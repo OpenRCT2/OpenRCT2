@@ -48,5 +48,5 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem * item) const;
 
 private:
-
+    void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
 };

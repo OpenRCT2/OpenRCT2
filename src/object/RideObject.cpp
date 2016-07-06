@@ -45,10 +45,38 @@ RideObject::~RideObject()
 
 void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    stream->Read(&_legacyType);
-    _legacyType.name = 0;
-    _legacyType.description = 0;
-    _legacyType.images_offset = 0;
+    stream->Seek(8, STREAM_SEEK_CURRENT);
+    _legacyType.flags = stream->ReadValue<uint32>();
+    for (int i = 0; i < 3; i++)
+    {
+        _legacyType.ride_type[i] = stream->ReadValue<uint8>();
+    }
+    _legacyType.min_cars_in_train = stream->ReadValue<uint8>();
+    _legacyType.max_cars_in_train = stream->ReadValue<uint8>();
+    _legacyType.cars_per_flat_ride = stream->ReadValue<uint8>();
+    _legacyType.zero_cars = stream->ReadValue<uint8>();
+    _legacyType.tab_vehicle = stream->ReadValue<uint8>();
+    _legacyType.default_vehicle = stream->ReadValue<uint8>();
+    _legacyType.front_vehicle = stream->ReadValue<uint8>();
+    _legacyType.second_vehicle = stream->ReadValue<uint8>();
+    _legacyType.rear_vehicle = stream->ReadValue<uint8>();
+    _legacyType.third_vehicle = stream->ReadValue<uint8>();
+    _legacyType.pad_019 = stream->ReadValue<uint8>();
+    for (int i = 0; i < 4; i++)
+    {
+        rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
+        ReadLegacyVehicle(context, stream, entry);
+    }
+    stream->Seek(4, STREAM_SEEK_CURRENT);
+    _legacyType.excitement_multipler = stream->ReadValue<sint8>();
+    _legacyType.intensity_multipler = stream->ReadValue<sint8>();
+    _legacyType.nausea_multipler = stream->ReadValue<sint8>();
+    _legacyType.max_height = stream->ReadValue<uint8>();
+    _legacyType.enabledTrackPieces = stream->ReadValue<uint64>();
+    _legacyType.category[0] = stream->ReadValue<uint8>();
+    _legacyType.category[1] = stream->ReadValue<uint8>();
+    _legacyType.shop_item = stream->ReadValue<uint8>();
+    _legacyType.shop_item_secondary = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
@@ -362,4 +390,52 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
         flags |= ORI_RIDE_FLAG_SEPARATE;
     }
     item->RideFlags = flags;
+}
+
+void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
+{
+    vehicle->rotation_frame_mask = stream->ReadValue<uint16>();
+    vehicle->var_02 = stream->ReadValue<uint8>();
+    vehicle->var_03 = stream->ReadValue<uint8>();
+    vehicle->spacing = stream->ReadValue<uint32>();
+    vehicle->car_friction = stream->ReadValue<uint16>();
+    vehicle->tab_height = stream->ReadValue<sint8>();
+    vehicle->num_seats = stream->ReadValue<uint8>();
+    vehicle->sprite_flags = stream->ReadValue<uint16>();
+    vehicle->sprite_width = stream->ReadValue<uint8>();
+    vehicle->sprite_height_negative = stream->ReadValue<uint8>();
+    vehicle->sprite_height_positive = stream->ReadValue<uint8>();
+    vehicle->var_11 = stream->ReadValue<uint8>();
+    vehicle->flags_a = stream->ReadValue<uint16>();
+    vehicle->flags_b = stream->ReadValue<uint16>();
+    vehicle->var_16 = stream->ReadValue<uint16>();
+    stream->Seek(4, STREAM_SEEK_CURRENT);
+    vehicle->var_1C = stream->ReadValue<uint32>();
+    vehicle->var_20 = stream->ReadValue<uint32>();
+    vehicle->var_24 = stream->ReadValue<uint32>();
+    vehicle->var_28 = stream->ReadValue<uint32>();
+    vehicle->var_2C = stream->ReadValue<uint32>();
+    vehicle->var_30 = stream->ReadValue<uint32>();
+    vehicle->var_34 = stream->ReadValue<uint32>();
+    vehicle->var_38 = stream->ReadValue<uint32>();
+    vehicle->var_3C = stream->ReadValue<uint32>();
+    vehicle->var_40 = stream->ReadValue<uint32>();
+    vehicle->var_44 = stream->ReadValue<uint32>();
+    vehicle->var_48 = stream->ReadValue<uint32>();
+    vehicle->var_4C = stream->ReadValue<uint32>();
+    vehicle->no_vehicle_images = stream->ReadValue<uint32>();
+    vehicle->no_seating_rows = stream->ReadValue<uint8>();
+    vehicle->spinning_inertia = stream->ReadValue<uint8>();
+    vehicle->spinning_friction = stream->ReadValue<uint8>();
+    vehicle->friction_sound_id = stream->ReadValue<uint8>();
+    vehicle->var_58 = stream->ReadValue<uint8>();
+    vehicle->sound_range = stream->ReadValue<uint8>();
+    vehicle->var_5A = stream->ReadValue<uint8>();
+    vehicle->powered_acceleration = stream->ReadValue<uint8>();
+    vehicle->powered_max_speed = stream->ReadValue<uint8>();
+    vehicle->car_visual = stream->ReadValue<uint8>();
+    vehicle->effect_visual = stream->ReadValue<uint8>();
+    vehicle->draw_order = stream->ReadValue<uint8>();
+    vehicle->special_frames = stream->ReadValue<uint8>();
+    stream->Seek(4, STREAM_SEEK_CURRENT);
 }
