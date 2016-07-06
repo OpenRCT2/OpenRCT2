@@ -196,7 +196,11 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	includeNewItem = (type & 0x01) == LOADSAVETYPE_SAVE;
 	switch (type & 0x0E) {
 	case LOADSAVETYPE_GAME:
-		platform_get_user_directory(path, "save");
+		if (gConfigGeneral.last_save_game_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_game_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_game_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "save");
+			
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create save directory.");
 			window_close(w);
@@ -206,7 +210,11 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sv6");
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
-		platform_get_user_directory(path, "landscape");
+		if (gConfigGeneral.last_save_landscape_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_landscape_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_landscape_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "landscape");
+			
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create landscapes directory.");
 			window_close(w);
@@ -216,7 +224,11 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
 	case LOADSAVETYPE_SCENARIO:
-		platform_get_user_directory(path, "scenario");
+		if (gConfigGeneral.last_save_scenario_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_scenario_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_scenario_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "scenario");
+			
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create scenarios directory.");
 			window_close(w);
@@ -229,11 +241,15 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		/*
 		Uncomment when user tracks are separated
 
-		platform_get_user_directory(path, "tracks");
+		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
+			save_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "tracks");
+		 
 		if (!platform_ensure_directory_exists(path)) {
-		log_error("Unable to create tracks directory.");
-		window_close(w);
-		return NULL;
+		    log_error("Unable to create tracks directory.");
+		    window_close(w);
+		    return NULL;
 		}
 		*/
 
@@ -705,11 +721,20 @@ static void window_loadsave_invoke_callback(int result)
 	}
 }
 
+static void save_path(utf8 **config_str, const char *path)
+{
+	if (*config_str != NULL)
+		free(*config_str);
+	*config_str = path_get_directory(path);
+	config_save_default();
+}
+
 static void window_loadsave_select(rct_window *w, const char *path)
 {
 	SDL_RWops* rw;
 	switch (_loadsaveType & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
+		save_path(&gConfigGeneral.last_save_game_directory, path);
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
 			char *extension = (char*)path_get_extension(path);
@@ -739,6 +764,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
+		save_path(&gConfigGeneral.last_save_game_directory, path);
 		rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
 			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
@@ -761,6 +787,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
+		save_path(&gConfigGeneral.last_save_landscape_directory, path);
 		if (editor_load_landscape(path)) {
 			gfx_invalidate_screen();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
@@ -771,6 +798,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
+		save_path(&gConfigGeneral.last_save_landscape_directory, path);
 		rw = SDL_RWFromFile(path, "wb+");
 		if (rw != NULL) {
 			scenario_set_filename(path);
@@ -791,6 +819,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 	{
+		save_path(&gConfigGeneral.last_save_scenario_directory, path);
 		int parkFlagsBackup = gParkFlags;
 		gParkFlags &= ~PARK_FLAGS_18;
 		gS6Info->editor_step = 255;
@@ -815,6 +844,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	}
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+		save_path(&gConfigGeneral.last_save_track_directory, path);
 		window_install_track_open(path);
 		window_close_by_class(WC_LOADSAVE);
 		window_loadsave_invoke_callback(MODAL_RESULT_OK);
