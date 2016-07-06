@@ -711,14 +711,6 @@ extern "C"
         return (void *)object;
     }
 
-    void * object_repository_get_loaded_object(uint8 objectType, uint8 entryIndex)
-    {
-        int index = GetObjectEntryIndex(objectType, entryIndex);
-
-        IObjectManager * objectManager = GetObjectManager();
-        return (void *)objectManager->GetLoadedObject(index);
-    }
-
     void object_repository_unload(size_t itemIndex)
     {
         // TODO

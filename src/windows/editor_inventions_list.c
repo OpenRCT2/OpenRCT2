@@ -23,6 +23,7 @@
 #include "../localisation/localisation.h"
 #include "../management/research.h"
 #include "../object.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../rct1.h"
 #include "../sprites.h"
@@ -783,9 +784,12 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
 		return;
 
+	rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex & 0xFF].entry;
+
 	// Draw preview
 	widget = &w->widgets[WIDX_PREVIEW];
-	void * object = object_repository_get_loaded_object(objectEntryType, researchItem->entryIndex & 0xFF);
+
+	void * object = object_manager_get_loaded_object(entry);
 	if (object != NULL) {
 		rct_drawpixelinfo clipDPI;
 		x = w->x + widget->left + 1;
