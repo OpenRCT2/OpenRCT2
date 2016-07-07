@@ -622,58 +622,6 @@ extern "C"
         objectRepository->LoadOrConstruct();
     }
 
-    bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex)
-    {
-        return false;
-
-        // IObjectRepository * objectRepository = GetObjectRepository();
-        // const ObjectRepositoryItem * ori = objectRepository->FindObject(entry);
-        // if (ori == nullptr)
-        // {
-        //     ReportMissingObject(entry);
-        //     return false;
-        // }
-        // 
-        // Object * object = objectRepository->LoadObject(ori);
-        // if (object == nullptr)
-        // {
-        //     utf8 objName[9] = { 0 };
-        //     Memory::Copy(objName, ori->ObjectEntry.name, 8);
-        //     Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
-        //     Console::Error::WriteLine();
-        //     return false;
-        // }
-        // 
-        // uint8 objectType = object->GetObjectType();
-        // void * * chunkList = object_entry_groups[objectType].chunks;
-        // if (groupIndex == -1)
-        // {
-        //     for (groupIndex = 0; chunkList[groupIndex] != (void*)-1; groupIndex++)
-        //     {
-        //         if (groupIndex + 1 >= object_entry_group_counts[objectType])
-        //         {
-        //             log_error("Object Load failed due to too many objects of a certain type.");
-        //             delete object;
-        //             return false;
-        //         }
-        //     }
-        // }
-        // chunkList[groupIndex] = object->GetLegacyData();
-        // if (outGroupIndex != nullptr)
-        // {
-        //     *outGroupIndex = groupIndex;
-        // }
-        // 
-        // rct_object_entry_extended * extendedEntry = &object_entry_groups[objectType].entries[groupIndex];
-        // Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
-        // extendedEntry->chunk_size = 0;
-        // 
-        // int loadedObjectIndex = GetObjectEntryIndex(objectType, groupIndex);
-        // delete _loadedObjects[loadedObjectIndex];
-        // _loadedObjects[loadedObjectIndex] = object;
-        // return true;
-    }
-
     bool object_load_entries(rct_object_entry * entries)
     {
         log_verbose("loading required objects");
