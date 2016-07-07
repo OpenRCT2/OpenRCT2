@@ -668,12 +668,6 @@ extern "C"
         return (void *)object;
     }
 
-    void object_unload_all()
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadAll();
-    }
-
     void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
     {
         rct_string_id localisedStringIds[3];
