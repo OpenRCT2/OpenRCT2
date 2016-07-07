@@ -139,6 +139,7 @@ rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
         tiles.push_back(tile);
     }
+    tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
 
     return Memory::DuplicateArray(tiles.data(), tiles.size());
 }
