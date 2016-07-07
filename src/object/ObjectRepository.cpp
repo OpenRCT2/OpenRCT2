@@ -25,6 +25,7 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
@@ -321,9 +322,16 @@ private:
                 header.PathChecksum == _queryDirectoryResult.PathChecksum)
             {
                 // Header matches, so the index is not out of date
+
+                // Buffer the rest of file into memory to speed up item reading
+                size_t dataSize = (size_t)(fs.GetLength() - fs.GetPosition());
+                void * data = fs.ReadArray<uint8>(dataSize);
+                auto ms = MemoryStream(data, dataSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+
+                // Read items
                 for (uint32 i = 0; i < header.NumItems; i++)
                 {
-                    ObjectRepositoryItem item = ReadItem(&fs);
+                    ObjectRepositoryItem item = ReadItem(&ms);
                     AddItem(&item);
                 }
                 return true;
