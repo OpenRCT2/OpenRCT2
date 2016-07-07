@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <array>
+#include <memory>
 #include <unordered_set>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
@@ -421,16 +422,16 @@ private:
     }
 };
 
-ObjectManager * _objectManager;
+static std::unique_ptr<ObjectManager> _objectManager;
 
 IObjectManager * GetObjectManager()
 {
     if (_objectManager == nullptr)
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        _objectManager = new ObjectManager(objectRepository);
+        _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
     }
-    return _objectManager;
+    return _objectManager.get();
 }
 
 extern "C"

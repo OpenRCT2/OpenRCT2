@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <algorithm>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
@@ -578,15 +579,15 @@ private:
     }
 };
 
-static ObjectRepository * _objectRepository = nullptr;
+static std::unique_ptr<ObjectRepository> _objectRepository;
 
 IObjectRepository * GetObjectRepository()
 {
     if (_objectRepository == nullptr)
     {
-        _objectRepository = new ObjectRepository();
+        _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository());
     }
-    return _objectRepository;
+    return _objectRepository.get();
 }
 
 static int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
