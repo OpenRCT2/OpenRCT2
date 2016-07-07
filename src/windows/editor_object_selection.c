@@ -732,7 +732,6 @@ static void window_editor_object_selection_close(rct_window *w)
 
 	unload_unselected_objects();
 	editor_load_selected_objects();
-	reset_loaded_objects();
 	editor_object_flags_free();
 
 	object_delete(_loadedObject);

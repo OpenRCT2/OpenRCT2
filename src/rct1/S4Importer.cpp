@@ -736,8 +736,6 @@ void S4Importer::LoadObjects()
     }));
     LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, List<const char *>({ "PKENT1  " }));
     LoadObjects(OBJECT_TYPE_WATER, List<const char *>({ "WTRCYAN " }));
-
-    reset_loaded_objects();
 }
 
 void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)

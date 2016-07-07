@@ -362,7 +362,6 @@ void S6Importer::Import()
     {
         throw ObjectLoadException();
     }
-    reset_loaded_objects();
     map_update_tile_pointers();
     if (network_get_mode() == NETWORK_MODE_CLIENT)
     {

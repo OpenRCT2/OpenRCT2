@@ -370,7 +370,6 @@ static int editor_read_s6(const char *path)
 			return 0;
 		}
 
-		reset_loaded_objects();
 		map_update_tile_pointers();
 		game_convert_strings_to_utf8();
 

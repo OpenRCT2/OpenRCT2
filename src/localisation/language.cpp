@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stack>
+#include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
 extern "C" {
@@ -189,13 +190,12 @@ bool language_open(int id)
 				gCurrentTTFFontSet = &TTFFontCustom;
 				
 				bool font_initialised = ttf_initialise();
-				if(!font_initialised) {
+				if (!font_initialised) {
 					log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
 				} else {
 					// Objects and their localized strings need to be refreshed
-					reset_loaded_objects();
-					
-					return 1;
+					GetObjectManager()->ResetObjects();
+					return true;
 				}
 			}
 			ttf_dispose();
@@ -220,8 +220,7 @@ bool language_open(int id)
 		}
 
 		// Objects and their localized strings need to be refreshed
-		reset_loaded_objects();
-
+		GetObjectManager()->ResetObjects();
 		return true;
 	}
 

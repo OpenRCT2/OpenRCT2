@@ -507,7 +507,6 @@ extern "C"
         }
         delete s6exporter;
 
-        reset_loaded_objects();
         gfx_invalidate_screen();
 
         if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
@@ -539,8 +538,6 @@ extern "C"
         {
             return 0;
         }
-
-        reset_loaded_objects();
 
         // Write other data not in normal save files
         SDL_WriteLE32(rw, gGamePaused);

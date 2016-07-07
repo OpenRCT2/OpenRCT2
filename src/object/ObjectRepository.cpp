@@ -634,24 +634,6 @@ extern "C"
         return true;
     }
 
-    void reset_loaded_objects()
-    {
-        // if (_loadedObjects != nullptr)
-        // {
-        //     for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        //     {
-        //         Object * object = _loadedObjects[i];
-        //         if (object != nullptr)
-        //         {
-        //             object->Unload();
-        //             object->Load();
-        //         }
-        //     }
-        // }
-        // 
-        // reset_type_to_ride_entry_index_map();
-    }
-
     void * object_repository_load_object(const rct_object_entry * objectEntry)
     {
         Object * object = nullptr;

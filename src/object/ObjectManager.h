@@ -43,6 +43,8 @@ interface IObjectManager
     virtual bool        LoadObjects(const rct_object_entry * entries, size_t count) abstract;
     virtual void        UnloadObjects(const rct_object_entry * entries, size_t count) abstract;
     virtual void        UnloadAll() abstract;
+
+    virtual void ResetObjects() abstract;
 };
 
 IObjectManager * GetObjectManager();

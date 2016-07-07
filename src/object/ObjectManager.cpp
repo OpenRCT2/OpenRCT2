@@ -180,6 +180,22 @@ public:
         reset_type_to_ride_entry_index_map();
     }
 
+    void ResetObjects() override
+    {
+        if (_loadedObjects != nullptr)
+        {
+            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+            {
+                Object * loadedObject = _loadedObjects[i];
+                if (loadedObject != nullptr)
+                {
+                    loadedObject->Unload();
+                    loadedObject->Load();
+                }
+            }
+        }
+    }
+
 private:
     sint32 FindSpareSlot(uint8 objectType)
     {

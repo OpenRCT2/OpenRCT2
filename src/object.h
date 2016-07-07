@@ -116,7 +116,6 @@ bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 int check_object_entry(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
-void reset_loaded_objects();
 int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);
 
