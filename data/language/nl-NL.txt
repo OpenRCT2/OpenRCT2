@@ -4182,6 +4182,15 @@ STR_5878    :Software (omgeleid via hardware)
 STR_5879    :OpenGL
 STR_5880    :Geselecteerd
 STR_5881    :Niet-geselecteerd
+STR_5882    :Eigen valuta
+STR_5883    :Instellen eigen valuta
+STR_5884    :{WINDOW_COLOUR_2}Wisselkoers 
+STR_5885    :{WINDOW_COLOUR_2}is het equivalent van {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Valutasymbool:
+STR_5887    :Staat voor het bedrag
+STR_5888    :Staat na het bedrag
+STR_5889    :Symbool eigen valuta
+STR_5890    :Voer het te gebruiken valutasymbool in:
 
 #############
 # Scenarios #

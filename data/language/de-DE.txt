@@ -2230,7 +2230,7 @@ STR_2224    :{WINDOW_COLOUR_2}Kontostand: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kontostand: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Verkehrswert: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Firmenwert: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Gewinne des letzten Monats aus Speisen/Getränke und {NEWLINE}-Werbeartikeln: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Gewinne des letzten Monats aus Speisen, {NEWLINE}Getränke und Werbeartikeln: {BLACK}{CURRENCY}
 STR_2229    :Anstieg bis vertikal
 STR_2230    :Vertikale Strecke
 STR_2231    :Haltebremse (Gefälle)
