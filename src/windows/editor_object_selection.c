@@ -472,26 +472,15 @@ static void setup_track_manager_objects()
 		uint8 * selectionFlags = &_objectSelectionFlags[i];
 		const ObjectRepositoryItem * item = &items[i];
 		uint8 object_type = item->ObjectEntry.flags & 0xF;
-		if (object_type == OBJECT_TYPE_RIDE){
+		if (object_type == OBJECT_TYPE_RIDE) {
 			*selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
 			for (uint8 j = 0; j < 3; j++) {
 				uint8 rideType = item->RideType[j];
-				if (rideType == 0xFF)
-					continue;
-
-				if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK))
-					continue;
-
-				if (item->RideType[3] & (1 << 0)) {
+				if (rideType != 0xFF && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK)) {
 					*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
-				} else if (ride_list[rideType] & (1 << 0)) {
-					continue;
-				} else {
-					ride_list[rideType] |= (1 << 0);
-					*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
+					break;
 				}
-				break;
 			}
 		}
 	}
