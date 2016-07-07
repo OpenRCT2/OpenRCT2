@@ -50,16 +50,16 @@ enum {
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,			  STR_NONE },
-	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,			  STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,		  STR_CLOSE_WINDOW_TIP }, //Window close button
-	{ WWT_CLOSEBOX,		0,		105,				205,			36,			47,			2718,				  STR_NONE},	// Up
-	{ WWT_CLOSEBOX,		0,		206,				307,			36,			47,			2719,				  STR_NONE},	// New
-	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			STR_NONE,			  STR_NONE },	// Name
-	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			STR_NONE,			  STR_NONE },	// Date
-	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	2,					  STR_NONE },	// File list
-	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	2707,				  STR_NONE }, // Use native browser
-	{ WWT_CLOSEBOX,     0,      4,                  104,            36,			47,			STR_LOADSAVE_DEFAULT, STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
+	{ WWT_FRAME,    0, 0,                WW - 1,       0,       WH - 1,  STR_NONE,             STR_NONE },
+	{ WWT_CAPTION,  0, 1,                WW - 2,       1,       14,      STR_NONE,             STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX, 0, WW - 13,          WW - 3,       2,       13,      STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP }, //Window close button
+	{ WWT_CLOSEBOX, 0, 105,              205,          36,      47,      2718,                 STR_NONE }, // Up
+	{ WWT_CLOSEBOX, 0, 206,              307,          36,      47,      2719,                 STR_NONE }, // New
+	{ WWT_CLOSEBOX, 0, 4,                (WW - 5) / 2, 50,      61,      STR_NONE,             STR_NONE }, // Name
+	{ WWT_CLOSEBOX, 0, (WW - 5) / 2 + 1, WW - 5 - 1,   50,      61,      STR_NONE,             STR_NONE }, // Date
+	{ WWT_SCROLL,   0, 4,                WW - 5,       61,      WH - 40, 2,                    STR_NONE }, // File list
+	{ WWT_CLOSEBOX, 0, 4,                200,          WH - 36, WH - 18, 2707,                 STR_NONE }, // Use native browser
+	{ WWT_CLOSEBOX, 0, 4,                104,          36,      47,      STR_LOADSAVE_DEFAULT, STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
 	{ WIDGETS_END }
 };
 
