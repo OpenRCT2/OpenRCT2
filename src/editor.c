@@ -26,6 +26,7 @@
 #include "management/finance.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "object/ObjectManager.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
@@ -59,7 +60,7 @@ void editor_load()
 
 	audio_pause_sounds();
 	audio_unpause_sounds();
-	object_unload_all();
+	object_manager_unload_all_objects();
 	object_list_load();
 	map_init(150);
 	banner_init();
@@ -146,7 +147,7 @@ void trackdesigner_load()
 	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
 	gScreenAge = 0;
 
-	object_unload_all();
+	object_manager_unload_all_objects();
 	object_list_load();
 	map_init(150);
 	set_all_land_owned();
@@ -185,7 +186,7 @@ void trackmanager_load()
 	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
 	gScreenAge = 0;
 
-	object_unload_all();
+	object_manager_unload_all_objects();
 	object_list_load();
 	map_init(150);
 	set_all_land_owned();
@@ -484,7 +485,7 @@ void editor_open_windows_for_current_step()
 			return;
 
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-			object_unload_all();
+			object_manager_unload_all_objects();
 		}
 
 		window_editor_object_selection_open();

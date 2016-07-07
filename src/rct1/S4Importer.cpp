@@ -37,6 +37,7 @@ extern "C"
     #include "../management/finance.h"
     #include "../management/marketing.h"
     #include "../object.h"
+    #include "../object/ObjectManager.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
     #include "../util/sawyercoding.h"
@@ -111,7 +112,7 @@ void S4Importer::Initialise()
     // Do map initialisation, same kind of stuff done when loading scenario editor
     audio_pause_sounds();
     audio_unpause_sounds();
-    object_unload_all();
+    GetObjectManager()->UnloadAll();
     map_init(mapSize);
     banner_init();
     reset_park_entrances();

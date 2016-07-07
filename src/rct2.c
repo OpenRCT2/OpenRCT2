@@ -35,6 +35,7 @@
 #include "network/network.h"
 #include "network/twitch.h"
 #include "object.h"
+#include "object/ObjectManager.h"
 #include "openrct2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
@@ -140,7 +141,7 @@ void rct2_dispose()
 {
 	gfx_unload_g2();
 	gfx_unload_g1();
-	object_unload_all();
+	object_manager_unload_all_objects();
 }
 
 int rct2_init()
