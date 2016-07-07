@@ -924,6 +924,12 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 			case TRACK_ELEM_60_DEG_DOWN:
 			case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
 			case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+			case TRACK_ELEM_DIAG_60_DEG_UP:
+			case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+			case TRACK_ELEM_DIAG_60_DEG_DOWN:
+			case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+			case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
 				rideType = RIDE_TYPE_WATER_COASTER;
 				break;
 
