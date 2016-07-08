@@ -1853,7 +1853,7 @@ uint8 *object_alloc_chunk(SDL_RWops *rw, int *size)
 
 void *object_realloc_chunk(void *chunk, size_t size)
 {
-	void *ptr_new;
+	void *ptr_new, *ptr_new_chunk;
 	void *ptr_old = ((void **)chunk)[-1];
 
 	int alignment = ((size_t *)chunk)[-2];
@@ -1867,21 +1867,21 @@ void *object_realloc_chunk(void *chunk, size_t size)
 		assert(false);
 	}
 
-	// Turn ptr_new into a "chunk pointer"
-	ptr_new = (void *)((uint8 *)ptr_new + offset);
-	memset((uint8 *)ptr_new + size, 0x00, zero_pad);
+	ptr_new_chunk = (void *)((uint8 *)ptr_new + offset);
+	((void **)ptr_new_chunk)[-1] = ptr_new;
+	memset((uint8 *)ptr_new_chunk + size, 0x00, zero_pad);
 
 	// realloc moved the data (fine) to a non-aligned location (not fine)
-	if ((uint32)ptr_new % alignment > 0) {
+	if ((uint32)ptr_new_chunk % alignment > 0) {
 		void *tmp = object_aligned_alloc_pad(32, size);
 
-		memcpy(tmp, ptr_new, size);
-		object_free_chunk(ptr_new);
+		memcpy(tmp, ptr_new_chunk, size);
+		object_free_chunk(ptr_new_chunk);
 
-		ptr_new = tmp;
+		ptr_new_chunk = tmp;
 	}
 
-	return ptr_new;
+	return ptr_new_chunk;
 }
 
 void object_free_chunk(void *chunk)
