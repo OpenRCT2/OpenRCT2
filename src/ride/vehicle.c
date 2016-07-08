@@ -5401,25 +5401,28 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 	}
 
 	int trackType = vehicle->track_type >> 2;
+
 	switch (trackType) {
 	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_BLOCK_BRAKES:
-		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
+		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride))
+			apply_block_section_stop_site(vehicle, ride);
+
+		break;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_CABLE_LIFT_HILL:
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		if (ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
-	default:
-		return;
+		if (ride_is_block_sectioned(ride))
+			apply_block_section_stop_site(vehicle, ride);
+
+		break;
 	}
+}
+
+void apply_block_section_stop_site(rct_vehicle *vehicle, rct_ride *ride){
+	int trackType = vehicle->track_type >> 2;
 
 	rct_map_element *trackElement =  map_get_track_element_at_of_type(
 		vehicle->track_x,
@@ -5427,11 +5430,6 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		vehicle->track_z >> 3,
 		trackType
 	);
-
-}
-
-void apply_block_section_stop_site(rct_vehicle *vehicle, rct_map_element *trackElement){
-	int trackType = vehicle->track_type >> 2;
 
 	if (trackType == TRACK_ELEM_END_STATION) {
 		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
