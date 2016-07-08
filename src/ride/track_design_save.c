@@ -15,15 +15,15 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../interface/viewport.h"
 #include "../util/sawyercoding.h"
+#include "../util/util.h"
 #include "../windows/error.h"
 #include "../world/scenery.h"
-#include "../config.h"
-#include "../util/util.h"
 #include "ride_data.h"
 #include "track.h"
 #include "track_data.h"
