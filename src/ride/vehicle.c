@@ -5453,11 +5453,12 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 				// Slow it down till completely stop the car
 				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 				vehicle->acceleration = 0;
-				// If the vehicle is slow enough, stop it
+				// If the vehicle is slow enough, stop it. If not, slow it down
 				if (vehicle->velocity <= 0x20000) {
 					vehicle->velocity = 0;
+				} else {
+					vehicle->velocity -= vehicle->velocity >> 3;
 				}
-				vehicle->velocity -= vehicle->velocity >> 3;
 			}
 		}
 	}
