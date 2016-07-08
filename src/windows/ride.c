@@ -4702,9 +4702,7 @@ static void window_ride_measurements_design_cancel()
  */
 static void window_ride_measurements_design_save(rct_window *w)
 {
-	if (track_design_save((uint8)w->number) == 0) return;
-
-	window_ride_measurements_design_cancel();
+	track_design_save((uint8)w->number);
 }
 
 /**

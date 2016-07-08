@@ -187,6 +187,9 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
 		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_TRACK;
+		break;
 	default:
 		log_error("Unsupported load / save type: %d", type & 0x0F);
 		return NULL;
@@ -892,6 +895,17 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		window_close_by_class(WC_LOADSAVE);
 		window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+	{
+		int success = track_design_save_to_file(path);
+		if (success) {
+			window_close_by_class(WC_LOADSAVE);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
+		} else {
+			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+		}
+	}
 	}
 }
 

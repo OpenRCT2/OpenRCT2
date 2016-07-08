@@ -218,5 +218,6 @@ bool track_design_save_contains_map_element(rct_map_element *mapElement);
 void track_design_save_select_nearby_scenery(int rideIndex);
 void track_design_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 bool track_design_save(uint8 rideIndex);
+bool track_design_save_to_file(const utf8 *path);
 
 #endif
