@@ -4198,6 +4198,15 @@ STR_5878    :软件渲染(硬件显示)
 STR_5879    :OpenGL
 STR_5880    :只显示选中的物体
 STR_5881    :只显示未被选中的物体
+STR_5882    :自定义货币
+STR_5883    :自定义货币选项
+STR_5884    :{WINDOW_COLOUR_2}汇率: 
+STR_5885    :{WINDOW_COLOUR_2}等价于英镑(£){COMMA32}
+STR_5886    :{WINDOW_COLOUR_2}货币符号:
+STR_5887    :前缀
+STR_5888    :后缀
+STR_5889    :自定义货币符号
+STR_5890    :请输入用于显示的货币符号
 
 #############
 # Scenarios #
