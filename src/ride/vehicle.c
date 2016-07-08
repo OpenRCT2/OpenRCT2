@@ -5432,20 +5432,28 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		}
 	} else {
+		// If the track piece is a block section stop site
 		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_BLOCK_BRAKES || track_element_is_lift_hill(trackElement)) {
+			// If the site is NOT in a "train blocking" state
 			if (!(trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) || !ride_is_block_sectioned(ride)) {
+				// If the site is a block brake
 				if (trackType == TRACK_ELEM_BLOCK_BRAKES && vehicle->velocity >= 0) {
+					// If the vehicle is below the speed limit
 					if (vehicle->velocity <= 0x20364) {
+						// Boost it until the fixed block brake speed
 						vehicle->velocity = 0x20364;
 						vehicle->acceleration = 0;
 					} else {
+						// Slow it down till the fixed block brake speed
 						vehicle->velocity -= vehicle->velocity >> 4;
 						vehicle->acceleration = 0;
 					}
 				}
 			} else {
+				// Slow it down till completely stop the car
 				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 				vehicle->acceleration = 0;
+				// If the vehicle is slow enough, stop it
 				if (vehicle->velocity <= 0x20000) {
 					vehicle->velocity = 0;
 				}
