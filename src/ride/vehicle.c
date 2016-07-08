@@ -5427,6 +5427,12 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		vehicle->track_z >> 3,
 		trackType
 	);
+
+}
+
+void apply_block_section_stop_site(rct_vehicle *vehicle, rct_map_element *trackElement){
+	int trackType = vehicle->track_type >> 2;
+
 	if (trackType == TRACK_ELEM_END_STATION) {
 		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
