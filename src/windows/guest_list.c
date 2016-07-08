@@ -437,7 +437,9 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		y = numGuests * 10;
 		RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
 		_window_guest_list_num_pages = (int) ceilf((float)numGuests / 3173);
-		if (_window_guest_list_selected_page >= _window_guest_list_num_pages) 
+		if (_window_guest_list_num_pages == 0)
+			_window_guest_list_selected_page = 0;
+		else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)
 			_window_guest_list_selected_page = _window_guest_list_num_pages - 1;
 		break;
 	case PAGE_SUMMARISED:
