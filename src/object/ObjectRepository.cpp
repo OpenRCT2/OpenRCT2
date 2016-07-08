@@ -480,10 +480,16 @@ private:
     {
         Memory::Free(item->Path);
         Memory::Free(item->Name);
-        Memory::Free(item->ThemeObjects);
         item->Path = nullptr;
         item->Name = nullptr;
-        item->ThemeObjects = nullptr;
+
+        uint8 objectType = item->ObjectEntry.flags & 0x0F;
+        switch (objectType) {
+        case OBJECT_TYPE_SCENERY_SETS:
+            Memory::Free(item->ThemeObjects);
+            item->ThemeObjects = nullptr;
+            break;
+        }
     }
 
     static void SaveObject(const utf8 * path, const rct_object_entry * entry, const void * data, size_t dataSize)
