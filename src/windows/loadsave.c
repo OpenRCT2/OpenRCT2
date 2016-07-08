@@ -45,19 +45,21 @@ enum {
 	WIDX_SORT_DATE,
 	WIDX_SCROLL,
 	WIDX_BROWSE,
+	WIDX_DEFAULT
 };
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,			STR_NONE },
-	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,			STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP }, //Window close button
-	{ WWT_CLOSEBOX,		0,		4,					104,			36,			47,			2718,				STR_NONE},	// Up
-	{ WWT_CLOSEBOX,		0,		105,				205,			36,			47,			2719,				STR_NONE},	// New
-	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			STR_NONE,			STR_NONE },	// Name
-	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			STR_NONE,			STR_NONE },	// Date
-	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	2,					STR_NONE },	// File list
-	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	2707,				STR_NONE }, // Use native browser
+	{ WWT_FRAME,    0, 0,                WW - 1,       0,       WH - 1,  STR_NONE,             STR_NONE },
+	{ WWT_CAPTION,  0, 1,                WW - 2,       1,       14,      STR_NONE,             STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX, 0, WW - 13,          WW - 3,       2,       13,      STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP }, //Window close button
+	{ WWT_CLOSEBOX, 0, 105,              205,          36,      47,      2718,                 STR_NONE }, // Up
+	{ WWT_CLOSEBOX, 0, 206,              307,          36,      47,      2719,                 STR_NONE }, // New
+	{ WWT_CLOSEBOX, 0, 4,                (WW - 5) / 2, 50,      61,      STR_NONE,             STR_NONE }, // Name
+	{ WWT_CLOSEBOX, 0, (WW - 5) / 2 + 1, WW - 5 - 1,   50,      61,      STR_NONE,             STR_NONE }, // Date
+	{ WWT_SCROLL,   0, 4,                WW - 5,       61,      WH - 40, 2,                    STR_NONE }, // File list
+	{ WWT_CLOSEBOX, 0, 4,                200,          WH - 36, WH - 18, 2707,                 STR_NONE }, // Use native browser
+	{ WWT_CLOSEBOX, 0, 4,                104,          36,      47,      STR_LOADSAVE_DEFAULT, STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
 	{ WIDGETS_END }
 };
 
@@ -159,7 +161,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	if (w == NULL) {
 		w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
-		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE);
+		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
 		w->colours[0] = 7;
 		w->colours[1] = 7;
 		w->colours[2] = 7;
@@ -240,24 +242,23 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_TRACK:
 		/*
 		Uncomment when user tracks are separated
-
-		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
-			save_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
-		else
-			platform_get_user_directory(path, "tracks");
 		 
 		if (!platform_ensure_directory_exists(path)) {
-		    log_error("Unable to create tracks directory.");
-		    window_close(w);
-		    return NULL;
+			log_error("Unable to create tracks directory.");
+			window_close(w);
+			return NULL;
 		}
 		*/
-
-		safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
-		ch = strchr(path, '*');
-		if (ch != NULL)
-			*ch = 0;
-
+			
+		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+		else {
+			safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
+			ch = strchr(path, '*');
+			if (ch != NULL)
+				*ch = 0;
+		}
+		
 		window_loadsave_populate_list(w, includeNewItem, path, ".td?");
 		break;
 	}
@@ -387,6 +388,48 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		window_loadsave_sort_list(0, _listItemsCount - 1);
 		window_invalidate(w);
 		break;
+	case WIDX_DEFAULT:
+	{
+		char directory[MAX_PATH];
+		
+		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
+		
+		switch (_type & 0x0E) {
+		case LOADSAVETYPE_GAME:
+			platform_get_user_directory(directory, "save");
+			break;
+		
+		case LOADSAVETYPE_LANDSCAPE:
+			platform_get_user_directory(directory, "landscape");
+			break;
+				
+		case LOADSAVETYPE_SCENARIO:
+			platform_get_user_directory(directory, "scenario");
+			break;
+				
+		case LOADSAVETYPE_TRACK:
+		{
+			/*
+			Uncomment when tracks get separated
+			
+			platform_get_user_directory(directory, "track");
+			*/
+
+			safe_strcpy(directory, gRCT2AddressTracksPath, MAX_PATH);
+			char *ch = strchr(directory, '*');
+			if (ch != NULL)
+				*ch = 0;
+
+			break;
+		}
+		}
+		
+		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
+		window_init_scroll_widgets(w);
+		w->no_list_items = _listItemsCount;
+		
+		break;
+	}
 	}
 }
 

@@ -4199,6 +4199,8 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Custom currency symbol
 STR_5890    :Enter the currency symbol to display
+STR_5891    :Default
+STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
 
 #############
 # Scenarios #

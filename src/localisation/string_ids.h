@@ -2668,6 +2668,9 @@ enum {
 	STR_SUFFIX = 5888,
 	STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE = 5889,
 	STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC = 5890,
+	
+	STR_LOADSAVE_DEFAULT = 5891,
+	STR_LOADSAVE_DEFAULT_TIP = 5892,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
