@@ -425,7 +425,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 
 	rct_g1_element *g1_source = gfx_get_g1_element(image_element);
 
-	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
+	if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_HAS_ZOOM_SPRITE)) {
 		rct_drawpixelinfo zoomed_dpi = {
 			.bits = dpi->bits,
 			.x = dpi->x >> 1,
@@ -439,7 +439,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		return;
 	}
 
-	if ( dpi->zoom_level && (g1_source->flags & (1<<5)) ){
+	if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_NO_ZOOM_DRAW)) {
 		return;
 	}
 
@@ -554,7 +554,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	//Move the pointer to the start point of the source
 	source_pointer += g1_source->width*source_start_y + source_start_x;
 
-	if (!(g1_source->flags & 0x02)){
+	if (!(g1_source->flags & G1_FLAG_1)) {
 		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 		return;
 	}
@@ -609,8 +609,8 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x,
 	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
 	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
 
-	assert(imgMask->flags & 1);
-	assert(imgColour->flags & 1);
+	assert(imgMask->flags & G1_FLAG_BMP);
+	assert(imgColour->flags & G1_FLAG_BMP);
 
 	if (dpi->zoom_level != 0) {
 		// TODO implement other zoom levels (probably not used though)
