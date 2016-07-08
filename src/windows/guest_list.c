@@ -344,11 +344,11 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 			widget->right - widget->left - 3
 		);
 
-		for (i = 0; i < 2; i++) {
+		for (i = 0; i < _window_guest_list_num_pages; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
 		}
-		dropdown_set_checked(_window_guest_list_selected_view, true);
+		dropdown_set_checked(_window_guest_list_selected_page, true);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
@@ -436,6 +436,9 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		w->var_492 = numGuests;
 		y = numGuests * 10;
 		RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
+		_window_guest_list_num_pages = (int) ceilf((float)numGuests / 3173);
+		if (_window_guest_list_selected_page >= _window_guest_list_num_pages) 
+			_window_guest_list_selected_page = _window_guest_list_num_pages - 1;
 		break;
 	case PAGE_SUMMARISED:
 		// Find the groups
@@ -573,6 +576,14 @@ static void window_guest_list_invalidate(rct_window *w)
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = _window_guest_list_selected_page + 3440;
 	window_guest_list_widgets[WIDX_TRACKING].left = 321 - 350 + w->width;
 	window_guest_list_widgets[WIDX_TRACKING].right = 344 - 350 + w->width;
+
+	if (_window_guest_list_num_pages > 1) {
+		window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
+		window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
+	}else{
+		window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
+		window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
+	}
 }
 
 /**
