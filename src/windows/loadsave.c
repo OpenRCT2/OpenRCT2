@@ -391,7 +391,6 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_DEFAULT:
 	{
 		char directory[MAX_PATH];
-		char *ch;
 		
 		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 		
