@@ -1681,8 +1681,8 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	if (shouldBreak == true || ride->status != RIDE_STATUS_OPEN) {
 		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
-			uint8 bl = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-			if (vehicle->peep[bl] == 0xFFFF) {
+			uint8 seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
+			if (vehicle->peep[seat * 2] == 0xFFFF) {
 				if (vehicle->num_peeps == 0) {
 					skipCheck = true;
 				}
