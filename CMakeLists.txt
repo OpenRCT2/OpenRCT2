@@ -226,9 +226,11 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLU
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS})
 
-# Disable optimizations for addresses.c for all compilers, to allow optimized
-# builds without need for -fno-omit-frame-pointer
-set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
+if (NOT DISABLE_RCT2)
+	# Disable optimizations for addresses.c for all compilers, to allow optimized
+	# builds without need for -fno-omit-frame-pointer
+	set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
+endif (NOT DISABLE_RCT2)
 
 if (WIN32)
 	# build as library for now, replace with add_executable
