@@ -5381,46 +5381,6 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 	}
 }
 
-/**
- *
- *  rct2: 0x006DAC43
- */
-static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
-{
-	rct_ride *ride = get_ride(vehicle->ride);
-	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
-	// Is chair lift type
-	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
-		sint32 velocity = ride->speed << 16;
-		if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
-			velocity = 0;
-		}
-		vehicle->velocity = velocity;
-		vehicle->acceleration = 0;
-	}
-
-	int trackType = vehicle->track_type >> 2;
-
-	switch (trackType) {
-	case TRACK_ELEM_END_STATION:
-	case TRACK_ELEM_BLOCK_BRAKES:
-		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride))
-			apply_block_section_stop_site(vehicle, ride);
-
-		break;
-	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_CABLE_LIFT_HILL:
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		if (ride_is_block_sectioned(ride))
-			apply_block_section_stop_site(vehicle, ride);
-
-		break;
-	}
-}
-
 void apply_block_section_stop_site(rct_vehicle *vehicle, rct_ride *ride){
 	int trackType = vehicle->track_type >> 2;
 
@@ -5470,9 +5430,49 @@ void apply_block_section_stop_site(rct_vehicle *vehicle, rct_ride *ride){
 
 /**
  *
+ *  rct2: 0x006DAC43
+ */
+static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
+{
+	rct_ride *ride = get_ride(vehicle->ride);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+	// Is chair lift type
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
+		sint32 velocity = ride->speed << 16;
+		if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+			velocity = 0;
+		}
+		vehicle->velocity = velocity;
+		vehicle->acceleration = 0;
+	}
+
+	int trackType = vehicle->track_type >> 2;
+
+	switch (trackType) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BLOCK_BRAKES:
+		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride))
+			apply_block_section_stop_site(vehicle, ride);
+
+		break;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_CABLE_LIFT_HILL:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		if (ride_is_block_sectioned(ride))
+			apply_block_section_stop_site(vehicle, ride);
+
+		break;
+	}
+}
+
+/**
+ *
  *  rct2: 0x006DADAE
  */
-static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
+static void update_velocity(rct_vehicle *vehicle)
 {
 	sint32 nextVelocity = vehicle->acceleration + vehicle->velocity;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7) {
@@ -8077,7 +8077,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 	vehicle_update_track_motion_up_stop_check(vehicle);
 	check_and_apply_block_section_stop_site(vehicle);
-	sub_6DAB4C_chunk_3(vehicle);
+	update_velocity(vehicle);
 
 	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
 		vehicle = vehicle_get_tail(vehicle);
