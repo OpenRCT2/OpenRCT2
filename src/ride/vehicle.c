@@ -5442,14 +5442,14 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 					vehicle->acceleration = 0;
 				}
 			}
-			return;
+		} else {
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+			vehicle->acceleration = 0;
+			if (vehicle->velocity <= 0x20000) {
+				vehicle->velocity = 0;
+			}
+			vehicle->velocity -= vehicle->velocity >> 3;
 		}
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		vehicle->acceleration = 0;
-		if (vehicle->velocity <= 0x20000) {
-			vehicle->velocity = 0;
-		}
-		vehicle->velocity -= vehicle->velocity >> 3;
 	}
 }
 
