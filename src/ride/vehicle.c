@@ -5385,7 +5385,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DAC43
  */
-static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
+static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 {
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -8076,7 +8076,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
 
 	vehicle_update_track_motion_up_stop_check(vehicle);
-	sub_6DAB4C_chunk_2(vehicle);
+	check_and_apply_block_section_stop_site(vehicle);
 	sub_6DAB4C_chunk_3(vehicle);
 
 	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
