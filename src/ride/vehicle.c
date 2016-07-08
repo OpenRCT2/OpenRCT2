@@ -5428,11 +5428,11 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		trackType
 	);
 	if (trackType == TRACK_ELEM_END_STATION) {
-		if (trackElement->flags & (1 << 5)) {
+		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		}
 	} else if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_BLOCK_BRAKES || track_element_is_lift_hill(trackElement)) {
-		if (!(trackElement->flags & (1 << 5)) || !ride_is_block_sectioned(ride)) {
+		if (!(trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) || !ride_is_block_sectioned(ride)) {
 			if (trackType == TRACK_ELEM_BLOCK_BRAKES && vehicle->velocity >= 0) {
 				if (vehicle->velocity <= 0x20364) {
 					vehicle->velocity = 0x20364;
