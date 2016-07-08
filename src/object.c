@@ -1806,7 +1806,7 @@ char *object_get_name(rct_object_entry *entry)
 
 void *object_aligned_alloc_pad(size_t alignment, size_t size)
 {
-	int remainder = size % alignment;
+	size_t remainder = size % alignment;
 	size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
 
 	// Allocate enough space for ...:
@@ -1856,10 +1856,10 @@ void *object_realloc_chunk(void *chunk, size_t size)
 	void *ptr_new, *ptr_new_chunk;
 	void *ptr_old = ((void **)chunk)[-1];
 
-	int alignment = ((size_t *)chunk)[-2];
-	int remainder = size % alignment;
-	int zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
-	int offset = (uint8 *)chunk - (uint8 *)ptr_old;
+	size_t alignment = ((size_t *)chunk)[-2];
+	size_t remainder = size % alignment;
+	size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+	size_t offset = (size_t)((uint8 *)chunk - (uint8 *)ptr_old);
 
 	ptr_new = realloc(ptr_old, offset + size + zero_pad);
 	if (ptr_new == NULL) {
