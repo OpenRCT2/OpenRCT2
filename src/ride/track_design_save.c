@@ -22,6 +22,8 @@
 #include "../util/sawyercoding.h"
 #include "../windows/error.h"
 #include "../world/scenery.h"
+#include "../config.h"
+#include "../util/util.h"
 #include "ride_data.h"
 #include "track.h"
 #include "track_data.h"
@@ -160,7 +162,12 @@ bool track_design_save(uint8 rideIndex)
 
 	// Default location
 	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "track");
+	
+	if (gConfigGeneral.last_save_track_directory && platform_directory_exists(gConfigGeneral.last_save_track_directory))
+		safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+	else
+		platform_get_user_directory(path, "track");
+	
 	strcat(path, track_name);
 	strcat(path, ".td6");
 
@@ -195,6 +202,8 @@ bool track_design_save(uint8 rideIndex)
 	audio_unpause_sounds();
 
 	if (result) {
+		gConfigGeneral.last_save_track_directory = path_get_directory(path);
+		config_save_default();
 		result = track_design_save_to_file(_trackDesign, path);
 	}
 

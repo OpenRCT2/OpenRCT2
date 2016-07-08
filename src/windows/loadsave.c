@@ -242,11 +242,6 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_TRACK:
 		/*
 		Uncomment when user tracks are separated
-
-		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
-			save_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
-		else
-			platform_get_user_directory(path, "tracks");
 		 
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create tracks directory.");
@@ -254,12 +249,16 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 			return NULL;
 		}
 		*/
-
-		safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
-		ch = strchr(path, '*');
-		if (ch != NULL)
-			*ch = 0;
-
+			
+		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+		else {
+			safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
+			ch = strchr(path, '*');
+			if (ch != NULL)
+				*ch = 0;
+		}
+		
 		window_loadsave_populate_list(w, includeNewItem, path, ".td?");
 		break;
 	}
@@ -392,7 +391,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_DEFAULT:
 	{
 		char directory[MAX_PATH];
-		char *ch = directory;
+		char *ch;
 		
 		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 		
@@ -410,6 +409,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			break;
 				
 		case LOADSAVETYPE_TRACK:
+		{
 			/*
 			Uncomment when tracks get separated
 			
@@ -417,13 +417,15 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			*/
 
 			safe_strcpy(directory, gRCT2AddressTracksPath, MAX_PATH);
-			ch = strchr(directory, '*');
+			char *ch = strchr(directory, '*');
 			if (ch != NULL)
 				*ch = 0;
+
 			break;
 		}
+		}
 		
-		window_loadsave_populate_list(w, includeNewItem, ch, _extension);
+		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
 		
