@@ -635,6 +635,9 @@ extern "C"
     {
         IObjectRepository * objectRepository = GetObjectRepository();
         objectRepository->LoadOrConstruct();
+
+        IObjectManager * objectManager = GetObjectManager();
+        objectManager->UnloadAll();
     }
 
     bool object_load_entries(rct_object_entry * entries)
