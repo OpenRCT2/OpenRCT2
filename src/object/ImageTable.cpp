@@ -34,6 +34,14 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         uint32 numImages = stream->ReadValue<uint32>();
         uint32 imageDataSize = stream->ReadValue<uint32>();
 
+        uint64 headerTableSize = numImages * 16;
+        uint64 remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
+        if (remainingBytes > imageDataSize)
+        {
+            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
+            imageDataSize = (uint32)remainingBytes;
+        }
+
         _dataSize = imageDataSize;
         _data = Memory::Reallocate(_data, _dataSize);
 
@@ -68,6 +76,8 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size shorter than expected.");
         }
+
+        // TODO validate the image data to prevent crashes in-game
     }
     catch (Exception ex)
     {
