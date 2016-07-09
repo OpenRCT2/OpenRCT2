@@ -207,20 +207,28 @@ public:
 
         // TODO append checksum match bytes
 
-        // TODO check object is loadable before writing it
-
-        utf8 path[MAX_PATH];
-        GetPathForNewObject(path, sizeof(path), objectName);
-
-        Console::WriteLine("Adding object: [%s]", objectName);
-        try
+        // Check that the object is loadable before writing it
+        Object * object = ObjectFactory::CreateObjectFromLegacyData(objectEntry, data, dataSize);
+        if (object == nullptr)
         {
-            SaveObject(path, objectEntry, data, dataSize);
-            ScanObject(path);
+            Console::Error::WriteFormat("[%s] Unable to export object.", objectName);
+            Console::Error::WriteLine();
         }
-        catch (Exception ex)
+        else
         {
-            Console::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+            utf8 path[MAX_PATH];
+            GetPathForNewObject(path, sizeof(path), objectName);
+
+            Console::WriteLine("Adding object: [%s]", objectName);
+            try
+            {
+                SaveObject(path, objectEntry, data, dataSize);
+                ScanObject(path);
+            }
+            catch (Exception ex)
+            {
+                Console::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+            }
         }
     }
 
@@ -895,6 +903,6 @@ static void ReportMissingObject(const rct_object_entry * entry)
 {
     utf8 objName[9] = { 0 };
     Memory::Copy(objName, entry->name, 8);
-    Console::Error::WriteFormat("[%s]: Object not found.", objName);
+    Console::Error::WriteFormat("[%s] Object not found.", objName);
     Console::Error::WriteLine();
 }

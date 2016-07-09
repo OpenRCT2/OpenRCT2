@@ -438,7 +438,7 @@ private:
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);
-        Console::Error::WriteFormat("[%s]: Object not found.", objName);
+        Console::Error::WriteFormat("[%s] Object not found.", objName);
         Console::Error::WriteLine();
     }
 
@@ -446,7 +446,7 @@ private:
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);
-        Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
+        Console::Error::WriteFormat("[%s] Object could not be loaded.", objName);
         Console::Error::WriteLine();
     }
 

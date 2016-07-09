@@ -167,6 +167,30 @@ namespace ObjectFactory
         return result;
     }
 
+    Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize)
+    {
+        Guard::ArgumentNotNull(entry);
+        Guard::ArgumentNotNull(data);
+
+        Object * result = CreateObject(*entry);
+        if (result != nullptr)
+        {
+            utf8 objectName[9] = { 0 };
+            Memory::Copy(objectName, entry->name, 8);
+
+            auto readContext = ReadObjectContext(objectName);
+            auto chunkStream = MemoryStream(data, dataSize);
+            ReadObjectLegacy(result, &readContext, &chunkStream);
+
+            if (readContext.WasError())
+            {
+                delete result;
+                result = nullptr;
+            }
+        }
+        return result;
+    }
+
     Object * CreateObject(const rct_object_entry &entry)
     {
         Object * result = nullptr;
