@@ -5407,10 +5407,10 @@ void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
  *
  * Modifies the train's velocity influenced by a block brake
  */
-void apply_block_brakes(rct_vehicle *vehicle, bool block_brake_closed)
+void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
 {
 	// If the site is in a "train blocking" state
-	if (block_brake_closed) {
+	if (is_block_brake_closed) {
 		// Slow it down till completely stop the car
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		vehicle->acceleration = 0;
@@ -5421,7 +5421,7 @@ void apply_block_brakes(rct_vehicle *vehicle, bool block_brake_closed)
 			vehicle->velocity -= vehicle->velocity >> 3;
 		}
 	} else {
-		apply_non_stop_block_brake(vehicle, block_brake_closed);
+		apply_non_stop_block_brake(vehicle, is_block_brake_closed);
 	}
 }
 
