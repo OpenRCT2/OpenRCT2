@@ -45,7 +45,7 @@ public:
     const utf8 * GetDescription() const;
     const utf8 * GetCapacity() const;
 
-    void SetRepositoryItem(ObjectRepositoryItem * item) const;
+    void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
