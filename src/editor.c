@@ -364,9 +364,8 @@ static int editor_read_s6(const char *path)
 		}
 
 		SDL_RWclose(rw);
-		if (!load_success){
+		if (!load_success) {
 			log_error("failed to load all entries.");
-			set_load_objects_fail_reason();
 			return 0;
 		}
 

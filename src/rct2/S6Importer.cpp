@@ -409,7 +409,6 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
         }
         catch (Exception)
         {
@@ -442,7 +441,8 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
         }
         catch (IOException)
         {
@@ -475,7 +475,6 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
         }
         catch (Exception)
         {

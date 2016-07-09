@@ -107,7 +107,6 @@ assert_struct_size(rct_object_filters, 3);
 extern const rct_object_entry_group object_entry_groups[];
 
 void object_list_load();
-void set_load_objects_fail_reason();
 bool object_read_and_load_entries(SDL_RWops* rw);
 bool object_load_entries(rct_object_entry* entries);
 int object_load_packed(SDL_RWops* rw);

@@ -15,22 +15,12 @@
 #pragma endregion
 
 #include "addresses.h"
-#include "config.h"
 #include "game.h"
-#include "localisation/localisation.h"
 #include "object.h"
 #include "object_list.h"
 #include "object/ObjectRepository.h"
-#include "platform/platform.h"
-#include "rct1.h"
-#include "ride/track.h"
-#include "ride/track_design.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
-#include "world/entrance.h"
-#include "world/footpath.h"
-#include "world/scenery.h"
-#include "world/water.h"
 
 // 98DA00
 int object_entry_group_counts[] = {
@@ -128,54 +118,6 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
 
 /**
  *
- *  rct2: 0x675827
- */
-void set_load_objects_fail_reason()
-{
-	return;
-
-	rct_object_entry *object;
-	memcpy(&object, gCommonFormatArgs, sizeof(rct_object_entry*));
-	
-	int expansion = (object->flags & 0xFF) >> 4;
-	if (expansion == 0 ||
-		expansion == 8 ||
-		RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << expansion)
-	) {
-		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
-
-		format_string(string_buffer, STR_MISSING_OBJECT_DATA_ID, 0);
-
-		object_create_identifier_name(string_buffer, object);
-		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gErrorStringId = STR_PLACEHOLDER;
-		return;
-	}
-
-	rct_string_id expansionNameId;
-	switch(expansion) {
-		case 1: // Wacky Worlds
-			expansionNameId = STR_OBJECT_FILTER_WW;
-			break;
-		case 2: // Time Twister
-			expansionNameId = STR_OBJECT_FILTER_TT;
-			break;
-		default:
-			gErrorType = ERROR_TYPE_FILE_LOAD;
-			gErrorStringId = STR_REQUIRES_AN_ADDON_PACK;
-			return;
-	}
-
-	char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
-
-	format_string(string_buffer, STR_REQUIRES_THE_FOLLOWING_ADDON_PACK, &expansionNameId);
-
-	gErrorType = ERROR_TYPE_FILE_LOAD;
-	gErrorStringId = STR_PLACEHOLDER;
-}
-
-/**
- *
  *  rct2: 0x006AA0C6
  */
 bool object_read_and_load_entries(SDL_RWops* rw)
@@ -211,15 +153,6 @@ int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type,
 
 	if (*entry_index == object_entry_group_counts[*entry_type])return 0;
 	return 1;
-}
-
-void object_list_init()
-{
-	for (uint8 objectType = 0; objectType < OBJECT_ENTRY_GROUP_COUNT; objectType++) {
-		for (size_t i = 0; i < (size_t)object_entry_group_counts[objectType]; i++) {
-			object_entry_groups[objectType].chunks[i] = (void*)-1;
-		}
-	}
 }
 
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)

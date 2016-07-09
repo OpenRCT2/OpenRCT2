@@ -222,8 +222,6 @@ bool openrct2_initialise()
 		audio_populate_devices();
 	}
 
-	object_list_init();
-
 	if (!language_open(gConfigGeneral.language)) {
 		log_error("Failed to open configured language...");
 
