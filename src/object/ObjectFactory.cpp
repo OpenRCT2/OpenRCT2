@@ -68,8 +68,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteFormat("[%s] Warning: %s", _objectName, text);
-            Console::Error::WriteLine();
+            Console::Error::WriteLine("[%s] Warning: %s", _objectName, text);
         }
     }
 
@@ -79,8 +78,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteFormat("[%s] Error: %s", _objectName, text);
-            Console::Error::WriteLine();
+            Console::Error::WriteLine("[%s] Error: %s", _objectName, text);
         }
     }
 };
@@ -154,8 +152,7 @@ namespace ObjectFactory
 
                     if (readContext.WasError())
                     {
-                        Console::Error::WriteFormat("Error reading object: '%s'", path);
-                        Console::Error::WriteLine();
+                        Console::Error::WriteLine("Error reading object: '%s'", path);
 
                         delete result;
                         result = nullptr;

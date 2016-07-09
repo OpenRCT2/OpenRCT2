@@ -438,16 +438,14 @@ private:
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);
-        Console::Error::WriteFormat("[%s] Object not found.", objName);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("[%s] Object not found.", objName);
     }
 
     static void ReportObjectLoadProblem(const rct_object_entry * entry)
     {
         utf8 objName[9] = { 0 };
         Memory::Copy(objName, entry->name, 8);
-        Console::Error::WriteFormat("[%s] Object could not be loaded.", objName);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
     static sint32 GetIndexFromTypeEntry(uint8 objectType, uint8 entryIndex)

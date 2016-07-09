@@ -211,8 +211,7 @@ public:
         Object * object = ObjectFactory::CreateObjectFromLegacyData(objectEntry, data, dataSize);
         if (object == nullptr)
         {
-            Console::Error::WriteFormat("[%s] Unable to export object.", objectName);
-            Console::Error::WriteLine();
+            Console::Error::WriteLine("[%s] Unable to export object.", objectName);
         }
         else
         {
@@ -418,10 +417,8 @@ private:
         }
         else
         {
-            Console::Error::WriteFormat("Object conflict: '%s'", conflict->Path);
-            Console::Error::WriteLine();
-            Console::Error::WriteFormat("               : '%s'", item->Path);
-            Console::Error::WriteLine();
+            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
+            Console::Error::WriteLine("               : '%s'", item->Path);
             return false;
         }
     }
@@ -903,6 +900,5 @@ static void ReportMissingObject(const rct_object_entry * entry)
 {
     utf8 objName[9] = { 0 };
     Memory::Copy(objName, entry->name, 8);
-    Console::Error::WriteFormat("[%s] Object not found.", objName);
-    Console::Error::WriteLine();
+    Console::Error::WriteLine("[%s] Object not found.", objName);
 }

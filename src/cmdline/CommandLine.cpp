@@ -397,8 +397,7 @@ namespace CommandLine
         const CommandLineOptionDefinition * option = FindOption(options, optionName);
         if (option == nullptr)
         {
-            Console::Error::Write("Unknown option: --");
-            Console::Error::WriteLine(optionName);
+            Console::Error::WriteLine("Unknown option: --%s", optionName);
             return false;
         }
 
@@ -413,8 +412,7 @@ namespace CommandLine
                 const char * valueString = nullptr;
                 if (!argEnumerator->TryPopString(&valueString))
                 {
-                    Console::Error::Write("Expected value for option: ");
-                    Console::Error::WriteLine(optionName);
+                    Console::Error::WriteLine("Expected value for option: %s", optionName);
                     return false;
                 }
                 
@@ -428,8 +426,7 @@ namespace CommandLine
         {
             if (option->Type == CMDLINE_TYPE_SWITCH)
             {
-                Console::Error::Write("Option is a switch: ");
-                Console::Error::WriteLine(optionName);
+                Console::Error::WriteLine("Option is a switch: %s", optionName);
                 return false;
             }
             else
@@ -456,9 +453,7 @@ namespace CommandLine
             option = FindOption(options, shortOption[0]);
             if (option == nullptr)
             {
-                Console::Error::Write("Unknown option: -");
-                Console::Error::Write(shortOption[0]);
-                Console::Error::WriteLine();
+                Console::Error::WriteLine("Unknown option: -%c", shortOption[0]);
                 return false;
             }
             if (option->Type == CMDLINE_TYPE_SWITCH)
@@ -483,9 +478,7 @@ namespace CommandLine
             const char * valueString = nullptr;
             if (!argEnumerator->TryPopString(&valueString))
             {
-                Console::Error::Write("Expected value for option: ");
-                Console::Error::Write(option->ShortName);
-                Console::Error::WriteLine();
+                Console::Error::WriteLine("Expected value for option: %c", option->ShortName);
                 return false;
             }
                 
@@ -516,8 +509,7 @@ namespace CommandLine
             *((utf8 * *)option->OutAddress) = String::Duplicate(valueString);
             return true;
         default:
-            Console::Error::Write("Unknown CMDLINE_TYPE for: ");
-            Console::Error::WriteLine(option->LongName);
+            Console::Error::WriteLine("Unknown CMDLINE_TYPE for: %s", option->LongName);
             return false;
         }
     }

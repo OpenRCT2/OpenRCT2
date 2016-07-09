@@ -133,7 +133,7 @@ bool OpenGLAPI::Initialise()
     const char * failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)
     {
-        Console::Error::WriteFormat("Failed to load %s.\n", failedProcName);
+        Console::Error::WriteLine("Failed to load %s.", failedProcName);
         return false;
     }
 #endif

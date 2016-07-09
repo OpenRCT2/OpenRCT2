@@ -91,10 +91,14 @@ namespace Console
             fputs(platform_get_new_line(), stderr);
         }
 
-        void WriteLine(const utf8 * str)
+        void WriteLine(const utf8 * format, ...)
         {
-            fputs(str, stderr);
-            WriteLine();
+            va_list args;
+
+            va_start(args, format);
+            vfprintf(stdout, format, args);
+            puts("");
+            va_end(args);
         }
     }
 }
