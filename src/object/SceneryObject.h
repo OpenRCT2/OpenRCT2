@@ -16,26 +16,19 @@
 
 #pragma once
 
-#include "SceneryObject.h"
+#include "Object.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
-
-class FootpathItemObject : public SceneryObject
+class SceneryObject : public Object
 {
 private:
-    rct_scenery_entry   _legacyType = { 0 };
+    rct_object_entry    _primarySceneryGroupEntry = { 0 };
 
 public:
-    explicit FootpathItemObject(const rct_object_entry &entry) : SceneryObject(entry) { };
+    explicit SceneryObject(const rct_object_entry &entry) : Object(entry) { }
+    virtual ~SceneryObject() { }
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    const rct_object_entry * GetPrimarySceneryGroup() { return &_primarySceneryGroupEntry; }
 
-    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
-    void Load() override;
-    void Unload() override;
-
-    void DrawPreview(rct_drawpixelinfo * dpi) const override;
+protected:
+    void SetPrimarySceneryGroup(const rct_object_entry * entry) { _primarySceneryGroupEntry = *entry; }
 };

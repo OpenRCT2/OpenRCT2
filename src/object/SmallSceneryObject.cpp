@@ -51,7 +51,8 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
-    _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
+    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    SetPrimarySceneryGroup(&sgEntry);
 
     if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
     {
@@ -82,14 +83,6 @@ void SmallSceneryObject::Load()
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
-    if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
-    {
-        uint8 entryType, entryIndex;
-        if (find_object_in_entry_group(&_sceneryTabEntry, &entryType, &entryIndex))
-        {
-            _legacyType.small_scenery.scenery_tab_id = entryIndex;
-        }
-    }
 
     if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
     {

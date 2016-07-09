@@ -16,21 +16,20 @@
 
 #pragma once
 
-#include "Object.h"
+#include "SceneryObject.h"
 
 extern "C"
 {
     #include "../world/scenery.h"
 }
 
-class WallObject : public Object
+class WallObject : public SceneryObject
 {
 private:
     rct_scenery_entry   _legacyType = { 0 };
-    rct_object_entry    _sceneryTabEntry = { 0 };
 
 public:
-    explicit WallObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit WallObject(const rct_object_entry &entry) : SceneryObject(entry) { };
 
     void * GetLegacyData()  override { return &_legacyType; }
 

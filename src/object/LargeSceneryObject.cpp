@@ -49,7 +49,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
-    _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
+    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    SetPrimarySceneryGroup(&sgEntry);
 
     if (_legacyType.large_scenery.flags & (1 << 2))
     {
@@ -85,16 +86,6 @@ void LargeSceneryObject::Load()
     _legacyType.image = _baseImageId;
 
     _legacyType.large_scenery.tiles = _tiles;
-
-    _legacyType.large_scenery.scenery_tab_id = 0xFF;
-    if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
-    {
-        uint8 entryType, entryIndex;
-        if (find_object_in_entry_group(&_sceneryTabEntry, &entryType, &entryIndex))
-        {
-            _legacyType.large_scenery.scenery_tab_id = entryIndex;
-        }
-    }
 
     if (_legacyType.large_scenery.flags & (1 << 2))
     {

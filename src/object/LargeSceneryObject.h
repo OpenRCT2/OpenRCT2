@@ -16,24 +16,23 @@
 
 #pragma once
 
-#include "Object.h"
+#include "SceneryObject.h"
 
 extern "C"
 {
     #include "../world/scenery.h"
 }
 
-class LargeSceneryObject : public Object
+class LargeSceneryObject : public SceneryObject
 {
 private:
     rct_scenery_entry           _legacyType = { 0 };
     uint32                      _baseImageId = 0;
-    rct_object_entry            _sceneryTabEntry = { 0 };
     rct_large_scenery_text *    _3dFont = nullptr;
     rct_large_scenery_tile *    _tiles = nullptr;
 
 public:
-    explicit LargeSceneryObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit LargeSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { };
     ~LargeSceneryObject();
 
     void * GetLegacyData()  override { return &_legacyType; }

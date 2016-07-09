@@ -42,7 +42,8 @@ void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
-    _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
+    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    SetPrimarySceneryGroup(&sgEntry);
 
     GetImageTable()->Read(context, stream);
 
@@ -57,16 +58,6 @@ void WallObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
-
-    _legacyType.small_scenery.scenery_tab_id = 0xFF;
-    if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
-    {
-        uint8 entryType, entryIndex;
-        if (find_object_in_entry_group(&_sceneryTabEntry, &entryType, &entryIndex))
-        {
-            _legacyType.small_scenery.scenery_tab_id = entryIndex;
-        }
-    }
 }
 
 void WallObject::Unload()
