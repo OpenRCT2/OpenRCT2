@@ -51,14 +51,15 @@ rct_widget window_custom_currency_widgets[] = {
 
 
 static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_mouseup(rct_window *w, int widgetIndex);
 static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text);
+static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
 static rct_window_event_list _windowCustomCurrencyEvents = {
 	NULL,
-	NULL,
+	custom_currency_window_mouseup,
 	NULL,
 	custom_currency_window_mousedown,
 	custom_currency_window_dropdown,
@@ -187,6 +188,22 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 	}
 }
 
+static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
+{
+	switch(widgetIndex) {
+	case WIDX_RATE:
+		window_text_input_raw_open(
+			w,
+			WIDX_RATE,
+			STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE,
+			STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
+			CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
+			CURRENCY_SYMBOL_MAX_SIZE
+		);
+		break;
+	}
+}
+
 static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	if(dropdownIndex == -1)
@@ -211,9 +228,14 @@ static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int 
 	}
 }
 
-static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text)
+static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text)
 {
-	if(text != NULL) {
+	if (text == NULL)
+		return;
+	int rate;
+	char* end;
+	switch(widgetIndex){
+	case WIDX_SYMBOL_TEXT:
 		strncpy(
 			CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
 			text,
@@ -228,6 +250,17 @@ static void custom_currency_window_text_input(struct rct_window *w, int windgetI
 
 		config_save_default();
 		window_invalidate_all();
+		break;
+
+	case WIDX_RATE:
+		rate = strtol(text, &end, 10);
+		if (*end == '\0') {
+			CurrencyDescriptors[CURRENCY_CUSTOM].rate = rate;
+			gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+			config_save_default();
+			window_invalidate_all();
+		}
+		break;
 	}
 }
 
