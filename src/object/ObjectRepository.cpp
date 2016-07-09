@@ -195,15 +195,11 @@ public:
         utf8 objectName[9];
         object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
-        int realChecksum = object_calculate_checksum(objectEntry, (const uint8 *)data, (int)dataSize);
-        if (realChecksum != objectEntry->checksum)
-        {
-            log_error("Checksum mismatch from packed object: %.8s", objectName);
-            if (!gConfigGeneral.allow_loading_with_incorrect_checksum)
-            {
-                return;
-            }
-        }
+        // Currently disable checksum validation
+        // int realChecksum = object_calculate_checksum(objectEntry, (const uint8 *)data, (int)dataSize);
+        // if (realChecksum != objectEntry->checksum)
+        // {
+        // }
 
         // TODO append checksum match bytes
 
