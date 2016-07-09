@@ -72,7 +72,7 @@ int object_entry_group_encoding[] = {
 	CHUNK_ENCODING_ROTATE
 };
 
-#if NO_RCT2
+#ifdef NO_RCT2
 	rct_ride_entry				*gRideEntries[128];
 	rct_small_scenery_entry		*gSmallSceneryEntries[252];
 	rct_large_scenery_entry		*gLargeSceneryEntries[128];

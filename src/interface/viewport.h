@@ -96,7 +96,7 @@ typedef struct viewport_interaction_info {
 
 // rct2: 0x014234BC
 extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
-#if NO_RCT2
+#ifdef NO_RCT2
 extern paint_struct *unk_EE7884;
 extern paint_struct *unk_EE7888;
 #else

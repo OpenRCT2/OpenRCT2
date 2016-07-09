@@ -600,7 +600,7 @@ static int scenario_create_ducks()
  */
 unsigned int scenario_rand()
 {
-#if DEBUG_DESYNC
+#ifdef DEBUG_DESYNC
 	if (!gInUpdateCode) {
 		log_warning("scenario_rand called from outside game update");
 		assert(false);

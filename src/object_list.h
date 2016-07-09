@@ -7,7 +7,7 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
-#if NO_RCT2
+#ifdef NO_RCT2
 	extern rct_ride_entry				*gRideEntries[128];
 	extern rct_small_scenery_entry		*gSmallSceneryEntries[252];
 	extern rct_large_scenery_entry		*gLargeSceneryEntries[128];

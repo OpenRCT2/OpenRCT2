@@ -168,11 +168,11 @@ bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 
 int bitscanforward(int source)
 {
-	#if _MSC_VER >= 1400 // Visual Studio 2005
+	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
 		int i;
 		uint8 success = _BitScanForward(&i, source);
 		return success != 0 ? i : -1;
-	#elif __GNUC__
+	#elif defined(__GNUC__)
 		int success = __builtin_ffs(source);
 		return success - 1;
 	#else

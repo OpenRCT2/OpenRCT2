@@ -37,7 +37,7 @@ sint32 gPickupPeepY;
 void *unk_9ABDA4;
 void *unk_9E3CDC;
 void *unk_9E3CE4[8];
-#if NO_RCT2
+#ifdef NO_RCT2
 rct_drawpixelinfo *unk_140E9A8;
 #endif
 

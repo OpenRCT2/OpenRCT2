@@ -140,7 +140,7 @@ extern rct_drawpixelinfo gWindowDPI;
 extern void *unk_9ABDA4;
 extern void *unk_9E3CDC;
 extern void *unk_9E3CE4[8];
-#if NO_RCT2
+#ifdef NO_RCT2
 extern rct_drawpixelinfo *unk_140E9A8;
 #else
 #define unk_140E9A8 RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*)

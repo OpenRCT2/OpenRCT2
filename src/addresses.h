@@ -440,7 +440,7 @@
 #pragma endregion
 
 #pragma region Obsolete
-#if USE_OBSOLETE_ADDRESSES
+#ifdef USE_OBSOLETE_ADDRESSES
 
 // The following addresses relate to memory locations that no longer used by
 // OpenRCT2. This may be due to the data at those locations being stored in
