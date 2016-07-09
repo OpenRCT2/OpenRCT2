@@ -364,6 +364,12 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
 			desc.filters[0].pattern = "*.td4;*.td6";
 			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+			desc.type = FD_SAVE;
+			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_TRACK);
+			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
+			desc.filters[0].pattern = "*.td6";
+			break;
 		}
 
 		result = platform_open_common_file_dialog(path, &desc);
