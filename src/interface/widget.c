@@ -24,6 +24,8 @@
 #include "../localisation/localisation.h"
 #include "../util/util.h"
 
+#include <math.h>
+
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -96,8 +98,8 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 			float percent = (scroll->v_thumb_bottom*1.0)/view_size;
 			printf("percent: %f\n", percent);
 
-			scroll->v_thumb_top = (uint16) scroll->v_thumb_top - (20*percent);
-			scroll->v_thumb_bottom = (uint16) scroll->v_thumb_bottom + (20*(1-percent));
+			scroll->v_thumb_top = (uint16) lroundf(scroll->v_thumb_top - (20*percent));
+			scroll->v_thumb_bottom = (uint16) lroundf(scroll->v_thumb_bottom + (20*(1-percent)));
 		}
 	}
 
