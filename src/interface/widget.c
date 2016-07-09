@@ -96,8 +96,8 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 			float percent = (scroll->v_thumb_bottom*1.0)/view_size;
 			printf("percent: %f\n", percent);
 
-			scroll->v_thumb_top = scroll->v_thumb_top - (20*percent);
-			scroll->v_thumb_bottom = scroll->v_thumb_bottom + (20*(1-percent));
+			scroll->v_thumb_top = (uint16) scroll->v_thumb_top - (20*percent);
+			scroll->v_thumb_bottom = (uint16) scroll->v_thumb_bottom + (20*(1-percent));
 		}
 	}
 
