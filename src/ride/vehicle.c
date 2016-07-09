@@ -5386,13 +5386,13 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
  * This function must be called when the car is running through a non-stopping
  * state block-brake (precondition), which means that the block brake is acting
  * merely as a velocity regulator, in a closed state. When the brake is open, it
- * boosts the train till the speed limit
+ * boosts the train to the speed limit
  */
 void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
 	if (vehicle->velocity >= 0) {
 		// If the vehicle is below the speed limit
 		if (vehicle->velocity <= 0x20364) {
-			// Boost it until the fixed block brake speed
+			// Boost it to the fixed block brake speed
 			vehicle->velocity = 0x20364;
 			vehicle->acceleration = 0;
 		} else if(block_brake_closed){
