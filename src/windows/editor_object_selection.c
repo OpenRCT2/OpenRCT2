@@ -1319,8 +1319,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		rct_drawpixelinfo clipDPI;
 		x = w->x + widget->left + 1;
 		y = w->y + widget->top + 1;
-		int width = widget->right - widget->left;
-		int height = widget->bottom - widget->top;
+		int width = widget->right - widget->left - 1;
+		int height = widget->bottom - widget->top - 1;
 		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
 			object_draw_preview(_loadedObject, &clipDPI);
 		}
