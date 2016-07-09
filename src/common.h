@@ -78,7 +78,7 @@
 	#ifndef FASTCALL
 		#ifdef __GNUC__
 			#define FASTCALL __attribute__((fastcall))
-		#elif _MSC_VER
+		#elif defined(_MSC_VER)
 			#define FASTCALL __fastcall
 		#else
 			#pragma message "Not using fastcall calling convention, please check your compiler support"
