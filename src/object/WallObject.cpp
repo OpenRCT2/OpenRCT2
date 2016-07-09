@@ -48,7 +48,7 @@ void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetImageTable()->Read(context, stream);
 
     // Validate properties
-    if (_legacyType.large_scenery.price <= 0)
+    if (_legacyType.wall.price <= 0)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
     }
