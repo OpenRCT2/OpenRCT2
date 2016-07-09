@@ -5381,52 +5381,50 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 	}
 }
 
-void apply_block_section_stop_site(rct_vehicle *vehicle, rct_ride *ride){
-	int trackType = vehicle->track_type >> 2;
-
-	rct_map_element *trackElement =  map_get_track_element_at_of_type(
-		vehicle->track_x,
-		vehicle->track_y,
-		vehicle->track_z >> 3,
-		trackType
-	);
-
-	if (trackType == TRACK_ELEM_END_STATION) {
-		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		}
-	} else {
-		// If the track piece is a block section stop site
-		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_BLOCK_BRAKES || track_element_is_lift_hill(trackElement)) {
-			// If the site is in a "train blocking" state
-			if ((trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) && ride_is_block_sectioned(ride)) {
-				// Slow it down till completely stop the car
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-				vehicle->acceleration = 0;
-				// If the vehicle is slow enough, stop it. If not, slow it down
-				if (vehicle->velocity <= 0x20000) {
-					vehicle->velocity = 0;
-				} else {
-					vehicle->velocity -= vehicle->velocity >> 3;
-				}
-			} else {
-				// If the site is a block brake
-				if (trackType == TRACK_ELEM_BLOCK_BRAKES && vehicle->velocity >= 0) {
-					// If the vehicle is below the speed limit
-					if (vehicle->velocity <= 0x20364) {
-						// Boost it until the fixed block brake speed
-						vehicle->velocity = 0x20364;
-						vehicle->acceleration = 0;
-					} else {
-						// Slow it down till the fixed block brake speed
-						vehicle->velocity -= vehicle->velocity >> 4;
-						vehicle->acceleration = 0;
-					}
-				}
-			}
+/**
+ * Modifies the train's velocity to match the block-brake fixed velocity.
+ * This function must be called when the car is running through a non-stopping
+ * state block-brake (precondition), which means that the block brake is acting
+ * merely as a velocity regulator, in a closed state. When the brake is open, it
+ * boosts the train till the speed limit
+ */
+void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
+	if (vehicle->velocity >= 0) {
+		// If the vehicle is below the speed limit
+		if (vehicle->velocity <= 0x20364) {
+			// Boost it until the fixed block brake speed
+			vehicle->velocity = 0x20364;
+			vehicle->acceleration = 0;
+		} else if(block_brake_closed){
+			// Slow it down till the fixed block brake speed
+			vehicle->velocity -= vehicle->velocity >> 4;
+			vehicle->acceleration = 0;
 		}
 	}
 }
+
+/**
+ *
+ * Modifies the train's velocity influenced by a block brake
+ */
+void apply_block_brakes(rct_vehicle *vehicle, bool block_brake_closed)
+{
+	// If the site is in a "train blocking" state
+	if (block_brake_closed) {
+		// Slow it down till completely stop the car
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+		vehicle->acceleration = 0;
+		// If the vehicle is slow enough, stop it. If not, slow it down
+		if (vehicle->velocity <= 0x20000) {
+			vehicle->velocity = 0;
+		} else {
+			vehicle->velocity -= vehicle->velocity >> 3;
+		}
+	} else {
+		apply_non_stop_block_brake(vehicle, block_brake_closed);
+	}
+}
+
 
 /**
  *
@@ -5449,11 +5447,24 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 
 	int trackType = vehicle->track_type >> 2;
 
+	rct_map_element *trackElement =  map_get_track_element_at_of_type(
+		vehicle->track_x,
+		vehicle->track_y,
+		vehicle->track_z >> 3,
+		trackType
+	);
+
 	switch (trackType) {
-	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_BLOCK_BRAKES:
-		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride))
-			apply_block_section_stop_site(vehicle, ride);
+		if (ride_is_block_sectioned(ride))
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
+		else
+			apply_non_stop_block_brake(vehicle, true);
+
+		break;
+	case TRACK_ELEM_END_STATION:
+		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED)
+			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 
 		break;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
@@ -5462,7 +5473,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
 		if (ride_is_block_sectioned(ride))
-			apply_block_section_stop_site(vehicle, ride);
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
 
 		break;
 	}
