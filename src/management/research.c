@@ -643,3 +643,11 @@ static void ride_entry_set_invented(int rideEntryIndex)
 	int bitIndex = rideEntryIndex & 0x1F;
 	gResearchedRideEntries[quadIndex] |= 1 << bitIndex;
 }
+
+bool scenery_is_invented(uint16 sceneryItem)
+{
+	int quadIndex = sceneryItem >> 5;
+	int bitIndex = sceneryItem & 0x1F;
+	bool invented = (gResearchedSceneryItems[quadIndex] & ((uint32)1 << bitIndex));
+	return invented;
+}
