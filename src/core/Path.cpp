@@ -119,7 +119,7 @@ namespace Path
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
     {
-#if __WINDOWS__
+#ifdef __WINDOWS__
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW, Util::CountOf(absolutePathW), absolutePathW, NULL);
@@ -153,7 +153,7 @@ namespace Path
     bool Equals(const utf8 * a, const utf8 * b)
     {
         bool ignoreCase = false;
-#if __WINDOWS__
+#ifdef __WINDOWS__
         ignoreCase = true;
 #endif
         return String::Equals(a, b, ignoreCase);

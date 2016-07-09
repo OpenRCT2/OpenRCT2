@@ -131,7 +131,7 @@ typedef uint8 colour_t;
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-#if !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+#if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
 	char *strndup(const char *src, size_t size);
 #endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
 

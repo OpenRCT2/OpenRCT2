@@ -41,7 +41,7 @@
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 
-#if NO_RCT2
+#ifdef NO_RCT2
 paint_struct *unk_EE7884;
 paint_struct *unk_EE7888;
 #endif
@@ -1598,7 +1598,7 @@ uint8 get_current_rotation()
 {
 	uint8 rotation = gCurrentRotation;
 	uint8 rotation_masked = rotation & 3;
-#if DEBUG_LEVEL_1
+#ifdef DEBUG_LEVEL_1
 	if (rotation != rotation_masked) {
 		log_error("Found wrong rotation %d! Will return %d instead.", (uint32)rotation, (uint32)rotation_masked);
 	}

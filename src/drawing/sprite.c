@@ -25,7 +25,7 @@ void *_g1Buffer = NULL;
 
 rct_gx g2;
 
-#if NO_RCT2
+#ifdef NO_RCT2
 	rct_g1_element *g1Elements = NULL;
 #else
 	rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
@@ -92,7 +92,7 @@ int gfx_load_g1()
 			header.num_entries = 29294;
 
 			// Read element headers
-#if NO_RCT2
+#ifdef NO_RCT2
 			g1Elements = calloc(324206, sizeof(rct_g1_element));
 #endif
 
@@ -122,7 +122,7 @@ int gfx_load_g1()
 void gfx_unload_g1()
 {
 	SafeFree(_g1Buffer);
-#if NO_RCT2
+#ifdef NO_RCT2
 	SafeFree(g1Elements);
 #endif
 }
@@ -367,7 +367,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
 
-#if DEBUG_LEVEL_2
+#ifdef DEBUG_LEVEL_2
 		assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
 #endif // DEBUG_LEVEL_2
 		uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];

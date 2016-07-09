@@ -597,7 +597,7 @@ static void openrct2_setup_rct2_hooks()
 	// None for now
 }
 
-#if _MSC_VER >= 1900
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
 /**
  * Temporary fix for libraries not compiled with VS2015
  */

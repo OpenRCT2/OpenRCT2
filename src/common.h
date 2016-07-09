@@ -47,13 +47,13 @@
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
 #ifdef __cplusplus
-	#if _MSC_VER
+	#ifdef _MSC_VER
 		#define RESTRICT __restrict
 	#else
 		#define RESTRICT __restrict__
 	#endif
 #else
-	#if _MSC_VER
+	#ifdef _MSC_VER
 		#define RESTRICT __restrict
 	#else
 		#define RESTRICT restrict
@@ -78,7 +78,7 @@
 	#ifndef FASTCALL
 		#ifdef __GNUC__
 			#define FASTCALL __attribute__((fastcall))
-		#elif _MSC_VER
+		#elif defined(_MSC_VER)
 			#define FASTCALL __fastcall
 		#else
 			#pragma message "Not using fastcall calling convention, please check your compiler support"
