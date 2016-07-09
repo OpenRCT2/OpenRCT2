@@ -157,10 +157,13 @@ public:
             if (ori != nullptr)
             {
                 Object * loadedObject = ori->LoadedObject;
-                size_t index = GetLoadedObjectIndex(loadedObject);
-                
-                UnloadObject(loadedObject);
-                numObjectsUnloaded++;
+                if (loadedObject != nullptr)
+                {
+                    size_t index = GetLoadedObjectIndex(loadedObject);
+
+                    UnloadObject(loadedObject);
+                    numObjectsUnloaded++;
+                }
             }
         }
 
