@@ -207,6 +207,8 @@ public:
 
         // TODO append checksum match bytes
 
+        // TODO check object is loadable before writing it
+
         utf8 path[MAX_PATH];
         GetPathForNewObject(path, sizeof(path), objectName);
 
@@ -540,11 +542,12 @@ private:
         Path::Append(buffer, bufferSize, normalisedName);
         String::Append(buffer, bufferSize, ".DAT");
 
+        uint32 counter = 2;
         for (; platform_file_exists(buffer);)
         {
-            uint32 counter = 2;
             utf8 counterString[8];
             snprintf(counterString, sizeof(counterString), "-%02X", counter);
+            counter++;
 
             GetUserObjectPath(buffer, bufferSize);
             Path::Append(buffer, bufferSize, normalisedName);
@@ -634,10 +637,10 @@ extern "C"
         log_verbose("loading required objects");
 
         IObjectManager * objectManger = GetObjectManager();
-        objectManger->LoadObjects(entries, OBJECT_ENTRY_COUNT);
+        bool result = objectManger->LoadObjects(entries, OBJECT_ENTRY_COUNT);
 
         log_verbose("finished loading required objects");
-        return true;
+        return result;
     }
 
     void * object_repository_load_object(const rct_object_entry * objectEntry)
