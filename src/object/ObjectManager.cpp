@@ -156,8 +156,6 @@ public:
                 size_t index = GetLoadedObjectIndex(loadedObject);
                 
                 UnloadObject(loadedObject);
-                _loadedObjects[index] = nullptr;
-
                 numObjectsUnloaded++;
             }
         }
@@ -177,7 +175,6 @@ public:
             for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
             {
                 UnloadObject(_loadedObjects[i]);
-                _loadedObjects[i] = nullptr;
             }
         }
         UpdateLegacyLoadedObjectList();
@@ -263,6 +260,19 @@ private:
 
             object->Unload();
             delete object;
+
+            // Because its possible to have the same loaded object for multiple
+            // slots, we have to make sure find and set all of them to nullptr
+            if (_loadedObjects != nullptr)
+            {
+                for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+                {
+                    if (_loadedObjects[i] == object)
+                    {
+                        _loadedObjects[i] = nullptr;
+                    }
+                }
+            }
         }
     }
 
@@ -296,7 +306,6 @@ private:
                 if (exceptSet.find(object) == exceptSet.end())
                 {
                     UnloadObject(object);
-                    _loadedObjects[i] = nullptr;
                     numObjectsUnloaded++;
                 }
             }
