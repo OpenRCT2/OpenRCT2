@@ -19,10 +19,14 @@
 #include <unordered_set>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
+#include "FootpathItemObject.h"
+#include "LargeSceneryObject.h"
 #include "Object.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
+#include "SmallSceneryObject.h"
+#include "WallObject.h"
 
 extern "C"
 {
@@ -218,6 +222,8 @@ private:
 
     size_t GetLoadedObjectIndex(const Object * object)
     {
+        Guard::ArgumentNotNull(object);
+
         size_t result = SIZE_MAX;
         if (_loadedObjects != nullptr)
         {
@@ -352,14 +358,50 @@ private:
                 Object * loadedObject = _loadedObjects[i];
                 if (loadedObject != nullptr)
                 {
-                    if (loadedObject->GetObjectType() == OBJECT_TYPE_SCENERY_SETS)
-                    {
+                    rct_scenery_entry * sceneryEntry;
+                    switch (loadedObject->GetObjectType()) {
+                    case OBJECT_TYPE_SMALL_SCENERY:
+                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                        break;
+                    case OBJECT_TYPE_LARGE_SCENERY:
+                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                        break;
+                    case OBJECT_TYPE_WALLS:
+                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                        break;
+                    case OBJECT_TYPE_BANNERS:
+                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                        break;
+                    case OBJECT_TYPE_PATH_BITS:
+                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
+                        break;
+                    case OBJECT_TYPE_SCENERY_SETS:
                         auto sgObject = static_cast<SceneryGroupObject *>(loadedObject);
                         sgObject->UpdateEntryIndexes();
+                        break;
                     }
                 }
             }
         }
+    }
+
+    uint8 GetPrimarySceneryGroupEntryIndex(Object * loadedObject)
+    {
+        auto sceneryObject = static_cast<SceneryObject *>(loadedObject);
+        const rct_object_entry * primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
+        Object * sgObject = GetLoadedObject(primarySGEntry);
+
+        uint8 entryIndex = 255;
+        if (sgObject != nullptr)
+        {
+            entryIndex = GetLoadedObjectEntryIndex(sgObject);
+        }
+        return entryIndex;
     }
 
     bool GetRequiredObjects(const rct_object_entry * entries,
