@@ -172,8 +172,8 @@ namespace ObjectFactory
         Object * result = CreateObject(*entry);
         if (result != nullptr)
         {
-            utf8 objectName[9] = { 0 };
-            Memory::Copy(objectName, entry->name, 8);
+            utf8 objectName[9];
+            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectName);
             auto chunkStream = MemoryStream(data, dataSize);

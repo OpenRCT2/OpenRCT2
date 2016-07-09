@@ -192,8 +192,8 @@ public:
 
     void AddObject(const rct_object_entry * objectEntry, const void * data, size_t dataSize) override
     {
-        char objectName[9] = { 0 };
-        Memory::Copy(objectName, objectEntry->name, 8);
+        utf8 objectName[9];
+        object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
         int realChecksum = object_calculate_checksum(objectEntry, (const uint8 *)data, (int)dataSize);
         if (realChecksum != objectEntry->checksum)
