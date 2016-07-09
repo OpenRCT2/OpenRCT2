@@ -41,6 +41,7 @@ public:
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;
     void Unload() override;
+    void UpdateEntryIndexes();
 
     void DrawPreview(rct_drawpixelinfo * dpi) const override;
 

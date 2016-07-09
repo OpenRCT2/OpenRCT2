@@ -16,6 +16,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
 
@@ -56,27 +57,7 @@ void SceneryGroupObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
-
     _legacyType.entry_count = 0;
-    for (uint32 i = 0; i < _numItems; i++)
-    {
-        uint8 entryType;
-        uint8 entryIndex;
-        if (find_object_in_entry_group(&_items[i], &entryType, &entryIndex))
-        {
-            uint16 sceneryEntry = entryIndex;
-            switch (entryType) {
-            case OBJECT_TYPE_SMALL_SCENERY:                        break;
-            case OBJECT_TYPE_LARGE_SCENERY: sceneryEntry |= 0x300; break;
-            case OBJECT_TYPE_WALLS:         sceneryEntry |= 0x200; break;
-            case OBJECT_TYPE_PATH_BITS:     sceneryEntry |= 0x100; break;
-            default:                        sceneryEntry |= 0x400; break;
-            }
-
-            _legacyType.scenery_entries[_legacyType.entry_count] = sceneryEntry;
-            _legacyType.entry_count++;
-        }
-    }
 }
 
 void SceneryGroupObject::Unload()
@@ -95,6 +76,37 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi) const
 
     uint32 imageId = _legacyType.image + 0x20600001;
     gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
+}
+
+void SceneryGroupObject::UpdateEntryIndexes()
+{
+    IObjectRepository * objectRepository = GetObjectRepository();
+    IObjectManager * objectManager = GetObjectManager();
+
+    _legacyType.entry_count = 0;
+    for (uint32 i = 0; i < _numItems; i++)
+    {
+        const rct_object_entry * objectEntry = &_items[i];
+
+        const ObjectRepositoryItem * ori = objectRepository->FindObject(objectEntry);
+        if (ori == nullptr) continue;
+        if (ori->LoadedObject == nullptr) continue;
+
+        uint16 sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
+        Guard::Assert(sceneryEntry != UINT8_MAX);
+
+        uint8 objectType = objectEntry->flags & 0x0F;
+        switch (objectType) {
+        case OBJECT_TYPE_SMALL_SCENERY:                        break;
+        case OBJECT_TYPE_LARGE_SCENERY: sceneryEntry |= 0x300; break;
+        case OBJECT_TYPE_WALLS:         sceneryEntry |= 0x200; break;
+        case OBJECT_TYPE_PATH_BITS:     sceneryEntry |= 0x100; break;
+        default:                        sceneryEntry |= 0x400; break;
+        }
+
+        _legacyType.scenery_entries[_legacyType.entry_count] = sceneryEntry;
+        _legacyType.entry_count++;
+    }
 }
 
 void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const

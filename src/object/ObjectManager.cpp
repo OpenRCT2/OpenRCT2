@@ -22,6 +22,7 @@
 #include "Object.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
+#include "SceneryGroupObject.h"
 
 extern "C"
 {
@@ -94,6 +95,7 @@ public:
                     {
                         _loadedObjects[slot] = loadedObject;
                         UpdateLegacyLoadedObjectList();
+                        UpdateSceneryGroupIndexes();
                         reset_type_to_ride_entry_index_map();
                     }
                 }
@@ -130,6 +132,7 @@ public:
         {
             SetNewLoadedObjectList(loadedObjects);
             UpdateLegacyLoadedObjectList();
+            UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
             // Console::WriteLine("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
             return true;
@@ -162,6 +165,7 @@ public:
         if (numObjectsUnloaded > 0)
         {
             UpdateLegacyLoadedObjectList();
+            UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
         }
     }
@@ -177,6 +181,7 @@ public:
             }
         }
         UpdateLegacyLoadedObjectList();
+        UpdateSceneryGroupIndexes();
         reset_type_to_ride_entry_index_map();
     }
 
@@ -325,6 +330,25 @@ private:
                 legacyEntry->entry = *loadedObject->GetObjectEntry();
                 legacyEntry->chunk_size = 0;
                 *legacyChunk = loadedObject->GetLegacyData();
+            }
+        }
+    }
+
+    void UpdateSceneryGroupIndexes()
+    {
+        if (_loadedObjects != nullptr)
+        {
+            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+            {
+                Object * loadedObject = _loadedObjects[i];
+                if (loadedObject != nullptr)
+                {
+                    if (loadedObject->GetObjectType() == OBJECT_TYPE_SCENERY_SETS)
+                    {
+                        auto sgObject = static_cast<SceneryGroupObject *>(loadedObject);
+                        sgObject->UpdateEntryIndexes();
+                    }
+                }
             }
         }
     }
