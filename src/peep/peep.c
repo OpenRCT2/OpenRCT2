@@ -10347,8 +10347,19 @@ static int peep_compare(const void *sprite_index_a, const void *sprite_index_b)
 		peep_b->name_string_idx >= 0xA000 && peep_b->name_string_idx < 0xE000
 	);
 	if (both_have_generated_names) {
-		// This assumes the names are ordered alphabetically
-		return peep_a->name_string_idx - peep_b->name_string_idx;
+		rct_string_id peep_a_format = peep_a->name_string_idx + 0xA000;
+		rct_string_id peep_b_format = peep_b->name_string_idx + 0xA000;
+
+		uint16 peep_a_name = (peep_a_format % countof(real_names));
+		uint16 peep_b_name = (peep_b_format % countof(real_names));
+
+		if (peep_a_name == peep_b_name) {
+			uint16 peep_a_initial = ((peep_a_format >> 10) % countof(real_name_initials));
+			uint16 peep_b_initial = ((peep_b_format >> 10) % countof(real_name_initials));
+			return peep_a_initial - peep_b_initial;
+		} else {
+			return peep_a_name - peep_b_name;
+		}
 	}
 
 	// At least one of them has a custom name assigned
