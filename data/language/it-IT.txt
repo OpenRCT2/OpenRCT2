@@ -4202,6 +4202,8 @@ STR_5887    :Prefisso
 STR_5888    :Suffisso
 STR_5889    :Simbolo valuta personalizzato
 STR_5890    :Inserire il simbolo della valuta da visualizzare
+STR_5891    :Predefinita
+STR_5892    :{SMALLFONT}{BLACK}Apre la cartella predefinita
 
 #############
 # Scenarios #

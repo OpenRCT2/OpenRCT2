@@ -4191,6 +4191,17 @@ STR_5878    :Logiciel (aff. matériel)
 STR_5879    :OpenGL
 STR_5880    :Sélectionnés
 STR_5881    :Non-sélectionnés
+STR_5882    :Devise personnalisée...
+STR_5883    :Configuration de la devise personnalisée
+STR_5884    :{WINDOW_COLOUR_2}Taux de change :
+STR_5885    :{WINDOW_COLOUR_2}équivaut à {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Symbole monétaire :
+STR_5887    :Préfixe
+STR_5888    :Suffixe
+STR_5889    :Symbole monétaire personnalisé
+STR_5890    :Entrez le symbole monétaire à utiliser
+STR_5891    :Par défaut
+STR_5892    :{SMALLFONT}{BLACK}Aller au répertoire de sauvegarde par défaut
 
 #############
 # Scenarios #

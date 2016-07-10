@@ -4190,6 +4190,8 @@ STR_5887    :Präfix
 STR_5888    :Suffix
 STR_5889    :Benutzerdefiniertes Währungssymbol
 STR_5890    :Benutzerdef. Währungssymbol eingeben:
+STR_5891    :Standard
+STR_5892    :{SMALLFONT}{BLACK}Zum Standardverzeichnis gehen
 
 #############
 # Scenarios #

@@ -4159,6 +4159,8 @@ STR_5887    :Prefijo
 STR_5888    :Sufijo
 STR_5889    :Símbolo de la moneda personalizada
 STR_5890    :Introduce el símbolo de la moneda personalizada
+STR_5891    :Por defecto
+STR_5892    :{SMALLFONT}{BLACK}Ir a la carpeta por defecto.
 
 ##############
 # Escenarios #
