@@ -4549,7 +4549,7 @@ static void clear_elements_at(int x, int y)
 			gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 			game_do_command(
 				x,
-				(GAME_COMMAND_FLAG_APPLY) | (mapElement->type & MAP_ELEMENT_DIRECTION_MASK),
+				(GAME_COMMAND_FLAG_APPLY) | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
 				y,
 				(mapElement->base_height) | (((mapElement->properties.scenerymultiple.type >> 8) >> 2) << 8),
 				GAME_COMMAND_REMOVE_LARGE_SCENERY,
