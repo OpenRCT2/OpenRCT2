@@ -5382,10 +5382,55 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 }
 
 /**
+ * Modifies the train's velocity to match the block-brake fixed velocity.
+ * This function must be called when the car is running through a non-stopping
+ * state block-brake (precondition), which means that the block brake is acting
+ * merely as a velocity regulator, in a closed state. When the brake is open, it
+ * boosts the train to the speed limit
+ */
+void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
+	if (vehicle->velocity >= 0) {
+		// If the vehicle is below the speed limit
+		if (vehicle->velocity <= 0x20364) {
+			// Boost it to the fixed block brake speed
+			vehicle->velocity = 0x20364;
+			vehicle->acceleration = 0;
+		} else if(block_brake_closed){
+			// Slow it down till the fixed block brake speed
+			vehicle->velocity -= vehicle->velocity >> 4;
+			vehicle->acceleration = 0;
+		}
+	}
+}
+
+/**
+ *
+ * Modifies the train's velocity influenced by a block brake
+ */
+void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
+{
+	// If the site is in a "train blocking" state
+	if (is_block_brake_closed) {
+		// Slow it down till completely stop the car
+		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+		vehicle->acceleration = 0;
+		// If the vehicle is slow enough, stop it. If not, slow it down
+		if (vehicle->velocity <= 0x20000) {
+			vehicle->velocity = 0;
+		} else {
+			vehicle->velocity -= vehicle->velocity >> 3;
+		}
+	} else {
+		apply_non_stop_block_brake(vehicle, is_block_brake_closed);
+	}
+}
+
+
+/**
  *
  *  rct2: 0x006DAC43
  */
-static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
+static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 {
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -5401,25 +5446,6 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 	}
 
 	int trackType = vehicle->track_type >> 2;
-	switch (trackType) {
-	case TRACK_ELEM_END_STATION:
-	case TRACK_ELEM_BLOCK_BRAKES:
-		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
-	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_CABLE_LIFT_HILL:
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		if (ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
-	default:
-		return;
-	}
 
 	rct_map_element *trackElement =  map_get_track_element_at_of_type(
 		vehicle->track_x,
@@ -5427,29 +5453,29 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		vehicle->track_z >> 3,
 		trackType
 	);
-	if (trackType == TRACK_ELEM_END_STATION) {
-		if (trackElement->flags & (1 << 5)) {
+
+	switch (trackType) {
+	case TRACK_ELEM_BLOCK_BRAKES:
+		if (ride_is_block_sectioned(ride))
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
+		else
+			apply_non_stop_block_brake(vehicle, true);
+
+		break;
+	case TRACK_ELEM_END_STATION:
+		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED)
 			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		}
-	} else if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_BLOCK_BRAKES || track_element_is_lift_hill(trackElement)) {
-		if (!(trackElement->flags & (1 << 5)) || !ride_is_block_sectioned(ride)) {
-			if (trackType == TRACK_ELEM_BLOCK_BRAKES && vehicle->velocity >= 0) {
-				if (vehicle->velocity <= 0x20364) {
-					vehicle->velocity = 0x20364;
-					vehicle->acceleration = 0;
-				} else {
-					vehicle->velocity -= vehicle->velocity >> 4;
-					vehicle->acceleration = 0;
-				}
-			}
-			return;
-		}
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		vehicle->acceleration = 0;
-		if (vehicle->velocity <= 0x20000) {
-			vehicle->velocity = 0;
-		}
-		vehicle->velocity -= vehicle->velocity >> 3;
+
+		break;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_CABLE_LIFT_HILL:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		if (ride_is_block_sectioned(ride))
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
+
+		break;
 	}
 }
 
@@ -5457,7 +5483,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DADAE
  */
-static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
+static void update_velocity(rct_vehicle *vehicle)
 {
 	sint32 nextVelocity = vehicle->acceleration + vehicle->velocity;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7) {
@@ -8061,8 +8087,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
 
 	vehicle_update_track_motion_up_stop_check(vehicle);
-	sub_6DAB4C_chunk_2(vehicle);
-	sub_6DAB4C_chunk_3(vehicle);
+	check_and_apply_block_section_stop_site(vehicle);
+	update_velocity(vehicle);
 
 	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
 		vehicle = vehicle_get_tail(vehicle);
