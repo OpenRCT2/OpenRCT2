@@ -4556,7 +4556,6 @@ static void clear_elements_at(int x, int y)
 				0,
 				0
 			);
-			map_element_remove(mapElement);
 			break;
 		case MAP_ELEMENT_TYPE_BANNER:
 			gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
