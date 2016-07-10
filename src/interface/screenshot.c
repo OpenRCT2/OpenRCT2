@@ -272,6 +272,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 	gOpenRCT2Headless = true;
 	if (openrct2_initialise()) {
+		drawing_engine_init();
 		rct2_open_file(inputPath);
 
 		gIntroState = INTRO_STATE_NONE;
@@ -354,6 +355,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		image_io_png_write(&dpi, &renderedPalette, outputPath);
 
 		free(dpi.bits);
+		drawing_engine_dispose();
 	}
 	openrct2_dispose();
 	return 1;
