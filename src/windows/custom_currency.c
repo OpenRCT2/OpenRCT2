@@ -115,6 +115,7 @@ void custom_currency_window_open()
 		(1 << WIDX_AFFIX_DROPDOWN) |
 		(1 << WIDX_AFFIX_DROPDOWN_BUTTON);
 
+	window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
 	window_init_scroll_widgets(window);
 	window->colours[0] = 22;
 	window->colours[1] = 22;
@@ -192,13 +193,14 @@ static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
 {
 	switch(widgetIndex) {
 	case WIDX_RATE:
-		window_text_input_raw_open(
+		window_text_input_open(
 			w,
 			WIDX_RATE,
-			STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE,
-			STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-			CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-			CURRENCY_SYMBOL_MAX_SIZE
+			STR_RATE_INPUT_TITLE,
+			STR_RATE_INPUT_DESC,
+			5182,
+			(uint32)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
+			CURRENCY_RATE_MAX_NUM_DIGITS
 		);
 		break;
 	}
