@@ -138,7 +138,7 @@ public:
             UpdateLegacyLoadedObjectList();
             UpdateSceneryGroupIndexes();
             reset_type_to_ride_entry_index_map();
-            // Console::WriteLine("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
+            log_verbose("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
             return true;
         }
     }
@@ -320,7 +320,7 @@ private:
             }
         }
 
-        // Console::WriteLine("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
+        log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
     void UpdateLegacyLoadedObjectList()

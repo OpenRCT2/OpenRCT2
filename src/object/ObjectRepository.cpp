@@ -214,7 +214,7 @@ public:
             utf8 path[MAX_PATH];
             GetPathForNewObject(path, sizeof(path), objectName);
 
-            Console::WriteLine("Adding object: [%s]", objectName);
+            log_verbose("Adding object: [%s]", objectName);
             try
             {
                 SaveObject(path, objectEntry, data, dataSize);
@@ -222,7 +222,7 @@ public:
             }
             catch (Exception ex)
             {
-                Console::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+                Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
         }
     }

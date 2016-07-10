@@ -68,7 +68,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning: %s", _objectName, text);
+            log_verbose("[%s] Warning: %s", _objectName, text);
         }
     }
 
