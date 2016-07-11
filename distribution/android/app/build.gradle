@@ -11,9 +11,11 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
 
-        cmake {
-            arguments "-DTARGET_PLATFORM_VERSION=${platformVersion}"
-            abiFilters 'x86', 'armeabi', 'armeabi-v7a'
+        externalNativeBuild {
+            cmake {
+                arguments "-DTARGET_PLATFORM_VERSION=${platformVersion}"
+                abiFilters 'armeabi-v7a'
+            }
         }
     }
 

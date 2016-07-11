@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0-alpha4'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
         classpath 'de.undercouch:gradle-download-task:3.1.0-SNAPSHOT'
 
         // NOTE: Do not place your application dependencies here; they belong
