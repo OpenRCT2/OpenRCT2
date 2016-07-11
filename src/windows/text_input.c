@@ -297,12 +297,13 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			cursorY = y;
 
 			int width = 6;
-			if ((uint32)gTextInput.selection_offset < strlen(text_input)){
-				// Make a new 1 character wide string for measuring the width
-				// of the character that the cursor is under.
-				temp_string[1] = '\0';
-				temp_string[0] = text_input[gTextInput.selection_offset];
-				width = max(gfx_get_string_width(temp_string) - 2, 4);
+			if (gTextInput.selection_offset < strlen(text_input)){
+				// Make a 1 utf8-character wide string for measuring the width
+				// of the currently selected character.
+				utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
+				uint32 codepoint = utf8_get_next(text_input + gTextInput.selection_offset, NULL);
+				utf8_write_codepoint(tmp, codepoint);
+				width = max(gfx_get_string_width(tmp) - 2, 4);
 			}
 
 			if (w->frame_no > 15){
