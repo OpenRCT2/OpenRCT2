@@ -191,21 +191,21 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
 		w->widgets[WIDX_TITLE].image = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-		if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "landscape")) {
+		if (window_loadsave_get_dir(gConfigGeneral.last_save_landscape_directory, path, "landscape")) {
 			window_loadsave_populate_list(w, isSave, path, ".sc6");
 			success = true;
 		}
 		break;
 	case LOADSAVETYPE_SCENARIO:
 		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-		if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "scenario")) {
+		if (window_loadsave_get_dir(gConfigGeneral.last_save_scenario_directory, path, "scenario")) {
 			window_loadsave_populate_list(w, isSave, path, ".sc6");
 			success = true;
 		}
 		break;
 	case LOADSAVETYPE_TRACK:
 		w->widgets[WIDX_TITLE].image = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-		if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "track")) {
+		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track")) {
 			window_loadsave_populate_list(w, isSave, path, ".td?");
 			success = true;
 		}
