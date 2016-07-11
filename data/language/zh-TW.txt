@@ -4199,7 +4199,9 @@ STR_5886    :{WINDOW_COLOUR_2}貨幣符號:
 STR_5887    :前綴
 STR_5888    :後綴
 STR_5889    :自訂貨幣符號
-STR_5890    :請輸入用於顯示的貨幣符號Enter the currency symbol to display
+STR_5890    :請輸入用於顯示的貨幣符號
+STR_5891    :預設文件夾
+STR_5892    :{SMALLFONT}{BLACK}回到預設文件夾
 
 #############
 # Scenarios #
