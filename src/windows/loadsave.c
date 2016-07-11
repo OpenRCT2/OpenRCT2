@@ -138,8 +138,6 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 static void window_loadsave_select(rct_window *w, const char *path);
 static void window_loadsave_sort_list(int index, int endIndex);
 
-static int has_extension(char *path, char *extension);
-
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
 static int window_loadsave_get_dir(utf8 *last_save, char *path, const char *subdir)
@@ -384,17 +382,6 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	}
-}
-
-static int has_extension(char *path, char *extension)
-{
-	int extensionLength = strlen(extension);
-	int pathLength = strlen(path);
-	for (int u = 0; u < extensionLength; u++) {
-		if (tolower(path[pathLength - extensionLength + u]) != tolower(extension[u]))
-			return 0;
-	}
-	return 1;
 }
 
 static void window_loadsave_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
