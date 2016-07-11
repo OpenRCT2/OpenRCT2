@@ -798,7 +798,7 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 		0x4,
 		gMapSelectPositionA.y,
 		LandRightsMode ? 0x00E : 0x20F,
-		35,
+		GAME_COMMAND_BUY_LAND_RIGHTS,
 		gMapSelectPositionB.x,
 		gMapSelectPositionB.y
 		);
