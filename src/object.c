@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdlib.h>
 #include "addresses.h"
 #include "config.h"
 #include "drawing/drawing.h"
@@ -78,30 +79,19 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Read chunk size
 	*chunkSize = *((uint32*)installedObject_pointer);
-	uint8 *chunk;
-
-	if (*chunkSize == 0xFFFFFFFF) {
-		chunk = (uint8*)malloc(0x600000);
-		assert(chunk != NULL);
-		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-		chunk = realloc(chunk, *chunkSize);
-	}
-	else {
-		chunk = (uint8*)malloc(*chunkSize);
-		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, *chunkSize);
-	}
+	uint8 *chunk = object_alloc_chunk(rw, chunkSize);
 	SDL_RWclose(rw);
 	if (chunk == NULL) {
 		log_error("Failed to load object from %s of size %d", path, *chunkSize);
 		return 0;
 	}
 
-	int calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
+	uint32 calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
-		log_error("Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
-		free(chunk);
+		log_error("Object Load failed due to checksum failure: calculated checksum 0x%08x, object says 0x%08x.", calculatedChecksum, openedEntry.checksum);
+		object_free_chunk(chunk);
 		return 0;
 			
 	}
@@ -110,13 +100,13 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
 	if (gTotalNoImages >= 0x4726E){
 		log_error("Object Load failed due to too many images loaded.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -125,7 +115,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		for (groupIndex = 0; chunk_list[groupIndex] != (void*)-1; groupIndex++) {
 			if (groupIndex + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to too many objects of a certain type.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 		}
@@ -207,7 +197,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 
 
 	//Check if content of object file matches the stored checksum. If it does not, then fix it.
-	int calculated_checksum = object_calculate_checksum(entry, chunk, installed_entry->chunk_size);
+	uint32 calculated_checksum = object_calculate_checksum(entry, chunk, installed_entry->chunk_size);
 	if(entry->checksum != calculated_checksum) {
 		//Store the current length of the header - it's the offset at which we will write the extra bytes
 		int salt_offset = chunkHeader.length;
@@ -265,14 +255,8 @@ int object_load_packed(SDL_RWops* rw)
 
 	SDL_RWread(rw, &entry, 16, 1);
 
-	uint8* chunk = (uint8*)malloc(0x600000);
-	uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
-	chunk = realloc(chunk, chunkSize);
-
-	if (chunk == NULL){
-		log_error("Failed to allocate memory for packed object.");
-		return 0;
-	}
+	int chunkSize = -1;
+	uint8 *chunk = object_alloc_chunk(rw, &chunkSize);
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
 	
@@ -280,7 +264,7 @@ int object_load_packed(SDL_RWops* rw)
 			log_warning("Checksum mismatch from packed object: %.8s", entry.name);
 		} else {
 			log_error("Checksum mismatch from packed object: %.8s", entry.name);
-			free(chunk);
+			object_free_chunk(chunk);
 			return 0;
 		}
 	}
@@ -289,13 +273,13 @@ int object_load_packed(SDL_RWops* rw)
 
 	if (!object_test(type, chunk)) {
 		log_error("Packed object failed paint test.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
 	if (gTotalNoImages >= 0x4726E){
 		log_error("Packed object has too many images.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -312,7 +296,7 @@ int object_load_packed(SDL_RWops* rw)
 		// This should never occur. Objects are not loaded before installing a
 		// packed object. So there is only one object loaded at this point.
 		log_error("Too many objects of the same type loaded.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -395,7 +379,7 @@ void object_unload_chunk(rct_object_entry *entry)
 
 	object_unload(object_type, chunk);
 
-	free(chunk);
+	object_free_chunk(chunk);
 	memset(&object_entry_groups[object_type].entries[object_index], 0, sizeof(rct_object_entry_extended));
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
@@ -423,22 +407,45 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 	return 1;
 }
 
-int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength)
+uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const uint8 *RESTRICT data, int dataLength)
 {
-	const uint8 *entryBytePtr = (uint8*)entry;
-
+	uint8 *entry_bytes = (uint8 *)entry;
 	uint32 checksum = 0xF369A75B;
-	checksum ^= entryBytePtr[0];
-	checksum = rol32(checksum, 11);
-	for (int i = 4; i < 12; i++) {
-		checksum ^= entryBytePtr[i];
-		checksum = rol32(checksum, 11);
+
+	int dataLength_padded = (dataLength + 31) ^ 0x1F;
+
+	uint8 tmp[32] = { 0 };
+
+	// Insert entry data "backwards" and "rewind" checksum rotations so that
+	// tmp[0] can still start rotating with (11*0).
+	checksum = rol32(checksum, (9 * 11) % 32);
+	tmp[23] = entry_bytes[0];
+	for (int j = 4; j < 12; ++j)
+		tmp[20 + j] = entry_bytes[j];
+
+	for (int i = 0; i <= (dataLength_padded - 32); i += 32) {
+		for (int j = 0; j < 32; ++j) {
+			tmp[j] ^= data[i + j];
+		}
 	}
-	for (int i = 0; i < dataLength; i++) {
-		checksum ^= data[i];
-		checksum = rol32(checksum, 11);
+
+	// Shuffle bytes such that they can be rotated in unison as uint32s.
+	const uint8 tmp2[32] = { tmp[0], tmp[8], tmp[16], tmp[24],
+							 tmp[1], tmp[9], tmp[17], tmp[25],
+							 tmp[2], tmp[10], tmp[18], tmp[26],
+							 tmp[3], tmp[11], tmp[19], tmp[27],
+							 tmp[4], tmp[12], tmp[20], tmp[28],
+							 tmp[5], tmp[13], tmp[21], tmp[29],
+							 tmp[6], tmp[14], tmp[22], tmp[30],
+							 tmp[7], tmp[15], tmp[23], tmp[31] };
+	for (int i = 0; i < 8; ++i) {
+		checksum ^= ror32(((uint32 *)tmp2)[i], (11 * i) % 32);
 	}
-	return (int)checksum;
+
+	// Rotate checksum to account for misaligned data.
+	checksum = rol32(checksum, (11 * (dataLength % 32)) % 32);
+
+	return checksum;
 }
 
 /**
@@ -1685,29 +1692,20 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// Read chunk
 			int chunkSize = *((uint32*)pos);
 
-			uint8 *chunk;
-			if (chunkSize == 0xFFFFFFFF) {
-				chunk = (uint8*)malloc(0x600000);
-				chunkSize = sawyercoding_read_chunk(rw, chunk);
-				chunk = realloc(chunk, chunkSize);
-			}
-			else {
-				chunk = (uint8*)malloc(chunkSize);
-				sawyercoding_read_chunk_with_size(rw, chunk, chunkSize);
-			}
+			uint8 *chunk = object_alloc_chunk(rw, &chunkSize);
 			SDL_RWclose(rw);
 
 			// Calculate and check checksum
 			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
 				log_error("Opened object failed calculated checksum.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 
 			if (!object_test(openedEntry.flags & 0x0F, chunk)) {
 				// This is impossible for STEX entries to fail.
 				log_error("Opened object failed paint test.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 
@@ -1749,7 +1747,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (gStexTempChunk != NULL) {
-		free(gStexTempChunk);
+		object_free_chunk(gStexTempChunk);
 		gStexTempChunk = NULL;
 	}
 }
@@ -1805,3 +1803,89 @@ char *object_get_name(rct_object_entry *entry)
 
 	return (char *)pos;
 }
+
+void *object_aligned_alloc_pad(size_t alignment, size_t size)
+{
+	size_t remainder = size % alignment;
+	size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+
+	// Allocate enough space for ...:
+	//  - the alignment
+	//  - a pointer to the original return value (needed for free)
+	//  - the object
+	//  - extra zero-padded space to bring object size to a multiple of 32
+	//  - extra space for alignment
+	void *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(uint8 *) + size + alignment - 1 + zero_pad);
+	if (ptr == NULL) {
+		log_error("Failed to allocate memory for object.");
+		assert(false);
+	}
+
+	// Align chunk pointer on boundary.
+	void *ptr_aligned = (void *)((uint8 *)ptr + sizeof(size_t) + sizeof(uint8 *) + alignment - 1 - (size % alignment));
+
+	// Save alignment for realloc
+	((size_t *)ptr_aligned)[-2] = alignment;
+	// Save original pointer for free
+	((void **)ptr_aligned)[-1] = ptr;
+
+	// Zero-pad object up to a multiple of alignment
+	memset((uint8 *)ptr_aligned + size, 0x00, zero_pad);
+
+	return ptr_aligned;
+}
+
+uint8 *object_alloc_chunk(SDL_RWops *rw, int *size)
+{
+	void *ptr;
+
+	if (*size == -1) {
+		ptr = object_aligned_alloc_pad(32, 0x600000);
+		*size = sawyercoding_read_chunk(rw, ptr);
+		ptr = object_realloc_chunk(ptr, *size);
+	} else {
+		ptr = object_aligned_alloc_pad(32, *size);
+		*size = sawyercoding_read_chunk(rw, ptr);
+	}
+
+	return (uint8 *)ptr;
+}
+
+void *object_realloc_chunk(void *chunk, size_t size)
+{
+	void *ptr_new, *ptr_new_chunk;
+	void *ptr_old = ((void **)chunk)[-1];
+
+	size_t alignment = ((size_t *)chunk)[-2];
+	size_t remainder = size % alignment;
+	size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+	size_t offset = (size_t)((uint8 *)chunk - (uint8 *)ptr_old);
+
+	ptr_new = realloc(ptr_old, offset + size + zero_pad);
+	if (ptr_new == NULL) {
+		log_error("Failed to reallocate memory for object.");
+		assert(false);
+	}
+
+	ptr_new_chunk = (void *)((uint8 *)ptr_new + offset);
+	((void **)ptr_new_chunk)[-1] = ptr_new;
+	memset((uint8 *)ptr_new_chunk + size, 0x00, zero_pad);
+
+	// realloc moved the data (fine) to a non-aligned location (not fine)
+	if ((uint32)ptr_new_chunk % alignment > 0) {
+		void *tmp = object_aligned_alloc_pad(32, size);
+
+		memcpy(tmp, ptr_new_chunk, size);
+		object_free_chunk(ptr_new_chunk);
+
+		ptr_new_chunk = tmp;
+	}
+
+	return ptr_new_chunk;
+}
+
+void object_free_chunk(void *chunk)
+{
+	free(((void **)chunk)[-1]);
+}
+
