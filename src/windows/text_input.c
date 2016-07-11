@@ -297,7 +297,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			cursorY = y;
 
 			int width = 6;
-			if ((uint32)gTextInput.selection_offset < strlen(text_input)){
+			if (gTextInput.selection_offset < strlen(text_input)){
 				// Make a 1 utf8-character wide string for measuring the width
 				// of the currently selected character.
 				utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
