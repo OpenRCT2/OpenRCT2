@@ -147,7 +147,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 {
 	gLoadSaveCallback = NULL;
 	gLoadSaveTitleSequenceSave = false;
-	char path[MAX_PATH], *ch;
+	char path[MAX_PATH];
 	int includeNewItem;
 	rct_window* w;
 	_type = type;
