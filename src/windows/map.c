@@ -28,6 +28,7 @@
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"
+#include "dropdown.h"
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
@@ -47,49 +48,59 @@ enum WINDOW_MAP_WIDGET_IDX {
 	WIDX_TITLE,
 	WIDX_CLOSE,
 	WIDX_RESIZE = 3,
-	WIDX_PEOPLE_TAB = 4,
-	WIDX_RIDES_TAB = 5,
-	WIDX_MAP = 6,
-	WIDX_MAP_SIZE_SPINNER = 7,
-	WIDX_MAP_SIZE_SPINNER_UP = 8,
-	WIDX_MAP_SIZE_SPINNER_DOWN = 9,
-	WIDX_SET_LAND_RIGHTS = 10,
-	WIDX_BUILD_PARK_ENTRANCE = 11,
-	WIDX_PEOPLE_STARTING_POSITION = 12,
-	WIDX_LAND_TOOL = 13,
-	WIDX_LAND_TOOL_SMALLER = 14,
-	WIDX_LAND_TOOL_LARGER = 15,
-	WIDX_LAND_OWNED_CHECKBOX = 16,
-	WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX = 17,
-	WIDX_LAND_SALE_CHECKBOX = 18,
-	WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX = 19,
-	WIDX_ROTATE_90 = 20,
-	WIDX_MAP_GENERATOR = 21
+	WIDX_PEOPLE_TAB,
+	WIDX_RIDES_TAB,
+	WIDX_MAP,
+	WIDX_MAP_SIZE_SPINNER,
+	WIDX_MAP_SIZE_SPINNER_UP,
+	WIDX_MAP_SIZE_SPINNER_DOWN,
+	WIDX_SET_LAND_RIGHTS,
+	WIDX_BUILD_PARK_ENTRANCE,
+	WIDX_PEOPLE_STARTING_POSITION,
+	WIDX_LAND_TOOL,
+	WIDX_LAND_TOOL_SMALLER,
+	WIDX_LAND_TOOL_LARGER,
+	WIDX_LAND_OWNED_CHECKBOX,
+	WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
+	WIDX_LAND_SALE_CHECKBOX,
+	WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
+	WIDX_APPLY_WHOLE_MAP,
+	WIDX_ROTATE_90,
+	WIDX_MAP_GENERATOR,
+};
+
+enum 
+{
+	DDIX_LAND_APPLY_WHOLE_MAP,
+	DDIX_LAND_APPLY_INCLUDE_MAP_EDGE,
+	DDIX_LAND_APPLY_CUSTOM_EDGE,
+	DDIX_LAND_APPLY_COUNT
 };
 
 static rct_widget window_map_widgets[] = {
-	{ WWT_FRAME,			0,	0,		244,	0,		258,	STR_NONE,								STR_NONE },
-	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP_LABEL,							STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	232,	242,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
-	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,								STR_NONE },
-	{ WWT_COLOURBTN,		1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SHOW_PEOPLE_ON_MAP_TIP },
-	{ WWT_COLOURBTN,		1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
-	{ WWT_SCROLL,			1,	3,		241,	46,		225,	SCROLL_BOTH,							STR_NONE },
-	{ WWT_SPINNER,			1,	104,	198,	229,	240,	STR_MAP_SIZE_VALUE,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	230,	234,	STR_NUMERIC_UP,							STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	235,	239,	STR_NUMERIC_DOWN,						STR_NONE },
-	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_BUY_LAND_RIGHTS,					STR_SELECT_PARK_OWNED_LAND_TIP },
-	{ WWT_FLATBTN,			1,	4,		27,		1,		24,		SPR_PARK_ENTRANCE,						STR_BUILD_PARK_ENTRANCE_TIP },
-	{ WWT_FLATBTN,			1,	28,		51,		1,		24,		SPR_NONE,								STR_SET_STARTING_POSITIONS_TIP },
-	{ WWT_IMGBTN,			1,	4,		47,		17,		48,		SPR_LAND_TOOL_SIZE_0,					STR_NONE },
-	{ WWT_TRNBTN,			1,	5,		20,		18,		33,		0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },
-	{ WWT_TRNBTN,			1,	31,		46,		32,		47,		0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_OWNED,							STR_SET_LAND_TO_BE_OWNED_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_CONSTRUCTION_RIGHTS_OWNED,			STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP },
-	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_SALE,							STR_SET_LAND_TO_BE_AVAILABLE_TIP },
-	{ WWT_CHECKBOX,			1,	58,		231,	197,	208,	STR_CONSTRUCTION_RIGHTS_SALE,			STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
-	{ WWT_FLATBTN,			1,	218,	241,	45,		68,		SPR_ROTATE_ARROW,						STR_ROTATE_OBJECTS_90 },
-	{ WWT_DROPDOWN_BUTTON,	1,	110,	240,	190,	201,	STR_MAPGEN_WINDOW_TITLE,				STR_MAP_GENERATOR_TIP},
+	{ WWT_FRAME,				0,	0,		244,	0,		258,	STR_NONE,							STR_NONE },
+	{ WWT_CAPTION,				0,	1,		243,	1,		14,		STR_MAP_LABEL,						STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,				0,	232,	242,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_RESIZE,				1,	0,		244,	43,		257,	STR_NONE,							STR_NONE },
+	{ WWT_COLOURBTN,			1,	3,		33,		17,		43,		0x02000144E,						STR_SHOW_PEOPLE_ON_MAP_TIP },
+	{ WWT_COLOURBTN,			1,	34,		64,		17,		43,		0x02000144E,						STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
+	{ WWT_SCROLL,				1,	3,		241,	46,		225,	0x3,								STR_NONE },
+	{ WWT_SPINNER,				1,	104,	198,	229,	240,	0xC8C,								STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,		1,	187,	197,	230,	234,	STR_NUMERIC_UP,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,		1,	187,	197,	235,	239,	STR_NUMERIC_DOWN,					STR_NONE },
+	{ WWT_FLATBTN,				1,	4,		27,		1,		24,		SPR_BUY_LAND_RIGHTS,				STR_SELECT_PARK_OWNED_LAND_TIP },
+	{ WWT_FLATBTN,				1,	4,		27,		1,		24,		SPR_PARK_ENTRANCE,					STR_BUILD_PARK_ENTRANCE_TIP },
+	{ WWT_FLATBTN,				1,	28,		51,		1,		24,		SPR_NONE,							STR_SET_STARTING_POSITIONS_TIP },
+	{ WWT_IMGBTN,				1,	4,		47,		17,		48,		SPR_LAND_TOOL_SIZE_0,				STR_NONE },
+	{ WWT_TRNBTN,				1,	5,		20,		18,		33,		0x02000157B,						STR_ADJUST_SMALLER_LAND_TIP },
+	{ WWT_TRNBTN,				1,	31,		46,		32,		47,		0x02000157D,						STR_ADJUST_LARGER_LAND_TIP },
+	{ WWT_CHECKBOX,				1,	58,		241,	197,	208,	STR_LAND_OWNED,						STR_SET_LAND_TO_BE_OWNED_TIP },
+	{ WWT_CHECKBOX,				1,	58,		241,	197,	208,	STR_CONSTRUCTION_RIGHTS_OWNED,		STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP },
+	{ WWT_CHECKBOX,				1,	58,		241,	197,	208,	STR_LAND_SALE,						STR_SET_LAND_TO_BE_AVAILABLE_TIP },
+	{ WWT_CHECKBOX,				1,	58,		241,	197,	208,	STR_CONSTRUCTION_RIGHTS_SALE,		STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
+	{ WWT_DROPDOWN_BUTTON,		1,	58,		198,	197,	208,	STR_APPLY_TO_WHOLE_MAP,				STR_NONE },
+	{ WWT_FLATBTN,				1,	218,	241,	45,		68,		SPR_ROTATE_ARROW,					STR_ROTATE_OBJECTS_90 },
+	{ WWT_DROPDOWN_BUTTON,		1,	110,	240,	190,	201,	STR_MAPGEN_WINDOW_TITLE,			STR_MAP_GENERATOR_TIP },
 	{ WIDGETS_END },
 };
 
@@ -106,6 +117,7 @@ static void window_map_close(rct_window *w);
 static void window_map_resize(rct_window *w);
 static void window_map_mouseup(rct_window *w, int widgetIndex);
 static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_map_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_map_update(rct_window *w);
 static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y);
 static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y);
@@ -124,7 +136,7 @@ static rct_window_event_list window_map_events = {
 	window_map_mouseup,
 	window_map_resize,
 	window_map_mousedown,
-	NULL,
+	window_map_dropdown,
 	NULL,
 	window_map_update,
 	NULL,
@@ -169,6 +181,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y);
 static void window_map_set_peep_spawn_tool_down(int x, int y);
 static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
+static void map_window_apply_land_rights_to_whole_map(int edge_offset);
 static void map_window_set_pixels(rct_window *w);
 
 static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY);
@@ -214,6 +227,7 @@ void window_map_open()
 		(1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) |
 		(1 << WIDX_BUILD_PARK_ENTRANCE) |
 		(1 << WIDX_ROTATE_90) |
+		(1 << WIDX_APPLY_WHOLE_MAP) |
 		(1 << WIDX_PEOPLE_STARTING_POSITION) |
 		(1 << WIDX_MAP_GENERATOR);
 
@@ -391,6 +405,72 @@ static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *wid
 	case WIDX_MAP_SIZE_SPINNER_DOWN:
 		map_window_decrease_map_size();
 		break;
+	case WIDX_APPLY_WHOLE_MAP:
+		window_dropdown_show_text(
+			w->x + widget->left,
+			w->y + widget->top,
+			widget->bottom - widget->top + 1,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			DDIX_LAND_APPLY_COUNT
+		);
+		gDropdownItemsFormat[DDIX_LAND_APPLY_WHOLE_MAP] = STR_APPLY_TO_WHOLE_MAP;
+		gDropdownItemsFormat[DDIX_LAND_APPLY_INCLUDE_MAP_EDGE] = STR_INCLUDE_MAP_EDGE;
+		gDropdownItemsFormat[DDIX_LAND_APPLY_CUSTOM_EDGE] = STR_CUSTOM_EDGE_OFFSET;
+		gDropdownHighlightedIndex = 0;
+		gDropdownDefaultIndex = 0;
+		break;
+	}
+}
+
+static void map_window_apply_land_rights_to_whole_map(int edge_offset) 
+{
+	uint8 map_flag = RCT2_GLOBAL(0xF1AD61, sint8);
+	// Tiles are based on intervals of 32, and anything below 32 (or an "edge offset" of 0) will
+	// include out of map boundaries, so clamp between 1 and half the map.
+	edge_offset += 1;
+	edge_offset = (clamp(1, edge_offset, (gMapSize / 2) - 2)) * 32;
+	uint16 map_selection_a = edge_offset;
+	uint16 map_selection_b = gMapSizeUnits - edge_offset;
+	game_do_command(
+		map_selection_a,
+		GAME_COMMAND_FLAG_APPLY,
+		map_selection_a,
+		map_flag,
+		GAME_COMMAND_SET_LAND_OWNERSHIP,
+		map_selection_b,
+		map_selection_b	
+	);
+
+	//code below from editor_check_park() - remove path from map edge to park entrances
+	for (int i = 0; i < 4; i++) {
+		if (gParkEntranceX[i] == (sint16)0x8000)
+			continue;
+
+		int x = gParkEntranceX[i];
+		int y = gParkEntranceY[i];
+		int z = gParkEntranceZ[i] / 8;
+		int direction = gParkEntranceDirection[i] ^ 2;
+		
+		if (footpath_is_connected_to_map_edge(x, y, z, direction, 0) == FOOTPATH_SEARCH_SUCCESS) {
+			// Run the search again and unown the path
+			footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
+		}
+	}
+}
+
+static void window_map_dropdown(rct_window *w, int widgetIndex, int dropdownIndex) 
+{
+	if (widgetIndex == WIDX_APPLY_WHOLE_MAP) {
+		if (dropdownIndex == DDIX_LAND_APPLY_WHOLE_MAP) {
+			map_window_apply_land_rights_to_whole_map(1);
+		}
+		else if (dropdownIndex == DDIX_LAND_APPLY_INCLUDE_MAP_EDGE) {
+			map_window_apply_land_rights_to_whole_map(0);
+		}
+		else if (dropdownIndex == DDIX_LAND_APPLY_CUSTOM_EDGE) {
+			window_text_input_raw_open(w, widgetIndex, STR_CUSTOM_EDGE_OFFSET, STR_ENTER_CUSTOM_EDGE_OFFSET, "", 4);
+		}
 	}
 }
 
@@ -639,6 +719,13 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 			window_invalidate(w);
 		}
 		break;
+	case WIDX_APPLY_WHOLE_MAP:
+		size = strtol(text, &end, 10);
+		if (*end == '\0') {
+			map_window_apply_land_rights_to_whole_map(size);
+			window_invalidate(w);
+		}
+		break;
 	}
 }
 
@@ -700,44 +787,49 @@ static void window_map_invalidate(rct_window *w)
 	w->widgets[WIDX_MAP].right = w->width - 4;
 
 	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-		w->widgets[WIDX_MAP].bottom = w->height - 1 - 72;
+		w->widgets[WIDX_MAP].bottom = w->height - 1 - 78;
 	else if (w->selected_tab == PAGE_RIDES)
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 44;
 	else
 		w->widgets[WIDX_MAP].bottom = w->height - 1 - 14;
 
-	w->widgets[WIDX_MAP_SIZE_SPINNER].top = w->height - 15;
-	w->widgets[WIDX_MAP_SIZE_SPINNER].bottom = w->height - 4;
-	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].top = w->height - 14;
-	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].bottom = w->height - 10;
-	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].top = w->height - 9;
-	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].bottom = w->height - 5;
+	w->widgets[WIDX_MAP_SIZE_SPINNER].top = w->height - 19;
+	w->widgets[WIDX_MAP_SIZE_SPINNER].bottom = w->height - 8;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].top = w->height - 18;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].bottom = w->height - 14;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].top = w->height - 13;
+	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].bottom = w->height - 9;
 
-	w->widgets[WIDX_SET_LAND_RIGHTS].top = w->height - 70;
-	w->widgets[WIDX_SET_LAND_RIGHTS].bottom = w->height - 70 + 23;
-	w->widgets[WIDX_BUILD_PARK_ENTRANCE].top = w->height - 46;
-	w->widgets[WIDX_BUILD_PARK_ENTRANCE].bottom = w->height - 46 + 23;
-	w->widgets[WIDX_ROTATE_90].top = w->height - 46;
-	w->widgets[WIDX_ROTATE_90].bottom = w->height - 46 + 23;
-	w->widgets[WIDX_PEOPLE_STARTING_POSITION].top = w->height - 46;
-	w->widgets[WIDX_PEOPLE_STARTING_POSITION].bottom = w->height - 46 + 23;
+	w->widgets[WIDX_SET_LAND_RIGHTS].top = w->height - 74;
+	w->widgets[WIDX_SET_LAND_RIGHTS].bottom = w->height - 74 + 23;
+	w->widgets[WIDX_BUILD_PARK_ENTRANCE].top = w->height - 50;
+	w->widgets[WIDX_BUILD_PARK_ENTRANCE].bottom = w->height - 50 + 23;
+	w->widgets[WIDX_ROTATE_90].top = w->height - 50;
+	w->widgets[WIDX_ROTATE_90].bottom = w->height - 50 + 23;
+	w->widgets[WIDX_PEOPLE_STARTING_POSITION].top = w->height - 50;
+	w->widgets[WIDX_PEOPLE_STARTING_POSITION].bottom = w->height - 50 + 23;
 
-	w->widgets[WIDX_LAND_TOOL].top = w->height - 42;
-	w->widgets[WIDX_LAND_TOOL].bottom = w->height - 42 + 30;
-	w->widgets[WIDX_LAND_TOOL_SMALLER].top = w->height - 41;
-	w->widgets[WIDX_LAND_TOOL_SMALLER].bottom = w->height - 41 + 15;
-	w->widgets[WIDX_LAND_TOOL_LARGER].top = w->height - 27;
-	w->widgets[WIDX_LAND_TOOL_LARGER].bottom = w->height - 27 + 15;
+	w->widgets[WIDX_LAND_TOOL].top = w->height - 46;
+	w->widgets[WIDX_LAND_TOOL].bottom = w->height - 46 + 30;
+	w->widgets[WIDX_LAND_TOOL_SMALLER].top = w->height - 45;
+	w->widgets[WIDX_LAND_TOOL_SMALLER].bottom = w->height - 45 + 15;
+	w->widgets[WIDX_LAND_TOOL_LARGER].top = w->height - 31;
+	w->widgets[WIDX_LAND_TOOL_LARGER].bottom = w->height - 31 + 15;
 
-	// Land tool mode (4 checkboxes)
-	height = w->height - 55;
-	for (i = 0; i < 4; i++) {
+	// Land tool mode (4 checkboxes + Apply map button)
+	height = w->height - 74;
+	for (i = 0; i < 5; i++) {
 		w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].top = height;
 		height += 11;
 		w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].bottom = height;
 		height += 2;
 	}
 
+	// Include space between button and checkboxes
+	w->widgets[WIDX_APPLY_WHOLE_MAP].top += 4;
+	w->widgets[WIDX_APPLY_WHOLE_MAP].bottom += 4;
+	//w->widgets[WIDX_APPLY_WHOLE_MAP].right = w->widgets[WIDX_APPLY_WHOLE_MAP].left + 140;
+	
 	// Disable all scenario editor related widgets
 	for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_MAP_GENERATOR; i++) {
 		w->widgets[i].type = WWT_EMPTY;
@@ -771,6 +863,7 @@ static void window_map_invalidate(rct_window *w)
 
 				for (i = 0; i < 4; i++)
 					w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
+				w->widgets[WIDX_APPLY_WHOLE_MAP].type = WWT_DROPDOWN_BUTTON;
 
 				w->widgets[WIDX_LAND_TOOL].image = gLandToolSize <= 7 ?
 					SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
