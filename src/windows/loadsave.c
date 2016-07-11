@@ -903,7 +903,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
 	{
-		int success = track_design_save_to_file(path);
+		char *p = _strdup(path);
+		path_set_extension(p, "td6");
+		int success = track_design_save_to_file(p);
+		free(p);
+		
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
