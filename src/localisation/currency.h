@@ -49,6 +49,7 @@ typedef enum {
 } CURRENCY_AFFIX;
 
 #define CURRENCY_SYMBOL_MAX_SIZE 8
+#define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
 // Currency format specification - inspired by OpenTTD
 typedef struct currency_descriptor {

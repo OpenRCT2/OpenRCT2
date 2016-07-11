@@ -4201,6 +4201,8 @@ STR_5889    :Custom currency symbol
 STR_5890    :Enter the currency symbol to display
 STR_5891    :Default
 STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
+STR_5893    :Exchange Rate
+STR_5894    :Enter the exchange rate
 
 #############
 # Scenarios #

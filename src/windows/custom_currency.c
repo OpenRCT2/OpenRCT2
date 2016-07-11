@@ -51,14 +51,15 @@ rct_widget window_custom_currency_widgets[] = {
 
 
 static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_mouseup(rct_window *w, int widgetIndex);
 static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text);
+static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
 static rct_window_event_list _windowCustomCurrencyEvents = {
 	NULL,
-	NULL,
+	custom_currency_window_mouseup,
 	NULL,
 	custom_currency_window_mousedown,
 	custom_currency_window_dropdown,
@@ -114,6 +115,7 @@ void custom_currency_window_open()
 		(1 << WIDX_AFFIX_DROPDOWN) |
 		(1 << WIDX_AFFIX_DROPDOWN_BUTTON);
 
+	window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
 	window_init_scroll_widgets(window);
 	window->colours[0] = 22;
 	window->colours[1] = 22;
@@ -187,6 +189,23 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 	}
 }
 
+static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
+{
+	switch(widgetIndex) {
+	case WIDX_RATE:
+		window_text_input_open(
+			w,
+			WIDX_RATE,
+			STR_RATE_INPUT_TITLE,
+			STR_RATE_INPUT_DESC,
+			5182,
+			(uint32)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
+			CURRENCY_RATE_MAX_NUM_DIGITS
+		);
+		break;
+	}
+}
+
 static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	if(dropdownIndex == -1)
@@ -211,9 +230,14 @@ static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int 
 	}
 }
 
-static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text)
+static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text)
 {
-	if(text != NULL) {
+	if (text == NULL)
+		return;
+	int rate;
+	char* end;
+	switch(widgetIndex){
+	case WIDX_SYMBOL_TEXT:
 		strncpy(
 			CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
 			text,
@@ -228,6 +252,17 @@ static void custom_currency_window_text_input(struct rct_window *w, int windgetI
 
 		config_save_default();
 		window_invalidate_all();
+		break;
+
+	case WIDX_RATE:
+		rate = strtol(text, &end, 10);
+		if (*end == '\0') {
+			CurrencyDescriptors[CURRENCY_CUSTOM].rate = rate;
+			gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+			config_save_default();
+			window_invalidate_all();
+		}
+		break;
 	}
 }
 
