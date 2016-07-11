@@ -41,7 +41,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
 private:
     static rct_large_scenery_tile * ReadTiles(IStream * stream);

@@ -89,7 +89,7 @@ void *                          object_repository_load_object(const rct_object_e
 
 void            object_delete(void * object);
 const utf8 *    object_get_description(const void * object);
-void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi);
+void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height);
 
 #endif
 

@@ -39,7 +39,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi) const override;
+    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
 private:
     static uint8 * ReadVar10(IStream * stream);

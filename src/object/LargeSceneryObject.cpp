@@ -110,10 +110,10 @@ void LargeSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    int x = dpi->width / 2;
-    int y = (dpi->height / 2) - 39;
+    sint32 x = width / 2;
+    sint32 y = (height / 2) - 39;
 
     uint32 imageId = 0xB2D00000 | _legacyType.image;
     gfx_draw_sprite(dpi, imageId, x, y, 0);

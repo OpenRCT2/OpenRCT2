@@ -68,9 +68,9 @@ void FootpathItemObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    int x = dpi->width / 2;
-    int y = dpi->height / 2;
+    sint32 x = width / 2;
+    sint32 y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
 }

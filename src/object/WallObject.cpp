@@ -69,10 +69,10 @@ void WallObject::Unload()
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void WallObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    int x = dpi->width / 2;
-    int y = dpi->height / 2;
+    sint32 x = width / 2;
+    sint32 y = height / 2;
 
     x += 14;
     y += (_legacyType.wall.height * 2) + 16;

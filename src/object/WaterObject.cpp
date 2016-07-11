@@ -57,10 +57,10 @@ void WaterObject::Unload()
     _legacyType.string_idx = 0;
 }
 
-void WaterObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void WaterObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
     // Write (no image)
-    int x = dpi->width / 2;
-    int y = dpi->height / 2;
+    sint32 x = width / 2;
+    sint32 y = height / 2;
     gfx_draw_string_centred(dpi, 3326, x, y, 0, nullptr);
 }

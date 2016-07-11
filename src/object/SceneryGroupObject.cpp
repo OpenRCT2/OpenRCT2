@@ -69,10 +69,10 @@ void SceneryGroupObject::Unload()
     _legacyType.image = 0;
 }
 
-void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    int x = dpi->width / 2;
-    int y = dpi->height / 2;
+    sint32 x = width / 2;
+    sint32 y = height / 2;
 
     uint32 imageId = _legacyType.image + 0x20600001;
     gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);

@@ -903,10 +903,10 @@ extern "C"
         }
     }
 
-    void object_draw_preview(const void * object, rct_drawpixelinfo * dpi)
+    void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
     {
         const Object * baseObject = (const Object *)object;
-        baseObject->DrawPreview(dpi);
+        baseObject->DrawPreview(dpi, width, height);
     }
 
     bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b)

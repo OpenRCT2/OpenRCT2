@@ -66,7 +66,7 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * dpi) const { }
+    virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
 
     virtual uint8           GetObjectType() const { return _objectEntry.flags & 0x0F; }
     virtual const utf8 *    GetName() const;

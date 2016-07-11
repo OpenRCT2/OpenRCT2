@@ -99,7 +99,7 @@ void SmallSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
+void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
     uint32 flags = _legacyType.small_scenery.flags;
     uint32 imageId = _legacyType.image;
@@ -112,9 +112,9 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
         }
     }
 
-    int x = dpi->width / 2;
-    int y = (dpi->height / 2) + (_legacyType.small_scenery.height / 2);
-    y = Math::Min(y, dpi->height - 16);
+    sint32 x = width / 2;
+    sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
+    y = Math::Min(y, height - 16);
 
     if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
         (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
