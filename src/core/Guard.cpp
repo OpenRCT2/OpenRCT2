@@ -37,4 +37,17 @@ namespace Guard
 #endif
         assert(false);
     }
+
+    void Fail(const char * message)
+    {
+        if (message != nullptr)
+        {
+            Console::Error::WriteLine(message);
+        }
+
+#if DEBUG
+        Debug::Break();
+#endif
+        assert(false);
+    }
 }

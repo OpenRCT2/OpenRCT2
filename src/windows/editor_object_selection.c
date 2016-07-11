@@ -27,6 +27,8 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../object_list.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -219,18 +221,17 @@ static void window_editor_object_set_page(rct_window *w, int page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
 static void window_editor_object_selection_select_default_objects();
 static void window_editor_object_selection_select_required_objects();
-static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry);
-static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry);
+static int window_editor_object_selection_select_object(uint8 bh, int flags, const rct_object_entry *entry);
+static int get_object_from_object_selection(uint8 object_type, int y);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
-static bool filter_selected(uint8* objectFlags);
-static bool filter_string(rct_object_entry *entry, rct_object_filters *filter);
-static bool filter_source(rct_object_entry *entry);
-static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter);
+static bool filter_selected(uint8 objectFlags);
+static bool filter_string(const ObjectRepositoryItem * item);
+static bool filter_source(const ObjectRepositoryItem * item);
+static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
 
 void reset_selected_object_count_and_size();
-void reset_required_object_flags();
 static int sub_6AB211();
 
 static rct_object_entry RequiredSelectedObjects[] = {
@@ -281,11 +282,24 @@ enum {
 	RIDE_SORT_RIDE
 };
 
+enum {
+	DDIX_FILTER_RCT2,
+	DDIX_FILTER_WW,
+	DDIX_FILTER_TT,
+	DDIX_FILTER_CUSTOM,
+	DDIX_FILTER_SEPERATOR,
+	DDIX_FILTER_SELECTED,
+	DDIX_FILTER_NONSELECTED,
+};
+
 typedef struct list_item {
+	const ObjectRepositoryItem * repositoryItem;
 	rct_object_entry *entry;
 	rct_object_filters *filter;
 	uint8 *flags;
 } list_item;
+
+static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 
 typedef int (*sortFunc)(const void *, const void *);
 
@@ -293,6 +307,11 @@ static int _numListItems = 0;
 static list_item *_listItems = NULL;
 static int _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
+static void * _loadedObject = NULL;
+static uint8 * _objectSelectionFlags = NULL;
+static int _numSelectedObjectsForType[11];
+static int _numAvailableObjectsForType[11];
+static bool _maxObjectsWasHit;
 
 static void visible_list_dispose()
 {
@@ -305,8 +324,8 @@ static int visible_list_sort_ride_name(const void *rawA, const void *rawB)
 	list_item *a = (list_item*)rawA;
 	list_item *b = (list_item*)rawB;
 
-	const char *nameA = object_get_name(a->entry);
-	const char *nameB = object_get_name(b->entry);
+	const char *nameA = a->repositoryItem->Name;
+	const char *nameB = b->repositoryItem->Name;
 	return strcmp(nameA, nameB);
 }
 
@@ -315,8 +334,8 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 	list_item *a = (list_item*)rawA;
 	list_item *b = (list_item*)rawB;
 
-	const char *rideTypeA = language_get_string(2 + a->filter->ride.ride_type);
-	const char *rideTypeB = language_get_string(2 + b->filter->ride.ride_type);
+	const char *rideTypeA = language_get_string(get_ride_type_string_id(a->repositoryItem));
+	const char *rideTypeB = language_get_string(get_ride_type_string_id(b->repositoryItem));
 	int result = strcmp(rideTypeA, rideTypeB);
 	if (result != 0)
 		return result;
@@ -326,32 +345,33 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 
 static void visible_list_refresh(rct_window *w)
 {
-	int numObjects = gInstalledObjectsCount;
+	int numObjects = (int)object_repository_get_items_count();
 
 	visible_list_dispose();
+	w->selected_list_item = -1;
 	_listItems = malloc(numObjects * sizeof(list_item));
 	_numListItems = 0;
 
 	list_item *currentListItem = &_listItems[0];
-	rct_object_entry *entry = gInstalledObjects;
-	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+	const ObjectRepositoryItem *items = object_repository_get_items();
 	for (int i = 0; i < numObjects; i++) {
-		rct_object_filters *filter = get_object_filter(i);
-		int type = entry->flags & 0x0F;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) 
-			&& filter_source(entry) 
-			&& filter_string(entry, filter) 
-			&& filter_chunks(entry, filter) 
-			&& filter_selected(itemFlags)) {
-				currentListItem->entry = entry;
-				currentListItem->filter = filter;
-				currentListItem->flags = itemFlags;
-				currentListItem++;
-				_numListItems++;
+		uint8 selectionFlags = _objectSelectionFlags[i];
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 objectType = item->ObjectEntry.flags & 0x0F;
+		if (objectType == w->selected_tab && !(selectionFlags & OBJECT_SELECTION_FLAG_6) &&
+			filter_source(item) &&
+			filter_string(item) &&
+			filter_chunks(item) &&
+			filter_selected(selectionFlags)
+		) {
+			rct_object_filters * filter = calloc(1, sizeof(rct_object_filters));
+			currentListItem->repositoryItem = item;
+			currentListItem->entry = (rct_object_entry *)&item->ObjectEntry;
+			currentListItem->filter = filter;
+			currentListItem->flags = &_objectSelectionFlags[i];
+			currentListItem++;
+			_numListItems++;
 		}
-
-		entry = object_get_next(entry);
-		itemFlags++;
 	}
 
 	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
@@ -442,64 +462,27 @@ void window_editor_object_selection_open()
  *
  *  rct2: 0x006ABCD1
  */
-static void setup_track_manager_objects(){
+static void setup_track_manager_objects()
+{
 	uint8 ride_list[128] = { 0 };
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-	uint16 num_objects = 0;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
-		if (object_type == OBJECT_TYPE_RIDE){
-			*selection_flags |= OBJECT_SELECTION_FLAG_6;
+	int numObjects = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 * selectionFlags = &_objectSelectionFlags[i];
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 object_type = item->ObjectEntry.flags & 0xF;
+		if (object_type == OBJECT_TYPE_RIDE) {
+			*selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			// Skip required objects
-			pos += *pos * 16 + 1;
-
-			// Skip theme objects
-			pos += *pos * 16 + 1;
-
-			for (uint8 j = 0; j < 3; j++){
-				uint8 ride_type = pos[j];
-				if (ride_type == 0xFF)
-					continue;
-
-				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK))
-					continue;
-
-				if (pos[3] & (1 << 0)){
-					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
+			for (uint8 j = 0; j < 3; j++) {
+				uint8 rideType = item->RideType[j];
+				if (rideType != 0xFF && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK)) {
+					*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
+					break;
 				}
-				else if (ride_list[ride_type] & (1 << 0)){
-					continue;
-				}
-				else{
-					ride_list[ride_type] |= (1 << 0);
-					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				}
-				num_objects++;
-				break;
 			}
 		}
-
-		installedObject = object_get_next(installedObject);
-		selection_flags++;
 	}
 }
 
@@ -507,54 +490,27 @@ static void setup_track_manager_objects(){
  *
  *  rct2: 0x006ABC1E
  */
-static void setup_track_designer_objects(){
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-	uint16 num_objects = 0;
+static void setup_track_designer_objects()
+{
+	int numObjects = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 * selectionFlags = &_objectSelectionFlags[i];
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		if (objectType == OBJECT_TYPE_RIDE){
+			*selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
-		if (object_type == OBJECT_TYPE_RIDE){
-			*selection_flags |= OBJECT_SELECTION_FLAG_6;
-
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			// Skip required objects
-			pos += *pos * 16 + 1;
-
-			// Skip theme objects
-			pos += *pos * 16 + 1;
-
-			for (uint8 j = 0; j < 3; j++){
-				uint8 ride_type = pos[j];
-				if (ride_type == 0xFF)
-					continue;
-
-				if (!(RideData4[ride_type].flags & RIDE_TYPE_FLAG4_11))
-					continue;
-
-				*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				num_objects++;
-				break;
+			for (uint8 j = 0; j < 3; j++) {
+				uint8 rideType = item->RideType[j];
+				if (rideType != 0xFF) {
+					if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_11) {
+						*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
+						break;
+					}
+				}
 			}
 		}
-
-		installedObject = object_get_next(installedObject);
-		selection_flags++;
 	}
 }
 
@@ -562,8 +518,8 @@ static void setup_track_designer_objects(){
  *
  *  rct2: 0x006AA82B
  */
-static void setup_in_use_selection_flags(){
-
+static void setup_in_use_selection_flags()
+{
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
 			RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] = 0;
@@ -634,34 +590,32 @@ static void setup_in_use_selection_flags(){
 		}
 	} while (map_element_iterator_next(&iter));
 
-	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++){
+	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++) {
 		rct_ride* ride = get_ride(ride_index);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-
-		uint8 type = ride->subtype;
-		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+		if (ride->type != RIDE_TYPE_NULL) {
+			uint8 type = ride->subtype;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+		}
 	}
 
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 *selectionFlags = &_objectSelectionFlags[i];
+		const ObjectRepositoryItem * item = &items[i];
+		*selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_IN_USE;
-
-		uint8 entry_type, entry_index;
-		if (find_object_in_entry_group(installedObject, &entry_type, &entry_index)){
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 0)){
-				*selection_flags |=
+		uint8 entryType, entryIndex;
+		if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 0)) {
+				*selectionFlags |=
 					OBJECT_SELECTION_FLAG_IN_USE |
 					OBJECT_SELECTION_FLAG_SELECTED;
 			}
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 1)){
-				*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 1)) {
+				*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
 			}
 		}
-		installedObject = object_get_next(installedObject);
-		selection_flags++;
 	}
 }
 
@@ -669,51 +623,46 @@ static void setup_in_use_selection_flags(){
  *
  *  rct2: 0x006AB211
  */
-static int sub_6AB211(){
-	uint32 total_objects = gInstalledObjectsCount;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = malloc(total_objects);
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
+static int sub_6AB211()
+{
+	int numObjects = (int)object_repository_get_items_count();
+	_objectSelectionFlags = (uint8*)calloc(numObjects, sizeof(uint8));
+	if (_objectSelectionFlags == NULL){
 		log_error("Failed to allocate memory for object flag list.");
 		return 0;
 	}
 
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*), 0, total_objects);
-	for (uint8 object_type = 0; object_type < 11; object_type++){
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
-		RCT2_ADDRESS(0x00F433E1, uint16)[object_type] = 0;
+	for (uint8 objectType = 0; objectType < 11; objectType++) {
+		_numSelectedObjectsForType[objectType] = 0;
+		_numAvailableObjectsForType[objectType] = 0;
 	}
 
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
-		RCT2_ADDRESS(0x00F433E1, uint16)[object_type]++;
-
-		installedObject = object_get_next(installedObject);
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0xF;
+		_numAvailableObjectsForType[objectType]++;
 	}
 
-	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		setup_track_designer_objects();
 	}
 
-	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		setup_track_manager_objects();
 	}
 
 	setup_in_use_selection_flags();
 	reset_selected_object_count_and_size();
 
-	if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))){
+	if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 		window_editor_object_selection_select_required_objects();
 
 		// To prevent it breaking in scenario mode.
-		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			window_editor_object_selection_select_default_objects();
+		}
 	}
 
-	reset_required_object_flags();
 	reset_selected_object_count_and_size();
 	return 1;
 }
@@ -724,14 +673,14 @@ static int sub_6AB211(){
  */
 static void editor_object_flags_free()
 {
-	SafeFree(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*));
+	SafeFree(_objectSelectionFlags);
 }
 
 /**
  *
  *  rct2: 0x00685791
  */
-void remove_selected_objects_from_research(rct_object_entry* installedObject){
+void remove_selected_objects_from_research(const rct_object_entry* installedObject){
 	uint8 entry_type, entry_index;
 	if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
 		return;
@@ -751,18 +700,25 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
  *
  *  rct2: 0x006ABB66
  */
-void unload_unselected_objects(){
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
+void unload_unselected_objects()
+{
+	int numItems = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
-			remove_selected_objects_from_research(installedObject);
-			object_unload_chunk(installedObject);
+	size_t numObjectsToUnload = 0;
+	rct_object_entry * objectsToUnload = (rct_object_entry *)malloc(numItems * sizeof(rct_object_entry));
+
+	for (int i = 0; i < numItems; i++) {
+		if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
+			const rct_object_entry * entry = &items[i].ObjectEntry;
+
+			remove_selected_objects_from_research(entry);
+			objectsToUnload[numObjectsToUnload++] = *entry;
 		}
-		selection_flags++;
-		installedObject = object_get_next(installedObject);
 	}
+
+	object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
+	free(objectsToUnload);
 }
 
 /**
@@ -776,9 +732,10 @@ static void window_editor_object_selection_close(rct_window *w)
 
 	unload_unselected_objects();
 	editor_load_selected_objects();
-	reset_loaded_objects();
-	object_free_scenario_text();
 	editor_object_flags_free();
+
+	object_delete(_loadedObject);
+	_loadedObject = NULL;
 
 	if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
 		research_populate_list_random();
@@ -837,7 +794,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		w->selected_list_item = -1;
 		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
-		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 	case WIDX_FILTER_RIDE_TAB_TRANSPORT:
@@ -857,7 +813,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		w->selected_list_item = -1;
 		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
-		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 
@@ -869,7 +824,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 	case WIDX_INSTALL_TRACK:
 		if (w->selected_list_item != -1) {
 			w->selected_list_item = -1;
-			object_free_scenario_text();
 		}
 		window_invalidate(w);
 
@@ -911,16 +865,7 @@ static void window_editor_object_selection_resize(rct_window *w)
 {
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
-enum
-{
-	DDIX_FILTER_RCT2,
-	DDIX_FILTER_WW,
-	DDIX_FILTER_TT,
-	DDIX_FILTER_CUSTOM,
-	DDIX_FILTER_SEPERATOR,
-	DDIX_FILTER_SELECTED,
-	DDIX_FILTER_NONSELECTED,
-};
+
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items;
@@ -1018,10 +963,13 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 	// when windows attempt to draw objects that don't exist any more
 	window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
 
-	uint8 object_selection_flags;
-	rct_object_entry* installed_entry;
-	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y, &object_selection_flags, &installed_entry);
-	if (selected_object == -1 || (object_selection_flags & OBJECT_SELECTION_FLAG_6))
+	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y);
+	if (selected_object == -1)
+		return;
+
+	list_item * listItem = &_listItems[selected_object];
+	uint8 object_selection_flags = *listItem->flags;
+	if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
 		return;
 
 	window_invalidate(w);
@@ -1030,7 +978,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 
 
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		if (!window_editor_object_selection_select_object(0, 1, installed_entry))
+		if (!window_editor_object_selection_select_object(0, 1, listItem->entry))
 			return;
 
 		// Close any other open windows such as options/colour schemes to prevent a crash.
@@ -1047,8 +995,8 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 	if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
 		ebx = 7;
 
-	RCT2_GLOBAL(0xF43411, uint8) = 0;
-	if (!window_editor_object_selection_select_object(0, ebx, installed_entry)) {
+	_maxObjectsWasHit = false;
+	if (!window_editor_object_selection_select_object(0, ebx, listItem->entry)) {
 		rct_string_id error_title = ebx & 1 ?
 			STR_UNABLE_TO_SELECT_THIS_OBJECT :
 			STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
@@ -1063,10 +1011,9 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 		window_invalidate(w);
 	}
 
-	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)
-		return;
-
-	window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+	if (_maxObjectsWasHit) {
+		window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+	}
 }
 
 /**
@@ -1075,26 +1022,30 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
  */
 static void window_editor_object_selection_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
 {
-	rct_object_entry *installedEntry;
-	int selectedObject;
-	uint8 objectSelectionFlags;
+	int selectedObject = get_object_from_object_selection(w->selected_tab & 0xFF, y);
+	if (selectedObject != -1) {
+		list_item * listItem = &_listItems[selectedObject];
+		uint8 objectSelectionFlags = *listItem->flags;
+		if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6) {
+			selectedObject = -1;
+		}
+	}
+	if (selectedObject != w->selected_list_item) {
+		w->selected_list_item = selectedObject;
 
-	selectedObject = get_object_from_object_selection(
-		w->selected_tab & 0xFF, y, &objectSelectionFlags, &installedEntry
-	);
-	if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6)
-		selectedObject = -1;
+		object_delete(_loadedObject);
+		_loadedObject = NULL;
 
-	if (selectedObject == w->selected_list_item)
-		return;
+		list_item * listItem = &_listItems[selectedObject];
+		if (selectedObject == -1) {
+			w->object_entry = NULL;
+		} else {
+			w->object_entry = listItem->entry;
+			_loadedObject = object_repository_load_object(listItem->entry);
+		}
 
-	w->selected_list_item = selectedObject;
-	w->object_entry = installedEntry;
-	object_free_scenario_text();
-	if (selectedObject != -1)
-		object_get_scenario_text(installedEntry);
-
-	window_invalidate(w);
+		window_invalidate(w);
+	}
 }
 
 /**
@@ -1263,8 +1214,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	rct_widget *widget;
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
-	uint8 *text, source;
-	char *datName, *name, *stringBuffer;
+	uint8 source;
+	char *stringBuffer;
 
 	/*if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		gfx_fill_rect_inset(dpi,
@@ -1332,7 +1283,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		x = w->x + 3;
 		y = w->y + w->height - 13;
 
-		numSelected = RCT2_ADDRESS(0x00F433F7, uint16)[w->selected_tab];
+		numSelected = _numSelectedObjectsForType[w->selected_tab];
 		totalSelectable = object_entry_group_counts[w->selected_tab];
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 			totalSelectable = 4;
@@ -1341,28 +1292,6 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		set_format_arg(2, uint16, totalSelectable);
 		gfx_draw_string_left(dpi, 3164, gCommonFormatArgs, 0, x, y);
 	}
-
-	rct_stex_entry* stex_entry = gStexTempChunk;
-
-	/*gfx_fill_rect_inset(dpi,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].bottom,
-		w->colours[1],
-		0x30
-		);
-
-	set_format_arg(0, uint32, (uint32)&_filter_string);
-	gfx_draw_string_left_clipped(
-		dpi,
-		1170,
-		gCommonFormatArgs,
-		w->colours[1],
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left + 1,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right
-		);*/
 
 	// Draw sort button text
 	widget = &w->widgets[WIDX_LIST_SORT_TYPE];
@@ -1376,63 +1305,40 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 
-	if (w->selected_list_item == -1 || stex_entry == NULL)
+	if (w->selected_list_item == -1 || _loadedObject == NULL)
 		return;
+
+	list_item *listItem = &_listItems[w->selected_list_item];
 
 	highlightedEntry = w->object_entry;
 	type = highlightedEntry->flags & 0x0F;
 
 	// Draw preview
 	widget = &w->widgets[WIDX_PREVIEW];
-	x = w->x + (widget->left + widget->right) / 2 + 1;
-	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	object_paint(type, stex_entry, dpi, x, y);
+	{
+		rct_drawpixelinfo clipDPI;
+		x = w->x + widget->left + 1;
+		y = w->y + widget->top + 1;
+		int width = widget->right - widget->left - 1;
+		int height = widget->bottom - widget->top - 1;
+		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
+			object_draw_preview(_loadedObject, &clipDPI, width, height);
+		}
+	}
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + widget->bottom + 3;
 	width = w->width - w->widgets[WIDX_LIST].right - 6;
 
-	// Skip object dat name
-	text = (uint8*)(highlightedEntry + 1);
-	datName = (char*)text;
-	do {
-		text++;
-	} while (*(text - 1) != 0);
-	text += 4;
-	name = (char*)text;
-
 	RCT2_GLOBAL(0x009BC677, uint8) = 14;
-
 	stringId = STR_PLACEHOLDER;
 	stringBuffer = (char*)language_get_string(STR_PLACEHOLDER) + 1;
-	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-		// Skip name
-		do {
-			text++;
-		} while (*(text - 1) != 0);
-		text += 4;
-		text += *text * 16 + 1;
-		text += *text * 16 + 1;
-
-		if (RCT2_GLOBAL(text, uint32) & 0x1000000) {
-			strcpy(stringBuffer, name);
-		} else {
-			int eax = *text;
-			if (*text == 0xFF) {
-				eax = *(text + 1);
-				if (*(text + 1) == 0xFF)
-					eax = *(text + 2);
-			}
-			format_string(stringBuffer, eax + 2, NULL);
-		}
-	} else {
-		strcpy(stringBuffer, name);
-	}
+	strcpy(stringBuffer, listItem->repositoryItem->Name);
 	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
 
 	// Draw description of object
-	stringId = object_desc(type, stex_entry);
+	strcpy(stringBuffer, object_get_description(_loadedObject));
 	if (stringId != STR_NONE) {
 		x = w->x + w->widgets[WIDX_LIST].right + 4;
 		y += 15;
@@ -1457,16 +1363,9 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	//
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
-
-		rct_ride_entry *rideType = (rct_ride_entry*)stex_entry;
-		for (int i = 0; i < 3; i++) {
-			if (rideType->ride_type[i] == 255)
-				continue;
-
-			stringId = 2 + rideType->ride_type[i];
-			gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
-			y -= 11;
-		}
+		stringId = get_ride_type_string_id(listItem->repositoryItem);
+		gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
+		y -= 11;
 	}
 
 	//stringId = highlightedEntry->checksum
@@ -1474,7 +1373,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	// Draw object dat name
 	stringId = STR_PLACEHOLDER;
-	strcpy(stringBuffer, datName);
+	strcpy(stringBuffer, path_get_filename(listItem->repositoryItem->Path));
 	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
 
@@ -1513,7 +1412,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				x = 2;
 				gCurrentFontSpriteBase = colour == 14 ? -2 : -1;
 				colour2 = w->colours[1] & 0x7F;
-				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 					colour2 |= 0x40;
 
 				gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
@@ -1534,13 +1433,14 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			if (ridePage) {
 				// Draw ride type
-				strcpy(buffer, language_get_string(2 + listItem->filter->ride.ride_type));
+				rct_string_id rideTypeStringId = get_ride_type_string_id(listItem->repositoryItem);
+				strcpy(buffer, language_get_string(rideTypeStringId));
 				gfx_draw_string(dpi, bufferWithColour, colour, x, y);
 				x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
 			}
 
 			// Draw text
-			strcpy(buffer, object_get_name(listItem->entry));
+			strcpy(buffer, listItem->repositoryItem->Name);
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 				while (*buffer != 0 && *buffer != 9)
 					buffer++;
@@ -1562,7 +1462,6 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->selected_list_item = -1;
 	w->object_entry = (rct_object_entry *)0xFFFFFFFF;
 	w->scrolls[0].v_top = 0;
-	object_free_scenario_text();
 
 	if (page == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		_listSortType = RIDE_SORT_TYPE;
@@ -1590,13 +1489,11 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 */
 static void window_editor_object_selection_select_default_objects()
 {
-	int i;
-
-	if (RCT2_GLOBAL(0x00F433F7, uint16) != 0)
-		return;
-
-	for (i = 0; i < countof(DefaultSelectedObjects); i++)
-		window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
+	if (_numSelectedObjectsForType[0] == 0) {
+		for (int i = 0; i < countof(DefaultSelectedObjects); i++) {
+			window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
+		}
+	}
 }
 
 /**
@@ -1615,131 +1512,19 @@ static void window_editor_object_selection_select_required_objects()
  *
  *  rct2: 0x006AA770
  */
-void reset_selected_object_count_and_size(){
-	for (uint8 object_type = 0; object_type < 11; object_type++){
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
+void reset_selected_object_count_and_size()
+{
+	for (uint8 objectType = 0; objectType < 11; objectType++) {
+		_numSelectedObjectsForType[objectType] = 0;
 	}
 
-	uint32 total_object_size = 0;
-
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
-
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			uint32 size_of_chunk = *((uint32*)pos);
-			RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
-			total_object_size += size_of_chunk;
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0xF;
+		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
+			_numSelectedObjectsForType[objectType]++;
 		}
-		selection_flags++;
-		installedObject = object_get_next(installedObject);
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) = total_object_size;
-}
-
-/**
- *
- *  rct2: 0x006AB863
- */
-void set_required_object_flags(rct_object_entry* required_object){
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		if (object_entry_compare(required_object, installedObject)){
-			*selection_flags |= OBJECT_SELECTION_FLAG_REQUIRED;
-
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			uint8 no_required_objects = *pos++;
-
-			required_object = (rct_object_entry*)pos;
-			for (; no_required_objects > 0; no_required_objects--){
-				set_required_object_flags(required_object);
-				required_object++;
-			}
-			return;
-		}
-
-		selection_flags++;
-		installedObject = object_get_next(installedObject);
-	}
-}
-
-/**
- *
- *  rct2: 0x006AB923
- */
-void reset_required_object_flags(){
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_REQUIRED;
-		selection_flags++;
-	}
-
-	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			uint8 no_required_objects = *pos++;
-
-			rct_object_entry* required_object = (rct_object_entry*)pos;
-			for (; no_required_objects > 0; no_required_objects--){
-				set_required_object_flags(required_object);
-				required_object++;
-			}
-
-		}
-
-		selection_flags++;
-		installedObject = object_get_next(installedObject);
 	}
 }
 
@@ -1759,193 +1544,92 @@ void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg)
  *
  *  rct2: 0x006AB54F
  */
-static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry)
+static int window_editor_object_selection_select_object(uint8 bh, int flags, const rct_object_entry *entry)
 {
-	uint8* selection_flags;
-	//if (bh == 0){
-	//	// Unsure what this does??
-	//	uint16 total_objects = 0;
-	//	for (uint8 i = 0; i < 11; ++i){
-	//		total_objects += RCT2_ADDRESS(0x00F433E1, uint16)[i];
-	//	}
-
-	//	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	//	for (; total_objects != 0; total_objects--, selection_flags++){
-	//		uint8 select_flag = *selection_flags & ~OBJECT_SELECTION_FLAG_2;
-	//		if (select_flag & OBJECT_SELECTION_FLAG_SELECTED){
-	//			select_flag |= OBJECT_SELECTION_FLAG_2;
-	//		}
-	//	}
-	//}
-
-	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	// There was previously a check to make sure the object list had an item
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	uint8 not_found = 1;
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		if (object_entry_compare(entry, installedObject)){
-			not_found = 0;
-			break;
-		}
-
-		installedObject = object_get_next(installedObject);
-		selection_flags++;
-	}
-	if (not_found){
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * item = object_repository_find_object_by_entry(entry);
+	if (item == NULL) {
 		set_object_selection_error(bh, 3169);
 		return 0;
 	}
 
-	if (!(flags & 1)){
-		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
-		{
-			if (bh == 0){
-				reset_required_object_flags();
-			}
+	// Get repository item index
+	int index = -1;
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		if (&items[i] == item) {
+			index = i;
+		}
+	}
+
+	uint8 * selectionFlags = &_objectSelectionFlags[index];
+	if (!(flags & 1)) {
+		if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
 			return 1;
 		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_IN_USE){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE) {
 			set_object_selection_error(bh, 3173);
 			return 0;
 		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_REQUIRED){
-			set_object_selection_error(bh, 3174);
-			return 0;
-		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED) {
 			set_object_selection_error(bh, 3175);
 			return 0;
 		}
 
-		uint8* pos = (uint8*)installedObject;
-		// Skip sizeof(rct_object_entry)
-		pos += 16;
-
-		// Skip filename
-		while (*pos++);
-
-		// Skip no of images
-		pos += 4;
-
-		// Skip name
-		while (*pos++);
-
-		uint32 size_of_chunk = *((uint32*)pos);
-		// Skip size of chunk
-		pos += 4;
-
-		// Skip required objects
-		pos += *pos * 16 + 1;
-
-		uint8 no_theme_objects = *pos++;
-
-		if (no_theme_objects != 0 && flags&(1 << 2)){
-			rct_object_entry* theme_object = (rct_object_entry*)pos;
-			for (; no_theme_objects > 0; no_theme_objects--){
-				window_editor_object_selection_select_object(++bh, flags, theme_object);
-				theme_object++;
+		if (flags & (1 << 2)) {
+			for (int j = 0; j < item->NumThemeObjects; j++) {
+				window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j]);
 			}
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) -= size_of_chunk;
-		uint8 object_type = installedObject->flags & 0xF;
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]--;
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_SELECTED;
-		if (bh == 0){
-			reset_required_object_flags();
-		}
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		_numSelectedObjectsForType[objectType]--;
+		*selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
 		return 1;
-	}
-	else{
-		if (bh == 0){
-			if (flags & (1 << 3)){
-				*selection_flags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
+	} else {
+		if (bh == 0) {
+			if (flags & (1 << 3)) {
+				*selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
 			}
 		}
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			if (bh == 0){
-				reset_required_object_flags();
-			}
+		if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED) {
 			return 1;
 		}
 
-		uint8 object_type = installedObject->flags & 0xF;
-		uint16 no_objects = object_entry_group_counts[object_type];
-		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
-			no_objects = 4;
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		uint16 maxObjects = object_entry_group_counts[objectType];
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
+			maxObjects = 4;
 		}
 
-		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
+		if (maxObjects <= _numSelectedObjectsForType[objectType]) {
 			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
-		uint8* pos = (uint8*)installedObject;
-		// Skip sizeof(rct_object_entry)
-		pos += 16;
-
-		// Skip filename
-		while (*pos++);
-
-		// Skip no of images
-		pos += 4;
-
-		// Skip name
-		while (*pos++);
-
-		uint32 size_of_chunk = *((uint32*)pos);
-		// Skip size of chunk
-		pos += 4;
-
-		uint8 num_required_objects = *pos++;
-		rct_object_entry* required_objects = (rct_object_entry*)pos;
-		for (; num_required_objects != 0; num_required_objects--){
-			if (!window_editor_object_selection_select_object(++bh, flags, required_objects)){
-				if (bh != 0){
-					reset_selected_object_count_and_size();
-				}
-				return 0;
-			}
-			required_objects++;
-		}
-		pos = (uint8*)required_objects;
-
-		uint8 num_theme_objects = *pos++;
-		rct_object_entry* theme_object = (rct_object_entry*)pos;
-		for (; num_theme_objects != 0; num_theme_objects--){
-			if (flags & (1 << 2)){
-				if (!window_editor_object_selection_select_object(++bh, flags, theme_object)){
-					RCT2_GLOBAL(0x00F43411, uint8) |= 1;
+		if (objectType == OBJECT_TYPE_SCENERY_SETS && (flags & (1 << 2))) {
+			for (uint16 j = 0; j < item->NumThemeObjects; j++) {
+				if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
+					_maxObjectsWasHit = true;
 				}
 			}
-			theme_object++;
 		}
 
-		if (bh != 0 && !(flags&(1 << 1))){
-			object_create_identifier_name((char*)0x009BC95A, installedObject);
+		if (bh != 0 && !(flags & (1 << 1))) {
+			object_create_identifier_name((char*)0x009BC95A, &item->ObjectEntry);
 			set_format_arg(0, uint32, 0x009BC95A);
 			set_object_selection_error(bh, 3172);
 			return 0;
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) + size_of_chunk > 0x40000){
-			set_object_selection_error(bh, 3170);
-			return 0;
-		}
-
-		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]){
+		if (maxObjects <= _numSelectedObjectsForType[objectType]) {
 			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) += size_of_chunk;
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
+		_numSelectedObjectsForType[objectType]++;
 
-		*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
-		if (bh == 0){
-			reset_required_object_flags();
-		}
+		*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
 		return 1;
 	}
 }
@@ -1958,15 +1642,12 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
  *
  *  rct2: 0x006AA703
  */
-static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry)
+static int get_object_from_object_selection(uint8 object_type, int y)
 {
 	int listItemIndex = y / 12;
 	if (listItemIndex < 0 || listItemIndex >= _numListItems)
 		return -1;
 
-	list_item *listItem = &_listItems[listItemIndex];
-	*object_selection_flags = *listItem->flags;
-	*installed_entry = listItem->entry;
 	return listItemIndex;
 }
 
@@ -2000,8 +1681,6 @@ static void window_editor_object_selection_manage_tracks()
 	int entry_index = 0;
 	for (; ((int)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
 
-	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
-
 	rct_ride_entry* ride_entry = get_ride_entry(entry_index);
 	uint8* ride_type_array = &ride_entry->ride_type[0];
 
@@ -2020,38 +1699,32 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
-	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = gInstalledObjects;
-
-	if (gInstalledObjectsCount == 0)
-		return;
-
-	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
-			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
-				int chunk_size;
-				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
-					log_error("Failed to load entry %.8s", installed_entry->name);
+	int numItems = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numItems; i++) {
+		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
+			const ObjectRepositoryItem * item = &items[i];
+			const rct_object_entry * entry = &item->ObjectEntry;
+			void * loadedObject = object_manager_get_loaded_object(entry);
+			if (loadedObject == NULL) {
+				loadedObject = object_manager_load_object(entry);
+				if (loadedObject == NULL) {
+					log_error("Failed to load entry %.8s", entry->name);
 				}
-
-				// For in game use (cheat)
-				if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
-					// Defaults selected items to researched.
-					if (find_object_in_entry_group(installed_entry, &entry_type, &entry_index)) {
-						if (entry_type == OBJECT_TYPE_RIDE) {
-							rct_ride_entry* rideType = get_ride_entry(entry_index);
-							research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entry_index, rideType->category[0]);
-						}
-						else if (entry_type == OBJECT_TYPE_SCENERY_SETS) {
-							research_insert(1, entry_index, RESEARCH_CATEGORY_SCENERYSET);
-						}
+				else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
+					// Defaults selected items to researched (if in-game)
+					uint8 objectType = entry->flags & 0x0F;
+					uint8 entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+					if (objectType == OBJECT_TYPE_RIDE) {
+						rct_ride_entry *rideType = get_ride_entry(entryIndex);
+						research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entryIndex, rideType->category[0]);
+					}
+					else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+						research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
 					}
 				}
 			}
 		}
-
-		installed_entry = object_get_next(installed_entry);
 	}
 }
 
@@ -2100,14 +1773,15 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	window_invalidate(w);
 }
 
-static bool filter_selected(uint8* objectFlag) {
+static bool filter_selected(uint8 objectFlag)
+{
 	if (_FILTER_SELECTED == _FILTER_NONSELECTED) {
 		return true;
 	}
-	if (_FILTER_SELECTED && *objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
+	if (_FILTER_SELECTED && objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
 		return true;
 	}
-	else if (_FILTER_NONSELECTED && !(*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
+	else if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
 		return true;
 	}
 	else {
@@ -2115,26 +1789,26 @@ static bool filter_selected(uint8* objectFlag) {
 	}
 }
 
-static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
+static bool filter_string(const ObjectRepositoryItem * item)
 {
 	// Nothing to search for
 	if (_filter_string[0] == '\0')
 		return true;
 
 	// Object doesn't have a name
-	char *name = object_get_name(entry);
-	if (name[0] == '\0')
+	utf8 *name = item->Name;
+	if (name == NULL || name[0] == '\0')
 		return false;
 
 	// Get ride type
-	const char *ride_type = language_get_string(2 + filter->ride.ride_type);
+	const char *rideTypeName = language_get_string(get_ride_type_string_id(item));
 
 	// Get object name (ride/vehicle for rides) and type name (rides only)
 	char name_lower[MAX_PATH];
 	char type_lower[MAX_PATH];
 	char filter_lower[sizeof(_filter_string)];
 	safe_strcpy(name_lower, name, MAX_PATH);
-	safe_strcpy(type_lower, ride_type, MAX_PATH);
+	safe_strcpy(type_lower, rideTypeName, MAX_PATH);
 	safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
 	// Make use of lowercase characters only
@@ -2145,30 +1819,37 @@ static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 	for (int i = 0; filter_lower[i] != '\0'; i++)
 		filter_lower[i] = (char)tolower(filter_lower[i]);
 
-	return strstr(name_lower, filter_lower) != NULL || (((entry->flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
+	return strstr(name_lower, filter_lower) != NULL || (((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
 }
 
-static bool filter_source(rct_object_entry *entry)
+static bool filter_source(const ObjectRepositoryItem * item)
 {
 	if (_FILTER_ALL)
 		return true;
 
-	uint8 source = (entry->flags & 0xF0) >> 4;
+	uint8 source = (item->ObjectEntry.flags & 0xF0) >> 4;
 	return (_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2);
 }
 
-static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
+static bool filter_chunks(const ObjectRepositoryItem * item)
 {
-	switch (entry->flags & 0x0F) {
+	switch (item->ObjectEntry.flags & 0x0F) {
 	case OBJECT_TYPE_RIDE:
 		if(!gConfigInterface.select_by_track_type) {
-			if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
+			if (_filter_flags & (1 << (item->RideCategory[0] + 5)))
 				return true;
-			if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
+			if (_filter_flags & (1 << (item->RideCategory[1] + 5)))
 				return true;
 		}
 		else {
-			if (_filter_flags & (1 << (gRideCategories[filter->ride.ride_type] + 5)))
+			uint8 rideType = 0;
+			for (int i = 0; i < 3; i++) {
+				if (item->RideType[i] != 255) {
+					rideType = item->RideType[i];
+					break;
+				}
+			}
+			if (_filter_flags & (1 << (gRideCategories[rideType] + 5)))
 				return true;
 		}
 		return false;
@@ -2179,24 +1860,51 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		rct_object_entry *installed_entry = gInstalledObjects;
-		rct_object_filters *filter;
-		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-		uint8 type;
+		uint8 *selectionFlags = _objectSelectionFlags;
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (uint32 i = 0; i < gInstalledObjectsCount; i++) {
-			filter = get_object_filter(i);
-			type = installed_entry->flags & 0xF;
-			if (filter_source(installed_entry) 
-				&& filter_string(installed_entry, filter) 
-				&& filter_chunks(installed_entry, filter) 
-				&& filter_selected(objectFlag)) {
-					_filter_object_counts[type]++;
+
+		size_t numObjects = object_repository_get_items_count();
+		const ObjectRepositoryItem * items = object_repository_get_items();
+		for (size_t i = 0; i < numObjects; i++) {
+			const ObjectRepositoryItem * item = &items[i];
+			if (filter_source(item) &&
+				filter_string(item) &&
+				filter_chunks(item) &&
+				filter_selected(*selectionFlags)
+			) {
+				uint8 objectType = item->ObjectEntry.flags & 0xF;
+				_filter_object_counts[objectType]++;
 			}
-			installed_entry = object_get_next(installed_entry);
-			objectFlag++;
+			selectionFlags++;
 		}
 	}
+}
+
+static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
+{
+	rct_string_id result = STR_NONE;
+	for (int i = 0; i < 3; i++) {
+		uint8 rideType = item->RideType[i];
+		if (rideType != 255) {
+			result = 2 + rideType;
+			break;
+		}
+	}
+	return result;
+}
+
+bool editor_check_object_group_at_least_one_selected(int checkObjectType)
+{
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0x0F;
+		if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
+			return true;
+		}
+	}
+	return false;
 }

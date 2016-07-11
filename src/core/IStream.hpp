@@ -17,9 +17,8 @@
 #pragma once
 
 #include "../common.h"
-
 #include "Exception.hpp"
-#include "IDisposable.hpp"
+#include "Memory.hpp"
 
 enum {
     STREAM_SEEK_BEGIN,
@@ -30,12 +29,12 @@ enum {
 /**
  * Represents a stream that can be read or written to. Implemented by types such as FileStream, NetworkStream or MemoryStream.
  */
-interface IStream : public IDisposable
+interface IStream
 {
     ///////////////////////////////////////////////////////////////////////////
     // Interface methods
     ///////////////////////////////////////////////////////////////////////////
-    // virtual ~IStream()                                           abstract;
+    virtual ~IStream() { }
 
     virtual bool    CanRead()                                 const abstract;
     virtual bool    CanWrite()                                const abstract;
@@ -47,6 +46,8 @@ interface IStream : public IDisposable
 
     virtual void    Read(void * buffer, uint64 length)              abstract;
     virtual void    Write(const void * buffer, uint64 length)       abstract;
+
+    virtual uint64  TryRead(void * buffer, uint64 length)           abstract;
 
     ///////////////////////////////////////////////////////////////////////////
     // Helper methods
@@ -89,6 +90,23 @@ interface IStream : public IDisposable
     {
         Write(&value);
     }
+
+    template<typename T>
+    T * ReadArray(size_t count)
+    {
+        T * buffer = Memory::AllocateArray<T>(count);
+        Read(buffer, sizeof(T) * count);
+        return buffer;
+    }
+
+    template<typename T>
+    void WriteArray(T * buffer, size_t count)
+    {
+        Write(buffer, sizeof(T) * count);
+    }
+
+    utf8 * ReadString();
+    void WriteString(utf8 * str);
 };
 
 class IOException : public Exception

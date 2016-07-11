@@ -64,4 +64,6 @@ namespace String
     codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr = nullptr);
     codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr = nullptr);
     utf8 *      WriteCodepoint(utf8 * dst, codepoint_t codepoint);
+
+    utf8 * Trim(utf8 * str);
 }

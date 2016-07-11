@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stack>
+#include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
 extern "C" {
@@ -188,13 +190,12 @@ bool language_open(int id)
 				gCurrentTTFFontSet = &TTFFontCustom;
 				
 				bool font_initialised = ttf_initialise();
-				if(!font_initialised) {
+				if (!font_initialised) {
 					log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
 				} else {
 					// Objects and their localized strings need to be refreshed
-					reset_loaded_objects();
-					
-					return 1;
+					GetObjectManager()->ResetObjects();
+					return true;
 				}
 			}
 			ttf_dispose();
@@ -219,8 +220,7 @@ bool language_open(int id)
 		}
 
 		// Objects and their localized strings need to be refreshed
-		reset_loaded_objects();
-
+		GetObjectManager()->ResetObjects();
 		return true;
 	}
 
@@ -315,133 +315,20 @@ static bool rct2_language_is_multibyte_charset(int languageId)
 	case RCT2_LANGUAGE_ID_KOREAN:
 	case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
 	case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
+	case RCT2_LANGUAGE_ID_8:
 		return true;
 	default:
 		return false;
 	}
 }
 
-/* rct2: 0x006A9E24*/
-rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/)
+utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
 {
-	uint8 languageId, chosenLanguageId;
-	char *pString = nullptr;
-	int result = 0;
-	bool isBlank;
-
-	while ((languageId = *(*pStringTable)++) != RCT2_LANGUAGE_ID_END) {
-		isBlank = true;
-
-		// Strings that are just ' ' are set as invalid langauges.
-		// But if there is no real string then it will set the string as
-		// the blank string
-		for (char *ch = (char*)(*pStringTable); *ch != 0; ch++) {
-			if (!isblank(*ch)) {
-				isBlank = false;
-				break;
-			}
-		}
-
-		if (isBlank) languageId = 0xFE;
-
-		// This is the ideal situation. Language found
-		if (languageId == LanguagesDescriptors[gCurrentLanguage].rct2_original_id) {
-			chosenLanguageId = languageId;
-			pString = (char*)(*pStringTable);
-			result |= 1;
-		}
-
-		// Just in case always load english into pString
-		if (languageId == RCT2_LANGUAGE_ID_ENGLISH_UK && !(result & 1)) {
-			chosenLanguageId = languageId;
-			pString = (char*)(*pStringTable);
-			result |= 2;
-		}
-
-		// Failing that fall back to whatever is first string
-		if (!(result & 7)) {
-			chosenLanguageId = languageId;
-			pString = (char*)(*pStringTable);
-			if (!isBlank) result |= 4;
-		}
-
-		// Skip over the actual string entry to get to the next entry
-		while (*(*pStringTable)++ != 0);
-	}
-	// Fall back in case language does not get set.
-	if (pString == NULL)
-	{
-		pString = (char*)(*pStringTable);
-	}
-
-	char name[9];
-	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
-		memcpy(name, object_entry_groups[type].entries[index].name, 8);
-	} else {
-		memcpy(name, gTempObjectLoadName, 8);
-	}
-	name[8] = 0;
-
-	rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
-	if (stringId != STR_NONE) {
-		return stringId;
-	}
-
-	// If not scenario text
-	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
-		int stringid = NONSTEX_BASE_STRING_ID;
-		for (int i = 0; i < type; i++) {
-			int nrobjects = object_entry_group_counts[i];
-			int nrstringtables = ObjectTypeStringTableCount[i];
-			stringid += nrobjects * nrstringtables;
-		}
-		stringid += index * ObjectTypeStringTableCount[type];
-		// Used by the object list to allocate name in plugin.dat
-		RCT2_GLOBAL(RCT2_ADDRESS_CURR_OBJECT_BASE_STRING_ID, uint32) = stringid;
-		stringid += tableindex;
-
-		// cache UTF-8 string
-		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
-		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
-		if (*cacheString != nullptr) {
-			free(*cacheString);
-		}
-		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
-			*cacheString = convert_multibyte_charset(pString, chosenLanguageId);
-		} else {
-			*cacheString = win1252_to_utf8_alloc(pString);
-		}
-		utf8_trim_string(*cacheString);
-
-		//put pointer in stringtable
-		_languageCurrent->SetString(stringid, *cacheString);
-		// Until all string related functions are finished copy
-		// to old array as well.
-		_languageOriginal[stringid] = *cacheString;
-		return stringid;
-	} else {
-		int stringid = STEX_BASE_STRING_ID + tableindex;
-
-		// cache UTF-8 string
-		int cacheStringOffset = stringid - STEX_BASE_STRING_ID;
-		utf8 **cacheString = &_cachedObjectStrings[cacheStringOffset];
-		if (*cacheString != nullptr) {
-			free(*cacheString);
-		}
-		if (rct2_language_is_multibyte_charset(chosenLanguageId)) {
-			*cacheString = convert_multibyte_charset(pString, chosenLanguageId);
-		} else {
-			*cacheString = win1252_to_utf8_alloc(pString);
-		}
-		utf8_trim_string(*cacheString);
-
-		//put pointer in stringtable
-		_languageCurrent->SetString(stringid, *cacheString);
-		// Until all string related functions are finished copy
-		// to old array as well.
-		_languageOriginal[stringid] = *cacheString;
-		return stringid;
-	}
+    if (rct2_language_is_multibyte_charset(languageId)) {
+        return convert_multibyte_charset(src, languageId);
+    } else {
+        return win1252_to_utf8_alloc(src);
+    }
 }
 
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
@@ -453,6 +340,47 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 		outStringIds[0] != STR_NONE ||
 		outStringIds[1] != STR_NONE ||
 		outStringIds[2] != STR_NONE;
+}
+
+static bool							_availableObjectStringIdsInitialised = false;
+static std::stack<rct_string_id>	_availableObjectStringIds;
+
+rct_string_id language_allocate_object_string(const utf8 * target)
+{
+	if (!_availableObjectStringIdsInitialised)
+	{
+		_availableObjectStringIdsInitialised = true;
+		for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
+		{
+			_availableObjectStringIds.push(stringId);
+		}
+	}
+	
+	rct_string_id stringId = _availableObjectStringIds.top();
+	_availableObjectStringIds.pop();
+	_languageCurrent->SetString(stringId, target);
+	return stringId;
+}
+
+void language_free_object_string(rct_string_id stringId)
+{
+	if (stringId != 0)
+	{
+		if (_languageCurrent != nullptr)
+		{
+			_languageCurrent->SetString(stringId, nullptr);
+		}
+		_availableObjectStringIds.push(stringId);
+	}
+}
+
+rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index)
+{
+	if (_languageCurrent == nullptr)
+	{
+		return STR_NONE;
+	}
+	return _languageCurrent->GetObjectOverrideStringId(identifier, index);
 }
 
 }

@@ -36,7 +36,6 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp);
 static void scenario_list_sort();
 static int scenario_list_sort_by_category(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
-static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
 
 static bool scenario_scores_load();
 static void scenario_scores_legacy_get_path(utf8 *outPath);
@@ -181,29 +180,6 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	}
 
 	scenario_translate(newEntry, &s6Info.entry);
-}
-
-static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry)
-{
-	rct_string_id localisedStringIds[3];
-	if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds)) {
-		if (localisedStringIds[0] != STR_NONE) {
-			safe_strcpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
-		}
-		if (localisedStringIds[2] != STR_NONE) {
-			safe_strcpy(scenarioEntry->details, language_get_string(localisedStringIds[2]), 256);
-		}
-	} else {
-		// Checks for a scenario string object (possibly for localisation)
-		if ((stexObjectEntry->flags & 0xFF) != 255) {
-			if (object_get_scenario_text((rct_object_entry*)stexObjectEntry)) {
-				rct_stex_entry* stex_entry = gStexTempChunk;
-				format_string(scenarioEntry->name, stex_entry->scenario_name, NULL);
-				format_string(scenarioEntry->details, stex_entry->details, NULL);
-				object_free_scenario_text();
-			}
-		}
-	}
 }
 
 void scenario_list_dispose()

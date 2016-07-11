@@ -26,6 +26,7 @@
 #include "management/finance.h"
 #include "management/news_item.h"
 #include "object.h"
+#include "object/ObjectManager.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
@@ -59,7 +60,8 @@ void editor_load()
 
 	audio_pause_sounds();
 	audio_unpause_sounds();
-	object_unload_all();
+	object_manager_unload_all_objects();
+	object_list_load();
 	map_init(150);
 	banner_init();
 	reset_park_entrances();
@@ -124,15 +126,6 @@ void editor_convert_save_to_scenario_callback(int result)
 	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 	climate_reset(gClimate);
 
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != 0xFFFFFFFF) {
-		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-		reset_loaded_objects();
-
-		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-		s6Info->name[0] = 0;
-	}
-
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_OTHER;
@@ -154,7 +147,8 @@ void trackdesigner_load()
 	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
 	gScreenAge = 0;
 
-	object_unload_all();
+	object_manager_unload_all_objects();
+	object_list_load();
 	map_init(150);
 	set_all_land_owned();
 	banner_init();
@@ -192,7 +186,8 @@ void trackmanager_load()
 	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
 	gScreenAge = 0;
 
-	object_unload_all();
+	object_manager_unload_all_objects();
+	object_list_load();
 	map_init(150);
 	set_all_land_owned();
 	banner_init();
@@ -369,13 +364,11 @@ static int editor_read_s6(const char *path)
 		}
 
 		SDL_RWclose(rw);
-		if (!load_success){
+		if (!load_success) {
 			log_error("failed to load all entries.");
-			set_load_objects_fail_reason();
 			return 0;
 		}
 
-		reset_loaded_objects();
 		map_update_tile_pointers();
 		game_convert_strings_to_utf8();
 
@@ -469,15 +462,6 @@ static void editor_clear_map_for_editing()
 
 	climate_reset(gClimate);
 
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != 0xFFFFFFFF) {
-		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-		reset_loaded_objects();
-
-		format_string(gS6Info->details, STR_NO_DETAILS_YET, NULL);
-		gS6Info->name[0] = 0;
-	}
-
 	news_item_init_queue();
 }
 
@@ -499,7 +483,7 @@ void editor_open_windows_for_current_step()
 			return;
 
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-			object_unload_all();
+			object_manager_unload_all_objects();
 		}
 
 		window_editor_object_selection_open();
@@ -557,21 +541,6 @@ static void editor_finalise_main_view()
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
 	load_palette();
 	gfx_invalidate_screen();
-}
-
-static bool editor_check_object_group_at_least_one_selected(int objectType)
-{
-	uint32 numObjects = gInstalledObjectsCount;
-	rct_object_entry *entry = gInstalledObjects;
-	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (uint32 i = 0; i < numObjects; i++) {
-		if ((entry->flags & 0x0F) == objectType && (*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
-			return true;
-		}
-		entry = object_get_next(entry);
-		objectFlag++;
-	}
-	return false;
 }
 
 /**

@@ -24,6 +24,7 @@
 #include "../ride/ride.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
+#include "../object/ObjectManager.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "error.h"
@@ -108,12 +109,12 @@ void window_install_track_open(const utf8 *path)
 		return;
 	}
 
-	object_unload_all();
+	object_manager_unload_all_objects();
 	if (_trackDesign->type == RIDE_TYPE_NULL){
 		log_error("Failed to load track (ride type null): %s", path);
 		return;
 	}
-	if (!object_load_chunk(0, &_trackDesign->vehicle_object, NULL)){
+	if (object_manager_load_object(&_trackDesign->vehicle_object) == NULL) {
 		log_error("Failed to load track (vehicle load fail): %s", path);
 		return;
 	}

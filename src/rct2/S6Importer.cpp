@@ -114,16 +114,9 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
-    if (_s6.header.num_packed_objects > 0) {
-        int j = 0;
-        for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
-        {
-            j += object_load_packed(rw);
-        }
-        if (j > 0)
-        {
-            object_list_load();
-        }
+    for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
+    {
+        object_load_packed(rw);
     }
 
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
@@ -144,16 +137,9 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
-    if (_s6.header.num_packed_objects > 0) {
-        int j = 0;
-        for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
-        {
-            j += object_load_packed(rw);
-        }
-        if (j > 0)
-        {
-            object_list_load();
-        }
+    for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
+    {
+        object_load_packed(rw);
     }
 
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
@@ -372,10 +358,10 @@ void S6Importer::Import()
     // pad_13CE778
 
     // Fix and set dynamic variables
-    if (!object_load_entries(_s6.objects)) {
+    if (!object_load_entries(_s6.objects))
+    {
         throw ObjectLoadException();
     }
-    reset_loaded_objects();
     map_update_tile_pointers();
     if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
@@ -423,7 +409,6 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
         }
         catch (Exception)
         {
@@ -456,7 +441,8 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
         }
         catch (IOException)
         {
@@ -489,7 +475,6 @@ extern "C"
         }
         catch (ObjectLoadException)
         {
-            set_load_objects_fail_reason();
         }
         catch (Exception)
         {

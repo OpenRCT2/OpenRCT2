@@ -78,7 +78,7 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	return success;
 }
 
-bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *rideEntry)
+bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry)
 {
 	if (!gConfigInterface.select_by_track_type) {
 		return false;

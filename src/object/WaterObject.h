@@ -16,12 +16,26 @@
 
 #pragma once
 
-#include "../common.h"
+#include "Object.h"
 
-/**
- * Represents an object that can be disposed. So things can explicitly close resources before the destructor kicks in.
- */
-interface IDisposable
+extern "C"
 {
-    virtual void Dispose() abstract;
+    #include "../world/water.h"
+}
+
+class WaterObject : public Object
+{
+private:
+    rct_water_type _legacyType = { 0 };
+
+public:
+    explicit WaterObject(const rct_object_entry &entry) : Object(entry) { };
+
+    void * GetLegacyData()  override { return &_legacyType; }
+
+    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
+    void Load() override;
+    void Unload() override;
+
+    void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 };

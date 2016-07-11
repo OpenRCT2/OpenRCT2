@@ -16,10 +16,8 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-}
+#include "../common.h"
+#include "Guard.hpp"
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.
@@ -80,7 +78,21 @@ namespace Memory
     T * Copy(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
+#ifdef DEBUG
+        uintptr_t srcBegin = (uintptr_t)src;
+        uintptr_t srcEnd = srcBegin + size;
+        uintptr_t dstBegin = (uintptr_t)dst;
+        uintptr_t dstEnd = dstBegin + size;
+        Guard::Assert(srcEnd <= dstBegin || srcBegin >= dstEnd, "Source overlaps destination, try using Memory::Move.");
+#endif
         return (T*)memcpy((void*)dst, (const void*)src, size);
+    }
+
+    template<typename T>
+    T * Move(T * dst, const T * src, size_t size)
+    {
+        if (size == 0) return (T*)dst;
+        return (T*)memmove((void*)dst, (const void*)src, size);
     }
 
     template<typename T>

@@ -250,8 +250,40 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 *
 *  rct2: 0x006DED68
 */
-void reset_type_to_ride_entry_index_map(){
-	memset(gTypeToRideEntryIndexMap, 0xFF, 91);
+void reset_type_to_ride_entry_index_map()
+{
+	uint8 maxRideEntries = 128;
+	uint8 maxRideTypes = 91;
+	size_t stride = maxRideEntries + 1;
+	uint8 * entryTypeTable = malloc(maxRideTypes * stride);
+	memset(entryTypeTable, 0xFF, maxRideTypes * stride);
+
+	for (uint8 i = 0; i < maxRideEntries; i++) {
+		rct_ride_entry * rideEntry = get_ride_entry(i);
+		if (rideEntry == (rct_ride_entry *)-1) {
+			continue;
+		}
+		for (uint8 j = 0; j < 3; j++) {
+			uint8 rideType = rideEntry->ride_type[j];
+			if (rideType < maxRideTypes) {
+				uint8 * entryArray = &entryTypeTable[rideType * stride];
+				uint8 * nextEntry = memchr(entryArray, 0xFF, stride);
+				*nextEntry = i;
+			}
+		}
+	}
+
+	uint8 * dst = gTypeToRideEntryIndexMap;
+	for (uint8 i = 0; i < maxRideTypes; i++) {
+		uint8 * entryArray = &entryTypeTable[i * stride];
+		uint8 * entry = entryArray;
+		while (*entry != 0xFF) {
+			*dst++ = *entry++;
+		}
+		*dst++ = 0xFF;
+	}
+
+	free(entryTypeTable);
 }
 
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)

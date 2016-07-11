@@ -22,6 +22,7 @@
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
@@ -319,42 +320,24 @@ void track_design_dispose(rct_track_td6 *td6)
 	}
 }
 
-uint32 *sub_6AB49A(rct_object_entry* entry)
-{
-	rct_object_entry* object_list_entry = object_list_find(entry);
-
-	if (object_list_entry == NULL) return NULL;
-
-	// Return the address of the last value of the list entry
-	return (((uint32*)object_get_next(object_list_entry)) - 1);
-}
-
 /**
  *
  *  rct2: 0x006ABDB0
  */
 static void track_design_load_scenery_objects(rct_track_td6 *td6)
 {
-	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
-	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
+	object_manager_unload_all_objects();
 
-	rct_object_entry* copied_entry = RCT2_ADDRESS(0xF43414, rct_object_entry);
-	memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
+	// Load ride object
+	rct_object_entry * rideEntry = &td6->vehicle_object;
+	void * loadedObject = object_manager_load_object(rideEntry);
 
-	object_unload_all();
-	object_load_chunk(-1, copied_entry, 0);
-	uint8 entry_type;
-	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
-	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
-
+	// Load scenery objects
 	rct_td6_scenery_element *scenery = td6->scenery_elements;
 	for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++) {
-		if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index)) {
-			object_load_chunk(-1, &scenery->scenery_object, 0);
-		}
+		rct_object_entry * sceneryEntry = &scenery->scenery_object;
+		object_manager_load_object(sceneryEntry);
 	}
-
-	reset_loaded_objects();
 }
 
 /**

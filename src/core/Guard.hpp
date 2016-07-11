@@ -22,6 +22,7 @@
 namespace Guard
 {
     void Assert(bool expression, const char * message = nullptr);
+    void Fail(const char * message = nullptr);
 
     template<typename T>
     void ArgumentNotNull(T * argument, const char * message = nullptr)

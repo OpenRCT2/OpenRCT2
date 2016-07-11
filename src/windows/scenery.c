@@ -187,7 +187,7 @@ void window_scenery_update_scroll(rct_window *w);
  */
 void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId)
 {
-	if (gResearchedSceneryItems[index >> 5] & (1UL << (index & 0x1F))) {
+	if (scenery_is_invented(index)) {
 		if (sceneryTabId != 0xFF) {
 			for (int i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
 				if (window_scenery_tab_entries[sceneryTabId][i] == -1)
@@ -199,7 +199,7 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
 			}
 		}
 
-		for (int i = 0; i < 0x13; i++) {
+		for (int i = 0; i < 19; i++) {
 			int counter = 0;
 
 			while (window_scenery_tab_entries[i][counter] != -1)
@@ -213,10 +213,10 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
 		}
 
 		for (int i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
-			if (window_scenery_tab_entries[0x13][i] == -1)
+			if (window_scenery_tab_entries[19][i] == -1)
 			{
-				window_scenery_tab_entries[0x13][i] = index;
-				window_scenery_tab_entries[0x13][i + 1] = -1;
+				window_scenery_tab_entries[19][i] = index;
+				window_scenery_tab_entries[19][i + 1] = -1;
 				break;
 			}
 		}
@@ -229,24 +229,21 @@ void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 scener
  */
 void init_scenery()
 {
-	bool enabledScenerySets[0x14] = { false };
+	bool enabledScenerySets[20] = { false };
 
-	for (int scenerySetIndex = 0; scenerySetIndex < 0x14; scenerySetIndex++) {
+	for (int scenerySetIndex = 0; scenerySetIndex < 20; scenerySetIndex++) {
 		window_scenery_tab_entries[scenerySetIndex][0] = -1;
-		if (scenerySetIndex == 0x13)
+		if (scenerySetIndex == 19)
 			continue;
 
 		rct_scenery_set_entry* scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
-		if ((uint32)scenerySetEntry == 0xFFFFFFFF)
+		if (scenerySetEntry == (rct_scenery_set_entry *)-1)
 			continue;
 
 		int sceneryTabEntryCount = 0;
-
 		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
 			uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
-			uint32 ecx = gResearchedSceneryItems[sceneryEntryId >> 5];
-			uint32 edx = 1u << (sceneryEntryId & 0x1F);
-			if (ecx & edx) {
+			if (scenery_is_invented(sceneryEntryId)) {
 				window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
 				window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
 			} else {
@@ -257,7 +254,7 @@ void init_scenery()
 
 	// small scenery
 	for (uint16 sceneryId = 0; sceneryId < 0xFC; sceneryId++) {
-		if ((uint32)get_small_scenery_entry(sceneryId) == 0xFFFFFFFF)
+		if (get_small_scenery_entry(sceneryId) == (rct_scenery_entry *)-1)
 			continue;
 
 		rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
@@ -268,7 +265,7 @@ void init_scenery()
 	for (int sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
 		int largeSceneryIndex = sceneryId - 0x300;
 
-		if ((uint32)get_large_scenery_entry(largeSceneryIndex) == 0xFFFFFFFF)
+		if (get_large_scenery_entry(largeSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
 
 		rct_scenery_entry* sceneryEntry = get_large_scenery_entry(largeSceneryIndex);
@@ -279,7 +276,7 @@ void init_scenery()
 	for (int sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
 		int wallSceneryIndex = sceneryId - 0x200;
 
-		if ((uint32)get_wall_entry(wallSceneryIndex) == 0xFFFFFFFF)
+		if (get_wall_entry(wallSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
 
 		rct_scenery_entry* sceneryEntry = get_wall_entry(wallSceneryIndex);
@@ -290,7 +287,7 @@ void init_scenery()
 	for (int sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
 		int bannerIndex = sceneryId - 0x400;
 
-		if ((uint32)get_banner_entry(bannerIndex) == 0xFFFFFFFF)
+		if (get_banner_entry(bannerIndex) == (rct_scenery_entry *)-1)
 			continue;
 
 		rct_scenery_entry* sceneryEntry = get_banner_entry(bannerIndex);
@@ -301,7 +298,7 @@ void init_scenery()
 	for (int sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
 		int pathBitIndex = sceneryId - 0x100;
 
-		if ((uint32)get_footpath_item_entry(pathBitIndex) == 0xFFFFFFFF)
+		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
 			continue;
 
 		rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathBitIndex);
@@ -317,7 +314,7 @@ void init_scenery()
 
 	for (int scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
 		rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
-		if ((uint32)sceneryEntry == 0xFFFFFFFF)
+		if (sceneryEntry == (rct_scenery_set_entry *)-1)
 			continue;
 
 		tabIndexes[usedValues] = scenerySetId;
@@ -986,7 +983,7 @@ void window_scenery_invalidate(rct_window *w)
 		} else if (tabSelectedSceneryId < 0x100) {
 			sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
-			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
+			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
@@ -1210,7 +1207,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
 
-				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED_FG) {
 					imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
 					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}

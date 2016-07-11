@@ -130,7 +130,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		sub_98197C(baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 	}
 
-	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG10) {
+	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS) {
 		if (dword_F64EB0 == 0) {
 			// Draw translucent overlay:
 			int image_id = (baseImageid & 0x7FFFF) + (((mapElement->properties.scenery.colour_1 & 0x1F) + 112) << 19) + 0x40000004;
@@ -230,7 +230,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				esi &= entry->small_scenery.var_16;
 				int image_id = 0;
 				if (esi < entry->small_scenery.var_18) {
-					image_id = ((uint8*)entry->small_scenery.var_10)[esi];
+					image_id = entry->small_scenery.var_10[esi];
 				}
 				image_id = (image_id * 4) + direction + entry->image;
 				if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG17)) {

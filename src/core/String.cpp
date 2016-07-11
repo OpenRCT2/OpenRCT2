@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cwctype>
+
 extern "C"
 {
     #include "../localisation/localisation.h"
@@ -217,5 +219,46 @@ namespace String
     utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint)
     {
         return utf8_write_codepoint(dst, codepoint);
+    }
+
+    utf8 * Trim(utf8 * str)
+    {
+        utf8 * firstNonWhitespace = nullptr;
+        utf8 * lastNonWhitespace = nullptr;
+
+        codepoint_t codepoint;
+        utf8 * ch = str;
+        utf8 * nextCh;
+        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        {
+            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            {
+                if (firstNonWhitespace == nullptr)
+                {
+                    firstNonWhitespace = ch;
+                }
+                lastNonWhitespace = ch;
+            }
+            ch = nextCh;
+        }
+
+        if (firstNonWhitespace != nullptr &&
+            firstNonWhitespace != str)
+        {
+            size_t newStringSize = ch - firstNonWhitespace;
+#if DEBUG
+            size_t currentStringSize = String::SizeOf(str);
+            assert(newStringSize < currentStringSize);
+#endif
+
+            Memory::Move(str, firstNonWhitespace, newStringSize);
+            str[newStringSize] = '\0';
+        }
+        else
+        {
+            *ch = '\0';
+        }
+
+        return str;
     }
 }

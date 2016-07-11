@@ -51,7 +51,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
         glGetShaderInfoLog(_id, sizeof(buffer), nullptr, buffer);
         glDeleteShader(_id);
 
-        Console::Error::WriteFormat("Error compiling %s\n", path);
+        Console::Error::WriteLine("Error compiling %s", path);
         Console::Error::WriteLine(buffer);
 
         throw Exception("Error compiling shader.");
@@ -115,7 +115,7 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
         GLsizei length;
         glGetProgramInfoLog(_id, sizeof(buffer), &length, buffer);
 
-        Console::Error::WriteFormat("Error linking %s\n", name);
+        Console::Error::WriteLine("Error linking %s", name);
         Console::Error::WriteLine(buffer);
 
         throw Exception("Failed to link OpenGL shader.");

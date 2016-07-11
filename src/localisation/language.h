@@ -69,8 +69,6 @@ const char *language_get_string(rct_string_id id);
 bool language_open(int id);
 void language_close_all();
 
-rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);
-
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
 int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
@@ -81,6 +79,10 @@ int utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
+utf8 *rct2_language_string_to_utf8(const char *src, int languageId);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
+rct_string_id language_allocate_object_string(const utf8 * target);
+void language_free_object_string(rct_string_id stringId);
+rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index);
 
 #endif

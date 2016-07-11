@@ -417,7 +417,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 
 	if (enumFileInfo->handle == NULL) {
 		fileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
-		if (fileHandle != 0) {
+		if (fileHandle != INVALID_HANDLE_VALUE) {
 			enumFileInfo->handle = fileHandle;
 		} else {
 			return false;

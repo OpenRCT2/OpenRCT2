@@ -71,8 +71,11 @@ assert_struct_size(rct_g1_element_32bit, 0x10);
 
 
 enum {
-	G1_FLAG_BMP = (1 << 0), //No invisible sections
-	G1_FLAG_RLE_COMPRESSION = (1<<2),
+	G1_FLAG_BMP				= (1 << 0), // Image data is encoded as raw pixels (no transparancy)
+	G1_FLAG_1				= (1 << 1),
+	G1_FLAG_RLE_COMPRESSION	= (1 << 2), // Image data is encoded using RCT2's form of run length encoding
+	G1_FLAG_HAS_ZOOM_SPRITE	= (1 << 4), // Use a different sprite for higher zoom levels
+	G1_FLAG_NO_ZOOM_DRAW	= (1 << 5), // Does not get drawn at higher zoom levels (only zoom 0)
 };
 
 enum {
@@ -176,6 +179,8 @@ int gfx_load_g2();
 void gfx_unload_g1();
 void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
+uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
+void gfx_object_free_images(uint32 baseImageId, uint32 count);
 void sub_68371D();
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);

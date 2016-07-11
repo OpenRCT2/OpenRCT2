@@ -89,7 +89,7 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-    _s6.header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+    _s6.header.num_packed_objects = ExportObjects ? scenario_get_num_packed_objects_to_write() : 0;
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
 
@@ -132,7 +132,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 
     // 3: Write available objects chunk
     chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-    chunkHeader.length = 721 * sizeof(rct_object_entry);
+    chunkHeader.length = OBJECT_ENTRY_COUNT * sizeof(rct_object_entry);
     encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)_s6.objects, chunkHeader);
     SDL_RWwrite(rw, buffer, encodedLength, 1);
 
@@ -228,19 +228,18 @@ void S6Exporter::Export()
 {
     _s6.info = *gS6Info;
 
-    for (int i = 0; i < 721; i++)
+    for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {
-        rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
-        void *entryData = get_loaded_object_entry(i);
+        const rct_object_entry * entry = get_loaded_object_entry(i);
+        void * entryData = get_loaded_object_chunk(i);
         if (entryData == (void *)0xFFFFFFFF)
         {
-            memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
+            Memory::Set(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }
         else
         {
             _s6.objects[i] = *((rct_object_entry*)entry);
         }
-
     }
 
     _s6.elapsed_months = gDateMonthsElapsed;
@@ -508,7 +507,6 @@ extern "C"
         }
         delete s6exporter;
 
-        reset_loaded_objects();
         gfx_invalidate_screen();
 
         if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
@@ -540,8 +538,6 @@ extern "C"
         {
             return 0;
         }
-
-        reset_loaded_objects();
 
         // Write other data not in normal save files
         SDL_WriteLE32(rw, gGamePaused);

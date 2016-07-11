@@ -28,13 +28,15 @@ typedef struct rct_small_scenery_entry {
 	uint8 tool_id;			// 0x0B
 	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint32 var_10;
+	uint8 *var_10;
 	uint16 var_14;
 	uint16 var_16;
 	uint16 var_18;
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
+#ifdef PLATFORM_32BIT
 assert_struct_size(rct_small_scenery_entry, 21);
+#endif
 
 typedef enum {
 	SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),					// 0x1
@@ -44,9 +46,9 @@ typedef enum {
 	SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),						// 0x10
 	SMALL_SCENERY_FLAG6 = (1 << 5),								// 0x20
 	SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),				// 0x40
-	SMALL_SCENERY_FLAG8 = (1 << 7),								// 0x80
+	SMALL_SCENERY_FLAG_ANIMATED_FG = (1 << 7),					// 0x80
 	SMALL_SCENERY_FLAG9 = (1 << 8),								// 0x100
-	SMALL_SCENERY_FLAG10 = (1 << 9),							// 0x200
+	SMALL_SCENERY_FLAG_HAS_GLASS = (1 << 9),					// 0x200
 	SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),			// 0x400
 	SMALL_SCENERY_FLAG12 = (1 << 11),							// 0x800
 	SMALL_SCENERY_FLAG13 = (1 << 12),							// 0x1000

@@ -30,6 +30,8 @@
 #include "../input.h"
 #include "../network/twitch.h"
 #include "../object.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../world/banner.h"
 #include "../world/climate.h"
 #include "../world/scenery.h"
@@ -866,109 +868,70 @@ static int cc_twitch(const utf8 **argv, int argc)
 	return 0;
 }
 
-static void editor_load_selected_objects_console()
-{
-	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = gInstalledObjects;
-
-	if (gInstalledObjectsCount == 0)
-		return;
-
-	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
-		if (*selection_flags & 1) {
-			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
-				int chunk_size;
-				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
-					log_error("Failed to load entry %.8s", installed_entry->name);
-				}
-			}
-		}
-
-		installed_entry = object_get_next(installed_entry);
-	}
-}
-
 static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		utf8 path[MAX_PATH];
-
-		substitute_path(path, gRCT2AddressObjectDataPath, argv[0]);
-		strcat(path, ".DAT\0");
-
-		rct_object_entry entry;
-		if (object_load_entry(path, &entry)) {
-			uint8 type = entry.flags & 0xF;
-			uint8 index;
-
-			if (check_object_entry(&entry)) {
-				if (!find_object_in_entry_group(&entry, &type, &index)){
-
-					int entryGroupIndex = 0;
-					for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
-						if (object_entry_groups[type].chunks[entryGroupIndex] == (uint8*)-1){
-							break;
-						}
-					}
-
-					if (entryGroupIndex >= object_entry_group_counts[type]) {
-						console_writeline_error("Too many objects of that type.");
-					}
-					else {
-						// Load the obect
-						if (!object_load_chunk(entryGroupIndex, &entry, NULL)) {
-							console_writeline_error("Could not load object file.");
-						}
-						else {
-							reset_loaded_objects();
-							if (type == OBJECT_TYPE_RIDE) {
-								// Automatically research the ride so it's supported by the game.
-								rct_ride_entry *rideEntry;
-								int rideType;
-
-								rideEntry = get_ride_entry(entryGroupIndex);
-
-								for (int j = 0; j < 3; j++) {
-									rideType = rideEntry->ride_type[j];
-									if (rideType != 255)
-										research_insert(true, 0x10000 | (rideType << 8) | entryGroupIndex, rideEntry->category[0]);
-								}
-
-								gSilentResearch = true;
-								sub_684AC3();
-								gSilentResearch = false;
-							}
-							else if (type == OBJECT_TYPE_SCENERY_SETS) {
-								rct_scenery_set_entry *scenerySetEntry;
-
-								scenerySetEntry = get_scenery_group_entry(entryGroupIndex);
-
-								research_insert(true, entryGroupIndex, RESEARCH_CATEGORY_SCENERYSET);
-
-								gSilentResearch = true;
-								sub_684AC3();
-								gSilentResearch = false;
-							}
-							scenery_set_default_placement_configuration();
-							window_new_ride_init_vars();
-
-							RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
-							gfx_invalidate_screen();
-							console_writeline("Object file loaded.");
-						}
-					}
-				}
-				else {
-					console_writeline_error("Object is already in scenario.");
-				}
-			}
-			else {
-				console_writeline_error("The object file was invalid.");
-			}
+		char name[9] = { 0 };
+		memset(name, ' ', 8);
+		int i = 0;
+		for (const char * ch = argv[0]; *ch != '\0' && i < 8; ch++) {
+			name[i++] = *ch;
 		}
-		else {
-			console_writeline_error("Could not find the object file.");
+
+		const ObjectRepositoryItem * ori = object_repository_find_object_by_name(name);
+		if (ori == NULL) {
+			console_writeline_error("Could not find the object.");
+			return 1;
 		}
+
+		const rct_object_entry * entry = &ori->ObjectEntry;
+		void * loadedObject = object_manager_get_loaded_object(entry);
+		if (loadedObject != NULL) {
+			console_writeline_error("Object is already in scenario.");
+			return 1;
+		}
+
+		loadedObject = object_manager_load_object(entry);
+		if (loadedObject == NULL) {
+			console_writeline_error("Unable to load object.");
+			return 1;
+		}
+		int groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+
+		uint8 objectType = entry->flags & 0x0F;
+		if (objectType == OBJECT_TYPE_RIDE) {
+			// Automatically research the ride so it's supported by the game.
+			rct_ride_entry *rideEntry;
+			int rideType;
+
+			rideEntry = get_ride_entry(groupIndex);
+
+			for (int j = 0; j < 3; j++) {
+				rideType = rideEntry->ride_type[j];
+				if (rideType != 255)
+					research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
+			}
+
+			gSilentResearch = true;
+			sub_684AC3();
+			gSilentResearch = false;
+		}
+		else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+			rct_scenery_set_entry *scenerySetEntry;
+
+			scenerySetEntry = get_scenery_group_entry(groupIndex);
+
+			research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
+
+			gSilentResearch = true;
+			sub_684AC3();
+			gSilentResearch = false;
+		}
+		scenery_set_default_placement_configuration();
+		window_new_ride_init_vars();
+
+		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
+		gfx_invalidate_screen();
+		console_writeline("Object file loaded.");
 	}
 
 	return 0;

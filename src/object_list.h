@@ -33,7 +33,6 @@
 	#define gStexEntries				RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_TEXT_ENTRIES,	rct_stex_entry*)
 #endif
 
-extern rct_stex_entry *gStexTempChunk;
-
-void object_list_init();
-void *get_loaded_object_entry(size_t index);
+void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex);
+const rct_object_entry * get_loaded_object_entry(size_t index);
+void * get_loaded_object_chunk(size_t index);

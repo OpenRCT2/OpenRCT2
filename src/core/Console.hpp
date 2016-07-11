@@ -36,6 +36,6 @@ namespace Console
         void Write(const utf8 * str);
         void WriteFormat(const utf8 * format, ...);
         void WriteLine();
-        void WriteLine(const utf8 * str);
+        void WriteLine(const utf8 * format, ...);
     }
 }

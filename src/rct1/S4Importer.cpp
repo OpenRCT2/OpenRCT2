@@ -22,6 +22,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/ObjectManager.h"
 #include "Tables.h"
 
 extern "C"
@@ -36,6 +37,7 @@ extern "C"
     #include "../management/finance.h"
     #include "../management/marketing.h"
     #include "../object.h"
+    #include "../object/ObjectManager.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
     #include "../util/sawyercoding.h"
@@ -110,7 +112,7 @@ void S4Importer::Initialise()
     // Do map initialisation, same kind of stuff done when loading scenario editor
     audio_pause_sounds();
     audio_unpause_sounds();
-    object_unload_all();
+    GetObjectManager()->UnloadAll();
     map_init(mapSize);
     banner_init();
     reset_park_entrances();
@@ -734,12 +736,12 @@ void S4Importer::LoadObjects()
     }));
     LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, List<const char *>({ "PKENT1  " }));
     LoadObjects(OBJECT_TYPE_WATER, List<const char *>({ "WTRCYAN " }));
-
-    reset_loaded_objects();
 }
 
 void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
 {
+    IObjectManager * objectManager = GetObjectManager();
+
     uint32 entryIndex = 0;
     for (const char * objectName : entries)
     {
@@ -747,8 +749,9 @@ void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
         entry.flags = 0x00008000 + objectType;
         Memory::Copy(entry.name, objectName, 8);
         entry.checksum = 0;
-        
-        if (!object_load_chunk(entryIndex, &entry, NULL))
+
+        Object * object = objectManager->LoadObject(&entry);
+        if (object == nullptr)
         {
             log_error("Failed to load %s.", objectName);
             throw Exception("Failed to load object.");

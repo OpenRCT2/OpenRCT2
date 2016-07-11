@@ -700,17 +700,14 @@ int scenario_prepare_for_save()
  */
 int scenario_get_num_packed_objects_to_write()
 {
-	int i, count = 0;
-	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
-
-	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
-		void *entryData = get_loaded_object_entry(i);
-		if (entryData == (void*)0xFFFFFFFF || (entry->flags & 0xF0)) {
-			continue;
+	int count = 0;
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+		const rct_object_entry *entry = get_loaded_object_entry(i);
+		void *entryData = get_loaded_object_chunk(i);
+		if (entryData != (void*)0xFFFFFFFF && !(entry->flags & 0xF0)) {
+			count++;
 		}
-		count++;
 	}
-
 	return count;
 }
 
@@ -720,18 +717,15 @@ int scenario_get_num_packed_objects_to_write()
  */
 int scenario_write_packed_objects(SDL_RWops* rw)
 {
-	int i;
-	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
-	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
-		void *entryData = get_loaded_object_entry(i);
-		if (entryData == (void*)0xFFFFFFFF || (entry->flags & 0xF0)) {
-			continue;
-		}
-		if (!write_object_file(rw, (rct_object_entry*)entry)) {
-			return 0;
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+		const rct_object_entry *entry = get_loaded_object_entry(i);
+		void *entryData = get_loaded_object_chunk(i);
+		if (entryData != (void*)0xFFFFFFFF && !(entry->flags & 0xF0)) {
+			if (!object_saved_packed(rw, entry)) {
+				return 0;
+			}
 		}
 	}
-
 	return 1;
 }
 
@@ -745,7 +739,7 @@ int scenario_write_available_objects(FILE *file)
 	int i, encodedLength;
 	sawyercoding_chunk_header chunkHeader;
 
-	const int totalEntries = 721;
+	const int totalEntries = OBJECT_ENTRY_COUNT;
 	const int bufferLength = totalEntries * sizeof(rct_object_entry);
 
 	// Initialise buffers
@@ -762,17 +756,14 @@ int scenario_write_available_objects(FILE *file)
 	}
 
 	// Write entries
-	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		void *entryData = get_loaded_object_entry(i);
+		void *entryData = get_loaded_object_chunk(i);
 		if (entryData == (void*)0xFFFFFFFF) {
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		} else {
-			*dstEntry = *((rct_object_entry*)srcEntry);
+			*dstEntry = *get_loaded_object_entry(i);
 		}
-
-		srcEntry++;
 		dstEntry++;
 	}
 

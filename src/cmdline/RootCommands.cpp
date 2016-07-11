@@ -312,8 +312,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     Console::WriteLine("Checking path...");
     if (!platform_directory_exists(path))
     {
-        Console::Error::WriteFormat("The path '%s' does not exist", path);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("The path '%s' does not exist", path);
         return EXITCODE_FAIL;
     }
 
@@ -327,8 +326,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     if (!platform_file_exists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
-        Console::Error::WriteFormat("Unable to find %s.", pathG1Check);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("Unable to find %s.", pathG1Check);
         return EXITCODE_FAIL;
     }
 
@@ -337,8 +335,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     platform_resolve_user_data_path();
     platform_get_user_directory(userPath, NULL);
     if (!platform_ensure_directory_exists(userPath)) {
-        Console::Error::WriteFormat("Unable to access or create directory '%s'.", userPath);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("Unable to access or create directory '%s'.", userPath);
         return EXITCODE_FAIL;
     }
 
