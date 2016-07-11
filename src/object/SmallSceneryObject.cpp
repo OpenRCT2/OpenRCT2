@@ -79,6 +79,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
 void SmallSceneryObject::Load()
 {
+    GetStringTable()->Sort();
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 

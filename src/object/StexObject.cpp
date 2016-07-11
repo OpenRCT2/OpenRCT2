@@ -42,6 +42,7 @@ void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void StexObject::Load()
 {
+    GetStringTable()->Sort();
     _legacyType.scenario_name = language_allocate_object_string(GetScenarioName());
     _legacyType.park_name = language_allocate_object_string(GetParkName());
     _legacyType.details = language_allocate_object_string(GetScenarioDetails());

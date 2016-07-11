@@ -903,6 +903,20 @@ extern "C"
         }
     }
 
+    const utf8 * object_get_capacity(const void * object)
+    {
+        const Object * baseObject = (const Object *)object;
+        switch (baseObject->GetObjectType()) {
+        case OBJECT_TYPE_RIDE:
+        {
+            auto rideObject = static_cast<const RideObject *>(baseObject);
+            return rideObject->GetCapacity();
+        }
+        default:
+            return "";
+        }
+    }
+
     void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
     {
         const Object * baseObject = (const Object *)object;

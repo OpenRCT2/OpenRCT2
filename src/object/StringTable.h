@@ -38,8 +38,6 @@ public:
     ~StringTable();
 
     void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
+    void            Sort();
     const utf8 *    GetString(uint8 id) const;
-
-private:
-    void Sort();
 };

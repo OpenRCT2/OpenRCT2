@@ -26,6 +26,8 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -2590,7 +2592,6 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
-	rct_string_id stringId;
 	int x, y;
 	sint16 factor;
 
@@ -2608,8 +2609,14 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 5;
 
 	// Capacity
-	stringId = rideEntry->description + 1;
-	gfx_draw_string_left(dpi, STR_CAPACITY, &stringId, 0, x, y);
+	void * loadedObject = object_manager_get_loaded_object_by_index(ride->subtype);
+	if (loadedObject != NULL)
+	{
+		const utf8 * capacity = object_get_capacity(loadedObject);
+		set_format_arg(0, rct_string_id, STR_STRING);
+		set_format_arg(2, utf8 *, capacity);
+		gfx_draw_string_left(dpi, STR_CAPACITY, gCommonFormatArgs, 0, x, y);
+	}
 	y += 15;
 
 	if ((!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) && var_496(w) > 1) {

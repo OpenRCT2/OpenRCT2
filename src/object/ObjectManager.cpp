@@ -528,6 +528,13 @@ IObjectManager * GetObjectManager()
 
 extern "C"
 {
+    void * object_manager_get_loaded_object_by_index(size_t index)
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        Object * loadedObject = objectManager->GetLoadedObject(index);
+        return (void *)loadedObject;
+    }
+
     void * object_manager_get_loaded_object(const rct_object_entry * entry)
     {
         IObjectManager * objectManager = GetObjectManager();

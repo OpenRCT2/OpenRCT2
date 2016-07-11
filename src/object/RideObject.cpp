@@ -129,6 +129,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void RideObject::Load()
 {
+    GetStringTable()->Sort();
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.description = language_allocate_object_string(GetDescription());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
