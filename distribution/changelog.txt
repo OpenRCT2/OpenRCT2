@@ -16,6 +16,9 @@
 - Feature: Add Cheat that allows any track piece to use a chain lift.
 - Feature: Add Console command to set vehicle friction.
 - Feature: Add console command to set scenario initial cash.
+- Feature: Objects are scanned from the user directory as well as the RCT2 directory.
+- Feature: Objects directory is scanned recursively.
+- Improve: Performance and reliability of loading objects.
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
