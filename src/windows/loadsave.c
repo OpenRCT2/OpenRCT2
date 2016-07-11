@@ -147,7 +147,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 {
 	gLoadSaveCallback = NULL;
 	gLoadSaveTitleSequenceSave = false;
-	char path[MAX_PATH], *ch;
+	char path[MAX_PATH];
 	int includeNewItem;
 	rct_window* w;
 	_type = type;
@@ -186,6 +186,9 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
 		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_TRACK;
 		break;
 	default:
 		log_error("Unsupported load / save type: %d", type & 0x0F);
@@ -240,23 +243,15 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
 	case LOADSAVETYPE_TRACK:
-		/*
-		Uncomment when user tracks are separated
-		 
+		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "track");
+			
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create tracks directory.");
 			window_close(w);
 			return NULL;
-		}
-		*/
-			
-		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
-			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
-		else {
-			safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
-			ch = strchr(path, '*');
-			if (ch != NULL)
-				*ch = 0;
 		}
 		
 		window_loadsave_populate_list(w, includeNewItem, path, ".td?");
@@ -361,6 +356,12 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
 			desc.filters[0].pattern = "*.td4;*.td6";
 			break;
+		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+			desc.type = FD_SAVE;
+			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_TRACK);
+			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
+			desc.filters[0].pattern = "*.td6";
+			break;
 		}
 
 		result = platform_open_common_file_dialog(path, &desc);
@@ -408,20 +409,8 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			break;
 				
 		case LOADSAVETYPE_TRACK:
-		{
-			/*
-			Uncomment when tracks get separated
-			
 			platform_get_user_directory(directory, "track");
-			*/
-
-			safe_strcpy(directory, gRCT2AddressTracksPath, MAX_PATH);
-			char *ch = strchr(directory, '*');
-			if (ch != NULL)
-				*ch = 0;
-
 			break;
-		}
 		}
 		
 		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
@@ -892,6 +881,22 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		window_close_by_class(WC_LOADSAVE);
 		window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		break;
+	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
+	{
+		char *p = _strdup(path);
+		path_set_extension(p, "td6");
+		int success = track_design_save_to_file(p);
+		free(p);
+		
+		if (success) {
+			window_close_by_class(WC_LOADSAVE);
+			window_ride_measurements_design_cancel();
+			window_loadsave_invoke_callback(MODAL_RESULT_OK);
+		} else {
+			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+		}
+	}
 	}
 }
 

@@ -2671,9 +2671,13 @@ enum {
 	
 	STR_LOADSAVE_DEFAULT = 5891,
 	STR_LOADSAVE_DEFAULT_TIP = 5892,
-
+	
 	STR_RATE_INPUT_TITLE = 5893,
 	STR_RATE_INPUT_DESC = 5894,
+	
+	STR_FILE_DIALOG_TITLE_SAVE_TRACK = 5895,
+	STR_TRACK_SAVE_FAILED = 5896,
+	
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -4690,7 +4690,7 @@ static void window_ride_measurements_design_select_nearby_scenery()
  *
  *  rct2: 0x006AD4DA
  */
-static void window_ride_measurements_design_cancel()
+void window_ride_measurements_design_cancel()
 {
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
 		cancel_scenery_selection();
@@ -4702,9 +4702,7 @@ static void window_ride_measurements_design_cancel()
  */
 static void window_ride_measurements_design_save(rct_window *w)
 {
-	if (track_design_save((uint8)w->number) == 0) return;
-
-	window_ride_measurements_design_cancel();
+	track_design_save((uint8)w->number);
 }
 
 /**

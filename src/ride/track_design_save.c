@@ -53,7 +53,6 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6);
 static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex);
 static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6);
 static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6);
-static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path);
 
 void track_design_save_init()
 {
@@ -119,6 +118,18 @@ void track_design_save_reset_scenery()
 	gfx_invalidate_screen();
 }
 
+void track_design_save_callback(int result) {
+	free(_trackDesign->track_elements);
+	free(_trackDesign->entrance_elements);
+	free(_trackDesign->scenery_elements);
+	free(_trackDesign);
+	
+	if (result == MODAL_RESULT_OK) {
+		track_design_index_create();
+	}
+	gfx_invalidate_screen();
+}
+
 /**
  *
  *  rct2: 0x006D2804, 0x006D264D
@@ -159,63 +170,10 @@ bool track_design_save(uint8 rideIndex)
 
 	utf8 track_name[MAX_PATH];
 	format_string(track_name, ride->name, &ride->name_arguments);
-
-	// Default location
-	utf8 path[MAX_PATH];
 	
-	if (gConfigGeneral.last_save_track_directory && platform_directory_exists(gConfigGeneral.last_save_track_directory))
-		safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
-	else
-		platform_get_user_directory(path, "track");
-	
-	strcat(path, track_name);
-	strcat(path, ".td6");
+	window_loadsave_open(LOADSAVETYPE_TRACK | LOADSAVETYPE_SAVE, track_name);
+	gLoadSaveCallback = track_design_save_callback;
 
-	// Show save dialog
-	utf8 initialDirectory[MAX_PATH];
-	{
-		strcpy(initialDirectory, path);
-		utf8 *a = strrchr(initialDirectory, '/');
-		utf8 *b = strrchr(initialDirectory, '\\');
-		utf8 *c = max(a, b);
-		if (c != NULL) {
-			*c = '\0';
-		}
-	}
-	platform_ensure_directory_exists(initialDirectory);
-
-	file_dialog_desc desc;
-	memset(&desc, 0, sizeof(desc));
-	desc.type = FD_SAVE;
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
-		desc.title = language_get_string(STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM);
-	} else {
-		desc.title = language_get_string(STR_SAVE_TRACK_DESIGN_ITEM);
-	}
-	desc.initial_directory = initialDirectory;
-	desc.default_filename = path;
-	desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-	desc.filters[0].pattern = "*.td6";
-
-	audio_pause_sounds();
-	bool result = platform_open_common_file_dialog(path, &desc);
-	audio_unpause_sounds();
-
-	if (result) {
-		gConfigGeneral.last_save_track_directory = path_get_directory(path);
-		config_save_default();
-		result = track_design_save_to_file(_trackDesign, path);
-	}
-
-	free(_trackDesign->track_elements);
-	free(_trackDesign->entrance_elements);
-	free(_trackDesign->scenery_elements);
-	free(_trackDesign);
-
-	if (result) {
-		track_design_index_create();
-	}
-	gfx_invalidate_screen();
 	return true;
 }
 
@@ -1280,8 +1238,9 @@ static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
  *  rct2: 0x006771DC but not really its branched from that
  *  quite far.
  */
-static bool track_design_save_to_file(rct_track_td6 *td6, utf8 *path)
+bool track_design_save_to_file(const utf8 *path)
 {
+	rct_track_td6 *td6 = _trackDesign;
 	const rct_td6_maze_element EndMarkerForMaze = { 0 };
 	const uint8 EndMarker = 0xFF;
 

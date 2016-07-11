@@ -4203,6 +4203,8 @@ STR_5891    :Default
 STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
 STR_5893    :Exchange Rate
 STR_5894    :Enter the exchange rate
+STR_5895    :Save Track
+STR_5896    :Track save failed!
 
 #############
 # Scenarios #

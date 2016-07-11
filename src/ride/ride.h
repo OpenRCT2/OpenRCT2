@@ -1100,6 +1100,7 @@ bool shop_item_is_souvenir(int shopItem);
 void ride_reset_all_names();
 const uint8* ride_seek_available_modes(rct_ride *ride);
 
+void window_ride_measurements_design_cancel();
 void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type);
 
 const uint32 ride_customers_per_hour(const rct_ride *ride);
