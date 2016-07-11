@@ -487,46 +487,67 @@ private:
         }
     }
 
-    static void SaveObject(const utf8 * path, const rct_object_entry * entry, const void * data, size_t dataSize)
+    static void SaveObject(const utf8 * path,
+                           const rct_object_entry * entry,
+                           const void * data, size_t dataSize,
+                           bool fixChecksum = true)
     {
-        uint8 objectType = entry->flags & 0x0F;
-
-        // Encode data
-        sawyercoding_chunk_header chunkHeader;
-        chunkHeader.encoding = object_entry_group_encoding[objectType];
-        chunkHeader.length = dataSize;
-        uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
-
-        void * extraBytes = nullptr;
-        size_t extraBytesCount = 0;
-
-        int realChecksum = object_calculate_checksum(entry, data, dataSize);
-        if (realChecksum != entry->checksum)
+        if (fixChecksum)
         {
-            char objectName[9];
-            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
-            log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
-
-            // Calculate the value of extra bytes that can be appended to the data so that the
-            // data is then valid for the object's checksum
-            extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
-#ifdef DEBUG
+            int realChecksum = object_calculate_checksum(entry, data, dataSize);
+            if (realChecksum != entry->checksum)
             {
-                // Check that CalculateExtraBytesToFixChecksum did the job
+                char objectName[9];
+                object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
+                log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
+
+                // Calculate the value of extra bytes that can be appended to the data so that the
+                // data is then valid for the object's checksum
+                size_t extraBytesCount = 0;
+                void * extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
+
+                // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
                 void * newData = Memory::Allocate<void>(newDataSize);
                 void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
                 Memory::Copy(newData, data, dataSize);
                 Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
 
-                int actualChecksum = object_calculate_checksum(entry, newData, newDataSize);
-                Guard::Assert(actualChecksum == realChecksum, "CalculateExtraBytesToFixChecksum failed to fix checksum.");
+                try
+                {
+                    int newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    if (newRealChecksum != entry->checksum)
+                    {
+                        Guard::Fail("CalculateExtraBytesToFixChecksum failed to fix checksum.");
 
-                Memory::Free(newData);
+                        // Save old data form
+                        SaveObject(path, entry, data, dataSize, false);
+                    }
+                    else
+                    {
+                        // Save new data form
+                        SaveObject(path, entry, newData, newDataSize, false);
+                    }
+                    Memory::Free(newData);
+                    Memory::Free(extraBytes);
+                }
+                catch (Exception ex)
+                {
+                    Memory::Free(newData);
+                    Memory::Free(extraBytes);
+                    throw;
+                }
+                return;
             }
-#endif
         }
+
+        // Encode data
+        uint8 objectType = entry->flags & 0x0F;
+        sawyercoding_chunk_header chunkHeader;
+        chunkHeader.encoding = object_entry_group_encoding[objectType];
+        chunkHeader.length = dataSize;
+        uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
 
         // Save to file
         try
@@ -535,17 +556,10 @@ private:
             fs.Write(entry, sizeof(rct_object_entry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
-            if (extraBytes != nullptr)
-            {
-                fs.Write(extraBytes, extraBytesCount);
-            }
-
-            Memory::Free(extraBytes);
             Memory::Free(encodedDataBuffer);
         }
         catch (Exception ex)
         {
-            Memory::Free(extraBytes);
             Memory::Free(encodedDataBuffer);
             throw;
         }
