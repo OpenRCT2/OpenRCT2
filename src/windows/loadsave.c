@@ -243,23 +243,15 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		window_loadsave_populate_list(w, includeNewItem, path, ".sc6");
 		break;
 	case LOADSAVETYPE_TRACK:
-		/*
-		Uncomment when user tracks are separated
-		 
+		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
+			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
+		else
+			platform_get_user_directory(path, "track");
+			
 		if (!platform_ensure_directory_exists(path)) {
 			log_error("Unable to create tracks directory.");
 			window_close(w);
 			return NULL;
-		}
-		*/
-			
-		if (gConfigGeneral.last_save_track_directory && platform_ensure_directory_exists(gConfigGeneral.last_save_track_directory))
-			safe_strcpy(path, gConfigGeneral.last_save_track_directory, MAX_PATH);
-		else {
-			safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
-			ch = strchr(path, '*');
-			if (ch != NULL)
-				*ch = 0;
 		}
 		
 		window_loadsave_populate_list(w, includeNewItem, path, ".td?");
@@ -417,20 +409,8 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			break;
 				
 		case LOADSAVETYPE_TRACK:
-		{
-			/*
-			Uncomment when tracks get separated
-			
 			platform_get_user_directory(directory, "track");
-			*/
-
-			safe_strcpy(directory, gRCT2AddressTracksPath, MAX_PATH);
-			char *ch = strchr(directory, '*');
-			if (ch != NULL)
-				*ch = 0;
-
 			break;
-		}
 		}
 		
 		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
