@@ -983,7 +983,7 @@ static char _window_overwrite_prompt_path[MAX_PATH];
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path)
 {
 	rct_window *w;
- 
+
 	window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
 	w = window_create_centred(OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
