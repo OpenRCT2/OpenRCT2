@@ -395,6 +395,7 @@ static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buf
 		if (rleCodeByte & 128) {
 			i++;
 			count = 257 - rleCodeByte;
+			assert(dst + count <= dst_buffer + dstSize);
 			memset(dst, src_buffer[i], count);
 			dst = (uint8*)((uintptr_t)dst + count);
 		} else {
