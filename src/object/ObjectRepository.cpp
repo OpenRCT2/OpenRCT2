@@ -195,14 +195,6 @@ public:
         utf8 objectName[9];
         object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
-        // Currently disable checksum validation
-        // int realChecksum = object_calculate_checksum(objectEntry, (const uint8 *)data, (int)dataSize);
-        // if (realChecksum != objectEntry->checksum)
-        // {
-        // }
-
-        // TODO append checksum match bytes
-
         // Check that the object is loadable before writing it
         Object * object = ObjectFactory::CreateObjectFromLegacyData(objectEntry, data, dataSize);
         if (object == nullptr)
@@ -506,6 +498,36 @@ private:
         uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
         size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
 
+        void * extraBytes = nullptr;
+        size_t extraBytesCount = 0;
+
+        int realChecksum = object_calculate_checksum(entry, data, dataSize);
+        if (realChecksum != entry->checksum)
+        {
+            char objectName[9];
+            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
+            log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
+
+            // Calculate the value of extra bytes that can be appended to the data so that the
+            // data is then valid for the object's checksum
+            extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
+#ifdef DEBUG
+            {
+                // Check that CalculateExtraBytesToFixChecksum did the job
+                size_t newDataSize = dataSize + extraBytesCount;
+                void * newData = Memory::Allocate<void>(newDataSize);
+                void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
+                Memory::Copy(newData, data, dataSize);
+                Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
+
+                int actualChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                Guard::Assert(actualChecksum == realChecksum, "CalculateExtraBytesToFixChecksum failed to fix checksum.");
+
+                Memory::Free(newData);
+            }
+#endif
+        }
+
         // Save to file
         try
         {
@@ -513,13 +535,49 @@ private:
             fs.Write(entry, sizeof(rct_object_entry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
+            if (extraBytes != nullptr)
+            {
+                fs.Write(extraBytes, extraBytesCount);
+            }
+
+            Memory::Free(extraBytes);
             Memory::Free(encodedDataBuffer);
         }
         catch (Exception ex)
         {
+            Memory::Free(extraBytes);
             Memory::Free(encodedDataBuffer);
             throw;
         }
+    }
+
+    static void * CalculateExtraBytesToFixChecksum(int currentChecksum, int targetChecksum, size_t * outSize)
+    {
+        // Allocate 11 extra bytes to manipulate the checksum
+        uint8 * salt = Memory::Allocate<uint8>(11);
+        if (outSize != nullptr) *outSize = 11;
+
+        // Next work out which bits need to be flipped to make the current checksum match the one in the file
+        // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
+        int bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
+
+        // Each set bit encountered during encoding flips one bit of the resulting checksum (so each bit of the checksum is an
+        // XOR of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in
+        // the data that maps to it. 11 bytes is the minimum needed to touch every bit of the checksum - with less than that,
+        // you wouldn't always be able to make the checksum come out to the desired target
+        salt[0] = (bitsToFlip & 0x00000001) << 7;
+        salt[1] = ((bitsToFlip & 0x00200000) >> 14);
+        salt[2] = ((bitsToFlip & 0x000007F8) >> 3);
+        salt[3] = ((bitsToFlip & 0xFF000000) >> 24);
+        salt[4] = ((bitsToFlip & 0x00100000) >> 13);
+        salt[5] = (bitsToFlip & 0x00000004) >> 2;
+        salt[6] = 0;
+        salt[7] = ((bitsToFlip & 0x000FF000) >> 12);
+        salt[8] = (bitsToFlip & 0x00000002) >> 1;
+        salt[9] = (bitsToFlip & 0x00C00000) >> 22;
+        salt[10] = (bitsToFlip & 0x00000800) >> 11;
+
+        return salt;
     }
 
     static void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
