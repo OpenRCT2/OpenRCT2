@@ -910,6 +910,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
+			window_ride_measurements_design_cancel();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
@@ -982,7 +983,7 @@ static char _window_overwrite_prompt_path[MAX_PATH];
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path)
 {
 	rct_window *w;
-
+ 
 	window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
 	w = window_create_centred(OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);

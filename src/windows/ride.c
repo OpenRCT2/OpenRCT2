@@ -4690,7 +4690,7 @@ static void window_ride_measurements_design_select_nearby_scenery()
  *
  *  rct2: 0x006AD4DA
  */
-static void window_ride_measurements_design_cancel()
+void window_ride_measurements_design_cancel()
 {
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
 		cancel_scenery_selection();
