@@ -518,7 +518,7 @@ private:
                     int newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
-                        Guard::Fail("CalculateExtraBytesToFixChecksum failed to fix checksum.");
+                        Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
 
                         // Save old data form
                         SaveObject(path, entry, data, dataSize, false);
