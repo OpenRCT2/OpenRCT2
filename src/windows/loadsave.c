@@ -239,31 +239,20 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	int result = 0;
 	char path[MAX_PATH], filter[MAX_PATH];
 
+	bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
 	switch (widgetIndex){
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_UP:
-	{
-		char directory[MAX_PATH];
-		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
-		
-		safe_strcpy(directory, _parentDirectory, sizeof(directory));
-		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
+		safe_strcpy(path, _parentDirectory, sizeof(path));
+		window_loadsave_populate_list(w, isSave, path, _extension);
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
 		break;
-	}
 	case WIDX_NEW:
-	{		
-		rct_string_id templateStringId = STR_PLACEHOLDER;
-		char *templateString;
-		
-		templateString = (char *)language_get_string(templateStringId);
-		strcpy(templateString, _defaultName);
-		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, templateStringId, 0, 64);
+		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, STR_STRING, (uint32)&_defaultName, 64);
 		break;
-	}
 	case WIDX_BROWSE:
 		safe_strcpy(path, _directory, MAX_PATH);
 		if (_type & LOADSAVETYPE_SAVE) {
