@@ -33,6 +33,9 @@
 #ifdef __MACOSX__
 	#define OPENRCT2_PLATFORM		"macOS"
 #endif
+#ifdef __ANDROID__
+	#define OPENRCT2_PLATFORM		"Android"
+#endif
 #ifndef OPENRCT2_PLATFORM
 	#error Unknown platform!
 #endif

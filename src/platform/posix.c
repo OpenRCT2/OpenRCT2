@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) && !defined(__ANDROID__)
 
 #include <dirent.h>
 #include <errno.h>
@@ -52,9 +52,9 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
  * The function that is called directly from the host application (rct2.exe)'s WinMain.
  * This will be removed when OpenRCT2 can be built as a stand alone application.
  */
-int main(int argc, const char **argv)
+int main(int argc, char *argv[])
 {
-	int run_game = cmdline_run(argv, argc);
+	int run_game = cmdline_run((const char **)argv, argc);
 	if (run_game == 1)
 	{
 		openrct2_launch();
@@ -849,9 +849,13 @@ uint8 platform_get_locale_currency(){
 		return platform_get_currency_value(NULL);
 	}
 	
+#ifdef __ANDROID__
+	return platform_get_currency_value(NULL);
+#else
 	struct lconv *lc = localeconv();
 	
 	return platform_get_currency_value(lc->int_curr_symbol);
+#endif
 }
 
 uint8 platform_get_locale_measurement_format(){

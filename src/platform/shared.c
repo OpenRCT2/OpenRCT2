@@ -806,3 +806,9 @@ uint8 platform_get_currency_value(const char *currCode) {
 	
 	return CURRENCY_POUNDS;
 }
+
+#ifndef __ANDROID__
+float platform_get_default_scale() {
+	return 1;
+}
+#endif
