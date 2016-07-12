@@ -5479,12 +5479,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 		if(ride_is_block_sectioned(ride)){
 			if(trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement)) {
 				if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-					vehicle->acceleration = 0;
-					if (vehicle->velocity <= 0x20000) {
-						vehicle->velocity = 0;
-					}
-					vehicle->velocity -= vehicle->velocity >> 3;
+					apply_block_brakes(vehicle, true);
 				}
 			}
 		}
