@@ -96,7 +96,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 		SDL_RWclose(file);
 
 		if (!sawyercoding_validate_track_checksum(buffer, bufferLength)) {
-			log_error("Track checksum failed.");
+			log_error("Track checksum failed. %s", path);
 			free(buffer);
 			return NULL;
 		}
