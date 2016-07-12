@@ -4199,6 +4199,8 @@ STR_5887    :Předpona
 STR_5888    :Přípona
 STR_5889    :Značka vlastní měny
 STR_5890    :Zadejte symbol měny
+STR_5891    :Výchozí
+STR_5892    :{SMALLFONT}{BLACK}Přejít do výchozí složky
 
 
 ###############################################################################

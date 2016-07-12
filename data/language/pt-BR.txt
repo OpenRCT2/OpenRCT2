@@ -4199,6 +4199,8 @@ STR_5887    :Prefixo
 STR_5888    :Sufixo
 STR_5889    :Símbolo de moeda personalizada
 STR_5890    :Insira o símbolo da moeda para exibir
+STR_5891    :Padrão
+STR_5892    :{SMALLFONT}{BLACK}Vai para o diretório padrão
 
 #############
 # Scenarios #
