@@ -186,7 +186,7 @@ void window_scenery_update_scroll(rct_window *w);
  * Was part of 0x006DFA00
  * The same code repeated five times for every scenery entry type
  */
-void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId)
+static void init_scenery_entry(rct_scenery_entry *sceneryEntry, int index, uint8 sceneryTabId)
 {
 	if (scenery_is_invented(index)) {
 		if (sceneryTabId != 0xFF) {
@@ -483,7 +483,7 @@ void window_scenery_open()
  *
  *  rct2: 0x0066DB3D
  */
-bool window_scenery_is_scenery_tool_active() {
+static bool window_scenery_is_scenery_tool_active() {
 	int toolWindowClassification = gCurrentToolWidget.window_classification;
 	int toolWidgetIndex = gCurrentToolWidget.widget_index;
 
@@ -806,7 +806,7 @@ void window_scenery_scrollgetsize(rct_window *w, int scrollIndex, int *width, in
 	*height = window_scenery_rows_height(rows);
 }
 
-short get_scenery_id_by_cursor_pos(short x, short y)
+static short get_scenery_id_by_cursor_pos(short x, short y)
 {
 	int tabSceneryIndex = x / SCENERY_BUTTON_WIDTH + (y / SCENERY_BUTTON_HEIGHT) * 9;
 	uint8 tabIndex = gWindowSceneryActiveTabIndex;

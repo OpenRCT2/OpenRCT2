@@ -25,6 +25,7 @@
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"
+#include "../../paint/map_element/map_element.h"
 #include "../paint.h"
 
 const uint8 byte_9A406C[] = {
@@ -46,7 +47,7 @@ const uint8 byte_9A40CC[] = {
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0
 };
 
-void fence_paint_door(uint32 imageId,
+static void fence_paint_door(uint32 imageId,
                       rct_scenery_entry * sceneryEntry,
                       uint32 imageColourFlags, uint32 tertiaryColour, uint32 dword_141F710,
                       rct_xyz16 offset,
@@ -89,7 +90,7 @@ void fence_paint_door(uint32 imageId,
     }
 }
 
-void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 imageColourFlags, uint32 dword_141F718, uint32 tertiaryColour, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
+static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 imageColourFlags, uint32 dword_141F718, uint32 tertiaryColour, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
 {
     uint32 baseImageId = sceneryEntry->image + imageOffset + frameNum;
     uint32 imageId = baseImageId;

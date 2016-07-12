@@ -695,7 +695,7 @@ static void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-void remove_selected_objects_from_research(const rct_object_entry* installedObject){
+static void remove_selected_objects_from_research(const rct_object_entry* installedObject){
 	uint8 entry_type, entry_index;
 	if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
 		return;
@@ -715,7 +715,7 @@ void remove_selected_objects_from_research(const rct_object_entry* installedObje
  *
  *  rct2: 0x006ABB66
  */
-void unload_unselected_objects()
+static void unload_unselected_objects()
 {
 	int numItems = object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
@@ -1548,7 +1548,7 @@ void reset_selected_object_count_and_size()
  * optional / required dependants of an
  * object.
  */
-void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
+static void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg){
 	gGameCommandErrorText = error_msg;
 	if (!is_master_object){
 		reset_selected_object_count_and_size();

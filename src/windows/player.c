@@ -233,7 +233,7 @@ void window_player_open(uint8 id)
 	window_player_set_page(window, WINDOW_PLAYER_PAGE_OVERVIEW);
 }
 
-void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
+static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
 {
 	rct_widget *dropdownWidget;
 	int numItems, i;

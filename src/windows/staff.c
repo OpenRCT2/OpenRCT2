@@ -606,7 +606,7 @@ void window_staff_overview_update(rct_window* w)
  *
  *  rct2: 0x006BE814
  */
-void window_staff_set_order(rct_window* w, int order_id)
+static void window_staff_set_order(rct_window* w, int order_id)
 {
 	rct_peep* peep = GET_PEEP(w->number);
 

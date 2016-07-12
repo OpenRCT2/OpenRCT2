@@ -68,7 +68,7 @@ static void platform_create_window();
 static void platform_load_cursors();
 static void platform_unload_cursors();
 
-int resolution_sort_func(const void *pa, const void *pb)
+static int resolution_sort_func(const void *pa, const void *pb)
 {
 	const resolution *a = (resolution*)pa;
 	const resolution *b = (resolution*)pb;

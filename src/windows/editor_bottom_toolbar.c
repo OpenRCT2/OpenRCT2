@@ -193,7 +193,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 *
 *  rct2: 0x0066F64E
 */
-void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
+static void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 	window_close_all();
 	window_editor_inventions_list_open();
 	gS6Info->editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
@@ -204,7 +204,7 @@ void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 *
 *  rct2: 0x0066F666
 */
-void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
+static void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 	window_close_all();
 	window_editor_scenario_options_open();
 	gS6Info->editor_step = EDITOR_STEP_OPTIONS_SELECTION;
@@ -226,7 +226,7 @@ void window_editor_bottom_toolbar_jump_back_to_options_selection() {
  *
  *  rct2: 0x006AB1CE
  */
-bool window_editor_bottom_toolbar_check_object_selection()
+static bool window_editor_bottom_toolbar_check_object_selection()
 {
 	rct_window *w;
 
@@ -365,12 +365,12 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-void hide_previous_step_button() {
+static void hide_previous_step_button() {
 	window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WWT_EMPTY;
 	window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WWT_EMPTY;
 }
 
-void hide_next_step_button() {
+static void hide_next_step_button() {
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WWT_EMPTY;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WWT_EMPTY;
 }

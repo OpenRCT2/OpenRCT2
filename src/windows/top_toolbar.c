@@ -1001,7 +1001,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
  * edx : parameter_2
  * edi : parameter_3
  */
-void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
+static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sint16* grid_y, uint32* parameter_1, uint32* parameter_2, uint32* parameter_3){
 	rct_window* w = window_find_by_class(WC_SCENERY);
 
 	if (w == NULL)
@@ -1648,7 +1648,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 *
 *  rct2: 0x0068E213
 */
-void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
+static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
@@ -1727,7 +1727,7 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	}
 }
 
-void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
+static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
@@ -1798,7 +1798,7 @@ void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 *
 *  rct2: 0x00664280
 */
-void top_toolbar_tool_update_land(sint16 x, sint16 y){
+static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
 	if (gCurrentToolId == 3){
@@ -1968,7 +1968,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 *
 *  rct2: 0x006E6BDC
 */
-void top_toolbar_tool_update_water(sint16 x, sint16 y){
+static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
 	if (gCurrentToolId == 3){
@@ -2101,7 +2101,7 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
-money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
+static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
 	scenery_remove_ghost_tool_placement();
 
 	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
@@ -2260,7 +2260,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 *
 *  rct2: 0x006E287B
 */
-void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
+static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
 
@@ -2641,7 +2641,7 @@ money32 selection_lower_land(uint8 flags)
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x00664454
 */
-void window_top_toolbar_land_tool_drag(short x, short y)
+static void window_top_toolbar_land_tool_drag(short x, short y)
 {
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)
@@ -2680,7 +2680,7 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 *  part of window_top_toolbar_tool_drag(0x0066CB4E)
 *  rct2: 0x006E6D4B
 */
-void window_top_toolbar_water_tool_drag(short x, short y)
+static void window_top_toolbar_water_tool_drag(short x, short y)
 {
 	rct_window *window = window_find_from_point(x, y);
 	if (!window)

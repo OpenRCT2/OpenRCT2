@@ -79,7 +79,12 @@ interface IObjectRepository
 
 IObjectRepository * GetObjectRepository();
 
-#else
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 size_t                          object_repository_get_items_count();
 const ObjectRepositoryItem *    object_repository_get_items();
@@ -92,6 +97,8 @@ const utf8 *    object_get_description(const void * object);
 const utf8 *    object_get_capacity(const void * object);
 void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height);
 
+#ifdef __cplusplus
+}
 #endif
 
 enum ORI_RIDE_FLAG

@@ -20,7 +20,7 @@
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */
-void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, int no_pixels)
+static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, int no_pixels)
 {
 	y -= dpi->y;
 

@@ -813,7 +813,7 @@ void window_guest_viewport_init(rct_window* w){
  *  rct2: 0x6983dd
  * used by window_staff as well
  */
-void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1<<WIDX_TAB_1))
 		return;
 
@@ -876,7 +876,7 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
  *
  *  rct2: 0x69869b
  */
-void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_2))
 		return;
 
@@ -908,7 +908,7 @@ void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
  *
  *  rct2: 0x69861F
  */
-void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_3)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_3];
@@ -928,7 +928,7 @@ void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
  *
  *  rct2: 0x698597
  */
-void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_4)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_4];
@@ -948,7 +948,7 @@ void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
  *
  *  rct2: 0x6985D8
  */
-void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_5)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_5];
@@ -968,7 +968,7 @@ void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
  *
  *  rct2: 0x698661
  */
-void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
+static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_6)) return;
 
 	rct_widget* widget = &w->widgets[WIDX_TAB_6];
@@ -1390,7 +1390,7 @@ void window_guest_stats_invalidate(rct_window *w)
 *
 *  ebp: colour, contains flag 0x80000000 for blinking
 */
-void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_drawpixelinfo *dpi, int colour){
+static void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_drawpixelinfo *dpi, int colour){
 	value *= 0x76;
 	value >>= 8;
 

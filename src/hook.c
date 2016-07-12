@@ -37,7 +37,7 @@ int g_maxhooks = 1000;
 	*(data + 2) = ((addr) & 0x00ff0000) >> 16; \
 	*(data + 3) = ((addr) & 0xff000000) >> 24;
 
-void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
+static void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	int i = 0;
 	char data[100];

@@ -198,4 +198,9 @@ datetime64 platform_get_datetime_now_utc();
 	void platform_remove_file_associations();
 #endif // __WINDOWS__
 
+#if defined(__LINUX__) || defined(__MACOSX__)
+	void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
+	void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+#endif
+
 #endif

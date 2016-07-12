@@ -76,7 +76,7 @@ static void window_all_wheel_input();
 static int window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
 static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
 
-int window_get_widget_index(rct_window *w, rct_widget *widget)
+static int window_get_widget_index(rct_window *w, rct_widget *widget)
 {
 	int i = 0;
 	for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
@@ -85,7 +85,7 @@ int window_get_widget_index(rct_window *w, rct_widget *widget)
 	return -1;
 }
 
-int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
+static int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 {
 	if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
 		return -1;
@@ -102,7 +102,7 @@ int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 	return scrollIndex;
 }
 
-int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
+static int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 {
 	if (widget->type != WWT_SCROLL)
 		return -1;
@@ -118,7 +118,7 @@ int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 	return scrollIndex;
 }
 
-rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
+static rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 {
 	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget->type != WWT_SCROLL)
@@ -1347,7 +1347,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
  *
  *  rct2: 0x00688956
  */
-void sub_688956()
+static void sub_688956()
 {
 	rct_window *w;
 
@@ -2163,7 +2163,7 @@ void window_close_construction_windows()
  *
  *  rct2: 0x006EA776
  */
-void window_invalidate_pressed_image_buttons(rct_window *w)
+static void window_invalidate_pressed_image_buttons(rct_window *w)
 {
 	int widgetIndex;
 	rct_widget *widget;
@@ -2226,7 +2226,7 @@ void window_update_viewport_ride_music()
 	}
 }
 
-void window_snap_left(rct_window *w, int proximity)
+static void window_snap_left(rct_window *w, int proximity)
 {
 	int right, rightMost, wLeftProximity, wRightProximity, wBottom;
 	rct_window *mainWindow, *w2;
@@ -2259,7 +2259,7 @@ void window_snap_left(rct_window *w, int proximity)
 		w->x = rightMost;
 }
 
-void window_snap_top(rct_window *w, int proximity)
+static void window_snap_top(rct_window *w, int proximity)
 {
 	int bottom, bottomMost, wTopProximity, wBottomProximity, wRight;
 	rct_window *mainWindow, *w2;
@@ -2292,7 +2292,7 @@ void window_snap_top(rct_window *w, int proximity)
 		w->y = bottomMost;
 }
 
-void window_snap_right(rct_window *w, int proximity)
+static void window_snap_right(rct_window *w, int proximity)
 {
 	int leftMost, wLeftProximity, wRightProximity, wRight, wBottom, screenWidth;
 	rct_window *mainWindow, *w2;
@@ -2325,7 +2325,7 @@ void window_snap_right(rct_window *w, int proximity)
 		w->x = leftMost - w->width;
 }
 
-void window_snap_bottom(rct_window *w, int proximity)
+static void window_snap_bottom(rct_window *w, int proximity)
 {
 	int topMost, wTopProximity, wBottomProximity, wRight, wBottom, screenHeight;
 	rct_window *mainWindow, *w2;

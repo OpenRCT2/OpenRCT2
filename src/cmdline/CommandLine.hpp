@@ -19,6 +19,7 @@
 extern "C"
 {
     #include "../common.h"
+    #include "../cmdline_sprite.h"
 }
 
 /**

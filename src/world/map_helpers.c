@@ -175,7 +175,7 @@ int map_smooth(int l, int t, int r, int b)
 	return raisedLand;
 }
 
-int map_get_corner_height(int x, int y, int corner)
+static int map_get_corner_height(int x, int y, int corner)
 {
 	rct_map_element *mapElement = map_get_surface_element_at(x, y);
 	int baseHeight = mapElement->base_height;
@@ -205,7 +205,7 @@ int map_get_corner_height(int x, int y, int corner)
 /**
  * There are non-smoothed tiles with this version, but diagonal land blocks end up being wavy.
  */
-int map_smooth_wavy(int l, int t, int r, int b)
+static int map_smooth_wavy(int l, int t, int r, int b)
 {
 	int i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
 	rct_map_element *mapElement;

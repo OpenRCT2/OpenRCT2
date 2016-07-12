@@ -21,6 +21,7 @@
 #include "../track_paint.h"
 #include "../track.h"
 #include "../../paint/supports.h"
+#include "../vehicle_paint.h"
 
 enum
 {

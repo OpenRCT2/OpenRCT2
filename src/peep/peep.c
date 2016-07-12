@@ -810,7 +810,7 @@ static void sub_68F41A(rct_peep *peep, int index)
  * rct2: 0x68F3AE
  * Set peep state to falling if path below has gone missing, return 1 if current path is valid, 0 if peep starts falling
  */
-int checkForPath(rct_peep *peep){
+static int checkForPath(rct_peep *peep){
 	peep->var_C4++;
 	if ((peep->var_C4 & 0xF) != (peep->sprite_index & 0xF)){
 		// This condition makes the check happen less often so the peeps hover for a short,
@@ -905,7 +905,7 @@ static void peep_state_reset(rct_peep* peep){
  *  rct2: 0x69C308
  * Check if lost.
  */
-void peep_check_if_lost(rct_peep* peep){
+static void peep_check_if_lost(rct_peep* peep){
 	if (!(peep->peep_flags & PEEP_FLAGS_LOST)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) < 2)return;
 		peep->peep_flags ^= PEEP_FLAGS_21;
@@ -926,7 +926,7 @@ void peep_check_if_lost(rct_peep* peep){
  *  rct2: 0x69C26B
 * Check if cant find ride.
 */
-void peep_check_cant_find_ride(rct_peep* peep){
+static void peep_check_cant_find_ride(rct_peep* peep){
 	if (peep->guest_heading_to_ride_id == 0xFF)
 		return;
 
@@ -955,7 +955,7 @@ void peep_check_cant_find_ride(rct_peep* peep){
  *  rct2: 0x69C2D0
 * Check if cant find exit.
 */
-void peep_check_cant_find_exit(rct_peep* peep){
+static void peep_check_cant_find_exit(rct_peep* peep){
 	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
 		return;
 
@@ -982,7 +982,7 @@ void peep_check_cant_find_exit(rct_peep* peep){
  * @param distance (bp)
  * @param peep (esi)
  */
-int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep){
+static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->action_sprite_image_offset;
 	if (peep->action == 0xFE){
 		peep->action = 0xFF;
@@ -1089,7 +1089,7 @@ void peep_decrement_num_riders(rct_peep* peep){
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void set_sprite_type(rct_peep* peep, uint8 type){
+static void set_sprite_type(rct_peep* peep, uint8 type){
 	if (peep->sprite_type == type)return;
 
 	peep->sprite_type = type;
@@ -1339,7 +1339,7 @@ void peep_remove(rct_peep* peep){
  * Falling and its subset drowning
  *  rct2: 0x690028
  */
-void peep_update_falling(rct_peep* peep){
+static void peep_update_falling(rct_peep* peep){
 	if (peep->action == PEEP_ACTION_DROWNING){
 		// Check to see if we are ready to drown.
 		sint16 x, y, xy_distance;
@@ -1455,7 +1455,7 @@ void peep_update_falling(rct_peep* peep){
  *
  *  rct2: 0x00691677
  */
-void peep_try_get_up_from_sitting(rct_peep* peep){
+static void peep_try_get_up_from_sitting(rct_peep* peep){
 	// Eats all food first
 	if (peep_has_food(peep))return;
 
@@ -1477,7 +1477,7 @@ void peep_try_get_up_from_sitting(rct_peep* peep){
  *
  *  rct2: 0x0069152B
  */
-void peep_update_sitting(rct_peep* peep){
+static void peep_update_sitting(rct_peep* peep){
 	if (peep->sub_state == 0){
 		if (!checkForPath(peep))return;
 		//691541
@@ -1865,7 +1865,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
  *
  *  rct2: 0x006921D3
  */
-void peep_update_ride_sub_state_1(rct_peep* peep){
+static void peep_update_ride_sub_state_1(rct_peep* peep){
 	sint16 x, y, xy_distance;
 
 	rct_ride* ride = get_ride(peep->current_ride);
@@ -2365,7 +2365,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
  *
  *  rct2: 0x00693028
  */
-void peep_update_ride_sub_state_7(rct_peep* peep){
+static void peep_update_ride_sub_state_7(rct_peep* peep){
 	rct_ride* ride = get_ride(peep->current_ride);
 
 	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
@@ -6445,7 +6445,7 @@ const int face_sprite_large[] = {
 	SPR_PEEP_LARGE_FACE_VERY_VERY_HAPPY,
 };
 
-int get_face_sprite_offset(rct_peep *peep){
+static int get_face_sprite_offset(rct_peep *peep){
 
 	// ANGRY
 	if (peep->var_F3) return PEEP_FACE_OFFSET_ANGRY;
@@ -7499,7 +7499,7 @@ static int guest_surface_path_finding(rct_peep* peep){
 	return peep_move_one_tile(randDirection, peep);
 }
 
-rct_map_element* get_banner_on_path(rct_map_element *path_element)
+static rct_map_element* get_banner_on_path(rct_map_element *path_element)
 {
 	// This is an improved version of original.
 	// That only checked for one fence in the way.
@@ -7711,7 +7711,7 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
  *
  *  rct2: 0x0069A60A
  */
-uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
+static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
 		return 16;
 

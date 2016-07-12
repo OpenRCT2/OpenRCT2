@@ -111,7 +111,7 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 	}
 }
 
-rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int x, int y, int z, int rideIndex)
+static rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int x, int y, int z, int rideIndex)
 {
 	rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	if (mapElement == NULL) {

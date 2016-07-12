@@ -224,12 +224,12 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-void sub_683326(int left, int top, int right, int bottom)
+static void sub_683326(int left, int top, int right, int bottom)
 {
 	RCT2_CALLPROC_X(0x00683359, left, top, right, bottom, 0, 0, 0);
 }
 
-void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int x, int y)
+static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int x, int y)
 {
 	// sub-divide by intersecting windows
 	if (window < gWindowNextSlot)
@@ -349,7 +349,7 @@ void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewpo
 	}
 }
 
-void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
+static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
 {
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
@@ -385,7 +385,7 @@ void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* 
 	sub_6E7FF3(dpi, w, viewport, x_diff, y_diff);
 }
 
-void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
+static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
 {
 	uint8 zoom = (1 << viewport->zoom);
 
@@ -465,7 +465,7 @@ void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
 }
 
 //rct2: 0x006E7A15
-void viewport_set_underground_flag(int underground, rct_window* window, rct_viewport* viewport)
+static void viewport_set_underground_flag(int underground, rct_window* window, rct_viewport* viewport)
 {
 	if (window->classification != WC_MAIN_WINDOW)
 	{
@@ -990,7 +990,7 @@ void viewport_set_visibility(uint8 mode)
  * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
  *  rct2: 0x00688697
  */
-void store_interaction_info(paint_struct *ps)
+static void store_interaction_info(paint_struct *ps)
 {
 	if (RCT2_GLOBAL(0x0141F569, uint8) == 0) return;
 
@@ -1282,7 +1282,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
  *
  *  rct2: 0x00679023
  */
-void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 {
 	RCT2_GLOBAL(0x00141F569, uint8) = 0;
 	imageId &= 0xBFFFFFFF;
@@ -1304,7 +1304,7 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
  *
  *  rct2: 0x0068862C
  */
-void sub_68862C()
+static void sub_68862C()
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 	paint_struct *ps = unk_EE7884, *old_ps, *next_ps;
@@ -1440,7 +1440,7 @@ void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, i
 	}
 }
 
-rct_viewport *viewport_find_from_point(int screenX, int screenY)
+static rct_viewport *viewport_find_from_point(int screenX, int screenY)
 {
 	rct_window *w = window_find_from_point(screenX, screenY);
 	if (w == NULL)

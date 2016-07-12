@@ -85,7 +85,7 @@ public:
 
 namespace ObjectFactory
 {
-    void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
+    static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
     {
         try
         {
@@ -102,7 +102,7 @@ namespace ObjectFactory
         }
     }
 
-    MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
+    static MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
     {
         size_t bufferSize = 0x600000;
         void * buffer = Memory::Allocate<void>(bufferSize);

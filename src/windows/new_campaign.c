@@ -98,7 +98,7 @@ static rct_window_event_list window_new_campaign_events = {
 uint8 window_new_campaign_rides[MAX_RIDES];
 uint8 window_new_campaign_shop_items[64];
 
-int ride_value_compare(const void *a, const void *b)
+static int ride_value_compare(const void *a, const void *b)
 {
 	rct_ride *rideA, *rideB;
 
@@ -107,7 +107,7 @@ int ride_value_compare(const void *a, const void *b)
 	return rideB->value - rideA->value;
 }
 
-int ride_name_compare(const void *a, const void *b)
+static int ride_name_compare(const void *a, const void *b)
 {
 	char rideAName[256], rideBName[256];
 	rct_ride *rideA, *rideB;

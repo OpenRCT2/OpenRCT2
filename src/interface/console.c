@@ -107,7 +107,7 @@ void console_toggle()
 		console_open();
 }
 
-void console_init()
+static void console_init()
 {
 	_consoleInitialised = true;
 	console_writeline(OPENRCT2_NAME " " OPENRCT2_VERSION);

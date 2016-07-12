@@ -952,7 +952,7 @@ namespace RCT1
         return map[sceneryGroupType];
     }
 
-    const char * GetWaterObject(uint8 waterType)
+    static const char * GetWaterObject(uint8 waterType)
     {
         static const char * map[] =
         {

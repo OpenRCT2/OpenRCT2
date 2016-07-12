@@ -17,6 +17,7 @@
 extern "C"
 {
     #include "../platform/platform.h"
+    #include "../openrct2.h"
 }
 
 #include "../core/Console.hpp"
@@ -290,7 +291,7 @@ namespace CommandLine
         return buffer;
     }
 
-    const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
+    static const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
     {
         // Check if end of arguments or options have started
         const char * firstArgument;

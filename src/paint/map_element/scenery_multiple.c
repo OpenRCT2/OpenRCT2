@@ -26,7 +26,7 @@
 #include "../../world/scenery.h"
 
 // 6B8172:
-void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
+static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
 {
 	if (tile->var_7 & 0x20) {
 		return;
@@ -59,7 +59,7 @@ void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_map_ele
 	paint_util_set_general_support_height(clearanceHeight, 0x20);
 }
 
-rct_large_scenery_text_glyph *scenery_multiple_sign_get_glyph(rct_large_scenery_text *text, uint32 codepoint)
+static rct_large_scenery_text_glyph *scenery_multiple_sign_get_glyph(rct_large_scenery_text *text, uint32 codepoint)
 {
 	if (codepoint >= countof(text->glyphs)) {
 		return &text->glyphs['?'];
@@ -67,7 +67,7 @@ rct_large_scenery_text_glyph *scenery_multiple_sign_get_glyph(rct_large_scenery_
 	return &text->glyphs[codepoint];
 }
 
-int scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_text *text)
+static int scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_text *text)
 {
 	int width = 0;
 	uint32 codepoint;
@@ -77,7 +77,7 @@ int scenery_multiple_sign_text_width(const utf8 *str, rct_large_scenery_text *te
 	return width;
 }
 
-int scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_text *text)
+static int scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_text *text)
 {
 	int height = 0;
 	uint32 codepoint;
@@ -87,7 +87,7 @@ int scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_text *t
 	return height;
 }
 
-const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_scenery_text *text, bool height)
+static const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_scenery_text *text, bool height)
 {
 	static utf8 fitStr[32] = {0};
 	utf8 *fitStrEnd = fitStr;
@@ -105,11 +105,11 @@ const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_scenery_te
 	return fitStr;
 }
 
-int div_to_minus_infinity(int a, int b) {
+static int div_to_minus_infinity(int a, int b) {
 	return (a / b) - (a % b < 0);
 }
 
-void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, int textImage, int textColour, uint8 direction, int y_offset)
+static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *text, int textImage, int textColour, uint8 direction, int y_offset)
 {
 	const utf8 *fitStr = scenery_multiple_sign_fit_text(str, text, false);
 	int width = scenery_multiple_sign_text_width(fitStr, text);

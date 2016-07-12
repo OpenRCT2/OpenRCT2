@@ -566,7 +566,7 @@ static void window_park_set_disabled_tabs(rct_window *w);
  *
  *  rct2: 0x00667F11
  */
-rct_window *window_park_open()
+static rct_window *window_park_open()
 {
 	rct_window* w;
 
@@ -751,7 +751,7 @@ static void window_park_entrance_update(rct_window *w)
 }
 
 
-void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
+static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 {
 	map_invalidate_selection_rect();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;

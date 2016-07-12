@@ -25,7 +25,7 @@ constexpr uint8 RCT2_LANGUAGE_ID_ENGLISH_UK = 0;
 constexpr uint8 RCT2_LANGUAGE_ID_BLANK = 254;
 constexpr uint8 RCT2_LANGUAGE_ID_END = 255;
 
-bool StringIsBlank(utf8 * str)
+static bool StringIsBlank(utf8 * str)
 {
     for (utf8 * ch = str; *ch != '\0'; ch++)
     {

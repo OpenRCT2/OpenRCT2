@@ -315,7 +315,7 @@ struct tile_descriptor
 	corner_height corner_heights;
 };
 
-uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
+static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
 {
 	uint8 slope = mapElement->properties.surface.slope;
 
@@ -329,7 +329,7 @@ uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapEleme
 /**
  * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
-void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 
 	if (neighbour.map_element == NULL) {
@@ -433,7 +433,7 @@ void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self,
 /**
  * rct2: 0x0065F63B, 0x0065F77D
  */
-void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
@@ -529,7 +529,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 /**
  * rct2: 0x0065EB7D, 0x0065F0D8
  */
-void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
@@ -689,7 +689,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 /**
  * rct2: 0x0066039B, 0x006604F1
  */
-void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
@@ -791,7 +791,7 @@ void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, uint8 te
 /**
  * rct2: 0x0065F8B9, 0x0065FE26
  */
-void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 

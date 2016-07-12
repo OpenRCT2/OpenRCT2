@@ -480,7 +480,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours) {
 void format_string_part_from_raw(char **dest, const char *src, char **args);
 void format_string_part(char **dest, rct_string_id format, char **args);
 
-void format_integer(char **dest, long long value)
+static void format_integer(char **dest, long long value)
 {
 	int digit;
 	char *dst = *dest;
@@ -520,7 +520,7 @@ void format_integer(char **dest, long long value)
 	*dest = finish;
 }
 
-void format_comma_separated_integer(char **dest, long long value)
+static void format_comma_separated_integer(char **dest, long long value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -574,7 +574,7 @@ void format_comma_separated_integer(char **dest, long long value)
 	*dest = finish;
 }
 
-void format_comma_separated_fixed_1dp(char **dest, long long value)
+static void format_comma_separated_fixed_1dp(char **dest, long long value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -639,7 +639,7 @@ void format_comma_separated_fixed_1dp(char **dest, long long value)
 	*dest = finish;
 }
 
-void format_comma_separated_fixed_2dp(char **dest, long long value)
+static void format_comma_separated_fixed_2dp(char **dest, long long value)
 {
 	int digit, groupIndex;
 	char *dst = *dest;
@@ -707,7 +707,7 @@ void format_comma_separated_fixed_2dp(char **dest, long long value)
 	*dest = finish;
 }
 
-void format_currency(char **dest, long long value)
+static void format_currency(char **dest, long long value)
 {
 	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
@@ -749,7 +749,7 @@ void format_currency(char **dest, long long value)
 	}
 }
 
-void format_currency_2dp(char **dest, long long value)
+static void format_currency_2dp(char **dest, long long value)
 {
 	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
@@ -790,7 +790,7 @@ void format_currency_2dp(char **dest, long long value)
 	}
 }
 
-void format_date(char **dest, uint16 value)
+static void format_date(char **dest, uint16 value)
 {
 	uint16 args[] = { date_get_month(value), date_get_year(value) + 1 };
 	uint16 *argsRef = args;
@@ -798,7 +798,7 @@ void format_date(char **dest, uint16 value)
 	(*dest)--;
 }
 
-void format_length(char **dest, sint16 value)
+static void format_length(char **dest, sint16 value)
 {
 	rct_string_id stringId = STR_UNIT_SUFFIX_METRES;
 
@@ -812,7 +812,7 @@ void format_length(char **dest, sint16 value)
 	(*dest)--;
 }
 
-void format_velocity(char **dest, uint16 value)
+static void format_velocity(char **dest, uint16 value)
 {
 	rct_string_id stringId;
 
@@ -841,7 +841,7 @@ static const rct_string_id DurationFormats[][2] = {
 	{STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS},
 };
 
-void format_duration(char **dest, uint16 value)
+static void format_duration(char **dest, uint16 value)
 {
 	uint16 minutes = value / 60;
 	uint16 seconds = value % 60;
@@ -875,7 +875,7 @@ static const rct_string_id RealtimeFormats[][2] = {
 	{STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS},
 };
 
-void format_realtime(char ** dest, uint16 value)
+static void format_realtime(char ** dest, uint16 value)
 {
 	uint16 hours = value / 60;
 	uint16 minutes = value % 60;
@@ -903,7 +903,7 @@ void format_realtime(char ** dest, uint16 value)
 	(*dest)--;
 }
 
-void format_string_code(unsigned int format_code, char **dest, char **args)
+static void format_string_code(unsigned int format_code, char **dest, char **args)
 {
 	int value;
 

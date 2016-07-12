@@ -30,7 +30,7 @@
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_element)
+static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_element)
 {
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
@@ -159,7 +159,7 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
  *
  *  rct2: 0x006658ED
  */
-void park_entrance_paint(uint8 direction, int height, rct_map_element* map_element){
+static void park_entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
 		return;
 

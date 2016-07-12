@@ -143,7 +143,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
 	invalidate_sprite_2((rct_sprite *)newPeep);
 }
 
-money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int *newPeep_sprite_index)
+static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int *newPeep_sprite_index)
 {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	gCommandPosition.x = command_x;
@@ -834,7 +834,7 @@ static int staff_path_finding_handyman(rct_peep* peep)
 	return 0;
 }
 
-uint8 staff_direction_surface(rct_peep* peep, uint8 initialDirection) {
+static uint8 staff_direction_surface(rct_peep* peep, uint8 initialDirection) {
 	uint8 direction = initialDirection;
 	for (int i = 0; i < 3; ++i) {
 		// Looks left and right from initial direction

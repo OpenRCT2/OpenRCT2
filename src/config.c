@@ -628,7 +628,7 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 	}
 }
 
-bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
+static bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
 {
 	utf8 *ch;
 	int c;
@@ -649,7 +649,7 @@ bool config_get_section(const utf8string line, const utf8 **sectionName, int *se
 	return true;
 }
 
-bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
+static bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
 {
 	utf8 *ch, *clast;
 	int c;
@@ -702,7 +702,7 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	return true;
 }
 
-config_section_definition *config_get_section_def(const utf8 *name, int size)
+static config_section_definition *config_get_section_def(const utf8 *name, int size)
 {
 	int i;
 
@@ -716,7 +716,7 @@ config_section_definition *config_get_section_def(const utf8 *name, int size)
 	return NULL;
 }
 
-config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
+static config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
 {
 	int i;
 
@@ -756,7 +756,7 @@ static utf8string escape_string(const utf8 *value, int valueSize) {
 	return escaped;
 }
 
-void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
+static void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
 {
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
@@ -1069,7 +1069,7 @@ void config_reset_shortcut_keys()
 	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
 }
 
-void config_shortcut_keys_get_path(utf8 *outPath)
+static void config_shortcut_keys_get_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
 	strcat(outPath, "hotkeys.cfg");

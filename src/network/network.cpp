@@ -1882,7 +1882,7 @@ void Network::Client_Send_GAMEINFO()
 	server_connection.QueuePacket(std::move(packet));
 }
 
-std::string json_stdstring_value(const json_t * string)
+static std::string json_stdstring_value(const json_t * string)
 {
 	const char * cstr = json_string_value(string);
 	return cstr == nullptr ? std::string() : std::string(cstr);
