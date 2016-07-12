@@ -4503,77 +4503,88 @@ void map_extend_boundary_surface()
 }
 
 /**
+ * Clears the provided element properly from a certain tile.
+ */
+void clear_element_at(int x, int y, rct_map_element *element)
+{
+	switch (map_element_get_type(element)) {
+	case MAP_ELEMENT_TYPE_SURFACE:
+		break;
+	case MAP_ELEMENT_TYPE_ENTRANCE:
+		viewport_interaction_remove_park_entrance(element, x, y);
+		break;
+	case MAP_ELEMENT_TYPE_FENCE:
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
+		game_do_command(
+				x,
+				GAME_COMMAND_FLAG_APPLY,
+				y,
+				(element->type & MAP_ELEMENT_DIRECTION_MASK) | (element->base_height << 8),
+				GAME_COMMAND_REMOVE_FENCE,
+				0,
+				0
+		);
+		break;
+	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
+		game_do_command(
+				x,
+				(GAME_COMMAND_FLAG_APPLY) | ((element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+				y,
+				(element->base_height) | (((element->properties.scenerymultiple.type >> 8) >> 2) << 8),
+				GAME_COMMAND_REMOVE_LARGE_SCENERY,
+				0,
+				0
+		);
+		break;
+	case MAP_ELEMENT_TYPE_BANNER:
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
+		game_do_command(
+				x,
+				GAME_COMMAND_FLAG_APPLY,
+				y,
+				(element->base_height) | ((element->properties.banner.position & 3) << 8),
+				GAME_COMMAND_REMOVE_BANNER,
+				0,
+				0
+		);
+		break;
+	default:
+		map_element_remove(element);
+		break;
+	}
+}
+
+/**
  * Clears all elements properly from a certain tile.
  *  rct2: 0x0068AE2A
  */
 static void clear_elements_at(int x, int y)
 {
-	for (;;) {
-		for (int i = 0; i < 2; i++) {
-			rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
-			if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
-				peepSpawn->x = UINT16_MAX;
-			}
-		}
-
-		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	next_element:
-		switch (map_element_get_type(mapElement)) {
-		case MAP_ELEMENT_TYPE_SURFACE:
-			mapElement->base_height = 2;
-			mapElement->clearance_height = 2;
-			mapElement->properties.surface.slope = 0;
-			mapElement->properties.surface.terrain = 0;
-			mapElement->properties.surface.grass_length = 1;
-			mapElement->properties.surface.ownership = 0;
-			if (!map_element_is_last_for_tile(mapElement++))
-				goto next_element;
-
-			return;
-		case MAP_ELEMENT_TYPE_ENTRANCE:
-			viewport_interaction_remove_park_entrance(mapElement, x, y);
-			break;
-		case MAP_ELEMENT_TYPE_FENCE:
-			gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-			game_do_command(
-				x,
-				GAME_COMMAND_FLAG_APPLY,
-				y,
-				(mapElement->type & MAP_ELEMENT_DIRECTION_MASK) | (mapElement->base_height << 8),
-				GAME_COMMAND_REMOVE_FENCE,
-				0,
-				0
-			);
-			break;
-		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-			gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-			game_do_command(
-				x,
-				(GAME_COMMAND_FLAG_APPLY) | ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
-				y,
-				(mapElement->base_height) | (((mapElement->properties.scenerymultiple.type >> 8) >> 2) << 8),
-				GAME_COMMAND_REMOVE_LARGE_SCENERY,
-				0,
-				0
-			);
-			break;
-		case MAP_ELEMENT_TYPE_BANNER:
-			gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-			game_do_command(
-				x,
-				GAME_COMMAND_FLAG_APPLY,
-				y,
-				(mapElement->base_height) | ((mapElement->properties.banner.position & 3) << 8),
-				GAME_COMMAND_REMOVE_BANNER,
-				0,
-				0
-			);
-			break;
-		default:
-			map_element_remove(mapElement);
-			break;
+	for (int i = 0; i < 2; i++) {
+		rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
+		if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
+			peepSpawn->x = UINT16_MAX;
 		}
 	}
+
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+
+	if(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE){
+		mapElement->base_height = 2;
+		mapElement->clearance_height = 2;
+		mapElement->properties.surface.slope = 0;
+		mapElement->properties.surface.terrain = 0;
+		mapElement->properties.surface.grass_length = 1;
+		mapElement->properties.surface.ownership = 0;
+		if (map_element_is_last_for_tile(mapElement++))
+			return;
+	}
+
+	while(!map_element_is_last_for_tile(mapElement))
+		clear_element_at(x, y, mapElement);
+
+	clear_element_at(x, y, mapElement);
 }
 
 int map_get_highest_z(int tileX, int tileY)
