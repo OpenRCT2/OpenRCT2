@@ -17,18 +17,18 @@
 #include <time.h>
 #include "../addresses.h"
 #include "../config.h"
-#include "../game.h"
 #include "../editor.h"
+#include "../game.h"
+#include "../interface/themes.h"
+#include "../interface/title_sequences.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../scenario.h"
 #include "../title.h"
-#include "../windows/error.h"
-#include "../interface/themes.h"
-#include "../interface/title_sequences.h"
 #include "../util/util.h"
+#include "../windows/error.h"
 
 #pragma region Widgets
 
