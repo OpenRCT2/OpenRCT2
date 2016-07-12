@@ -317,7 +317,8 @@ void platform_process_messages()
 	while (SDL_PollEvent(&e)) {
 
 		// Multiple window events per update must be handled; ignore inputs.
-		if (skip && (e.type != SDL_WINDOWEVENT))
+		if (skip && !(e.type == SDL_WINDOWEVENT ||
+					  e.type == SDL_QUIT))
 			continue;
 
 		switch (e.type) {
