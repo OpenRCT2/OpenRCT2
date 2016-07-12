@@ -535,91 +535,92 @@ static void window_loadsave_sort_list(int index, int endIndex)
 
 static void window_loadsave_populate_list(rct_window *w, int includeNewItem, const char *directory, const char *extension)
 {
-	int i;
-	int sortStartIndex = 0;
-	int listItemCapacity = 8;
-	loadsave_list_item *listItem;
-	char filter[MAX_PATH];
-	
 	safe_strcpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
 		safe_strcpy(_extension, extension, sizeof(_extension));
-		_extension[sizeof(_extension) - 1] = '\0';
 	}
 	_shortenedDirectory[0] = '\0';
 
-	safe_strcpy(filter, directory, sizeof(filter));
-	strncat(filter, "*", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
-	strncat(filter, extension, sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
-
 	if (_listItems != NULL)
 		free(_listItems);
-	_listItems = (loadsave_list_item*)malloc(listItemCapacity * sizeof(loadsave_list_item));
+	
+	int listItemCapacity = 8;
+	_listItems = malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
 	
-	window_loadsave_widgets[WIDX_NEW].type = includeNewItem?WWT_CLOSEBOX:WWT_EMPTY; // Hide/Show "new" button
-	if(directory[0]=='\0' && platform_get_drives()!=0) // List Windows drives
-	{
-		w->disabled_widgets |= (1<<WIDX_NEW) | (1<<WIDX_UP);
-		for (int x = 0; x < 32; x++){
+	// Show "new" button when saving
+	window_loadsave_widgets[WIDX_NEW].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
+	
+	int drives = platform_get_drives();
+	if (str_is_null_or_empty(directory) && drives) {
+		// List Windows drives
+		w->disabled_widgets |= (1 << WIDX_NEW) | (1 << WIDX_UP);
+		for (int x = 0; x < 26; x++){
 			if (listItemCapacity <= _listItemsCount) {
 				listItemCapacity *= 2;
 				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
 			}
 
-			if (platform_get_drives() & (1 << (x))){
-				listItem = &_listItems[_listItemsCount];
-				memset(listItem->path, '\0', MAX_PATH);
-				listItem->path[0] = 'A' + x;
-				listItem->path[1] = ':';
-				listItem->path[2] = platform_get_path_separator();
-				strcpy(listItem->name, listItem->path);
+			if (drives & (1 << x)){
+				// If the drive exists, list it
+				loadsave_list_item *listItem = &_listItems[_listItemsCount];
+				
+				sprintf(listItem->path, "%c:%c", 'A' + x, ':');
+				safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
 				listItem->type = TYPE_DIRECTORY;
+				
 				_listItemsCount++;
 			}
 		}
 	}
-	else
-	{
-		//Get parent directory
-		int directoryLength = strlen(directory);
+	else {
 		char separator = platform_get_path_separator();
-		for(i = directoryLength-2; i>=0; i--)
-		{
-			if(directory[i]==separator)
-				break;
-		}
-		safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
-		_parentDirectory[i+1] = '\0';
-		if(_parentDirectory[0]=='\0' && platform_get_drives()==0)
-			w->disabled_widgets |= (1<<WIDX_UP);
-		else
-			w->disabled_widgets &= ~(1<<WIDX_UP);
-		w->disabled_widgets &= ~(1<<WIDX_NEW);
-		file_info fileInfo;
-		int fileEnumHandle;
-		const char *src;
-		char *dst;
-		char *last_dot_in_filename;
-		char subDir[MAX_PATH];
 		
-		fileEnumHandle = platform_enumerate_directories_begin(directory);
-		while (platform_enumerate_directories_next(fileEnumHandle, subDir)){
+		// Remove the separator at the end of the path, if present
+		safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
+		if (_parentDirectory[strlen(_parentDirectory) - 1] == separator)
+			_parentDirectory[strlen(_parentDirectory) - 1] = '\0';
+		
+		// Remove everything past the now last separator
+		char *ch = strrchr(_parentDirectory, separator);
+		if (ch != NULL)
+			*(ch + 1) = '\0';
+		
+		// Disable the Up button if the current directory is the root directory
+		if (str_is_null_or_empty(_parentDirectory) && !drives)
+			w->disabled_widgets |= (1 << WIDX_UP);
+		else
+			w->disabled_widgets &= ~(1 << WIDX_UP);
+		
+		// Re-enable the "new" button if it was disabled
+		w->disabled_widgets &= ~(1 << WIDX_NEW);
+
+		// List all directories
+		char subDir[MAX_PATH];
+		int fileEnumHandle = platform_enumerate_directories_begin(directory);
+		while (platform_enumerate_directories_next(fileEnumHandle, subDir)) {
 			if (listItemCapacity <= _listItemsCount) {
 				listItemCapacity *= 2;
 				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
 			}
 
-			listItem = &_listItems[_listItemsCount];
-			memset(listItem->path, '\0', MAX_PATH);
-			safe_strcpy(listItem->path, directory, MAX_PATH);
-			strncat(listItem->path, subDir, MAX_PATH - strnlen(listItem->path, MAX_PATH) - 1);
+			loadsave_list_item *listItem = &_listItems[_listItemsCount];
+			safe_strcpy(listItem->path, directory, sizeof(listItem->path));
+			safe_strcat_path(listItem->path, subDir, sizeof(listItem->path));
 			safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
+			
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
+		
+		// List all files with the wanted extension
+		char filter[MAX_PATH];
+		safe_strcpy(filter, directory, sizeof(filter));
+		safe_strcat_path(filter, "*", sizeof(filter));
+		safe_strcat(filter, extension, sizeof(filter));
 
+		file_info fileInfo;
 		fileEnumHandle = platform_enumerate_files_begin(filter);
 		while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 			if (listItemCapacity <= _listItemsCount) {
@@ -627,27 +628,22 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
 			}
 
-			listItem = &_listItems[_listItemsCount];
+			loadsave_list_item *listItem = &_listItems[_listItemsCount];
+			
 			safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-			strncat(listItem->path, fileInfo.path, sizeof(listItem->path) - strnlen(listItem->path, MAX_PATH) - 1);
+			safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
 			listItem->type = TYPE_FILE;
 			listItem->date_modified = platform_file_get_modified_time(listItem->path);
 
-			src = fileInfo.path;
-			dst = listItem->name;
-			last_dot_in_filename = strrchr(fileInfo.path, '.');
-			assert(last_dot_in_filename != NULL);
-			i = 0;
-			while (src < last_dot_in_filename && i < sizeof(listItem->name) - 1) {
-				*dst++ = *src++;
-				i++;
-			}
-			*dst = '\0';
+			// Remove the extension
+			safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
+			path_remove_extension(listItem->name);
 
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
-		window_loadsave_sort_list(sortStartIndex, _listItemsCount - 1);
+		
+		window_loadsave_sort_list(0, _listItemsCount - 1);
 	}
 }
 
