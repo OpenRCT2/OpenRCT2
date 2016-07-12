@@ -565,7 +565,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 				// If the drive exists, list it
 				loadsave_list_item *listItem = &_listItems[_listItemsCount];
 				
-				sprintf(listItem->path, "%c:%c", 'A' + x, ':');
+				sprintf(listItem->path, "%c:%c", 'A' + x, platform_get_path_separator());
 				safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
 				listItem->type = TYPE_DIRECTORY;
 				
@@ -585,6 +585,8 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		char *ch = strrchr(_parentDirectory, separator);
 		if (ch != NULL)
 			*(ch + 1) = '\0';
+		else
+			_parentDirectory[0] = '\0';
 		
 		// Disable the Up button if the current directory is the root directory
 		if (str_is_null_or_empty(_parentDirectory) && !drives)
