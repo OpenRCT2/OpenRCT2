@@ -583,10 +583,15 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		
 		// Remove everything past the now last separator
 		char *ch = strrchr(_parentDirectory, separator);
-		if (ch != NULL)
+		if (ch != NULL) {
 			*(ch + 1) = '\0';
-		else
+		} else if (drives) {
+			// If on Windows, clear the entire path to show the drives
 			_parentDirectory[0] = '\0';
+		} else {
+			// Else, go to the root directory
+			sprintf(_parentDirectory, "%c", separator);
+		}
 		
 		// Disable the Up button if the current directory is the root directory
 		if (str_is_null_or_empty(_parentDirectory) && !drives)
