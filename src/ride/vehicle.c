@@ -5421,7 +5421,11 @@ void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
 			vehicle->velocity -= vehicle->velocity >> 3;
 		}
 	} else {
-		apply_non_stop_block_brake(vehicle, is_block_brake_closed);
+#ifdef NEW_BLOCK_BRAKES
+		apply_non_stop_block_brake(vehicle, false);
+#else
+		apply_non_stop_block_brake(vehicle, true);
+#endif
 	}
 }
 
