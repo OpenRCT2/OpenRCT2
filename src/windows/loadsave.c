@@ -234,10 +234,48 @@ static void window_loadsave_close(rct_window *w)
 	window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 }
 
+static bool browse(bool isSave, char *path)
+{
+	if (isSave)
+		strcat(path, _defaultName);
+	
+	file_dialog_desc desc = { 0 };
+	desc.initial_directory = _directory;
+	desc.type = isSave ? FD_SAVE : FD_OPEN;
+	desc.default_filename = isSave ? path : NULL;
+	
+	rct_string_id title;
+	switch (_type & 0x0E) {
+	case LOADSAVETYPE_GAME:
+		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
+		desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
+		desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv4;*.sv6";
+		break;
+	case LOADSAVETYPE_LANDSCAPE:
+		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
+		desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
+		desc.filters[0].pattern = isSave ? "*.sc6" : "*.sc4;*.sv4;*.sc6;*.sv6";
+		break;
+	case LOADSAVETYPE_SCENARIO:
+		title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
+		desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
+		desc.filters[0].pattern = "*.sc6";
+		break;
+	case LOADSAVETYPE_TRACK:
+		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+		desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
+		desc.filters[0].pattern = isSave ? "*.td6" : "*.td4;*.td6";
+		break;
+	}
+	
+	desc.title = language_get_string(title);
+	return platform_open_common_file_dialog(path, &desc);
+}
+
 static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
 	int result = 0;
-	char path[MAX_PATH], filter[MAX_PATH];
+	char path[MAX_PATH];
 
 	bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
 	switch (widgetIndex){
@@ -254,71 +292,8 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, STR_STRING, (uint32)&_defaultName, 64);
 		break;
 	case WIDX_BROWSE:
-		safe_strcpy(path, _directory, MAX_PATH);
-		if (_type & LOADSAVETYPE_SAVE) {
-			strcat(path, _defaultName);
-		}
-
-		memset(filter, '\0', MAX_PATH);
-		safe_strcpy(filter, "*", MAX_PATH);
-		strncat(filter, _extension, MAX_PATH - strnlen(filter, MAX_PATH) - 1);
-
-		file_dialog_desc desc;
-		memset(&desc, 0, sizeof(desc));
-		desc.initial_directory = _directory;
-		if (_type & LOADSAVETYPE_SAVE) {
-			desc.default_filename = path;
-		}
-
-		switch (_type) {
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			desc.type = FD_OPEN;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_LOAD_GAME);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-			desc.filters[0].pattern = "*.sv4;*.sv6";
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			desc.type = FD_SAVE;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_GAME);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-			desc.filters[0].pattern = "*.sv6";
-			break;
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			desc.type = FD_OPEN;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
-			desc.filters[0].pattern = "*.sc4;*.sv4;*.sc6;*.sv6";
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			desc.type = FD_SAVE;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
-			desc.filters[0].pattern = "*.sc6";
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-			desc.type = FD_SAVE;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
-			desc.filters[0].pattern = "*.sc6";
-			break;
-		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			desc.type = FD_OPEN;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-			desc.filters[0].pattern = "*.td4;*.td6";
-			break;
-		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
-			desc.type = FD_SAVE;
-			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_SAVE_TRACK);
-			desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-			desc.filters[0].pattern = "*.td6";
-			break;
-		}
-
-		result = platform_open_common_file_dialog(path, &desc);
-		if (result) {
+		if (browse(isSave, path))
 			window_loadsave_select(w, path);
-		}
 		break;
 	case WIDX_SORT_NAME:
 		if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING){
@@ -341,35 +316,25 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_DEFAULT:
-	{
-		char directory[MAX_PATH];
-		
-		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
-		
 		switch (_type & 0x0E) {
 		case LOADSAVETYPE_GAME:
-			platform_get_user_directory(directory, "save");
+			platform_get_user_directory(path, "save");
 			break;
-		
 		case LOADSAVETYPE_LANDSCAPE:
-			platform_get_user_directory(directory, "landscape");
+			platform_get_user_directory(path, "landscape");
 			break;
-				
 		case LOADSAVETYPE_SCENARIO:
-			platform_get_user_directory(directory, "scenario");
+			platform_get_user_directory(path, "scenario");
 			break;
-				
 		case LOADSAVETYPE_TRACK:
-			platform_get_user_directory(directory, "track");
+			platform_get_user_directory(path, "track");
 			break;
 		}
 		
-		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
+		window_loadsave_populate_list(w, isSave, path, _extension);
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
-		
 		break;
-	}
 	}
 }
 
