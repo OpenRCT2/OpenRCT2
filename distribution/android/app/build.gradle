@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "org.openrct.android"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
 
         externalNativeBuild {
             cmake {
@@ -79,7 +79,7 @@ task downloadLibraries {
 
 dependencies {
     compile 'commons-io:commons-io:2.5'
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
 }
 
 task createSegmentFile() {
