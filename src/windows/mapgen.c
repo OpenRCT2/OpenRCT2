@@ -26,6 +26,7 @@
 #include "../world/scenery.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../localisation/string_ids.h"
 
 enum {
 	WINDOW_MAPGEN_PAGE_BASE,
