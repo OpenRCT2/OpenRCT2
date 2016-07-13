@@ -1455,8 +1455,9 @@ static void window_park_price_invalidate(rct_window *w)
 	window_park_prepare_window_title_text();
 
 	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-		&& (!gCheatsUnlockAllPrices)) {
+	if ((gParkFlags & PARK_FLAGS_NO_MONEY) ||
+		((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
+	) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
@@ -1466,8 +1467,9 @@ static void window_park_price_invalidate(rct_window *w)
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 	}
 
-	set_format_arg(6, uint32, gParkEntranceFee);
-	window_park_price_widgets[WIDX_PRICE].image = gParkEntranceFee == 0 ? STR_FREE : 1429;
+	money16 parkEntranceFee = park_get_entrance_fee();
+	set_format_arg(6, uint32, parkEntranceFee);
+	window_park_price_widgets[WIDX_PRICE].image = parkEntranceFee == 0 ? STR_FREE : 1429;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);

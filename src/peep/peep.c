@@ -7052,8 +7052,8 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			return peep_return_to_center_of_tile(peep);
 		}
 
-		money16 entranceFee = gParkEntranceFee;
-		if (entranceFee != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
+		money16 entranceFee = park_get_entrance_fee();
+		if (entranceFee != 0) {
 			if (peep->item_standard_flags & PEEP_ITEM_VOUCHER){
 				if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE){
 					entranceFee /= 2;

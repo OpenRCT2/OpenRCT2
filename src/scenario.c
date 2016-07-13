@@ -374,17 +374,15 @@ void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
 	money16 totalRideValue = gTotalRideValue;
-	money16 park_entrance_fee = gParkEntranceFee;
 	money16 max_fee = totalRideValue + (totalRideValue / 2);
-	uint32 game_flags = gParkFlags, packed_xy;
 
-	if ((game_flags & PARK_FLAGS_PARK_OPEN) && !(game_flags & PARK_FLAGS_NO_MONEY) && park_entrance_fee > max_fee) {
+	if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
 		for (int i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
 			x = gParkEntranceX[i] + 16;
 			y = gParkEntranceY[i] + 16;
 		}
 
-		packed_xy = (y << 16) | x;
+		uint32 packed_xy = (y << 16) | x;
 		if (gConfigNotifications.park_warnings) {
 			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
 		}

@@ -162,7 +162,7 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (gTotalRideValue < MONEY(10, 00))
 		return 0;
-	if (gParkEntranceFee + MONEY(0, 10) >= gTotalRideValue / 2)
+	if (park_get_entrance_fee() + MONEY(0, 10) >= gTotalRideValue / 2)
 		return 0;
 	return 1;
 }
@@ -210,9 +210,11 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
-	if (gParkEntranceFee == MONEY(0, 00))
+
+	money32 parkEntranceFee = park_get_entrance_fee();
+	if (parkEntranceFee == MONEY(0, 00))
 		return 0;
-	if (gTotalRideValue >= gParkEntranceFee)
+	if (gTotalRideValue >= parkEntranceFee)
 		return 0;
 	return 1;
 }

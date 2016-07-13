@@ -113,4 +113,6 @@ void map_invalidate_tile(int x, int y, int z0, int z1);
 void park_remove_ghost_entrance();
 money32 park_place_ghost_entrance(int x, int y, int z, int direction);
 
+money16 park_get_entrance_fee();
+
 #endif
