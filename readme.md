@@ -28,7 +28,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 
 **OpenRCT2** is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2). The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities. The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both scenario and sandbox play. Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
 
-RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequal to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](http://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
+RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](http://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
 
 # 2 Downloading the game (pre-built)
 
@@ -64,7 +64,7 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new Developer Command Prompt for VS2015, run PowerShell and then navigate to the repository.
-3. Run the ```setenv.ps1``` script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
+3. Run the ```setenv.ps1``` script in the repository to set up your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
 4. Run ```install``` to download the required dependencies to build OpenRCT2.
 5. Run ```build all``` to build all the required components for OpenRCT2.
 6. Run ```run``` to run OpenRCT2.
