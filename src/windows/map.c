@@ -89,7 +89,7 @@ static rct_widget window_map_widgets[] = {
 	{ WWT_CHECKBOX,			1,	58,		241,	197,	208,	STR_LAND_SALE,						STR_SET_LAND_TO_BE_AVAILABLE_TIP },
 	{ WWT_CHECKBOX,			1,	58,		231,	197,	208,	STR_CONSTRUCTION_RIGHTS_SALE,		STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
 	{ WWT_FLATBTN,			1,	218,	241,	45,		68,		SPR_ROTATE_ARROW,					STR_ROTATE_OBJECTS_90 },
-	{ WWT_DROPDOWN_BUTTON,	1,	150,	240,	190,	208,	STR_MAP_GENERATOR,					STR_MAP_GENERATOR_TIP},
+	{ WWT_DROPDOWN_BUTTON,	1,	110,	240,	190,	201,	STR_MAP_GENERATOR,					STR_MAP_GENERATOR_TIP},
 	{ WIDGETS_END },
 };
 
@@ -739,7 +739,7 @@ static void window_map_invalidate(rct_window *w)
 	}
 
 	// Disable all scenario editor related widgets
-	for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_ROTATE_90; i++) {
+	for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_MAP_GENERATOR; i++) {
 		w->widgets[i].type = WWT_EMPTY;
 	}
 
@@ -936,6 +936,8 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+	if(!gCheatsSandboxMode) //Don't show the button if the sandbox cheat is enabled.
+		w->widgets[WIDX_MAP_GENERATOR].type = WWT_DROPDOWN_BUTTON;
 	set_format_arg(2, uint16, gMapSize - 2);
 }
 
