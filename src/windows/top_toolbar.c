@@ -467,7 +467,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		numItems = 2;
 
 		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
-			gDropdownItemsFormat[2] = 2690;
+			gDropdownItemsFormat[2] = STR_MAP_GENERATOR;
 			numItems++;
 		}
 
