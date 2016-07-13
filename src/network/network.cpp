@@ -2086,7 +2086,8 @@ const char* network_get_group_name(unsigned int index)
 
 void network_chat_show_connected_message()
 {
-	char *templateString = (char*)language_get_string(STR_INDIVIDUAL_KEYS_BASE);
+	// TODO: How does this work? 2525 is '???'
+	char *templateString = (char*)language_get_string(STR_SHORTCUT_KEY_UNKNOWN);
 	keyboard_shortcut_format_string(templateString, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
 	utf8 buffer[256];
 	NetworkPlayer server;

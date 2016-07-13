@@ -52,10 +52,6 @@ typedef struct rct_ride_name_convention {
 	ride_component_type vehicle;
 	ride_component_type structure;
 	ride_component_type station;
-	rct_string_id vehicle_name;
-	rct_string_id structure_name;
-	rct_string_id station_name;
-	rct_string_id unk_name;
 } rct_ride_name_convention;
 
 typedef struct rct_ride_entrance_definition {

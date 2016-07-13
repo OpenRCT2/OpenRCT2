@@ -356,6 +356,12 @@ static const rct_string_id window_options_scale_quality_names[] = {
 	STR_SCALING_QUALITY_ANISOTROPIC,
 };
 
+static const rct_string_id window_options_fullscreen_mode_names[] = {
+	STR_OPTIONS_DISPLAY_WINDOWED,
+	STR_OPTIONS_DISPLAY_FULLSCREEN,
+	STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
+};
+
 const int window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 1 };
 const int window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 1 };
 
@@ -1374,7 +1380,7 @@ static void window_options_invalidate(rct_window *w)
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		set_format_arg(16, uint16, (uint16)gConfigGeneral.fullscreen_width);
 		set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
-		set_format_arg(12, uint16, 2773 + gConfigGeneral.fullscreen_mode);
+		set_format_arg(12, uint16, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2){

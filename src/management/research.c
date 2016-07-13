@@ -211,7 +211,7 @@ void research_finish_item(sint32 entryIndex)
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			set_format_arg(0, rct_string_id, ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
-				rideEntry->name : base_ride_type + 2);
+				rideEntry->name : base_ride_type + STR_RIDE_NAME_SPIRAL_ROLLER_COASTER); // TODO: remove string addition
 			if (!gSilentResearch) {
 				if (gConfigNotifications.ride_researched) {
 					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);

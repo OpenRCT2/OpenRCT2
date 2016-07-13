@@ -256,7 +256,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		}
 
 		// TODO: How does this work? 2525 is '???'
-		rct_string_id templateStringId = 2525;
+		rct_string_id templateStringId = STR_SHORTCUT_KEY_UNKNOWN;
 		char *templateString = (char*)language_get_string(templateStringId);
 		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
