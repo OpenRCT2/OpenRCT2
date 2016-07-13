@@ -4503,8 +4503,8 @@ void map_extend_boundary_surface()
 }
 
 /**
- * Clears the provided element properly from a certain tile, and updates the pointer passed
- * to this function to point to the next element.
+ * Clears the provided element properly from a certain tile, and updates
+ * the pointer (when needed) passed to this function to point to the next element.
  */
 void clear_element_at(int x, int y, rct_map_element **elementPtr)
 {
@@ -4572,7 +4572,7 @@ void clear_element_at(int x, int y, rct_map_element **elementPtr)
  */
 static void clear_elements_at(int x, int y)
 {
-	// Remove the spawn point (if there is one in the current tile
+	// Remove the spawn point (if there is one in the current tile)
 	for (int i = 0; i < 2; i++) {
 		rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
 		if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
