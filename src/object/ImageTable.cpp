@@ -44,6 +44,11 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
         _dataSize = imageDataSize;
         _data = Memory::Reallocate(_data, _dataSize);
+        if (_data == nullptr)
+        {
+            context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
+            throw;
+        }
 
         // Read g1 element headers
         uintptr_t imageDataBase = (uintptr_t)_data;
