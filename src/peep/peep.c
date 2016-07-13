@@ -7361,7 +7361,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 			return peep_return_to_center_of_tile(peep);
 
 		money16 cost = ride->price;
-		if (cost != 0){
+		if (cost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 			ride->total_profit += cost;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
