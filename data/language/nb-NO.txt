@@ -4199,6 +4199,12 @@ STR_5887    :Prefiks
 STR_5888    :Suffiks
 STR_5889    :Symbol for egendefinert valuta
 STR_5890    :Skriv inn valutasymbol
+STR_5891    :Standard
+STR_5892    :{SMALLFONT}{BLACK}Gå til standardmappen
+STR_5893    :Valutakurs
+STR_5894    :Skriv inn valutakurs
+STR_5895    :Lagre bane
+STR_5896    :Klarte ikke lagre bane!
 
 #############
 # Scenarios #

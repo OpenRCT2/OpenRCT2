@@ -4191,6 +4191,8 @@ STR_5887    :Staat voor het bedrag
 STR_5888    :Staat na het bedrag
 STR_5889    :Symbool eigen valuta
 STR_5890    :Voer het te gebruiken valutasymbool in:
+STR_5891    :Standaardmap
+STR_5892    :{SMALLFONT}{BLACK}Ga naar de standaardmap
 
 #############
 # Scenarios #

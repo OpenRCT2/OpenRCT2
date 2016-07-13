@@ -4192,6 +4192,10 @@ STR_5889    :Benutzerdefiniertes Währungssymbol
 STR_5890    :Benutzerdef. Währungssymbol eingeben:
 STR_5891    :Standard
 STR_5892    :{SMALLFONT}{BLACK}Zum Standardverzeichnis gehen
+STR_5893    :Wechselkurs
+STR_5894    :Wechselkurs eingeben:
+STR_5895    :Streckenentwurf speichern
+STR_5896    :Streckenentwurf konnte nicht gespeichert werden!
 
 #############
 # Scenarios #

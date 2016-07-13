@@ -4202,6 +4202,10 @@ STR_5889    :Symbole monétaire personnalisé
 STR_5890    :Entrez le symbole monétaire à utiliser
 STR_5891    :Par défaut
 STR_5892    :{SMALLFONT}{BLACK}Aller au répertoire de sauvegarde par défaut
+STR_5893    :Taux de change
+STR_5894    :Entrez le taux de change
+STR_5895    :Sauvegarder la voie
+STR_5896    :La sauvegarde de la voie a échoué !
 
 #############
 # Scenarios #
