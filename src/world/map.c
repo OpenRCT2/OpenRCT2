@@ -4503,12 +4503,23 @@ void map_extend_boundary_surface()
 }
 
 /**
- * Clears the provided element properly from a certain tile.
+ * Clears the provided element properly from a certain tile, and updates the pointer passed
+ * to this function to point to the next element.
  */
-void clear_element_at(int x, int y, rct_map_element *element)
+void clear_element_at(int x, int y, rct_map_element **elementPtr)
 {
+	rct_map_element *element = *elementPtr;
 	switch (map_element_get_type(element)) {
 	case MAP_ELEMENT_TYPE_SURFACE:
+		element->base_height = 2;
+		element->clearance_height = 2;
+		element->properties.surface.slope = 0;
+		element->properties.surface.terrain = 0;
+		element->properties.surface.grass_length = 1;
+		element->properties.surface.ownership = 0;
+		// Because this element is not completely removed, the pointer must be updated muanually
+		// The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
+		(*elementPtr)++;
 		break;
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 		viewport_interaction_remove_park_entrance(element, x, y);
@@ -4561,6 +4572,7 @@ void clear_element_at(int x, int y, rct_map_element *element)
  */
 static void clear_elements_at(int x, int y)
 {
+	// Remove the spawn point (if there is one in the current tile
 	for (int i = 0; i < 2; i++) {
 		rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
 		if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
@@ -4570,21 +4582,12 @@ static void clear_elements_at(int x, int y)
 
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 
-	if(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE){
-		mapElement->base_height = 2;
-		mapElement->clearance_height = 2;
-		mapElement->properties.surface.slope = 0;
-		mapElement->properties.surface.terrain = 0;
-		mapElement->properties.surface.grass_length = 1;
-		mapElement->properties.surface.ownership = 0;
-		if (map_element_is_last_for_tile(mapElement++))
-			return;
-	}
-
+	// Remove all elements except the last one
 	while(!map_element_is_last_for_tile(mapElement))
-		clear_element_at(x, y, mapElement);
+		clear_element_at(x, y, &mapElement);
 
-	clear_element_at(x, y, mapElement);
+	// Remove the last element
+	clear_element_at(x, y, &mapElement);
 }
 
 int map_get_highest_z(int tileX, int tileY)
