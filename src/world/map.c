@@ -4506,7 +4506,7 @@ void map_extend_boundary_surface()
  * Clears the provided element properly from a certain tile, and updates
  * the pointer (when needed) passed to this function to point to the next element.
  */
-void clear_element_at(int x, int y, rct_map_element **elementPtr)
+static void clear_element_at(int x, int y, rct_map_element **elementPtr)
 {
 	rct_map_element *element = *elementPtr;
 	switch (map_element_get_type(element)) {
