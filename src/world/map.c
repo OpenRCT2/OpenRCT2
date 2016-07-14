@@ -1288,7 +1288,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
  *
  *  rct2: 0x0068DFE4
  */
-money32 map_clear_scenery_from_tile(int x, int y, int clear, int flags)
+static money32 map_clear_scenery_from_tile(int x, int y, int clear, int flags)
 {
 	int type;
 	money32 cost, totalCost;
@@ -1379,7 +1379,7 @@ restart_from_beginning:
  * Function to clear the flag that is set to prevent cost duplication
  * when using the clear scenery tool with large scenery.
  */
-void map_reset_clear_large_scenery_flag(){
+static void map_reset_clear_large_scenery_flag(){
 	rct_map_element* mapElement;
 	// TODO: Improve efficiency of this
 	for (int y = 0; y <= 255; y++) {
@@ -1465,7 +1465,7 @@ void game_command_clear_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
  *
  *  rct2: 0x00663CCD
  */
-money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
+static money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceStyle, uint8 edgeStyle, uint8 flags)
 {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
@@ -1619,7 +1619,7 @@ const uint8 map_element_lower_styles[5][32] = {
  *
  *  rct2: 0x00663CB9
  */
-int map_set_land_height_clear_func(rct_map_element** map_element, int x, int y, uint8 flags, money32* price) {
+static int map_set_land_height_clear_func(rct_map_element** map_element, int x, int y, uint8 flags, money32* price) {
 	if (map_element_get_type(*map_element) == MAP_ELEMENT_TYPE_SURFACE)
 		return 0;
 
@@ -1833,7 +1833,7 @@ void game_command_set_land_height(int *eax, int *ebx, int *ecx, int *edx, int *e
 	);
 }
 
-money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sint16 y2, uint8 newOwnership) {
+static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sint16 y2, uint8 newOwnership) {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY))
@@ -1880,7 +1880,7 @@ void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int
 }
 
 
-money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
+static money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
 {
 	money32 cost = 0;
 
@@ -1942,7 +1942,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	return cost;
 }
 
-money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
+static money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int by, int selectionType)
 {
 	money32 cost = 0;
 
@@ -2310,7 +2310,7 @@ static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int ta
 	return game_do_command(x, flags, y, targetBaseZ | (style << 8), GAME_COMMAND_SET_LAND_HEIGHT, 0, 0);
 }
 
-money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop, int mapRight, int mapBottom, int command)
+static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop, int mapRight, int mapBottom, int command)
 {
 	// Cap bounds to map
 	mapLeft = max(mapLeft, 32);
@@ -2856,7 +2856,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int map_place_scenery_clear_func(rct_map_element** map_element, int x, int y, uint8 flags, money32* price) {
+static int map_place_scenery_clear_func(rct_map_element** map_element, int x, int y, uint8 flags, money32* price) {
 	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
 		return 1;
 
@@ -3863,7 +3863,7 @@ void map_invalidate_map_selection_tiles()
 		map_invalidate_tile_full(position->x, position->y);
 }
 
-void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, int *right, int *bottom)
+static void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, int *right, int *bottom)
 {
 	int x, y;
 	x = ax;
@@ -4798,7 +4798,7 @@ static void translate_3d_to_2d(int rotation, int *x, int *y)
 	*y = ry;
 }
 
-void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
+static void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 {
 	if (gOpenRCT2Headless) return;
 
@@ -4932,7 +4932,7 @@ void map_clear_all_elements()
 	}
 }
 
-money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
+static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
 	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
 		return MONEY32_UNDEFINED;
 	}

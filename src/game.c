@@ -68,8 +68,6 @@ bool gInUpdateCode = false;
 int gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 
-extern void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
-
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	0,
@@ -912,11 +910,11 @@ void save_game_as()
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, name);
 }
 
-int compare_autosave_file_paths (const void * a, const void * b ) {
+static int compare_autosave_file_paths (const void * a, const void * b ) {
 	return strcmp(*(char **)a, *(char **)b);
 }
 
-void limit_autosave_count(const size_t numberOfFilesToKeep)
+static void limit_autosave_count(const size_t numberOfFilesToKeep)
 {
 	int fileEnumHandle = 0;
 

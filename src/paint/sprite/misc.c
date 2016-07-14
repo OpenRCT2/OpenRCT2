@@ -18,6 +18,7 @@
 #include "../../addresses.h"
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
+#include "../../paint/sprite/sprite.h"
 #include "../paint.h"
 #include "../../localisation/string_ids.h"
 

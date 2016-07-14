@@ -285,7 +285,7 @@ void scenario_begin()
 	gGameSpeed = 1;
 }
 
-void scenario_end()
+static void scenario_end()
 {
 	rct_window* w;
 	window_close_by_class(WC_DROPDOWN);
@@ -370,7 +370,7 @@ void scenario_success_submit_name(const char *name)
  * Send a warning when entrance price is too high.
  *  rct2: 0x0066A80E
  */
-void scenario_entrance_fee_too_high_check()
+static void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
 	money16 totalRideValue = gTotalRideValue;
@@ -626,7 +626,7 @@ unsigned int scenario_rand_max(unsigned int max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-void scenario_prepare_rides_for_save()
+static void scenario_prepare_rides_for_save()
 {
 	int i;
 	rct_ride *ride;
@@ -731,7 +731,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
  *
  *  rct2: 0x006AA039
  */
-int scenario_write_available_objects(FILE *file)
+static int scenario_write_available_objects(FILE *file)
 {
 	uint8 *buffer, *dstBuffer;
 	int i, encodedLength;

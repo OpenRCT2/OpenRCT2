@@ -196,6 +196,14 @@ datetime64 platform_get_datetime_now_utc();
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();
 	void platform_remove_file_associations();
+	// This function cannot be marked as 'static', even though it may seem to be,
+	// as it requires external linkage, which 'static' prevents
+	__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 #endif // __WINDOWS__
+
+#if defined(__LINUX__) || defined(__MACOSX__)
+	void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
+	void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+#endif
 
 #endif

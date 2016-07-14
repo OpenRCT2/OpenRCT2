@@ -1300,7 +1300,7 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 *
 * rct2: 0x006AEB9F
 */
-void window_ride_disable_tabs(rct_window *w)
+static void window_ride_disable_tabs(rct_window *w)
 {
 	uint32 disabled_tabs = 0;
 	rct_ride *ride = get_ride(w->number & 0xFF);
@@ -1404,7 +1404,7 @@ static void window_ride_update_overall_view(uint8 ride_index) {
  *
  *  rct2: 0x006AEAB4
  */
-rct_window *window_ride_open(int rideIndex)
+static rct_window *window_ride_open(int rideIndex)
 {
 	rct_window *w;
 	rct_ride *ride;

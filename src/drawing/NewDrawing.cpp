@@ -17,11 +17,14 @@
 #include "../core/Exception.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+#include "NewDrawing.h"
 
 extern "C"
 {
     #include "../config.h"
-	#include "../localisation/string_ids.h"
+    #include "../drawing/drawing.h"
+    #include "../interface/screenshot.h"
+    #include "../localisation/string_ids.h"
     #include "../platform/platform.h"
 }
 

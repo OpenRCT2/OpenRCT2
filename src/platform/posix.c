@@ -144,7 +144,7 @@ bool platform_original_game_data_exists(const utf8 *path)
 	return platform_file_exists(checkPath);
 }
 
-mode_t getumask()
+static mode_t getumask()
 {
 	mode_t mask = umask(0);
 	umask(mask);
@@ -627,7 +627,7 @@ bool platform_file_delete(const utf8 *path)
 	return ret == 0;
 }
 
-wchar_t *regular_to_wchar(const char* src)
+static wchar_t *regular_to_wchar(const char* src)
 {
 	int len = strnlen(src, MAX_PATH);
 	wchar_t *w_buffer = malloc((len + 1) * sizeof(wchar_t));
@@ -649,8 +649,6 @@ wchar_t *regular_to_wchar(const char* src)
 	}
 	return w_buffer;
 }
-
-void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
 
 /**
  * Default directory fallback is:
@@ -709,8 +707,6 @@ void platform_get_openrct_data_path(utf8 *outPath)
 {
 	safe_strcpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 }
-
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
 
 /**
  * Default directory fallback is:

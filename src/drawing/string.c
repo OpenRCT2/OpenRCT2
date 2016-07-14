@@ -446,7 +446,7 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
 /**
  * Changes the palette so that the next character changes colour
  */
-void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
+static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
 
 	int eax;
 
@@ -468,7 +468,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
+static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
 
 	int eax;
 
@@ -727,7 +727,7 @@ static void _ttf_surface_cache_dispose_all()
 	}
 }
 
-SDL_Surface *_ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text)
+SDL_Surface *ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text)
 {
 	ttf_cache_entry *entry;
 
@@ -956,7 +956,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 		return;
 	} else {
 		uint8 colour = info->palette[1];
-		SDL_Surface *surface = _ttf_surface_cache_get_or_add(fontDesc->font, text);
+		SDL_Surface *surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
 		if (surface == NULL)
 			return;
 

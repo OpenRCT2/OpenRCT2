@@ -293,7 +293,7 @@ int calculate_park_rating()
 	return result;
 }
 
-money32 calculate_ride_value(rct_ride *ride)
+static money32 calculate_ride_value(rct_ride *ride)
 {
 	if (ride->type == RIDE_TYPE_NULL)
 		return 0;
@@ -795,7 +795,7 @@ void update_park_fences(int x, int y)
 	}
 }
 
-void park_remove_entrance_segment(int x, int y, int z)
+static void park_remove_entrance_segment(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
@@ -940,7 +940,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	*ebx = 0;
 }
 
-money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
+static money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 	rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 	if (surfaceElement == NULL)
 		return MONEY32_UNDEFINED;

@@ -216,7 +216,7 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle)
 		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
 }
 
-bool sub_6DF01A_loop(rct_vehicle* vehicle) {
+static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
@@ -303,7 +303,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 	return true;
 }
 
-bool sub_6DF21B_loop(rct_vehicle* vehicle) {
+static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 

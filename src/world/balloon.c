@@ -39,7 +39,7 @@ void create_balloon(int x, int y, int z, int colour, uint8 bl)
 	}
 }
 
-void balloon_pop(rct_balloon *balloon)
+static void balloon_pop(rct_balloon *balloon)
 {
 	balloon->popped = 1;
 	balloon->frame = 0;

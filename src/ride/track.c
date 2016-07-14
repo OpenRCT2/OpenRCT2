@@ -1108,7 +1108,7 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 		);
 }
 
-money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
+static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = originX + 16;
 	gCommandPosition.y = originY + 16;
@@ -1397,7 +1397,7 @@ void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi,
 	return;
 }
 
-uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
+static uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
 	uint8 minorX = x & 0x1F; // 0 or 16
 	uint8 minorY = y & 0x1F; // 0 or 16
 
@@ -1416,7 +1416,7 @@ uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
 	return 7;
 }
 
-money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 rideIndex, uint8 mode, uint16 z) {
+static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 rideIndex, uint8 mode, uint16 z) {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = x + 8;
 	gCommandPosition.y = y + 8;

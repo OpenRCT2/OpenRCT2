@@ -98,7 +98,7 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 	peepSpawn->z = z;
 }
 
-rct_map_element *map_get_footpath_element(int x, int y, int z)
+static rct_map_element *map_get_footpath_element(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
@@ -111,7 +111,7 @@ rct_map_element *map_get_footpath_element(int x, int y, int z)
 	return NULL;
 }
 
-rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
+static rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
 {
 	rct_map_element *mapElement;
 
@@ -377,7 +377,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
  *
  *  rct2: 0x006BA23E
  */
-void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
+static void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
 	while (!map_element_is_last_for_tile(mapElement++)){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
 		else if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)continue;
@@ -842,7 +842,7 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	return false;
 }
 
-bool map_is_edge(int x, int y)
+static bool map_is_edge(int x, int y)
 {
 	return (
 		x < 32 ||
@@ -1484,7 +1484,7 @@ static void footpath_unown(int x, int y, rct_map_element *pathElement)
 	map_buy_land_rights(x, y, x, y, 6, 1);
 }
 
-bool get_next_direction(int edges, int *direction)
+static bool get_next_direction(int edges, int *direction)
 {
 	int index = bitscanforward(edges);
 	if (index == -1)
@@ -1501,7 +1501,7 @@ bool get_next_direction(int edges, int *direction)
  *              (1 << 5): Unown
  *              (1 << 7): Ignore no entry signs
  */
-int footpath_is_connected_to_map_edge_recurse(
+static int footpath_is_connected_to_map_edge_recurse(
 	int x, int y, int z, int direction, int flags,
 	int level, int distanceFromJunction, int junctionTolerance
 ) {

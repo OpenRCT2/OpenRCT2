@@ -1882,7 +1882,7 @@ void Network::Client_Send_GAMEINFO()
 	server_connection.QueuePacket(std::move(packet));
 }
 
-std::string json_stdstring_value(const json_t * string)
+static std::string json_stdstring_value(const json_t * string)
 {
 	const char * cstr = json_string_value(string);
 	return cstr == nullptr ? std::string() : std::string(cstr);
@@ -2437,7 +2437,6 @@ int network_get_group_index(uint8 id) { return -1; }
 uint8 network_get_group_id(unsigned int index) { return 0; }
 int network_get_num_groups() { return 0; }
 const char* network_get_group_name(unsigned int index) { return ""; };
-rct_string_id network_get_group_name_string_id(unsigned int index) { return -1; }
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 void game_command_modify_groups(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 void game_command_kick_player(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
@@ -2446,7 +2445,6 @@ int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
 int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
 int network_can_perform_command(unsigned int groupindex, unsigned int index) { return 0; }
-void network_free_string_ids() {}
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}

@@ -96,7 +96,7 @@ void climate_reset(int climate)
 	climate_determine_future_weather(util_rand());
 }
 
-sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
+static sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
 	if (next_weather_level > cur_weather_level) {
 		return cur_weather_level + 1;
 	} else {

@@ -149,7 +149,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 }
 
 
-void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
+static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
 	size_t n_chars;
 
@@ -181,7 +181,7 @@ void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 		pclose(f);
 }
 
-dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
+static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	int exit_value;
 	size_t size;
 	dialog_type dtype;

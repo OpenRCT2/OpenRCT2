@@ -1165,7 +1165,7 @@ static void window_map_set_land_rights_tool_update(int x, int y)
  *
  *  rct2: 0x00666EEF
  */
-void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
+static void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
 {
 	rct_map_element *mapElement;
 

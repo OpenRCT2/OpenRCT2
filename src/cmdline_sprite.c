@@ -19,6 +19,7 @@
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/util.h"
+#include "cmdline_sprite.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
@@ -57,7 +58,7 @@ rct_sprite_file_header spriteFileHeader;
 rct_g1_element *spriteFileEntries;
 uint8 *spriteFileData;
 
-void sprite_file_load_palette(int spriteIndex)
+static void sprite_file_load_palette(int spriteIndex)
 {
 	rct_g1_element *g1 = &spriteFileEntries[spriteIndex];
 	int numPaletteEntries = g1->width;
@@ -72,19 +73,19 @@ void sprite_file_load_palette(int spriteIndex)
 	}
 }
 
-void sprite_entries_make_absolute()
+static void sprite_entries_make_absolute()
 {
 	for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
 		spriteFileEntries[i].offset += (int)spriteFileData;
 }
 
-void sprite_entries_make_relative()
+static void sprite_entries_make_relative()
 {
 	for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
 		spriteFileEntries[i].offset -= (int)spriteFileData;
 }
 
-bool sprite_file_open(const utf8 *path)
+static bool sprite_file_open(const utf8 *path)
 {
 	SDL_RWops *file;
 
@@ -119,7 +120,7 @@ bool sprite_file_open(const utf8 *path)
 	return true;
 }
 
-bool sprite_file_save(const char *path)
+static bool sprite_file_save(const char *path)
 {
 	SDL_RWops *file = SDL_RWFromFile(path, "wb");
 	if (file == NULL)
@@ -153,13 +154,13 @@ bool sprite_file_save(const char *path)
 	return true;
 }
 
-void sprite_file_close()
+static void sprite_file_close()
 {
 	free(spriteFileEntries);
 	free(spriteFileData);
 }
 
-bool sprite_file_export(int spriteIndex, const char *outPath)
+static bool sprite_file_export(int spriteIndex, const char *outPath)
 {
 	rct_g1_element *spriteHeader;
 	rct_drawpixelinfo dpi;
@@ -190,12 +191,12 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 	}
 }
 
-bool is_transparent_pixel(sint16 *colour){
+static bool is_transparent_pixel(sint16 *colour){
 	return colour[3] < 128;
 }
 
 // Returns true if pixel index is an index not used for remapping
-bool is_changable_pixel(int palette_index) {
+static bool is_changable_pixel(int palette_index) {
 	if (palette_index == -1)
 		return true;
 	if (palette_index == 0)
@@ -211,7 +212,7 @@ bool is_changable_pixel(int palette_index) {
 	return true;
 }
 
-int get_closest_palette_index(sint16 *colour){
+static int get_closest_palette_index(sint16 *colour){
 	uint32 smallest_error = -1;
 	int best_match = -1;
 
@@ -231,7 +232,7 @@ int get_closest_palette_index(sint16 *colour){
 	return best_match;
 }
 
-int get_palette_index(sint16 *colour)
+static int get_palette_index(sint16 *colour)
 {
 	if (is_transparent_pixel(colour))
 		return -1;
@@ -246,7 +247,7 @@ int get_palette_index(sint16 *colour)
 	return -1;
 }
 
-bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
+static bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {
 	uint8 *pixels;
 	uint32 width, height;

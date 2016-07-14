@@ -243,7 +243,7 @@ uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
 utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
 
-void utf8_trim_string(utf8 *text)
+static void utf8_trim_string(utf8 *text)
 {
 	utf8 *src = text;
 	utf8 *dst = text;

@@ -599,6 +599,7 @@ void window_resize_gui(int width, int height);
 void window_resize_gui_scenario_editor(int width, int height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
+void window_game_bottom_toolbar_invalidate_news_item();
 void window_about_open();
 void window_footpath_open();
 void window_save_prompt_open();

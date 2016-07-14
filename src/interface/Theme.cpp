@@ -508,7 +508,7 @@ namespace ThemeManager
     bool EnsureThemeDirectoryExists();
     void GetThemePath(utf8 * buffer, size_t bufferSize);
 
-    void GetAvailableThemes(List<AvailableTheme> * outThemes)
+    static void GetAvailableThemes(List<AvailableTheme> * outThemes)
     {
         Guard::ArgumentNotNull(outThemes);
 
@@ -550,7 +550,7 @@ namespace ThemeManager
         }
     }
 
-    void LoadTheme(UITheme * theme)
+    static void LoadTheme(UITheme * theme)
     {
         if (CurrentTheme == theme)
         {
@@ -571,7 +571,7 @@ namespace ThemeManager
         gfx_invalidate_screen();
     }
 
-    void LoadTheme(const utf8 * path)
+    static void LoadTheme(const utf8 * path)
     {
         UITheme * theme = UITheme::FromFile(path);
         if (theme == nullptr)
@@ -587,7 +587,7 @@ namespace ThemeManager
         }
     }
 
-    bool LoadThemeByName(const utf8 * name)
+    static bool LoadThemeByName(const utf8 * name)
     {
         for (size_t i = 0; i < ThemeManager::AvailableThemes.GetCount(); i++)
         {
@@ -609,7 +609,7 @@ namespace ThemeManager
         return false;
     }
 
-    void Initialise()
+    static void Initialise()
     {
         ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
         LoadTheme((UITheme *)&PredefinedThemeRCT2);

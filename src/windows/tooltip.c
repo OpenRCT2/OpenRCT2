@@ -20,6 +20,7 @@
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "tooltip.h"
 
 enum {
 	WIDX_BACKGROUND

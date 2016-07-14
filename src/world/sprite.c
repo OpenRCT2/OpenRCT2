@@ -364,7 +364,7 @@ static void sprite_misc_explosion_flare_update(rct_sprite * sprite)
  *
  *  rct2: 0x006731CD
  */
-void sprite_misc_update(rct_sprite *sprite)
+static void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
 	case SPRITE_MISC_STEAM_PARTICLE:

@@ -519,7 +519,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *
  *  rct2: 0x006D0964
  */
-int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, int originX, int originY, int originZ)
+static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, int originX, int originY, int originZ)
 {
 	for (uint8 mode = 0; mode <= 1; mode++) {
 		if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
@@ -870,7 +870,7 @@ int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rid
 	return 1;
 }
 
-int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+static int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
@@ -1003,7 +1003,7 @@ int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, ui
 	return 1;
 }
 
-bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
@@ -1294,7 +1294,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
  * ebx = ride_id
  * cost = edi
  */
-bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
+static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 {
 	*flags = 0;
 
@@ -1377,7 +1377,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 	}
 }
 
-money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *outRideIndex)
+static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *outRideIndex)
 {
 	*outRideIndex = 255;
 
@@ -1498,7 +1498,7 @@ money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *out
 	return cost;
 }
 
-money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
+static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
 {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = x + 8;

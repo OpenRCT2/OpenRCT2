@@ -19,6 +19,7 @@
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "localisation.h"
+#include "user.h"
 
 utf8 *gUserStrings = (char*)0x0135A8F4;
 

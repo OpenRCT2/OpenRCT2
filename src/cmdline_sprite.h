@@ -14,27 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#ifndef _CMDLINE_SPRITE_H_
+#define _CMDLINE_SPRITE_H_
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-extern rct_string_id DrawingEngineStringIds[3];
-
-void drawing_engine_init();
-void drawing_engine_resize();
-void drawing_engine_set_palette(SDL_Color * colours);
-void drawing_engine_draw();
-void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy);
-void drawing_engine_dispose();
-
-rct_drawpixelinfo * drawing_engine_get_dpi();
-bool drawing_engine_has_dirty_optimisations();
-void drawing_engine_invalidate_image(uint32 image);
+int cmdline_for_sprite(const char **argv, int argc);
 
 #ifdef __cplusplus
 }
 #endif
 
+#endif

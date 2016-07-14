@@ -275,7 +275,7 @@ static const uint8 _button_offset_x = 220;
 static const uint8 _button_offset_y = 3;
 static const uint8 _check_offset_y = 3 + 12 + 2;
 
-void window_themes_init_vars()
+static void window_themes_init_vars()
 {
 	_selected_tab = WINDOW_THEMES_TAB_SETTINGS;
 }

@@ -86,7 +86,7 @@ void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * f
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
-void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
 	if (footpath_element_is_sloped(mapElement))
 		height += 8;
 
@@ -137,7 +137,7 @@ void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* map
 }
 
 /* rct2: 0x006A5C94 */
-void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
 	if (footpath_element_is_sloped(mapElement))
 		height += 8;
 
@@ -208,7 +208,7 @@ void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapEl
 }
 
 /* rct2: 0x006A5E81 */
-void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
 	uint32 imageId;
 
 	if (!(edges & (1 << 0))) {
@@ -256,7 +256,7 @@ void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* ma
 }
 
 /* rct2: 0x006A6008 */
-void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
+static void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
 	if (dpi->zoom_level != 0)
 		return;
 
@@ -276,7 +276,7 @@ void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_e
  * @param ebp (ebp)
  * @param base_image_id (0x00F3EF78)
  */
-void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool word_F3F038, rct_footpath_entry * footpathEntry, uint32 base_image_id, uint32 imageFlags)
+static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool word_F3F038, rct_footpath_entry * footpathEntry, uint32 base_image_id, uint32 imageFlags)
 {
 	if (map_element->type & 1) {
 		uint8 local_ebp = ebp & 0x0F;
@@ -574,7 +574,7 @@ void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool w
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_footpath_entry * footpathEntry, uint32 imageFlags, uint32 sceneryImageFlags, bool word_F3F038)
+static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_footpath_entry * footpathEntry, uint32 imageFlags, uint32 sceneryImageFlags, bool word_F3F038)
 {
 	// eax --
 	// ebx --

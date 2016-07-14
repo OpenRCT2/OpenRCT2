@@ -151,7 +151,7 @@ const uint8 _soundParams[SOUND_MAXID][2] = {
 	{ 0, 0 }	// SOUND_62
 };
 
-bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
+static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {
 		return false;
@@ -263,7 +263,7 @@ static const struct { sint8 x, y, z; } SteamParticleOffsets[] = {
 	{  -8,  -4, 17 }
 };
 
-void vehicle_invalidate(rct_vehicle *vehicle)
+static void vehicle_invalidate(rct_vehicle *vehicle)
 {
 	invalidate_sprite_2((rct_sprite*)vehicle);
 }
@@ -272,7 +272,7 @@ void vehicle_invalidate(rct_vehicle *vehicle)
  *
  *  rct2: 0x006BB9FF
  */
-void vehicle_update_sound_params(rct_vehicle* vehicle)
+static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info->editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
@@ -5388,7 +5388,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
  * merely as a velocity regulator, in a closed state. When the brake is open, it
  * boosts the train to the speed limit
  */
-void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
+static void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
 	if (vehicle->velocity >= 0) {
 		// If the vehicle is below the speed limit
 		if (vehicle->velocity <= 0x20364) {
@@ -5407,7 +5407,7 @@ void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
  *
  * Modifies the train's velocity influenced by a block brake
  */
-void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
+static void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
 {
 	// If the site is in a "train blocking" state
 	if (is_block_brake_closed) {
@@ -6381,7 +6381,7 @@ static bool loc_6DB38B(rct_vehicle *vehicle, rct_map_element *mapElement)
 	return true;
 }
 
-void loc_6DB481(rct_vehicle *vehicle)
+static void loc_6DB481(rct_vehicle *vehicle)
 {
 	uint16 probability = 0x8000;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6) {
@@ -6701,7 +6701,7 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DBF3E
  */
-void sub_6DBF3E(rct_vehicle *vehicle)
+static void sub_6DBF3E(rct_vehicle *vehicle)
 {
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
@@ -6782,7 +6782,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DB08C
  */
-bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
@@ -6952,7 +6952,7 @@ loc_6DB41D:
  *
  *  rct2: 0x006DAEB9
  */
-bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
@@ -7159,7 +7159,7 @@ loc_6DB967:
  *
  *  rct2: 0x006DBAA6
  */
-bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry, uint16* progress) {
+static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry, uint16* progress) {
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
 	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
 	rct_map_element* mapElement = map_get_track_element_at_of_type_seq(
@@ -7313,7 +7313,7 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
  *
  *  rct2: 0x006DBA33
  */
-bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
 loc_6DBA33:;
@@ -7435,7 +7435,7 @@ loc_6DBE7F:
  *
  *
  */
-int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation) {
+static int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation) {
 	registers regs = { 0 };
 
 	rct_ride *ride = get_ride(vehicle->ride);

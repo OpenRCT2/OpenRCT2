@@ -47,7 +47,7 @@ void painter_setup() {
 /**
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
-paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
+static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
 {
 	paint_struct * ps = unk_EE7888;
 
@@ -722,7 +722,7 @@ void viewport_paint_setup()
 	}
 }
 
-void sub_688217_helper(uint16 ax, uint8 flag)
+static void sub_688217_helper(uint16 ax, uint8 flag)
 {
 	paint_struct *ps, *ps_temp;
 	paint_struct *ps_next = unk_EE7884;
@@ -869,7 +869,7 @@ void sub_688217()
  *  rct2: 0x00688596
  *  Part of 0x688485
  */
-void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct_drawpixelinfo* dpi) {
+static void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct_drawpixelinfo* dpi) {
 	for (; attached_ps; attached_ps = attached_ps->next) {
 		sint16 x = attached_ps->x + ps->x;
 		sint16 y = attached_ps->y + ps->y;

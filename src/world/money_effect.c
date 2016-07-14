@@ -30,7 +30,7 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  *
  *  rct2: 0x0067351F
  */
-void money_effect_create_at(money32 value, int x, int y, int z)
+static void money_effect_create_at(money32 value, int x, int y, int z)
 {
 	rct_money_effect *moneyEffect;
 	rct_string_id stringId;

@@ -22,6 +22,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 #include "../../world/map.h"
+#include "../vehicle_paint.h"
 
 enum {
 	SPR_MINI_GOLF_FLAT_SW_NE = 14404,

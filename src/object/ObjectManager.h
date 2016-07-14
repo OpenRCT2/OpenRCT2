@@ -49,7 +49,12 @@ interface IObjectManager
 
 IObjectManager * GetObjectManager();
 
-#else
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 void *  object_manager_get_loaded_object_by_index(size_t index);
 void *  object_manager_get_loaded_object(const rct_object_entry * entry);
@@ -58,4 +63,6 @@ void *  object_manager_load_object(const rct_object_entry * entry);
 void    object_manager_unload_objects(const rct_object_entry * entries, size_t count);
 void    object_manager_unload_all_objects();
 
+#ifdef __cplusplus
+}
 #endif
