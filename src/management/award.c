@@ -48,6 +48,26 @@ static const uint8 AwardPositiveMap[] = {
 	POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
 };
 
+static const rct_string_id AwardNewsStrings[] = {
+	STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
+	STR_NEWS_ITEM_MOST_TIDY,
+	STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
+	STR_NEWS_ITEM_BEST_VALUE,
+	STR_NEWS_ITEM_MOST_BEAUTIFUL,
+	STR_NEWS_ITEM_WORST_VALUE,
+	STR_NEWS_ITEM_SAFEST,
+	STR_NEWS_ITEM_BEST_STAFF,
+	STR_NEWS_ITEM_BEST_FOOD,
+	STR_NEWS_ITEM_WORST_FOOD,
+	STR_NEWS_ITEM_BEST_RESTROOMS,
+	STR_NEWS_ITEM_MOST_DISAPPOINTING,
+	STR_NEWS_ITEM_BEST_WATER_RIDES,
+	STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
+	STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS,
+	STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,
+	STR_NEWS_ITEM_BEST_GENTLE_RIDES,
+};
+
 rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
 
 bool award_is_positive(int type)
@@ -634,7 +654,7 @@ void award_update_all()
 				gCurrentAwards[freeAwardEntryIndex].type = awardType;
 				gCurrentAwards[freeAwardEntryIndex].time = 5;
 				if (gConfigNotifications.park_award) {
-					news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+					news_item_add_to_queue(NEWS_ITEM_AWARD, AwardNewsStrings[awardType], 0);
 				}
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}

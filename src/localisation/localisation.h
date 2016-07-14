@@ -18,9 +18,11 @@
 #define LOCALISATION_H
 
 #include "currency.h"
+#include "date.h"
 #include "format_codes.h"
 #include "language.h"
 #include "string_ids.h"
+#include "../management/marketing.h"
 
 bool utf8_is_format_code(int codepoint);
 bool utf8_is_colour_code(int codepoint);
@@ -63,6 +65,15 @@ extern const char *real_names[1024];
 extern utf8 *gUserStrings;
 extern uint8 gCommonFormatArgs[80];
 extern uint8 gMapTooltipFormatArgs[40];
+
+extern const rct_string_id SpeedNames[5];
+extern const rct_string_id ObjectiveNames[12];
+extern const rct_string_id ResearchFundingLevelNames[4];
+extern const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
+extern const rct_string_id RideInspectionIntervalNames[];
+extern const rct_string_id PeepThoughts[174];
+extern const rct_string_id DateDayNames[31];
+extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 
 static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
 {

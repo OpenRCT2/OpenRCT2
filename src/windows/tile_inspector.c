@@ -26,6 +26,41 @@
 #include "../world/footpath.h"
 #include "../sprites.h"
 
+static const rct_string_id TerrainTypes[] = {
+	STR_TILE_INSPECTOR_TERRAIN_GRASS,
+	STR_TILE_INSPECTOR_TERRAIN_SAND,
+	STR_TILE_INSPECTOR_TERRAIN_DIRT,
+	STR_TILE_INSPECTOR_TERRAIN_ROCK,
+	STR_TILE_INSPECTOR_TERRAIN_MARTIAN,
+	STR_TILE_INSPECTOR_TERRAIN_CHECKERBOARD,
+	STR_TILE_INSPECTOR_TERRAIN_GRASS_CLUMPS,
+	STR_TILE_INSPECTOR_TERRAIN_ICE,
+	STR_TILE_INSPECTOR_TERRAIN_GRID_RED,
+	STR_TILE_INSPECTOR_TERRAIN_GRID_YELLOW,
+	STR_TILE_INSPECTOR_TERRAIN_GRID_BLUE,
+	STR_TILE_INSPECTOR_TERRAIN_GRID_GREEN,
+	STR_TILE_INSPECTOR_TERRAIN_SAND_DARK,
+	STR_TILE_INSPECTOR_TERRAIN_SAND_LIGHT,
+	STR_TILE_INSPECTOR_TERRAIN_CHECKERBOARD_INVERTED,
+	STR_TILE_INSPECTOR_TERRAIN_UNDERGROUND_VIEW,
+};
+
+static const rct_string_id TerrainEdgeTypes[] = {
+	STR_TILE_INSPECTOR_TERRAIN_EDGE_ROCK,
+	STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_RED,
+	STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_BLACK,
+	STR_TILE_INSPECTOR_TERRAIN_EDGE_ICE,
+
+};
+
+static const rct_string_id EntranceTypes[] = {
+	STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
+	STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
+	STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
+};
+
+
+
 enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -69,7 +104,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define COL_X_LF   (COL_X_BF + 12) // Last for tile flag
 
 rct_widget window_tile_inspector_widgets[] = {
-	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,		0x0FFFFFFFF,				STR_NONE },					// panel / background
+	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,		0xFFFFFFFF,					STR_NONE },					// panel / background
 	{ WWT_CAPTION,		0,	1,				WW - 2,				1,				14,			STR_TILE_INSPECTOR_TITLE,	STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,		0,	WW - 13,		WW - 3,				2,				13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
 
@@ -79,8 +114,8 @@ rct_widget window_tile_inspector_widgets[] = {
 	// Buttons
 	{ WWT_FLATBTN,		1,	BX,				BW,					BY,				BH,			SPR_MAP,		  STR_INSERT_CORRUPT_TIP },				// Insert corrupt button
 	{ WWT_FLATBTN,		1,  BX - BS * 1,	BW - BS * 1,		BY,				BH,			SPR_DEMOLISH,	  STR_REMOVE_SELECTED_ELEMENT_TIP },	// Remove button
-	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	5375,			  STR_MOVE_SELECTED_ELEMENT_UP_TIP },	// Move down
-	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		5376,			  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP },	// Move up
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	STR_UP,			  STR_MOVE_SELECTED_ELEMENT_UP_TIP },	// Move down
+	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		STR_DOWN,		  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP },	// Move up
 	{ WWT_FLATBTN,		1,  BX - BS * 3,	BW - BS * 3,		BY,				BH,			SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP },	// Rotate button
 
 	// Column headers
@@ -582,8 +617,8 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Surface (%s, %s)",
-					language_get_string(STR_TILE_INSPECTOR_TERRAIN_START + map_element_get_terrain(element)),
-					language_get_string(STR_TILE_INSPECTOR_TERRAIN_EDGE_START + map_element_get_terrain_edge(element))
+					language_get_string(TerrainTypes[map_element_get_terrain(element)]),
+					language_get_string(TerrainEdgeTypes[map_element_get_terrain_edge(element)])
 				);
 				type_name = buffer;
 				break;
@@ -615,7 +650,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Track (%s)",
-					language_get_string(2 + get_ride(element->properties.track.ride_index)->type)
+					language_get_string(STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + get_ride(element->properties.track.ride_index)->type)
 				);
 				type_name = buffer;
 				break;
@@ -631,7 +666,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Entrance (%s)",
-					language_get_string(STR_TILE_INSPECTOR_ENTRANCE_START + element->properties.entrance.type)
+					language_get_string(EntranceTypes[element->properties.entrance.type])
 					);
 				type_name = buffer;
 				break;
@@ -667,8 +702,8 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		const bool broken = (element->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
 		const bool last = (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
 		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE + 3, y); // 3px padding
-		gfx_draw_string_left(dpi, 5182, &base_height, 12, x + COL_X_BH, y);
-		gfx_draw_string_left(dpi, 5182, &clearance_height, 12, x + COL_X_CH, y);
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &base_height, 12, x + COL_X_BH, y);
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearance_height, 12, x + COL_X_CH, y);
 		if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
 		if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
 		if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);

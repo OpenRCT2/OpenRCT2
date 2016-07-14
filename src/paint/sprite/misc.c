@@ -19,6 +19,7 @@
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
 #include "../paint.h"
+#include "../../localisation/string_ids.h"
 
 /** rct2: 0x0097EDA4 */
 const sint8 money_wave[] = {
@@ -54,10 +55,10 @@ void misc_paint(rct_sprite *misc, int imageDirection)
 
 			rct_money_effect moneyEffect = misc->money_effect;
 			money32 amount = moneyEffect.value;
-			uint16 stringId = 1388; // {OUTLINE}{GREEN}+ {CURRENCY}
+			rct_string_id stringId = STR_MONEY_EFFECT_RECEIVE;
 			if (amount < 0) {
 				amount = -amount;
-				stringId = 1389; // {OUTLINE}{RED}- {CURRENCY}
+				stringId = STR_MONEY_EFFECT_SPEND;
 			}
 
 			sub_685EBC(amount, stringId, moneyEffect.y, moneyEffect.z, (sint8 *) &money_wave[moneyEffect.wiggle % 22], moneyEffect.offset_x, get_current_rotation());

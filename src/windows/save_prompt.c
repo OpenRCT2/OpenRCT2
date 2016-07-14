@@ -63,6 +63,13 @@ static rct_widget window_quit_prompt_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static const rct_string_id window_save_prompt_labels[][2] = {
+	{ STR_LOAD_GAME_PROMPT_TITLE,	STR_SAVE_BEFORE_LOADING },
+	{ STR_QUIT_GAME_PROMPT_TITLE,	STR_SAVE_BEFORE_QUITTING },
+	{ STR_QUIT_GAME_2_PROMPT_TITLE,	STR_SAVE_BEFORE_QUITTING_2 },
+};
+
+
 static void window_save_prompt_close(rct_window *w);
 static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
@@ -106,7 +113,8 @@ static rct_window_event_list window_save_prompt_events = {
  */
 void window_save_prompt_open()
 {
-	int stringId, width, height;
+	int width, height;
+	rct_string_id stringId;
 	rct_window* window;
 	uint8 prompt_mode;
 	rct_widget *widgets;
@@ -177,13 +185,13 @@ void window_save_prompt_open()
 	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
-	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
+	stringId = window_save_prompt_labels[prompt_mode][0];
 	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
 	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
-	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
-	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
+	window_save_prompt_widgets[WIDX_TITLE].text = stringId;
+	window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];
 }
 
 /**

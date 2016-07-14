@@ -51,9 +51,9 @@ static rct_widget window_editor_inventions_list_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_INVENTION_LIST,		STR_WINDOW_TITLE_TIP	},
 	{ WWT_CLOSEBOX,			0,	587,	597,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP	},
 	{ WWT_RESIZE,			1,	0,		599,	43,		399,	STR_NONE,				STR_NONE				},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_NONE				},
-	{ WWT_SCROLL,			1,	4,		371,	56,		175,	2,						STR_NONE				},
-	{ WWT_SCROLL,			1,	4,		371,	189,	396,	2,						STR_NONE				},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_NONE				},
+	{ WWT_SCROLL,			1,	4,		371,	56,		175,	SCROLL_VERTICAL,		STR_NONE				},
+	{ WWT_SCROLL,			1,	4,		371,	189,	396,	SCROLL_VERTICAL,		STR_NONE				},
 	{ WWT_FLATBTN,			1,	431,	544,	106,	219,	0xFFFFFFFF,				STR_NONE				},
 	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	385,	396,	STR_RANDOM_SHUFFLE,		STR_RANDOM_SHUFFLE_TIP	},
 	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	372,	383,	STR_MOVE_ALL_BOTTOM,	STR_NONE				},
@@ -153,6 +153,16 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 #pragma endregion
 
 rct_research_item *_editorInventionsListDraggedItem;
+
+static const rct_string_id EditorInventionsResearchCategories[] = {
+	STR_RESEARCH_NEW_TRANSPORT_RIDES,
+	STR_RESEARCH_NEW_GENTLE_RIDES,
+	STR_RESEARCH_NEW_ROLLER_COASTERS,
+	STR_RESEARCH_NEW_THRILL_RIDES,
+	STR_RESEARCH_NEW_WATER_RIDES,
+	STR_RESEARCH_NEW_SHOPS_AND_STALLS,
+	STR_RESEARCH_NEW_SCENERY_AND_THEMING,
+};
 
 static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
 static void move_research_item(rct_research_item *beforeItem);
@@ -806,12 +816,12 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	y = w->y + widget->bottom + 3;
 	width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 	stringId = research_item_get_name(eax);
-	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y, width);
 	y += 15;
 
 	// Item category
 	x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-	stringId = STR_RESEARCH_TRANSPORT_RIDES + researchItem->category;
+	stringId = EditorInventionsResearchCategories[researchItem->category];
 	gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, 0, x, y);
 }
 
@@ -986,7 +996,7 @@ static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixe
 	x = w->x;
 	y = w->y + 2;
 	stringId = research_item_get_name(_editorInventionsListDraggedItem->entryIndex & 0xFFFFFF);
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 32, x, y);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 32, x, y);
 }
 
 #pragma endregion

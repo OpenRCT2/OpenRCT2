@@ -41,14 +41,14 @@ enum {
 };
 
 static rct_widget window_install_track_widgets[] = {
-	{ WWT_FRAME,			0,	0,		401,	0,		399,	0xFFFFFFFF,				STR_NONE				},
-	{ WWT_CAPTION,			0,	1,		400,	1,		14,		2309,					STR_WINDOW_TITLE_TIP	},
-	{ WWT_CLOSEBOX,			0,	389,	399,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP	},
-	{ WWT_FLATBTN,			0,	15,		386,	18,		236,	0xFFFFFFFF,				STR_NONE				},
-	{ WWT_FLATBTN,			0,	376,	399,	374,	397,	5169,					STR_ROTATE_90_TIP		},
-	{ WWT_FLATBTN,			0,	376,	399,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP	},
-	{ WWT_DROPDOWN_BUTTON,	0,	303,	397,	241,	252,	3378,					STR_NONE				},
-	{ WWT_DROPDOWN_BUTTON,	0,	303,	397,	256,	267,	3379,					STR_NONE				},
+	{ WWT_FRAME,			0,	0,		401,	0,		399,	0xFFFFFFFF,								STR_NONE				},
+	{ WWT_CAPTION,			0,	1,		400,	1,		14,		STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP	},
+	{ WWT_CLOSEBOX,			0,	389,	399,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP	},
+	{ WWT_FLATBTN,			0,	15,		386,	18,		236,	0xFFFFFFFF,								STR_NONE				},
+	{ WWT_FLATBTN,			0,	376,	399,	374,	397,	SPR_ROTATE_ARROW,						STR_ROTATE_90_TIP		},
+	{ WWT_FLATBTN,			0,	376,	399,	350,	373,	SPR_SCENERY,							STR_TOGGLE_SCENERY_TIP	},
+	{ WWT_DROPDOWN_BUTTON,	0,	303,	397,	241,	252,	STR_INSTALL_NEW_TRACK_DESIGN_INSTALL,	STR_NONE				},
+	{ WWT_DROPDOWN_BUTTON,	0,	303,	397,	256,	267,	STR_INSTALL_NEW_TRACK_DESIGN_CANCEL,	STR_NONE				},
 	{ WIDGETS_END },
 };
 
@@ -105,7 +105,7 @@ void window_install_track_open(const utf8 *path)
 {
 	_trackDesign = track_design_open(path);
 	if (_trackDesign == NULL) {
-		window_error_open(3010, STR_NONE);
+		window_error_open(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
 		return;
 	}
 

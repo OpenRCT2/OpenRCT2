@@ -37,6 +37,28 @@ enum {
 	WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
 };
 
+static const rct_string_id ClimateNames[] = {
+	STR_CLIMATE_COOL_AND_WET,
+	STR_CLIMATE_WARM,
+	STR_CLIMATE_HOT_AND_DRY,
+	STR_CLIMATE_COLD,
+};
+
+static const rct_string_id ObjectiveDropdownOptionNames[] = {
+	STR_OBJECTIVE_DROPDOWN_NONE,
+	STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
+	STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,
+	STR_OBJECTIVE_DROPDOWN_HAVE_FUN,
+	STR_OBJECTIVE_DROPDOWN_BUILD_THE_BEST_RIDE_YOU_CAN,
+	STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS,
+	STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK,
+	STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS,
+	STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH,
+	STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS,
+	STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE,
+	STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE,
+};
+
 enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -69,8 +91,8 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								},
 	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								},
 	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,					STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,					STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
 	{ WWT_DROPDOWN,			1,	98,		441,	48,		59,		STR_NONE,					STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP			},
 	{ WWT_DROPDOWN_BUTTON,	1,	430,	440,	49,		58,		STR_DROPDOWN_GLYPH,			STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP			},
 	{ WWT_SPINNER,			1,	158,	237,	65,		76,		STR_NONE,					STR_NONE											},
@@ -94,9 +116,9 @@ static rct_widget window_editor_objective_options_rides_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								},
 	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								},
 	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,					STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,					STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
-	{ WWT_SCROLL,			1,	3,		376,	60,		220,	2,							STR_NONE											},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
+	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,				STR_NONE											},
 	{ WIDGETS_END }
 };
 
@@ -508,7 +530,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 
 	for (i = 0; i < 4; i++) {
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = STR_CLIMATE_COOL_AND_WET + i;
+		gDropdownItemsArgs[i] = ClimateNames[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -705,6 +727,7 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 
 	switch (widgetIndex) {
 	case WIDX_OBJECTIVE_DROPDOWN:
+		// TODO: Don't rely on string ID order
 		newObjectiveType = (uint8)(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
 		if (gScenarioObjectiveType != newObjectiveType)
 			window_editor_objective_options_set_objective(w, newObjectiveType);
@@ -892,8 +915,8 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Objective value
 	x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
 	y = w->y + w->widgets[WIDX_OBJECTIVE].top;
-	stringId = STR_OBJECTIVE_DROPDOWN_NONE + gScenarioObjectiveType;
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y);
+	stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 
 	if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY) {
 		// Objective argument 1 label
@@ -902,23 +925,23 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
-			stringId = 3303;
+			stringId = STR_WINDOW_OBJECTIVE_GUEST_COUNT;
 			break;
 		case OBJECTIVE_PARK_VALUE_BY:
 		case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-			stringId = 3304;
+			stringId = STR_WINDOW_OBJECTIVE_PARK_VALUE;
 			break;
 		case OBJECTIVE_MONTHLY_RIDE_INCOME:
-			stringId = 3305;
+			stringId = STR_WINDOW_OBJECTIVE_MONTHLY_INCOME;
 			break;
 		case OBJECTIVE_MONTHLY_FOOD_INCOME:
-			stringId = 3306;
+			stringId = STR_WINDOW_OBJECTIVE_MONTHLY_PROFIT;
 			break;
 		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-			stringId = 3307;
+			stringId = STR_WINDOW_OBJECTIVE_MINIMUM_LENGTH;
 			break;
 		default:
-			stringId = 3308;
+			stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
 			break;
 		}
 		gfx_draw_string_left(dpi, stringId, NULL, 0, x, y);
@@ -929,7 +952,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
-			stringId = 3309;
+			stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
 			arg = gScenarioObjectiveNumGuests;
 			break;
 		case OBJECTIVE_PARK_VALUE_BY:
@@ -940,11 +963,11 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 			arg = gScenarioObjectiveCurrency;
 			break;
 		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-			stringId = 3310;
+			stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
 			arg = gScenarioObjectiveNumGuests;
 			break;
 		default:
-			stringId = 3311;
+			stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
 			arg = gScenarioObjectiveCurrency;
 			break;
 		}
@@ -955,13 +978,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		// Objective argument 2 label
 		x = w->x + 28;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-		gfx_draw_string_left(dpi, 3301, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, NULL, 0, x, y);
 
 		// Objective argument 2 value
 		x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
 		arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
-		gfx_draw_string_left(dpi, 3302, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, 0, x, y);
 	}
 
 	// Climate label
@@ -972,8 +995,8 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Climate value
 	x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
 	y = w->y + w->widgets[WIDX_CLIMATE].top;
-	stringId = STR_CLIMATE_COOL_AND_WET + gClimate;
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y);
+	stringId = ClimateNames[gClimate];
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 
 	// Park name
 	x = w->x + 8;
@@ -1000,7 +1023,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(0, uint16, STR_PLACEHOLDER);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
-	gfx_draw_string_left_clipped(dpi, 3300, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, 0, x, y, width);
 
 	// Scenario details label
 	x = w->x + 8;
@@ -1030,7 +1053,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
 	y = w->y + w->widgets[WIDX_CATEGORY].top;
 	stringId = ScenarioCategoryStringIds[gS6Info->category];
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 }
 
 /**
@@ -1165,7 +1188,7 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
 	window_draw_widgets(w, dpi);
 	window_editor_objective_options_draw_tab_images(w, dpi);
 
-	gfx_draw_string_left(dpi, 3312, NULL, 0, w->x + 6, w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
+	gfx_draw_string_left(dpi, STR_WINDOW_PRESERVATION_ORDER, NULL, 0, w->x + 6, w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
 }
 
 /**
@@ -1192,7 +1215,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 
 		// Highlighted
 		if (i == w->selected_list_item) {
-			stringId = STR_WINDOW_COLOUR_2_STRING;
+			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
 		} else {
 			stringId = STR_BLACK_STRING;
@@ -1201,7 +1224,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		// Checkbox mark
 		ride = get_ride(i);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-			gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRING ? -2 : -1;
+			gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? -2 : -1;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
 		}
 

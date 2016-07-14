@@ -232,8 +232,15 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		newPeep->id = newStaffIndex;
 		newPeep->staff_type = staff_type;
 
+		static const rct_string_id staffNames[] = {
+			STR_HANDYMAN_X,
+			STR_MECHANIC_X,
+			STR_SECURITY_GUARD_X,
+			STR_ENTERTAINER_X,
+		};
+
 		uint8 sprite_type = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
-		newPeep->name_string_idx = staff_type + 0x300;
+		newPeep->name_string_idx = staffNames[staff_type];
 		newPeep->sprite_type = sprite_type;
 
 		spriteBounds = g_sprite_entries[sprite_type].sprite_bounds;

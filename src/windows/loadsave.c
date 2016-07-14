@@ -50,16 +50,16 @@ enum {
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,    0, 0,                WW - 1,       0,       WH - 1,  STR_NONE,             STR_NONE },
-	{ WWT_CAPTION,  0, 1,                WW - 2,       1,       14,      STR_NONE,             STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX, 0, WW - 13,          WW - 3,       2,       13,      STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP }, //Window close button
-	{ WWT_CLOSEBOX, 0, 105,              205,          36,      47,      2718,                 STR_NONE }, // Up
-	{ WWT_CLOSEBOX, 0, 206,              307,          36,      47,      2719,                 STR_NONE }, // New
-	{ WWT_CLOSEBOX, 0, 4,                (WW - 5) / 2, 50,      61,      STR_NONE,             STR_NONE }, // Name
-	{ WWT_CLOSEBOX, 0, (WW - 5) / 2 + 1, WW - 5 - 1,   50,      61,      STR_NONE,             STR_NONE }, // Date
-	{ WWT_SCROLL,   0, 4,                WW - 5,       61,      WH - 40, 2,                    STR_NONE }, // File list
-	{ WWT_CLOSEBOX, 0, 4,                200,          WH - 36, WH - 18, 2707,                 STR_NONE }, // Use native browser
-	{ WWT_CLOSEBOX, 0, 4,                104,          36,      47,      STR_LOADSAVE_DEFAULT, STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
+	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,							STR_NONE },
+	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,							STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },		//Window close button
+	{ WWT_CLOSEBOX,		0,		105,				205,			36,			47,			STR_FILEBROWSER_ACTION_UP,			STR_NONE},					// Up
+	{ WWT_CLOSEBOX,		0,		206,				307,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FILE,	STR_NONE},					// New
+	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			STR_NONE,							STR_NONE },					// Name
+	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			STR_NONE,							STR_NONE },					// Date
+	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	SCROLL_VERTICAL,					STR_NONE },					// File list
+	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	STR_FILEBROWSER_USE_SYSTEM_WINDOW,	STR_NONE },					// Use native browser
+	{ WWT_CLOSEBOX,		0,		4,					104,			36,			47,			STR_LOADSAVE_DEFAULT,				STR_LOADSAVE_DEFAULT_TIP },	// Go to default directory
 	{ WIDGETS_END }
 };
 
@@ -170,22 +170,22 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	_loadsaveType = type;
 	switch (type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_LOAD_GAME;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_GAME;
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_GAME;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_SAVE_GAME;
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE;
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+		w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
 		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_SAVE_TRACK;
@@ -299,7 +299,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		
 		templateString = (char *)language_get_string(templateStringId);
 		strcpy(templateString, _defaultName);
-		window_text_input_open(w, WIDX_NEW, STR_NONE, 2710, templateStringId, 0, 64);
+		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, templateStringId, 0, 64);
 		break;
 	}
 	case WIDX_BROWSE:
@@ -497,11 +497,11 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 				title_sequence_add_save(gCurrentTitleSequence, path, text);
 			}
 			else {
-				window_error_open(5404, STR_NONE);
+				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
 			}
 		}
 		else {
-			window_error_open(5243, STR_NONE);
+			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
 		}
 		return;
 	}
@@ -588,7 +588,7 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 
 		stringId = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
-			stringId = STR_WINDOW_COLOUR_2_STRING;
+			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
@@ -775,7 +775,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				strcat(newName, ".sv6");
 			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
 				set_format_arg(0, uint32, (uint32)&_listItems[w->selected_list_item].name);
-				window_text_input_open(w, WIDX_SCROLL, 5435, 5404, 1170, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+				window_text_input_open(w, WIDX_SCROLL, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 			}
 			else {
 				title_sequence_add_save(gCurrentTitleSequence, path, newName);
@@ -790,8 +790,8 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			gfx_invalidate_screen();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		} else {
-			// 1050, not the best message...
-			window_error_open(STR_LOAD_GAME, 1050);
+			// Not the best message...
+			window_error_open(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
@@ -810,11 +810,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 
 				window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			} else {
-				window_error_open(STR_SAVE_GAME, 1047);
+				window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
 				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 			}
 		} else {
-			window_error_open(STR_SAVE_GAME, 1047);
+			window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
@@ -824,8 +824,8 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			gfx_invalidate_screen();
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		} else {
-			// 1050, not the best message...
-			window_error_open(STR_LOAD_LANDSCAPE, 1050);
+			// Not the best message...
+			window_error_open(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
@@ -841,11 +841,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				gfx_invalidate_screen();
 				window_loadsave_invoke_callback(MODAL_RESULT_OK);
 			} else {
-				window_error_open(STR_SAVE_LANDSCAPE, 1049);
+				window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
 				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 			}
 		} else {
-			window_error_open(STR_SAVE_LANDSCAPE, 1049);
+			window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
@@ -914,11 +914,11 @@ enum {
 };
 
 static rct_widget window_overwrite_prompt_widgets[] = {
-	{ WWT_FRAME,			0, 0,					OVERWRITE_WW - 1,	0,					OVERWRITE_WH - 1,	STR_NONE,				STR_NONE },
-	{ WWT_CAPTION,			0, 1,					OVERWRITE_WW - 2,	1,					14,					2709,					STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0, OVERWRITE_WW - 13,	OVERWRITE_WW - 3,	2,					13,					STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
-	{ WWT_DROPDOWN_BUTTON,	0, 10,					94,					OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	2709,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	0, OVERWRITE_WW - 95,	OVERWRITE_WW - 11,	OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	STR_SAVE_PROMPT_CANCEL, STR_NONE },
+	{ WWT_FRAME,			0, 0,					OVERWRITE_WW - 1,	0,					OVERWRITE_WH - 1,	STR_NONE,							STR_NONE },
+	{ WWT_CAPTION,			0, 1,					OVERWRITE_WW - 2,	1,					14,					STR_FILEBROWSER_OVERWRITE_TITLE,	STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0, OVERWRITE_WW - 13,	OVERWRITE_WW - 3,	2,					13,					STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0, 10,					94,					OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	STR_FILEBROWSER_OVERWRITE_TITLE,	STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	0, OVERWRITE_WW - 95,	OVERWRITE_WW - 11,	OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	STR_SAVE_PROMPT_CANCEL, 			STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -1016,7 +1016,7 @@ static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	int x = w->x + w->width / 2;
 	int y = w->y + (w->height / 2) - 3;
-	gfx_draw_string_centred_wrapped(dpi, &templateStringId, x, y, w->width - 4, 2708, 0);
+	gfx_draw_string_centred_wrapped(dpi, &templateStringId, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, 0);
 }
 
 

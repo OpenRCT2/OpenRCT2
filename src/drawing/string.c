@@ -243,7 +243,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
  * y (dx)
  * width (bp)
  */
-void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y, int width)
+void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, void* args, int colour, int x, int y, int width)
 {
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -268,7 +268,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
  * y (dx)
  * width (bp)
  */
-void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y, int width)
+void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y, int width)
 {
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -297,7 +297,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
  * x (cx)
  * y (dx)
  */
-void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int colour, int x, int y)
+void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, int colour, int x, int y)
 {
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -320,7 +320,7 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
  * colour (al)
  * args (esi)
  */
-void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
+void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, int x, int y, int colour, void *args)
 {
 	gfx_draw_string_centred_wrapped(dpi, args, x, y, INT32_MAX, format, colour);
 }
@@ -336,7 +336,7 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
  * colour (al)
  * format (ebx)
  */
-int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
+int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, rct_string_id format, int colour)
 {
 	int font_height, line_height, line_width, line_y, num_lines;
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
@@ -387,7 +387,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
  * format (bx)
  * colour (al)
  */
-int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
+int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, rct_string_id format, int colour)
 {
 	// font height might actually be something else
 	int fontSpriteBase, lineHeight, lineY, numLines;
@@ -423,7 +423,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
  * x (cx)
  * y (dx)
  */
-void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
@@ -450,7 +450,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 
 	int eax;
 
-	rct_g1_element g1_element = g1Elements[0x1332];
+	rct_g1_element g1_element = g1Elements[SPR_TEXT_PALETTE];
 	eax = ((uint32*)g1_element.offset)[colour & 0xFF];
 
 	if (!(*current_font_flags & 2)) {
@@ -498,7 +498,7 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, in
 	ttf_draw_string(dpi, buffer, colour, x, y);
 }
 
-void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	char buffer[128];
 	int width;
@@ -512,7 +512,7 @@ void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, 
 		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
 }
 
-void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	char buffer[128];
 	int width;
@@ -527,7 +527,7 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args,
 		gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
 }
 
-void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *args, int colour, int x, int y)
+void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	char buffer[128];
 	int width;

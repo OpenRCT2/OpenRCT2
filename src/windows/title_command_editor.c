@@ -35,14 +35,14 @@ typedef struct TITLE_COMMAND_ORDER {
 } TITLE_COMMAND_ORDER;
 
 TITLE_COMMAND_ORDER window_title_command_editor_orders[] = {
-	{ TITLE_SCRIPT_LOAD,		5413, 5431 },
-	{ TITLE_SCRIPT_LOCATION,	5417, 5427 },
-	{ TITLE_SCRIPT_ROTATE,		5419, 5428 },
-	{ TITLE_SCRIPT_ZOOM,		5421, 5429 },
-	{ TITLE_SCRIPT_SPEED,		5445, 5444 },
-	{ TITLE_SCRIPT_WAIT,		5423, 5430 },
-	{ TITLE_SCRIPT_RESTART,		5425, STR_NONE },
-	{ TITLE_SCRIPT_END,			5426, STR_NONE },
+	{ TITLE_SCRIPT_LOAD,		STR_TITLE_EDITOR_ACTION_LOAD, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
+	{ TITLE_SCRIPT_LOCATION,	STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
+	{ TITLE_SCRIPT_ROTATE,		STR_TITLE_EDITOR_COMMAND_TYPE_ROTATE, STR_TITLE_EDITOR_ARGUMENT_ROTATIONS },
+	{ TITLE_SCRIPT_ZOOM,		STR_TITLE_EDITOR_COMMAND_TYPE_ZOOM, STR_TITLE_EDITOR_ARGUMENT_ZOOM_LEVEL },
+	{ TITLE_SCRIPT_SPEED,		STR_TITLE_EDITOR_COMMAND_TYPE_SPEED, STR_TITLE_EDITOR_ARGUMENT_SPEED },
+	{ TITLE_SCRIPT_WAIT,		STR_TITLE_EDITOR_COMMAND_TYPE_WAIT, STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS },
+	{ TITLE_SCRIPT_RESTART,		STR_TITLE_EDITOR_RESTART, STR_NONE },
+	{ TITLE_SCRIPT_END,			STR_TITLE_EDITOR_END, STR_NONE },
 };
 
 #define NUM_COMMANDS 8
@@ -78,20 +78,20 @@ static char textbox2Buffer[BUF_SIZE];
 static title_command command = { 6, 0, 0 };
 
 static rct_widget window_title_command_editor_widgets[] = {
-	{ WWT_FRAME,				1,	0,			WW-1,		0,		WH-1,	-1,							STR_NONE },							// panel / background
-	{ WWT_CAPTION,				1,	1,			WW-2,		1,		14,		5434,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,				1,	WW-13,		WW-3,		2,		13,		824,						STR_CLOSE_WINDOW_TIP },				// close x button
+	{ WWT_FRAME,				1,	0,			WW-1,		0,		WH-1,	0xFFFFFFFF,							STR_NONE },							// panel / background
+	{ WWT_CAPTION,				1,	1,			WW-2,		1,		14,		STR_TITLE_COMMAND_EDITOR_TITLE,						STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CLOSEBOX,				1,	WW-13,		WW-3,		2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_DROPDOWN,				1,	WS,			WW-WS-1,	BY,		BY+11,	STR_NONE,					STR_NONE }, // Command dropdown
-	{ WWT_DROPDOWN_BUTTON,		1,	WW-WS-12,	WW-WS-2,	BY+1,	BY+10,	876,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,		1,	WW-WS-12,	WW-WS-2,	BY+1,	BY+10,	STR_DROPDOWN_GLYPH,			STR_NONE },
 	{ WWT_TEXT_BOX,				1,	WS,			WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // full textbox
 
 	{ WWT_TEXT_BOX,				1,	WS,			WS+WHA-4,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // x textbox
 	{ WWT_TEXT_BOX,				1,	WS+WHA+3,	WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // y textbox
 
 	{ WWT_DROPDOWN,				1,	16,			WW-17,		BY2,	BY2+11,	STR_NONE,					STR_NONE }, // Save dropdown
-	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	876,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	STR_DROPDOWN_GLYPH,			STR_NONE },
 
-	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	5446,						STR_NONE }, // Get location/zoom/etc
+	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION,						STR_NONE }, // Get location/zoom/etc
 
 	{ WWT_DROPDOWN_BUTTON,		1,	10,			80,			WH-21,	WH-10,	STR_OK,						STR_NONE }, // OKAY
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-80,		WW-10,		WH-21,	WH-10,	STR_CANCEL,					STR_NONE }, // Cancel
@@ -205,9 +205,9 @@ void window_title_command_editor_open(int index, bool insert)
 		WC_TITLE_COMMAND_EDITOR,
 		WF_STICK_TO_FRONT
 	);
-	window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].image = (uint32)textbox1Buffer;
-	window_title_command_editor_widgets[WIDX_TEXTBOX_X].image = (uint32)textbox1Buffer;
-	window_title_command_editor_widgets[WIDX_TEXTBOX_Y].image = (uint32)textbox2Buffer;
+	window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].string = textbox1Buffer;
+	window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
+	window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;
 	window->widgets = window_title_command_editor_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
@@ -258,13 +258,13 @@ static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_TEXTBOX_FULL:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)textbox1Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox1Buffer, 4);
 		break;
 	case WIDX_TEXTBOX_X:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)textbox1Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox1Buffer, 4);
 		break;
 	case WIDX_TEXTBOX_Y:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)textbox2Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox2Buffer, 4);
 		break;
 	case WIDX_GET:
 		if (command.command == TITLE_SCRIPT_LOCATION) {
@@ -328,7 +328,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 			num_items = 4;
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-				gDropdownItemsArgs[i] = 5142 + i;
+				gDropdownItemsArgs[i] = SpeedNames[i];
 			}
 
 			window_dropdown_show_text_custom_width(
@@ -346,7 +346,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 		else if (command.command == TITLE_SCRIPT_LOAD) {
 			num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
 			for (i = 0; i < num_items; i++) {
-				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
 			}
 
@@ -527,7 +527,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 {
 	window_draw_widgets(w, dpi);
 
-	gfx_draw_string_left(dpi, 5432, NULL, w->colours[1], w->x + WS, w->y + BY - 14);
+	gfx_draw_string_left(dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, NULL, w->colours[1], w->x + WS, w->y + BY - 14);
 	gfx_draw_string_left(dpi, get_command_info(command.command).descStringId, NULL, w->colours[1], w->x + WS, w->y + BY2 - 14);
 
 	gfx_draw_string_left_clipped(
@@ -543,7 +543,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 	if (command.command == TITLE_SCRIPT_SPEED) {
 		gfx_draw_string_left_clipped(
 			dpi,
-			5142 + command.speed - 1,
+			SpeedNames[command.speed - 1],
 			NULL,
 			w->colours[1],
 			w->x + w->widgets[WIDX_INPUT].left + 1,
@@ -555,7 +555,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 		if (command.saveIndex == 0xFF) {
 			gfx_draw_string_left_clipped(
 				dpi,
-				5437,
+				STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED,
 				NULL,
 				w->colours[1],
 				w->x + w->widgets[WIDX_INPUT].left + 1,
@@ -567,7 +567,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 			set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex]);
 			gfx_draw_string_left_clipped(
 				dpi,
-				1170,
+				STR_STRING,
 				gCommonFormatArgs,
 				w->colours[1],
 				w->x + w->widgets[WIDX_INPUT].left + 1,

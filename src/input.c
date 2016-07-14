@@ -1065,7 +1065,7 @@ void process_mouse_over(int x, int y)
 	int ebx, esi, edi, ebp;
 
 	cursorId = CURSOR_ARROW;
-	set_map_tooltip_format_arg(0, sint16, -1);
+	set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
 	window = window_find_from_point(x, y);
 
 	if (window != NULL) {
@@ -1327,7 +1327,43 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		if (gDropdownIsColour && gDropdownLastColourHover != dropdown_index) {
 			gDropdownLastColourHover = dropdown_index;
 			window_tooltip_close();
-			window_tooltip_show(STR_COLOUR_NAMES_START + dropdown_index, x, y);
+
+			static const rct_string_id colourTooltips[] = {
+				STR_COLOUR_BLACK_TIP,
+				STR_COLOUR_GREY_TIP,
+				STR_COLOUR_WHITE_TIP,
+				STR_COLOUR_DARK_PURPLE_TIP,
+				STR_COLOUR_LIGHT_PURPLE_TIP,
+				STR_COLOUR_BRIGHT_PURPLE_TIP,
+				STR_COLOUR_DARK_BLUE_TIP,
+				STR_COLOUR_LIGHT_BLUE_TIP,
+				STR_COLOUR_ICY_BLUE_TIP,
+				STR_COLOUR_TEAL_TIP,
+				STR_COLOUR_AQUAMARINE_TIP,
+				STR_COLOUR_SATURATED_GREEN_TIP,
+				STR_COLOUR_DARK_GREEN_TIP,
+				STR_COLOUR_MOSS_GREEN_TIP,
+				STR_COLOUR_BRIGHT_GREEN_TIP,
+				STR_COLOUR_OLIVE_GREEN_TIP,
+				STR_COLOUR_DARK_OLIVE_GREEN_TIP,
+				STR_COLOUR_BRIGHT_YELLOW_TIP,
+				STR_COLOUR_YELLOW_TIP,
+				STR_COLOUR_DARK_YELLOW_TIP,
+				STR_COLOUR_LIGHT_ORANGE_TIP,
+				STR_COLOUR_DARK_ORANGE_TIP,
+				STR_COLOUR_LIGHT_BROWN_TIP,
+				STR_COLOUR_SATURATED_BROWN_TIP,
+				STR_COLOUR_DARK_BROWN_TIP,
+				STR_COLOUR_SALMON_PINK_TIP,
+				STR_COLOUR_BORDEAUX_RED_TIP,
+				STR_COLOUR_SATURATED_RED_TIP,
+				STR_COLOUR_BRIGHT_RED_TIP,
+				STR_COLOUR_DARK_PINK_TIP,
+				STR_COLOUR_BRIGHT_PINK_TIP,
+				STR_COLOUR_LIGHT_PINK_TIP,
+			};
+
+			window_tooltip_show(colourTooltips[dropdown_index], x, y);
 		}
 
 		if (dropdown_index < 64 && gDropdownItemsDisabled & (1ULL << dropdown_index)) {

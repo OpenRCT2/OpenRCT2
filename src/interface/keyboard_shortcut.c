@@ -218,7 +218,7 @@ static void shortcut_rotate_construction_object()
 	w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 	if (w != NULL && !widget_is_disabled(w, 32) && w->widgets[32].type != WWT_EMPTY) {
 		// Check if building a maze...
-		if (w->widgets[32].tooltip != 1761) {
+		if (w->widgets[32].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP) {
 			window_event_mouse_up_call(w, 32);
 			return;
 		}

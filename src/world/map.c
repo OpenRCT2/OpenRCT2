@@ -3474,7 +3474,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	RCT2_GLOBAL(0x00141F722, uint8) = position.z / 8;
 	if (bp & 0xC0){
 		if (fence->wall.flags & WALL_SCENERY_FLAG3){
-			gGameCommandErrorText = 3133;
+			gGameCommandErrorText = STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3985,7 +3985,7 @@ int sub_68B044()
 	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
 		return 1;
 	else{
-		gGameCommandErrorText = 894;
+		gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
 		return 0;
 	}
 }
@@ -4949,7 +4949,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	}
 
 	if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32)) {
-		gGameCommandErrorText = 3215;
+		gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -4962,7 +4962,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	}
 
 	if (entranceNum == -1) {
-		gGameCommandErrorText = 3227;
+		gGameCommandErrorText = STR_ERR_TOO_MANY_PARK_ENTRANCES;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -5157,7 +5157,7 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 			window_invalidate(w);
 		}
 	} else {
-		gGameCommandErrorText = 2984;
+		gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -5210,7 +5210,7 @@ void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi
 			banner->flags &= ~(BANNER_FLAG_2);
 			gfx_invalidate_screen();
 		} else {
-			gGameCommandErrorText = 2984;
+			gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -5226,7 +5226,7 @@ void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		banner->flags |= BANNER_FLAG_2;
 
 		rct_string_id prev_string_id = banner->string_idx;
-		banner->string_idx = 778;
+		banner->string_idx = STR_DEFAULT_SIGN;
 		user_string_free(prev_string_id);
 		gfx_invalidate_screen();
 	}
@@ -5302,7 +5302,7 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 			window_invalidate(w);
 		}
 	} else {
-		gGameCommandErrorText = 2984;
+		gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -5356,7 +5356,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 	} else { // large sign
 		rct_map_element *mapElement = banner_get_map_element(bannerId);
 		if (mapElement == NULL || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			gGameCommandErrorText = 2984;
+			gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

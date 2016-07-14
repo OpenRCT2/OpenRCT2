@@ -67,53 +67,53 @@ enum WINDOW_STAFF_WIDGET_IDX {
 };
 
 rct_widget window_staff_overview_widgets[] = {
-	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,			17,			43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,		1, 34,		64,			17,			43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,		1, 65,		95,			17,			43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,		1, 96,		126,		17,			43,		0x2000144E,		STR_NONE},				// Tab 4
-	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,0x0FFFFFFFF,	STR_NONE},				// Viewport
-	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	0x0FFFFFFFF,	STR_NONE },				// Label at bottom of viewport
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		SPR_PICKUP_BTN,	STR_PICKUP_TIP},		// Pickup Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		SPR_PATROL_BTN,	STR_SET_PATROL_TIP},	// Patrol Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	SPR_RENAME,		STR_NAME_STAFF_TIP},	// Rename Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},// Locate Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	SPR_DEMOLISH,	STR_FIRE_STAFF_TIP},	// Fire Button
+	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,		1, 96,		126,		17,			43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
+	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,0xFFFFFFFF,				STR_NONE},				// Viewport
+	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	0xFFFFFFFF,				STR_NONE },				// Label at bottom of viewport
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		SPR_PICKUP_BTN,			STR_PICKUP_TIP},		// Pickup Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		SPR_PATROL_BTN,			STR_SET_PATROL_TIP},	// Patrol Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	SPR_RENAME,				STR_NAME_STAFF_TIP},	// Rename Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	SPR_LOCATE,				STR_LOCATE_SUBJECT_TIP},// Locate Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	SPR_DEMOLISH,			STR_FIRE_STAFF_TIP},	// Fire Button
 	{ WIDGETS_END },
 };
 
 //0x9AF910
 rct_widget window_staff_options_widgets[] = {
-	{ WWT_FRAME,			0, 0,		WW - 1,	0,		WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,				1, 3,		33,		17,		43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,				1, 34,		64,		17,		43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,				1, 65,		95,		17,		43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,				1, 96,		126,	17,		43,		0x2000144E,		STR_NONE},				// Tab 4
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 1
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		0x0FFFFFFFF,	STR_NONE },				// Checkbox 2
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		0x0FFFFFFFF,	STR_NONE},				// Checkbox 3
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	0x0FFFFFFFF,	STR_NONE},				// Checkbox 4
-	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		0x0FFFFFFFF,	STR_NONE},				// Costume Dropdown
-	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		876,			STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
+	{ WWT_FRAME,			0, 0,		WW - 1,	0,		WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
+	{ WWT_TAB,				1, 3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,				1, 34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,				1, 65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,				1, 96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		0xFFFFFFFF,				STR_NONE},				// Checkbox 1
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		0xFFFFFFFF,				STR_NONE },				// Checkbox 2
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		0xFFFFFFFF,				STR_NONE},				// Checkbox 3
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	0xFFFFFFFF,				STR_NONE},				// Checkbox 4
+	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		0xFFFFFFFF,				STR_NONE},				// Costume Dropdown
+	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		STR_DROPDOWN_GLYPH,	STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
 	{ WIDGETS_END },
 };
 
 //0x9AF9F4
 rct_widget window_staff_stats_widgets[] = {
-	{ WWT_FRAME,	0, 0,		WW - 1,	0,	WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		0x361,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	0x0FFFFFFFF,	STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,		17,	43,		0x2000144E,		STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,		1, 34,		64,		17,	43,		0x2000144E,		STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,		1, 65,		95,		17,	43,		0x2000144E,		STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,		1, 96,		126,	17,	43,		0x2000144E,		STR_NONE},				// Tab 4
+	{ WWT_FRAME,	0, 0,		WW - 1,	0,	WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,		1, 96,		126,	17,	43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
 	{ WIDGETS_END },
 };
 
@@ -289,6 +289,20 @@ uint32 window_staff_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_3)
 };
 
+static const uint32 staffCostumeNames[] = {
+	STR_STAFF_OPTION_COSTUME_PANDA,
+	STR_STAFF_OPTION_COSTUME_TIGER,
+	STR_STAFF_OPTION_COSTUME_ELEPHANT,
+	STR_STAFF_OPTION_COSTUME_ROMAN,
+	STR_STAFF_OPTION_COSTUME_GORILLA,
+	STR_STAFF_OPTION_COSTUME_SNOWMAN,
+	STR_STAFF_OPTION_COSTUME_KNIGHT,
+	STR_STAFF_OPTION_COSTUME_ASTRONAUT,
+	STR_STAFF_OPTION_COSTUME_BANDIT,
+	STR_STAFF_OPTION_COSTUME_SHERIFF,
+	STR_STAFF_OPTION_COSTUME_PIRATE,
+};
+
 /**
 *
 *  rct2: 0x006BEE98
@@ -457,7 +471,7 @@ void window_staff_overview_mouseup(rct_window *w, int widgetIndex)
 		window_staff_fire_prompt_open(peep);
 		break;
 	case WIDX_RENAME:
-		window_text_input_open(w, widgetIndex, 2977, 2978, peep->name_string_idx, peep->id, 32);
+		window_text_input_open(w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peep->name_string_idx, peep->id, 32);
 		break;
 	}
 }
@@ -774,17 +788,17 @@ void window_staff_options_invalidate(rct_window *w)
 		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
 		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
 		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_DROPDOWN_BUTTON;
-		window_staff_options_widgets[WIDX_COSTUME_BOX].image = 1779 + peep->sprite_type - 4;
+		window_staff_options_widgets[WIDX_COSTUME_BOX].text = staffCostumeNames[peep->sprite_type - 4];
 		break;
 	case STAFF_TYPE_HANDYMAN:
 		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_1].image = 1712;
+		window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
 		window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_2].image = 1713;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
 		window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_3].image = 1714;
+		window_staff_options_widgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
 		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_4].image = 1715;
+		window_staff_options_widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
 		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
 		window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
 		w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
@@ -792,9 +806,9 @@ void window_staff_options_invalidate(rct_window *w)
 		break;
 	case STAFF_TYPE_MECHANIC:
 		window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_1].image = 1876;
+		window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
 		window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
-		window_staff_options_widgets[WIDX_CHECKBOX_2].image = 1877;
+		window_staff_options_widgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
 		window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
 		window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
 		window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
@@ -1046,33 +1060,27 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		set_format_arg(0, uint32, RCT2_ADDRESS(0x00992A00, uint16)[peep->staff_type]);
-		gfx_draw_string_left(dpi, 2349, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, 0, x, y);
 		y += 10;
 	}
 
-	gfx_draw_string_left(dpi, 2350, (void*)&peep->time_in_park, 0, x, y);
+	gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, (void*)&peep->time_in_park, 0, x, y);
 	y += 10;
 
 	switch (peep->staff_type){
 	case STAFF_TYPE_HANDYMAN:
-		// Lawns mown
-		gfx_draw_string_left(dpi, 2351, (void*)&peep->staff_lawns_mown, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, (void*)&peep->staff_lawns_mown, 0, x, y);
 		y += 10;
-		// Gardens Watered
-		gfx_draw_string_left(dpi, 2352, (void*)&peep->staff_gardens_watered, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, (void*)&peep->staff_gardens_watered, 0, x, y);
 		y += 10;
-		// Litter Swept
-		gfx_draw_string_left(dpi, 2353, (void*)&peep->staff_litter_swept, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, (void*)&peep->staff_litter_swept, 0, x, y);
 		y += 10;
-		// Bins Emptied
-		gfx_draw_string_left(dpi, 2354, (void*)&peep->staff_bins_emptied, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, (void*)&peep->staff_bins_emptied, 0, x, y);
 		break;
 	case STAFF_TYPE_MECHANIC:
-		// Rides Inspected
-		gfx_draw_string_left(dpi, 2356, (void*)&peep->staff_rides_inspected, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, (void*)&peep->staff_rides_inspected, 0, x, y);
 		y += 10;
-		// Rides Fixed
-		gfx_draw_string_left(dpi, 2355, (void*)&peep->staff_rides_fixed, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, (void*)&peep->staff_rides_fixed, 0, x, y);
 		break;
 	}
 }
@@ -1152,14 +1160,14 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		int dest_z = mapElement->base_height * 8 + 16;
 
 		if (!map_is_location_owned(tile_x, tile_y, dest_z)){
-			window_error_open(0x785, -1);
+			window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
 			return;
 		}
 
 		if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
-			if (gGameCommandErrorText != 0x3A5){
-				if (gGameCommandErrorText != 0x49B){
-					window_error_open(0x785, -1);
+			if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST){
+				if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY){
+					window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
 					return;
 				}
 			}
@@ -1232,7 +1240,7 @@ void window_staff_overview_text_input(rct_window *w, int widgetIndex, char *text
 	if (text == NULL)
 		return;
 
-	gGameCommandErrorTitle = STR_CANT_NAME_STAFF_MEMBER;
+	gGameCommandErrorTitle = STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER;
 	game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_STAFF_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
 	game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_STAFF_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_STAFF_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
@@ -1356,7 +1364,7 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		if (eax == peep->sprite_type){
 			item_checked = 1 << i;
 		}
-		gDropdownItemsArgs[i] = eax + 1775;
+		gDropdownItemsArgs[i] = staffCostumeNames[eax - 4];
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 	}
 

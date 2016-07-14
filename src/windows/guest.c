@@ -71,94 +71,94 @@ enum WINDOW_GUEST_WIDGET_IDX {
 };
 
 rct_widget window_guest_overview_widgets[] = {
-	{ WWT_FRAME,	0, 0,	191,	0,		156,	0x0FFFFFFFF,	STR_NONE },							// Panel / Background
-	{ WWT_CAPTION,	0, 1,	190,	1,		14,		865,			STR_WINDOW_TITLE_TIP }, 			// Title
-	{ WWT_CLOSEBOX, 0, 179, 189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP }, 			// Close x button
-	{ WWT_RESIZE,	1, 0,	191,	43,		156,	0x0FFFFFFFF,	STR_NONE },							// Resize
-	{ WWT_TAB,		1, 3,	33,		17,		43,		0x2000144E,		STR_SHOW_GUEST_VIEW_TIP },			// Tab 1
-	{ WWT_TAB,		1, 73,	64,		17,		43,		0x2000144E,		STR_SHOW_GUEST_NEEDS_TIP},			// Tab 2
-	{ WWT_TAB,		1, 65,	95,		17,		43,		0x2000144E,		STR_SHOW_GUEST_VISITED_RIDES_TIP},	// Tab 3
-	{ WWT_TAB,		1, 96,	126,	17,		43,		0x2000144E,		STR_SHOW_GUEST_FINANCE_TIP},		// Tab 4
-	{ WWT_TAB,		1, 127, 157,	17,		43,		0x2000144E,		STR_SHOW_GUEST_THOUGHTS_TIP},		// Tab 5
-	{ WWT_TAB,		1, 158, 188,	17,		43,		0x2000144E,		STR_SHOW_GUEST_ITEMS_TIP},			// Tab 6
-	{ WWT_12,		1, 3,	166,	45,		56,		0x0FFFFFFFF,	STR_NONE},							// Label Thought marquee
-	{ WWT_VIEWPORT, 1, 3,	166,	57,		143,	0x0FFFFFFFF,	STR_NONE },							// Viewport
-	{ WWT_12,		1, 3,	166,	144,	154,	0x0FFFFFFFF,	STR_NONE},							// Label Action
-	{ WWT_FLATBTN,	1, 167, 190,	45,		68,		SPR_PICKUP_BTN,	STR_PICKUP_TIP},					// Pickup Button
-	{ WWT_FLATBTN,	1, 167, 190,	69,		92,		SPR_RENAME,		STR_NAME_GUEST_TIP},				// Rename Button
-	{ WWT_FLATBTN,	1, 167, 190,	93,		116,	SPR_LOCATE,		STR_LOCATE_SUBJECT_TIP},			// Locate Button
-	{ WWT_FLATBTN,	1, 167, 190,	117,	140,	SPR_TRACK_PEEP,	STR_TOGGLE_GUEST_TRACKING_TIP},		// Track Button
+	{WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
+	{WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},            // Title
+	{WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},            // Close x button
+	{WWT_RESIZE,   1, 0,   191, 43,  156, 0xFFFFFFFF, STR_NONE},                            // Resize
+	{WWT_TAB,      1, 3,   33,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},            // Tab 1
+	{WWT_TAB,      1, 73,  64,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},            // Tab 2
+	{WWT_TAB,      1, 65,  95,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},    // Tab 3
+	{WWT_TAB,      1, 96,  126, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
+	{WWT_TAB,      1, 127, 157, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},        // Tab 5
+	{WWT_TAB,      1, 158, 188, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},            // Tab 6
+	{WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                            // Label Thought marquee
+	{WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                            // Viewport
+	{WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                            // Label Action
+	{WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
+	{WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
+	{WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button
+	{WWT_FLATBTN,  1, 167, 190, 117, 140, SPR_TRACK_PEEP,       STR_TOGGLE_GUEST_TRACKING_TIP},        // Track Button
 	{ WIDGETS_END },
 };
 
 rct_widget window_guest_stats_widgets[] = {
-	{WWT_FRAME,		0, 0,	191,	0,	156,	STR_NONE,	STR_NONE},
-	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,	1, 0,	191,	43,	156,	STR_NONE,	STR_NONE},
-	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_rides_widgets[] = {
-	{WWT_FRAME,		0, 0,	191,	0,	156,	STR_NONE,	STR_NONE},
-	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,	1, 0,	191,	43,	156,	STR_NONE,	STR_NONE},
-	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	STR_SHOW_GUEST_ITEMS_TIP},
-	{WWT_SCROLL,	1, 3,	188,	57,	143,	2,			STR_NONE},
+	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_SCROLL,   1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_finance_widgets[] = {
-	{WWT_FRAME,		0, 0,	191,	0,	156,	STR_NONE,	STR_NONE},
-	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,	1, 0,	191,	43,	156,	STR_NONE,	STR_NONE},
-	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_thoughts_widgets[] = {
-	{WWT_FRAME,		0, 0,	191,	0,	156,	STR_NONE,	STR_NONE},
-	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,	1, 0,	191,	43,	156,	STR_NONE,	STR_NONE},
-	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_inventory_widgets[] = {
-	{WWT_FRAME,		0, 0,	191,	0,	156,	STR_NONE,	STR_NONE},
-	{WWT_CAPTION,	0, 1,	190,	1,	14,		865,		STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX,	0, 179,	189,	2,	13,		824,		STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,	1, 0,	191,	43,	156,	STR_NONE,	STR_NONE},
-	{WWT_TAB,		1, 3,	33,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,		1, 34,	64,		17,	43,		0x2000144E,	STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,		1, 65,	95,		17,	43,		0x2000144E,	STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,		1, 96,	126,	17,	43,		0x2000144E,	STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,		1, 127,	157,	17,	43,		0x2000144E,	STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,		1, 158,	188,	17,	43,		0x2000144E,	STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
@@ -642,7 +642,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		peep_window_state_update(peep);
 		break;
 	case WIDX_RENAME:
-		window_text_input_open(w, widgetIndex, 0x5AC, 0x5AD, peep->name_string_idx, peep->id, 32);
+		window_text_input_open(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peep->name_string_idx, peep->id, 32);
 		break;
 	case WIDX_LOCATE:
 		window_scroll_to_viewport(w);
@@ -890,13 +890,13 @@ void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 		// If currently viewing this tab animate tab
 		// if it is very sick or angry.
 		switch (image_id){
-		case SPR_PEEP_LARGE_FACE_VERY_VERY_SICK:
+		case SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0:
 			image_id += (w->frame_no / 4) & 0xF;
 			break;
-		case SPR_PEEP_LARGE_FACE_VERY_SICK:
+		case SPR_PEEP_LARGE_FACE_VERY_SICK_0:
 			image_id += (w->frame_no / 8) & 0x3;
 			break;
-		case SPR_PEEP_LARGE_FACE_ANGRY:
+		case SPR_PEEP_LARGE_FACE_ANGRY_0:
 			image_id += (w->frame_no / 8) & 0x3;
 			break;
 		}
@@ -955,7 +955,7 @@ void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int x = widget->left + w->x;
 	int y = widget->top + w->y;
 
-	int image_id = 5269;
+	int image_id = SPR_TAB_THOUGHTS_0;
 
 	if ( w->page == WINDOW_GUEST_THOUGHTS ){
 		image_id += (w->frame_no / 2) & 0x7;
@@ -975,7 +975,7 @@ void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int x = widget->left + w->x;
 	int y = widget->top + w->y;
 
-	int image_id = 5326;
+	int image_id = SPR_TAB_GUEST_INVENTORY;
 
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
@@ -1048,7 +1048,7 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(8, uint16, 0);
 
 	x = widget->right - widget->left - w->list_information_type;
-	gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, x, 0);
+	gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, 0);
 }
 
 /**
@@ -1237,14 +1237,14 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 	int dest_z = mapElement->base_height * 8 + 16;
 
 	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
-		window_error_open(0x785,-1);
+		window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
 		return;
 	}
 	
 	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
-		if (gGameCommandErrorText != 0x3A5 ){
-			if (gGameCommandErrorText != 0x49B){
-				window_error_open(0x785, -1);
+		if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST) {
+			if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY) {
+				window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
 				return;
 			}
 		}
@@ -1433,7 +1433,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	//Happiness
-	gfx_draw_string_left(dpi, 1662, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int happiness = peep->happiness;
 	if (happiness < 10)happiness = 10;
@@ -1445,7 +1445,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Energy
 	y += 10;
-	gfx_draw_string_left(dpi, 1664, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int energy = ((peep->energy - 32) * 85) / 32;
 	ebp = 14;
@@ -1457,7 +1457,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Hunger
 	y += 10;
-	gfx_draw_string_left(dpi, 1665, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int hunger = peep->hunger;
 	if (hunger > 190) hunger = 190;
@@ -1476,7 +1476,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Thirst
 	y += 10;
-	gfx_draw_string_left(dpi, 1666, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int thirst = peep->thirst;
 	if (thirst > 190) thirst = 190;
@@ -1495,7 +1495,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Nausea
 	y += 10;
-	gfx_draw_string_left(dpi, 1663, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int nausea = peep->nausea - 32;
 
@@ -1511,7 +1511,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Bathroom
 	y += 10;
-	gfx_draw_string_left(dpi, 1667, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, 0, x, y);
 
 	int bathroom = peep->bathroom - 32;
 	if (bathroom > 210) bathroom = 210;
@@ -1534,34 +1534,40 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		eax -= peep->time_in_park;
 		eax >>= 11;
 		set_format_arg(0, uint16, eax & 0xFFFF);
-		gfx_draw_string_left(dpi, 1458, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, gCommonFormatArgs, 0, x, y);
 	}
 
 	y += 19;
 	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
 
 	// Preferred Ride
-	gfx_draw_string_left(dpi, 1657, (void*)0, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, (void *) 0, 0, x, y);
 	y += 10;
 
 	// Intensity
 	int intensity = peep->intensity / 16;
 	set_format_arg(0, uint16, intensity);
-	int string_id = 1658;
+	int string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BELOW;
 	if (peep->intensity & 0xF){
 		set_format_arg(0, uint16, peep->intensity & 0xF);
 		set_format_arg(2, uint16, intensity);
-		string_id = 1659;
-		if (intensity == 15) string_id = 1660;
+		string_id = STR_GUEST_STAT_PREFERRED_INTESITY_BETWEEN;
+		if (intensity == 15) string_id = STR_GUEST_STAT_PREFERRED_INTESITY_ABOVE;
 	}
 
 	gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, 0, x + 4, y);
 
 	// Nausea tolerance
+	static const rct_string_id nauseaTolerances[] = {
+		STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
+		STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
+		STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
+		STR_PEEP_STAT_NAUSEA_TOLERANCE_HIGH,
+	};
 	y += 10;
 	int nausea_tolerance = peep->nausea_tolerance & 0x3;
-	set_format_arg(0, uint16, nausea_tolerance + 2368);
-	gfx_draw_string_left(dpi, 1661, gCommonFormatArgs, 0, x, y);
+	set_format_arg(0, uint16, nauseaTolerances[nausea_tolerance]);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, 0, x, y);
 }
 
 /**
@@ -1733,11 +1739,11 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	//dx
 	int y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2;
 
-	gfx_draw_string_left(dpi, 2292, (void*)0, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, (void*)0, 0, x, y);
 
 	y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-	int ride_string_id = 3094;
+	int ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
 	int ride_string_arguments = 0;
 	if (peep->favourite_ride != 0xFF){
 		rct_ride* ride = get_ride(peep->favourite_ride);
@@ -1747,7 +1753,7 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, uint16, ride_string_id);
 	set_format_arg(2, uint32, ride_string_arguments);
 
-	gfx_draw_string_left_clipped(dpi, 3093, gCommonFormatArgs, 0, x, y, w->width - 14);
+	gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, 0, x, y, w->width - 14);
 }
 
 /**
@@ -1773,7 +1779,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int 
 		int string_format = STR_BLACK_STRING;
 		if (list_index == w->selected_list_item){
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-			string_format = STR_WINDOW_COLOUR_2_STRING;
+			string_format = STR_WINDOW_COLOUR_2_STRINGID;
 		}
 		rct_ride* ride = get_ride(w->list_item_positions[list_index]);
 
@@ -1859,29 +1865,29 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Cash in pocket
 	set_format_arg(0, money32, peep->cash_in_pocket);
-	gfx_draw_string_left(dpi, 1457, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, gCommonFormatArgs, 0, x, y);
 
 	// Cash spent
 	y += 10;
 	set_format_arg(0, money32, peep->cash_spent);
-	gfx_draw_string_left(dpi, 1456, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, 0, x, y);
 
 	y += 20;
 	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
 
 	// Paid to enter
 	set_format_arg(0, money32, peep->paid_to_enter);
-	gfx_draw_string_left(dpi, 2296, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, gCommonFormatArgs, 0, x, y);
 
 	// Paid on rides
 	y += 10;
 	set_format_arg(0, money32, peep->paid_on_rides);
 	set_format_arg(4, uint16, peep->no_of_rides);
 	if (peep->no_of_rides != 1){
-		gfx_draw_string_left(dpi, 2298, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2297, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on food
@@ -1889,10 +1895,10 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, money32, peep->paid_on_food);
 	set_format_arg(4, uint16, peep->no_of_food);
 	if (peep->no_of_food != 1){
-		gfx_draw_string_left(dpi, 2300, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2299, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on drinks
@@ -1900,10 +1906,10 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, money32, peep->paid_on_drink);
 	set_format_arg(4, uint16, peep->no_of_drinks);
 	if (peep->no_of_drinks != 1){
-		gfx_draw_string_left(dpi, 2302, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2301, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on souvenirs
@@ -1911,10 +1917,10 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, money32, peep->paid_on_souvenirs);
 	set_format_arg(4, uint16, peep->no_of_souvenirs);
 	if (peep->no_of_souvenirs != 1){
-		gfx_draw_string_left(dpi, 2304, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2303, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR, gCommonFormatArgs, 0, x, y);
 	}
 }
 
@@ -2000,7 +2006,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	//dx
 	int y = w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-	gfx_draw_string_left(dpi, 1654, (void*)0, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, (void*)0, 0, x, y);
 
 	y += 10;
 	for (rct_peep_thought* thought = peep->thoughts; thought < &peep->thoughts[PEEP_MAX_THOUGHTS]; ++thought){
@@ -2111,23 +2117,23 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 	case SHOP_ITEM_VOUCHER:
 		switch (peep->voucher_type) {
 		case VOUCHER_TYPE_PARK_ENTRY_FREE:
-			set_format_arg(6, uint16, 2418);
+			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
 			set_format_arg(8, uint16, gParkName);
 			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_RIDE_FREE:
 			ride = get_ride(peep->voucher_arguments);
-			set_format_arg(6, uint16, 2419);
+			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
 			set_format_arg(8, uint16, ride->name);
 			set_format_arg(10, uint32, ride->name_arguments);
 			break;
 		case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-			set_format_arg(6, uint16, 2420);
+			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
 			set_format_arg(8, uint16, gParkName);
 			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-			set_format_arg(6, uint16, 2421);
+			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
 			set_format_arg(8, uint16, ShopItemStringIds[peep->voucher_arguments].singular);
 			break;
 		}

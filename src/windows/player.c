@@ -61,20 +61,20 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 };
 
 #define WINDOW_PLAYER_COMMON_WIDGETS																									\
-	{ WWT_FRAME,			0,	0,		191,	0,		156,	0x0FFFFFFFF,	STR_NONE },				/* Panel / Background	*/		\
-	{ WWT_CAPTION,			0,	1,		190,	1,		14,		STR_STRING,		STR_WINDOW_TITLE_TIP },	/* Title				*/		\
-	{ WWT_CLOSEBOX,			0,	179,	189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP },	/* Close x button		*/		\
-	{ WWT_RESIZE,			1,	0,		191,	43,		156,	0x0FFFFFFFF,	STR_NONE },				/* Resize				*/		\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,		STR_NONE },				/* Tab 1				*/		\
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,		STR_NONE }				/* Tab 2				*/
+	{ WWT_FRAME,			0,	0,		191,	0,		156,	0xFFFFFFFF,				STR_NONE },				/* Panel / Background	*/		\
+	{ WWT_CAPTION,			0,	1,		190,	1,		14,		STR_STRING,				STR_WINDOW_TITLE_TIP },	/* Title				*/		\
+	{ WWT_CLOSEBOX,			0,	179,	189,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	/* Close x button		*/		\
+	{ WWT_RESIZE,			1,	0,		191,	43,		156,	0xFFFFFFFF,				STR_NONE },				/* Resize				*/		\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_NONE },				/* Tab 1				*/		\
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_NONE }				/* Tab 2				*/
 
 rct_widget window_player_overview_widgets[] = {
 	WINDOW_PLAYER_COMMON_WIDGETS,
-	{ WWT_DROPDOWN,			1,	3,		177,	46,		57,		0x0FFFFFFFF,	STR_NONE },					// Permission group
-	{ WWT_DROPDOWN_BUTTON,	1,	167,	177,	47,		56,		876,			STR_NONE },					//
-	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_LOCATE,		STR_LOCATE_PLAYER_TIP },	// Locate button
-	{ WWT_FLATBTN,			1,	179,	190,	69,		92,		SPR_DEMOLISH,	STR_KICK_PLAYER_TIP },		// Kick button
-	{ WWT_VIEWPORT,			1,	3,		177,	60,		120,	0x0FFFFFFFF,	STR_NONE },					// Viewport
+	{ WWT_DROPDOWN,			1,	3,		177,	46,		57,		0xFFFFFFFF,			STR_NONE },					// Permission group
+	{ WWT_DROPDOWN_BUTTON,	1,	167,	177,	47,		56,		STR_DROPDOWN_GLYPH,	STR_NONE },					//
+	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_LOCATE,			STR_LOCATE_PLAYER_TIP },	// Locate button
+	{ WWT_FLATBTN,			1,	179,	190,	69,		92,		SPR_DEMOLISH,		STR_KICK_PLAYER_TIP },		// Kick button
+	{ WWT_VIEWPORT,			1,	3,		177,	60,		120,	0xFFFFFFFF,			STR_NONE },					// Viewport
 	{ WIDGETS_END },
 };
 
@@ -257,7 +257,7 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 	);
 
 	for (i = 0; i < network_get_num_groups(); i++) {
-		gDropdownItemsFormat[i] = 2777;
+		gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 		gDropdownItemsArgs[i] = (int)network_get_group_name(i);
 	}
 
@@ -384,7 +384,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + 24;
 
 	set_format_arg(0, uint16, STR_PING);
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
 	char ping[64];
 	sprintf(ping, "%d ms", network_get_player_ping(player));
 	gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);

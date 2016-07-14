@@ -45,7 +45,7 @@ int _dropdown_item_width;
 int _dropdown_item_height;
 
 int gDropdownNumItems;
-uint16 gDropdownItemsFormat[64];
+rct_string_id gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
 uint64 gDropdownItemsChecked;
 uint64 gDropdownItemsDisabled;
@@ -424,7 +424,7 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 				defaultIndex = i;
 
 			gDropdownItemsFormat[i] = 0xFFFE;
-			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
+			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | SPR_PALETTE_BTN);
 		}
 	}
 

@@ -118,29 +118,29 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_themes_widgets[] = {
-	{ WWT_FRAME,			0,	0,		319,	0,		106,	0x0FFFFFFFF,					STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		318,	1,		14,		5244,							STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close button
-	{ WWT_RESIZE,			1,	0,		319,	43,		106,	0x0FFFFFFFF,					STR_NONE },					// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },						// settings tab
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5228 },						// main ui tab
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5229 },						// park tab
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x02000144E,					5230 },						// tools tab
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x02000144E,					5231 },						// rides and peeps tab
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x02000144E,					5232 },						// editors tab
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x02000144E,					5233 },						// misc tab
-	{ WWT_TAB,				1,	220,	250,	17,		43,		0x02000144E,					5234 },						// prompts tab
-	{ WWT_TAB,				1,	251,	281,	17,		43,		0x02000144E,					5281 },						// features tab
-	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },					// Preset colour schemes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5239,							5257 },						// Duplicate button
-	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							5258 },						// Delete button
-	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		3348,							5259 },						// Rename button
-	{ WWT_COLOURBTN,		1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// colour button mask
-	{ WWT_SCROLL,			1,	3,		316,	60,		103,	2,								STR_NONE },					// staff list
-	{ WWT_CHECKBOX,			1,	10,		299,	54,		65,		5282,							STR_NONE },					// rct1 ride lights
-	{ WWT_CHECKBOX,			1,	10,		299,	69,		80,		5283,							STR_NONE },					// rct1 park lights
-	{ WWT_CHECKBOX,			1,	10,		299,	84,		95,		5284,							STR_NONE },					// rct1 scenario font
+	{ WWT_FRAME,			0,	0,		319,	0,		106,	0xFFFFFFFF,									STR_NONE },								// panel / background
+	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_THEMES_TITLE,								STR_WINDOW_TITLE_TIP },					// title bar
+	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,									STR_CLOSE_WINDOW_TIP },					// close button
+	{ WWT_RESIZE,			1,	0,		319,	43,		106,	0xFFFFFFFF,									STR_NONE },								// tab content panel
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_SETTINGS_TIP },			// settings tab
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_MAIN_TIP },				// main ui tab
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_PARK_TIP },				// park tab
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_TOOLS_TIP },				// tools tab
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_RIDES_AND_GUESTS_TIP },	// rides and peeps tab
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_EDITORS_TIP },			// editors tab
+	{ WWT_TAB,				1,	189,	219,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_MISC_TIP },				// misc tab
+	{ WWT_TAB,				1,	220,	250,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_PROMPTS_TIP },			// prompts tab
+	{ WWT_TAB,				1,	251,	281,	17,		43,		0x20000000 | SPR_TAB,							STR_THEMES_TAB_FEATURES_TIP	},			// features tab
+	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,										STR_NONE },								// Preset colour schemes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		STR_DROPDOWN_GLYPH,								STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		STR_TITLE_EDITOR_ACTION_DUPLICATE,				STR_THEMES_ACTION_DUPLICATE_TIP },		// Duplicate button
+	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		STR_TRACK_MANAGE_DELETE,						STR_THEMES_ACTION_DELETE_TIP },			// Delete button
+	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		STR_TRACK_MANAGE_RENAME,						STR_THEMES_ACTION_RENAME_TIP },			// Rename button
+	{ WWT_COLOURBTN,		1,	0,		0,		0,		0,		STR_NONE,										STR_NONE },								// colour button mask
+	{ WWT_SCROLL,			1,	3,		316,	60,		103,	SCROLL_VERTICAL,								STR_NONE },								// staff list
+	{ WWT_CHECKBOX,			1,	10,		299,	54,		65,		STR_THEMES_OPTION_RCT1_RIDE_CONTROLS,			STR_NONE },								// rct1 ride lights
+	{ WWT_CHECKBOX,			1,	10,		299,	69,		80,		STR_THEMES_OPTION_RCT1_PARK_CONTROLS,			STR_NONE },								// rct1 park lights
+	{ WWT_CHECKBOX,			1,	10,		299,	84,		95,		STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT,	STR_NONE },								// rct1 scenario font
 	{ WIDGETS_END },
 };
 
@@ -167,13 +167,13 @@ static int window_themes_tab_animation_divisor[] = {
 	2
 };
 static int window_themes_tab_sprites[] = {
-	5221,
+	SPR_TAB_PAINT_0,
 	SPR_TAB_KIOSKS_AND_FACILITIES_0,
-	5200,
+	SPR_TAB_PARK_ENTRANCE,
 	SPR_G2_TAB_LAND,
 	SPR_TAB_RIDE_0,
-	5205,
-	5201,
+	SPR_TAB_WRENCH_0,
+	SPR_TAB_GEARS_0,
 	SPR_TAB_STAFF_OPTIONS_0,
 	SPR_TAB_FINANCES_MARKETING_0
 };
@@ -368,22 +368,22 @@ static void window_themes_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_THEMES_DUPLICATE_BUTTON:;
 		activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)activeThemeName, 64);
+		window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uint32)activeThemeName, 64);
 		break;
 	case WIDX_THEMES_DELETE_BUTTON:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-			window_error_open(5241, STR_NONE);
+			window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
 		} else {
 			theme_delete();
 		}
 		break;
 	case WIDX_THEMES_RENAME_BUTTON:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-			window_error_open(5241, STR_NONE);
+			window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
 		} else {
 			activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 			activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)activeThemeName, 64);
+			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uint32)activeThemeName, 64);
 		}
 		break;
 	}
@@ -492,7 +492,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 
 		widget--;
 		for (int i = 0; i < num_items; i++) {
-			gDropdownItemsFormat[i] = 2777;
+			gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 			gDropdownItemsArgs[i] = (uint32)theme_manager_get_available_theme_name(i);
 		}
 		
@@ -510,7 +510,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-			window_error_open(5241, STR_NONE);
+			window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
 		} else {
 			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
 			theme_save();
@@ -519,7 +519,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		break;
 	case WIDX_THEMES_RCT1_PARK_LIGHTS:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-			window_error_open(5241, STR_NONE);
+			window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
 		} else {
 			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_PARK);
 			theme_save();
@@ -528,7 +528,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		break;
 	case WIDX_THEMES_RCT1_SCENARIO_FONT:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-			window_error_open(5241, STR_NONE);
+			window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
 		} else {
 			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
 			theme_save();
@@ -604,7 +604,7 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 		if (_colour_index_2 < numColours) {
 			if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11) {
 				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-					window_error_open(5241, 5256);
+					window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
 				} else {
 					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_COLOURBTN;
 					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
@@ -619,7 +619,7 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 			}
 			else if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y && y2 < _check_offset_y + 11) {
 				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-					window_error_open(5241, 5256);
+					window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
 				} else {
 					uint8 colour = theme_get_colour(wc, _colour_index_2);
 					if (colour & COLOUR_FLAG_TRANSLUCENT) {
@@ -656,7 +656,7 @@ static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 				const utf8 * themeName = theme_manager_get_available_theme_name(i);
 				if (strcmp(themeName, text) == 0) {
 					if (widgetIndex != WIDX_THEMES_RENAME_BUTTON) {
-					    window_error_open(5242, STR_NONE);
+					    window_error_open(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE);
 					}
 					nameTaken = true;
 					break;
@@ -671,7 +671,7 @@ static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 				window_invalidate(w);
 			}
 		} else {
-			window_error_open(5243, STR_NONE);
+			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
 		}
 		break;
 	}
@@ -767,10 +767,10 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
 		set_format_arg(0, uint32, (uint32)activeThemeName);
-		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
+		gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
-			1170,
+			STR_STRING,
 			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
@@ -782,8 +782,8 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	}
 	else {
-		gfx_draw_string_left(dpi, 5236, w, w->colours[1], w->x + 6, 58 - 12 + w->y + 1);
-		gfx_draw_string_left(dpi, 5237, w, w->colours[1], w->x + 220, 58 - 12 + w->y + 1);
+		gfx_draw_string_left(dpi, STR_THEMES_HEADER_WINDOW, w, w->colours[1], w->x + 6, 58 - 12 + w->y + 1);
+		gfx_draw_string_left(dpi, STR_THEMES_HEADER_PALETTE, w, w->colours[1], w->x + 220, 58 - 12 + w->y + 1);
 	}
 }
 
@@ -830,9 +830,9 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 				gfx_draw_string_left(dpi, theme_desc_get_name(wc), NULL, w->colours[1], 2, y + 4);
 
 				uint8 colour = theme_get_colour(wc, j);
-				uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C3;
+				uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | 0x60000000 | SPR_PALETTE_BTN;
 				if (i == _colour_index_1 && j == _colour_index_2) {
-					image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C4;
+					image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) | 0x60000000 | SPR_PALETTE_BTN_PRESSED;
 				}
 				gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
 

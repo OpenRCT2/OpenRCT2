@@ -20,11 +20,38 @@
 #include "../common.h"
 #include "ride.h"
 
+typedef struct ride_component_name {
+	rct_string_id singular;
+	rct_string_id plural;
+	rct_string_id capitalised;
+	rct_string_id capitalised_plural;
+	rct_string_id count;
+	rct_string_id count_plural;
+	rct_string_id number;
+} ride_component_name;
+
+typedef enum  {
+	RIDE_COMPONENT_TYPE_TRAIN,
+	RIDE_COMPONENT_TYPE_BOAT,
+	RIDE_COMPONENT_TYPE_TRACK,
+	RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,
+	RIDE_COMPONENT_TYPE_STATION,
+	RIDE_COMPONENT_TYPE_CAR,
+	RIDE_COMPONENT_TYPE_BUILDING,
+	RIDE_COMPONENT_TYPE_STRUCTURE,
+	RIDE_COMPONENT_TYPE_SHIP,
+	RIDE_COMPONENT_TYPE_CABIN,
+	RIDE_COMPONENT_TYPE_WHEEL,
+	RIDE_COMPONENT_TYPE_RING,
+	RIDE_COMPONENT_TYPE_PLAYER,
+	RIDE_COMPONENT_TYPE_COURSE,
+	RIDE_COMPONENT_TYPE_COUNT
+} ride_component_type;
+
 typedef struct rct_ride_name_convention {
-	rct_string_id vehicle_name;
-	rct_string_id structure_name;
-	rct_string_id station_name;
-	rct_string_id unk_name;
+	ride_component_type vehicle;
+	ride_component_type structure;
+	ride_component_type station;
 } rct_ride_name_convention;
 
 typedef struct rct_ride_entrance_definition {
@@ -37,6 +64,7 @@ typedef struct rct_ride_entrance_definition {
 } rct_ride_entrance_definition;
 
 typedef struct rct_shop_item_string_types {
+	rct_string_id price_label;		// Balloon price:
 	rct_string_id singular;			// Balloon
 	rct_string_id plural;			// Balloons
 	rct_string_id indefinite;		// a Balloon
@@ -102,6 +130,7 @@ extern const bool rideUnknownData2[0x60];
 extern const uint8 rideUnknownData3[0x60];
 extern const uint8 rideBonusValue[0x60];
 
+extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
 extern const rct_ride_name_convention RideNameConvention[96];
 extern const uint8 RideAvailableModes[];
 extern const uint8 AllRideModesAvailable[];

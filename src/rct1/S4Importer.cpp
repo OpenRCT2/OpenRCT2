@@ -1395,7 +1395,7 @@ void S4Importer::ImportBanner(rct_banner * dst, rct_banner * src)
     *dst = *src;
     dst->colour = RCT1::GetColour(src->colour);
 
-    dst->string_idx = 778;
+    dst->string_idx = STR_DEFAULT_SIGN;
     if (is_user_string_id(src->string_idx))
     {
         const char * bannerText = GetUserString(src->string_idx);

@@ -1002,9 +1002,9 @@ void window_init_scroll_widgets(rct_window *w)
 		scroll->v_top = 0;
 		scroll->v_bottom = height + 1;
 
-		if (widget->image & 0x01)
+		if (widget->content & SCROLL_HORIZONTAL)
 			scroll->flags |= HSCROLLBAR_VISIBLE;
-		if (widget->image & 0x02)
+		if (widget->content & SCROLL_VERTICAL)
 			scroll->flags |= VSCROLLBAR_VISIBLE;
 
 		widget_scroll_update_thumbs(w, widget_index);
@@ -1047,12 +1047,12 @@ void window_update_scroll_widgets(rct_window *w)
 		height++;
 
 		scrollPositionChanged = 0;
-		if ((widget->image & 1) && width != scroll->h_right) {
+		if ((widget->content & SCROLL_HORIZONTAL) && width != scroll->h_right) {
 			scrollPositionChanged = 1;
 			scroll->h_right = width;
 		}
 
-		if ((widget->image & 2) && height != scroll->v_bottom) {
+		if ((widget->content & SCROLL_VERTICAL) && height != scroll->v_bottom) {
 			scrollPositionChanged = 1;
 			scroll->v_bottom = height;
 		}

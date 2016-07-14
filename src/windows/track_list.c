@@ -43,10 +43,10 @@ static rct_widget window_track_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		599,	0,		399,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_CAPTION,			0,	1,		598,	1,		14,		STR_SELECT_DESIGN,		STR_WINDOW_TITLE_TIP					},
 	{ WWT_CLOSEBOX,			0,	587,	597,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP					},
-	{ WWT_SCROLL,			0,	4,		221,	33,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
+	{ WWT_SCROLL,			0,	4,		221,	33,		395,	SCROLL_VERTICAL,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
 	{ WWT_FLATBTN,			0,	224,	595,	18,		236,	0xFFFFFFFF,				STR_NONE								},
 	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	SPR_ROTATE_ARROW,		STR_ROTATE_90_TIP						},
-	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP					},
+	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	SPR_SCENERY,			STR_TOGGLE_SCENERY_TIP					},
 	{ WWT_13,				0,	4,		221,	18,		29,		STR_SELECT_OTHER_RIDE,	STR_NONE								},
 	{ WIDGETS_END },
 };
@@ -342,10 +342,10 @@ static void window_track_list_invalidate(rct_window *w)
 
 	set_format_arg(0, uint16, stringId);
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		window_track_list_widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS;
+		window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
 	} else {
-		window_track_list_widgets[WIDX_TITLE].image = STR_SELECT_DESIGN;
+		window_track_list_widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
 	}
 
@@ -571,7 +571,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		if (listIndex == w->selected_list_item) {
 			// Highlight
 			gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
-			stringId = STR_WINDOW_COLOUR_2_STRING;
+			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 		} else {
 			stringId = STR_BLACK_STRING;
 		}
@@ -588,7 +588,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			if (listIndex == w->selected_list_item) {
 				// Highlight
 				gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
-				stringId = STR_WINDOW_COLOUR_2_STRING;
+				stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			} else {
 				stringId = STR_BLACK_STRING;
 			}

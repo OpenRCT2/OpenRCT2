@@ -65,8 +65,13 @@ typedef struct rct_widget {
 	sint16 right;					// 0x04
 	sint16 top;						// 0x06
 	sint16 bottom;					// 0x08
-	uint32 image;					// 0x0A
-	uint16 tooltip;					// 0x0E
+	union {							// 0x0A
+		uint32 image;
+		rct_string_id text;
+		uint32 content;
+		utf8 * string;
+	};
+	rct_string_id tooltip;			// 0x0E
 } rct_widget;
 
 /**

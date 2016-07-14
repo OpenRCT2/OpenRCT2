@@ -40,14 +40,14 @@ enum WINDOW_WATER_WIDGET_IDX {
 };
 
 static rct_widget window_land_rights_widgets[] = {
-	{ WWT_FRAME,	0,	0,	97,	0,	93,	-1,											STR_NONE },							// panel / background
-	{ WWT_CAPTION,	0,	1,	96,	1,	14,	5136,										STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	824,										STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,						STR_NONE },							// preview box
-	{ WWT_TRNBTN,	2,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,		5133 },								// decrement size
-	{ WWT_TRNBTN,	2,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,		5134 },								// increment size
-	{ WWT_FLATBTN,	2,	22, 45, 53, 76, 0x20000000 | SPR_BUY_LAND_RIGHTS,			SPR_BUY_LAND_RIGHTS_TIP },			// land rights
-	{ WWT_FLATBTN,	2,	52, 75, 53, 76, 0x20000000 | SPR_BUY_CONSTRUCTION_RIGHTS,	SPR_BUY_CONSTRUCTION_RIGHTS_TIP },	// construction rights
+	{ WWT_FRAME,	0,	0,	97,	0,	93,	0xFFFFFFFF,									STR_NONE },							    // panel / background
+	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_LAND_RIGHTS,							STR_WINDOW_TITLE_TIP },				    // title bar
+	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	STR_CLOSE_X,								STR_CLOSE_WINDOW_TIP },				    // close x button
+	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,						STR_NONE },							    // preview box
+	{ WWT_TRNBTN,	2,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,		STR_ADJUST_SMALLER_LAND_RIGHTS_TIP },	// decrement size
+	{ WWT_TRNBTN,	2,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,		STR_ADJUST_LARGER_LAND_RIGHTS_TIP },	// increment size
+	{ WWT_FLATBTN,	2,	22, 45, 53, 76, 0x20000000 | SPR_BUY_LAND_RIGHTS,			STR_BUY_LAND_RIGHTS_TIP },			    // land rights
+	{ WWT_FLATBTN,	2,	52, 75, 53, 76, 0x20000000 | SPR_BUY_CONSTRUCTION_RIGHTS,	STR_BUY_CONSTRUCTION_RIGHTS_TIP },	    // construction rights
 	{ WIDGETS_END },
 };
 
@@ -186,7 +186,7 @@ static void window_land_rights_inputsize(rct_window *w)
 {
 	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
 	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
+	window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
 }
 
 static void window_land_rights_update(rct_window *w)
@@ -205,6 +205,7 @@ static void window_land_rights_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(1 << (!LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
 	// Update the preview image
+	// TODO: Don't apply addition to images
 	window_land_rights_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
 		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
@@ -228,7 +229,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
 	if (RCT2_GLOBAL(0x00F1AD62, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(0x00F1AD62, uint32) != 0)
-		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)0x00F1AD62);
+		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, (void*)0x00F1AD62);
 }
 
 static int window_land_rights_should_close()

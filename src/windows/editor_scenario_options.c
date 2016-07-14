@@ -95,9 +95,9 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		278,	1,		14,		STR_SCENARIO_OPTIONS_FINANCIAL,			STR_WINDOW_TITLE_TIP						},
 	{ WWT_CLOSEBOX,			0,	267,	277,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP						},
 	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE									},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,								STR_SCENARIO_OPTIONS_GUESTS_TIP				},
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_PARK_TIP				},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_GUESTS_TIP				},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_PARK_TIP				},
 
 	{ WWT_CHECKBOX,			1,	8,		271,	48,		59,		STR_MAKE_PARK_NO_MONEY,					STR_MAKE_PARK_NO_MONEY_TIP					},
 	{ WWT_SPINNER,			1,	168,	267,	65,		76,		STR_NONE,								STR_NONE									},
@@ -121,9 +121,9 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		278,	1,		14,		STR_SCENARIO_OPTIONS_GUESTS,			STR_WINDOW_TITLE_TIP						},
 	{ WWT_CLOSEBOX,			0,	267,	277,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP						},
 	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE									},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,								STR_SCENARIO_OPTIONS_GUESTS_TIP				},
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_PARK_TIP				},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_GUESTS_TIP				},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_PARK_TIP				},
 
 	{ WWT_SPINNER,			1,	268,	337,	48,		59,		STR_NONE,								STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	326,	336,	49,		53,		STR_NUMERIC_UP,							STR_NONE									},
@@ -147,9 +147,9 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		278,	1,		14,		STR_SCENARIO_OPTIONS_PARK,				STR_WINDOW_TITLE_TIP						},
 	{ WWT_CLOSEBOX,			0,	267,	277,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP						},
 	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE									},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,								STR_SCENARIO_OPTIONS_GUESTS_TIP				},
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_PARK_TIP				},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_FINANCIAL_TIP			},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_GUESTS_TIP				},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_SCENARIO_OPTIONS_PARK_TIP				},
 
 	{ WWT_SPINNER,			1,	188,	257,	48,		59,		STR_NONE,								STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	246,	256,	49,		53,		STR_NUMERIC_UP,							STR_NONE									},
@@ -1212,7 +1212,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 
 		// Pay for park or rides value
 		stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? STR_FREE_PARK_ENTER : STR_PAY_PARK_ENTER;
-		gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y);
+		gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY) {

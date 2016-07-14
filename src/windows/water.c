@@ -36,9 +36,9 @@ enum WINDOW_WATER_WIDGET_IDX {
 };
 
 static rct_widget window_water_widgets[] = {
-	{ WWT_FRAME,	0,	0,	75,	0,	76,	-1,										STR_NONE },							// panel / background
+	{ WWT_FRAME,	0,	0,	75,	0,	76,	0xFFFFFFFF,								STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	74,	1,	14,	STR_WATER,								STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,	0,	63,	73,	2,	13,	824,									STR_CLOSE_WINDOW_TIP },				// close x button
+	{ WWT_CLOSEBOX,	0,	63,	73,	2,	13,	STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_IMGBTN,	0,	16,	59,	17,	48,	SPR_LAND_TOOL_SIZE_0,					STR_NONE },							// preview box
 	{ WWT_TRNBTN,	2,	17,	32,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_WATER_TIP },		// decrement size
 	{ WWT_TRNBTN,	2,	43,	58,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_WATER_TIP },		// increment size
@@ -236,12 +236,12 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
 	if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
-		gfx_draw_string_centred(dpi, 984, x, y, 0, &gWaterToolRaiseCost);
+		gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, 0, &gWaterToolRaiseCost);
 	y += 10;
 
 	// Draw lower cost amount
 	if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
-		gfx_draw_string_centred(dpi, 985, x, y, 0, &gWaterToolLowerCost);
+		gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, 0, &gWaterToolLowerCost);
 
 
 }

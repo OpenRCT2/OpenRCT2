@@ -102,7 +102,7 @@ void marketing_update()
 		}
 
 		if (gConfigNotifications.park_marketing_campaign_finished) {
-			news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + campaign, 0);
+			news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign][2], 0);
 		}
 	}
 }

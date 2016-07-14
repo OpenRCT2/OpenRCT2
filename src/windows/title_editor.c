@@ -143,43 +143,43 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define WH2 127
 
 static rct_widget window_title_editor_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH2-1,	0x0FFFFFFFF,					STR_NONE },						// panel / background
-	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		5433,							STR_WINDOW_TITLE_TIP },			// title bar
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			// close button
-	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH2-1,	0x0FFFFFFFF,					STR_NONE },						// tab content panel
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,					5235 },							// presets tab
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x02000144E,					5377 },							// saves tab
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x02000144E,					5378 },							// script tab
-	{ WWT_SCROLL,			1,	BX+BW+9,WW-4,	48,		WH-4,	3,								STR_NONE },						// command/save list
+	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH2-1,	0xFFFFFFFF,				STR_NONE },								// panel / background
+	{ WWT_CAPTION,			0,	1,		WW-2,	1,		14,		STR_TITLE_EDITOR_TITLE,	STR_WINDOW_TITLE_TIP },					// title bar
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },					// close button
+	{ WWT_RESIZE,			1,	0,		WW-1,	43,		WH2-1,	0xFFFFFFFF,				STR_NONE },								// tab content panel
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_THEMES_TAB_SETTINGS_TIP },	// presets tab
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_TITLE_EDITOR_SAVES_TAB_TIP },		// saves tab
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_TITLE_EDITOR_SCRIPT_TAB_TIP },		// script tab
+	{ WWT_SCROLL,			1,	BX+BW+9,WW-4,	48,		WH-4,	SCROLL_BOTH,			STR_NONE },								// command/save list
 
 	// Presets Tab
-	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,						STR_NONE },						// Preset title sequences
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		876,							STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5254,							5255 },						// Create button
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82+20,	93+20,	5239,							5383 },						// Duplicate button
-	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							5384 },						// Delete button
-	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		3348,							5385 },						// Rename button
+	{ WWT_DROPDOWN,			1,	125,	299,	60,		71,		STR_NONE,							STR_NONE },						// Preset title sequences
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	61,		70,		STR_DROPDOWN_GLYPH,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		STR_TITLE_EDITOR_ACTION_CREATE,		STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP },						// Create button
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82+20,	93+20,	STR_TITLE_EDITOR_ACTION_DUPLICATE,	STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP },						// Duplicate button
+	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		STR_TRACK_MANAGE_DELETE,			STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP },						// Delete button
+	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		STR_TRACK_MANAGE_RENAME,			STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP },						// Rename button
 
 	// Saves Tab
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY,			BH,			5407,					5392 }, // Add
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*1),	BH+(BS*1),	5408,					5393 }, // Remove
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	3348,					5394 }, // Rename
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5413,					5395 }, // Load
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY,			BH,			STR_TITLE_EDITOR_ACTION_ADD,		STR_TITLE_EDITOR_ACTION_ADD_TIP }, // Add
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*1),	BH+(BS*1),	STR_TITLE_EDITOR_ACTION_REMOVE,		STR_TITLE_EDITOR_ACTION_REMOVE_TIP }, // Remove
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	STR_TRACK_MANAGE_RENAME,			STR_TITLE_EDITOR_ACTION_RENAME_TIP }, // Rename
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	STR_TITLE_EDITOR_ACTION_LOAD,		STR_TITLE_EDITOR_ACTION_LOAD_TIP }, // Load
 
 	// Script Tab
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY,			BH,			5409,					5386 }, // Insert
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*1),	BH+(BS*1),	5410,					5387 }, // Edit
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	3349,					5388 }, // Delete
-	//{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5411,					5396 }, // Reload
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	5412,					5389 }, // Skip to
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY,			BH,			STR_TITLE_EDITOR_ACTION_INSERT,		STR_TITLE_EDITOR_ACTION_INSERT_TIP }, // Insert
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*1),	BH+(BS*1),	STR_TITLE_EDITOR_ACTION_EDIT,		STR_TITLE_EDITOR_ACTION_EDIT_TIP }, // Edit
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*2),	BH+(BS*2),	STR_TRACK_MANAGE_DELETE,			STR_TITLE_EDITOR_ACTION_DELETE_TIP }, // Delete
+	//{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	STR_TITLE_EDITOR_ACTION_RELOAD,		STR_TITLE_EDITOR_ACTION_RELOAD_TIP }, // Reload
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW-1,BY+(BS*3),	BH+(BS*3),	STR_TITLE_EDITOR_ACTION_SKIP_TO,	STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP }, // Skip to
 
-	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW/2-1,BY+(BS*5),BH+(BS*5),	5375,					5390 }, // Move down
-	{ WWT_DROPDOWN_BUTTON,	1,	BX+BW/2,BX+BW-1,BY+(BS*5),	BH+(BS*5),	5376,					5391 }, // Move up
+	{ WWT_DROPDOWN_BUTTON,	1,	BX,		BX+BW/2-1,BY+(BS*5),BH+(BS*5),	STR_DOWN,	STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP }, // Move down
+	{ WWT_DROPDOWN_BUTTON,	1,	BX+BW/2,BX+BW-1,BY+(BS*5),	BH+(BS*5),	STR_UP,	STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP }, // Move up
 
-	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-32,	WH-16,		SPR_G2_TITLE_RESTART,	5382 }, // Replay
-	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-32,	WH-16,		SPR_G2_TITLE_STOP,		5381 }, // Stop
-	{ WWT_IMGBTN,			1,	BX+BW/2,BX+BW*3/4-1,WH-32,	WH-16,		SPR_G2_TITLE_PLAY,		5380 }, // Play
-	{ WWT_IMGBTN,			1,	BX+BW*3/4,BX+BW,	WH-32,	WH-16,		SPR_G2_TITLE_SKIP,		5379 }, // Skip
+	{ WWT_IMGBTN,			1,	BX,		BX+BW/4-1,	WH-32,	WH-16,		SPR_G2_TITLE_RESTART,	STR_TITLE_EDITOR_ACTION_REPLAY_TIP }, // Replay
+	{ WWT_IMGBTN,			1,	BX+BW/4,BX+BW/2-1,	WH-32,	WH-16,		SPR_G2_TITLE_STOP,		STR_TITLE_EDITOR_ACTION_STOP_TIP }, // Stop
+	{ WWT_IMGBTN,			1,	BX+BW/2,BX+BW*3/4-1,WH-32,	WH-16,		SPR_G2_TITLE_PLAY,		STR_TITLE_EDITOR_ACTION_PLAY_TIP }, // Play
+	{ WWT_IMGBTN,			1,	BX+BW*3/4,BX+BW,	WH-32,	WH-16,		SPR_G2_TITLE_SKIP,		STR_TITLE_EDITOR_ACTION_SKIP_TIP }, // Skip
 
 	{ WIDGETS_END },
 };
@@ -310,12 +310,13 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_NEW_BUTTON:
 		commandEditorOpen *= 2;
 		if (!commandEditorOpen)
-			window_text_input_open(w, widgetIndex, 5239, 5406, STR_NONE, 0, 64);
+			// TODO: This should probably be 'NEW'
+			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_NONE, 0, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 		commandEditorOpen *= 2;
 		if (!commandEditorOpen)
-			window_text_input_open(w, widgetIndex, 5239, 5406, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
+			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
 		defaultPreset *= 2; commandEditorOpen *= 2;
@@ -325,7 +326,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
 		defaultPreset *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !commandEditorOpen)
-			window_text_input_open(w, widgetIndex, 3348, 5406, 1170, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
+			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_ADD:
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
@@ -350,7 +351,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1)
-				window_text_input_open(w, widgetIndex, 5435, 5405, 1170, (uint32)gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uint32)gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_LOAD:
@@ -359,6 +360,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 				safe_strcpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path, MAX_PATH);
 			}
 			else {
+				// TODO: This should probably use a constant
 				platform_get_user_directory(path, "title sequences");
 				strcat(path, gConfigTitleSequences.presets[gCurrentTitleSequence].name);
 				strncat(path, &separator, 1);
@@ -483,11 +485,11 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	if (defaultPreset == 2)
-		window_error_open(5400, STR_NONE);
+		window_error_open(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
 	else if (commandEditorOpen == 2)
-		window_error_open(5438, STR_NONE);
+		window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
 	else if (playing == 2)
-		window_error_open(5398, 5399);
+		window_error_open(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
 }
 
 static void window_title_editor_resize(rct_window *w)
@@ -562,14 +564,14 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 		break;
 	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
 		if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL) {
-			window_error_open(5438, STR_NONE);
+			window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
 		}
 		else {
 			num_items = gConfigTitleSequences.num_presets;
 
 			widget--;
 			for (i = 0; i < num_items; i++) {
-				gDropdownItemsFormat[i] = 2777;
+				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[i].name;
 			}
 
@@ -709,11 +711,11 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 				window_invalidate(w);
 			}
 			else {
-				window_error_open(5404, STR_NONE);
+				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
 			}
 		}
 		else {
-			window_error_open(5243, STR_NONE);
+			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME:
@@ -724,11 +726,11 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 				window_invalidate(w);
 			}
 			else {
-				window_error_open(5404, STR_NONE);
+				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
 			}
 		}
 		else {
-			window_error_open(5243, STR_NONE);
+			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
 		}
 		break;
 	}
@@ -856,10 +858,10 @@ void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
 
 		set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name);
-		gfx_draw_string_left(dpi, 5304, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
+		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
-			1170,
+			STR_STRING,
 			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
@@ -909,14 +911,14 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 
 			set_format_arg(0, uint32, (uint32)&title->saves[i]);
 			if (selected || hover) {
-				format_string(buffer, 1170, gCommonFormatArgs);
+				format_string(buffer, STR_STRING, gCommonFormatArgs);
 			}
 			else {
-				format_string(buffer + 1, 1170, gCommonFormatArgs);
+				format_string(buffer + 1, STR_STRING, gCommonFormatArgs);
 				buffer[0] = FORMAT_BLACK;
 			}
 			set_format_arg(0, uint32, (uint32)&buffer);
-			gfx_draw_string_left(dpi, 1170, gCommonFormatArgs, w->colours[1], x + 5, y);
+			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
 	else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT) {
@@ -942,43 +944,44 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			rct_string_id commandName = STR_NONE;
 			switch (command->command) {
 			case TITLE_SCRIPT_LOAD:
-				commandName = 5415;
+				commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
 				if (command->saveIndex == 0xFF) {
-					commandName = 5416;
+					commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
 					error = true;
 				}
 				set_format_arg(0, uint32, (uint32)&title->saves[command->saveIndex]);
 				break;
 			case TITLE_SCRIPT_LOADMM:
-				commandName = 5414;
+				commandName = STR_TITLE_EDITOR_COMMAND_LOAD_SFMM;
 				break;
 			case TITLE_SCRIPT_LOCATION:
-				commandName = 5418;
+				commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
 				set_format_arg(0, uint16, command->x);
 				set_format_arg(2, uint16, command->y);
 				break;
 			case TITLE_SCRIPT_ROTATE:
-				commandName = 5420;
+				commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
 				set_format_arg(0, uint16, command->rotations);
 				break;
 			case TITLE_SCRIPT_ZOOM:
-				commandName = 5422;
+				commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
 				set_format_arg(0, uint16, command->zoom);
 				break;
 			case TITLE_SCRIPT_SPEED:
-				commandName = 5443;
-				set_format_arg(0, uint16, (uint16)(5142 + command->speed - 1));
+				commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
+				set_format_arg(0, rct_string_id, SpeedNames[command->speed - 1]);
 				break;
 			case TITLE_SCRIPT_WAIT:
-				commandName = 5424;
+				commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
 				set_format_arg(0, uint16, command->seconds);
 				break;
 			case TITLE_SCRIPT_RESTART:
-				commandName = 5425;
+				commandName = STR_TITLE_EDITOR_RESTART;
+				// TODO: Why the format arg?
 				set_format_arg(0, uint16, command->zoom);
 				break;
 			case TITLE_SCRIPT_END:
-				commandName = 5426;
+				commandName = STR_TITLE_EDITOR_END;
 				break;
 			default:
 				log_warning("Unknown command %d", command->command);
@@ -992,7 +995,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
 			}
 			set_format_arg(0, uint32, (uint32)&buffer);
-			gfx_draw_string_left(dpi, 1170, gCommonFormatArgs, w->colours[1], x + 5, y);
+			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
 }

@@ -29,6 +29,7 @@
 #include "dropdown.h"
 #include "../drawing/drawing.h"
 #include "../interface/themes.h"
+#include "../sprites.h"
 
 #define WW 113
 #define WH 96
@@ -46,14 +47,14 @@ enum WINDOW_SIGN_WIDGET_IDX {
 
 // 0x9AEE00
 rct_widget window_sign_widgets[] = {
-		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		0x0FFFFFFFF,	65535 },							// panel / background
+		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		0xFFFFFFFF,		STR_NONE },							// panel / background
 		{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,			STR_SIGN,		STR_WINDOW_TITLE_TIP },				// title bar
 		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },				// close x button
-		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	0x0FFFFFFFE,	65535 },							// Viewport
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			5168,			STR_CHANGE_SIGN_TEXT_TIP },			// change sign button
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			5165,			STR_DEMOLISH_SIGN_TIP },			// demolish button
-		{ WWT_COLOURBTN, 1, 5,		16,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_SIGN_COLOUR_TIP },	// Main colour
-		{ WWT_COLOURBTN, 1, 17,		28,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_TEXT_COLOUR_TIP },		// Text colour
+		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	0xFFFFFFFE,		STR_NONE },							// Viewport
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			SPR_RENAME,		STR_CHANGE_SIGN_TEXT_TIP },			// change sign button
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			SPR_DEMOLISH,	STR_DEMOLISH_SIGN_TIP },			// demolish button
+		{ WWT_COLOURBTN, 1, 5,		16,			WH - 16,	WH - 5,		0xFFFFFFFF,		STR_SELECT_MAIN_SIGN_COLOUR_TIP },	// Main colour
+		{ WWT_COLOURBTN, 1, 17,		28,			WH - 16,	WH - 5,		0xFFFFFFFF,		STR_SELECT_TEXT_COLOUR_TIP },		// Text colour
 		{ WIDGETS_END },
 };
 
@@ -261,7 +262,7 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 		{
 			string_id = gBanners[w->number].string_idx;
 		}
-		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0, 32);
+		window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
 		break;
 	}
 }
@@ -342,8 +343,8 @@ static void window_sign_invalidate(rct_window *w)
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
-	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
-	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
+	main_colour_btn->image = (w->list_information_type << 19) | 0x60000000 | SPR_PALETTE_BTN;
+	text_colour_btn->image = (w->var_492 << 19) | 0x60000000 | SPR_PALETTE_BTN;
 }
 
 /**
@@ -525,7 +526,7 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 		{
 			string_id = gBanners[w->number].string_idx;
 		}
-		window_text_input_open(w, WIDX_SIGN_TEXT, 2992, 2993, string_id, 0, 32);
+		window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
 		break;
 	}
 }
@@ -577,6 +578,6 @@ static void window_sign_small_invalidate(rct_window *w)
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
-	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
-	text_colour_btn->image = (w->var_492 << 19) | 0x600013C3;
+	main_colour_btn->image = (w->list_information_type << 19) | 0x60000000 | SPR_PALETTE_BTN;
+	text_colour_btn->image = (w->var_492 << 19) | 0x60000000 | SPR_PALETTE_BTN;
 }

@@ -187,17 +187,17 @@ static rct_widget window_top_toolbar_widgets[] = {
 	{ WWT_TRNBTN,	2,	0x0183,	0x01A0,	0,						27,		0x20000000 | SPR_TOOLBAR_CONSTRUCT_RIDE,	STR_BUILD_RIDE_TIP },				// Construct ride
 	{ WWT_TRNBTN,	3,	0x01EA,	0x0207,	0,						27,		0x20000000 | SPR_TOOLBAR_RIDES,				STR_RIDES_IN_PARK_TIP },			// Rides
 	{ WWT_TRNBTN,	3,	0x0208,	0x0225,	0,						27,		0x20000000 | SPR_TOOLBAR_PARK,				STR_PARK_INFORMATION_TIP },			// Park
-	{ WWT_TRNBTN,	3,	0x0226,	0x0243,	0,						27,		0x20000000 | 0x15F9,						STR_STAFF_TIP },					// Staff
+	{ WWT_TRNBTN,	3,	0x0226,	0x0243,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_STAFF_TIP },					// Staff
 	{ WWT_TRNBTN,	3,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_GUESTS,			STR_GUESTS_TIP },					// Guests
 	{ WWT_TRNBTN,	2,	0x0230,	0x024D,	0,						27,		0x20000000 | SPR_TOOLBAR_CLEAR_SCENERY,		STR_CLEAR_SCENERY_TIP },			// Clear scenery
 
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_GAME_SPEED_TIP },				// Fast forward
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_CHEATS_TIP },					// Cheats
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_DEBUG_TIP },					// Debug
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | 0x15F9,						STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_FINANCES_RESEARCH_TIP },		// Research
-	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_RECENT_MESSAGES_TIP },		// News
-	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | 0x15F9,						STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_GAME_SPEED_TIP },				// Fast forward
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_CHEATS_TIP },					// Cheats
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_DEBUG_TIP },					// Debug
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B, 0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_FINANCES_RESEARCH_TIP },		// Research
+	{ WWT_TRNBTN,	3,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SHOW_RECENT_MESSAGES_TIP },		// News
+	{ WWT_TRNBTN,	0,	0x001E,	0x003B,	0,						27,		0x20000000 | SPR_TAB_TOOLBAR,				STR_SHOW_MULTIPLAYER_STATUS_TIP },	// Network
 
 	{ WWT_EMPTY,	0,	0,		10-1,	0,						0,		0xFFFFFFFF,									STR_NONE },							// Artificial widget separator
 	{ WIDGETS_END },
@@ -408,7 +408,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
 				gDropdownItemsFormat[12] = 0;
-				gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = 1156;
+				gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = STR_TOGGLE_OPTION;
 				gDropdownItemsArgs[DDIDX_ENABLE_TWITCH] = STR_TWITCH_ENABLE;
 				numItems = 14;
 			}
@@ -430,12 +430,12 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 #endif
 		break;
 	case WIDX_CHEATS:
-		gDropdownItemsFormat[0] = 1156;
+		gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
 		gDropdownItemsFormat[1] = 0;
-		gDropdownItemsFormat[2] = 1156;
-		gDropdownItemsFormat[3] = 1156;
-		gDropdownItemsFormat[4] = 1156;
-		gDropdownItemsArgs[0] = 5217;
+		gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
+		gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
+		gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
+		gDropdownItemsArgs[0] = STR_CHEAT_TITLE;
 		gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
 		gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
 		gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
@@ -462,12 +462,12 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		top_toolbar_init_view_menu(w, widget);
 		break;
 	case WIDX_MAP:
-		gDropdownItemsFormat[0] = 2523;
-		gDropdownItemsFormat[1] = 2780;
+		gDropdownItemsFormat[0] = STR_SHORTCUT_SHOW_MAP;
+		gDropdownItemsFormat[1] = STR_EXTRA_VIEWPORT;
 		numItems = 2;
 
 		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
-			gDropdownItemsFormat[2] = 2690;
+			gDropdownItemsFormat[2] = STR_MAPGEN_WINDOW_TITLE;
 			numItems++;
 		}
 
@@ -795,7 +795,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (window_top_toolbar_widgets[WIDX_STAFF].type != WWT_EMPTY) {
 		x = w->x + window_top_toolbar_widgets[WIDX_STAFF].left;
 		y = w->y + window_top_toolbar_widgets[WIDX_STAFF].top;
-		imgId = 5627;
+		imgId = SPR_TOOLBAR_STAFF;
 		if (widget_is_pressed(w, WIDX_STAFF))
 			imgId++;
 		imgId |= (gStaffHandymanColour << 19) | 0xA0000000 | (gStaffMechanicColour << 24);
@@ -836,7 +836,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = w->y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1;
 		if (widget_is_pressed(w, WIDX_DEBUG))
 			y++;
-		imgId = 5201;
+		imgId = SPR_TAB_GEARS_0;
 		gfx_draw_sprite(dpi, imgId, x, y, 3);
 	}
 
@@ -2843,21 +2843,21 @@ static void window_top_toolbar_tool_abort(rct_window *w, int widgetIndex)
 
 void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	int num_items = 4;
-	gDropdownItemsFormat[0] = 1156;
-	gDropdownItemsFormat[1] = 1156;
-	gDropdownItemsFormat[2] = 1156;
-	gDropdownItemsFormat[3] = 1156;
+	gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
 	if (gConfigGeneral.debugging_tools) {
 		gDropdownItemsFormat[4] = 0;
-		gDropdownItemsFormat[5] = 1156;
-		gDropdownItemsArgs[5] = 5146;
+		gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
+		gDropdownItemsArgs[5] = STR_SPEED_HYPER;
 		num_items = 6;
 	}
 
-	gDropdownItemsArgs[0] = 5142;
-	gDropdownItemsArgs[1] = 5143;
-	gDropdownItemsArgs[2] = 5144;
-	gDropdownItemsArgs[3] = 5145;
+	gDropdownItemsArgs[0] = STR_SPEED_NORMAL;
+	gDropdownItemsArgs[1] = STR_SPEED_QUICK;
+	gDropdownItemsArgs[2] = STR_SPEED_FAST;
+	gDropdownItemsArgs[3] = STR_SPEED_TURBO;
 
 
 	window_dropdown_show_text(
@@ -3010,18 +3010,18 @@ void top_toolbar_network_menu_dropdown(short dropdownIndex)
  *  rct2: 0x0066CDE4
  */
 void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
-	gDropdownItemsFormat[0] = 1156;
-	gDropdownItemsFormat[1] = 1156;
-	gDropdownItemsFormat[2] = 1156;
+	gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[3] = 0;
-	gDropdownItemsFormat[4] = 1156;
-	gDropdownItemsFormat[5] = 1156;
-	gDropdownItemsFormat[6] = 1156;
-	gDropdownItemsFormat[7] = 1156;
+	gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[8] = 0;
-	gDropdownItemsFormat[9] = 1156;
-	gDropdownItemsFormat[10] = 1156;
-	gDropdownItemsFormat[11] = 1156;
+	gDropdownItemsFormat[9] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
 
 	gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
 	gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;

@@ -26,6 +26,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "dropdown.h"
+#include "../sprites.h"
 
 #pragma region Widgets
 
@@ -48,14 +49,14 @@ enum {
 
 static rct_widget window_maze_construction_widgets[] = {
 	{ WWT_FRAME,			0,	0,		165,	0,		199,	0xFFFFFFFF,							STR_NONE												},
-	{ WWT_CAPTION,			0,	1,		164,	1,		14,		896,								STR_WINDOW_TITLE_TIP									},
+	{ WWT_CAPTION,			0,	1,		164,	1,		14,		STR_RIDE_CONSTRUCTION_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP									},
 	{ WWT_CLOSEBOX,			0,	153,	163,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP									},
 	{ WWT_GROUPBOX,			0,	3,		162,	17,		71,		STR_RIDE_CONSTRUCTION_MODE,			STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
-	{ WWT_FLATBTN,			1,	35,		66,		29,		60,		0x15C8,								STR_RIDE_CONSTRUCTION_BUILD_MODE						},
-	{ WWT_FLATBTN,			1,	67,		98,		29,		60,		0x15C9,								STR_RIDE_CONSTRUCTION_MOVE_MODE							},
-	{ WWT_FLATBTN,			1,	99,		130,	29,		60,		0x15CA,								STR_RIDE_CONSTRUCTION_FILL_IN_MODE						},
+	{ WWT_FLATBTN,			1,	35,		66,		29,		60,		SPR_MAZE_CONSTRUCTION_BUILD,		STR_RIDE_CONSTRUCTION_BUILD_MODE						},
+	{ WWT_FLATBTN,			1,	67,		98,		29,		60,		SPR_MAZE_CONSTRUCTION_MOVE,			STR_RIDE_CONSTRUCTION_MOVE_MODE							},
+	{ WWT_FLATBTN,			1,	99,		130,	29,		60,		SPR_MAZE_CONSTRUCTION_FILL_IN,		STR_RIDE_CONSTRUCTION_FILL_IN_MODE						},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
@@ -71,10 +72,10 @@ static rct_widget window_maze_construction_widgets[] = {
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_GROUPBOX,			0,	3,		162,	80,		166,	STR_RIDE_CONSTRUCTION_BUILD,		STR_NONE												},
-	{ WWT_FLATBTN,			1,	83,		127,	96,		124,	0x1603,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	83,		127,	125,	153,	0x1604,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	38,		82,		125,	153,	0x1605,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	38,		82,		96,		124,	0x1606,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	83,		127,	96,		124,	SPR_CONSTRUCTION_DIRECTION_NE,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	83,		127,	125,	153,	SPR_CONSTRUCTION_DIRECTION_SE,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	38,		82,		125,	153,	SPR_CONSTRUCTION_DIRECTION_SW,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	38,		82,		96,		124,	SPR_CONSTRUCTION_DIRECTION_NW,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
 	{ WWT_GROUPBOX,			0,	3,		162,	168,	195,	0xFFFFFFFF,							STR_NONE												},
 	{ WWT_DROPDOWN_BUTTON,	1,	9,		78,		178,	189,	STR_RIDE_CONSTRUCTION_ENTRANCE,		STR_RIDE_CONSTRUCTION_ENTRANCE_TIP						},
 	{ WWT_DROPDOWN_BUTTON,	1,	87,		156,	178,	189,	STR_RIDE_CONSTRUCTION_EXIT,			STR_RIDE_CONSTRUCTION_EXIT_TIP							},
@@ -360,7 +361,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
 	uint8 entranceExitType = gRideEntranceExitPlaceType;
-	gGameCommandErrorTitle = entranceExitType ? 1144 : 1145;
+	gGameCommandErrorTitle = entranceExitType ? STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION : STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 
 	money32 cost = game_do_command(
 		x,

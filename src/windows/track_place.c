@@ -49,7 +49,7 @@ static rct_widget window_track_place_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		198,	1,		14,		3155,							STR_WINDOW_TITLE_TIP						},
 	{ WWT_CLOSEBOX,			0,	187,	197,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP						},
 	{ WWT_FLATBTN,			0,	173,	196,	83,		106,	SPR_ROTATE_ARROW,				STR_ROTATE_90_TIP							},
-	{ WWT_FLATBTN,			0,	173,	196,	59,		82,		5170,							STR_MIRROR_IMAGE_TIP						},
+	{ WWT_FLATBTN,			0,	173,	196,	59,		82,		SPR_MIRROR_ARROW,				STR_MIRROR_IMAGE_TIP						},
 	{ WWT_DROPDOWN_BUTTON,	0,	4,		195,	109,	120,	STR_SELECT_A_DIFFERENT_DESIGN,	STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP	},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,						STR_NONE									},
 	{ WIDGETS_END },
@@ -169,6 +169,7 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 	window_track_place_draw_mini_preview(td6);
 
+	// TODO: 3155 appears to be empty. What is this supposed to do?
 	char *title = (char*)language_get_string(3155);
 	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &td6->name);
 	
@@ -340,7 +341,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 		}
 
 		// Check if player did not have enough funds
-		if (gGameCommandErrorText == 827)
+		if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES)
 			break;
 
 		mapZ += 8;

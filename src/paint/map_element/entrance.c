@@ -194,7 +194,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 		if (ghost_id != 0)
 			break;
 
-		rct_string_id park_text_id = 1730;
+		rct_string_id park_text_id = STR_BANNER_TEXT_CLOSED;
 		set_format_arg(0, uint32, 0);
 		set_format_arg(4, uint32, 0);
 
@@ -202,7 +202,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 			set_format_arg(0, rct_string_id, gParkName);
 			set_format_arg(2, uint32, gParkNameArgs);
 
-			park_text_id = 1731;
+			park_text_id = STR_BANNER_TEXT_FORMAT;
 		}
 
 		utf8 park_name[MAX_PATH];

@@ -81,19 +81,19 @@ enum {
 #pragma region Widgets
 
 static rct_widget window_finances_summary_widgets[] = {
-	{ WWT_FRAME,			0,	0,		529,	0,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_SUMMARY,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
-	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
-	{ WWT_SPINNER,			1,	64,		153,	229,	240,	1917,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	230,	234,	STR_NUMERIC_UP,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	235,	239,	STR_NUMERIC_DOWN,		STR_NONE },
+	{ WWT_FRAME,			0,	0,		529,	0,		256,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_SUMMARY,				STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_SPINNER,			1,	64,		153,	229,	240,	STR_FINANCES_SUMMARY_LOAN_VALUE,	STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	230,	234,	STR_NUMERIC_UP,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	235,	239,	STR_NUMERIC_DOWN,					STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -102,12 +102,12 @@ static rct_widget window_finances_cash_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_GRAPH,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -116,12 +116,12 @@ static rct_widget window_finances_park_value_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_PARK_VALUE_GRAPH,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -130,12 +130,12 @@ static rct_widget window_finances_profit_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_PROFIT_GRAPH,		STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -144,12 +144,12 @@ static rct_widget window_finances_marketing_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_MARKETING,							STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		526,	47,		91,		STR_MARKETING_CAMPAIGNS_IN_OPERATION,	STR_NONE },
 	{ WWT_GROUPBOX,			2,	3,		526,	47,		252,	STR_MARKETING_CAMPAIGNS_AVAILABLE,		STR_NONE },
 	{ WWT_IMGBTN,			1,	8,		521,	0,		11,		0xFFFFFFFF,								STR_START_THIS_MARKETING_CAMPAIGN },
@@ -166,23 +166,23 @@ static rct_widget window_finances_research_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_RESEARCH_FUNDING,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		319,	43,		206,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		316,	47,		91,		STR_RESEARCH_FUNDING_,					STR_NONE },
 	{ WWT_DROPDOWN,			2,	8,		167,	59,		70,		0xFFFFFFFF,								STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		876,									STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		STR_DROPDOWN_GLYPH,			    		STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
 	{ WWT_GROUPBOX,			2,	3,		316,	96,		202,	STR_RESEARCH_PRIORITIES,				STR_NONE },
-	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_TRANSPORT_RIDES,			STR_RESEARCH_NEW_TRANSPORT_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_GENTLE_RIDES,				STR_RESEARCH_NEW_GENTLE_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_ROLLER_COASTERS,			STR_RESEARCH_NEW_ROLLER_COASTERS },
-	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_THRILL_RIDES,				STR_RESEARCH_NEW_THRILL_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_WATER_RIDES,				STR_RESEARCH_NEW_WATER_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_SHOPS_AND_STALLS,			STR_RESEARCH_NEW_SHOPS_AND_STALLS },
-	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_SCENERY_AND_THEMING,		STR_RESEARCH_NEW_SCENERY_AND_THEMING },
+	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_NEW_TRANSPORT_RIDES,		STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_NEW_GENTLE_RIDES,			STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_NEW_ROLLER_COASTERS,		STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_NEW_THRILL_RIDES,			STR_RESEARCH_NEW_THRILL_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_NEW_WATER_RIDES,			STR_RESEARCH_NEW_WATER_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_NEW_SHOPS_AND_STALLS,		STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_NEW_SCENERY_AND_THEMING,	STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
 	{ WIDGETS_END },
 };
 
@@ -522,6 +522,23 @@ static uint32 window_finances_page_hold_down_widgets[] = {
 
 const int window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
 
+static const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
+	STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
+	STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
+	STR_FINANCES_SUMMARY_LAND_PURCHASE,
+	STR_FINANCES_SUMMARY_LANDSCAPING,
+	STR_FINANCES_SUMMARY_PARK_ENTRANCE_TICKETS,
+	STR_FINANCES_SUMMARY_RIDE_TICKETS,
+	STR_FINANCES_SUMMARY_SHOP_SALES,
+	STR_FINANCES_SUMMARY_SHOP_STOCK,
+	STR_FINANCES_SUMMARY_FOOD_DRINK_SALES,
+	STR_FINANCES_SUMMARY_FOOD_DRINK_STOCK,
+	STR_FINANCES_SUMMARY_STAFF_WAGES,
+	STR_FINANCES_SUMMARY_MARKETING,
+	STR_FINANCES_SUMMARY_RESEARCH,
+	STR_FINANCES_SUMMARY_LOAN_INTEREST,
+};
+
 static void window_finances_set_page(rct_window *w, int page);
 static void window_finances_set_pressed_tab(rct_window *w);
 static void window_finances_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -663,7 +680,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (i % 2 == 0)
 			gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-		gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION + i, NULL, 0, x, y - 1);
+		gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], NULL, 0, x, y - 1);
 		y += 10;
 	}
 
@@ -682,7 +699,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		set_format_arg(2, uint16, monthyear);
 		draw_string_right_underline(
 			dpi,
-			monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRING : STR_BLACK_STRING,
+			monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING,
 			gCommonFormatArgs,
 			0,
 			x + 80,
@@ -932,7 +949,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	money32 parkValue = gParkValue;
 	gfx_draw_string_left(
 		dpi,
-		STR_FINACNES_PARK_VALUE,
+		STR_FINANCES_PARK_VALUE,
 		&parkValue,
 		0,
 		graphLeft,
@@ -1143,7 +1160,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
 		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
 
-		campaginButton->type = 0;
+		campaginButton->type = WWT_EMPTY;
 
 		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
@@ -1196,7 +1213,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		}
 
 		// Advertisement
-		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, gCommonFormatArgs, 0, x + 4, y, 296);
+		gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, 0, x + 4, y, 296);
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
@@ -1221,7 +1238,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
 
 		// Draw button text
-		gfx_draw_string_left(dpi, STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + i, NULL, 0, x + 4, y - 1);
+		gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], NULL, 0, x + 4, y - 1);
 		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, 0, x + 310, y - 1);
 
 		y += 12;
@@ -1282,7 +1299,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 
 	for (i = 0; i < 4; i++) {
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = STR_NO_FUNDING + i;
+		gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -1343,7 +1360,7 @@ static void window_finances_research_invalidate(rct_window *w)
 	int currentResearchLevel = gResearchFundingLevel;
 
 	// Current funding
-	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
+	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
 
 	// Checkboxes
 	uint8 activeResearchTypes = gResearchPriorities;

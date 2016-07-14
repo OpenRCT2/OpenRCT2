@@ -57,14 +57,14 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-	{ WWT_FRAME,			0,	0,		339,	0,		239,	0x0FFFFFFFF,				STR_NONE },					/* panel / background	*/	\
+	{ WWT_FRAME,			0,	0,		339,	0,		239,	0xFFFFFFFF,					STR_NONE },					/* panel / background	*/	\
 	{ WWT_CAPTION,			0,	1,		338,	1,		14,		STR_MULTIPLAYER,			STR_WINDOW_TITLE_TIP },		/* title bar			*/	\
 	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		/* close x button		*/	\
-	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0x0FFFFFFFF,				STR_NONE },					/* content panel		*/	\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_SHOW_SERVER_INFO_TIP },	/* tab					*/	\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_PLAYERS_TIP },			/* tab					*/	\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_GROUPS_TIP },			/* tab					*/	\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_OPTIONS_TIP }			/* tab					*/	\
+	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0xFFFFFFFF,					STR_NONE },					/* content panel		*/	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SHOW_SERVER_INFO_TIP },	/* tab					*/	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_PLAYERS_TIP },			/* tab					*/	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_GROUPS_TIP },			/* tab					*/	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_OPTIONS_TIP }			/* tab					*/	\
 
 static rct_widget window_multiplayer_information_widgets[] = {
 	MAIN_MULTIPLAYER_WIDGETS,
@@ -73,20 +73,20 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
 	MAIN_MULTIPLAYER_WIDGETS,
-	{ WWT_SCROLL,			1,	3,		336,	60,		236,	2,							STR_NONE },					// list
+	{ WWT_SCROLL,			1,	3,		336,	60,		236,	SCROLL_VERTICAL,			STR_NONE },					// list
 	{ WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_groups_widgets[] = {
 	MAIN_MULTIPLAYER_WIDGETS,
-	{ WWT_DROPDOWN,			1,	141,	315,	46,		57,		0x0FFFFFFFF,				STR_NONE },					// default group
-	{ WWT_DROPDOWN_BUTTON,	1,	305,	315,	47,		56,		876,						STR_NONE },					//
+	{ WWT_DROPDOWN,			1,	141,	315,	46,		57,		0xFFFFFFFF,					STR_NONE },					// default group
+	{ WWT_DROPDOWN_BUTTON,	1,	305,	315,	47,		56,		STR_DROPDOWN_GLYPH,			STR_NONE },					//
 	{ WWT_DROPDOWN_BUTTON,	1,	11,		102,	65,		76,		STR_ADD_GROUP,				STR_NONE },					// add group button
 	{ WWT_DROPDOWN_BUTTON,	1,	113,	204,	65,		76,		STR_REMOVE_GROUP,			STR_NONE },					// remove group button
 	{ WWT_DROPDOWN_BUTTON,	1,	215,	306,	65,		76,		STR_RENAME_GROUP,			STR_NONE },					// rename group button
-	{ WWT_DROPDOWN,			1,	72,		246,	80,		91,		0x0FFFFFFFF,				STR_NONE },					// selected group
-	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	81,		90,		876,						STR_NONE },					//
-	{ WWT_SCROLL,			1,	3,		316,	94,		300,	2,							STR_NONE },					// permissions list
+	{ WWT_DROPDOWN,			1,	72,		246,	80,		91,		0xFFFFFFFF,					STR_NONE },					// selected group
+	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	81,		90,		STR_DROPDOWN_GLYPH,			STR_NONE },					//
+	{ WWT_SCROLL,			1,	3,		316,	94,		300,	SCROLL_VERTICAL,							STR_NONE },					// permissions list
 	{ WIDGETS_END }
 };
 
@@ -358,7 +358,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_wid
 	);
 
 	for (i = 0; i < network_get_num_groups(); i++) {
-		gDropdownItemsFormat[i] = 2777;
+		gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 		gDropdownItemsArgs[i] = (int)network_get_group_name(i);
 	}
 	if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN]) {
@@ -586,7 +586,7 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
 	// Number of players
-	stringId = w->no_list_items == 1 ? STR_X_PLAYER : STR_X_PLAYERS;
+	stringId = w->no_list_items == 1 ? STR_RIDE_COMPONENT_PLAYER_COUNT : STR_RIDE_COMPONENT_PLAYER_COUNT_PLURAL;
 	x = w->x + 4;
 	y = w->y + w->widgets[WIDX_LIST].bottom + 2;
 	gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);
@@ -895,7 +895,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
 			// Draw action name
 			set_format_arg(0, uint16, network_get_action_name_string_id(i));
-			gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, 10, y - 1);
+			gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, 10, y - 1);
 		}
 		y += 10;
 	}

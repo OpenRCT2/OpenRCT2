@@ -36,11 +36,11 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	2,				2786 },
-	{ WWT_DROPDOWN_BUTTON,	0,	4,		153,	WH-15,	WH - 4,		2491,			2492 },
+	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,					STR_NONE },
+	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_OPTIONS,				STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
+	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	SCROLL_VERTICAL,			STR_SHORTCUT_LIST_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0,	4,		153,	WH-15,	WH - 4,		STR_SHORTCUT_ACTION_RESET,	STR_SHORTCUT_ACTION_RESET_TIP },
 	{ WIDGETS_END }
 };
 
@@ -251,11 +251,12 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		if (y + 10 < dpi->y)continue;
 		int format = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
-			format = STR_WINDOW_COLOUR_2_STRING;
+			format = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		rct_string_id templateStringId = 2525;
+		// TODO: How does this work? 2525 is '???'
+		rct_string_id templateStringId = STR_SHORTCUT_KEY_UNKNOWN;
 		char *templateString = (char*)language_get_string(templateStringId);
 		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 

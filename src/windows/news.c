@@ -34,11 +34,11 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		299,	0x0FFFFFFFF,			STR_NONE },				// panel / background
+	{ WWT_FRAME,			0,	0,			399,	0,		299,	0xFFFFFFFF,				STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_RECENT_MESSAGES,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		5201,					STR_NONE },				// settings
-	{ WWT_SCROLL,			0,	4,			395,	44,		295,	2,						STR_NONE },				// scroll
+	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		SPR_TAB_GEARS_0,		STR_NONE },				// settings
+	{ WWT_SCROLL,			0,	4,			395,	44,		295,	SCROLL_VERTICAL,						STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -250,7 +250,7 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
  */
 static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, 3159);
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 /**
@@ -291,9 +291,9 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], 0x24);
 
 		// Date text
-		set_format_arg(0, uint16, STR_DATE_DAY_1 + newsItem->day - 1);
-		set_format_arg(2, uint16, STR_MONTH_MARCH + (newsItem->month_year % 8));
-		gfx_draw_string_left(dpi, 2235, gCommonFormatArgs, 2, 4, y);
+		set_format_arg(0, uint16, DateDayNames[newsItem->day - 1]);
+		set_format_arg(2, uint16, DateGameMonthNames[(newsItem->month_year % 8)]);
+		gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, 2, 4, y);
 
 		// Item text
 		utf8 buffer[400];
@@ -301,7 +301,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		ch = utf8_write_codepoint(ch, FORMAT_SMALLFONT);
 		memcpy(ch, newsItem->text, 256);
 		ch = buffer;
-		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, 1170, 14);
+		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, STR_STRING, 14);
 
 		// Subject button
 		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
@@ -353,7 +353,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
 				break;
 			case NEWS_ITEM_RESEARCH:
-				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY, x, yy, 0);
+				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
 				break;
 			case NEWS_ITEM_PEEPS:
 				gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);

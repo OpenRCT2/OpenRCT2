@@ -111,26 +111,40 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 #define MAX_WH 450
 
 static rct_widget window_staff_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,			319,		0,		269,	0x0FFFFFFFF,	STR_NONE },							// panel / background
-	{ WWT_CAPTION,			0,	1,			318,		1,		14,		STR_STAFF,		STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,			0,	307,		317,		2,		13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },				// close button
-	{ WWT_RESIZE,			1,	0,			319,		43,		269,	0x0FFFFFFFF,	STR_NONE },							// tab content panel
-	{ WWT_TAB,				1,	3,			33,			17,		43,		0x02000144E,	STR_STAFF_HANDYMEN_TAB_TIP },		// handymen tab
-	{ WWT_TAB,				1,	34,			64,			17,		43,		0x02000144E,	STR_STAFF_MECHANICS_TAB_TIP },		// mechanics tab
-	{ WWT_TAB,				1,	65,			95,			17,		43,		0x02000144E,	STR_STAFF_SECURITY_TAB_TIP },		// security guards tab
-	{ WWT_TAB,				1,	96,			126,		17,		43,		0x02000144E,	STR_STAFF_ENTERTAINERS_TAB_TIP },	// entertainers tab
-	{ WWT_SCROLL,			1,	3,			316,		72,		266,	3,				STR_NONE },							// staff list
-	{ WWT_COLOURBTN,		1,	130,		141,		58,		69,		STR_NONE,		STR_UNIFORM_COLOUR_TIP },			// uniform colour picker
-	{ WWT_DROPDOWN_BUTTON,	0,	WW - 155,	WW - 11,	17,		29,		STR_NONE,		STR_HIRE_STAFF_TIP },				// hire button
-	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,	STR_QUICK_FIRE_STAFF },				// quick fire staff
-	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		SPR_PATROL_BTN,	STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
-	{ WWT_FLATBTN,			1,	WW - 29,	WW - 6,		46,		69,		SPR_MAP,		STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
+	{ WWT_FRAME,			0,	0,			319,		0,		269,	0xFFFFFFFF,			STR_NONE },							// panel / background
+	{ WWT_CAPTION,			0,	1,			318,		1,		14,		STR_STAFF,				STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CLOSEBOX,			0,	307,		317,		2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },				// close button
+	{ WWT_RESIZE,			1,	0,			319,		43,		269,	0xFFFFFFFF,			STR_NONE },							// tab content panel
+	{ WWT_TAB,				1,	3,			33,			17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_HANDYMEN_TAB_TIP },		// handymen tab
+	{ WWT_TAB,				1,	34,			64,			17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_MECHANICS_TAB_TIP },		// mechanics tab
+	{ WWT_TAB,				1,	65,			95,			17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_SECURITY_TAB_TIP },		// security guards tab
+	{ WWT_TAB,				1,	96,			126,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_ENTERTAINERS_TAB_TIP },	// entertainers tab
+	{ WWT_SCROLL,			1,	3,			316,		72,		266,	SCROLL_BOTH,			STR_NONE },							// staff list
+	{ WWT_COLOURBTN,		1,	130,		141,		58,		69,		STR_NONE,				STR_UNIFORM_COLOUR_TIP },			// uniform colour picker
+	{ WWT_DROPDOWN_BUTTON,	0,	WW - 155,	WW - 11,	17,		29,		STR_NONE,				STR_HIRE_STAFF_TIP },				// hire button
+	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,			STR_QUICK_FIRE_STAFF },				// quick fire staff
+	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		SPR_PATROL_BTN,			STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
+	{ WWT_FLATBTN,			1,	WW - 29,	WW - 6,		46,		69,		SPR_MAP,				STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
 	{ WIDGETS_END },
 };
 
 static uint16 _window_staff_list_selected_type_count = 0;
 static int _windowStaffListHighlightedIndex;
 static int _windowStaffListSelectedTab;
+
+typedef struct staff_naming_convention
+{
+	rct_string_id plural;
+	rct_string_id singular;
+	rct_string_id action_hire;
+} staff_naming_convention;
+
+static const staff_naming_convention StaffNamingConvention[] = {
+	{ STR_HANDYMAN_PLURAL,			STR_HANDYMAN_SINGULAR,			STR_HIRE_HANDYMAN },
+	{ STR_MECHANIC_PLURAL,			STR_MECHANIC_SINGULAR,			STR_HIRE_MECHANIC },
+	{ STR_SECURITY_GUARD_PLURAL,	STR_SECURITY_GUARD_SINGULAR,	STR_HIRE_SECURITY_GUARD },
+	{ STR_ENTERTAINER_PLURAL,		STR_ENTERTAINER_SINGULAR,		STR_HIRE_ENTERTAINER },
+};
 
 /*
 * rct2: 0x006BD39C
@@ -367,7 +381,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 			rct_window *staffWindow = window_staff_open(closestPeep);
 			window_event_dropdown_call(staffWindow, 11, 0);
 		} else {
-			set_format_arg(0, rct_string_id, STR_HANDYMAN_PLURAL + selectedPeepType);
+			set_format_arg(0, rct_string_id, StaffNamingConvention[selectedPeepType].plural);
 			window_error_open(STR_NO_THING_IN_PARK_YET, STR_NONE);
 		}
 	}
@@ -484,14 +498,13 @@ void window_staff_list_invalidate(rct_window *w)
 	uint8 widgetIndex = tabIndex + 4;
 
 	w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
-	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].image = STR_HIRE_HANDYMAN + tabIndex;
+	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = StaffNamingConvention[tabIndex].action_hire;
 	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_EMPTY;
 
 	if (tabIndex < 3) {
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-			((uint32)gStaffColours[tabIndex] << 19) +
-			0x600013C3;
+			((uint32)gStaffColours[tabIndex] << 19) | 0x60000000 | SPR_PALETTE_BTN;
 	}
 	if (_quick_fire_mode)
 		w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -591,10 +604,10 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, 0, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
 	}
 
-	int staffTypeStringId = STR_HANDYMAN_PLURAL + selectedTab;
+	int staffTypeStringId = StaffNamingConvention[selectedTab].plural;
 	// If the number of staff for a given type is 1, we use the singular forms of the names
 	if (_window_staff_list_selected_type_count == 1) {
-		staffTypeStringId += 4;
+		staffTypeStringId = StaffNamingConvention[selectedTab].singular;
 	}
 
 	set_format_arg(0, uint16, _window_staff_list_selected_type_count);
@@ -626,11 +639,11 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 			}
 
 			if (y + 11 >= dpi->y) {
-				int format = (_quick_fire_mode ? 5298 : STR_BLACK_STRING);
+				int format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
 				if (i == _windowStaffListHighlightedIndex) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-					format = (_quick_fire_mode ? 5299 : STR_WINDOW_COLOUR_2_STRING);
+					format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
 				}
 
 				set_format_arg(0, uint16, peep->name_string_idx);

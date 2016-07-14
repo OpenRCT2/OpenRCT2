@@ -27,6 +27,7 @@
 #include "mixer.h"
 #include "../openrct2.h"
 #include "../util/util.h"
+#include "../localisation/string_ids.h"
 
 typedef struct rct_audio_params {
 	bool in_range;
@@ -146,14 +147,14 @@ void audio_populate_devices()
 	for (int i = 0; i < gAudioDeviceCount; i++) {
 		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
-			utf8Name = language_get_string(5511);
+			utf8Name = language_get_string(STR_OPTIONS_SOUND_VALUE_UNKNOWN);
 
 		safe_strcpy(systemAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
 	}
 #ifndef __LINUX__
 	gAudioDeviceCount++;
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-	safe_strcpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
+	safe_strcpy(gAudioDevices[0].name, language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT), AUDIO_DEVICE_NAME_SIZE);
 	memcpy(&gAudioDevices[1], systemAudioDevices, (gAudioDeviceCount - 1) * sizeof(audio_device));
 #else
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));

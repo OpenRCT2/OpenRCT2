@@ -2531,7 +2531,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
 
-	set_format_arg(0, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6);
+	set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 
 	uint8 vehicleIndex = 0;
 	for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
@@ -2541,9 +2541,9 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	set_format_arg(2, uint16, vehicleIndex);
 	set_format_arg(4, rct_string_id, ride->name);
 	set_format_arg(6, uint32, ride->name_arguments);
-	set_format_arg(10, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2]);
+	set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
-	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
+	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
 }
 
 /**
@@ -5048,11 +5048,11 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
 			break;
 
-	set_map_tooltip_format_arg(0, uint16, 2215);
-	set_map_tooltip_format_arg(2, uint16, 1165);
-	set_map_tooltip_format_arg(4, uint16, ride->name);
+	set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+	set_map_tooltip_format_arg(2, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
+	set_map_tooltip_format_arg(4, rct_string_id, ride->name);
 	set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
-	set_map_tooltip_format_arg(10, uint16, RideNameConvention[ride->type].vehicle_name + 2);
+	set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
 	set_map_tooltip_format_arg(12, uint16, vehicleIndex + 1);
 
 	int arg0, arg1;
