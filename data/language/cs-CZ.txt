@@ -4201,6 +4201,10 @@ STR_5889    :Značka vlastní měny
 STR_5890    :Zadejte symbol měny
 STR_5891    :Výchozí
 STR_5892    :{SMALLFONT}{BLACK}Přejít do výchozí složky
+STR_5893    :Kurz měny
+STR_5894    :Zadejte kurz měny
+STR_5895    :Uložit trať
+STR_5896    :Nepodařilo se uložit trať!
 
 
 ###############################################################################
