@@ -1456,6 +1456,7 @@ enum {
 
 	STR_CHEAT_5K_MONEY_TIP = 2681,
 
+	STR_MAP_GENERATOR = 2690,
 	STR_BASE_HEIGHT_LABEL = 2691,
 	STR_WATER_LEVEL_LABEL = 2692,
 	STR_TERRAIN_LABEL = 2693,
@@ -2677,6 +2678,8 @@ enum {
 	
 	STR_FILE_DIALOG_TITLE_SAVE_TRACK = 5895,
 	STR_TRACK_SAVE_FAILED = 5896,
+	
+	STR_MAP_GENERATOR_TIP = 5897,
 	
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

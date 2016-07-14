@@ -26,6 +26,7 @@
 #include "../world/scenery.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../localisation/string_ids.h"
 
 enum {
 	WINDOW_MAPGEN_PAGE_BASE,
@@ -87,7 +88,7 @@ enum {
 
 static rct_widget window_mapgen_base_widgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_CAPTION,			0,	1,		298,	1,		14,		2690,					STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAP_GENERATOR,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,				STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_NONE },
@@ -112,7 +113,7 @@ static rct_widget window_mapgen_base_widgets[] = {
 
 static rct_widget window_mapgen_random_widgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_CAPTION,			0,	1,		298,	1,		14,		2690,					STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAP_GENERATOR,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,				STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_NONE },
@@ -128,7 +129,7 @@ static rct_widget window_mapgen_random_widgets[] = {
 
 static rct_widget window_mapgen_simplex_widgets[] = {
 	{ WWT_FRAME,			0,	0,		299,	0,		195,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_CAPTION,			0,	1,		298,	1,		14,		2690,					STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_MAP_GENERATOR,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,				STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_NONE },
