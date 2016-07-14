@@ -146,7 +146,7 @@ static int window_loadsave_get_dir(utf8 *last_save, char *path, const char *subd
 		safe_strcpy(path, last_save, MAX_PATH);
 	else
 		platform_get_user_directory(path, subdir);
-	
+
 	if (!platform_ensure_directory_exists(path)) {
 		log_error("Unable to create save directory.");
 		return 0;
@@ -174,7 +174,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		w->colours[1] = 7;
 		w->colours[2] = 7;
 	}
-	
+
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 
@@ -213,12 +213,12 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	default:
 		log_error("Unsupported load/save type: %d", type & 0x0F);
 	}
-	
+
 	if (!success) {
 		window_close(w);
 		return NULL;
 	}
-	
+
 	w->no_list_items = _listItemsCount;
 	window_init_scroll_widgets(w);
 	return w;
@@ -238,12 +238,12 @@ static bool browse(bool isSave, char *path)
 {
 	if (isSave)
 		strcat(path, _defaultName);
-	
+
 	file_dialog_desc desc = { 0 };
 	desc.initial_directory = _directory;
 	desc.type = isSave ? FD_SAVE : FD_OPEN;
 	desc.default_filename = isSave ? path : NULL;
-	
+
 	rct_string_id title;
 	switch (_type & 0x0E) {
 	case LOADSAVETYPE_GAME:
@@ -267,7 +267,7 @@ static bool browse(bool isSave, char *path)
 		desc.filters[0].pattern = isSave ? "*.td6" : "*.td4;*.td6";
 		break;
 	}
-	
+
 	desc.title = language_get_string(title);
 	return platform_open_common_file_dialog(path, &desc);
 }
@@ -330,7 +330,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			platform_get_user_directory(path, "track");
 			break;
 		}
-		
+
 		window_loadsave_populate_list(w, isSave, path, _extension);
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
@@ -543,14 +543,14 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 
 	if (_listItems != NULL)
 		free(_listItems);
-	
+
 	int listItemCapacity = 8;
 	_listItems = malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
-	
+
 	// Show "new" button when saving
 	window_loadsave_widgets[WIDX_NEW].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
-	
+
 	int drives = platform_get_drives();
 	if (str_is_null_or_empty(directory) && drives) {
 		// List Windows drives
@@ -564,23 +564,23 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			if (drives & (1 << x)){
 				// If the drive exists, list it
 				loadsave_list_item *listItem = &_listItems[_listItemsCount];
-				
+
 				sprintf(listItem->path, "%c:%c", 'A' + x, platform_get_path_separator());
 				safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
 				listItem->type = TYPE_DIRECTORY;
-				
+
 				_listItemsCount++;
 			}
 		}
 	}
 	else {
 		char separator = platform_get_path_separator();
-		
+
 		// Remove the separator at the end of the path, if present
 		safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
 		if (_parentDirectory[strlen(_parentDirectory) - 1] == separator)
 			_parentDirectory[strlen(_parentDirectory) - 1] = '\0';
-		
+
 		// Remove everything past the now last separator
 		char *ch = strrchr(_parentDirectory, separator);
 		if (ch != NULL) {
@@ -592,13 +592,13 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			// Else, go to the root directory
 			sprintf(_parentDirectory, "%c", separator);
 		}
-		
+
 		// Disable the Up button if the current directory is the root directory
 		if (str_is_null_or_empty(_parentDirectory) && !drives)
 			w->disabled_widgets |= (1 << WIDX_UP);
 		else
 			w->disabled_widgets &= ~(1 << WIDX_UP);
-		
+
 		// Re-enable the "new" button if it was disabled
 		w->disabled_widgets &= ~(1 << WIDX_NEW);
 
@@ -616,11 +616,11 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			safe_strcat_path(listItem->path, subDir, sizeof(listItem->path));
 			safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
-			
+
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
-		
+
 		// List all files with the wanted extension
 		char filter[MAX_PATH];
 		safe_strcpy(filter, directory, sizeof(filter));
@@ -636,7 +636,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			}
 
 			loadsave_list_item *listItem = &_listItems[_listItemsCount];
-			
+
 			safe_strcpy(listItem->path, directory, sizeof(listItem->path));
 			safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
 			listItem->type = TYPE_FILE;
@@ -649,7 +649,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			_listItemsCount++;
 		}
 		platform_enumerate_files_end(fileEnumHandle);
-		
+
 		window_loadsave_sort_list(0, _listItemsCount - 1);
 	}
 }
@@ -795,7 +795,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		path_set_extension(p, "td6");
 		int success = track_design_save_to_file(p);
 		free(p);
-		
+
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
 			window_ride_measurements_design_cancel();
