@@ -877,8 +877,10 @@ static void window_ride_list_close_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_CLOSED)
 			continue;
-		set_format_arg(6, uint16, w->scrolls[0].v_top);
-		set_format_arg(8, uint32, w->scrolls[0].v_bottom);
+
+		gGameCommandErrorTitle = STR_CANT_CLOSE;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 	}
@@ -894,8 +896,10 @@ static void window_ride_list_open_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_OPEN)
 			continue;
-		set_format_arg(6, uint16, w->scrolls[0].v_top);
-		set_format_arg(8, uint32, w->scrolls[0].v_bottom);
+
+		gGameCommandErrorTitle = STR_CANT_OPEN;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_OPEN);
 	}
