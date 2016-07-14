@@ -402,7 +402,15 @@ typedef struct rct_peep {
 	sint16 sprite_right;			// 0x1A
 	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
-	uint8 pad_1F[3];
+	union {
+		uint8 pad_1F[3];
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		struct {
+			uint8 peeps_ex_direction_preference;
+			uint8 pad_1F_[2];
+		};
+#endif
+	};
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
@@ -472,7 +480,12 @@ typedef struct rct_peep {
 		uint16 next_in_queue;		// 0x74
 	};
 	uint8 var_76;
-	uint8 pad_77;
+	union {
+		uint8 pad_77;
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		uint8 peeps_ex_queue_wait_distance;		// Messy Queue
+#endif
+	};
 	union{
 		uint8 maze_last_edge;			// 0x78
 		uint8 var_78;	//Direction ?
@@ -545,7 +558,12 @@ typedef struct rct_peep {
 	uint8 hat_colour;				// 0xF8
 	uint8 favourite_ride;			// 0xF9
 	uint8 favourite_ride_rating;	// 0xFA
-	uint8 pad_FB;
+	union {
+		uint8 pad_FB;
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		uint8 peeps_ex_crowded_store;			// Store crowdedness
+#endif
+	};
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
 assert_struct_size(rct_peep, 0x100);
