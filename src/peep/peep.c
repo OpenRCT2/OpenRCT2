@@ -325,6 +325,12 @@ static struct {
 	{ PEEP_ACTION_NONE_2, 1 },
 };
 
+static uint8 unk_981D8C[] = { 0, 6, 12 };
+static uint8 unk_981D8F[] = {
+	1, 3, 4, 5, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20,
+	21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+	34, 35, 36, 0, 0
+};
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
 static const ride_rating NauseaMinimumThresholds[] = {
@@ -1028,10 +1034,9 @@ static int checkForPath(rct_peep *peep){
 void sub_693B58(rct_peep* peep){
 	uint8 action_sprite_type;
 	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
-		action_sprite_type = RCT2_ADDRESS(0x981D8C, uint8)[peep->special_sprite];
-	}
-	else{
-		action_sprite_type = RCT2_ADDRESS(0x981D8F, uint8)[peep->action];
+		action_sprite_type = unk_981D8C[peep->special_sprite];
+	} else {
+		action_sprite_type = unk_981D8F[peep->action];
 	}
 	if (action_sprite_type == peep->action_sprite_type)return;
 
