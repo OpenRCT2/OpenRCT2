@@ -26,6 +26,8 @@
 #include "world/scenery.h"
 
 bool gCheatsSandboxMode = false;
+bool gCheatsIgnoreMoney = false;
+bool gCheatsFreeBuilding = false;
 bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
 bool gCheatsShowAllOperatingModes = false;
@@ -214,17 +216,57 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
-static void cheat_increase_money(money32 amount)
+static void cheat_no_money(int enabled)
+{
+	if (enabled == 1) {
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
+	}
+	else {
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	}
+	// Invalidate all windows that have anything to do with finance
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_PEEP);
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_ignore_money()
+{
+	gCheatsIgnoreMoney = !gCheatsIgnoreMoney;
+	gCheatsFreeBuilding = false;
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_free_building() 
+{
+	gCheatsFreeBuilding = !gCheatsFreeBuilding;
+	gCheatsIgnoreMoney = false;
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_set_money(money32 amount) 
+{
+	money32 money = clamp(INT_MIN, amount, INT_MAX);
+	gCashEncrypted = ENCRYPT_MONEY(money);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+}
+
+static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney;
-
 	currentMoney = DECRYPT_MONEY(gCashEncrypted);
 	if (currentMoney < INT_MAX - amount)
 		currentMoney += amount;
 	else
 		currentMoney = INT_MAX;
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
-
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
@@ -232,7 +274,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ADDMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -290,7 +332,6 @@ static void cheat_set_guest_parameter(int parameter, int value)
 		}
 		peep_update_sprite_type(peep);
 	}
-
 }
 
 static void cheat_give_all_guests(int object)
@@ -407,7 +448,8 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = !gCheatsDisableVandalism; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = !gCheatsDisableLittering; break;
-			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
+			case CHEAT_ADDMONEY: cheat_add_money(*edx); break;
+			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
 			case CHEAT_GENERATEGUESTS: cheat_generate_guests(*edx); break;
@@ -434,6 +476,9 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
 			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
+			case CHEAT_NOMONEY: cheat_no_money(*edx); break;
+			case CHEAT_IGNOREMONEY: cheat_ignore_money(); break;
+			case CHEAT_FREEBUILDING: cheat_free_building(); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
@@ -446,6 +491,8 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 void cheats_reset()
 {
 	gCheatsSandboxMode = false;
+	gCheatsIgnoreMoney = false;
+	gCheatsFreeBuilding = false;
 	gCheatsDisableClearanceChecks = false;
 	gCheatsDisableSupportLimits = false;
 	gCheatsShowAllOperatingModes = false;
