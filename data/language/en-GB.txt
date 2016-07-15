@@ -4206,6 +4206,7 @@ STR_5894    :Enter the exchange rate
 STR_5895    :Save Track
 STR_5896    :Track save failed!
 STR_5897    :Window limit:
+STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
 
 #############
 # Scenarios #
