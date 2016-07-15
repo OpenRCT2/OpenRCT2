@@ -193,7 +193,7 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
 		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
