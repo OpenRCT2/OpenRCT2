@@ -167,7 +167,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 	}
 
 	int newStaffId = i;
-	rct_sprite_bounds *spriteBounds;
+	const rct_sprite_bounds *spriteBounds;
 	rct_peep *newPeep = &(create_sprite(flags)->peep);
 
 	if (newPeep == NULL) {

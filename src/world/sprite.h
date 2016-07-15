@@ -350,15 +350,15 @@ assert_struct_size(rct_sprite_bounds, 4);
 
 typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
-	uint8* unkn_04;      // 0x04
+	const uint8* unkn_04;      // 0x04
 } rct_sprite_image;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_sprite_image, 8);
 #endif
 
 typedef struct rct_sprite_entry {
-	rct_sprite_image *sprite_image;      // 0x00
-	rct_sprite_bounds *sprite_bounds;    // 0x04
+	const rct_sprite_image *sprite_image;      // 0x00
+	const rct_sprite_bounds *sprite_bounds;    // 0x04
 } rct_sprite_entry;
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_sprite_entry, 8);
@@ -388,7 +388,7 @@ enum {
 extern rct_sprite* g_sprite_list;
 
 // rct2: 0x00982708
-extern rct_sprite_entry* g_sprite_entries;
+extern rct_sprite_entry g_sprite_entries[48];
 
 extern uint16 *gSpriteListHead;
 extern uint16 *gSpriteListCount;

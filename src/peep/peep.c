@@ -144,6 +144,198 @@ const char *gPeepEasterEggNames[] = {
 	"DAVID ELLIS"
 };
 
+/** rct2: 0x00981DB0 */
+static struct {
+	uint8 action;
+	uint8 flags;
+} PeepThoughtToActionMap[] = {
+	{ PEEP_ACTION_SHAKE_HEAD, 1 },
+	{ PEEP_ACTION_EMPTY_POCKETS, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_WOW, 1 },
+	{ PEEP_ACTION_NONE_2, 2 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 4 },
+	{ PEEP_ACTION_SHAKE_HEAD, 4 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_WAVE, 0 },
+	{ PEEP_ACTION_JOY, 1 },
+	{ PEEP_ACTION_CHECK_TIME, 1 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_WAVE, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_WAVE, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_27, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_29, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 1 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_SHAKE_HEAD, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_NONE_2, 0 },
+	{ PEEP_ACTION_JOY, 0 },
+	{ PEEP_ACTION_NONE_2, 1 },
+};
+
+static uint8 unk_981D8C[] = { 0, 6, 12 };
+static uint8 unk_981D8F[] = {
+	1, 3, 4, 5, 8, 9, 10, 13, 14, 15, 16, 17, 18, 19, 20,
+	21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+	34, 35, 36, 0, 0
+};
+
+static uint8 unk_982134[] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
+};
+
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
 static const ride_rating NauseaMinimumThresholds[] = {
 	0, 0, 200, 400
@@ -398,7 +590,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep->action = PEEP_ACTION_NONE_2;
 
 		peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-		if (RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
+		if (unk_982134[sprite_type] & 1) {
 			peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 		}
 
@@ -846,17 +1038,16 @@ static int checkForPath(rct_peep *peep){
 void sub_693B58(rct_peep* peep){
 	uint8 action_sprite_type;
 	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
-		action_sprite_type = RCT2_ADDRESS(0x981D8C, uint8)[peep->special_sprite];
-	}
-	else{
-		action_sprite_type = RCT2_ADDRESS(0x981D8F, uint8)[peep->action];
+		action_sprite_type = unk_981D8C[peep->special_sprite];
+	} else {
+		action_sprite_type = unk_981D8F[peep->action];
 	}
 	if (action_sprite_type == peep->action_sprite_type)return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
 	peep->action_sprite_type = action_sprite_type;
 
-	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[action_sprite_type].sprite_width;
 	peep->sprite_height_negative =  spriteBounds[action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive =  spriteBounds[action_sprite_type].sprite_height_positive;
@@ -1017,8 +1208,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
 		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
 		peep->no_action_frame_no++;
-		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-		uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
+		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 		if (peep->no_action_frame_no >= *_edi){
 			peep->no_action_frame_no = 0;
 		}
@@ -1026,8 +1217,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 		return 1;
 	}
 
-	rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-	uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
+	const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+	const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 	peep->action_frame++;
 	int ebx = _edi[peep->action_frame + 1];
 
@@ -1100,7 +1291,7 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 		peep->action = PEEP_ACTION_NONE_2;
 
 	peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-	if (RCT2_ADDRESS(0x00982134, uint8)[type] & 1){
+	if (unk_982134[type] & 1) {
 		peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 	}
 
@@ -6102,7 +6293,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->favourite_ride = 0xFF;
 	peep->favourite_ride_rating = 0;
 
-	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;
 	peep->sprite_height_negative = spriteBounds[peep->action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive = spriteBounds[peep->action_sprite_type].sprite_height_positive;
@@ -6373,12 +6564,13 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 {
 	int esi = 0x009AC86C;
 
-	if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 1) {
+	uint8 flags = PeepThoughtToActionMap[thought.type].flags;
+	if (flags & 1) {
 		rct_ride* ride = get_ride(thought.item);
 		esi = (int)(&(ride->name));
-	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 2) {
+	} else if (flags & 2) {
 		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].singular;
-	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 4) {
+	} else if (flags & 4) {
 		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].indefinite;
 	} else {
 		esi = 0x009AC864; //No thought?
@@ -6664,9 +6856,9 @@ static int peep_should_find_bench(rct_peep* peep){
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments){
-	uint8 action = RCT2_ADDRESS(0x981DB0, uint16)[thought_type] & 0xFF;
-
+void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_arguments)
+{
+	uint8 action = PeepThoughtToActionMap[thought_type].action;
 	if (action != 0xFF && peep->action >= 254){
 			peep->action = action;
 			peep->action_frame = 0;
@@ -6776,7 +6968,7 @@ void sub_693BAB(rct_peep* peep) {
 	if (nextActionSpriteType != peep->action_sprite_type) {
 		invalidate_sprite_2((rct_sprite*)peep);
 		peep->action_sprite_type = nextActionSpriteType;
-		rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+		const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 		peep->sprite_width = spriteBounds[nextActionSpriteType].sprite_width;
 		peep->sprite_height_negative = spriteBounds[nextActionSpriteType].sprite_height_negative;
 		peep->sprite_height_positive = spriteBounds[nextActionSpriteType].sprite_height_positive;

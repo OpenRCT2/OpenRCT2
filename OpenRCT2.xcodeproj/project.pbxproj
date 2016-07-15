@@ -340,6 +340,7 @@
 		D464FEF31D31A6AA00CBABAC /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEDF1D31A6AA00CBABAC /* StringTable.cpp */; };
 		D464FEF41D31A6AA00CBABAC /* WallObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEE11D31A6AA00CBABAC /* WallObject.cpp */; };
 		D464FEF51D31A6AA00CBABAC /* WaterObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEE31D31A6AA00CBABAC /* WaterObject.cpp */; };
+		D46F2A9E1D39A25A00A36AB7 /* peep_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D46F2A9D1D39A25A00A36AB7 /* peep_data.c */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
@@ -994,6 +995,7 @@
 		D464FEE21D31A6AA00CBABAC /* WallObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallObject.h; sourceTree = "<group>"; };
 		D464FEE31D31A6AA00CBABAC /* WaterObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterObject.cpp; sourceTree = "<group>"; };
 		D464FEE41D31A6AA00CBABAC /* WaterObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterObject.h; sourceTree = "<group>"; };
+		D46F2A9D1D39A25A00A36AB7 /* peep_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1511,6 +1513,7 @@
 		D442715B1CC81B3200D84D28 /* peep */ = {
 			isa = PBXGroup;
 			children = (
+				D46F2A9D1D39A25A00A36AB7 /* peep_data.c */,
 				D442715C1CC81B3200D84D28 /* peep.c */,
 				D442715D1CC81B3200D84D28 /* peep.h */,
 				D442715E1CC81B3200D84D28 /* staff.c */,
@@ -2300,6 +2303,7 @@
 				D44272291CC81B3200D84D28 /* LanguagePack.cpp in Sources */,
 				D44272901CC81B3200D84D28 /* title_options.c in Sources */,
 				C686F94A1CDBC3B7009F9BFC /* lift.c in Sources */,
+				D46F2A9E1D39A25A00A36AB7 /* peep_data.c in Sources */,
 				D44272A01CC81B3200D84D28 /* map_animation.c in Sources */,
 				C686F92A1CDBC3B7009F9BFC /* wooden_wild_mouse.c in Sources */,
 				C686F90C1CDBC3B7009F9BFC /* bobsleigh_coaster.c in Sources */,

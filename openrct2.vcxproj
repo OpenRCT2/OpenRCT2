@@ -153,6 +153,7 @@
     <ClCompile Include="src\paint\sprite\sprite.c" />
     <ClCompile Include="src\paint\supports.c" />
     <ClCompile Include="src\peep\peep.c" />
+    <ClCompile Include="src\peep\peep_data.c" />
     <ClCompile Include="src\peep\staff.c" />
     <ClCompile Include="src\platform\crash.cpp" />
     <ClCompile Include="src\platform\linux.c" />
