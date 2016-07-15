@@ -314,7 +314,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							if (screenwidth < 64) {
 								screenwidth = 64;
 							}
-							i->pan_x = ((((pan_x << 16) / screenwidth) - 0x8000) >> 4);
+							i->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
 
 							int pan_y = (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
 							pan_y >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
@@ -324,7 +324,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							if (screenheight < 64) {
 								screenheight = 64;
 							}
-							i->pan_y = ((((pan_y << 16) / screenheight) - 0x8000) >> 4);
+							i->pan_y = ((((pan_y * 65536) / screenheight) - 0x8000) >> 4);
 
 							sint32 v = vehicle->velocity;
 
@@ -8287,7 +8287,7 @@ loc_6DC23A:
 	regs.eax /= regs.ebx;
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_15) {
-		regs.eax <<= 2;
+		regs.eax *= 4;
 	}
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13)) {

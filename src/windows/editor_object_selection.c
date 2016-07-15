@@ -452,7 +452,7 @@ void window_editor_object_selection_open()
 		(1 << WIDX_FILTER_CLEAR_BUTTON) |
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_LIST_SORT_TYPE) |
-		(1 << WIDX_LIST_SORT_RIDE);
+		(((uint32)1) << WIDX_LIST_SORT_RIDE);
 
 	_filter_flags = gConfigInterface.object_selection_filter_flags;
 	memset(_filter_string, 0, sizeof(_filter_string));
