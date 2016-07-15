@@ -341,11 +341,6 @@ static void window_all_wheel_input()
 			}
 		}
 	}
-
-	// Check windows, front to back
-	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
-		if (window_wheel_input(w, wheel))
-			return;
 }
 
 /**
