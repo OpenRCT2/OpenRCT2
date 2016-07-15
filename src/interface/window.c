@@ -349,7 +349,7 @@ static void window_all_wheel_input()
 			return;
 }
 
-void window_close_surplus(int cap, sint8 avoid_classification)
+static void window_close_surplus(int cap, sint8 avoid_classification)
 {
 	int count, i, diff;
 	//find the amount of windows that are currently open
