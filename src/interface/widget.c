@@ -24,6 +24,8 @@
 #include "../localisation/localisation.h"
 #include "../util/util.h"
 
+#include <math.h>
+
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
@@ -71,6 +73,13 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 		x += 11;
 		view_size += 10;
 		scroll->h_thumb_right = min(x, view_size);
+
+		if(scroll->h_thumb_right - scroll->h_thumb_left < 20) {
+			double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
+
+			scroll->h_thumb_left = (uint16) lround(scroll->h_thumb_left - (20 * barPosition));
+			scroll->h_thumb_right = (uint16) lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
+		}
 	}
 
 	if (scroll->flags & VSCROLLBAR_VISIBLE) {
@@ -91,7 +100,15 @@ void widget_scroll_update_thumbs(rct_window *w, int widget_index)
 		y += 11;
 		view_size += 10;
 		scroll->v_thumb_bottom = min(y, view_size);
+
+		if(scroll->v_thumb_bottom - scroll->v_thumb_top < 20) {
+			double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
+
+			scroll->v_thumb_top = (uint16) lround(scroll->v_thumb_top - (20 * barPosition));
+			scroll->v_thumb_bottom = (uint16) lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
+		}
 	}
+
 }
 
 /**
