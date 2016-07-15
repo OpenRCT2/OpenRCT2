@@ -85,7 +85,7 @@ typedef struct viewport_interaction_info {
 	};
 } viewport_interaction_info;
 
-#define MAX_VIEWPORT_COUNT MAX_WINDOW_COUNT
+#define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 
 #define gSavedViewX				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16)
 #define gSavedViewY				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16)

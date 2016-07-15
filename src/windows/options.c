@@ -1133,14 +1133,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_WINDOW_LIMIT_UP:
 			i = gConfigGeneral.window_limit;
-			if (i < MAX_WINDOW_COUNT) {
+			if (i < WINDOW_LIMIT_MAX) {
 				window_set_window_limit(++i);
 			}
 			window_invalidate(w);
 			break;
 		case WIDX_WINDOW_LIMIT_DOWN:
 			i = gConfigGeneral.window_limit;
-			if (i > MIN_WINDOW_COUNT) {
+			if (i > WINDOW_LIMIT_MIN) {
 				window_set_window_limit(--i);
 			}
 			window_invalidate(w);

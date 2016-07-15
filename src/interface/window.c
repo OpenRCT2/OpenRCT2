@@ -35,7 +35,7 @@
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
 #define RCT2_NEW_WINDOW			(gWindowNextSlot)
 
-rct_window g_window_list[MAX_WINDOW_COUNT];
+rct_window g_window_list[WINDOW_LIMIT_MAX];
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot;
 
@@ -353,7 +353,7 @@ void window_close_surplus(int cap, sint8 avoid_classification)
 {
 	int count, i, diff;
 	//find the amount of windows that are currently open
-	for (i = 0; i < MAX_WINDOW_COUNT; i++) {
+	for (i = 0; i < WINDOW_LIMIT_MAX; i++) {
 		if (&g_window_list[i] == RCT2_NEW_WINDOW) {
 			count = i;
 			break;
@@ -382,7 +382,7 @@ void window_close_surplus(int cap, sint8 avoid_classification)
 void window_set_window_limit(int value) 
 {
 	int prev = gConfigGeneral.window_limit;
-	int val = clamp(value, MIN_WINDOW_COUNT, MAX_WINDOW_COUNT);
+	int val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
 	gConfigGeneral.window_limit = val;
 	config_save_default();
 	// Checks if value decreases and then closes surplus
