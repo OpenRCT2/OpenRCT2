@@ -147,7 +147,7 @@ const char *gPeepEasterEggNames[] = {
 /** rct2: 0x00981DB0 */
 static struct {
 	uint8 action;
-	uint8 unk_01;
+	uint8 flags;
 } PeepThoughtToActionMap[] = {
 	{ PEEP_ACTION_SHAKE_HEAD, 1 },
 	{ PEEP_ACTION_EMPTY_POCKETS, 0 },
@@ -6564,12 +6564,13 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 {
 	int esi = 0x009AC86C;
 
-	if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 1) {
+	uint8 flags = PeepThoughtToActionMap[thought.type].flags;
+	if (flags & 1) {
 		rct_ride* ride = get_ride(thought.item);
 		esi = (int)(&(ride->name));
-	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 2) {
+	} else if (flags & 2) {
 		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].singular;
-	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 4) {
+	} else if (flags & 4) {
 		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].indefinite;
 	} else {
 		esi = 0x009AC864; //No thought?
