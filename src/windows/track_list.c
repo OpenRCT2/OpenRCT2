@@ -181,7 +181,10 @@ static void window_track_list_close(rct_window *w)
 static void window_track_list_select(rct_window *w, int index)
 {
 	w->track_list.var_480 = index;
-
+	if (_loadedTrackDesign == NULL)
+		window_error_open(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
+	else
+	
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		if (index == 0) {
