@@ -161,6 +161,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTO_OPEN_SHOPS,
 	WIDX_DEFAULT_INSPECTION_INTERVAL,
 	WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
+	WIDX_WINDOW_LIMIT,
+	WIDX_WINDOW_LIMIT_UP,
+	WIDX_WINDOW_LIMIT_DOWN,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -308,6 +311,9 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
 	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// Default inspection time dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_DEFAULT_INSPECTION_INTERVAL_TIP },				// Default inspection time dropdown button
+	{ WWT_SPINNER,			1,	155,	299,	249,	260,	STR_NONE,									STR_NONE },								// Window limit
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	250,	254,	STR_NUMERIC_UP,								STR_NONE },											// Window limit up
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	255,	259,	STR_NUMERIC_DOWN,							STR_NONE },											// Window limit down
 	{ WIDGETS_END },
 };
 
@@ -514,7 +520,10 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
 	(1 << WIDX_AUTO_OPEN_SHOPS) |
 	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
-	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
+	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN) |
+	(1 << WIDX_WINDOW_LIMIT) |
+	(1 << WIDX_WINDOW_LIMIT_UP) |
+	(1 << WIDX_WINDOW_LIMIT_DOWN),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -781,6 +790,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
 			config_save_default();
 			window_invalidate(w);
+			break;
 		}
 		break;
 
@@ -1120,6 +1130,20 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, 7);
 			dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+			break;
+		case WIDX_WINDOW_LIMIT_UP:
+			i = gConfigGeneral.window_limit;
+			if (i < WINDOW_LIMIT_MAX) {
+				window_set_window_limit(++i);
+			}
+			window_invalidate(w);
+			break;
+		case WIDX_WINDOW_LIMIT_DOWN:
+			i = gConfigGeneral.window_limit;
+			if (i > WINDOW_LIMIT_MIN) {
+				window_set_window_limit(--i);
+			}
+			window_invalidate(w);
 			break;
 		}
 		break;
@@ -1564,6 +1588,8 @@ static void window_options_invalidate(rct_window *w)
 		if (gParkFlags & PARK_FLAGS_LOCK_REAL_NAMES_OPTION)
 			w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
 
+		w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
+		
 		// save plugin data checkbox: visible or not
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
@@ -1593,6 +1619,9 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_WINDOW_LIMIT].type = WWT_SPINNER;
+		window_options_misc_widgets[WIDX_WINDOW_LIMIT_UP].type = WWT_DROPDOWN_BUTTON;
+		window_options_misc_widgets[WIDX_WINDOW_LIMIT_DOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1789,6 +1818,15 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].left + 1,
 			w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top
+		);
+		gfx_draw_string_left(dpi, STR_WINDOW_LIMIT, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			STR_COMMA16,
+			&gConfigGeneral.window_limit,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
+			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
 		);
 		break;
 	}
