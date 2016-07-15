@@ -1047,7 +1047,7 @@ void sub_693B58(rct_peep* peep){
 	invalidate_sprite_2((rct_sprite*)peep);
 	peep->action_sprite_type = action_sprite_type;
 
-	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[action_sprite_type].sprite_width;
 	peep->sprite_height_negative =  spriteBounds[action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive =  spriteBounds[action_sprite_type].sprite_height_positive;
@@ -1208,8 +1208,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
 		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
 		peep->no_action_frame_no++;
-		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-		uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
+		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 		if (peep->no_action_frame_no >= *_edi){
 			peep->no_action_frame_no = 0;
 		}
@@ -1217,8 +1217,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 		return 1;
 	}
 
-	rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
-	uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
+	const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
+	const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
 	peep->action_frame++;
 	int ebx = _edi[peep->action_frame + 1];
 
@@ -6293,7 +6293,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->favourite_ride = 0xFF;
 	peep->favourite_ride_rating = 0;
 
-	rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+	const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 	peep->sprite_width = spriteBounds[peep->action_sprite_type].sprite_width;
 	peep->sprite_height_negative = spriteBounds[peep->action_sprite_type].sprite_height_negative;
 	peep->sprite_height_positive = spriteBounds[peep->action_sprite_type].sprite_height_positive;
@@ -6968,7 +6968,7 @@ void sub_693BAB(rct_peep* peep) {
 	if (nextActionSpriteType != peep->action_sprite_type) {
 		invalidate_sprite_2((rct_sprite*)peep);
 		peep->action_sprite_type = nextActionSpriteType;
-		rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
+		const rct_sprite_bounds* spriteBounds = g_sprite_entries[peep->sprite_type].sprite_bounds;
 		peep->sprite_width = spriteBounds[nextActionSpriteType].sprite_width;
 		peep->sprite_height_negative = spriteBounds[nextActionSpriteType].sprite_height_negative;
 		peep->sprite_height_positive = spriteBounds[nextActionSpriteType].sprite_height_positive;
