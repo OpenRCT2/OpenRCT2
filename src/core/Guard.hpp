@@ -16,23 +16,35 @@
 
 #pragma once
 
+#include <stdarg.h>
+
 /**
  * Utility methods for asserting function parameters.
  */
 namespace Guard
 {
-    void Assert(bool expression, const char * message = nullptr);
-    void Fail(const char * message = nullptr);
+    void Assert(bool expression, const char * message = nullptr, ...);
+    void Assert_VA(bool expression, const char * message, va_list args);
+    void Fail(const char * message = nullptr, ...);
+    void Fail_VA(const char * message, va_list args);
 
     template<typename T>
-    void ArgumentNotNull(T * argument, const char * message = nullptr)
+    void ArgumentNotNull(T * argument, const char * message = nullptr, ...)
     {
-        Assert(argument != nullptr, message);
+        va_list args;
+        va_start(args, message);
+        Assert_VA(argument != nullptr, message, args);
+        va_end(args);
     }
 
     template<typename T>
-    void ArgumentInRange(T argument, T min, T max, const char * message = nullptr)
+    void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
     {
-        Assert(argument >= min && argument <= max, message);
+        va_list args;
+        va_start(args, message);
+        Assert(argument >= min && argument <= max, message, args);
+        va_end(args);
     }
 };
+
+#define GUARD_LINE "Location: %s:%d", __func__, __LINE__

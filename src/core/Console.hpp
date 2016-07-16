@@ -37,5 +37,6 @@ namespace Console
         void WriteFormat(const utf8 * format, ...);
         void WriteLine();
         void WriteLine(const utf8 * format, ...);
+        void WriteLine_VA(const utf8 * format, va_list args);
     }
 }

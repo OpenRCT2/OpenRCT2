@@ -94,11 +94,15 @@ namespace Console
         void WriteLine(const utf8 * format, ...)
         {
             va_list args;
-
             va_start(args, format);
+            WriteLine_VA(format, args);
+            va_end(args);
+        }
+
+        void WriteLine_VA(const utf8 * format, va_list args)
+        {
             vfprintf(stdout, format, args);
             puts("");
-            va_end(args);
         }
     }
 }
