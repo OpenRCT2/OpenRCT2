@@ -510,7 +510,7 @@ namespace ThemeManager
 
     static void GetAvailableThemes(List<AvailableTheme> * outThemes)
     {
-        Guard::ArgumentNotNull(outThemes);
+        Guard::ArgumentNotNull(outThemes, GUARD_LINE);
 
         outThemes->Clear();
 

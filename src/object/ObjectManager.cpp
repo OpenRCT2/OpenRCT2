@@ -225,7 +225,7 @@ private:
 
     size_t GetLoadedObjectIndex(const Object * object)
     {
-        Guard::ArgumentNotNull(object);
+        Guard::ArgumentNotNull(object, GUARD_LINE);
 
         size_t result = SIZE_MAX;
         if (_loadedObjects != nullptr)

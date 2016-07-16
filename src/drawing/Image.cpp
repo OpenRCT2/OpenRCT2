@@ -56,7 +56,7 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
 
 static uint32 AllocateImageList(uint32 count)
 {
-    Guard::Assert(count != 0);
+    Guard::Assert(count == 0, GUARD_LINE);
 
     if (!_initialised)
     {
@@ -92,12 +92,12 @@ static uint32 AllocateImageList(uint32 count)
 
 static void FreeImageList(uint32 baseImageId, uint32 count)
 {
-    Guard::Assert(_initialised);
-    Guard::Assert(baseImageId >= BASE_IMAGE_ID);
+    Guard::Assert(_initialised, GUARD_LINE);
+    Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
 
 #ifdef DEBUG
     bool contains = AllocatedListContains(baseImageId, count);
-    Guard::Assert(contains);
+    Guard::Assert(contains, GUARD_LINE);
 #endif
     
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)

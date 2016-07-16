@@ -360,7 +360,7 @@ namespace RCT1
             "LEMST   ",  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
-        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "");
+        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "Unsupported RCT1 ride type.");
         return map[rideType];
     }
 
@@ -459,7 +459,7 @@ namespace RCT1
             "ENTERP  ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
 
-        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "");
+        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "Unsupported RCT1 vehicle type.");
         return map[vehicleType];
     }
 

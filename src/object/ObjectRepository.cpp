@@ -167,7 +167,7 @@ public:
 
     Object * LoadObject(const ObjectRepositoryItem * ori) override
     {
-        Guard::ArgumentNotNull(ori);
+        Guard::ArgumentNotNull(ori, GUARD_LINE);
 
         Object * object = ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
         return object;
@@ -177,7 +177,7 @@ public:
     {
         ObjectRepositoryItem * item = &_items[ori->Id];
 
-        Guard::Assert(item->LoadedObject == nullptr);
+        Guard::Assert(item->LoadedObject == nullptr, GUARD_LINE);
         item->LoadedObject = object;
     }
 
@@ -518,7 +518,7 @@ private:
                     int newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
-                        Guard::Fail("CalculateExtraBytesToFixChecksum failed to fix checksum.");
+                        Guard::Fail("CalculateExtraBytesToFixChecksum failed to fix checksum.", GUARD_LINE);
 
                         // Save old data form
                         SaveObject(path, entry, data, dataSize, false);

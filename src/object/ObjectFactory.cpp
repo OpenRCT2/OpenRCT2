@@ -166,8 +166,8 @@ namespace ObjectFactory
 
     Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize)
     {
-        Guard::ArgumentNotNull(entry);
-        Guard::ArgumentNotNull(data);
+        Guard::ArgumentNotNull(entry, GUARD_LINE);
+        Guard::ArgumentNotNull(data, GUARD_LINE);
 
         Object * result = CreateObject(*entry);
         if (result != nullptr)

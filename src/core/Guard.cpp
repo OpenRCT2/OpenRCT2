@@ -15,34 +15,83 @@
 #pragma endregion
 
 #include <cassert>
+#include <stdarg.h>
 #include <stdio.h>
+
+#ifdef __WINDOWS__
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
 
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
 
+extern "C"
+{
+    #include "../openrct2.h"
+}
+
 namespace Guard
 {
-    void Assert(bool expression, const char * message)
+    void Assert(bool expression, const char * message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        Assert_VA(expression, message, args);
+        va_end(args);
+    }
+
+    void Assert_VA(bool expression, const char * message, va_list args)
     {
         if (expression) return;
 
         if (message != nullptr)
         {
-            Console::Error::WriteLine(message);
+            Console::Error::WriteLine("Assertion failed:");
+            Console::Error::WriteLine_VA(message, args);
         }
 
-#if DEBUG
+#ifdef DEBUG
         Debug::Break();
 #endif
+#ifdef __WINDOWS__
+        char version[128];
+        openrct2_write_full_version_info(version, sizeof(version));
+
+        char buffer[512];
+        strcpy(buffer, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
+        strcat(buffer, version);
+        strcat(buffer, "\r\n");
+        vsprintf((char *)strchr(buffer, 0), message, args);
+        int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+        if (result == IDABORT)
+        {
+#ifdef USE_BREAKPAD
+            // Force a crash that breakpad will handle allowing us to get a dump
+            *((void**)0) = 0;
+#else
+            assert(false);
+#endif
+        }
+#else
         assert(false);
+#endif
     }
 
-    void Fail(const char * message)
+    void Fail(const char * message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        Fail_VA(message, args);
+        va_end(args);
+    }
+
+    void Fail_VA(const char * message, va_list args)
     {
         if (message != nullptr)
         {
-            Console::Error::WriteLine(message);
+            Console::Error::WriteLine_VA(message, args);
         }
 
 #if DEBUG
