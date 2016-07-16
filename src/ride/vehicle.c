@@ -5421,7 +5421,11 @@ static void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
 			vehicle->velocity -= vehicle->velocity >> 3;
 		}
 	} else {
-		apply_non_stop_block_brake(vehicle, is_block_brake_closed);
+#ifdef NEW_BLOCK_BRAKES
+		apply_non_stop_block_brake(vehicle, false);
+#else
+		apply_non_stop_block_brake(vehicle, true);
+#endif
 	}
 }
 
@@ -5472,8 +5476,13 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 	case TRACK_ELEM_CABLE_LIFT_HILL:
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		if (ride_is_block_sectioned(ride))
-			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED);
+		if(ride_is_block_sectioned(ride)){
+			if(trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement)) {
+				if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED) {
+					apply_block_brakes(vehicle, true);
+				}
+			}
+		}
 
 		break;
 	}
