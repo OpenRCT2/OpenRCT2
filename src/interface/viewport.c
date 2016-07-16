@@ -40,6 +40,7 @@
 //#define DEBUG_SHOW_DIRTY_BOX
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
+rct_viewport *g_music_tracking_viewport;
 
 #ifdef NO_RCT2
 paint_struct *unk_EE7884;

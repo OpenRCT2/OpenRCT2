@@ -2241,14 +2241,14 @@ void window_update_viewport_ride_music()
 	rct_window *w;
 
 	gRideMusicParamsListEnd = &gRideMusicParamsList[0];//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*) = (rct_ride_music_params*)0x009AF430;
-	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+	g_music_tracking_viewport = (rct_viewport*)-1;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		viewport = w->viewport;
 		if (viewport == NULL || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
 			continue;
 
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
+		g_music_tracking_viewport = viewport;
 		RCT2_GLOBAL(0x00F438A8, rct_window*) = w;
 
 		switch (viewport->zoom) {
