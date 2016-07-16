@@ -1591,13 +1591,13 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 			return 0;
 		}
 
-		if (flags & (1 << 2)) {
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		if (objectType == OBJECT_TYPE_SCENERY_SETS && (flags & (1 << 2))) {
 			for (int j = 0; j < item->NumThemeObjects; j++) {
 				window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j]);
 			}
 		}
 
-		uint8 objectType = item->ObjectEntry.flags & 0xF;
 		_numSelectedObjectsForType[objectType]--;
 		*selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
 		return 1;
