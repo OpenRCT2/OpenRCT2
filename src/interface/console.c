@@ -848,7 +848,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get paint_segments");
 		}
 		else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			window_set_window_limit(int_valid[0]);
+			window_set_window_limit(int_val[0]);
 			console_execute_silent("get window_limit");
 		}
 		else if (invalidArgs) {
