@@ -423,7 +423,7 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 
 	attached_paint_struct * out;
 	if (paint_attach_to_previous_ps(image_id, 0, 0)) {
-		out = RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *);
+		out = g_aps_F1AD2C;
 		// set content and enable masking
 		out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
 		out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
@@ -1177,10 +1177,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			paint_attach_to_previous_ps(2625 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+			paint_struct * backup = g_ps_F1AD28;
 			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
 			sub_98196C(22955, 16, 16, 1, 1, 0, height, rotation);
-			RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+			g_ps_F1AD28 = backup;
 		}
 	}
 
@@ -1191,11 +1191,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
 			paint_attach_to_previous_ps(2644 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
-			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+			paint_struct * backup = g_ps_F1AD28;
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 			int height = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
 			sub_98196C(22956, 16, 16, 1, 1, 0, height + 3, rotation);
-			RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+			g_ps_F1AD28 = backup;
 		}
 	}
 
@@ -1259,9 +1259,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 				int image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
-				paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+				paint_struct * backup = g_ps_F1AD28;
 				sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, rotation);
-				RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+				g_ps_F1AD28 = backup;
 			}
 		}
 	}

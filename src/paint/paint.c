@@ -28,20 +28,25 @@ const uint32 construction_markers[] = {
 	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_MIX_BACKGROUND << 28, // Translucent
 };
 
+paint_struct * g_ps_F1AD28;
+attached_paint_struct * g_aps_F1AD2C;
+paint_string_struct *pss1;
+paint_string_struct *pss2;
+
 /**
  *
  *  rct2: 0x0068615B
  */
 void painter_setup() {
 	unk_EE7888 = (paint_struct*)0x00EE788C;
-	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	g_ps_F1AD28 = NULL;
+	g_aps_F1AD2C = NULL;
 	uint8* edi = RCT2_ADDRESS(0xF1A50C, uint8);
 	memset(edi, 0, 2048);
 	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
 	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD20, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
+	pss1 = NULL;
+	pss2 = NULL;
 }
 
 /**
@@ -162,8 +167,8 @@ paint_struct * sub_98196C(
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	g_ps_F1AD28 = 0;
+	g_aps_F1AD2C = NULL;
 
 	//Not a paint struct but something similar
 	paint_struct *ps = unk_EE7888;
@@ -260,7 +265,7 @@ paint_struct * sub_98196C(
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
 	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	g_ps_F1AD28 = ps;
 
 	sint32 edi;
 	switch (rotation) {
@@ -332,8 +337,8 @@ paint_struct * sub_98197C(
 	uint32 rotation
 ) {
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	g_ps_F1AD28 = 0;
+	g_aps_F1AD2C = NULL;
 
 	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
 	rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
@@ -344,7 +349,7 @@ paint_struct * sub_98197C(
 		return NULL;
 	}
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	g_ps_F1AD28 = ps;
 
 	rct_xy16 attach = {
 		.x = ps->bound_box_x,
@@ -418,8 +423,8 @@ paint_struct * sub_98198C(
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+	g_ps_F1AD28 = 0;
+	g_aps_F1AD2C = NULL;
 
 	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
 	rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
@@ -430,7 +435,7 @@ paint_struct * sub_98198C(
 		return NULL;
 	}
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	g_ps_F1AD28 = ps;
 	unk_EE7888++;
 	return ps;
 }
@@ -463,7 +468,7 @@ paint_struct * sub_98199C(
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-	if (RCT2_GLOBAL(0xF1AD28, uint32) == 0) {
+	if (g_ps_F1AD28 == NULL) {
 		return sub_98197C(
 			image_id,
 			x_offset, y_offset,
@@ -483,10 +488,10 @@ paint_struct * sub_98199C(
 		return NULL;
 	}
 
-	paint_struct *old_ps = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+	paint_struct *old_ps = g_ps_F1AD28;
 	old_ps->var_20 = ps;
 
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	g_ps_F1AD28 = ps;
 	unk_EE7888++;
 	return ps;
 }
@@ -501,7 +506,7 @@ paint_struct * sub_98199C(
  */
 bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
 {
-    if (RCT2_GLOBAL(0xF1AD2C, uint32) == 0) {
+    if (g_aps_F1AD2C == NULL) {
         return paint_attach_to_previous_ps(image_id, x, y);
     }
 
@@ -516,12 +521,12 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
     ps->y = y;
     ps->flags = 0;
 
-    attached_paint_struct * ebx = RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *);
+    attached_paint_struct * ebx = g_aps_F1AD2C;
 
     ps->next = NULL;
     ebx->next = ps;
 
-    RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *) = ps;
+	g_aps_F1AD2C = ps;
 
 	unk_EE7888++;
 
@@ -549,7 +554,7 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
     ps->y = y;
     ps->flags = 0;
 
-    paint_struct * masterPs = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+	paint_struct * masterPs = g_ps_F1AD28;
     if (masterPs == NULL) {
         return false;
     }
@@ -561,7 +566,7 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
 
     ps->next = oldFirstAttached;
 
-    RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *) = ps;
+	g_aps_F1AD2C = ps;
 
     return true;
 }
@@ -600,12 +605,12 @@ void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_of
 
 	unk_EE7888++;
 
-	paint_string_struct * oldPs = RCT2_GLOBAL(0xF1AD24, paint_string_struct*);
+	paint_string_struct * oldPs = pss2;
 
-	RCT2_GLOBAL(0xF1AD24, paint_string_struct*) = ps;
+	pss2 = ps;
 
 	if (oldPs == 0) { // 0 or NULL?
-		RCT2_GLOBAL(0xF1AD20, paint_string_struct *) = ps;
+		pss1 = ps;
 	} else {
 		oldPs->next = ps;
 	}
@@ -982,7 +987,7 @@ void viewport_draw_money_effects()
 {
 	utf8 buffer[256];
 
-	paint_string_struct *ps = RCT2_GLOBAL(0x00F1AD20, paint_string_struct*);
+	paint_string_struct *ps = pss1;
 	if (ps == NULL)
 		return;
 
