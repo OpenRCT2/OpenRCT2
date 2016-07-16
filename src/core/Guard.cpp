@@ -48,10 +48,10 @@ namespace Guard
             Console::Error::WriteLine_VA(message, args);
         }
 
-#if DEBUG
+#ifdef DEBUG
         Debug::Break();
 #endif
-#if __WINDOWS__
+#ifdef __WINDOWS__
         char version[128];
         openrct2_write_full_version_info(version, sizeof(version));
 
@@ -63,8 +63,12 @@ namespace Guard
         int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)
         {
+#ifdef USE_BREAKPAD
             // Force a crash that breakpad will handle allowing us to get a dump
             *((void**)0) = 0;
+#else
+            assert(false);
+#endif
         }
 #else
         assert(false);
