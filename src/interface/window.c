@@ -355,13 +355,14 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 		}
 	}
 	//difference between amount open and cap = amount to close
-	diff = count - cap; 
+	diff = count - 3 - cap; 
 	for (i = 0; i < diff; i++) {
 		rct_window *w = NULL;
 		//iterates through the list until it finds the newest window, or a window that can be closed
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
-			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE))) {
 				break;
+			}
 		}
 		//skip window if window matches specified rct_windowclass (as user may be modifying via options)
 		if (avoid_classification != -1 && w != NULL && w->classification == avoid_classification) {
