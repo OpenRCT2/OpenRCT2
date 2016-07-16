@@ -360,7 +360,7 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 		rct_window *w = NULL;
 		//iterates through the list until it finds the newest window, or a window that can be closed
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
-			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE))){
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE))) {
 				break;
 			}
 		}
