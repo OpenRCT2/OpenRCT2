@@ -2002,7 +2002,8 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 		return;
 
-	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+	money16 ridePrice = ride_get_price(ride);
+	if (ridePrice != 0) {
 		if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
 			!(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
 			!(peep->voucher_arguments == peep->current_ride)){
@@ -2018,7 +2019,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 				return;
 			}
 
-			if (ride->price > peep->cash_in_pocket){
+			if (ridePrice > peep->cash_in_pocket){
 				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
 				if (peep->destination_tolerence == 0){
 					remove_peep_from_queue(peep);
@@ -2031,7 +2032,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 
 			uint16 value = ride->value;
 			if (value != RIDE_VALUE_UNDEFINED){
-				if (value * 2 < ride->price){
+				if (value * 2 < ridePrice) {
 					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
 					if (peep->destination_tolerence == 0){
 						remove_peep_from_queue(peep);
@@ -2309,8 +2310,10 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
  *
  *  rct2: 0x006920B4
  */
-static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride){
-	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
+static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride)
+{
+	money16 ridePrice = ride_get_price(ride);
+	if (ridePrice != 0) {
 		if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
 			(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
 			(peep->voucher_arguments == peep->current_ride)){
@@ -2319,10 +2322,10 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 			peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 		}
 		else{
-			ride->total_profit += ride->price;
+			ride->total_profit += ridePrice;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
-			peep_spend_money(peep, &peep->paid_on_rides, ride->price);
+			peep_spend_money(peep, &peep->paid_on_rides, ridePrice);
 		}
 	}
 
@@ -8794,12 +8797,13 @@ static sint8 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride)
 
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		if (ride->value != 0xFFFF) {
-			if (ride->price <= (money16)ride->value) {
+			money16 ridePrice = ride_get_price(ride);
+			if (ridePrice <= (money16)ride->value) {
 				valueSatisfaction = 2;
 			}
 			// Even if the price is more than the value, the peep will still be partially satisfied if their
 			// happiness is high enough to offset the difference. (Scales from +0% at empty happiness to +99% at full)
-			else if (ride->price <= (money16)(ride->value + ride->value * (peep->happiness / 256.0))) {
+			else if (ridePrice <= (money16)(ride->value + ride->value * (peep->happiness / 256.0))) {
 				valueSatisfaction = 1;
 			}
 			else {
@@ -9814,7 +9818,10 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 	if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
 
 		// Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
-		if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ride->price != 0) {
+		if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) ||
+			ride->value == 0xFFFF ||
+			ride_get_price(ride) != 0
+		) {
 			if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) {
 				peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
 				return false;
@@ -9870,16 +9877,17 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 		// Assuming the queue conditions are met, peeps will always go on free transport rides.
 		// Ride ratings, recent crashes and weather will all be ignored.
-		if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ride->price != 0) {
+		money16 ridePrice = ride_get_price(ride);
+		if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ridePrice != 0) {
 			if (peep->previous_ride == rideIndex) {
 				peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
 				return false;
 			}
 
 			// Basic price checks
-			if (ride->price != 0 && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
+			if (ridePrice != 0 && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
 
-				if (ride->price > peep->cash_in_pocket) {
+				if (ridePrice > peep->cash_in_pocket) {
 					if (peepAtRide) {
 						if (peep->cash_in_pocket <= 0) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 255);
@@ -10005,7 +10013,8 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 					value /= 4;
 
 				// Peeps won't pay more than twice the value of the ride.
-				if (ride->price > (money16)(value * 2)) {
+				money16 ridePrice = ride_get_price(ride);
+				if (ridePrice > (money16)(value * 2)) {
 					if (peepAtRide) {
 						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, rideIndex);
 						if (peep->happiness_growth_rate < 60) {
@@ -10018,7 +10027,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 				}
 
 				// A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
-				if (ride->price <= (money16)(value / 2) && peepAtRide) {
+				if (ridePrice <= (money16)(value / 2) && peepAtRide) {
 					if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 						if (!(peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GOOD_VALUE, rideIndex);

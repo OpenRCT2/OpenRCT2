@@ -8637,3 +8637,33 @@ void ride_delete(uint8 rideIndex)
 	user_string_free(ride->name);
 	ride->type = RIDE_TYPE_NULL;
 }
+
+bool ride_is_ride(rct_ride * ride)
+{
+	switch (ride->type) {
+	case RIDE_TYPE_FOOD_STALL:
+	case RIDE_TYPE_1D:
+	case RIDE_TYPE_DRINK_STALL:
+	case RIDE_TYPE_1F:
+	case RIDE_TYPE_SHOP:
+	case RIDE_TYPE_22:
+	case RIDE_TYPE_INFORMATION_KIOSK:
+	case RIDE_TYPE_TOILETS:
+	case RIDE_TYPE_CASH_MACHINE:
+	case RIDE_TYPE_FIRST_AID:
+		return false;
+	default:
+		return true;
+	}
+}
+
+money16 ride_get_price(rct_ride * ride)
+{
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) return 0;
+	if (ride_is_ride(ride)) {
+		if (!gCheatsUnlockAllPrices) {
+			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) return 0;
+		}
+	}
+	return ride->price;
+}

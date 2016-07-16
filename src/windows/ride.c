@@ -5922,8 +5922,9 @@ static void window_ride_income_invalidate(rct_window *w)
 	window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_EMPTY;
 
 	window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_ARG_6_CURRENCY2DP;
-	set_format_arg(6, money32, ride->price);
-	if (ride->price == 0)
+	money16 ridePrimaryPrice = ride_get_price(ride);
+	set_format_arg(6, money32, ridePrimaryPrice);
+	if (ridePrimaryPrice == 0)
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
 	primaryItem = SHOP_ITEM_ADMISSION;
