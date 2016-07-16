@@ -78,6 +78,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 #define NO_SCREAM 254
 
 rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
+rct_vehicle *gCurrentVehicle;
 
 const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
 const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
@@ -6923,7 +6924,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 	}
 
 	if (trackType == TRACK_ELEM_TOWER_BASE &&
-		vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+		vehicle == gCurrentVehicle
 	) {
 		if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)) {
 			rct_xy_element input, output;
@@ -6943,7 +6944,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 	}
 
 	if (trackType != TRACK_ELEM_END_STATION ||
-		vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+		vehicle != gCurrentVehicle
 	) {
 		return;
 	}
@@ -6984,7 +6985,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
 		trackType,
 		0
 		);
-	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == gCurrentVehicle) {
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
 
@@ -7595,7 +7596,7 @@ loc_6DBE7F:
 	vehicle->remaining_distance -= regs.eax;
 
 	rct_vehicle *v3 = GET_VEHICLE(regs.bp);
-	rct_vehicle *v4 = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	rct_vehicle *v4 = gCurrentVehicle;
 	regs.eax = abs(v4->velocity - v3->velocity);
 
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
@@ -7634,7 +7635,7 @@ static int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outS
 
 	rct_map_element *mapElement = NULL;
 
-	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
+	gCurrentVehicle = vehicle;
 	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
 	vehicle->velocity += vehicle->acceleration;
 	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
@@ -8078,7 +8079,7 @@ loc_6DCD6B:
 	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	rct_vehicle *vEBP = GET_VEHICLE(regs.bp);
-	rct_vehicle *vEDI = RCT2_GLOBAL(0x00F64E04, rct_vehicle *);
+	rct_vehicle *vEDI = gCurrentVehicle;
 	regs.eax = abs(vEDI->velocity - vEBP->velocity);
 	if (regs.eax > 0xE0000) {
 		if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
@@ -8107,7 +8108,7 @@ loc_6DCE02:
 	if (trackType != TRACK_ELEM_END_STATION) {
 		goto loc_6DCEB2;
 	}
-	if (vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+	if (vehicle != gCurrentVehicle) {
 		goto loc_6DCEB2;
 	}
 	regs.ax = vehicle->track_progress;
@@ -8153,14 +8154,14 @@ loc_6DCEB2:
 		goto loc_6DC40E;
 	}
 
-	if (vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+	if (vehicle == gCurrentVehicle) {
 		goto loc_6DCEFF;
 	}
 	vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	goto loc_6DC40E;
 
 loc_6DCEFF:
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax = 0;
 	regs.ebp = 0;
 	regs.dx = 0;
@@ -8178,7 +8179,7 @@ loc_6DCEFF:
 		vehicle = GET_VEHICLE((uint16)regs.si);
 	}
 
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax /= regs.ebx;
 	regs.ecx = (regs.eax * 21) >> 9;
 	regs.eax = vehicle->velocity >> 12;
@@ -8272,7 +8273,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
-	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
+	gCurrentVehicle = vehicle;
 	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
 	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
 
@@ -8363,14 +8364,14 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 			spriteId = car->next_vehicle_on_train;
 		}
 		else {
-			if (car == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+			if (car == gCurrentVehicle) {
 				break;
 			}
 			spriteId = car->prev_vehicle_on_ride;
 		}
 	}
 	// loc_6DC144
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 
 	vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	//eax
@@ -8396,7 +8397,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 		vehicle = GET_VEHICLE(spriteIndex);
 	}
 
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax = (totalAcceleration / numVehicles) * 21;
 	if (regs.eax < 0) {
 		regs.eax += 511;
