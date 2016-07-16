@@ -8279,15 +8279,15 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
 		return;
 
 	uint8 direction = (mapElement->type & 3) ^ (1 << 1);
-	RCT2_GLOBAL(0x00F3EFE0, rct_map_element*) = NULL;
-	RCT2_GLOBAL(0x00F3EFE8, rct_map_element*) = NULL;
+	rct_map_element* lastPathElement = NULL;
+	rct_map_element* firstPathElement = NULL;
 
 	sint16 baseZ = mapElement->base_height;
 	sint16 nextX = *x;
 	sint16 nextY = *y;
 	while (1){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH){
-			RCT2_GLOBAL(0x00F3EFE0, rct_map_element*) = mapElement;
+			lastPathElement = mapElement;
 			RCT2_GLOBAL(0x00F3EFE4, sint16) = nextX;
 			RCT2_GLOBAL(0x00F3EFE6, sint16) = nextY;
 			RCT2_GLOBAL(0x00F3EFEC, uint32) = direction;
@@ -8303,7 +8303,7 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
 		mapElement = map_get_first_element_at(nextX / 32, nextY / 32);
 		found = false;
 		do{
-			if (mapElement == RCT2_GLOBAL(0x00F3EFE8, rct_map_element*))
+			if (mapElement == firstPathElement)
 				continue;
 
 			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
@@ -8341,8 +8341,8 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
 		if (!(mapElement->properties.path.edges & (1 << (direction ^ (1 << 1)))))
 			break;
 
-		if (RCT2_GLOBAL(0x00F3EFE8, rct_map_element*) == NULL)
-			RCT2_GLOBAL(0x00F3EFE8, rct_map_element*) = mapElement;
+		if (firstPathElement == NULL)
+			firstPathElement = mapElement;
 
 		// More queue to go.
 		if (mapElement->properties.path.edges & (1 << (direction)))
@@ -8365,7 +8365,7 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
 	if ((uint8)*z == 0xFF)
 		return;
 
-	mapElement = RCT2_GLOBAL(0x00F3EFE0, rct_map_element*);
+	mapElement = lastPathElement;
 	if (mapElement == NULL)
 		return;
 
