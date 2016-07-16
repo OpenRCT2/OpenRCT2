@@ -1291,6 +1291,7 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 		peep->action = PEEP_ACTION_NONE_2;
 
 	peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+	assert(type < countof(unk_982134));
 	if (unk_982134[type] & 1) {
 		peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 	}
