@@ -99,7 +99,22 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     bool contains = AllocatedListContains(baseImageId, count);
     Guard::Assert(contains);
 #endif
-
+    
+    for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
+    {
+        if (it->BaseId + count == baseImageId) 
+        {
+            it->Count += count;
+            return;
+        }
+        else if (baseImageId + count == it->BaseId) 
+        {
+            it->BaseId = baseImageId;
+            it->Count += count;
+            return;
+        }
+    }
+    
     // TODO validate that this was an allocated list
     _freeLists.push_back({ baseImageId, count });
 }
