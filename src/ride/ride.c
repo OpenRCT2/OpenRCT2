@@ -8638,7 +8638,7 @@ void ride_delete(uint8 rideIndex)
 	ride->type = RIDE_TYPE_NULL;
 }
 
-bool ride_is_ride(rct_ride * ride)
+static bool ride_is_ride(rct_ride * ride)
 {
 	switch (ride->type) {
 	case RIDE_TYPE_FOOD_STALL:
