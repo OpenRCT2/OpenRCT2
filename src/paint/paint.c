@@ -33,6 +33,12 @@ attached_paint_struct * g_aps_F1AD2C;
 paint_string_struct *pss1;
 paint_string_struct *pss2;
 
+#ifdef NO_RCT2
+paint_struct *g_paint_structs[512];
+#else
+#define g_paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
+#endif
+
 /**
  *
  *  rct2: 0x0068615B
@@ -41,8 +47,9 @@ void painter_setup() {
 	unk_EE7888 = (paint_struct*)0x00EE788C;
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
-	uint8* edi = RCT2_ADDRESS(0xF1A50C, uint8);
-	memset(edi, 0, 2048);
+	for (int i = 0; i < 512; i++) {
+		g_paint_structs[i] = NULL;
+	}
 	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
 	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
 	pss1 = NULL;
@@ -295,8 +302,8 @@ paint_struct * sub_98196C(
 
 	ps->var_18 = edi;
 
-	paint_struct *old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[edi];
-	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[edi] = ps;
+	paint_struct *old_ps = g_paint_structs[edi];
+	g_paint_structs[edi] = ps;
 	ps->next_quadrant_ps = old_ps;
 
 	if ((uint16)edi < RCT2_GLOBAL(0x00F1AD0C, uint32)) {
@@ -379,8 +386,8 @@ paint_struct * sub_98197C(
 		di = 511;
 
 	ps->var_18 = di;
-	paint_struct* old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di];
-	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
+	paint_struct* old_ps = g_paint_structs[di];
+	g_paint_structs[di] = ps;
 	ps->next_quadrant_ps = old_ps;
 
 	if ((uint16)di < RCT2_GLOBAL(0x00F1AD0C, uint32)) {
@@ -849,7 +856,7 @@ void sub_688217()
 		return;
 
 	do {
-		ps_next = RCT2_GLOBAL(0x00F1A50C + 4 * edi, paint_struct*);
+		ps_next = g_paint_structs[edi];
 		if (ps_next != NULL) {
 			ps->next_quadrant_ps = ps_next;
 			do {
