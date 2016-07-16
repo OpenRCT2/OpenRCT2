@@ -313,6 +313,34 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 	SwingingTimeToSpriteMap_11,
 };
 
+/** rct2: 0x009A12E0 */
+static const uint8 * TopSpinTimeToSpriteMaps[] = {
+	(const uint8*)0x009A12EC,
+	(const uint8*)0x009A1751,
+	(const uint8*)0x009A1CC6,
+};
+
+/** rct2: 0x0099F0F4 */
+static const uint8 * Rotation1TimeToSpriteMaps[] = {
+	(const uint8*)0x0099F100,
+	(const uint8*)0x0099F422,
+	(const uint8*)0x0099F6AB,
+};
+
+/** rct2: 0x009A2428 */
+static const uint8 * Rotation2TimeToSpriteMaps[] = {
+	(const uint8*)0x009A2434,
+	(const uint8*)0x009A26A6,
+	(const uint8*)0x009A270E,
+};
+
+/** rct2: 0x0099EB1C */
+static const uint8 * Rotation3TimeToSpriteMaps[] = {
+	(const uint8*)0x0099EB28,
+	(const uint8*)0x0099ED49,
+	(const uint8*)0x0099EED1,
+};
+
 static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {
@@ -3919,8 +3947,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A042C, uint8*)[vehicle->sub_state];
-
+	uint8* edi = (uint8*)0x009A0434;
 	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
 		vehicle->current_time++;
@@ -3948,15 +3975,15 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	uint8* edi;
+	const uint8* edi;
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1) {
-		edi = RCT2_ADDRESS(0x0099F0F4, uint8*)[vehicle->sub_state];
+		edi = Rotation1TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2) {
-		edi = RCT2_ADDRESS(0x009A2428, uint8*)[vehicle->sub_state];
+		edi = Rotation2TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else {
-		edi = RCT2_ADDRESS(0x0099EB1C, uint8*)[vehicle->sub_state];
+		edi = Rotation3TimeToSpriteMaps[vehicle->sub_state];
 	}
 
 	sint32 var_4C = (sint16)vehicle->current_time;
@@ -4133,8 +4160,7 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A12E0, uint8*)[vehicle->sub_state];
-
+	const uint8* edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
 	uint8 al = edi[(vehicle->current_time + 1) * 2];
 	if (al != 0xFF) {
 		vehicle->current_time = vehicle->current_time + 1;
