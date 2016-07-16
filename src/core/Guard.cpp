@@ -17,7 +17,11 @@
 #include <cassert>
 #include <stdarg.h>
 #include <stdio.h>
+
+#ifdef __WINDOWS__
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#endif
 
 #include "Console.hpp"
 #include "Diagnostics.hpp"
