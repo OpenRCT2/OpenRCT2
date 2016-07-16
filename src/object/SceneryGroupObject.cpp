@@ -94,7 +94,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr) continue;
 
         uint16 sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
-        Guard::Assert(sceneryEntry != UINT8_MAX);
+        Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
         uint8 objectType = objectEntry->flags & 0x0F;
         switch (objectType) {

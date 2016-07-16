@@ -72,7 +72,7 @@ public:
 
     void Insert(T item, size_t index)
     {
-        Guard::ArgumentInRange(index, (size_t)0, this->size());
+        Guard::ArgumentInRange(index, (size_t)0, this->size(), GUARD_LINE);
         this->insert(this->begin() + index, item);
     }
 
@@ -91,7 +91,7 @@ public:
 
     void RemoveAt(size_t index)
     {
-        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
+        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1, GUARD_LINE);
         this->erase(this->begin() + index);
     }
 
@@ -102,13 +102,13 @@ public:
 
     const_reference operator[](size_t index) const
     {
-        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
+        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1, GUARD_LINE);
         return std::vector<T>::operator[](index);
     }
 
     reference operator[](size_t index)
     {
-        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
+        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1, GUARD_LINE);
         return std::vector<T>::operator[](index);
     }
 
