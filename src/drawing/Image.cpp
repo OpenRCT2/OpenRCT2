@@ -102,7 +102,7 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
-        if (it->BaseId + count == baseImageId) 
+        if (it->BaseId + it->Count == baseImageId) 
         {
             it->Count += count;
             return;
