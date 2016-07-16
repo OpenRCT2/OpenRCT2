@@ -350,12 +350,12 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 	//find the amount of windows that are currently open
 	for (i = 0; i < WINDOW_LIMIT_MAX; i++) {
 		if (&g_window_list[i] == RCT2_NEW_WINDOW) {
-			count = i - 3;
+			count = i;
 			break;
 		}
 	}
 	//difference between amount open and cap = amount to close
-	diff = count - cap; 
+	diff = count - 3 - cap; 
 	for (i = 0; i < diff; i++) {
 		rct_window *w = NULL;
 		//iterates through the list until it finds the newest window, or a window that can be closed
