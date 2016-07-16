@@ -56,7 +56,7 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
 
 static uint32 AllocateImageList(uint32 count)
 {
-    Guard::Assert(count == 0, GUARD_LINE);
+    Guard::Assert(count != 0, GUARD_LINE);
 
     if (!_initialised)
     {
