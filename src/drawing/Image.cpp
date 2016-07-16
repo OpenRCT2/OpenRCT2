@@ -145,6 +145,15 @@ extern "C"
     {
         if (baseImageId != 0)
         {
+            // Zero the G1 elements so we don't have invalid pointers
+            // and data lying about
+            for (uint32 i = 0; i < count; i++)
+            {
+                uint32 imageId = baseImageId + i;
+                g1Elements[imageId] = { 0 };
+                drawing_engine_invalidate_image(imageId);
+            }
+
             FreeImageList(baseImageId, count);
         }
     }
