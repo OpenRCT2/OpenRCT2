@@ -6156,7 +6156,7 @@ void peep_update_crowd_noise()
 	if (gScreenFlags & 2)
 		return;
 
-	viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
+	viewport = g_music_tracking_viewport;
 	if (viewport == (rct_viewport*)-1)
 		return;
 

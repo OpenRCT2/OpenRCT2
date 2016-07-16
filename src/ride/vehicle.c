@@ -467,17 +467,17 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info->editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
-				sint16 x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
-				sint16 y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
-				sint16 w = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width / 4;
-				sint16 h = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height / 4;
+				sint16 x = g_music_tracking_viewport->view_x;
+				sint16 y = g_music_tracking_viewport->view_y;
+				sint16 w = g_music_tracking_viewport->view_width / 4;
+				sint16 h = g_music_tracking_viewport->view_height / 4;
 				if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
 					x -= w;
 					y -= h;
 				}
 				if (x < vehicle->sprite_right && y < vehicle->sprite_bottom) {
-					sint16 w2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + x;
-					sint16 h2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + y;
+					sint16 w2 = g_music_tracking_viewport->view_width + x;
+					sint16 h2 = g_music_tracking_viewport->view_height + y;
 					if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
 						w2 += w + w;
 						h2 += h + h;
@@ -496,9 +496,9 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 								*(j + 1) = *j;
 							}
 							i->var_A = v9;
-							int pan_x = (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
-							pan_x >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
-							pan_x += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x;
+							int pan_x = (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - g_music_tracking_viewport->view_x;
+							pan_x >>= g_music_tracking_viewport->zoom;
+							pan_x += g_music_tracking_viewport->x;
 
 							uint16 screenwidth = gScreenWidth;
 							if (screenwidth < 64) {
@@ -506,9 +506,9 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							}
 							i->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
 
-							int pan_y = (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
-							pan_y >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
-							pan_y += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y;
+							int pan_y = (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+							pan_y >>= g_music_tracking_viewport->zoom;
+							pan_y += g_music_tracking_viewport->y;
 
 							uint16 screenheight = gScreenHeight;
 							if (screenheight < 64) {
@@ -584,7 +584,7 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 void vehicle_sounds_update()
 {
 	if (gAudioCurrentDevice != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless) {
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+		g_music_tracking_viewport = (rct_viewport*)-1;
 		rct_viewport* viewport = (rct_viewport*)-1;
 		rct_window* window = gWindowNextSlot;
 		while (1) {
@@ -597,7 +597,7 @@ void vehicle_sounds_update()
 				break;
 			}
 		}
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
+		g_music_tracking_viewport = viewport;
 		if (viewport != (rct_viewport*)-1) {
 			if (window) {
 				RCT2_GLOBAL(0x00F438A8, rct_window*) = window;

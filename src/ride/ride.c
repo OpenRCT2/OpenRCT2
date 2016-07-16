@@ -3393,7 +3393,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != (rct_viewport*)-1) {
 		rct_xy16 rotatedCoords;
 
 		switch (get_current_rotation()) {
@@ -3414,7 +3414,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 				rotatedCoords.y = ((x - y) / 2) - z;
 				break;
 		}
-		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
+		rct_viewport* viewport = g_music_tracking_viewport;
 		sint16 view_width = viewport->view_width;
 		sint16 view_width2 = view_width * 2;
 		sint16 view_x = viewport->view_x - view_width2;
