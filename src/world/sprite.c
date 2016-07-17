@@ -24,6 +24,7 @@
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
+#include "../openrct2.h"
 
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
@@ -34,7 +35,7 @@ rct_sprite* sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
 rct_sprite *get_sprite(size_t sprite_idx)
 {
-	assert(sprite_idx < MAX_SPRITES);
+	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
 	return &sprite_list[sprite_idx];
 }
 
