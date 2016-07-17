@@ -35,7 +35,7 @@
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
 #define RCT2_NEW_WINDOW			(gWindowNextSlot)
 
-rct_window g_window_list[WINDOW_LIMIT_MAX];
+rct_window g_window_list[WINDOW_LIMIT_MAX + 3]; //64 windows + 3 (toolbars and main viewport) = 67 slots
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot;
 
@@ -402,7 +402,7 @@ void window_set_window_limit(int value)
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
 	// Check if there are any window slots left
-	if ((RCT2_NEW_WINDOW - 3) > &(g_window_list[gConfigGeneral.window_limit])) {
+	if (RCT2_NEW_WINDOW >= &(g_window_list[WINDOW_LIMIT_MAX + 3]) || (RCT2_NEW_WINDOW - 3) > &(g_window_list[gConfigGeneral.window_limit])) {
 		rct_window *w = NULL;
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
