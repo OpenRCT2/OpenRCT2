@@ -390,6 +390,9 @@ money16 get_shop_hot_value(int shopItem)
  */
 static money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
+	if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
+		return MONEY(0, 00);
+	
 	rct_ride_entry *entry;
 	money32 customersPerHour, priceMinusCost;
 	int currentShopItem;
