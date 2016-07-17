@@ -332,8 +332,13 @@ static uint8 unk_981D8F[] = {
 	34, 35, 36, 0, 0
 };
 
-static uint8 unk_982134[] = {
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1,
+static const bool SpriteTypeToSlowWalkMap[] = {
+	false, false, false, false, false, false, false, false,
+	false, false, false, true,  false, false, true,  true,
+	true,  true,  true,  false, true,  false, true,  true,
+	true,  false, false, true,  true,  false, false, true,
+	true,  true,  true,  true,  true,  true,  false, true,
+	false, true,  true,  true,  true,  true,  true,  true,
 };
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
@@ -590,7 +595,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep->action = PEEP_ACTION_NONE_2;
 
 		peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-		if (unk_982134[sprite_type] & 1) {
+		if (SpriteTypeToSlowWalkMap[sprite_type]) {
 			peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 		}
 
@@ -1291,8 +1296,8 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 		peep->action = PEEP_ACTION_NONE_2;
 
 	peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-	assert(type < countof(unk_982134));
-	if (unk_982134[type] & 1) {
+	assert(type < countof(SpriteTypeToSlowWalkMap));
+	if (SpriteTypeToSlowWalkMap[type]) {
 		peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 	}
 
