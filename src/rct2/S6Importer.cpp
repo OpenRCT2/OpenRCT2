@@ -169,7 +169,10 @@ void S6Importer::Import()
     memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
 
     RCT2_GLOBAL(0x0010E63B8, uint32) = _s6.dword_010E63B8;
-    memcpy(g_sprite_list, _s6.sprites, sizeof(_s6.sprites));
+    for (int i = 0; i < MAX_SPRITES; i++)
+    {
+        memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
+    }
 
     for (int i = 0; i < NUM_SPRITE_LISTS; i++)
     {

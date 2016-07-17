@@ -579,7 +579,7 @@ enum {
 };
 
 /** Helper macro until rides are stored in this module. */
-#define GET_PEEP(sprite_index) &(g_sprite_list[sprite_index].peep)
+#define GET_PEEP(sprite_index) &(get_sprite(sprite_index)->peep)
 
 /**
  * Helper macro loop for enumerating through all the peeps. To avoid needing a end loop counterpart, statements are

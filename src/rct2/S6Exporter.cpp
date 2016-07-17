@@ -251,7 +251,10 @@ void S6Exporter::Export()
     memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
 
     _s6.dword_010E63B8 = RCT2_GLOBAL(0x0010E63B8, uint32);
-    memcpy(_s6.sprites, g_sprite_list, sizeof(_s6.sprites));
+    for (int i = 0; i < MAX_SPRITES; i++)
+    {
+        memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
+    }
 
     for (int i = 0; i < NUM_SPRITE_LISTS; i++)
     {

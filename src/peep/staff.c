@@ -323,7 +323,7 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 		return;
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		rct_peep *peep = &get_sprite(sprite_id)->peep;
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
 			sprite_type += 4;
@@ -362,7 +362,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 			log_warning("Invalid sprite id %u", sprite_id);
 			return;
 		}
-		rct_sprite *sprite = &g_sprite_list[sprite_id];
+		rct_sprite *sprite = get_sprite(sprite_id);
 		if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP || sprite->peep.type != PEEP_TYPE_STAFF)
 		{
 			*ebx = MONEY32_UNDEFINED;
@@ -414,7 +414,7 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
-		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		rct_peep *peep = &get_sprite(sprite_id)->peep;
 		if (peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
 		{
 			log_warning("Invalid game command, peep->sprite_identifier = %u, peep->type = %u", peep->sprite_identifier, peep->type);
@@ -592,7 +592,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	rct_litter* litter = NULL;
 	
 	for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next){
-		litter = &g_sprite_list[litterIndex].litter;
+		litter = &get_sprite(litterIndex)->litter;
 		
 		uint16 distance = 
 			abs(litter->x - peep->x) + 

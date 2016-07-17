@@ -532,7 +532,7 @@ void window_guest_open(rct_peep* peep){
  *  rct2: 0x006987A6
  */
 void window_guest_disable_widgets(rct_window* w){
-	rct_peep* peep = &g_sprite_list[w->number].peep;
+	rct_peep* peep = &get_sprite(w->number)->peep;
 	uint64 disabled_widgets = 0;
 
 	if (peep_can_be_picked_up(peep)){
@@ -648,7 +648,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_TRACK:
-		g_sprite_list[w->number].peep.peep_flags ^= PEEP_FLAGS_TRACKING;
+		get_sprite(w->number)->peep.peep_flags ^= PEEP_FLAGS_TRACKING;
 		break;
 	}
 }

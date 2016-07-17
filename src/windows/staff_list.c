@@ -225,7 +225,7 @@ static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 			rct_window* window = window_find_by_class(WC_STAFF_LIST);
 			window_invalidate(window);
 		} else {
-			window_staff_open(&g_sprite_list[newStaffId].peep);
+			window_staff_open(&get_sprite(newStaffId)->peep);
 		}
 
 		break;

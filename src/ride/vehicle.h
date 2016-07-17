@@ -388,6 +388,6 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 extern rct_vehicle *gCurrentVehicle;
 
 /** Helper macro until rides are stored in this module. */
-#define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)
+#define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)
 
 #endif

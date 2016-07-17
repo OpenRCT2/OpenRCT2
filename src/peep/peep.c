@@ -378,7 +378,7 @@ void peep_update_all()
 	spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
 	i = 0;
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		peep = &(g_sprite_list[spriteIndex].peep);
+		peep = &(get_sprite(spriteIndex)->peep);
 		spriteIndex = peep->next;
 
 		if ((i & 0x7F) != (gCurrentTicks & 0x7F)) {
@@ -469,7 +469,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 
 	rct_litter* litter;
 	for (uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
-		litter = &(g_sprite_list[sprite_idx].litter);
+		litter = &(get_sprite(sprite_idx)->litter);
 
 		sint16 dist_x = abs(litter->x - center_x);
 		sint16 dist_y = abs(litter->y - center_y);
@@ -4766,7 +4766,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	uint8 free_edge = 3;
 
 	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
-		sprite = &g_sprite_list[sprite_id];
+		sprite = get_sprite(sprite_id);
 
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) continue;
 
@@ -5552,7 +5552,7 @@ static int peep_update_patrolling_find_sweeping(rct_peep* peep){
 		sprite_id != 0xFFFF;
 		sprite_id = sprite->unknown.next_in_quadrant){
 
-		sprite = &g_sprite_list[sprite_id];
+		sprite = get_sprite(sprite_id);
 
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_LITTER * 2) continue;
 
@@ -5794,7 +5794,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
-		sprite = &g_sprite_list[sprite_id];
+		sprite = get_sprite(sprite_id);
 
 		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) continue;
 
@@ -7344,7 +7344,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 	uint8 sick_count = 0;
 	uint16 sprite_id = sprite_get_first_in_quadrant(x, y);
 	for (rct_sprite* sprite; sprite_id != 0xFFFF; sprite_id = sprite->unknown.next_in_quadrant){
-		sprite = &g_sprite_list[sprite_id];
+		sprite = get_sprite(sprite_id);
 		if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
 			rct_peep* other_peep = (rct_peep*)sprite;
 			if (other_peep->state != PEEP_STATE_WALKING)

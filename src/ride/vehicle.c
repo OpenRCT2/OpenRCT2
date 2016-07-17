@@ -611,8 +611,8 @@ void vehicle_sounds_update()
 				}
 			}
 			gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-			for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
-				vehicle_update_sound_params(&g_sprite_list[i].vehicle);
+			for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next) {
+				vehicle_update_sound_params(&get_sprite(i)->vehicle);
 			}
 			for(int i = 0; i < countof(gVehicleSoundList); i++){
 				rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
@@ -730,7 +730,7 @@ void vehicle_sounds_update()
 				}
 
 				// do sound1 stuff, track noise
-				rct_sprite* sprite = &g_sprite_list[vehicle_sound_params->id];
+				rct_sprite* sprite = get_sprite(vehicle_sound_params->id);
 				int volume = sprite->vehicle.sound1_volume;
 				volume *= vol1;
 				volume = volume / 8;
@@ -781,7 +781,7 @@ void vehicle_sounds_update()
 					}
 				}
 			label87: // do sound2 stuff, screams
-				sprite = &g_sprite_list[vehicle_sound_params->id];
+				sprite = get_sprite(vehicle_sound_params->id);
 				volume = sprite->vehicle.sound2_volume;
 				volume *= vol1;
 				volume = (uint16)volume / 8;
@@ -862,7 +862,7 @@ void vehicle_update_all()
 
 	sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE];
 	while (sprite_index != SPRITE_INDEX_NULL) {
-		vehicle = &(g_sprite_list[sprite_index].vehicle);
+		vehicle = &(get_sprite(sprite_index)->vehicle);
 		sprite_index = vehicle->next;
 
 		vehicle_update(vehicle);
@@ -4636,7 +4636,7 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 
 		spriteIndex = vehicle->sprite_index;
 		do {
-			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+			vehicle2 = &(get_sprite(spriteIndex)->vehicle);
 			if (vehicle2->vehicle_sprite_type < 1)
 				continue;
 			if (vehicle2->vehicle_sprite_type <= 4)
@@ -4654,7 +4654,7 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 
 	spriteIndex = vehicle->sprite_index;
 	do {
-		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+		vehicle2 = &(get_sprite(spriteIndex)->vehicle);
 		if (vehicle2->vehicle_sprite_type < 5)
 			continue;
 		if (vehicle2->vehicle_sprite_type <= 8)
@@ -5473,8 +5473,9 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 	uint8 rideIndex = vehicle->ride;
 	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
 		uint16 spriteIdx = gSpriteSpatialIndex[location];
-		for (rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx); spriteIdx != 0xFFFF; spriteIdx = vehicle2->next_in_quadrant) {
-			vehicle2 = GET_VEHICLE(spriteIdx);
+		while (spriteIdx != 0xFFFF) {
+			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
+			spriteIdx = vehicle2->next_in_quadrant;
 
 			if (vehicle2 == vehicle)
 				continue;
@@ -8289,7 +8290,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
 
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* car = vehicle; spriteId != 0xFFFF; car = GET_VEHICLE(spriteId)) {
+	while (spriteId != 0xFFFF) {
+		rct_vehicle* car = GET_VEHICLE(spriteId);
 		vehicleEntry = vehicle_get_vehicle_entry(car);
 
 		// Swinging cars
@@ -8584,7 +8586,7 @@ int vehicle_get_total_num_peeps(rct_vehicle *vehicle)
 		if (spriteIndex == SPRITE_INDEX_NULL)
 			break;
 
-		vehicle = &(g_sprite_list[spriteIndex].vehicle);
+		vehicle = &(get_sprite(spriteIndex)->vehicle);
 	}
 
 	return numPeeps;

@@ -817,8 +817,8 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		*formatSecondary = STR_TEST_RUN;
 		return;
 	}
-	rct_peep *peep = GET_PEEP(ride->race_winner);
-	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+		rct_peep *peep = GET_PEEP(ride->race_winner);
 		if (peep->name_string_idx == STR_GUEST_X) {
 			*argument = peep->id;
 			*formatSecondary = STR_RACE_WON_BY_GUEST;
@@ -2481,7 +2481,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 		ride_call_closest_mechanic(rideIndex);
 		break;
 	case RIDE_MECHANIC_STATUS_HEADING:
-		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		mechanic = &(get_sprite(ride->mechanic)->peep);
 		if (
 			!peep_is_mechanic(mechanic) ||
 			(mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING) ||
@@ -2493,7 +2493,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 		}
 		break;
 	case RIDE_MECHANIC_STATUS_FIXING:
-		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		mechanic = &(get_sprite(ride->mechanic)->peep);
 		if (
 			!peep_is_mechanic(mechanic) ||
 			(
@@ -2642,7 +2642,7 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 			ride->mechanic_status == 3 ||
 			ride->mechanic_status == 4
 		) {
-			peep = &(g_sprite_list[ride->mechanic].peep);
+			peep = &(get_sprite(ride->mechanic)->peep);
 			if (peep_is_mechanic(peep))
 				return peep;
 		}

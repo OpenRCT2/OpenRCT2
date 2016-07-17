@@ -30,6 +30,15 @@
 extern "C"
 {
     #include "../openrct2.h"
+
+    void openrct2_assert(bool expression, const char * message, ...)
+    {
+        va_list args;
+        va_start(args, message);
+        Guard::Assert_VA(expression, message, args);
+        va_end(args);
+    }
+
 }
 
 namespace Guard

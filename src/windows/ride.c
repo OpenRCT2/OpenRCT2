@@ -1600,7 +1600,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 				numPeepsLeft--;
 				w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
 				if (w2 == NULL) {
-					rct_peep *peep = &(g_sprite_list[peepSpriteIndex].peep);
+					rct_peep *peep = &(get_sprite(peepSpriteIndex)->peep);
 					window_guest_open(peep);
 					openedPeepWindow = 1;
 
@@ -2184,7 +2184,7 @@ static void window_ride_main_update(rct_window *w)
 			if (vehicleSpriteIndex == 0xFFFF)
 				return;
 
-			vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
+			vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
 			if (
 				vehicle->status != 4 &&
 				vehicle->status != 22 &&
@@ -2349,7 +2349,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	if (vehicleSpriteIndex == 0xFFFF)
 		return 0;
 
-	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
+	vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
 		int trackType = vehicle->track_type >> 2;
 		if (trackType == TRACK_ELEM_BLOCK_BRAKES ||
@@ -3726,11 +3726,11 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 			case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
 			case BREAKDOWN_DOORS_STUCK_CLOSED:
 			case BREAKDOWN_DOORS_STUCK_OPEN:
-				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
 				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
 				break;
 			case BREAKDOWN_VEHICLE_MALFUNCTION:
-				vehicle = &(g_sprite_list[ride->vehicles[ride->broken_vehicle]].vehicle);
+				vehicle = &(get_sprite(ride->vehicles[ride->broken_vehicle])->vehicle);
 				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
 				break;
 			}
@@ -3915,7 +3915,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			if (stringId == STR_CALLING_MECHANIC) {
 				gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, 0);
 			} else {
-				mechanicSprite = &(g_sprite_list[ride->mechanic].peep);
+				mechanicSprite = &(get_sprite(ride->mechanic)->peep);
 				if (peep_is_mechanic(mechanicSprite)) {
 					set_format_arg(0, uint16, mechanicSprite->name_string_idx);
 					set_format_arg(2, uint32, mechanicSprite->id);

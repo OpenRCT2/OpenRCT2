@@ -24,13 +24,20 @@
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
-
-rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+#include "../openrct2.h"
 
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
 
 uint16 *gSpriteSpatialIndex = (uint16*)0xF1EF60;
+
+rct_sprite* sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+
+rct_sprite *get_sprite(size_t sprite_idx)
+{
+	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
+	return &sprite_list[sprite_idx];
+}
 
 uint16 sprite_get_first_in_quadrant(int x, int y)
 {
@@ -92,7 +99,7 @@ void invalidate_sprite_2(rct_sprite *sprite)
 void reset_sprite_list()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
-	memset(g_sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
+	memset(sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < NUM_SPRITE_LISTS; i++) {
 		gSpriteListHead[i] = SPRITE_INDEX_NULL;
@@ -101,8 +108,8 @@ void reset_sprite_list()
 
 	rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
 
-	rct_sprite* spr = g_sprite_list;
 	for (int i = 0; i < MAX_SPRITES; ++i){
+		rct_sprite *spr = get_sprite(i);
 		spr->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
 		spr->unknown.sprite_index = i;
 		spr->unknown.next = SPRITE_INDEX_NULL;
@@ -135,7 +142,7 @@ void reset_sprite_spatial_index()
 {
 	memset(gSpriteSpatialIndex, -1, 0x10001 * sizeof(uint16));
 	for (size_t i = 0; i < MAX_SPRITES; i++) {
-		rct_sprite *spr = &g_sprite_list[i];
+		rct_sprite *spr = get_sprite(i);
 		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
 			uint32 index;
 			if (spr->unknown.x == SPRITE_LOCATION_NULL) {
@@ -171,7 +178,7 @@ void sprite_clear_all_unused()
 
 	spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex].unknown;
+		sprite = &get_sprite(spriteIndex)->unknown;
 		nextSpriteIndex = sprite->next;
 		previousSpriteIndex = sprite->previous;
 		memset(sprite, 0, sizeof(rct_sprite));
@@ -202,7 +209,7 @@ rct_sprite *create_sprite(uint8 bl)
 		return NULL;
 	}
 
-	rct_unk_sprite *sprite = &(g_sprite_list[gSpriteListHead[SPRITE_LIST_NULL]]).unknown;
+	rct_unk_sprite *sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->unknown;
 
 	move_sprite_to_list((rct_sprite *)sprite, (uint8)linkedListTypeOffset);
 
@@ -247,12 +254,12 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 newListOffset)
 		gSpriteListHead[oldList] = unkSprite->next;
 	} else {
 		// Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-		g_sprite_list[unkSprite->previous].unknown.next = unkSprite->next;
+		get_sprite(unkSprite->previous)->unknown.next = unkSprite->next;
 	}
 
 	// Similarly, hook up sprite->next->previous to sprite->previous
 	if (unkSprite->next != SPRITE_INDEX_NULL) {
-		g_sprite_list[unkSprite->next].unknown.previous = unkSprite->previous;
+		get_sprite(unkSprite->next)->unknown.previous = unkSprite->previous;
 	}
 
 	unkSprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
@@ -264,7 +271,7 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 newListOffset)
 	if (unkSprite->next != SPRITE_INDEX_NULL)
 	{
 		// Fix the chain by settings sprite->next->previous to sprite_index
-		g_sprite_list[unkSprite->next].unknown.previous = unkSprite->sprite_index;
+		get_sprite(unkSprite->next)->unknown.previous = unkSprite->sprite_index;
 	}
 
 	// These globals are probably counters for each sprite list?
@@ -407,7 +414,7 @@ void sprite_misc_update_all()
 
 	spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex];
+		sprite = get_sprite(spriteIndex);
 		spriteIndex = sprite->unknown.next;
 		sprite_misc_update(sprite);
 	}
@@ -442,10 +449,10 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 
 	if (new_position != current_position){
 		uint16* sprite_idx = &gSpriteSpatialIndex[current_position];
-		rct_sprite* sprite2 = &g_sprite_list[*sprite_idx];
+		rct_sprite* sprite2 = get_sprite(*sprite_idx);
 		while (sprite != sprite2){
 			sprite_idx = &sprite2->unknown.next_in_quadrant;
-			sprite2 = &g_sprite_list[*sprite_idx];
+			sprite2 = get_sprite(*sprite_idx);
 		}
 		*sprite_idx = sprite->unknown.next_in_quadrant;
 
@@ -509,7 +516,7 @@ void sprite_remove(rct_sprite *sprite)
 
 	uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
 	rct_sprite *quadrantSprite;
-	while ((quadrantSprite = &g_sprite_list[*spriteIndex]) != sprite) {
+	while ((quadrantSprite = get_sprite(*spriteIndex)) != sprite) {
 		spriteIndex = &quadrantSprite->unknown.next_in_quadrant;
 	}
 	*spriteIndex = sprite->unknown.next_in_quadrant;
@@ -562,7 +569,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 		newestLitter = NULL;
 		newestLitterCreationTick = 0;
 		for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-			litter = &(g_sprite_list[spriteIndex].litter);
+			litter = &get_sprite(spriteIndex)->litter;
 			nextSpriteIndex = litter->next;
 			if (newestLitterCreationTick <= litter->creationTick) {
 				newestLitterCreationTick = litter->creationTick;
@@ -600,7 +607,7 @@ void litter_remove_at(int x, int y, int z)
 {
 	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		rct_sprite *sprite = &g_sprite_list[spriteIndex];
+		rct_sprite *sprite = get_sprite(spriteIndex);
 		uint16 nextSpriteIndex = sprite->unknown.next_in_quadrant;
 		if (sprite->unknown.linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			rct_litter *litter = &sprite->litter;

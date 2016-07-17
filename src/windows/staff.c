@@ -337,7 +337,7 @@ rct_window *window_staff_open(rct_peep* peep)
 	window_staff_disable_widgets(w);
 	window_init_scroll_widgets(w);
 	window_staff_viewport_init(w);
-	if (g_sprite_list[w->number].peep.state == PEEP_STATE_PICKED)
+	if (get_sprite(w->number)->peep.state == PEEP_STATE_PICKED)
 		window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
 	return w;
@@ -349,7 +349,7 @@ rct_window *window_staff_open(rct_peep* peep)
 */
 void window_staff_disable_widgets(rct_window* w)
 {
-	rct_peep* peep = &g_sprite_list[w->number].peep;
+	rct_peep* peep = &get_sprite(w->number)->peep;
 	uint64 disabled_widgets = (1 << WIDX_TAB_4);
 
 	if (peep->staff_type == STAFF_TYPE_SECURITY){

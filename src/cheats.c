@@ -110,7 +110,7 @@ static void cheat_remove_litter()
 	uint16 spriteIndex, nextSpriteIndex;
 
 	for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-		litter = &(g_sprite_list[spriteIndex].litter);
+		litter = &(get_sprite(spriteIndex)->litter);
 		nextSpriteIndex = litter->next;
 		sprite_remove((rct_sprite*)litter);
 	}
@@ -321,7 +321,7 @@ static void cheat_remove_all_guests()
 	uint16 spriteIndex, nextSpriteIndex;
 
 	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-		peep = &(g_sprite_list[spriteIndex].peep);
+		peep = &(get_sprite(spriteIndex)->peep);
 		nextSpriteIndex = peep->next;
 		if (peep->type == PEEP_TYPE_GUEST) {
 			peep_remove(peep);
