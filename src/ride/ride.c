@@ -817,8 +817,8 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		*formatSecondary = STR_TEST_RUN;
 		return;
 	}
-	rct_peep *peep = GET_PEEP(ride->race_winner);
-	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+		rct_peep *peep = GET_PEEP(ride->race_winner);
 		if (peep->name_string_idx == STR_GUEST_X) {
 			*argument = peep->id;
 			*formatSecondary = STR_RACE_WON_BY_GUEST;

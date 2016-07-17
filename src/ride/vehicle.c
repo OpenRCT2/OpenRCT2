@@ -5473,8 +5473,9 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 	uint8 rideIndex = vehicle->ride;
 	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
 		uint16 spriteIdx = gSpriteSpatialIndex[location];
-		for (rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx); spriteIdx != 0xFFFF; spriteIdx = vehicle2->next_in_quadrant) {
-			vehicle2 = GET_VEHICLE(spriteIdx);
+		while (spriteIdx != 0xFFFF) {
+			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
+			spriteIdx = vehicle2->next_in_quadrant;
 
 			if (vehicle2 == vehicle)
 				continue;
