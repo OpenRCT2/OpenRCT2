@@ -3805,7 +3805,7 @@ void map_element_remove(rct_map_element *mapElement)
 {
 	// Replace Nth element by (N+1)th element.
 	// This loop will make mapElement point to the old last element position,
-	// befor copy it to it's new position
+	// after copy it to it's new position
 	if (!map_element_is_last_for_tile(mapElement)){
 		do{
 			*mapElement = *(mapElement + 1);
