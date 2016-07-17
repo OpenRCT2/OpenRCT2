@@ -876,7 +876,7 @@ void game_load_init()
 void reset_all_sprite_quadrant_placements()
 {
 	for (size_t i = 0; i < MAX_SPRITES; i++) {
-		rct_sprite *spr = &g_sprite_list[i];
+		rct_sprite *spr = get_sprite(i);
 		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
 			sprite_move(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
 		}

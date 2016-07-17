@@ -198,7 +198,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 
 				uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
 				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.next_in_quadrant) {
-					sprite = &g_sprite_list[spriteIdx];
+					sprite = get_sprite(spriteIdx);
 					if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
 						continue;
 

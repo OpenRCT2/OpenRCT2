@@ -2481,7 +2481,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 		ride_call_closest_mechanic(rideIndex);
 		break;
 	case RIDE_MECHANIC_STATUS_HEADING:
-		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		mechanic = &(get_sprite(ride->mechanic)->peep);
 		if (
 			!peep_is_mechanic(mechanic) ||
 			(mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING) ||
@@ -2493,7 +2493,7 @@ static void ride_mechanic_status_update(int rideIndex, int mechanicStatus)
 		}
 		break;
 	case RIDE_MECHANIC_STATUS_FIXING:
-		mechanic = &(g_sprite_list[ride->mechanic].peep);
+		mechanic = &(get_sprite(ride->mechanic)->peep);
 		if (
 			!peep_is_mechanic(mechanic) ||
 			(
@@ -2642,7 +2642,7 @@ rct_peep *ride_get_assigned_mechanic(rct_ride *ride)
 			ride->mechanic_status == 3 ||
 			ride->mechanic_status == 4
 		) {
-			peep = &(g_sprite_list[ride->mechanic].peep);
+			peep = &(get_sprite(ride->mechanic)->peep);
 			if (peep_is_mechanic(peep))
 				return peep;
 		}

@@ -107,7 +107,7 @@ void window_staff_fire_prompt_open(rct_peep* peep)
 */
 static void window_staff_fire_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_peep* peep = &g_sprite_list[w->number].peep;
+	rct_peep* peep = &get_sprite(w->number)->peep;
 
 	switch (widgetIndex){
 	case WIDX_YES:
@@ -132,7 +132,7 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	rct_peep* peep = &g_sprite_list[w->number].peep;
+	rct_peep* peep = &get_sprite(w->number)->peep;
 
 	set_format_arg(0, uint16, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);

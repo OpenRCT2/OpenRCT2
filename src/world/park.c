@@ -279,7 +279,7 @@ int calculate_park_rating()
 
 		num_litter = 0;
 		for (sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
-			litter = &(g_sprite_list[sprite_idx].litter);
+			litter = &(get_sprite(sprite_idx)->litter);
 
 			// Ignore recently dropped litter
 			if (litter->creationTick - gScenarioTicks >= 7680)

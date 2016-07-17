@@ -386,9 +386,9 @@ static void openrct2_loop()
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
 				// Get the original position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					_spritelocations1[i].x = g_sprite_list[i].unknown.x;
-					_spritelocations1[i].y = g_sprite_list[i].unknown.y;
-					_spritelocations1[i].z = g_sprite_list[i].unknown.z;
+					_spritelocations1[i].x = get_sprite(i)->unknown.x;
+					_spritelocations1[i].y = get_sprite(i)->unknown.y;
+					_spritelocations1[i].z = get_sprite(i)->unknown.z;
 				}
 
 				// Update the game so the sprite positions update
@@ -396,9 +396,9 @@ static void openrct2_loop()
 
 				// Get the next position of each sprite
 				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					_spritelocations2[i].x = g_sprite_list[i].unknown.x;
-					_spritelocations2[i].y = g_sprite_list[i].unknown.y;
-					_spritelocations2[i].z = g_sprite_list[i].unknown.z;
+					_spritelocations2[i].x = get_sprite(i)->unknown.x;
+					_spritelocations2[i].y = get_sprite(i)->unknown.y;
+					_spritelocations2[i].z = get_sprite(i)->unknown.z;
 				}
 
 				uncapTick += 25;
@@ -408,16 +408,16 @@ static void openrct2_loop()
 			// tick and the next tick.
 			float nudge = 1 - ((float)(currentTick - uncapTick) / 25);
 			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!sprite_should_tween(&g_sprite_list[i]))
+				if (!sprite_should_tween(get_sprite(i)))
 					continue;
 
 				sprite_move(
 					_spritelocations2[i].x + (sint16)((_spritelocations1[i].x - _spritelocations2[i].x) * nudge),
 					_spritelocations2[i].y + (sint16)((_spritelocations1[i].y - _spritelocations2[i].y) * nudge),
 					_spritelocations2[i].z + (sint16)((_spritelocations1[i].z - _spritelocations2[i].z) * nudge),
-					&g_sprite_list[i]
+					get_sprite(i)
 				);
-				invalidate_sprite_2(&g_sprite_list[i]);
+				invalidate_sprite_2(get_sprite(i));
 			}
 
 			platform_draw();
@@ -430,11 +430,11 @@ static void openrct2_loop()
 
 			// Restore the real positions of the sprites so they aren't left at the mid-tween positions
 			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!sprite_should_tween(&g_sprite_list[i]))
+				if (!sprite_should_tween(get_sprite(i)))
 					continue;
 
-				invalidate_sprite_2(&g_sprite_list[i]);
-				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, &g_sprite_list[i]);
+				invalidate_sprite_2(get_sprite(i));
+				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, get_sprite(i));
 			}
 			network_update();
 		} else {
@@ -471,9 +471,9 @@ void openrct2_finish()
 void openrct2_reset_object_tween_locations()
 {
 	for (uint16 i = 0; i < MAX_SPRITES; i++) {
-		_spritelocations1[i].x = _spritelocations2[i].x = g_sprite_list[i].unknown.x;
-		_spritelocations1[i].y = _spritelocations2[i].y = g_sprite_list[i].unknown.y;
-		_spritelocations1[i].z = _spritelocations2[i].z = g_sprite_list[i].unknown.z;
+		_spritelocations1[i].x = _spritelocations2[i].x = get_sprite(i)->unknown.x;
+		_spritelocations1[i].y = _spritelocations2[i].y = get_sprite(i)->unknown.y;
+		_spritelocations1[i].z = _spritelocations2[i].z = get_sprite(i)->unknown.z;
 	}
 }
 

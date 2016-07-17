@@ -101,7 +101,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		dl = dx & 0xFF;
 		dh = (dx >> 8) & 0xFF;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
 				continue;
 
@@ -116,7 +116,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 	} else {
 		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) {
 				ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 				return;
@@ -186,11 +186,11 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
 		numLaps = ride->num_laps;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps) {
 				// Found a winner
 				if (vehicle->num_peeps != 0) {
-					peep = &(g_sprite_list[vehicle->peep[0]].peep);
+					peep = &(get_sprite(vehicle->peep[0])->peep);
 					ride->race_winner = peep->sprite_index;
 					ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 				}
@@ -210,7 +210,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 	} else {
 		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING) {
 				if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
 					ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
@@ -244,7 +244,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 	int i;
 
 	for (i = 0; i < ride->num_vehicles; i++) {
-		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
+		vehicle = &get_sprite(ride->vehicles[i])->vehicle;
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
 		rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -252,7 +252,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
 		if (vehicle->num_peeps != 0) {
-			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;
+			rct_peep *peep = &get_sprite(vehicle->peep[0])->peep;
 
 			switch (peep_get_easteregg_name_id(peep)) {
 			case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:

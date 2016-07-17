@@ -412,7 +412,7 @@ static void editor_clear_map_for_editing()
 
 	//
 	for (int i = 0; i < MAX_SPRITES; i++) {
-		rct_sprite *sprite = &g_sprite_list[i];
+		rct_sprite *sprite = get_sprite(i);
 		user_string_free(sprite->unknown.name_string_idx);
 	}
 

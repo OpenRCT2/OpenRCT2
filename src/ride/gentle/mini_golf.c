@@ -983,7 +983,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 	}
 
 	rct_ride_entry *rideType = get_ride_entry(get_ride(vehicle->ride)->subtype);
-	rct_sprite *sprite = &g_sprite_list[vehicle->peep[0]];
+	rct_sprite *sprite = get_sprite(vehicle->peep[0]);
 
 	uint32 eax = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
 	uint32 ebx = (RCT2_GLOBAL(eax + vehicle->var_C5, uint8) << 2) + (imageDirection >> 3);

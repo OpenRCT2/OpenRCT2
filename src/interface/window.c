@@ -1294,7 +1294,7 @@ void window_scroll_to_viewport(rct_window *w)
 		return;
 
 	if (w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE) {
-		rct_sprite *sprite = &(g_sprite_list[w->viewport_focus_sprite.sprite_id]);
+		rct_sprite *sprite = get_sprite(w->viewport_focus_sprite.sprite_id);
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;

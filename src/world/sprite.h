@@ -384,8 +384,7 @@ enum {
 	SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
 };
 
-// rct2: 0x010E63BC
-extern rct_sprite* g_sprite_list;
+rct_sprite *get_sprite(size_t sprite_idx);
 
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];

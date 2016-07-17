@@ -162,7 +162,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 
 	if (flags & VIEWPORT_FOCUS_TYPE_SPRITE){
 		w->viewport_target_sprite = sprite;
-		rct_sprite* center_sprite = &g_sprite_list[sprite];
+		rct_sprite* center_sprite = get_sprite(sprite);
 		center_x = center_sprite->unknown.x;
 		center_y = center_sprite->unknown.y;
 		center_z = center_sprite->unknown.z;
@@ -594,7 +594,7 @@ void viewport_update_position(rct_window *window)
 void viewport_update_sprite_follow(rct_window *window)
 {
 	if (window->viewport_target_sprite != -1 && window->viewport){
-		rct_sprite* sprite = &g_sprite_list[window->viewport_target_sprite];
+		rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
 		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
 		int underground = sprite->unknown.z < height;
