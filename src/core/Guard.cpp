@@ -83,20 +83,12 @@ namespace Guard
     {
         va_list args;
         va_start(args, message);
-        Fail_VA(message, args);
+        Assert_VA(false, message, args);
         va_end(args);
     }
 
     void Fail_VA(const char * message, va_list args)
     {
-        if (message != nullptr)
-        {
-            Console::Error::WriteLine_VA(message, args);
-        }
-
-#if DEBUG
-        Debug::Break();
-#endif
-        assert(false);
+        Assert_VA(false, message, args);
     }
 }
