@@ -160,7 +160,7 @@ void gfx_transpose_palette(int pal, unsigned char product);
 void load_palette();
 
 // other
-void gfx_clear(rct_drawpixelinfo *dpi, int colour);
+void gfx_clear(rct_drawpixelinfo *dpi, uint32 colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_invalidate_pickedup_peep();
 void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi);
