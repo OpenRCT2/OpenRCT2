@@ -3803,11 +3803,16 @@ int map_get_station(rct_map_element *mapElement)
  */
 void map_element_remove(rct_map_element *mapElement)
 {
+	// Replace Nth element by (N+1)th element.
+	// This loop will make mapElement point to the old last element position,
+	// befor copy it to it's new position
 	if (!map_element_is_last_for_tile(mapElement)){
 		do{
 			*mapElement = *(mapElement + 1);
 		} while (!map_element_is_last_for_tile(++mapElement));
 	}
+
+	// Mark the latest element with the last element flag.
 	(mapElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 	mapElement->base_height = 0xFF;
 
