@@ -176,7 +176,7 @@ extern "C"
     {
     }
 
-    void gfx_clear(rct_drawpixelinfo * dpi, int colour)
+    void gfx_clear(rct_drawpixelinfo * dpi, uint32 colour)
     {
         if (_drawingEngine != nullptr)
         {
