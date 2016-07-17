@@ -8289,7 +8289,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
 
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* car = vehicle; spriteId != 0xFFFF; car = GET_VEHICLE(spriteId)) {
+	while (spriteId != 0xFFFF) {
+		rct_vehicle* car = GET_VEHICLE(spriteId);
 		vehicleEntry = vehicle_get_vehicle_entry(car);
 
 		// Swinging cars
