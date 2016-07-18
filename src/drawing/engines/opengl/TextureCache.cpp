@@ -211,7 +211,10 @@ void TextureCache::FreeTextures()
     {
         textures.push_back(kvp.second);
     }
-    glDeleteTextures(textures.size(), textures.data());
+    if (textures.size() > 0)
+    {
+        glDeleteTextures(textures.size(), textures.data());
+    }
 
     // Free glyphs
     numTextures = _glyphTextureMap.size();
@@ -221,7 +224,10 @@ void TextureCache::FreeTextures()
     {
         textures.push_back(kvp.second);
     }
-    glDeleteTextures(textures.size(), textures.data());
+    if (textures.size() > 0)
+    {
+        glDeleteTextures(textures.size(), textures.data());
+    }
 }
 
 rct_drawpixelinfo * TextureCache::CreateDPI(sint32 width, sint32 height)

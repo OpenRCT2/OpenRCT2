@@ -57,6 +57,14 @@ extern "C"
     #include "../../drawing.h"
 }
 
+struct OpenGLVersion
+{
+    GLint Major;
+    GLint Minor;
+};
+
+constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 2 };
+
 static const vec3f TransparentColourTable[144 - 44] =
 {
     { 0.7f, 0.8f, 0.8f }, // 44
@@ -248,12 +256,17 @@ public:
     {
         _window = window;
 
-
+        OpenGLVersion requiredVersion = OPENGL_MINIMUM_REQUIRED_VERSION;
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);
         _context = SDL_GL_CreateContext(_window);
-        if(_context == nullptr) throw Exception("OpenGL 3.2 Not Available");
+        if (_context == nullptr)
+        {
+            char szRequiredVersion[32];
+            sprintf(szRequiredVersion, "OpenGL %d.%d", requiredVersion.Major, requiredVersion.Minor);
+            throw Exception(std::string(szRequiredVersion) + std::string(" not available."));
+        }
         SDL_GL_MakeCurrent(_window, _context);
 
         if (!OpenGLAPI::Initialise())
@@ -378,6 +391,19 @@ public:
     }
 
 private:
+    static OpenGLVersion GetOpenGLVersion()
+    {
+        OpenGLVersion version;
+        if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &version.Major) == 0)
+        {
+            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &version.Minor) == 0)
+            {
+                return version;
+            }
+        }
+        return { 0, 0 };
+    }
+
     void ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     {
         size_t  newBitsSize = pitch * height;
