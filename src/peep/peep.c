@@ -10893,6 +10893,10 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
 	uint16 sprite_index = *ecx & 0xFFFF;
 
+	if (sprite_index >= MAX_SPRITES) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_peep *peep = GET_PEEP(sprite_index);
 	if (peep->type != PEEP_TYPE_GUEST) {
 		*ebx = MONEY32_UNDEFINED;
