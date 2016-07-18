@@ -426,6 +426,9 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 						break;
 
 					scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
+					if (scenery == NULL) {
+						return PEEP_THOUGHT_TYPE_NONE;
+					}
 					if (footpath_element_path_scenery_is_ghost(mapElement))
 						break;
 
