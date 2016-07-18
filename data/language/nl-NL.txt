@@ -4193,6 +4193,11 @@ STR_5889    :Symbool eigen valuta
 STR_5890    :Voer het te gebruiken valutasymbool in:
 STR_5891    :Standaardmap
 STR_5892    :{SMALLFONT}{BLACK}Ga naar de standaardmap
+STR_5893    :Wisselkoers
+STR_5894    :Vul de wisselkoers in
+STR_5895    :Baanontwerp opslaan
+STR_5896    :Opslaan baanontwerp mislukt!
+STR_5897    :Vensterlimiet:
 
 #############
 # Scenarios #
