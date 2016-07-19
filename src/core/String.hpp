@@ -16,14 +16,14 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-}
+#include <string>
+#include "../common.h"
 
 namespace String
 {
     constexpr const utf8 * Empty = "";
+
+    std::string ToStd(const utf8 * str);
 
     bool   IsNullOrEmpty(const utf8 * str);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);

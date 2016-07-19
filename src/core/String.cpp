@@ -28,6 +28,12 @@ extern "C"
 
 namespace String
 {
+    std::string ToStd(const utf8 * str)
+    {
+        if (str == nullptr) return std::string();
+        else return std::string(str);
+    }
+
     bool IsNullOrEmpty(const utf8 * str)
     {
         return str == nullptr || str[0] == '\0';

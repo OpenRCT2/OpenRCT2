@@ -298,11 +298,11 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		return false;
 	}
 
-	ServerName = gConfigNetwork.server_name;
-	ServerDescription = gConfigNetwork.server_description;
-	ServerProviderName = gConfigNetwork.provider_name;
-	ServerProviderEmail = gConfigNetwork.provider_email;
-	ServerProviderWebsite = gConfigNetwork.provider_website;
+	ServerName = String::ToStd(gConfigNetwork.server_name);
+	ServerDescription = String::ToStd(gConfigNetwork.server_description);
+	ServerProviderName = String::ToStd(gConfigNetwork.provider_name);
+	ServerProviderEmail = String::ToStd(gConfigNetwork.provider_email);
+	ServerProviderWebsite = String::ToStd(gConfigNetwork.provider_website);
 
 	cheats_reset();
 	LoadGroups();
