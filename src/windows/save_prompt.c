@@ -120,10 +120,6 @@ void window_save_prompt_open()
 	rct_widget *widgets;
 	uint64 enabled_widgets;
 
-	if (gSavePromptMode >= countof(window_save_prompt_labels)) {
-		log_warning("Invalid save prompt mode %u", gSavePromptMode);
-		return;
-	}
 	prompt_mode = gSavePromptMode;
 	if (prompt_mode == PM_QUIT)
 		prompt_mode = PM_SAVE_BEFORE_QUIT;
@@ -172,6 +168,10 @@ void window_save_prompt_open()
 		height = 50;
 	}
 
+	if (prompt_mode >= countof(window_save_prompt_labels)) {
+		log_warning("Invalid save prompt mode %u", prompt_mode);
+		return;
+	}
 	window = window_create_centred(
 		width,
 		height,
