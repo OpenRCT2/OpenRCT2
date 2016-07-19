@@ -426,6 +426,9 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 						break;
 
 					scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
+					if (scenery == NULL) {
+						return PEEP_THOUGHT_TYPE_NONE;
+					}
 					if (footpath_element_path_scenery_is_ghost(mapElement))
 						break;
 
@@ -10893,6 +10896,10 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
 	uint16 sprite_index = *ecx & 0xFFFF;
 
+	if (sprite_index >= MAX_SPRITES) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_peep *peep = GET_PEEP(sprite_index);
 	if (peep->type != PEEP_TYPE_GUEST) {
 		*ebx = MONEY32_UNDEFINED;

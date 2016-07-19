@@ -1393,6 +1393,9 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 	}
 
 	rct_track_td6 *td6 = gActiveTrackDesign;
+	if (td6 == NULL) {
+		return MONEY32_UNDEFINED;
+	}
 	rct_object_entry *rideEntryObject = &td6->vehicle_object;
 
 	uint8 entryType, entryIndex;
