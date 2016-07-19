@@ -5641,7 +5641,9 @@ static void update_same_price_throughout_flags(uint32 shop_item)
 		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 
 		newFlags = gSamePriceThroughoutParkB;
-		newFlags ^= (SHOP_ITEM_PHOTO2 - 32) | (SHOP_ITEM_PHOTO3 - 32) | (SHOP_ITEM_PHOTO4 - 32);
+		newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) |
+					(1 << (SHOP_ITEM_PHOTO3 - 32)) |
+					(1 << (SHOP_ITEM_PHOTO4 - 32));
 		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 	}
 	else {

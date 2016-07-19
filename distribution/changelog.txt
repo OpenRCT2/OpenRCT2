@@ -111,6 +111,7 @@
 - Fix: [#3015] Walls in SC4/SV4 files are not imported correctly.
 - Fix: [#3063] Search exe directory for SSL bundle as well as CWD.
 - Fix: [#3120] Negative cash in finance window is not red.
+- Fix: [#4134] Can't enable park-wide photo price for log flume and river rapids.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
