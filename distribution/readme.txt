@@ -94,7 +94,11 @@ in the following locations:
   - C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2,
   - C:\Program Files\Atari\RollerCoaster Tycoon 2,
   - C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2,
-  - C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack
+  - C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack,
+  - C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack,
+  - C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack,
+  - C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2,
+  - C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2,
   - The location of the openrct2.exe (where OpenRCT2 was extracted/installed)
 
 If none of these locations are found, OpenRCT2 will ask you to manually specify
