@@ -519,7 +519,7 @@ typedef void (*close_callback)();
 #define WINDOW_LIMIT_MAX 64
 
 // rct2: 0x01420078
-extern rct_window g_window_list[WINDOW_LIMIT_MAX];
+extern rct_window g_window_list[WINDOW_LIMIT_MAX + 3]; //64 windows + 3 (toolbars and main viewport) = 67 slots
 
 extern rct_window * gWindowFirst;
 extern rct_window * gWindowNextSlot;
