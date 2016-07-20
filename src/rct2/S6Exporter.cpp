@@ -528,6 +528,7 @@ extern "C"
         auto s6exporter = new S6Exporter();
         try
         {
+            s6exporter->ExportObjects = true;
             s6exporter->Export();
             s6exporter->SaveGame(rw);
             result = true;
