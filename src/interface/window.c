@@ -374,7 +374,7 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 /*
  * Changes the maximum amount of windows allowed
  */
-void window_set_window_limit(int value) 
+void window_set_window_limit(int value)
 {
 	int prev = gConfigGeneral.window_limit;
 	int val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
@@ -1445,6 +1445,13 @@ void window_rotate_camera(rct_window *w, int direction)
 	reset_all_sprite_quadrant_placements();
 }
 
+void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y)
+{
+	int mouse_x, mouse_y;
+	platform_get_cursor_position(&mouse_x, &mouse_y);
+	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
+}
+
 void window_zoom_set(rct_window *w, int zoomLevel)
 {
 	rct_viewport* v = w->viewport;
@@ -1453,12 +1460,15 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 	if (v->zoom == zoomLevel)
 		return;
 
+	sint16 saved_map_x, saved_map_y;
+	window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y);
+
 	// Zoom in
 	while (v->zoom > zoomLevel) {
 		v->zoom--;
 		w->saved_view_x += v->view_width / 4;
 		w->saved_view_y += v->view_height / 4;
-		v->view_width /= 2;
+		v->view_width  /= 2;
 		v->view_height /= 2;
 	}
 
@@ -1467,9 +1477,15 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 		v->zoom++;
 		w->saved_view_x -= v->view_width / 2;
 		w->saved_view_y -= v->view_height / 2;
-		v->view_width *= 2;
+		v->view_width  *= 2;
 		v->view_height *= 2;
 	}
+
+	int dest_x, dest_y;
+	center_2d_coordinates(saved_map_x, saved_map_y, 14, &dest_x, &dest_y, v);
+
+	w->saved_view_x = dest_x;
+	w->saved_view_y = dest_y;
 
 	// HACK: Prevents the redraw from failing when there is
 	// a window on top of the viewport.
