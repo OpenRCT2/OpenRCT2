@@ -566,6 +566,7 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     bottom += _offsetY;
 
 	DrawRectCommand command = {};
+
 	command.sourceFramebuffer = _fillRectShader->GetSourceFramebuffer();
 
     vec4f paletteColour[2];
@@ -614,6 +615,8 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 	command.bounds[3] = bottom + 1;
 
 	_commandBuffers.rectangles.push_back(command);
+
+	// Must be rendered in order, depends on already rendered contents
 	FlushCommandBuffers();
 }
 
@@ -627,6 +630,7 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
 	
 	DrawLineCommand command = {};
+
 	command.colour = paletteColour;
 
 	command.clip[0] = _clipLeft;
@@ -640,6 +644,8 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 	command.pos[3] = y2;
 
 	_commandBuffers.lines.push_back(command);
+
+	// Must be rendered in order right now, because it does not yet use depth
 	FlushCommandBuffers();
 }
 
@@ -725,7 +731,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 	command.bounds[3] = bottom;
 
 	_commandBuffers.images.push_back(command);
-	FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
@@ -788,7 +793,6 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
 	command.bounds[3] = bottom;
 
 	_commandBuffers.maskedImages.push_back(command);
-	FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
@@ -842,7 +846,6 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
 	command.bounds[3] = bottom;
 
 	_commandBuffers.images.push_back(command);
-	FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
@@ -893,12 +896,12 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
 	command.bounds[3] = bottom;
 
 	_commandBuffers.images.push_back(command);
-	FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers() {
 	FlushRectangles();
 	FlushLines();
+
 	FlushImages();
 	FlushMaskedImages();
 }
