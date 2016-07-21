@@ -7799,6 +7799,14 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
 		if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
 			preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
 		}
+
+		// Validate preset
+		vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+		if (preset >= presetList->count) {
+			log_error("Unknown vehicle colour preset.");
+			return MONEY32_UNDEFINED;
+		}
+
 		ride_set_vehicle_colours_to_random_preset(ride, preset);
 		if (!gCheatsDisableTrainLengthLimit) {
 			ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
