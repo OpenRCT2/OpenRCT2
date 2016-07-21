@@ -4165,6 +4165,8 @@ STR_5893    :Tasa de Cambio
 STR_5894    :Introduce la Tasa de Cambio
 STR_5895    :Guardar diseño de vía
 STR_5896    :¡Falló al guardar el diseño de vía!
+STR_5897    :Límite de ventanas:
+STR_5898    :{BLACK}No se pudo cargar el diseño de vía:{NEWLINE}¡El archivo parece estar corrupto, dañado o no existe!
 
 ##############
 # Escenarios #

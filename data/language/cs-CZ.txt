@@ -4206,6 +4206,7 @@ STR_5894    :Zadejte kurz měny
 STR_5895    :Uložit trať
 STR_5896    :Nepodařilo se uložit trať!
 STR_5897    :Limit okna:
+STR_5898    :{BLACK}Nelze načíst trať - soubor neexistuje,{newline}nebo je pravděpodobně poškozen!
 
 
 ###############################################################################

@@ -4201,6 +4201,12 @@ STR_5889    :Símbolo de moeda personalizada
 STR_5890    :Insira o símbolo da moeda para exibir
 STR_5891    :Padrão
 STR_5892    :{SMALLFONT}{BLACK}Vai para o diretório padrão
+STR_5893    :Taxa de Câmbio
+STR_5894    :Insira a taxa de câmbio
+STR_5895    :Salvar pista
+STR_5896    :Falha ao salvar pista!
+STR_5897    :Limite da janela:
+STR_5898    :{BLACK}Não é possível carregar pista, o arquivo pode estar {newline}corrompido, quebrado ou faltando!
 
 #############
 # Scenarios #

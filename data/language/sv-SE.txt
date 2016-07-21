@@ -4185,6 +4185,14 @@ STR_5887    :Prefix
 STR_5888    :Suffix
 STR_5889    :Skriv in valutatecken
 STR_5890    :Skriv in vilket valutatecken som ska visas
+STR_5891    :Standard
+STR_5892    :{SMALLFONT}{BLACK}Gå till standardmappen
+STR_5893    :Valutakurs
+STR_5894    :Skriv in valutakurs
+STR_5895    :Spara bandesign
+STR_5896    :Misslyckades med att spara bandesignen!
+STR_5897    :Max antal fönster:
+STR_5898    :{BLACK}Kan inte ladda bandesignen, filen kan vara {newline}skadad eller saknas!
 
 #############
 # Scenarion #
