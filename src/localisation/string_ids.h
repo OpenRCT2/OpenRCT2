@@ -3336,8 +3336,9 @@ enum {
 	STR_DEBUG_PAINT_SHOW_BOUND_BOXES = 5902,
 	STR_DEBUG_DROPDOWN_DEBUG_PAINT = 5903,
 	STR_CHEAT_RESET_DATE = 5904,
-
 	STR_MAP_GENERATOR_TIP = 5905,
+	STR_ZOOM_TO_CURSOR = 5906,
+	STR_ZOOM_TO_CURSOR_TIP = 5907,
 	
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

@@ -198,6 +198,7 @@ typedef struct general_configuration {
 	utf8string last_save_scenario_directory;
 	utf8string last_save_track_directory;
 	uint8 window_limit;
+	uint8 zoom_to_cursor;
 } general_configuration;
 
 typedef struct interface_configuration {

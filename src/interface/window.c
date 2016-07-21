@@ -1460,8 +1460,11 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 	if (v->zoom == zoomLevel)
 		return;
 
+	// Zooming to cursor? Remember where we're pointing at the moment.
 	sint16 saved_map_x, saved_map_y;
-	window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y);
+	if (gConfigGeneral.zoom_to_cursor) {
+		window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y);
+	}
 
 	// Zoom in
 	while (v->zoom > zoomLevel) {
@@ -1481,11 +1484,14 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 		v->view_height *= 2;
 	}
 
-	int dest_x, dest_y;
-	center_2d_coordinates(saved_map_x, saved_map_y, 14, &dest_x, &dest_y, v);
+	// Zooming to cursor? Centre around the tile we were hovering over just now.
+	if (gConfigGeneral.zoom_to_cursor) {
+		int dest_x, dest_y;
+		center_2d_coordinates(saved_map_x, saved_map_y, 14, &dest_x, &dest_y, v);
 
-	w->saved_view_x = dest_x;
-	w->saved_view_y = dest_y;
+		w->saved_view_x = dest_x;
+		w->saved_view_y = dest_y;
+	}
 
 	// HACK: Prevents the redraw from failing when there is
 	// a window on top of the viewport.

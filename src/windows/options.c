@@ -129,6 +129,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SCREEN_EDGE_SCROLLING,
 	WIDX_TRAP_CURSOR,
 	WIDX_INVERT_DRAG,
+	WIDX_ZOOM_TO_CURSOR,
 	WIDX_HOTKEY_DROPDOWN,
 	WIDX_THEMES_GROUP,
 	WIDX_THEMES,
@@ -269,27 +270,28 @@ static rct_widget window_options_audio_widgets[] = {
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,			129,	STR_CONTROLS_GROUP,						STR_NONE },									// Controls group
+	{ WWT_GROUPBOX,			1,	5,      304,	53,			144,	STR_CONTROLS_GROUP,						STR_NONE },									// Controls group
 	{ WWT_CHECKBOX,			2,	10,		299,	68,			79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },			// Edge scrolling
 	{ WWT_CHECKBOX,			2,	10,		299,	83,			94,		STR_TRAP_MOUSE,							STR_TRAP_MOUSE_TIP },						// Trap mouse
 	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_INVERT_RIGHT_MOUSE_DRAG_TIP },			// Invert right mouse dragging
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	113,		124,	STR_HOTKEY,								STR_HOTKEY_TIP },							// Set hotkeys buttons
+	{ WWT_CHECKBOX,			2,	10,		299,	113,		124,	STR_ZOOM_TO_CURSOR,						STR_ZOOM_TO_CURSOR_TIP },			// Zoom to cursor
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	128,		139,	STR_HOTKEY,								STR_HOTKEY_TIP },							// Set hotkeys buttons
 
-	{ WWT_GROUPBOX,			1,	5,      304,	133,		179,	STR_THEMES_GROUP,						STR_NONE },									// Toolbar buttons group
-	{ WWT_DROPDOWN,			1,	155,	299,	147,		158,	STR_NONE,								STR_NONE },									// Themes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	148,		157,	STR_DROPDOWN_GLYPH,						STR_CURRENT_THEME_TIP },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_EDIT_THEMES_BUTTON_TIP },				// Themes button
+	{ WWT_GROUPBOX,			1,	5,      304,	148,		194,	STR_THEMES_GROUP,						STR_NONE },									// Toolbar buttons group
+	{ WWT_DROPDOWN,			1,	155,	299,	162,		173,	STR_NONE,								STR_NONE },									// Themes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	163,		172,	STR_DROPDOWN_GLYPH,						STR_CURRENT_THEME_TIP },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	178,		189,	STR_EDIT_THEMES_BUTTON,					STR_EDIT_THEMES_BUTTON_TIP },				// Themes button
 
-	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
-	{ WWT_CHECKBOX,			2,	10,		145,	214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },		// Finances
-	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },		// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	214,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
-	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
+	{ WWT_GROUPBOX,			1,	5,      304,	198,		260,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
+	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },		// Finances
+	{ WWT_CHECKBOX,			2,	10,		145,	244,		255,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },		// Research
+	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
+	{ WWT_CHECKBOX,			2,	155,	299,	244,		255,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
 
-	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
-	{ WWT_DROPDOWN,			2,	155,	299,	269,		280,	STR_NONE,								STR_NONE },									// Scenario select mode
-	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	270,		279,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
-	{ WWT_CHECKBOX,			2,	18,		299,	284,		295,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_SCENARIO_UNLOCKING_TIP },				// Unlocking of scenarios
+	{ WWT_CHECKBOX,			2,	10,		299,	269,		280,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
+	{ WWT_DROPDOWN,			2,	155,	299,	284,		295,	STR_NONE,								STR_NONE },									// Scenario select mode
+	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	285,		294,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
+	{ WWT_CHECKBOX,			2,	18,		299,	299,		310,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_SCENARIO_UNLOCKING_TIP },				// Unlocking of scenarios
 	{ WIDGETS_END },
 };
 
@@ -491,6 +493,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SCREEN_EDGE_SCROLLING) |
 	(1 << WIDX_TRAP_CURSOR) |
 	(1 << WIDX_INVERT_DRAG) |
+	(1 << WIDX_ZOOM_TO_CURSOR) |
 	(1 << WIDX_HOTKEY_DROPDOWN) |
 	(1 << WIDX_TOOLBAR_SHOW_FINANCES) |
 	(1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
@@ -692,6 +695,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			gConfigGeneral.trap_cursor ^= 1;
 			config_save_default();
 			SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
+			window_invalidate(w);
+			break;
+		case WIDX_ZOOM_TO_CURSOR:
+			gConfigGeneral.zoom_to_cursor ^= 1;
+			config_save_default();
 			window_invalidate(w);
 			break;
 		case WIDX_TOOLBAR_SHOW_FINANCES:
@@ -1556,6 +1564,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
 		widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
 		widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+		widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
 		widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
