@@ -1452,6 +1452,24 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
 }
 
+void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y)
+{
+	// Get viewport coordinates centring around the tile.
+	int dest_x, dest_y;
+	center_2d_coordinates(map_x, map_y, 14, &dest_x, &dest_y, w->viewport);
+
+	// Get mouse position to offset against.
+	int mouse_x, mouse_y;
+	platform_get_cursor_position(&mouse_x, &mouse_y);
+
+	// Rebase mouse position onto centre of window.
+	int rebased_x = (w->width >> 1) - mouse_x,
+		rebased_y = (w->height >> 1) - mouse_y;
+
+	w->saved_view_x = dest_x + rebased_x;
+	w->saved_view_y = dest_y + rebased_y;
+}
+
 void window_zoom_set(rct_window *w, int zoomLevel)
 {
 	rct_viewport* v = w->viewport;
@@ -1486,11 +1504,7 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 
 	// Zooming to cursor? Centre around the tile we were hovering over just now.
 	if (gConfigGeneral.zoom_to_cursor) {
-		int dest_x, dest_y;
-		center_2d_coordinates(saved_map_x, saved_map_y, 14, &dest_x, &dest_y, v);
-
-		w->saved_view_x = dest_x;
-		w->saved_view_y = dest_y;
+		window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y);
 	}
 
 	// HACK: Prevents the redraw from failing when there is
