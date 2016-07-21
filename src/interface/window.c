@@ -35,7 +35,7 @@
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
 #define RCT2_NEW_WINDOW			(gWindowNextSlot)
 
-rct_window g_window_list[WINDOW_LIMIT_MAX];
+rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot;
 
@@ -355,7 +355,7 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 		}
 	}
 	//difference between amount open and cap = amount to close
-	diff = count - cap; 
+	diff = count - WINDOW_LIMIT_RESERVED - cap; 
 	for (i = 0; i < diff; i++) {
 		rct_window *w = NULL;
 		//iterates through the list until it finds the newest window, or a window that can be closed
@@ -402,7 +402,8 @@ void window_set_window_limit(int value)
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit])) {
+	// include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
+	if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED])) {
 		rct_window *w = NULL;
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
