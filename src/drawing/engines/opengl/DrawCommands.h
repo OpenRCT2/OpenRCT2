@@ -21,30 +21,30 @@
 #include "GLSLTypes.h"
 
 struct DrawRectCommand {
-	uint32 flags;
-	GLuint sourceFramebuffer;
-	vec4f colours[2];
-	sint32 clip[4];
-	sint32 bounds[4];
+    uint32 flags;
+    GLuint sourceFramebuffer;
+    vec4f colours[2];
+    sint32 clip[4];
+    sint32 bounds[4];
 };
 
 struct DrawLineCommand {
-	vec4f colour;
-	sint32 clip[4];
-	sint32 pos[4];
+    vec4f colour;
+    sint32 clip[4];
+    sint32 pos[4];
 };
 
 struct DrawImageCommand {
-	uint32 flags;
-	vec4f colour;
-	sint32 clip[4];
-	GLuint texColour;
-	sint32 bounds[4];
+    uint32 flags;
+    vec4f colour;
+    sint32 clip[4];
+    GLuint texColour;
+    sint32 bounds[4];
 };
 
 struct DrawImageMaskedCommand {
-	sint32 clip[4];
-	GLuint texMask;
-	GLuint texColour;
-	sint32 bounds[4];
+    sint32 clip[4];
+    GLuint texMask;
+    GLuint texColour;
+    sint32 bounds[4];
 };
