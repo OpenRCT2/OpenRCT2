@@ -57,6 +57,8 @@ void DrawImageShader::GetLocations()
     uColour             = GetUniformLocation("uColour");
     uFlags              = GetUniformLocation("uFlags");
     uPalette            = GetUniformLocation("uPalette");
+    uTexCoordScale      = GetUniformLocation("uTexCoordScale");
+    uTexSlot            = GetUniformLocation("uTexSlot");
 
     vIndex              = GetAttributeLocation("vIndex");
 }
@@ -81,9 +83,13 @@ void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 righ
     glUniform4i(uTextureCoordinates, left, top, right, bottom);
 }
 
-void DrawImageShader::SetTexture(GLuint texture)
+void DrawImageShader::SetTextureCoordScale(float width, float height) {
+    glUniform2f(uTexCoordScale, width, height);
+}
+
+void DrawImageShader::SetTextureSlot(GLuint slot)
 {
-    OpenGLAPI::SetTexture2D(0, texture);
+    glUniform1i(uTexSlot, slot);
 }
 
 void DrawImageShader::SetColour(vec4f colour)

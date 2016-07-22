@@ -275,6 +275,11 @@ public:
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);
+
+#ifdef DEBUG
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+#endif
+
         _context = SDL_GL_CreateContext(_window);
         if (_context == nullptr)
         {
@@ -288,6 +293,10 @@ public:
         {
             throw Exception("Unable to initialise OpenGL.");
         }
+
+#ifdef DEBUG
+        glDebugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
+#endif
 
         _drawingContext->Initialise();
 
@@ -676,8 +685,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         }
     }
 
-    GLuint texture = _textureCache->GetOrLoadImageTexture(image);
-
     uint8 zoomLevel = (1 << _dpi->zoom_level);
 
     sint32 drawOffsetX = g1Element->x_offset;
@@ -723,6 +730,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     command.clip[2] = _clipRight;
     command.clip[3] = _clipBottom;
 
+    auto texture = _textureCache->GetOrLoadImageTexture(image);
     command.texColour = texture;
 
     command.bounds[0] = left;
@@ -738,8 +746,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     rct_g1_element * g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     rct_g1_element * g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
 
-    GLuint textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
-    GLuint textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
+    auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
+    auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
     uint8 zoomLevel = (1 << _dpi->zoom_level);
 
@@ -805,7 +813,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
-    GLuint texture = _textureCache->GetOrLoadImageTexture(image);
+    auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -856,7 +864,7 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
-    GLuint texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
+    auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -935,15 +943,17 @@ void OpenGLDrawingContext::FlushLines() {
 }
 
 void OpenGLDrawingContext::FlushImages() {
-    // DEBUG: disabled until new array based texture cache is finished
-    /*for (const auto& command : _commandBuffers.images) {
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetArrayTexture());
+
+    for (const auto& command : _commandBuffers.images) {
         _drawImageShader->Use();
         _drawImageShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
-        _drawImageShader->SetTexture(command.texColour);
+        _drawImageShader->SetTextureCoordScale(command.texColour.dimensions.x, command.texColour.dimensions.y);
+        _drawImageShader->SetTextureSlot(command.texColour.slot);
         _drawImageShader->SetFlags(command.flags);
         _drawImageShader->SetColour(command.colour);
         _drawImageShader->Draw(command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]);
-    }*/
+    }
 
     _commandBuffers.images.clear();
 }

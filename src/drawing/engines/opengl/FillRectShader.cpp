@@ -88,7 +88,7 @@ void FillRectShader::SetColour(int index, vec4f colour)
 void FillRectShader::SetSourceFramebuffer(GLuint texture)
 {
 	_sourceFramebuffer = texture;
-    OpenGLAPI::SetTexture2D(0, texture);
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

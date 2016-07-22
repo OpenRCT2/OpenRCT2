@@ -20,6 +20,7 @@
 #include <SDL_pixels.h>
 #include "../../../common.h"
 #include "OpenGLAPI.h"
+#include "GLSLTypes.h"
 
 struct rct_drawpixelinfo;
 
@@ -50,11 +51,27 @@ struct GlyphId
     };
 };
 
+// TODO: Currently hardcoded to support 2048 simultaneous images of 256 x 256 dimensions
+constexpr size_t TEXTURE_CACHE_ARRAY_DEPTH = 2048;
+constexpr short TEXTURE_CACHE_ARRAY_WIDTH = 256;
+constexpr short TEXTURE_CACHE_ARRAY_HEIGHT = 256;
+
+struct CachedTextureInfo {
+    GLuint slot;
+    vec2f dimensions;
+};
+
 class TextureCache
 {
 private:
-    std::unordered_map<uint32, GLuint> _imageTextureMap;
-    std::unordered_map<GlyphId, GLuint, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+    bool _arrayTextureInitialized = false;
+    GLuint _arrayTexture;
+
+    std::vector<GLuint> _freeSlots;
+
+    std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
+    std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+
     SDL_Color _palette[256];
 
 public:
@@ -62,12 +79,15 @@ public:
     ~TextureCache();
     void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);
-    GLuint GetOrLoadImageTexture(uint32 image);
-    GLuint GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
+    CachedTextureInfo GetOrLoadImageTexture(uint32 image);
+    CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
+
+    GLuint GetArrayTexture();
 
 private:
-    GLuint LoadImageTexture(uint32 image);
-    GLuint LoadGlyphTexture(uint32 image, uint8 * palette);
+    void InitializeArrayTexture();
+    CachedTextureInfo LoadImageTexture(uint32 image);
+    CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
     rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);
     void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);

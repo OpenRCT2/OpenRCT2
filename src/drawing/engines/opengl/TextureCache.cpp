@@ -41,32 +41,38 @@ void TextureCache::SetPalette(const SDL_Color * palette)
 
 void TextureCache::InvalidateImage(uint32 image)
 {
+    InitializeArrayTexture();
+
     auto kvp = _imageTextureMap.find(image);
     if (kvp != _imageTextureMap.end())
     {
-        GLuint texture = kvp->second;
-        glDeleteTextures(1, &texture);
-
         _imageTextureMap.erase(kvp);
+        _freeSlots.push_back(kvp->second.slot);
     }
 }
 
-GLuint TextureCache::GetOrLoadImageTexture(uint32 image)
+CachedTextureInfo TextureCache::GetOrLoadImageTexture(uint32 image)
 {
+    InitializeArrayTexture();
+
     auto kvp = _imageTextureMap.find(image & 0x7FFFF);
     if (kvp != _imageTextureMap.end())
     {
         return kvp->second;
     }
 
-    GLuint texture = LoadImageTexture(image);
-    _imageTextureMap[image & 0x7FFFF] = texture;
+    auto cacheInfo = LoadImageTexture(image);
+    _imageTextureMap[image & 0x7FFFF] = cacheInfo;
 
-    return texture;
+    printf("%d slots left\n", (int) _freeSlots.size());
+
+    return cacheInfo;
 }
 
-GLuint TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
+CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
 {
+    InitializeArrayTexture();
+
     GlyphId glyphId;
     glyphId.Image = image;
     Memory::Copy<void>(&glyphId.Palette, palette, sizeof(glyphId.Palette));
@@ -77,46 +83,58 @@ GLuint TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
         return kvp->second;
     }
 
-    GLuint texture = LoadGlyphTexture(image, palette);
-    _glyphTextureMap[glyphId] = texture;
+    auto cacheInfo = LoadGlyphTexture(image, palette);
+    _glyphTextureMap[glyphId] = cacheInfo;
 
-    return texture;
+    printf("%d slots left\n", (int) _freeSlots.size());
+
+    return cacheInfo;
 }
 
-GLuint TextureCache::LoadImageTexture(uint32 image)
-{
-    GLuint texture;
-    glGenTextures(1, &texture);
+void TextureCache::InitializeArrayTexture() {
+    if (!_arrayTextureInitialized) {
+        glGenTextures(1, &_arrayTexture);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, _arrayTexture);
+        glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_R8UI, TEXTURE_CACHE_ARRAY_WIDTH, TEXTURE_CACHE_ARRAY_HEIGHT, TEXTURE_CACHE_ARRAY_DEPTH);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+        _freeSlots.resize(TEXTURE_CACHE_ARRAY_DEPTH);
+        for (size_t i = 0; i < _freeSlots.size(); i++) _freeSlots[i] = i;
+
+        _arrayTextureInitialized = true;
+    }
+}
+
+CachedTextureInfo TextureCache::LoadImageTexture(uint32 image)
+{
     rct_drawpixelinfo * dpi = GetImageAsDPI(image, 0);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, dpi->width, dpi->height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
+    GLuint slot = _freeSlots.back();
+    _freeSlots.pop_back();
+
+    glBindTexture(GL_TEXTURE_2D_ARRAY, _arrayTexture);
+    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, slot, dpi->width, dpi->height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
     
     DeleteDPI(dpi);
 
-    return texture;
+    return{slot, {dpi->width / (float) TEXTURE_CACHE_ARRAY_WIDTH, dpi->height / (float) TEXTURE_CACHE_ARRAY_HEIGHT}};
 }
 
-GLuint TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
+CachedTextureInfo TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
 {
-    GLuint texture;
-    glGenTextures(1, &texture);
-
     rct_drawpixelinfo * dpi = GetGlyphAsDPI(image, palette);
 
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, dpi->width, dpi->height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
+    GLuint slot = _freeSlots.back();
+    _freeSlots.pop_back();
+
+    glBindTexture(GL_TEXTURE_2D_ARRAY, _arrayTexture);
+    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, slot, dpi->width, dpi->height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
 
     DeleteDPI(dpi);
 
-    return texture;
+    return {slot, {dpi->width / (float) TEXTURE_CACHE_ARRAY_WIDTH, dpi->height / (float) TEXTURE_CACHE_ARRAY_HEIGHT}};
 }
 
 void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight)
@@ -204,30 +222,8 @@ void * TextureCache::ConvertDPIto32bpp(const rct_drawpixelinfo * dpi)
 
 void TextureCache::FreeTextures()
 {
-    // Free images
-    size_t numTextures = _imageTextureMap.size();
-    auto textures = std::vector<GLuint>(numTextures);
-    for (auto kvp : _imageTextureMap)
-    {
-        textures.push_back(kvp.second);
-    }
-    if (textures.size() > 0)
-    {
-        glDeleteTextures(textures.size(), textures.data());
-    }
-
-    // Free glyphs
-    numTextures = _glyphTextureMap.size();
-    textures.clear();
-    textures.reserve(numTextures);
-    for (auto kvp : _glyphTextureMap)
-    {
-        textures.push_back(kvp.second);
-    }
-    if (textures.size() > 0)
-    {
-        glDeleteTextures(textures.size(), textures.data());
-    }
+    // Free array texture
+    glDeleteTextures(1, &_arrayTexture);
 }
 
 rct_drawpixelinfo * TextureCache::CreateDPI(sint32 width, sint32 height)
@@ -251,6 +247,10 @@ void TextureCache::DeleteDPI(rct_drawpixelinfo* dpi)
 {
     Memory::Free(dpi->bits);
     delete dpi;
+}
+
+GLuint TextureCache::GetArrayTexture() {
+    return _arrayTexture;
 }
 
 #endif /* DISABLE_OPENGL */

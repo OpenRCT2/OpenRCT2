@@ -40,6 +40,7 @@
 #define glTexImage2D        __static__glTexImage2D
 #define glTexParameteri     __static__glTexParameteri
 #define glViewport          __static__glViewport
+#define glTexSubImage3D     __static__glTexSubImage3D
 
 #endif
 
@@ -67,6 +68,7 @@
 #undef glTexImage2D
 #undef glTexParameteri
 #undef glViewport
+#undef glTexSubImage3D
 
 // 1.1 function signatures
 typedef void   (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
@@ -118,6 +120,7 @@ GLAPI_DECL PFNGLREADPIXELSPROC                  glReadPixels                GLAP
 GLAPI_DECL PFNGLTEXIMAGE2DPROC                  glTexImage2D                GLAPI_SET;
 GLAPI_DECL PFNGLTEXPARAMETERIPROC               glTexParameteri             GLAPI_SET;
 GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAPI_SET;
+GLAPI_DECL PFNGLTEXSUBIMAGE3DPROC               glTexSubImage3D             GLAPI_SET;
 
 // 2.0+ function pointers
 GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;
@@ -150,12 +153,15 @@ GLAPI_DECL PFNGLLINKPROGRAMPROC                 glLinkProgram               GLAP
 GLAPI_DECL PFNGLSHADERSOURCEPROC                glShaderSource              GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM1IPROC                   glUniform1i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAPI_SET;
+GLAPI_DECL PFNGLUNIFORM2FPROC                   glUniform2f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FVPROC                  glUniform4fv                GLAPI_SET;
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
+GLAPI_DECL PFNGLTEXSTORAGE3DPROC                glTexStorage3D              GLAPI_SET;
+GLAPI_DECL PFNGLDEBUGMESSAGECALLBACKPROC        glDebugMessageCallback      GLAPI_SET;
 
 #endif /* OPENGL_NO_LINK */
 
@@ -172,7 +178,9 @@ inline void CheckGLError()
 namespace OpenGLAPI
 {
     bool Initialise();
-    void SetTexture2D(uint16 index, GLuint texture);
+    void SetTexture(uint16 index, GLenum type, GLuint texture);
+
+    void APIENTRY DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* msg, const void* userData);
 }
 
 namespace OpenGLState

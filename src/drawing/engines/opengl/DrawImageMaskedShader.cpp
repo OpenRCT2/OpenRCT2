@@ -75,12 +75,12 @@ void DrawImageMaskedShader::SetBounds(sint32 left, sint32 top, sint32 right, sin
 
 void DrawImageMaskedShader::SetTextureMask(GLuint texture)
 {
-    OpenGLAPI::SetTexture2D(0, texture);
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
 void DrawImageMaskedShader::SetTextureColour(GLuint texture)
 {
-    OpenGLAPI::SetTexture2D(1, texture);
+    OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, texture);
 }
 
 void DrawImageMaskedShader::SetPalette(const vec4f *glPalette)

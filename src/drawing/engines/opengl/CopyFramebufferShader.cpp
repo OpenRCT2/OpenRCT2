@@ -71,7 +71,7 @@ void CopyFramebufferShader::SetTextureCoordinates(sint32 left, sint32 top, sint3
 
 void CopyFramebufferShader::SetTexture(GLuint texture)
 {
-    OpenGLAPI::SetTexture2D(0, texture);
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
 void CopyFramebufferShader::Draw()

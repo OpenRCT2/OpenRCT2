@@ -31,6 +31,8 @@ private:
     GLuint uColour;
     GLuint uFlags;
     GLuint uPalette;
+    GLuint uTexCoordScale;
+    GLuint uTexSlot;
 
     GLuint vIndex;
 
@@ -47,7 +49,8 @@ public:
     void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetTexture(GLuint texture);
+    void SetTextureCoordScale(float width, float height);
+    void SetTextureSlot(GLuint slot);
     void SetColour(vec4f colour);
     void SetFlags(uint32 flags);
     void SetPalette(const vec4f *glPalette);
