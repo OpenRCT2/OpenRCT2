@@ -187,6 +187,21 @@ extern const uint8 mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
 extern const rct_xy16 defaultRightQuarterTurn3TilesOffsets[4][3];
 extern const rct_xy16 defaultRightQuarterTurn3TilesBoundLengths[4][3];
 
+extern const rct_xy16 defaultRightHelixUpSmallQuarterBoundLengths[4][3][2];
+extern const rct_xyz16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2];
+
+extern const rct_xy16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2];
+extern const rct_xyz16 defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2];
+
+extern const rct_xyz16 defaultLeftEighthToDiagBoundOffsets[4][4];
+extern const rct_xy16 defaultLeftEighthToDiagBoundLengths[4][4];
+extern const rct_xyz16 defaultRightEighthToDiagBoundOffsets[4][4];
+extern const rct_xy16 defaultRightEighthToDiagBoundLengths[4][4];
+extern const sint8 defaultEighthToDiagThickness[4][4];
+
+extern const rct_xy16 defaultDiagBoundLengths[4];
+extern const rct_xy16 defaultDiagTileOffsets[4];
+
 extern bool gUseOriginalRidePaint;
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
@@ -207,6 +222,10 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 dire
 void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
 void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint8 direction, uint8 rotation);
+void track_paint_util_right_helix_up_small_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const rct_xy16 offsets[4][3][2], const rct_xy16 boundsLengths[4][3][2], const rct_xyz16 boundsOffsets[4][3][2], uint8 rotation);
+void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const rct_xy16 offsets[4][5][2], const rct_xy16 boundsLengths[4][5][2], const rct_xyz16 boundsOffsets[4][5][2], uint8 rotation);
+void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation);
+void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const rct_xy16 offsets[4], const rct_xy16 boundsLengths[4], const rct_xyz16 boundsOffsets[4], uint8 rotation);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
@@ -248,5 +267,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int di
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 
 #endif
