@@ -1449,6 +1449,11 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 {
 	int mouse_x, mouse_y;
 	platform_get_cursor_position(&mouse_x, &mouse_y);
+
+	// Compensate for window scaling.
+	mouse_x = (int) ceilf(mouse_x / gConfigGeneral.window_scale);
+	mouse_y = (int) ceilf(mouse_y / gConfigGeneral.window_scale);
+
 	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
 }
 
@@ -1462,6 +1467,10 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 	// Get mouse position to offset against.
 	int mouse_x, mouse_y;
 	platform_get_cursor_position(&mouse_x, &mouse_y);
+
+	// Compensate for window scaling.
+	mouse_x = (int) ceilf(mouse_x / gConfigGeneral.window_scale);
+	mouse_y = (int) ceilf(mouse_y / gConfigGeneral.window_scale);
 
 	// Rebase mouse position onto centre of window.
 	int rebased_x = (w->width >> 1) - mouse_x,
