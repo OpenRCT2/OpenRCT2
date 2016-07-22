@@ -64,7 +64,7 @@ CachedTextureInfo TextureCache::GetOrLoadImageTexture(uint32 image)
     auto cacheInfo = LoadImageTexture(image);
     _imageTextureMap[image & 0x7FFFF] = cacheInfo;
 
-    printf("%d slots left\n", (int) _freeSlots.size());
+    //printf("%d slots left\n", (int) _freeSlots.size());
 
     return cacheInfo;
 }
@@ -86,7 +86,7 @@ CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * pale
     auto cacheInfo = LoadGlyphTexture(image, palette);
     _glyphTextureMap[glyphId] = cacheInfo;
 
-    printf("%d slots left\n", (int) _freeSlots.size());
+    //printf("%d slots left\n", (int) _freeSlots.size());
 
     return cacheInfo;
 }

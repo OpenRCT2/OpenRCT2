@@ -110,6 +110,8 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glVertexAttribPointer);
     SetupOpenGLFunction(glTexStorage3D);
     SetupOpenGLFunction(glDebugMessageCallback);
+    SetupOpenGLFunction(glDrawArraysInstanced);
+    SetupOpenGLFunction(glVertexAttribDivisor);
 
     return nullptr;
 }

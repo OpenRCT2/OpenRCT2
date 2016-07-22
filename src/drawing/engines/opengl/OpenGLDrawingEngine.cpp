@@ -803,7 +803,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     _commandBuffers.maskedImages.push_back(command);
 
     // Currently not properly ordered with regular images yet
-    FlushCommandBuffers();
+    // TODO: uncomment once masked images are mixed with normal images using depth sorting
+    //FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
@@ -943,17 +944,28 @@ void OpenGLDrawingContext::FlushLines() {
 }
 
 void OpenGLDrawingContext::FlushImages() {
+    if (_commandBuffers.images.size() == 0) return;
+
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetArrayTexture());
+    
+    std::vector<DrawImageInstance> instances;
+    instances.reserve(_commandBuffers.images.size());
 
     for (const auto& command : _commandBuffers.images) {
-        _drawImageShader->Use();
-        _drawImageShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
-        _drawImageShader->SetTextureCoordScale(command.texColour.dimensions.x, command.texColour.dimensions.y);
-        _drawImageShader->SetTextureSlot(command.texColour.slot);
-        _drawImageShader->SetFlags(command.flags);
-        _drawImageShader->SetColour(command.colour);
-        _drawImageShader->Draw(command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]);
+        DrawImageInstance instance;
+
+        instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};
+        instance.texCoordScale = command.texColour.dimensions;
+        instance.texSlot = command.texColour.slot;
+        instance.flags = command.flags;
+        instance.colour = command.colour;
+        instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};
+
+        instances.push_back(instance);
     }
+
+    _drawImageShader->Use();
+    _drawImageShader->DrawInstances(instances);
 
     _commandBuffers.images.clear();
 }

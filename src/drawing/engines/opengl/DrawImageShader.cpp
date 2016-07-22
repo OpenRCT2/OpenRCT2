@@ -23,6 +23,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     GetLocations();
 
     glGenBuffers(1, &_vbo);
+    glGenBuffers(1, &_vboInstances);
     glGenVertexArrays(1, &_vao);
 
     GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
@@ -34,7 +35,6 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
     Use();
-    SetFlags(0);
     SetTextureCoordinates(0, 0, 1, 1);
     glUniform1i(uTexture, 0);
 }
@@ -42,6 +42,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 DrawImageShader::~DrawImageShader()
 {
     glDeleteBuffers(1, &_vbo);
+    glDeleteBuffers(1, &_vboInstances);
     glDeleteVertexArrays(1, &_vao);
 
     glBindVertexArray(_vao);
@@ -50,15 +51,9 @@ DrawImageShader::~DrawImageShader()
 void DrawImageShader::GetLocations()
 {
     uScreenSize         = GetUniformLocation("uScreenSize");
-    uClip               = GetUniformLocation("uClip");
-    uBounds             = GetUniformLocation("uBounds");
-    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
-    uColour             = GetUniformLocation("uColour");
-    uFlags              = GetUniformLocation("uFlags");
     uPalette            = GetUniformLocation("uPalette");
-    uTexCoordScale      = GetUniformLocation("uTexCoordScale");
-    uTexSlot            = GetUniformLocation("uTexSlot");
+    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
 
     vIndex              = GetAttributeLocation("vIndex");
 }
@@ -68,14 +63,9 @@ void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
     glUniform2i(uScreenSize, width, height);
 }
 
-void DrawImageShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawImageShader::SetPalette(const vec4f *glPalette)
 {
-    glUniform4i(uClip, left, top, right, bottom);
-}
-
-void DrawImageShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uBounds, left, top, right, bottom);
+    glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
 }
 
 void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom)
@@ -83,36 +73,38 @@ void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 righ
     glUniform4i(uTextureCoordinates, left, top, right, bottom);
 }
 
-void DrawImageShader::SetTextureCoordScale(float width, float height) {
-    glUniform2f(uTexCoordScale, width, height);
-}
-
-void DrawImageShader::SetTextureSlot(GLuint slot)
+void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instances)
 {
-    glUniform1i(uTexSlot, slot);
-}
+    // Copy instance data to vbo for single-use
+    glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(instances[0]) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-void DrawImageShader::SetColour(vec4f colour)
-{
-    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
-}
-
-void DrawImageShader::SetFlags(uint32 flags)
-{
-    glUniform1i(uFlags, flags);
-}
-
-void DrawImageShader::SetPalette(const vec4f *glPalette)
-{
-    glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
-}
-
-void DrawImageShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    SetBounds(left, top, right, bottom);
-
+    // Bind vertex attributes
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glVertexAttribIPointer(GetAttributeLocation("ivClip"), 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
+    glVertexAttribPointer(GetAttributeLocation("ivTexCoordScale"), 2, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texCoordScale));
+    glVertexAttribIPointer(GetAttributeLocation("ivTexSlot"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texSlot));
+    glVertexAttribIPointer(GetAttributeLocation("ivFlags"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
+    glVertexAttribPointer(GetAttributeLocation("ivColour"), 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
+    glVertexAttribIPointer(GetAttributeLocation("ivBounds"), 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
+
+    glEnableVertexAttribArray(GetAttributeLocation("ivClip"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivTexCoordScale"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivTexSlot"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivFlags"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivColour"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivBounds"));
+
+    glVertexAttribDivisor(GetAttributeLocation("ivClip"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivTexCoordScale"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivTexSlot"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivFlags"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivColour"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivBounds"), 1);
+
+    // Draw instances
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, instances.size());
 }
 
 #endif /* DISABLE_OPENGL */
