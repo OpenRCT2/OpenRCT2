@@ -19,6 +19,7 @@
 - Feature: Add console command to set scenario initial cash.
 - Feature: Objects are scanned from the user directory as well as the RCT2 directory.
 - Feature: Objects directory is scanned recursively.
+- Feature: Optionally zoom in towards the cursor rather than the screen centre.
 - Improve: Performance and reliability of loading objects.
 - Improve: Screenshots are now saved with the name of the park and the current date and time.
 - Improve: More accurate frame rate calculation
