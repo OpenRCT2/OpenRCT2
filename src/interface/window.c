@@ -1456,7 +1456,8 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 {
 	// Get viewport coordinates centring around the tile.
 	int dest_x, dest_y;
-	center_2d_coordinates(map_x, map_y, 14, &dest_x, &dest_y, w->viewport);
+	int base_height = map_element_height(map_x, map_y);
+	center_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
 
 	// Get mouse position to offset against.
 	int mouse_x, mouse_y;
@@ -1466,6 +1467,11 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 	int rebased_x = (w->width >> 1) - mouse_x,
 		rebased_y = (w->height >> 1) - mouse_y;
 
+	// Compensate for zoom level.
+	rebased_x <<= w->viewport->zoom;
+	rebased_y <<= w->viewport->zoom;
+
+	// Apply offset to the viewport.
 	w->saved_view_x = dest_x + rebased_x;
 	w->saved_view_y = dest_y + rebased_y;
 }
