@@ -793,6 +793,9 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
 	command.bounds[3] = bottom;
 
 	_commandBuffers.maskedImages.push_back(command);
+
+    // Currently not properly ordered with regular images yet
+    FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
@@ -934,7 +937,7 @@ void OpenGLDrawingContext::FlushLines() {
 void OpenGLDrawingContext::FlushImages() {
 	for (const auto& command : _commandBuffers.images) {
 		_drawImageShader->Use();
-		_drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+		_drawImageShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
 		_drawImageShader->SetTexture(command.texColour);
 		_drawImageShader->SetFlags(command.flags);
 		_drawImageShader->SetColour(command.colour);
