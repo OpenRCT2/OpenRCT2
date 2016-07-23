@@ -47,6 +47,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "../../IDrawingContext.h"
 #include "../../IDrawingEngine.h"
 #include "../../Rain.h"
+#include "../../../config.h"
 
 extern "C"
 {
@@ -315,6 +316,10 @@ public:
                              colour.a / 255.0f };
         }
         _drawingContext->ResetPalette();
+    }
+
+    void SetUncappedFrameRate(bool uncapped) {
+        SDL_GL_SetSwapInterval(uncapped ? 0 : 1);
     }
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override

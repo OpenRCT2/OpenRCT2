@@ -33,6 +33,7 @@ void drawing_engine_dispose();
 rct_drawpixelinfo * drawing_engine_get_dpi();
 bool drawing_engine_has_dirty_optimisations();
 void drawing_engine_invalidate_image(uint32 image);
+void drawing_engine_set_fps_uncapped(bool uncapped);
 
 #ifdef __cplusplus
 }
