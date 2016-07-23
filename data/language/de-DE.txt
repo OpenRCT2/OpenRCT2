@@ -4196,6 +4196,8 @@ STR_5893    :Wechselkurs
 STR_5894    :Wechselkurs eingeben:
 STR_5895    :Streckenentwurf speichern
 STR_5896    :Streckenentwurf konnte nicht gespeichert werden!
+STR_5897    :Fensterlimit:
+STR_5898    :{BLACK}Streckenentwurf konnte nicht geladen werden, da die Datei möglicherweise fehlt oder fehlerhaft ist!
 
 #############
 # Scenarios #

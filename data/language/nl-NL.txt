@@ -1160,7 +1160,7 @@ STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kan dit niet verwijderen...
 STR_1159    :{SMALLFONT}{BLACK}Decor, tuinen en andere accessoires neerzetten
 STR_1160    :{SMALLFONT}{BLACK}Waterniveaus bewerken
-STR_1161    :Kan dit hier niet positioneren...
+STR_1161    :Kan dit hier niet plaatsen...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Klik rechts om te bewerken)
 STR_1164    :{STRINGID}{NEWLINE}(Klik rechts om te verwijderen)
@@ -2218,8 +2218,8 @@ STR_2212    :{SMALLFONT}{BLACK}Toon lijst van bewakers in het park
 STR_2213    :{SMALLFONT}{BLACK}Toon lijst van entertainers in het park
 STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16} {DEGREE}C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16} {DEGREE}F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
