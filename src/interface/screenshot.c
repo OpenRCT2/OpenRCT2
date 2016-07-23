@@ -80,12 +80,32 @@ static int screenshot_get_next_path(char *path)
 		return -1;
 	}
 
-	int i;
-	for (i = 1; i < 1000; i++) {
-		set_format_arg(0, uint16, i);
+	char park_name[128] = { 0 };
+	format_string(park_name, gParkName, &gParkNameArgs);
 
+	// retrieve current time
+	time_t now;
+	time(&now);
+	struct tm* tm_now = localtime(&now);
+
+	utf8 time_now_str[128] = { 0 };
+	size_t size = strftime(time_now_str, 128, "%F %H-%M-%S", tm_now);
+	assert(size != 0);
+
+	sprintf(path, "%s%s %s.png", screenshotPath, park_name, time_now_str);
+
+	if (!platform_file_exists(path)) {
+		return 0; // path ok
+	}
+
+	// multiple screenshots with same timestamp
+	// might be possible when switching timezones
+	// but should not happen
+	int i;
+	for (i = 2; i < 1000; i++) {
+		set_format_arg(0, uint16, i);
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d.png", screenshotPath, i);
+		sprintf(path, "%s%s %s (%d).png", screenshotPath, park_name, time_now_str, i);
 
 		if (!platform_file_exists(path)) {
 			return i;
