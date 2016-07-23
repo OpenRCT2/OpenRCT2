@@ -119,7 +119,6 @@
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
 		D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */; };
-		D43407D71D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C21D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp */; };
 		D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */; };
 		D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */; };
 		D43407DA1D0E14BE00C2B3D4 /* FillRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C81D0E14BE00C2B3D4 /* FillRectShader.cpp */; };
