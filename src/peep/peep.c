@@ -1045,6 +1045,9 @@ static int checkForPath(rct_peep *peep){
 
 void sub_693B58(rct_peep* peep){
 	uint8 action_sprite_type;
+	if (peep->sprite_type >= countof(g_sprite_entries)) {
+		return;
+	}
 	if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
 		action_sprite_type = unk_981D8C[peep->special_sprite];
 	} else {

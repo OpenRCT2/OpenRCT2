@@ -3445,6 +3445,12 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 	int banner_index = 0xFF;
 	rct_scenery_entry* fence = get_wall_entry(fence_type);
+	// Have to check both -1 and NULL, as one can be a invalid object,
+	// while the other can be invalid index
+	if ((uintptr_t)fence == (uintptr_t)-1 || fence == NULL) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	if (fence->wall.var_0D != 0xFF){
 		banner_index = create_new_banner(fence->wall.var_0D);
 

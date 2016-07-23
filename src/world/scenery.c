@@ -241,30 +241,48 @@ void scenery_remove_ghost_tool_placement(){
 
 rct_scenery_entry *get_small_scenery_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]) {
+		return NULL;
+	}
 	return (rct_scenery_entry*)gSmallSceneryEntries[entryIndex];
 }
 
 rct_scenery_entry *get_large_scenery_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]) {
+		return NULL;
+	}
 	return (rct_scenery_entry*)gLargeSceneryEntries[entryIndex];
 }
 
 rct_scenery_entry *get_wall_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_WALLS]) {
+		return NULL;
+	}
 	return (rct_scenery_entry*)gWallSceneryEntries[entryIndex];
 }
 
 rct_scenery_entry *get_banner_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_BANNERS]) {
+		return NULL;
+	}
 	return (rct_scenery_entry*)gBannerSceneryEntries[entryIndex];
 }
 
 rct_scenery_entry *get_footpath_item_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_PATH_BITS]) {
+		return NULL;
+	}
 	return (rct_scenery_entry*)gFootpathAdditionEntries[entryIndex];
 }
 
 rct_scenery_set_entry *get_scenery_group_entry(int entryIndex)
 {
+	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SCENERY_SETS]) {
+		return NULL;
+	}
 	return (rct_scenery_set_entry*)gSceneryGroupEntries[entryIndex];
 }
