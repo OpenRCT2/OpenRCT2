@@ -191,6 +191,22 @@ void sprite_clear_all_unused()
 	}
 }
 
+static void sprite_reset(rct_unk_sprite *sprite)
+{
+	// Need to retain how the sprite is linked in lists
+	uint8 llto = sprite->linked_list_type_offset;
+	uint16 next = sprite->next;
+	uint16 prev = sprite->previous;
+	uint16 sprite_index = sprite->sprite_index;
+
+	memset(sprite, 0, sizeof(rct_sprite));
+
+	sprite->linked_list_type_offset = llto;
+	sprite->next = next;
+	sprite->previous = prev;
+	sprite->sprite_index = sprite_index;
+}
+
 /*
 * rct2: 0x0069EC6B
 * bl: if bl & 2 > 0, the sprite ends up in the MISC linked list.
@@ -212,6 +228,10 @@ rct_sprite *create_sprite(uint8 bl)
 	rct_unk_sprite *sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->unknown;
 
 	move_sprite_to_list((rct_sprite *)sprite, (uint8)linkedListTypeOffset);
+
+	// Need to reset all sprite data, as the uninitialised values
+	// may contain garbage and cause a desync later on.
+	sprite_reset(sprite);
 
 	sprite->x = SPRITE_LOCATION_NULL;
 	sprite->y = SPRITE_LOCATION_NULL;
