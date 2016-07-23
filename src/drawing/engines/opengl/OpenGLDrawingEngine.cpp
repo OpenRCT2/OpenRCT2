@@ -272,10 +272,6 @@ public:
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);
 
-#ifdef DEBUG
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
-#endif
-
         _context = SDL_GL_CreateContext(_window);
         if (_context == nullptr)
         {
@@ -289,17 +285,6 @@ public:
         {
             throw Exception("Unable to initialise OpenGL.");
         }
-
-        // TODO: Remove when OpenGL optimization is done
-        SDL_GL_SetSwapInterval(0);
-
-#ifdef DEBUG
-        typedef void (APIENTRYP debugMessageCallback)(GLDEBUGPROC callback, const void *userParam);
-        debugMessageCallback glDebugMessageCallback = (debugMessageCallback) SDL_GL_GetProcAddress("glDebugMessageCallback");
-        if (glDebugMessageCallback != nullptr) {
-            glDebugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
-        }
-#endif
 
         _drawingContext->Initialise();
 
