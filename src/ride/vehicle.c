@@ -8476,7 +8476,9 @@ loc_6DC23A:
 	regs.edx = vehicle->powered_acceleration;
 	regs.edx <<= 1;
 	regs.eax *= regs.edx;
-	regs.eax /= regs.ebx;
+	if (regs.ebx != 0) {
+		regs.eax /= regs.ebx;
+	}
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_15) {
 		regs.eax *= 4;
