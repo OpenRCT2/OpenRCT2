@@ -318,7 +318,8 @@ public:
         _drawingContext->ResetPalette();
     }
 
-    void SetUncappedFrameRate(bool uncapped) {
+    void SetUncappedFrameRate(bool uncapped) override
+    {
         SDL_GL_SetSwapInterval(uncapped ? 0 : 1);
     }
 

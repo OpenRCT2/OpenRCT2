@@ -327,7 +327,7 @@ public:
         }
     }
 
-    void SetUncappedFrameRate(bool uncapped)
+    void SetUncappedFrameRate(bool uncapped) override
     {
         // Not applicable for this engine
     }
