@@ -34,7 +34,6 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "OpenGLFramebuffer.h"
 #include "CopyFramebufferShader.h"
 #include "DrawImageShader.h"
-#include "DrawImageMaskedShader.h"
 #include "DrawLineShader.h"
 #include "FillRectShader.h"
 #include "SwapFramebuffer.h"
@@ -179,7 +178,6 @@ private:
     rct_drawpixelinfo *     _dpi;
 
     DrawImageShader *       _drawImageShader        = nullptr;
-    DrawImageMaskedShader * _drawImageMaskedShader  = nullptr;
     DrawLineShader *        _drawLineShader         = nullptr;
     FillRectShader *        _fillRectShader         = nullptr;
 
@@ -196,7 +194,6 @@ private:
         std::vector<DrawRectCommand> rectangles;
         std::vector<DrawLineCommand> lines;
         std::vector<DrawImageCommand> images;
-        std::vector<DrawImageMaskedCommand> maskedImages;
     } _commandBuffers;
 
 public:
@@ -223,7 +220,6 @@ public:
     void FlushRectangles();
     void FlushLines();
     void FlushImages();
-    void FlushMaskedImages();
 
     void SetDPI(rct_drawpixelinfo * dpi);
 };
@@ -293,6 +289,9 @@ public:
         {
             throw Exception("Unable to initialise OpenGL.");
         }
+
+        // TODO: Remove when OpenGL optimization is done
+        SDL_GL_SetSwapInterval(0);
 
 #ifdef DEBUG
         glDebugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
@@ -517,7 +516,6 @@ OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 OpenGLDrawingContext::~OpenGLDrawingContext()
 {
     delete _drawImageShader;
-    delete _drawImageMaskedShader;
     delete _drawLineShader;
     delete _fillRectShader;
 
@@ -532,7 +530,6 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 void OpenGLDrawingContext::Initialise()
 {
     _drawImageShader = new DrawImageShader();
-    _drawImageMaskedShader = new DrawImageMaskedShader();
     _drawLineShader = new DrawLineShader();
     _fillRectShader = new FillRectShader();
 }
@@ -543,8 +540,6 @@ void OpenGLDrawingContext::Resize(sint32 width, sint32 height)
 
     _drawImageShader->Use();
     _drawImageShader->SetScreenSize(width, height);
-    _drawImageMaskedShader->Use();
-    _drawImageMaskedShader->SetScreenSize(width, height);
     _drawLineShader->Use();
     _drawLineShader->SetScreenSize(width, height);
     _fillRectShader->Use();
@@ -558,8 +553,6 @@ void OpenGLDrawingContext::ResetPalette()
     _textureCache->SetPalette(_engine->Palette);
     _drawImageShader->Use();
     _drawImageShader->SetPalette(_engine->GLPalette);
-    _drawImageMaskedShader->Use();
-    _drawImageMaskedShader->SetPalette(_engine->GLPalette);
 }
 
 void OpenGLDrawingContext::Clear(uint32 colour)
@@ -724,6 +717,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     DrawImageCommand command = {};
 
     command.flags = 0;
+    command.mask = false;
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -785,7 +779,9 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     right += _clipLeft;
     bottom += _clipTop;
 
-    DrawImageMaskedCommand command = {};
+    DrawImageCommand command = {};
+
+    command.mask = true;
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -800,11 +796,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     command.bounds[2] = right;
     command.bounds[3] = bottom;
 
-    _commandBuffers.maskedImages.push_back(command);
-
-    // Currently not properly ordered with regular images yet
-    // TODO: uncomment once masked images are mixed with normal images using depth sorting
-    //FlushCommandBuffers();
+    _commandBuffers.images.push_back(command);
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
@@ -843,6 +835,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     DrawImageCommand command = {};
 
     command.flags = 1;
+    command.mask = false;
     command.colour = paletteColour;
 
     command.clip[0] = _clipLeft;
@@ -894,6 +887,7 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     DrawImageCommand command = {};
 
     command.flags = 0;
+    command.mask = false;
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -915,7 +909,6 @@ void OpenGLDrawingContext::FlushCommandBuffers() {
     FlushLines();
 
     FlushImages();
-    FlushMaskedImages();
 }
 
 void OpenGLDrawingContext::FlushRectangles() {
@@ -956,10 +949,13 @@ void OpenGLDrawingContext::FlushImages() {
 
         instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};
         instance.texCoordScale = command.texColour.dimensions;
-        instance.texSlot = command.texColour.slot;
+        instance.texColourSlot = command.texColour.slot;
+        instance.texMaskSlot = command.texMask.slot;
+        if (!command.mask) instance.texMaskSlot = instance.texColourSlot;
         instance.flags = command.flags;
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};
+        instance.mask = command.mask;
 
         instances.push_back(instance);
     }
@@ -968,19 +964,6 @@ void OpenGLDrawingContext::FlushImages() {
     _drawImageShader->DrawInstances(instances);
 
     _commandBuffers.images.clear();
-}
-
-void OpenGLDrawingContext::FlushMaskedImages() {
-    // DEBUG: disabled until new array based texture cache is finished
-    /*for (const auto& command : _commandBuffers.maskedImages) {
-        _drawImageMaskedShader->Use();
-        _drawImageMaskedShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
-        _drawImageMaskedShader->SetTextureMask(command.texMask);
-        _drawImageMaskedShader->SetTextureColour(command.texColour);
-        _drawImageMaskedShader->Draw(command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]);
-    }*/
-
-    _commandBuffers.maskedImages.clear();
 }
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)

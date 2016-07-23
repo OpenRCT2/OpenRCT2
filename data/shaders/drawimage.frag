@@ -7,7 +7,9 @@ flat in ivec4           fClip;
 flat in int             fFlags;
 in vec4                 fColour;
 in vec2                 fTexCoordScale;
-flat in int             fTexSlot;
+flat in int             fTexColourSlot;
+flat in int             fTexMaskSlot;
+flat in int             fMask;
 
 in vec2 fPosition;
 in vec2 fTextureCoordinate;
@@ -22,13 +24,22 @@ void main()
         discard;
     }
 
-    vec4 texel = uPalette[texture(uTexture, vec3(fTextureCoordinate * fTexCoordScale, float(fTexSlot))).r];
-    if ((fFlags & 1) != 0)
+    vec4 mask = uPalette[texture(uTexture, vec3(fTextureCoordinate * fTexCoordScale, float(fTexMaskSlot))).r];
+    vec4 texel = uPalette[texture(uTexture, vec3(fTextureCoordinate * fTexCoordScale, float(fTexColourSlot))).r];
+
+    if (fMask)
     {
-        oColour = vec4(fColour.rgb, fColour.a * texel.a);
+        oColour = texel * mask;
     }
     else
     {
-        oColour = texel;
+        if ((fFlags & 1) != 0)
+        {
+            oColour = vec4(fColour.rgb, fColour.a * texel.a);
+        }
+        else
+        {
+            oColour = texel;
+        }
     }
 }

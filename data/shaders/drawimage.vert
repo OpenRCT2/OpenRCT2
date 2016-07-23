@@ -5,10 +5,12 @@ uniform ivec4 uTextureCoordinates;
 
 in ivec4 ivClip;
 in vec2  ivTexCoordScale;
-in int   ivTexSlot;
+in int   ivTexColourSlot;
+in int   ivTexMaskSlot;
 in int   ivFlags;
 in vec4  ivColour;
 in ivec4 ivBounds;
+in int   ivMask;
 
 in uint vIndex;
 
@@ -18,7 +20,9 @@ flat out ivec4 fClip;
 flat out int   fFlags;
 out vec4       fColour;
 out vec2       fTexCoordScale;
-flat out int   fTexSlot;
+flat out int   fTexColourSlot;
+flat out int   fTexMaskSlot;
+flat out int   fMask;
 
 void main()
 {
@@ -53,7 +57,9 @@ void main()
     fFlags = ivFlags;
     fColour = ivColour;
     fTexCoordScale = ivTexCoordScale;
-    fTexSlot = ivTexSlot;
+    fTexColourSlot = ivTexColourSlot;
+    fTexMaskSlot = ivTexMaskSlot;
+    fMask = ivMask;
 
     gl_Position = vec4(pos, 0.0, 1.0);
 }

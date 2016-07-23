@@ -38,13 +38,8 @@ struct DrawImageCommand {
     uint32 flags;
     vec4f colour;
     sint32 clip[4];
-    CachedTextureInfo texColour;
-    sint32 bounds[4];
-};
-
-struct DrawImageMaskedCommand {
-    sint32 clip[4];
     CachedTextureInfo texMask;
     CachedTextureInfo texColour;
     sint32 bounds[4];
+    bool mask;
 };

@@ -25,10 +25,12 @@
 struct DrawImageInstance {
     vec4i clip;
     vec2f texCoordScale;
-    int texSlot;
+    int texColourSlot;
+    int texMaskSlot;
     int flags;
     vec4f colour;
     vec4i bounds;
+    int mask;
 };
 
 class DrawImageShader : public OpenGLShaderProgram

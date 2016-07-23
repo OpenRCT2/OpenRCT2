@@ -84,24 +84,30 @@ void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instan
 
     glVertexAttribIPointer(GetAttributeLocation("ivClip"), 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
     glVertexAttribPointer(GetAttributeLocation("ivTexCoordScale"), 2, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texCoordScale));
-    glVertexAttribIPointer(GetAttributeLocation("ivTexSlot"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texSlot));
+    glVertexAttribIPointer(GetAttributeLocation("ivTexColourSlot"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourSlot));
+    glVertexAttribIPointer(GetAttributeLocation("ivTexMaskSlot"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskSlot));
     glVertexAttribIPointer(GetAttributeLocation("ivFlags"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
     glVertexAttribPointer(GetAttributeLocation("ivColour"), 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
     glVertexAttribIPointer(GetAttributeLocation("ivBounds"), 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
+    glVertexAttribIPointer(GetAttributeLocation("ivMask"), 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, mask));
 
     glEnableVertexAttribArray(GetAttributeLocation("ivClip"));
     glEnableVertexAttribArray(GetAttributeLocation("ivTexCoordScale"));
-    glEnableVertexAttribArray(GetAttributeLocation("ivTexSlot"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivTexColourSlot"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivTexMaskSlot"));
     glEnableVertexAttribArray(GetAttributeLocation("ivFlags"));
     glEnableVertexAttribArray(GetAttributeLocation("ivColour"));
     glEnableVertexAttribArray(GetAttributeLocation("ivBounds"));
+    glEnableVertexAttribArray(GetAttributeLocation("ivMask"));
 
     glVertexAttribDivisor(GetAttributeLocation("ivClip"), 1);
     glVertexAttribDivisor(GetAttributeLocation("ivTexCoordScale"), 1);
-    glVertexAttribDivisor(GetAttributeLocation("ivTexSlot"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivTexColourSlot"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivTexMaskSlot"), 1);
     glVertexAttribDivisor(GetAttributeLocation("ivFlags"), 1);
     glVertexAttribDivisor(GetAttributeLocation("ivColour"), 1);
     glVertexAttribDivisor(GetAttributeLocation("ivBounds"), 1);
+    glVertexAttribDivisor(GetAttributeLocation("ivMask"), 1);
 
     // Draw instances
     glDrawArraysInstanced(GL_TRIANGLES, 0, 6, instances.size());
