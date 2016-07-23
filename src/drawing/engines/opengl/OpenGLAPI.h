@@ -43,6 +43,7 @@
 #define glTexSubImage3D     __static__glTexSubImage3D
 #define glTexImage3D        __static__glTexImage3D
 #define glGetIntegerv       __static__glGetIntegerv
+#define glGetTexImage       __static__glGetTexImage
 
 #endif
 
@@ -73,6 +74,7 @@
 #undef glTexSubImage3D
 #undef glTexImage3D
 #undef glGetIntegerv
+#undef glGetTexImage
 
 // 1.1 function signatures
 typedef void   (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
@@ -96,6 +98,7 @@ typedef void   (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei wid
 typedef void   (APIENTRYP PFNGLTEXSUBIMAGE3DPROC )(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data);
 typedef void   (APIENTRYP PFNGLTEXIMAGE3DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid * data);
 typedef void   (APIENTRYP PFNGLGETINTERGERVPROC  )(GLenum pname, GLint * data);
+typedef void   (APIENTRYP PFNGLGETTEXIMAGEPROC   )(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * img);
 
 #ifdef NO_EXTERN_GLAPI
     // Defines the function pointers
@@ -130,6 +133,7 @@ GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAP
 GLAPI_DECL PFNGLTEXSUBIMAGE3DPROC               glTexSubImage3D             GLAPI_SET;
 GLAPI_DECL PFNGLTEXIMAGE3DPROC                  glTexImage3D                GLAPI_SET;
 GLAPI_DECL PFNGLGETINTERGERVPROC                glGetIntegerv               GLAPI_SET;
+GLAPI_DECL PFNGLGETTEXIMAGEPROC                 glGetTexImage               GLAPI_SET;
 
 // 2.0+ function pointers
 GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;

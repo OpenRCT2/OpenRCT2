@@ -943,7 +943,7 @@ void OpenGLDrawingContext::FlushLines() {
 void OpenGLDrawingContext::FlushImages() {
     if (_commandBuffers.images.size() == 0) return;
 
-    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasTextureArray());
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
     
     std::vector<DrawImageInstance> instances;
     instances.reserve(_commandBuffers.images.size());
