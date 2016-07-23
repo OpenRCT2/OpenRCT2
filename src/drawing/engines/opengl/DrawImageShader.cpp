@@ -36,8 +36,9 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
-    glVertexAttribIPointer(vTexAtlasIndex, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texAtlasIndex));
+    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourAtlas));
     glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourBounds));
+    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskAtlas));
     glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskBounds));
     glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
     glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
@@ -46,8 +47,9 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 
     glEnableVertexAttribArray(vIndex);
     glEnableVertexAttribArray(vClip);
-    glEnableVertexAttribArray(vTexAtlasIndex);
+    glEnableVertexAttribArray(vTexColourAtlas);
     glEnableVertexAttribArray(vTexColourBounds);
+    glEnableVertexAttribArray(vTexMaskAtlas);
     glEnableVertexAttribArray(vTexMaskBounds);
     glEnableVertexAttribArray(vFlags);
     glEnableVertexAttribArray(vColour);
@@ -55,8 +57,9 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glEnableVertexAttribArray(vMask);
 
     glVertexAttribDivisor(vClip, 1);
-    glVertexAttribDivisor(vTexAtlasIndex, 1);
+    glVertexAttribDivisor(vTexColourAtlas, 1);
     glVertexAttribDivisor(vTexColourBounds, 1);
+    glVertexAttribDivisor(vTexMaskAtlas, 1);
     glVertexAttribDivisor(vTexMaskBounds, 1);
     glVertexAttribDivisor(vFlags, 1);
     glVertexAttribDivisor(vColour, 1);
@@ -84,8 +87,9 @@ void DrawImageShader::GetLocations()
 
     vIndex              = GetAttributeLocation("vIndex");
     vClip               = GetAttributeLocation("ivClip");
-    vTexAtlasIndex      = GetAttributeLocation("ivTexAtlasIndex");
+    vTexColourAtlas     = GetAttributeLocation("ivTexColourAtlas");
     vTexColourBounds    = GetAttributeLocation("ivTexColourBounds");
+    vTexMaskAtlas       = GetAttributeLocation("ivTexMaskAtlas");
     vTexMaskBounds      = GetAttributeLocation("ivTexMaskBounds");
     vFlags              = GetAttributeLocation("ivFlags");
     vColour             = GetAttributeLocation("ivColour");

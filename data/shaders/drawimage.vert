@@ -3,8 +3,9 @@
 uniform ivec2 uScreenSize;
 
 in ivec4 ivClip;
-in int   ivTexAtlasIndex;
+in int   ivTexColourAtlas;
 in vec4  ivTexColourBounds;
+in int   ivTexMaskAtlas;
 in vec4  ivTexMaskBounds;
 in int   ivFlags;
 in vec4  ivColour;
@@ -18,8 +19,9 @@ out vec2       fPosition;
 flat out ivec4 fClip;
 flat out int   fFlags;
 out vec4       fColour;
-flat out int   fTexAtlasIndex;
+flat out int   fTexColourAtlas;
 out vec2       fTexColourCoords;
+flat out int   fTexMaskAtlas;
 out vec2       fTexMaskCoords;
 flat out int   fMask;
 
@@ -60,7 +62,8 @@ void main()
     fFlags = ivFlags;
     fColour = ivColour;
     fMask = ivMask;
-    fTexAtlasIndex = ivTexAtlasIndex;
+    fTexColourAtlas = ivTexColourAtlas;
+    fTexMaskAtlas = ivTexMaskAtlas;
 
     gl_Position = vec4(pos, 0.0, 1.0);
 }

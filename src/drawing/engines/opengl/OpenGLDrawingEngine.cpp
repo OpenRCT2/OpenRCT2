@@ -952,8 +952,9 @@ void OpenGLDrawingContext::FlushImages() {
         DrawImageInstance instance;
 
         instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};
-        instance.texAtlasIndex = command.texColour.index;
+        instance.texColourAtlas = command.texColour.index;
         instance.texColourBounds = command.texColour.normalizedBounds;
+        instance.texMaskAtlas = command.texMask.index;
         instance.texMaskBounds = command.texMask.normalizedBounds;
         instance.flags = command.flags;
         instance.colour = command.colour;
