@@ -353,6 +353,7 @@
     <ClInclude Include="src\audio\mixer.h" />
     <ClInclude Include="src\cheats.h" />
     <ClInclude Include="src\cmdline\CommandLine.hpp" />
+    <ClInclude Include="src\cmdline_sprite.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\Console.hpp" />
