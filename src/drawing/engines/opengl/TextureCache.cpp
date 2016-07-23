@@ -90,13 +90,23 @@ CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * pale
 
 void TextureCache::InitialiseAtlases() {
     if (!_atlasInitialised) {
+        // Determine width and height to use for texture atlases
+        GLint maxSize;
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxSize);
+        if (maxSize > TEXTURE_CACHE_MAX_ATLAS_SIZE) maxSize = TEXTURE_CACHE_MAX_ATLAS_SIZE;
+
         // Create an array texture to hold all of the atlases
         glGenTextures(1, &_atlasTextureArray);
         glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasTextureArray);
-        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, TEXTURE_CACHE_ATLAS_WIDTH, TEXTURE_CACHE_ATLAS_HEIGHT, _atlases.size(), 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, maxSize, maxSize, _atlases.size(), 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
         glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        // Initialise atlases
+        for (auto& atlas : _atlases) {
+            atlas.Initialise(maxSize, maxSize);
+        }
 
         _atlasInitialised = true;
     }

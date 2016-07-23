@@ -52,11 +52,11 @@ struct GlyphId
     };
 };
 
-// TODO: Derive from hardware limits instead
 // TODO: Handle no more slots remaining (allocate more atlases?)
 // TODO: Handle images larger than 256x256
-constexpr int TEXTURE_CACHE_ATLAS_WIDTH = 8192;
-constexpr int TEXTURE_CACHE_ATLAS_HEIGHT = 8192;
+
+// This is the maximum width and height of each atlas (2048 -> 4 MB)
+constexpr int TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
 
 // Location of an image (texture atlas index, slot and normalized coordinates)
 struct CachedTextureInfo {
@@ -72,6 +72,7 @@ class Atlas {
 private:
     GLuint _index;
     int _imageWidth, _imageHeight;
+    int _atlasWidth, _atlasHeight;
     std::vector<GLuint> _freeSlots;
 
     int _cols, _rows;
@@ -81,9 +82,14 @@ public:
         _index = index;
         _imageWidth = imageWidth;
         _imageHeight = imageHeight;
+    }
 
-        _cols = TEXTURE_CACHE_ATLAS_WIDTH / imageWidth;
-        _rows = TEXTURE_CACHE_ATLAS_HEIGHT / imageHeight;
+    void Initialise(int atlasWidth, int atlasHeight) {
+        _atlasWidth = atlasWidth;
+        _atlasHeight = atlasHeight;
+
+        _cols = _atlasWidth / _imageWidth;
+        _rows = _atlasHeight / _imageHeight;
 
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++) {
@@ -121,7 +127,7 @@ public:
     }
 
 private:
-    vec4i GetSlotCoordinates(GLuint slot, int actualWidth, int actualHeight) {
+    vec4i GetSlotCoordinates(GLuint slot, int actualWidth, int actualHeight) const {
         int row = slot / _cols;
         int col = slot % _cols;
 
@@ -133,12 +139,12 @@ private:
         };
     }
 
-    static vec4f NormalizeCoordinates(const vec4i& coords) {
+    vec4f NormalizeCoordinates(const vec4i& coords) const {
         return vec4f{
-            coords.x / (float) TEXTURE_CACHE_ATLAS_WIDTH,
-            coords.y / (float) TEXTURE_CACHE_ATLAS_HEIGHT,
-            coords.z / (float) TEXTURE_CACHE_ATLAS_WIDTH,
-            coords.w / (float) TEXTURE_CACHE_ATLAS_HEIGHT
+            coords.x / (float) _atlasWidth,
+            coords.y / (float) _atlasHeight,
+            coords.z / (float) _atlasWidth,
+            coords.w / (float) _atlasHeight
         };
     }
 };
@@ -151,9 +157,11 @@ private:
     GLuint _atlasTextureArray;
 
     // Atlases should be ordered from small to large image support
-    std::array<Atlas, 2> _atlases = {
-        Atlas{0, 64, 64},
-        Atlas{1, 256, 256}
+    std::array<Atlas, 4> _atlases = {
+        Atlas{0, 32, 32},
+        Atlas{1, 64, 64},
+        Atlas{2, 128, 128},
+        Atlas{3, 256, 256}
     };
 
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;

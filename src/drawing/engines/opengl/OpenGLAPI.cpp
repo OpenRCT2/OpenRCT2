@@ -70,6 +70,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glViewport);
     SetupOpenGLFunction(glTexSubImage3D);
     SetupOpenGLFunction(glTexImage3D);
+    SetupOpenGLFunction(glGetIntegerv);
 
     // 2.0+ functions
     SetupOpenGLFunction(glAttachShader);
