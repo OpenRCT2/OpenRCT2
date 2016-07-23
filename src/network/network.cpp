@@ -2296,7 +2296,12 @@ int network_get_num_actions()
 
 rct_string_id network_get_action_name_string_id(unsigned int index)
 {
-	return NetworkActions::Actions[index].Name;
+	if (index < NetworkActions::Actions.size())
+	{
+		return NetworkActions::Actions[index].Name;
+	} else {
+		return STR_NONE;
+	}
 }
 
 int network_can_perform_action(unsigned int groupindex, unsigned int index)
