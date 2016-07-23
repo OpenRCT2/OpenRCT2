@@ -951,7 +951,6 @@ void OpenGLDrawingContext::FlushImages() {
         instance.texCoordScale = command.texColour.dimensions;
         instance.texColourSlot = command.texColour.slot;
         instance.texMaskSlot = command.texMask.slot;
-        if (!command.mask) instance.texMaskSlot = instance.texColourSlot;
         instance.flags = command.flags;
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};

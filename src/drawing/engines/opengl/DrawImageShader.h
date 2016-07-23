@@ -42,6 +42,14 @@ private:
     GLuint uTextureCoordinates;
 
     GLuint vIndex;
+    GLuint vClip;
+    GLuint vTexCoordScale;
+    GLuint vTexColourSlot;
+    GLuint vTexMaskSlot;
+    GLuint vFlags;
+    GLuint vColour;
+    GLuint vBounds;
+    GLuint vMask;
 
     GLuint _vbo;
     GLuint _vboInstances;
