@@ -309,12 +309,14 @@ static void rct2_measure_fps()
 {
     _frames++;
 
-    if (time(NULL) != _lastSecond) {
+    time_t currentTime = time(NULL);
+
+    if (currentTime != _lastSecond) {
         _currentFPS = _frames;
         _frames = 0;
     }
 
-    _lastSecond = time(NULL);
+    _lastSecond = currentTime;
 }
 
 static void rct2_draw_fps(rct_drawpixelinfo *dpi)
