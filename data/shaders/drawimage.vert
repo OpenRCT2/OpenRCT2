@@ -1,12 +1,10 @@
 #version 150
 
 uniform ivec2 uScreenSize;
-uniform ivec4 uTextureCoordinates;
 
 in ivec4 ivClip;
-in vec2  ivTexCoordScale;
-in int   ivTexColourSlot;
-in int   ivTexMaskSlot;
+in vec4  ivTexColourBounds;
+in vec4  ivTexMaskBounds;
 in int   ivFlags;
 in vec4  ivColour;
 in ivec4 ivBounds;
@@ -19,9 +17,8 @@ out vec2       fPosition;
 flat out ivec4 fClip;
 flat out int   fFlags;
 out vec4       fColour;
-out vec2       fTexCoordScale;
-flat out int   fTexColourSlot;
-flat out int   fTexMaskSlot;
+out vec2       fTexColourCoords;
+out vec2       fTexMaskCoords;
 flat out int   fMask;
 
 void main()
@@ -30,19 +27,23 @@ void main()
     switch (vIndex) {
     case 0u:
         pos = ivBounds.xy;
-        fTextureCoordinate = uTextureCoordinates.xy;
+        fTexColourCoords = ivTexColourBounds.xy;
+        fTexMaskCoords = ivTexMaskBounds.xy;
         break;
     case 1u:
         pos = ivBounds.zy;
-        fTextureCoordinate = uTextureCoordinates.zy;
+        fTexColourCoords = ivTexColourBounds.zy;
+        fTexMaskCoords = ivTexMaskBounds.zy;
         break;
     case 2u:
         pos = ivBounds.xw;
-        fTextureCoordinate = uTextureCoordinates.xw;
+        fTexColourCoords = ivTexColourBounds.xw;
+        fTexMaskCoords = ivTexMaskBounds.xw;
         break;
     case 3u:
         pos = ivBounds.zw;
-        fTextureCoordinate = uTextureCoordinates.zw;
+        fTexColourCoords = ivTexColourBounds.zw;
+        fTexMaskCoords = ivTexMaskBounds.zw;
         break;
     }
 
@@ -56,9 +57,6 @@ void main()
     fClip = ivClip;
     fFlags = ivFlags;
     fColour = ivColour;
-    fTexCoordScale = ivTexCoordScale;
-    fTexColourSlot = ivTexColourSlot;
-    fTexMaskSlot = ivTexMaskSlot;
     fMask = ivMask;
 
     gl_Position = vec4(pos, 0.0, 1.0);

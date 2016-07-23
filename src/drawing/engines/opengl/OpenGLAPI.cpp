@@ -68,7 +68,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);
     SetupOpenGLFunction(glViewport);
-    SetupOpenGLFunction(glTexSubImage3D);
+    SetupOpenGLFunction(glTexSubImage2D);
 
     // 2.0+ functions
     SetupOpenGLFunction(glAttachShader);
@@ -108,8 +108,6 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glUseProgram);
     SetupOpenGLFunction(glVertexAttribIPointer);
     SetupOpenGLFunction(glVertexAttribPointer);
-    SetupOpenGLFunction(glTexStorage3D);
-    SetupOpenGLFunction(glDebugMessageCallback);
     SetupOpenGLFunction(glDrawArraysInstanced);
     SetupOpenGLFunction(glVertexAttribDivisor);
 

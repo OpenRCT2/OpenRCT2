@@ -63,7 +63,7 @@ struct OpenGLVersion
     GLint Minor;
 };
 
-constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 2 };
+constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 3 };
 
 static const vec3f TransparentColourTable[144 - 44] =
 {
@@ -294,7 +294,10 @@ public:
         SDL_GL_SetSwapInterval(0);
 
 #ifdef DEBUG
-        glDebugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
+        PFNGLDEBUGMESSAGECALLBACKPROC debugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKPROC) SDL_GL_GetProcAddress("glDebugMessageCallback");
+        if (debugMessageCallback != nullptr) {
+            debugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
+        }
 #endif
 
         _drawingContext->Initialise();
@@ -939,7 +942,7 @@ void OpenGLDrawingContext::FlushLines() {
 void OpenGLDrawingContext::FlushImages() {
     if (_commandBuffers.images.size() == 0) return;
 
-    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetArrayTexture());
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, _textureCache->GetAtlasTexture());
     
     std::vector<DrawImageInstance> instances;
     instances.reserve(_commandBuffers.images.size());
@@ -948,9 +951,8 @@ void OpenGLDrawingContext::FlushImages() {
         DrawImageInstance instance;
 
         instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};
-        instance.texCoordScale = command.texColour.dimensions;
-        instance.texColourSlot = command.texColour.slot;
-        instance.texMaskSlot = command.texMask.slot;
+        instance.texColourBounds = command.texColour.bounds;
+        instance.texMaskBounds = command.texMask.bounds;
         instance.flags = command.flags;
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};
@@ -961,7 +963,7 @@ void OpenGLDrawingContext::FlushImages() {
 
     _drawImageShader->Use();
     _drawImageShader->DrawInstances(instances);
-
+    
     _commandBuffers.images.clear();
 }
 

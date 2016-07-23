@@ -51,21 +51,26 @@ struct GlyphId
     };
 };
 
-// TODO: Currently hardcoded to support 2048 simultaneous images of 256 x 256 dimensions
-constexpr size_t TEXTURE_CACHE_ARRAY_DEPTH = 2048;
-constexpr short TEXTURE_CACHE_ARRAY_WIDTH = 256;
-constexpr short TEXTURE_CACHE_ARRAY_HEIGHT = 256;
+// TODO: Derive from hardware limits instead
+// TODO: Support > 64x64 images
+constexpr int TEXTURE_CACHE_ATLAS_WIDTH = 8192;
+constexpr int TEXTURE_CACHE_ATLAS_HEIGHT = 8192;
+constexpr int TEXTURE_CACHE_MAX_IMAGE_WIDTH = 64;
+constexpr int TEXTURE_CACHE_MAX_IMAGE_HEIGHT = 64;
+constexpr int TEXTURE_CACHE_IMAGES_U = TEXTURE_CACHE_ATLAS_WIDTH / TEXTURE_CACHE_MAX_IMAGE_WIDTH;
+constexpr int TEXTURE_CACHE_IMAGES_V = TEXTURE_CACHE_ATLAS_HEIGHT / TEXTURE_CACHE_MAX_IMAGE_HEIGHT;
+constexpr int TEXTURE_CACHE_MAX_IMAGES = TEXTURE_CACHE_IMAGES_U * TEXTURE_CACHE_IMAGES_V;
 
 struct CachedTextureInfo {
     GLuint slot;
-    vec2f dimensions;
+    vec4f bounds;
 };
 
 class TextureCache
 {
 private:
-    bool _arrayTextureInitialized = false;
-    GLuint _arrayTexture;
+    bool _atlasTextureInitialized = false;
+    GLuint _atlasTexture;
 
     std::vector<GLuint> _freeSlots;
 
@@ -82,10 +87,10 @@ public:
     CachedTextureInfo GetOrLoadImageTexture(uint32 image);
     CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
 
-    GLuint GetArrayTexture();
+    GLuint GetAtlasTexture();
 
 private:
-    void InitializeArrayTexture();
+    void InitializeAtlasTexture();
     CachedTextureInfo LoadImageTexture(uint32 image);
     CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
@@ -94,6 +99,8 @@ private:
     rct_drawpixelinfo * GetGlyphAsDPI(uint32 image, uint8 * palette);
     void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
     void FreeTextures();
+    vec4i CalculateAtlasCoordinates(GLuint slot, int width, int height);
+    vec4f ConvertToNormalizedCoordinates(vec4i coordinates);
 
     static rct_drawpixelinfo * CreateDPI(sint32 width, sint32 height);
     static void DeleteDPI(rct_drawpixelinfo * dpi);

@@ -40,7 +40,7 @@
 #define glTexImage2D        __static__glTexImage2D
 #define glTexParameteri     __static__glTexParameteri
 #define glViewport          __static__glViewport
-#define glTexSubImage3D     __static__glTexSubImage3D
+#define glTexSubImage2D     __static__glTexSubImage2D
 
 #endif
 
@@ -68,7 +68,7 @@
 #undef glTexImage2D
 #undef glTexParameteri
 #undef glViewport
-#undef glTexSubImage3D
+#undef glTexSubImage2D
 
 // 1.1 function signatures
 typedef void   (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
@@ -89,6 +89,7 @@ typedef void   (APIENTRYP PFNGLREADPIXELSPROC    )(GLint x, GLint y, GLsizei wid
 typedef void   (APIENTRYP PFNGLTEXIMAGE2DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void   (APIENTRYP PFNGLTEXPARAMETERIPROC )(GLenum target, GLenum pname, GLint param);
 typedef void   (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei width, GLsizei height);
+typedef void   (APIENTRYP PFNGLTEXSUBIMAGE2DPROC )(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* data);
 
 #ifdef NO_EXTERN_GLAPI
     // Defines the function pointers
@@ -120,7 +121,7 @@ GLAPI_DECL PFNGLREADPIXELSPROC                  glReadPixels                GLAP
 GLAPI_DECL PFNGLTEXIMAGE2DPROC                  glTexImage2D                GLAPI_SET;
 GLAPI_DECL PFNGLTEXPARAMETERIPROC               glTexParameteri             GLAPI_SET;
 GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAPI_SET;
-GLAPI_DECL PFNGLTEXSUBIMAGE3DPROC               glTexSubImage3D             GLAPI_SET;
+GLAPI_DECL PFNGLTEXSUBIMAGE2DPROC               glTexSubImage2D             GLAPI_SET;
 
 // 2.0+ function pointers
 GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;
@@ -160,8 +161,6 @@ GLAPI_DECL PFNGLUNIFORM4FVPROC                  glUniform4fv                GLAP
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
-GLAPI_DECL PFNGLTEXSTORAGE3DPROC                glTexStorage3D              GLAPI_SET;
-GLAPI_DECL PFNGLDEBUGMESSAGECALLBACKPROC        glDebugMessageCallback      GLAPI_SET;
 GLAPI_DECL PFNGLDRAWARRAYSINSTANCEDPROC         glDrawArraysInstanced       GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBDIVISORPROC         glVertexAttribDivisor       GLAPI_SET;
 

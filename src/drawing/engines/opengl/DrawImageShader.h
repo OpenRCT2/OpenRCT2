@@ -24,9 +24,8 @@
 // Per-instance data for images
 struct DrawImageInstance {
     vec4i clip;
-    vec2f texCoordScale;
-    int texColourSlot;
-    int texMaskSlot;
+    vec4f texColourBounds;
+    vec4f texMaskBounds;
     int flags;
     vec4f colour;
     vec4i bounds;
@@ -39,13 +38,11 @@ private:
     GLuint uScreenSize;
     GLuint uTexture;
     GLuint uPalette;
-    GLuint uTextureCoordinates;
 
     GLuint vIndex;
     GLuint vClip;
-    GLuint vTexCoordScale;
-    GLuint vTexColourSlot;
-    GLuint vTexMaskSlot;
+    GLuint vTexColourBounds;
+    GLuint vTexMaskBounds;
     GLuint vFlags;
     GLuint vColour;
     GLuint vBounds;
@@ -63,7 +60,6 @@ public:
 
     void SetScreenSize(sint32 width, sint32 height);
     void SetPalette(const vec4f *glPalette);
-    void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void DrawInstances(const std::vector<DrawImageInstance>& instances);
 
 private:
