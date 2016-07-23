@@ -27,7 +27,7 @@ void main()
     vec4 mask = uPalette[texture(uTexture, vec3(fTextureCoordinate * fTexCoordScale, float(fTexMaskSlot))).r];
     vec4 texel = uPalette[texture(uTexture, vec3(fTextureCoordinate * fTexCoordScale, float(fTexColourSlot))).r];
 
-    if (fMask)
+    if ((fMask & 1) != 0)
     {
         oColour = texel * mask;
     }
