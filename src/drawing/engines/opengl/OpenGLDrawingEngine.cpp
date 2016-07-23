@@ -294,9 +294,10 @@ public:
         SDL_GL_SetSwapInterval(0);
 
 #ifdef DEBUG
-        PFNGLDEBUGMESSAGECALLBACKPROC debugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKPROC) SDL_GL_GetProcAddress("glDebugMessageCallback");
-        if (debugMessageCallback != nullptr) {
-            debugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
+        typedef void (APIENTRYP debugMessageCallback)(GLDEBUGPROC callback, const void *userParam);
+        debugMessageCallback glDebugMessageCallback = (debugMessageCallback) SDL_GL_GetProcAddress("glDebugMessageCallback");
+        if (glDebugMessageCallback != nullptr) {
+            glDebugMessageCallback(OpenGLAPI::DebugCallback, nullptr);
         }
 #endif
 
