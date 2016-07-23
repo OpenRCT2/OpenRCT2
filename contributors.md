@@ -51,6 +51,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hugo Wallenburg (Goddesen) - Misc.
 * (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
+* Niels NTG Poldervaart (Niels-NTG) - Misc.
 
 ## Bug fixes
 * (halfbro)

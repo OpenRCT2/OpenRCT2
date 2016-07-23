@@ -64,7 +64,7 @@ int main(int argc, const char **argv)
 	return gExitCode;
 }
 
-void platform_get_date(rct2_date *out_date)
+void platform_get_date_utc(rct2_date *out_date)
 {
 	assert(out_date != NULL);
 	time_t rawtime;
@@ -72,18 +72,43 @@ void platform_get_date(rct2_date *out_date)
 	time(&rawtime);
 	timeinfo = gmtime(&rawtime);
 	out_date->day = timeinfo->tm_mday;
-	out_date->month = timeinfo->tm_mon;
-	out_date->year = timeinfo->tm_year;
+	out_date->month = timeinfo->tm_mon + 1;
+	out_date->year = timeinfo->tm_year + 1900;
 	out_date->day_of_week = timeinfo->tm_wday;
 }
 
-void platform_get_time(rct2_time *out_time)
+void platform_get_time_utc(rct2_time *out_time)
 {
 	assert(out_time != NULL);
 	time_t rawtime;
 	struct tm * timeinfo;
 	time(&rawtime);
 	timeinfo = gmtime(&rawtime);
+	out_time->second = timeinfo->tm_sec;
+	out_time->minute = timeinfo->tm_min;
+	out_time->hour = timeinfo->tm_hour;
+}
+
+void platform_get_date_local(rct2_date *out_date)
+{
+	assert(out_date != NULL);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+	out_date->day = timeinfo->tm_mday;
+	out_date->month = timeinfo->tm_mon + 1;
+	out_date->year = timeinfo->tm_year + 1900;
+	out_date->day_of_week = timeinfo->tm_wday;
+}
+
+void platform_get_time_local(rct2_time *out_time)
+{
+	assert(out_time != NULL);
+	time_t rawtime;
+	struct tm * timeinfo;
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
 	out_time->second = timeinfo->tm_sec;
 	out_time->minute = timeinfo->tm_min;
 	out_time->hour = timeinfo->tm_hour;
@@ -201,7 +226,7 @@ bool platform_directory_delete(const utf8 *path)
 		switch (p->fts_info) {
 			case FTS_DP: // Directory postorder, which means
 						 // the directory is empty
-						 
+
 			case FTS_F:  // File
 				if(remove(p->fts_path)) {
 					log_error("Could not remove %s", p->fts_path);
@@ -232,7 +257,7 @@ bool platform_lock_single_instance()
 	safe_strcat_path(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, sizeof(pidFilePath));
 
 	// We will never close this file manually. The operating system will
-	// take care of that, because flock keeps the lock as long as the 
+	// take care of that, because flock keeps the lock as long as the
 	// file is open and closes it automatically on file close.
 	// This is intentional.
 	int pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
@@ -844,9 +869,9 @@ uint8 platform_get_locale_currency(){
 	if (langstring == NULL) {
 		return platform_get_currency_value(NULL);
 	}
-	
+
 	struct lconv *lc = localeconv();
-	
+
 	return platform_get_currency_value(lc->int_curr_symbol);
 }
 
