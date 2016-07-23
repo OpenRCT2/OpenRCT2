@@ -1,11 +1,12 @@
 #version 150
 
 uniform vec4            uPalette[256];
-uniform usampler2D      uTexture;
+uniform usampler2DArray uTexture;
 
 flat in ivec4           fClip;
 flat in int             fFlags;
 in vec4                 fColour;
+flat in int             fTexAtlasIndex;
 in vec2                 fTexColourCoords;
 in vec2                 fTexMaskCoords;
 flat in int             fMask;
@@ -23,8 +24,8 @@ void main()
         discard;
     }
 
-    vec4 mask = uPalette[texture(uTexture, fTexMaskCoords).r];
-    vec4 texel = uPalette[texture(uTexture, fTexColourCoords).r];
+    vec4 mask = uPalette[texture(uTexture, vec3(fTexMaskCoords, float(fTexAtlasIndex))).r];
+    vec4 texel = uPalette[texture(uTexture, vec3(fTexColourCoords, float(fTexAtlasIndex))).r];
 
     if (fMask != 0)
     {

@@ -17,6 +17,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <array>
 #include <SDL_pixels.h>
 #include "../../../common.h"
 #include "OpenGLAPI.h"
@@ -52,27 +53,108 @@ struct GlyphId
 };
 
 // TODO: Derive from hardware limits instead
-// TODO: Support > 64x64 images
+// TODO: Handle no more slots remaining (allocate more atlases?)
+// TODO: Handle images larger than 256x256
 constexpr int TEXTURE_CACHE_ATLAS_WIDTH = 8192;
 constexpr int TEXTURE_CACHE_ATLAS_HEIGHT = 8192;
-constexpr int TEXTURE_CACHE_MAX_IMAGE_WIDTH = 64;
-constexpr int TEXTURE_CACHE_MAX_IMAGE_HEIGHT = 64;
-constexpr int TEXTURE_CACHE_IMAGES_U = TEXTURE_CACHE_ATLAS_WIDTH / TEXTURE_CACHE_MAX_IMAGE_WIDTH;
-constexpr int TEXTURE_CACHE_IMAGES_V = TEXTURE_CACHE_ATLAS_HEIGHT / TEXTURE_CACHE_MAX_IMAGE_HEIGHT;
-constexpr int TEXTURE_CACHE_MAX_IMAGES = TEXTURE_CACHE_IMAGES_U * TEXTURE_CACHE_IMAGES_V;
 
+// Location of an image (texture atlas index, slot and normalized coordinates)
 struct CachedTextureInfo {
+    GLuint index;
     GLuint slot;
-    vec4f bounds;
+    vec4i bounds;
+    vec4f normalizedBounds;
+};
+
+// Represents a texture atlas that images of a given maximum size can be allocated from
+// Atlases are all stored in the same 2D texture array, occupying the specified index
+class Atlas {
+private:
+    GLuint _index;
+    int _imageWidth, _imageHeight;
+    std::vector<GLuint> _freeSlots;
+
+    int _cols, _rows;
+
+public:
+    Atlas(GLuint index, int imageWidth, int imageHeight) {
+        _index = index;
+        _imageWidth = imageWidth;
+        _imageHeight = imageHeight;
+
+        _cols = TEXTURE_CACHE_ATLAS_WIDTH / imageWidth;
+        _rows = TEXTURE_CACHE_ATLAS_HEIGHT / imageHeight;
+
+        _freeSlots.resize(_cols * _rows);
+        for (size_t i = 0; i < _freeSlots.size(); i++) {
+            _freeSlots[i] = i;
+        }
+    }
+
+    CachedTextureInfo Allocate(int actualWidth, int actualHeight) {
+        assert(_freeSlots.size() > 0);
+
+        GLuint slot = _freeSlots.back();
+        _freeSlots.pop_back();
+
+        auto bounds = GetSlotCoordinates(slot, actualWidth, actualHeight);
+
+#ifdef DEBUG
+        printf("texture atlas (%d, %d) has %d slots left\n", _imageWidth, _imageHeight, GetFreeSlots());
+#endif
+
+        return {_index, slot, bounds, NormalizeCoordinates(bounds)};
+    }
+
+    void Free(const CachedTextureInfo& info) {
+        assert(_index == info.index);
+
+        _freeSlots.push_back(info.slot);
+    }
+
+    bool SupportsImage(int actualWidth, int actualHeight) const {
+        return actualWidth <= _imageWidth && actualHeight <= _imageHeight;
+    }
+
+    int GetFreeSlots() const {
+        return (int) _freeSlots.size();
+    }
+
+private:
+    vec4i GetSlotCoordinates(GLuint slot, int actualWidth, int actualHeight) {
+        int row = slot / _cols;
+        int col = slot % _cols;
+
+        return vec4i{
+            _imageWidth * col,
+            _imageHeight * row,
+            _imageWidth * col + actualWidth,
+            _imageHeight * row + actualHeight,
+        };
+    }
+
+    static vec4f NormalizeCoordinates(const vec4i& coords) {
+        return vec4f{
+            coords.x / (float) TEXTURE_CACHE_ATLAS_WIDTH,
+            coords.y / (float) TEXTURE_CACHE_ATLAS_HEIGHT,
+            coords.z / (float) TEXTURE_CACHE_ATLAS_WIDTH,
+            coords.w / (float) TEXTURE_CACHE_ATLAS_HEIGHT
+        };
+    }
 };
 
 class TextureCache
 {
 private:
-    bool _atlasTextureInitialized = false;
-    GLuint _atlasTexture;
+    bool _atlasInitialised = false;
 
-    std::vector<GLuint> _freeSlots;
+    GLuint _atlasTextureArray;
+
+    // Atlases should be ordered from small to large image support
+    std::array<Atlas, 2> _atlases = {
+        Atlas{0, 64, 64},
+        Atlas{1, 256, 256}
+    };
 
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
     std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
@@ -87,20 +169,19 @@ public:
     CachedTextureInfo GetOrLoadImageTexture(uint32 image);
     CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
 
-    GLuint GetAtlasTexture();
+    GLuint GetAtlasTextureArray();
 
 private:
-    void InitializeAtlasTexture();
+    void InitialiseAtlases();
     CachedTextureInfo LoadImageTexture(uint32 image);
     CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
+    CachedTextureInfo AllocateFromAppropriateAtlas(int imageWidth, int imageHeight);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
     rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);
     void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);
     rct_drawpixelinfo * GetGlyphAsDPI(uint32 image, uint8 * palette);
     void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
     void FreeTextures();
-    vec4i CalculateAtlasCoordinates(GLuint slot, int width, int height);
-    vec4f ConvertToNormalizedCoordinates(vec4i coordinates);
 
     static rct_drawpixelinfo * CreateDPI(sint32 width, sint32 height);
     static void DeleteDPI(rct_drawpixelinfo * dpi);

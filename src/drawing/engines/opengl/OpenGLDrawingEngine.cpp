@@ -943,7 +943,7 @@ void OpenGLDrawingContext::FlushLines() {
 void OpenGLDrawingContext::FlushImages() {
     if (_commandBuffers.images.size() == 0) return;
 
-    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, _textureCache->GetAtlasTexture());
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasTextureArray());
     
     std::vector<DrawImageInstance> instances;
     instances.reserve(_commandBuffers.images.size());
@@ -952,8 +952,9 @@ void OpenGLDrawingContext::FlushImages() {
         DrawImageInstance instance;
 
         instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};
-        instance.texColourBounds = command.texColour.bounds;
-        instance.texMaskBounds = command.texMask.bounds;
+        instance.texAtlasIndex = command.texColour.index;
+        instance.texColourBounds = command.texColour.normalizedBounds;
+        instance.texMaskBounds = command.texMask.normalizedBounds;
         instance.flags = command.flags;
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};

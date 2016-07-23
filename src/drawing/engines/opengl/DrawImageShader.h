@@ -24,6 +24,7 @@
 // Per-instance data for images
 struct DrawImageInstance {
     vec4i clip;
+    int texAtlasIndex;
     vec4f texColourBounds;
     vec4f texMaskBounds;
     int flags;
@@ -41,6 +42,7 @@ private:
 
     GLuint vIndex;
     GLuint vClip;
+    GLuint vTexAtlasIndex;
     GLuint vTexColourBounds;
     GLuint vTexMaskBounds;
     GLuint vFlags;
