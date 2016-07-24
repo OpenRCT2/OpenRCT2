@@ -393,15 +393,13 @@ public:
 private:
     static OpenGLVersion GetOpenGLVersion()
     {
-        OpenGLVersion version;
-        if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &version.Major) == 0)
-        {
-            if (SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &version.Minor) == 0)
-            {
-                return version;
-            }
-        }
-        return { 0, 0 };
+        CheckGLError(); // Clear Any Errors
+        OpenGLVersion version = { 0, 0 };
+        glGetIntegerv(GL_MAJOR_VERSION, &version.Major);
+        if (glGetError() != GL_NO_ERROR) return { 0, 0 };
+        glGetIntegerv(GL_MINOR_VERSION, &version.Minor);
+        if (glGetError() != GL_NO_ERROR) return { 0, 0 };
+        return version;
     }
 
     void ConfigureBits(uint32 width, uint32 height, uint32 pitch)
