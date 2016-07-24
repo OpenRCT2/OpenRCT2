@@ -586,7 +586,10 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 
 	if (tick == server_srand0_tick) {
 		server_srand0_tick = 0;
-		if (srand0 != server_srand0) {
+		// Check that the server and client sprite hashes match
+		const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(sprite_checksum(), server_sprite_hash);
+		// Check PRNG values and sprite hashes, if exist
+		if ((srand0 != server_srand0) || sprites_mismatch) {
 			return false;
 		}
 	}
@@ -1081,6 +1084,22 @@ void Network::Server_Send_TICK()
 	last_tick_sent_time = SDL_GetTicks();
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
+	uint32 flags = 0;
+	// Simple counter which limits how often a sprite checksum gets sent.
+	// This can get somewhat expensive, so we don't want to push it every from in release,
+	// but debug version can check more often.
+	static int checksum_counter = 0;
+	checksum_counter++;
+	if (checksum_counter >= 100) {
+		checksum_counter = 0;
+		flags |= NETWORK_TICK_FLAG_CHECKSUMS;
+	}
+	// Send flags always, so we can understand packet structure on the other end,
+	// and allow for some expansion.
+	*packet << flags;
+	if (flags & NETWORK_TICK_FLAG_CHECKSUMS) {
+		packet->WriteString(sprite_checksum());
+	}
 	SendPacketToClients(*packet);
 }
 
@@ -1739,10 +1758,23 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 void Network::Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet)
 {
 	uint32 srand0;
-	packet >> server_tick >> srand0;
+	uint32 flags;
+	// Note: older server version may not advertise flags at all.
+	// NetworkPacket will return 0, if trying to read past end of buffer,
+	// so flags == 0 is expected in such cases.
+	packet >> server_tick >> srand0 >> flags;
 	if (server_srand0_tick == 0) {
 		server_srand0 = srand0;
 		server_srand0_tick = server_tick;
+		server_sprite_hash[0] = '\0';
+		if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
+		{
+			const char* text = packet.ReadString();
+			if (text != nullptr)
+			{
+				safe_strcpy(server_sprite_hash, text, sizeof(server_sprite_hash));
+			}
+		}
 	}
 }
 
