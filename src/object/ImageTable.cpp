@@ -47,7 +47,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         if (_data == nullptr)
         {
             context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
-            throw;
+            throw Exception();
         }
 
         // Read g1 element headers

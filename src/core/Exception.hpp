@@ -24,7 +24,7 @@
 class Exception : public std::exception
 {
 public:
-    Exception() : Exception(nullptr) { }
+    Exception() : Exception("") { }
 
     Exception(const char * message) : Exception(std::string(message)) { }
 
