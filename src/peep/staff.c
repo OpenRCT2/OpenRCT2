@@ -155,6 +155,14 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		return MONEY32_UNDEFINED;
 	}
 
+	if (staff_type != STAFF_TYPE_HANDYMAN &&
+		staff_type != STAFF_TYPE_MECHANIC &&
+		staff_type != STAFF_TYPE_SECURITY &&
+		staff_type != STAFF_TYPE_ENTERTAINER)
+	{
+		return MONEY32_UNDEFINED;
+	}
+
 	int i;
 	for (i = 0; i < STAFF_MAX_COUNT; ++i) {
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] & 1))
