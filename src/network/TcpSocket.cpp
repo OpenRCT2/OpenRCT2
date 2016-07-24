@@ -369,7 +369,12 @@ public:
         }
 
         int readBytes = recv(_socket, (char *)buffer, size, 0);
-        if (readBytes == SOCKET_ERROR || readBytes <= 0)
+        if (readBytes == 0)
+        {
+            *sizeReceived = 0;
+            return NETWORK_READPACKET_DISCONNECTED;
+        }
+        else if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
