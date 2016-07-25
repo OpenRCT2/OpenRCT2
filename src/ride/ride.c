@@ -3916,6 +3916,14 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 			}
 		}
 		break;
+	case RIDE_SETTING_RIDE_TYPE:
+		if (!gCheatsAllowArbitraryRideTypeChanges) {
+			return MONEY32_UNDEFINED;
+		}
+		if (flags & GAME_COMMAND_FLAG_APPLY) {
+			ride->type = value;
+		}
+		break;
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {

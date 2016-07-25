@@ -43,6 +43,7 @@ bool gCheatsFreezeClimate = false;
 bool gCheatsDisableTrainLengthLimit = false;
 bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
+bool gCheatsAllowArbitraryRideTypeChanges = false;
 
 int park_rating_spinner_value;
 
@@ -416,6 +417,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
+			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
@@ -445,4 +447,5 @@ void cheats_reset()
 	gCheatsNeverendingMarketing = false;
 	gCheatsFreezeClimate = false;
 	gCheatsDisablePlantAging = false;
+	gCheatsAllowArbitraryRideTypeChanges = false;
 }
