@@ -518,27 +518,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	sprite->unknown.z = z;
 }
 
-void sprite_move_interframe(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
-	sint16 new_x = x, new_y = y, start_x = x;
-	switch (get_current_rotation()){
-	case 0:
-		new_x = new_y - new_x;
-		new_y = (new_y + start_x) / 2 - z;
-		break;
-	case 1:
-		new_x = -new_y - new_x;
-		new_y = (new_y - start_x) / 2 - z;
-		break;
-	case 2:
-		new_x = -new_y + new_x;
-		new_y = (-new_y - start_x) / 2 - z;
-		break;
-	case 3:
-		new_x = new_y + new_x;
-		new_y = (-new_y + start_x) / 2 - z;
-		break;
-	}
-
+void sprite_set_coordinates(sint16 x, sint16 y, sint16 z, rct_sprite *sprite){
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;
