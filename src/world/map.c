@@ -2340,6 +2340,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 	int centreZ = map_element_height(centreX, centreY);
 	int mapLeftRight = mapLeft | (mapRight << 16);
 	int mapTopBottom = mapTop | (mapBottom << 16);
+	bool fullTile = ((command & 0x7FFF) == MAP_SELECT_TYPE_FULL);
 
 	// Play sound (only once)
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) {
@@ -2350,8 +2351,8 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 	// First raise / lower the centre tile
 	money32 result;
-	commandType = command == 1 ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
-	result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, 4, mapTopBottom);
+	commandType = command < 0x7FFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
+	result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, command & 0x7FFF, mapTopBottom);
 	if (result != MONEY32_UNDEFINED) {
 		totalCost += result;
 	}
@@ -2376,24 +2377,15 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
-	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-	if (slope != 0) {
-		commandType = command == 0xFFFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
-		result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, 4, mapTopBottom);
-		if (result != MONEY32_UNDEFINED) {
-			totalCost += result;
-		}
-
-		x = mapLeft;
-		y = mapTop;
-		mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-		slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
+	// Flatten the edited part
+	if (fullTile) {
+		int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
 		if (slope != 0) {
-			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-			gCommandPosition.x = centreX;
-			gCommandPosition.y = centreY;
-			gCommandPosition.z = centreZ;
-			return totalCost * 4;
+			commandType = command > 0x7FFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
+			result = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, MAP_SELECT_TYPE_FULL, mapTopBottom);
+			if (result != MONEY32_UNDEFINED) {
+				totalCost += result;
+			}
 		}
 	}
 
@@ -2402,6 +2394,8 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 	int size = ((mapRight - mapLeft) >> 5) + 1;
 	int initialMinZ = -2;
 
+	// Then do the smoothing
+	// The coords go in circles around the selected tile(s)
 	for (; size <= 256; size += 2) {
 		initialMinZ += 2;
 		int minZ = initialMinZ * 2;
@@ -2421,10 +2415,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		for (int i = 0; i < size; i++) {
 			int y2 = clamp(mapTop, y, mapBottom);
 			mapElement = map_get_surface_element_at(mapLeft >> 5, y2 >> 5);
-			z = map_get_corner_height(mapElement, 2);
-			result = smooth_land_tile(1, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (y >= mapTop) {
+				z = map_get_corner_height(mapElement, 3);
+				result = smooth_land_tile((y <= mapBottom) ? 0 : 1, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 			minZ -= 2;
 			if (y >= mapTop) {
@@ -2433,10 +2429,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 					minZ += 2;
 				}
 			}
-			z = map_get_corner_height(mapElement, 3);
-			result = smooth_land_tile(0, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (y <= mapBottom) {
+				z = map_get_corner_height(mapElement, 2);
+				result = smooth_land_tile((y >= mapTop) ? 1 : 0, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 
 			y += 32;
@@ -2455,10 +2453,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		for (int i = 0; i < size; i++) {
 			int x2 = clamp(mapLeft, x, mapRight);
 			mapElement = map_get_surface_element_at(x2 >> 5, mapBottom >> 5);
-			z = map_get_corner_height(mapElement, 3);
-			result = smooth_land_tile(2, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (x >= mapLeft) {
+				z = map_get_corner_height(mapElement, 0);
+				result = smooth_land_tile((x <= mapRight) ? 1 : 2, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 			minZ -= 2;
 			if (x >= mapLeft) {
@@ -2467,12 +2467,13 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 					minZ += 2;
 				}
 			}
-			z = map_get_corner_height(mapElement, 0);
-			result = smooth_land_tile(1, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (x <= mapRight) {
+				z = map_get_corner_height(mapElement, 3);
+				result = smooth_land_tile((x >= mapLeft) ? 2 : 1, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
-
 			x += 32;
 		}
 
@@ -2489,10 +2490,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		for (int i = 0; i < size; i++) {
 			int y2 = clamp(mapTop, y, mapBottom);
 			mapElement = map_get_surface_element_at(mapRight >> 5, y2 >> 5);
-			z = map_get_corner_height(mapElement, 0);
-			result = smooth_land_tile(3, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (y <= mapBottom) {
+				z = map_get_corner_height(mapElement, 1);
+				result = smooth_land_tile((y >= mapTop) ? 2 : 3, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 			minZ -= 2;
 			if (y <= mapBottom) {
@@ -2501,10 +2504,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 					minZ += 2;
 				}
 			}
-			z = map_get_corner_height(mapElement, 1);
-			result = smooth_land_tile(2, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (y >= mapTop) {
+				z = map_get_corner_height(mapElement, 0);
+				result = smooth_land_tile((y <= mapBottom) ? 3 : 2, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 
 			y -= 32;
@@ -2523,10 +2528,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		for (int i = 0; i < size; i++) {
 			int x2 = clamp(mapLeft, x, mapRight);
 			mapElement = map_get_surface_element_at(x2 >> 5, mapTop >> 5);
-			z = map_get_corner_height(mapElement, 1);
-			result = smooth_land_tile(0, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (x <= mapRight) {
+				z = map_get_corner_height(mapElement, 2);
+				result = smooth_land_tile((x >= mapLeft) ? 3 : 0, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 			minZ -= 2;
 			if (x <= mapRight) {
@@ -2535,10 +2542,12 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 					minZ += 2;
 				}
 			}
-			z = map_get_corner_height(mapElement, 2);
-			result = smooth_land_tile(3, flags, x, y, z, minZ);
-			if (result != MONEY32_UNDEFINED) {
-				totalCost += result;
+			if (x >= mapLeft) {
+				z = map_get_corner_height(mapElement, 1);
+				result = smooth_land_tile((x <= mapRight) ? 0 : 3, flags, x, y, z, minZ);
+				if (result != MONEY32_UNDEFINED) {
+					totalCost += result;
+				}
 			}
 
 			x -= 32;
