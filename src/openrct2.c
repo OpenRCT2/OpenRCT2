@@ -411,7 +411,7 @@ static void openrct2_loop()
 				if (!sprite_should_tween(get_sprite(i)))
 					continue;
 
-				sprite_move(
+				sprite_move_interframe(
 					_spritelocations2[i].x + (sint16)((_spritelocations1[i].x - _spritelocations2[i].x) * nudge),
 					_spritelocations2[i].y + (sint16)((_spritelocations1[i].y - _spritelocations2[i].y) * nudge),
 					_spritelocations2[i].z + (sint16)((_spritelocations1[i].z - _spritelocations2[i].z) * nudge),
@@ -434,7 +434,7 @@ static void openrct2_loop()
 					continue;
 
 				invalidate_sprite_2(get_sprite(i));
-				sprite_move(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, get_sprite(i));
+				sprite_move_interframe(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, get_sprite(i));
 			}
 			network_update();
 		} else {
