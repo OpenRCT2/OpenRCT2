@@ -39,6 +39,24 @@ paint_struct *g_paint_structs[512];
 #define g_paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #endif
 
+static const uint8 BoundBoxDebugColours[] = {
+	0,   // NONE
+	102, // TERRAIN
+	114, // SPRITE
+	229, // RIDE
+	126, // WATER
+	138, // SCENERY
+	150, // FOOTPATH
+	162, // FOOTPATH_ITEM
+	174, // PARK
+	186, // WALL
+	198, // LARGE_SCENERY
+	210, // LABEL
+	222, // BANNER
+};
+
+bool gPaintBoundingBoxes;
+
 /**
  *
  *  rct2: 0x0068615B
@@ -959,10 +977,64 @@ void paint_quadrant_ps() {
 			}
 		}
 
-		if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
-		else
-			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
+		if (gPaintBoundingBoxes && dpi->zoom_level == 0) {
+			uint8 colour = BoundBoxDebugColours[ps->sprite_type];
+
+			rct_xyz16 frontTop = {.x = ps->bound_box_x_end, .y = ps->bound_box_y_end, .z = ps->bound_box_z_end};
+			rct_xy16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, get_current_rotation());
+			rct_xyz16 frontBottom = {.x = ps->bound_box_x_end, .y = ps->bound_box_y_end, .z = ps->bound_box_z};
+			rct_xy16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, get_current_rotation());
+
+			rct_xyz16 leftTop = {.x = ps->bound_box_x, .y = ps->bound_box_y_end, .z = ps->bound_box_z_end};
+			rct_xy16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, get_current_rotation());
+			rct_xyz16 leftBottom = {.x = ps->bound_box_x, .y = ps->bound_box_y_end, .z = ps->bound_box_z};
+			rct_xy16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, get_current_rotation());
+
+			rct_xyz16 rightTop = {.x = ps->bound_box_x_end, .y = ps->bound_box_y, .z = ps->bound_box_z_end};
+			rct_xy16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, get_current_rotation());
+			rct_xyz16 rightBottom = {.x = ps->bound_box_x_end, .y = ps->bound_box_y, .z = ps->bound_box_z};
+			rct_xy16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, get_current_rotation());
+
+			rct_xyz16 backTop = {.x = ps->bound_box_x, .y = ps->bound_box_y, .z = ps->bound_box_z_end};
+			rct_xy16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, get_current_rotation());
+			rct_xyz16 backBottom = {.x = ps->bound_box_x, .y = ps->bound_box_y, .z = ps->bound_box_z};
+			rct_xy16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, get_current_rotation());
+
+			// bottom square
+			gfx_draw_line(dpi, screenCoordFrontBottom.x, screenCoordFrontBottom.y, screenCoordLeftBottom.x, screenCoordLeftBottom.y, colour);
+			gfx_draw_line(dpi, screenCoordBackBottom.x, screenCoordBackBottom.y, screenCoordLeftBottom.x, screenCoordLeftBottom.y, colour);
+			gfx_draw_line(dpi, screenCoordBackBottom.x, screenCoordBackBottom.y, screenCoordRightBottom.x, screenCoordRightBottom.y, colour);
+			gfx_draw_line(dpi, screenCoordFrontBottom.x, screenCoordFrontBottom.y, screenCoordRightBottom.x, screenCoordRightBottom.y, colour);
+
+			//vertical back + sides
+			gfx_draw_line(dpi, screenCoordBackTop.x, screenCoordBackTop.y, screenCoordBackBottom.x, screenCoordBackBottom.y, colour);
+			gfx_draw_line(dpi, screenCoordLeftTop.x, screenCoordLeftTop.y, screenCoordLeftBottom.x, screenCoordLeftBottom.y, colour);
+			gfx_draw_line(dpi, screenCoordRightTop.x, screenCoordRightTop.y, screenCoordRightBottom.x, screenCoordRightBottom.y, colour);
+
+			// top square back
+			gfx_draw_line(dpi, screenCoordBackTop.x, screenCoordBackTop.y, screenCoordLeftTop.x, screenCoordLeftTop.y, colour);
+			gfx_draw_line(dpi, screenCoordBackTop.x, screenCoordBackTop.y, screenCoordRightTop.x, screenCoordRightTop.y, colour);
+
+			if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
+				gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
+			} else {
+				gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
+			}
+
+			// vertical front
+			gfx_draw_line(dpi, screenCoordFrontTop.x, screenCoordFrontTop.y, screenCoordFrontBottom.x, screenCoordFrontBottom.y, colour);
+
+			// top square
+			gfx_draw_line(dpi, screenCoordFrontTop.x, screenCoordFrontTop.y, screenCoordLeftTop.x, screenCoordLeftTop.y, colour);
+			gfx_draw_line(dpi, screenCoordFrontTop.x, screenCoordFrontTop.y, screenCoordRightTop.x, screenCoordRightTop.y, colour);
+		} else {
+			if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
+				gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
+			} else {
+				gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
+			}
+		}
+
 
 		if (ps->var_20 != 0) {
 			ps = ps->var_20;
