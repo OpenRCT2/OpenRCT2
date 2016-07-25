@@ -547,7 +547,18 @@ static void shortcut_show_multiplayer()
 static void shortcut_orginal_painting_toggle()
 {
 	gUseOriginalRidePaint = !gUseOriginalRidePaint;
+	window_invalidate_by_class(WC_DEBUG_PAINT);
 	gfx_invalidate_screen();
+}
+
+static void shortcut_debug_paint_toggle()
+{
+	rct_window * window = window_find_by_class(WC_DEBUG_PAINT);
+	if (window != NULL) {
+		window_close(window);
+	} else {
+		window_debug_paint_open();
+	}
 }
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -601,6 +612,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_windowed_mode_toggle,
 	shortcut_show_multiplayer,
 	shortcut_orginal_painting_toggle,
+	shortcut_debug_paint_toggle,
 };
 
 #pragma endregion
