@@ -675,7 +675,7 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("window_limit %d", gConfigGeneral.window_limit);
 		}
 		else if (strcmp(argv[0], "paint_bounds") == 0) {
-			console_printf("paint_bounds %d", gShowSupportSegmentHeights);
+			console_printf("paint_bounds %d", gPaintBoundingBoxes);
 		}
 		else {
 			console_writeline_warning("Invalid variable.");
