@@ -2999,13 +2999,13 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex)
 			break;
 		case DDIDX_SCENARIO_OPTIONS:
 			window_editor_scenario_options_open();
-				break;
-			case DDIDX_DEBUG_PAINT:
-				if (window_find_by_class(WC_DEBUG_PAINT) == NULL) {
-					window_debug_paint_open();
-				} else {
-					window_close_by_class(WC_DEBUG_PAINT);
-				}
+			break;
+		case DDIDX_DEBUG_PAINT:
+			if (window_find_by_class(WC_DEBUG_PAINT) == NULL) {
+				window_debug_paint_open();
+			} else {
+				window_close_by_class(WC_DEBUG_PAINT);
+			}
 			break;
 		}
 	}
