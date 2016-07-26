@@ -306,6 +306,17 @@ const rct_string_id DateGameMonthNames[MONTH_COUNT] = {
 	STR_MONTH_OCTOBER,
 };
 
+const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
+	STR_MONTH_SHORT_MAR,
+	STR_MONTH_SHORT_APR,
+	STR_MONTH_SHORT_MAY,
+	STR_MONTH_SHORT_JUN,
+	STR_MONTH_SHORT_JUL,
+	STR_MONTH_SHORT_AUG,
+	STR_MONTH_SHORT_SEP,
+	STR_MONTH_SHORT_OCT,
+};
+
 #pragma region Format codes
 
 typedef struct format_code_token {

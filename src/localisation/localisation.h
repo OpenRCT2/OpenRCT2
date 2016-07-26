@@ -74,6 +74,7 @@ extern const rct_string_id RideInspectionIntervalNames[];
 extern const rct_string_id PeepThoughts[174];
 extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
+extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
 static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
 {
