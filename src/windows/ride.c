@@ -3586,7 +3586,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 		break;
 	case RIDE_MODE_RACE:
 		set_format_arg(18, uint16, ride->num_laps);
-		format = STR_RIDE_MODE_COUNT_VALUE;
+		format = STR_NUMBER_OF_LAPS_VALUE;
 		caption = STR_NUMBER_OF_LAPS;
 		tooltip = STR_NUMBER_OF_LAPS_TIP;
 		break;
@@ -3608,8 +3608,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 		tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
 		break;
 	default:
-		// TODO: should likely be `1744` instead of `1736`,
-		format = STR_RIDE_MODE_COUNT_VALUE;
+		format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
 		caption = STR_MAX_PEOPLE_ON_RIDE;
 		tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
