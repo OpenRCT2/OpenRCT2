@@ -25,6 +25,7 @@
 #include "../world/map.h"
 #include "../world/footpath.h"
 #include "../sprites.h"
+#include "../ride/ride_data.h"
 
 static const rct_string_id TerrainTypes[] = {
 	STR_TILE_INSPECTOR_TERRAIN_GRASS,
@@ -650,7 +651,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Track (%s)",
-					language_get_string(STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + get_ride(element->properties.track.ride_index)->type)
+					language_get_string(RideNaming[get_ride(element->properties.track.ride_index)->type].name)
 				);
 				type_name = buffer;
 				break;

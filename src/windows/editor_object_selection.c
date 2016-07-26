@@ -1904,7 +1904,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
 	for (int i = 0; i < 3; i++) {
 		uint8 rideType = item->RideType[i];
 		if (rideType != 255) {
-			result = STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + rideType;
+			result = RideNaming[rideType].name;
 			break;
 		}
 	}

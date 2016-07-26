@@ -2405,7 +2405,7 @@ static void window_ride_main_invalidate(rct_window *w)
 
 	set_format_arg(0, uint16, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
-	set_format_arg(6, uint16, _rideType + STR_RIDE_NAME_SPIRAL_ROLLER_COASTER);
+	set_format_arg(6, uint16, RideNaming[_rideType].name);
 	uint32 spriteIds[] = {
 		SPR_CLOSED,
 		SPR_OPEN,
