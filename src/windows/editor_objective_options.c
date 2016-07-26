@@ -112,13 +112,13 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
-	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,					STR_NONE											},
-	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								},
-	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								},
-	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
-	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,				STR_NONE											},
+	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,								STR_NONE								},
+	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_PRESERVED_RIDES_TITLE,	STR_WINDOW_TITLE_TIP					},
+	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP					},
+	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE								},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP	},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SELECT_RIDES_TO_BE_PRESERVED_TIP	},
+	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,						STR_NONE								},
 	{ WIDGETS_END }
 };
 
