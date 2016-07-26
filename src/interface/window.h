@@ -515,11 +515,12 @@ extern modal_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 
-#define WINDOW_LIMIT_MIN 8
+#define WINDOW_LIMIT_MIN 4
 #define WINDOW_LIMIT_MAX 64
+#define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
 
 // rct2: 0x01420078
-extern rct_window g_window_list[WINDOW_LIMIT_MAX];
+extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 
 extern rct_window * gWindowFirst;
 extern rct_window * gWindowNextSlot;
