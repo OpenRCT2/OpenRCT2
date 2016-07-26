@@ -2907,7 +2907,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
+STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
