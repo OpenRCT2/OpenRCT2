@@ -372,6 +372,58 @@ static const uint32 mini_golf_track_sprites_hole_e[][3][2] = {
 	},
 };
 
+/** rct2: 0x00933471 */
+static const uint8 mini_golf_peep_animation_frames_walk[] = {0, 1, 2, 3, 4, 5};
+
+/** rct2: 0x00933478 */
+static const uint8 mini_golf_peep_animation_frames_place_ball_downwards[] = {12, 13, 14, 15};
+
+/** rct2: 0x009334B5 */
+static const uint8 mini_golf_peep_animation_frames_swing[] = {31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 33, 33, 33, 33, 34};
+
+/** rct2: 0x0093347D */
+static const uint8 mini_golf_peep_animation_frames_swing_left[] = {6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 8, 8, 8, 9};
+
+/** rct2: 0x0093348D */
+static const uint8 mini_golf_peep_animation_frames_place_ball_upwards[] = {12, 13, 14, 15, 14, 13, 12};
+
+/** rct2: 0x00933495 */
+static const uint8 mini_golf_peep_animation_frames_jump[] = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+
+/** rct2: 0x009334A5 */
+static const uint8 mini_golf_peep_animation_frames_pickup_ball[] = {15, 14, 13, 12};
+
+/** rct2: 0x009334C5 */
+static const uint8 mini_golf_peep_animation_frames_put[] = {35, 36, 36, 36, 36, 36, 35, 35, 35, 35};
+
+/** rct2: 0x009334AA */
+static const uint8 mini_golf_peep_animation_frames_put_left[] = {10, 11, 11, 11, 11, 11, 10, 10, 10, 10};
+
+/** rct2: 0x008B8F74 */
+static const uint8 * mini_golf_peep_animation_frames[] = {
+	mini_golf_peep_animation_frames_walk,
+	mini_golf_peep_animation_frames_place_ball_downwards,
+	mini_golf_peep_animation_frames_swing_left,
+	mini_golf_peep_animation_frames_place_ball_upwards,
+	mini_golf_peep_animation_frames_jump,
+	mini_golf_peep_animation_frames_pickup_ball,
+	mini_golf_peep_animation_frames_put_left,
+	mini_golf_peep_animation_frames_swing,
+	mini_golf_peep_animation_frames_put,
+};
+
+const uint8 mini_golf_peep_animation_lengths[] = {
+	countof(mini_golf_peep_animation_frames_walk),
+	countof(mini_golf_peep_animation_frames_place_ball_downwards),
+	countof(mini_golf_peep_animation_frames_swing_left),
+	countof(mini_golf_peep_animation_frames_place_ball_upwards),
+	countof(mini_golf_peep_animation_frames_jump),
+	countof(mini_golf_peep_animation_frames_pickup_ball),
+	countof(mini_golf_peep_animation_frames_put_left),
+	countof(mini_golf_peep_animation_frames_swing),
+	countof(mini_golf_peep_animation_frames_put),
+};
+
 static paint_struct * mini_golf_paint_util_7c(
 	uint8 direction,
 	uint32 image_id,
@@ -978,15 +1030,15 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 		return;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
 		return;
 	}
 
 	rct_ride_entry *rideType = get_ride_entry(get_ride(vehicle->ride)->subtype);
 	rct_sprite *sprite = get_sprite(vehicle->peep[0]);
 
-	uint32 eax = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
-	uint32 ebx = (RCT2_GLOBAL(eax + vehicle->var_C5, uint8) << 2) + (imageDirection >> 3);
+	uint8 frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->var_C5];
+	uint32 ebx = (frame << 2) + (imageDirection >> 3);
 
 	uint32 image_id = rideType->vehicles[0].base_image_id + 1 + ebx;
 	uint32 peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
@@ -998,7 +1050,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
  */
 void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
 {
-	if (vehicle->var_D4 != 1) {
+	if (vehicle->mini_golf_current_animation != 1) {
 		return;
 	}
 
@@ -1007,7 +1059,7 @@ void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_
 		return;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
 		return;
 	}
 

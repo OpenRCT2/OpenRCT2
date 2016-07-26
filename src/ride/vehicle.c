@@ -7621,6 +7621,8 @@ loc_6DBE7F:
 	return false;
 }
 
+extern const uint8 mini_golf_peep_animation_lengths[];
+
 /**
  *  rct2: 0x006DC3A7
  *
@@ -7671,10 +7673,9 @@ loc_6DC462:
 
 loc_6DC476:
 	if (vehicle->mini_golf_flags & (1 << 2)) {
-		regs.edi = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
-		regs.al = vehicle->var_C5 + 1;
-		if ((uint8)regs.al < ((uint8*)regs.edi)[-1]) {
-			vehicle->var_C5 = regs.al;
+		uint8 nextFrame = vehicle->var_C5 + 1;
+		if (nextFrame < mini_golf_peep_animation_lengths[vehicle->mini_golf_current_animation]) {
+			vehicle->var_C5 = nextFrame;
 			goto loc_6DC985;
 		}
 		vehicle->mini_golf_flags &= ~(1 << 2);
@@ -7852,7 +7853,7 @@ loc_6DC743:
 					z = 8;
 				}
 			}
-			vehicle->var_D4 = (uint8)z;
+			vehicle->mini_golf_current_animation = (uint8)z;
 			vehicle->var_C5 = 0;
 			vehicle->track_progress++;
 			break;

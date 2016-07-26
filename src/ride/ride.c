@@ -4555,7 +4555,7 @@ static rct_vehicle *vehicle_create_car(
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 			regs.dl = 9;
 			vehicle->var_D3 = 0;
-			vehicle->var_D4 = 0;
+			vehicle->mini_golf_current_animation = 0;
 			vehicle->mini_golf_flags = 0;
 		}
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_4) {
