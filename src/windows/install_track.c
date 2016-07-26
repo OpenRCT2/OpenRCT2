@@ -289,7 +289,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		set_format_arg(0, uint16, 1345);
+		set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
 		set_format_arg(2, uint16, td6->ride_length);
 		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
 		y += 10;

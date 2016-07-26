@@ -2610,9 +2610,9 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 		RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = queueLength;
 		stringId = STR_QUEUE_EMPTY;
 		if (queueLength == 1)
-			stringId++; // TODO: String calculation
+			stringId = STR_QUEUE_ONE_PERSON;
 		else if (queueLength > 1)
-			stringId += 2;// TODO: String calculation
+			stringId = STR_QUEUE_PEOPLE;
 	}
 
 	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;

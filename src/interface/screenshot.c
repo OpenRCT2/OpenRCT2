@@ -226,7 +226,7 @@ void screenshot_giant()
 	int index;
 	if ((index = screenshot_get_next_path(path)) == -1) {
 		log_error("Giant screenshot failed, unable to find a suitable destination path.");
-		window_error_open(STR_SCREENSHOT_FAILED, -1);
+		window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 		return;
 	}
 
