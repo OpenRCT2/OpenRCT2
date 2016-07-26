@@ -2152,7 +2152,7 @@ static void window_ride_construction_invalidate(rct_window *w)
 		set_format_arg(2, uint16, ((RCT2_GLOBAL(0x00F440CE, uint8) * 9) >> 2) & 0xFFFF);
 
 	// Set window title arguments
-	set_format_arg(4, uint16, ride->name);
+	set_format_arg(4, rct_string_id, ride->name);
 	set_format_arg(6, uint32, ride->name_arguments);
 }
 

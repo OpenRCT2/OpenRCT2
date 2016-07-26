@@ -392,7 +392,7 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 			rct_ride* ride = get_ride(map_element->properties.path.ride_index);
 			rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
 			if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
-				set_format_arg(0, uint16, ride->name);
+				set_format_arg(0, rct_string_id, ride->name);
 				set_format_arg(2, uint32, ride->name_arguments);
 				string_id = STR_RIDE_ENTRANCE_NAME;
 			}

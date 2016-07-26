@@ -689,7 +689,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, int scr
  */
 static void window_editor_inventions_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**

@@ -886,10 +886,10 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 	case WIDX_SCENERY_TAB_17:
 	case WIDX_SCENERY_TAB_18:
 	case WIDX_SCENERY_TAB_19:
-		set_format_arg(0, uint16, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
+		set_format_arg(0, rct_string_id, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
 		break;
 	case WIDX_SCENERY_TAB_20:
-		set_format_arg(0, uint16, STR_MISCELLANEOUS);
+		set_format_arg(0, rct_string_id, STR_MISCELLANEOUS);
 		break;
 	}
 }
@@ -1078,7 +1078,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + w->width - 0x1A, w->y + w->height - 13);
 	}
 
-	set_format_arg(0, uint16, sceneryEntry->name);
+	set_format_arg(0, rct_string_id, sceneryEntry->name);
 	gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
 }

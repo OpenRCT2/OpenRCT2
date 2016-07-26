@@ -1004,9 +1004,9 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_PARK_NAME].left - 16;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->park_name);
+		set_format_arg(0, rct_string_id, stex->park_name);
 	} else {
-		set_format_arg(0, uint16, gParkName);
+		set_format_arg(0, rct_string_id, gParkName);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
 	gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, 0, x, y, width);
@@ -1017,10 +1017,10 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->scenario_name);
+		set_format_arg(0, rct_string_id, stex->scenario_name);
 	} else {
 		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->name, 64);
-		set_format_arg(0, uint16, STR_PLACEHOLDER);
+		set_format_arg(0, rct_string_id, STR_PLACEHOLDER);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
 	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, 0, x, y, width);
@@ -1036,10 +1036,10 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_DETAILS].left - 4;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->details);
+		set_format_arg(0, rct_string_id, stex->details);
 	} else {
 		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->details, 256);
-		set_format_arg(0, uint16, STR_PLACEHOLDER);
+		set_format_arg(0, rct_string_id, STR_PLACEHOLDER);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
 	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);

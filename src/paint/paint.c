@@ -607,7 +607,7 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
  * @param y_offsets (di)
  * @param rotation (ebp)
  */
-void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
+void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
 {
 	paint_string_struct * ps = (paint_string_struct *)unk_EE7888;
 

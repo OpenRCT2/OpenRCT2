@@ -437,7 +437,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int
  */
 static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -524,7 +524,8 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y, format, formatSecondary, argument;
+	int i, y, argument;
+	rct_string_id format, formatSecondary;
 	rct_ride *ride;
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
@@ -660,7 +661,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
 			format = STR_RED_OUTLINED_STRING;
 
-		set_format_arg(0, uint16, formatSecondary);
+		set_format_arg(0, rct_string_id, formatSecondary);
 		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 160, y - 1, 157);
 		y += 10;
 	}
@@ -892,7 +893,7 @@ static void window_ride_list_close_all(rct_window *w)
 			continue;
 
 		gGameCommandErrorTitle = STR_CANT_CLOSE;
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_CLOSED);
@@ -911,7 +912,7 @@ static void window_ride_list_open_all(rct_window *w)
 			continue;
 
 		gGameCommandErrorTitle = STR_CANT_OPEN;
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_OPEN);

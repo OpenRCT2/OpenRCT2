@@ -381,9 +381,9 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			set_format_arg(0, short, ScenarioOriginStringIds[i]);
+			set_format_arg(0, rct_string_id, ScenarioOriginStringIds[i]);
 		} else { // old-style
-			set_format_arg(0, short, ScenarioCategoryStringIds[i]);
+			set_format_arg(0, rct_string_id, ScenarioCategoryStringIds[i]);
 		}
 		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, 10);
 	}

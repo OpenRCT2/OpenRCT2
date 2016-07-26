@@ -738,7 +738,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 
 void window_title_editor_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 void window_title_editor_invalidate(rct_window *w)

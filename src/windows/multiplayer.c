@@ -635,9 +635,9 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
 			// Draw last action
 			int action = network_get_player_last_action(i, 2000);
-			set_format_arg(0, uint16, STR_ACTION_NA);
+			set_format_arg(0, rct_string_id, STR_ACTION_NA);
 			if (action != -999) {
-				set_format_arg(0, uint16, network_get_action_name_string_id(action));
+				set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
 			}
 			gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, 256, y - 1, 100);
 

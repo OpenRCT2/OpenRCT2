@@ -197,7 +197,7 @@ static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 */
 static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -262,9 +262,9 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		char *templateString = (char*)language_get_string(templateStringId);
 		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
-		set_format_arg(0, uint16, STR_SHORTCUT_ENTRY_FORMAT);
-		set_format_arg(2, uint16, ShortcutStringIds[i]);
-		set_format_arg(4, uint16, templateStringId);
+		set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
+		set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
+		set_format_arg(4, rct_string_id, templateStringId);
 		gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, 0, y - 1);
 	}
 }

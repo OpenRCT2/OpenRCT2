@@ -660,7 +660,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
  */
 static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, short, STR_MAP);
+	set_format_arg(0, rct_string_id, STR_MAP);
 }
 
 /**

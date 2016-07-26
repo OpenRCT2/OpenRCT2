@@ -725,7 +725,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
  */
 static void window_new_ride_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
