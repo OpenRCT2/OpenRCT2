@@ -34,8 +34,8 @@ enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 	WIDX_TOGGLE_SHOW_BOUND_BOXES,
 };
 
-static const int WINDOW_WIDTH = 200;
-static const int WINDOW_HEIGHT = 8 + 15 + 15 + 11 + 8;
+#define WINDOW_WIDTH	200
+#define WINDOW_HEIGHT	8 + 15 + 15 + 11 + 8
 
 static rct_widget window_debug_paint_widgets[] = {
 	{ WWT_FRAME,	0,	0,	WINDOW_WIDTH - 1,	0,				WINDOW_HEIGHT - 1,	0xFFFFFFFF,								STR_NONE},
