@@ -3603,7 +3603,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 	case RIDE_MODE_ROTATION:
 	case RIDE_MODE_FORWARD_ROTATION:
 	case RIDE_MODE_BACKWARD_ROTATION:
-		format = STR_ARG18_COMMA16;
+		format = STR_NUMBER_OF_ROTATIONS_VALUE;
 		caption = STR_NUMBER_OF_ROTATIONS;
 		tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
 		break;

@@ -4223,6 +4223,11 @@ STR_5911    :See-Through Paths
 STR_5912    :See-through paths toggle
 STR_5913    :Chat
 STR_5914    :Unknown ride
+STR_5915    :Player
+STR_5916    :{COMMA16} player
+STR_5917    :{COMMA16} players
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

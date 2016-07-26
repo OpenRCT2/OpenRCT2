@@ -586,7 +586,7 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
 	// Number of players
-	stringId = w->no_list_items == 1 ? STR_RIDE_COMPONENT_PLAYER_COUNT : STR_RIDE_COMPONENT_PLAYER_COUNT_PLURAL;
+	stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
 	x = w->x + 4;
 	y = w->y + w->widgets[WIDX_LIST].bottom + 2;
 	gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);

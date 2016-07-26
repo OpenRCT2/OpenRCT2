@@ -48,18 +48,18 @@ enum {
 #define WH 120
 
 static rct_widget window_server_start_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,				STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		WW-2,	1,			14,		STR_START_SERVER,		STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,				STR_NONE },					// port text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,				STR_NONE },					// name text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,				STR_NONE },					// password text box
-	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		STR_ARG18_COMMA16,				STR_NONE },					// max players
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
-	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,			STR_NONE },					// start server button
-	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,			STR_NONE },
+	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,						STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		WW-2,	1,			14,		STR_START_SERVER,				STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,						STR_NONE },					// port text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,						STR_NONE },					// name text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,						STR_NONE },					// password text box
+	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		STR_SERVER_MAX_PLAYERS_VALUE,	STR_NONE },					// max players
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,				STR_NONE },
+	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,					STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
+	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,					STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,					STR_NONE },
 	{ WIDGETS_END },
 };
 
