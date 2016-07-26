@@ -461,6 +461,7 @@ enum {
 	WC_SERVER_LIST = 127,
 	WC_SERVER_START = 128,
 	WC_CUSTOM_CURRENCY_CONFIG = 129,
+	WC_DEBUG_PAINT = 130,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -688,6 +689,7 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(int type, char *defaultName);
 rct_window *window_changelog_open();
+void window_debug_paint_open();
 
 void window_editor_main_open();
 void window_editor_bottom_toolbar_open();

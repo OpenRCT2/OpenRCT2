@@ -22,6 +22,7 @@
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
+		C6575A371D46AFBA00C3E79F /* debug_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C6575A361D46AFBA00C3E79F /* debug_paint.c */; };
 		C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8981CDBC37E009F9BFC /* banner.c */; };
 		C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8991CDBC37E009F9BFC /* entrance.c */; };
 		C686F8AE1CDBC37E009F9BFC /* fence.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F89A1CDBC37E009F9BFC /* fence.c */; };
@@ -397,6 +398,7 @@
 		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2181CCABBDD00B4D91C /* Tables.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Tables.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertCommand.cpp; sourceTree = "<group>"; usesTabs = 0; };
+		C6575A361D46AFBA00C3E79F /* debug_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug_paint.c; sourceTree = "<group>"; };
 		C686F8981CDBC37E009F9BFC /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
 		C686F8991CDBC37E009F9BFC /* entrance.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = entrance.c; sourceTree = "<group>"; };
 		C686F89A1CDBC37E009F9BFC /* fence.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fence.c; sourceTree = "<group>"; };
@@ -1594,6 +1596,7 @@
 				D44271921CC81B3200D84D28 /* cheats.c */,
 				D44271931CC81B3200D84D28 /* clear_scenery.c */,
 				D45B202C1D1E92DB00B67CC7 /* custom_currency.c */,
+				C6575A361D46AFBA00C3E79F /* debug_paint.c */,
 				D44271941CC81B3200D84D28 /* demolish_ride_prompt.c */,
 				D44271951CC81B3200D84D28 /* dropdown.c */,
 				D44271961CC81B3200D84D28 /* dropdown.h */,
@@ -2229,6 +2232,7 @@
 				D44272A51CC81B3200D84D28 /* particle.c in Sources */,
 				D44272811CC81B3200D84D28 /* server_start.c in Sources */,
 				D44272611CC81B3200D84D28 /* finances.c in Sources */,
+				C6575A371D46AFBA00C3E79F /* debug_paint.c in Sources */,
 				D442722D1CC81B3200D84D28 /* utf8.c in Sources */,
 				C686F9461CDBC3B7009F9BFC /* swinging_inverter_ship.c in Sources */,
 				D442720B1CC81B3200D84D28 /* font.c in Sources */,

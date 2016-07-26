@@ -4207,6 +4207,11 @@ STR_5895    :Save Track
 STR_5896    :Track save failed!
 STR_5897    :Window limit:
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
+STR_5899    :Toggle paint debug window
+STR_5900    :Use original drawing code
+STR_5901    :Show segment heights
+STR_5902    :Show bounding boxes
+STR_5903    :Show paint debug window
 
 #############
 # Scenarios #

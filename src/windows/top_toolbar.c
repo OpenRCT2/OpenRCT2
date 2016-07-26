@@ -105,7 +105,10 @@ typedef enum {
 	DDIDX_TILE_INSPECTOR = 1,
 	DDIDX_OBJECT_SELECTION = 2,
 	DDIDX_INVENTIONS_LIST = 3,
-	DDIDX_SCENARIO_OPTIONS = 4
+	DDIDX_SCENARIO_OPTIONS = 4,
+	DDIDX_DEBUG_PAINT = 5,
+
+	TOP_TOOLBAR_DEBUG_COUNT
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 typedef enum {
@@ -2934,11 +2937,18 @@ void top_toolbar_rotate_menu_dropdown(short dropdownIndex)
 
 void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 {
-	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
-	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
-	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
-	gDropdownItemsFormat[3] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
-	gDropdownItemsFormat[4] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
+	gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
+	gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+	gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
+	gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
+	gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
+	gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
+	gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2946,9 +2956,10 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 		widget->bottom - widget->top + 1,
 		w->colours[0] | 0x80,
 		DROPDOWN_FLAG_STAY_OPEN,
-		5
+		TOP_TOOLBAR_DEBUG_COUNT
 	);
 
+	dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != NULL);
 	gDropdownDefaultIndex = DDIDX_CONSOLE;
 }
 
@@ -2988,6 +2999,13 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex)
 			break;
 		case DDIDX_SCENARIO_OPTIONS:
 			window_editor_scenario_options_open();
+			break;
+		case DDIDX_DEBUG_PAINT:
+			if (window_find_by_class(WC_DEBUG_PAINT) == NULL) {
+				window_debug_paint_open();
+			} else {
+				window_close_by_class(WC_DEBUG_PAINT);
+			}
 			break;
 		}
 	}
