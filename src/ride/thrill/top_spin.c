@@ -26,6 +26,13 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x014280BC */
+static sint16 TopSpinSeatHeightOffset[] = {
+	-10, -10,  -9,  -7,  -4,  -1,   2,   6,  11,  16,  21,  26,  31,  37,  42,  47,
+	 52,  57,  61,  64,  67,  70,  72,  73,  73,  73,  72,  70,  67,  64,  61,  57,
+	 52,  47,  42,  37,  31,  26,  21,  16,  11,   6,   2,  -1,  -4,  -7,  -9, -10,
+};
+
 /**
  *
  *  rct2: 0x0142811C
@@ -36,7 +43,6 @@ static sint8 TopSpinSeatPositionOffset[] = {
 	  0,   4,   9,  13,  17,  21,  24,  27,  29,  31,  33,  34,  34,  34,  33,  31,
 	 29,  27,  24,  21,  17,  13,   9,   4,   0,  -3,  -8, -12, -16, -20, -23, -26,
 	-28, -30, -32, -33, -33, -33, -32, -30, -28, -26, -23, -20, -16, -12,  -8,  -3,
-	  0
 };
 
 /**
@@ -147,7 +153,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		.y = cl,
 		.z = height
 	};
-	seatCoords.z += RCT2_ADDRESS(0x14280BC, sint16)[armRotation];
+
+	seatCoords.z += TopSpinSeatHeightOffset[armRotation];
 
 	assert(armRotation < sizeof(TopSpinSeatPositionOffset));
 	switch (direction) {
@@ -164,10 +171,6 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		seatCoords.y -= TopSpinSeatPositionOffset[armRotation];
 		break;
 	}
-
-	RCT2_GLOBAL(0x014280B8, sint8) = (sint8)seatCoords.x;
-	RCT2_GLOBAL(0x014280B9, sint8) = (sint8)seatCoords.y;
-	RCT2_GLOBAL(0x014280BA, sint16) = seatCoords.z;
 
 	sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
