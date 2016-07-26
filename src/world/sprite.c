@@ -162,6 +162,7 @@ void reset_sprite_spatial_index()
 void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		reset_all_sprite_quadrant_placements();
 		reset_sprite_spatial_index();
 	}
 	*ebx = 0;
@@ -512,6 +513,12 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	sprite->unknown.sprite_right = new_x + sprite->unknown.sprite_width;
 	sprite->unknown.sprite_top = new_y - sprite->unknown.sprite_height_negative;
 	sprite->unknown.sprite_bottom = new_y + sprite->unknown.sprite_height_positive;
+	sprite->unknown.x = x;
+	sprite->unknown.y = y;
+	sprite->unknown.z = z;
+}
+
+void sprite_set_coordinates(sint16 x, sint16 y, sint16 z, rct_sprite *sprite){
 	sprite->unknown.x = x;
 	sprite->unknown.y = y;
 	sprite->unknown.z = z;

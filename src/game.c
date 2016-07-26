@@ -270,13 +270,13 @@ void game_update()
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
-	} else {
-		if (game_is_paused()) {
-			numUpdates = 0;
-			// Update the animation list. Note this does not 
-			// increment the map animation.
-			map_animation_invalidate_all();
-		}
+	}
+
+	if (game_is_paused()) {
+		numUpdates = 0;
+		// Update the animation list. Note this does not
+		// increment the map animation.
+		map_animation_invalidate_all();
 	}
 
 	// Update the game one or more times
