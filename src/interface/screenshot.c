@@ -45,9 +45,8 @@ void screenshot_check()
 
 			if (screenshotIndex != -1) {
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-				
-				// TODO use a more obvious sound like a camera shutter
-				audio_play_sound(SOUND_CLICK_1, 0, gScreenWidth / 2);
+
+				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
@@ -80,19 +79,39 @@ static int screenshot_get_next_path(char *path)
 		return -1;
 	}
 
+	char park_name[128] = { 0 };
+	format_string(park_name, gParkName, &gParkNameArgs);
+
+	// retrieve current time
+	rct2_date currentDate;
+	platform_get_date_local(&currentDate);
+	rct2_time currentTime;
+	platform_get_time_local(&currentTime);
+
+	// Glue together path and filename
+	sprintf(path, "%s%s %d-%02d-%02d %02d-%02d-%02d.png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
+
+	if (!platform_file_exists(path)) {
+		return 0; // path ok
+	}
+
+	// multiple screenshots with same timestamp
+	// might be possible when switching timezones
+	// in the unlikely case that this does happen,
+	// append (%d) to the filename and increment
+	// this int until it doesn't overwrite any
+	// other file in the directory.
 	int i;
 	for (i = 1; i < 1000; i++) {
-		set_format_arg(0, uint16, i);
-
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d.png", screenshotPath, i);
+		sprintf(path, "%s%s %d-%02d-%02d %02d-%02d-%02d (%d).png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
 
 		if (!platform_file_exists(path)) {
 			return i;
 		}
 	}
 
-	log_error("You have too many saved screenshots.\n");
+	log_error("You have too many saved screenshots saved at exactly the same date and time.\n");
 	return -1;
 }
 

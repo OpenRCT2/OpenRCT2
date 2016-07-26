@@ -129,7 +129,7 @@ utf8 **windows_get_command_line_args(int *outNumArgs)
 	return argvUtf8;
 }
 
-void platform_get_date(rct2_date *out_date)
+void platform_get_date_local(rct2_date *out_date)
 {
 	assert(out_date != NULL);
 	SYSTEMTIME systime;
@@ -141,7 +141,7 @@ void platform_get_date(rct2_date *out_date)
 	out_date->day_of_week = systime.wDayOfWeek;
 }
 
-void platform_get_time(rct2_time *out_time)
+void platform_get_time_local(rct2_time *out_time)
 {
 	assert(out_time != NULL);
 	SYSTEMTIME systime;
@@ -909,7 +909,7 @@ uint8 platform_get_locale_currency()
 	) {
 		return platform_get_currency_value(NULL);
 	}
-	
+
 	return platform_get_currency_value(currCode);
 }
 
