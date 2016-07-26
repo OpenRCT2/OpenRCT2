@@ -44,20 +44,11 @@ rct_crooked_house_bound_box crooked_house_data[] = {
  * @param (edx) height
  */
 static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, int height) {
-	//RCT2_CALLPROC_X(0x88ABA4, al, segment, cl, height, 0, direction, 0);
-	//return;
-
-	//  push    dword_9DE578
 	rct_map_element *original_map_element = g_currently_drawn_item;
-	//    push    edx
-	RCT2_GLOBAL(0x14281B0, uint32) = segment;
-	RCT2_GLOBAL(0x14281B4, uint32) = direction;
 
 	rct_ride *ride = get_ride(original_map_element->properties.track.ride_index);
 
 	rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
-
-	RCT2_GLOBAL(0x0014281B8, uint32) = ride_type->vehicles[0].base_image_id;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
 		if (ride->vehicles[0] != (uint16)-1) {
