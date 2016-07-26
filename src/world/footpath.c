@@ -1472,6 +1472,8 @@ void sub_6A759F()
  */
 static void footpath_unown(int x, int y, rct_map_element *pathElement)
 {
+	//Not entirely sure if this code is needed, but seems to work fine without it
+	/* 
 	int ownershipUnk = 0;
 	int z = pathElement->base_height;
 	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
@@ -1480,8 +1482,9 @@ static void footpath_unown(int x, int y, rct_map_element *pathElement)
 		if (surfaceElement->base_height != z) {
 			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
 		}
-	}
-	map_buy_land_rights(x, y, x, y, 6, 1);
+	}*/
+	//map_buy_land_rights(x, y, x, y, 6, 1);
+	game_do_command(x, 1, y, 6 << 8, GAME_COMMAND_BUY_LAND_RIGHTS, x, y);
 }
 
 static bool get_next_direction(int edges, int *direction)
