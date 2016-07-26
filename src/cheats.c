@@ -426,22 +426,22 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 
 void cheats_reset()
 {
-	gCheatsSandboxMode = false;
-	gCheatsDisableClearanceChecks = false;
-	gCheatsDisableSupportLimits = false;
-	gCheatsShowAllOperatingModes = false;
-	gCheatsShowVehiclesFromOtherTrackTypes = false;
-	gCheatsDisableTrainLengthLimit = false;
-	gCheatsEnableChainLiftOnAllTrack = false;
-	gCheatsFastLiftHill = false;
-	gCheatsDisableBrakesFailure = false;
-	gCheatsDisableAllBreakdowns = false;
-	gCheatsUnlockAllPrices = false;
-	gCheatsBuildInPauseMode = false;
-	gCheatsIgnoreRideIntensity = false;
-	gCheatsDisableVandalism = false;
-	gCheatsDisableLittering = false;
-	gCheatsNeverendingMarketing = false;
-	gCheatsFreezeClimate = false;
-	gCheatsDisablePlantAging = false;
+	gCheatsSandboxMode = gConfigCheats.sandbox_mode;
+	gCheatsDisableClearanceChecks = gConfigCheats.disable_clearance_checks;
+	gCheatsDisableSupportLimits = gConfigCheats.disable_support_limits;
+	gCheatsShowAllOperatingModes = gConfigCheats.show_all_operating_modes;
+	gCheatsShowVehiclesFromOtherTrackTypes = gConfigCheats.show_vehicles_from_other_track_types;
+	gCheatsDisableTrainLengthLimit = gConfigCheats.disable_train_length_limit;
+	gCheatsEnableChainLiftOnAllTrack = gConfigCheats.enable_chain_lift_on_all_track;
+	gCheatsFastLiftHill = gConfigCheats.fast_lift_hill;
+	gCheatsDisableBrakesFailure = gConfigCheats.disable_breaks_failure;
+	gCheatsDisableAllBreakdowns = gConfigCheats.disable_all_breakdowns;
+	gCheatsUnlockAllPrices = gConfigCheats.unlock_all_prices;
+	gCheatsBuildInPauseMode = gConfigCheats.build_in_pause_mode;
+	gCheatsIgnoreRideIntensity = gConfigCheats.ignore_ride_intensity;
+	gCheatsDisableVandalism = gConfigCheats.disable_vandalism;
+	gCheatsDisableLittering = gConfigCheats.disable_littering;
+	gCheatsNeverendingMarketing = gConfigCheats.neverending_marketing;
+	gCheatsFreezeClimate = gConfigCheats.freeze_climate;
+	gCheatsDisablePlantAging = gConfigCheats.disable_plant_aging;
 }

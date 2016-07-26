@@ -314,6 +314,48 @@ config_property_definition _fontsDefinitions[] = {
 	{ offsetof(font_configuration, height_big),				"height_big",			CONFIG_VALUE_TYPE_UINT8,		20,								NULL			}
 };
 
+/*uint8 sandbox_mode,
+		disable_clearance_checks,
+		disable_support_limits,
+		show_all_operating_modes,
+		show_vehicles_from_other_track_types,
+		fast_lift_hill,
+		disable_breaks_failure,
+		disable_all_breakdowns,
+		unlock_all_prices,
+		build_in_pause_mode,
+		ignore_ride_intensity,
+		disable_vandalism,
+		disable_littering,
+		neverending_marketing,
+		freeze_climate,
+		disable_train_length_limit,
+		disable_plant_aging,
+		enable_chain_lift_on_all_track;
+*/
+
+config_property_definition _cheatsDefinitions[] = {
+	{ offsetof(cheats_configuration, sandbox_mode),							"sandbox_mode",							CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_clearance_checks),				"disable_clearance_checks",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_support_limits),				"disable_support_limits",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, show_all_operating_modes),				"show_all_operating_modes",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, show_vehicles_from_other_track_types),	"show_vehicles_from_other_track_types",	CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, fast_lift_hill),						"fast_lift_hill",						CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_breaks_failure),				"disable_breaks_failure",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_all_breakdowns),				"disable_all_breakdowns",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, unlock_all_prices),					"unlock_all_prices",					CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, build_in_pause_mode),					"build_in_pause_mode",					CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, ignore_ride_intensity),				"ignore_ride_intensity",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_vandalism),					"disable_vandalism",					CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_littering),					"disable_littering",					CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, neverending_marketing),				"neverending_marketing",				CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, freeze_climate),						"freeze_climate",						CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_train_length_limit),			"disable_train_length_limit",			CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, disable_plant_aging),					"disable_plant_aging",					CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+	{ offsetof(cheats_configuration, enable_chain_lift_on_all_track),		"enable_chain_lift_on_all_track",		CONFIG_VALUE_TYPE_BOOLEAN, false,		NULL },
+};
+
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
@@ -321,7 +363,8 @@ config_section_definition _sectionDefinitions[] = {
 	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
 	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) },
 	{ &gConfigNotifications, "notifications", _notificationsDefinitions, countof(_notificationsDefinitions) },
-	{ &gConfigFonts, "fonts", _fontsDefinitions, countof(_fontsDefinitions) }
+	{ &gConfigFonts, "fonts", _fontsDefinitions, countof(_fontsDefinitions) },
+	{ &gConfigCheats, "default_cheats", _cheatsDefinitions, countof(_cheatsDefinitions) },
 };
 
 #pragma endregion
@@ -334,6 +377,7 @@ network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
 font_configuration gConfigFonts;
 title_sequences_configuration gConfigTitleSequences;
+cheats_configuration gConfigCheats;
 
 static bool config_open(const utf8string path);
 static bool config_save(const utf8string path);

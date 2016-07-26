@@ -283,6 +283,28 @@ typedef struct font_configuration {
 	uint8 height_big;
 } font_configuration;
 
+typedef struct cheats_configuration {
+	uint8 sandbox_mode,
+		disable_clearance_checks,
+		disable_support_limits,
+		show_all_operating_modes,
+		show_vehicles_from_other_track_types,
+		fast_lift_hill,
+		disable_breaks_failure,
+		disable_all_breakdowns,
+		unlock_all_prices,
+		build_in_pause_mode,
+		ignore_ride_intensity,
+		disable_vandalism,
+		disable_littering,
+		neverending_marketing,
+		freeze_climate,
+		disable_train_length_limit,
+		disable_plant_aging,
+		enable_chain_lift_on_all_track;
+} cheats_configuration;
+
+
 // Define structures for any other settings here
 typedef struct theme_features {
 	uint8 rct1_ride_lights;
@@ -336,6 +358,7 @@ extern network_configuration gConfigNetwork;
 extern notification_configuration gConfigNotifications;
 extern font_configuration gConfigFonts;
 extern title_sequences_configuration gConfigTitleSequences;
+extern cheats_configuration gConfigCheats;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
