@@ -41,6 +41,8 @@ interface IDrawingEngine
     virtual void Resize(uint32 width, uint32 height) abstract;
     virtual void SetPalette(SDL_Color * colours)     abstract;
 
+    virtual void SetUncappedFrameRate(bool uncapped) abstract;
+
     virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
     virtual void    Draw() abstract;
     virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;

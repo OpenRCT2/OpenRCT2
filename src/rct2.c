@@ -301,21 +301,22 @@ void rct2_draw(rct_drawpixelinfo *dpi)
 	gCurrentDrawCount++;
 }
 
-static uint32 _lastFPSUpdateTicks;
-static uint32 _lastFPSTicks;
-static float _currentFPS;
+static time_t _lastSecond;
+static int _currentFPS;
+static int _frames;
 
-static float rct2_measure_fps()
+static void rct2_measure_fps()
 {
-	uint32 currentTicks = SDL_GetTicks();
-	if (currentTicks - _lastFPSUpdateTicks > 500) {
-		_lastFPSUpdateTicks = currentTicks;
+	_frames++;
 
-		uint32 frameDelta = currentTicks - _lastFPSTicks;
-		_currentFPS = 1000.0f / frameDelta;
+	time_t currentTime = time(NULL);
+
+	if (currentTime != _lastSecond) {
+		_currentFPS = _frames;
+		_frames = 0;
 	}
-	_lastFPSTicks = currentTicks;
-	return _currentFPS;
+
+	_lastSecond = currentTime;
 }
 
 static void rct2_draw_fps(rct_drawpixelinfo *dpi)
@@ -332,9 +333,8 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-	const char *formatString = (_currentFPS >= 100.0f ? "%.0f" : "%.1f");
-	sprintf(ch, formatString, _currentFPS);
+	
+	sprintf(ch, "%d", _currentFPS);
 
 	// Draw Text
 	int stringWidth = gfx_get_string_width(buffer);

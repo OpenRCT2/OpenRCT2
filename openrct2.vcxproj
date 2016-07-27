@@ -56,7 +56,6 @@
     <ClCompile Include="src\drawing\drawing.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\CopyFramebufferShader.cpp" />
-    <ClCompile Include="src\drawing\engines\opengl\DrawImageMaskedShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\DrawImageShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\DrawLineShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\FillRectShader.cpp" />
@@ -383,7 +382,7 @@
     <ClInclude Include="src\drawing\drawing.h" />
     <ClInclude Include="src\drawing\engines\OpenGLAPI.h" />
     <ClInclude Include="src\drawing\engines\opengl\CopyFramebufferShader.h" />
-    <ClInclude Include="src\drawing\engines\opengl\DrawImageMaskedShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\DrawCommands.h" />
     <ClInclude Include="src\drawing\engines\opengl\DrawImageShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\DrawLineShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\FillRectShader.h" />

@@ -327,6 +327,11 @@ public:
         }
     }
 
+    void SetUncappedFrameRate(bool uncapped) override
+    {
+        // Not applicable for this engine
+    }
+
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
     {
         left = Math::Max(left, 0);

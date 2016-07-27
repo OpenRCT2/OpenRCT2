@@ -87,7 +87,8 @@ void FillRectShader::SetColour(int index, vec4f colour)
 
 void FillRectShader::SetSourceFramebuffer(GLuint texture)
 {
-    OpenGLAPI::SetTexture2D(0, texture);
+	_sourceFramebuffer = texture;
+    OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
@@ -96,6 +97,10 @@ void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
 
     glBindVertexArray(_vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+GLuint FillRectShader::GetSourceFramebuffer() const {
+	return _sourceFramebuffer;
 }
 
 #endif /* DISABLE_OPENGL */

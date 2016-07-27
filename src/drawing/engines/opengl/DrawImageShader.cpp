@@ -23,6 +23,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     GetLocations();
 
     glGenBuffers(1, &_vbo);
+    glGenBuffers(1, &_vboInstances);
     glGenVertexArrays(1, &_vao);
 
     GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
@@ -30,18 +31,49 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glEnableVertexAttribArray(vIndex);
+
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
+    glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
+    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourAtlas));
+    glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourBounds));
+    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskAtlas));
+    glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskBounds));
+    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
+    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
+    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
+    glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, mask));
+
+    glEnableVertexAttribArray(vIndex);
+    glEnableVertexAttribArray(vClip);
+    glEnableVertexAttribArray(vTexColourAtlas);
+    glEnableVertexAttribArray(vTexColourBounds);
+    glEnableVertexAttribArray(vTexMaskAtlas);
+    glEnableVertexAttribArray(vTexMaskBounds);
+    glEnableVertexAttribArray(vFlags);
+    glEnableVertexAttribArray(vColour);
+    glEnableVertexAttribArray(vBounds);
+    glEnableVertexAttribArray(vMask);
+
+    glVertexAttribDivisor(vClip, 1);
+    glVertexAttribDivisor(vTexColourAtlas, 1);
+    glVertexAttribDivisor(vTexColourBounds, 1);
+    glVertexAttribDivisor(vTexMaskAtlas, 1);
+    glVertexAttribDivisor(vTexMaskBounds, 1);
+    glVertexAttribDivisor(vFlags, 1);
+    glVertexAttribDivisor(vColour, 1);
+    glVertexAttribDivisor(vBounds, 1);
+    glVertexAttribDivisor(vMask, 1);
+
     Use();
-    SetFlags(0);
-    SetTextureCoordinates(0, 0, 1, 1);
     glUniform1i(uTexture, 0);
 }
 
 DrawImageShader::~DrawImageShader()
 {
     glDeleteBuffers(1, &_vbo);
+    glDeleteBuffers(1, &_vboInstances);
     glDeleteVertexArrays(1, &_vao);
 
     glBindVertexArray(_vao);
@@ -50,15 +82,19 @@ DrawImageShader::~DrawImageShader()
 void DrawImageShader::GetLocations()
 {
     uScreenSize         = GetUniformLocation("uScreenSize");
-    uClip               = GetUniformLocation("uClip");
-    uBounds             = GetUniformLocation("uBounds");
-    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
-    uColour             = GetUniformLocation("uColour");
-    uFlags              = GetUniformLocation("uFlags");
     uPalette            = GetUniformLocation("uPalette");
 
     vIndex              = GetAttributeLocation("vIndex");
+    vClip               = GetAttributeLocation("ivClip");
+    vTexColourAtlas     = GetAttributeLocation("ivTexColourAtlas");
+    vTexColourBounds    = GetAttributeLocation("ivTexColourBounds");
+    vTexMaskAtlas       = GetAttributeLocation("ivTexMaskAtlas");
+    vTexMaskBounds      = GetAttributeLocation("ivTexMaskBounds");
+    vFlags              = GetAttributeLocation("ivFlags");
+    vColour             = GetAttributeLocation("ivColour");
+    vBounds             = GetAttributeLocation("ivBounds");
+    vMask               = GetAttributeLocation("ivMask");
 }
 
 void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
@@ -66,47 +102,19 @@ void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
     glUniform2i(uScreenSize, width, height);
 }
 
-void DrawImageShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uClip, left, top, right, bottom);
-}
-
-void DrawImageShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uBounds, left, top, right, bottom);
-}
-
-void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uTextureCoordinates, left, top, right, bottom);
-}
-
-void DrawImageShader::SetTexture(GLuint texture)
-{
-    OpenGLAPI::SetTexture2D(0, texture);
-}
-
-void DrawImageShader::SetColour(vec4f colour)
-{
-    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
-}
-
-void DrawImageShader::SetFlags(uint32 flags)
-{
-    glUniform1i(uFlags, flags);
-}
-
 void DrawImageShader::SetPalette(const vec4f *glPalette)
 {
     glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
 }
 
-void DrawImageShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instances)
 {
-    SetBounds(left, top, right, bottom);
-
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(instances[0]) * instances.size(), instances.data(), GL_STREAM_DRAW);
+
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, instances.size());
 }
 
 #endif /* DISABLE_OPENGL */

@@ -36,6 +36,8 @@ private:
     GLuint _vbo;
     GLuint _vao;
 
+	GLuint _sourceFramebuffer = 0;
+
 public:
     FillRectShader();
     ~FillRectShader() override;
@@ -48,6 +50,8 @@ public:
     void SetSourceFramebuffer(GLuint texture);
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
+
+	GLuint GetSourceFramebuffer() const;
 
 private:
     void GetLocations();

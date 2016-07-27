@@ -83,6 +83,7 @@ extern "C"
             try
             {
                 _drawingEngine->Initialise(gWindow);
+                _drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
             }
             catch (Exception ex)
             {
@@ -161,6 +162,14 @@ extern "C"
         if (_drawingEngine != nullptr)
         {
             _drawingEngine->InvalidateImage(image);
+        }
+    }
+
+    void drawing_engine_set_fps_uncapped(bool uncapped)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            _drawingEngine->SetUncappedFrameRate(uncapped);
         }
     }
 

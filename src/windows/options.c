@@ -587,6 +587,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		switch (widgetIndex) {
 		case WIDX_UNCAP_FPS_CHECKBOX:
 			gConfigGeneral.uncap_fps ^= 1;
+			drawing_engine_set_fps_uncapped(gConfigGeneral.uncap_fps);
 			config_save_default();
 			window_invalidate(w);
 			break;

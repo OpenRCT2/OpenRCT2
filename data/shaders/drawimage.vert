@@ -1,33 +1,53 @@
 #version 150
 
 uniform ivec2 uScreenSize;
-uniform ivec4 uBounds;
-uniform ivec4 uTextureCoordinates;
+
+in ivec4 ivClip;
+in int   ivTexColourAtlas;
+in vec4  ivTexColourBounds;
+in int   ivTexMaskAtlas;
+in vec4  ivTexMaskBounds;
+in int   ivFlags;
+in vec4  ivColour;
+in ivec4 ivBounds;
+in int   ivMask;
 
 in uint vIndex;
 
-out vec2 fPosition;
-out vec2 fTextureCoordinate;
+out vec2       fTextureCoordinate;
+out vec2       fPosition;
+flat out ivec4 fClip;
+flat out int   fFlags;
+out vec4       fColour;
+flat out int   fTexColourAtlas;
+out vec2       fTexColourCoords;
+flat out int   fTexMaskAtlas;
+out vec2       fTexMaskCoords;
+flat out int   fMask;
 
 void main()
 {
     vec2 pos;
     switch (vIndex) {
     case 0u:
-        pos = uBounds.xy;
-        fTextureCoordinate = uTextureCoordinates.xy;
+        pos = ivBounds.xy;
+        fTexColourCoords = ivTexColourBounds.xy;
+        fTexMaskCoords = ivTexMaskBounds.xy;
         break;
     case 1u:
-        pos = uBounds.zy;
-        fTextureCoordinate = uTextureCoordinates.zy;
+        pos = ivBounds.zy;
+        fTexColourCoords = ivTexColourBounds.zy;
+        fTexMaskCoords = ivTexMaskBounds.zy;
         break;
     case 2u:
-        pos = uBounds.xw;
-        fTextureCoordinate = uTextureCoordinates.xw;
+        pos = ivBounds.xw;
+        fTexColourCoords = ivTexColourBounds.xw;
+        fTexMaskCoords = ivTexMaskBounds.xw;
         break;
     case 3u:
-        pos = uBounds.zw;
-        fTextureCoordinate = uTextureCoordinates.zw;
+        pos = ivBounds.zw;
+        fTexColourCoords = ivTexColourBounds.zw;
+        fTexMaskCoords = ivTexMaskBounds.zw;
         break;
     }
 
@@ -37,6 +57,13 @@ void main()
     pos.x = (pos.x * (2.0 / uScreenSize.x)) - 1.0;
     pos.y = (pos.y * (2.0 / uScreenSize.y)) - 1.0;
     pos.y *= -1;
+
+    fClip = ivClip;
+    fFlags = ivFlags;
+    fColour = ivColour;
+    fMask = ivMask;
+    fTexColourAtlas = ivTexColourAtlas;
+    fTexMaskAtlas = ivTexMaskAtlas;
 
     gl_Position = vec4(pos, 0.0, 1.0);
 }

@@ -40,6 +40,10 @@
 #define glTexImage2D        __static__glTexImage2D
 #define glTexParameteri     __static__glTexParameteri
 #define glViewport          __static__glViewport
+#define glTexSubImage3D     __static__glTexSubImage3D
+#define glTexImage3D        __static__glTexImage3D
+#define glGetIntegerv       __static__glGetIntegerv
+#define glGetTexImage       __static__glGetTexImage
 
 #endif
 
@@ -67,6 +71,10 @@
 #undef glTexImage2D
 #undef glTexParameteri
 #undef glViewport
+#undef glTexSubImage3D
+#undef glTexImage3D
+#undef glGetIntegerv
+#undef glGetTexImage
 
 // 1.1 function signatures
 typedef void   (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
@@ -87,6 +95,10 @@ typedef void   (APIENTRYP PFNGLREADPIXELSPROC    )(GLint x, GLint y, GLsizei wid
 typedef void   (APIENTRYP PFNGLTEXIMAGE2DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void   (APIENTRYP PFNGLTEXPARAMETERIPROC )(GLenum target, GLenum pname, GLint param);
 typedef void   (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei width, GLsizei height);
+typedef void   (APIENTRYP PFNGLTEXSUBIMAGE3DPROC )(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data);
+typedef void   (APIENTRYP PFNGLTEXIMAGE3DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid * data);
+typedef void   (APIENTRYP PFNGLGETINTERGERVPROC  )(GLenum pname, GLint * data);
+typedef void   (APIENTRYP PFNGLGETTEXIMAGEPROC   )(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * img);
 
 #ifdef NO_EXTERN_GLAPI
     // Defines the function pointers
@@ -118,6 +130,10 @@ GLAPI_DECL PFNGLREADPIXELSPROC                  glReadPixels                GLAP
 GLAPI_DECL PFNGLTEXIMAGE2DPROC                  glTexImage2D                GLAPI_SET;
 GLAPI_DECL PFNGLTEXPARAMETERIPROC               glTexParameteri             GLAPI_SET;
 GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAPI_SET;
+GLAPI_DECL PFNGLTEXSUBIMAGE3DPROC               glTexSubImage3D             GLAPI_SET;
+GLAPI_DECL PFNGLTEXIMAGE3DPROC                  glTexImage3D                GLAPI_SET;
+GLAPI_DECL PFNGLGETINTERGERVPROC                glGetIntegerv               GLAPI_SET;
+GLAPI_DECL PFNGLGETTEXIMAGEPROC                 glGetTexImage               GLAPI_SET;
 
 // 2.0+ function pointers
 GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;
@@ -150,12 +166,15 @@ GLAPI_DECL PFNGLLINKPROGRAMPROC                 glLinkProgram               GLAP
 GLAPI_DECL PFNGLSHADERSOURCEPROC                glShaderSource              GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM1IPROC                   glUniform1i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAPI_SET;
+GLAPI_DECL PFNGLUNIFORM2FPROC                   glUniform2f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FVPROC                  glUniform4fv                GLAPI_SET;
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
+GLAPI_DECL PFNGLDRAWARRAYSINSTANCEDPROC         glDrawArraysInstanced       GLAPI_SET;
+GLAPI_DECL PFNGLVERTEXATTRIBDIVISORPROC         glVertexAttribDivisor       GLAPI_SET;
 
 #endif /* OPENGL_NO_LINK */
 
@@ -172,7 +191,7 @@ inline void CheckGLError()
 namespace OpenGLAPI
 {
     bool Initialise();
-    void SetTexture2D(uint16 index, GLuint texture);
+    void SetTexture(uint16 index, GLenum type, GLuint texture);
 }
 
 namespace OpenGLState

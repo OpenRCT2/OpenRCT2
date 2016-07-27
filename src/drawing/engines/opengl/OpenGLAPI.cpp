@@ -68,6 +68,10 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);
     SetupOpenGLFunction(glViewport);
+    SetupOpenGLFunction(glTexSubImage3D);
+    SetupOpenGLFunction(glTexImage3D);
+    SetupOpenGLFunction(glGetIntegerv);
+    SetupOpenGLFunction(glGetTexImage);
 
     // 2.0+ functions
     SetupOpenGLFunction(glAttachShader);
@@ -100,12 +104,15 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glShaderSource);
     SetupOpenGLFunction(glUniform1i);
     SetupOpenGLFunction(glUniform2i);
+    SetupOpenGLFunction(glUniform2f);
     SetupOpenGLFunction(glUniform4f);
     SetupOpenGLFunction(glUniform4i);
     SetupOpenGLFunction(glUniform4fv);
     SetupOpenGLFunction(glUseProgram);
     SetupOpenGLFunction(glVertexAttribIPointer);
     SetupOpenGLFunction(glVertexAttribPointer);
+    SetupOpenGLFunction(glDrawArraysInstanced);
+    SetupOpenGLFunction(glVertexAttribDivisor);
 
     return nullptr;
 }
@@ -118,13 +125,13 @@ namespace OpenGLState
     GLuint CurrentProgram = UINT32_MAX;
 }
 
-void OpenGLAPI::SetTexture2D(uint16 index, GLuint texture)
+void OpenGLAPI::SetTexture(uint16 index, GLenum type, GLuint texture)
 {
     if (OpenGLState::ActiveTexture != index)
     {
         glActiveTexture(GL_TEXTURE0 + index);
     }
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(type, texture);
 }
 
 bool OpenGLAPI::Initialise()

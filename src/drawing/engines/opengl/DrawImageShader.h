@@ -19,22 +19,41 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 #include <SDL_pixels.h>
+#include <vector>
+
+// Per-instance data for images
+struct DrawImageInstance {
+    vec4i clip;
+    int texColourAtlas;
+    vec4f texColourBounds;
+    int texMaskAtlas;
+    vec4f texMaskBounds;
+    int flags;
+    vec4f colour;
+    vec4i bounds;
+    int mask;
+};
 
 class DrawImageShader : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;
-    GLuint uClip;
-    GLuint uBounds;
-    GLuint uTextureCoordinates;
     GLuint uTexture;
-    GLuint uColour;
-    GLuint uFlags;
     GLuint uPalette;
 
     GLuint vIndex;
+    GLuint vClip;
+    GLuint vTexColourAtlas;
+    GLuint vTexColourBounds;
+    GLuint vTexMaskAtlas;
+    GLuint vTexMaskBounds;
+    GLuint vFlags;
+    GLuint vColour;
+    GLuint vBounds;
+    GLuint vMask;
 
     GLuint _vbo;
+    GLuint _vboInstances;
     GLuint _vao;
     
     SDL_Color _palette[256];
@@ -44,14 +63,8 @@ public:
     ~DrawImageShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetTexture(GLuint texture);
-    void SetColour(vec4f colour);
-    void SetFlags(uint32 flags);
     void SetPalette(const vec4f *glPalette);
-    void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
+    void DrawInstances(const std::vector<DrawImageInstance>& instances);
 
 private:
     void GetLocations();
