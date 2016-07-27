@@ -3015,7 +3015,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 	}
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO){
-		uint8 secondaryItem = RCT2_ADDRESS(0x0097D7CB, uint8)[ride->type * 4];
+		uint8 secondaryItem = RidePhotoItems[ride->type];
 		if (sub_69AF1E(peep, peep->current_ride, secondaryItem, ride->price_secondary)) {
 			ride->no_secondary_items_sold++;
 		}
