@@ -82,8 +82,10 @@ CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * pale
     return cacheInfo;
 }
 
-void TextureCache::CreateAtlasesTexture() {
-    if (!_atlasesTextureInitialised) {
+void TextureCache::CreateAtlasesTexture()
+{
+    if (!_atlasesTextureInitialised)
+    {
         // Determine width and height to use for texture atlases
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_atlasesTextureDimensions);
         if (_atlasesTextureDimensions > TEXTURE_CACHE_MAX_ATLAS_SIZE) {
@@ -106,13 +108,14 @@ void TextureCache::CreateAtlasesTexture() {
     }
 }
 
-void TextureCache::EnlargeAtlasesTexture(GLuint newEntries) {
+void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
+{
     CreateAtlasesTexture();
 
     GLuint newIndices = _atlasesTextureIndices + newEntries;
 
     // Retrieve current array data
-    std::vector<char> oldPixels(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureIndices);
+    auto oldPixels = std::vector<char>(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureIndices);
     glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
 
     // Reallocate array
@@ -168,18 +171,22 @@ void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 
     return pixels32;
 }
 
-CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight) {
+CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight)
+{
     CreateAtlasesTexture();
 
     // Find an atlas that fits this image
-    for (Atlas& atlas : _atlases) {
-        if (atlas.GetFreeSlots() > 0 && atlas.IsImageSuitable(imageWidth, imageHeight)) {
+    for (Atlas& atlas : _atlases)
+    {
+        if (atlas.GetFreeSlots() > 0 && atlas.IsImageSuitable(imageWidth, imageHeight))
+        {
             return atlas.Allocate(imageWidth, imageHeight);
         }
     }
 
     // If there is no such atlas, then create a new one
-    if ((int) _atlases.size() >= _atlasesTextureIndicesLimit) {
+    if ((int) _atlases.size() >= _atlasesTextureIndicesLimit)
+    {
         throw std::runtime_error("more texture atlases required, but device limit reached!");
     }
 
@@ -187,7 +194,7 @@ CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight) {
     int atlasSize = (int) powf(2, (float) Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
 #ifdef DEBUG
-    printf("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
+    log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
 #endif
 
     _atlases.push_back(std::move(Atlas(atlasIndex, atlasSize)));
@@ -296,7 +303,8 @@ void TextureCache::DeleteDPI(rct_drawpixelinfo* dpi)
     delete dpi;
 }
 
-GLuint TextureCache::GetAtlasesTexture() {
+GLuint TextureCache::GetAtlasesTexture()
+{
     return _atlasesTexture;
 }
 

@@ -307,16 +307,16 @@ static int _frames;
 
 static void rct2_measure_fps()
 {
-    _frames++;
+	_frames++;
 
-    time_t currentTime = time(NULL);
+	time_t currentTime = time(NULL);
 
-    if (currentTime != _lastSecond) {
-        _currentFPS = _frames;
-        _frames = 0;
-    }
+	if (currentTime != _lastSecond) {
+		_currentFPS = _frames;
+		_frames = 0;
+	}
 
-    _lastSecond = currentTime;
+	_lastSecond = currentTime;
 }
 
 static void rct2_draw_fps(rct_drawpixelinfo *dpi)
@@ -333,7 +333,7 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-    
+	
 	sprintf(ch, "%d", _currentFPS);
 
 	// Draw Text

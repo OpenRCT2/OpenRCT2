@@ -899,15 +899,18 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     _commandBuffers.images.push_back(command);
 }
 
-void OpenGLDrawingContext::FlushCommandBuffers() {
+void OpenGLDrawingContext::FlushCommandBuffers()
+{
     FlushRectangles();
     FlushLines();
 
     FlushImages();
 }
 
-void OpenGLDrawingContext::FlushRectangles() {
-    for (const auto& command : _commandBuffers.rectangles) {
+void OpenGLDrawingContext::FlushRectangles()
+{
+    for (const auto& command : _commandBuffers.rectangles)
+    {
         _fillRectShader->Use();
         _fillRectShader->SetFlags(command.flags);
         _fillRectShader->SetSourceFramebuffer(command.sourceFramebuffer);
@@ -921,7 +924,8 @@ void OpenGLDrawingContext::FlushRectangles() {
 }
 
 void OpenGLDrawingContext::FlushLines() {
-    for (const auto& command : _commandBuffers.lines) {
+    for (const auto& command : _commandBuffers.lines)
+    {
         _drawLineShader->Use();
         _drawLineShader->SetColour(command.colour);
         _drawLineShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
@@ -931,7 +935,8 @@ void OpenGLDrawingContext::FlushLines() {
     _commandBuffers.lines.clear();
 }
 
-void OpenGLDrawingContext::FlushImages() {
+void OpenGLDrawingContext::FlushImages()
+{
     if (_commandBuffers.images.size() == 0) return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
@@ -939,7 +944,8 @@ void OpenGLDrawingContext::FlushImages() {
     std::vector<DrawImageInstance> instances;
     instances.reserve(_commandBuffers.images.size());
 
-    for (const auto& command : _commandBuffers.images) {
+    for (const auto& command : _commandBuffers.images)
+    {
         DrawImageInstance instance;
 
         instance.clip = {command.clip[0], command.clip[1], command.clip[2], command.clip[3]};

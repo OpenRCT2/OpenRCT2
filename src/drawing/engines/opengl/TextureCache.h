@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <unordered_map>
 #include <vector>
-#include <algorithm>
 #include <SDL_pixels.h>
 #include "../../../common.h"
 #include "OpenGLAPI.h"
@@ -62,7 +62,8 @@ constexpr int TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
 constexpr int TEXTURE_CACHE_SMALLEST_SLOT = 32;
 
 // Location of an image (texture atlas index, slot and normalized coordinates)
-struct CachedTextureInfo {
+struct CachedTextureInfo
+{
     GLuint index;
     GLuint slot;
     vec4i bounds;
@@ -72,7 +73,8 @@ struct CachedTextureInfo {
 // Represents a texture atlas that images of a given maximum size can be allocated from
 // Atlases are all stored in the same 2D texture array, occupying the specified index
 // Slots in atlases are always squares.
-class Atlas {
+class Atlas
+{
 private:
     GLuint _index;
     int _imageSize;
@@ -82,12 +84,14 @@ private:
     int _cols, _rows;
 
 public:
-    Atlas(GLuint index, int imageSize) {
+    Atlas(GLuint index, int imageSize)
+    {
         _index = index;
         _imageSize = imageSize;
     }
 
-    void Initialise(int atlasWidth, int atlasHeight) {
+    void Initialise(int atlasWidth, int atlasHeight)
+    {
         _atlasWidth = atlasWidth;
         _atlasHeight = atlasHeight;
 
@@ -95,12 +99,14 @@ public:
         _rows = _atlasHeight / _imageSize;
 
         _freeSlots.resize(_cols * _rows);
-        for (size_t i = 0; i < _freeSlots.size(); i++) {
+        for (size_t i = 0; i < _freeSlots.size(); i++)
+        {
             _freeSlots[i] = i;
         }
     }
 
-    CachedTextureInfo Allocate(int actualWidth, int actualHeight) {
+    CachedTextureInfo Allocate(int actualWidth, int actualHeight)
+    {
         assert(_freeSlots.size() > 0);
 
         GLuint slot = _freeSlots.back();
@@ -108,10 +114,17 @@ public:
 
         auto bounds = GetSlotCoordinates(slot, actualWidth, actualHeight);
 
-        return {_index, slot, bounds, NormalizeCoordinates(bounds)};
+        return
+        {
+            _index,
+            slot,
+            bounds,
+            NormalizeCoordinates(bounds)
+        };
     }
 
-    void Free(const CachedTextureInfo& info) {
+    void Free(const CachedTextureInfo& info)
+    {
         assert(_index == info.index);
 
         _freeSlots.push_back(info.slot);
@@ -119,18 +132,21 @@ public:
 
     // Checks if specified image would be tightly packed in this atlas
     // by checking if it is within the right power of 2 range
-    bool IsImageSuitable(int actualWidth, int actualHeight) const {
+    bool IsImageSuitable(int actualWidth, int actualHeight) const
+    {
         int imageOrder = CalculateImageSizeOrder(actualWidth, actualHeight);
         int atlasOrder = (int) log2(_imageSize);
 
         return imageOrder == atlasOrder;
     }
 
-    int GetFreeSlots() const {
+    int GetFreeSlots() const
+    {
         return (int) _freeSlots.size();
     }
 
-    static int CalculateImageSizeOrder(int actualWidth, int actualHeight) {
+    static int CalculateImageSizeOrder(int actualWidth, int actualHeight)
+    {
         int actualSize = std::max(actualWidth, actualHeight);
 
         if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT) {
@@ -141,11 +157,13 @@ public:
     }
 
 private:
-    vec4i GetSlotCoordinates(GLuint slot, int actualWidth, int actualHeight) const {
+    vec4i GetSlotCoordinates(GLuint slot, int actualWidth, int actualHeight) const
+    {
         int row = slot / _cols;
         int col = slot % _cols;
 
-        return vec4i{
+        return vec4i
+        {
             _imageSize * col,
             _imageSize * row,
             _imageSize * col + actualWidth,
@@ -153,8 +171,10 @@ private:
         };
     }
 
-    vec4f NormalizeCoordinates(const vec4i& coords) const {
-        return vec4f{
+    vec4f NormalizeCoordinates(const vec4i& coords) const
+    {
+        return vec4f
+        {
             coords.x / (float) _atlasWidth,
             coords.y / (float) _atlasHeight,
             coords.z / (float) _atlasWidth,
