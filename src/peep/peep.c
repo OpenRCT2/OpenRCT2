@@ -9661,7 +9661,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  */
 static bool sub_69101A(rct_map_element *esi) {
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
-	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] != 0) {
+	if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE) {
 		return true;
 	}
 

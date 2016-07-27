@@ -53,6 +53,7 @@
 
 #pragma region Ride classification table
 
+/** rct2: 0x0097C3AF */
 const uint8 gRideClassifications[255] = {
 	RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
 	RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,

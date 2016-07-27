@@ -1602,7 +1602,7 @@ void window_guest_rides_update(rct_window *w)
 		uint8 ride_id_offset = ride_id / 8;
 		if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit)){
 			rct_ride* ride = get_ride(ride_id);
-			if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0){
+			if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE){
 				w->list_item_positions[curr_list_position] = ride_id;
 				curr_list_position++;
 			}

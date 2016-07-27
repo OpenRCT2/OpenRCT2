@@ -649,7 +649,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			formatSecondary = 0;
-			if (RCT2_ADDRESS(0x0097C3AF, uint8)[ride->type] == PAGE_RIDES) {
+			if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
 				set_format_arg(2, uint16, ride->guests_favourite);
 				formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
 			}
