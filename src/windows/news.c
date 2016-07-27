@@ -221,12 +221,12 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
 				buttonIndex = 0;
 				break;
 			} else if (x < 351) {
-				if (RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) {
+				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) {
 					buttonIndex = 1;
 					break;
 				}
 			} else if (x < 376) {
-				if (RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 1) {
+				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) {
 					buttonIndex = 2;
 					break;
 				}
@@ -304,7 +304,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, STR_STRING, 14);
 
 		// Subject button
-		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->flags & 1)) {
 			x = 328;
 			yy = y + 14;
 
@@ -368,7 +368,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		}
 
 		// Location button
-		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 1) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->flags & 1)) {
 			x = 352;
 			yy = y + 14;
 

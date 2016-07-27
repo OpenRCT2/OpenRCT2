@@ -32,6 +32,13 @@ enum {
 	NEWS_ITEM_GRAPH
 };
 
+enum {
+	NEWS_TYPE_HAS_LOCATION = 1,
+	NEWS_TYPE_HAS_SUBJECT = 2,
+};
+
+extern const uint8 news_type_properties[10];
+
 #pragma pack(push, 1)
 /**
  * News item structure.

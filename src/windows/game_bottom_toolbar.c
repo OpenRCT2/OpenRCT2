@@ -289,7 +289,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 		if (x == SPRITE_LOCATION_NULL)
 			w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
-		if (!((RCT2_ADDRESS(0x0097BE7C, char))[newsItem->type] & 2)) {
+		if (!(news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT)) {
 			w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
 			window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
 		}
