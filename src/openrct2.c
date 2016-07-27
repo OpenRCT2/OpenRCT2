@@ -63,6 +63,11 @@ bool gOpenRCT2Headless = false;
 bool gOpenRCT2ShowChangelog;
 bool gOpenRCT2SilentBreakpad;
 
+#ifndef DISABLE_NETWORK
+// OpenSSL's message digest context used for calculating sprite checksums
+EVP_MD_CTX *gHashCTX = NULL;
+#endif // DISABLE_NETWORK
+
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
 
@@ -175,6 +180,11 @@ static void openrct2_copy_original_user_files_over()
 bool openrct2_initialise()
 {
 	utf8 userPath[MAX_PATH];
+
+#ifndef DISABLE_NETWORK
+	gHashCTX = EVP_MD_CTX_create();
+	assert(gHashCTX != NULL);
+#endif // DISABLE_NETWORK
 
 	platform_resolve_openrct_data_path();
 	platform_resolve_user_data_path();
@@ -336,6 +346,9 @@ void openrct2_dispose()
 	language_close_all();
 	rct2_dispose();
 	config_release();
+#ifndef DISABLE_NETWORK
+	EVP_MD_CTX_destroy(gHashCTX);
+#endif // DISABLE_NETWORK
 	platform_free();
 }
 

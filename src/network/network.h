@@ -43,6 +43,7 @@ extern "C" {
 #include "../game.h"
 #include "../platform/platform.h"
 #include "../localisation/string_ids.h"
+#include <openssl/evp.h>
 #ifdef __cplusplus
 }
 #endif // __cplusplus
@@ -76,6 +77,10 @@ extern "C" {
 #include "NetworkPlayer.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
+
+enum {
+	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
+};
 
 class Network
 {
@@ -191,6 +196,7 @@ private:
 	uint32 server_tick = 0;
 	uint32 server_srand0 = 0;
 	uint32 server_srand0_tick = 0;
+	char server_sprite_hash[EVP_MAX_MD_SIZE + 1];
 	uint8 player_id = 0;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;

@@ -441,4 +441,6 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle);
 void crash_splash_create(int x, int y, int z);
 void crash_splash_update(rct_crash_splash *splash);
 
+const char *sprite_checksum();
+
 #endif
