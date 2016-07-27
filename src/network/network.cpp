@@ -1086,7 +1086,7 @@ void Network::Server_Send_TICK()
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	uint32 flags = 0;
 	// Simple counter which limits how often a sprite checksum gets sent.
-	// This can get somewhat expensive, so we don't want to push it every from in release,
+	// This can get somewhat expensive, so we don't want to push it every tick in release,
 	// but debug version can check more often.
 	static int checksum_counter = 0;
 	checksum_counter++;
