@@ -3185,6 +3185,10 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		vehicle->track_z / 8
 		);
 
+	if (mapElement == NULL) {
+		return;
+	}
+
 	vehicle->current_station = map_get_station(mapElement);
 	vehicle->num_laps++;
 
@@ -5641,6 +5645,10 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 		trackType
 	);
 
+	if (trackElement == NULL) {
+		return;
+	}
+
 	switch (trackType) {
 	case TRACK_ELEM_BLOCK_BRAKES:
 		if (ride_is_block_sectioned(ride))
@@ -6917,8 +6925,12 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 			trackType,
 			0
 		);
-
 	}
+
+	if (mapElement == NULL) {
+		return;
+	}
+
 	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
 		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
 	}
@@ -6985,6 +6997,11 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
 		trackType,
 		0
 		);
+
+	if (mapElement == NULL) {
+		return false;
+	}
+
 	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == gCurrentVehicle) {
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
