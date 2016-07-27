@@ -888,7 +888,7 @@ STR_0882    :Load Game
 STR_0883    :Save Game
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
-STR_0886    :Quit Game
+STR_0886    :<removed string - do not use>
 STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
