@@ -205,7 +205,7 @@ const char * sprite_checksum()
 }
 #else
 
-char * sprite_checksum()
+const char * sprite_checksum()
 {
 	return NULL;
 }
