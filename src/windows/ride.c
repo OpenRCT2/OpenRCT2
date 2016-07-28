@@ -4594,7 +4594,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = w->y + (widget->bottom + widget->top) / 2 - 6;
 
 		uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
-		spriteIndex = 5061 + shopItem;
+		spriteIndex = ShopItemImage[shopItem];
 		spriteIndex |= ride->track_colour_main[0] << 19;
 		spriteIndex |= 0x20000000;
 
