@@ -1684,6 +1684,9 @@ uint8 footpath_element_get_type(rct_map_element *mapElement)
 static void footpath_clear_wide(int x, int y)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;
@@ -1746,6 +1749,9 @@ void footpath_update_path_wide_flags(int x, int y)
 		return;
 
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;

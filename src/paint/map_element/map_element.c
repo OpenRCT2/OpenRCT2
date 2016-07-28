@@ -144,6 +144,9 @@ static void sub_68B3FB(int x, int y)
 	RCT2_GLOBAL(0x9DE576, uint16_t) = y;
 
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
+	if (map_element == NULL) {
+		return;
+	}
 	uint8 rotation = get_current_rotation();
 
 	int dx = 0;

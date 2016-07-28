@@ -406,6 +406,10 @@ int map_element_height(int x, int y)
 	// Get the surface element for the tile
 	mapElement = map_get_surface_element_at(x_tile / 32, y_tile / 32);
 
+	if (mapElement == NULL) {
+		return 16;
+	}
+
 	uint32 height =
 		((mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 20) |
 		(mapElement->base_height << 3);
@@ -4523,6 +4527,9 @@ static void clear_elements_at(int x, int y)
 		}
 
 		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+		if (mapElement == NULL) {
+			continue;
+		}
 	next_element:
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE:

@@ -1019,6 +1019,10 @@ static int checkForPath(rct_peep *peep){
 	}
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		// should the peep start falling?
+		return 1;
+	}
 
 	uint8 map_type = MAP_ELEMENT_TYPE_PATH;
 	if (peep->next_var_29 & ((1 << 4) | (1 << 3))){
@@ -4742,6 +4746,9 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	if (!peep_should_find_bench(peep))return 0;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return 0;
+	}
 
 	for (;; map_element++){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -4817,6 +4824,9 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	if (peep->next_var_29 & 0x18)return 0;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return 0;
+	}
 
 	for (;; map_element++){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -4898,6 +4908,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	if (peep->next_var_29 & 0x18) return;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return;
+	}
 
 	for (;; map_element++){
 		if ( map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -8629,6 +8642,9 @@ static int sub_693C9E(rct_peep *peep)
 	}
 
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return 1;
+	}
 	sint16 base_z = max(0, (peep->z / 8) - 2);
 	sint16 top_z = (peep->z / 8) + 1;
 
