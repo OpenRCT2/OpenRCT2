@@ -616,6 +616,28 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, 0, w->x + 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->y + 2);
 }
 
+/** rct2: 0x00992A08 */
+static const uint32 staffOrderBaseSprites[] = {
+	SPR_STAFF_ORDERS_SWEEPING,
+	SPR_STAFF_ORDERS_INSPECT_RIDES,
+	0,
+	0,
+};
+
+static const uint32 staffCostumeSprites[] = {
+	SPR_STAFF_COSTUME_PANDA,
+	SPR_STAFF_COSTUME_TIGER,
+	SPR_STAFF_COSTUME_ELEPHANT,
+	SPR_STAFF_COSTUME_ROMAN,
+	SPR_STAFF_COSTUME_GORILLA,
+	SPR_STAFF_COSTUME_SNOWMAN,
+	SPR_STAFF_COSTUME_KNIGHT,
+	SPR_STAFF_COSTUME_ASTRONAUT,
+	SPR_STAFF_COSTUME_BANDIT,
+	SPR_STAFF_COSTUME_SHERIFF,
+	SPR_STAFF_COSTUME_PIRATE,
+};
+
 /**
 *
 *  rct2: 0x006BD785
@@ -657,13 +679,13 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 
 				// True if a patrol path is set for the worker
 				if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2) {
-					gfx_draw_sprite(dpi, 0x13FD, 110, y - 1, 0);
+					gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, 110, y - 1, 0);
 				}
 
 				staffOrderIcon_x = 0x7D;
 				if (peep->staff_type != 3) {
 					staffOrders = peep->staff_orders;
-					staffOrderSprite = RCT2_ADDRESS(0x00992A08, uint32)[selectedTab];
+					staffOrderSprite = staffOrderBaseSprites[selectedTab];
 
 					while (staffOrders != 0) {
 						if (staffOrders & 1) {
@@ -671,10 +693,11 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 						}
 						staffOrders = staffOrders >> 1;
 						staffOrderIcon_x += 9;
+						// TODO: Remove sprite ID addition
 						staffOrderSprite++;
 					}
 				} else {
-					gfx_draw_sprite(dpi, peep->sprite_type - 4 + 0x13FE, staffOrderIcon_x, y - 1, 0);
+					gfx_draw_sprite(dpi, staffCostumeSprites[peep->sprite_type - 4], staffOrderIcon_x, y - 1, 0);
 				}
 			}
 
