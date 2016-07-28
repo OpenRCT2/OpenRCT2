@@ -62,14 +62,14 @@ All libs listed here (bar cmake) required in 32 bit variants.
 
 ## 3.2 Compiling and running
 ### Windows:
-1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
+1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new Developer Command Prompt for VS2015, run PowerShell and then navigate to the repository.
 3. Run the ```setenv.ps1``` script in the repository to set up your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
 4. Run ```install``` to download the required dependencies to build OpenRCT2.
 5. Run ```build all``` to build all the required components for OpenRCT2.
 6. Run ```run``` to run OpenRCT2.
 
-These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such ```g2.dat``` or language files.
+These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have used the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such ```g2.dat``` or language files.
 
 ### Mac:
 We support native builds for macOS (limited to i386 only for now).
