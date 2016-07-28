@@ -830,7 +830,7 @@ STR_0825    :Der gewählte Name wird bereits verwendet
 STR_0826    :Es sind zu viele Namen definiert
 STR_0827    :Nicht genügend Geld - erforderlich sind {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Fenster schließen
-STR_0829    :{SMALLFONT}{BLACK}Fenstertitel - Ziehen Sie hier, um das Fenster zu verschieben
+STR_0829    :{SMALLFONT}{BLACK}Fenstertitel - Ziehen Sie hier, um{NEWLINE}das Fenster zu verschieben
 STR_0830    :{SMALLFONT}{BLACK}Ansicht heranzoomen
 STR_0831    :{SMALLFONT}{BLACK}Ansicht wegzoomen
 STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90{DEGREE} im Uhrzeigersinn drehen
@@ -1160,7 +1160,7 @@ STR_1155    :Höhenmarkierungen an Fußwegen
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kann nicht entfernt werden...
-STR_1159    :{SMALLFONT}{BLACK}Platzieren Sie Szenerien, Beete und{NEWLINE}andere Objekte
+STR_1159    :{SMALLFONT}{BLACK}Platzieren Sie Szenerien, Beete{NEWLINE}und andere Objekte
 STR_1160    :{SMALLFONT}{BLACK}Seen & Wasseranlagen erstellen/anpassen
 STR_1161    :Kann hier nicht positioniert werden...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
@@ -1949,7 +1949,7 @@ STR_1943    :{SMALLFONT}{BLACK}Aktuelle Gedanken dieses Besuchers anzeigen
 STR_1944    :{SMALLFONT}{BLACK}Objekte anzeigen, die der{NEWLINE}Besucher bei sich trägt
 STR_1945    :{SMALLFONT}{BLACK}Anweisungen und Optionen für diesen Mitarbeiter anzeigen
 STR_1946    :{SMALLFONT}{BLACK}Kostüm für diesen Animateur auswählen
-STR_1947    :{SMALLFONT}{BLACK}Vom Mitarbeitertyp abgelaufene{NEWLINE}Bereiche anzeigen und den nächsten{NEWLINE}Mitarbeiter suchen
+STR_1947    :{SMALLFONT}{BLACK}Vom Mitarbeitertyp abgelaufene Bereiche anzeigen und den nächsten{NEWLINE}Mitarbeiter suchen
 STR_1948    :{SMALLFONT}{BLACK}Neuen Mitarbeiter für den ausgewählten{NEWLINE}Typ einstellen
 STR_1949    :Finanzübersicht
 STR_1950    :Finanzdiagramm
@@ -2982,7 +2982,7 @@ STR_2972    :Alternatives Farbschema 1
 STR_2973    :Alternatives Farbschema 2
 STR_2974    :Alternatives Farbschema 3
 STR_2975    :{SMALLFONT}{BLACK}Wählen Sie das Farbschema aus, das geändert oder mit dem eine Bahn gestrichen werden soll
-STR_2976    :{SMALLFONT}{BLACK}Streichen Sie einen bestimmten Bereich dieser Bahn mit dem ausgewählten Farbschema
+STR_2976    :{SMALLFONT}{BLACK}Streichen Sie einen bestimmten Bereich{NEWLINE}dieser Bahn mit dem ausgewählten Farbschema
 STR_2977    :Mitarbeitername
 STR_2978    :Neuen Namen für diesen Mitarbeiter eingeben:
 STR_2979    :Dieser Mitarbeiter kann nicht benannt werden...
@@ -4198,6 +4198,11 @@ STR_5895    :Streckenentwurf speichern
 STR_5896    :Streckenentwurf konnte nicht gespeichert werden!
 STR_5897    :Fensterlimit:
 STR_5898    :{BLACK}Streckenentwurf konnte nicht geladen werden, da die Datei möglicherweise fehlt oder fehlerhaft ist!
+STR_5899    :Zeichen-Debugging-Fenster ein/aus
+STR_5900    :Originalen Zeichen-Code verw.
+STR_5901    :Segmenthöhen anzeigen
+STR_5902    :Rahmen anzeigen
+STR_5903    :Zeichen-Debugging-Fenster anzeigen
 
 #############
 # Scenarios #

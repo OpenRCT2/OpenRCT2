@@ -4169,7 +4169,7 @@ STR_5856    :{SMALLFONT}{BLACK}Définit la résolution du jeu en plein écran
 STR_5857    :{SMALLFONT}{BLACK}Options du jeu
 STR_5858    :{SMALLFONT}{BLACK}Utilise la carte graphique au lieu du processeur pour l'affichage. Améliore la compatibilité avec les logiciels de capture. Peut dégrader légèrement les performances
 STR_5859    :{SMALLFONT}{BLACK}Active l'extrapolation des frames pour des animations plus fluides. Désactivé, le jeu s'affichera à 40FPS
-#STR_5860    :Dessin des voies original/décompilé
+STR_5860    :Dessin des voies original/décompilé
 STR_5861    :Echec de la vérification de clé
 STR_5862    :Bloquer les joueurs inconnus
 STR_5863    :{SMALLFONT}{BLACK}Seuls les joueurs ayant une clé connue peuvent rejoindre la partie
@@ -4208,6 +4208,11 @@ STR_5895    :Sauvegarder la voie
 STR_5896    :La sauvegarde de la voie a échoué !
 STR_5897    :Nombre de fenêtres max. :
 STR_5898    :{BLACK}Impossible de charger la voie, le fichier est peut-être corrompu ou manquant !
+STR_5899    :Afficher/masquer fenêtre de débogage du dessin
+STR_5900    :Utiliser le code de dessin original
+STR_5901    :Afficher la hauteur des segments
+STR_5902    :Afficher les boîtes englobantes
+STR_5903    :Fenêtre de débogage du dessin
 
 #############
 # Scenarios #
