@@ -4198,7 +4198,12 @@ STR_5894    :Vul de wisselkoers in
 STR_5895    :Baanontwerp opslaan
 STR_5896    :Opslaan baanontwerp mislukt!
 STR_5897    :Vensterlimiet:
-STR_5898    :{BLACK}Kan het baanontwerp niet laden. Het bestand{NEWLINE}is beschadigd of verwijderd! 
+STR_5898    :{BLACK}Kan het baanontwerp niet laden. Het bestand{NEWLINE}is beschadigd of verwijderd!
+STR_5899    :Debugscherm tekencode aan/uitschakelen
+STR_5900    :Originele tekencode gebruiken
+STR_5901    :Segmenthoogten weergeven
+STR_5902    :Begrenzingsvak weergeven
+STR_5903    :Debugscherm tekencode weergeven
 
 #############
 # Scenarios #
