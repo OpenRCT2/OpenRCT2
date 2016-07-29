@@ -289,6 +289,9 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 		PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return false;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;

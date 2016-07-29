@@ -311,6 +311,9 @@ rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int statio
 
 	// Find the station track element
 	mapElement = map_get_first_element_at(x, y);
+	if (mapElement == NULL) {
+		return NULL;
+	}
 	do {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK && z == mapElement->base_height)
 			return mapElement;
@@ -326,6 +329,9 @@ rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int
 
 	// Find the station track element
 	mapElement = map_get_first_element_at(x, y);
+	if (mapElement == NULL) {
+		return NULL;
+	}
 	do {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE && z == mapElement->base_height)
 			return mapElement;

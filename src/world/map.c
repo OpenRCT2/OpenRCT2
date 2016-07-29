@@ -155,7 +155,11 @@ int map_element_iterator_next(map_element_iterator *it)
 {
 	if (it->element == NULL) {
 		it->element = map_get_first_element_at(it->x, it->y);
-		return 1;
+		if (it->element == NULL) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 
 	if (!map_element_is_last_for_tile(it->element)) {
@@ -726,6 +730,9 @@ bool map_is_location_owned_or_has_rights(int x, int y)
 
 	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		if (mapElement == NULL) {
+			return false;
+		}
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
 	}
@@ -3958,6 +3965,9 @@ void map_reorganise_elements()
 		for (int x = 0; x < 256; x++) {
 			rct_map_element *startElement = map_get_first_element_at(x, y);
 			rct_map_element *endElement = startElement;
+			if (endElement == NULL) {
+				continue;
+			}
 			while (!map_element_is_last_for_tile(endElement++));
 
 			num_elements = endElement - startElement;
@@ -5410,6 +5420,9 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 rct_map_element *map_get_track_element_at(int x, int y, int z)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return NULL;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;
@@ -5430,6 +5443,9 @@ rct_map_element *map_get_track_element_at(int x, int y, int z)
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return NULL;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;

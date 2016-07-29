@@ -2113,6 +2113,9 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
+		if (mapElement == NULL) {
+			continue;
+		}
 		int rotation = ((mapElement->type & 3) << 2) | current_rotation;
 		x *= 32;
 		y *= 32;
