@@ -1,5 +1,6 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: Add cheat to reset date.
 - Feature: Add OpenGL drawing engine.
 - Feature: Implementation of the user-defined currency
 - Feature: Add ability to rotate map elements with the tile inspector.

@@ -415,6 +415,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
 			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
+			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();

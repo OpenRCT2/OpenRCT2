@@ -4212,6 +4212,7 @@ STR_5900    :Use original drawing code
 STR_5901    :Show segment heights
 STR_5902    :Show bounding boxes
 STR_5903    :Show paint debug window
+STR_5904    :Reset date
 
 #############
 # Scenarios #
