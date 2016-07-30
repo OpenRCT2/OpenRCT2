@@ -218,7 +218,7 @@ void scenario_begin()
 			}
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
-			if ((int)stex != -1) {
+			if ((intptr_t)stex != -1) {
 				char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 
 				// Set localised park name
@@ -453,7 +453,7 @@ static void scenario_week_update()
 
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-	if (month <= MONTH_APRIL && (sint32)water_type != -1 && water_type->var_0E & 1) {
+	if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->var_0E & 1) {
 		// 100 attempts at finding some water to create a few ducks at
 		for (int i = 0; i < 100; i++) {
 			if (scenario_create_ducks())
@@ -666,7 +666,7 @@ int scenario_prepare_for_save()
 	s6Info->entry.flags = 255;
 
 	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != 0xFFFFFFFF) {
+	if ((intptr_t)stex != -1) {
 		format_string(buffer, stex->scenario_name, NULL);
 		safe_strcpy(s6Info->name, buffer, sizeof(s6Info->name));
 

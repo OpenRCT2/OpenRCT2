@@ -1062,7 +1062,7 @@ void process_mouse_over(int x, int y)
 
 	int widgetId;
 	int cursorId;
-	int ebx, esi, edi, ebp;
+	int ebx, edi;
 
 	cursorId = CURSOR_ARROW;
 	set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
@@ -1087,13 +1087,11 @@ void process_mouse_over(int x, int y)
 					gCurrentToolWidget.window_classification,
 					gCurrentToolWidget.window_number
 					);
-				ebp = (int)subWindow;
 				if (subWindow == NULL)
 					break;
 
 				ebx = 0;
 				edi = cursorId;
-				esi = (int)subWindow;
 				// Window event WE_UNKNOWN_0E was called here, but no windows actually implemented a handler and
 				// its not known what it was for
 				cursorId = edi;

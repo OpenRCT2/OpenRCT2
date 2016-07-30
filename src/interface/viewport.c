@@ -1244,7 +1244,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 	uint8 *source_pointer = image->offset;
 	uint8 *new_source_pointer_start = malloc(total_no_pixels);
 	uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
-	int ebx1, ecx;
+	intptr_t ebx1;
+	int ecx;
 	while (total_no_pixels > 0) {
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0) {
@@ -1263,8 +1264,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		eax = (eax & 0xFF00) + *(source_pointer + 1);
 		total_no_pixels -= ecx;
 		source_pointer += 2;
-		ebx1 = (uint32) new_source_pointer - eax;
-		eax = (uint32) source_pointer;
+		ebx1 = (uintptr_t) new_source_pointer - eax;
+		eax = (uintptr_t) source_pointer;
 		source_pointer = (uint8 *) ebx1;
 		ebx1 = eax;
 		eax = 0;
@@ -1273,7 +1274,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		source_pointer = (uint8 *) ebx1;
 	}
 
-	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, new_source_pointer_start + (uint32) offset);
+	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, new_source_pointer_start + (uintptr_t) offset);
 	free(new_source_pointer_start);
 
 	return output;
