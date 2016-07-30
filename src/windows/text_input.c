@@ -96,7 +96,7 @@ rct_windownumber calling_number = 0;
 int calling_widget = 0;
 int _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength)
+void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int maxLength)
 {
 	_maxInputLength = maxLength;
 
