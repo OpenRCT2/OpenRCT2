@@ -1447,13 +1447,11 @@ void window_rotate_camera(rct_window *w, int direction)
 
 void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y)
 {
+	// Get mouse position to offset against.
 	int mouse_x, mouse_y;
-	platform_get_cursor_position(&mouse_x, &mouse_y);
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
-	// Compensate for window scaling.
-	mouse_x = (int) ceilf(mouse_x / gConfigGeneral.window_scale);
-	mouse_y = (int) ceilf(mouse_y / gConfigGeneral.window_scale);
-
+	// Compute map coordinate by mouse position.
 	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
 
 	// Get viewport coordinates centring around the tile.
@@ -1461,20 +1459,13 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 	int dest_x, dest_y;
 	center_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
 
-	// Rebase mouse position onto centre of window.
-	int rebased_x = (w->width >> 1) - mouse_x,
-		rebased_y = (w->height >> 1) - mouse_y;
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
+		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
 
-	// Compensate for zoom level.
-	rebased_x <<= w->viewport->zoom;
-	rebased_y <<= w->viewport->zoom;
-
-	// Apply offset to the viewport.
-	int new_x = dest_x + rebased_x,
-		new_y = dest_y + rebased_y;
-
-	*offset_x = (w->saved_view_x - new_x) << w->viewport->zoom,
-	*offset_y = (w->saved_view_y - new_y) << w->viewport->zoom;
+	// Compute cursor offset relative to tile.
+	*offset_x = (w->saved_view_x - (dest_x + rebased_x)) << w->viewport->zoom;
+	*offset_y = (w->saved_view_y - (dest_y + rebased_y)) << w->viewport->zoom;
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y)
@@ -1486,19 +1477,11 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 
 	// Get mouse position to offset against.
 	int mouse_x, mouse_y;
-	platform_get_cursor_position(&mouse_x, &mouse_y);
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
-	// Compensate for window scaling.
-	mouse_x = (int) ceilf(mouse_x / gConfigGeneral.window_scale);
-	mouse_y = (int) ceilf(mouse_y / gConfigGeneral.window_scale);
-
-	// Rebase mouse position onto centre of window.
-	int rebased_x = (w->width >> 1) - mouse_x,
-		rebased_y = (w->height >> 1) - mouse_y;
-
-	// Compensate for zoom level.
-	rebased_x <<= w->viewport->zoom;
-	rebased_y <<= w->viewport->zoom;
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
+		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
 
 	// Apply offset to the viewport.
 	w->saved_view_x = dest_x + rebased_x + (offset_x >> w->viewport->zoom);

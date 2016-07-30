@@ -166,6 +166,7 @@ bool platform_file_delete(const utf8 *path);
 void platform_hide_cursor();
 void platform_show_cursor();
 void platform_get_cursor_position(int *x, int *y);
+void platform_get_cursor_position_scaled(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 void platform_resolve_user_data_path();
