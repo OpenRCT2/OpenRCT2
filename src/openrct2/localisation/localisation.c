@@ -1363,9 +1363,7 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 	(*env)->DeleteLocalRef(env, bytes);
 	(*env)->DeleteLocalRef(env, jstring1);
 
-	printf("Final copied string : %s\n", dst);
-
-	int result = strlen(dst);
+	int result = strlen(dst) + 1;
 #else
 	//log_warning("converting %s of size %d", src, srcLength);
 	char *buffer_conv = strndup(src, srcLength);
