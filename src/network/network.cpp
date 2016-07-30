@@ -1022,6 +1022,12 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		header = (unsigned char *)_strdup("open2_sv6_zlib");
 		size_t header_len = strlen((char *)header) + 1; // account for null terminator
 		header = (unsigned char *)realloc(header, header_len + out_size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", header_len + out_size);
+			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			connection->Socket->Disconnect();
+			return;
+		}
 		memcpy(&header[header_len], compressed, out_size);
 		out_size += header_len;
 		free(compressed);
@@ -1029,6 +1035,12 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	} else {
 		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
 		header = (unsigned char *)malloc(size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", size);
+			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			connection->Socket->Disconnect();
+			return;
+		}
 		out_size = size;
 		memcpy(header, &buffer[0], size);
 	}
