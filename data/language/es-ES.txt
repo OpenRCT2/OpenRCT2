@@ -4167,6 +4167,11 @@ STR_5895    :Guardar diseño de vía
 STR_5896    :¡Falló al guardar el diseño de vía!
 STR_5897    :Límite de ventanas:
 STR_5898    :{BLACK}No se pudo cargar el diseño de vía:{NEWLINE}¡El archivo parece estar corrupto, dañado o no existe!
+STR_5899    :Alternar vent. depuración de pintado
+STR_5900    :Utilizar código de dibujado original
+STR_5901    :Mostrar alturas de segmentos
+STR_5902    :Mostrar cajas delimitadoras
+STR_5903    :Mostrar ventana de depuración de pintado
 
 ##############
 # Escenarios #
