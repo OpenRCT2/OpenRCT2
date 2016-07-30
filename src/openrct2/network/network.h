@@ -62,6 +62,7 @@ extern "C" {
 #ifdef __cplusplus
 
 #include <array>
+#include <openssl/evp.h>
 #include <list>
 #include <set>
 #include <memory>
