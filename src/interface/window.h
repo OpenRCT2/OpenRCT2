@@ -748,7 +748,7 @@ void textinput_cancel();
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 int window_can_resize(rct_window *w);
 
-void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength);
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, char *existing_args, int maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();

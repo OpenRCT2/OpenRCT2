@@ -2508,7 +2508,7 @@ void textinput_cancel()
 	}
 }
 
-void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength)
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, char * existing_args, int maxLength)
 {
 	if (gUsingWidgetTextBox)
 		window_cancel_textbox();

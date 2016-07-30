@@ -846,7 +846,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
 		//window_text_input_open(w, widgetIndex, STR_OBJECT_SEARCH, STR_OBJECT_SEARCH_DESC, STR_STRING, (uint32)_filter_string, 40);
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_filter_string, 40);
+		window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, 40);
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
