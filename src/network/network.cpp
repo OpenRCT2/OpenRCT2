@@ -1024,6 +1024,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		header = (unsigned char *)realloc(header, header_len + out_size);
 		if (header == nullptr) {
 			log_error("Failed to allocate %u bytes.", header_len + out_size);
+			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			connection->Socket->Disconnect();
 			return;
 		}
 		memcpy(&header[header_len], compressed, out_size);
@@ -1035,6 +1037,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		header = (unsigned char *)malloc(size);
 		if (header == nullptr) {
 			log_error("Failed to allocate %u bytes.", size);
+			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			connection->Socket->Disconnect();
 			return;
 		}
 		out_size = size;
