@@ -883,6 +883,16 @@ enum {
 	RIDE_SETTING_RIDE_TYPE,
 };
 
+typedef struct rct_ride_properties {
+	uint32 flags;
+	uint8 minValue;
+	uint8 maxValue;
+	uint8 maxBrakesSpeed;
+	uint8 accelaration;
+} rct_ride_properties;
+
+extern const rct_ride_properties gRideProperties[91];
+
 #define MAX_RIDES 255
 
 #define MAX_RIDE_MEASUREMENTS 8
