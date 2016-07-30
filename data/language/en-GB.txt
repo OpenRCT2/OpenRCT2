@@ -4213,6 +4213,7 @@ STR_5901    :Show segment heights
 STR_5902    :Show bounding boxes
 STR_5903    :Show paint debug window
 STR_5904    :Reset date
+STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
 
 #############
 # Scenarios #
