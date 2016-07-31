@@ -273,6 +273,7 @@
     <ClCompile Include="src\title.c" />
     <ClCompile Include="src\util\sawyercoding.c" />
     <ClCompile Include="src\util\util.c" />
+    <ClCompile Include="src\version.c" />
     <ClCompile Include="src\windows\about.c" />
     <ClCompile Include="src\windows\banner.c" />
     <ClCompile Include="src\windows\cheats.c" />

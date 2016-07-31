@@ -37,6 +37,7 @@
 #include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
+#include "version.h"
 #include "world/mapgen.h"
 
 #if defined(__unix__)
@@ -87,14 +88,14 @@ void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
 	strcat(buffer, OPENRCT2_VERSION);
 
 	// Build information
-	if (!str_is_null_or_empty(OPENRCT2_BRANCH)) {
-		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
+	if (!str_is_null_or_empty(gGitBranch)) {
+		sprintf(strchr(buffer, 0), "-%s", gGitBranch);
 	}
-	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT)) {
-		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_COMMIT_SHA1_SHORT);
+	if (!str_is_null_or_empty(gCommitSha1Short)) {
+		sprintf(strchr(buffer, 0), " build %s", gCommitSha1Short);
 	}
-	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER)) {
-		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
+	if (!str_is_null_or_empty(gBuildServer)) {
+		sprintf(strchr(buffer, 0), " provided by %s", gBuildServer);
 	}
 
 #if DEBUG
