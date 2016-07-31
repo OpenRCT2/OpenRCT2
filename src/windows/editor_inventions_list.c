@@ -211,7 +211,7 @@ static void research_rides_setup(){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
 				rct_ride_entry* master_ride = get_ride_entry(rideType);
-				if (master_ride == NULL || (uint32)master_ride == 0xFFFFFFFF)
+				if (master_ride == NULL || (intptr_t)master_ride == -1)
 					continue;
 
 				if (master_ride->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)

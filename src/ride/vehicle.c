@@ -702,7 +702,7 @@ void vehicle_sounds_update()
 							vehicle_sound++;
 							i++;
 							if (i >= countof(gVehicleSoundList)) {
-								vehicle_sound_params = (rct_vehicle_sound_params*)((int)vehicle_sound_params + 10);
+								vehicle_sound_params = (rct_vehicle_sound_params*)((uintptr_t)vehicle_sound_params + 10);
 								goto label28;
 							}
 						}
