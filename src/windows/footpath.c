@@ -590,7 +590,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 	rct_footpath_entry *pathType;
 
 	numPathTypes = 0;
-	flags = 4;
+	flags = FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
 	// If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
 	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
 		flags = 0;
