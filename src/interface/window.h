@@ -574,6 +574,8 @@ rct_window *window_get_main();
 void window_scroll_to_viewport(rct_window *w);
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w, int direction);
+void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y);
+void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y);
 void window_zoom_set(rct_window *w, int zoomLevel);
 void window_zoom_in(rct_window *w);
 void window_zoom_out(rct_window *w);

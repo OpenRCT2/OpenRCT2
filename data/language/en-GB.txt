@@ -4214,6 +4214,8 @@ STR_5902    :Show bounding boxes
 STR_5903    :Show paint debug window
 STR_5904    :Reset date
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
+STR_5906    :Zoom to cursor position
+STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the cursor, as opposed to the screen centre.
 
 #############
 # Scenarios #

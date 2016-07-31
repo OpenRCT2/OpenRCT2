@@ -374,7 +374,7 @@ static void window_close_surplus(int cap, sint8 avoid_classification)
 /*
  * Changes the maximum amount of windows allowed
  */
-void window_set_window_limit(int value) 
+void window_set_window_limit(int value)
 {
 	int prev = gConfigGeneral.window_limit;
 	int val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
@@ -1445,6 +1445,49 @@ void window_rotate_camera(rct_window *w, int direction)
 	reset_all_sprite_quadrant_placements();
 }
 
+void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y)
+{
+	// Get mouse position to offset against.
+	int mouse_x, mouse_y;
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+
+	// Compute map coordinate by mouse position.
+	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
+
+	// Get viewport coordinates centring around the tile.
+	int base_height = map_element_height(*map_x, *map_y);
+	int dest_x, dest_y;
+	center_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
+
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
+		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
+
+	// Compute cursor offset relative to tile.
+	*offset_x = (w->saved_view_x - (dest_x + rebased_x)) << w->viewport->zoom;
+	*offset_y = (w->saved_view_y - (dest_y + rebased_y)) << w->viewport->zoom;
+}
+
+void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y)
+{
+	// Get viewport coordinates centring around the tile.
+	int dest_x, dest_y;
+	int base_height = map_element_height(map_x, map_y);
+	center_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
+
+	// Get mouse position to offset against.
+	int mouse_x, mouse_y;
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
+		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
+
+	// Apply offset to the viewport.
+	w->saved_view_x = dest_x + rebased_x + (offset_x >> w->viewport->zoom);
+	w->saved_view_y = dest_y + rebased_y + (offset_y >> w->viewport->zoom);
+}
+
 void window_zoom_set(rct_window *w, int zoomLevel)
 {
 	rct_viewport* v = w->viewport;
@@ -1453,12 +1496,18 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 	if (v->zoom == zoomLevel)
 		return;
 
+	// Zooming to cursor? Remember where we're pointing at the moment.
+	sint16 saved_map_x, saved_map_y, offset_x, offset_y;
+	if (gConfigGeneral.zoom_to_cursor) {
+		window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
+	}
+
 	// Zoom in
 	while (v->zoom > zoomLevel) {
 		v->zoom--;
 		w->saved_view_x += v->view_width / 4;
 		w->saved_view_y += v->view_height / 4;
-		v->view_width /= 2;
+		v->view_width  /= 2;
 		v->view_height /= 2;
 	}
 
@@ -1467,8 +1516,13 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 		v->zoom++;
 		w->saved_view_x -= v->view_width / 2;
 		w->saved_view_y -= v->view_height / 2;
-		v->view_width *= 2;
+		v->view_width  *= 2;
 		v->view_height *= 2;
+	}
+
+	// Zooming to cursor? Centre around the tile we were hovering over just now.
+	if (gConfigGeneral.zoom_to_cursor) {
+		window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
 	}
 
 	// HACK: Prevents the redraw from failing when there is

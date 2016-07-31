@@ -783,6 +783,15 @@ void platform_get_cursor_position(int *x, int *y)
 	SDL_GetMouseState(x, y);
 }
 
+void platform_get_cursor_position_scaled(int *x, int *y)
+{
+	platform_get_cursor_position(x, y);
+
+	// Compensate for window scaling.
+	*x = (int) ceilf(*x / gConfigGeneral.window_scale);
+	*y = (int) ceilf(*y / gConfigGeneral.window_scale);
+}
+
 void platform_set_cursor_position(int x, int y)
 {
 	SDL_WarpMouseInWindow(NULL, x, y);
