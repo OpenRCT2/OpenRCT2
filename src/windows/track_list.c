@@ -429,13 +429,13 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	RCT2_GLOBAL(0x00F44153, uint8) = 0;
 	// Warnings
-	if ((td6->track_flags & 4) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
 		gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, 0, x, y, 368);
 		y -= 10;
 	}
 
-	if (td6->track_flags & 1) {
+	if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
 		RCT2_GLOBAL(0x00F44153, uint8) = 1;
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available

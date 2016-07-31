@@ -40,6 +40,10 @@ assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
 enum {
+	FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+};
+
+enum {
 	FOOTPATH_SEARCH_SUCCESS,
 	FOOTPATH_SEARCH_NOT_FOUND,
 	FOOTPATH_SEARCH_INCOMPLETE,
