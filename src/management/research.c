@@ -203,7 +203,7 @@ void research_finish_item(sint32 entryIndex)
 					rideEntry2->ride_type[1] == base_ride_type ||
 					rideEntry2->ride_type[2] == base_ride_type
 				) {
-					ride_entry_set_invented(rideEntryIndex);
+					ride_entry_set_invented(i);
 				}
 			}
 		}
