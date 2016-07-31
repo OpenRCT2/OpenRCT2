@@ -14,6 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef OPENRCT2_BUILD_INFO_HEADER
+#include OPENRCT2_BUILD_INFO_HEADER
+#endif
+
 #ifdef OPENRCT2_BUILD_NUMBER
 	const char *gBuildNumber = OPENRCT2_BUILD_NUMBER;
 #else
