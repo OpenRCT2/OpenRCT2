@@ -4204,6 +4204,7 @@ STR_5900    :Originele tekencode gebruiken
 STR_5901    :Segmenthoogten weergeven
 STR_5902    :Begrenzingsvak weergeven
 STR_5903    :Debugscherm tekencode weergeven
+STR_5904    :Datum resetten
 
 #############
 # Scenarios #

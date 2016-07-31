@@ -4207,6 +4207,12 @@ STR_5895    :Salvar pista
 STR_5896    :Falha ao salvar pista!
 STR_5897    :Limite da janela:
 STR_5898    :{BLACK}Não é possível carregar pista, o arquivo pode estar {newline}corrompido, quebrado ou faltando!
+STR_5899    :Alternar janela de depuração de pintura
+STR_5900    :Usar código original de desenho
+STR_5901    :Mostrar altura de segmentos
+STR_5902    :Mostrar caixas delimitadoras
+STR_5903    :Mostrar janela de depuração de pintura
+STR_5904    :Reiniciar data
 
 #############
 # Scenarios #

@@ -4213,6 +4213,7 @@ STR_5900    :Utiliser le code de dessin original
 STR_5901    :Afficher la hauteur des segments
 STR_5902    :Afficher les boîtes englobantes
 STR_5903    :Fenêtre de débogage du dessin
+STR_5904    :Réinitialiser date
 
 #############
 # Scenarios #

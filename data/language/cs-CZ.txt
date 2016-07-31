@@ -4207,6 +4207,12 @@ STR_5895    :Uložit trať
 STR_5896    :Nepodařilo se uložit trať!
 STR_5897    :Limit okna:
 STR_5898    :{BLACK}Nelze načíst trať - soubor neexistuje,{newline}nebo je pravděpodobně poškozen!
+STR_5899    :Přepnout okno debug vykreslování
+STR_5900    :Použít původní vykreslovací kód
+STR_5901    :Zobrazit výšky segmentů
+STR_5902    :Vykreslit okraje (bounding box)
+STR_5903    :Zobrazit okno debug vykreslování
+STR_5904    :Vynulovat datum
 
 
 ###############################################################################

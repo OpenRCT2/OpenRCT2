@@ -4172,6 +4172,7 @@ STR_5900    :Utilizar código de dibujado original
 STR_5901    :Mostrar alturas de segmentos
 STR_5902    :Mostrar cajas delimitadoras
 STR_5903    :Mostrar ventana de depuración de pintado
+STR_5904    :Reiniciar fecha
 
 ##############
 # Escenarios #
