@@ -6295,7 +6295,7 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
 
-	peep->sprite_identifier = 1;
+	peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
 	peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
 	peep->outside_of_park = 1;
 	peep->state = PEEP_STATE_FALLING;

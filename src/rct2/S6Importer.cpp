@@ -367,10 +367,9 @@ void S6Importer::Import()
     }
     map_update_tile_pointers();
     reset_all_sprite_quadrant_placements();
-    reset_sprite_spatial_index();
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
+    if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
+        reset_sprite_spatial_index();
     }
     game_convert_strings_to_utf8();
     if (FixIssues)
@@ -491,6 +490,7 @@ extern "C"
         SDL_RWread(rw, &checksum, sizeof(uint32), 1);
 
         // Read other data not in normal save files
+        SDL_RWread(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
         gGamePaused = SDL_ReadLE32(rw);
         _guestGenerationProbability = SDL_ReadLE32(rw);
         _suggestedGuestMaximum = SDL_ReadLE32(rw);

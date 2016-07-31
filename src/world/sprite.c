@@ -128,8 +128,6 @@ void reset_sprite_list()
 	}
 
 	gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
 }
 
 /**
@@ -159,15 +157,6 @@ void reset_sprite_spatial_index()
 	}
 }
 
-void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
-{
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		reset_all_sprite_quadrant_placements();
-		reset_sprite_spatial_index();
-	}
-	*ebx = 0;
-}
-
 #ifndef DISABLE_NETWORK
 
 static unsigned char _spriteChecksum[EVP_MAX_MD_SIZE + 1];
@@ -181,9 +170,11 @@ const char * sprite_checksum()
 	for (size_t i = 0; i < MAX_SPRITES; i++)
 	{
 		rct_sprite *sprite = get_sprite(i);
-		if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+		if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL && sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_MISC)
 		{
-			if (EVP_DigestUpdate(gHashCTX, sprite, sizeof(rct_sprite)) <= 0)
+			rct_sprite copy = *sprite;
+			copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
+			if (EVP_DigestUpdate(gHashCTX, &copy, sizeof(rct_sprite)) <= 0)
 			{
 				openrct2_assert(false, "Failed to update digest");
 			}

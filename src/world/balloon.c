@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../network/network.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "sprite.h"
@@ -82,6 +83,9 @@ void balloon_update(rct_balloon *balloon)
  */
 void balloon_press(rct_balloon *balloon)
 {
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		return;
+	}
 	if (balloon->popped == 1)
 		return;
 

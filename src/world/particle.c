@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../util/util.h"
+#include "../scenario.h"
 #include "sprite.h"
 
 /**
@@ -35,12 +36,12 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, i
 		sprite_move(x, y, z, (rct_sprite*)sprite);
 		sprite->misc_identifier = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
-		sprite->frame = (util_rand() & 0xFF) * 12;
-		sprite->var_24 = (util_rand() & 0x7F) + 140;
-		sprite->var_2E = ((util_rand() & 0xFF) * 5) >> 8;
-		sprite->acceleration_x = ((sint16)(util_rand() & 0xFFFF)) * 4;
-		sprite->acceleration_y = ((sint16)(util_rand() & 0xFFFF)) * 4;
-		sprite->acceleration_z = (util_rand() & 0xFFFF) * 4 + 0x10000;
+		sprite->frame = (scenario_rand() & 0xFF) * 12;
+		sprite->var_24 = (scenario_rand() & 0x7F) + 140;
+		sprite->var_2E = ((scenario_rand() & 0xFF) * 5) >> 8;
+		sprite->acceleration_x = ((sint16)(scenario_rand() & 0xFFFF)) * 4;
+		sprite->acceleration_y = ((sint16)(scenario_rand() & 0xFFFF)) * 4;
+		sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
 		sprite->velocity_x = 0;
 		sprite->velocity_y = 0;
 		sprite->velocity_z = 0;

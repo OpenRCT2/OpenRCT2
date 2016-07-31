@@ -483,7 +483,6 @@ extern "C"
         }
 
         map_reorganise_elements();
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
         sprite_clear_all_unused();
 
         viewport_set_saved_view();
@@ -544,6 +543,7 @@ extern "C"
         }
 
         // Write other data not in normal save files
+        SDL_RWwrite(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
         SDL_WriteLE32(rw, gGamePaused);
         SDL_WriteLE32(rw, _guestGenerationProbability);
         SDL_WriteLE32(rw, _suggestedGuestMaximum);
