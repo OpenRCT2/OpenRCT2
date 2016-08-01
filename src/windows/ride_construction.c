@@ -2642,12 +2642,12 @@ static bool sub_6CA2DF(int *_trackType, int *_trackDirection, int *_rideIndex, i
 
 	bool do_loc_6CAF26 = false;
 	if (!(_enabledRidePieces.a & (1 << 5))) {
-		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x2000) {
+		if (TrackFlags[trackType] & TRACK_ELEM_FLAG_2000) {
 			do_loc_6CAF26 = true;
 		}
 	}
 
-	if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x1000)) {
+	if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_1000)) {
 		do_loc_6CAF26 = true;
 	}
 

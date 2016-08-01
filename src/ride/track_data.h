@@ -82,3 +82,6 @@ extern const uint32 TrackHeightMarkerPositions[256];
 
 extern const uint8 TrackSequenceElementAllowedWallEdges[256][16];
 extern const uint8 FlatRideTrackSequenceElementAllowedWallEdges[256][16];
+
+extern const uint16 FlatTrackFlags[256];
+extern const uint16 TrackFlags[256];
