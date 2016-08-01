@@ -346,6 +346,7 @@
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
 		D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766841D03BAA5002222CD /* NewDrawing.cpp */; };
 		D49766891D03BABB002222CD /* rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766871D03BABB002222CD /* rain.cpp */; };
+		D4CA88661D4E64C800060C11 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = D4CA88651D4E64C800060C11 /* version.c */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
@@ -1007,6 +1008,7 @@
 		D497668A1D03BAC8002222CD /* IDrawingContext.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IDrawingContext.h; sourceTree = "<group>"; usesTabs = 0; };
 		D497668B1D03BAC8002222CD /* IDrawingEngine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IDrawingEngine.h; sourceTree = "<group>"; usesTabs = 0; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4CA88651D4E64C800060C11 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
@@ -1256,6 +1258,7 @@
 				D44271821CC81B3200D84D28 /* scenario_sources.c */,
 				D44271831CC81B3200D84D28 /* scenario.c */,
 				D44271861CC81B3200D84D28 /* title.c */,
+				D4CA88651D4E64C800060C11 /* version.c */,
 				D44270CE1CC81B3200D84D28 /* addresses.h */,
 				D44270D51CC81B3200D84D28 /* cheats.h */,
 				D44270DD1CC81B3200D84D28 /* common.h */,
@@ -2011,6 +2014,7 @@
 				D4EC48E91C264FC20024B507 /* Download Libraries */,
 				D4EC012A1C25532B00DAFE69 /* Setup AppIcon */,
 				D40F4E1D1C2528D5009582C9 /* Create Segment Files */,
+				D4CA88671D4E962100060C11 /* Get Git Variables */,
 				D497D0741C20FD52002BF46A /* Sources */,
 				D497D0751C20FD52002BF46A /* Frameworks */,
 				D41B74201C210B190080A7B9 /* Embed Frameworks */,
@@ -2107,6 +2111,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/\"";
+		};
+		D4CA88671D4E962100060C11 /* Get Git Variables */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Get Git Variables";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/gitversion.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2285,6 +2304,7 @@
 				D44272931CC81B3200D84D28 /* top_toolbar.c in Sources */,
 				D43407DA1D0E14BE00C2B3D4 /* FillRectShader.cpp in Sources */,
 				D464FEBE1D31A66E00CBABAC /* MemoryStream.cpp in Sources */,
+				D4CA88661D4E64C800060C11 /* version.c in Sources */,
 				D44271F61CC81B3200D84D28 /* audio.c in Sources */,
 				D442728A1CC81B3200D84D28 /* tile_inspector.c in Sources */,
 				D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */,
@@ -2513,6 +2533,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2555,7 +2576,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = OPENGL_NO_LINK;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;

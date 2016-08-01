@@ -14,36 +14,36 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
-
-#include "common.h"
-
-#define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.5"
-#define OPENRCT2_ARCHITECTURE		"x86"
-
-// Platform
-#ifdef __WINDOWS__
-	#define OPENRCT2_PLATFORM		"Windows"
-#endif
-#ifdef __LINUX__
-	#define OPENRCT2_PLATFORM		"Linux"
-#endif
-#ifdef __MACOSX__
-	#define OPENRCT2_PLATFORM		"macOS"
-#endif
-#ifndef OPENRCT2_PLATFORM
-	#error Unknown platform!
+#ifdef OPENRCT2_BUILD_INFO_HEADER
+#include OPENRCT2_BUILD_INFO_HEADER
 #endif
 
-#define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+#ifdef OPENRCT2_BUILD_NUMBER
+	const char *gBuildNumber = OPENRCT2_BUILD_NUMBER;
+#else
+	const char *gBuildNumber = "";
+#endif
 
-// The following constants are for automated build servers
-extern const char *gBuildNumber;
-extern const char *gBuildServer;
-extern const char *gGitBranch;
-extern const char *gCommitSha1;
-extern const char *gCommitSha1Short;
+#ifdef OPENRCT2_BUILD_SERVER
+	const char *gBuildServer = OPENRCT2_BUILD_SERVER;
+#else
+	const char *gBuildServer = "";
+#endif
 
+#ifdef OPENRCT2_BRANCH
+	const char *gGitBranch = OPENRCT2_BRANCH;
+#else
+	const char *gGitBranch = "";
+#endif
+
+#ifdef OPENRCT2_COMMIT_SHA1
+	const char *gCommitSha1 = OPENRCT2_COMMIT_SHA1;
+#else
+	const char *gCommitSha1 = "";
+#endif
+
+#ifdef OPENRCT2_COMMIT_SHA1_SHORT
+	const char *gCommitSha1Short = OPENRCT2_COMMIT_SHA1_SHORT;
+#else
+	const char *gCommitSha1Short = "";
 #endif
