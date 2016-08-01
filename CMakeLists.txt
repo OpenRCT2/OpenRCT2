@@ -244,6 +244,10 @@ if (NOT DISABLE_OPENGL)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(GLLIBS opengl32)
+	elseif (APPLE)
+		# GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
+		find_package(OpenGL REQUIRED)
+		set(GLLIBS ${OPENGL_LIBRARY})
 	else (WIN32)
 		PKG_CHECK_MODULES(GL REQUIRED gl)
 		set(GLLIBS ${GL_LIBRARIES})
