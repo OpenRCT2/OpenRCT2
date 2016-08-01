@@ -1142,5 +1142,4 @@ GAME_COMMAND_POINTER* new_game_command_table[68] = {
 	game_command_modify_groups,
 	game_command_kick_player,
 	game_command_cheat,
-	game_command_reset_sprites,
 };

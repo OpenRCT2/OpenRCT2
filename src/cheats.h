@@ -37,6 +37,7 @@ extern bool gCheatsFreezeClimate;
 extern bool gCheatsDisableTrainLengthLimit;
 extern bool gCheatsDisablePlantAging;
 extern bool gCheatsEnableChainLiftOnAllTrack;
+extern bool gCheatsAllowArbitraryRideTypeChanges;
 
 
 enum {
@@ -81,6 +82,7 @@ enum {
 	CHEAT_SETFORCEDPARKRATING,
 	CHEAT_NEVERENDINGMARKETING,
 	CHEAT_RESETDATE,
+	CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,
 };
 
 enum {

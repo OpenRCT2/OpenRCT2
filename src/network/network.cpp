@@ -1520,9 +1520,6 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
 		Server_Send_MAP(&connection);
-		// This is needed to synchronise calls to reset sprite order across clients,
-		// otherwise connected clients will fall out of sync in simulation.
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
 		gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
 		Server_Send_GROUPLIST(connection);
 		Server_Send_PLAYERLIST();

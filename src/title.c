@@ -106,6 +106,9 @@ void title_load()
 
 	gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
 
+#ifndef DISABLE_NETWORK
+	network_close();
+#endif
 	reset_park_entrances();
 	user_string_clear_all();
 	reset_sprite_list();
@@ -131,9 +134,6 @@ void title_load()
 	title_init_showcase();
 	gfx_invalidate_screen();
 	gScreenAge = 0;
-#ifndef DISABLE_NETWORK
-	network_close();
-#endif
 
 	if (gOpenRCT2ShowChangelog) {
 		gOpenRCT2ShowChangelog = false;

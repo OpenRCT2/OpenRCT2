@@ -93,7 +93,7 @@ void climate_reset(int climate)
 		_rainVolume = 1;
 	}
 
-	climate_determine_future_weather(util_rand());
+	climate_determine_future_weather(scenario_rand());
 }
 
 static sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {

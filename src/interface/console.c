@@ -451,11 +451,11 @@ static int cc_rides(const utf8 **argv, int argc)
 			FOR_ALL_RIDES(i, ride) {
 				char name[128];
 				format_string(name, ride->name, &ride->name_arguments);
-				console_printf("ride %03d type: %02u subtype %03u name %s", i, ride->type, ride->subtype, name);
+				console_printf("rides %03d type: %02u subtype %03u name %s", i, ride->type, ride->subtype, name);
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
-				console_printf("ride set type <ride id> <ride type> [ride subtype]");
+				console_printf("rides set type <ride id> <ride type>");
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
@@ -470,18 +470,12 @@ static int cc_rides(const utf8 **argv, int argc)
 					console_printf("This command expects integer arguments");
 				} else if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
-				} else if (argc > 4 && (!int_valid[2] || (subtype < 0 || subtype >= object_entry_group_counts[OBJECT_TYPE_RIDE])))
-				{
-					console_printf("No ride entry found for given subtype");
 				} else {
+					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
+					int res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 					rct_ride *ride = get_ride(ride_index);
-					if (ride->type != RIDE_TYPE_NULL) {
-						ride->type = type;
-						if (int_valid[2]) {
-							ride->subtype = subtype;
-						}
-					} else {
-						console_printf("No ride found with index %d", ride_index);
+					if (res == MONEY32_UNDEFINED) {
+						console_printf("That didn't work");
 					}
 				}
 			} else if (strcmp(argv[1], "friction") == 0) {

@@ -86,6 +86,10 @@ enum {
 	WIDX_CLOSE_LIGHT,
 	WIDX_TEST_LIGHT,
 	WIDX_OPEN_LIGHT,
+	WIDX_RIDE_TYPE,
+	WIDX_RIDE_TYPE_INCREASE,
+	WIDX_RIDE_TYPE_DECREASE,
+	WIDX_RIDE_TYPE_APPLY,
 
 	WIDX_VEHICLE_TYPE = 14,
 	WIDX_VEHICLE_TYPE_DROPDOWN,
@@ -214,6 +218,13 @@ static rct_widget window_ride_main_widgets[] = {
 	{ WWT_IMGBTN,			1,	296,	309,	48,		61,		SPR_G2_RCT1_CLOSE_BUTTON_0,		STR_CLOSE_RIDE_TIP							},
 	{ WWT_IMGBTN,			1,	296,	309,	62,		75,		SPR_G2_RCT1_TEST_BUTTON_0,		STR_TEST_RIDE_TIP							},
 	{ WWT_IMGBTN,			1,	296,	309,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,		STR_OPEN_RIDE_TIP							},
+
+	// Ride type spinner + apply button
+	{ WWT_SPINNER,			1,	3,		253,	180,	191,	STR_ARG_6_STRINGID,				STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	242,	252,	181,	185,	STR_NUMERIC_UP,					STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	242,	252,	186,	190,	STR_NUMERIC_DOWN,				STR_NONE									},
+	{ WWT_CLOSEBOX,			1,	260,	307,	180,	191,	STR_APPLY,						STR_NONE									},
+
 	{ WIDGETS_END },
 };
 
@@ -243,6 +254,7 @@ static rct_widget window_ride_vehicle_widgets[] = {
 	{ WWT_SPINNER,			1,	164,	308,	190,	201,	STR_1_CAR_PER_TRAIN,						STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	195,	STR_NUMERIC_UP,								STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	196,	200,	STR_NUMERIC_DOWN,							STR_NONE										},
+
 	{ WIDGETS_END },
 };
 
@@ -497,7 +509,7 @@ static rct_widget *window_ride_page_widgets[] = {
 };
 
 const uint64 window_ride_page_enabled_widgets[] = {
-	0x0000000003FDBFF4,
+	0x000000003FFDBFF4,
 	0x00000000007EFFF4,
 	0x0000019E777DBFF4,
 	0x000000000003FFF4,
@@ -954,6 +966,10 @@ static rct_window_event_list *window_ride_page_events[] = {
 };
 
 #pragma endregion
+
+static uint8 _rideType;
+
+static void set_operating_setting(int rideNumber, uint8 setting, uint8 value);
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
@@ -1528,9 +1544,8 @@ static rct_window *window_ride_open(int rideIndex)
 	w->max_width = 500;
 	w->max_height = 450;
 
-	window_ride_update_overall_view((uint8) rideIndex);
-
 	ride = get_ride(rideIndex);
+	_rideType = ride->type;
 	numSubTypes = 0;
 	rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
 	for (; *rideEntryIndexPtr != 0xFF; rideEntryIndexPtr++) {
@@ -1539,6 +1554,9 @@ static rct_window *window_ride_open(int rideIndex)
 		}
 	}
 	var_496(w) = numSubTypes;
+
+	window_ride_update_overall_view((uint8) rideIndex);
+
 	return w;
 }
 
@@ -1609,6 +1627,7 @@ rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 	) {
 		tool_cancel();
 	}
+	_rideType = ride->type;
 
 	w->page = WINDOW_RIDE_PAGE_MAIN;
 	w->width = 316;
@@ -1719,6 +1738,7 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 		w->ride.var_482 = -1;
 	}
 
+	_rideType = ride->type;
 	w->page = WINDOW_RIDE_PAGE_MAIN;
 	w->width = 316;
 	w->height = 180;
@@ -2024,16 +2044,17 @@ static void window_ride_main_resize(rct_window *w)
 	rct_viewport *viewport;
 	int width, height;
 
+	const int offset = gCheatsAllowArbitraryRideTypeChanges ? 15 : 0;
 	w->flags |= WF_RESIZABLE;
-	int minHeight = 180;
+	int minHeight = 180 + offset;
 	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
-		minHeight = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
+		minHeight = 200 + offset + RCT1_LIGHT_OFFSET - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
 	window_set_resize(w, 316, minHeight, 500, 450);
 
 	viewport = w->viewport;
 	if (viewport != NULL) {
 		width = w->width - 30;
-		height = w->height - 75;
+		height = w->height - (75 + offset);
 		if (viewport->width != width || viewport->height != height) {
 			viewport->width = width;
 			viewport->height = height;
@@ -2190,12 +2211,35 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
  */
 static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
+	rct_ride *ride = get_ride(w->number);
 	switch (widgetIndex) {
 	case WIDX_VIEW_DROPDOWN:
 		window_ride_show_view_dropdown(w, widget);
 		break;
 	case WIDX_OPEN:
 		window_ride_show_open_dropdown(w, widget);
+		break;
+	case WIDX_RIDE_TYPE_INCREASE:
+		if (_rideType >= 90) {
+			_rideType = 90;
+		} else {
+			_rideType++;
+		}
+		widget_invalidate(w, WIDX_RIDE_TYPE);
+		break;
+	case WIDX_RIDE_TYPE_DECREASE:
+		if (_rideType == 0) {
+			_rideType = 0;
+		} else {
+			_rideType--;
+		}
+		widget_invalidate(w, WIDX_RIDE_TYPE);
+		break;
+	case WIDX_RIDE_TYPE_APPLY:
+		if (_rideType >= 0 && _rideType <= 90) {
+			set_operating_setting(w->number, RIDE_SETTING_RIDE_TYPE, _rideType);
+		}
+		window_invalidate_all();
 		break;
 	}
 }
@@ -2347,6 +2391,7 @@ static void window_ride_main_invalidate(rct_window *w)
 
 	set_format_arg(0, uint16, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
+	set_format_arg(6, uint16, _rideType + STR_RIDE_NAME_SPIRAL_ROLLER_COASTER);
 	uint32 spriteIds[] = {
 		SPR_CLOSED,
 		SPR_OPEN,
@@ -2360,15 +2405,46 @@ static void window_ride_main_invalidate(rct_window *w)
 
 	window_ride_anchor_border_widgets(w);
 
+	const int offset = gCheatsAllowArbitraryRideTypeChanges ? 15 : 0;
 	// Anchor main page specific widgets
 	window_ride_main_widgets[WIDX_VIEWPORT].right = w->width - 26;
-	window_ride_main_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+	window_ride_main_widgets[WIDX_VIEWPORT].bottom = w->height - (14 + offset);
 	window_ride_main_widgets[WIDX_STATUS].right = w->width - 26;
-	window_ride_main_widgets[WIDX_STATUS].top = w->height - 13;
-	window_ride_main_widgets[WIDX_STATUS].bottom = w->height - 3;
+	window_ride_main_widgets[WIDX_STATUS].top = w->height - (13 + offset);
+	window_ride_main_widgets[WIDX_STATUS].bottom = w->height - (3 + offset);
 	window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
+	window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 87;
+	window_ride_main_widgets[WIDX_RIDE_TYPE].top = w->height - 17;
+	window_ride_main_widgets[WIDX_RIDE_TYPE].bottom = w->height - 4;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].right = w->width - 88;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].left = w->width - 98;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].top = w->height - 16;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].bottom = w->height - 11;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].right = w->width - 88;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].left = w->width - 98;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].top = w->height - 10;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].bottom = w->height - 5;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].left = w->width - 83;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].right = w->width - 26;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].top = w->height - 17;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].bottom = w->height - 4;
+
+	widget_invalidate(w, WIDX_VIEWPORT);
+	widget_invalidate(w, WIDX_VIEW);
+
+	if (!gCheatsAllowArbitraryRideTypeChanges) {
+		window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_EMPTY;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_EMPTY;
+	} else {
+		window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_SPINNER;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_CLOSEBOX;
+	}
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
