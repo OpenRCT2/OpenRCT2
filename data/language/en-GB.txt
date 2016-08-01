@@ -541,15 +541,15 @@ STR_0536    :Circular boats meander along a wide water channel, splashing throug
 STR_0537    :Self-drive electric dodgem cars
 STR_0538    :Large swinging pirate ship
 STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
-STR_0540    :STR_RIDE_DESCRIPTION_FOOD_STALL
+STR_0540    :A stall where guests can purchase food
 STR_0541    :<removed string - do not use>
-STR_0542    :STR_RIDE_DESCRIPTION_DRINK_STALL
+STR_0542    :A stall where guests can purchase drinks
 STR_0543    :<removed string - do not use>
-STR_0544    :STR_RIDE_DESCRIPTION_SHOP
+STR_0544    :A stall that sells souvenirs
 STR_0545    :Traditional rotating carousel with carved wooden horses
 STR_0546    :<removed string - do not use>
 STR_0547    :A stall where guests can obtain park maps and purchase umbrellas
-STR_0548    :STR_RIDE_DESCRIPTION_TOILETS
+STR_0548    :A toilet building
 STR_0549    :Rotating big wheel with open chairs
 STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
 STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
