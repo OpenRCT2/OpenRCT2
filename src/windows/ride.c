@@ -220,10 +220,10 @@ static rct_widget window_ride_main_widgets[] = {
 	{ WWT_IMGBTN,			1,	296,	309,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,		STR_OPEN_RIDE_TIP							},
 
 	// Ride type spinner + apply button
-	{ WWT_SPINNER,			1,	7,		260,	180,	191,	STR_ARG_6_STRINGID,				STR_NONE									},
-	{ WWT_DROPDOWN_BUTTON,	1,	249,	259,	181,	185,	STR_NUMERIC_UP,					STR_NONE									},
-	{ WWT_DROPDOWN_BUTTON,	1,	249,	259,	186,	190,	STR_NUMERIC_DOWN,				STR_NONE									},
-	{ WWT_CLOSEBOX,			1,	265,	307,	180,	191,	STR_APPLY,						STR_NONE									},
+	{ WWT_SPINNER,			1,	3,		253,	180,	191,	STR_ARG_6_STRINGID,				STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	242,	252,	181,	185,	STR_NUMERIC_UP,					STR_NONE									},
+	{ WWT_DROPDOWN_BUTTON,	1,	242,	252,	186,	190,	STR_NUMERIC_DOWN,				STR_NONE									},
+	{ WWT_CLOSEBOX,			1,	260,	307,	180,	191,	STR_APPLY,						STR_NONE									},
 
 	{ WIDGETS_END },
 };
@@ -2415,19 +2415,19 @@ static void window_ride_main_invalidate(rct_window *w)
 	window_ride_main_widgets[WIDX_VIEW].right = w->width - 60;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].right = w->width - 61;
 	window_ride_main_widgets[WIDX_VIEW_DROPDOWN].left = w->width - 71;
-	window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 80;
+	window_ride_main_widgets[WIDX_RIDE_TYPE].right = w->width - 87;
 	window_ride_main_widgets[WIDX_RIDE_TYPE].top = w->height - 17;
 	window_ride_main_widgets[WIDX_RIDE_TYPE].bottom = w->height - 4;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].right = w->width - 81;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].left = w->width - 91;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].right = w->width - 88;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].left = w->width - 98;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].top = w->height - 16;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].bottom = w->height - 11;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].right = w->width - 81;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].left = w->width - 91;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].right = w->width - 88;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].left = w->width - 98;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].top = w->height - 10;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].bottom = w->height - 5;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].left = w->width - 78;
-	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].right = w->width - 25;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].left = w->width - 83;
+	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].right = w->width - 26;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].top = w->height - 17;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].bottom = w->height - 4;
 
