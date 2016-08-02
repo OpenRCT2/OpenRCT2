@@ -163,4 +163,6 @@ extern const rating_tuple RideRatings[91];
 
 extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
+extern const uint8 RideConstructionDefaultTrackType[91];
+
 #endif

@@ -1429,7 +1429,7 @@ static void ride_construction_reset_current_piece()
 
 	ride = get_ride(_currentRideIndex);
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0) {
-		_currentTrackCurve = RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) | 0x100;
+		_currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
 		_currentTrackSlopeEnd = 0;
 		_currentTrackBankEnd = 0;
 		_currentTrackLiftHill = 0;
@@ -1882,7 +1882,7 @@ int sub_6CC3FB(int rideIndex)
 
 	ride = get_ride(_currentRideIndex);
 
-	_currentTrackCurve = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
+	_currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
 	_currentTrackSlopeEnd = 0;
 	_currentTrackBankEnd = 0;
 	_currentTrackLiftHill = 0;
@@ -4578,8 +4578,8 @@ static rct_vehicle *vehicle_create_car(
 			direction = 4;
 		} else {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
-				if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != FLAT_TRACK_ELEM_1_X_4_B) {
-					if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != FLAT_TRACK_ELEM_1_X_4_A) {
+				if (RideConstructionDefaultTrackType[ride->type] != FLAT_TRACK_ELEM_1_X_4_B) {
+					if (RideConstructionDefaultTrackType[ride->type] != FLAT_TRACK_ELEM_1_X_4_A) {
 						if (ride->type == RIDE_TYPE_ENTERPRISE) {
 							direction += 5;
 						} else {
