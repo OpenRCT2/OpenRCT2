@@ -1763,7 +1763,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	gCommandPosition.y = y + 8;
 	gCommandPosition.z = z;
 
-	RCT2_GLOBAL(0xF4413E, money32) = 0;
+	money32 cost = 0;
 
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
@@ -1834,14 +1834,14 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 		rct_ride *ride = get_ride(rideIndex);
 
 		money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
-		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
+		cost = price / 2 * 10;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 			if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 				return 0;
 			}
 
-			return RCT2_GLOBAL(0xF4413E, money32);
+			return cost;
 		}
 
 		uint16 flooredX = floor2(x, 32);
@@ -1877,7 +1877,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 			return 0;
 		}
 
-		return RCT2_GLOBAL(0xF4413E, money32);
+		return cost;
 	}
 
 
@@ -1958,7 +1958,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 		return 0;
 	}
 
-	return RCT2_GLOBAL(0xF4413E, money32);
+	return cost;
 }
 
 /**
