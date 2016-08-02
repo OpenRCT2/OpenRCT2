@@ -885,13 +885,13 @@ enum {
 
 typedef struct rct_ride_properties {
 	uint32 flags;
-	uint8 minValue;
-	uint8 maxValue;
-	uint8 maxBrakesSpeed;
-	uint8 accelaration;
+	uint8 min_value;
+	uint8 max_value;
+	uint8 max_brakes_speed;
+	uint8 acceleration;
 } rct_ride_properties;
 
-extern const rct_ride_properties gRideProperties[91];
+extern const rct_ride_properties RideProperties[91];
 
 #define MAX_RIDES 255
 

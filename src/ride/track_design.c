@@ -260,7 +260,7 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 
 	td6->var_50 = min(
 		td6->var_50,
-		gRideProperties[td6->type].maxValue
+		RideProperties[td6->type].max_value
 	);
 
 	// Set the element helper pointers

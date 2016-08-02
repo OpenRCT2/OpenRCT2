@@ -1511,7 +1511,7 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			uint8 maxBrakesSpeed = 30;
 			if (RCT2_GLOBAL(0x00F440D3, uint8) != 1) {
 				brakesSpeedPtr = (uint8*)0x00F440CE;
-				maxBrakesSpeed = gRideProperties[ride->type].maxBrakesSpeed;
+				maxBrakesSpeed = RideProperties[ride->type].max_brakes_speed;
 			}
 			uint8 brakesSpeed = *brakesSpeedPtr + 2;
 			if (brakesSpeed <= maxBrakesSpeed) {
