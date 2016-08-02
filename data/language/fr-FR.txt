@@ -3861,7 +3861,7 @@ STR_5518    :{SMALLFONT}{BLACK}Blanc
 STR_5519    :{SMALLFONT}{BLACK}Violet foncé
 STR_5520    :{SMALLFONT}{BLACK}Violet clair
 STR_5521    :{SMALLFONT}{BLACK}Violet vif
-STR_5522    :{SMALLFONT}{BLACK}Bleu fincé
+STR_5522    :{SMALLFONT}{BLACK}Bleu foncé
 STR_5523    :{SMALLFONT}{BLACK}Bleu clair
 STR_5524    :{SMALLFONT}{BLACK}Bleu vif
 STR_5525    :{SMALLFONT}{BLACK}Eau foncée
@@ -3875,8 +3875,8 @@ STR_5532    :{SMALLFONT}{BLACK}Vert olive foncé
 STR_5533    :{SMALLFONT}{BLACK}Jaune clair
 STR_5534    :{SMALLFONT}{BLACK}Jaune
 STR_5535    :{SMALLFONT}{BLACK}Jaune foncé
-STR_5536    :{SMALLFONT}{BLACK}Orange claire
-STR_5537    :{SMALLFONT}{BLACK}Orange foncée
+STR_5536    :{SMALLFONT}{BLACK}Orange clair
+STR_5537    :{SMALLFONT}{BLACK}Orange foncé
 STR_5538    :{SMALLFONT}{BLACK}Brun clair
 STR_5539    :{SMALLFONT}{BLACK}Brun saturé
 STR_5540    :{SMALLFONT}{BLACK}Brun foncé
@@ -3901,18 +3901,18 @@ STR_5558    :Redémarrez le jeu pour appliquer ce paramètre
 STR_5559    :Inspections 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Définit l'intervalle d'inspection de toutes les attractions à toutes les 10 minutes
 STR_5561    :Le chargement de la langue a échoué
-STR_5562    :ATTENTION!
+STR_5562    :ATTENTION !
 STR_5563    :Cette fonctionnalité est actuellement instable, faites attention.
 STR_5564    :Insérer un élément corrompu
-STR_5565    :{SMALLFONT}{BLACK}Insère un élément corrompu au sommet du carré. Ceci va masquer tous les éléments au-dessus de l'élément corrompu.
+STR_5565    :{SMALLFONT}{BLACK}Insère un élément corrompu au sommet du carré. Ceci va masquer tous les éléments au-dessus de l'élément corrompu
 STR_5566    :Mot de passe :
 STR_5567    :Afficher dans la liste des serveurs
 STR_5568    :Mot de passe requis
 STR_5569    :Ce serveur nécessite un mot de passe
 STR_5570    :Rafraichir
 STR_5571    :Rejoindre
-STR_5572    :Ajouter aux Favoris
-STR_5573    :Retirer des Favoris
+STR_5572    :Ajouter aux favoris
+STR_5573    :Retirer des favoris
 STR_5574    :Nom du serveur :
 STR_5575    :Joueurs max. :
 STR_5576    :Port :
@@ -4029,7 +4029,7 @@ STR_5719    :Ensoleillé
 STR_5720    :Partiellement nuageux
 STR_5721    :Nuageux
 STR_5722    :Pluie
-STR_5723    :Forte Pluie
+STR_5723    :Forte pluie
 STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
 STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
@@ -4058,7 +4058,7 @@ STR_5747    :Déconnecté : {STRING}
 STR_5748    :Expulsé
 STR_5749    :Sort du serveur !
 STR_5750    :Connexion fermée
-STR_5751    :Aucune Données
+STR_5751    :Aucune données
 STR_5752    :{OUTLINE}{RED}{STRING} s'est déconnecté
 STR_5753    :{OUTLINE}{RED}{STRING} s'est déconnecté ({STRING})
 STR_5754    :Mauvais pseudo
@@ -4214,6 +4214,9 @@ STR_5901    :Afficher la hauteur des segments
 STR_5902    :Afficher les boîtes englobantes
 STR_5903    :Fenêtre de débogage du dessin
 STR_5904    :Réinitialiser date
+STR_5905    :{SMALLFONT}{BLACK}Outil de génération de carte permettant de créer automatiquement un paysage personnalisé
+STR_5906    :Zoom centré sur le curseur
+STR_5907    :{SMALLFONT}{BLACK}Activé, le zoom sera centré sur le curseur au lieu du centre de l'écran
 
 #############
 # Scenarios #

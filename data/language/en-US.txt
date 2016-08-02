@@ -3433,6 +3433,7 @@ STR_5730    :Nearest neighbor
 STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbor scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
 STR_5821    :{SMALLFONT}{BLACK}Changes the color of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
 STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
+STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the cursor, as opposed to the screen center.
 
 
 #############

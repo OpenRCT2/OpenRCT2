@@ -4205,6 +4205,9 @@ STR_5901    :Segmenthoogten weergeven
 STR_5902    :Begrenzingsvak weergeven
 STR_5903    :Debugscherm tekencode weergeven
 STR_5904    :Datum resetten
+STR_5905    :{SMALLFONT}{BLACK}Opent een venster om automatisch een nieuw landschap te genereren
+STR_5906    :Zoomen op cursorpositie
+STR_5907    :{SMALLFONT}{BLACK}Laat het spel zoomen op de plaats van de cursor, in plaats van het midden van het scherm.
 
 #############
 # Scenarios #

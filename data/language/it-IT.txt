@@ -4204,6 +4204,22 @@ STR_5889    :Simbolo valuta personalizzato
 STR_5890    :Inserire il simbolo della valuta da visualizzare
 STR_5891    :Predefinita
 STR_5892    :{SMALLFONT}{BLACK}Apre la cartella predefinita
+STR_5893    :Tasso di cambio
+STR_5894    :Inserire il tasso di cambio
+STR_5895    :Salva percorso
+STR_5896    :Salvataggio percorso fallito!
+STR_5897    :Limite finestra:
+STR_5898    :{BLACK}Impossibile caricare il percorso, il file{NEWLINE}potrebbe essere corrotto o inesistente!
+STR_5899    :Attiva/disattiva finestra di debug del rendering
+STR_5900    :Utilizza il codice originale di rendering
+STR_5901    :Mostra altezza segmenti
+STR_5902    :Mostra i bounding box
+STR_5903    :Mostra la finestra di debug del rendering
+STR_5904    :Reimposta data
+STR_5905    :{SMALLFONT}{BLACK}Uno strumento di generazione mappe che crea automaticamente un paesaggio personalizzato
+STR_5906    :Zoom alla posizione del cursore
+STR_5907    :{SMALLFONT}{BLACK}Se abilitato, effettuando lo zoom l'ingrandimento avverrà centrato sul cursore anziché al centro dello schermo.
+
 
 #############
 # Scenarios #
