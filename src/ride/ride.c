@@ -4320,7 +4320,7 @@ static void ride_set_boat_hire_return_point(rct_ride *ride, rct_xy_element *star
 	};
 
 	trackType = returnTrackElement->properties.track.type;
-	int elementReturnDirection = RCT2_GLOBAL(0x009968BB + (trackType * 10), uint8);
+	int elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
 	ride->boat_hire_return_direction = (returnTrackElement->type + elementReturnDirection) & 3;
 	ride->boat_hire_return_position = (returnX >> 5) | ((returnY >> 5) << 8);
 }
