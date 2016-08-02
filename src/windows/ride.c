@@ -1256,6 +1256,21 @@ static const window_ride_colour_preview TrackColourPreviews[] = {
 	{ SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK,	SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS},
 };
 
+typedef struct rct_window_graphs_y_axis {
+	uint8 interval;
+	sint8 unit;
+	sint8 unit_interval;
+	rct_string_id label;
+} rct_window_graphs_y_axis;
+
+/** rct2: 0x0098DD98 */
+static const rct_window_graphs_y_axis window_graphs_y_axi[] = {
+	{11, 0,  10, STR_RIDE_STATS_VELOCITY_FORMAT},	// GRAPH_VELOCITY
+	{10, 0,  15, STR_RIDE_STATS_ALTITUDE_FORMAT},	// GRAPH_ALTITUDE
+	{13, -3, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},	// GRAPH_VERTICAL
+	{13, -4, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},	// GRAPH_LATERAL
+};
+
 static void window_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int page, int spriteIndex)
 {
 	int widgetIndex = WIDX_TAB_1 + page;
@@ -5726,13 +5741,13 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 	// Horizontal grid lines
 	y = widget->bottom - widget->top - 13;
-	short yUnit = RCT2_GLOBAL(0x0098DD9A + (listType * 8), uint16);
-	rct_string_id stringID = RCT2_GLOBAL(0x0098DD9E + (listType * 8), rct_string_id);
-	short yUnitInterval = RCT2_GLOBAL(0x0098DD9C + (listType * 8), uint16);
-	short yInterval = RCT2_GLOBAL(0x0098DD98 + (listType * 8), uint16);
+	short yUnit = window_graphs_y_axi[listType].unit;
+	rct_string_id stringID = window_graphs_y_axi[listType].label;
+	short yUnitInterval = window_graphs_y_axi[listType].unit_interval;
+	short yInterval = window_graphs_y_axi[listType].interval;
 
 	// Scale modifier
-	if (stringID == STR_RIDE_STATS_ALTITUDE_FORMAT) {
+	if (listType == GRAPH_ALTITUDE) {
 		short unk = RCT2_GLOBAL(0x01359208, uint16);
 		yUnit -= RCT2_GLOBAL(0x01359208, uint16);
 		unk *= 2;
@@ -5749,7 +5764,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 		sint16 scaled_yUnit = yUnit;
 		// Scale modifier
-		if (stringID == STR_RIDE_STATS_ALTITUDE_FORMAT)
+		if (listType == GRAPH_ALTITUDE)
 			scaled_yUnit /= 2;
 
 		gfx_draw_string_left(dpi, stringID, &scaled_yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
