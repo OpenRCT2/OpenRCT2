@@ -289,7 +289,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		w->no_list_items = _listItemsCount;
 		break;
 	case WIDX_NEW:
-		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, STR_STRING, (uint32)&_defaultName, 64);
+		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, STR_STRING, (uintptr_t)&_defaultName, 64);
 		break;
 	case WIDX_BROWSE:
 		if (browse(isSave, path))
@@ -477,12 +477,10 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, y;
-	rct_string_id stringId, templateStringId = STR_PLACEHOLDER;
-	char *templateString;
+	rct_string_id stringId;
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-	templateString = (char*)language_get_string(templateStringId);
 	for (i = 0; i < w->no_list_items; i++) {
 		y = i * 10;
 		if (y > dpi->y + dpi->height)
@@ -497,8 +495,9 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		strcpy(templateString, _listItems[i].name);
-		gfx_draw_string_left(dpi, stringId, &templateStringId, 0, 0, y - 1);
+		set_format_arg(0, rct_string_id, STR_STRING);
+		set_format_arg(2, char*, _listItems[i].name);
+		gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, 0, y - 1);
 	}
 }
 
@@ -682,8 +681,8 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 				strcat(newName, ".sv6");
 			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
-				set_format_arg(0, uint32, (uint32)&_listItems[w->selected_list_item].name);
-				window_text_input_open(w, WIDX_SCROLL, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uint32)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+				set_format_arg(0, uint32, (intptr_t)&_listItems[w->selected_list_item].name);
+				window_text_input_open(w, WIDX_SCROLL, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uintptr_t)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 			}
 			else {
 				title_sequence_add_save(gCurrentTitleSequence, path, newName);

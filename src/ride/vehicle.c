@@ -702,7 +702,7 @@ void vehicle_sounds_update()
 							vehicle_sound++;
 							i++;
 							if (i >= countof(gVehicleSoundList)) {
-								vehicle_sound_params = (rct_vehicle_sound_params*)((int)vehicle_sound_params + 10);
+								vehicle_sound_params = (rct_vehicle_sound_params*)((uintptr_t)vehicle_sound_params + 10);
 								goto label28;
 							}
 						}
@@ -2079,11 +2079,12 @@ typedef struct rct_synchronised_vehicle {
 assert_struct_size(rct_synchronised_vehicle, 4);
 #pragma pack(pop)
 
-// 8 synchronised vehicle info
-rct_synchronised_vehicle *_synchronisedVehicles = (rct_synchronised_vehicle*)0x00F64E4C;
+#define SYNCHRONISED_VEHICLE_COUNT 8
 
-#define _lastSynchronisedVehicle	RCT2_GLOBAL(0x00F64E48, rct_synchronised_vehicle*)
-#define MaxSynchronisedVehicle		((rct_synchronised_vehicle*)0x00F64E6C)
+// 8 synchronised vehicle info
+rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
+
+static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
 
 /**
  * Checks if a map position contains a synchronised ride station and adds the vehicle
@@ -2168,7 +2169,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 	int direction = (mapElement->type + 1) & 3;
 	_lastSynchronisedVehicle = _synchronisedVehicles;
 
-	while (_lastSynchronisedVehicle < MaxSynchronisedVehicle) {
+	while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
 		if (!try_add_synchronised_station(x, y, z)) {
@@ -2176,7 +2177,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 		}
 	}
 
-	while (_lastSynchronisedVehicle < MaxSynchronisedVehicle) {
+	while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
 		if (!try_add_synchronised_station(x, y, z)) {
@@ -7201,7 +7202,7 @@ loc_6DAEB9:
 	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
 		(trackType == TRACK_ELEM_POWERED_LIFT)
 		) {
-		vehicle->acceleration = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 7, uint8) << 16;
+		vehicle->acceleration = RideProperties[ride->type].acceleration << 16;
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {

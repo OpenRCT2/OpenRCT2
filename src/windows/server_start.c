@@ -173,13 +173,13 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_PORT_INPUT:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_port, 6);
+		window_start_textbox(w, widgetIndex, STR_STRING, _port, 6);
 		break;
 	case WIDX_NAME_INPUT:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_name, 64);
+		window_start_textbox(w, widgetIndex, STR_STRING, _name, 64);
 		break;
 	case WIDX_PASSWORD_INPUT:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_password, 32);
+		window_start_textbox(w, widgetIndex, STR_STRING, _password, 32);
 		break;
 	case WIDX_MAXPLAYERS_INCREASE:
 		if (gConfigNetwork.maxplayers < 255) {

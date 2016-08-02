@@ -260,7 +260,7 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 
 	td6->var_50 = min(
 		td6->var_50,
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (td6->type * 8), uint8)
+		RideProperties[td6->type].max_value
 	);
 
 	// Set the element helper pointers

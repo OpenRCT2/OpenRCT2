@@ -160,7 +160,7 @@ int gfx_load_g2()
 
 			// Fix entry data offsets
 			for (i = 0; i < g2.header.num_entries; i++)
-				g2.elements[i].offset += (int)g2.data;
+				g2.elements[i].offset += (uintptr_t)g2.data;
 
 			// Successful
 			return 1;
@@ -563,7 +563,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	source_pointer = g1_source->offset;
 	uint8* new_source_pointer_start = malloc(total_no_pixels);
 	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-	int ebx, ecx;
+	intptr_t ebx, ecx;
 	while (total_no_pixels>0){
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0){
@@ -582,8 +582,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		eax = (eax & 0xFF00) + *(source_pointer+1);
 		total_no_pixels -= ecx;
 		source_pointer += 2;
-		ebx = (uint32)new_source_pointer - eax;
-		eax = (uint32)source_pointer;
+		ebx = (uintptr_t)new_source_pointer - eax;
+		eax = (uintptr_t)source_pointer;
 		source_pointer = (uint8*)ebx;
 		ebx = eax;
 		eax = 0;

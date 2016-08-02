@@ -350,6 +350,168 @@ static const ride_rating NauseaMaximumThresholds[] = {
 	300, 600, 800, 1000
 };
 
+// Has to use signed types
+static const rct_xy16 _97e1bc_21[64] = {
+	{  56,   8 },
+	{   8,   8 },
+	{   8,  32 },
+	{  32,  32 },
+	{   8,   8 },
+	{   8,   8 },
+	{   8,  32 },
+	{  32,  32 },
+	{   8,  32 },
+	{   8,  32 },
+	{   8,  32 },
+	{  32,  32 },
+	{   8,  56 },
+	{   8,  32 },
+	{   8,  32 },
+	{  32,  32 },
+	{  56,  24 },
+	{  32,  24 },
+	{  32,  24 },
+	{  32,   0 },
+	{  56, -24 },
+	{  56,  24 },
+	{  32,  24 },
+	{  32,   0 },
+	{   8,  24 },
+	{  32,  24 },
+	{  32,  24 },
+	{  32,   0 },
+	{  32,  24 },
+	{  32,  24 },
+	{  32,  24 },
+	{  32,   0 },
+	{  24,   0 },
+	{  24,   0 },
+	{  24,   0 },
+	{   0,   0 },
+	{  24, -24 },
+	{  24,   0 },
+	{  24,   0 },
+	{   0,   0 },
+	{ -24, -24 },
+	{  24, -24 },
+	{  24,   0 },
+	{   0,   0 },
+	{  24,  24 },
+	{  24,   0 },
+	{  24,   0 },
+	{   0,   0 },
+	{  24,   8 },
+	{   0,   8 },
+	{   0,   8 },
+	{   0,  32 },
+	{   0,   8 },
+	{   0,   8 },
+	{   0,   8 },
+	{   0,  32 },
+	{ -24,   8 },
+	{   0,   8 },
+	{   0,   8 },
+	{   0,  32 },
+	{ -24,  56 },
+	{ -24,   8 },
+	{   0,   8 },
+	{   0,  32 },
+};
+
+static const rct_xy16 * _97e1bc[91] = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	_97e1bc_21, // RIDE_TYPE_SPIRAL_SLIDE
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
+
 int peep_get_staff_count()
 {
 	uint16 spriteIndex;
@@ -2163,10 +2325,10 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 		x *= 32;
 		y *= 32;
 
-		sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
+		const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
 
-		x += edx[0];
-		y += edx[1];
+		x += edx.x;
+		y += edx.y;
 
 		peep->destination_x = x;
 		peep->destination_y = y;
@@ -3071,10 +3233,10 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 
 			x *= 32;
 			y *= 32;
-			sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
 
-			x += edx[0];
-			y += edx[1];
+			const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
+			x += edx.x;
+			y += edx.y;
 
 			peep->destination_x = x;
 			peep->destination_y = y;
@@ -3089,10 +3251,10 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 
 	x *= 32;
 	y *= 32;
-	sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
 
-	x += edx[0];
-	y += edx[1];
+	const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
+	x += edx.x;
+	y += edx.y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -3175,10 +3337,10 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 
 	x *= 32;
 	y *= 32;
-	sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
 
-	x += edx[0];
-	y += edx[1];
+	const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
+	x += edx.x;
+	y += edx.y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -3213,10 +3375,10 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 
 		x *= 32;
 		y *= 32;
-		sint8* edx = peep->var_37 * 2 + RCT2_ADDRESS(0x97E1BC, sint8*)[ride->type];
 
-		x += edx[0];
-		y += edx[1];
+		const rct_xy16 edx  = _97e1bc[ride->type][peep->var_37];
+		x += edx.x;
+		y += edx.y;
 
 		peep->destination_x = x;
 		peep->destination_y = y;

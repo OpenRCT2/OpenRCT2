@@ -258,13 +258,13 @@ static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_TEXTBOX_FULL:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox1Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
 		break;
 	case WIDX_TEXTBOX_X:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox1Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
 		break;
 	case WIDX_TEXTBOX_Y:
-		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)textbox2Buffer, 4);
+		window_start_textbox(w, widgetIndex, STR_STRING, textbox2Buffer, 4);
 		break;
 	case WIDX_GET:
 		if (command.command == TITLE_SCRIPT_LOCATION) {

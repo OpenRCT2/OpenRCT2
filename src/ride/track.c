@@ -622,7 +622,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[ride->type];
 	enabledTrackPieces <<= 32;
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[ride->type];
-	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
+	uint32 rideTypeFlags = RideProperties[ride->type].flags;
 	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {

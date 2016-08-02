@@ -142,7 +142,7 @@ void update_palette_effects()
 		// change palette to lighter colour during lightning
 		int palette = 1532;
 
-		if ((sint32)water_type != -1) {
+		if ((intptr_t)water_type != -1) {
 			palette = water_type->image_id;
 		}
 		rct_g1_element g1_element = g1Elements[palette];
@@ -161,7 +161,7 @@ void update_palette_effects()
 			// change palette back to normal after lightning
 			int palette = 1532;
 
-			if ((sint32)water_type != -1) {
+			if ((intptr_t)water_type != -1) {
 				palette = water_type->image_id;
 			}
 
@@ -188,7 +188,7 @@ void update_palette_effects()
 		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
-		if ((sint32)water_type != -1) {
+		if ((intptr_t)water_type != -1) {
 			p = water_type->var_06;
 		}
 		rct_g1_element g1_element = g1Elements[q + p];
@@ -207,7 +207,7 @@ void update_palette_effects()
 		}
 
 		p = 1536;
-		if ((sint32)water_type != -1) {
+		if ((intptr_t)water_type != -1) {
 			p = water_type->var_0A;
 		}
 		g1_element = g1Elements[q + p];
