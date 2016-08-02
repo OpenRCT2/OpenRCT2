@@ -121,6 +121,13 @@ enum {
 	RIDE_TYPE_FLAG4_15 = (1 << 15),
 };
 
+typedef struct rct_shop_item_stats {
+	uint16 cost;
+	uint16 base_value;
+	uint16 hot_value;
+	uint16 cold_value;
+} rct_shop_item_stats;
+
 extern const bool hasRunningTrack[0x60];
 extern const uint8 initialUpkeepCosts[0x60];
 extern const uint8 costPerTrackPiece[0x60];
@@ -153,5 +160,7 @@ extern const uint16 RideFilmLength[3];
 extern const uint16 RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[91];
+
+extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
 #endif
