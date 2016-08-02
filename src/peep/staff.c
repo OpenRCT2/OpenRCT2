@@ -247,7 +247,15 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 			STR_ENTERTAINER_X,
 		};
 
-		uint8 sprite_type = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		/* rct2: 0x009929FC */
+		static const uint8 spriteTypes[] = {
+			PEEP_SPRITE_TYPE_HANDYMAN,
+			PEEP_SPRITE_TYPE_MECHANIC,
+			PEEP_SPRITE_TYPE_SECURITY,
+			PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
+		};
+
+		uint8 sprite_type = spriteTypes[staff_type];
 		newPeep->name_string_idx = staffNames[staff_type];
 		newPeep->sprite_type = sprite_type;
 

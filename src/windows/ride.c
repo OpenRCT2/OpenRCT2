@@ -1386,7 +1386,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo *dpi, rct_window *w)
 		if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
 			spriteIndex = w->var_492 & ~3;
 
-		spriteIndex += g_sprite_entries[0].sprite_image->base_image;
+		spriteIndex += g_sprite_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_image->base_image;
 		spriteIndex += 1;
 		spriteIndex |= 0xA9E00000;
 

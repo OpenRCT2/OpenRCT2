@@ -2007,7 +2007,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 			sprite_idx += (w->frame_no / 8) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 
-		sprite_idx = g_sprite_entries[0].sprite_image->base_image + 1;
+		sprite_idx = g_sprite_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_image->base_image + 1;
 		if (w->page == WINDOW_PARK_PAGE_GUESTS)
 			sprite_idx += w->var_492 & 0xFFFFFFFC;
 

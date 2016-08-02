@@ -748,7 +748,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		uint8 sprite_type = PEEP_SPRITE_TYPE_23;
 		if (peep->state != PEEP_STATE_PATROLLING)
-			sprite_type = PEEP_SPRITE_TYPE_3;
+			sprite_type = PEEP_SPRITE_TYPE_SECURITY;
 
 		if (peep->sprite_type == sprite_type)
 			return;
@@ -1757,7 +1757,7 @@ static void peep_update_falling(rct_peep* peep){
 						if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 							peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
-							if (peep->sprite_type == 19 && peep->x != (sint16)0x8000) {
+							if (peep->sprite_type == PEEP_SPRITE_TYPE_19 && peep->x != (sint16) 0x8000) {
 								create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
 								peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 								peep_update_sprite_type(peep);
@@ -1893,7 +1893,7 @@ static void peep_update_sitting(rct_peep* peep){
 			return;
 		}
 
-		if (peep->sprite_type == 0x15){
+		if (peep->sprite_type == PEEP_SPRITE_TYPE_UMBRELLA) {
 			peep_try_get_up_from_sitting(peep);
 			return;
 		}
@@ -1916,7 +1916,7 @@ static void peep_update_sitting(rct_peep* peep){
 			peep_try_get_up_from_sitting(peep);
 			return;
 		}
-		if (peep->sprite_type == 0x13 || peep->sprite_type == 0x1E){
+		if (peep->sprite_type == PEEP_SPRITE_TYPE_19 || peep->sprite_type == PEEP_SPRITE_TYPE_30) {
 			peep_try_get_up_from_sitting(peep);
 			return;
 		}
@@ -4439,7 +4439,7 @@ static void peep_update_queuing(rct_peep* peep){
 
 	sub_693C9E(peep);
 	if (peep->action < 0xFE)return;
-	if (peep->sprite_type == 0){
+	if (peep->sprite_type == PEEP_SPRITE_TYPE_NORMAL) {
 		if (peep->time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119){
 			// Eat Food/Look at watch
 			peep->action = PEEP_ACTION_EAT_FOOD;
