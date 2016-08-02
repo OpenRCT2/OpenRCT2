@@ -104,10 +104,10 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 		if (!(segments & segment_offsets[s])) {
 			continue;
 		}
-		uint16 temp = RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16);
-		RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, uint16);
+		uint16 temp = gSupportSegments[s].height;
+		gSupportSegments[s].height = gSupport.height;
 		metal_a_supports_paint_setup(10, s, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
-		RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = temp;
+		gSupportSegments[s].height = temp;
 	}
 }
 

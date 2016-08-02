@@ -158,10 +158,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-        RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
-    }
+    paint_util_set_general_support_height(height, 0x20);
 
     uint32 dword_141F710 = 0;
     if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) {

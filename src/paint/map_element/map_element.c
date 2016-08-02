@@ -272,18 +272,18 @@ static void sub_68B3FB(int x, int y)
 		return;
 	}
 
-	static const int segmentOffsets[][3] = {
-		{0xB4, 0xCC, 0xBc},
-		{0xC8, 0xC4, 0xD4},
-		{0xB8, 0xD0, 0xC0},
+	static const int segmentPositions[][3] = {
+		{0, 6, 2},
+		{5, 4, 8},
+		{1, 7, 3},
 	};
 
 	for (int y = 0; y < 3; y++) {
 		for (int x = 0; x < 3; x++) {
-			uint16 segmentHeight = RCT2_GLOBAL(0x0141E900 + segmentOffsets[y][x], uint16);
+			uint16 segmentHeight = gSupportSegments[segmentPositions[y][x]].height;
 			int imageColourFlats = 0b101111 << 19 | 0x40000000;
 			if (segmentHeight == 0xFFFF) {
-				segmentHeight = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16);
+				segmentHeight = gSupport.height;
 				// white: 0b101101
 				imageColourFlats = 0b111011 << 19 | 0x40000000;
 			}
@@ -316,7 +316,7 @@ void paint_util_push_tunnel_right(uint16 height, uint8 type)
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) >= height) {
+	if (gSupport.height >= height) {
 		return;
 	}
 
@@ -325,8 +325,8 @@ void paint_util_set_general_support_height(sint16 height, uint8 slope)
 
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-	RCT2_GLOBAL(0x141E9DA, uint8) = slope;
+	gSupport.height = height;
+	gSupport.slope = slope;
 }
 
 const uint16 segment_offsets[9] = {
@@ -345,9 +345,9 @@ void paint_util_set_segment_support_height(int segments, uint16 height, uint8 sl
 {
 	for (int s = 0; s < 9; s++) {
 		if (segments & segment_offsets[s]) {
-			RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = height;
+			gSupportSegments[s].height = height;
 			if (height != 0xFFFF) {
-				RCT2_GLOBAL(0x0141E9B6 + s * 4, uint8) = slope;
+				gSupportSegments[s].slope = slope;
 			}
 		}
 	}
