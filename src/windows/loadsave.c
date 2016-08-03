@@ -681,7 +681,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 				strcat(newName, ".sv6");
 			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
-				set_format_arg(0, uint32, (intptr_t)&_listItems[w->selected_list_item].name);
+				set_format_arg(0, intptr_t, (intptr_t)&_listItems[w->selected_list_item].name);
 				window_text_input_open(w, WIDX_SCROLL, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uintptr_t)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 			}
 			else {

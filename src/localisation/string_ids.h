@@ -22,6 +22,7 @@
 #define STR_NONE ((rct_string_id)-1)
 
 enum {
+	STR_EMPTY = 0,
 	// STR_0001    :{STRINGID} {COMMA16}
 	STR_RIDE_NAME_SPIRAL_ROLLER_COASTER = 2,
 

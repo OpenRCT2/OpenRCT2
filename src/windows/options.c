@@ -1008,7 +1008,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_LANGUAGE_DROPDOWN:
 			for (i = 1; i < LANGUAGE_COUNT; i++) {
 				gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i - 1] = (sint32)LanguagesDescriptors[i].native_name;
+				gDropdownItemsArgs[i - 1] = (uintptr_t)LanguagesDescriptors[i].native_name;
 			}
 			window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
 			dropdown_set_checked(gCurrentLanguage - 1, true);
@@ -1061,7 +1061,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			for (int i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i] = (uint32)theme_manager_get_available_theme_name(i);
+				gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
 			}
 
 			window_dropdown_show_text_custom_width(
@@ -1117,7 +1117,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[i].name;
+				gDropdownItemsArgs[i] = (uintptr_t)&gConfigTitleSequences.presets[i].name;
 			}
 
 			window_dropdown_show_text(
@@ -1772,7 +1772,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		set_format_arg(0, uint32, (uint32)activeThemeName);
+		set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
 
 		gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
 		gfx_draw_string_left_clipped(
@@ -1808,7 +1808,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
 
-		set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name);
+		set_format_arg(0, uintptr_t, (uintptr_t)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,

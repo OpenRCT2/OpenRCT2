@@ -3709,7 +3709,6 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 
 		RCT2_GLOBAL(0x00F43892, sint16) = curTile.x;
 		RCT2_GLOBAL(0x00F43894, sint16) = curTile.y;
-		RCT2_GLOBAL(0x00F43896, uint32) = (uint32)(ebx - 3); // this is how ebx flags var is passed to 0x006B8D88
 		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F4389A, money32))) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
