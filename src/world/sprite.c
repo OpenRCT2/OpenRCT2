@@ -128,6 +128,8 @@ void reset_sprite_list()
 	}
 
 	gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
+
+	reset_sprite_spatial_index();
 }
 
 /**
