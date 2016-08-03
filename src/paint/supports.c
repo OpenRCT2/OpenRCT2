@@ -186,7 +186,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		return false;
 	}
 
-	int z = floor2(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) + 15, 16);
+	int z = floor2(gSupport.height + 15, 16);
 	height -= z;
 	if (height < 0) {
 		if (underground != NULL) {
@@ -201,7 +201,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 	int rotation = get_current_rotation();
 
 	// Draw base support (usually shaped to the slope)
-	int slope = RCT2_GLOBAL(0x0141E9DA, uint8);
+	int slope = gSupport.slope;
 	if (slope & (1 << 5)) {
 		// Above scenery (just put a base piece above it)
 		drawFlatPiece = true;
@@ -341,7 +341,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 
 	const uint8 rotation = get_current_rotation();
 	RCT2_GLOBAL(0x009E3294, sint16) = -1;
-	if (height < RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2]){
+	if (height < gSupportSegments[segment].height){
 		RCT2_GLOBAL(0x009E3294, sint16) = height;
 
 		height -= RCT2_ADDRESS(0x0097B142, sint16)[supportType];
@@ -351,16 +351,16 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[rotation * 2]);
 
 		uint8 newSegment = esi[segment * 8];
-		if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+		if (height <= gSupportSegments[newSegment].height) {
 			esi += 72;
 			newSegment = esi[segment * 8];
-			if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+			if (height <= gSupportSegments[newSegment].height) {
 				esi += 72;
 				newSegment = esi[segment * 8];
-				if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+				if (height <= gSupportSegments[newSegment].height) {
 					esi += 72;
 					newSegment = esi[segment * 8];
-					if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+					if (height <= gSupportSegments[newSegment].height) {
 						esi += 72;
 						newSegment = esi[segment * 8];
 						return true;
@@ -386,23 +386,23 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		segment = newSegment;
 	}
 	sint16 si = height;
-	if (RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] & (1 << 5) ||
-		height - RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] < 6 ||
+	if (gSupportSegments[segment].slope & (1 << 5) ||
+		height - gSupportSegments[segment].height < 6 ||
 		RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2] == 0
 		) {
 
-		height = RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2];
+		height = gSupportSegments[segment].height;
 	}else{
 		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
 		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2];
-		image_id += RCT2_ADDRESS(0x0097B404, sint16)[RCT2_ADDRESS(0x00141E9B4 + 2, sint16)[segment * 2] & 0x1F];
+		image_id += RCT2_ADDRESS(0x0097B404, sint16)[gSupportSegments[segment].slope & 0x1F];
 		image_id |= imageColourFlags;
 
-		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2], rotation);
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, gSupportSegments[segment].height, rotation);
 
-		height = RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2] + 6;
+		height = gSupportSegments[segment].height + 6;
 	}
 
 
@@ -458,8 +458,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		height += z;
 	}
 
-	RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] = RCT2_GLOBAL(0x009E3294, sint16);
-	RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] = 0x20;
+	gSupportSegments[segment].height = RCT2_GLOBAL(0x009E3294, sint16);
+	gSupportSegments[segment].slope = 0x20;
 
 	height = originalHeight;
 	if (special == 0)

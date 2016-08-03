@@ -110,7 +110,15 @@ enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
+typedef struct support_height {
+	uint16 height;
+	uint8 slope;
+	uint8 pad;
+} support_height;
+
 #define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
+#define gSupportSegments			RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
+#define gSupport					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
