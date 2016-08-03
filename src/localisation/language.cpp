@@ -147,7 +147,7 @@ const char *language_get_string(rct_string_id id)
 		return openrctString != nullptr ? openrctString : "(undefined string)";
 	} else {
 		const char *rct = _languageOriginal[id];
-		const char *str = (openrctString == nullptr || strlen(openrctString) == 0 ? rct : openrctString);
+		const char *str = (id != STR_EMPTY && (openrctString == nullptr || strlen(openrctString)) == 0 ? rct : openrctString);
 		return str == nullptr ? "" : str;
 	}
 }

@@ -372,7 +372,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[1] = STR_OPTIONS;
 			gDropdownItemsFormat[2] = STR_SCREENSHOT;
 			gDropdownItemsFormat[3] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[4] = STR_EMPTY;
 			gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
 			gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
 
@@ -383,12 +383,12 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		} else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
 			gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
-			gDropdownItemsFormat[2] = 0;
+			gDropdownItemsFormat[2] = STR_EMPTY;
 			gDropdownItemsFormat[3] = STR_ABOUT;
 			gDropdownItemsFormat[4] = STR_OPTIONS;
 			gDropdownItemsFormat[5] = STR_SCREENSHOT;
 			gDropdownItemsFormat[6] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[7] = 0;
+			gDropdownItemsFormat[7] = STR_EMPTY;
 			gDropdownItemsFormat[8] = STR_QUIT_SCENARIO_EDITOR;
 			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
 			numItems = 10;
@@ -397,12 +397,12 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[1] = STR_LOAD_GAME;
 			gDropdownItemsFormat[2] = STR_SAVE_GAME;
 			gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
-			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[4] = STR_EMPTY;
 			gDropdownItemsFormat[5] = STR_ABOUT;
 			gDropdownItemsFormat[6] = STR_OPTIONS;
 			gDropdownItemsFormat[7] = STR_SCREENSHOT;
 			gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[9] = 0;
+			gDropdownItemsFormat[9] = STR_EMPTY;
 			gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
 			gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
 			numItems = 12;
@@ -410,7 +410,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[12] = 0;
+				gDropdownItemsFormat[12] = STR_EMPTY;
 				gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = STR_TOGGLE_OPTION;
 				gDropdownItemsArgs[DDIDX_ENABLE_TWITCH] = STR_TWITCH_ENABLE;
 				numItems = 14;
@@ -434,7 +434,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		break;
 	case WIDX_CHEATS:
 		gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-		gDropdownItemsFormat[1] = 0;
+		gDropdownItemsFormat[1] = STR_EMPTY;
 		gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
 		gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
 		gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
@@ -2851,7 +2851,7 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
 	if (gConfigGeneral.debugging_tools) {
-		gDropdownItemsFormat[4] = 0;
+		gDropdownItemsFormat[4] = STR_EMPTY;
 		gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
 		gDropdownItemsArgs[5] = STR_SPEED_HYPER;
 		num_items = 6;
@@ -3031,12 +3031,12 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-	gDropdownItemsFormat[3] = 0;
+	gDropdownItemsFormat[3] = STR_EMPTY;
 	gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
-	gDropdownItemsFormat[8] = 0;
+	gDropdownItemsFormat[8] = STR_EMPTY;
 	gDropdownItemsFormat[9] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
