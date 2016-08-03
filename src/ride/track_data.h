@@ -23,6 +23,9 @@ extern const rct_track_coordinates TrackCoordinates[256];
 // 0x009972BB, 0x009972BC, 0x009972BD, 0x009972BF, 0x009972C1, 0x009972C3
 extern const rct_track_coordinates* FlatTrackCoordinates;
 
+extern const uint8 TrackSequenceProperties[256][16];
+extern const uint8 FlatRideTrackSequenceProperties[256][16];
+
 extern const uint64 RideTypePossibleTrackConfigurations[91];
 extern const rct_preview_track *TrackBlocks[256];
 extern const rct_preview_track *FlatRideTrackBlocks[255];

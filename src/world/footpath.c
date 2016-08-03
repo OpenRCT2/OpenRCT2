@@ -27,6 +27,8 @@
 #include "map.h"
 #include "map_animation.h"
 #include "scenery.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
 void sub_6A7642(int x, int y, rct_map_element *mapElement);
@@ -1138,12 +1140,14 @@ static void loc_6A6D7E(
 					if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 						continue;
 					}
-					uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
-					if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+
+					const uint8 trackType = mapElement->properties.track.type;
+					const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+					if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
 						return;
 					}
 					uint16 dx = ((direction - mapElement->type) & 3) ^ 2;
-					if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+					if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
 						return;
 					}
 					if (query) {
@@ -1229,12 +1233,13 @@ static void loc_6A6C85(
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			return;
 		}
-		uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
-		if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+		const uint8 trackType = mapElement->properties.track.type;
+		const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+		if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
 			return;
 		}
 		uint16 dx = (direction - mapElement->type) & 3;
-		if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+		if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
 			return;
 		}
 	}
