@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /** rct2: 0x01428010 */
 static const uint32 swinging_inverter_ship_base_sprite_offset[] = {
@@ -173,7 +174,7 @@ static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, u
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int trackType, int direction)
 {
-	if (trackType != 119) {
+	if (trackType != FLAT_TRACK_ELEM_1_X_4_B) {
 		return NULL;
 	}
 

@@ -1599,7 +1599,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 		rct_map_element *mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
 		mapElement->clearance_height = fz + 4;
 		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
-		mapElement->properties.track.type = 101;
+		mapElement->properties.track.type = TRACK_ELEM_MAZE;
 		mapElement->properties.track.ride_index = rideIndex;
 		mapElement->properties.track.maze_entry = mazeEntry;
 		if (flags & GAME_COMMAND_FLAG_GHOST) {

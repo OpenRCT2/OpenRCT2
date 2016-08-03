@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 // 1 2 0 3 4
 static const uint8 track_map_1x5[][5] = {
@@ -262,7 +263,7 @@ static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direct
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction)
 {
-	if (trackType != 116) {
+	if (trackType != FLAT_TRACK_ELEM_1_X_5) {
 		return NULL;
 	}
 

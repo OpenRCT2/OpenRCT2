@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 enum
 {
@@ -62,7 +63,7 @@ static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 dir
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction)
 {
-	if (trackType != 111) {
+	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;
 	}
 

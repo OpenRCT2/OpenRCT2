@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /**
  * rct2: 0x007664C2
@@ -103,7 +104,7 @@ static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 directio
 /* 0x0076554C */
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 

@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 enum {
 	SPIRAL_SLIDE_LEFT_R0 = 20548,
@@ -191,7 +192,7 @@ static void paint_spiral_slide(uint8 rideIndex, uint8 trackSequence, uint8 direc
  * rct2: 0x0074840C
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction) {
-	if (trackType != 110) {
+	if (trackType != FLAT_TRACK_ELEM_2_X_2) {
 		return NULL;
 	}
 

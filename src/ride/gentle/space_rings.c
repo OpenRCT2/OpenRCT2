@@ -19,6 +19,7 @@
 #include "../track_paint.h"
 #include "../../paint/supports.h"
 #include "../../paint/paint.h"
+#include "../track.h"
 
 enum
 {
@@ -142,7 +143,7 @@ static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direct
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 
