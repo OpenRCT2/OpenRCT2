@@ -58,3 +58,5 @@ typedef struct {
 } rct_vehicle_info_list;
 
 extern const rct_vehicle_info_list **gTrackVehicleInfo[17];
+
+extern const sint16 AlternativeTrackTypes[256];

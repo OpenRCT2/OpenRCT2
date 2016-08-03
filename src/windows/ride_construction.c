@@ -2589,7 +2589,10 @@ static bool sub_6CA2DF(int *_trackType, int *_trackDirection, int *_rideIndex, i
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackCovered & 1) {
 		if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
-			trackType = RCT2_GLOBAL(0x00993D1C + trackType, uint8);
+			sint16 alternativeType = AlternativeTrackTypes[trackType];
+			if (alternativeType > -1) {
+				trackType = (uint8) alternativeType;
+			}
 			edxRS16 &= 0xFFFE; // unsets 0x1
 		}
 	}
