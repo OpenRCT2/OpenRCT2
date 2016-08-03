@@ -332,7 +332,7 @@ void sub_684AC3(){
 
 	for (int i = 0; i < 19; ++i){
 		rct_scenery_set_entry* scenery_set = get_scenery_group_entry(i);
-		if ((int)scenery_set == -1)continue;
+		if ((intptr_t)scenery_set == -1)continue;
 
 		for (int j = 0; j < scenery_set->entry_count; ++j){
 			uint8 value = scenery_set->scenery_entries[j] & 0x1F;

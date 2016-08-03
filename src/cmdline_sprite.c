@@ -76,13 +76,13 @@ static void sprite_file_load_palette(int spriteIndex)
 static void sprite_entries_make_absolute()
 {
 	for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
-		spriteFileEntries[i].offset += (int)spriteFileData;
+		spriteFileEntries[i].offset += (uintptr_t)spriteFileData;
 }
 
 static void sprite_entries_make_relative()
 {
 	for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
-		spriteFileEntries[i].offset -= (int)spriteFileData;
+		spriteFileEntries[i].offset -= (uintptr_t)spriteFileData;
 }
 
 static bool sprite_file_open(const utf8 *path)
@@ -443,7 +443,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 			printf("height: %d\n", g1->height);
 			printf("x offset: %d\n", g1->x_offset);
 			printf("y offset: %d\n", g1->y_offset);
-			printf("data offset: 0x%X\n", (uint32)g1->offset);
+			printf("data offset: %p\n", g1->offset);
 
 			sprite_file_close();
 			return 1;

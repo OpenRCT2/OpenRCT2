@@ -40,7 +40,7 @@
 #include "dropdown.h"
 #include "../rct1.h"
 
-#define var_496(w)	RCT2_GLOBAL((int)w + 0x496, uint16)
+#define var_496(w)	RCT2_GLOBAL((uintptr_t)w + 0x496, uint16)
 
 enum {
 	WINDOW_RIDE_PAGE_MAIN,
@@ -2512,8 +2512,8 @@ static rct_string_id window_ride_get_status_overall_view(rct_window *w, void *ar
 	rct_string_id stringId;
 
 	ride_get_status(w->number, &formatSecondary, &argument);
-	RCT2_GLOBAL((int)arguments + 0, uint16) = formatSecondary;
-	RCT2_GLOBAL((int)arguments + 2, uint32) = argument;
+	RCT2_GLOBAL((uintptr_t)arguments + 0, uint16) = formatSecondary;
+	RCT2_GLOBAL((uintptr_t)arguments + 2, uintptr_t) = argument;
 	stringId = STR_RED_OUTLINED_STRING;
 	if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
 		stringId = STR_BLACK_STRING;
@@ -2550,7 +2550,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
 			if (track_type_is_invented(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0) {
-				RCT2_GLOBAL((int)arguments + 0, rct_string_id) = STR_STOPPED_BY_BLOCK_BRAKES;
+				RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return STR_BLACK_STRING;
 			}
 		}
@@ -2559,7 +2559,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	stringId = VehicleStatusNames[vehicle->status];
 
 	// Get speed in mph
-	RCT2_GLOBAL((int)arguments + 2, uint16) = (abs(vehicle->velocity) * 9) >> 18;
+	RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = (abs(vehicle->velocity) * 9) >> 18;
 
 	if (ride->type == RIDE_TYPE_MINI_GOLF)
 		return 0;
@@ -2569,9 +2569,9 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	}
 
 	const ride_component_name stationName = RideComponentNames[RideNameConvention[ride->type].station];
-	RCT2_GLOBAL((int)arguments + 4, rct_string_id) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
-	RCT2_GLOBAL((int)arguments + 6, uint16) = vehicle->current_station + 1;
-	RCT2_GLOBAL((int)arguments + 0, rct_string_id) = stringId;
+	RCT2_GLOBAL((uintptr_t)arguments + 4, rct_string_id) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
+	RCT2_GLOBAL((uintptr_t)arguments + 6, uint16) = vehicle->current_station + 1;
+	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;
 	return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 
@@ -2611,7 +2611,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 	// Queue length
 	if (stringId == 0) {
 		queueLength = ride->queue_length[stationIndex];
-		RCT2_GLOBAL((int)arguments + 2, uint16) = queueLength;
+		RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = queueLength;
 		stringId = STR_QUEUE_EMPTY;
 		if (queueLength == 1)
 			stringId++; // TODO: String calculation
@@ -2619,7 +2619,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 			stringId += 2;// TODO: String calculation
 	}
 
-	RCT2_GLOBAL((int)arguments + 0, rct_string_id) = stringId;
+	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;
 	return STR_BLACK_STRING;
 }
 

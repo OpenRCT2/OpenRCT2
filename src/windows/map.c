@@ -1674,7 +1674,7 @@ static void map_window_set_pixels(rct_window *w)
 		}
 		x += dx;
 		y += dy;
-		destination = (uint16*)((int)destination + 513);
+		destination = (uint16*)((uintptr_t)destination + 513);
 	}
 	RCT2_GLOBAL(0x00F1AD6C, uint32)++;
 	if (RCT2_GLOBAL(0x00F1AD6C, uint32) >= 256)
