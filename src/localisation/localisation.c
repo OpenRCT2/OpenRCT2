@@ -905,7 +905,7 @@ static void format_realtime(char ** dest, uint16 value)
 
 static void format_string_code(unsigned int format_code, char **dest, char **args)
 {
-	int value;
+	intptr_t value;
 
 	switch (format_code) {
 	case FORMAT_COMMA32:
@@ -975,8 +975,8 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		break;
 	case FORMAT_STRING:
 		// Pop argument
-		value = *((uint32*)*args);
-		*args += 4;
+		value = *((uintptr_t*)*args);
+		*args += sizeof(uintptr_t);
 
 		if (value != 0) {
 			strcpy(*dest, (char*)value);
@@ -1038,7 +1038,7 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		*args += 4;
 
 		*(*dest)++ = 23;
-		*((uint32*)(*dest)) = value;
+		*((intptr_t*)(*dest)) = value;
 		*dest += 4;
 		break;
 	}
