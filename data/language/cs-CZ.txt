@@ -4216,6 +4216,9 @@ STR_5904    :Vynulovat datum
 STR_5905    :{SMALLFONT}{BLACK}Nástroj pro vygenerování mapy, který automaticky vytvoří charakteristickou krajinu
 STR_5906    :Přiblížovat na pozici kurzoru
 STR_5907    :{SMALLFONT}{BLACK}Přibližování bude centrovat na ukazatel myši, namísto centrování doprostřed obrazovky.
+STR_5908    :Povolit libovolné změny typu atrakce
+STR_5909    :{SMALLFONT}{BLACK}Povolí libovolné změny typu atrakce. Může způsobit pád aplikace.
+STR_5910    :Použít
 
 
 ###############################################################################

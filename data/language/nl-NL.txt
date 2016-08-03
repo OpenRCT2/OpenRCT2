@@ -3855,7 +3855,7 @@ STR_5518    :{SMALLFONT}{BLACK}Wit
 STR_5519    :{SMALLFONT}{BLACK}Donkerpaars
 STR_5520    :{SMALLFONT}{BLACK}Lichtpaars
 STR_5521    :{SMALLFONT}{BLACK}Helder paars
-STR_5522    :{SMALLFONT}{BLACK}Darkblauw
+STR_5522    :{SMALLFONT}{BLACK}Donkerblauw
 STR_5523    :{SMALLFONT}{BLACK}Lichtblauw
 STR_5524    :{SMALLFONT}{BLACK}IJzig blauw
 STR_5525    :{SMALLFONT}{BLACK}Donkere waterkleur
@@ -4208,6 +4208,9 @@ STR_5904    :Datum resetten
 STR_5905    :{SMALLFONT}{BLACK}Opent een venster om automatisch een nieuw landschap te genereren
 STR_5906    :Zoomen op cursorpositie
 STR_5907    :{SMALLFONT}{BLACK}Laat het spel zoomen op de plaats van de cursor, in plaats van het midden van het scherm.
+STR_5908    :Attractietype veranderen toestaan
+STR_5909    :{SMALLFONT}{BLACK}Maakt het mogelijk om het baantype van een attractie te veranderen. Kan crashes veroorzaken.
+STR_5910    :Toepassen
 
 #############
 # Scenarios #

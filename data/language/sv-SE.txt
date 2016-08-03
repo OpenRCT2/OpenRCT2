@@ -4192,7 +4192,16 @@ STR_5894    :Skriv in valutakurs
 STR_5895    :Spara bandesign
 STR_5896    :Misslyckades med att spara bandesignen!
 STR_5897    :Max antal fönster:
-STR_5898    :{BLACK}Kan inte ladda bandesignen, filen kan vara {newline}skadad eller saknas!
+STR_5898    :{BLACK}Kan inte ladda bandesignen, filen kan vara {NEWLINE}skadad eller saknas!
+STR_5899    :Växla 'grafik felsökning' fönstret
+STR_5900    :Använd orginal koden till grafik
+STR_5901    :Visa segmenternas höjder
+STR_5902    :Visa ritlådorna
+STR_5903    :Visa 'grafik felsökning' fönstret
+STR_5904    :Återställ datum
+STR_5905    :{SMALLFONT}{BLACK}Ett verktyg kallad 'markgenerator' som automatiskt skapar en skräddarsydd terräng
+STR_5906    :Zooma till musens position
+STR_5907    :{SMALLFONT}{BLACK}Inzoomning kommer förstoras till musen, istället för centrum av skärmen.
 
 #############
 # Scenarion #

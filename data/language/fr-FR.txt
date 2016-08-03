@@ -4217,6 +4217,9 @@ STR_5904    :Réinitialiser date
 STR_5905    :{SMALLFONT}{BLACK}Outil de génération de carte permettant de créer automatiquement un paysage personnalisé
 STR_5906    :Zoom centré sur le curseur
 STR_5907    :{SMALLFONT}{BLACK}Activé, le zoom sera centré sur le curseur au lieu du centre de l'écran
+STR_5908    :Autoriser les changements de {NEWLINE}voie arbitraires
+STR_5909    :{SMALLFONT}{BLACK}Permet de changer librement le type de voie. Peut causer un plantage
+STR_5910    :Appliquer
 
 #############
 # Scenarios #

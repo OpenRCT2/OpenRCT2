@@ -4173,6 +4173,12 @@ STR_5901    :Mostrar alturas de segmentos
 STR_5902    :Mostrar cajas delimitadoras
 STR_5903    :Mostrar ventana de depuración de pintado
 STR_5904    :Reiniciar fecha
+STR_5905    :{SMALLFONT}{BLACK}Una herramienta de generación de mapa que crea automáticamente un paisaje personalizado.
+STR_5906    :Zoom a la posición del cursor
+STR_5907    :{SMALLFONT}{BLACK}Cuando está activado el zoom se centrará en el cursor en lugar de el centro de la pantalla.
+STR_5908    :Permitir cambios de tipo de vía arbritarios
+STR_5909    :{SMALLFONT}{BLACK}Permite cambiar el tipo de vía de una atracción libremente. Puede causar un crash.
+STR_5910    :Aplicar
 
 ##############
 # Escenarios #

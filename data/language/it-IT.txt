@@ -4219,6 +4219,9 @@ STR_5904    :Reimposta data
 STR_5905    :{SMALLFONT}{BLACK}Uno strumento di generazione mappe che crea automaticamente un paesaggio personalizzato
 STR_5906    :Zoom alla posizione del cursore
 STR_5907    :{SMALLFONT}{BLACK}Se abilitato, effettuando lo zoom l'ingrandimento avverrà centrato sul cursore anziché al centro dello schermo.
+STR_5908    :Permetti qualsiasi cambio di tipo percorso
+STR_5909    :{SMALLFONT}{BLACK}Permette di cambiare liberamente il tipo di percorso. Potrebbe causare blocchi del gioco.
+STR_5910    :Applica
 
 
 #############
