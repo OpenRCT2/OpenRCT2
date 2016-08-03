@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 static const uint8 edges_1x4_ne_sw[] = {
 	EDGE_NW | EDGE_SE,
@@ -182,7 +183,7 @@ static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direc
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction)
 {
-	if (trackType != 122) {
+	if (trackType != FLAT_TRACK_ELEM_1_X_4_C) {
 		return NULL;
 	}
 

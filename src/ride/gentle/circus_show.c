@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /**
  * rct2: 0x0077084A
@@ -102,7 +103,7 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 

@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 
 typedef struct haunted_house_bound_box
@@ -133,7 +134,7 @@ static void paint_haunted_house(uint8 rideIndex, uint8 trackSequence, uint8 dire
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 

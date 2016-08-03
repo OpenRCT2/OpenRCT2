@@ -21,6 +21,7 @@
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /**
  *
@@ -72,7 +73,7 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction)
 {
 	switch (trackType) {
-	case 118: return facility_paint_setup;
+	case FLAT_TRACK_ELEM_1_X_1_A: return facility_paint_setup;
 	}
 	return NULL;
 }

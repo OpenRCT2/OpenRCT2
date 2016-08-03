@@ -19,6 +19,7 @@
 #include "../track_paint.h"
 #include "../../paint/supports.h"
 #include "../../paint/paint.h"
+#include "../track.h"
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOffset, uint16 height, rct_map_element * mapElement)
@@ -123,7 +124,7 @@ static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 directi
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction)
 {
-	if (trackType != 111) {
+	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;
 	}
 

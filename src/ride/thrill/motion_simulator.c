@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 enum {
 	SPR_MOTION_SIMULATOR_STAIRS_R0		= 22154,
@@ -152,7 +153,7 @@ static void paint_motionsimulator(uint8 rideIndex, uint8 trackSequence, uint8 di
 TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction)
 {
 	switch (trackType) {
-	case 110: return paint_motionsimulator;
+	case FLAT_TRACK_ELEM_2_X_2: return paint_motionsimulator;
 	}
 	return NULL;
 }

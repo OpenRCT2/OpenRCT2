@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 enum {
 	PLANE_BACK,
@@ -224,7 +225,7 @@ static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direc
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int direction)
 {
 	switch (trackType) {
-	case 95: return paint_magic_carpet;
+	case FLAT_TRACK_ELEM_1_X_4_A: return paint_magic_carpet;
 	}
 	return NULL;
 }

@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 enum {
 	SPR_DODGEMS_FLOOR = 21925,
@@ -92,7 +93,7 @@ static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction,
  * rct2:
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction) {
-	if (trackType != 111) {
+	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;
 	}
 

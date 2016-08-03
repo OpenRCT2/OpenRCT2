@@ -22,6 +22,7 @@
 #include "../../world/map.h"
 #include "../track_paint.h"
 #include "../../paint/map_element/surface.h"
+#include "../track.h"
 
 enum {
 	SPR_MAZE_BASE_HEDGE = 21938,
@@ -178,7 +179,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
  * rct2: 0x008A81E8
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction) {
-	if (trackType != 101) {
+	if (trackType != TRACK_ELEM_MAZE) {
 		return NULL;
 	}
 

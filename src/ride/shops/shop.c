@@ -21,6 +21,7 @@
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /**
  *
@@ -61,8 +62,8 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction)
 {
 	switch (trackType) {
-	case 118:
-	case 121: return shop_paint_setup;
+	case FLAT_TRACK_ELEM_1_X_1_A:
+	case FLAT_TRACK_ELEM_1_X_1_B: return shop_paint_setup;
 	}
 	return NULL;
 }

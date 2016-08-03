@@ -19,6 +19,7 @@
 #include "../track_paint.h"
 #include "../../paint/supports.h"
 #include "../../paint/paint.h"
+#include "../track.h"
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
@@ -146,7 +147,7 @@ static void paint_twist(uint8 rideIndex, uint8 trackSequence, uint8 direction, i
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_twist(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 

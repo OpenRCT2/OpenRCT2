@@ -18,6 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../track_paint.h"
+#include "../track.h"
 
 /** rct2: 0x0142805C */
 static const uint32 merry_go_round_rider_offsets[] = {
@@ -155,7 +156,7 @@ static void paint_merry_go_round(uint8 rideIndex, uint8 trackSequence, uint8 dir
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 

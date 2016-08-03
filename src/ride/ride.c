@@ -4586,8 +4586,8 @@ static rct_vehicle *vehicle_create_car(
 			direction = 4;
 		} else {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
-				if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != 119) {
-					if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != 95) {
+				if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != FLAT_TRACK_ELEM_1_X_4_B) {
+					if (RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) != FLAT_TRACK_ELEM_1_X_4_A) {
 						if (ride->type == RIDE_TYPE_ENTERPRISE) {
 							direction += 5;
 						} else {

@@ -305,7 +305,7 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
 /* 0x0076659C */
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction)
 {
-	if (trackType != 123) {
+	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}
 
