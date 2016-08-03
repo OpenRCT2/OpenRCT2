@@ -316,7 +316,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 		commandEditorOpen *= 2;
 		if (!commandEditorOpen)
-			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
+			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
 		defaultPreset *= 2; commandEditorOpen *= 2;
@@ -326,7 +326,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
 		defaultPreset *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !commandEditorOpen)
-			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
+			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)&gConfigTitleSequences.presets[gCurrentTitleSequence].name, 64);
 		break;
 	case WIDX_TITLE_EDITOR_ADD:
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
@@ -351,7 +351,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		defaultPreset *= 2; playing *= 2; commandEditorOpen *= 2;
 		if (!defaultPreset && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1)
-				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uint32)gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
+				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uintptr_t)gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_LOAD:
@@ -857,7 +857,7 @@ void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
 
-		set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name);
+		set_format_arg(0, uintptr_t, &gConfigTitleSequences.presets[gCurrentTitleSequence].name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
@@ -909,7 +909,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 			}
 
-			set_format_arg(0, uint32, (uint32)&title->saves[i]);
+			set_format_arg(0, uintptr_t, &title->saves[i]);
 			if (selected || hover) {
 				format_string(buffer, STR_STRING, gCommonFormatArgs);
 			}
@@ -917,7 +917,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				format_string(buffer + 1, STR_STRING, gCommonFormatArgs);
 				buffer[0] = FORMAT_BLACK;
 			}
-			set_format_arg(0, uint32, (uint32)&buffer);
+			set_format_arg(0, uintptr_t, &buffer);
 			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
@@ -949,7 +949,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 					commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
 					error = true;
 				}
-				set_format_arg(0, uint32, (uint32)&title->saves[command->saveIndex]);
+				set_format_arg(0, uintptr_t, &title->saves[command->saveIndex]);
 				break;
 			case TITLE_SCRIPT_LOADMM:
 				commandName = STR_TITLE_EDITOR_COMMAND_LOAD_SFMM;
@@ -994,7 +994,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				format_string(buffer + 1, commandName, gCommonFormatArgs);
 				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
 			}
-			set_format_arg(0, uint32, (uint32)&buffer);
+			set_format_arg(0, uintptr_t, &buffer);
 			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
