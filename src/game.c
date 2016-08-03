@@ -806,12 +806,12 @@ bool game_load_save(const utf8 *path)
 	SDL_RWclose(rw);
 
 	if (result) {
+		if (network_get_mode() == NETWORK_MODE_CLIENT) {
+			network_close();
+		}
 		game_load_init();
 		if (network_get_mode() == NETWORK_MODE_SERVER) {
 			network_send_map();
-		}
-		if (network_get_mode() == NETWORK_MODE_CLIENT) {
-			network_close();
 		}
 		return true;
 	} else {
@@ -851,6 +851,10 @@ void game_load_init()
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 	window_invalidate(mainWindow);
 
+	if (network_get_mode() != NETWORK_MODE_CLIENT)
+	{
+		reset_sprite_spatial_index();
+	}
 	reset_all_sprite_quadrant_placements();
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();

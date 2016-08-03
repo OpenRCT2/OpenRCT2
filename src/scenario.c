@@ -119,6 +119,9 @@ int scenario_load_and_play_from_path(const char *path)
 	if (!scenario_load(path))
 		return 0;
 
+	reset_sprite_spatial_index();
+	reset_all_sprite_quadrant_placements();
+
 	int len = strnlen(path, MAX_PATH) + 1;
 	safe_strcpy(_scenarioPath, path, len);
 	if (len - 1 == MAX_PATH)

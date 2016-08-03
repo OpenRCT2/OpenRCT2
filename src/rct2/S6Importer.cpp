@@ -366,11 +366,6 @@ void S6Importer::Import()
         throw ObjectLoadException();
     }
     map_update_tile_pointers();
-    reset_all_sprite_quadrant_placements();
-    if (network_get_mode() != NETWORK_MODE_CLIENT)
-    {
-        reset_sprite_spatial_index();
-    }
     game_convert_strings_to_utf8();
     if (FixIssues)
     {
