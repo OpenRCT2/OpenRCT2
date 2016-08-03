@@ -1026,6 +1026,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 			log_error("Failed to allocate %u bytes.", header_len + out_size);
 			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
 			connection->Socket->Disconnect();
+			free(compressed);
 			return;
 		}
 		memcpy(&header[header_len], compressed, out_size);
