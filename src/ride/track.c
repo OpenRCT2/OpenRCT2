@@ -44,8 +44,8 @@ uint8 gTrackGroundFlags;
  *
  *  rct2: 0x00997C9D
  */
-const rct_trackdefinition *gTrackDefinitions = (rct_trackdefinition*)0x00997C9D;
-const rct_trackdefinition *gFlatRideTrackDefinitions = (rct_trackdefinition*)0x0099849D;
+const rct_trackdefinition *TrackDefinitions = (rct_trackdefinition*)0x00997C9D;
+const rct_trackdefinition *FlatRideTrackDefinitions = (rct_trackdefinition*)0x0099849D;
 
 // TODO This table is incorrect or at least missing 69 elements. There should be 256 in total!
 const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
@@ -247,13 +247,13 @@ int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 	int trackType, aBank, aAngle, bBank, bAngle;
 
 	trackType = a->properties.track.type;
-	aBank = gTrackDefinitions[trackType].bank_end;
-	aAngle = gTrackDefinitions[trackType].vangle_end;
+	aBank = TrackDefinitions[trackType].bank_end;
+	aAngle = TrackDefinitions[trackType].vangle_end;
 	aBank = track_get_actual_bank(a, aBank);
 
 	trackType = b->properties.track.type;
-	bBank = gTrackDefinitions[trackType].bank_start;
-	bAngle = gTrackDefinitions[trackType].vangle_start;
+	bBank = TrackDefinitions[trackType].bank_start;
+	bAngle = TrackDefinitions[trackType].vangle_start;
 	bBank = track_get_actual_bank(b, bBank);
 
 	return aBank == bBank && aAngle == bAngle;
@@ -1855,7 +1855,7 @@ int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement)
 	int trackType = mapElement->properties.track.type;
 	int rideType = get_ride(mapElement->properties.track.ride_index)->type;
 	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
-	int bankStart = gTrackDefinitions[trackType].bank_start;
+	int bankStart = TrackDefinitions[trackType].bank_start;
 	return track_get_actual_bank_2(rideType, trackColour, bankStart);
 }
 

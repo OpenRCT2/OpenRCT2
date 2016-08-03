@@ -474,8 +474,8 @@ typedef struct track_circuit_iterator {
 	bool looped;
 } track_circuit_iterator;
 
-extern const rct_trackdefinition *gFlatRideTrackDefinitions;
-extern const rct_trackdefinition *gTrackDefinitions;
+extern const rct_trackdefinition *FlatRideTrackDefinitions;
+extern const rct_trackdefinition *TrackDefinitions;
 
 extern uint8 gTrackGroundFlags;
 

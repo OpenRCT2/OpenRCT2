@@ -3174,7 +3174,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 			return false;
 		}
 
-		if (gTrackDefinitions[trackType].bank_start == 0) {
+		if (TrackDefinitions[trackType].bank_start == 0) {
 			if (!(RCT2_ADDRESS(0x009968BB, uint8)[trackType * 10] & 4)) {
 				direction = (trackElement->type & 3) ^ 2;
 				if (direction == edge) {
@@ -3194,7 +3194,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	if (gTrackDefinitions[trackType].bank_end != 0) {
+	if (TrackDefinitions[trackType].bank_end != 0) {
 		return false;
 	}
 
