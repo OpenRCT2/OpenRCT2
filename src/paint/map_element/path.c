@@ -692,12 +692,12 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	}
 
 	if (footpath_element_path_scenery_is_ghost(map_element)) {
-		sceneryImageFlags = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		sceneryImageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-		imageFlags = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);

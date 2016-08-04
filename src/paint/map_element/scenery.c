@@ -59,7 +59,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	}
 	if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-		baseImageid = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		baseImageid = construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 	uint32 dword_F64EB0 = baseImageid;
 	
