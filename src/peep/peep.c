@@ -610,21 +610,24 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 					break;
 				case MAP_ELEMENT_TYPE_TRACK:
 					ride = get_ride(mapElement->properties.track.ride_index);
-					if (ride->type == RIDE_TYPE_MERRY_GO_ROUND &&
-						ride->music_tune_id != 0xFF){
-						nearby_music |= 1;
-						break;
-					}
+					if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC &&
+						ride->status != RIDE_STATUS_CLOSED &&
+						!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))){
 
-					if (ride->music_tune_id == MUSIC_STYLE_ORGAN){
-						nearby_music |= 1;
-						break;
-					}
+						if (ride->type == RIDE_TYPE_MERRY_GO_ROUND){
+							nearby_music |= 1;
+							break;
+						}
 
-					if (ride->type == RIDE_TYPE_DODGEMS &&
-						ride->music_tune_id != 0xFF){
-						// Dodgems drown out music?
-						nearby_music |= 2;
+						if (ride->music == MUSIC_STYLE_ORGAN){
+							nearby_music |= 1;
+							break;
+						}
+
+						if (ride->type == RIDE_TYPE_DODGEMS){
+							// Dodgems drown out music?
+							nearby_music |= 2;
+						}
 					}
 					break;
 				}
