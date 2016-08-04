@@ -2446,9 +2446,6 @@ static void window_ride_main_invalidate(rct_window *w)
 	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].top = w->height - 17;
 	window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].bottom = w->height - 4;
 
-	widget_invalidate(w, WIDX_VIEWPORT);
-	widget_invalidate(w, WIDX_VIEW);
-
 	if (!gCheatsAllowArbitraryRideTypeChanges) {
 		window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_EMPTY;
 		window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_EMPTY;
