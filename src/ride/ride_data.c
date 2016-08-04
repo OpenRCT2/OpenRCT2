@@ -2234,3 +2234,61 @@ const rct_ride_properties RideProperties[91] = {
 		 RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
 				10, 31,  26, 18},  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
+
+/** rct2: 0x00982164 */
+const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
+	{  3, 14, 14, 14 },	// SHOP_ITEM_BALLOON
+	{ 15, 30, 30, 30 },	// SHOP_ITEM_TOY
+	{  1,  7,  7,  8 },	// SHOP_ITEM_MAP
+	{  2, 30, 30, 30 },	// SHOP_ITEM_PHOTO
+	{ 20, 35, 25, 50 },	// SHOP_ITEM_UMBRELLA
+	{  3, 12, 20, 10 },	// SHOP_ITEM_DRINK
+	{  5, 19, 19, 22 },	// SHOP_ITEM_BURGER
+	{  4, 16, 16, 18 },	// SHOP_ITEM_FRIES
+	{  4, 10, 15,  6 },	// SHOP_ITEM_ICE_CREAM
+	{  3,  9,  9,  6 },	// SHOP_ITEM_COTTON_CANDY
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_CAN
+	{  0,  0,  0,  0 },	// SHOP_ITEM_RUBBISH
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BURGER_BOX
+	{  6, 21, 21, 25 },	// SHOP_ITEM_PIZZA
+	{  0,  0,  0,  0 },	// SHOP_ITEM_VOUCHER
+	{  5, 13, 13, 11 },	// SHOP_ITEM_POPCORN
+	{  5, 17, 17, 20 },	// SHOP_ITEM_HOT_DOG
+	{ 11, 22, 20, 18 },	// SHOP_ITEM_TENTACLE
+	{  9, 27, 32, 24 },	// SHOP_ITEM_HAT
+	{  4, 10, 10, 10 },	// SHOP_ITEM_CANDY_APPLE
+	{ 20, 37, 37, 37 },	// SHOP_ITEM_TSHIRT
+	{  4,  8,  7, 10 },	// SHOP_ITEM_DONUT
+	{  3, 11, 15, 20 },	// SHOP_ITEM_COFFEE
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_CUP
+	{  5, 19, 19, 22 },	// SHOP_ITEM_CHICKEN
+	{  4, 11, 21, 10 },	// SHOP_ITEM_LEMONADE
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BOX
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BOTTLE
+	{  0,  0,  0,  0 },	// 28
+	{  0,  0,  0,  0 },	// 29
+	{  0,  0,  0,  0 },	// 30
+	{  0,  0,  0,  0 },	// SHOP_ITEM_ADMISSION
+	{  2, 30, 30, 30 },	// SHOP_ITEM_PHOTO2
+	{  2, 30, 30, 30 },	// SHOP_ITEM_PHOTO3
+	{  2, 30, 30, 30 },	// SHOP_ITEM_PHOTO4
+	{  5, 11, 11, 11 },	// SHOP_ITEM_PRETZEL
+	{  4, 13, 13, 20 },	// SHOP_ITEM_CHOCOLATE
+	{  3, 10, 20, 10 },	// SHOP_ITEM_ICED_TEA
+	{  5, 13, 11, 14 },	// SHOP_ITEM_FUNNEL_CAKE
+	{  8, 15, 20, 12 },	// SHOP_ITEM_SUNGLASSES
+	{  7, 17, 17, 20 },	// SHOP_ITEM_BEEF_NOODLES
+	{  6, 17, 17, 20 },	// SHOP_ITEM_FRIED_RICE_NOODLES
+	{  4, 13, 13, 15 },	// SHOP_ITEM_WONTON_SOUP
+	{  5, 14, 14, 16 },	// SHOP_ITEM_MEATBALL_SOUP
+	{  4, 11, 19, 11 },	// SHOP_ITEM_FRUIT_JUICE
+	{  4, 10, 14, 10 },	// SHOP_ITEM_SOYBEAN_MILK
+	{  3, 11, 14, 11 },	// SHOP_ITEM_SU_JONGKWA
+	{  5, 19, 19, 17 },	// SHOP_ITEM_SUB_SANDWICH
+	{  4,  8,  8,  8 },	// SHOP_ITEM_COOKIE
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BOWL_RED
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_DRINK_CARTON
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_JUICE_CUP
+	{  5, 16, 16, 20 },	// SHOP_ITEM_ROAST_SAUSAGE
+	{  0,  0,  0,  0 },	// SHOP_ITEM_EMPTY_BOWL_BLUE
+};

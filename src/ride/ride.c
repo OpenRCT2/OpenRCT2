@@ -358,30 +358,22 @@ void ride_update_favourited_stat()
 
 money32 get_shop_item_cost(int shopItem)
 {
-	return shopItem < 32 ?
-		RCT2_GLOBAL(0x00982164 + (shopItem * 8), uint16) :
-		RCT2_GLOBAL(0x00982144 + (shopItem * 8), uint16);
+	return ShopItemStats[shopItem].cost;
 }
 
 money16 get_shop_base_value(int shopItem)
 {
-	return shopItem < 32 ?
-		RCT2_GLOBAL((0x00982164 + 2) + (shopItem * 8), uint16) :
-		RCT2_GLOBAL((0x00982144 + 2) + (shopItem * 8), uint16);
+	return ShopItemStats[shopItem].base_value;
 }
 
 money16 get_shop_cold_value(int shopItem)
 {
-	return shopItem < 32 ?
-		RCT2_GLOBAL((0x00982164 + 4) + (shopItem * 8), uint16) :
-		RCT2_GLOBAL((0x00982144 + 4) + (shopItem * 8), uint16);
+	return ShopItemStats[shopItem].cold_value;
 }
 
 money16 get_shop_hot_value(int shopItem)
 {
-	return shopItem < 32 ?
-		RCT2_GLOBAL((0x00982164 + 6) + (shopItem * 8), uint16) :
-		RCT2_GLOBAL((0x00982144 + 6) + (shopItem * 8), uint16);
+	return ShopItemStats[shopItem].hot_value;
 }
 
 /**
