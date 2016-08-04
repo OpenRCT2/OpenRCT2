@@ -40,8 +40,6 @@
 #include "dropdown.h"
 #include "../rct1.h"
 
-#define var_496(w)	RCT2_GLOBAL((uintptr_t)w + 0x496, uint16)
-
 enum {
 	WINDOW_RIDE_PAGE_MAIN,
 	WINDOW_RIDE_PAGE_VEHICLE,
@@ -1568,7 +1566,7 @@ static rct_window *window_ride_open(int rideIndex)
 			numSubTypes++;
 		}
 	}
-	var_496(w) = numSubTypes;
+	w->var_496 = numSubTypes;
 
 	window_ride_update_overall_view((uint8) rideIndex);
 
@@ -2901,7 +2899,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	// Vehicle type
 	window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->name;
 	// Always show a dropdown button when changing subtypes is allowed
-	if ((var_496(w) <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
+	if ((w->var_496 <= 1 || (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
 		w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
@@ -2989,7 +2987,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	y += 15;
 
-	if ((!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) && var_496(w) > 1) {
+	if ((!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) && w->var_496 > 1) {
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
 		if (factor > 0) {
