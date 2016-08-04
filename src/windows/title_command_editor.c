@@ -347,7 +347,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 			num_items = gConfigTitleSequences.presets[gCurrentTitleSequence].num_saves;
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
+				gDropdownItemsArgs[i] = (uintptr_t)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[i];
 			}
 
 			window_dropdown_show_text_custom_width(
@@ -564,7 +564,7 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 				);
 		}
 		else {
-			set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex]);
+			set_format_arg(0, uintptr_t, (uintptr_t)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex]);
 			gfx_draw_string_left_clipped(
 				dpi,
 				STR_STRING,

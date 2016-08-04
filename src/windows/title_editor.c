@@ -572,7 +572,7 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 			widget--;
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i] = (uint32)&gConfigTitleSequences.presets[i].name;
+				gDropdownItemsArgs[i] = (uintptr_t)&gConfigTitleSequences.presets[i].name;
 			}
 
 			window_dropdown_show_text_custom_width(

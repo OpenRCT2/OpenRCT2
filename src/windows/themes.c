@@ -368,7 +368,7 @@ static void window_themes_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_THEMES_DUPLICATE_BUTTON:;
 		activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uint32)activeThemeName, 64);
+		window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uintptr_t)activeThemeName, 64);
 		break;
 	case WIDX_THEMES_DELETE_BUTTON:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
@@ -383,7 +383,7 @@ static void window_themes_mouseup(rct_window *w, int widgetIndex)
 		} else {
 			activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 			activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uint32)activeThemeName, 64);
+			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_THEMES_PROMPT_ENTER_THEME_NAME, STR_STRING, (uintptr_t)activeThemeName, 64);
 		}
 		break;
 	}
@@ -493,7 +493,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		widget--;
 		for (int i = 0; i < num_items; i++) {
 			gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-			gDropdownItemsArgs[i] = (uint32)theme_manager_get_available_theme_name(i);
+			gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
 		}
 		
 		window_dropdown_show_text_custom_width(
@@ -766,7 +766,7 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
 		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		set_format_arg(0, uint32, (uint32)activeThemeName);
+		set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
 		gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,

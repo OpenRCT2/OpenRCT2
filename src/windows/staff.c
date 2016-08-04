@@ -593,12 +593,12 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
  */
 void window_staff_overview_update(rct_window* w)
 {
-	int var_496 = RCT2_GLOBAL((int)w + 0x496, uint16);
+	int var_496 = w->var_496;
 	var_496++;
 	if (var_496 >= 24) {
 		var_496 = 0;
 	}
-	RCT2_GLOBAL((int)w + 0x496, uint16) = var_496;
+	w->var_496 = var_496;
 	widget_invalidate(w, WIDX_TAB_1);
 }
 

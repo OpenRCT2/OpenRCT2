@@ -842,7 +842,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
 	int eax = 0;
 
 	if (w->page == WINDOW_GUEST_OVERVIEW){
-		eax = w->highlighted_item>>16;
+		eax = w->var_496;
 		eax &= 0xFFFC;
 	}
 	ebx += eax;
@@ -1114,11 +1114,10 @@ void window_guest_overview_invalidate(rct_window *w)
  *  rct2: 0x696F45
  */
 void window_guest_overview_update(rct_window* w){
-	int var_496 = w->highlighted_item >> 16;
+	int var_496 = w->var_496;
 	var_496++;
 	var_496 %= 24;
-	w->highlighted_item &= 0x0000FFFF;
-	w->highlighted_item |= var_496 << 16;
+	w->var_496 = var_496;
 
 	widget_invalidate(w, WIDX_TAB_1);
 	widget_invalidate(w, WIDX_TAB_2);
