@@ -5888,7 +5888,7 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
 
 	shop_item = ride_type->shop_item_secondary;
 	if (shop_item == 0xFF)
-		shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+		shop_item = RidePhotoItems[ride->type];
 
 	update_same_price_throughout_flags(shop_item);
 
@@ -6123,7 +6123,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	}
 
 	// Get secondary item
-	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+	secondaryItem = RidePhotoItems[ride->type];
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)) {
 		if ((secondaryItem = rideEntry->shop_item_secondary) != SHOP_ITEM_NONE) {
 			window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItemStringIds[secondaryItem].price_label;
@@ -6199,7 +6199,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 39;
 
 	// Secondary item profit / loss per item sold
-	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+	secondaryItem = RidePhotoItems[ride->type];
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
 		secondaryItem = rideEntry->shop_item_secondary;
 
@@ -6418,7 +6418,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Secondary shop items sold / on-ride photos sold
 	shopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
-		RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
+		RidePhotoItems[ride->type] :
 		get_ride_entry_by_ride(ride)->shop_item_secondary;
 	if (shopItem != SHOP_ITEM_NONE) {
 		set_format_arg(0, uint16, ShopItemStringIds[shopItem].plural);

@@ -400,7 +400,7 @@ static money32 ride_calculate_income_per_hour(rct_ride *ride)
 	}
 
 	currentShopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
-			RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
+					  RidePhotoItems[ride->type] :
 			entry->shop_item_secondary;
 
 	if (currentShopItem != SHOP_ITEM_NONE) {
@@ -6629,7 +6629,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		else {
 			shop_item = rideEntry->shop_item_secondary;
 			if (shop_item == SHOP_ITEM_NONE) {
-				shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
+				shop_item = RidePhotoItems[ride->type];
 				if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0) {
 					ride->price_secondary = price;
 					window_invalidate_by_class(WC_RIDE);
