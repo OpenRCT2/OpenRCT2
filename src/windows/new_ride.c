@@ -909,7 +909,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	// Price
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		// Get price of ride
-		int unk2 = RCT2_GLOBAL(0x0097CC68 + (item.type * 2), uint8);
+		int unk2 = RideConstructionDefaultTrackType[item.type];
 		money32 price = RideTrackCosts[item.type].track_price;
 		if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			price *= RCT2_ADDRESS(0x0099DE34, uint32)[unk2];

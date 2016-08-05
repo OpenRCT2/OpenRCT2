@@ -573,7 +573,7 @@ rct_window *window_ride_construction_open()
 	if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
 		RCT2_GLOBAL(0x00F440CE, uint8) = 30;
 
-	_currentTrackCurve = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
+	_currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
 	_currentTrackSlopeEnd = 0;
 	_currentTrackBankEnd = 0;
 	_currentTrackLiftHill = 0;
