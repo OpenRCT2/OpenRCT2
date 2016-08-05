@@ -3760,10 +3760,6 @@ static bool ride_is_valid_operation_option(rct_ride *ride, uint8 value)
 {
 	uint8 minValue = RideProperties[ride->type].min_value;
 	uint8 maxValue = RideProperties[ride->type].max_value;
-	if (ride->mode == RIDE_MODE_MAZE) {
-		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-		maxValue = 64;
-	}
 	if (gCheatsFastLiftHill) {
 		minValue = 0;
 		maxValue = 255;

@@ -3168,10 +3168,6 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
 
 	uint8 maxValue = RideProperties[ride->type].max_value;
 	uint8 minValue = gCheatsFastLiftHill ? 0 : RideProperties[ride->type].min_value;
-	if (ride->mode == RIDE_MODE_MAZE) {
-		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-		maxValue = 64;
-	}
 	if (gCheatsFastLiftHill) {
 		maxValue = 255;
 	}
