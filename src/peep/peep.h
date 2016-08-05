@@ -489,7 +489,7 @@ typedef struct rct_peep {
 	uint8 pad_77;
 	union{
 		uint8 maze_last_edge;			// 0x78
-		uint8 var_78;	//Direction ?
+		uint8 direction;	//Direction ?
 	};
 	uint8 var_79;
 	uint16 time_in_queue;			// 0x7A
