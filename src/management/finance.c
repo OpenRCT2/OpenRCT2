@@ -190,7 +190,7 @@ void finance_init() {
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
 
-	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, uint16) = 0x3F;
 
 	finance_update_loan_hash();
 }

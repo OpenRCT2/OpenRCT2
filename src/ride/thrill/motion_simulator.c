@@ -47,7 +47,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 		uint16 spriteIndex = ride->vehicles[0];
 		if (spriteIndex != SPRITE_INDEX_NULL) {
 			vehicle = GET_VEHICLE(spriteIndex);
-			RCT2_GLOBAL(0x009DE570, uint8) = 2;
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 2;
 			RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
 		}
 	}
