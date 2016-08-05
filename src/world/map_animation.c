@@ -114,6 +114,9 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
 	const rct_ride_entrance_definition *entranceDefinition;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
@@ -142,6 +145,9 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
@@ -175,6 +181,9 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 	rct_peep *peep;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
@@ -234,6 +243,9 @@ static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
@@ -402,6 +414,9 @@ static bool map_animation_invalidate_banner(int x, int y, int baseZ)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;
@@ -513,6 +528,9 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 
 	bool wasInvalidated = false;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return true;
+	}
 	do {
 		if (mapElement->base_height != baseZ)
 			continue;

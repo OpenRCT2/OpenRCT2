@@ -160,6 +160,9 @@ static void ride_ratings_update_state_2()
 	int trackType = _rideRatingsProximityTrackType;
 
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
+	if (mapElement == NULL) {
+		return;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;

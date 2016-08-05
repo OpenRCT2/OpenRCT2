@@ -1294,6 +1294,9 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);
+	if (map_element == NULL) {
+		return;
+	}
 	if (map_element->base_height * 8 <= vehicle->z){
 
 		bool cover_found = false;
@@ -2369,6 +2372,9 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle) {
 		vehicle->track_y,
 		vehicle->track_z / 8,
 		vehicle->track_type >> 2);
+	if (mapElement == NULL) {
+		return true;
+	}
 
 	if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
 		return true;
@@ -3783,6 +3789,9 @@ static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, int x, int y)
 {
 	int z = vehicle->track_z >> 3;
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return false;
+	}
 	do {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
 			int waterZ = (mapElement->properties.surface.terrain & 0x1F) * 2;
@@ -7378,6 +7387,9 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 		trackType,
 		0
 		);
+	if (mapElement == NULL) {
+		return false;
+	}
 
 	bool nextTileBackwards = true;
 	int direction;

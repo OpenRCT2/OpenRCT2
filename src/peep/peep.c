@@ -577,6 +577,9 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 	for (sint16 x = initial_x; x < final_x; x += 32){
 		for (sint16 y = initial_y; y < final_y; y += 32){
 			rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+			if (mapElement == NULL) {
+				continue;
+			}
 
 			do{
 				rct_ride* ride;
@@ -980,6 +983,9 @@ static void sub_68F41A(rct_peep *peep, int index)
 		case PEEP_STATE_QUEUING:
 			if (peep->time_in_queue >= 2000){
 				rct_map_element* mapElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+				if (mapElement == NULL) {
+					return;
+				}
 				uint8 found = 0;
 				do {
 					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
@@ -1184,6 +1190,10 @@ static int checkForPath(rct_peep *peep){
 	}
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		// should the peep start falling?
+		return 1;
+	}
 
 	uint8 map_type = MAP_ELEMENT_TYPE_PATH;
 	if (peep->next_var_29 & ((1 << 4) | (1 << 3))){
@@ -3598,6 +3608,9 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 
 	// Find the station track element
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return;
+	}
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;
@@ -4907,6 +4920,9 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	if (!peep_should_find_bench(peep))return 0;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return 0;
+	}
 
 	for (;; map_element++){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -4982,6 +4998,9 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	if (peep->next_var_29 & 0x18)return 0;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return 0;
+	}
 
 	for (;; map_element++){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -5063,6 +5082,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	if (peep->next_var_29 & 0x18) return;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return;
+	}
 
 	for (;; map_element++){
 		if ( map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -5227,6 +5249,9 @@ static void peep_update_using_bin(rct_peep* peep){
 		}
 
 		rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+		if (map_element == NULL) {
+			return;
+		}
 
 		for (;;map_element++){
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_PATH){
@@ -5574,6 +5599,9 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 		int y = peep->next_y + TileDirectionDelta[chosen_position].y;
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+		if (map_element == NULL) {
+			continue;
+		}
 
 		do {
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY){
@@ -5932,6 +5960,9 @@ static void peep_update_walking(rct_peep* peep){
 	if (peep->next_var_29 & 0x1C)return;
 
 	rct_map_element* map_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+	if (map_element == NULL) {
+		return;
+	}
 
 	for (;; map_element++){
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
@@ -8794,6 +8825,9 @@ static int sub_693C9E(rct_peep *peep)
 	}
 
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return 1;
+	}
 	sint16 base_z = max(0, (peep->z / 8) - 2);
 	sint16 top_z = (peep->z / 8) + 1;
 
@@ -10378,6 +10412,9 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+					if (mapElement == NULL) {
+						return;
+					}
 					do {
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
@@ -10494,6 +10531,9 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+					if (mapElement == NULL) {
+						continue;
+					}
 					do {
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
@@ -10606,6 +10646,9 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 			for (int y = cy - 320; y <= cy + 320; y += 32) {
 				if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32)) {
 					rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+					if (mapElement == NULL) {
+						return;
+					}
 					do {
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
