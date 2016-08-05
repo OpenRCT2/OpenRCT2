@@ -8126,27 +8126,27 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
  */
 static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
-		return 16;
+		return 8;
 
 	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
 			peep->peep_flags &= ~PEEP_FLAGS_2;
 
-		return 16;
+		return 8;
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK &&
 		peep->peep_is_lost_countdown < 90){
-		return 16;
+		return 8;
 	}
 
 	if (peep->item_standard_flags & PEEP_ITEM_MAP)
-		return 14;
+		return 7;
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-		return 14;
+		return 7;
 
-	return 10;
+	return 5;
 }
 
 /**
@@ -8191,6 +8191,7 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 
 	++counter;
 	if (--_peepPathFindTilesChecked < 0) {
+		fprintf(stderr, "WARNING: Path finding search limit (maxTilesChecked) exceeded - expect path finding problems!\n");
 		if (_peepPathFindLog > 1)
 			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; TilesChecked < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
 		return score;
@@ -8333,28 +8334,6 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 		if (footpath_element_next_in_direction(x, y, z, path, prescan_edge) != PATH_SEARCH_WIDE) {
 			thin_count++;
 		}
-		/*sint16 prescan_x = x + TileDirectionDelta[prescan_edge].x;
-		sint16 prescan_y = y + TileDirectionDelta[prescan_edge].y;
-		rct_map_element *prescan_path = map_get_first_element_at(prescan_x / 32, prescan_y / 32);
-		do {
-			if (map_element_get_type(prescan_path) != MAP_ELEMENT_TYPE_PATH) continue;
-
-			if (footpath_element_is_sloped(prescan_path)) {
-				if (
-					(footpath_element_get_slope_direction(prescan_path) == prescan_edge && prescan_path->base_height == z ) || 
-					((footpath_element_get_slope_direction(prescan_path) ^ 2) == prescan_edge && prescan_path->base_height + 2 == z)) {
-					thin_count++;
-					break;
-				}
-			} else { // Not sloped.
-				if (prescan_path->base_height == z &&
-					!footpath_element_is_wide(prescan_path)) {
-					thin_count++;
-					break;
-				}
-			}
-		} while (!map_element_is_last_for_tile(prescan_path++));
-		*/
 
 		if (thin_count > 2) {
 			thin_junction = true;
