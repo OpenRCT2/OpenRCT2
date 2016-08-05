@@ -76,7 +76,7 @@ typedef struct rct_ride_data_4 {
 	uint8 price_secondary;
 	uint16 flags;
 	uint8 default_music;
-	uint8 var_3;
+	uint8 alternate_type;
 	uint8 pad[2];
 } rct_ride_data_4;
 

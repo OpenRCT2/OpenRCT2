@@ -6046,7 +6046,7 @@ foundRideEntry:
 	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT) {
 		ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
 	}
-	ride->music = RCT2_ADDRESS(0x0097D4F4, uint8)[ride->type * 8];
+	ride->music = RideData4[ride->type].default_music;
 
 	ride->operation_option = (
 		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
