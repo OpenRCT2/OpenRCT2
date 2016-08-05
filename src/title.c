@@ -209,6 +209,7 @@ static int title_load_park(const char *path)
 	}
 
 	window_invalidate(w);
+	reset_sprite_spatial_index();
 	reset_all_sprite_quadrant_placements();
 	window_new_ride_init_vars();
 	if (_strcmpi(path_get_extension(path), ".sv6") != 0)
