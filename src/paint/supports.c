@@ -19,6 +19,32 @@
 #include "../paint/paint.h"
 #include "supports.h"
 
+/** rct2: 0x0097AF20, 0x0097AF21 */
+const rct_xy8 loc_97AF20[] = {
+	{4,  4},
+	{28, 4},
+	{4,  28},
+	{28, 28},
+	{16, 16},
+	{16, 4},
+	{4,  16},
+	{28, 16},
+	{16, 28}
+};
+
+/** rct2: 0x0097B052, 0x0097B053 */
+const rct_xy16 loc_97B052[] = {
+	{-15, -1},
+	{0,   -2},
+	{-2,  -1},
+	{-1,  -15},
+	{-26, -1},
+	{0,   -2},
+	{-2,  -1},
+	{-1,  -26}
+};
+
+
 typedef struct supports_id_desc {
 	uint16 full;
 	uint16 half;
@@ -371,10 +397,10 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 
 		uint8 ebp = esi[segment * 8 + 1];
 
-		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
-		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
-		xOffset += RCT2_ADDRESS(0x0097B052, sint8)[ebp * 2];
-		yOffset += RCT2_ADDRESS(0x0097B052 + 1, sint8)[ebp * 2];
+		sint8 xOffset = loc_97AF20[segment].x;
+		sint8 yOffset = loc_97AF20[segment].y;
+		xOffset += loc_97B052[ebp].x;
+		yOffset += loc_97B052[ebp].y;
 
 		sint16 boundBoxLengthX = RCT2_ADDRESS(0x0097B062, uint8)[ebp * 2];
 		sint16 boundBoxLengthY = RCT2_ADDRESS(0x0097B062 + 1, uint8)[ebp * 2];
@@ -393,8 +419,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 
 		height = gSupportSegments[segment].height;
 	}else{
-		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
-		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+		sint8 xOffset = loc_97AF20[segment].x;
+		sint8 yOffset = loc_97AF20[segment].y;
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2];
 		image_id += RCT2_ADDRESS(0x0097B404, sint16)[gSupportSegments[segment].slope & 0x1F];
@@ -416,8 +442,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	heightDiff -= height;
 
 	if (heightDiff > 0) {
-		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
-		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+		sint8 xOffset = loc_97AF20[segment].x;
+		sint8 yOffset = loc_97AF20[segment].y;
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
 		image_id += heightDiff - 1;
@@ -443,8 +469,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		if (z <= 0)
 			break;
 
-		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
-		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+		sint8 xOffset = loc_97AF20[segment].x;
+		sint8 yOffset = loc_97AF20[segment].y;
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
 		image_id += z - 1;
@@ -470,8 +496,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		height--;
 	}
 
-	sint16 boundBoxOffsetX = RCT2_ADDRESS(0x0097AF20, uint8)[segment * 2];
-	sint16 boundBoxOffsetY = RCT2_ADDRESS(0x0097AF21, uint8)[segment * 2];
+	sint16 boundBoxOffsetX = loc_97AF20[segment].x;
+	sint16 boundBoxOffsetY = loc_97AF20[segment].y;
 	sint16 boundBoxOffsetZ = height;
 	si = height + special;
 
@@ -485,8 +511,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		if (z <= 0)
 			break;
 
-		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
-		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+		sint8 xOffset = loc_97AF20[segment].x;
+		sint8 yOffset = loc_97AF20[segment].y;
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
 		image_id += z - 1;
