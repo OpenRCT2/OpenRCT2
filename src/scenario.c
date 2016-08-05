@@ -259,7 +259,7 @@ void scenario_begin()
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
-	RCT2_GLOBAL(0x013587D8, uint16) = 63;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, uint16) = 63;
 	finance_update_loan_hash();
 	park_reset_history();
 	finance_reset_history();
