@@ -19,6 +19,7 @@
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
 #include "drawing.h"
+#include "../sprites.h"
 
 #pragma pack(push, 1)
 /* size: 0xA12 */
@@ -56,7 +57,7 @@ void scrolling_text_initialise_bitmaps()
 
 	for (int i = 0; i < 224; i++) {
 		memset(drawingSurface, 0, sizeof(drawingSurface));
-		gfx_draw_sprite_software(&dpi, i + 0x10D5, -1, 0, 0);
+		gfx_draw_sprite_software(&dpi, SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i, -1, 0, 0);
 
 		for (int x = 0; x < 8; x++) {
 			uint8 val = 0;
@@ -103,7 +104,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 			scrollText->mode == scrollingMode
 		) {
 			scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
-			return i + 0x606;
+			return i + SPR_SCROLLING_TEXT_START;
 		}
 	}
 	return scrollIndex;
@@ -112,7 +113,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 static uint8 scrolling_text_get_colour(uint32 character)
 {
 	int colour = character & 0x7F;
-	if (character & (1 << 7)) {
+	if (character & COLOUR_FLAG_TRANSLUCENT) {
 		return ColourMapA[colour].light;
 	} else {
 		return ColourMapA[colour].mid_dark;
@@ -1408,12 +1409,12 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 	rct_drawpixelinfo* dpi = unk_140E9A8;
 
-	if (dpi->zoom_level != 0) return 0x626;
+	if (dpi->zoom_level != 0) return SPR_SCROLLING_TEXT_DEFAULT;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32)++;
 
 	int scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
-	if (scrollIndex >= 0x606) return scrollIndex;
+	if (scrollIndex >= SPR_SCROLLING_TEXT_START) return scrollIndex;
 
 	// Setup scrolling text
 	uint32 stringArgs0, stringArgs1;
@@ -1441,7 +1442,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 		scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
 	}
 
-	uint32 imageId = 0x606 + scrollIndex;
+	uint32 imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
 	drawing_engine_invalidate_image(imageId);
 	return imageId;
 }
@@ -1463,7 +1464,7 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 		// Set any change in colour
 		if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START){
 			codepoint -= FORMAT_COLOUR_CODE_START;
-			characterColour = g1Elements[4914].offset[codepoint * 4];
+			characterColour = g1Elements[SPR_TEXT_PALETTE].offset[codepoint * 4];
 			continue;
 		}
 
@@ -1523,7 +1524,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 	if (colour == 0) {
 		colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 	} else {
-		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
+		colour = g1Elements[SPR_TEXT_PALETTE].offset[colour - FORMAT_COLOUR_CODE_START];
 	}
 
 	SDL_Surface *surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
