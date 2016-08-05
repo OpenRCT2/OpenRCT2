@@ -2247,8 +2247,8 @@ static void window_ride_construction_draw_track_piece(
 	z = 1024 + z;
 
 	short bx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		RCT2_GLOBAL(0x009984A2 + trackType * 8, sint8) :
-		RCT2_GLOBAL(0x00997CA2 + trackType * 8, sint8);
+		FlatRideTrackDefinitions[trackType].special :
+		TrackDefinitions[trackType].special;
 
 	z -= bx;
 	int start_x = x;
@@ -2904,8 +2904,8 @@ static void window_ride_construction_update_possible_ride_configurations()
 	_numCurrentPossibleSpecialTrackPieces = 0;
 	for (trackType = 0; trackType < 256; trackType++) {
 		edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-			gFlatRideTrackDefinitions[trackType].type :
-			gTrackDefinitions[trackType].type;
+			FlatRideTrackDefinitions[trackType].type :
+			TrackDefinitions[trackType].type;
 
 		if (edx == 0)
 			continue;
@@ -2921,19 +2921,19 @@ static void window_ride_construction_update_possible_ride_configurations()
 		int slope, bank;
 		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE) {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-				slope = gFlatRideTrackDefinitions[trackType].vangle_start;
-				bank = gFlatRideTrackDefinitions[trackType].bank_start;
+				slope = FlatRideTrackDefinitions[trackType].vangle_start;
+				bank = FlatRideTrackDefinitions[trackType].bank_start;
 			} else {
-				slope = gTrackDefinitions[trackType].vangle_start;
-				bank = gTrackDefinitions[trackType].bank_start;
+				slope = TrackDefinitions[trackType].vangle_start;
+				bank = TrackDefinitions[trackType].bank_start;
 			}
 		} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-				slope = gFlatRideTrackDefinitions[trackType].vangle_end;
-				bank = gFlatRideTrackDefinitions[trackType].bank_end;
+				slope = FlatRideTrackDefinitions[trackType].vangle_end;
+				bank = FlatRideTrackDefinitions[trackType].bank_end;
 			} else {
-				slope = gTrackDefinitions[trackType].vangle_end;
-				bank = gTrackDefinitions[trackType].bank_end;
+				slope = TrackDefinitions[trackType].vangle_end;
+				bank = TrackDefinitions[trackType].bank_end;
 			}
 		} else {
 			continue;
@@ -2941,8 +2941,8 @@ static void window_ride_construction_update_possible_ride_configurations()
 
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			if (
-				gTrackDefinitions[trackType].type == TRACK_HELIX_SMALL ||
-				gTrackDefinitions[trackType].type == TRACK_HELIX_LARGE
+				TrackDefinitions[trackType].type == TRACK_HELIX_SMALL ||
+				TrackDefinitions[trackType].type == TRACK_HELIX_LARGE
 			) {
 				if (bank != _previousTrackBankEnd) {
 					if (_previousTrackBankEnd != TRACK_BANK_NONE)

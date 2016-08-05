@@ -232,8 +232,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		const rct_vehicle_info *moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 		uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 		if (trackProgress >= trackTotalProgress) {
-			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+			RCT2_GLOBAL(0x00F64E36, uint8) = TrackDefinitions[trackType].vangle_end;
+			RCT2_GLOBAL(0x00F64E37, uint8) = TrackDefinitions[trackType].bank_end;
 			rct_map_element* trackElement =
 				map_get_track_element_at_of_type_seq(
 					vehicle->track_x,
@@ -254,8 +254,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
 				return false;
 
-			if (gTrackDefinitions[output.element->properties.track.type].vangle_start != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				gTrackDefinitions[output.element->properties.track.type].bank_start != RCT2_GLOBAL(0x00F64E37, uint8))
+			if (TrackDefinitions[output.element->properties.track.type].vangle_start != RCT2_GLOBAL(0x00F64E36, uint8) ||
+				TrackDefinitions[output.element->properties.track.type].bank_start != RCT2_GLOBAL(0x00F64E37, uint8))
 				return false;
 
 			vehicle->track_x = output.x;
@@ -313,8 +313,8 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 
 		if ((sint16)trackProgress == -1) {
 			uint8 trackType = vehicle->track_type >> 2;
-			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
-			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
+			RCT2_GLOBAL(0x00F64E36, uint8) = TrackDefinitions[trackType].vangle_start;
+			RCT2_GLOBAL(0x00F64E37, uint8) = TrackDefinitions[trackType].bank_start;
 			rct_map_element* trackElement =
 				map_get_track_element_at_of_type_seq(
 					vehicle->track_x,
@@ -333,8 +333,8 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 			if (!track_block_get_previous(input.x, input.y, input.element, &output))
 				return false;
 
-			if (gTrackDefinitions[output.begin_element->properties.track.type].vangle_end != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				gTrackDefinitions[output.begin_element->properties.track.type].bank_end != RCT2_GLOBAL(0x00F64E37, uint8))
+			if (TrackDefinitions[output.begin_element->properties.track.type].vangle_end != RCT2_GLOBAL(0x00F64E36, uint8) ||
+				TrackDefinitions[output.begin_element->properties.track.type].bank_end != RCT2_GLOBAL(0x00F64E37, uint8))
 				return false;
 
 			vehicle->track_x = output.begin_x;

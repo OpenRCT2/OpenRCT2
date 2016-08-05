@@ -1489,12 +1489,12 @@ void ride_construction_set_default_next_piece()
 
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			curve = gFlatRideTrackCurveChain[trackType].next;
-			bank = gFlatRideTrackDefinitions[trackType].bank_end;
-			slope = gFlatRideTrackDefinitions[trackType].vangle_end;
+			bank = FlatRideTrackDefinitions[trackType].bank_end;
+			slope = FlatRideTrackDefinitions[trackType].vangle_end;
 		} else {
 			curve = gTrackCurveChain[trackType].next;
-			bank = gTrackDefinitions[trackType].bank_end;
-			slope = gTrackDefinitions[trackType].vangle_end;
+			bank = TrackDefinitions[trackType].bank_end;
+			slope = TrackDefinitions[trackType].vangle_end;
 		}
 
 		// Set track curve
@@ -1540,12 +1540,12 @@ void ride_construction_set_default_next_piece()
 
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			curve = gFlatRideTrackCurveChain[trackType].previous;
-			bank = gFlatRideTrackDefinitions[trackType].bank_start;
-			slope = gFlatRideTrackDefinitions[trackType].vangle_start;
+			bank = FlatRideTrackDefinitions[trackType].bank_start;
+			slope = FlatRideTrackDefinitions[trackType].vangle_start;
 		} else {
 			curve = gTrackCurveChain[trackType].previous;
-			bank = gTrackDefinitions[trackType].bank_start;
-			slope = gTrackDefinitions[trackType].vangle_start;
+			bank = TrackDefinitions[trackType].bank_start;
+			slope = TrackDefinitions[trackType].vangle_start;
 		}
 
 		// Set track curve

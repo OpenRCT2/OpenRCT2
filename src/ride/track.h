@@ -136,7 +136,11 @@ enum {
 
 	TRACK_WATERFALL = 152,
 	TRACK_WHIRLPOOL = 152,
-	TRACK_BRAKE_FOR_DROP = 172
+	TRACK_BRAKE_FOR_DROP = 172,
+	TRACK_190 = 190,
+	TRACK_192 = 192,
+	TRACK_194 = 194,
+	TRACK_MINI_GOLF_HOLE = 195,
 };
 
 enum {
@@ -175,6 +179,7 @@ enum {
 	TRACK_HALF_LOOP_UP = 64,
 	TRACK_HALF_LOOP_DOWN = 192,
 	TRACK_UNKNOWN_VERTICAL_LOOP = 208,
+	TRACK_216 = 216,
 	TRACK_CORKSCREW_DOWN = 224
 };
 
@@ -474,8 +479,8 @@ typedef struct track_circuit_iterator {
 	bool looped;
 } track_circuit_iterator;
 
-extern const rct_trackdefinition *gFlatRideTrackDefinitions;
-extern const rct_trackdefinition *gTrackDefinitions;
+extern const rct_trackdefinition FlatRideTrackDefinitions[256];
+extern const rct_trackdefinition TrackDefinitions[256];
 
 extern uint8 gTrackGroundFlags;
 
