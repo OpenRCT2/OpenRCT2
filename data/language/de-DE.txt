@@ -4203,6 +4203,13 @@ STR_5900    :Originalen Zeichen-Code verw.
 STR_5901    :Segmenthöhen anzeigen
 STR_5902    :Rahmen anzeigen
 STR_5903    :Zeichen-Debugging-Fenster anzeigen
+STR_5904    :Datum zurücksetzen
+STR_5905    :{SMALLFONT}{BLACK}Ein Werkzeug, um Landschaften{NEWLINE}automatisch zu erstellen
+STR_5906    :Auf die Position des Mauszeigers zoomen
+STR_5907    :{SMALLFONT}{BLACK}Das Bild wird beim Zoomen auf{NEWLINE}den Mauszeiger, anstatt der{NEWLINE}Bildmitte, zentriert
+STR_5908    :Beliebiges Ändern des Bahntyps erlauben
+STR_5909    :{SMALLFONT}{BLACK}Erlaubt ein freies Ändern des Bahntyps. Verursacht möglicherweise Abstürze
+STR_5910    :Anwenden
 
 #############
 # Scenarios #

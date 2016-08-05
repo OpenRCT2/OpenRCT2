@@ -4205,6 +4205,20 @@ STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs
 STR_5895    :Lagre bane
 STR_5896    :Klarte ikke lagre bane!
+STR_5897    :Vindusbegrensning:
+STR_5898    :{BLACK}Kunne ikke laste inn spor, filen kan være{newline}korruptert, ødelagt eller manglende!
+STR_5899    :Vis/skjul 'grafikk debug' vindu
+STR_5900    :Bruk orginal grafikk-kode
+STR_5901    :Vis segmenthøyder
+STR_5902    :Vis markeringsrammer
+STR_5903    :Vis 'grafikk debug' vindu
+STR_5904    :Tilbakestill dato
+STR_5905    :{SMALLFONT}{BLACK}Et kartgenereringsverktøy som automatisk lager nye landskaper
+STR_5906    :Zoom til museposisjon
+STR_5907    :{SMALLFONT}{BLACK}Hvis aktivert vil kameraet zoome mot musen istedenfor skjermens midtpunkt.
+STR_5908    :Tillat vilkårlig endring av attraksjonstype
+STR_5909    :{SMALLFONT}{BLACK}Tillater fri endring av attraksjonstype. Kan forårsake krasj.
+STR_5910    :Bruk
 
 #############
 # Scenarios #
