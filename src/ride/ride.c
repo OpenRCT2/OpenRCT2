@@ -2071,6 +2071,31 @@ void ride_update_popularity(rct_ride* ride, uint8 pop_amount){
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
+/** rct2: 0x0098DDB8, 0x0098DDBA */
+static const rct_xy16 ride_spiral_slide_main_tile_offset[][4] = {
+	{
+		{  32,  32 },
+		{   0,  32 },
+		{   0,   0 },
+		{  32,   0 },
+	}, {
+		{  32,   0 },
+		{   0,   0 },
+		{   0, -32 },
+		{  32, -32 },
+	}, {
+		{   0,   0 },
+		{ -32,   0 },
+		{ -32, -32 },
+		{   0, -32 },
+	}, {
+		{   0,   0 },
+		{   0,  32 },
+		{ -32,  32 },
+		{ -32,   0 },
+	},
+};
+
 /**
  *
  *  rct2: 0x006AC545
@@ -2105,11 +2130,11 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
-		int rotation = ((mapElement->type & 3) << 2) | current_rotation;
+		int rotation = map_element_get_direction(mapElement);
 		x *= 32;
 		y *= 32;
-		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
-		y += RCT2_GLOBAL(0x0098DDBA + (rotation * 4), sint16);
+		x += ride_spiral_slide_main_tile_offset[rotation][current_rotation].x;
+		y += ride_spiral_slide_main_tile_offset[rotation][current_rotation].y;
 
 		map_invalidate_tile_zoom0(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 	}
