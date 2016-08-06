@@ -282,7 +282,7 @@ typedef struct rct_window {
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
 		scenario_index_entry* highlighted_scenario;
-		union {
+		struct {
 			uint16 var_494;
 			uint16 var_496;
 		};
