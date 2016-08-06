@@ -571,10 +571,10 @@ static void window_sign_small_invalidate(rct_window *w)
 	main_colour_btn->type = WWT_EMPTY;
 	text_colour_btn->type = WWT_EMPTY;
 
-	if (scenery_entry->wall.flags&(1 << 0)){
+	if (scenery_entry->wall.flags & WALL_SCENERY_FLAG1) {
 		main_colour_btn->type = WWT_COLOURBTN;
 	}
-	if (scenery_entry->wall.flags&(1 << 6)) {
+	if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
