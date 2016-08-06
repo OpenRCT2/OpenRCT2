@@ -58,7 +58,7 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 static char _scenarioPath[MAX_PATH];
 const char *_scenarioFileName = "";
 
-rct_s6_info *gS6Info = (rct_s6_info*)0x0141F570;
+rct_s6_info *gS6Info = RCT2_ADDRESS(0x0141F570, rct_s6_info);
 char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
 char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
 char *gScenarioCompletedBy = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char);
@@ -222,7 +222,7 @@ void scenario_begin()
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
 			if ((intptr_t)stex != -1) {
-				char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+				char *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
 				// Set localised park name
 				format_string(buffer, stex->park_name, 0);
@@ -251,7 +251,7 @@ void scenario_begin()
 	strcpy(gRCT2AddressSavedGamesPath2 + strlen(gRCT2AddressSavedGamesPath2), gScenarioSavePath);
 	strcat(gRCT2AddressSavedGamesPath2, ".SV6");
 
-	memset((void*)0x001357848, 0, 56);
+	memset(RCT2_ADDRESS(0x001357848, void), 0, 56);
 	gCurrentExpenditure = 0;
 	gCurrentProfit = 0;
 	gWeeklyProfitAverageDividend = 0;
@@ -270,7 +270,7 @@ void scenario_begin()
 	park_calculate_size();
 	staff_reset_stats();
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = 0;
-	memset((void*)0x001358102, 0, 20);
+	memset(RCT2_ADDRESS(0x001358102, void), 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
 
 	// Open park with free entry when there is no money

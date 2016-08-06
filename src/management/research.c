@@ -34,7 +34,7 @@
 const int _researchRate[] = { 0, 160, 250, 400 };
 
 // 0x01358844[500]
-rct_research_item *gResearchItems = (rct_research_item*)RCT2_RESEARCH_ITEMS;
+rct_research_item *gResearchItems = RCT2_ADDRESS(RCT2_RESEARCH_ITEMS, rct_research_item);
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;

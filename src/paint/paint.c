@@ -62,7 +62,7 @@ bool gPaintBoundingBoxes;
  *  rct2: 0x0068615B
  */
 void painter_setup() {
-	unk_EE7888 = (paint_struct*)0x00EE788C;
+	unk_EE7888 = RCT2_ADDRESS(0x00EE788C, paint_struct);
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
 	for (int i = 0; i < 512; i++) {

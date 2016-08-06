@@ -22,7 +22,7 @@
 
 static const int SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
-static uint8 *_spriteFontCharacterWidths = (uint8*)RCT2_ADDRESS_FONT_CHAR_WIDTH;
+static uint8 *_spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
 
 TTFFontSetDescriptor *gCurrentTTFFontSet;
 

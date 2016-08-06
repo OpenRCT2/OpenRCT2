@@ -683,7 +683,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	} else {
 		format = STR_ALL_GUESTS_SUMMARISED;
 	}
-	gfx_draw_string_left_clipped(dpi, format, (void*)0x00F1EDF6, 0, x, y, 310);
+	gfx_draw_string_left_clipped(dpi, format, RCT2_ADDRESS(0x00F1EDF6, void), 0, x, y, 310);
 
 	// Number of guests (list items)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {

@@ -286,7 +286,7 @@ static int editor_read_s6(const char *path)
 {
 	int i, j;
 	SDL_RWops* rw;
-	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_header *s6Header = RCT2_ADDRESS(0x009E34E4, rct_s6_header);
 	rct_s6_info *s6Info = gS6Info;
 
 	log_verbose("loading landscape, %s", path);
@@ -331,36 +331,36 @@ static int editor_read_s6(const char *path)
 		//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
 		//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
 		//	RCT2_ADDRESS_SCENARIO_TICKS
-		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
+		sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8));
 
 		// Read map elements
 		memset((void*)gMapElements, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-		sawyercoding_read_chunk(rw, (uint8*)gMapElements);
+		sawyercoding_read_chunk(rw, RCT2_ADDRESS(gMapElements, uint8));
 
 		// Read game data, including sprites
-		sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
+		sawyercoding_read_chunk(rw, RCT2_ADDRESS(0x010E63B8, uint8));
 
 		if (s6Header->type == S6_TYPE_SCENARIO) {
 			// Read number of guests in park and something else
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK, uint8));
 
 			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint8));
 
 			// Read park rating
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_PARK_RATING, uint8));
 
 			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8));
 
 			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint8));
 
 			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_PARK_VALUE, uint8));
 
 			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
+			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint8));
 		}
 
 		SDL_RWclose(rw);
@@ -388,7 +388,7 @@ static int editor_read_s6(const char *path)
 
 static void editor_clear_map_for_editing()
 {
-	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_header *s6Header = RCT2_ADDRESS(0x009E34E4, rct_s6_header);
 
 	map_remove_all_rides();
 

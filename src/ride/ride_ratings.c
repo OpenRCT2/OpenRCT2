@@ -64,7 +64,7 @@ enum {
 
 typedef void (*ride_ratings_calculation)(rct_ride *ride);
 
-uint16 *_proximityScores = (uint16*)0x0138B596;
+uint16 *_proximityScores = RCT2_ADDRESS(0x0138B596, uint16);
 
 static const ride_ratings_calculation ride_ratings_calculate_func_table[91];
 

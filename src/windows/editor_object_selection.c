@@ -1435,7 +1435,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-			char *bufferWithColour = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+			char *bufferWithColour = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 			char *buffer = utf8_write_codepoint(bufferWithColour, colour);
 			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
 				colour = w->colours[1] & 0x7F;

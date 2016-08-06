@@ -779,7 +779,7 @@ bool game_load_save(const utf8 *path)
 {
 	log_verbose("loading saved game, %s", path);
 
-	safe_strcpy((char*)0x0141EF68, path, MAX_PATH);
+	safe_strcpy(RCT2_ADDRESS(0x0141EF68, char), path, MAX_PATH);
 	safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, MAX_PATH);
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
@@ -868,7 +868,7 @@ void game_load_init()
 
 	gGameSpeed = 1;
 
-	scenario_set_filename((char*)0x0135936C);
+	scenario_set_filename(RCT2_ADDRESS(0x0135936C, char));
 }
 
 /**

@@ -733,8 +733,8 @@ static void window_ride_list_refresh_list(rct_window *w)
 		int current_list_position = list_index;
 		switch (w->list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			bufferA = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
-			bufferB = (char*)0x0141EF68;
+			bufferA = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+			bufferB = RCT2_ADDRESS(0x0141EF68, char);
 			format_string_to_upper(bufferA, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
 				otherRide = get_ride(w->list_item_positions[current_list_position]);

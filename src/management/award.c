@@ -68,7 +68,7 @@ static const rct_string_id AwardNewsStrings[] = {
 	STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
+rct_award *gCurrentAwards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
 
 bool award_is_positive(int type)
 {

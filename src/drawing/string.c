@@ -438,7 +438,7 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *ar
 void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	char *buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	char *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 	int height = string_get_height_raw(buffer);
 	gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
@@ -556,7 +556,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format,
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
 {
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gfx_draw_string(dpi, (char*)0x009C383D, 0, dpi->x, dpi->y);
+	gfx_draw_string(dpi, RCT2_ADDRESS(0x009C383D, char), 0, dpi->x, dpi->y);
 	gCurrentFontFlags = 0;
 
 	for (int i = 0; i <= numLines; i++) {
@@ -655,10 +655,10 @@ int string_get_height_raw(char *buffer)
 void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks)
 {
 	int numLines, fontSpriteBase, lineHeight, lineY;
-	utf8 *buffer = (utf8*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gfx_draw_string(dpi, (char*)0x009C383D, colour, dpi->x, dpi->y);
+	gfx_draw_string(dpi, RCT2_ADDRESS(0x009C383D, char), colour, dpi->x, dpi->y);
 	format_string(buffer, format, args);
 
 

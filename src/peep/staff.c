@@ -28,8 +28,8 @@
 #include "peep.h"
 #include "staff.h"
 
-uint32 *gStaffPatrolAreas = (uint32*)RCT2_ADDRESS_STAFF_PATROL_AREAS;
-uint8 *gStaffModes = (uint8*)RCT2_ADDRESS_STAFF_MODE_ARRAY;
+uint32 *gStaffPatrolAreas = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS, uint32);
+uint8 *gStaffModes = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8);
 
 /**
  *
@@ -391,12 +391,12 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 		int mask = 1u << (patrolIndex & 0x1F);
 		int base = patrolIndex >> 5;
 
-		uint32 *patrolBits = (uint32*)(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4));
+		uint32 *patrolBits = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4), uint32);
 		*patrolBits ^= mask;
 
 		int ispatrolling = 0;
 		for(int i = 0; i < 128; i++){
-			ispatrolling |= *(uint32*)(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (i * 4));
+			ispatrolling |= RCT2_GLOBAL(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (i * 4), uint32);
 		}
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
@@ -509,7 +509,7 @@ static int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 	int mask = 1u << (patrolIndex & 0x1F);
 	int base = patrolIndex >> 5;
 
-	uint32 *patrolBits = (uint32*)(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4));
+	uint32 *patrolBits = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4), uint32);
 	return (*patrolBits & mask) != 0;
 }
 

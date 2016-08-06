@@ -31,7 +31,7 @@ static bool map_animation_invalidate(rct_map_animation *obj);
 
 static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT];
 
-rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
+rct_map_animation *gAnimatedObjects = RCT2_ADDRESS(0x013886A0, rct_map_animation);
 
 /**
  *

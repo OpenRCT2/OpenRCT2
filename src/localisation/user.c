@@ -21,7 +21,7 @@
 #include "localisation.h"
 #include "user.h"
 
-utf8 *gUserStrings = (char*)0x0135A8F4;
+utf8 *gUserStrings = RCT2_ADDRESS(0x0135A8F4, char);
 
 static bool user_string_exists(const utf8 *text);
 

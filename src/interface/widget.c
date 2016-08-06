@@ -538,7 +538,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
 		gfx_draw_string_left(dpi, widget->text, gCommonFormatArgs, colour, l, t);
-		textRight = l + gfx_get_string_width((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER) + 1;
+		textRight = l + gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char)) + 1;
 	}
 
 	// Border
