@@ -157,8 +157,6 @@ void window_update_all_viewports()
  */
 void window_update_all()
 {
-	RCT2_GLOBAL(0x009E3CD8, sint32)++;
-
 	// gfx_draw_all_dirty_blocks();
 	// window_update_all_viewports();
 	// gfx_draw_all_dirty_blocks();
@@ -325,7 +323,8 @@ static void window_all_wheel_input()
 			if (widgetIndex != -1) {
 				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
-					rct_scroll *scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
+					int scrollIndex = window_get_scroll_index(w, widgetIndex);
+					rct_scroll *scroll =  &w->scrolls[scrollIndex];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
 						return;
@@ -889,20 +888,15 @@ int window_find_widget_from_point(rct_window *w, int x, int y)
 
 	// Find the widget at point x, y
 	widget_index = -1;
-	RCT2_GLOBAL(0x01420074, uint8) = -1;
 	for (i = 0;; i++) {
 		widget = &w->widgets[i];
 		if (widget->type == WWT_LAST) {
 			break;
 		} else if (widget->type != WWT_EMPTY) {
-			if (widget->type == WWT_SCROLL)
-				RCT2_GLOBAL(0x01420074, uint8)++;
-
 			if (x >= w->x + widget->left && x <= w->x + widget->right &&
 				y >= w->y + widget->top && y <= w->y + widget->bottom
 			) {
 				widget_index = i;
-				RCT2_GLOBAL(0x01420075, uint8) = RCT2_GLOBAL(0x01420074, uint8);
 			}
 		}
 	}
@@ -2137,8 +2131,6 @@ void window_resize_gui(int width, int height)
 		rct_viewport* viewport = mainWind->viewport;
 		mainWind->width = width;
 		mainWind->height = height;
-		RCT2_GLOBAL(0x9A9418, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A941C, uint16) = height - 1;
 		viewport->width = width;
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
@@ -2158,16 +2150,6 @@ void window_resize_gui(int width, int height)
 	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
-		RCT2_GLOBAL(0x9A95D0, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A95E0, uint16) = width - 3;
-		RCT2_GLOBAL(0x9A95DE, uint16) = width - 118;
-		RCT2_GLOBAL(0x9A95CE, uint16) = width - 120;
-		RCT2_GLOBAL(0x9A9590, uint16) = width - 121;
-		RCT2_GLOBAL(0x9A95A0, uint16) = width - 123;
-		RCT2_GLOBAL(0x9A95C0, uint16) = width - 126;
-		RCT2_GLOBAL(0x9A95BE, uint16) = width - 149;
-		RCT2_GLOBAL(0x9A95EE, uint16) = width - 118;
-		RCT2_GLOBAL(0x9A95F0, uint16) = width - 3;
 	}
 
 	rct_window *titleWind = window_find_by_class(WC_TITLE_MENU);
@@ -2198,8 +2180,6 @@ void window_resize_gui_scenario_editor(int width, int height)
 		rct_viewport* viewport = mainWind->viewport;
 		mainWind->width = width;
 		mainWind->height = height;
-		RCT2_GLOBAL(0x9A9834, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A9838, uint16) = height - 1;
 		viewport->width = width;
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
@@ -2219,10 +2199,6 @@ void window_resize_gui_scenario_editor(int width, int height)
 	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
-		RCT2_GLOBAL(0x9A997C, uint16) = bottomWind->width - 1;
-		RCT2_GLOBAL(0x9A997A, uint16) = bottomWind->width - 200;
-		RCT2_GLOBAL(0x9A998A, uint16) = bottomWind->width - 198;
-		RCT2_GLOBAL(0x9A998C, uint16) = bottomWind->width - 3;
 	}
 
 }
@@ -2295,7 +2271,7 @@ void window_update_viewport_ride_music()
 	rct_viewport *viewport;
 	rct_window *w;
 
-	gRideMusicParamsListEnd = &gRideMusicParamsList[0];//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*) = (rct_ride_music_params*)0x009AF430;
+	gRideMusicParamsListEnd = &gRideMusicParamsList[0];
 	g_music_tracking_viewport = (rct_viewport*)-1;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
@@ -2492,20 +2468,7 @@ int window_can_resize(rct_window *w)
  */
 void textinput_cancel()
 {
-	rct_window *w;
-
-	// Close the new text input window
 	window_close_by_class(WC_TEXTINPUT);
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, uint8) != 255) {
-		w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER, rct_windownumber)
-		);
-		if (w != NULL) {
-			window_event_textinput_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WIDGETINDEX, uint16), NULL);
-		}
-	}
 }
 
 void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, char * existing_args, int maxLength)
