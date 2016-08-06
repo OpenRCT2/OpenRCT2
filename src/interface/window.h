@@ -533,6 +533,7 @@ extern rct_window * gWindowNextSlot;
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
 
+extern uint16 gWindowUpdateTicks;
 extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
 

@@ -47,6 +47,7 @@ int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
 bool gLoadSaveTitleSequenceSave = 0;
 
+uint16 gWindowUpdateTicks;
 uint8 gToolbarDirtyFlags;
 uint16 gWindowMapFlashingFlags;
 
@@ -164,9 +165,9 @@ void window_update_all()
 	// gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += gTicksSinceLastUpdate;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) >= 1000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
+	gWindowUpdateTicks += gTicksSinceLastUpdate;
+	if (gWindowUpdateTicks >= 1000) {
+		gWindowUpdateTicks = 0;
 		for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 			window_event_unknown_07_call(w);
 	}

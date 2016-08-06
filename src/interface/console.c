@@ -921,7 +921,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 		scenery_set_default_placement_configuration();
 		window_new_ride_init_vars();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
+		gWindowUpdateTicks = 0;
 		gfx_invalidate_screen();
 		console_writeline("Object file loaded.");
 	}

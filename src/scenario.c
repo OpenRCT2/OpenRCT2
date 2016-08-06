@@ -182,7 +182,7 @@ void scenario_begin()
 	gScenarioSrand0 ^= platform_get_ticks();
 	gScenarioSrand1 ^= platform_get_ticks();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
+	gWindowUpdateTicks = 0;
 	gParkFlags &= ~PARK_FLAGS_NO_MONEY;
 	if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
 		gParkFlags |= PARK_FLAGS_NO_MONEY;

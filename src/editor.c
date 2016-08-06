@@ -538,7 +538,7 @@ static void editor_finalise_main_view()
 	reset_all_sprite_quadrant_placements();
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
+	gWindowUpdateTicks = 0;
 	load_palette();
 	gfx_invalidate_screen();
 }
