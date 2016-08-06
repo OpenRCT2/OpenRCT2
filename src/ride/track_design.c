@@ -447,6 +447,11 @@ static void track_design_mirror_ride(rct_track_td6 *td6)
 	}
 }
 
+/** rct2: 0x00993EDC */
+static const uint8 maze_segment_mirror_map[] = {
+	5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11
+};
+
 /**
  *
  *  rct2: 0x006D25FA
@@ -468,7 +473,7 @@ static void track_design_mirror_maze(rct_track_td6 *td6)
 		uint16 new_entry = 0;
 		for (uint8 position = bitscanforward(maze_entry); position != 0xFF; position = bitscanforward(maze_entry)) {
 			maze_entry &= ~(1 << position);
-			new_entry |= (1 << RCT2_ADDRESS(0x00993EDC, uint8)[position]);
+			new_entry |= (1 << maze_segment_mirror_map[position]);
 		}
 		maze->maze_entry = new_entry;
 	}

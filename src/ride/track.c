@@ -1738,6 +1738,25 @@ static uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
 	return 7;
 }
 
+/** rct2: 0x00993CE9 */
+static const uint8 byte_993CE9[] = {
+	0xFF, 0xE0, 0xFF,
+	14,  0,  1,  2,
+	 6,  2,  4,  5,
+	 9, 10,  6,  8,
+	12, 13, 14, 10,
+};
+
+/** rct2: 0x00993CFC */
+static const uint8 byte_993CFC[] = {
+	5, 12, 0xFF, 0xFF, 9, 0, 0xFF, 0xFF, 13, 4, 0xFF, 0xFF, 1, 8, 0xFF, 0xFF
+};
+
+/** rct2: 0x00993D0C */
+static const uint8 byte_993D0C[] = {
+	3, 0, 0xFF, 0xFF, 0, 1, 0xFF, 0xFF, 1, 2, 0xFF, 0xFF, 2, 3, 0xFF, 0xFF
+};
+
 static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 rideIndex, uint8 mode, uint16 z) {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = x + 8;
@@ -1791,7 +1810,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 		}
 	}
 
-	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, 0x65, rideIndex);
+	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 	if (mapElement == NULL) {
 		if (mode != 0) {
 			gGameCommandErrorText = 0;
@@ -1832,7 +1851,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 		assert(mapElement != NULL);
 		mapElement->clearance_height = clearanceHeight;
 		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
-		mapElement->properties.track.type = 0x65;
+		mapElement->properties.track.type = TRACK_ELEM_MAZE;
 		mapElement->properties.track.ride_index = rideIndex;
 		mapElement->properties.track.maze_entry = 0xFFFF;
 
@@ -1869,15 +1888,15 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 		mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
 		if (direction != 4) {
-			segmentOffset = RCT2_GLOBAL(0x993ce9 + (direction + segmentOffset), uint8);
+			segmentOffset = byte_993CE9[(direction + segmentOffset)];
 			mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
-			uint8 temp_edx = RCT2_GLOBAL(0x993cfc + segmentOffset, uint8);
+			uint8 temp_edx = byte_993CFC[segmentOffset];
 			if (temp_edx != 0xFF) {
 				uint16 previousElementX = floor2(x, 32) - TileDirectionDelta[direction].x;
 				uint16 previousElementY = floor2(y, 32) - TileDirectionDelta[direction].y;
 
-				rct_map_element *previousMapElement = map_get_track_element_at_of_type_from_ride(previousElementX, previousElementY, baseHeight, 0x65, rideIndex);
+				rct_map_element *previousMapElement = map_get_track_element_at_of_type_from_ride(previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 				if (previousMapElement != NULL) {
 					previousMapElement->properties.track.maze_entry &= ~(1 << temp_edx);
 				} else {
@@ -1893,7 +1912,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 			uint16 previousSegmentX = x - TileDirectionDelta[direction].x / 2;
 			uint16 previousSegmentY = y - TileDirectionDelta[direction].y / 2;
 
-			mapElement = map_get_track_element_at_of_type_from_ride(previousSegmentX, previousSegmentY, baseHeight, 0x65, rideIndex);
+			mapElement = map_get_track_element_at_of_type_from_ride(previousSegmentX, previousSegmentY, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 			map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
 			if (mapElement == NULL) {
 				log_error("No surface found");
@@ -1912,11 +1931,11 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 			do {
 				mapElement->properties.track.maze_entry |= (1 << segmentBit);
 
-				uint32 direction1 = RCT2_GLOBAL(0x00993D0C + segmentBit, uint8_t);
+				uint32 direction1 = byte_993D0C[segmentBit];
 				uint16 nextElementX = floor2(previousSegmentX, 32) + TileDirectionDelta[direction1].x;
 				uint16 nextElementY = floor2(previousSegmentY, 32) + TileDirectionDelta[direction1].y;
 
-				rct_map_element *tmp_mapElement = map_get_track_element_at_of_type_from_ride(nextElementX, nextElementY, baseHeight, 0x65, rideIndex);
+				rct_map_element *tmp_mapElement = map_get_track_element_at_of_type_from_ride(nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 				if (tmp_mapElement != NULL) {
 					uint8 edx11 = RCT2_GLOBAL(0x993CFC + segmentBit, uint8);
 					tmp_mapElement->properties.track.maze_entry |= 1 << (edx11);
