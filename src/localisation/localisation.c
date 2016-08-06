@@ -1180,7 +1180,7 @@ void generate_string_file()
 	f = fopen("english.txt", "w");
 
 	for (i = 0; i < 4442; i++) {
-		str = ((uint8**)(0x009BF2D4 + (i * 4)));
+		str = (RCT2_ADDRESS(0x009BF2D4, uint8*) + (i * 4));
 		if (*str == (uint8*)0xFFFFFFFF)
 			continue;
 		c = *str;
