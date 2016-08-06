@@ -481,14 +481,14 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
 		short stateY = w->height - 0x0C + w->y;
 		gfx_draw_string_centred(dpi, EditorStepNames[gS6Info->editor_step],
-			stateX, stateY, (w->colours[2] & 0x7F) | 0x20, 0);
+			stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, 0);
 
 		if (drawPreviousButton) {
 			gfx_draw_sprite(dpi, SPR_PREVIOUS,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y, 0);
 
-			int textColour = w->colours[1] & 0x7F;
+			int textColour = NOT_TRANSLUCENT(w->colours[1]);
 			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
 				gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON
 			) {
@@ -512,7 +512,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y, 0);
 
-			int textColour = w->colours[1] & 0x7F;
+			int textColour = NOT_TRANSLUCENT(w->colours[1]);
 
 			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
 				gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON

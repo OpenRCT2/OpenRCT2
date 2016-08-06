@@ -95,9 +95,9 @@ void window_music_credits_open()
 	window->enabled_widgets = 1 << WIDX_CLOSE;
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
+	window->colours[0] = COLOUR_LIGHT_BLUE;
+	window->colours[1] = COLOUR_LIGHT_BLUE;
+	window->colours[2] = COLOUR_LIGHT_BLUE;
 
 }
 

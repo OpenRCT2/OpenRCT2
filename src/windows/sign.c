@@ -275,10 +275,10 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 {
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->list_information_type);
+		window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->list_information_type);
 		break;
 	case WIDX_TEXT_COLOUR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->var_492);
+		window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->var_492);
 		break;
 	}
 }
@@ -425,9 +425,9 @@ void window_sign_small_open(rct_windownumber number){
 
 	w->number = number;
 	window_init_scroll_widgets(w);
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
+	w->colours[0] = COLOUR_DARK_BROWN;
+	w->colours[1] = COLOUR_DARK_BROWN;
+	w->colours[2] = COLOUR_DARK_BROWN;
 
 	int view_x = gBanners[w->number].x << 5;
 	int view_y = gBanners[w->number].y << 5;

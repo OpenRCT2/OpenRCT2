@@ -103,7 +103,7 @@ void window_debug_paint_open()
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
-	window->colours[0] = COLOUR_BLACK | COLOUR_FLAG_TRANSLUCENT;
+	window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
 	window->colours[1] = COLOUR_GREY;
 }
 

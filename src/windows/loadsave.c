@@ -170,9 +170,9 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
 		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
-		w->colours[0] = 7;
-		w->colours[1] = 7;
-		w->colours[2] = 7;
+		w->colours[0] = COLOUR_LIGHT_BLUE;
+		w->colours[1] = COLOUR_LIGHT_BLUE;
+		w->colours[2] = COLOUR_LIGHT_BLUE;
 	}
 
 	w->no_list_items = 0;
@@ -878,7 +878,7 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
 	window_init_scroll_widgets(w);
 	w->flags |= WF_TRANSPARENT;
-	w->colours[0] = 154;
+	w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
 
 	safe_strcpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
 	safe_strcpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));

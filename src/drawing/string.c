@@ -1209,7 +1209,7 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 static void ttf_process_initial_colour(int colour, text_draw_info *info)
 {
 	if (colour != 254 && colour != 255) {
-		info->flags &= ~(1 | 2 | 4 | 8);
+		info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | 4 | 8);
 		if ((sint16)info->font_sprite_base < 0) {
 			info->flags |= 4;
 			if ((sint16)info->font_sprite_base != -1) {
@@ -1217,18 +1217,18 @@ static void ttf_process_initial_colour(int colour, text_draw_info *info)
 			}
 			info->font_sprite_base = 224;
 		}
-		if (colour & (1 << 5)) {
+		if (colour & COLOUR_FLAG_OUTLINE) {
 			info->flags |= TEXT_DRAW_FLAG_OUTLINE;
 		}
-		colour &= ~(1 << 5);
-		if (!(colour & (1 << 6))) {
-			if (!(info->flags & 1)) {
+		colour &= ~COLOUR_FLAG_OUTLINE;
+		if (!(colour & COLOUR_FLAG_INSET)) {
+			if (!(info->flags & TEXT_DRAW_FLAG_INSET)) {
 				uint16 flags = info->flags;
 				colour_char_window(colour, &flags, (uint8*)&info->palette);
 			}
 		} else {
-			info->flags |= 1;
-			colour &= 0x1F;
+			info->flags |= TEXT_DRAW_FLAG_INSET;
+			colour &= ~COLOUR_FLAG_INSET;
 
 			uint32 eax;
 			if (info->flags & 4) {

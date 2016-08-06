@@ -553,9 +553,9 @@ rct_window *window_ride_construction_open()
 
 	window_init_scroll_widgets(w);
 
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
+	w->colours[0] = COLOUR_DARK_BROWN;
+	w->colours[1] = COLOUR_DARK_BROWN;
+	w->colours[2] = COLOUR_DARK_BROWN;
 
 	w->number = rideIndex;
 

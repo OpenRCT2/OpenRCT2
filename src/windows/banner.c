@@ -231,7 +231,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, banner->colour);
+		window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
 		break;
 	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
