@@ -495,7 +495,7 @@ static void loc_6C7502(int al);
 static void ride_construction_set_brakes_speed(int brakesSpeed);
 static void ride_construction_tooldown_entrance_exit(int screenX, int screenY);
 
-uint8 *_currentPossibleRideConfigurations = (uint8*)0x00F4407C;
+uint8 *_currentPossibleRideConfigurations = RCT2_ADDRESS(0x00F4407C, uint8);
 
 static const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
 	STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180,
@@ -1507,10 +1507,10 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			_currentTrackPrice = MONEY32_UNDEFINED;
 			sub_6C84CE();
 		} else {
-			uint8 *brakesSpeedPtr = (uint8*)0x00F440CD;
+			uint8 *brakesSpeedPtr = RCT2_ADDRESS(0x00F440CD, uint8);
 			uint8 maxBrakesSpeed = 30;
 			if (RCT2_GLOBAL(0x00F440D3, uint8) != 1) {
-				brakesSpeedPtr = (uint8*)0x00F440CE;
+				brakesSpeedPtr = RCT2_ADDRESS(0x00F440CE, uint8);
 				maxBrakesSpeed = RideProperties[ride->type].max_brakes_speed;
 			}
 			uint8 brakesSpeed = *brakesSpeedPtr + 2;
@@ -1531,9 +1531,9 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			_currentTrackPrice = MONEY32_UNDEFINED;
 			sub_6C84CE();
 		} else {
-			uint8 *brakesSpeedPtr = (uint8*)0x00F440CD;
+			uint8 *brakesSpeedPtr = RCT2_ADDRESS(0x00F440CD, uint8);
 			if (RCT2_GLOBAL(0x00F440D3, uint8) != 1) {
-				brakesSpeedPtr = (uint8*)0x00F440CE;
+				brakesSpeedPtr = RCT2_ADDRESS(0x00F440CE, uint8);
 			}
 			uint8 brakesSpeed = *brakesSpeedPtr - 2;
 			if (brakesSpeed >= 2) {

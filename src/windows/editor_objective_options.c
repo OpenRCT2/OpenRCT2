@@ -424,11 +424,11 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
-		safe_strcpy((char*)0x009BC677, gS6Info->name, 64);
+		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->name, 64);
 		window_text_input_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, STR_PLACEHOLDER, 0, 64);
 		break;
 	case WIDX_DETAILS:
-		safe_strcpy((char*)0x009BC677, gS6Info->details, 256);
+		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->details, 256);
 		window_text_input_open(w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, STR_PLACEHOLDER, 0, 256);
 		break;
 	}
@@ -1019,7 +1019,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		set_format_arg(0, uint16, stex->scenario_name);
 	} else {
-		safe_strcpy((char*)0x009BC677, gS6Info->name, 64);
+		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->name, 64);
 		set_format_arg(0, uint16, STR_PLACEHOLDER);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
@@ -1038,7 +1038,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		set_format_arg(0, uint16, stex->details);
 	} else {
-		safe_strcpy((char*)0x009BC677, gS6Info->details, 256);
+		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->details, 256);
 		set_format_arg(0, uint16, STR_PLACEHOLDER);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);

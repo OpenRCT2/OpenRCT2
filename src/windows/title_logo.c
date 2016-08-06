@@ -114,7 +114,7 @@ static void window_title_logo_draw_expansion_packs(rct_drawpixelinfo *dpi)
 
 	packs = RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16);
 	names = RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char);
-	buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	while (packs != 0) {
 		if (packs & 1) {
 			// TODO: Should probably be localisable

@@ -416,13 +416,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	safe_strcpy((char*)0x009BC677, scenario->name, 64);
+	safe_strcpy(RCT2_ADDRESS(0x009BC677, char), scenario->name, 64);
 	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
 	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	safe_strcpy((char*)0x009BC677, scenario->details, 256);
+	safe_strcpy(RCT2_ADDRESS(0x009BC677, char), scenario->details, 256);
 	set_format_arg(0, rct_string_id, STR_PLACEHOLDER); // empty string
 	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, 0) + 5;
 
@@ -440,7 +440,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (!str_is_null_or_empty(scenario->highscore->name)) {
 			completedByName = scenario->highscore->name;
 		}
-		safe_strcpy((char*)0x009BC677, completedByName, 64);
+		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), completedByName, 64);
 		set_format_arg(0, short, STR_PLACEHOLDER); // empty string
 		set_format_arg(2, int, scenario->highscore->company_value);
 		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);

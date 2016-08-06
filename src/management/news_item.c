@@ -265,7 +265,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	utf8 *buffer = (char*)0x0141EF68;
+	utf8 *buffer = RCT2_ADDRESS(0x0141EF68, char);
 	void *args = gCommonFormatArgs;
 
 	format_string(buffer, string_id, args); // overflows possible?
@@ -278,7 +278,7 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC) // &news_list[10]
+		if (newsItem + 1 >= &gNewsItems[10]) // &news_list[10]
 			news_item_close_current();
 		else
 			newsItem++;
@@ -407,7 +407,7 @@ void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 
 	// Find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x013CB1CC)
+		if (newsItem + 1 >= RCT2_ADDRESS(0x013CB1CC, rct_news_item))
 			news_item_close_current();
 		else
 			newsItem++;

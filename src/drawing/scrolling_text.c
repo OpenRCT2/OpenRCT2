@@ -1404,7 +1404,7 @@ static const sint16* _scrollPositions[38] = {
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
 	if (TempForScrollText) {
-		memcpy(gCommonFormatArgs, (const void*)0x013CE952, 16);
+		memcpy(gCommonFormatArgs, RCT2_ADDRESS(0x013CE952, const void), 16);
 	}
 
 	rct_drawpixelinfo* dpi = unk_140E9A8;

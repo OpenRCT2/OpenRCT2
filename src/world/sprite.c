@@ -29,7 +29,7 @@
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
 
-uint16 *gSpriteSpatialIndex = (uint16*)0xF1EF60;
+uint16 *gSpriteSpatialIndex = RCT2_ADDRESS(0xF1EF60, uint16);
 
 rct_sprite* sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 

@@ -77,7 +77,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 
 #define NO_SCREAM 254
 
-rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
+rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 rct_vehicle *gCurrentVehicle;
 
 const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
@@ -316,30 +316,30 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 
 /** rct2: 0x009A12E0 */
 static const uint8 * TopSpinTimeToSpriteMaps[] = {
-	(const uint8*)0x009A12EC,
-	(const uint8*)0x009A1751,
-	(const uint8*)0x009A1CC6,
+	RCT2_ADDRESS(0x009A12EC, const uint8),
+	RCT2_ADDRESS(0x009A1751, const uint8),
+	RCT2_ADDRESS(0x009A1CC6, const uint8),
 };
 
 /** rct2: 0x0099F0F4 */
 static const uint8 * Rotation1TimeToSpriteMaps[] = {
-	(const uint8*)0x0099F100,
-	(const uint8*)0x0099F422,
-	(const uint8*)0x0099F6AB,
+	RCT2_ADDRESS(0x0099F100, const uint8),
+	RCT2_ADDRESS(0x0099F422, const uint8),
+	RCT2_ADDRESS(0x0099F6AB, const uint8),
 };
 
 /** rct2: 0x009A2428 */
 static const uint8 * Rotation2TimeToSpriteMaps[] = {
-	(const uint8*)0x009A2434,
-	(const uint8*)0x009A26A6,
-	(const uint8*)0x009A270E,
+	RCT2_ADDRESS(0x009A2434, const uint8),
+	RCT2_ADDRESS(0x009A26A6, const uint8),
+	RCT2_ADDRESS(0x009A270E, const uint8),
 };
 
 /** rct2: 0x0099EB1C */
 static const uint8 * Rotation3TimeToSpriteMaps[] = {
-	(const uint8*)0x0099EB28,
-	(const uint8*)0x0099ED49,
-	(const uint8*)0x0099EED1,
+	RCT2_ADDRESS(0x0099EB28, const uint8),
+	RCT2_ADDRESS(0x0099ED49, const uint8),
+	RCT2_ADDRESS(0x0099EED1, const uint8),
 };
 
 static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
@@ -3953,7 +3953,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	uint8* edi = (uint8*)0x009A0434;
+	uint8* edi = RCT2_ADDRESS(0x009A0434, uint8);
 	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
 		vehicle->current_time++;
@@ -5515,7 +5515,7 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 }
 
 // rct2: 0x009A2970
-const sint32 *dword_9A2970 = (sint32*)0x009A2970;
+const sint32 *dword_9A2970 = RCT2_ADDRESS(0x009A2970, sint32);
 
 /**
  *

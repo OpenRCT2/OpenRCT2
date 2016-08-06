@@ -10400,7 +10400,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	}
 
 	// Filter the considered rides
-	uint8 *potentialRides = (uint8*)0x00F1ADBC;
+	uint8 *potentialRides = RCT2_ADDRESS(0x00F1ADBC, uint8);
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
@@ -10509,7 +10509,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	}
 
 	// Filter the considered rides
-	uint8 *potentialRides = (uint8*)0x00F1ADBC;
+	uint8 *potentialRides = RCT2_ADDRESS(0x00F1ADBC, uint8);
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
@@ -10621,7 +10621,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	}
 
 	// Filter the considered rides
-	uint8 *potentialRides = (uint8*)0x00F1ADBC;
+	uint8 *potentialRides = RCT2_ADDRESS(0x00F1ADBC, uint8);
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {

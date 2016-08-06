@@ -2507,8 +2507,8 @@ static rct_string_id window_ride_get_status_overall_view(rct_window *w, void *ar
 	rct_string_id stringId;
 
 	ride_get_status(w->number, &formatSecondary, &argument);
-	RCT2_GLOBAL((uintptr_t)arguments + 0, uint16) = formatSecondary;
-	RCT2_GLOBAL((uintptr_t)arguments + 2, uintptr_t) = argument;
+	*(uint16*)((uintptr_t)arguments + 0) = formatSecondary;
+	*(uintptr_t*)((uintptr_t)arguments + 2) = argument;
 	stringId = STR_RED_OUTLINED_STRING;
 	if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
 		stringId = STR_BLACK_STRING;
@@ -2554,7 +2554,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	stringId = VehicleStatusNames[vehicle->status];
 
 	// Get speed in mph
-	RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = (abs(vehicle->velocity) * 9) >> 18;
+	*((uint16*)((uintptr_t)arguments + 2)) = (abs(vehicle->velocity) * 9) >> 18;
 
 	if (ride->type == RIDE_TYPE_MINI_GOLF)
 		return 0;
@@ -2564,9 +2564,9 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	}
 
 	const ride_component_name stationName = RideComponentNames[RideNameConvention[ride->type].station];
-	RCT2_GLOBAL((uintptr_t)arguments + 4, rct_string_id) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
-	RCT2_GLOBAL((uintptr_t)arguments + 6, uint16) = vehicle->current_station + 1;
-	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;
+	*(rct_string_id*)((uintptr_t)arguments + 4) = (ride->num_stations > 1) ? stationName.number : stationName.singular;
+	*((uint16*)((uintptr_t)arguments + 6)) = vehicle->current_station + 1;
+	*(rct_string_id*)((uintptr_t)arguments + 0) = stringId;
 	return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 

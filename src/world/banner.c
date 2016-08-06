@@ -20,7 +20,7 @@
 #include "banner.h"
 #include "map.h"
 
-rct_banner *gBanners = (rct_banner*)0x0135A124;
+rct_banner *gBanners = RCT2_ADDRESS(0x0135A124, rct_banner);
 
 /**
  *

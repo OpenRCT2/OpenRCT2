@@ -193,7 +193,7 @@ static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 {
 	gCurrentFontFlags = 0;
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gfx_draw_string(dpi, (char*)0x009C383D, 1, dpi->x, dpi->y);
+	gfx_draw_string(dpi, RCT2_ADDRESS(0x009C383D, char), 1, dpi->x, dpi->y);
 
 	int x = 3;
 	int y = 3;
