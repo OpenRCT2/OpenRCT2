@@ -134,6 +134,10 @@ static rct_window_event_list window_guest_list_events = {
 	window_guest_list_scrollpaint
 };
 
+static uint32 _window_guest_list_last_find_groups_tick;
+static uint32 _window_guest_list_last_find_groups_selected_view;
+static uint32 _window_guest_list_last_find_groups_wait;
+
 static int _window_guest_list_highlighted_index; // 0x00F1EE10
 static int _window_guest_list_selected_tab;      // 0x00F1EE12
 static int _window_guest_list_selected_filter;   // 0x00F1EE06
@@ -152,6 +156,30 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
 
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
+
+/**
+*
+*  rct2: 0x0068F083
+*/
+void window_guest_list_init_vars_a()
+{
+	gNextGuestNumber = 1;
+	_window_guest_list_last_find_groups_tick = 0xFFFFFFFF;
+	_window_guest_list_selected_filter = 0xFF;
+}
+
+/**
+*
+*  rct2: 0x0068F050
+*/
+void window_guest_list_init_vars_b()
+{
+	_window_guest_list_selected_tab = 0;
+	_window_guest_list_selected_view = 0;
+	_window_guest_list_last_find_groups_tick = 0xFFFFFFFF;
+	_window_guest_list_selected_filter = 0xFF;
+	_window_guest_list_last_find_groups_wait = 0;
+}
 
 /**
  *
@@ -421,8 +449,9 @@ static void window_guest_list_dropdown(rct_window *w, int widgetIndex, int dropd
  */
 static void window_guest_list_update(rct_window *w)
 {
-	if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0)
-		RCT2_GLOBAL(0x00F1AF20, uint16)--;
+	if (_window_guest_list_last_find_groups_wait != 0) {
+		_window_guest_list_last_find_groups_wait--;
+	}
 	w->list_information_type++;
 	if (w->list_information_type >= (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 24 : 32))
 		w->list_information_type = 0;
@@ -860,14 +889,18 @@ static void window_guest_list_find_groups()
 	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
-	int eax = gScenarioTicks & 0xFFFFFF00;
-	if (_window_guest_list_selected_view == RCT2_GLOBAL(0x00F1EE02, uint32))
-		if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0 || eax == RCT2_GLOBAL(0x00F1AF1C, uint32))
+	int tick256 = floor2(gScenarioTicks, 256);
+	if (_window_guest_list_selected_view == _window_guest_list_last_find_groups_selected_view) {
+		if (_window_guest_list_last_find_groups_wait != 0 ||
+			_window_guest_list_last_find_groups_tick == tick256
+		) {
 			return;
+		}
+	}
 
-	RCT2_GLOBAL(0x00F1AF1C, uint32) = eax;
-	RCT2_GLOBAL(0x00F1EE02, uint32) = _window_guest_list_selected_view;
-	RCT2_GLOBAL(0x00F1AF20, uint16) = 320;
+	_window_guest_list_last_find_groups_tick = tick256;
+	_window_guest_list_last_find_groups_selected_view = _window_guest_list_selected_view;
+	_window_guest_list_last_find_groups_wait = 320;
 	_window_guest_list_num_groups = 0;
 
 	// Set all guests to unassigned

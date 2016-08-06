@@ -1875,32 +1875,6 @@ void tool_cancel()
 	}
 }
 
-/**
-*
-*  rct2: 0x0068F083
-*/
-void window_guest_list_init_vars_a()
-{
-	gNextGuestNumber = 1;
-	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
-}
-
-/**
-*
-*  rct2: 0x0068F050
-*/
-void window_guest_list_init_vars_b()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_TAB, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_VIEW, uint8) = 0;
-	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
-	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
-}
-
 void window_event_close_call(rct_window *w)
 {
 	if (w->event_handlers->close != NULL)
