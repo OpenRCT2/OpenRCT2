@@ -536,6 +536,8 @@ extern ride_list_item _window_track_list_item;
 extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
 
+extern colour_t gCurrentWindowColours[4];
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();

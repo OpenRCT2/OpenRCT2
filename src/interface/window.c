@@ -50,6 +50,8 @@ bool gLoadSaveTitleSequenceSave = 0;
 uint8 gToolbarDirtyFlags;
 uint16 gWindowMapFlashingFlags;
 
+colour_t gCurrentWindowColours[4];
+
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
 float window_scroll_locations[][2] = {
@@ -1672,10 +1674,10 @@ static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, 
 	window_event_invalidate_call(w);
 
 	// Text colouring
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = w->colours[0] & 0x7F;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = w->colours[1] & 0x7F;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = w->colours[2] & 0x7F;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = w->colours[3] & 0x7F;
+	gCurrentWindowColours[0] = NOT_TRANSLUCENT(w->colours[0]);
+	gCurrentWindowColours[1] = NOT_TRANSLUCENT(w->colours[1]);
+	gCurrentWindowColours[2] = NOT_TRANSLUCENT(w->colours[2]);
+	gCurrentWindowColours[3] = NOT_TRANSLUCENT(w->colours[3]);
 
 	window_event_paint_call(w, dpi);
 }

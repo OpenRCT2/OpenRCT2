@@ -16,6 +16,7 @@
 
 #include "../addresses.h"
 #include "../interface/colour.h"
+#include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
@@ -1115,19 +1116,19 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
 	case FORMAT_WINDOW_COLOUR_1:
 	{
 		uint16 flags = info->flags;
-		colour_char_window(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8), &flags, info->palette);
+		colour_char_window(gCurrentWindowColours[0], &flags, info->palette);
 		break;
 	}
 	case FORMAT_WINDOW_COLOUR_2:
 	{
 		uint16 flags = info->flags;
-		colour_char_window(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8), &flags, info->palette);
+		colour_char_window(gCurrentWindowColours[1], &flags, info->palette);
 		break;
 	}
 	case FORMAT_WINDOW_COLOUR_3:
 	{
 		uint16 flags = info->flags;
-		colour_char_window(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8), &flags, info->palette);
+		colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
 		break;
 	}
 	case 0x10:
