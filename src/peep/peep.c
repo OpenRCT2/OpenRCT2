@@ -8126,27 +8126,27 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
  */
 static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
-		return 8;
+		return 10;
 
 	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
 			peep->peep_flags &= ~PEEP_FLAGS_2;
 
-		return 8;
+		return 10;
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK &&
 		peep->peep_is_lost_countdown < 90){
-		return 8;
+		return 10;
 	}
 
 	if (peep->item_standard_flags & PEEP_ITEM_MAP)
-		return 7;
+		return 9;
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-		return 7;
+		return 9;
 
-	return 5;
+	return 7;
 }
 
 /**
@@ -8393,14 +8393,15 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 			footpath_element_get_slope_direction(path) == test_edge) {
 			height += 2;
 		}
-		if (_peepPathFindLog > 1)
+		if (_peepPathFindLog > 1) {
 			if (thin_junction == true)
 				fprintf(stderr, "DEBUG: [%03d] Recurse from %d,%d,%d direction: %d; Thin-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
 			else
 				fprintf(stderr, "DEBUG: [%03d] Recurse from %d,%d,%d direction: %d; Wide-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+		}
 		score = peep_pathfind_heuristic_search(x, y, height, counter, score, test_edge);
 		_peepPathFindNumJunctions = savedNumJunctions;
-	} while ((test_edge = bitscanforward(edges)) != -1 && score != 0);
+	} while ((test_edge = bitscanforward(edges)) != -1);
 
 	if (_peepPathFindLog > 1)
 		fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; Best Junction; Score: %d\n", counter, x >> 5, y >> 5, z, score);
@@ -8416,9 +8417,14 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
  */
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 {
+	// The max number of thin junctions searched - a per-search-path limit.
 	sint8 maxNumJunctions = peep_pathfind_get_max_number_junctions(peep);
 
-	// Mainly to prevent stack overflows.
+	/* The max number of tiles to check - a whole-search limit.
+	 * Mainly to limit the performance impact of the path finding.
+	 * WARNING: Exceeding this limit can cause path finding problems.
+	 * FUTURE: fix how this limit is applied so all possible directions
+	 * are always searched. */
 	sint32 maxTilesChecked = (peep->type == PEEP_TYPE_STAFF) ? 50000 : 15000;
 	// Used to allow walking through no entry banners
 	_peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
@@ -8524,17 +8530,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				_peepPathFindHistory[junctionIndex].z = 0xFF;
 			}
 
-			/* Turn on debug logging based on peep position x,y,z */
-			/*if ((x >> 5) == 59 && (y >> 5) == 48  && z == 26 && test_edge == 3) {
-				_peepPathFindLog = 1;
-			} */
-
 			uint16 score = peep_pathfind_heuristic_search(x, y, height, 0, 0xFFFF, test_edge);
 			if (_peepPathFindLog > 0)
 				fprintf(stderr, "DEBUG: Pathfind test edge: %d score: %d steps: %d\n", test_edge, score, _peepPathFindFewestNumSteps);
-			/* if ((x >> 5) == 61 && (y >> 5) == 48 && z == 26 && test_edge == 3) {
-				_peepPathFindLog = 0;
-			} */
 
 			if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
 				chosen_edge = test_edge;
