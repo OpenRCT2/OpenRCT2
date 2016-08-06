@@ -1631,7 +1631,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 		}
 
 		if (bh != 0 && !(flags & (1 << 1))) {
-			object_create_identifier_name((char*)0x009BC95A, &item->ObjectEntry);
+			object_create_identifier_name(RCT2_ADDRESS(0x009BC95A, char), &item->ObjectEntry);
 			set_format_arg(0, uint32, 0x009BC95A);
 			set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
 			return 0;

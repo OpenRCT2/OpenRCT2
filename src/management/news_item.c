@@ -407,7 +407,7 @@ void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 
 	// Find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= RCT2_ADDRESS(0x013CB1CC, rct_news_item))
+		if (newsItem + 1 >= &gNewsItems[10])
 			news_item_close_current();
 		else
 			newsItem++;
