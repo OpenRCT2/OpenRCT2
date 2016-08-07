@@ -13,7 +13,7 @@ $scriptsPath = Split-Path $Script:MyInvocation.MyCommand.Path
 Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 
 # Constants
-$libsVersion = 8
+$libsVersion = 9
 $libsUrl = "https://github.com/OpenRCT2/Dependencies/releases/download/v$libsVersion/openrct2-libs-vs2015.zip"
 
 # Get paths
