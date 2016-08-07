@@ -33,6 +33,7 @@
 #include "../world/scenery.h"
 #include "../ride/ride_data.h"
 #include "../sprites.h"
+#include "../ride/track_data.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 
@@ -912,9 +913,9 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		int unk2 = RideConstructionDefaultTrackType[item.type];
 		money32 price = RideTrackCosts[item.type].track_price;
 		if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			price *= RCT2_ADDRESS(0x0099DE34, uint32)[unk2];
+			price *= FlatRideTrackPricing[unk2];
 		} else {
-			price *= RCT2_ADDRESS(0x0099DA34, uint32)[unk2];
+			price *= TrackPricing[unk2];
 		}
 		price = (price >> 17) * 10 * RideData5[item.type].price;
 

@@ -5458,10 +5458,10 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;
 
-	sint16 rideLeft = vehicle->track_x + RCT2_ADDRESS(0x0099E228, uint8)[trackType * 4];
-	sint16 rideRight = vehicle->track_x + RCT2_ADDRESS(0x0099E22A, uint8)[trackType * 4];
-	sint16 rideTop = vehicle->track_y + RCT2_ADDRESS(0x0099E229, uint8)[trackType * 4];
-	sint16 rideBottom = vehicle->track_y + RCT2_ADDRESS(0x0099E22B, uint8)[trackType * 4];
+	sint16 rideLeft = vehicle->track_x + DodgemsTrackSize[trackType].left;
+	sint16 rideRight = vehicle->track_x + DodgemsTrackSize[trackType].right;
+	sint16 rideTop = vehicle->track_y + DodgemsTrackSize[trackType].top;
+	sint16 rideBottom = vehicle->track_y + DodgemsTrackSize[trackType].bottom;
 
 	if (x - bp < rideLeft ||
 		y - bp < rideTop ||

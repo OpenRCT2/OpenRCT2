@@ -60,3 +60,17 @@ typedef struct {
 extern const rct_vehicle_info_list **gTrackVehicleInfo[17];
 
 extern const sint16 AlternativeTrackTypes[256];
+
+extern const money32 TrackPricing[256];
+extern const money32 FlatRideTrackPricing[256];
+
+typedef struct dodgems_track_size {
+	uint8 left;
+	uint8 top;
+	uint8 right;
+	uint8 bottom;
+} dodgems_track_size;
+
+extern const dodgems_track_size DodgemsTrackSize[256];
+
+extern const uint8 TrackElementMirrorMap[256];

@@ -1395,8 +1395,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 	money32 price = RideTrackCosts[ride->type].track_price;
 	price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		RCT2_ADDRESS(0x0099DE34, money32)[type] :
-		RCT2_ADDRESS(0x0099DA34, money32)[type];
+			 FlatRideTrackPricing[type] :
+			 TrackPricing[type];
 
 	price >>= 16;
 	price = cost + ((price / 2) * 10);
@@ -1675,10 +1675,10 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 
 	money32 price = RideTrackCosts[ride->type].track_price;
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		price *= RCT2_ADDRESS(0x0099DE34, money32)[type];
+		price *= FlatRideTrackPricing[type];
 	}
 	else {
-		price *= RCT2_ADDRESS(0x0099DA34, money32)[type];
+		price *= TrackPricing[type];
 	}
 	price >>= 16;
 	price = (price + cost) / 2;
@@ -1833,7 +1833,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
 		rct_ride *ride = get_ride(rideIndex);
 
-		money32 price = (((RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32)) >> 16));
+		money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
 		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
