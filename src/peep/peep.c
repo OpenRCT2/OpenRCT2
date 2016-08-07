@@ -8126,27 +8126,27 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
  */
 static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
-		return 10;
+		return 8;
 
 	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
 			peep->peep_flags &= ~PEEP_FLAGS_2;
 
-		return 10;
+		return 8;
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK &&
 		peep->peep_is_lost_countdown < 90){
-		return 10;
+		return 8;
 	}
 
 	if (peep->item_standard_flags & PEEP_ITEM_MAP)
-		return 9;
+		return 7;
 
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-		return 9;
+		return 7;
 
-	return 7;
+	return 5;
 }
 
 /**
