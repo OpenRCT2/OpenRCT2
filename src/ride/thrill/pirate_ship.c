@@ -70,7 +70,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 {
 	uint32 imageId, baseImageId;
 
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 
 	rct_ride_entry * rideType = get_ride_entry(ride->subtype);
 	rct_vehicle * vehicle = NULL;
@@ -85,7 +85,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
 
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 	}
 
 	baseImageId = rideType->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
@@ -153,7 +153,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 	imageId = pirate_ship_frame_sprites[(direction & 1)][1] | RCT2_GLOBAL(0x00F44198, uint32);
 	sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

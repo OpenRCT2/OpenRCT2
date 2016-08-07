@@ -24,6 +24,12 @@
 
 typedef struct attached_paint_struct attached_paint_struct;
 
+#ifdef NO_RCT2
+extern void *g_currently_drawn_item;
+#else
+	#define g_currently_drawn_item RCT2_GLOBAL(0x9DE578, void*)
+#endif
+
 #pragma pack(push, 1)
 /* size 0x12 */
 struct attached_paint_struct {

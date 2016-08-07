@@ -42,6 +42,8 @@
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
 
+rct_map_element *_interaction_element = NULL;
+
 #ifdef NO_RCT2
 paint_struct *unk_EE7884;
 paint_struct *unk_EE7888;
@@ -1010,7 +1012,7 @@ static void store_interaction_info(paint_struct *ps)
 		RCT2_GLOBAL(0x009AC149, uint8) = ps->var_29;
 		RCT2_GLOBAL(0x009AC14C, uint32) = ps->map_x;
 		RCT2_GLOBAL(0x009AC14E, uint32) = ps->map_y;
-		RCT2_GLOBAL(0x009AC150, rct_map_element*) = ps->mapElement;
+		_interaction_element = ps->mapElement;
 	}
 }
 
@@ -1389,7 +1391,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
 	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, int16_t);
 	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, int16_t);
-	if (mapElement != NULL) *mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
+	if (mapElement != NULL) *mapElement = _interaction_element;
 }
 
 /**

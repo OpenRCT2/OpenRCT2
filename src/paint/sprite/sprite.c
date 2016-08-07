@@ -57,7 +57,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 		image_direction += spr->unknown.sprite_direction;
 		image_direction &= 0x1F;
 
-		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
+		g_currently_drawn_item = spr;
 
 		RCT2_GLOBAL(0x9DE568, sint16) = spr->unknown.x;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;

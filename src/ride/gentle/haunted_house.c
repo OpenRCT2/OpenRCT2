@@ -44,7 +44,7 @@ static haunted_house_bound_box haunted_house_data[] = {
  */
 static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint8 part, uint16 height)
 {
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 
 	uint8 frameNum = 0;
 
@@ -57,7 +57,7 @@ static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		rct_vehicle * vehicle = GET_VEHICLE(ride->vehicles[0]);
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 		frameNum = vehicle->vehicle_sprite_type;
 	}
 
@@ -77,7 +77,7 @@ static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint
 		sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 	}
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

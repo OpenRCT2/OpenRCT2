@@ -40,7 +40,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 	rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 
 	rct_vehicle *vehicle = NULL;
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
@@ -48,7 +48,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 		if (spriteIndex != SPRITE_INDEX_NULL) {
 			vehicle = GET_VEHICLE(spriteIndex);
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 2;
-			RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+			g_currently_drawn_item = vehicle;
 		}
 	}
 
@@ -119,7 +119,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 		break;
 	}
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

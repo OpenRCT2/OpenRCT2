@@ -223,7 +223,7 @@ static void sub_68B3FB(int x, int y)
 		int height = map_element->base_height * 8;
 
 		uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
-		RCT2_GLOBAL(0x9DE578, rct_map_element*) = map_element;
+		g_currently_drawn_item = map_element;
 		//setup the painting of for example: the underground, signs, rides, scenery, etc.
 		switch (map_element_get_type(map_element))
 		{
