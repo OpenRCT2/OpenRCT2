@@ -1457,12 +1457,12 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint
 	center_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
 
 	// Rebase mouse position onto centre of window, and compensate for zoom level.
-	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
-		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
+	int rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
+		rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
 
 	// Compute cursor offset relative to tile.
-	*offset_x = (w->saved_view_x - (dest_x + rebased_x)) << w->viewport->zoom;
-	*offset_y = (w->saved_view_y - (dest_y + rebased_y)) << w->viewport->zoom;
+	*offset_x = (w->saved_view_x - (dest_x + rebased_x)) * (1 << w->viewport->zoom);
+	*offset_y = (w->saved_view_y - (dest_y + rebased_y)) * (1 << w->viewport->zoom);
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y)
@@ -1477,12 +1477,12 @@ void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint
 	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
 	// Rebase mouse position onto centre of window, and compensate for zoom level.
-	int rebased_x = ((w->width >> 1) - mouse_x) << w->viewport->zoom,
-		rebased_y = ((w->height >> 1) - mouse_y) << w->viewport->zoom;
+	int rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
+		rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
 
 	// Apply offset to the viewport.
-	w->saved_view_x = dest_x + rebased_x + (offset_x >> w->viewport->zoom);
-	w->saved_view_y = dest_y + rebased_y + (offset_y >> w->viewport->zoom);
+	w->saved_view_x = dest_x + rebased_x + (offset_x / (1 << w->viewport->zoom));
+	w->saved_view_y = dest_y + rebased_y + (offset_y / (1 << w->viewport->zoom));
 }
 
 void window_zoom_set(rct_window *w, int zoomLevel)
