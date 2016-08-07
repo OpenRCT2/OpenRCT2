@@ -1582,7 +1582,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	// Calculate price
 	money32 price = 0;
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		price = RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32);
+		price = RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE];
 		price = (price >> 17) * 10;
 	}
 

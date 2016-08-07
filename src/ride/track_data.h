@@ -60,3 +60,6 @@ typedef struct {
 extern const rct_vehicle_info_list **gTrackVehicleInfo[17];
 
 extern const sint16 AlternativeTrackTypes[256];
+
+extern const money32 TrackPricing[256];
+extern const money32 FlatRideTrackPricing[256];
