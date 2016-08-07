@@ -35,6 +35,7 @@ paint_string_struct *pss2;
 
 #ifdef NO_RCT2
 paint_struct *g_paint_structs[512];
+void *g_currently_drawn_item;
 #else
 #define g_paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #endif
@@ -164,7 +165,7 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
-	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+	ps->mapElement = g_currently_drawn_item;
 
 	return ps;
 }
@@ -288,7 +289,7 @@ paint_struct * sub_98196C(
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
-	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+	ps->mapElement = g_currently_drawn_item;
 
 	g_ps_F1AD28 = ps;
 

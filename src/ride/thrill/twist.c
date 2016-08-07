@@ -24,7 +24,7 @@
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 
 	rct_ride_entry * rideType = get_ride_entry(ride->subtype);
 	rct_vehicle * vehicle = NULL;
@@ -37,7 +37,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
 
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 	}
 
 	uint32 frameNum = (direction * 88) % 216;
@@ -72,7 +72,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 		}
 	}
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

@@ -35,7 +35,7 @@ static const uint16 merry_go_round_breakdown_vibration[] = {
  */
 static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 	height += 7;
 
 	rct_ride * ride = get_ride(rideIndex);
@@ -48,7 +48,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 
 		if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
 		    && ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE
@@ -96,7 +96,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 		}
 	}
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

@@ -26,7 +26,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 {
 	height += 7;
 
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 	rct_ride_entry * rideType = get_ride_entry(ride->subtype);
 	rct_vehicle * vehicle = NULL;
 
@@ -36,7 +36,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 	}
 
 	uint32 imageOffset = (get_current_rotation() + map_element_get_direction(mapElement)) % 4;
@@ -70,7 +70,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 		}
 	}
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

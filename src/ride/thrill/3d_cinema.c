@@ -25,7 +25,7 @@
  */
 static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element * savedMapElement = g_currently_drawn_item;
 
 	rct_ride * ride = get_ride(rideIndex);
 	rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
@@ -33,7 +33,7 @@ static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xO
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = GET_VEHICLE(ride->vehicles[0]);
+		g_currently_drawn_item = GET_VEHICLE(ride->vehicles[0]);
 	}
 
 	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
@@ -44,7 +44,7 @@ static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xO
 	uint32 imageId = (ride_type->vehicles[0].base_image_id + direction) | imageColourFlags;
 	sub_98197C(imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3, get_current_rotation());
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 

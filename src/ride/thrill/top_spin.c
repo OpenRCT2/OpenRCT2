@@ -47,7 +47,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	// As we will be drawing a vehicle we need to backup the mapElement that
 	// is assigned to the drawings.
-	rct_map_element* curMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+	rct_map_element* curMapElement = g_currently_drawn_item;
 
 	height += 3;
 
@@ -63,7 +63,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
 
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+		g_currently_drawn_item = vehicle;
 
 		armRotation = vehicle->vehicle_sprite_type;
 		seatRotation = vehicle->bank_rotation;
@@ -247,7 +247,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
 	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
+	g_currently_drawn_item = curMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
