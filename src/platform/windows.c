@@ -46,6 +46,8 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
+#ifdef NO_RCT2
+
 /**
  * Windows entry point to OpenRCT2 without a console window.
  */
@@ -57,10 +59,20 @@ static HMODULE _dllModule = NULL;
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-// int main(char *argv[], int argc)
-// {
-//     return 0;
-// }
+int main(char *argv[], int argc)
+{
+	HINSTANCE hInstance = GetModuleHandle(NULL);
+	_dllModule = hInstance;
+
+	int runGame = cmdline_run((const char **)argv, argc);
+	if (runGame == 1) {
+		openrct2_launch();
+	}
+
+	return gExitCode;
+}
+
+#else
 
 /* DllMain is already defined in one of static libraries we implicitly depend
  * on (libcrypto), which is their bug really, but since we don't do anything in
@@ -109,6 +121,8 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	exit(gExitCode);
 	return gExitCode;
 }
+
+#endif // NO_RCT2
 
 utf8 **windows_get_command_line_args(int *outNumArgs)
 {
