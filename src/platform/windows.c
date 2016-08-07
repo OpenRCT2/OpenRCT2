@@ -59,7 +59,7 @@ static HMODULE _dllModule = NULL;
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int main(char *argv[], int argc)
+int main(int argc, char *argv[])
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	_dllModule = hInstance;
