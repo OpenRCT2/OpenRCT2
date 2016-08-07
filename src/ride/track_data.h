@@ -72,3 +72,5 @@ typedef struct dodgems_track_size {
 } dodgems_track_size;
 
 extern const dodgems_track_size DodgemsTrackSize[256];
+
+extern const uint8 TrackElementMirrorMap[256];
