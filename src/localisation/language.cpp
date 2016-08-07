@@ -110,7 +110,9 @@ bool gUseTrueTypeFont = false;
 LanguagePack *_languageFallback = nullptr;
 LanguagePack *_languageCurrent = nullptr;
 
-const char **_languageOriginal = (const char**)0x009BF2D4;
+// This is `const char**` in reality, but needs to be represented as uint32's
+// for 64 bit builds
+const uint32 *_languageOriginal = RCT2_ADDRESS(0x009BF2D4, uint32);
 
 const utf8 BlackUpArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
 const utf8 BlackDownArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
@@ -146,7 +148,7 @@ const char *language_get_string(rct_string_id id)
 	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
 		return openrctString != nullptr ? openrctString : "(undefined string)";
 	} else {
-		const char *rct = _languageOriginal[id];
+		const char *rct = RCT2_ADDRESS((uintptr_t)_languageOriginal[id], char);
 		const char *str = (id != STR_EMPTY && (openrctString == nullptr || strlen(openrctString)) == 0 ? rct : openrctString);
 		return str == nullptr ? "" : str;
 	}
