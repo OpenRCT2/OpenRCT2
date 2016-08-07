@@ -51,7 +51,7 @@
 
 int gExitCode;
 int fdData;
-void *segments = (void *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+char *segments = (void *)(GOOD_PLACE_FOR_DATA_SEGMENT);
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
