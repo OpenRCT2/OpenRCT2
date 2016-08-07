@@ -1022,15 +1022,15 @@ namespace RCT1
             { "SFRIC1  " },                                                             // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
             { "SMC1    ", "SMC2    ", "WMSPIN  " },                                     // RIDE_TYPE_WILD_MOUSE
             { "ARRX    " },                                                             // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-            { },                                                                        // RIDE_TYPE_38
+            { },                                                                        // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
             { "BMAIR   " },                                                             // RIDE_TYPE_FLYING_ROLLER_COASTER
-            { },                                                                        // RIDE_TYPE_3A
+            { },                                                                        // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
             { "VREEL   " },                                                             // RIDE_TYPE_VIRGINIA_REEL
             { "SPBOAT  " },                                                             // RIDE_TYPE_SPLASH_BOATS
             { "HELICAR " },                                                             // RIDE_TYPE_MINI_HELICOPTERS
             { "VEKST   " },                                                             // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
             { "SMONO   " },                                                             // RIDE_TYPE_SUSPENDED_MONORAIL
-            { },                                                                        // RIDE_TYPE_40
+            { },                                                                        // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
             { "REVCAR  " },                                                             // RIDE_TYPE_REVERSER_ROLLER_COASTER
             { "UTCAR   ", "UTCARR  " },                                                 // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
             { },                                                                        // RIDE_TYPE_MINI_GOLF

@@ -524,7 +524,7 @@ static bool is_track_enabled(int trackFlagIndex)
 static int ride_get_alternative_type(rct_ride *ride)
 {
 	return _currentTrackCovered & 2 ?
-		RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] :
+		RideData4[ride->type].alternate_type :
 		ride->type;
 }
 
@@ -1327,7 +1327,7 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		break;
 	case WIDX_SLOPE_DOWN_STEEP:
 		sub_6C9627();
-		rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
+		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = 349;
@@ -1425,7 +1425,7 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		break;
 	case WIDX_SLOPE_UP_STEEP:
 		sub_6C9627();
-		rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
+		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = 347;
@@ -2692,7 +2692,7 @@ static void window_ride_construction_update_enabled_track_pieces()
 	if (rideEntry == NULL)
 		return;
 
-	int rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
+	int rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[rideType];
 	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[rideType];
 }
@@ -2899,7 +2899,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 
 	RCT2_GLOBAL(0x00F440D3, uint8) = 0;
 	if (_currentTrackCovered & 2)
-		edi = RCT2_GLOBAL(0x0097D4F5 + (ride->type * 8), uint8);
+		edi = RideData4[ride->type].alternate_type;
 	else
 		edi = ride->type;
 
@@ -3282,7 +3282,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = 0;
 	window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = 0;
 	if (
-		(rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_38) &&
+		(rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT) &&
 		RCT2_GLOBAL(0x00F440D0, uint8) != 99 &&
 		_currentTrackCurve != 355
 	) {

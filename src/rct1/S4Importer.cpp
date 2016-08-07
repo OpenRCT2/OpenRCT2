@@ -47,6 +47,7 @@ extern "C"
     #include "../world/map_animation.h"
     #include "../world/park.h"
     #include "../world/scenery.h"
+    #include "../ride/ride_data.h"
 }
 
 static bool ObjectNameComparer(const char * a, const char * b)
@@ -546,7 +547,7 @@ void S4Importer::ImportRide(rct_ride * dst, rct1_ride * src)
     if (_gameVersion == FILE_VERSION_RCT1)
     {
         // Original RCT had no music settings, take default style
-        dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
+        dst->music = RideData4[dst->type].default_music;
     }
     else
     {

@@ -186,7 +186,7 @@ void research_finish_item(sint32 entryIndex)
 		gResearchedTrackTypesA[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type]         ) & 0xFFFFFFFFULL;
 		gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
 		if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
-			ebx = RCT2_GLOBAL(0x0097D4F5 + (base_ride_type * 8), uint8);
+			ebx = RideData4[base_ride_type].alternate_type;
 			gResearchedTrackTypesA[ebx] = (RideTypePossibleTrackConfigurations[ebx]         ) & 0xFFFFFFFFULL;
 			gResearchedTrackTypesB[ebx] = (RideTypePossibleTrackConfigurations[ebx] >> 32ULL) & 0xFFFFFFFFULL;
 		}
