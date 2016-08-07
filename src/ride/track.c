@@ -961,8 +961,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 	}
 
+	const uint8 (*wallEdges)[16];
 	if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
-		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x0099AA94, uint8)[type * 16];
+		wallEdges = &FlatRideTrackSequenceElementAllowedWallEdges[type];
 	} else {
 		if (type == TRACK_ELEM_ON_RIDE_PHOTO) {
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
@@ -981,7 +982,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 				return MONEY32_UNDEFINED;
 			}
 		}
-		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x00999A94, uint8)[type * 16];
+
+		wallEdges = &TrackSequenceElementAllowedWallEdges[type];
 	}
 
 	money32 cost = 0;
@@ -1038,7 +1040,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	// If that is not the case, then perform the remaining checks
 	trackBlock = get_track_def_from_ride(ride, type);
 
-	for (; trackBlock->index != 0xFF; trackBlock++, RCT2_GLOBAL(0x00F44054, uint8*)++) {
+	for (int blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++) {
 		int x, y, z, offsetX, offsetY;
 		int bl = trackBlock->var_08;
 		int bh;
@@ -1122,7 +1124,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
 			} else {
 				// Remove walls in the directions this track intersects
-				uint8 intersectingDirections = *RCT2_GLOBAL(0x00F44054, uint8*);
+				uint8 intersectingDirections = (*wallEdges)[blockIndex];
 				intersectingDirections ^= 0x0F;
 				for (int i = 0; i < 4; i++) {
 					if (intersectingDirections & (1 << i)) {
