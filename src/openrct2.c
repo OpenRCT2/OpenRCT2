@@ -611,7 +611,6 @@ bool openrct2_setup_rct2_segment()
 #endif // defined(__unix__)
 
 #if defined(USE_MMAP) && defined(__WINDOWS__)
-	#error
 	segments = VirtualAlloc((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
 		log_error("VirtualAlloc, segments = %p, GetLastError = 0x%x", segments, GetLastError());
