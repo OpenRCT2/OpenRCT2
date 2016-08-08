@@ -508,7 +508,6 @@ bool openrct2_setup_rct2_segment()
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	int err = 0;
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
-#error
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
