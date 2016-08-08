@@ -560,7 +560,7 @@ bool openrct2_setup_rct2_segment()
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
 
-	err = mincore((void *)0x8a4000, len, dummy);
+	err = mincore((void *)segments, len, dummy);
 	bool pagesMissing = false;
 	if (err != 0)
 	{
@@ -582,8 +582,8 @@ bool openrct2_setup_rct2_segment()
 			if (dummy[i] != 1)
 			{
 				pagesMissing = true;
-				void *start = (void *)0x8a4000 + i * pageSize;
-				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
+				void *start = (void *)segments + i * pageSize;
+				void *end = (void *)segments + (i + 1) * pageSize - 1;
 				log_warning("required page %p - %p is not in memory!", start, end);
 			}
 		}
@@ -602,7 +602,7 @@ bool openrct2_setup_rct2_segment()
 	}
 #endif // !defined(USE_MMAP)
 	// section: rw data
-	err = mprotect((void *)0x8a4000, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
+	err = mprotect((void *)segments, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
 	if (err != 0)
 	{
 		perror("mprotect");
