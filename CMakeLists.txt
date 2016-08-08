@@ -294,7 +294,7 @@ if (WIN32)
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES} ${ORCT2_MM_SOURCES} ${RCT2_SECTIONS})
 	add_dependencies(${PROJECT} segfiles)
-	if (NOT APPLE)
+	if (NOT APPLE AND NOT USE_MMAP)
 		add_dependencies(${PROJECT} linkable_sections)
 	endif ()
 	add_custom_command(
