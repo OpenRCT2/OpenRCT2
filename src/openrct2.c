@@ -40,16 +40,18 @@
 #include "version.h"
 #include "world/mapgen.h"
 
-#if defined(__unix__)
+#if defined(__unix__) || defined(__MACOSX__)
 #include <sys/mman.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#endif // defined(__unix__)
+#endif // defined(__unix__) || defined(__MACOSX__)
 
 int gExitCode;
+int fdData;
+char *segments = (void *)(GOOD_PLACE_FOR_DATA_SEGMENT);
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -350,6 +352,10 @@ void openrct2_dispose()
 #ifndef DISABLE_NETWORK
 	EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
+	munmap(segments, 12079104);
+	close(fdData);
+#endif
 	platform_free();
 }
 
@@ -499,7 +505,9 @@ bool openrct2_setup_rct2_segment()
 {
 	// OpenRCT2 on Linux and macOS is wired to have the original Windows PE sections loaded
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-#if defined(__unix__)
+	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	int err = 0;
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
@@ -532,11 +540,27 @@ bool openrct2_setup_rct2_segment()
 	// TODO: UGLY, UGLY HACK!
 	//off_t file_size = 6750208;
 
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	fdData = open("openrct2_data", O_RDONLY);
+	if (fdData < 0)
+	{
+		log_fatal("failed to load openrct2_data");
+		exit(1);
+	}
+	log_warning("%p", GOOD_PLACE_FOR_DATA_SEGMENT);
+	segments = mmap((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE, fdData, 0);
+	log_warning("%p", segments);
+	if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
+		perror("mmap");
+		return false;
+	}
+#endif // defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
+
+#if defined(__unix__)
 	int pageSize = getpagesize();
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
-	int err = mincore((void *)0x8a4000, len, dummy);
+
+	err = mincore((void *)0x8a4000, len, dummy);
 	bool pagesMissing = false;
 	if (err != 0)
 	{
@@ -569,12 +593,14 @@ bool openrct2_setup_rct2_segment()
 	{
 		log_error("At least one of required pages was not found in memory. This can cause segfaults later on.");
 	}
+#if !defined(USE_MMAP)
 	// section: text
 	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
 	if (err != 0)
 	{
 		perror("mprotect");
 	}
+#endif // !defined(USE_MMAP)
 	// section: rw data
 	err = mprotect((void *)0x8a4000, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
 	if (err != 0)
@@ -583,12 +609,30 @@ bool openrct2_setup_rct2_segment()
 	}
 #endif // defined(__unix__)
 
-#if !defined(NO_RCT2) || !defined(__WINDOWS__)
+#if defined(USE_MMAP) && defined(__WINDOWS__)
+	segments = VirtualAlloc((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
+		log_error("VirtualAlloc, segments = %p, GetLastError = 0x%x", segments, GetLastError());
+		return false;
+	}
+	SDL_RWops * rw = SDL_RWFromFile("openrct2_data", "rb");
+	if (rw == NULL)
+	{
+		log_error("failed to load file");
+		return false;
+	}
+	if (SDL_RWread(rw, segments, len, 1) != 1) {
+		log_error("Unable to read chunk header!");
+		return false;
+	}
+	SDL_RWclose(rw);
+#endif // defined(USE_MMAP) && defined(__WINDOWS__)
+
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.
-	const uint32 c1 = sawyercoding_calculate_checksum((void *)0x009A6000, 0x009E0000 - 0x009A6000);
-	const uint32 c2 = sawyercoding_calculate_checksum((void *)0x01428000, 0x014282BC - 0x01428000);
+	const uint32 c1 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
+	const uint32 c2 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
 	const uint32 exp_c1 = 10114815;
 	const uint32 exp_c2 = 23564;
 	if (c1 != exp_c1 || c2 != exp_c2) {
@@ -596,7 +640,6 @@ bool openrct2_setup_rct2_segment()
 		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
 		return false;
 	}
-#endif
 
 	return true;
 }

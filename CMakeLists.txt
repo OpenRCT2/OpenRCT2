@@ -63,6 +63,10 @@ add_definitions(-DOPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
 
 INCLUDE(FindPkgConfig)
 
+if (APPLE)
+	set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
+endif (APPLE)
+
 # Options
 
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
@@ -75,12 +79,17 @@ option(STATIC "Create a static build.")
 option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
 option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "WIP: Try building without using code and data segments from vanilla.")
+option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 
 if (FORCE64)
 	set(TARGET_M "-m64")
 	set(OBJ_FORMAT "elf64-x86-64")
 	set(LINKER_SCRIPT "ld_script_x86_64.xc")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=pointer-to-int-cast -Wno-error=int-to-pointer-cast")
+	if ((APPLE OR WIN32) AND NOT USE_MMAP)
+		message(WARNING "Building such configuration won't work. Enabling USE_MMAP.")
+		set(USE_MMAP ON)
+	endif()
 else ()
 	set(TARGET_M "-m32")
 	set(OBJ_FORMAT "elf32-i386")
@@ -93,6 +102,10 @@ else (DISABLE_OPENGL)
 	# Makes OpenGL function get queried in run-time rather than linked-in
 	add_definitions(-DOPENGL_NO_LINK)
 endif (DISABLE_OPENGL)
+
+if (USE_MMAP)
+	add_definitions(-DUSE_MMAP)
+endif (USE_MMAP)
 
 if (DISABLE_NETWORK)
 	add_definitions(-DDISABLE_NETWORK)
@@ -142,35 +155,40 @@ if (UNIX)
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe
   )
   add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
-	if (APPLE)
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -fno-pie -read_only_relocs suppress")
-	else (APPLE)
-		# For Linux we have to use objcopy to wrap regular binaries into a linkable
-		# format. We use specific section names which are then referenced in a
-		# bespoke linker script so they can be placed at predefined VMAs.
-		add_custom_command(
-			OUTPUT openrct2_text_section.o
-			COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
-			DEPENDS segfiles
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-		add_custom_command(
-			OUTPUT openrct2_data_section.o
-			COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
-			DEPENDS segfiles
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-		add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
-		SET_SOURCE_FILES_PROPERTIES(
-		    openrct2_text_section.o openrct2_data_section.o
-		    PROPERTIES
-		    EXTERNAL_OBJECT true
-		    GENERATED true
-		)
-		# can't use GLOB here, as the files don't exist yet at cmake-time
-		set(RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\"")
-	endif (APPLE)
+	if (NOT USE_MMAP)
+		if (APPLE)
+				set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -fno-pie -read_only_relocs suppress")
+		else (APPLE)
+			# For Linux we have to use objcopy to wrap regular binaries into a linkable
+			# format. We use specific section names which are then referenced in a
+			# bespoke linker script so they can be placed at predefined VMAs.
+			add_custom_command(
+				OUTPUT openrct2_text_section.o
+				COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
+				DEPENDS segfiles
+				WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+			)
+			add_custom_command(
+				OUTPUT openrct2_data_section.o
+				COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
+				DEPENDS segfiles
+				WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+			)
+			add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
+			SET_SOURCE_FILES_PROPERTIES(
+				openrct2_text_section.o openrct2_data_section.o
+				PROPERTIES
+				EXTERNAL_OBJECT true
+				GENERATED true
+			)
+			# can't use GLOB here, as the files don't exist yet at cmake-time
+			set(RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
+			set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\"")
+		endif (APPLE)
+	endif (NOT USE_MMAP)
+elseif (USE_MMAP)
+	# No dd here, can't extract data segment
+	message(WARNING "Sorry, your platform is not supported, you have to extract data segment manually")
 endif (UNIX)
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
@@ -226,6 +244,10 @@ if (NOT DISABLE_OPENGL)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(GLLIBS opengl32)
+	elseif (APPLE)
+		# GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
+		find_package(OpenGL REQUIRED)
+		set(GLLIBS ${OPENGL_LIBRARY})
 	else (WIN32)
 		PKG_CHECK_MODULES(GL REQUIRED gl)
 		set(GLLIBS ${GL_LIBRARIES})
@@ -252,7 +274,7 @@ if (UNIX)
 	set(DLLIB dl)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR} ${SSL_INCLUDE_DIRS})
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS})
 
@@ -264,7 +286,11 @@ endif (NOT DISABLE_RCT2)
 
 if (WIN32)
 	# build as library for now, replace with add_executable
-	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
+	if (USE_MMAP)
+		add_executable(${PROJECT} ${ORCT2_SOURCES} ${SPEEX_SOURCES})
+	else ()
+		add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
+	endif ()
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES} ${ORCT2_MM_SOURCES} ${RCT2_SECTIONS})
 	add_dependencies(${PROJECT} segfiles)

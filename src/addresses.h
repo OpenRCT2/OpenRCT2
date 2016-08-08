@@ -23,8 +23,14 @@
 #pragma warning(disable : 4731)
 #endif
 
-#define RCT2_ADDRESS(address, type)				((type*)(address))
-#define RCT2_GLOBAL(address, type)				(*((type*)(address)))
+#ifdef USE_MMAP
+	#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+#else
+	#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
+#endif
+
+#define RCT2_ADDRESS(address, type)				((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
+#define RCT2_GLOBAL(address, type)				(*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
 
 #pragma region Memory locations
 
