@@ -139,9 +139,9 @@ void rct2_quit()
 
 void rct2_dispose()
 {
+	object_manager_unload_all_objects();
 	gfx_unload_g2();
 	gfx_unload_g1();
-	object_manager_unload_all_objects();
 }
 
 int rct2_init()
