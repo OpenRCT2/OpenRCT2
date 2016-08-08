@@ -886,7 +886,7 @@ void Network::LoadGroups()
 	}
 	json_t * jsonDefaultGroup = json_object_get(json, "default_group");
 	default_group = (uint8)json_integer_value(jsonDefaultGroup);
-	if (default_group >= group_list.size()) {
+	if (GetGroupByID(default_group) == nullptr) {
 		default_group = 0;
 	}
 	json_decref(json);
