@@ -632,8 +632,8 @@ bool openrct2_setup_rct2_segment()
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.
-	const uint32 c1 = sawyercoding_calculate_checksum(segments + (uintptr_t)(0x009A6000 - 0x8a4000), 0x009E0000 - 0x009A6000);
-	const uint32 c2 = sawyercoding_calculate_checksum(segments + (uintptr_t)(0x01428000 - 0x8a4000), 0x014282BC - 0x01428000);
+	const uint32 c1 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
+	const uint32 c2 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
 	const uint32 exp_c1 = 10114815;
 	const uint32 exp_c2 = 23564;
 	if (c1 != exp_c1 || c2 != exp_c2) {
