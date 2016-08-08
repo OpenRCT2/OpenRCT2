@@ -59,11 +59,6 @@ uint8 _peepPathFindFewestNumSteps;
  * be declared properly. */
 rct_xyz8 _peepPathFindHistory[16];
 
-/* Configure peep pathfinding logging:
- * 0: logging disabled
- * 1+: logging enable; larger value = more detailed logging. */
-int _peepPathFindLog = 0;
-
 enum {
 	PATH_SEARCH_DEAD_END,
 	PATH_SEARCH_RIDE_EXIT,
@@ -8191,17 +8186,19 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 
 	++counter;
 	if (--_peepPathFindTilesChecked < 0) {
-		fprintf(stderr, "WARNING: Path finding search limit (maxTilesChecked) exceeded - expect path finding problems!\n");
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; TilesChecked < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		log_warning("WARNING: Path finding search limit (maxTilesChecked) exceeded - expect path finding problems!\n");
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Return from %d,%d,%d; TilesChecked < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return score;
 	}
 
 	/* If counter (# steps taken) exceeds the limit, the current search
 	 * path ends here */
 	if (counter > 200) {
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; counter > 200; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Return from %d,%d,%d; counter > 200; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return score;
 	}
 
@@ -8210,8 +8207,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 	if ((_peepPathFindHistory[0].x == (uint8)(x >> 5)) &&
 		(_peepPathFindHistory[0].y == (uint8)(y >> 5)) &&
 		(_peepPathFindHistory[0].z == (uint8)z)) {
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; At start; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Return from %d,%d,%d; At start; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return score;
 	}
 
@@ -8230,8 +8228,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 		/* If this tile is the search goal (score == 0) the current
 		 * search path ends here */
 		if (score == 0) {
-			if (_peepPathFindLog > 1)
-				fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; At goal; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+				log_information("[%03d] Return from %d,%d,%d; At goal; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			return score;
 		}
 	}
@@ -8275,8 +8274,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 	/* If no tile of interest (for continuing the current search path)
 	 * was found, the current search path ends here. */
 	if (!found) {
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; Not found; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Return from %d,%d,%d; Not found; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return score;
 	}
 
@@ -8284,8 +8284,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 	uint8 edges = path_get_permitted_edges(path);
 	z = path->base_height;
 
-	if (_peepPathFindLog > 1)
-		fprintf(stderr, "DEBUG: [%03d] Path %d,%d,%d; 0123:%d%d%d%d; Reverse: %d\n", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		log_information("[%03d] Path %d,%d,%d; 0123:%d%d%d%d; Reverse: %d\n", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
 	/* Remove the reverse edge (i.e. the edge back to the previous tile
 	 * in the current search path */
@@ -8295,8 +8296,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 	/* If there are no other edges, this is a dead end - the current search
 	 * path ends here. */
 	if (test_edge == -1) {
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; Dead end; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Return from %d,%d,%d; Dead end; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return score;
 	}
 
@@ -8309,8 +8311,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 		}
 		_peepPathFindQueueRideIndex = true;
 
-		if (_peepPathFindLog > 1)
-			fprintf(stderr, "DEBUG: [%03d] Recurse from %d,%d,%d direction: %d; Segment; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_information("[%03d] Recurse from %d,%d,%d direction: %d; Segment; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return peep_pathfind_heuristic_search(x, y, z, counter, score, test_edge);
 	}
 
@@ -8350,8 +8353,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 		/* If junction search limit is reached, the current search
 		 * path ends here */
 		if (_peepPathFindNumJunctions < 0) {
-			if (_peepPathFindLog > 1)
-				fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+				log_information("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			return score;
 		}
 
@@ -8363,8 +8367,9 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 			if ((_peepPathFindHistory[junctionNum].x == (uint8)(x >> 5)) &&
 				(_peepPathFindHistory[junctionNum].y == (uint8)(y >> 5)) &&
 				(_peepPathFindHistory[junctionNum].z == (uint8)z)) {
-				if (_peepPathFindLog > 1)
-					fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; Loop; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					log_information("[%03d] Return from %d,%d,%d; Loop; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 				return score;
 			}
 		}
@@ -8393,18 +8398,19 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 			footpath_element_get_slope_direction(path) == test_edge) {
 			height += 2;
 		}
-		if (_peepPathFindLog > 1) {
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			if (thin_junction == true)
-				fprintf(stderr, "DEBUG: [%03d] Recurse from %d,%d,%d direction: %d; Thin-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+				log_information("[%03d] Recurse from %d,%d,%d direction: %d; Thin-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
 			else
-				fprintf(stderr, "DEBUG: [%03d] Recurse from %d,%d,%d direction: %d; Wide-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
-		}
+				log_information("[%03d] Recurse from %d,%d,%d direction: %d; Wide-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		score = peep_pathfind_heuristic_search(x, y, height, counter, score, test_edge);
 		_peepPathFindNumJunctions = savedNumJunctions;
 	} while ((test_edge = bitscanforward(edges)) != -1);
 
-	if (_peepPathFindLog > 1)
-		fprintf(stderr, "DEBUG: [%03d] Return from %d,%d,%d; Best Junction; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		log_information("[%03d] Return from %d,%d,%d; Best Junction; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 	return score;
 }
 
@@ -8495,8 +8501,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint16 best_score = 0xFFFF;
 		uint8 best_sub = 0xFF;
 
-		if (_peepPathFindLog > 0)
-			fprintf(stderr, "DEBUG: Pathfind start for goal %d,%d,%d from %d,%d,%d\n", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d\n", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		/* Call the search heuristic on each edge, keeping track of the
 		 * edge that gives the best (i.e. smallest) value (best_score)
@@ -8531,8 +8538,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			}
 
 			uint16 score = peep_pathfind_heuristic_search(x, y, height, 0, 0xFFFF, test_edge);
-			if (_peepPathFindLog > 0)
-				fprintf(stderr, "DEBUG: Pathfind test edge: %d score: %d steps: %d\n", test_edge, score, _peepPathFindFewestNumSteps);
+			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				log_verbose("Pathfind test edge: %d score: %d steps: %d\n", test_edge, score, _peepPathFindFewestNumSteps);
+			#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 			if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
 				chosen_edge = test_edge;
@@ -8540,8 +8548,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				best_sub = _peepPathFindFewestNumSteps;
 			}
 		}
-		if (_peepPathFindLog > 0)
-			fprintf(stderr,"DEBUG: Pathfind best edge %d with score %d\n", chosen_edge, best_score);
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+			log_verbose("Pathfind best edge %d with score %d\n", chosen_edge, best_score);
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
 	/* This is a new goal for the peep. Store it and reset the peep's
