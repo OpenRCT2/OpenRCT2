@@ -6778,6 +6778,8 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (z_diff > 16) continue;
 
+			if (collideVehicle->ride_subtype == RIDE_TYPE_NULL) continue;
+
 			rct_ride_entry_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
 
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_6)) continue;
@@ -7166,7 +7168,6 @@ static bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
 	regs.cx = vehicle->track_type >> 2;
-
 	int trackType = vehicle->track_type >> 2;
 	if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN) {
 		if (vehicle->track_progress == 80) {
