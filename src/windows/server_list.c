@@ -179,9 +179,9 @@ void window_server_list_open()
 
 	window->page = 0;
 	window->list_information_type = 0;
-	window->colours[0] = 1;
-	window->colours[1] = 26;
-	window->colours[2] = 26;
+	window->colours[0] = COLOUR_GREY;
+	window->colours[1] = COLOUR_BORDEAUX_RED;
+	window->colours[2] = COLOUR_BORDEAUX_RED;
 
 	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 

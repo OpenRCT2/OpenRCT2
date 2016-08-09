@@ -305,7 +305,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			t += (_dropdown_item_height / 2);
 			b = t;
 
-			if (w->colours[0] & 0x80) {
+			if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
 				gfx_fill_rect(dpi, l, t, r, b, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 1);
 				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 2);
 			} else {
@@ -344,12 +344,12 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				}
 
 				// Calculate colour
-				colour = w->colours[0] & 0x7F;
+				colour = NOT_TRANSLUCENT(w->colours[0]);
 				if (i == highlightedIndex)
 					colour = 2;
 				if (dropdown_is_disabled(i))
 					if (i < 64)
-						colour = (w->colours[0] & 0x7F) | 0x40;
+						colour = NOT_TRANSLUCENT(w->colours[0]) | 0x40;
 
 				// Draw item string
 				gfx_draw_string_left_clipped(

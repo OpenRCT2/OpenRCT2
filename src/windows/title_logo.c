@@ -86,9 +86,9 @@ void window_title_logo_open()
 	);
 	window->widgets = window_title_logo_widgets;
 	window_init_scroll_widgets(window);
-	window->colours[0] = 129;
-	window->colours[1] = 129;
-	window->colours[2] = 129;
+	window->colours[0] = TRANSLUCENT(COLOUR_GREY);
+	window->colours[1] = TRANSLUCENT(COLOUR_GREY);
+	window->colours[2] = TRANSLUCENT(COLOUR_GREY);
 }
 
 /**

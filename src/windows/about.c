@@ -96,9 +96,9 @@ void window_about_open()
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_MUSIC_CREDITS) | (1 << WIDX_PUBLISHER_CREDITS);
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
+	window->colours[0] = COLOUR_LIGHT_BLUE;
+	window->colours[1] = COLOUR_LIGHT_BLUE;
+	window->colours[2] = COLOUR_LIGHT_BLUE;
 }
 
 /**

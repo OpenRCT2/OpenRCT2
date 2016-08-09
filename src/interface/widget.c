@@ -861,7 +861,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	int t = w->y + widget->top;
 
 	// Get the colour
-	uint8 colour = w->colours[widget->colour] & 0x7F;
+	uint8 colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
 	if (widget->type == WWT_4 || widget->type == WWT_COLOURBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
 		if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
@@ -870,12 +870,12 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	if (widget_is_disabled(w, widgetIndex)) {
 		// Draw greyed out (light border bottom right shadow)
 		colour = w->colours[widget->colour];
-		colour = ColourMapA[colour & 0x7F].lighter;
+		colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
 		gfx_draw_sprite_solid(dpi, image, l + 1, t + 1, colour);
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
-		colour = ColourMapA[colour & 0x7F].mid_light;
+		colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
 		gfx_draw_sprite_solid(dpi, image, l, t, colour);
 	} else {
 		if (image & 0x80000000) {

@@ -465,7 +465,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 			continue;
 
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		if (!(sceneryEntry->wall.flags & (1 << 4)))
+		if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
 			continue;
 
 		uint8 di = 0;
@@ -478,7 +478,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 				di |= 2;
 				if (bh != 40) {
 					bh += 8;
-					if (bh == 104 && !(sceneryEntry->wall.flags & (1 << 5)))
+					if (bh == 104 && !(sceneryEntry->wall.flags & WALL_SCENERY_FLAG6))
 						bh = 120;
 
 					di |= 1;

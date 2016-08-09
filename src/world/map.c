@@ -1132,7 +1132,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 		map_element->properties.fence.item[1] |= (colour2 & 0x7) * 32;
 		map_element->flags |= (colour2 & 0x18) * 4;
 
-		if(scenery_entry->wall.flags & 0x80){
+		if(scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR){
 			map_element->properties.fence.item[0] = colour3;
 		}
 		map_invalidate_tile_zoom1(x, y, z, z + 72);

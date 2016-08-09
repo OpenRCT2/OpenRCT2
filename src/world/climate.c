@@ -25,6 +25,7 @@
 #include "../scenario.h"
 #include "../util/util.h"
 #include "climate.h"
+#include "../sprites.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,
@@ -335,12 +336,12 @@ static int climate_play_thunder(int instanceIndex, int soundId, int volume, int 
 // rct2: 0x00993C94
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const rct_weather climate_weather_data[6] = {
-	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
-	{ .temp_delta = 5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
-	{ .temp_delta = 0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
-	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
-	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9A }, // Heavy Rain
-	{ .temp_delta = 2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9B }, // Thunderstorm
+	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = SPR_WEATHER_SUN }, // Sunny
+	{ .temp_delta = 5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = SPR_WEATHER_SUN_CLOUD }, // Partially Cloudy
+	{ .temp_delta = 0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = SPR_WEATHER_CLOUD }, // Cloudy
+	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = SPR_WEATHER_LIGHT_RAIN }, // Rain
+	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+	{ .temp_delta = 2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = SPR_WEATHER_STORM }, // Thunderstorm
 };
 
 

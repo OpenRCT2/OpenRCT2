@@ -553,9 +553,9 @@ rct_window *window_ride_construction_open()
 
 	window_init_scroll_widgets(w);
 
-	w->colours[0] = 24;
-	w->colours[1] = 24;
-	w->colours[2] = 24;
+	w->colours[0] = COLOUR_DARK_BROWN;
+	w->colours[1] = COLOUR_DARK_BROWN;
+	w->colours[2] = COLOUR_DARK_BROWN;
 
 	w->number = rideIndex;
 
@@ -698,7 +698,7 @@ static void window_ride_construction_resize(rct_window *w)
 
 	uint64 disabledWidgets = 0;
 
-	if (_currentTrackCurve >= 256) {
+	if (_currentTrackCurve & 0x100) {
 		disabledWidgets |=
 			(1ULL << WIDX_SLOPE_GROUPBOX) |
 			(1ULL << WIDX_BANKING_GROUPBOX) |
@@ -1271,57 +1271,57 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 	switch (widgetIndex) {
 	case WIDX_LEFT_CURVE:
 		sub_6C9627();
-		_currentTrackCurve = 1;
+		_currentTrackCurve = TRACK_CURVE_LEFT;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_RIGHT_CURVE:
 		sub_6C9627();
-		_currentTrackCurve = 2;
+		_currentTrackCurve = TRACK_CURVE_RIGHT;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_LEFT_CURVE_SMALL:
 		sub_6C9627();
-		_currentTrackCurve = 3;
+		_currentTrackCurve = TRACK_CURVE_LEFT_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_RIGHT_CURVE_SMALL:
 		sub_6C9627();
-		_currentTrackCurve = 4;
+		_currentTrackCurve = TRACK_CURVE_RIGHT_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_LEFT_CURVE_VERY_SMALL:
 		sub_6C9627();
-		_currentTrackCurve = 5;
+		_currentTrackCurve = TRACK_CURVE_LEFT_VERY_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_RIGHT_CURVE_VERY_SMALL:
 		sub_6C9627();
-		_currentTrackCurve = 6;
+		_currentTrackCurve = TRACK_CURVE_RIGHT_VERY_SMALL;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_LEFT_CURVE_LARGE:
 		sub_6C9627();
-		_currentTrackCurve = 7;
+		_currentTrackCurve = TRACK_CURVE_LEFT_LARGE;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_RIGHT_CURVE_LARGE:
 		sub_6C9627();
-		_currentTrackCurve = 8;
+		_currentTrackCurve = TRACK_CURVE_RIGHT_LARGE;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
 	case WIDX_STRAIGHT:
 		sub_6C9627();
-		if (_currentTrackCurve != 0)
+		if (_currentTrackCurve != TRACK_CURVE_NONE)
 			_currentTrackBankEnd = TRACK_BANK_NONE;
-		_currentTrackCurve = 0;
+		_currentTrackCurve = TRACK_CURVE_NONE;
 		_currentTrackPrice = MONEY32_UNDEFINED;
 		sub_6C84CE();
 		break;
@@ -1329,36 +1329,36 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		sub_6C9627();
 		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
-			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 349;
+			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 2 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 350;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 3 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 345;
+			} else if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 4 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 346;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
 			}
 		}
 		if (is_track_enabled(TRACK_HELIX_LARGE)) {
-			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 360;
+			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 2 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 361;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
@@ -1366,13 +1366,13 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		}
 		if (is_track_enabled(TRACK_HELIX_LARGE_UNBANKED)) {
 			if (_currentTrackBankEnd == TRACK_BANK_NONE) {
-				if (_currentTrackCurve == 1) {
-					_currentTrackCurve = 364;
+				if (_currentTrackCurve == TRACK_CURVE_LEFT) {
+					_currentTrackCurve = TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN | 0x100;
 					_currentTrackPrice = MONEY32_UNDEFINED;
 					sub_6C84CE();
 					break;
-				} else if (_currentTrackCurve == 2) {
-					_currentTrackCurve = 365;
+				} else if (_currentTrackCurve == TRACK_CURVE_RIGHT) {
+					_currentTrackCurve = TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN | 0x100;
 					_currentTrackPrice = MONEY32_UNDEFINED;
 					sub_6C84CE();
 					break;
@@ -1395,15 +1395,15 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 	case WIDX_LEVEL:
 		sub_6C9627();
 		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _previousTrackSlopeEnd == 6) {
-			if (_currentTrackCurve == 3) {
+			if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL) {
 				_currentTrackBankEnd = TRACK_BANK_LEFT;
-			} else if (_currentTrackCurve == 4) {
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL) {
 				_currentTrackBankEnd = TRACK_BANK_RIGHT;
 			}
 		} else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK && _previousTrackSlopeEnd == 2) {
-			if (_currentTrackCurve == 3) {
+			if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL) {
 				_currentTrackBankEnd = TRACK_BANK_LEFT;
-			} else if (_currentTrackCurve == 4) {
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL) {
 				_currentTrackBankEnd = TRACK_BANK_RIGHT;
 			}
 		}
@@ -1415,8 +1415,8 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 			_currentTrackBankEnd = TRACK_BANK_NONE;
 		}
 		if (ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER || ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER) {
-			if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == 0) {
-				_currentTrackCurve = 124 | 0x100;
+			if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == TRACK_CURVE_NONE) {
+				_currentTrackCurve = TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE | 0x100;
 				sub_6C84CE();
 			}
 		} else {
@@ -1427,36 +1427,36 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		sub_6C9627();
 		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
-			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 347;
+			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 2 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 348;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 3 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 343;
+			} else if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 4 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 344;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT_SMALL && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
 			}
 		}
 		if (is_track_enabled(TRACK_HELIX_LARGE)) {
-			if (_currentTrackCurve == 1 && _currentTrackBankEnd == TRACK_BANK_LEFT) {
-				_currentTrackCurve = 358;
+			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
+				_currentTrackCurve = TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
-			} else if (_currentTrackCurve == 2 && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
-				_currentTrackCurve = 359;
+			} else if (_currentTrackCurve == TRACK_CURVE_RIGHT && _currentTrackBankEnd == TRACK_BANK_RIGHT) {
+				_currentTrackCurve = TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP | 0x100;
 				_currentTrackPrice = MONEY32_UNDEFINED;
 				sub_6C84CE();
 				break;
@@ -1464,13 +1464,13 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		}
 		if (is_track_enabled(TRACK_HELIX_LARGE_UNBANKED)) {
 			if (_currentTrackBankEnd == TRACK_BANK_NONE) {
-				if (_currentTrackCurve == 1) {
-					_currentTrackCurve = 362;
+				if (_currentTrackCurve == TRACK_CURVE_LEFT) {
+					_currentTrackCurve = TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_UP | 0x100;
 					_currentTrackPrice = MONEY32_UNDEFINED;
 					sub_6C84CE();
 					break;
-				} else if (_currentTrackCurve == 2) {
-					_currentTrackCurve = 363;
+				} else if (_currentTrackCurve == TRACK_CURVE_RIGHT) {
+					_currentTrackCurve = TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_UP | 0x100;
 					_currentTrackPrice = MONEY32_UNDEFINED;
 					sub_6C84CE();
 					break;
@@ -1665,8 +1665,8 @@ static void window_ride_construction_construct(rct_window *w)
 	}
 
 	if (
-		(_currentTrackCurve >= 343 && _currentTrackCurve <= 350) ||
-		(_currentTrackCurve >= 358 && _currentTrackCurve <= 365) ||
+		(_currentTrackCurve >= (TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL | 0x100) && _currentTrackCurve <= (TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE | 0x100)) ||
+		(_currentTrackCurve >= (TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP | 0x100) && _currentTrackCurve <= (TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN | 0x100)) ||
 		(_currentTrackSlopeEnd != TRACK_SLOPE_NONE)
 	) {
 		viewport_set_visibility(2);
@@ -1979,10 +1979,10 @@ static void window_ride_construction_update(rct_window *w)
 	}
 
 	switch (_currentTrackCurve) {
-	case 429:
-	case 376:
-	case 369:
-	case 368:
+	case TRACK_ELEM_SPINNING_TUNNEL | 0x100:
+	case TRACK_ELEM_WHIRLPOOL | 0x100:
+	case TRACK_ELEM_RAPIDS | 0x100:
+	case TRACK_ELEM_WATERFALL | 0x100:
 		widget_invalidate(w, WIDX_CONSTRUCT);
 		break;
 	}
@@ -2135,8 +2135,8 @@ static void window_ride_construction_invalidate(rct_window *w)
 	ride = get_ride(_currentRideIndex);
 
 	stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
-	if (_currentTrackCurve >= 256) {
-		stringId = RideConfigurationStringIds[_currentTrackCurve - 256];
+	if (_currentTrackCurve & 0x100) {
+		stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
 	}
@@ -3222,7 +3222,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_EMPTY;
 	window_ride_construction_widgets[WIDX_U_TRACK].type = WWT_EMPTY;
 	window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
-	if (RCT2_GLOBAL(0x00F440D0, uint8) != 99 && _currentTrackCurve != 355) {
+	if (RCT2_GLOBAL(0x00F440D0, uint8) != 99 && _currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES)) {
 		if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
 			window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_FLATBTN;
 			window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_FLATBTN;
@@ -3284,7 +3284,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	if (
 		(rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT) &&
 		RCT2_GLOBAL(0x00F440D0, uint8) != 99 &&
-		_currentTrackCurve != 355
+		_currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES)
 	) {
 		window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WWT_GROUPBOX;
 		window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_SPINNER;
