@@ -2136,6 +2136,7 @@ static void window_ride_construction_invalidate(rct_window *w)
 
 	stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
 	if (_currentTrackCurve >= 256) {
+		assert(_currentTrackCurve - 256 < countof(RideConfigurationStringIds));
 		stringId = RideConfigurationStringIds[_currentTrackCurve - 256];
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
