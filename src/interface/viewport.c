@@ -663,6 +663,14 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 #endif
 }
 
+/** rct2: 0x0098195C */
+const sint32 WeatherColours[] = {
+	-1,
+	0x2000000 | 49,
+	0x2000000 | 50,
+	0x2000000 | 47,
+};
+
 /**
  *
  *  rct2: 0x00685CBF
@@ -754,7 +762,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_688217();
 		paint_quadrant_ps();
 
-		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[gClimateCurrentWeatherGloom];
+		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
 		if ((weather_colour != -1) && (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}

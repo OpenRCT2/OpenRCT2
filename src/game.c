@@ -178,7 +178,8 @@ void update_palette_effects()
 
 		// animate the water/lava/chain movement palette
 		int q = 0;
-		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[gClimateCurrentWeatherGloom];
+		extern const sint32 WeatherColours[4];
+		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
 		if (weather_colour != -1) {
 			q = 1;
 			if (weather_colour != 0x2000031) {
