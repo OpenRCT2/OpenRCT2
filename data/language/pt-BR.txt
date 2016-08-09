@@ -2813,14 +2813,14 @@ STR_2802    :Mapa
 STR_2803    :{SMALLFONT}{BLACK}Mostrar estes visitantes destacadoss no mapa
 STR_2804    :{SMALLFONT}{BLACK}Mostrar estes funcionários destacados no mapa
 STR_2805    :{SMALLFONT}{BLACK}Exibir o mapa do parque
-STR_2806    :{RED}Os visitantes estão reclamando sobre o estado nojento dos caminhos de seu parque{NEWLINE}Verifique aonde seus faxineiros estão e considere organizá-los melhor
-STR_2807    :{RED}Os visitantes estão reclamando sobre a quatidade de lixo em seu parque{NEWLINE}Verifique aonde seus faxineiros estão e considere organizá-los melhor
-STR_2808    :{RED}Os visitantes estão reclamando sobre o vandalismo em seu parque{NEWLINE}Verifique aonde seus seguranças estão e considere organizá-los melhor
+STR_2806    :{RED}Os visitantes estão reclamando sobre o estado nojento dos caminhos de seu parque. Verifique aonde seus faxineiros estão e considere organizá-los melhor
+STR_2807    :{RED}Os visitantes estão reclamando sobre a quatidade de lixo em seu parque. Verifique aonde seus faxineiros estão e considere organizá-los melhor
+STR_2808    :{RED}Os visitantes estão reclamando sobre o vandalismo em seu parque. Verifique aonde seus seguranças estão e considere organizá-los melhor
 STR_2809    :{RED}Os visitantes estão com fome e não conseguem encontrar nenhum lugar para comprar comida
 STR_2810    :{RED}Os visitantes estão com sede e não conseguem encontrar nenhum lugar para combrar bebidas
 STR_2811    :{RED}Os visitantes estão reclamando porque não conseguem encontrar banheiros em seu parque
-STR_2812    :{RED}Os visitantes estão ficando perdidos ou presos{NEWLINE}Verifique se o traçado de suas calçadas precisam melhorar para ajudar os visitantes a encontrarem seu rumo
-STR_2813    :{RED}O preço do ingresso do parque está muito caro!{NEWLINE}Diminua ou melhore o valor do parque para atrair mais visitantes
+STR_2812    :{RED}Os visitantes estão ficando perdidos ou presos. Verifique se o traçado de suas calçadas precisam melhorar para ajudar os visitantes a encontrarem seu rumo
+STR_2813    :{RED}O preço do ingresso do parque está muito caro! Diminua ou melhore o valor do parque para atrair mais visitantes
 STR_2814    :{WINDOW_COLOUR_2}Prêmio de parque mais desarrumado
 STR_2815    :{WINDOW_COLOUR_2}Prêmio de parque mais arrumado
 STR_2816    :{WINDOW_COLOUR_2}Prêmio para o parque com as melhores montanhas-russas
@@ -4213,6 +4213,12 @@ STR_5901    :Mostrar altura de segmentos
 STR_5902    :Mostrar caixas delimitadoras
 STR_5903    :Mostrar janela de depuração de pintura
 STR_5904    :Reiniciar data
+STR_5905    :{SMALLFONT}{BLACK}Um gerador de mapa que cria automaticamente uma paisagem personalizada
+STR_5906    :Aproximar para a posição do cursor
+STR_5907    :{SMALLFONT}{BLACK}Quando habilitado, aproximar a vista irá centralizar em volta do cursor, em oposição ao centro da tela.
+STR_5908    :Permitir tipos de atrações arbitrárias
+STR_5909    :{SMALLFONT}{BLACK}Permite mudar livremente o tipo de atração. Podem ocorrer falhas.
+STR_5910    :Aplicar
 
 #############
 # Scenarios #
