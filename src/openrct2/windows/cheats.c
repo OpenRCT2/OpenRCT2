@@ -746,10 +746,10 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_FAST_STAFF:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, 0xFF, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_FAST_SPEED, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_NORMAL_STAFF:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, 0x60, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETSTAFFSPEED, CHEATS_STAFF_NORMAL_SPEED, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_PARK_PARAMETERS:
 		window_editor_scenario_options_open();

@@ -107,12 +107,17 @@ enum {
 };
 
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
+#define CHEATS_GIVE_GUESTS_MONEY MONEY(1000,00)
 #define CHEATS_TRAM_INCREMENT 250
+#define CHEATS_STAFF_FAST_SPEED 0xFF
+#define CHEATS_STAFF_NORMAL_SPEED 0x60
 
 extern sint32 park_rating_spinner_value;
 
 void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 void cheats_reset();
+
+const char* cheats_get_cheat_string(int cheat, int edx, int edi);
 
 #endif

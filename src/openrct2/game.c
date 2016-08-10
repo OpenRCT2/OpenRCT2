@@ -512,6 +512,13 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 		game_command_playerid = network_get_current_player_id();
 	}
 
+	// Log certain commands if we are in multiplayer and logging is enabled
+	bool serverLog = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
+	bool clientLog = (network_get_mode() == NETWORK_MODE_CLIENT) && (flags & GAME_COMMAND_FLAG_NETWORKED) && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
+	if (serverLog || clientLog) {
+		game_log_multiplayer_command(command, ebx, ecx, edx, edi, ebp);
+	}
+
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
 	// First call for validity and price check
@@ -609,6 +616,185 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
 	return MONEY32_UNDEFINED;
+}
+
+void game_log_multiplayer_command(int command, int* ebx, int* ecx, int* edx, int* edi, int* ebp)
+{
+	// Get player name
+	int player_index = network_get_player_index(game_command_playerid);
+	const char* player_name = network_get_player_name(player_index);
+
+	char log_msg[256];
+
+	if (command == GAME_COMMAND_CHEAT) {
+		// Get cheat name
+		const char* cheat = cheats_get_cheat_string(*ecx, *edx, *edi);
+		char* args[2] = {
+			(char *)player_name,
+			(char *)cheat
+		};
+		format_string(log_msg, 256, STR_LOG_CHEAT_USED, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_CREATE_RIDE && *ebp == 1) { // ebp is 1 if the command comes from ride_create method in ride.c, other calls send ride_entry instead of ride and wont work
+		// Get ride name
+		rct_ride* ride = get_ride(*edx);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		char* args[2] = {
+			(char *)player_name,
+			ride_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_CREATE_RIDE, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_DEMOLISH_RIDE && *ebp == 1) { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
+		// Get ride name
+		rct_ride* ride = get_ride(*edx);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		char* args[2] = {
+			(char *) player_name,
+			ride_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_RIDE_APPEARANCE || command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING) {
+		// Get ride name
+		int ride_index = *edx & 0xFF;
+		rct_ride* ride = get_ride(ride_index);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		char* args[2] = {
+			(char *) player_name,
+			ride_name
+		};
+
+		switch (command) {
+			case GAME_COMMAND_SET_RIDE_APPEARANCE: format_string(log_msg, 256, STR_LOG_RIDE_APPEARANCE, args); break;
+			case GAME_COMMAND_SET_RIDE_VEHICLES: format_string(log_msg, 256, STR_LOG_RIDE_VEHICLES, args); break;
+			case GAME_COMMAND_SET_RIDE_SETTING: format_string(log_msg, 256, STR_LOG_RIDE_SETTINGS, args); break;
+		}
+
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_RIDE_STATUS) {
+		// Get ride name
+		int ride_index = *edx & 0xFF;
+		rct_ride* ride = get_ride(ride_index);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		char* args[2] = {
+			(char *) player_name,
+			ride_name
+		};
+
+		int status = *edx >> 8;
+		switch (status) {
+			case 0: format_string(log_msg, 256, STR_LOG_RIDE_STATUS_CLOSED, args); break;
+			case 1: format_string(log_msg, 256, STR_LOG_RIDE_STATUS_OPEN, args); break;
+			case 2: format_string(log_msg, 256, STR_LOG_RIDE_STATUS_TESTING, args); break;
+		}
+
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_RIDE_PRICE) {
+		// Get ride name
+		int ride_index = *edx & 0xFF;
+		rct_ride* ride = get_ride(ride_index);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		// Format price
+		int price_args[1] = {*edi};
+		char price_str[16];
+		format_string(price_str, 16, STR_BOTTOM_TOOLBAR_CASH, price_args);
+
+		// Log change in primary or secondary price
+		char* args[3] = {
+			(char *) player_name,
+			ride_name,
+			price_str
+		};
+
+		if (*edx >> 8 == 0) {
+			format_string(log_msg, 256, STR_LOG_RIDE_PRICE, args);
+		} else if (*edx >> 8 == 1) {
+			format_string(log_msg, 256, STR_LOG_RIDE_SECONDARY_PRICE, args);
+		}
+
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_PARK_OPEN) {
+		// Log change in park open/close
+		char* args[1] = {
+			(char *) player_name
+		};
+
+		if (*edx >> 8 == 0) {
+			format_string(log_msg, 256, STR_LOG_PARK_OPEN, args);
+		} else if (*edx >> 8 == 1) {
+			format_string(log_msg, 256, STR_LOG_PARK_CLOSED, args);
+		}
+
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_PARK_ENTRANCE_FEE) {
+		// Format price
+		int price_args[1] = {*edi};
+		char price_str[16];
+		format_string(price_str, 16, STR_BOTTOM_TOOLBAR_CASH, price_args);
+
+		// Log change in park entrance fee
+		char* args[2] = {
+			(char *) player_name,
+			price_str
+		};
+
+		format_string(log_msg, 256, STR_LOG_PARK_ENTRANCE_FEE, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_PLACE_SCENERY       || command == GAME_COMMAND_PLACE_WALL ||
+		       command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER) {
+		uint8 flags = *ebx & 0xFF;
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			// Don't log ghost previews being removed
+			return;
+		}
+
+		// Log placing scenery
+		char* args[1] = {
+			(char *)player_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_PLACE_SCENERY, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_REMOVE_SCENERY       || command == GAME_COMMAND_REMOVE_WALL ||
+		       command == GAME_COMMAND_REMOVE_LARGE_SCENERY || command == GAME_COMMAND_REMOVE_BANNER) {
+		uint8 flags = *ebx & 0xFF;
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			// Don't log ghost previews being removed
+			return;
+		}
+
+		// Log removing scenery
+		char* args[1] = {
+			(char *)player_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_REMOVE_SCENERY, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_SET_SCENERY_COLOUR       || command == GAME_COMMAND_SET_WALL_COLOUR  ||
+		       command == GAME_COMMAND_SET_LARGE_SCENERY_COLOUR || command == GAME_COMMAND_SET_BANNER_COLOUR ||
+		       command == GAME_COMMAND_SET_BANNER_NAME          || command == GAME_COMMAND_SET_SIGN_NAME     ||
+		       command == GAME_COMMAND_SET_BANNER_STYLE         || command == GAME_COMMAND_SET_SIGN_STYLE) {
+		// Log editing scenery
+		char* args[1] = {
+			(char *)player_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_EDIT_SCENERY, args);
+		network_append_server_log(log_msg);
+	}
 }
 
 void pause_toggle()

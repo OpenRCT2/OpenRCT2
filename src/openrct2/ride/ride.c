@@ -5594,6 +5594,22 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 	}
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		// Log ride rename command if we are in multiplayer and logging is enabled
+		if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
+			// Get player name
+			int player_index = network_get_player_index(game_command_playerid);
+			const char* player_name = network_get_player_name(player_index);
+
+			char log_msg[256];
+			char* args[3] = {
+				(char *) player_name,
+				oldName,
+				newName
+			};
+			format_string(log_msg, 256, STR_LOG_RIDE_NAME, args);
+			network_append_server_log(log_msg);
+		}
+
 		if (ride->overall_view != (uint16)-1) {
 			rct_xyz16 coord;
 			coord.x = (ride->overall_view & 0xFF) * 32 + 16;
@@ -6157,6 +6173,10 @@ foundRideEntry:
 	ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
 	ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (*outRideColour >> 8));
 	window_invalidate_by_class(WC_RIDE_LIST);
+
+	// Log ride creation
+	int ebp = 1;
+	game_log_multiplayer_command(GAME_COMMAND_CREATE_RIDE, 0, 0, &rideIndex, 0, &ebp);
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = 0x8000;

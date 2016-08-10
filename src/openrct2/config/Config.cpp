@@ -359,6 +359,7 @@ namespace Config
             model->provider_website = reader->GetCString("provider_website", nullptr);
             model->known_keys_only = reader->GetBoolean("known_keys_only", false);
             model->log_chat = reader->GetBoolean("log_chat", false);
+            model->log_server_actions = reader->GetBoolean("log_server_actions", false);
         }
     }
 
@@ -382,6 +383,7 @@ namespace Config
         writer->WriteString("provider_website", model->provider_website);
         writer->WriteBoolean("known_keys_only", model->known_keys_only);
         writer->WriteBoolean("log_chat", model->log_chat);
+        writer->WriteBoolean("log_server_actions", model->log_server_actions);
     }
 
     static void ReadNotifications(IIniReader * reader)

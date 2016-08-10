@@ -52,6 +52,7 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 	WIDX_PERMISSIONS_LIST,
 
 	WIDX_LOG_CHAT_CHECKBOX = 8,
+	WIDX_LOG_SERVER_ACTIONS_CHECKBOX,
 	WIDX_KNOWN_KEYS_ONLY_CHECKBOX,
 };
 
@@ -92,7 +93,8 @@ static rct_widget window_multiplayer_groups_widgets[] = {
 static rct_widget window_multiplayer_options_widgets[] = {
 	MAIN_MULTIPLAYER_WIDGETS,
 	{ WWT_CHECKBOX,			1,	3,		297,	50,		61,		STR_LOG_CHAT,				STR_LOG_CHAT_TIP },
-	{ WWT_CHECKBOX,			1,	3,		297,	64,		75,		STR_ALLOW_KNOWN_KEYS_ONLY,	STR_ALLOW_KNOWN_KEYS_ONLY_TIP },
+	{ WWT_CHECKBOX,			1,	3,		297,	64,		75,		STR_LOG_SERVER_ACTIONS,		STR_LOG_SERVER_ACTIONS_TIP },
+	{ WWT_CHECKBOX,			1,	3,		297,	78,		89,		STR_ALLOW_KNOWN_KEYS_ONLY,	STR_ALLOW_KNOWN_KEYS_ONLY_TIP },
 	{ WIDGETS_END }
 };
 
@@ -107,7 +109,7 @@ const uint64 window_multiplayer_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
 };
 
 static uint8 _selectedGroup = 0;
@@ -918,6 +920,10 @@ static void window_multiplayer_options_mouseup(rct_window *w, rct_widgetindex wi
 		gConfigNetwork.log_chat = !gConfigNetwork.log_chat;
 		config_save_default();
 		break;
+	case WIDX_LOG_SERVER_ACTIONS_CHECKBOX:
+		gConfigNetwork.log_server_actions = !gConfigNetwork.log_server_actions;
+		config_save_default();
+		break;
 	case WIDX_KNOWN_KEYS_ONLY_CHECKBOX:
 		gConfigNetwork.known_keys_only = !gConfigNetwork.known_keys_only;
 		config_save_default();
@@ -947,6 +953,7 @@ static void window_multiplayer_options_invalidate(rct_window *w)
 	}
 
 	widget_set_checkbox_value(w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
+	widget_set_checkbox_value(w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
 	widget_set_checkbox_value(w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
 }
 

@@ -120,9 +120,16 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
-	void BeginChatLog();
+	std::string BeginLog(const char* directory, const char* filename_format);
+	void AppendLog(const utf8 *logPath, const utf8 *text);
+
+	void BeginChatLog(const char* directory, const char* filename_format);
 	void AppendChatLog(const utf8 *text);
 	void CloseChatLog();
+
+	void BeginServerLog(const char* directory, std::string server_name, const char* filename_format);
+	void AppendServerLog(const utf8 *text);
+	void CloseServerLog();
 
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
@@ -217,9 +224,14 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
+	uint32 game_commands_processed_this_tick = 0;
 	IStream * _chatLogStream = nullptr;
 	std::string _chatLogPath;
-	uint32 game_commands_processed_this_tick = 0;
+	const char* _chatLogDirectory = "/chatlogs";
+	const char* _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
+	std::string _serverLogPath;
+	const char* _serverLogDirectory = "/serverlogs";
+	const char* _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
 
 	void UpdateServer();
 	void UpdateClient();
@@ -316,6 +328,7 @@ void network_set_password(const char* password);
 
 void network_print_error();
 void network_append_chat_log(const utf8 *text);
+void network_append_server_log(const utf8 *text);
 const utf8 * network_get_server_name();
 const utf8 * network_get_server_description();
 const utf8 * network_get_server_greeting();

@@ -4373,6 +4373,39 @@ STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests ma
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Own all land
+STR_6065    :Log user actions
+STR_6066    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_6067    :Server started.
+STR_6068    :Server shutdown.
+STR_6069    :{STRING} was kicked from the server by {STRING}.
+STR_6070    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_6071    :{STRING} created new player group '{STRING}'.
+STR_6072    :{STRING} deleted player group '{String}'.
+STR_6073    :{STRING} edited permissions for player group '{String}'.
+STR_6074    :{STRING} changed player group name from '{String}' to '{String}'.
+STR_6075    :{STRING} changed the default player group to '{String}'.
+STR_6076    :{STRING} used/toggled cheat '{STRING}'.
+STR_6077    :Add Money
+STR_6078    :{STRING} created ride '{STRING}'.
+STR_6079    :{STRING} demolished ride '{STRING}'.
+STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
+STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
+STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
+STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
+STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
+STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
+STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
+STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
+STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
+STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6090    :{STRING} opened the park.
+STR_6091    :{STRING} closed the park.
+STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6093    :{STRING} placed new scenery.
+STR_6094    :{STRING} removed scenery.
+STR_6095    :{STRING} edited scenery.
+STR_6096    :You connected to the server.
+STR_6097    :You disconnected from the server.
 
 #############
 # Scenarios #
