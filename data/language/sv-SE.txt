@@ -4202,6 +4202,9 @@ STR_5904    :Återställ datum
 STR_5905    :{SMALLFONT}{BLACK}Ett verktyg kallad 'markgenerator' som automatiskt skapar en skräddarsydd terräng
 STR_5906    :Zooma till musens position
 STR_5907    :{SMALLFONT}{BLACK}Inzoomning kommer förstoras till musen, istället för centrum av skärmen.
+STR_5908    :Tillåt ändringar av attraktion
+STR_5909    :{SMALLFONT}{BLACK}Tillåter ändringar på attraktionstypen via karusellens meny.{NEWLINE}Instabil - kan krascha spelet
+STR_5910    :Verkställ
 
 #############
 # Scenarion #
