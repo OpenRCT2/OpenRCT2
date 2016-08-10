@@ -122,6 +122,10 @@ public:
 	void AppendChatLog(const utf8 *text);
 	void CloseChatLog();
 
+	void BeginServerLog(std::string server_name);
+	void AppendServerLog(const utf8 *text);
+	void CloseServerLog();
+
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
@@ -212,6 +216,8 @@ private:
 	uint8 default_group = 0;
 	SDL_RWops *_chatLogStream;
 	std::string _chatLogPath;
+	SDL_RWops *_serverLogStream;
+	std::string _serverLogPath;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -314,6 +320,7 @@ void network_set_password(const char* password);
 
 void network_print_error();
 void network_append_chat_log(const utf8 *text);
+void network_append_server_log(const utf8 *text);
 const utf8 * network_get_server_name();
 const utf8 * network_get_server_description();
 const utf8 * network_get_server_greeting();

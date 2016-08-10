@@ -4299,6 +4299,17 @@ STR_5987    :Unable to create folder
 STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
 STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
 STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
+STR_5991    :Log user actions
+STR_5992    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_5993    :Server started.
+STR_5994    :Server shutdown.
+STR_5995    :{STRING} was kicked from the server by {STRING}.
+STR_5996    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_5997    :{STRING} created new player group '{STRING}'.
+STR_5998    :{STRING} deleted player group '{String}'.
+STR_5999    :{STRING} edited permissions for player group '{String}'.
+STR_6000    :{STRING} changed player group name from '{String}' to '{String}'.
+STR_6001    :{STRING} changed the default player group to '{String}'.
 
 #############
 # Scenarios #
