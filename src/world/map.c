@@ -3526,7 +3526,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 	RCT2_GLOBAL(0x00141F722, uint8) = position.z / 8;
 	if (bp & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)) {
-		if (fence->wall.flags & WALL_SCENERY_FLAG3){
+		if (fence->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE){
 			gGameCommandErrorText = STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE;
 			*ebx = MONEY32_UNDEFINED;
 			return;

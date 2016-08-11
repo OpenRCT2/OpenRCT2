@@ -124,7 +124,7 @@ assert_struct_size(rct_wall_scenery_entry, 8);
 typedef enum {
 	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
 	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
-	WALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
+	WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),		// 0x4
 	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_IS_DOOR = (1 << 4),		// 0x10
 	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
