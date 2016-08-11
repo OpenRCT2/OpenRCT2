@@ -146,6 +146,49 @@ static sint8 _window_footpath_provisional_path_arrow_timer;
 static uint8 _lastUpdatedCameraRotation = UINT8_MAX;
 static bool _footpathErrorOccured;
 
+
+enum
+{
+	FOOTHPATH_IS_SLOPED = (1 << 2),
+	IRREGULAR_SLOPE = (1 << 3),
+};
+
+/** rct2: 0x0098D8B4 */
+const uint8 default_path_slope[] = {
+	0,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	FOOTHPATH_IS_SLOPED | 2,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	FOOTHPATH_IS_SLOPED | 3,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	FOOTHPATH_IS_SLOPED | 1,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	FOOTHPATH_IS_SLOPED | 0,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+	IRREGULAR_SLOPE,
+};
+
 static void window_footpath_mousedown_direction(int direction);
 static void window_footpath_mousedown_slope(int slope);
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
@@ -688,7 +731,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		footpath_provisional_update();
 
 		// Set provisional path
-		slope = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.surface.slope & 0x1F];
+		slope = default_path_slope[mapElement->properties.surface.slope & 0x1F];
 		if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
 			slope = mapElement->properties.surface.slope & 7;
 		pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
@@ -765,7 +808,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 		return;
 
 	// Set path
-	presentType = RCT2_ADDRESS(0x0098D8B4, uint8)[mapElement->properties.path.type & 0x1F];
+	presentType = default_path_slope[mapElement->properties.path.type & 0x1F];
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
 		presentType = mapElement->properties.path.type & 7;
 	z = mapElement->base_height;
