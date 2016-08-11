@@ -170,6 +170,11 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 	map_invalidate_tile_full(x, y);
 }
 
+/** rct2: 0x0098D7EC */
+static const uint8 byte_98D7EC[] = {
+	207, 159, 63, 111
+};
+
 static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
@@ -187,7 +192,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	bl = 15;
 	zHigh = z + 4;
 	if (slope & 4) {
-		bl = RCT2_ADDRESS(0x0098D7EC, uint8)[slope & 3];
+		bl = byte_98D7EC[slope & 3];
 		zHigh += 2;
 	}
 
@@ -516,7 +521,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	uint8 bl = 15;
 	int zHigh = z + 4;
 	if (slope & 4) {
-		bl = RCT2_ADDRESS(0x0098D7EC, uint8)[slope & 3];
+		bl = byte_98D7EC[slope & 3];
 		zHigh += 2;
 	}
 
