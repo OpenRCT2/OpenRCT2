@@ -62,6 +62,26 @@ static const uint16 EntranceDirections[] = {
 	(4 | 1), 0, 0, 0, 0, 0, 0, 0,	// ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
+/** rct2: 0x0098D7F0 */
+static const uint8 connected_path_count[] = {
+	0, // 0b0000
+	1, // 0b0001
+	1, // 0b0010
+	2, // 0b0011
+	1, // 0b0100
+	2, // 0b0101
+	2, // 0b0110
+	3, // 0b0111
+	1, // 0b1000
+	2, // 0b1001
+	2, // 0b1010
+	3, // 0b1011
+	2, // 0b1100
+	3, // 0b1101
+	3, // 0b1110
+	4, // 0b1111
+};
+
 static int entrance_get_directions(rct_map_element *mapElement)
 {
 	uint8 entranceType = mapElement->properties.entrance.type;
@@ -1070,7 +1090,7 @@ static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *m
 
 	if (footpath_element_is_sloped(mapElement)) return false;
 
-	uint8 c = RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F];
+	uint8 c = connected_path_count[mapElement->properties.path.edges & 0x0F];
 	if ((action < 0) ? (c >= 2) : (c < 2)) return false;
 
 	if (action < 0) {
@@ -1180,7 +1200,7 @@ static void loc_6A6D7E(
 				return;
 			}
 			if (footpath_element_is_queue(mapElement)) {
-				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
+				if (connected_path_count[mapElement->properties.path.edges & 0x0F] < 2) {
 					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 				} else {
 					if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH &&
