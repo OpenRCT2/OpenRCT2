@@ -6459,6 +6459,72 @@ void peep_update_days_in_queue()
 	}
 }
 
+/** rct2: 0x009823BC */
+static const uint8 trouser_colours[] = {
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_DARK_PURPLE,
+	COLOUR_LIGHT_PURPLE,
+	COLOUR_DARK_BLUE,
+	COLOUR_SATURATED_GREEN,
+	COLOUR_SATURATED_RED,
+	COLOUR_DARK_ORANGE,
+	COLOUR_BORDEAUX_RED,
+};
+
+/** rct2: 0x009823D5 */
+static const uint8 tshirt_colours[] = {
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_DARK_PURPLE,
+	COLOUR_LIGHT_PURPLE,
+	COLOUR_DARK_BLUE,
+	COLOUR_SATURATED_GREEN,
+	COLOUR_SATURATED_RED,
+	COLOUR_DARK_ORANGE,
+	COLOUR_BORDEAUX_RED,
+	COLOUR_WHITE,
+	COLOUR_BRIGHT_PURPLE,
+	COLOUR_LIGHT_BLUE,
+	COLOUR_TEAL,
+	COLOUR_DARK_GREEN,
+	COLOUR_MOSS_GREEN,
+	COLOUR_BRIGHT_GREEN,
+	COLOUR_OLIVE_GREEN,
+	COLOUR_DARK_OLIVE_GREEN,
+	COLOUR_YELLOW,
+	COLOUR_LIGHT_ORANGE,
+	COLOUR_BRIGHT_RED,
+	COLOUR_DARK_PINK,
+	COLOUR_BRIGHT_PINK,
+};
+
 /**
  *
  *  rct2: 0x0069A05D
@@ -6594,11 +6660,11 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->var_F3 = 0;
 	peep->var_F4 = 0;
 
-	uint8 tshirt_colour = scenario_rand() % 33;
-	peep->tshirt_colour = RCT2_ADDRESS(0x009823D5, uint8)[tshirt_colour];
+	uint8 tshirt_colour = scenario_rand() % countof(tshirt_colours);
+	peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-	uint8 trousers_colour = scenario_rand() % 25;
-	peep->trousers_colour = RCT2_ADDRESS(0x009823BC, uint8)[trousers_colour];
+	uint8 trousers_colour = scenario_rand() % countof(trouser_colours);
+	peep->trousers_colour = trouser_colours[trousers_colour];
 
 	uint8 energy = (scenario_rand() & 0x3F) + 65;
 	peep->energy = energy;
