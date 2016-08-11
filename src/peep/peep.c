@@ -739,6 +739,26 @@ static void sub_68F8CD(rct_peep *peep)
 	peep_leave_park(peep);
 }
 
+/** rct2: 009823AC */
+static const uint8 crowded_thoughts[] = {
+	PEEP_THOUGHT_TYPE_LOST,
+	PEEP_THOUGHT_TYPE_TIRED,
+	PEEP_THOUGHT_TYPE_BAD_LITTER,
+	PEEP_THOUGHT_TYPE_HUNGRY,
+	PEEP_THOUGHT_TYPE_THIRSTY,
+	PEEP_THOUGHT_TYPE_VERY_CLEAN,
+	PEEP_THOUGHT_TYPE_CROWDED,
+	PEEP_THOUGHT_TYPE_SCENERY,
+	PEEP_THOUGHT_TYPE_VERY_CLEAN,
+	PEEP_THOUGHT_TYPE_MUSIC,
+	PEEP_THOUGHT_TYPE_WATCHED,
+	PEEP_THOUGHT_TYPE_NOT_HUNGRY,
+	PEEP_THOUGHT_TYPE_NOT_THIRSTY,
+	PEEP_THOUGHT_TYPE_BATHROOM,
+	PEEP_THOUGHT_TYPE_NONE,
+	PEEP_THOUGHT_TYPE_NONE,
+};
+
 /**
  *
  *  rct2: 0x0068F41A
@@ -776,7 +796,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
-			uint8 thought_type = RCT2_ADDRESS(0x009823AC, uint8)[scenario_rand() & 0xF];
+			uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
 				peep_insert_new_thought(peep, thought_type, 0xFF);
 			}
