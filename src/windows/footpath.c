@@ -189,6 +189,13 @@ const uint8 default_path_slope[] = {
 	IRREGULAR_SLOPE,
 };
 
+/** rct2: 0x0098D7E0 */
+unsigned char footpath_construction_preview_images[][4] = {
+	{5,  10, 5,  10}, // Flat
+	{16, 17, 18, 19}, // Upwards
+	{18, 19, 16, 17}, // Downwards
+};
+
 static void window_footpath_mousedown_direction(int direction);
 static void window_footpath_mousedown_slope(int slope);
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
@@ -591,12 +598,13 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
 		// Get construction image
-		image = (gFootpathConstructDirection + get_current_rotation()) % 4;
+		uint8 direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
+		uint8 slope = 0;
 		if (gFootpathConstructSlope == 2)
-			image += 4;
+			slope = 1;
 		else if (gFootpathConstructSlope == 6)
-			image += 8;
-		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
+			slope = 2;
+		image = footpath_construction_preview_images[slope][direction];
 
 		selectedPath = gFootpathSelectedId;
 		pathType = get_footpath_entry(selectedPath);
