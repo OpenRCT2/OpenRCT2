@@ -759,6 +759,64 @@ static const uint8 crowded_thoughts[] = {
 	PEEP_THOUGHT_TYPE_NONE,
 };
 
+/** rct2: 0x00982326 */
+static const uint8 peep_item_containers[] = {
+	0xFF,							// PEEP_ITEM_BALLOON
+	0xFF,							// PEEP_ITEM_TOY
+	0xFF,							// PEEP_ITEM_MAP
+	0xFF,							// PEEP_ITEM_PHOTO
+	0xFF,							// PEEP_ITEM_UMBRELLA
+	SHOP_ITEM_EMPTY_CAN,			// PEEP_ITEM_DRINK
+	SHOP_ITEM_EMPTY_BURGER_BOX,		// PEEP_ITEM_BURGER
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_FRIES
+	0xFF,							// PEEP_ITEM_ICE_CREAM
+	0xFF,							// PEEP_ITEM_COTTON_CANDY
+	0xFF,							// PEEP_ITEM_EMPTY_CAN
+	0xFF,							// PEEP_ITEM_RUBBISH
+	0xFF,							// PEEP_ITEM_EMPTY_BURGER_BOX
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_PIZZA
+	0xFF,							// PEEP_ITEM_VOUCHER
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_POPCORN
+	0xFF,							// PEEP_ITEM_HOT_DOG
+	0xFF,							// PEEP_ITEM_TENTACLE
+	0xFF,							// PEEP_ITEM_HAT
+	0xFF,							// PEEP_ITEM_CANDY_APPLE
+	0xFF,							// PEEP_ITEM_TSHIRT
+	0xFF,							// PEEP_ITEM_DONUT
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_COFFEE
+	0xFF,							// PEEP_ITEM_EMPTY_CUP
+	SHOP_ITEM_EMPTY_BOX,			// PEEP_ITEM_CHICKEN
+	SHOP_ITEM_EMPTY_BOTTLE,			// PEEP_ITEM_LEMONADE
+	0xFF,							// PEEP_ITEM_EMPTY_BOX
+	0xFF,							// PEEP_ITEM_EMPTY_BOTTLE
+};
+
+/** rct2: 0x00982342 */
+static const uint8 peep_extra_item_containers[] = {
+	0xFF,							// PEEP_ITEM_PHOTO2
+	0xFF,							// PEEP_ITEM_PHOTO3
+	0xFF,							// PEEP_ITEM_PHOTO4
+	0xFF,							// PEEP_ITEM_PRETZEL
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_CHOCOLATE
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_ICED_TEA
+	0xFF,							// PEEP_ITEM_FUNNEL_CAKE
+	0xFF,							// PEEP_ITEM_SUNGLASSES
+	SHOP_ITEM_EMPTY_BOWL_BLUE,		// PEEP_ITEM_BEEF_NOODLES
+	SHOP_ITEM_EMPTY_BOWL_BLUE,		// PEEP_ITEM_FRIED_RICE_NOODLES
+	SHOP_ITEM_EMPTY_BOWL_RED,		// PEEP_ITEM_WONTON_SOUP
+	SHOP_ITEM_EMPTY_BOWL_RED,		// PEEP_ITEM_MEATBALL_SOUP
+	SHOP_ITEM_EMPTY_JUICE_CUP,		// PEEP_ITEM_FRUIT_JUICE
+	SHOP_ITEM_EMPTY_DRINK_CARTON,	// PEEP_ITEM_SOYBEAN_MILK
+	SHOP_ITEM_EMPTY_DRINK_CARTON,	// PEEP_ITEM_SU_JONGKWA
+	0xFF,							// PEEP_ITEM_SUB_SANDWICH
+	0xFF,							// PEEP_ITEM_COOKIE
+	0xFF,							// PEEP_ITEM_EMPTY_BOWL_RED
+	0xFF,							// PEEP_ITEM_EMPTY_DRINK_CARTON
+	0xFF,							// PEEP_ITEM_EMPTY_JUICE_CUP
+	0xFF,							// PEEP_ITEM_ROAST_SAUSAGE
+	0xFF,							// PEEP_ITEM_EMPTY_BOWL_BLUE
+};
+
 /**
  *
  *  rct2: 0x0068F41A
@@ -1103,7 +1161,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			if (chosen_food != -1){
 				peep->item_standard_flags &= ~(1 << chosen_food);
 
-				uint8 discard_container = RCT2_ADDRESS(0x00982326, uint8)[chosen_food];
+				uint8 discard_container = peep_item_containers[chosen_food];
 				if (discard_container != 0xFF){
 					peep->item_standard_flags |= (1 << discard_container);
 				}
@@ -1115,7 +1173,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 				chosen_food = bitscanforward(peep_has_food_extra_flag(peep));
 				if (chosen_food != -1){
 					peep->item_extra_flags &= ~(1 << chosen_food);
-					uint8 discard_container = RCT2_ADDRESS(0x00982342, uint8)[chosen_food];
+					uint8 discard_container = peep_extra_item_containers[chosen_food];
 					if (discard_container != 0xFF){
 						if (discard_container >= 32)
 							peep->item_extra_flags |= (1 << (discard_container - 32));
