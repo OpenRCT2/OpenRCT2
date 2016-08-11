@@ -489,6 +489,23 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		game_command_playerid = network_get_current_player_id();
 	}
 
+	// Log cheats if we are in multiplayer and logging is enabled
+	if (network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) {
+		if (command == GAME_COMMAND_CHEAT && gConfigNetwork.log_server_actions) {
+			int player_index = network_get_player_index(game_command_playerid);
+			const char* player_name = network_get_player_name(player_index);
+			const char* cheat = cheats_get_cheat_string(*ecx, *edx);
+
+			char log_msg[256];
+			char* args[2] = {
+				(char *) player_name,
+				(char *) cheat
+			};
+			format_string(log_msg, STR_LOG_CHEAT_USED, args);
+			network_append_server_log(log_msg);
+		}
+	}
+
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
 	// First call for validity and price check

@@ -19,6 +19,7 @@
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/date.h"
+#include "localisation/language.h"
 #include "management/finance.h"
 #include "network/network.h"
 #include "world/climate.h"
@@ -464,4 +465,73 @@ void cheats_reset()
 	gCheatsFreezeClimate = false;
 	gCheatsDisablePlantAging = false;
 	gCheatsAllowArbitraryRideTypeChanges = false;
+}
+
+const char* cheats_get_cheat_string(int cheat, int arg) {
+	switch (cheat) {
+		case CHEAT_SANDBOXMODE: 
+			if (gCheatsSandboxMode) {
+				return language_get_string(STR_CHEAT_SANDBOX_MODE_DISABLE);
+			} else {
+				return language_get_string(STR_CHEAT_SANDBOX_MODE);
+			}
+		case CHEAT_DISABLECLEARANCECHECKS: return language_get_string(STR_DISABLE_CLEARANCE_CHECKS);
+		case CHEAT_DISABLESUPPORTLIMITS: return language_get_string(STR_DISABLE_SUPPORT_LIMITS);
+		case CHEAT_SHOWALLOPERATINGMODES: return language_get_string(STR_CHEAT_SHOW_ALL_OPERATING_MODES);
+		case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: return language_get_string(STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES);
+		case CHEAT_FASTLIFTHILL: return language_get_string(STR_CHEAT_UNLOCK_OPERATING_LIMITS);
+		case CHEAT_DISABLEBRAKESFAILURE: return language_get_string(STR_CHEAT_DISABLE_BRAKES_FAILURE);
+		case CHEAT_DISABLEALLBREAKDOWNS: return language_get_string(STR_CHEAT_DISABLE_BREAKDOWNS);
+		case CHEAT_DISABLETRAINLENGTHLIMIT: return language_get_string(STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT);
+		case CHEAT_ENABLECHAINLIFTONALLTRACK: return language_get_string(STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK);
+		case CHEAT_UNLOCKALLPRICES: return language_get_string(STR_CHEAT_UNLOCK_PRICES);
+		case CHEAT_BUILDINPAUSEMODE: return language_get_string(STR_CHEAT_BUILD_IN_PAUSE_MODE);
+		case CHEAT_IGNORERIDEINTENSITY: return language_get_string(STR_CHEAT_IGNORE_INTENSITY);
+		case CHEAT_DISABLEVANDALISM: return language_get_string(STR_CHEAT_DISABLE_VANDALISM);
+		case CHEAT_DISABLELITTERING: return language_get_string(STR_CHEAT_DISABLE_LITTERING);
+		case CHEAT_INCREASEMONEY: return language_get_string(STR_LOG_CHEAT_ADD_MONEY);
+		case CHEAT_CLEARLOAN: return language_get_string(STR_CHEAT_CLEAR_LOAN);
+		case CHEAT_SETGUESTPARAMETER: return language_get_string(STR_CHEAT_SET_GUESTS_PARAMETERS);
+		case CHEAT_GENERATEGUESTS: return language_get_string(STR_CHEAT_LARGE_TRAM_GUESTS);
+		case CHEAT_REMOVEALLGUESTS: return language_get_string(STR_CHEAT_REMOVE_ALL_GUESTS);
+		case CHEAT_EXPLODEGUESTS: return language_get_string(STR_CHEAT_EXPLODE);
+		case CHEAT_GIVEALLGUESTS: return language_get_string(STR_CHEAT_GIVE_ALL_GUESTS);
+		case CHEAT_SETGRASSLENGTH: 
+			if (arg == 0) {
+				return language_get_string(STR_CHEAT_MOWED_GRASS);
+			} else if (arg == 1) {
+				return language_get_string(STR_CHEAT_CLEAR_GRASS);
+			}
+		case CHEAT_WATERPLANTS: return language_get_string(STR_CHEAT_WATER_PLANTS);
+		case CHEAT_FIXVANDALISM: return language_get_string(STR_CHEAT_FIX_VANDALISM);
+		case CHEAT_REMOVELITTER: return language_get_string(STR_CHEAT_REMOVE_LITTER);
+		case CHEAT_DISABLEPLANTAGING: return language_get_string(STR_CHEAT_DISABLE_PLANT_AGING);
+		case CHEAT_SETSTAFFSPEED: return language_get_string(STR_CHEAT_STAFF_SPEED);
+		case CHEAT_RENEWRIDES: return language_get_string(STR_CHEAT_RENEW_RIDES);
+		case CHEAT_MAKEDESTRUCTIBLE: return language_get_string(STR_CHEAT_MAKE_DESTRUCTABLE);
+		case CHEAT_FIXRIDES: return language_get_string(STR_CHEAT_FIX_ALL_RIDES);
+		case CHEAT_RESETCRASHSTATUS: return language_get_string(STR_CHEAT_RESET_CRASH_STATUS);
+		case CHEAT_10MINUTEINSPECTIONS: return language_get_string(STR_CHEAT_10_MINUTE_INSPECTIONS);
+		case CHEAT_WINSCENARIO: return language_get_string(STR_CHEAT_WIN_SCENARIO);
+		case CHEAT_FORCEWEATHER: return language_get_string(STR_FORCE_WEATHER);
+		case CHEAT_FREEZECLIMATE: 
+			if (gCheatsFreezeClimate) {
+				return language_get_string(STR_CHEAT_UNFREEZE_CLIMATE);
+			} else {
+				return language_get_string(STR_CHEAT_FREEZE_CLIMATE);
+			}
+		case CHEAT_NEVERENDINGMARKETING: return language_get_string(STR_CHEAT_NEVERENDING_MARKETING);
+		case CHEAT_OPENCLOSEPARK: 
+			if (park_is_open()) {
+				return language_get_string(STR_CHEAT_CLOSE_PARK);
+			} else {
+				return language_get_string(STR_CHEAT_OPEN_PARK);
+			}
+		case CHEAT_HAVEFUN: return language_get_string(STR_CHEAT_HAVE_FUN);
+		case CHEAT_SETFORCEDPARKRATING: return language_get_string(STR_FORCE_PARK_RATING);
+		case CHEAT_RESETDATE: return language_get_string(STR_CHEAT_RESET_DATE);
+		case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: return language_get_string(STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES);
+	}
+
+	return "";
 }
