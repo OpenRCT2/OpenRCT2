@@ -6537,6 +6537,14 @@ void peep_update_days_in_queue()
 	}
 }
 
+/** rct2: 0x009823A0 */
+static const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
+	PEEP_NAUSEA_TOLERANCE_NONE,
+	PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
+	PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
+	PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH,
+};
+
 /** rct2: 0x009823BC */
 static const uint8 trouser_colours[] = {
 	COLOUR_BLACK,
@@ -6669,7 +6677,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		nausea_tolerance += 4;
 	}
 
-	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
+	peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
 
 	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
 
