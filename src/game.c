@@ -489,11 +489,14 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		game_command_playerid = network_get_current_player_id();
 	}
 
-	// Log cheats if we are in multiplayer and logging is enabled
-	if (network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) {
-		if (command == GAME_COMMAND_CHEAT && gConfigNetwork.log_server_actions) {
-			int player_index = network_get_player_index(game_command_playerid);
-			const char* player_name = network_get_player_name(player_index);
+	// Log certain commands if we are in multiplayer and logging is enabled
+	if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
+
+		// Get player name
+		int player_index = network_get_player_index(game_command_playerid);
+		const char* player_name = network_get_player_name(player_index);
+
+		if (command == GAME_COMMAND_CHEAT) {
 			const char* cheat = cheats_get_cheat_string(*ecx, *edx);
 
 			char log_msg[256];
@@ -502,6 +505,18 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				(char *) cheat
 			};
 			format_string(log_msg, STR_LOG_CHEAT_USED, args);
+			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_DEMOLISH_RIDE) {
+			rct_ride* ride = get_ride(*edx);
+			char ride_name[128];
+			format_string(ride_name, ride->name, &ride->name_arguments);
+
+			char log_msg[256];
+			char* args[2] = {
+				(char *) player_name,
+				ride_name
+			};
+			format_string(log_msg, STR_LOG_DEMOLISH_RIDE, args);
 			network_append_server_log(log_msg);
 		}
 	}

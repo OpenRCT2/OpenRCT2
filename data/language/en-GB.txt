@@ -4310,19 +4310,9 @@ STR_5998    :{STRING} deleted player group '{String}'.
 STR_5999    :{STRING} edited permissions for player group '{String}'.
 STR_6000    :{STRING} changed player group name from '{String}' to '{String}'.
 STR_6001    :{STRING} changed the default player group to '{String}'.
-STR_6002    :Log user actions
-STR_6003    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
-STR_6004    :Server started.
-STR_6005    :Server shutdown.
-STR_6006    :{STRING} was kicked from the server by {STRING}.
-STR_6007    :{STRING} was set to group '{STRING}' by {STRING}.
-STR_6008    :{STRING} created new player group '{STRING}'.
-STR_6009    :{STRING} deleted player group '{String}'.
-STR_6010    :{STRING} edited permissions for player group '{String}'.
-STR_6011    :{STRING} changed player group name from '{String}' to '{String}'.
-STR_6012    :{STRING} changed the default player group to '{String}'.
-STR_6013    :{STRING} used/toggled cheat '{STRING}'.
-STR_6014    :Add Money
+STR_6002    :{STRING} used/toggled cheat '{STRING}'.
+STR_6003    :Add Money
+STR_6004    :{STRING} demolished ride '{STRING}'.
 
 #############
 # Scenarios #
