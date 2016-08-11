@@ -684,6 +684,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	return nextDirection;
 }
 
+extern const uint8 byte_98D800[4];
+
 /**
  *
  *  rct2: 0x006BF931
@@ -697,7 +699,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8 valid
 			return 0xFF;
 
 		if (peep->next_var_29 & 0x4) {
-			if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != RCT2_ADDRESS(0x0098D800, uint8)[peep->next_var_29 & 0x3])
+			if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
 				return 0xFF;
 		}
 		else if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != 0)
