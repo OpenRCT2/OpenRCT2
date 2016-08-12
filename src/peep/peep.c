@@ -6982,13 +6982,41 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
 }
 
+/** rct2: 0x00982004 */
+static const bool peep_allow_pick_up[] = {
+	true,	// PEEP_STATE_FALLING
+	false,	// PEEP_STATE_1
+	false,	// PEEP_STATE_QUEUING_FRONT
+	false,	// PEEP_STATE_ON_RIDE
+	false,	// PEEP_STATE_LEAVING_RIDE
+	true,	// PEEP_STATE_WALKING
+	true,	// PEEP_STATE_QUEUING
+	false,	// PEEP_STATE_ENTERING_RIDE
+	true,	// PEEP_STATE_SITTING
+	true,	// PEEP_STATE_PICKED
+	true,	// PEEP_STATE_PATROLLING
+	true,	// PEEP_STATE_MOWING
+	true,	// PEEP_STATE_SWEEPING
+	false,	// PEEP_STATE_ENTERING_PARK
+	false,	// PEEP_STATE_LEAVING_PARK
+	true,	// PEEP_STATE_ANSWERING
+	false,	// PEEP_STATE_FIXING
+	false,	// PEEP_STATE_BUYING
+	true,	// PEEP_STATE_WATCHING
+	true,	// PEEP_STATE_EMPTYING_BIN
+	true,	// PEEP_STATE_USING_BIN
+	true,	// PEEP_STATE_WATERING
+	true,	// PEEP_STATE_HEADING_TO_INSPECTION
+	false,	// PEEP_STATE_INSPECTING
+};
+
 /**
  *
  *  rct2: 0x00698827
  * returns 1 on pickup (CF not set)
  */
 int peep_can_be_picked_up(rct_peep* peep){
-	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+	return peep_allow_pick_up[peep->state];
 }
 
 enum{
