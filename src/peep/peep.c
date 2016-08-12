@@ -3802,6 +3802,18 @@ static void peep_update_ride(rct_peep* peep){
 	}
 }
 
+static const uint32 loc_992A18[9] = {
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 2) | (1 << 1),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 4) | (1 << 1),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 3) | (1 << 1),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 5) | (1 << 1),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 6) | (1 << 1),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 11)| (1 << 9),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
+	(1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
+};
+
 /**
  *
  *  rct2: 0x006C0E8B
@@ -3886,10 +3898,10 @@ static void peep_update_fixing(int steps, rct_peep* peep){
 		}
 
 		int subState = peep->sub_state;
-		uint32 ebp = RCT2_ADDRESS(0x992A18, uint32)[8];
+		uint32 ebp = loc_992A18[8];
 
 		if (peep->state != PEEP_STATE_INSPECTING) {
-			ebp = RCT2_ADDRESS(0x992A18, uint32)[ride->breakdown_reason_pending];
+			ebp = loc_992A18[ride->breakdown_reason_pending];
 		}
 
 		do {
@@ -9661,7 +9673,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  */
 static bool sub_69101A(rct_map_element *esi) {
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
-	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] != 0) {
+	if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE) {
 		return true;
 	}
 

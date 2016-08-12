@@ -204,7 +204,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	}
 	if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-		ebp = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		ebp = construction_markers[gConfigGeneral.construction_marker_colour];
 		image_id &= 0x7FFFF;
 		dword_F4387C = ebp;
 		image_id |= dword_F4387C;

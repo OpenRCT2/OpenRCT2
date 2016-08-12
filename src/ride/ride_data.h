@@ -166,4 +166,6 @@ extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
 extern const uint8 RideConstructionDefaultTrackType[91];
 
+extern const track_colour_preset_list RideColourPresets[91];
+
 #endif

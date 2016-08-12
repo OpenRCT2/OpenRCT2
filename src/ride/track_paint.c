@@ -1248,7 +1248,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		RCT2_GLOBAL(0x00F441A0, uint32) = 0x20000000;
 		RCT2_GLOBAL(0x00F441A4, uint32) = 0x20C00000;
 		RCT2_GLOBAL(0x00F4419C, uint32) = (ride->track_colour_supports[trackColourScheme] << 19) | 0x20000000;
-		if (mapElement->type & 0x40) {
+		if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
 			RCT2_GLOBAL(0x00F44198, uint32) = 0x21600000;
 			RCT2_GLOBAL(0x00F4419C, uint32) = 0x21600000;
 			RCT2_GLOBAL(0x00F441A0, uint32) = 0x21600000;

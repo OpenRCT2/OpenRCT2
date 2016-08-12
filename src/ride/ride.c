@@ -53,6 +53,7 @@
 
 #pragma region Ride classification table
 
+/** rct2: 0x0097C3AF */
 const uint8 gRideClassifications[255] = {
 	RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
 	RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
@@ -5830,7 +5831,7 @@ static int ride_get_random_colour_preset_index(uint8 ride_type)
 		return 0;
 	}
 
-	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride_type];
+	colourPresets = &RideColourPresets[ride_type];
 
 	// 200 attempts to find a colour preset that hasn't already been used in the park for this ride type
 	for (int i = 0; i < 200; i++) {
@@ -5852,7 +5853,7 @@ static void ride_set_colour_preset(rct_ride *ride, uint8 index) {
 	const track_colour_preset_list *colourPresets;
 	const track_colour *colours;
 
-	colourPresets = RCT2_ADDRESS(0x0097D934, track_colour_preset_list*)[ride->type];
+	colourPresets = &RideColourPresets[ride->type];
 	colours = &colourPresets->list[index];
 	for (int i = 0; i < 4; i++) {
 		ride->track_colour_main[i] = colours->main;

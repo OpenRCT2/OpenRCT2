@@ -26,6 +26,21 @@
 #include "news_item.h"
 
 rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+
+/** rct2: 0x0097BE7C */
+const uint8 news_type_properties[] =	{
+	0,												// NEWS_ITEM_NULL
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_RIDE
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP_ON_RIDE
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_MONEY
+	NEWS_TYPE_HAS_LOCATION,							// NEWS_ITEM_BLANK
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_RESEARCH
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_PEEPS
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_AWARD
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_GRAPH
+};
+
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
