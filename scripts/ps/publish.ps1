@@ -129,7 +129,7 @@ function Do-Symbols()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" "$artifactsDir\openrct2.dll" > $null
+    & $7zcmd a -tzip -mx9 -mtc=off $outZip "$artifactsDir\openrct2.pdb" "$artifactsDir\openrct2.dll" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
@@ -175,7 +175,7 @@ function Do-Package()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" > $null
+    & $7zcmd a -tzip -mx9 -mtc=off $outZip "$tempDir\*" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
