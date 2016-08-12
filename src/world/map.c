@@ -3291,6 +3291,53 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 	return true;
 }
 
+enum
+{
+	EDGE_SLOPE_ELEVATED = (1 << 0), // 0x01
+	EDGE_SLOPE_UPWARDS = (1 << 6), // 0x40
+	EDGE_SLOPE_DOWNWARDS = (1 << 7), // 0x80
+
+	EDGE_SLOPE_UPWARDS_ELEVATED = EDGE_SLOPE_UPWARDS | EDGE_SLOPE_ELEVATED,
+	EDGE_SLOPE_DOWNWARDS_ELEVATED = EDGE_SLOPE_DOWNWARDS | EDGE_SLOPE_ELEVATED,
+};
+
+/** rct2: 0x009A3FEC */
+static const uint8 EdgeSlopes[][4] = {
+//	  Top right							Bottom right					Bottom left						Top left
+	{ 0,								0,								0,								0								},
+	{ 0,								EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS,			0								},
+	{ 0,								0,								EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS			},
+	{ 0,								EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_DOWNWARDS			},
+	{ EDGE_SLOPE_DOWNWARDS,				0,								0,								EDGE_SLOPE_UPWARDS				},
+	{ EDGE_SLOPE_DOWNWARDS,				EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS				},
+	{ EDGE_SLOPE_DOWNWARDS,				0,								EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED				},
+	{ EDGE_SLOPE_DOWNWARDS,				EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_ELEVATED				},
+	{ EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS,			0,								0								},
+	{ EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_DOWNWARDS,			0								},
+	{ EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_DOWNWARDS			},
+	{ EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_DOWNWARDS			},
+	{ EDGE_SLOPE_ELEVATED,				EDGE_SLOPE_DOWNWARDS,			0,								EDGE_SLOPE_UPWARDS				},
+	{ EDGE_SLOPE_ELEVATED,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS				},
+	{ EDGE_SLOPE_ELEVATED,				EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_ELEVATED				},
+	{ EDGE_SLOPE_ELEVATED,				EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_ELEVATED,			EDGE_SLOPE_ELEVATED				},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ EDGE_SLOPE_DOWNWARDS,				EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_UPWARDS_ELEVATED,	EDGE_SLOPE_DOWNWARDS_ELEVATED	},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ 0,								0,								0,								0								},
+	{ EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_UPWARDS_ELEVATED,	EDGE_SLOPE_DOWNWARDS_ELEVATED,	EDGE_SLOPE_DOWNWARDS			},
+	{ 0,								0,								0,								0								},
+	{ EDGE_SLOPE_UPWARDS_ELEVATED,		EDGE_SLOPE_DOWNWARDS_ELEVATED,	EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS				},
+	{ EDGE_SLOPE_DOWNWARDS_ELEVATED,	EDGE_SLOPE_DOWNWARDS,			EDGE_SLOPE_UPWARDS,				EDGE_SLOPE_UPWARDS_ELEVATED		},
+	{ 0,								0,								0,								0								},
+};
+
 /**
  *
  *  rct2: 0x006E519A
@@ -3355,8 +3402,8 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		position.z = map_element->base_height * 8;
 
 		uint8 slope = map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-		bp = RCT2_ADDRESS(0x009A3FEC, uint8)[slope + (edge & 3) * 32];
-		if (bp & (1 << 0)){
+		bp = EdgeSlopes[slope][edge & 3];
+		if (bp & EDGE_SLOPE_ELEVATED) {
 			position.z += 16;
 			bp &= ~(1 << 0);
 		}
@@ -3478,8 +3525,8 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	bp = RCT2_GLOBAL(0x00141F723, uint8);
 
 	RCT2_GLOBAL(0x00141F722, uint8) = position.z / 8;
-	if (bp & 0xC0){
-		if (fence->wall.flags & WALL_SCENERY_FLAG3){
+	if (bp & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)) {
+		if (fence->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE){
 			gGameCommandErrorText = STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
