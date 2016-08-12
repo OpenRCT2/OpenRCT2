@@ -3344,6 +3344,11 @@ enum {
 	STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP = 5909,
 	STR_APPLY = 5910,
 
+	STR_APPLY_TO_WHOLE_MAP = 5904,
+	STR_INCLUDE_MAP_EDGE = 5905,
+	STR_CUSTOM_EDGE_OFFSET = 5906,
+	STR_ENTER_CUSTOM_EDGE_OFFSET = 5907,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

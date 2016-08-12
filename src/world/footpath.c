@@ -1472,16 +1472,25 @@ void sub_6A759F()
  */
 static void footpath_unown(int x, int y, rct_map_element *pathElement)
 {
-	int ownershipUnk = 0;
-	int z = pathElement->base_height;
 	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
-	if (surfaceElement->base_height != z) {
-		z -= 2;
-		if (surfaceElement->base_height != z) {
-			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
+	int ownership = surfaceElement->properties.surface.ownership;
+	//land is already unowned!
+	if (ownership == 0)
+		return;
+	//if footpath is higher than 2 units or lower than land, do not own land.
+	//doing so will confuse outside guests.
+	int z = pathElement->base_height;
+	if (z != surfaceElement->base_height) {
+		if (z > surfaceElement->base_height + 2 || z < surfaceElement->base_height) {
+			game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, 0, GAME_COMMAND_SET_LAND_OWNERSHIP, x, y);
+			return;
 		}
 	}
-	map_buy_land_rights(x, y, x, y, 6, 1);
+	//convert land owned/available to construction rights owned/available
+	if (ownership == OWNERSHIP_OWNED)
+		game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, 1, GAME_COMMAND_SET_LAND_OWNERSHIP, x, y);
+	else if (ownership == OWNERSHIP_AVAILABLE)
+		game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, 4, GAME_COMMAND_SET_LAND_OWNERSHIP, x, y);
 }
 
 static bool get_next_direction(int edges, int *direction)
