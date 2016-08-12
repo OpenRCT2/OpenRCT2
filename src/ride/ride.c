@@ -3783,12 +3783,8 @@ static bool ride_is_valid_num_circuits(rct_ride *ride, int numCircuits)
 
 static bool ride_is_valid_operation_option(rct_ride *ride, uint8 value)
 {
-	uint8 minValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
-	uint8 maxValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
-	if (ride->mode == RIDE_MODE_MAZE) {
-		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-		maxValue = 64;
-	}
+	uint8 minValue = RideProperties[ride->type].min_value;
+	uint8 maxValue = RideProperties[ride->type].max_value;
 	if (gCheatsFastLiftHill) {
 		minValue = 0;
 		maxValue = 255;
@@ -4345,7 +4341,7 @@ static void ride_set_boat_hire_return_point(rct_ride *ride, rct_xy_element *star
 	};
 
 	trackType = returnTrackElement->properties.track.type;
-	int elementReturnDirection = RCT2_GLOBAL(0x009968BB + (trackType * 10), uint8);
+	int elementReturnDirection = TrackCoordinates[trackType].rotation_begin;
 	ride->boat_hire_return_direction = (returnTrackElement->type + elementReturnDirection) & 3;
 	ride->boat_hire_return_position = (returnX >> 5) | ((returnY >> 5) << 8);
 }
@@ -5485,7 +5481,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	RCT2_GLOBAL(0x00F43484, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
+	RCT2_GLOBAL(0x00F43484, uint32) = RideProperties[ride->type].flags;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (ride->overall_view != (uint16)-1) {
@@ -6073,12 +6069,8 @@ foundRideEntry:
 	}
 	ride->music = RideData4[ride->type].default_music;
 
-	ride->operation_option = (
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (ride->type * 8), uint8)
-	) / 4;
+	const rct_ride_properties rideProperties = RideProperties[ride->type];
+	ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
 
 	ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
 
@@ -6701,7 +6693,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 
 bool ride_type_has_flag(int rideType, int flag)
 {
-	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
+	return (RideProperties[rideType].flags & flag) != 0;
 }
 
 /*

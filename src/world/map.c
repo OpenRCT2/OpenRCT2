@@ -3175,11 +3175,11 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		}
 
 		if (TrackDefinitions[trackType].bank_start == 0) {
-			if (!(RCT2_ADDRESS(0x009968BB, uint8)[trackType * 10] & 4)) {
+			if (!(TrackCoordinates[trackType].rotation_begin & 4)) {
 				direction = (trackElement->type & 3) ^ 2;
 				if (direction == edge) {
 					trackBlock = &TrackBlocks[trackType][sequence];
-					z = RCT2_GLOBAL(0x009968BD + (trackType * 10), uint8);
+					z = TrackCoordinates[trackType].z_begin;
 					z = trackElement->base_height + ((z - trackBlock->z) * 8);
 					if (z == z0) {
 						return true;
@@ -3198,7 +3198,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	direction = RCT2_ADDRESS(0x009968BC, uint8)[trackType * 10];
+	direction = TrackCoordinates[trackType].rotation_end;
 	if (direction & 4) {
 		return false;
 	}
@@ -3209,7 +3209,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 	}
 
 	trackBlock = &TrackBlocks[trackType][sequence];
-	z = RCT2_GLOBAL(0x009968BF + (trackType * 10), uint8);
+	z = TrackCoordinates[trackType].z_end;
 	z = trackElement->base_height + ((z - trackBlock->z) * 8);
 	if (z != z0) {
 		return false;

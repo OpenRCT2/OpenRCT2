@@ -2731,8 +2731,8 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		RCT2_GLOBAL(0x00F440C5, uint16) = x;
 		RCT2_GLOBAL(0x00F440C7, uint16) = y;
 		z += ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-			RCT2_GLOBAL(0x009972BD + (trackType * 10), uint16) :
-			RCT2_GLOBAL(0x009968BD + (trackType * 10), uint16);
+			FlatTrackCoordinates[trackType].z_begin:
+			TrackCoordinates[trackType].z_begin;
 
 		RCT2_GLOBAL(0x00F440C9, uint16) = z;
 		RCT2_GLOBAL(0x00F440CB, uint8) = trackDirection;

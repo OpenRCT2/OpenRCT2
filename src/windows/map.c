@@ -102,6 +102,18 @@ const rct_xy16 MiniMapOffsets[] = {
 	{   0 - 8, 256 }
 };
 
+/** rct2: 0x00981BCC */
+static const uint16 RideKeyColours[] = {
+	0x3D3D,			// COLOUR_KEY_RIDE
+	0x2A2A,			// COLOUR_KEY_FOOD
+	0x1414,			// COLOUR_KEY_DRINK
+	0xD1D1,			// COLOUR_KEY_SOUVENIR
+	0x8888,			// COLOUR_KEY_KIOSK
+	0x6666,			// COLOUR_KEY_FIRST_AID
+	0x3737,			// COLOUR_KEY_CASH_MACHINE
+	0xA1A1,			// COLOUR_KEY_TOILETS
+};
+
 static void window_map_close(rct_window *w);
 static void window_map_resize(rct_window *w);
 static void window_map_mouseup(rct_window *w, int widgetIndex);
@@ -828,7 +840,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			};
 
 			for (i = 0; i < 8; i++) {
-				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RCT2_GLOBAL(0x00981BCC + (i * 2), uint8));
+				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
 				gfx_draw_string_left(dpi, mapLabels[i], w, 0, x + 10, y);
 				y += 10;
 				if (i == 3) {
@@ -1543,17 +1555,6 @@ static const uint8 RideColourKey[] = {
 	COLOUR_KEY_RIDE,				//
 	COLOUR_KEY_RIDE,				//
 	COLOUR_KEY_RIDE,				//
-};
-
-static const uint16 RideKeyColours[] = {
-	0x3D3D,			// COLOUR_KEY_RIDE
-	0x2A2A,			// COLOUR_KEY_FOOD
-	0x1414,			// COLOUR_KEY_DRINK
-	0x0D1D,			// COLOUR_KEY_SOUVENIR
-	0x8888,			// COLOUR_KEY_KIOSK
-	0x6666,			// COLOUR_KEY_FIRST_AID
-	0x3737,			// COLOUR_KEY_CASH_MACHINE
-	0xA1A1,			// COLOUR_KEY_TOILETS
 };
 
 static uint16 map_window_get_pixel_colour_peep(int x, int y)
