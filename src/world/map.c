@@ -3138,13 +3138,13 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 	rct_ride *ride = get_ride(trackElement->properties.track.ride_index);
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		if (RCT2_ADDRESS(0x0099AA94, uint8)[typeAndSequence] & (1 << direction)) {
+		if (FlatRideTrackSequenceElementAllowedWallEdges[trackType][sequence] & (1 << direction)) {
 			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
 				return true;
 			}
 		}
 	} else {
-		if (RCT2_ADDRESS(0x00999A94, uint8)[typeAndSequence] & (1 << direction)) {
+		if (TrackSequenceElementAllowedWallEdges[trackType][sequence] & (1 << direction)) {
 			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
 				return true;
 			}

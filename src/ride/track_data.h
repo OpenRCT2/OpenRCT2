@@ -79,3 +79,6 @@ extern const dodgems_track_size DodgemsTrackSize[256];
 extern const uint8 TrackElementMirrorMap[256];
 
 extern const uint32 TrackHeightMarkerPositions[256];
+
+extern const uint8 TrackSequenceElementAllowedWallEdges[256][16];
+extern const uint8 FlatRideTrackSequenceElementAllowedWallEdges[256][16];
