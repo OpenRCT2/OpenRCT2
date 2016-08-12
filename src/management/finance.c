@@ -25,7 +25,11 @@
 #include "../world/sprite.h"
 #include "finance.h"
 
-// Monthly staff wages
+/**
+ * Monthly staff wages
+ *
+ * rct2: 0x00992A00
+ */
 const money32 wage_table[4] = {
 	MONEY(50,00),		// Handyman
 	MONEY(80,00),		// Mechanic

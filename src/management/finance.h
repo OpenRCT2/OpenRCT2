@@ -53,6 +53,7 @@ enum {
 #define gWeeklyProfitAverageDivisor		RCT2_GLOBAL(RCT2_ADDRESS_WEEKLY_PROFIT_AVERAGE_DIVISOR, uint16)
 
 extern const money32 research_cost_table[4];
+extern const money32 wage_table[4];
 
 extern money32 *gCashHistory;
 extern money32 *gWeeklyProfitHistory;

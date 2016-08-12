@@ -596,7 +596,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		set_format_arg(0, uint32, RCT2_ADDRESS(0x00992A00, uint16)[selectedTab]);
+		set_format_arg(0, money32, wage_table[selectedTab]);
 		gfx_draw_string_left(dpi, STR_COST_PER_MONTH, gCommonFormatArgs, 0, w->x + w->width - 155, w->y + 0x20);
 	}
 

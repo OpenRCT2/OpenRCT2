@@ -249,7 +249,8 @@ static void filter_update_counts();
 void reset_selected_object_count_and_size();
 static int sub_6AB211();
 
-static rct_object_entry RequiredSelectedObjects[] = {
+/** rct2: 0x0098DA74 */
+rct_object_entry RequiredSelectedObjects[] = {
 	// Objects that are always required
 	{ 0x00000087, { "SCGTREES" }, 0 },		// Scenery: Trees
 	{ 0x00000087, { "SCGSHRUB" }, 0 },		// Scenery: Shrubs and Ornaments

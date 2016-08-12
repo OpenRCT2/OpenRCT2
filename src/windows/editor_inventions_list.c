@@ -249,6 +249,8 @@ static void research_rides_setup(){
 	}
 }
 
+extern rct_object_entry RequiredSelectedObjects[7];
+
 /**
  *
  *  rct2: 0x0068590C
@@ -256,9 +258,8 @@ static void research_rides_setup(){
  */
 static void research_scenery_sets_setup(){
 
-	for (rct_object_entry* object = RCT2_ADDRESS(0x0098DA74, rct_object_entry);
-		(object->flags & 0xFF) != 0xFF;
-		object++){
+	for (int i = 0; i < countof(RequiredSelectedObjects); i++) {
+		rct_object_entry * object = &RequiredSelectedObjects[i];
 
 		uint8 entry_type, entry_index;
 		if (!find_object_in_entry_group(object, &entry_type, &entry_index))
