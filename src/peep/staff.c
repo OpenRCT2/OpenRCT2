@@ -323,6 +323,26 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 									   edi);
 }
 
+/** rct2: 0x00982134 */
+static const bool peep_slow_walking_types[] = {
+	false,	// PEEP_SPRITE_TYPE_NORMAL
+	false,	// PEEP_SPRITE_TYPE_HANDYMAN
+	false,	// PEEP_SPRITE_TYPE_MECHANIC
+	false,	// PEEP_SPRITE_TYPE_SECURITY
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_PANDA
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_TIGER
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT
+	true,	// PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
+	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
+	true,	// PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
+	true,	// PEEP_SPRITE_TYPE_19
+};
+
 /**
  *
  *  rct2: 0x006C0BB5
@@ -345,7 +365,7 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 			sprite_type += 4;
 			peep->sprite_type = sprite_type;
 			peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-			if(RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
+			if(peep_slow_walking_types[sprite_type]){
 				peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 			}
 			peep->action_frame = 0;

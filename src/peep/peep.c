@@ -739,6 +739,142 @@ static void sub_68F8CD(rct_peep *peep)
 	peep_leave_park(peep);
 }
 
+/** rct2: 0x009822F4, 0x00982310 */
+static const uint8 byte_9822F4[] = {
+	0,		// SHOP_ITEM_BALLOON
+	0,		// SHOP_ITEM_TOY
+	0,		// SHOP_ITEM_MAP
+	0,		// SHOP_ITEM_PHOTO
+	0,		// SHOP_ITEM_UMBRELLA
+	100,	// SHOP_ITEM_DRINK
+	150,	// SHOP_ITEM_BURGER
+	120,	// SHOP_ITEM_FRIES
+	60,		// SHOP_ITEM_ICE_CREAM
+	50,		// SHOP_ITEM_COTTON_CANDY
+	0,		// SHOP_ITEM_EMPTY_CAN
+	0,		// SHOP_ITEM_RUBBISH
+	0,		// SHOP_ITEM_EMPTY_BURGER_BOX
+	150,	// SHOP_ITEM_PIZZA
+	0,		// SHOP_ITEM_VOUCHER
+	75,		// SHOP_ITEM_POPCORN
+	133,	// SHOP_ITEM_HOT_DOG
+	110,	// SHOP_ITEM_TENTACLE
+	0,		// SHOP_ITEM_HAT
+	50,		// SHOP_ITEM_CANDY_APPLE
+	0,		// SHOP_ITEM_TSHIRT
+	80,		// SHOP_ITEM_DONUT
+	90,		// SHOP_ITEM_COFFEE
+	0,		// SHOP_ITEM_EMPTY_CUP
+	170,	// SHOP_ITEM_CHICKEN
+	115,	// SHOP_ITEM_LEMONADE
+	0,		// SHOP_ITEM_EMPTY_BOX
+	0,		// SHOP_ITEM_EMPTY_BOTTLE
+	0xFF,
+	0xFF,
+	0xFF,
+	0xFF,
+	0,		// SHOP_ITEM_PHOTO2
+	0,		// SHOP_ITEM_PHOTO3
+	0,		// SHOP_ITEM_PHOTO4
+	70,		// SHOP_ITEM_PRETZEL
+	85,		// SHOP_ITEM_CHOCOLATE
+	95,		// SHOP_ITEM_ICED_TEA
+	90,		// SHOP_ITEM_FUNNEL_CAKE
+	0,		// SHOP_ITEM_SUNGLASSES
+	130,	// SHOP_ITEM_BEEF_NOODLES
+	120,	// SHOP_ITEM_FRIED_RICE_NOODLES
+	100,	// SHOP_ITEM_WONTON_SOUP
+	110,	// SHOP_ITEM_MEATBALL_SOUP
+	110,	// SHOP_ITEM_FRUIT_JUICE
+	90,		// SHOP_ITEM_SOYBEAN_MILK
+	100,	// SHOP_ITEM_SU_JONGKWA
+	130,	// SHOP_ITEM_SUB_SANDWICH
+	75,		// SHOP_ITEM_COOKIE
+	0,		// SHOP_ITEM_EMPTY_BOWL_RED
+	0,		// SHOP_ITEM_EMPTY_DRINK_CARTON
+	0,		// SHOP_ITEM_EMPTY_JUICE_CUP
+	115,	// SHOP_ITEM_ROAST_SAUSAGE
+	0		// SHOP_ITEM_EMPTY_BOWL_BLUE
+};
+
+/** rct2: 009823AC */
+static const uint8 crowded_thoughts[] = {
+	PEEP_THOUGHT_TYPE_LOST,
+	PEEP_THOUGHT_TYPE_TIRED,
+	PEEP_THOUGHT_TYPE_BAD_LITTER,
+	PEEP_THOUGHT_TYPE_HUNGRY,
+	PEEP_THOUGHT_TYPE_THIRSTY,
+	PEEP_THOUGHT_TYPE_VERY_CLEAN,
+	PEEP_THOUGHT_TYPE_CROWDED,
+	PEEP_THOUGHT_TYPE_SCENERY,
+	PEEP_THOUGHT_TYPE_VERY_CLEAN,
+	PEEP_THOUGHT_TYPE_MUSIC,
+	PEEP_THOUGHT_TYPE_WATCHED,
+	PEEP_THOUGHT_TYPE_NOT_HUNGRY,
+	PEEP_THOUGHT_TYPE_NOT_THIRSTY,
+	PEEP_THOUGHT_TYPE_BATHROOM,
+	PEEP_THOUGHT_TYPE_NONE,
+	PEEP_THOUGHT_TYPE_NONE,
+};
+
+/** rct2: 0x00982326 */
+static const uint8 peep_item_containers[] = {
+	0xFF,							// PEEP_ITEM_BALLOON
+	0xFF,							// PEEP_ITEM_TOY
+	0xFF,							// PEEP_ITEM_MAP
+	0xFF,							// PEEP_ITEM_PHOTO
+	0xFF,							// PEEP_ITEM_UMBRELLA
+	SHOP_ITEM_EMPTY_CAN,			// PEEP_ITEM_DRINK
+	SHOP_ITEM_EMPTY_BURGER_BOX,		// PEEP_ITEM_BURGER
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_FRIES
+	0xFF,							// PEEP_ITEM_ICE_CREAM
+	0xFF,							// PEEP_ITEM_COTTON_CANDY
+	0xFF,							// PEEP_ITEM_EMPTY_CAN
+	0xFF,							// PEEP_ITEM_RUBBISH
+	0xFF,							// PEEP_ITEM_EMPTY_BURGER_BOX
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_PIZZA
+	0xFF,							// PEEP_ITEM_VOUCHER
+	SHOP_ITEM_RUBBISH,				// PEEP_ITEM_POPCORN
+	0xFF,							// PEEP_ITEM_HOT_DOG
+	0xFF,							// PEEP_ITEM_TENTACLE
+	0xFF,							// PEEP_ITEM_HAT
+	0xFF,							// PEEP_ITEM_CANDY_APPLE
+	0xFF,							// PEEP_ITEM_TSHIRT
+	0xFF,							// PEEP_ITEM_DONUT
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_COFFEE
+	0xFF,							// PEEP_ITEM_EMPTY_CUP
+	SHOP_ITEM_EMPTY_BOX,			// PEEP_ITEM_CHICKEN
+	SHOP_ITEM_EMPTY_BOTTLE,			// PEEP_ITEM_LEMONADE
+	0xFF,							// PEEP_ITEM_EMPTY_BOX
+	0xFF,							// PEEP_ITEM_EMPTY_BOTTLE
+};
+
+/** rct2: 0x00982342 */
+static const uint8 peep_extra_item_containers[] = {
+	0xFF,							// PEEP_ITEM_PHOTO2
+	0xFF,							// PEEP_ITEM_PHOTO3
+	0xFF,							// PEEP_ITEM_PHOTO4
+	0xFF,							// PEEP_ITEM_PRETZEL
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_CHOCOLATE
+	SHOP_ITEM_EMPTY_CUP,			// PEEP_ITEM_ICED_TEA
+	0xFF,							// PEEP_ITEM_FUNNEL_CAKE
+	0xFF,							// PEEP_ITEM_SUNGLASSES
+	SHOP_ITEM_EMPTY_BOWL_BLUE,		// PEEP_ITEM_BEEF_NOODLES
+	SHOP_ITEM_EMPTY_BOWL_BLUE,		// PEEP_ITEM_FRIED_RICE_NOODLES
+	SHOP_ITEM_EMPTY_BOWL_RED,		// PEEP_ITEM_WONTON_SOUP
+	SHOP_ITEM_EMPTY_BOWL_RED,		// PEEP_ITEM_MEATBALL_SOUP
+	SHOP_ITEM_EMPTY_JUICE_CUP,		// PEEP_ITEM_FRUIT_JUICE
+	SHOP_ITEM_EMPTY_DRINK_CARTON,	// PEEP_ITEM_SOYBEAN_MILK
+	SHOP_ITEM_EMPTY_DRINK_CARTON,	// PEEP_ITEM_SU_JONGKWA
+	0xFF,							// PEEP_ITEM_SUB_SANDWICH
+	0xFF,							// PEEP_ITEM_COOKIE
+	0xFF,							// PEEP_ITEM_EMPTY_BOWL_RED
+	0xFF,							// PEEP_ITEM_EMPTY_DRINK_CARTON
+	0xFF,							// PEEP_ITEM_EMPTY_JUICE_CUP
+	0xFF,							// PEEP_ITEM_ROAST_SAUSAGE
+	0xFF,							// PEEP_ITEM_EMPTY_BOWL_BLUE
+};
+
 /**
  *
  *  rct2: 0x0068F41A
@@ -776,7 +912,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
-			uint8 thought_type = RCT2_ADDRESS(0x009823AC, uint8)[scenario_rand() & 0xF];
+			uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
 				peep_insert_new_thought(peep, thought_type, 0xFF);
 			}
@@ -1083,7 +1219,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			if (chosen_food != -1){
 				peep->item_standard_flags &= ~(1 << chosen_food);
 
-				uint8 discard_container = RCT2_ADDRESS(0x00982326, uint8)[chosen_food];
+				uint8 discard_container = peep_item_containers[chosen_food];
 				if (discard_container != 0xFF){
 					peep->item_standard_flags |= (1 << discard_container);
 				}
@@ -1095,7 +1231,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 				chosen_food = bitscanforward(peep_has_food_extra_flag(peep));
 				if (chosen_food != -1){
 					peep->item_extra_flags &= ~(1 << chosen_food);
-					uint8 discard_container = RCT2_ADDRESS(0x00982342, uint8)[chosen_food];
+					uint8 discard_container = peep_extra_item_containers[chosen_food];
 					if (discard_container != 0xFF){
 						if (discard_container >= 32)
 							peep->item_extra_flags |= (1 << (discard_container - 32));
@@ -6459,6 +6595,80 @@ void peep_update_days_in_queue()
 	}
 }
 
+/** rct2: 0x009823A0 */
+static const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
+	PEEP_NAUSEA_TOLERANCE_NONE,
+	PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
+	PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
+	PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH,
+};
+
+/** rct2: 0x009823BC */
+static const uint8 trouser_colours[] = {
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_DARK_PURPLE,
+	COLOUR_LIGHT_PURPLE,
+	COLOUR_DARK_BLUE,
+	COLOUR_SATURATED_GREEN,
+	COLOUR_SATURATED_RED,
+	COLOUR_DARK_ORANGE,
+	COLOUR_BORDEAUX_RED,
+};
+
+/** rct2: 0x009823D5 */
+static const uint8 tshirt_colours[] = {
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_DARK_PURPLE,
+	COLOUR_LIGHT_PURPLE,
+	COLOUR_DARK_BLUE,
+	COLOUR_SATURATED_GREEN,
+	COLOUR_SATURATED_RED,
+	COLOUR_DARK_ORANGE,
+	COLOUR_BORDEAUX_RED,
+	COLOUR_WHITE,
+	COLOUR_BRIGHT_PURPLE,
+	COLOUR_LIGHT_BLUE,
+	COLOUR_TEAL,
+	COLOUR_DARK_GREEN,
+	COLOUR_MOSS_GREEN,
+	COLOUR_BRIGHT_GREEN,
+	COLOUR_OLIVE_GREEN,
+	COLOUR_DARK_OLIVE_GREEN,
+	COLOUR_YELLOW,
+	COLOUR_LIGHT_ORANGE,
+	COLOUR_BRIGHT_RED,
+	COLOUR_DARK_PINK,
+	COLOUR_BRIGHT_PINK,
+};
+
 /**
  *
  *  rct2: 0x0069A05D
@@ -6525,7 +6735,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		nausea_tolerance += 4;
 	}
 
-	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
+	peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
 
 	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
 
@@ -6594,11 +6804,11 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->var_F3 = 0;
 	peep->var_F4 = 0;
 
-	uint8 tshirt_colour = scenario_rand() % 33;
-	peep->tshirt_colour = RCT2_ADDRESS(0x009823D5, uint8)[tshirt_colour];
+	uint8 tshirt_colour = scenario_rand() % countof(tshirt_colours);
+	peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-	uint8 trousers_colour = scenario_rand() % 25;
-	peep->trousers_colour = RCT2_ADDRESS(0x009823BC, uint8)[trousers_colour];
+	uint8 trousers_colour = scenario_rand() % countof(trouser_colours);
+	peep->trousers_colour = trouser_colours[trousers_colour];
 
 	uint8 energy = (scenario_rand() & 0x3F) + 65;
 	peep->energy = energy;
@@ -6772,13 +6982,41 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
 }
 
+/** rct2: 0x00982004 */
+static const bool peep_allow_pick_up[] = {
+	true,	// PEEP_STATE_FALLING
+	false,	// PEEP_STATE_1
+	false,	// PEEP_STATE_QUEUING_FRONT
+	false,	// PEEP_STATE_ON_RIDE
+	false,	// PEEP_STATE_LEAVING_RIDE
+	true,	// PEEP_STATE_WALKING
+	true,	// PEEP_STATE_QUEUING
+	false,	// PEEP_STATE_ENTERING_RIDE
+	true,	// PEEP_STATE_SITTING
+	true,	// PEEP_STATE_PICKED
+	true,	// PEEP_STATE_PATROLLING
+	true,	// PEEP_STATE_MOWING
+	true,	// PEEP_STATE_SWEEPING
+	false,	// PEEP_STATE_ENTERING_PARK
+	false,	// PEEP_STATE_LEAVING_PARK
+	true,	// PEEP_STATE_ANSWERING
+	false,	// PEEP_STATE_FIXING
+	false,	// PEEP_STATE_BUYING
+	true,	// PEEP_STATE_WATCHING
+	true,	// PEEP_STATE_EMPTYING_BIN
+	true,	// PEEP_STATE_USING_BIN
+	true,	// PEEP_STATE_WATERING
+	true,	// PEEP_STATE_HEADING_TO_INSPECTION
+	false,	// PEEP_STATE_INSPECTING
+};
+
 /**
  *
  *  rct2: 0x00698827
  * returns 1 on pickup (CF not set)
  */
 int peep_can_be_picked_up(rct_peep* peep){
-	return RCT2_ADDRESS(0x982004, uint8)[peep->state] & 1;
+	return peep_allow_pick_up[peep->state];
 }
 
 enum{
@@ -9415,12 +9653,7 @@ loc_69B221:
 	if (shopItem == SHOP_ITEM_MAP)
 		peep_reset_pathfind_goal(peep);
 
-	uint16 dl;
-	if (shopItem >= 32)
-		dl = RCT2_ADDRESS(0x982310, uint8)[shopItem - 32];
-	else
-		dl = RCT2_ADDRESS(0x9822F4, uint8)[shopItem];
-
+	uint16 dl = byte_9822F4[shopItem];
 	peep->var_42 = min((peep->var_42 + dl), 255);
 
 	if (shopItem == SHOP_ITEM_PHOTO)
