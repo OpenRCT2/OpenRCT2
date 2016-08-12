@@ -1203,18 +1203,18 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		int entranceDirections;
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+			entranceDirections = FlatRideTrackSequenceProperties[type][0];
 		}
 		else {
-			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+			entranceDirections = TrackSequenceProperties[type][0];
 		}
-		if ((entranceDirections & 0x10) && trackBlock->index == 0) {
+		if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0) {
 			if (!track_add_station_element(x, y, baseZ, direction, rideIndex, 0)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
 		//6c55be
-		if (entranceDirections & 0x20) {
+		if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH) {
 			entranceDirections &= 0x0F;
 			if (entranceDirections != 0) {
 				if (!(flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
@@ -1301,14 +1301,14 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (ride->overall_view != 0xFFFF){
 			if (!(flags & GAME_COMMAND_FLAG_5)){
 				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-					entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+					entranceDirections = FlatRideTrackSequenceProperties[type][0];
 				}
 				else {
-					entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+					entranceDirections = TrackSequenceProperties[type][0];
 				}
 			}
 		}
-		if (entranceDirections & (1 << 4) || ride->overall_view == 0xFFFF){
+		if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view == 0xFFFF){
 			ride->overall_view = (x >> 5) | (y << 3);
 		}
 
@@ -1359,13 +1359,13 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		mapElement->properties.track.colour |= colour;
 
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+			entranceDirections = FlatRideTrackSequenceProperties[type][0];
 		}
 		else {
-			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+			entranceDirections = TrackSequenceProperties[type][0];
 		}
 
-		if (entranceDirections & (1 << 4)) {
+		if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) {
 			if (trackBlock->index == 0) {
 				track_add_station_element(x, y, baseZ, direction, rideIndex, GAME_COMMAND_FLAG_APPLY);
 			}
@@ -1590,13 +1590,13 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 
 		int entranceDirections;
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			entranceDirections = RCT2_ADDRESS(0x0099CA64, uint8)[type * 16];
+			entranceDirections = FlatRideTrackSequenceProperties[type][0];
 		}
 		else {
-			entranceDirections = RCT2_ADDRESS(0x0099BA64, uint8)[type * 16];
+			entranceDirections = TrackSequenceProperties[type][0];
 		}
 
-		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
+		if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && ((mapElement->properties.track.sequence & 0xF) == 0)){
 			if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, 0)) {
 				return MONEY32_UNDEFINED;
 			}

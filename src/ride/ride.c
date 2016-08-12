@@ -440,7 +440,7 @@ bool ride_try_get_origin_element(int rideIndex, rct_xy_element *output)
 		bool specialTrackPiece = (
 			it.element->properties.track.type != TRACK_ELEM_BEGIN_STATION &&
 			it.element->properties.track.type != TRACK_ELEM_MIDDLE_STATION &&
-			(RCT2_ADDRESS(0x0099BA64, uint8)[it.element->properties.track.type * 16] & 0x10)
+			(TrackSequenceProperties[it.element->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
 		);
 
 		// Set result tile to this track piece if first found track or a ???
@@ -3239,9 +3239,9 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	uint8 track_type = mapElement->properties.track.type;
 	ride = get_ride(mapElement->properties.track.ride_index);
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		entrance_directions = RCT2_ADDRESS(0x0099CA64, uint8)[track_type * 16];
+		entrance_directions = FlatRideTrackSequenceProperties[track_type][0];
 	} else {
-		entrance_directions = RCT2_ADDRESS(0x0099BA64, uint8)[track_type * 16];
+		entrance_directions = TrackSequenceProperties[track_type][0];
 	}
 
 	uint8 tile_direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
@@ -4249,7 +4249,7 @@ static int ride_check_station_length(rct_xy_element *input, rct_xy_element *outp
 	rct_xy_element last_good_station = *output;
 
 	do{
-		if (RCT2_ADDRESS(0x0099BA64, uint8)[output->element->properties.track.type * 16] & 0x10){
+		if (TrackSequenceProperties[output->element->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN){
 			num_station_elements++;
 			last_good_station = *output;
 		}
@@ -4293,7 +4293,7 @@ static bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_el
 	// Check back of the track
 	track_get_back(input, &trackBack);
 	trackType = trackBack.element->properties.track.type;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		return false;
 	}
 	ride->chairlift_bullwheel_location[0].x = trackBack.x >> 5;
@@ -4303,7 +4303,7 @@ static bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_el
 	// Check front of the track
 	track_get_front(input, &trackFront);
 	trackType = trackFront.element->properties.track.type;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		return false;
 	}
 	ride->chairlift_bullwheel_location[1].x = trackFront.x >> 5;
@@ -4945,8 +4945,7 @@ static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;
 
-		int trackType = mapElement->properties.track.type;
-		if (!(RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10)) {
+		if (!(TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 			continue;
 		}
 		success = true;
@@ -5176,12 +5175,11 @@ static rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
 
-		uint32 unk = mapElement->properties.track.type << 4;
 		if (RCT2_GLOBAL(0x00F43484, uint32) & 0x80000) {
-			if (!(RCT2_ADDRESS(0x0099CA64, uint8)[unk] & 0x10))
+			if (!(FlatRideTrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
 				continue;
 		} else {
-			if (!(RCT2_ADDRESS(0x0099BA64, uint8)[unk] & 0x10))
+			if (!(TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
 				continue;
 		}
 
@@ -7112,8 +7110,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 	if (interactionType != 0) {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
 			if (mapElement->properties.track.ride_index == gRideEntranceExitPlaceRideIndex) {
-				if (RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type << 4] & 0x10) {
-					if (mapElement->properties.track.type == 101) {
+				if (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN) {
+					if (mapElement->properties.track.type == TRACK_ELEM_MAZE) {
 						gRideEntranceExitPlaceStationIndex = 0;
 					} else {
 						gRideEntranceExitPlaceStationIndex = (mapElement->properties.track.sequence & 0x70) >> 4;
@@ -7177,9 +7175,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 					if (map_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
 						continue;
 
-					int ebx = (mapElement->properties.track.type << 4) + (mapElement->properties.track.sequence & 0x0F);
 					int eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
-					if (RCT2_ADDRESS(0x0099CA64, uint8)[ebx] & (1 << eax)) {
+					if (FlatRideTrackSequenceProperties[mapElement->properties.track.type][mapElement->properties.track.sequence & 0x0F] & (1 << eax)) {
 						gRideEntranceExitPlaceDirection = direction ^ 2;
 						*outDirection = direction ^ 2;
 						return;
@@ -7505,7 +7502,7 @@ static int ride_get_track_length(rct_ride *ride)
 				continue;
 
 			trackType = mapElement->properties.track.type;
-			if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10))
+			if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
 				continue;
 
 			if (mapElement->base_height != z)
@@ -7908,7 +7905,7 @@ void sub_6CB945(int rideIndex)
 					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 					if (mapElement->properties.track.ride_index != rideIndex) continue;
 					if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
-					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4))) continue;
+					if (!(TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) continue;
 
 					trackFound = true;
 					break;
@@ -7943,7 +7940,7 @@ void sub_6CB945(int rideIndex)
 				do {
 					if (blockLocation.z != mapElement->base_height) continue;
 					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
-					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4))) continue;
+					if (!(TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) continue;
 
 					trackFound = true;
 					break;
@@ -8012,12 +8009,12 @@ void sub_6CB945(int rideIndex)
 				if (trackElement->properties.track.ride_index != rideIndex) continue;
 				if (trackElement->base_height != mapElement->base_height) continue;
 
-				uint32 edi = trackElement->properties.track.type * 16;
-				edi |= trackElement->properties.track.sequence & 0xF;
+				uint8 trackType = trackElement->properties.track.type;
+				uint8 trackSequence = trackElement->properties.track.sequence & 0xF;
 
 				uint8 direction = (map_element_get_direction(mapElement) - map_element_get_direction(trackElement) + 2) & 3;
 
-				if (!(RCT2_GLOBAL(0x0099BA64 + edi, uint32) & (1 << direction))) {
+				if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << direction))) {
 					continue;
 				}
 

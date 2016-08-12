@@ -526,7 +526,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 					bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
 					// Station track is a lighter colour
-					uint8 colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
+					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? 222 : 218;
 
 					for (int i = 0; i < 4; i++) {
 						if (bits & 1) pixel[338 + i] = colour;

@@ -3170,7 +3170,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 	}
 
 	if (sequence == 0) {
-		if (RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint8) & 0x40) {
+		if (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS) {
 			return false;
 		}
 

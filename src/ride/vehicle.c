@@ -6913,7 +6913,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 	}
 
 	int trackType = vehicle->track_type >> 2;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		return;
 	}
 
@@ -8121,7 +8121,7 @@ loc_6DCE02:
 		goto loc_6DCEB2;
 	}
 	trackType = vehicle->track_type >> 2;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		goto loc_6DCEB2;
 	}
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
