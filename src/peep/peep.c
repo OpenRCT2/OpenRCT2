@@ -2167,8 +2167,8 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
+	sint16 x_shift = word_981D6C[direction].x;
+	sint16 y_shift = word_981D6C[direction].y;
 
 	uint8 shift_multiplier = 21;
 	rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
@@ -2590,8 +2590,8 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+	sint16 x_shift = word_981D6C[exit_direction].x;
+	sint16 y_shift = word_981D6C[exit_direction].y;
 
 	sint16 shift_multiplier = 20;
 
@@ -2692,8 +2692,8 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 
 	x *= 32;
 	y *= 32;
-	x += 16 - RCT2_ADDRESS(0x981D6C, sint16)[direction_entrance * 2] * 20;
-	y += 16 - RCT2_ADDRESS(0x981D6E, sint16)[direction_entrance * 2] * 20;
+	x += 16 - word_981D6C[direction_entrance].x * 20;
+	y += 16 - word_981D6C[direction_entrance].y * 20;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -2957,9 +2957,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			}
 
 
-
-			sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2];
-			sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
+			sint16 x_shift = word_981D6C[direction].x;
+			sint16 y_shift = word_981D6C[direction].y;
 
 			x = vehicle->x + x_shift * shift_multiplier;
 			y = vehicle->y + y_shift * shift_multiplier;
@@ -2969,8 +2968,8 @@ static void peep_update_ride_sub_state_7(rct_peep* peep){
 			return;
 		}
 
-		x = vehicle->x + RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2] * 12;
-		y = vehicle->y + RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2] * 12;
+		x = vehicle->x + word_981D6C[exit_direction].x * 12;
+		y = vehicle->y + word_981D6C[exit_direction].y * 12;
 
 		sint8 load_position = vehicle_entry->peep_loading_positions[peep->current_seat];
 
@@ -3084,8 +3083,8 @@ static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+	sint16 x_shift = word_981D6C[exit_direction].x;
+	sint16 y_shift = word_981D6C[exit_direction].y;
 
 	sint16 shift_multiplier = 20;
 
@@ -3302,8 +3301,8 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+	sint16 x_shift = word_981D6C[exit_direction].x;
+	sint16 y_shift = word_981D6C[exit_direction].y;
 
 	sint16 shift_multiplier = 20;
 
@@ -3540,8 +3539,8 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 	x += 16;
 	y += 16;
 
-	sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[exit_direction * 2];
-	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[exit_direction * 2];
+	sint16 x_shift = word_981D6C[exit_direction].x;
+	sint16 y_shift = word_981D6C[exit_direction].y;
 
 	sint16 shift_multiplier = 20;
 
@@ -5557,8 +5556,8 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 		uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 		peep->var_78 = direction;
 
-		int x = peep->next_x + 16 + RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2] * 53;
-		int y = peep->next_y + 16 + RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2] * 53;
+		int x = peep->next_x + 16 + word_981D6C[direction].x * 53;
+		int y = peep->next_y + 16 + word_981D6C[direction].y * 53;
 
 		peep->destination_x = x;
 		peep->destination_y = y;
@@ -5670,8 +5669,8 @@ static void peep_update_answering(rct_peep* peep){
 		uint8 direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
 		peep->var_78 = direction;
 
-		int x = peep->next_x + 16 + RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2] * 53;
-		int y = peep->next_y + 16 + RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2] * 53;
+		int x = peep->next_x + 16 + word_981D6C[direction].x * 53;
+		int y = peep->next_y + 16 + word_981D6C[direction].y * 53;
 
 		peep->destination_x = x;
 		peep->destination_y = y;

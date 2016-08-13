@@ -48,6 +48,7 @@ uint8 gFootpathGroundFlags;
 static uint8 *_footpathQueueChainNext;
 static uint8 _footpathQueueChain[64];
 
+/** rct2: 0x00981D6C, 0x00981D6E */
 const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
 	{  0,  1 },
