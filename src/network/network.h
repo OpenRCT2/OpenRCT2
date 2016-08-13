@@ -118,11 +118,14 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
-	void BeginChatLog();
+	std::string BeginLog(char* directory, char* filename_format);
+	void AppendLog(const utf8 *logPath, const utf8 *text);
+
+	void BeginChatLog(char* directory, char* filename_format);
 	void AppendChatLog(const utf8 *text);
 	void CloseChatLog();
 
-	void BeginServerLog(std::string server_name);
+	void BeginServerLog(char* directory, std::string server_name, char* filename_format);
 	void AppendServerLog(const utf8 *text);
 	void CloseServerLog();
 
@@ -214,10 +217,13 @@ private:
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
 	uint8 default_group = 0;
-	SDL_RWops *_chatLogStream;
+	SDL_RWops *_logStream;
 	std::string _chatLogPath;
-	SDL_RWops *_serverLogStream;
+	char* _chatLogDirectory = "/chatlogs";
+	char* _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
 	std::string _serverLogPath;
+	char* _serverLogDirectory = "/serverlogs";
+	char* _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
 
 	void UpdateServer();
 	void UpdateClient();

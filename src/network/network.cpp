@@ -222,7 +222,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	status = NETWORK_STATUS_CONNECTING;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
-	BeginChatLog();
+	BeginChatLog(_chatLogDirectory, _chatLogFilenameFormat);
 
 	utf8 keyPath[MAX_PATH];
 	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -311,8 +311,8 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	cheats_reset();
 	LoadGroups();
-	BeginChatLog();
-	BeginServerLog(ServerName);
+	BeginChatLog(_chatLogDirectory, _chatLogFilenameFormat);
+	BeginServerLog(_serverLogDirectory, ServerName, _serverLogFilenameFormat);
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
@@ -791,35 +791,29 @@ void Network::LoadGroups()
 	}
 }
 
-void Network::BeginChatLog()
+std::string Network::BeginLog(char* directory, char* filename_format)
 {
 	utf8 filename[32];
 	time_t timer;
 	struct tm * tmInfo;
 	time(&timer);
 	tmInfo = localtime(&timer);
-	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
+	strftime(filename, sizeof(filename), filename_format, tmInfo);
 
 	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "chatlogs", sizeof(path));
+	platform_get_user_directory(path, directory, sizeof(path));
 	Path::Append(path, sizeof(path), filename);
 
-	_chatLogPath = std::string(path);
+	return std::string(path);
 }
 
-void Network::AppendChatLog(const utf8 *text)
+void Network::AppendLog(const utf8 *logPath, const utf8 *text)
 {
-	if (!gConfigNetwork.log_chat) {
-		return;
-	}
-
-	const utf8 *chatLogPath = _chatLogPath.c_str();
-
 	utf8 directory[MAX_PATH];
-	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
+	Path::GetDirectory(directory, sizeof(directory), logPath);
 	if (platform_ensure_directory_exists(directory)) {
-		_chatLogStream = SDL_RWFromFile(chatLogPath, "a");
-		if (_chatLogStream != nullptr) {
+		_logStream = SDL_RWFromFile(logPath, "a");
+		if (_logStream != nullptr) {
 			utf8 buffer[256];
 
 			time_t timer;
@@ -832,31 +826,35 @@ void Network::AppendChatLog(const utf8 *text)
 			utf8_remove_formatting(buffer, false);
 			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
-			SDL_RWclose(_chatLogStream);
+			SDL_RWwrite(_logStream, buffer, strlen(buffer), 1);
+			SDL_RWclose(_logStream);
 		}
 	}
+}
+
+void Network::BeginChatLog(char* directory, char* filename_format)
+{
+	_chatLogPath = BeginLog(directory, filename_format);
+}
+
+void Network::AppendChatLog(const utf8 *text)
+{
+	if (!gConfigNetwork.log_chat) {
+		return;
+	}
+
+	AppendLog(_chatLogPath.c_str(), text);
 }
 
 void Network::CloseChatLog()
 {
 }
 
-void Network::BeginServerLog(std::string server_name)
+void Network::BeginServerLog(char* directory, std::string server_name, char* filename_format)
 {
-	utf8 filename[64];
-	time_t timer;
-	struct tm * tmInfo;
-	time(&timer);
-	tmInfo = localtime(&timer);
-	server_name.append("-%Y%m%d-%H%M%S.txt");
-	strftime(filename, sizeof(filename), server_name.c_str(), tmInfo);
-
-	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "serverlogs", sizeof(path));
-	Path::Append(path, sizeof(path), filename);
-
-	_serverLogPath = std::string(path);
+	server_name.append(filename_format);
+	char* filename = (char *) server_name.c_str();
+	_serverLogPath = BeginLog(directory, filename);
 
 	// Log server start event
 	char log_msg[256];
@@ -870,29 +868,7 @@ void Network::AppendServerLog(const utf8 *text)
 		return;
 	}
 
-	const utf8 *serverLogPath = _serverLogPath.c_str();
-
-	utf8 directory[MAX_PATH];
-	Path::GetDirectory(directory, sizeof(directory), serverLogPath);
-	if (platform_ensure_directory_exists(directory)) {
-		_serverLogStream = SDL_RWFromFile(serverLogPath, "a");
-		if (_serverLogStream != nullptr) {
-			utf8 buffer[256];
-
-			time_t timer;
-			struct tm * tmInfo;
-			time(&timer);
-			tmInfo = localtime(&timer);
-			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
-
-			String::Append(buffer, sizeof(buffer), text);
-			utf8_remove_formatting(buffer, false);
-			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-			SDL_RWwrite(_serverLogStream, buffer, strlen(buffer), 1);
-			SDL_RWclose(_serverLogStream);
-		}
-	}
+	AppendLog(_serverLogPath.c_str(), text);
 }
 
 void Network::CloseServerLog()
