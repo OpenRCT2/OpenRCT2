@@ -2177,7 +2177,7 @@ static void ride_inspection_update(rct_ride *ride)
 	if (inspectionIntervalMinutes == 0)
 		return;
 
-	if (RCT2_ADDRESS(0x0097C740, uint32)[ride->type] == 0)
+	if (RideAvailableBreakdowns[ride->type] == 0)
 		return;
 
 	if (inspectionIntervalMinutes > ride->last_inspection)
