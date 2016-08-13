@@ -4313,6 +4313,15 @@ STR_6001    :{STRING} changed the default player group to '{String}'.
 STR_6002    :{STRING} used/toggled cheat '{STRING}'.
 STR_6003    :Add Money
 STR_6004    :{STRING} demolished ride '{STRING}'.
+STR_6005    :{STRING} changed the appearance of ride '{STRING}'.
+STR_6006    :{STRING} changed the status of ride '{STRING}' to closed.
+STR_6007    :{STRING} changed the status of ride '{STRING}' to open.
+STR_6008    :{STRING} changed the status of ride '{STRING}' to testing.
+STR_6009    :{STRING} changed the vehicle settings of ride '{STRING}'.
+STR_6010    :{STRING} changed the ride settings of ride '{STRING}'.
+STR_6011    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
+STR_6012    :{STRING} changed the price of ride '{STRING}' to {STRING}
+STR_6013    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
 
 #############
 # Scenarios #

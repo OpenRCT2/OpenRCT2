@@ -491,32 +491,98 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	// Log certain commands if we are in multiplayer and logging is enabled
 	if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
-
 		// Get player name
 		int player_index = network_get_player_index(game_command_playerid);
 		const char* player_name = network_get_player_name(player_index);
 
-		if (command == GAME_COMMAND_CHEAT) {
-			const char* cheat = cheats_get_cheat_string(*ecx, *edx);
+		char log_msg[256];
 
-			char log_msg[256];
+		if (command == GAME_COMMAND_CHEAT) {
+			// Get cheat name
+			const char* cheat = cheats_get_cheat_string(*ecx, *edx);			
 			char* args[2] = {
 				(char *) player_name,
 				(char *) cheat
 			};
 			format_string(log_msg, STR_LOG_CHEAT_USED, args);
 			network_append_server_log(log_msg);
-		} else if (command == GAME_COMMAND_DEMOLISH_RIDE) {
+		} else if (command == GAME_COMMAND_DEMOLISH_RIDE && *ebp == 1) { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" preview rides
+			// Get ride name
 			rct_ride* ride = get_ride(*edx);
 			char ride_name[128];
 			format_string(ride_name, ride->name, &ride->name_arguments);
 
-			char log_msg[256];
 			char* args[2] = {
 				(char *) player_name,
 				ride_name
 			};
 			format_string(log_msg, STR_LOG_DEMOLISH_RIDE, args);
+			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_SET_RIDE_APPEARANCE || command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING) {
+			// Get ride name
+			int ride_index = *edx & 0xFF;
+			rct_ride* ride = get_ride(ride_index);
+			char ride_name[128];
+			format_string(ride_name, ride->name, &ride->name_arguments);
+
+			char* args[2] = {
+				(char *) player_name,
+				ride_name
+			};
+
+			switch (command) {
+				case GAME_COMMAND_SET_RIDE_APPEARANCE: format_string(log_msg, STR_LOG_RIDE_APPEARANCE, args); break;
+				case GAME_COMMAND_SET_RIDE_VEHICLES: format_string(log_msg, STR_LOG_RIDE_VEHICLES, args); break;
+				case GAME_COMMAND_SET_RIDE_SETTING: format_string(log_msg, STR_LOG_RIDE_SETTINGS, args); break;
+			}
+
+			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_SET_RIDE_STATUS) {
+			// Get ride name
+			int ride_index = *edx & 0xFF;
+			rct_ride* ride = get_ride(ride_index);
+			char ride_name[128];
+			format_string(ride_name, ride->name, &ride->name_arguments);
+
+			char* args[2] = {
+				(char *) player_name,
+				ride_name
+			};
+
+			int status = *edx >> 8;
+			switch (status) {
+				case 0: format_string(log_msg, STR_LOG_RIDE_STATUS_CLOSED, args); break;
+				case 1: format_string(log_msg, STR_LOG_RIDE_STATUS_OPEN, args); break;
+				case 2: format_string(log_msg, STR_LOG_RIDE_STATUS_TESTING, args); break;
+			}
+
+			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_SET_RIDE_PRICE) {
+			// Get ride name
+			int ride_index = *edx & 0xFF;
+			rct_ride* ride = get_ride(ride_index);
+			char ride_name[128];
+			format_string(ride_name, ride->name, &ride->name_arguments);
+
+			// Format price
+			int price_args[1] = {*edi};
+			char price_str[16];
+			format_string(price_str, STR_BOTTOM_TOOLBAR_CASH, price_args);
+
+			// Log change in primary or secondary price
+			char log_msg[256];
+			char* args[3] = {
+				(char *) player_name,
+				ride_name,
+				price_str
+			};
+
+			if (*edx >> 8 == 0) {
+				format_string(log_msg, STR_LOG_RIDE_PRICE, args);
+			} else if (*edx >> 8 == 1) {
+				format_string(log_msg, STR_LOG_RIDE_SECONDARY_PRICE, args);
+			}
+			
 			network_append_server_log(log_msg);
 		}
 	}
