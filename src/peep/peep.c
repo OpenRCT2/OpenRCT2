@@ -1472,6 +1472,14 @@ static void peep_check_cant_find_exit(rct_peep* peep){
 		peep->peep_is_lost_countdown = 90;
 }
 
+/** rct2: 0x00981D7C, 0x00981D7E */
+const rct_xy16 word_981D7C[4] = {
+	{ -2,  0 },
+	{  0,  2 },
+	{  2,  0 },
+	{  0, -2 }
+};
+
 /**
  *
  *  rct2: 0x6939EB
@@ -1517,8 +1525,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 			}
 		}
 		peep->sprite_direction = direction;
-		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
-		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
+		*x = peep->x + word_981D7C[direction / 4].x;
+		*y = peep->y + word_981D7C[direction / 4].y;
 		peep->no_action_frame_no++;
 		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
 		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
