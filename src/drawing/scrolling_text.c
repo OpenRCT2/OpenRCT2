@@ -1524,7 +1524,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, co
 	if (colour == 0) {
 		colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 	} else {
-		colour = g1Elements[SPR_TEXT_PALETTE].offset[colour - FORMAT_COLOUR_CODE_START];
+		colour = g1Elements[SPR_TEXT_PALETTE].offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}
 
 	SDL_Surface *surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
