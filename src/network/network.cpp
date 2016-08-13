@@ -791,7 +791,7 @@ void Network::LoadGroups()
 	}
 }
 
-std::string Network::BeginLog(char* directory, char* filename_format)
+std::string Network::BeginLog(const char* directory, const char* filename_format)
 {
 	utf8 filename[32];
 	time_t timer;
@@ -832,7 +832,7 @@ void Network::AppendLog(const utf8 *logPath, const utf8 *text)
 	}
 }
 
-void Network::BeginChatLog(char* directory, char* filename_format)
+void Network::BeginChatLog(const char* directory, const char* filename_format)
 {
 	_chatLogPath = BeginLog(directory, filename_format);
 }
@@ -850,7 +850,7 @@ void Network::CloseChatLog()
 {
 }
 
-void Network::BeginServerLog(char* directory, std::string server_name, char* filename_format)
+void Network::BeginServerLog(const char* directory, std::string server_name, const char* filename_format)
 {
 	server_name.append(filename_format);
 	char* filename = (char *) server_name.c_str();

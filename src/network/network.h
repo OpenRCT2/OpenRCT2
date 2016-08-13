@@ -118,14 +118,14 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
-	std::string BeginLog(char* directory, char* filename_format);
+	std::string BeginLog(const char* directory, const char* filename_format);
 	void AppendLog(const utf8 *logPath, const utf8 *text);
 
-	void BeginChatLog(char* directory, char* filename_format);
+	void BeginChatLog(const char* directory, const char* filename_format);
 	void AppendChatLog(const utf8 *text);
 	void CloseChatLog();
 
-	void BeginServerLog(char* directory, std::string server_name, char* filename_format);
+	void BeginServerLog(const char* directory, std::string server_name, const char* filename_format);
 	void AppendServerLog(const utf8 *text);
 	void CloseServerLog();
 
@@ -219,11 +219,11 @@ private:
 	uint8 default_group = 0;
 	SDL_RWops *_logStream;
 	std::string _chatLogPath;
-	char* _chatLogDirectory = "/chatlogs";
-	char* _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
+	const char* _chatLogDirectory = "/chatlogs";
+	const char* _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
 	std::string _serverLogPath;
-	char* _serverLogDirectory = "/serverlogs";
-	char* _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
+	const char* _serverLogDirectory = "/serverlogs";
+	const char* _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
 
 	void UpdateServer();
 	void UpdateClient();
