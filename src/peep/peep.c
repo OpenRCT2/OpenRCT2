@@ -3407,6 +3407,22 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/** rct2: 0x00981F0C, 0x00981F0E */
+static const rct_xy16 _981F0C[] = {
+	{25,  56},
+	{56,  7},
+	{7,   -24},
+	{-24, 25},
+};
+
+/** rct2: 0x00981F1C, 0x00981F1E */
+static const rct_xy16 _981F1C[] = {
+	{8,   56},
+	{56,  24},
+	{24,  -24},
+	{-24, 8},
+};
+
 /**
  *
  *  rct2: 0x00692D83
@@ -3445,14 +3461,14 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 			y *= 32;
 
 			uint8 direction = (peep->var_37 / 4) & 3;
-			sint16 dest_x = x + RCT2_ADDRESS(0x981F1C, sint16)[direction * 2];
-			sint16 dest_y = y + RCT2_ADDRESS(0x981F1E, sint16)[direction * 2];
+			sint16 dest_x = x + _981F1C[direction].x;
+			sint16 dest_y = y + _981F1C[direction].y;
 
 			peep->destination_x = dest_x;
 			peep->destination_y = dest_y;
 
-			x += RCT2_ADDRESS(0x981F0C, sint16)[direction * 2];
-			y += RCT2_ADDRESS(0x981F0E, sint16)[direction * 2];
+			x += _981F0C[direction].x;
+			y += _981F0C[direction].y;
 
 			sprite_move(x, y, peep->z, (rct_sprite*)peep);
 
