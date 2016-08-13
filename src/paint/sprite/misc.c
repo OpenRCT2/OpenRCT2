@@ -33,6 +33,8 @@ const uint32 vehicle_particle_base_sprites[] = {
 	22577, 22589, 22601, 22613, 22625
 };
 
+extern const uint8 * duck_animations[];
+
 /**
  * rct2: 0x00672AC9
  */
@@ -188,8 +190,7 @@ void misc_paint(rct_sprite *misc, int imageDirection)
 
 			rct_duck duck = misc->duck;
 
-			uint32 stateAddress = RCT2_ADDRESS(0x97F058, uint32)[duck.state];
-			uint8 imageOffset = RCT2_ADDRESS(stateAddress, uint8)[duck.var_26];
+			uint8 imageOffset = duck_animations[duck.state][duck.frame];
 			uint32 imageId = 23133 + (imageOffset * 4) + (imageDirection / 8);
 			sub_98196C(imageId, 0, 0, 1, 1, 0, duck.z, get_current_rotation());
 			break;

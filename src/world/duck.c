@@ -43,15 +43,39 @@ static const rct_xy16 duck_move_offset[] = {
 	{ 0, -1 }
 };
 
+/** rct2: 0x0097F06C */
+static const uint8 duck_fly_to_water_animation[] = {
+	8, 9, 10, 11, 12, 13
+};
+
+/** rct2: 0x0097F072 */
+static const uint8 duck_swim_animation[] = {
+	0
+};
+
 // rct2: 0x0097F073
 static const uint8 duck_drink_animation[] = {
-	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 255
+	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
 // rct2: 0x0097F08C
 static const uint8 duck_double_drink_animation[] = {
 	4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
-	6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 255
+	6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
+};
+
+/** rct2: 0x0097F0B4 */
+static const uint8 duck_fly_away_animation[] = {
+	8, 9, 10, 11, 12, 13
+};
+
+/** rct2: 0x0097F058 */
+const uint8 * duck_animations[] = {
+	duck_fly_to_water_animation,	// DUCK_STATE_FLY_TO_WATER
+	duck_swim_animation,			// DUCK_STATE_SWIM
+	duck_drink_animation,			// DUCK_STATE_DRINK
+	duck_double_drink_animation,	// DUCK_STATE_DOUBLE_DRINK
+	duck_fly_away_animation,		// DUCK_STATE_FLY_AWAY
 };
 
 /**
@@ -90,7 +114,7 @@ void create_duck(int targetX, int targetY)
 		sprite->duck.sprite_direction = direction << 3;
 		sprite_move(targetX, targetY, 496, sprite);
 		sprite->duck.state = DUCK_STATE_FLY_TO_WATER;
-		sprite->duck.var_26 = 0;
+		sprite->duck.frame = 0;
 	}
 }
 
@@ -133,9 +157,9 @@ static void duck_update_fly_to_water(rct_duck *duck)
 	if (gCurrentTicks & 3)
 		return;
 
-	duck->var_26++;
-	if (duck->var_26 >= 6)
-		duck->var_26 = 0;
+	duck->frame++;
+	if (duck->frame >= countof(duck_fly_to_water_animation))
+		duck->frame = 0;
 
 	duck_invalidate(duck);
 	int manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
@@ -160,7 +184,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
 			if (waterHeight >= duck->z)
 				z += 4;
 
-			duck->var_26 = 1;
+			duck->frame = 1;
 		} else {
 			z = duck->z;
 		}
@@ -172,7 +196,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
 			duck_update_fly_away(duck);
 		} else {
 			duck->state = DUCK_STATE_SWIM;
-			duck->var_26 = 0;
+			duck->frame = 0;
 			duck_update_swim(duck);
 		}
 	}
@@ -191,11 +215,11 @@ static void duck_update_swim(rct_duck *duck)
 	if ((randomNumber & 0xFFFF) < 0x666) {
 		if (randomNumber & 0x80000000) {
 			duck->state = DUCK_STATE_DOUBLE_DRINK;
-			duck->var_26 = -1;
+			duck->frame = -1;
 			duck_update_double_drink(duck);
 		} else {
 			duck->state = DUCK_STATE_DRINK;
-			duck->var_26 = -1;
+			duck->frame = -1;
 			duck_update_drink(duck);
 		}
 		return;
@@ -246,10 +270,10 @@ static void duck_update_swim(rct_duck *duck)
  */
 static void duck_update_drink(rct_duck *duck)
 {
-	duck->var_26++;
-	if (duck_drink_animation[duck->var_26] == 255) {
+	duck->frame++;
+	if (duck_drink_animation[duck->frame] == 0xFF) {
 		duck->state = DUCK_STATE_SWIM;
-		duck->var_26 = 0;
+		duck->frame = 0;
 		duck_update_swim(duck);
 	} else {
 		duck_invalidate(duck);
@@ -262,10 +286,10 @@ static void duck_update_drink(rct_duck *duck)
  */
 static void duck_update_double_drink(rct_duck *duck)
 {
-	duck->var_26++;
-	if (duck_double_drink_animation[duck->var_26] == 255) {
+	duck->frame++;
+	if (duck_double_drink_animation[duck->frame] == 0xFF) {
 		duck->state = DUCK_STATE_SWIM;
-		duck->var_26 = 0;
+		duck->frame = 0;
 		duck_update_swim(duck);
 	} else {
 		duck_invalidate(duck);
@@ -281,9 +305,9 @@ static void duck_update_fly_away(rct_duck *duck)
 	if (gCurrentTicks & 3)
 		return;
 
-	duck->var_26++;
-	if (duck->var_26 >= 6)
-		duck->var_26 = 0;
+	duck->frame++;
+	if (duck->frame >= countof(duck_fly_away_animation))
+		duck->frame = 0;
 
 	duck_invalidate(duck);
 	int direction = duck->sprite_direction >> 3;
