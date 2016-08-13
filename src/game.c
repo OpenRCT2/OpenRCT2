@@ -584,6 +584,34 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 			
 			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_SET_PARK_OPEN) {
+			// Log change in park open/close
+			char log_msg[256];
+			char* args[1] = {
+				(char *) player_name
+			};
+			if (*edx >> 8 == 0) {
+				format_string(log_msg, STR_LOG_PARK_OPEN, args);
+			} else if (*edx >> 8 == 1) {
+				format_string(log_msg, STR_LOG_PARK_CLOSED, args);
+			}
+
+			network_append_server_log(log_msg);
+		} else if (command == GAME_COMMAND_SET_PARK_ENTRANCE_FEE) {
+			// Format price
+			int price_args[1] = {*edi};
+			char price_str[16];
+			format_string(price_str, STR_BOTTOM_TOOLBAR_CASH, price_args);
+
+			// Log change in park entrance fee
+			char log_msg[256];
+			char* args[2] = {
+				(char *) player_name,
+				price_str
+			};
+
+			format_string(log_msg, STR_LOG_PARK_ENTRANCE_FEE, args);
+			network_append_server_log(log_msg);
 		}
 	}
 
