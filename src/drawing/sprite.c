@@ -407,7 +407,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 
 		//Top
 		int top_type = (image_id >> 19) & 0x1f;
-		uint32 top_offset = palette_to_g1_offset[top_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[top_type];
+		uint32 top_offset = palette_to_g1_offset[top_type];
 		rct_g1_element top_palette = g1Elements[top_offset];
 		memcpy(palette_pointer + 0xF3, top_palette.offset + 0xF3, 12);
 

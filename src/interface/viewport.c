@@ -1295,7 +1295,7 @@ static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 		if (imageId & 0x80000000) {
 			index &= 0x1F;
 		}
-		int g1Index = RCT2_ADDRESS(0x0097FCBC, uint32)[index];
+		int g1Index = palette_to_g1_offset[index];
 		unk_9ABDA4 = g1Elements[g1Index].offset;
 	} else {
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
