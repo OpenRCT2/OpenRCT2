@@ -741,6 +741,9 @@ static void window_map_invalidate(rct_window *w)
 	w->widgets[WIDX_LAND_TOOL_LARGER].top = w->height - 27;
 	w->widgets[WIDX_LAND_TOOL_LARGER].bottom = w->height - 27 + 15;
 
+	w->widgets[WIDX_MAP_GENERATOR].top = w->height - 69;
+	w->widgets[WIDX_MAP_GENERATOR].bottom = w->height - 69 + 11;
+
 	// Land tool mode (4 checkboxes)
 	height = w->height - 55;
 	for (i = 0; i < 4; i++) {
