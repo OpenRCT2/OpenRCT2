@@ -5969,6 +5969,42 @@ static void peep_update_patrolling(rct_peep* peep){
 	peep_update_patrolling_find_watering(peep);
 }
 
+/** rct2: 0x00981F4C, 0x00981F4E */
+static const rct_xy16 _981F4C[] = {
+	{  7,  5 },
+	{  5, 25 },
+	{ 25,  5 },
+	{  5,  7 },
+	{  7,  9 },
+	{  9, 25 },
+	{ 25,  9 },
+	{  9,  7 },
+	{  7, 23 },
+	{ 23, 25 },
+	{ 25, 23 },
+	{ 23,  7 },
+	{  7, 27 },
+	{ 27, 25 },
+	{ 25, 27 },
+	{ 27,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+};
+
 /**
  *
  *  rct2: 0x0069030A
@@ -6179,8 +6215,8 @@ static void peep_update_walking(rct_peep* peep){
 	peep->sub_state = 0;
 
 	int ebx = peep->var_37 & 0x1F;
-	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F4C, uint16)[ebx * 2];
-	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F4E, uint16)[ebx * 2];
+	int x = (peep->x & 0xFFE0) + _981F4C[ebx].x;
+	int y = (peep->y & 0xFFE0) + _981F4C[ebx].y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
