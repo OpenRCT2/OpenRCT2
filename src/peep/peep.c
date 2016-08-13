@@ -1985,6 +1985,18 @@ static void peep_try_get_up_from_sitting(rct_peep* peep){
 	sub_693B58(peep);
 }
 
+/** rct2: 0x00981F2C, 0x00981F2E */
+static const rct_xy16 _981F2C[] = {
+	{  7, 12 },
+	{ 12, 25 },
+	{ 25, 20 },
+	{ 20,  7 },
+	{  7, 20 },
+	{ 20, 25 },
+	{ 25, 12 },
+	{ 12,  7 },
+};
+
 /**
  *
  *  rct2: 0x0069152B
@@ -1998,8 +2010,8 @@ static void peep_update_sitting(rct_peep* peep){
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
 
 		int ebx = peep->var_37 & 0x7;
-		int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
-		int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+		int x = (peep->x & 0xFFE0) + _981F2C[ebx].x;
+		int y = (peep->y & 0xFFE0) + _981F2C[ebx].y;
 		int z = peep->z;
 
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -5138,8 +5150,8 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	peep->sub_state = 0;
 
 	int ebx = peep->var_37 & 0x7;
-	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
-	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+	int x = (peep->x & 0xFFE0) + _981F2C[ebx].x;
+	int y = (peep->y & 0xFFE0) + _981F2C[ebx].y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
