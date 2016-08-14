@@ -47,10 +47,19 @@ const money32 research_cost_table[4] = {
 
 int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 
-money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
-money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
-money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
-money32 *gExpenditureTable = RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32);
+money32 gInitialCash;
+money32 gCashEncrypted;
+money32 gBankLoan;
+uint8 gBankLoanInterestRate;
+money32 gMaxBankLoan;
+money32 gCurrentExpenditure;
+money32 gCurrentProfit;
+money32 gWeeklyProfitAverageDividend;
+uint16 gWeeklyProfitAverageDivisor;
+money32 gCashHistory[128];
+money32 gWeeklyProfitHistory[128];
+money32 gParkValueHistory[128];
+money32 gExpenditureTable[RCT_EXPENDITURE_TYPE_COUNT];
 
 uint8 gCommandExpenditureType;
 
