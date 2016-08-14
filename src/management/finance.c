@@ -59,7 +59,7 @@ uint16 gWeeklyProfitAverageDivisor;
 money32 gCashHistory[128];
 money32 gWeeklyProfitHistory[128];
 money32 gParkValueHistory[128];
-money32 gExpenditureTable[RCT_EXPENDITURE_TYPE_COUNT];
+money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
 
 uint8 gCommandExpenditureType;
 

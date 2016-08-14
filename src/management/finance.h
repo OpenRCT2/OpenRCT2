@@ -57,7 +57,7 @@ extern uint16 gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[128];
 extern money32 gWeeklyProfitHistory[128];
 extern money32 gParkValueHistory[128];
-extern money32 gExpenditureTable[RCT_EXPENDITURE_TYPE_COUNT];
+extern money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
 
 extern uint8 gCommandExpenditureType;
 
