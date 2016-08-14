@@ -21,7 +21,7 @@
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 extern const rct_track_coordinates TrackCoordinates[256];
 // 0x009972BB, 0x009972BC, 0x009972BD, 0x009972BF, 0x009972C1, 0x009972C3
-extern const rct_track_coordinates* FlatTrackCoordinates;
+extern const rct_track_coordinates FlatTrackCoordinates[253];
 
 extern const uint8 TrackSequenceProperties[256][16];
 extern const uint8 FlatRideTrackSequenceProperties[256][16];
