@@ -140,8 +140,8 @@ static void ride_ratings_update_state_1()
 	for (int i = 0; i < PROXIMITY_COUNT; i++) {
 		gRideRatingsCalcData.proximity_scores[i] = 0;
 	}
-	RCT2_GLOBAL(0x0138B5CA, uint16) = 0;
-	RCT2_GLOBAL(0x0138B5CC, uint16) = 0;
+	gRideRatingsCalcData.num_brakes = 0;
+	gRideRatingsCalcData.num_reversers = 0;
 	gRideRatingsCalcData.state = RIDE_RATINGS_STATE_2;
 	gRideRatingsCalcData.station_flags = 0;
 	ride_ratings_begin_proximity_loop();
@@ -582,11 +582,11 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 
 	switch (gRideRatingsCalcData.proximity_track_type) {
 	case TRACK_ELEM_BRAKES:
-		RCT2_GLOBAL(0x0138B5CA, uint16)++;
+		gRideRatingsCalcData.num_brakes++;
 		break;
 	case TRACK_ELEM_LEFT_REVERSER:
 	case TRACK_ELEM_RIGHT_REVERSER:
-		RCT2_GLOBAL(0x0138B5CC, uint16)++;
+		gRideRatingsCalcData.num_reversers++;
 		break;
 	}
 }
@@ -688,26 +688,15 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
 		upkeep += 40;
 	}
 
-	// Originally this data was at 0x0097E3B0 and incrementing in 18 byte
-	// offsets. The value here for every ride is 80, except for the reverser,
-	// which is 10
-	uint16 eax;
+	// Add maintenance cost for reverser track pieces
+	uint16 reverserMaintenanceCost = 80;
 	if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
-		eax = 10;
-	} else {
-		eax = 80;
+		reverserMaintenanceCost = 10;
 	}
+	upkeep += reverserMaintenanceCost * gRideRatingsCalcData.num_reversers;
 
-	// not sure what this value is; it's only written to in one place, where
-	// it's incremented.
-	sint16 dx = RCT2_GLOBAL(0x0138B5CC, sint16);
-	upkeep += eax * dx;
-
-	dx = RCT2_GLOBAL(0x0138B5CA, sint16);
-	// Originally there was a lookup into a table at 0x0097E3B0 and
-	// incrementing in 18 byte offsets. The value here for every ride was 20,
-	// so it's been replaced here by the constant.
-	upkeep += 20 * dx;
+	// Add maintenance cost for brake track pieces
+	upkeep += 20 * gRideRatingsCalcData.num_brakes;
 
 	// these seem to be adhoc adjustments to a ride's upkeep/cost, times
 	// various variables set on the ride itself.
@@ -3055,10 +3044,11 @@ static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
 	ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
 
-	int unk = min(RCT2_GLOBAL(0x0138B5CC, uint16), 6) * 20;
-	ratings.excitement += unk;
-	ratings.intensity += unk;
-	ratings.nausea += unk;
+	int numReversers = min(gRideRatingsCalcData.num_reversers, 6);
+	ride_rating reverserRating = numReversers * RIDE_RATING(0,20);
+	ratings.excitement += reverserRating;
+	ratings.intensity += reverserRating;
+	ratings.nausea += reverserRating;
 
 	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
 	ride_ratings_apply_gforces(&ratings, ride, 28672, 23831, 49648);
@@ -3068,8 +3058,9 @@ static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_proximity(&ratings, ride, 22367);
 	ride_ratings_apply_scenery(&ratings, ride, 11155);
 
-	if (RCT2_GLOBAL(0x0138B5CC, uint16) < 1)
+	if (gRideRatingsCalcData.num_reversers < 1) {
 		ratings.excitement /= 8;
+	}
 
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 1, 1);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
