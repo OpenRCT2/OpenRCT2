@@ -152,6 +152,7 @@ public:
 
 	std::string ServerName;
 	std::string ServerDescription;
+	std::string ServerGreeting;
 	std::string ServerProviderName;
 	std::string ServerProviderEmail;
 	std::string ServerProviderWebsite;
@@ -308,6 +309,7 @@ void network_print_error();
 void network_append_chat_log(const utf8 *text);
 const utf8 * network_get_server_name();
 const utf8 * network_get_server_description();
+const utf8 * network_get_server_greeting();
 const utf8 * network_get_server_provider_name();
 const utf8 * network_get_server_provider_email();
 const utf8 * network_get_server_provider_website();

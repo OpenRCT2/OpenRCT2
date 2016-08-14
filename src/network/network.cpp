@@ -155,6 +155,7 @@ bool Network::Init()
 
 	ServerName = std::string();
 	ServerDescription = std::string();
+	ServerGreeting = std::string();
 	ServerProviderName = std::string();
 	ServerProviderEmail = std::string();
 	ServerProviderWebsite = std::string();
@@ -300,6 +301,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	ServerName = String::ToStd(gConfigNetwork.server_name);
 	ServerDescription = String::ToStd(gConfigNetwork.server_description);
+	ServerGreeting = String::ToStd(gConfigNetwork.server_greeting);
 	ServerProviderName = String::ToStd(gConfigNetwork.provider_name);
 	ServerProviderEmail = String::ToStd(gConfigNetwork.provider_email);
 	ServerProviderWebsite = String::ToStd(gConfigNetwork.provider_website);
@@ -1174,6 +1176,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set_new(obj, "players", json_integer(player_list.size()));
 	json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
+	json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting));
 	json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
 
 	// Provider details
@@ -1939,6 +1942,7 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 
 	ServerName = json_stdstring_value(json_object_get(root, "name"));
 	ServerDescription = json_stdstring_value(json_object_get(root, "description"));
+	ServerGreeting = json_stdstring_value(json_object_get(root, "greeting"));
 
 	json_t *jsonProvider = json_object_get(root, "provider");
 	if (jsonProvider != nullptr) {
@@ -1947,6 +1951,14 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 		ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
 	}
 	json_decref(root);
+
+	// Display server greeting if one exists
+	const char* greeting = network_get_server_greeting();
+	if (strcmp(greeting, "") != 0) {
+		char greeting_formatted[256];
+		format_string(greeting_formatted, STR_SERVER_GREETING, &greeting);
+		chat_history_add(greeting_formatted);
+	}
 }
 
 namespace Convert
@@ -2451,6 +2463,7 @@ static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
 
 const utf8 * network_get_server_name() { return gNetwork.ServerName.c_str(); }
 const utf8 * network_get_server_description() { return gNetwork.ServerDescription.c_str(); }
+const utf8 * network_get_server_greeting() { return gNetwork.ServerGreeting.c_str(); }
 const utf8 * network_get_server_provider_name() { return gNetwork.ServerProviderName.c_str(); }
 const utf8 * network_get_server_provider_email() { return gNetwork.ServerProviderEmail.c_str(); }
 const utf8 * network_get_server_provider_website() { return gNetwork.ServerProviderWebsite.c_str(); }
@@ -2502,6 +2515,7 @@ int network_get_current_player_group_index() { return 0; }
 void network_append_chat_log(const utf8 *text) { }
 const utf8 * network_get_server_name() { return nullptr; }
 const utf8 * network_get_server_description() { return nullptr; }
+const utf8 * network_get_server_greeting() { return nullptr; }
 const utf8 * network_get_server_provider_name() { return nullptr; }
 const utf8 * network_get_server_provider_email() { return nullptr; }
 const utf8 * network_get_server_provider_website() { return nullptr; }

@@ -3343,6 +3343,7 @@ enum {
 	STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES = 5908,
 	STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP = 5909,
 	STR_APPLY = 5910,
+	STR_SERVER_GREETING = 5911,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
