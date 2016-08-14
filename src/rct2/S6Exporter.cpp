@@ -397,21 +397,7 @@ void S6Exporter::Export()
     _s6.num_map_animations = gNumMapAnimations;
     // pad_0138B582
 
-    _s6.ride_ratings_proximity_x = _rideRatingsProximityX;
-    _s6.ride_ratings_proximity_y = _rideRatingsProximityY;
-    _s6.ride_ratings_proximity_z = _rideRatingsProximityZ;
-    _s6.ride_ratings_proximity_start_x = _rideRatingsProximityStartX;
-    _s6.ride_ratings_proximity_start_y = _rideRatingsProximityStartY;
-    _s6.ride_ratings_proximity_start_z = _rideRatingsProximityStartZ;
-    _s6.ride_ratings_current_ride = _rideRatingsCurrentRide;
-    _s6.ride_ratings_state = _rideRatingsState;
-    _s6.ride_ratings_proximity_track_type = _rideRatingsProximityTrackType;
-    _s6.ride_ratings_proximity_base_height = _rideRatingsProximityBaseHeight;
-    _s6.ride_ratings_proximity_total = _rideRatingsProximityTotal;
-    memcpy(_s6.ride_ratings_proximity_scores, _proximityScores, sizeof(_s6.ride_ratings_proximity_scores));
-    _s6.ride_ratings_num_brakes = _rideRatingsNumBrakes;
-    _s6.ride_ratings_num_reversers = _rideRatingsNumReversers;
-    _s6.ride_ratings_station_flags = _rideRatingsStationFlags;
+    _s6.ride_ratings_calc_data = gRideRatingsCalcData;
     memcpy(_s6.ride_measurements, gRideMeasurements, sizeof(_s6.ride_measurements));
     _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;

@@ -24,23 +24,25 @@ enum {
 	RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
 
-#define _rideRatingsProximityX				RCT2_GLOBAL(0x0138B584, uint16)
-#define _rideRatingsProximityY				RCT2_GLOBAL(0x0138B586, uint16)
-#define _rideRatingsProximityZ				RCT2_GLOBAL(0x0138B588, uint16)
-#define _rideRatingsCurrentRide				RCT2_GLOBAL(0x0138B590, uint8)
-#define _rideRatingsState					RCT2_GLOBAL(0x0138B591, uint8)
-#define _rideRatingsProximityTrackType		RCT2_GLOBAL(0x0138B592, uint8)
-#define _rideRatingsProximityBaseHeight		RCT2_GLOBAL(0x0138B593, uint8)
-#define _rideRatingsProximityTotal			RCT2_GLOBAL(0x0138B594, uint16)
-#define _rideRatingsProximityStartX			RCT2_GLOBAL(0x0138B58A, uint16)
-#define _rideRatingsProximityStartY			RCT2_GLOBAL(0x0138B58C, uint16)
-#define _rideRatingsProximityStartZ			RCT2_GLOBAL(0x0138B58E, uint16)
+typedef struct rct_ride_rating_calc_data {
+	uint16	proximity_x;
+	uint16	proximity_y;
+	uint16	proximity_z;
+	uint16	proximity_start_x;
+	uint16	proximity_start_y;
+	uint16	proximity_start_z;
+	uint8	current_ride;
+	uint8	state;
+	uint8	proximity_track_type;
+	uint8	proximity_base_height;
+	uint16	proximity_total;
+	uint16	proximity_scores[26];
+	uint16	num_brakes;
+	uint16	num_reversers;
+	uint16	station_flags;
+} rct_ride_rating_calc_data;
 
-#define _rideRatingsNumBrakes				RCT2_GLOBAL(0x0138B5CA, uint16)
-#define _rideRatingsNumReversers			RCT2_GLOBAL(0x0138B5CC, uint16)
-#define _rideRatingsStationFlags			RCT2_GLOBAL(0x0138B5CE, uint16)
-
-extern uint16 *_proximityScores;
+extern rct_ride_rating_calc_data gRideRatingsCalcData;
 
 void ride_ratings_update_all();
 

@@ -23,6 +23,7 @@
 #include "management/news_item.h"
 #include "management/research.h"
 #include "ride/ride.h"
+#include "ride/ride_ratings.h"
 #include "object.h"
 #include "platform/platform.h"
 #include "world/banner.h"
@@ -296,21 +297,7 @@ typedef struct rct_s6_data {
 	rct_map_animation rct1_map_animations[1000];
 	uint16 num_map_animations;
 	uint8 pad_0138B582[2];
-	uint16 ride_ratings_proximity_x;
-	uint16 ride_ratings_proximity_y;
-	uint16 ride_ratings_proximity_z;
-	uint16 ride_ratings_proximity_start_x;
-	uint16 ride_ratings_proximity_start_y;
-	uint16 ride_ratings_proximity_start_z;
-	uint8 ride_ratings_current_ride;
-	uint8 ride_ratings_state;
-	uint8 ride_ratings_proximity_track_type;
-	uint8 ride_ratings_proximity_base_height;
-	uint16 ride_ratings_proximity_total;
-	uint16 ride_ratings_proximity_scores[26];
-	uint16 ride_ratings_num_brakes;
-	uint16 ride_ratings_num_reversers;
-	uint16 ride_ratings_station_flags;
+	rct_ride_rating_calc_data ride_ratings_calc_data;
 	uint8 pad_0138B5D0[60];
 	rct_ride_measurement ride_measurements[8];
 	uint32 next_guest_index;
