@@ -1525,8 +1525,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 			}
 		}
 		peep->sprite_direction = direction;
-		*x = peep->x + word_981D7C[direction / 4].x;
-		*y = peep->y + word_981D7C[direction / 4].y;
+		*x = peep->x + word_981D7C[direction / 8].x;
+		*y = peep->y + word_981D7C[direction / 8].y;
 		peep->no_action_frame_no++;
 		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
 		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
