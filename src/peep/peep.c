@@ -3564,6 +3564,14 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/** rct2: 0x00981FF1 */
+static const uint8 _981FF1[][4] = {
+	{  1,  2, 14,  0 },
+	{  4,  5,  6,  2 },
+	{  6,  8,  9, 10 },
+	{ 14, 10, 12, 13 },
+};
+
 /**
  *
  *  rct2: 0x00692A83
@@ -3611,20 +3619,21 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 	uint16 maze_entry = mapElement->properties.track.maze_entry;
 	uint16 open_hedges = 0;
 	uint8 var_37 = peep->var_37;
+	// var_37 is 3, 7, 11 or 15
 
-	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF4, uint8)[var_37])){
+	if (maze_entry & (1 << _981FF1[var_37 / 4][3])) {
 		open_hedges = 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF3, uint8)[var_37])){
+	if (maze_entry & (1 << _981FF1[var_37 / 4][2])) {
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF2, uint8)[var_37])){
+	if (maze_entry & (1 << _981FF1[var_37 / 4][1])) {
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << RCT2_ADDRESS(0x981FF1, uint8)[var_37])){
+	if (maze_entry & (1 << _981FF1[var_37 / 4][0])) {
 		open_hedges |= 1;
 	}
 
