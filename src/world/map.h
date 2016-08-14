@@ -314,6 +314,7 @@ enum {
 };
 
 extern const rct_xy16 TileDirectionDelta[];
+extern const money32 TerrainPricing[];
 
 #define gWidePathTileLoopX				RCT2_GLOBAL(0x013CE774, uint16)
 #define gWidePathTileLoopY				RCT2_GLOBAL(0x013CE776, uint16)

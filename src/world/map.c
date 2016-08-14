@@ -52,6 +52,24 @@ const rct_xy16 TileDirectionDelta[] = {
 	{ -32, -32 }
 };
 
+/** rct2: 0x0097B8B8 */
+const money32 TerrainPricing[] = {
+	300,	// TERRAIN_GRASS
+	100,	// TERRAIN_SAND
+	80,		// TERRAIN_DIRT
+	120,	// TERRAIN_ROCK
+	100,	// TERRAIN_MARTIAN
+	100,	// TERRAIN_CHECKERBOARD
+	110,	// TERRAIN_GRASS_CLUMPS
+	130,	// TERRAIN_ICE
+	110,	// TERRAIN_GRID_RED
+	110,	// TERRAIN_GRID_YELLOW
+	110,	// TERRAIN_GRID_BLUE
+	110,	// TERRAIN_GRID_GREEN
+	110,	// TERRAIN_SAND_DARK
+	110,	// TERRAIN_SAND_LIGHT
+};
+
 uint16			gMapSelectFlags;
 uint16			gMapSelectType;
 rct_xy16		gMapSelectPositionA;
@@ -1515,7 +1533,7 @@ static money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 su
 					(mapElement->properties.surface.terrain >> 5);
 
 				if (surfaceStyle != cur_terrain) {
-					RCT2_GLOBAL(0x009E32B4, uint32) += RCT2_ADDRESS(0x0097B8B8, uint32)[surfaceStyle & 0x1F];
+					RCT2_GLOBAL(0x009E32B4, uint32) += TerrainPricing[surfaceStyle & 0x1F];
 					if (flags & 1){
 						mapElement->properties.surface.terrain &= MAP_ELEMENT_WATER_HEIGHT_MASK;
 						mapElement->type &= MAP_ELEMENT_QUADRANT_MASK | MAP_ELEMENT_TYPE_MASK;
