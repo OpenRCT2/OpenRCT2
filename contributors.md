@@ -49,7 +49,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood (spacek531) - title sequence for 0.0.4
 * Hugo Wallenburg (Goddesen) - Misc.
-* (Nubbie) - Misc, UX
+* Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 
@@ -89,7 +89,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
-* Reviewing and merging: Michael Steenbeek (Gymnasiast), (Nubbie), Rune Laenen (runelaenen)
+* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte Andersson (Nubbie), Rune Laenen (runelaenen)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
@@ -106,7 +106,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Russian - (Soosisya)
 * Simplified Chinese - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
-* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
+* Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
 * Norwegian - (Goddesen)
 
