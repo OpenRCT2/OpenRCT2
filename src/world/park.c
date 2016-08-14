@@ -40,6 +40,9 @@ uint32 gParkNameArgs;
 uint32 gParkFlags;
 uint16 gParkRating;
 money16 gParkEntranceFee;
+uint16 gParkSize;
+money16 gLandPrice;
+money16 gConstructionRightsPrice;
 
 uint32 gTotalAdmissions;
 money32 gTotalIncomeFromAdmissions;
