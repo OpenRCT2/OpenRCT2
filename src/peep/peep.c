@@ -3564,6 +3564,14 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/** rct2: 0x00981FE1 */
+static const uint8 _981FE1[][4] = {
+	{ 15,  7, 15,  7 },
+	{ 11,  3, 11,  3 },
+	{  7, 15,  7, 15 },
+	{  3, 11,  3, 11 },
+};
+
 /** rct2: 0x00981FF1 */
 static const uint8 _981FF1[][4] = {
 	{  1,  2, 14,  0 },
@@ -3685,7 +3693,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 		peep->destination_x = x;
 		peep->destination_y = y;
 
-		peep->var_37 = RCT2_ADDRESS(0x981FE1, uint8)[peep->var_37 + chosen_edge];
+		peep->var_37 = _981FE1[peep->var_37 / 4][chosen_edge];
 		peep->maze_last_edge = chosen_edge;
 		break;
 	case 2:
