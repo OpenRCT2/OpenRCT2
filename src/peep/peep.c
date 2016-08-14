@@ -5205,6 +5205,14 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	return 1;
 }
 
+/** rct2: 0x00992A4C */
+static const rct_xy16 _992A4C[] = {
+	{ 11, 16 },
+	{ 16, 21 },
+	{ 21, 16 },
+	{ 16, 11 },
+};
+
 static int peep_update_walking_find_bin(rct_peep* peep){
 	if (!peep_has_empty_container(peep)) return 0;
 
@@ -5260,8 +5268,8 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	peep->sub_state = 0;
 
 	int ebx = peep->var_37 & 0x3;
-	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A4C, uint16)[ebx * 2];
-	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A4E, uint16)[ebx * 2];
+	int x = (peep->x & 0xFFE0) + _992A4C[ebx].x;
+	int y = (peep->y & 0xFFE0) + _992A4C[ebx].y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
