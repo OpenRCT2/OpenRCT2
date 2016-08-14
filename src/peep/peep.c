@@ -2366,8 +2366,8 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	peep_go_to_ride_entrance(peep, ride);
 }
 
-/** rct2: 0x00981FD1, 0x00981FD3 */
-static const rct_xy16 _981FD1[] = {
+/** rct2: 0x00981FD4, 0x00981FD6 */
+static const rct_xy16 _981FD4[] = {
 	{  8,  8 },
 	{  8, 24 },
 	{ 24, 24 },
@@ -2448,8 +2448,8 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 			peep->var_37 = direction;
 			peep->maze_last_edge &= 3;
 
-			x += _981FD1[direction / 4].x;
-			y += _981FD1[direction / 4].y;
+			x += _981FD4[direction / 4].x;
+			y += _981FD4[direction / 4].y;
 
 			peep->destination_x = x;
 			peep->destination_y = y;
@@ -3564,16 +3564,16 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 	peep->destination_y = y;
 }
 
-/** rct2: 0x00981FE1 */
-static const uint8 _981FE1[][4] = {
+/** rct2: 0x00981FE4 */
+static const uint8 _981FE4[][4] = {
 	{ 15,  7, 15,  7 },
 	{ 11,  3, 11,  3 },
 	{  7, 15,  7, 15 },
 	{  3, 11,  3, 11 },
 };
 
-/** rct2: 0x00981FF1 */
-static const uint8 _981FF1[][4] = {
+/** rct2: 0x00981FF4 */
+static const uint8 _981FF4[][4] = {
 	{  1,  2, 14,  0 },
 	{  4,  5,  6,  2 },
 	{  6,  8,  9, 10 },
@@ -3629,19 +3629,19 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 	uint8 var_37 = peep->var_37;
 	// var_37 is 3, 7, 11 or 15
 
-	if (maze_entry & (1 << _981FF1[var_37 / 4][3])) {
+	if (maze_entry & (1 << _981FF4[var_37 / 4][3])) {
 		open_hedges = 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << _981FF1[var_37 / 4][2])) {
+	if (maze_entry & (1 << _981FF4[var_37 / 4][2])) {
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << _981FF1[var_37 / 4][1])) {
+	if (maze_entry & (1 << _981FF4[var_37 / 4][1])) {
 		open_hedges |= 1;
 	}
 	open_hedges <<= 1;
-	if (maze_entry & (1 << _981FF1[var_37 / 4][0])) {
+	if (maze_entry & (1 << _981FF4[var_37 / 4][0])) {
 		open_hedges |= 1;
 	}
 
@@ -3693,7 +3693,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 		peep->destination_x = x;
 		peep->destination_y = y;
 
-		peep->var_37 = _981FE1[peep->var_37 / 4][chosen_edge];
+		peep->var_37 = _981FE4[peep->var_37 / 4][chosen_edge];
 		peep->maze_last_edge = chosen_edge;
 		break;
 	case 2:
