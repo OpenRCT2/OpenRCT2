@@ -4714,6 +4714,18 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 }
 
+/** rct2: 0x009929C8 */
+static const rct_xy16 _9929C8[] = {
+	{ 28, 28 },
+	{ 28,  4 },
+	{ 20,  4 },
+	{ 20, 28 },
+	{ 12, 28 },
+	{ 12,  4 },
+	{  4,  4 },
+	{  4, 28 },
+};
+
 /**
  *
  *  rct2: 0x006BF567
@@ -4737,13 +4749,13 @@ static void peep_update_mowing(rct_peep* peep){
 			sub_693BE5(peep, 2);
 		}
 
-		if (RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] == 0xFFFF){
+		if (peep->var_37 == countof(_9929C8)) {
 			peep_state_reset(peep);
 			return;
 		}
 
-		peep->destination_x = RCT2_ADDRESS(0x9929C8, uint16)[peep->var_37 * 2] + peep->next_x;
-		peep->destination_y = RCT2_ADDRESS(0x9929CA, uint16)[peep->var_37 * 2] + peep->next_y;
+		peep->destination_x = _9929C8[peep->var_37].x + peep->next_x;
+		peep->destination_y = _9929C8[peep->var_37].y + peep->next_y;
 
 		if (peep->var_37 != 7)continue;
 
