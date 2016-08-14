@@ -133,8 +133,13 @@ static const uint8 word_97B142[] = {
 	6,
 };
 
+typedef struct metal_supports_images {
+	uint16 base_id;
+	uint16 beam_id;
+} metal_supports_images;
+
 /** rct2: 0x0097B15C */
-static const uint32 _97B15C[][2] = {
+static const metal_supports_images _97B15C[] = {
 	{ 3243, 3209 },
 	{ 3279, 3262 },
 	{ 3298, 3262 },
@@ -151,7 +156,7 @@ static const uint32 _97B15C[][2] = {
 };
 
 /** rct2: 0x0097B190 */
-static const uint32 _97B190[][2] = {
+static const metal_supports_images _97B190[] = {
 	{ 3243, 3226 }, // 3209
 	{ 3279, 3262 },
 	{ 3298, 3262 },
@@ -502,7 +507,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		if (height < 0)
 			return false;
 
-		uint8* esi = &_97AF32[rotation * 2];
+		const uint8* esi = &(_97AF32[rotation * 2]);
 
 		uint8 newSegment = esi[segment * 8];
 		if (height <= gSupportSegments[newSegment].height) {
@@ -542,7 +547,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	sint16 si = height;
 	if (gSupportSegments[segment].slope & (1 << 5) ||
 		height - gSupportSegments[segment].height < 6 ||
-		_97B15C[supportType][0] == 0
+		_97B15C[supportType].base_id == 0
 		) {
 
 		height = gSupportSegments[segment].height;
@@ -550,7 +555,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = _97B15C[supportType][0];
+		uint32 image_id = _97B15C[supportType].base_id;
 		image_id += metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
 		image_id |= imageColourFlags;
 
@@ -573,7 +578,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = _97B15C[supportType][1];
+		uint32 image_id = _97B15C[supportType].beam_id;
 		image_id += heightDiff - 1;
 		image_id |= imageColourFlags;
 
@@ -600,7 +605,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = _97B15C[supportType][1];
+		uint32 image_id = _97B15C[supportType].beam_id;
 		image_id += z - 1;
 		image_id |= imageColourFlags;
 
@@ -642,7 +647,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = _97B190[supportType][1];
+		uint32 image_id = _97B190[supportType].beam_id;
 		image_id += z - 1;
 		image_id |= imageColourFlags;
 
