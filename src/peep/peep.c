@@ -4240,6 +4240,14 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 	return false;
 }
 
+/** rct2: 0x00992A3C */
+static const rct_xy16 _992A3C[] = {
+	{ -12,   0 },
+	{   0,  12 },
+	{  12,   0 },
+	{   0, -12 },
+};
+
 /**
  * rct2: 0x006C1114
  */
@@ -4267,7 +4275,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 		}
 
 		int direction = map_element_get_direction(mapElement);
-		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction];
+		rct_xy16 offset = _992A3C[direction];
 
 		stationX += 16 + offset.x;
 		if (offset.x == 0) {
@@ -4366,7 +4374,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		uint16 destinationY = input.y + 16;
 
 		uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
-		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction];
+		rct_xy16 offset = _992A3C[direction];
 
 		destinationX -= offset.x;
 		if (offset.x == 0) {
