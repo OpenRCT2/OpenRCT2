@@ -286,7 +286,7 @@ void S6Exporter::Export()
 
     memcpy(_s6.expenditure_table, gExpenditureTable, sizeof(_s6.expenditure_table));
 
-    _s6.last_guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16);
+    _s6.last_guests_in_park = gNumGuestsInParkLastWeek;
     // pad_01357BCA
     _s6.handyman_colour = gStaffHandymanColour;
     _s6.mechanic_colour = gStaffMechanicColour;

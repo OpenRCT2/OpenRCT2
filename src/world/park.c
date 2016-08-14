@@ -35,8 +35,20 @@
 #include "park.h"
 #include "sprite.h"
 
-uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
-uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
+rct_string_id gParkName;
+uint32 gParkNameArgs;
+uint32 gParkFlags;
+uint16 gParkRating;
+money16 gParkEntranceFee;
+
+uint32 gTotalAdmissions;
+money32 gTotalIncomeFromAdmissions;
+
+money32 gParkValue;
+money32 gCompanyValue;
+
+uint8 gParkRatingHistory[32];
+uint8 gGuestsInParkHistory[32];
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 int gForcedParkRating = -1;

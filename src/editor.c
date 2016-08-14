@@ -284,106 +284,19 @@ static int editor_load_landscape_from_sc4(const char *path)
  */
 static int editor_read_s6(const char *path)
 {
-	int i, j;
-	SDL_RWops* rw;
-	rct_s6_header *s6Header = RCT2_ADDRESS(0x009E34E4, rct_s6_header);
-	rct_s6_info *s6Info = gS6Info;
-
-	log_verbose("loading landscape, %s", path);
-
-	rw = SDL_RWFromFile(path, "rb");
-	if (rw != NULL) {
-		if (!sawyercoding_validate_checksum(rw)) {
-			SDL_RWclose(rw);
-			gErrorType = ERROR_TYPE_FILE_LOAD;
-			gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-
-			log_error("failed to load scenario, invalid checksum");
-			return 0;
-		}
-
-		// Read first chunk
-		sawyercoding_read_chunk(rw, (uint8*)s6Header);
-		if (s6Header->type == S6_TYPE_SCENARIO) {
-			// Read second chunk
-			sawyercoding_read_chunk(rw, (uint8*)s6Info);
-
-			if (s6Info->editor_step == 255)
-				s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-		} else {
-			s6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-			s6Info->category = SCENARIO_CATEGORY_OTHER;
-			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-		}
-
-		// Read packed objects
-		if (s6Header->num_packed_objects > 0) {
-			j = 0;
-			for (i = 0; i < s6Header->num_packed_objects; i++)
-				j += object_load_packed(rw);
-			if (j > 0)
-				object_list_load();
-		}
-
-		uint8 load_success = object_read_and_load_entries(rw);
-
-		// Read flags (16 bytes). Loads:
-		//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
-		//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
-		//	RCT2_ADDRESS_SCENARIO_TICKS
-		sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8));
-
-		// Read map elements
-		memset((void*)gMapElements, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-		sawyercoding_read_chunk(rw, RCT2_ADDRESS(gMapElements, uint8));
-
-		// Read game data, including sprites
-		sawyercoding_read_chunk(rw, RCT2_ADDRESS(0x010E63B8, uint8));
-
-		if (s6Header->type == S6_TYPE_SCENARIO) {
-			// Read number of guests in park and something else
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK, uint8));
-
-			// Read ?
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint8));
-
-			// Read park rating
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_PARK_RATING, uint8));
-
-			// Read ?
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8));
-
-			// Read ?
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint8));
-
-			// Read ?
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_PARK_VALUE, uint8));
-
-			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(rw, RCT2_ADDRESS(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint8));
-		}
-
-		SDL_RWclose(rw);
-		if (!load_success) {
-			log_error("failed to load all entries.");
-			return 0;
-		}
-
-		map_update_tile_pointers();
-		game_convert_strings_to_utf8();
-
-		gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-		editor_clear_map_for_editing();
-		viewport_init_all();
-		window_editor_main_open();
-		editor_finalise_main_view();
-		return 1;
+	if (!scenario_load(path)) {
+		return 0;
 	}
 
-	log_error("failed to find scenario file.");
-	gErrorType = ERROR_TYPE_FILE_LOAD;
-	gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-	return 0;
+	editor_clear_map_for_editing();
+
+	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gScreenAge = 0;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	window_editor_main_open();
+	editor_finalise_main_view();
+	return 1;
 }
 
 static void editor_clear_map_for_editing()

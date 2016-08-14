@@ -40,7 +40,19 @@
 #include "peep.h"
 #include "staff.h"
 
-uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, uint8);
+uint8 gGuestChangeModifier;
+uint16 gNumGuestsInPark;
+uint16 gNumGuestsInParkLastWeek;
+uint16 gNumGuestsHeadingForPark;
+
+money16 gGuestInitialCash;
+uint8 gGuestInitialHappiness;
+uint8 gGuestInitialHunger;
+uint8 gGuestInitialThirst;
+
+uint32 gNextGuestNumber;
+
+uint8 gPeepWarningThrottle[16];
 
 rct_xyz16 gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;

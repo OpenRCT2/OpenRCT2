@@ -204,7 +204,7 @@ void S6Importer::Import()
 
     memcpy(gExpenditureTable, _s6.expenditure_table, sizeof(_s6.expenditure_table));
 
-    RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = _s6.last_guests_in_park;
+    gNumGuestsInParkLastWeek = _s6.last_guests_in_park;
     // pad_01357BCA
     gStaffHandymanColour = _s6.handyman_colour;
     gStaffMechanicColour = _s6.mechanic_colour;

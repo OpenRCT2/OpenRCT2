@@ -611,19 +611,19 @@ enum {
 	FOR_ALL_PEEPS(sprite_index, peep) \
 		if (peep->type == PEEP_TYPE_STAFF)
 
-#define gGuestChangeModifier		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8)
-#define gNumGuestsInPark			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
-#define gNumGuestsInParkLastWeek	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16)
-#define gNumGuestsHeadingForPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)
+extern uint8 gGuestChangeModifier;
+extern uint16 gNumGuestsInPark;
+extern uint16 gNumGuestsInParkLastWeek;
+extern uint16 gNumGuestsHeadingForPark;
 
-#define gGuestInitialCash			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16)
-#define gGuestInitialHappiness		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8)
-#define gGuestInitialHunger			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)
-#define gGuestInitialThirst			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)
+extern money16 gGuestInitialCash;
+extern uint8 gGuestInitialHappiness;
+extern uint8 gGuestInitialHunger;
+extern uint8 gGuestInitialThirst;
 
-#define gNextGuestNumber			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_GUEST_NUMBER, uint32)
+extern uint32 gNextGuestNumber;
 
-extern uint8 *gPeepWarningThrottle;
+extern uint8 gPeepWarningThrottle[16];
 
 extern rct_xyz16 gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
