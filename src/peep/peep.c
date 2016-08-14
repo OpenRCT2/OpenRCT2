@@ -5795,6 +5795,18 @@ static void peep_update_answering(rct_peep* peep){
 	invalidate_sprite_2((rct_sprite*)peep);
 }
 
+/** rct2: 0x00992A5C */
+static const rct_xy16 _992A5C[] = {
+	{  3, 16 },
+	{ 16, 29 },
+	{ 29, 16 },
+	{ 16,  3 },
+	{  3, 29 },
+	{ 29, 29 },
+	{ 29,  3 },
+	{  3,  3 },
+};
+
 /**
  *
  *  rct2: 0x006BF483
@@ -5845,8 +5857,8 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 			peep_window_state_update(peep);
 
 			peep->sub_state = 0;
-			peep->destination_x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A5C, uint16)[chosen_position * 2];
-			peep->destination_y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A5E, uint16)[chosen_position * 2];
+			peep->destination_x = (peep->x & 0xFFE0) + _992A5C[chosen_position].x;
+			peep->destination_y = (peep->y & 0xFFE0) + _992A5C[chosen_position].y;
 			peep->destination_tolerence = 3;
 
 			return 1;
