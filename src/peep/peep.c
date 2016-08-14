@@ -2366,6 +2366,14 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	peep_go_to_ride_entrance(peep, ride);
 }
 
+/** rct2: 0x00981FD1, 0x00981FD3 */
+static const rct_xy16 _981FD1[] = {
+	{  8,  8 },
+	{  8, 24 },
+	{ 24, 24 },
+	{ 24,  8 },
+};
+
 /**
  *
  *  rct2: 0x006921D3
@@ -2436,11 +2444,12 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 			}
 
 			direction &= 0xF;
+			// Direction is 11, 15, 3, or 7
 			peep->var_37 = direction;
 			peep->maze_last_edge &= 3;
 
-			x += RCT2_GLOBAL(0x981FD1 + direction, sint16);
-			y += RCT2_GLOBAL(0x981FD3 + direction, sint16);
+			x += _981FD1[direction / 4].x;
+			y += _981FD1[direction / 4].y;
 
 			peep->destination_x = x;
 			peep->destination_y = y;
