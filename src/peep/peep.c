@@ -1472,6 +1472,14 @@ static void peep_check_cant_find_exit(rct_peep* peep){
 		peep->peep_is_lost_countdown = 90;
 }
 
+/** rct2: 0x00981D7C, 0x00981D7E */
+const rct_xy16 word_981D7C[4] = {
+	{ -2,  0 },
+	{  0,  2 },
+	{  2,  0 },
+	{  0, -2 }
+};
+
 /**
  *
  *  rct2: 0x6939EB
@@ -1517,8 +1525,8 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 			}
 		}
 		peep->sprite_direction = direction;
-		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
-		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
+		*x = peep->x + word_981D7C[direction / 4].x;
+		*y = peep->y + word_981D7C[direction / 4].y;
 		peep->no_action_frame_no++;
 		const rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
 		const uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
@@ -1977,6 +1985,18 @@ static void peep_try_get_up_from_sitting(rct_peep* peep){
 	sub_693B58(peep);
 }
 
+/** rct2: 0x00981F2C, 0x00981F2E */
+static const rct_xy16 _981F2C[] = {
+	{  7, 12 },
+	{ 12, 25 },
+	{ 25, 20 },
+	{ 20,  7 },
+	{  7, 20 },
+	{ 20, 25 },
+	{ 25, 12 },
+	{ 12,  7 },
+};
+
 /**
  *
  *  rct2: 0x0069152B
@@ -1990,8 +2010,8 @@ static void peep_update_sitting(rct_peep* peep){
 		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
 
 		int ebx = peep->var_37 & 0x7;
-		int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
-		int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+		int x = (peep->x & 0xFFE0) + _981F2C[ebx].x;
+		int y = (peep->y & 0xFFE0) + _981F2C[ebx].y;
 		int z = peep->z;
 
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -3399,6 +3419,22 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
 	peep->destination_y = y;
 }
 
+/** rct2: 0x00981F0C, 0x00981F0E */
+static const rct_xy16 _981F0C[] = {
+	{25,  56},
+	{56,  7},
+	{7,   -24},
+	{-24, 25},
+};
+
+/** rct2: 0x00981F1C, 0x00981F1E */
+static const rct_xy16 _981F1C[] = {
+	{8,   56},
+	{56,  24},
+	{24,  -24},
+	{-24, 8},
+};
+
 /**
  *
  *  rct2: 0x00692D83
@@ -3437,14 +3473,14 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 			y *= 32;
 
 			uint8 direction = (peep->var_37 / 4) & 3;
-			sint16 dest_x = x + RCT2_ADDRESS(0x981F1C, sint16)[direction * 2];
-			sint16 dest_y = y + RCT2_ADDRESS(0x981F1E, sint16)[direction * 2];
+			sint16 dest_x = x + _981F1C[direction].x;
+			sint16 dest_y = y + _981F1C[direction].y;
 
 			peep->destination_x = dest_x;
 			peep->destination_y = dest_y;
 
-			x += RCT2_ADDRESS(0x981F0C, sint16)[direction * 2];
-			y += RCT2_ADDRESS(0x981F0E, sint16)[direction * 2];
+			x += _981F0C[direction].x;
+			y += _981F0C[direction].y;
 
 			sprite_move(x, y, peep->z, (rct_sprite*)peep);
 
@@ -5114,8 +5150,8 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	peep->sub_state = 0;
 
 	int ebx = peep->var_37 & 0x7;
-	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F2C, uint16)[ebx * 2];
-	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F2E, uint16)[ebx * 2];
+	int x = (peep->x & 0xFFE0) + _981F2C[ebx].x;
+	int y = (peep->y & 0xFFE0) + _981F2C[ebx].y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
@@ -5933,6 +5969,42 @@ static void peep_update_patrolling(rct_peep* peep){
 	peep_update_patrolling_find_watering(peep);
 }
 
+/** rct2: 0x00981F4C, 0x00981F4E */
+static const rct_xy16 _981F4C[] = {
+	{  7,  5 },
+	{  5, 25 },
+	{ 25,  5 },
+	{  5,  7 },
+	{  7,  9 },
+	{  9, 25 },
+	{ 25,  9 },
+	{  9,  7 },
+	{  7, 23 },
+	{ 23, 25 },
+	{ 25, 23 },
+	{ 23,  7 },
+	{  7, 27 },
+	{ 27, 25 },
+	{ 25, 27 },
+	{ 27,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+	{  7,  0 },
+	{  0, 25 },
+	{ 25,  0 },
+	{  0,  7 },
+};
+
 /**
  *
  *  rct2: 0x0069030A
@@ -6143,8 +6215,8 @@ static void peep_update_walking(rct_peep* peep){
 	peep->sub_state = 0;
 
 	int ebx = peep->var_37 & 0x1F;
-	int x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x981F4C, uint16)[ebx * 2];
-	int y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x981F4E, uint16)[ebx * 2];
+	int x = (peep->x & 0xFFE0) + _981F4C[ebx].x;
+	int y = (peep->y & 0xFFE0) + _981F4C[ebx].y;
 
 	peep->destination_x = x;
 	peep->destination_y = y;
