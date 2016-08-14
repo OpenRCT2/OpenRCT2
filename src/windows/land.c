@@ -110,10 +110,6 @@ static char window_land_wall_texture_order[] = {
 	0, 0
 };
 
-static int land_pricing[] = {
-	300, 100, 80, 120, 100, 100, 110, 130,  110, 110, 110, 110, 110, 110
-};
-
 int _selectedFloorTexture;
 int _selectedWallTexture;
 
@@ -400,12 +396,12 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	numTiles = gLandToolSize * gLandToolSize;
 	price = 0;
 	if (gLandToolTerrainSurface != 255)
-		price += numTiles * land_pricing[gLandToolTerrainSurface];
+		price += numTiles * TerrainPricing[gLandToolTerrainSurface];
 	if (gLandToolTerrainEdge != 255)
 		price += numTiles * 100;
 
 	if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		set_format_arg(0, sint32, price);
+		set_format_arg(0, money32, price);
 		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, gCommonFormatArgs);
 	}
 }
