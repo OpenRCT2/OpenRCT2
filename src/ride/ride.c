@@ -1117,8 +1117,8 @@ static void ride_remove_peeps(int rideIndex)
 			mapElement = ride_get_station_exit_element(ride, exitX, exitY, exitZ);
 
 			exitDirection = (mapElement == NULL ? 0 : mapElement->type & MAP_ELEMENT_DIRECTION_MASK);
-			exitX = (exitX * 32) - (RCT2_ADDRESS(0x00981D6C, sint16)[exitDirection * 2] * 20) + 16;
-			exitY = (exitY * 32) - (RCT2_ADDRESS(0x00981D6E, sint16)[exitDirection * 2] * 20) + 16;
+			exitX = (exitX * 32) - (word_981D6C[exitDirection].x * 20) + 16;
+			exitY = (exitY * 32) - (word_981D6C[exitDirection].y * 20) + 16;
 			exitZ = (exitZ * 8) + 2;
 
 			// Reverse direction
