@@ -43,9 +43,22 @@ typedef struct rct_weather_transition {
 assert_struct_size(rct_weather_transition, 26);
 #pragma pack(pop)
 
-static const rct_weather_transition* climate_transitions[4];
+uint8 gClimate;
+uint8 gClimateCurrentWeather;
+sint8 gClimateCurrentTemperature;
+uint8 gClimateCurrentWeatherEffect;
+uint8 gClimateCurrentWeatherGloom;
+uint8 gClimateCurrentRainLevel;
+uint8 gClimateNextWeather;
+sint8 gClimateNextTemperature;
+uint8 gClimateNextWeatherEffect;
+uint8 gClimateNextWeatherGloom;
+uint8 gClimateNextRainLevel;
+uint16 gClimateUpdateTimer;
 
 uint16 gClimateLightningFlash;
+
+static const rct_weather_transition* climate_transitions[4];
 
 // Sound data
 static int _rainVolume = 1;

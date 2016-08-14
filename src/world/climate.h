@@ -46,22 +46,22 @@ typedef struct rct_weather {
 assert_struct_size(rct_weather, 8);
 #pragma pack(pop)
 
-#define gClimate						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8)
-#define gClimateCurrentWeather			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8)
-#define gClimateCurrentTemperature		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8)
-#define gClimateCurrentWeatherEffect	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8)
-#define gClimateCurrentWeatherGloom		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)
-#define gClimateCurrentRainLevel		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8)
-#define gClimateNextWeather				RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, uint8)
-#define gClimateNextTemperature			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, sint8)
-#define gClimateNextWeatherEffect		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8)
-#define gClimateNextWeatherGloom		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8)
-#define gClimateNextRainLevel			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8)
-#define gClimateUpdateTimer				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, uint16)
-
-extern const rct_weather climate_weather_data[6];
+extern uint8 gClimate;
+extern uint8 gClimateCurrentWeather;
+extern sint8 gClimateCurrentTemperature;
+extern uint8 gClimateCurrentWeatherEffect;
+extern uint8 gClimateCurrentWeatherGloom;
+extern uint8 gClimateCurrentRainLevel;
+extern uint8 gClimateNextWeather;
+extern sint8 gClimateNextTemperature;
+extern uint8 gClimateNextWeatherEffect;
+extern uint8 gClimateNextWeatherGloom;
+extern uint8 gClimateNextRainLevel;
+extern uint16 gClimateUpdateTimer;
 
 extern uint16 gClimateLightningFlash;
+
+extern const rct_weather climate_weather_data[6];
 
 int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);
