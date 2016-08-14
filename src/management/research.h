@@ -65,23 +65,23 @@ enum {
 	RESEARCH_CATEGORY_SCENERYSET
 };
 
-#define gResearchFundingLevel		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8)
-#define gResearchPriorities			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8)
-#define gResearchProgress			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16)
-#define gResearchProgressStage		RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)
-#define gResearchLastItemSubject	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32)
-#define gResearchExpectedMonth		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8)
-#define gResearchExpectedDay		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8)
-#define gResearchNextCategory		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8)
-#define gResearchNextItem			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32)
+extern uint8 gResearchFundingLevel;
+extern uint8 gResearchPriorities;
+extern uint16 gResearchProgress;
+extern uint8 gResearchProgressStage;
+extern uint32 gResearchLastItemSubject;
+extern uint8 gResearchExpectedMonth;
+extern uint8 gResearchExpectedDay;
+extern uint8 gResearchNextCategory;
+extern uint32 gResearchNextItem;
 
-extern rct_research_item *gResearchItems;
+extern rct_research_item gResearchItems[500];
 extern uint8 gResearchUncompletedCategories;
-extern uint32 *gResearchedRideTypes;
-extern uint32 *gResearchedRideEntries;
-extern uint32 *gResearchedTrackTypesA;
-extern uint32 *gResearchedTrackTypesB;
-extern uint32 *gResearchedSceneryItems;
+extern uint32 gResearchedRideTypes[8];
+extern uint32 gResearchedRideEntries[8];
+extern uint32 gResearchedTrackTypesA[128];
+extern uint32 gResearchedTrackTypesB[128];
+extern uint32 gResearchedSceneryItems[56];
 extern bool gSilentResearch;
 
 void research_reset_items();

@@ -33,17 +33,27 @@
 
 const int _researchRate[] = { 0, 160, 250, 400 };
 
+uint8 gResearchFundingLevel;
+uint8 gResearchPriorities;
+uint16 gResearchProgress;
+uint8 gResearchProgressStage;
+uint32 gResearchLastItemSubject;
+uint8 gResearchExpectedMonth;
+uint8 gResearchExpectedDay;
+uint8 gResearchNextCategory;
+uint32 gResearchNextItem;
+
 // 0x01358844[500]
-rct_research_item *gResearchItems = RCT2_ADDRESS(RCT2_RESEARCH_ITEMS, rct_research_item);
+rct_research_item gResearchItems[500];
 
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
 
-uint32 *gResearchedRideTypes = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_RIDE_TYPES, uint32);
-uint32 *gResearchedRideEntries = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_RIDE_ENTRIES, uint32);
-uint32 *gResearchedTrackTypesA = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_TRACK_TYPES_A, uint32);
-uint32 *gResearchedTrackTypesB = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_TRACK_TYPES_B, uint32);
-uint32 *gResearchedSceneryItems = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_SCENERY_ITEMS, uint32);
+uint32 gResearchedRideTypes[8];
+uint32 gResearchedRideEntries[8];
+uint32 gResearchedTrackTypesA[128];
+uint32 gResearchedTrackTypesB[128];
+uint32 gResearchedSceneryItems[56];
 
 bool gSilentResearch = false;
 
