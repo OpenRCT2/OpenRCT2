@@ -94,6 +94,7 @@ constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
 constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
 
 void network_chat_show_connected_message();
+void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
 static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName);
 static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
@@ -317,6 +318,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	printf("Ready for clients...\n");
 	network_chat_show_connected_message();
+	network_chat_show_server_greeting();
 
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
@@ -1952,13 +1954,7 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 	}
 	json_decref(root);
 
-	// Display server greeting if one exists
-	const char* greeting = network_get_server_greeting();
-	if (strcmp(greeting, "") != 0) {
-		char greeting_formatted[256];
-		format_string(greeting_formatted, STR_SERVER_GREETING, &greeting);
-		chat_history_add(greeting_formatted);
-	}
+	network_chat_show_server_greeting();
 }
 
 namespace Convert
@@ -2149,6 +2145,23 @@ void network_chat_show_connected_message()
 	format_string(buffer, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
 	const char *formatted = Network::FormatChat(&server, buffer);
 	chat_history_add(formatted);
+}
+
+// Display server greeting if one exists
+void network_chat_show_server_greeting()
+{
+	const char* greeting = gConfigNetwork.server_greeting;
+	if (!str_is_null_or_empty(greeting)) {
+		static char greeting_formatted[256];
+		char* lineCh = greeting_formatted;
+		greeting_formatted[0] = 0;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+		char* ptrtext = lineCh;
+		safe_strcpy(lineCh, greeting, 240);
+		utf8_remove_format_codes((utf8*)ptrtext, true);
+		chat_history_add(greeting_formatted);
+	}
 }
 
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
