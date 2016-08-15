@@ -2294,7 +2294,6 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 					}
 
 					int totalTrains = numTrainsAtStation + numTravelingTrains;
-					//return false; // force sync - no exceptions!
 					if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2) {
 					//if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->num_vehicles / 2) {
 						/* Sync condition: If there are trains arriving at the
