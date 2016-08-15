@@ -2304,8 +2304,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 					} else {
 						/* Sync exception - train is not arriving at the station
 						 * and there are less than half the trains for the ride
-						 * travelling (will also cover closed rides, rides under
-						 * construction). */
+						 * travelling. */
 						continue;
 					}
 				}
