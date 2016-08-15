@@ -4222,6 +4222,9 @@ STR_5910    :Apply
 STR_5911    :See-Through Paths
 STR_5912    :See-through paths toggle
 STR_5913    :Chat
+STR_5914    :Duplicate
+STR_5915    :Move Up
+STR_5916    :Move Down
 
 #############
 # Scenarios #

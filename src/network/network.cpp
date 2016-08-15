@@ -783,6 +783,116 @@ void Network::RemoveGroup(uint8 id)
 	}
 }
 
+NetworkGroup* Network::DuplicateGroup(uint8 id) 
+{
+	NetworkGroup* addedgroup = nullptr;
+	NetworkGroup* oldgroup = GetGroupByID(id);
+	int newid = -1;
+	// Find first unused group id
+	for (int id = 0; id < 255; id++) {
+		if (std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) {
+			return group->Id == id;
+		}) == group_list.end()) {
+			newid = id;
+			break;
+		}
+	}
+	if (newid != -1) {
+		std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
+		group->Id = newid;
+		
+		//Count the number of groups with the same name
+		std::string old_name = oldgroup->GetName();
+		std::string new_name = old_name;
+		int counter = 1;
+		bool unique;
+		do {
+			unique = true;
+			for (const auto &gr : group_list) {
+				if (String::Equals(gr->GetName().c_str(), new_name.c_str(), true)) {
+					unique = false;
+					break;
+				}
+			}
+			if (!unique) {
+				counter++;
+				new_name = old_name + " #" + std::to_string(counter);
+			}
+		} while (!unique);
+		group->SetName(new_name);
+		
+		for (size_t i = 0; i < NetworkActions::Actions.size(); i++) {
+			if (oldgroup->CanPerformAction(i)) {
+				group->ToggleActionPermission(i);
+			}
+		}
+		addedgroup = group.get();
+		group_list.push_back(std::move(group));
+	}
+	return addedgroup;
+}
+
+bool Network::SwapGroup(uint8 id_a, uint8 id_b) 
+{
+	//Filter out admin group
+	if (id_a == 0 || id_b == 0) return false;
+	//Get groups
+	NetworkGroup* group_a = GetGroupByID(id_a);
+	NetworkGroup* group_b = GetGroupByID(id_b);
+	if (group_a == nullptr || group_b == nullptr) return false;
+	NetworkGroup* tempGroup = AddGroup();
+	if (tempGroup == nullptr) return false;
+	//move users
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		_userManager.MoveUsersOfGroupToGroup(id_a, tempGroup->Id);
+		_userManager.MoveUsersOfGroupToGroup(id_b, id_a);
+		_userManager.MoveUsersOfGroupToGroup(tempGroup->Id, id_b);
+		_userManager.Save();
+	}
+	//move actions
+	for (size_t i = 0; i < NetworkActions::Actions.size(); i++) {
+		if (tempGroup->CanPerformAction(i)) {
+			tempGroup->ToggleActionPermission(i);
+		}
+		if (group_a->CanPerformAction(i)) {
+			tempGroup->ToggleActionPermission(i);
+			group_a->ToggleActionPermission(i);
+		}
+		if (group_b->CanPerformAction(i)) {
+			group_a->ToggleActionPermission(i);
+			group_b->ToggleActionPermission(i);
+		}
+		if (tempGroup->CanPerformAction(i)) {
+			group_b->ToggleActionPermission(i);
+			tempGroup->ToggleActionPermission(i);
+		}
+	}
+	//move online users
+	for (size_t i = 0; i < player_list.size(); i++) {
+		if (player_list[i] != nullptr) {
+			if (player_list[i]->group == id_a)
+				player_list[i]->group = tempGroup->Id; 
+			if (player_list[i]->group == id_b) 
+				player_list[i]->group = id_a; 
+			if (player_list[i]->group == tempGroup->Id) 
+				player_list[i]->group = id_b; 
+		}
+	}
+	// move names
+	tempGroup->SetName(group_a->GetName());
+	group_a->SetName(group_b->GetName());
+	group_b->SetName(tempGroup->GetName());
+	// move default status
+	if (default_group == id_a) {
+		SetDefaultGroup(id_b);
+	} else if (default_group == id_b) {
+		SetDefaultGroup(id_a);
+	}
+	// delete temp group
+	RemoveGroup(tempGroup->Id);
+	return true;
+}
+
 uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 {
 	const NetworkUser * networkUser = _userManager.GetUserByHash(keyhash);
@@ -2320,6 +2430,33 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		}
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 			gNetwork.SetDefaultGroup(groupid);
+		}
+	}break;
+	case 5:{ // duplicate group
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			gNetwork.DuplicateGroup(groupid);
+		}
+	}break;
+	case 6:{ // move up
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			//filter out admin group.
+			if (!gNetwork.SwapGroup(groupid, groupid - 1)) {
+				gGameCommandErrorTitle = STR_CANT_DO_THIS;
+				gGameCommandErrorText = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
+		}
+	}break;
+	case 7:{ // move down
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			//filter out admin group.
+			if (!gNetwork.SwapGroup(groupid, groupid + 1)) {
+				gGameCommandErrorTitle = STR_CANT_DO_THIS;
+				gGameCommandErrorText = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
 		}
 	}break;
 	}

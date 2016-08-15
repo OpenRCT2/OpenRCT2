@@ -53,6 +53,7 @@ public:
     void Save();
 
     void UnsetUsersOfGroup(uint8 groupId);
+    void MoveUsersOfGroupToGroup(uint8 source_id, uint8 dest_id);
     void RemoveUser(const std::string &hash);
 
     NetworkUser * GetUserByHash(const std::string &hash);

@@ -23,6 +23,7 @@
 #include "../sprites.h"
 #include "../util/util.h"
 #include "dropdown.h"
+#include "error.h"
 
 enum {
 	WINDOW_MULTIPLAYER_PAGE_INFORMATION,
@@ -48,6 +49,9 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 	WIDX_ADD_GROUP,
 	WIDX_REMOVE_GROUP,
 	WIDX_RENAME_GROUP,
+	WIDX_DUPLICATE_GROUP,
+	WIDX_MOVE_UP_GROUP,
+	WIDX_MOVE_DOWN_GROUP,
 	WIDX_SELECTED_GROUP,
 	WIDX_SELECTED_GROUP_DROPDOWN,
 	WIDX_PERMISSIONS_LIST,
@@ -84,9 +88,12 @@ static rct_widget window_multiplayer_groups_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	11,		102,	65,		76,		STR_ADD_GROUP,				STR_NONE },					// add group button
 	{ WWT_DROPDOWN_BUTTON,	1,	113,	204,	65,		76,		STR_REMOVE_GROUP,			STR_NONE },					// remove group button
 	{ WWT_DROPDOWN_BUTTON,	1,	215,	306,	65,		76,		STR_RENAME_GROUP,			STR_NONE },					// rename group button
-	{ WWT_DROPDOWN,			1,	72,		246,	80,		91,		0xFFFFFFFF,					STR_NONE },					// selected group
-	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	81,		90,		STR_DROPDOWN_GLYPH,			STR_NONE },					//
-	{ WWT_SCROLL,			1,	3,		316,	94,		300,	SCROLL_VERTICAL,							STR_NONE },					// permissions list
+	{ WWT_DROPDOWN_BUTTON,	1,	11,		102,	79,		90,		STR_DUPLICATE,				STR_NONE },					// duplicate group button
+	{ WWT_DROPDOWN_BUTTON,	1,	113,	204,	79,		90,		STR_MOVE_UP,				STR_NONE },					// move up group button
+	{ WWT_DROPDOWN_BUTTON,	1,	215,	306,	79,		90,		STR_MOVE_DOWN,				STR_NONE },					// move down group button
+	{ WWT_DROPDOWN,			1,	72,		246,	94,		105,	0xFFFFFFFF,					STR_NONE },					// selected group
+	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	95,		104,	STR_DROPDOWN_GLYPH,			STR_NONE },					//
+	{ WWT_SCROLL,			1,	3,		316,	108,	300,	SCROLL_VERTICAL,			STR_NONE },					// permissions list
 	{ WIDGETS_END }
 };
 
@@ -107,7 +114,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
 const uint64 window_multiplayer_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_DUPLICATE_GROUP) | (1 << WIDX_MOVE_UP_GROUP) | (1 << WIDX_MOVE_DOWN_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_LOG_CHAT_CHECKBOX) | (1 << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
 };
 
@@ -687,6 +694,30 @@ static void window_multiplayer_groups_mouseup(rct_window *w, int widgetIndex)
 		int groupIndex = network_get_group_index(_selectedGroup);
 		const utf8 *groupName = network_get_group_name(groupIndex);
 		window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, (utf8*)groupName, 32);
+		break;
+	case WIDX_DUPLICATE_GROUP:
+		game_do_command(5 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+		_selectedGroup = network_get_num_groups() - 1;
+		break;
+	case WIDX_MOVE_UP_GROUP:
+		//Filter out host group
+		if (_selectedGroup < 2) {
+			window_error_open(STR_CANT_DO_THIS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
+		}
+		else {
+			game_do_command(6 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+			_selectedGroup--;
+		}
+		break;
+	case WIDX_MOVE_DOWN_GROUP:
+		//Filter out host group
+		if (_selectedGroup == 0 || _selectedGroup >= network_get_num_groups() - 1) {
+			window_error_open(STR_CANT_DO_THIS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
+		}
+		else {
+			game_do_command(7 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+			_selectedGroup++;
+		}
 		break;
 	}
 }

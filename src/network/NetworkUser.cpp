@@ -192,6 +192,19 @@ void NetworkUserManager::UnsetUsersOfGroup(uint8 groupId)
     }
 }
 
+void NetworkUserManager::MoveUsersOfGroupToGroup(uint8 source_id, uint8 dest_id)
+{
+    for (const auto &kvp : _usersByHash)
+    {
+        NetworkUser * networkUser = kvp.second;
+        if (networkUser->GroupId.HasValue() &&
+            networkUser->GroupId.GetValue() == source_id)
+        {
+            networkUser->GroupId = dest_id;
+        }
+    }
+}
+
 void NetworkUserManager::RemoveUser(const std::string &hash)
 {
     NetworkUser * networkUser = GetUserByHash(hash);
