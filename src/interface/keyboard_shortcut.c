@@ -291,6 +291,11 @@ static void shortcut_see_through_scenery_toggle()
 	toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_SCENERY);
 }
 
+static void shortcut_see_through_paths_toggle()
+{
+	toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_PATHS);
+}
+
 static void shortcut_invisible_supports_toggle()
 {
 	toggle_view_flag(VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
@@ -613,6 +618,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_show_multiplayer,
 	shortcut_orginal_painting_toggle,
 	shortcut_debug_paint_toggle,
+	shortcut_see_through_paths_toggle,
 };
 
 #pragma endregion

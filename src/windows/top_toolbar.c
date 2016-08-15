@@ -93,11 +93,12 @@ typedef enum {
 	DDIDX_HIDE_VERTICAL = 2,
 	DDIDX_SEETHROUGH_RIDES = 4,
 	DDIDX_SEETHROUGH_SCENARY = 5,
-	DDIDX_INVISIBLE_SUPPORTS = 6,
-	DDIDX_INVISIBLE_PEEPS = 7,
-	DDIDX_LAND_HEIGHTS = 9,
-	DDIDX_TRACK_HEIGHTS = 10,
-	DDIDX_PATH_HEIGHTS = 11,
+	DDIDX_SEETHROUGH_PATHS = 6,
+	DDIDX_INVISIBLE_SUPPORTS = 7,
+	DDIDX_INVISIBLE_PEEPS = 8,
+	DDIDX_LAND_HEIGHTS = 10,
+	DDIDX_TRACK_HEIGHTS = 11,
+	DDIDX_PATH_HEIGHTS = 12,
 } TOP_TOOLBAR_VIEW_MENU_DDIDX;
 
 typedef enum {
@@ -3036,21 +3037,23 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
-	gDropdownItemsFormat[8] = STR_EMPTY;
-	gDropdownItemsFormat[9] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[8] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[9] = STR_EMPTY;
 	gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
 
 	gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
 	gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
 	gDropdownItemsArgs[2] = STR_REMOVE_VERTICAL_FACES;
 	gDropdownItemsArgs[4] = STR_SEE_THROUGH_RIDES;
 	gDropdownItemsArgs[5] = STR_SEE_THROUGH_SCENERY;
-	gDropdownItemsArgs[6] = STR_INVISIBLE_SUPPORTS;
-	gDropdownItemsArgs[7] = STR_INVISIBLE_PEOPLE;
-	gDropdownItemsArgs[9] = STR_HEIGHT_MARKS_ON_LAND;
-	gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
-	gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_PATHS;
+	gDropdownItemsArgs[6] = STR_SEE_THROUGH_PATHS;
+	gDropdownItemsArgs[7] = STR_INVISIBLE_SUPPORTS;
+	gDropdownItemsArgs[8] = STR_INVISIBLE_PEOPLE;
+	gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
+	gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
+	gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -3058,7 +3061,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 		widget->bottom - widget->top + 1,
 		w->colours[1] | 0x80,
 		0,
-		12
+		13
 	);
 
 	// Set checkmarks
@@ -3073,16 +3076,18 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 		dropdown_set_checked(4, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
 		dropdown_set_checked(5, true);
-	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+	if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
 		dropdown_set_checked(6, true);
-	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
 		dropdown_set_checked(7, true);
+	if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+		dropdown_set_checked(8, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-		dropdown_set_checked(9, true);
-	if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
 		dropdown_set_checked(10, true);
-	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
+	if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
 		dropdown_set_checked(11, true);
+	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
+		dropdown_set_checked(12, true);
 
 	gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }
@@ -3110,6 +3115,9 @@ void top_toolbar_view_menu_dropdown(short dropdownIndex)
 			break;
 		case DDIDX_SEETHROUGH_SCENARY:
 			w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+			break;
+		case DDIDX_SEETHROUGH_PATHS:
+			w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
 			break;
 		case DDIDX_INVISIBLE_SUPPORTS:
 			w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
