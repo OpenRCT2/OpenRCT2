@@ -38,6 +38,7 @@
 #include "window.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
+uint16 gCurrentViewportFlags = 0;
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
@@ -675,6 +676,10 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
 	gCurrentViewportFlags = viewport->flags;
+	//This should still be updated until the rest of supports, etc, is reverse-engineered. Otherwise
+	// Wooden Coaster supports (and a few other coaster supports) will still appear even if "invisible supports"
+	// are enabled.
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
 
 	uint16 width = right - left;
