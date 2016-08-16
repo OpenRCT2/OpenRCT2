@@ -1138,7 +1138,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 
 		// ax
-		uint16 track_flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
+		uint16 track_flags = TrackFlags[track_elem_type];
 
 		uint32 testing_flags = ride->testing_flags;
 		if (testing_flags & RIDE_TESTING_TURN_LEFT &&
@@ -7486,7 +7486,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				trackType = mapElement->properties.track.type;
-				if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20)) {
+				if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN)) {
 					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
 				}
 			}

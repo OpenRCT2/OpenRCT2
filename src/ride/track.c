@@ -977,7 +977,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 		if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) && !gCheatsEnableChainLiftOnAllTrack) {
-			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
+			if (TrackFlags[type] & TRACK_ELEM_FLAG_0400) {
 				gGameCommandErrorText = STR_TOO_STEEP_FOR_LIFT_HILL;
 				return MONEY32_UNDEFINED;
 			}
@@ -1022,10 +1022,10 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 	}
 
-	uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		RCT2_ADDRESS(0x0099443C, uint16) :
-		RCT2_ADDRESS(0x0099423C, uint16);
-	if (trackFlags[type] & 0x100) {
+	const uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		FlatTrackFlags :
+		TrackFlags;
+	if (trackFlags[type] & TRACK_ELEM_FLAG_0100) {
 		if ((originZ & 0x0F) != 8) {
 			gGameCommandErrorText = 954;
 			return MONEY32_UNDEFINED;
@@ -1142,7 +1142,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		gTrackGroundFlags = bh;
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
-			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 0x200) {
+			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_0200) {
 				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
@@ -1150,7 +1150,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 		else {
-			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x200) {
+			if (TrackFlags[type] & TRACK_ELEM_FLAG_0200) {
 				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
@@ -1159,7 +1159,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
-			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 1) {
+			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_0001) {
 				if (!(gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
@@ -1167,7 +1167,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 		else {
-			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 1) {
+			if (TrackFlags[type] & TRACK_ELEM_FLAG_0001) { // No element has this flag
 				if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
