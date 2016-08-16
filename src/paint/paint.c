@@ -907,7 +907,7 @@ static void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_
 
 		int image_id = attached_ps->image_id;
 		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
-			if (ps->sprite_type == 3) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_RIDE) {
 				if (image_id & 0x40000000) {
 					image_id &= 0x7FFFF;
 					image_id |= 0x41880000;
@@ -916,8 +916,17 @@ static void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_
 		}
 
 		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
-			if (ps->sprite_type == 5) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SCENERY) {
 				if (image_id & 0x40000000) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
+				if (!(image_id & 0x40000000)) {
 					image_id &= 0x7FFFF;
 					image_id |= 0x41880000;
 				}
@@ -942,7 +951,7 @@ void paint_quadrant_ps() {
 	for (ps = ps->next_quadrant_ps; ps;) {
 		sint16 x = ps->x;
 		sint16 y = ps->y;
-		if (ps->sprite_type == 2) {
+		if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE) {
 			if (dpi->zoom_level >= 1) {
 				x &= 0xFFFE;
 				y &= 0xFFFE;
@@ -954,7 +963,7 @@ void paint_quadrant_ps() {
 		}
 		int image_id = ps->image_id;
 		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
-			if (ps->sprite_type == 3) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_RIDE) {
 				if (!(image_id & 0x40000000)) {
 					image_id &= 0x7FFFF;
 					image_id |= 0x41880000;
@@ -962,7 +971,17 @@ void paint_quadrant_ps() {
 			}
 		}
 		if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-			if (ps->sprite_type == 9) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_WALL) {
+				if (!(image_id & 0x40000000)) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_FOOTPATH || 
+				ps->sprite_type == VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM ||
+				ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER) {
 				if (!(image_id & 0x40000000)) {
 					image_id &= 0x7FFFF;
 					image_id |= 0x41880000;
@@ -970,7 +989,9 @@ void paint_quadrant_ps() {
 			}
 		}
 		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
-			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5) {
+			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY || 
+				ps->sprite_type == VIEWPORT_INTERACTION_ITEM_WALL || 
+				ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SCENERY) {
 				if (!(image_id & 0x40000000)) {
 					image_id &= 0x7FFFF;
 					image_id |= 0x41880000;

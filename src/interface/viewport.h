@@ -38,7 +38,8 @@ enum {
 	VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
 	VIEWPORT_FLAG_HIDE_VERTICAL = (1 << 13),
 	VIEWPORT_FLAG_INVISIBLE_SPRITES = (1 << 14),
-	VIEWPORT_FLAG_15 = (1 << 15)
+	VIEWPORT_FLAG_15 = (1 << 15),
+	VIEWPORT_FLAG_SEETHROUGH_PATHS = (1 << 16)
 };
 
 enum {
@@ -92,7 +93,7 @@ typedef struct viewport_interaction_info {
 #define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM, uint8)
 #define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ROTATION, uint8)
 #define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
-#define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16)
+extern uint32 gCurrentViewportFlags;
 
 // rct2: 0x014234BC
 extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];

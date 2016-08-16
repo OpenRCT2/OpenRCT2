@@ -1,5 +1,6 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: New view option: "See-Through Paths"
 - Feature: Add cheat to reset date.
 - Feature: Add OpenGL drawing engine.
 - Feature: Implementation of the user-defined currency

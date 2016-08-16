@@ -4219,6 +4219,8 @@ STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the c
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
 STR_5910    :Apply
+STR_5911    :See-Through Paths
+STR_5912    :See-through paths toggle
 
 #############
 # Scenarios #
