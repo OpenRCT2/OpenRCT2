@@ -76,7 +76,6 @@ typedef struct rct_widget {
 
 /**
  * Viewport structure
- * size: 0x14
  */
 typedef struct rct_viewport {
 	sint16 width;					// 0x00
