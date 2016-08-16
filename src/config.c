@@ -227,6 +227,8 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, last_save_track_directory),       "last_track_directory",         CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
 	{ offsetof(general_configuration, window_limit),					"window_limit",					CONFIG_VALUE_TYPE_UINT8,		WINDOW_LIMIT_MAX,				NULL					},
 	{ offsetof(general_configuration, zoom_to_cursor),					"zoom_to_cursor",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_effects),			"render_weather_effects",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_gloom),			"render_weather_gloom",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {

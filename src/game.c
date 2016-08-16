@@ -186,7 +186,7 @@ void update_palette_effects()
 		int q = 0;
 		extern const sint32 WeatherColours[4];
 		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-		if (weather_colour != -1) {
+		if (weather_colour != -1 && gConfigGeneral.render_weather_gloom) {
 			q = 1;
 			if (weather_colour != 0x2000031) {
 				q = 2;

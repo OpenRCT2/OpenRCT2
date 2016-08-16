@@ -19,6 +19,7 @@ extern "C"
     #include "../interface/window.h"
     #include "../world/climate.h"
     #include "drawing.h"
+    #include "../config.h"
 }
 
 #include "IDrawingEngine.h"
@@ -86,6 +87,9 @@ static void DrawRainWindow(IRainDrawer * rainDrawer,
                            sint16 bottom,
                            uint32 rainType)
 {
+    if (!gConfigGeneral.render_weather_effects)
+        return;
+
     rct_window * newWindow = gWindowNextSlot;
     rct_window * w = original_w + 1; // Start from second window
     for (; ; w++)

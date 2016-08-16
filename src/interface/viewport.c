@@ -777,7 +777,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		paint_quadrant_ps();
 
 		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-		if ((weather_colour != -1) && (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && !gTrackDesignSaveMode) {
+		if ((weather_colour != -1) && (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && !gTrackDesignSaveMode && gConfigGeneral.render_weather_gloom) {
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}
 		viewport_draw_money_effects();
