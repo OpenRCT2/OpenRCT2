@@ -32,6 +32,49 @@ const rct_xy8 loc_97AF20[] = {
 	{16, 28}
 };
 
+/** rct2: 0x0097AF32 */
+static const uint8 _97AF32[] = {
+	5, 2, 5, 2, 5, 2, 5, 2,
+	7, 1, 7, 1, 7, 1, 7, 1,
+	6, 3, 6, 3, 6, 3, 6, 3,
+	8, 0, 8, 0, 8, 0, 8, 0,
+	5, 3, 6, 0, 8, 1, 7, 2,
+	1, 2, 1, 2, 1, 2, 1, 2,
+	0, 3, 0, 3, 0, 3, 0, 3,
+	3, 1, 3, 1, 3, 1, 3, 1,
+	2, 0, 2, 0, 2, 0, 2, 0,
+
+	6, 1, 6, 1, 6, 1, 6, 1,
+	5, 0, 5, 0, 5, 0, 5, 0,
+	8, 2, 8, 2, 8, 2, 8, 2,
+	7, 3, 7, 3, 7, 3, 7, 3,
+	6, 0, 8, 1, 7, 2, 5, 3,
+	0, 0, 0, 0, 0, 0, 0, 0,
+	2, 1, 2, 1, 2, 1, 2, 1,
+	1, 3, 1, 3, 1, 3, 1, 3,
+	3, 2, 3, 2, 3, 2, 3, 2,
+
+	1, 6, 1, 6, 1, 6, 1, 6,
+	3, 5, 3, 5, 3, 5, 3, 5,
+	0, 7, 0, 7, 0, 7, 0, 7,
+	2, 4, 2, 4, 2, 4, 2, 4,
+	8, 1, 7, 2, 5, 3, 6, 0,
+	4, 1, 4, 1, 4, 1, 4, 1,
+	4, 2, 4, 2, 4, 2, 4, 2,
+	4, 0, 4, 0, 4, 0, 4, 0,
+	4, 3, 4, 3, 4, 3, 4, 3,
+
+	2, 5, 2, 5, 2, 5, 2, 5,
+	0, 4, 0, 4, 0, 4, 0, 4,
+	3, 6, 3, 6, 3, 6, 3, 6,
+	1, 7, 1, 7, 1, 7, 1, 7,
+	7, 2, 5, 3, 6, 0, 8, 1,
+	8, 5, 8, 5, 8, 5, 8, 5,
+	7, 6, 7, 6, 7, 6, 7, 6,
+	6, 4, 6, 4, 6, 4, 6, 4,
+	5, 7, 5, 7, 5, 7, 5, 7,
+};
+
 /** rct2: 0x0097B052, 0x0097B053 */
 const rct_xy16 loc_97B052[] = {
 	{-15, -1},
@@ -44,6 +87,96 @@ const rct_xy16 loc_97B052[] = {
 	{-1,  -26}
 };
 
+/** rct2: 0x0097B062, 0x0097B063 */
+const rct_xy8 _97B062[] = {
+	{ 18,  3 },
+	{  3, 18 },
+	{ 18,  3 },
+	{  3, 18 },
+	{ 32,  3 },
+	{  3, 32 },
+	{ 32,  3 },
+	{  3, 32 }
+};
+
+/** rct2: 0x0097B072 */
+const uint32 _97B072[][8] = {
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
+	{ 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 },
+	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 },
+	{ 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 },
+	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 },
+	{ 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 },
+	{ 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 },
+	{ 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 },
+	{ 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 },
+};
+
+/** rct2: 0x0097B142 */
+static const uint8 word_97B142[] = {
+	6,
+	3,
+	3,
+	6,
+	3,
+	3,
+	6,
+	6,
+	6,
+	6,
+	4,
+	3,
+	6,
+};
+
+typedef struct metal_supports_images {
+	uint16 base_id;
+	uint16 beam_id;
+} metal_supports_images;
+
+/** rct2: 0x0097B15C */
+static const metal_supports_images _97B15C[] = {
+	{ 3243, 3209 },
+	{ 3279, 3262 },
+	{ 3298, 3262 },
+	{ 3334, 3317 },
+	{    0, 3658 },
+	{    0, 3658 },
+	{    0, 3141 },
+	{    0, 3158 },
+	{    0, 3175 },
+	{    0, 3192 },
+	{    0, 3124 },
+	{ 3243, 3209 },
+	{ 3334, 3353 },
+};
+
+/** rct2: 0x0097B190 */
+static const metal_supports_images _97B190[] = {
+	{ 3243, 3226 }, // 3209
+	{ 3279, 3262 },
+	{ 3298, 3262 },
+	{ 3334, 3317 },
+	{    0, 3658 },
+	{    0, 3658 },
+	{    0, 3141 },
+	{    0, 3158 },
+	{    0, 3175 },
+	{    0, 3192 },
+	{    0, 3124 },
+	{ 3243, 3226 }, // 3209
+	{ 3334, 3353 },
+};
+
+/** rct2: 0x0097B404 */
+static const uint8 metal_supports_slope_image_map[] = {
+	 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,  0,
+	 0,  0,  0,  0,  0,  0,  0, 15,  0,  0,  0, 16,  0, 17, 18,  0,
+};
 
 typedef struct supports_id_desc {
 	uint16 full;
@@ -370,11 +503,11 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	if (height < gSupportSegments[segment].height){
 		RCT2_GLOBAL(0x009E3294, sint16) = height;
 
-		height -= RCT2_ADDRESS(0x0097B142, sint16)[supportType];
+		height -= word_97B142[supportType];
 		if (height < 0)
 			return false;
 
-		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[rotation * 2]);
+		const uint8* esi = &(_97AF32[rotation * 2]);
 
 		uint8 newSegment = esi[segment * 8];
 		if (height <= gSupportSegments[newSegment].height) {
@@ -389,7 +522,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 					if (height <= gSupportSegments[newSegment].height) {
 						esi += 72;
 						newSegment = esi[segment * 8];
-						return true;
+						return false;
 					}
 				}
 			}
@@ -402,10 +535,10 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		xOffset += loc_97B052[ebp].x;
 		yOffset += loc_97B052[ebp].y;
 
-		sint16 boundBoxLengthX = RCT2_ADDRESS(0x0097B062, uint8)[ebp * 2];
-		sint16 boundBoxLengthY = RCT2_ADDRESS(0x0097B062 + 1, uint8)[ebp * 2];
+		sint16 boundBoxLengthX = _97B062[ebp].x;
+		sint16 boundBoxLengthY = _97B062[ebp].y;
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B072, uint16)[supportType * 8 + ebp];
+		uint32 image_id = _97B072[supportType][ebp];
 		image_id |= imageColourFlags;
 		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, rotation);
 
@@ -414,7 +547,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	sint16 si = height;
 	if (gSupportSegments[segment].slope & (1 << 5) ||
 		height - gSupportSegments[segment].height < 6 ||
-		RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2] == 0
+		_97B15C[supportType].base_id == 0
 		) {
 
 		height = gSupportSegments[segment].height;
@@ -422,8 +555,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2];
-		image_id += RCT2_ADDRESS(0x0097B404, sint16)[gSupportSegments[segment].slope & 0x1F];
+		uint32 image_id = _97B15C[supportType].base_id;
+		image_id += metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
 		image_id |= imageColourFlags;
 
 		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, gSupportSegments[segment].height, rotation);
@@ -445,7 +578,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		uint32 image_id = _97B15C[supportType].beam_id;
 		image_id += heightDiff - 1;
 		image_id |= imageColourFlags;
 
@@ -472,7 +605,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		uint32 image_id = _97B15C[supportType].beam_id;
 		image_id += z - 1;
 		image_id |= imageColourFlags;
 
@@ -514,7 +647,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		sint8 xOffset = loc_97AF20[segment].x;
 		sint8 yOffset = loc_97AF20[segment].y;
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		uint32 image_id = _97B190[supportType].beam_id;
 		image_id += z - 1;
 		image_id |= imageColourFlags;
 
