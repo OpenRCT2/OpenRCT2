@@ -1586,7 +1586,7 @@ static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_pee
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
 
 	// Create sick at location
-	litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, peep->sprite_index & 1);
+	litter_create(peep->x, peep->y, peep->z, peep->sprite_direction, (peep->sprite_index & 1) ? LITTER_TYPE_SICK_ALT: LITTER_TYPE_SICK);
 
 	int sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
 	audio_play_sound_at_location(sound_id, peep->x, peep->y, peep->z);
@@ -5454,6 +5454,64 @@ static void peep_update_buying(rct_peep* peep)
 	return;
 }
 
+/** rct2: 0x0097EFCC */
+static const uint8 item_standard_litter[32] = {
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_BALLOON
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_TOY
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_MAP
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PHOTO
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_UMBRELLA
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_DRINK
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_BURGER
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_FRIES
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_ICE_CREAM
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_COTTON_CANDY
+	LITTER_TYPE_EMPTY_CAN,			// PEEP_ITEM_EMPTY_CAN
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_RUBBISH
+	LITTER_TYPE_EMPTY_BURGER_BOX,	// PEEP_ITEM_EMPTY_BURGER_BOX
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PIZZA
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_VOUCHER
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_POPCORN
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_HOT_DOG
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_TENTACLE
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_HAT
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_CANDY_APPLE
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_TSHIRT
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_DONUT
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_COFFEE
+	LITTER_TYPE_EMPTY_CUP,			// PEEP_ITEM_EMPTY_CUP
+	LITTER_TYPE_EMPTY_BOX,			// PEEP_ITEM_CHICKEN
+	LITTER_TYPE_EMPTY_BOTTLE,		// PEEP_ITEM_LEMONADE
+	LITTER_TYPE_EMPTY_BOX,			// PEEP_ITEM_EMPTY_BOX
+	LITTER_TYPE_EMPTY_BOTTLE,		// PEEP_ITEM_EMPTY_BOTTLE
+};
+
+/** rct2: 0x0097EFE8 */
+static const uint8 item_extra_litter[32] = {
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PHOTO2
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PHOTO3
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PHOTO4
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_PRETZEL
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_CHOCOLATE
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_ICED_TEA
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_FUNNEL_CAKE
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_SUNGLASSES
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_BEEF_NOODLES
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_FRIED_RICE_NOODLES
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_WONTON_SOUP
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_MEATBALL_SOUP
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_FRUIT_JUICE
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_SOYBEAN_MILK
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_SU_JONGKWA
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_SUB_SANDWICH
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_COOKIE
+	LITTER_TYPE_EMPTY_BOWL_RED,		// PEEP_ITEM_EMPTY_BOWL_RED
+	LITTER_TYPE_EMPTY_DRINK_CARTON,	// PEEP_ITEM_EMPTY_DRINK_CARTON
+	LITTER_TYPE_EMPTY_JUICE_CUP,	// PEEP_ITEM_EMPTY_JUICE_CUP
+	LITTER_TYPE_RUBBISH,			// PEEP_ITEM_ROAST_SAUSAGE
+	LITTER_TYPE_EMPTY_BOWL_BLUE,	// PEEP_ITEM_EMPTY_BOWL_BLUE
+};
+
 /**
  *
  *  rct2: 0x00691089
@@ -5531,7 +5589,7 @@ static void peep_update_using_bin(rct_peep* peep){
 				peep_update_sprite_type(peep);
 				continue;
 			}
-			uint8 bp = RCT2_ADDRESS(0x97EFCC, uint8)[cur_container];
+			uint8 bp = item_standard_litter[cur_container];
 
 			int x, y;
 			x = peep->x + (scenario_rand() & 7) - 3;
@@ -5562,7 +5620,7 @@ static void peep_update_using_bin(rct_peep* peep){
 				peep_update_sprite_type(peep);
 				continue;
 			}
-			uint8 bp = RCT2_ADDRESS(0x97EFE8, uint8)[cur_container];
+			uint8 bp = item_extra_litter[cur_container];
 
 			int x, y;
 			x = peep->x + (scenario_rand() & 7) - 3;
@@ -6137,7 +6195,13 @@ static void peep_update_walking(rct_peep* peep){
 	if (peep->peep_flags & PEEP_FLAGS_LITTER){
 		if (!(peep->next_var_29 & 0x18)){
 			if ((0xFFFF & scenario_rand()) <= 4096){
-				int ebp = (scenario_rand() & 0x3) + 2;
+				static const uint8 litter_types[] = {
+					LITTER_TYPE_EMPTY_CAN,
+					LITTER_TYPE_RUBBISH,
+					LITTER_TYPE_EMPTY_BURGER_BOX,
+					LITTER_TYPE_EMPTY_CUP,
+				};
+				int ebp = litter_types[scenario_rand() & 0x3];
 				int x = peep->x + (scenario_rand() & 0x7) - 3;
 				int y = peep->y + (scenario_rand() & 0x7) - 3;
 				int direction = (scenario_rand() & 0x3);
@@ -6160,7 +6224,7 @@ static void peep_update_walking(rct_peep* peep){
 
 			if (pos_stnd != 32){
 				peep->item_standard_flags &= ~(1u << pos_stnd);
-				bp = RCT2_ADDRESS(0x97EFCC, uint8)[pos_stnd];
+				bp = item_standard_litter[pos_stnd];
 			}
 			else{
 				uint8 pos_extr = 0;
@@ -6168,7 +6232,7 @@ static void peep_update_walking(rct_peep* peep){
 					if (container & (1u << pos_extr))
 						break;
 				peep->item_extra_flags &= ~(1u << pos_extr);
-				bp = RCT2_ADDRESS(0x97EFE8, uint8)[pos_extr];
+				bp = item_extra_litter[pos_extr];
 			}
 
 			peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -7931,7 +7995,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 				continue;
 
 			litter_count++;
-			if (litter->type > 1)
+			if (litter->type != LITTER_TYPE_SICK && litter->type != LITTER_TYPE_SICK_ALT)
 				continue;
 
 			litter_count--;
