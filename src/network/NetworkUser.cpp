@@ -18,6 +18,7 @@
 
 #include <unordered_set>
 
+#include "../core/Console.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -94,18 +95,25 @@ void NetworkUserManager::Load()
     {
         DisposeUsers();
 
-        json_t * jsonUsers = Json::ReadFromFile(path);
-        size_t numUsers = json_array_size(jsonUsers);
-        for (size_t i = 0; i < numUsers; i++)
+        try
         {
-            json_t * jsonUser = json_array_get(jsonUsers, i);
-            NetworkUser * networkUser = NetworkUser::FromJson(jsonUser);
-            if (networkUser != nullptr)
+            json_t * jsonUsers = Json::ReadFromFile(path);
+            size_t numUsers = json_array_size(jsonUsers);
+            for (size_t i = 0; i < numUsers; i++)
             {
-               _usersByHash[networkUser->Hash] = networkUser;
+                json_t * jsonUser = json_array_get(jsonUsers, i);
+                NetworkUser * networkUser = NetworkUser::FromJson(jsonUser);
+                if (networkUser != nullptr)
+                {
+                    _usersByHash[networkUser->Hash] = networkUser;
+                }
             }
+            json_decref(jsonUsers);
         }
-        json_decref(jsonUsers);
+        catch (Exception ex)
+        {
+            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.GetMsg());
+        }
     }
 }
 
