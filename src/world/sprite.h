@@ -148,7 +148,7 @@ typedef struct rct_duck {
 	uint8 pad_16[0x8];
 	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[0x7];
-	uint16 var_26;
+	uint16 frame;
 	uint8 pad_28[0x8];
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32

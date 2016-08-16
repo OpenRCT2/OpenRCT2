@@ -818,6 +818,52 @@ void SoftwareDrawingContext::Clear(uint32 colour)
     }
 }
 
+/** rct2: 0x0097FF04 */
+static const uint16 Pattern[] = {
+    0b0111111110000000,
+    0b0011111111000000,
+    0b0001111111100000,
+    0b0000111111110000,
+    0b0000011111111000,
+    0b0000001111111100,
+    0b0000000111111110,
+    0b0000000011111111,
+    0b1000000001111111,
+    0b1100000000111111,
+    0b1110000000011111,
+    0b1111000000001111,
+    0b1111100000000111,
+    0b1111110000000011,
+    0b1111111000000001,
+    0b1111111100000000,
+};
+
+/** rct2: 0x0097FF14 */
+static const uint16 PatternInverse[] = {
+    0b1000000001111111,
+    0b1100000000111111,
+    0b1110000000011111,
+    0b1111000000001111,
+    0b1111100000000111,
+    0b1111110000000011,
+    0b1111111000000001,
+    0b1111111100000000,
+    0b0111111110000000,
+    0b0011111111000000,
+    0b0001111111100000,
+    0b0000111111110000,
+    0b0000011111111000,
+    0b0000001111111100,
+    0b0000000111111110,
+    0b0000000011111111
+};
+
+/** rct2: 0x0097FEFC */
+static const uint16 * Patterns[] = {
+    Pattern,
+    PatternInverse
+};
+
 void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     rct_drawpixelinfo * dpi = _dpi;
@@ -923,7 +969,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         int startPatternX = (startX + dpi->x) % 16;
         int patternX = startPatternX;
     
-        uint16 * patternsrc = RCT2_ADDRESS(0x0097FEFC, uint16*)[colour >> 28]; // or possibly uint8)[esi*4] ?
+        const uint16 * patternsrc = Patterns[colour >> 28]; // or possibly uint8)[esi*4] ?
     
         for (int numLines = height; numLines > 0; numLines--)
         {
