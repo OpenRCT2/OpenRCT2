@@ -94,6 +94,7 @@ constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
 constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
 
 void network_chat_show_connected_message();
+void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
 static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName);
 static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
@@ -155,6 +156,7 @@ bool Network::Init()
 
 	ServerName = std::string();
 	ServerDescription = std::string();
+	ServerGreeting = std::string();
 	ServerProviderName = std::string();
 	ServerProviderEmail = std::string();
 	ServerProviderWebsite = std::string();
@@ -300,6 +302,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	ServerName = String::ToStd(gConfigNetwork.server_name);
 	ServerDescription = String::ToStd(gConfigNetwork.server_description);
+	ServerGreeting = String::ToStd(gConfigNetwork.server_greeting);
 	ServerProviderName = String::ToStd(gConfigNetwork.provider_name);
 	ServerProviderEmail = String::ToStd(gConfigNetwork.provider_email);
 	ServerProviderWebsite = String::ToStd(gConfigNetwork.provider_website);
@@ -315,6 +318,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	printf("Ready for clients...\n");
 	network_chat_show_connected_message();
+	network_chat_show_server_greeting();
 
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
@@ -1174,6 +1178,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_object_set_new(obj, "players", json_integer(player_list.size()));
 	json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
+	json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting));
 	json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
 
 	// Provider details
@@ -1939,6 +1944,7 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 
 	ServerName = json_stdstring_value(json_object_get(root, "name"));
 	ServerDescription = json_stdstring_value(json_object_get(root, "description"));
+	ServerGreeting = json_stdstring_value(json_object_get(root, "greeting"));
 
 	json_t *jsonProvider = json_object_get(root, "provider");
 	if (jsonProvider != nullptr) {
@@ -1947,6 +1953,8 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 		ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
 	}
 	json_decref(root);
+
+	network_chat_show_server_greeting();
 }
 
 namespace Convert
@@ -2137,6 +2145,23 @@ void network_chat_show_connected_message()
 	format_string(buffer, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
 	const char *formatted = Network::FormatChat(&server, buffer);
 	chat_history_add(formatted);
+}
+
+// Display server greeting if one exists
+void network_chat_show_server_greeting()
+{
+	const char* greeting = gConfigNetwork.server_greeting;
+	if (!str_is_null_or_empty(greeting)) {
+		static char greeting_formatted[256];
+		char* lineCh = greeting_formatted;
+		greeting_formatted[0] = 0;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+		char* ptrtext = lineCh;
+		safe_strcpy(lineCh, greeting, 240);
+		utf8_remove_format_codes((utf8*)ptrtext, true);
+		chat_history_add(greeting_formatted);
+	}
 }
 
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
@@ -2451,6 +2476,7 @@ static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
 
 const utf8 * network_get_server_name() { return gNetwork.ServerName.c_str(); }
 const utf8 * network_get_server_description() { return gNetwork.ServerDescription.c_str(); }
+const utf8 * network_get_server_greeting() { return gNetwork.ServerGreeting.c_str(); }
 const utf8 * network_get_server_provider_name() { return gNetwork.ServerProviderName.c_str(); }
 const utf8 * network_get_server_provider_email() { return gNetwork.ServerProviderEmail.c_str(); }
 const utf8 * network_get_server_provider_website() { return gNetwork.ServerProviderWebsite.c_str(); }
@@ -2502,6 +2528,7 @@ int network_get_current_player_group_index() { return 0; }
 void network_append_chat_log(const utf8 *text) { }
 const utf8 * network_get_server_name() { return nullptr; }
 const utf8 * network_get_server_description() { return nullptr; }
+const utf8 * network_get_server_greeting() { return nullptr; }
 const utf8 * network_get_server_provider_name() { return nullptr; }
 const utf8 * network_get_server_provider_email() { return nullptr; }
 const utf8 * network_get_server_provider_website() { return nullptr; }

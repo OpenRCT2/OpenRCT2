@@ -243,6 +243,7 @@ typedef struct network_configuration {
 	uint8 maxplayers;
 	utf8string server_name;
 	utf8string server_description;
+	utf8string server_greeting;
 	utf8string master_server_url;
 	utf8string provider_name;
 	utf8string provider_email;
