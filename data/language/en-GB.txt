@@ -4221,6 +4221,7 @@ STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crash
 STR_5910    :Apply
 STR_5911    :See-Through Paths
 STR_5912    :See-through paths toggle
+STR_5913    :Chat
 
 #############
 # Scenarios #

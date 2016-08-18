@@ -173,6 +173,7 @@ WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_PLAYER),                         STR_THEMES_WINDOW_PLAYER,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { THEME_WC(WC_NETWORK_STATUS),                 STR_THEMES_WINDOW_NETWORK_STATUS,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
     { THEME_WC(WC_SERVER_LIST),                    STR_SERVER_LIST,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_CHAT),                           STR_CHAT,       COLOURS_1(TRANSLUCENT(COLOUR_GREY)                                                                                             ) },
 };
 
 #pragma endregion
