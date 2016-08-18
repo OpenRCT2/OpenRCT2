@@ -46,7 +46,7 @@ rct_xyz16 gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
 uint8 gPeepPathFindQueueRideIndex;
 bool gPeepPathFindSingleChoiceSection;
-uint32 gPeepPathFindAltStationNum;
+// uint32 gPeepPathFindAltStationNum;
 bool _peepPathFindIsStaff;
 uint8 _peepPathFindQueueRideIndex;
 sint8 _peepPathFindNumJunctions;
@@ -8976,23 +8976,21 @@ static int guest_path_finding(rct_peep* peep)
 
 	gPeepPathFindQueueRideIndex = rideIndex;
 
-	/* Global gPeepPathFindAltStationNum is used for storing a
-         * ride station number that is not the nearest station to the peep.
-         * In the case when the nearest ride station is not the first station,
-         * it will be the ride station number prior to the nearest station;
-         * in the case when the first station is the closest, it will be the
-         * next ride station number.
-         * For rides with a single station, its value remains unchanged from 4.
-         * Note that the initial value set is the game hardcoded max number of
-	 * stations per ride = 4 */
-	gPeepPathFindAltStationNum = 4;
-
+	/* Find the ride's closest entrance station to the peep.
+	 * At the same time, count how many entrance stations there are and
+	 * which stations are entrance stations. */
 	uint16 closestDist = 0xFFFF;
-	uint8 closestStationNum = 4;
+	uint8 closestStationNum;
+
+	int numEntranceStations = 0;
+	uint entranceStations = 0;
 
 	for (uint8 stationNum = 0; stationNum < 4; ++stationNum){
-		if (ride->entrances[stationNum] == 0xFFFF)
+		if (ride->entrances[stationNum] == 0xFFFF) // stationNum has no entrance (so presumably an exit only station).
 			continue;
+
+		numEntranceStations++;
+		entranceStations |= (1 << stationNum);
 
 		sint16 stationX = (ride->entrances[stationNum] & 0xFF) * 32;
 		sint16 stationY = (ride->entrances[stationNum] & 0xFF00) / 8;
@@ -9000,66 +8998,47 @@ static int guest_path_finding(rct_peep* peep)
 
 		if (dist < closestDist){
 			closestDist = dist;
-			gPeepPathFindAltStationNum = closestStationNum;
 			closestStationNum = stationNum;
 			continue;
 		}
-
-		if (gPeepPathFindAltStationNum == 4){
-			gPeepPathFindAltStationNum = stationNum;
-		}
 	}
 
-	if (closestStationNum == 4)
+	// Ride has no stations with an entrance, so head to station 0.
+	if (numEntranceStations == 0)
 		closestStationNum = 0;
 
-	/* For rides with 2 stations (and those being stations 0 and 1)
-         * that are snychronised with adjacent stations, make the peep alternate
-         * between going to station 0 and station 1. */
-	/* FUTURE: expand this beyond just 2 ride stations.
-	 * i.e. randomly pick between all available ride stations.
-         * Also check whether this applies to Transport rides, since it would
-         * be better if this behaviour did not apply to transport rides. */
-	if (gPeepPathFindAltStationNum != 4) {
-		if (
-			(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) &&
-			ride->num_stations == 2 &&
-			ride->entrances[0] != 0xFFFF &&
-			ride->entrances[1] != 0xFFFF
-		) {
-			closestStationNum = 0;
-			if (peep->no_of_rides & 1)
-				closestStationNum++;
+	/* If a ride has multiple entrance stations and is set to sync with
+	 * adjacent stations, cycle through the entrance stations (based on
+	 * number of rides the peep has been on) so the peep will try the
+	 * different sections of the ride.
+	 * In this case, the ride's various entrance stations will typically,
+	 * though not necessarily, be adjacent to one another and consequently
+	 * not too far for the peep to walk when cycling between them.
+	 * Note: the same choice of station must made while the peep navigates
+	 * to the station. Consequently a random station selection here is not
+	 * appropriate. */
+	if (numEntranceStations > 1 &&
+		(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+		int select = peep->no_of_rides % numEntranceStations;
+		while (select > 0) {
+			closestStationNum = bitscanforward(entranceStations);
+			entranceStations &= ~(1 << closestStationNum);
+			select--;
 		}
+		closestStationNum = bitscanforward(entranceStations);
 	}
 
-	/* FUTURE: this needs to be iterated to correctly loop around
-         * all four potential stations depending on which was closest.
-         * As is, some unexpected behaviour or errors could result.
-	 * Need to understand when entranceXY == 0xFFFF will occur.
-	 * Should only be when the ride has no stations... but can such a
-	 * ride be open? Possibly covers the case when the ride station was
- 	 * removed after the peep chose it.
-	 * Also, for getting the correct z value later on, closestStationNum
-	 * should be updated.
-         */
-	uint16 entranceXY = ride->entrances[closestStationNum];
-	if (entranceXY == 0xFFFF){
-		entranceXY = ride->entrances[closestStationNum + 1];
-		if (entranceXY == 0xFFFF){
-			entranceXY = ride->entrances[closestStationNum + 2];
-		}
-	}
-
-	if (closestDist == 0xFFFF){
-		entranceXY = ride->station_starts[closestStationNum];
-	}
+	uint16 entranceXY;
+	if (numEntranceStations == 0)
+		entranceXY = ride->station_starts[closestStationNum]; // closestStationNum is always 0 here.
+	else
+		entranceXY = ride->entrances[closestStationNum];
 
 	x = (entranceXY & 0xFF) * 32;
 	y = (entranceXY & 0xFF00) / 8;
-	z = ride->station_heights[closestStationNum]; // FUTURE: closestStationNum could be wrong (see above)
+	z = ride->station_heights[closestStationNum];
 
-	get_ride_queue_end(&x, &y, &z, closestDist);
+	get_ride_queue_end(&x, &y, &z);
 
 	gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z };
 	gPeepPathFindIgnoreForeignQueues = true;
