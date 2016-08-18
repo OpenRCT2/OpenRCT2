@@ -67,6 +67,8 @@ enum {
 	PATH_SEARCH_PARK_EXIT,
 	PATH_SEARCH_LIMIT_REACHED,
 	PATH_SEARCH_WIDE,
+	PATH_SEARCH_QUEUE,
+	PATH_SEARCH_OTHER = 10
 };
 
 static void sub_68F41A(rct_peep *peep, int index);
@@ -7942,8 +7944,9 @@ static bool is_valid_path_z_and_direction(rct_map_element *mapElement, int curre
 /**
  *
  * Returns:
- *   0 - other
  *   6 - wide path
+ *   7 - ride queue
+ *   10 - other
  *
  *  rct2: 0x00694BAE
  *
@@ -7966,12 +7969,13 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
 	do {
 		if (map_element_get_type(nextMapElement) != MAP_ELEMENT_TYPE_PATH) continue;
 		if (!is_valid_path_z_and_direction(nextMapElement, z, chosenDirection)) continue;
-		if (footpath_element_is_wide(nextMapElement)) return 6;
+		if (footpath_element_is_wide(nextMapElement)) return PATH_SEARCH_WIDE;
+		if (footpath_element_is_queue(nextMapElement)) return PATH_SEARCH_QUEUE;
 
-		return 0;
+		return PATH_SEARCH_OTHER;
 	} while (!map_element_is_last_for_tile(nextMapElement++));
 
-	return 0;
+	return PATH_SEARCH_OTHER;
 }
 
 /**
@@ -7984,6 +7988,7 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
  *   4 - park entrance / exit
  *   5 - search limit reached
  *   6 - wide path
+ *   7 - ride queue
  * For return values 1, 2 the rideIndex is stored in outRideIndex.
  *
  *  rct2: 0x006949B9
@@ -8319,22 +8324,26 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 
 	/* At this point it is known that the tile being examined is not
 	 * the goal, not a dead end, and not a single tile wide path.
-         * It must be a junction. */
+         * It must be a junction of tiles. */
 
-	/* Determine if this is a 'thin' junction or a 'wide' junction.
+	/* Determine if this is a 'thin' junction.
          * A junction is considered 'thin' if it has more than 2 edges
-	 * leading to non-wide path elements).
+	 * leading to non-wide path elements; furthermore, ride queues are not
+	 * counted, since a ride queue coming off a path should not result in
+	 * the path being considered a junction.
+	 *
 	 * A 'thin' junction is considered a junction with respect to
-	 * the search limit _peepPathFindNumJunctions ; a 'wide junction
-	 * is not and is treated like a path segment with respect to the
-	 * search limits. */
+	 * the search limit _peepPathFindNumJunctions ; junctions that are not
+	 * 'thin' per the above definition are treated like a path segment with
+	 * respect to the search limits. */
 	uint8 prescan_edges = path_get_permitted_edges(path);
 	int prescan_edge = bitscanforward(prescan_edges);
 	bool thin_junction = false;
 	int thin_count = 0;
 	do
 	{
-		if (footpath_element_next_in_direction(x, y, z, path, prescan_edge) != PATH_SEARCH_WIDE) {
+		int fp_result = footpath_element_next_in_direction(x, y, z, path, prescan_edge);
+		if (fp_result != PATH_SEARCH_WIDE && fp_result != PATH_SEARCH_QUEUE) {
 			thin_count++;
 		}
 
@@ -8723,8 +8732,9 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 /**
  *
  *  rct2: 0x006A72C5
+ *  param dist is not used.
  */
-static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z, sint16 dist){
+static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	rct_map_element *mapElement = map_get_first_element_at(*x / 32, *y / 32);
 
 	bool found = false;
