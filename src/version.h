@@ -21,7 +21,12 @@
 
 #define OPENRCT2_NAME				"OpenRCT2"
 #define OPENRCT2_VERSION			"0.0.5"
-#define OPENRCT2_ARCHITECTURE		"x86"
+
+#if defined(__LP64__) || defined(_WIN64)
+	#define OPENRCT2_ARCHITECTURE		"x64"
+#else
+	#define OPENRCT2_ARCHITECTURE		"x86"
+#endif
 
 // Platform
 #ifdef __WINDOWS__
