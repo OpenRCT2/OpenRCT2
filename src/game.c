@@ -499,7 +499,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 		if (command == GAME_COMMAND_CHEAT) {
 			// Get cheat name
-			const char* cheat = cheats_get_cheat_string(*ecx, *edx);			
+			const char* cheat = cheats_get_cheat_string(*ecx, *edx, *edi);
 			char* args[2] = {
 				(char *) player_name,
 				(char *) cheat
