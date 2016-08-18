@@ -35,6 +35,7 @@
 #include "track.h"
 #include "track_data.h"
 #include "vehicle.h"
+#include "vehicle_data.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
 
@@ -312,13 +313,6 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 	SwingingTimeToSpriteMap_9,
 	SwingingTimeToSpriteMap_10,
 	SwingingTimeToSpriteMap_11,
-};
-
-/** rct2: 0x009A12E0 */
-static const uint8 * TopSpinTimeToSpriteMaps[] = {
-	RCT2_ADDRESS(0x009A12EC, const uint8),
-	RCT2_ADDRESS(0x009A1751, const uint8),
-	RCT2_ADDRESS(0x009A1CC6, const uint8),
 };
 
 /** rct2: 0x0099F0F4 */
@@ -4166,15 +4160,15 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	const uint8* edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
-	uint8 al = edi[(vehicle->current_time + 1) * 2];
+	const top_spin_time_to_sprite_map * edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
+	uint8 al = edi[vehicle->current_time + 1].arm_rotation;
 	if (al != 0xFF) {
 		vehicle->current_time = vehicle->current_time + 1;
 		if (al != vehicle->vehicle_sprite_type) {
 			vehicle->vehicle_sprite_type = al;
 			vehicle_invalidate(vehicle);
 		}
-		al = edi[vehicle->current_time * 2 + 1];
+		al = edi[vehicle->current_time].bank_rotation;
 		if (al != vehicle->bank_rotation) {
 			vehicle->bank_rotation = al;
 			vehicle_invalidate(vehicle);

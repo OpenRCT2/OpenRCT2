@@ -16,6 +16,7 @@
 		008BF72B1CDAA5C30019A2AD /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7271CDAA5C30019A2AD /* track_design_save.c */; };
 		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
 		00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EFEE701CF1D80B0035213B /* NetworkKey.cpp */; };
+		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; };
 		C61FB7211CF618BA004CE991 /* libssl.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
@@ -391,6 +392,8 @@
 		008BF7291CDAA5C30019A2AD /* track_design.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_design.h; sourceTree = "<group>"; };
 		00EFEE701CF1D80B0035213B /* NetworkKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkKey.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		00EFEE711CF1D80B0035213B /* NetworkKey.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkKey.h; sourceTree = "<group>"; usesTabs = 0; };
+		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
+		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1547,28 +1550,30 @@
 				C686F8FC1CDBC3B7009F9BFC /* transport */,
 				C686F9021CDBC3B7009F9BFC /* water */,
 				D442716F1CC81B3200D84D28 /* cable_lift.c */,
+				D44271701CC81B3200D84D28 /* cable_lift.h */,
 				D44271731CC81B3200D84D28 /* ride_data.c */,
+				D44271741CC81B3200D84D28 /* ride_data.h */,
 				D44271751CC81B3200D84D28 /* ride_ratings.c */,
+				D44271761CC81B3200D84D28 /* ride_ratings.h */,
 				D44271711CC81B3200D84D28 /* ride.c */,
+				D44271721CC81B3200D84D28 /* ride.h */,
 				D44271771CC81B3200D84D28 /* station.c */,
+				D44271781CC81B3200D84D28 /* station.h */,
 				D442717B1CC81B3200D84D28 /* track_data.c */,
+				D442717C1CC81B3200D84D28 /* track_data.h */,
 				008BF7261CDAA5C30019A2AD /* track_design_index.c */,
 				008BF7271CDAA5C30019A2AD /* track_design_save.c */,
 				008BF7281CDAA5C30019A2AD /* track_design.c */,
-				D442717D1CC81B3200D84D28 /* track_paint.c */,
-				D44271791CC81B3200D84D28 /* track.c */,
-				C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */,
-				D442717F1CC81B3200D84D28 /* vehicle.c */,
-				D44271701CC81B3200D84D28 /* cable_lift.h */,
-				D44271741CC81B3200D84D28 /* ride_data.h */,
-				D44271761CC81B3200D84D28 /* ride_ratings.h */,
-				D44271721CC81B3200D84D28 /* ride.h */,
-				D44271781CC81B3200D84D28 /* station.h */,
-				D442717C1CC81B3200D84D28 /* track_data.h */,
 				008BF7291CDAA5C30019A2AD /* track_design.h */,
+				D442717D1CC81B3200D84D28 /* track_paint.c */,
 				D442717E1CC81B3200D84D28 /* track_paint.h */,
+				D44271791CC81B3200D84D28 /* track.c */,
 				D442717A1CC81B3200D84D28 /* track.h */,
+				C612A8971D64825300B634CA /* vehicle_data.c */,
+				C612A8981D64825300B634CA /* vehicle_data.h */,
+				C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */,
 				C686F9571CDBC4C7009F9BFC /* vehicle_paint.h */,
+				D442717F1CC81B3200D84D28 /* vehicle.c */,
 				D44271801CC81B3200D84D28 /* vehicle.h */,
 			);
 			path = ride;
@@ -2427,6 +2432,7 @@
 				D442722A1CC81B3200D84D28 /* localisation.c in Sources */,
 				D44272731CC81B3200D84D28 /* new_ride.c in Sources */,
 				D442721A1CC81B3200D84D28 /* console.c in Sources */,
+				C612A8991D64825300B634CA /* vehicle_data.c in Sources */,
 				D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */,
 				D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */,
 				D442729E1CC81B3200D84D28 /* fountain.c in Sources */,

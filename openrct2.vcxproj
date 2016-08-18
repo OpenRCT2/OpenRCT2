@@ -252,6 +252,7 @@
     <ClCompile Include="src\ride\transport\monorail.c" />
     <ClCompile Include="src\ride\transport\suspended_monorail.c" />
     <ClCompile Include="src\ride\vehicle.c" />
+    <ClCompile Include="src\ride\vehicle_data.c" />
     <ClCompile Include="src\ride\vehicle_paint.c" />
     <ClCompile Include="src\ride\water\boat_ride.c" />
     <ClCompile Include="src\ride\water\dingy_slide.c" />
@@ -493,6 +494,7 @@
     <ClInclude Include="src\ride\track_design.h" />
     <ClInclude Include="src\ride\track_paint.h" />
     <ClInclude Include="src\ride\vehicle.h" />
+    <ClInclude Include="src\ride\vehicle_data.h" />
     <ClInclude Include="src\ride\vehicle_paint.h" />
     <ClInclude Include="src\scenario.h" />
     <ClCompile Include="src\scenario_sources.c" />
