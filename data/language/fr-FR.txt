@@ -4220,6 +4220,8 @@ STR_5907    :{SMALLFONT}{BLACK}Activé, le zoom sera centré sur le curseur au l
 STR_5908    :Autoriser les changements de {NEWLINE}voie arbitraires
 STR_5909    :{SMALLFONT}{BLACK}Permet de changer librement le type de voie. Peut causer un plantage
 STR_5910    :Appliquer
+STR_5911    :Allées transparentes
+STR_5912    :Allées transparentes
 
 #############
 # Scenarios #

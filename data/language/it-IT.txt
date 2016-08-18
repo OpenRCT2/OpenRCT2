@@ -4222,6 +4222,8 @@ STR_5907    :{SMALLFONT}{BLACK}Se abilitato, effettuando lo zoom l'ingrandimento
 STR_5908    :Permetti qualsiasi cambio di tipo percorso
 STR_5909    :{SMALLFONT}{BLACK}Permette di cambiare liberamente il tipo di percorso. Potrebbe causare blocchi del gioco.
 STR_5910    :Applica
+STR_5911    :Sentieri trasparenti
+STR_5912    :Attiva/disattiva la trasparenza dei sentieri
 
 
 #############

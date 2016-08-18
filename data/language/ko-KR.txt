@@ -1676,7 +1676,7 @@ STR_1669    :{WINDOW_COLOUR_2}만족도: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}총 고객: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}총 수익: {BLACK}{CURRENCY2DP}
 STR_1672    :브레이크
-STR_1673    :회전 컨트롤 토글 트랙
+STR_1673    :회전 컨트롤 전환 트랙
 STR_1674    :브레이크 속력
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속도를 설정하세요
@@ -2506,7 +2506,7 @@ STR_2497    :화면 축소
 STR_2498    :화면 확대
 STR_2499    :게임 화면을 시계방향으로 회전
 STR_2500    :건설 대상 회전
-STR_2501    :지하 시야 토글
+STR_2501    :지하 시야
 STR_2502    :땅 표면 제거
 STR_2503    :벽면 제거
 STR_2504    :놀이기구 투명화
@@ -4216,6 +4216,8 @@ STR_5907    :{SMALLFONT}{BLACK}이 설정을 켜면, 화면을 게임 화면 중
 STR_5908    :놀이기구 종류 임의 변경 허용
 STR_5909    :{SMALLFONT}{BLACK}놀이기구 종류를 자유롭게 바꾸는 것을 허용합니다. 게임이 튕길 수 있습니다.
 STR_5910    :적용
+STR_5911    :보도 숨기기
+STR_5912    :보도 숨기기
 
 
 #############

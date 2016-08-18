@@ -4219,6 +4219,8 @@ STR_5907    :{SMALLFONT}{BLACK}Přibližování bude centrovat na ukazatel myši
 STR_5908    :Povolit libovolné změny typu atrakce
 STR_5909    :{SMALLFONT}{BLACK}Povolí libovolné změny typu atrakce. Může způsobit pád aplikace.
 STR_5910    :Použít
+STR_5911    :Průhledné cesty
+STR_5912    :Přěpnout průhledné cesty
 
 
 ###############################################################################
