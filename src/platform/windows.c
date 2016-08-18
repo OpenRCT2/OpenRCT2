@@ -51,10 +51,26 @@ static HMODULE _dllModule = NULL;
 /**
  * Windows entry point to OpenRCT2 without a console window.
  */
-// int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-// {
-//     return 0;
-// }
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	_dllModule = hInstance;
+
+	int argc;
+	char ** argv = (char**)windows_get_command_line_args(&argc);
+	int runGame = cmdline_run(argv, argc);
+
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
+
+	if (runGame == 1) {
+		openrct2_launch();
+	}
+
+	return gExitCode;
+}
 
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
