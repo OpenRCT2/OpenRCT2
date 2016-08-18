@@ -14,21 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "chat.h"
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "chat.h"
 #include "../util/util.h"
-#include "../interface/themes.h"
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 256
+#define CHAT_MAX_MESSAGE_LENGTH 200
+#define CHAT_MAX_WINDOW_WIDTH 600
 
 bool gChatOpen = false;
-char _chatCurrentLine[200]; //Limit 200 characters
+char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
 char _chatHistory[CHAT_HISTORY_SIZE][CHAT_INPUT_SIZE];
 uint32 _chatHistoryTime[CHAT_HISTORY_SIZE];
 unsigned int _chatHistoryIndex = 0;
@@ -85,16 +87,10 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	}
 
 	_chatLeft = 10;
-	_chatRight = gScreenWidth - 10;
+	_chatRight = min((gScreenWidth - 10), CHAT_MAX_WINDOW_WIDTH);
+	_chatWidth = _chatRight - _chatLeft;
 	_chatBottom = gScreenHeight - 45;
 	_chatTop = _chatBottom - 10;
-
-	//Max width
-	if (_chatRight > 600) {
-		_chatRight = 600;
-	}
-
-	_chatWidth = _chatRight - _chatLeft;
 
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
@@ -102,6 +98,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	int inputLineHeight = 10;
 	uint8 chatBackgroundColor = theme_get_colour(WC_CHAT, 0);
 
+	// Draw chat window
 	if (gChatOpen) {
 		inputLineHeight = chat_string_wrapped_get_height((void*)&inputLine, _chatWidth - 10);
 		_chatTop -= inputLineHeight;
@@ -121,53 +118,23 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 		if (_chatTop < 50) {
 			_chatTop = 50;
-		}else if (_chatHeight < 150) { //Min width
+		} else if (_chatHeight < 150) { //Min height
 			_chatTop = _chatBottom - 150;
 			_chatHeight = 150;
 		}
 
 		gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); //Background area + Textbox
-		gfx_fill_rect(
-			dpi,
-			_chatLeft,
-			_chatTop - 5,
-			_chatRight,
-			_chatBottom + 5,
-			0x2000000 | 51 //gray background, this makes the chat more opaque
-		);
-		gfx_fill_rect_inset(
-			dpi, 
-			_chatLeft, 
-			_chatTop - 5, 
-			_chatRight, 
-			_chatBottom + 5, 
-			chatBackgroundColor,
-			0x10 //No fill
-		);
-		gfx_fill_rect_inset(
-			dpi,
-			_chatLeft + 1,
-			_chatTop - 4,
-			_chatRight - 1,
-			_chatBottom - inputLineHeight - 6,
-			chatBackgroundColor,
-			0x20 //Pressed
-		);
-		gfx_fill_rect_inset(
-			dpi, 
-			_chatLeft + 1,
-			_chatBottom - inputLineHeight - 5,
-			_chatRight - 1, 
-			_chatBottom + 4,
-			chatBackgroundColor,
-			0x20 //Pressed
-		); //Textbox
+		gfx_fill_rect(dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, 0x2000000 | 51); //Opaque gray background
+		gfx_fill_rect_inset(dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, chatBackgroundColor, 0x10);
+		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatTop - 4, _chatRight - 1, _chatBottom - inputLineHeight - 6, chatBackgroundColor, 0x20);
+		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor, 0x20); //Textbox
 	}
 	
 	int x = _chatLeft + 5;
 	int y = _chatBottom - inputLineHeight - 20;
 	int stringHeight = 0;
 
+	// Draw chat history
 	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= stringHeight) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
@@ -183,6 +150,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		}
 	}
 	
+	// Draw current chat input
 	if (gChatOpen) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
