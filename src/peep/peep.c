@@ -8993,7 +8993,7 @@ static int guest_path_finding(rct_peep* peep)
 	uint8 closestStationNum;
 
 	int numEntranceStations = 0;
-	uint entranceStations = 0;
+	uint8 entranceStations = 0;
 
 	for (uint8 stationNum = 0; stationNum < 4; ++stationNum){
 		if (ride->entrances[stationNum] == 0xFFFF) // stationNum has no entrance (so presumably an exit only station).
