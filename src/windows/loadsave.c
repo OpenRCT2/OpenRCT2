@@ -236,6 +236,7 @@ static void window_loadsave_close(rct_window *w)
 
 static bool browse(bool isSave, char *path)
 {
+	safe_strcpy(path, _directory, MAX_PATH);
 	if (isSave)
 		strcat(path, _defaultName);
 
