@@ -3997,8 +3997,9 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A0434, uint8);
-	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
+	assert(vehicle->current_time >= -1);
+	assert(vehicle->current_time < MotionSimulatorTimeToSpriteMapCount);
+	uint8 al = MotionSimulatorTimeToSpriteMap[vehicle->current_time + 1];
 	if (al != 0xFF) {
 		vehicle->current_time++;
 		if (al == vehicle->vehicle_sprite_type)

@@ -26,4 +26,7 @@ typedef struct top_spin_time_to_sprite_map {
 
 extern const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[];
 
+extern const uint8 MotionSimulatorTimeToSpriteMap[];
+extern const int MotionSimulatorTimeToSpriteMapCount;
+
 #endif
