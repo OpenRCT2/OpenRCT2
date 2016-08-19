@@ -315,27 +315,6 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 	SwingingTimeToSpriteMap_11,
 };
 
-/** rct2: 0x0099F0F4 */
-static const uint8 * Rotation1TimeToSpriteMaps[] = {
-	RCT2_ADDRESS(0x0099F100, const uint8),
-	RCT2_ADDRESS(0x0099F422, const uint8),
-	RCT2_ADDRESS(0x0099F6AB, const uint8),
-};
-
-/** rct2: 0x009A2428 */
-static const uint8 * Rotation2TimeToSpriteMaps[] = {
-	RCT2_ADDRESS(0x009A2434, const uint8),
-	RCT2_ADDRESS(0x009A26A6, const uint8),
-	RCT2_ADDRESS(0x009A270E, const uint8),
-};
-
-/** rct2: 0x0099EB1C */
-static const uint8 * Rotation3TimeToSpriteMaps[] = {
-	RCT2_ADDRESS(0x0099EB28, const uint8),
-	RCT2_ADDRESS(0x0099ED49, const uint8),
-	RCT2_ADDRESS(0x0099EED1, const uint8),
-};
-
 static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {

@@ -19,6 +19,10 @@
 
 #include "../common.h"
 
+extern const uint8 * Rotation1TimeToSpriteMaps[];
+extern const uint8 * Rotation2TimeToSpriteMaps[];
+extern const uint8 * Rotation3TimeToSpriteMaps[];
+
 typedef struct top_spin_time_to_sprite_map {
 	uint8 arm_rotation;
 	uint8 bank_rotation;
