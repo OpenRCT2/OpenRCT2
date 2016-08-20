@@ -33,4 +33,6 @@ extern const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[];
 extern const uint8 MotionSimulatorTimeToSpriteMap[];
 extern const int MotionSimulatorTimeToSpriteMapCount;
 
+extern const sint32 dword_9A2930[];
+
 #endif

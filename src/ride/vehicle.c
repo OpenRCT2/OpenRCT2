@@ -7315,7 +7315,7 @@ loc_6DAEB9:
 	}
 
 	// loc_6DB8A5
-	regs.ebx = RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
+	regs.ebx = dword_9A2930[regs.ebx];
 	vehicle->remaining_distance -= regs.ebx;
 	unk_F64E20->x = x;
 	unk_F64E20->y = y;
@@ -7591,7 +7591,7 @@ loc_6DBA33:;
 	if (x != unk_F64E20->x) { regs.ebx |= 1; }
 	if (y != unk_F64E20->y) { regs.ebx |= 2; }
 	if (z != unk_F64E20->z) { regs.ebx |= 4; }
-	vehicle->remaining_distance += RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
+	vehicle->remaining_distance += dword_9A2930[regs.ebx];
 
 	unk_F64E20->x = x;
 	unk_F64E20->y = y;

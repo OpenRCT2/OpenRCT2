@@ -19,6 +19,7 @@
 #include "ride.h"
 #include "track.h"
 #include "ride_data.h"
+#include "vehicle_data.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle *vehicle);
@@ -287,7 +288,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->remaining_distance -= RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance -= dword_9A2930[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;
@@ -373,7 +374,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->remaining_distance += RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance += dword_9A2930[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;

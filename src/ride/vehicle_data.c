@@ -798,3 +798,23 @@ const uint8 MotionSimulatorTimeToSpriteMap[] = {
 };
 
 const int MotionSimulatorTimeToSpriteMapCount = countof(MotionSimulatorTimeToSpriteMap);
+
+/** rct2: 0x009A2930 */
+const sint32 dword_9A2930[] = {
+	0,		// 0000
+	8716,	// 0001
+	8716,	// 0010
+	12327,	// 0011
+	6554,	// 0100
+	10905,	// 0101
+	10905,	// 0110
+	13961,	// 0111
+	0,		// 1000
+	21790,	// 1001
+	21790,	// 1010
+	30817,	// 1011
+	16385,	// 1100
+	27262,	// 1101
+	27262,	// 1110
+	34902,	// 1111
+};
