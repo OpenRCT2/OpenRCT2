@@ -19,6 +19,7 @@
 #include "ride.h"
 #include "track.h"
 #include "ride_data.h"
+#include "vehicle_data.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle *vehicle);
@@ -287,7 +288,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->remaining_distance -= RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance -= dword_9A2930[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;
@@ -297,7 +298,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
 		if (vehicle->remaining_distance >= 13962) {
-			vehicle->acceleration += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->vehicle_sprite_type];
+			vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
 		}
 	}
 	return true;
@@ -373,7 +374,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		if (unk.z != unk_F64E20->z)
 			bx |= (1 << 2);
 
-		vehicle->remaining_distance += RCT2_ADDRESS(0x009A2930, sint32)[bx];
+		vehicle->remaining_distance += dword_9A2930[bx];
 		unk_F64E20->x = unk.x;
 		unk_F64E20->y = unk.y;
 		unk_F64E20->z = unk.z;
@@ -383,7 +384,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
 		if (vehicle->remaining_distance < 0) {
-			vehicle->acceleration += RCT2_ADDRESS(0x009A2970, sint32)[vehicle->vehicle_sprite_type];
+			vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
 		}
 	}
 	return true;
@@ -412,7 +413,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = frontVehicle;
 
 	for (rct_vehicle* vehicle = frontVehicle;;) {
-		vehicle->acceleration = RCT2_ADDRESS(0x009A2970, sint32)[vehicle->vehicle_sprite_type];
+		vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
 		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
 		vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
 
@@ -432,7 +433,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
 						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance - 13962;
 						vehicle->remaining_distance = 13962;
-						vehicle->acceleration += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->vehicle_sprite_type];
+						vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
 						RCT2_GLOBAL(0x00F64E10, uint32)++;
 						continue;
 					}
@@ -445,7 +446,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
 						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance + 1;
 						vehicle->remaining_distance = -1;
-						vehicle->acceleration += RCT2_ADDRESS(0x009A2970, uint32)[vehicle->vehicle_sprite_type];
+						vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
 						RCT2_GLOBAL(0x00F64E10, uint32)++;
 					}
 				}
