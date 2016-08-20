@@ -456,7 +456,6 @@ static void openrct2_loop()
 				invalidate_sprite_2(get_sprite(i));
 				sprite_set_coordinates(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, get_sprite(i));
 			}
-			network_update();
 		} else {
 			uncapTick = 0;
 			currentTick = SDL_GetTicks();
