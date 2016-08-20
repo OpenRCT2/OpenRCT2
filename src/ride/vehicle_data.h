@@ -36,4 +36,6 @@ extern const int MotionSimulatorTimeToSpriteMapCount;
 extern const sint32 dword_9A2930[];
 extern const sint32 dword_9A2970[];
 
+extern const sint32 word_9A3684[];
+
 #endif

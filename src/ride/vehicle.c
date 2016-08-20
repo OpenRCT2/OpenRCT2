@@ -4632,7 +4632,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
 
 	{
-		int ebx = RCT2_ADDRESS(0x009A3684, sint16)[vehicle->sprite_direction];
+		int ebx = word_9A3684[vehicle->sprite_direction];
 		int eax = ((vehicle->velocity >> 14) * ebx) >> 14;
 		eax = clamp(-127, eax, 127);
 
