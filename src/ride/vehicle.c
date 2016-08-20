@@ -2841,6 +2841,26 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 	vehicle->velocity = 0;
 }
 
+/** rct2: 0x009A3AC4, 0x009A3AC6 */
+static const rct_xy16 stru_9A3AC4[] = {
+	{ -256,    0 },
+	{ -236,   98 },
+	{ -181,  181 },
+	{  -98,  236 },
+	{    0,  256 },
+	{   98,  236 },
+	{  181,  181 },
+	{  236,   98 },
+	{  256,    0 },
+	{  236,  -98 },
+	{  181, -181 },
+	{   98, -236 },
+	{    0, -256 },
+	{  -98, -236 },
+	{ -181, -181 },
+	{ -236,  -98 },
+};
+
 /**
  *
  *  rct2: 0x006D9EFE
@@ -2868,8 +2888,8 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		lastVehicle = trainVehicle;
 
 		trainVehicle->sub_state = 0;
-		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction & 0xFE];
-		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction & 0xFE];
+		int x = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
+		int y = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
 
 		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->vehicle_sprite_type] >> 15;
 		x *= ecx;
