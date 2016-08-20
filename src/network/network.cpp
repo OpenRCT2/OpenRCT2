@@ -2152,13 +2152,13 @@ void network_chat_show_server_greeting()
 {
 	const char* greeting = gConfigNetwork.server_greeting;
 	if (!str_is_null_or_empty(greeting)) {
-		static char greeting_formatted[256];
+		static char greeting_formatted[CHAT_INPUT_SIZE];
 		char* lineCh = greeting_formatted;
 		greeting_formatted[0] = 0;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
 		char* ptrtext = lineCh;
-		safe_strcpy(lineCh, greeting, 240);
+		safe_strcpy(lineCh, greeting, CHAT_INPUT_SIZE - 24); // Limit to 1000 characters so we don't overflow the buffer
 		utf8_remove_format_codes((utf8*)ptrtext, true);
 		chat_history_add(greeting_formatted);
 	}
