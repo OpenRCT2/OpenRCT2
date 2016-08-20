@@ -589,7 +589,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
 				{
 					char money[16];
 					set_format_arg(0, money32, CHEATS_GIVE_GUESTS_MONEY);
-					format_string(money, STR_CHEAT_CURRENCY_FORMAT, gCommonFormatArgs);
+					format_string(money, 16, STR_CHEAT_CURRENCY_FORMAT, gCommonFormatArgs);
 					safe_strcat(cheat_string, money, 64);
 					break;
 				}

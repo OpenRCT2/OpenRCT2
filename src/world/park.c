@@ -948,7 +948,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 				oldName,
 				newName
 			};
-			format_string(log_msg, STR_LOG_PARK_NAME, args);
+			format_string(log_msg, 256, STR_LOG_PARK_NAME, args);
 			network_append_server_log(log_msg);
 		}
 

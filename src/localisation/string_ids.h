@@ -3666,6 +3666,9 @@ enum {
 	STR_LOG_PARK_CLOSED = 6015,
 	STR_LOG_PARK_OPEN = 6016,
 	STR_LOG_PARK_ENTRANCE_FEE = 6017,
+	STR_LOG_PLACE_SCENERY = 6018,
+	STR_LOG_REMOVE_SCENERY = 6019,
+	STR_LOG_EDIT_SCENERY = 6020,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

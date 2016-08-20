@@ -4326,6 +4326,9 @@ STR_6014    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
 STR_6015    :{STRING} opened the park.
 STR_6016    :{STRING} closed the park.
 STR_6017    :{STRING} changed the park entrance fee to {STRING}
+STR_6018    :{STRING} placed new scenery.
+STR_6019    :{STRING} removed scenery.
+STR_6020    :{STRING} edited scenery.
 
 #############
 # Scenarios #
