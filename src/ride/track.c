@@ -1939,7 +1939,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
 				rct_map_element *tmp_mapElement = map_get_track_element_at_of_type_from_ride(nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, rideIndex);
 				if (tmp_mapElement != NULL) {
-					uint8 edx11 = RCT2_GLOBAL(0x993CFC + segmentBit, uint8);
+					uint8 edx11 = byte_993CFC[segmentBit];
 					tmp_mapElement->properties.track.maze_entry |= 1 << (edx11);
 				}
 

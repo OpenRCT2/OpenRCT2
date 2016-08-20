@@ -413,7 +413,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 
 		//Trousers
 		int trouser_type = (image_id >> 24) & 0x1f;
-		uint32 trouser_offset = palette_to_g1_offset[trouser_type]; //RCT2_ADDRESS(0x97FCBC, uint32)[trouser_type];
+		uint32 trouser_offset = palette_to_g1_offset[trouser_type];
 		rct_g1_element trouser_palette = g1Elements[trouser_offset];
 		memcpy(palette_pointer + 0xCA, trouser_palette.offset + 0xF3, 12);
 	}

@@ -5992,8 +5992,8 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	peep_window_state_update(peep);
 
 	peep->sub_state = 0;
-	peep->destination_x = (peep->x & 0xFFE0) + RCT2_ADDRESS(0x992A4C, uint16)[chosen_position * 2];
-	peep->destination_y = (peep->y & 0xFFE0) + RCT2_ADDRESS(0x992A4E, uint16)[chosen_position * 2];
+	peep->destination_x = (peep->x & 0xFFE0) + _992A4C[chosen_position].x;
+	peep->destination_y = (peep->y & 0xFFE0) + _992A4C[chosen_position].y;
 	peep->destination_tolerence = 3;
 	return 1;
 }
@@ -6022,8 +6022,9 @@ static int peep_update_patrolling_find_grass(rct_peep* peep){
 	peep->state = PEEP_STATE_MOWING;
 	peep_window_state_update(peep);
 	peep->var_37 = 0;
-	peep->destination_x = peep->next_x + RCT2_ADDRESS(0x9929CA, uint16)[0 * 2];
-	peep->destination_y = peep->next_y + RCT2_ADDRESS(0x9929CA, uint16)[0 * 2];
+	// Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
+	peep->destination_x = peep->next_x + _9929C8[0].x;
+	peep->destination_y = peep->next_y + _9929C8[0].y;
 	peep->destination_tolerence = 3;
 	return 1;
 }
