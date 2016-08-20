@@ -293,8 +293,7 @@ typedef struct rct_s6_data {
 	uint16 saved_view_y;
 	uint8 saved_view_zoom;
 	uint8 saved_view_rotation;
-	rct_map_animation map_animations[1000];
-	rct_map_animation rct1_map_animations[1000];
+	rct_map_animation map_animations[2000];
 	uint16 num_map_animations;
 	uint8 pad_0138B582[2];
 	rct_ride_rating_calc_data ride_ratings_calc_data;

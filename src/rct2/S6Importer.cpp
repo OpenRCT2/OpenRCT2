@@ -311,7 +311,6 @@ void S6Importer::Import()
     gSavedViewZoom = _s6.saved_view_zoom;
     gSavedViewRotation = _s6.saved_view_rotation;
     memcpy(gAnimatedObjects, _s6.map_animations, sizeof(_s6.map_animations));
-    // rct1_map_animations
     gNumMapAnimations = _s6.num_map_animations;
     // pad_0138B582
 

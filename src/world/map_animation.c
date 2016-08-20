@@ -31,7 +31,8 @@ static bool map_animation_invalidate(rct_map_animation *obj);
 
 static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT];
 
-rct_map_animation *gAnimatedObjects = RCT2_ADDRESS(0x013886A0, rct_map_animation);
+uint16 gNumMapAnimations;
+rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
 
 /**
  *
@@ -46,7 +47,7 @@ void map_animation_create(int type, int x, int y, int z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
 	int numAnimatedObjects = gNumMapAnimations;
-	if (numAnimatedObjects >= 2000) {
+	if (numAnimatedObjects >= MAX_ANIMATED_OBJECTS) {
 		log_error("Exceeded the maximum number of animations");
 		return;
 	}
