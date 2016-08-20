@@ -5538,9 +5538,6 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 	return false;
 }
 
-// rct2: 0x009A2970
-const sint32 *dword_9A2970 = RCT2_ADDRESS(0x009A2970, sint32);
-
 /**
  *
  *  rct2: 0x006DAB90
