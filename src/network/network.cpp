@@ -2158,7 +2158,7 @@ void network_chat_show_server_greeting()
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
 		char* ptrtext = lineCh;
-		safe_strcpy(lineCh, greeting, 1000);
+		safe_strcpy(lineCh, greeting, 1000); // Limit to 1000 characters so we don't overflow the buffer
 		utf8_remove_format_codes((utf8*)ptrtext, true);
 		chat_history_add(greeting_formatted);
 	}
