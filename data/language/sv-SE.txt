@@ -4205,6 +4205,9 @@ STR_5907    :{SMALLFONT}{BLACK}Inzoomning kommer förstoras till musen, iställe
 STR_5908    :Tillåt ändringar av attraktion
 STR_5909    :{SMALLFONT}{BLACK}Tillåter ändringar på attraktionstypen via karusellens meny.{NEWLINE}Instabil - kan krascha spelet
 STR_5910    :Verkställ
+STR_5911    :Dölj Gångvägar
+STR_5912    :Växla synlighet av gångvägar
+STR_5913    :Chatt
 
 #############
 # Scenarion #

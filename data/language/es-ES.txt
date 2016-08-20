@@ -2486,8 +2486,8 @@ STR_2502    :Tierra invisible
 STR_2503    :Acantilados invisibles
 STR_2504    :Mirar a través de atracciones
 STR_2505    :Mirar a través del escenario
-STR_2506    :Invisible supports toggle
-STR_2507    :Invisible people toggle
+STR_2506    :Alternar Soportes Invisibles
+STR_2507    :Alternar Invitados Invisibles
 STR_2508    :Marcas de altura en el suelo
 STR_2509    :Marcas de altura en atracciones
 STR_2510    :Marcas de altura en senderos
@@ -4179,6 +4179,9 @@ STR_5907    :{SMALLFONT}{BLACK}Cuando está activado el zoom se centrará en el 
 STR_5908    :Permitir cambios de tipo de vía arbritarios
 STR_5909    :{SMALLFONT}{BLACK}Permite cambiar el tipo de vía de una atracción libremente. Puede causar un crash.
 STR_5910    :Aplicar
+STR_5911    :Ver a través de senderos
+STR_5912    :Alternar vista a través de senderos
+STR_5913    :Chat
 
 ##############
 # Escenarios #

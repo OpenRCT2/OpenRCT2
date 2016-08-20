@@ -4221,6 +4221,7 @@ STR_5909    :{SMALLFONT}{BLACK}Povolí libovolné změny typu atrakce. Může zp
 STR_5910    :Použít
 STR_5911    :Průhledné cesty
 STR_5912    :Přěpnout průhledné cesty
+STR_5913    :Chat
 
 
 ###############################################################################

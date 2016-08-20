@@ -4222,6 +4222,7 @@ STR_5909    :{SMALLFONT}{BLACK}Permet de changer librement le type de voie. Peut
 STR_5910    :Appliquer
 STR_5911    :Allées transparentes
 STR_5912    :Allées transparentes
+STR_5913    :Chat
 
 #############
 # Scenarios #

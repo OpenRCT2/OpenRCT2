@@ -4210,6 +4210,9 @@ STR_5907    :{SMALLFONT}{BLACK}Das Bild wird beim Zoomen auf{NEWLINE}den Mauszei
 STR_5908    :Beliebiges Ändern des Bahntyps erlauben
 STR_5909    :{SMALLFONT}{BLACK}Erlaubt ein freies Ändern des Bahntyps. Verursacht möglicherweise Abstürze
 STR_5910    :Anwenden
+STR_5911    :Wege ausblenden
+STR_5912    :Wege ein-/ausblenden
+STR_5913    :Chat
 
 #############
 # Scenarios #

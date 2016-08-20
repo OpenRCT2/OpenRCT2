@@ -4219,6 +4219,9 @@ STR_5907    :{SMALLFONT}{BLACK}Quando habilitado, aproximar a vista irá central
 STR_5908    :Permitir tipos de atrações arbitrárias
 STR_5909    :{SMALLFONT}{BLACK}Permite mudar livremente o tipo de atração. Podem ocorrer falhas.
 STR_5910    :Aplicar
+STR_5911    :Ver através dos caminhos
+STR_5912    :Alternar ver através dos caminhos
+STR_5913    :Bate-papo
 
 #############
 # Scenarios #

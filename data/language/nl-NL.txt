@@ -4213,6 +4213,7 @@ STR_5909    :{SMALLFONT}{BLACK}Maakt het mogelijk om het baantype van een attrac
 STR_5910    :Toepassen
 STR_5911    :Doorzichtige paden
 STR_5912    :Doorzichtige paden
+STR_5913    :Chat
 
 #############
 # Scenarios #
