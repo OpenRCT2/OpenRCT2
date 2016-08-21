@@ -509,7 +509,7 @@ static rct_peep *park_generate_new_guest()
 
 			peep->destination_tolerence = 5;
 			peep->var_76 = 0;
-			peep->var_78 = spawn.direction;
+			peep->direction = spawn.direction;
 			peep->var_37 = 0;
 			peep->state = PEEP_STATE_ENTERING_PARK;
 		}

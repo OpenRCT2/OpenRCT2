@@ -833,9 +833,9 @@ static int staff_path_finding_handyman(rct_peep* peep)
 						direction = litterDirection;
 					}
 				} else {
-					pathDirections &= ~(1 << (peep->var_78 ^ (1 << 1)));
+					pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
 					if (pathDirections == 0) {
-						pathDirections |= 1 << (peep->var_78 ^ (1 << 1));
+						pathDirections |= 1 << (peep->direction ^ (1 << 1));
 					}
 				}
 
@@ -862,7 +862,7 @@ static int staff_path_finding_handyman(rct_peep* peep)
 		chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
 	}
 
-	peep->var_78 = direction;
+	peep->direction = direction;
 	peep->destination_x = chosenTile.x + 16;
 	peep->destination_y = chosenTile.y + 16;
 	peep->destination_tolerence = 3;
@@ -960,8 +960,8 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
  */
 static uint8 staff_mechanic_direction_path_rand(rct_peep* peep, uint8 pathDirections) {
 	if (scenario_rand() & 1) {
-		if (pathDirections & (1 << peep->var_78))
-			return peep->var_78;
+		if (pathDirections & (1 << peep->direction))
+			return peep->direction;
 	}
 	
 	// Modified from original to spam scenario_rand less
@@ -972,7 +972,7 @@ static uint8 staff_mechanic_direction_path_rand(rct_peep* peep, uint8 pathDirect
 			return direction;
 	}
 	// This will never happen as pathDirections always has a bit set.
-	return peep->var_78;
+	return peep->direction;
 }
 
 /**
@@ -990,9 +990,9 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		return staff_mechanic_direction_surface(peep);
 	}
 
-	pathDirections &= ~(1 << (peep->var_78 ^ (1 << 1)));
+	pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
 	if (pathDirections == 0) {
-		pathDirections |= (1 << (peep->var_78 ^ (1 << 1)));
+		pathDirections |= (1 << (peep->direction ^ (1 << 1)));
 	}
 
 	direction = bitscanforward(pathDirections);
@@ -1107,7 +1107,7 @@ static int staff_path_finding_mechanic(rct_peep* peep) {
 		chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
 	}
 
-	peep->var_78 = direction;
+	peep->direction = direction;
 	peep->destination_x = chosenTile.x + 16;
 	peep->destination_y = chosenTile.y + 16;
 	peep->destination_tolerence = (scenario_rand() & 7) + 2;
@@ -1130,9 +1130,9 @@ static uint8 staff_direction_path(rct_peep* peep, uint8 validDirections, rct_map
 		return staff_direction_surface(peep, scenario_rand() & 3);
 	}
 
-	pathDirections &= ~(1 << (peep->var_78 ^ (1 << 1)));
+	pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
 	if (pathDirections == 0) {
-		pathDirections |= (1 << (peep->var_78 ^ (1 << 1)));
+		pathDirections |= (1 << (peep->direction ^ (1 << 1)));
 	}
 
 	direction = bitscanforward(pathDirections);
@@ -1184,7 +1184,7 @@ static int staff_path_finding_misc(rct_peep* peep) {
 		chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
 	}
 
-	peep->var_78 = direction;
+	peep->direction = direction;
 	peep->destination_x = chosenTile.x + 16;
 	peep->destination_y = chosenTile.y + 16;
 	peep->destination_tolerence = (scenario_rand() & 7) + 2;
