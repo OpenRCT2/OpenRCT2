@@ -1387,7 +1387,7 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 			gTooltipTimeout = gTicksSinceLastUpdate;
 
 			int time = 2000;
-			if (gTooltipNotShownTicks >= 1) {
+			if (gTooltipNotShownTicks >= 50) {
 				time = 0;
 			}
 			if (time > gTooltipTimeout) {
