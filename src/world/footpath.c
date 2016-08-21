@@ -1751,6 +1751,9 @@ void footpath_update_path_wide_flags(int x, int y)
 		if (footpath_element_is_sloped(mapElement))
 			continue;
 
+		if ((mapElement->properties.path.edges & 0xF) == 0)
+			continue;
+
 		uint8 height = mapElement->base_height;
 
 		// pathList is a list of elements, set by sub_6A8ACF adjacent to x,y
