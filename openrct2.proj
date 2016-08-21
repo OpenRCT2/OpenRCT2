@@ -1,0 +1,15 @@
+<!-- Main msbuild project for OpenRCT2 -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import the C++ project for OpenRCT2 -->
+  <Import Project="openrct2.vcxproj" />
+
+  <!-- Target to build g2.dat containing OpenRCT2 sprites -->
+  <Target Name="g2" DependsOnTargets="Build">
+    <Message Text="Building g2.dat..." />
+    <PropertyGroup>
+      <!-- We need to override TargetPath for x86 as we build a dll not a exe. -->
+      <TargetPath Condition="'$(Platform)' == 'Win32'">$(TargetDir)openrct2.exe</TargetPath>
+    </PropertyGroup>
+    <Exec Command="$(TargetPath) sprite build $(TargetDir)data\g2.dat $(TargetDir)resources\g2" />
+  </Target>
+</Project>

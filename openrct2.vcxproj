@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build0;Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build0;Build;g2" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="Build0">
     <Copy SourceFiles="openrct2.exe" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
