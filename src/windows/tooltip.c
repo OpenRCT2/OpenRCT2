@@ -113,6 +113,9 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 
 	x = clamp(0, x - (width / 2), gScreenWidth - width);
 
+	// TODO The cursor size will be relative to the window DPI.
+	//      The amount to offset the y should be adjusted.
+
 	int max_y = gScreenHeight - height;
 	y += 26; // Normally, we'd display the tooltip 26 lower
 	if (y > max_y)

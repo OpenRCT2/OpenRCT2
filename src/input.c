@@ -1383,29 +1383,24 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y)
 {
 	if (gTooltipWidget.window_classification == 255) {
-		if (gTooltipNotShownTicks < 500 || (gTooltipCursorX == x && gTooltipCursorY == y)) {
-			gTooltipTimeout = gTicksSinceLastUpdate;
-
-			int time = 2000;
-			if (gTooltipNotShownTicks >= 1) {
-				time = 0;
+		if (gTooltipCursorX == x && gTooltipCursorY == y) {
+			gTooltipNotShownTicks++;
+			if (gTooltipNotShownTicks > 50) {
+				gTooltipTimeout = 0;
+				window_tooltip_open(w, widgetIndex, x, y);
 			}
-			if (time > gTooltipTimeout) {
-				gTooltipNotShownTicks++;
-				return;
-			}
-
-			window_tooltip_open(w, widgetIndex, x, y);
 		}
 	} else {
-		if ((
-				(w != NULL) &&
-				(gTooltipWidget.window_classification != w->classification || gTooltipWidget.window_number != w->number)
-			) ||
+		gTooltipNotShownTicks = 0;
+
+		if (w == NULL ||
+			gTooltipWidget.window_classification != w->classification ||
+			gTooltipWidget.window_number != w->number ||
 			gTooltipWidget.widget_index != widgetIndex
 		) {
 			window_tooltip_close();
 		}
+
 		gTooltipTimeout += gTicksSinceLastUpdate;
 		if (gTooltipTimeout >= 8000) {
 			window_close_by_class(WC_TOOLTIP);
