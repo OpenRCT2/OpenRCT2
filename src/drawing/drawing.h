@@ -124,8 +124,10 @@ typedef struct rct_palette {
 extern uint8 gGamePalette[256 * 4];
 extern uint32 gPaletteEffectFrame;
 extern const uint16 palette_to_g1_offset[];
-extern const uint8 peep_palette[];
+extern uint8 gPeepPalette[256];
+extern uint8 gOtherPalette[256];
 extern uint8 text_palette[];
+extern const uint8 _9DEDF4[];
 
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
