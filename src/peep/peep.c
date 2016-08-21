@@ -8533,18 +8533,15 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			_peepPathFindQueueRideIndex = false;
 			_peepPathFindNumJunctions = maxNumJunctions;
 
-			/* Initialise _peepPathFindHistory.
-			 * The pathfinding will only use elements
+			// Initialise _peepPathFindHistory.
+			memset(_peepPathFindHistory, 0xFF, sizeof(_peepPathFindHistory));
+
+			/* The pathfinding will only use elements
 			 * 1..maxNumJunctions, so the starting point is
 			 * placed in element 0 */
 			_peepPathFindHistory[0].x = (uint8)(x >> 5);
 			_peepPathFindHistory[0].y = (uint8)(y >> 5);
 			_peepPathFindHistory[0].z = (uint8)z;
-			for (int junctionIndex = 1; junctionIndex < 16; junctionIndex++) {
-				_peepPathFindHistory[junctionIndex].x = 0xFF;
-				_peepPathFindHistory[junctionIndex].y = 0xFF;
-				_peepPathFindHistory[junctionIndex].z = 0xFF;
-			}
 
 			uint16 score = peep_pathfind_heuristic_search(x, y, height, 0, 0xFFFF, test_edge);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
