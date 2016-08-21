@@ -22,7 +22,10 @@
 #include <dlfcn.h>
 #include <errno.h>
 #include <fontconfig/fontconfig.h>
+#include <fnmatch.h>
+#include <locale.h>
 
+#include "../config.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "../util/util.h"
@@ -146,6 +149,66 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 			return;
 		}
 	}
+}
+
+uint16 platform_get_locale_language(){
+	const char *langString = setlocale(LC_MESSAGES, "");
+	if(langString != NULL){
+		// The locale has the following form:
+		// language[_territory[.codeset]][@modifier]
+		// (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		// longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		char pattern[32];
+		//strip the codeset and modifier part
+		int length = strlen(langString);
+		{
+			for(int i = 0; i < length; ++i){
+				if(langString[i] == '.' || langString[i] == '@'){
+					length = i;
+					break;
+				}
+			}
+		} //end strip
+		strncpy(pattern,langString, length); //copy all until first '.' or '@'
+		pattern[length] = '\0';
+		//find _ if present
+		const char *strip = strchr(pattern, '_');
+		if(strip != NULL){
+			// could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change.
+			// pattern is now "language?territory"
+			pattern[strip - pattern] = '?';
+		}
+
+		// Iterate through all available languages
+		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+				return i;
+			}
+		}
+
+		//special cases :(
+		if(!fnmatch(pattern, "en_CA", 0)){
+			return LANGUAGE_ENGLISH_US;
+		}
+		else if (!fnmatch(pattern, "zh_CN", 0)){
+			return LANGUAGE_CHINESE_SIMPLIFIED;
+		}
+		else if (!fnmatch(pattern, "zh_TW", 0)){
+			return LANGUAGE_CHINESE_TRADITIONAL;
+		}
+
+		//no exact match found trying only language part
+		if(strip != NULL){
+			pattern[strip - pattern] = '*';
+			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
+			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+					return i;
+				}
+			}
+		}
+	}
+	return LANGUAGE_ENGLISH_UK;
 }
 
 uint8 platform_get_locale_currency(){

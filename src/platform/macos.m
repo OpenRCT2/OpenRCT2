@@ -21,7 +21,8 @@
 #include <mach-o/dyld.h>
 #include "platform.h"
 #include "../util/util.h"
-#include "config.h"
+#include "../localisation/language.h"
+#include "../config.h"
 
 bool platform_check_steam_overlay_attached() {
 	STUB();
@@ -189,6 +190,65 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		} else {
 			return false;
 		}
+	}
+}
+
+bool platform_has_matching_language(NSString *preferredLocale, uint16* languageIdentifier)
+{
+	@autoreleasepool
+	{
+		if ([preferredLocale isEqualToString:@"en"] || [preferredLocale isEqualToString:@"en-CA"]) {
+			*languageIdentifier = LANGUAGE_ENGLISH_US;
+			return YES;
+		}
+		
+		if ([preferredLocale isEqualToString:@"zh-CN"]) {
+			*languageIdentifier = LANGUAGE_CHINESE_SIMPLIFIED;
+			return YES;
+		}
+		
+		if ([preferredLocale isEqualToString:@"zh-TW"]) {
+			*languageIdentifier = LANGUAGE_CHINESE_TRADITIONAL;
+			return YES;
+		}
+		
+		// Find an exact match (language and region)
+		for (int i = 1; i < LANGUAGE_COUNT; i++) {
+			if([preferredLocale isEqualToString:[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]]) {
+				*languageIdentifier = i;
+				return YES;
+			}
+		}
+		
+		
+		// Only check for a matching language
+		NSString *languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
+		for (int i = 1; i < LANGUAGE_COUNT; i++) {
+			NSString *optionLanguageCode = [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
+			if([languageCode isEqualToString:optionLanguageCode]) {
+				*languageIdentifier = i;
+				return YES;
+			}
+		}
+		
+		return NO;
+	}
+}
+
+uint16 platform_get_locale_language()
+{
+	@autoreleasepool
+	{
+		NSArray<NSString*> *preferredLanguages = [NSLocale preferredLanguages];
+		for (NSString *preferredLanguage in preferredLanguages) {
+			uint16 languageIdentifier;
+			if (platform_has_matching_language(preferredLanguage, &languageIdentifier)) {
+				return languageIdentifier;
+			}
+		}
+		
+		// Fallback
+		return LANGUAGE_ENGLISH_UK;
 	}
 }
 
