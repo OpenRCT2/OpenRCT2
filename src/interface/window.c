@@ -976,6 +976,12 @@ void widget_invalidate(rct_window *w, int widgetIndex)
 	rct_widget* widget;
 
 	assert(w != NULL);
+#if DEBUG
+	for (int i = 0; i <= widgetIndex; i++) {
+		assert(w->widgets[i].type != WWT_LAST);
+	}
+#endif
+
 	widget = &w->widgets[widgetIndex];
 	if (widget->left == -2)
 		return;
