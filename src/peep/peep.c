@@ -1462,7 +1462,7 @@ static void peep_check_cant_find_ride(rct_peep* peep){
 		window_event_invalidate_call(w);
 	}
 
-	widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 12);
+	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 }
 
 /**
@@ -1788,27 +1788,23 @@ void peep_update_sprite_type(rct_peep* peep)
  * Note also increase ride count if on/entering a ride.
  *  rct2: 0x0069A42F
  */
-void peep_window_state_update(rct_peep* peep){
-
+void peep_window_state_update(rct_peep* peep)
+{
 	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL)
 		window_event_invalidate_call(w);
 
-	if (peep->type == PEEP_TYPE_GUEST){
-		// Update action label
-		widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 12);
-
-		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
+	if (peep->type == PEEP_TYPE_GUEST) {
+		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE) {
 			rct_ride* ride = get_ride(peep->current_ride);
 			ride->num_riders++;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
 
+		window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 		window_invalidate_by_class(WC_GUEST_LIST);
-	}
-	else{
-		// Update action label
-		widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 9);
+	} else {
+		window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 		window_invalidate_by_class(WC_STAFF_LIST);
 	}
 }
@@ -11121,8 +11117,8 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	rct_window *w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL) {
 		window_event_invalidate_call(w);
+		window_invalidate(w);
 	}
-	widget_invalidate_by_number(WC_RIDE, closestRideIndex, 23);
 
 	peep->var_F4 = 0;
 }
