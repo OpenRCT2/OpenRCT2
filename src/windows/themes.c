@@ -810,8 +810,8 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 		if (y + _row_height >= dpi->y) {
 			if (i + 1 < get_colour_scheme_tab_count()) {
 				int colour = w->colours[1];
-				if (colour & 0x80) {
-					colour = RCT2_ADDRESS(0x009DEDF4, uint8)[colour];
+				if (colour & COLOUR_FLAG_TRANSLUCENT) {
+					colour = _9DEDF4[colour];
 
 					colour = colour | 0x2000000;
 					gfx_fill_rect(dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2, colour + 1);

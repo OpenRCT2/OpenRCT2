@@ -306,8 +306,8 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			b = t;
 
 			if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
-				gfx_fill_rect(dpi, l, t, r, b, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 1);
-				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 2);
+				gfx_fill_rect(dpi, l, t, r, b, (_9DEDF4[w->colours[0]] | 0x02000000) + 1);
+				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (_9DEDF4[w->colours[0]] | 0x02000000) + 2);
 			} else {
 				gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
 				gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);

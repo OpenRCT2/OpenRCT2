@@ -47,7 +47,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 		if (colour & 0x100) {
 			colour = NOT_TRANSLUCENT(colour);
 		} else {
-			colour = RCT2_ADDRESS(0x009DEDF4,uint8)[colour];
+			colour = _9DEDF4[colour];
 		}
 
 		colour = colour | 0x2000000; //Transparent
