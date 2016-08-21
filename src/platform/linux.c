@@ -148,6 +148,34 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 	}
 }
 
+uint8 platform_get_locale_currency(){
+	char *langstring = setlocale(LC_MONETARY, "");
+
+	if (langstring == NULL) {
+		return platform_get_currency_value(NULL);
+	}
+
+	struct lconv *lc = localeconv();
+
+	return platform_get_currency_value(lc->int_curr_symbol);
+}
+
+uint8 platform_get_locale_measurement_format(){
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
+
+	if(langstring != NULL){
+		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
+			return MEASUREMENT_FORMAT_IMPERIAL;
+		}
+	}
+	return MEASUREMENT_FORMAT_METRIC;
+}
 
 static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;

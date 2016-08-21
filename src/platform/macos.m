@@ -21,6 +21,7 @@
 #include <mach-o/dyld.h>
 #include "platform.h"
 #include "../util/util.h"
+#include "config.h"
 
 bool platform_check_steam_overlay_attached() {
 	STUB();
@@ -188,6 +189,29 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		} else {
 			return false;
 		}
+	}
+}
+
+uint8 platform_get_locale_currency()
+{
+	@autoreleasepool
+	{
+		NSString *currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		return platform_get_currency_value(currencyCode.UTF8String);
+	}
+}
+
+uint8 platform_get_locale_measurement_format()
+{
+	@autoreleasepool
+	{
+		NSNumber *metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
+
+		if (metricSystem.boolValue) {
+			return MEASUREMENT_FORMAT_METRIC;
+		}
+		
+		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
 }
 
