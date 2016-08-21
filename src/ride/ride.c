@@ -383,26 +383,22 @@ money16 get_shop_hot_value(int shopItem)
  */
 static money32 ride_calculate_income_per_hour(rct_ride *ride)
 {
-	rct_ride_entry *entry;
-	money32 customersPerHour, priceMinusCost;
-	int currentShopItem;
-
 	// Get entry by ride to provide better reporting
-	entry = get_ride_entry_by_ride(ride);
+	rct_ride_entry *entry = get_ride_entry_by_ride(ride);
 	if (entry == NULL) {
 		return 0;
 	}
-	customersPerHour = ride_customers_per_hour(ride);
-	priceMinusCost = ride->price;
+	money32 customersPerHour = ride_customers_per_hour(ride);
+	money32 priceMinusCost = ride_get_price(ride);
 
-	currentShopItem = entry->shop_item;
+	int currentShopItem = entry->shop_item;
 	if (currentShopItem != SHOP_ITEM_NONE) {
 		priceMinusCost -= get_shop_item_cost(currentShopItem);
 	}
 
 	currentShopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
-					  RidePhotoItems[ride->type] :
-			entry->shop_item_secondary;
+		RidePhotoItems[ride->type] :
+		entry->shop_item_secondary;
 
 	if (currentShopItem != SHOP_ITEM_NONE) {
 		priceMinusCost += ride->price_secondary;
