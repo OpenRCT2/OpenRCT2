@@ -377,7 +377,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
 		unk_9E3CDC = NULL;
 		unknown_pointer = NULL;
-		palette_pointer = RCT2_ADDRESS(0x9ABF0C, uint8);
+		palette_pointer = gOtherPalette;
 
 		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
@@ -403,7 +403,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 		unk_9E3CDC = NULL;
 		unknown_pointer = NULL;
 
-		palette_pointer = RCT2_ADDRESS(0x9ABE0C, uint8);
+		palette_pointer = gPeepPalette;
 
 		//Top
 		int top_type = (image_id >> 19) & 0x1f;
