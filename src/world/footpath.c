@@ -1740,11 +1740,6 @@ void footpath_update_path_wide_flags(int x, int y)
 	footpath_clear_wide(x, y);
 	y -= 0x20;
 
-	if (!(x & 0xFFE0))
-		return;
-	if (!(y & 0xFFE0))
-		return;
-
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
