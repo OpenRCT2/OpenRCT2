@@ -12,6 +12,8 @@
     <DistDir>$(RootDir)distribution\</DistDir>
     <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
 
+    <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
+
     <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
     <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
     <OutputExe Condition="'$(Platform)'=='x64'">$(TargetPath)</OutputExe>
@@ -23,6 +25,7 @@
     <PublishZip>$(ArtifactsDir)openrct2.zip</PublishZip>
     <PublishSymbolsZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
     <PublishSymbolsZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</PublishSymbolsZip>
+    <PublishInstallerExe>$(ArtifactsDir)openrct2-install.exe</PublishInstallerExe>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,6 +60,7 @@
     <Delete Files="$(g2Output)" />
     <Delete Files="$(PublishZip)" />
     <Delete Files="$(PublishSymbolsZip)" />
+    <Delete Files="$(PublishInstallerExe)" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
@@ -107,7 +111,33 @@
     <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
   </Target>
 
+  <!-- Target to publish the OpenRCT2 as an NSIS installer -->
+  <Target Name="PublishInstaller"
+          DependsOnTargets="Build;Sign;g2"
+          Inputs="@(PublishItems);$(NsisScript)"
+          Outputs="$(PublishInstallerExe)">
+    <PropertyGroup>
+      <VersionExtra Condition="'$(GitBranch)'!=''">-$(GitBranch)-$(GitCommitSha1Short)</VersionExtra>
+      <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GitTag)', '^v[0-9]'))">$(GitTag)</VersionTag>
+      <VersionExtra Condition="'$(GitTag)'!='' AND '$(VersionTag)'==''">-$(GitTag)</VersionExtra>
+      <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
+    </PropertyGroup>
+
+    <!-- Create the installer -->
+    <Message Text="Building Windows Installer (NSIS script)" Importance="high" />
+    <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) /DAPPV_EXTRA=$(VersionExtra) /DVERSION_INCLUDE=$(DistDir)windows\win32.txt $(NsisScript)"
+          StandardOutputImportance="normal" />
+
+    <!-- Sign the installer -->
+    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing of $(PublishInstallerExeName)." />
+    <Message Condition="'$(SignPassword)'!=''" Text="Signing $(PublishInstallerExeName)"
+             Importance="high" />
+    <Exec Condition="'$(SignPassword)'!=''"
+          Command="signtool.exe sign /f $(SignCertificate) /p $(SignPassword) /t $(SignTimestampUrl) $(PublishInstallerExe)"
+          StandardOutputImportance="low" />
+  </Target>
+
   <Target Name="PublishAll"
-          DependsOnTargets="PublishPortable;PublishSymbols" />
+          DependsOnTargets="PublishSymbols;PublishPortable;PublishInstaller" />
 
 </Project>
