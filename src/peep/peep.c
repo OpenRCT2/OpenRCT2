@@ -9329,6 +9329,7 @@ static int guest_path_finding(rct_peep* peep)
 		return 1;
 	}
 
+	_peepPathFindIsStaff = false;
 	uint8 edges = path_get_permitted_edges(mapElement);
 
 	if (edges == 0) {
