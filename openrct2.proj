@@ -12,16 +12,41 @@
     <DistDir>$(RootDir)distribution\</DistDir>
     <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
 
+    <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
+    <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
+    <OutputExe Condition="'$(Platform)'=='x64'">$(TargetPath)</OutputExe>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
     <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
+
+    <PublishZip>$(ArtifactsDir)openrct2.zip</PublishZip>
+    <PublishSymbolsZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
+    <PublishSymbolsZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</PublishSymbolsZip>
   </PropertyGroup>
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
-    <SignItems Include="$(TargetDir)openrct2.exe" />
-    <SignItems Include="$(TargetDir)openrct2.dll" />
+    <SignItems Include="$(OutputExe)" />
+    <SignItems Condition="'$(Platform)'=='Win32'" Include="$(OutputDll)" />
+  </ItemGroup>
+
+  <ItemGroup Label="Symbol Items">
+    <SymbolItems Condition="'$(Platform)'=='Win32'" Include="$(OutputDll)" />
+    <SymbolItems Include="$(OutputExe)" />
+    <SymbolItems Include="$(TargetDir)$(TargetName).pdb" />
+  </ItemGroup>
+
+  <ItemGroup Label="Publish Items">
+    <PublishItems Include="$(TargetDir)data\**\*" />
+    <PublishItems Include="$(TargetDir)openrct2.exe" />
+    <PublishItems Include="$(TargetDir)openrct2.dll" />
+    <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
+    <PublishItems Include="$(DistDir)changelog.txt" />
+    <PublishItems Include="$(DistDir)known_issues.txt" />
+    <PublishItems Include="$(DistDir)readme.txt" />
+    <PublishItems Include="$(RootDir)contributors.md" />
+    <PublishItems Include="$(RootDir)licence.txt" />
   </ItemGroup>
 
   <Target Name="Install">
@@ -30,20 +55,21 @@
 
   <Target Name="BeforeClean">
     <Delete Files="$(g2Output)" />
+    <Delete Files="$(PublishZip)" />
+    <Delete Files="$(PublishSymbolsZip)" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" DependsOnTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
     <Message Text="Building g2.dat..." />
-    <PropertyGroup>
-      <!-- We need to override TargetPath for x86 as we build a dll not a exe. -->
-      <TargetPath Condition="'$(Platform)' == 'Win32'">$(TargetDir)openrct2.exe</TargetPath>
-    </PropertyGroup>
-    <Exec Command="$(TargetPath) sprite build $(g2Output) $(RootDir)resources\g2" />
+    <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
+          StandardOutputImportance="low" />
   </Target>
 
+  <!-- Target to sign OpenRCT2 (exe and dll)
+       This requires the project parameter SignPassword to be set -->
   <Target Name="Sign" DependsOnTargets="Build" Inputs="@(SignItems)" Outputs="%(Identity).bogus">
-    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing." />
+    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
     <Message Condition="'$(SignPassword)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
     <Exec Condition="'$(SignPassword)'!=''"
@@ -52,25 +78,12 @@
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
-  <Target Name="Publish" DependsOnTargets="Build;g2">
+  <Target Name="PublishPortable" DependsOnTargets="Build;g2;Sign" Inputs="@(PublishItems)" Outputs="$(PublishZip)">
     <PropertyGroup>
       <TempDir>$(ArtifactsDir)temp</TempDir>
-      <OutZip>$(ArtifactsDir)openrct2.zip</OutZip>
     </PropertyGroup>
-    <ItemGroup>
-      <PublishItems Include="$(TargetDir)data\**\*" />
-      <PublishItems Include="$(TargetDir)openrct2.exe" />
-      <PublishItems Include="$(TargetDir)openrct2.dll" />
-      <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
-      <PublishItems Include="$(DistDir)changelog.txt" />
-      <PublishItems Include="$(DistDir)known_issues.txt" />
-      <PublishItems Include="$(DistDir)readme.txt" />
-      <PublishItems Include="$(RootDir)contributors.md" />
-      <PublishItems Include="$(RootDir)licence.txt" />
-    </ItemGroup>
 
     <!-- Clean -->
-    <RemoveDir Directories="$(ArtifactsDir)" />
     <RemoveDir Directories="$(TempDir)" />
 
     <!-- Copy publish files -->
@@ -81,27 +94,20 @@
 
     <!-- Create zip -->
     <Message Importance="high" Text="Creating openrct2.zip..." />
-    <_7z Output="$(OutZip)" Inputs="$(TempDir)\*" />
+    <_7z Output="$(PublishZip)" Inputs="$(TempDir)\*" />
 
     <!-- Delete the temporary directory -->
     <RemoveDir Directories="$(TempDir)" />
   </Target>
 
-  <Target Name="PublishSymbols" DependsOnTargets="Build;g2">
-    <PropertyGroup>
-      <OutZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols</OutZip>
-      <OutZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</OutZip>
-    </PropertyGroup>
-    <ItemGroup>
-      <SymbolItems Include="$(TargetDir)openrct2.dll" />
-      <SymbolItems Include="$(TargetDir)openrct2.pdb" />
-    </ItemGroup>
-
+  <!-- Target to publish the OpenRCT2 debug symbols -->
+  <Target Name="PublishSymbols" DependsOnTargets="Build;Sign" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)">
     <MakeDir Directories="$(ArtifactsDir)" />
-
-    <!-- Create zip -->
     <Message Importance="high" Text="Creating openrct2-symbols.zip..." />
-    <_7z Output="$(OutZip)" Inputs="@(SymbolItems)" />
+    <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
   </Target>
+
+  <Target Name="PublishAll"
+          DependsOnTargets="PublishPortable;PublishSymbols" />
 
 </Project>
