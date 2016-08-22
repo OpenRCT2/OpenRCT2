@@ -2,7 +2,7 @@
 <!-- Main msbuild project for OpenRCT2 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Import custom build tasks -->
-  <Import Project="openrct2.props" />
+  <Import Project="openrct2.targets" />
 
   <!-- Import the C++ project for OpenRCT2 -->
   <Import Project="openrct2.vcxproj" />
