@@ -1,5 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- Main msbuild project for OpenRCT2 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import custom build tasks -->
+  <Import Project="openrct2.props" />
+
   <!-- Import the C++ project for OpenRCT2 -->
   <Import Project="openrct2.vcxproj" />
 
@@ -53,10 +57,9 @@
 
     <!-- Create zip -->
     <Message Importance="high" Text="Creating openrct2.zip..." />
-    <Exec Command="7z a -tzip -mx9 -mtc=off $(OutZip) $(TempDir)\*" StandardOutputImportance="normal" />
+    <_7z Output="$(OutZip)" Inputs="$(TempDir)\*" />
 
     <!-- Delete the temporary directory -->
     <RemoveDir Directories="$(TempDir)" />
   </Target>
-
 </Project>
