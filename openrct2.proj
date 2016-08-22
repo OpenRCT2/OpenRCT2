@@ -3,6 +3,15 @@
   <!-- Import the C++ project for OpenRCT2 -->
   <Import Project="openrct2.vcxproj" />
 
+  <PropertyGroup>
+    <RootDir>$(MsBuildThisFileDirectory)</RootDir>
+    <DistDir>$(RootDir)distribution\</DistDir>
+  </PropertyGroup>
+
+  <Target Name="install">
+    <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" />
+  </Target>
+
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" DependsOnTargets="Build">
     <Message Text="Building g2.dat..." />
@@ -12,4 +21,42 @@
     </PropertyGroup>
     <Exec Command="$(TargetPath) sprite build $(TargetDir)data\g2.dat $(TargetDir)resources\g2" />
   </Target>
+
+  <!-- Target to publish OpenRCT2 as a portable zip -->
+  <Target Name="publish" DependsOnTargets="Build;g2">
+    <PropertyGroup>
+      <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
+      <TempDir>$(ArtifactsDir)temp</TempDir>
+      <OutZip>$(ArtifactsDir)openrct2.zip</OutZip>
+    </PropertyGroup>
+    <ItemGroup>
+      <PublishItems Include="$(TargetDir)data\**\*" />
+      <PublishItems Include="$(TargetDir)openrct2.exe" />
+      <PublishItems Include="$(TargetDir)openrct2.dll" />
+      <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
+      <PublishItems Include="$(DistDir)changelog.txt" />
+      <PublishItems Include="$(DistDir)known_issues.txt" />
+      <PublishItems Include="$(DistDir)readme.txt" />
+      <PublishItems Include="$(RootDir)contributors.md" />
+      <PublishItems Include="$(RootDir)licence.txt" />
+    </ItemGroup>
+
+    <!-- Clean -->
+    <RemoveDir Directories="$(ArtifactsDir)" />
+    <RemoveDir Directories="$(TempDir)" />
+
+    <!-- Copy publish files -->
+    <Message Importance="high" Text="Copying publish files..." />
+    <MakeDir Directories="$(ArtifactsDir)" />
+    <MakeDir Directories="$(TempDir)" />
+    <Copy SourceFiles="@(PublishItems)" DestinationFolder="$(TempDir)\%(RecursiveDir)" />
+
+    <!-- Create zip -->
+    <Message Importance="high" Text="Creating openrct2.zip..." />
+    <Exec Command="7z a -tzip -mx9 -mtc=off $(OutZip) $(TempDir)\*" StandardOutputImportance="normal" />
+
+    <!-- Delete the temporary directory -->
+    <RemoveDir Directories="$(TempDir)" />
+  </Target>
+
 </Project>
