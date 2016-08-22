@@ -21,9 +21,10 @@
 - Feature: Objects are scanned from the user directory as well as the RCT2 directory.
 - Feature: Objects directory is scanned recursively.
 - Feature: Optionally zoom in towards the cursor rather than the screen centre.
-- Improve: Performance and reliability of loading objects.
-- Improve: Screenshots are now saved with the name of the park and the current date and time.
-- Improve: More accurate frame rate calculation
+- Improved: Pathfinding algorithm.
+- Improved: Performance and reliability of loading objects.
+- Improved: Screenshots are now saved with the name of the park and the current date and time.
+- Improved: More accurate frame rate calculation
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
@@ -43,7 +44,7 @@
 - Fix: [#3824] Segfault when passing invalid arguments to ride set type.
 - Fix: [#3858] Tooltip shown when hovering over title logo.
 - Fix: [#3915] Restore horizontal and vertical scrollbar behavior from RCT2 when clicking on one of the scrollbars.
-- Technical: Mulitplayer groups are now stored in JSON format.
+- Technical: Multiplayer groups are now stored in JSON format.
 
 0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
