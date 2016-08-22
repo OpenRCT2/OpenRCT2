@@ -10,26 +10,50 @@
   <PropertyGroup>
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
+    <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
+
+    <g2Output>$(TargetDir)data\g2.dat</g2Output>
+
+    <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
+    <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
   </PropertyGroup>
 
-  <Target Name="install">
+  <ItemGroup>
+    <g2Inputs Include="$(RootDir)resources\g2\*" />
+    <SignItems Include="$(TargetDir)openrct2.exe" />
+    <SignItems Include="$(TargetDir)openrct2.dll" />
+  </ItemGroup>
+
+  <Target Name="Install">
     <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" />
   </Target>
 
+  <Target Name="BeforeClean">
+    <Delete Files="$(g2Output)" />
+  </Target>
+
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <Target Name="g2" DependsOnTargets="Build">
+  <Target Name="g2" DependsOnTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
     <Message Text="Building g2.dat..." />
     <PropertyGroup>
       <!-- We need to override TargetPath for x86 as we build a dll not a exe. -->
       <TargetPath Condition="'$(Platform)' == 'Win32'">$(TargetDir)openrct2.exe</TargetPath>
     </PropertyGroup>
-    <Exec Command="$(TargetPath) sprite build $(TargetDir)data\g2.dat $(TargetDir)resources\g2" />
+    <Exec Command="$(TargetPath) sprite build $(g2Output) $(RootDir)resources\g2" />
+  </Target>
+
+  <Target Name="Sign" DependsOnTargets="Build" Inputs="@(SignItems)" Outputs="%(Identity).bogus">
+    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing." />
+    <Message Condition="'$(SignPassword)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
+             Importance="high" />
+    <Exec Condition="'$(SignPassword)'!=''"
+          Command="signtool.exe sign /f $(SignCertificate) /p $(SignPassword) /t $(SignTimestampUrl) %(SignItems.Identity)"
+          StandardOutputImportance="low" />
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
-  <Target Name="publish" DependsOnTargets="Build;g2">
+  <Target Name="Publish" DependsOnTargets="Build;g2">
     <PropertyGroup>
-      <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
       <TempDir>$(ArtifactsDir)temp</TempDir>
       <OutZip>$(ArtifactsDir)openrct2.zip</OutZip>
     </PropertyGroup>
@@ -62,4 +86,22 @@
     <!-- Delete the temporary directory -->
     <RemoveDir Directories="$(TempDir)" />
   </Target>
+
+  <Target Name="PublishSymbols" DependsOnTargets="Build;g2">
+    <PropertyGroup>
+      <OutZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols</OutZip>
+      <OutZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</OutZip>
+    </PropertyGroup>
+    <ItemGroup>
+      <SymbolItems Include="$(TargetDir)openrct2.dll" />
+      <SymbolItems Include="$(TargetDir)openrct2.pdb" />
+    </ItemGroup>
+
+    <MakeDir Directories="$(ArtifactsDir)" />
+
+    <!-- Create zip -->
+    <Message Importance="high" Text="Creating openrct2-symbols.zip..." />
+    <_7z Output="$(OutZip)" Inputs="@(SymbolItems)" />
+  </Target>
+
 </Project>

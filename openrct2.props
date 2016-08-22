@@ -23,7 +23,15 @@
                   return false;
               }
 
-              string args = "a -tzip -mx9 -mtc=off \"" + Output + "\" \"" + Inputs + "\"";
+              var argsSB = new StringBuilder();
+              argsSB.Append("a -tzip -mx9 -mtc=off ");
+              argsSB.Append("\"" + Output + "\" ");
+              foreach (string input in Inputs.Split(';'))
+              {
+                  argsSB.Append("\"" + input + "\" ");
+              }
+              string args = argsSB.ToString();
+
               Log.LogMessage(MessageImportance.Normal, "7z " + args);
 
               var psi = new ProcessStartInfo(appPath, args);
