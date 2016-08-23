@@ -379,8 +379,6 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = !gCheatsSandboxMode; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
 			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks; break;
 			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits; break;
-			case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes; break;
-			case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes; break;
 			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = !gCheatsFastLiftHill; break;
 			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = !gCheatsDisableBrakesFailure; break;
 			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = !gCheatsDisableAllBreakdowns; break;
@@ -417,7 +415,6 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
-			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
@@ -427,6 +424,22 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 	*ebx = 0;
 }
 
+void game_command_unstable_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int cheat = *ecx;
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		switch (cheat) {
+		case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes; break;
+		case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes; break;
+		case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
+		}
+		if (network_get_mode() == NETWORK_MODE_NONE) {
+			config_save_default();
+		}
+		window_invalidate_by_class(WC_CHEATS);
+	}
+	*ebx = 0;
+}
 void cheats_reset()
 {
 	gCheatsSandboxMode = false;
