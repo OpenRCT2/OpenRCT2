@@ -1825,7 +1825,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	rct_xy16 mapTile = { .x = x, .y = y };
 
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-	if (tool_size == 1 && !gLandMountainMode){
+	if (tool_size == 1){
 		int direction;
 		screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
@@ -2613,7 +2613,7 @@ money32 selection_raise_land(uint8 flags)
 
 	gGameCommandErrorTitle = STR_CANT_RAISE_LAND_HERE;
 	if (gLandMountainMode) {
-		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 1, yBounds);
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, gMapSelectType, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, gMapSelectType, yBounds);
 	}
@@ -2635,7 +2635,7 @@ money32 selection_lower_land(uint8 flags)
 
 	gGameCommandErrorTitle = STR_CANT_LOWER_LAND_HERE;
 	if (gLandMountainMode) {
-		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0xFFFF, yBounds);
+		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0x8000+gMapSelectType, yBounds);
 	} else {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, gMapSelectType, yBounds);
 	}
