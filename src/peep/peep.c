@@ -8651,7 +8651,6 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 
 	++counter;
 	if (--_peepPathFindTilesChecked < 0) {
-		log_warning("WARNING: Path finding search limit (maxTilesChecked) exceeded - expect path finding problems!\n");
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			log_information("[%03d] Return from %d,%d,%d; TilesChecked < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -8978,6 +8977,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		 * edge that gives the best (i.e. smallest) value (best_score)
 		 * or for different edges with equal value, the edge with the
 		 * least steps (best_sub). */
+		int numEdges = bitcount(edges);
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
@@ -8989,8 +8989,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			}
 
 			_peepPathFindFewestNumSteps = 255;
-			_peepPathFindTilesChecked = maxTilesChecked;
 			_peepPathFindQueueRideIndex = false;
+			/* Divide the maxTilesChecked global search limit
+			 * between the remaining edges to ensure the search
+			 * covers all of the remaining edges. */
+			_peepPathFindTilesChecked = maxTilesChecked / numEdges;
 			_peepPathFindNumJunctions = maxNumJunctions;
 
 			// Initialise _peepPathFindHistory.
