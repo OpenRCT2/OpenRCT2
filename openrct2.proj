@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Main msbuild project for OpenRCT2 -->
+<!-- Inputs
+       - GIT_TAG
+       - GIT_BRANCH
+       - GIT_COMMIT_SHA1
+       - GIT_COMMIT_SHA1_SHORT
+       - SIGN_PASSWORD
+       - OPENRCT2_ORG_TOKEN
+  -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Import custom build tasks -->
   <Import Project="openrct2.targets" />
@@ -25,8 +33,8 @@
     <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
 
     <PublishZip>$(ArtifactsDir)openrct2.zip</PublishZip>
-    <PublishSymbolsZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
-    <PublishSymbolsZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</PublishSymbolsZip>
+    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
+    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols-$(GIT_COMMIT_SHA1_SHORT).zip</PublishSymbolsZip>
     <PublishInstallerExe>$(ArtifactsDir)openrct2-install.exe</PublishInstallerExe>
 
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtension)-windows</UploadFilename>
@@ -90,13 +98,13 @@
   </Target>
 
   <!-- Target to sign OpenRCT2 (exe and dll)
-       This requires the project parameter SignPassword to be set -->
+       This requires the project parameter SIGN_PASSWORD to be set -->
   <Target Name="Sign" DependsOnTargets="Build" Inputs="@(SignItems)" Outputs="%(Identity).bogus">
-    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
-    <Message Condition="'$(SignPassword)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
+    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
+    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
-    <Exec Condition="'$(SignPassword)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SignPassword) /t $(SignTimestampUrl) %(SignItems.Identity)"
+    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) %(SignItems.Identity)"
           StandardOutputImportance="low" />
   </Target>
 
@@ -136,9 +144,9 @@
           Inputs="@(PublishItems);$(NsisScript)"
           Outputs="$(PublishInstallerExe)">
     <PropertyGroup>
-      <VersionExtra Condition="'$(GitBranch)'!=''">-$(GitBranch)-$(GitCommitSha1Short)</VersionExtra>
-      <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GitTag)', '^v[0-9]'))">$(GitTag)</VersionTag>
-      <VersionExtra Condition="'$(GitTag)'!='' AND '$(VersionTag)'==''">-$(GitTag)</VersionExtra>
+      <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
+      <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
+      <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
       <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
     </PropertyGroup>
 
@@ -148,11 +156,11 @@
           StandardOutputImportance="normal" />
 
     <!-- Sign the installer -->
-    <Warning Condition="'$(SignPassword)'==''" Text="SignPassword was not set, skipping signing of $(PublishInstallerExeName)." />
-    <Message Condition="'$(SignPassword)'!=''" Text="Signing $(PublishInstallerExeName)"
+    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." />
+    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
              Importance="high" />
-    <Exec Condition="'$(SignPassword)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SignPassword) /t $(SignTimestampUrl) $(PublishInstallerExe)"
+    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) $(PublishInstallerExe)"
           StandardOutputImportance="low" />
   </Target>
 
@@ -167,16 +175,16 @@
     </PropertyGroup>
     <Message Text="Uploading $(UploadFileNameShort)" Importance="high" />
     <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
-    <Error Condition="'$(GitCommitSha1)'==''" Text="GitCommitSha1 not set." />
-    <Error Condition="'$(GitBranch)'==''" Text="GitBranch not set." />
+    <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
+    <Error Condition="'$(GIT_BRANCH)'==''" Text="GIT_BRANCH not set." />
     <Exec Command="curl.exe -s -o - ^
-         --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot;              ^
-         --form &quot;fileName=%(UploadArtifacts.Name)&quot;       ^
-         --form &quot;version=$(Version)&quot;     ^
-         --form &quot;gitHash=$(GitCommitSha1)&quot;               ^
-         --form &quot;gitBranch=$(GitBranch)&quot;                 ^
+         --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
+         --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
+         --form &quot;version=$(Version)&quot; ^
+         --form &quot;gitHash=$(GIT_COMMIT_SHA1)&quot; ^
+         --form &quot;gitBranch=$(GIT_BRANCH)&quot; ^
          --form &quot;flavourId=%(UploadArtifacts.FlavourId)&quot; ^
-         --form &quot;file=@%(UploadArtifacts.Identity)&quot;      ^
+         --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
          &quot;$(UploadLink)&quot;"
           CustomErrorRegularExpression="&quot;error&quot;:1" />
   </Target>
