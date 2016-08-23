@@ -109,6 +109,7 @@ enum {
 extern int park_rating_spinner_value;
 
 void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_unstable_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 void cheats_reset();
 
