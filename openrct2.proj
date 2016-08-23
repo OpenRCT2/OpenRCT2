@@ -8,6 +8,8 @@
   <Import Project="openrct2.vcxproj" />
 
   <PropertyGroup>
+    <Version>0.0.5</Version>
+
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
     <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
@@ -26,6 +28,8 @@
     <PublishSymbolsZip Condition="'$(GitSha1Short)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
     <PublishSymbolsZip Condition="'$(GitSha1Short)'!=''">$(ArtifactsDir)openrct2-symbols-$(GitSha1Short).zip</PublishSymbolsZip>
     <PublishInstallerExe>$(ArtifactsDir)openrct2-install.exe</PublishInstallerExe>
+
+    <UploadFilename>OpenRCT2-$(Version)$(VersionExtension)-windows</UploadFilename>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,6 +54,21 @@
     <PublishItems Include="$(DistDir)readme.txt" />
     <PublishItems Include="$(RootDir)contributors.md" />
     <PublishItems Include="$(RootDir)licence.txt" />
+  </ItemGroup>
+
+  <ItemGroup Label="Upload Artifacts">
+    <UploadArtifacts Include="$(PublishZip)">
+      <Name>$(UploadFilename).zip</Name>
+      <FlavourId>1</FlavourId>
+    </UploadArtifacts>
+    <UploadArtifacts Include="$(PublishInstallerExe)">
+      <Name>$(UploadFilename).exe</Name>
+      <FlavourId>2</FlavourId>
+    </UploadArtifacts>
+    <UploadArtifacts Include="$(PublishSymbolsZip)">
+      <Name>$(UploadFilename)-symbols.zip</Name>
+      <FlavourId>5</FlavourId>
+    </UploadArtifacts>
   </ItemGroup>
 
   <Target Name="Install">
@@ -139,5 +158,27 @@
 
   <Target Name="PublishAll"
           DependsOnTargets="PublishSymbols;PublishPortable;PublishInstaller" />
+
+  <!-- Target to upload the artifacts to OpenRCT2.org -->
+  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll">
+    <PropertyGroup>
+      <UploadLink>https://openrct2.org/altapi/?command=push-build</UploadLink>
+      <UploadFileNameShort>%(UploadArtifacts.Filename)%(UploadArtifacts.Extension)</UploadFileNameShort>
+    </PropertyGroup>
+    <Message Text="Uploading $(UploadFileNameShort)" Importance="high" />
+    <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
+    <Error Condition="'$(GitCommitSha1)'==''" Text="GitCommitSha1 not set." />
+    <Error Condition="'$(GitBranch)'==''" Text="GitBranch not set." />
+    <Exec Command="curl.exe -s -o - ^
+         --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot;              ^
+         --form &quot;fileName=%(UploadArtifacts.Name)&quot;       ^
+         --form &quot;version=$(Version)&quot;     ^
+         --form &quot;gitHash=$(GitCommitSha1)&quot;               ^
+         --form &quot;gitBranch=$(GitBranch)&quot;                 ^
+         --form &quot;flavourId=%(UploadArtifacts.FlavourId)&quot; ^
+         --form &quot;file=@%(UploadArtifacts.Identity)&quot;      ^
+         &quot;$(UploadLink)&quot;"
+          CustomErrorRegularExpression="&quot;error&quot;:1" />
+  </Target>
 
 </Project>
