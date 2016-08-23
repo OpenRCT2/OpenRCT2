@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Main msbuild project for OpenRCT2 -->
 <!-- Inputs
+       - BUILD_SERVER
        - GIT_TAG
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
@@ -17,6 +18,14 @@
 
   <PropertyGroup>
     <Version>0.0.5</Version>
+
+    <BUILD_SERVER Condition="'$(BUILD_SERVER)'!=''">$(COMPUTERNAME)</BUILD_SERVER>
+
+    <!-- Set dynamic OpenRCT2 #defines -->
+    <OPENRCT2_DEFINES Condition="'$(BUILD_SERVER)'!=''">OPENRCT2_BUILD_SERVER="$(BUILD_SERVER)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
+    <OPENRCT2_DEFINES Condition="'$(GIT_BRANCH)'!=''">OPENRCT2_BRANCH="$(GIT_BRANCH)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
+    <OPENRCT2_DEFINES Condition="'$(GIT_COMMIT_SHA1)'!=''">OPENRCT2_COMMIT_SHA1="$(GIT_COMMIT_SHA1)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
+    <OPENRCT2_DEFINES Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">OPENRCT2_COMMIT_SHA1_SHORT="$(GIT_COMMIT_SHA1_SHORT)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
