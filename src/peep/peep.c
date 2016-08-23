@@ -79,7 +79,7 @@ enum {
 	PATH_SEARCH_PARK_EXIT,
 	PATH_SEARCH_LIMIT_REACHED,
 	PATH_SEARCH_WIDE,
-	PATH_SEARCH_QUEUE,
+	PATH_SEARCH_RIDE_QUEUE,
 	PATH_SEARCH_OTHER = 10
 };
 
@@ -8430,7 +8430,8 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
 		if (map_element_get_type(nextMapElement) != MAP_ELEMENT_TYPE_PATH) continue;
 		if (!is_valid_path_z_and_direction(nextMapElement, z, chosenDirection)) continue;
 		if (footpath_element_is_wide(nextMapElement)) return PATH_SEARCH_WIDE;
-		if (footpath_element_is_queue(nextMapElement)) return PATH_SEARCH_QUEUE;
+		// Only queue tiles that are connected to a ride are returned as ride queues.
+		if (footpath_element_is_queue(nextMapElement) && nextMapElement->properties.path.ride_index != 0xFF) return PATH_SEARCH_RIDE_QUEUE;
 
 		return PATH_SEARCH_OTHER;
 	} while (!map_element_is_last_for_tile(nextMapElement++));
@@ -8725,7 +8726,7 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 		}
 
 		if (footpath_element_is_queue(path) && path->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
-			if (gPeepPathFindIgnoreForeignQueues) {
+			if (gPeepPathFindIgnoreForeignQueues && (path->properties.path.ride_index != 0xFF)) {
 				// Path is a queue we aren't interested in
 				continue;
 			}
@@ -8802,7 +8803,7 @@ static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 
 	do
 	{
 		int fp_result = footpath_element_next_in_direction(x, y, z, path, prescan_edge);
-		if (fp_result != PATH_SEARCH_WIDE && fp_result != PATH_SEARCH_QUEUE) {
+		if (fp_result != PATH_SEARCH_WIDE && fp_result != PATH_SEARCH_RIDE_QUEUE) {
 			thin_count++;
 		}
 
