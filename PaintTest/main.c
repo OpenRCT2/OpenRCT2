@@ -116,7 +116,14 @@ int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
 	return sequenceCount;
 }
 
-bool testTrackElement(uint8 rideType, uint8 trackType) {
+bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
+	if (rideType == RIDE_TYPE_CHAIRLIFT) {
+		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
+			// These rides chechk neighbouring tiles for tracks
+			*error = "Skipped";
+			return false;
+		}
+	}
 	uint8 rideIndex = 0;
 	rct_map_element mapElement = {};
 
@@ -186,14 +193,21 @@ void testRide(int rideType) {
 			continue;
 		}
 
-		bool success = testTrackElement(rideType, trackType);
 
 		int sequenceCount = getTrackSequenceCount(rideType, trackType);
 		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			printf("  - %s (%d)\n", FlatTrackNames[trackType], sequenceCount);
+			printf("  - %s (%d)", FlatTrackNames[trackType], sequenceCount);
 		} else {
-			printf("  - %s (%d)\n", TrackNames[trackType], sequenceCount);
+			printf("  - %s (%d)", TrackNames[trackType], sequenceCount);
 		}
+
+		utf8string error;
+		bool success = testTrackElement(rideType, trackType, &error);
+
+		if (success == false) {
+			printf(" FAILED!\n    %s", error);
+		}
+		printf("\n");
 
 	}
 }
