@@ -106,6 +106,7 @@
 		C64FDAC51D6DA55E00F259B9 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC41D6DA55E00F259B9 /* compat.c */; };
 		C64FDAC81D6DA72400F259B9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC71D6DA72400F259B9 /* main.c */; };
 		C64FDACA1D6DA92D00F259B9 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC91D6DA92D00F259B9 /* data.c */; };
+		C64FDACB1D6DBCC700F259B9 /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271121CC81B3200D84D28 /* hook.c */; };
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
@@ -1152,6 +1153,8 @@
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
 				C64FDAC71D6DA72400F259B9 /* main.c */,
 				C64FDAC91D6DA92D00F259B9 /* data.c */,
+				C64FDAC91D6DA92D00F259B9 /* data.c */,
+				C64FDAC71D6DA72400F259B9 /* main.c */,
 			);
 			path = PaintTest;
 			sourceTree = "<group>";
@@ -2345,6 +2348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C64FDACB1D6DBCC700F259B9 /* hook.c in Sources */,
 				C64FDAC31D6DA41000F259B9 /* track_paint.c in Sources */,
 				C64FDAC21D6DA0B800F259B9 /* diagnostic.c in Sources */,
 				C64FDAC01D6D9E3B00F259B9 /* track_data.c in Sources */,
