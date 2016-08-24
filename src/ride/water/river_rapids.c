@@ -183,6 +183,7 @@ static const uint32 river_rapids_track_pieces_25_deg_down_to_flat[][2] = {
 	{SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_SE_NW, SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_FRONT_SE_NW},
 };
 
+#ifndef NO_VEHICLES
 /**
  *
  *  rct2: 0x006D5889
@@ -248,6 +249,7 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 
 	vehicle_visual_splash_effect(z, vehicle, vehicleEntry);
 }
+#endif
 
 /** rct2: 0x00757650 */
 static void paint_river_rapids_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)

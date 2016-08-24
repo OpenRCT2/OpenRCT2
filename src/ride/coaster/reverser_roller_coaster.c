@@ -21,6 +21,7 @@
 #include "../../paint/paint.h"
 #include "../vehicle_paint.h"
 
+#ifndef NO_VEHICLES
 /**
  *
  *  rct2: 0x006D4453
@@ -36,3 +37,4 @@ void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicl
 	gUnk9DE56C = y;
 	vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry);
 }
+#endif
