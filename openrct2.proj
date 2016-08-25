@@ -18,6 +18,7 @@
 
   <PropertyGroup>
     <Version>0.0.5</Version>
+    <TargetLibsVersion>9</TargetLibsVersion>
 
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
@@ -50,6 +51,13 @@
     <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
 
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtension)-windows</UploadFilename>
+  </PropertyGroup>
+
+  <!-- 3rd party libraries / dependencies -->
+  <PropertyGroup>
+    <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
+    <LibsPath>$(RootDir)lib\</LibsPath>
+    <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -91,9 +99,36 @@
     </UploadArtifacts>
   </ItemGroup>
 
+  <Target Name="CheckLibs">
+    <!-- Get libversion file and check version -->
+    <Message Text="Checking if libraries need updating..." Importance="high" />
+    <PropertyGroup>
+      <CurrentLibsVersion>0</CurrentLibsVersion>
+      <CurrentLibsVersion Condition="Exists($(LibsVersionPath))">$([System.IO.File]::ReadAllText($(LibsVersionPath)).Trim())</CurrentLibsVersion>
+      <UpdateLibs Condition="$(TargetLibsVersion) &gt; $(CurrentLibsVersion)">true</UpdateLibs>
+    </PropertyGroup>
+
+    <Message Condition="'$(UpdateLibs)'!='true'" Text="Libraries up to date" Importance="high" />
+    <Message Condition="'$(UpdateLibs)'=='true'" Text="Libraries out of date, updating..." Importance="high" />
+    <CallTarget Condition="'$(UpdateLibs)'=='true'" Targets="DownloadLibs" />
+  </Target>
+
   <Target Name="DownloadLibs">
-    <Message Text="Checking / downloading libraries..." Importance="high" />
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" StandardOutputImportance="normal" />
+    <PropertyGroup>
+      <LibsZipPath>$(LibsPath)openrct2-libs-vs2015.zip</LibsZipPath>
+    </PropertyGroup>
+
+    <!-- Clean libs directory -->
+    <RemoveDir Directories="$(LibsPath)" />
+    <MakeDir Directories="$(LibsPath)" />
+
+    <Message Text="Downloading libraries..." Importance="normal" />
+    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(LibsUrl)' -OutFile '$(LibsZipPath)'&quot;" StandardOutputImportance="low" />
+    <Unzip Input="$(LibsZipPath)" OutputDirectory="$(LibsPath)" />
+    <Delete Files="$(LibsZipPath)" ContinueOnError="true" />
+
+    <!-- Update libversion file -->
+    <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
   </Target>
 
   <Target Name="BeforeClean">
@@ -106,7 +141,7 @@
     <RemoveDir Directories="$(TargetDir)data" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus" DependsOnTargets="DownloadLibs">
+  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus" DependsOnTargets="CheckLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>

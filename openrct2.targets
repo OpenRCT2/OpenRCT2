@@ -3,7 +3,7 @@
   <!-- 7z Task -->
   <UsingTask TaskName="_7z"
              TaskFactory="CodeTaskFactory"
-             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" >
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
       <Inputs Required="true" ParameterType="System.String" />
       <Output Required="true" ParameterType="System.String" />
@@ -101,6 +101,24 @@
               
               return null;
           }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="Unzip"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Input Required="true" ParameterType="System.String" />
+      <OutputDirectory Required="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          Log.LogMessage(MessageImportance.Normal, String.Format("Extracting '{0}' to '{1}'.", Input, OutputDirectory));
+          System.IO.Compression.ZipFile.ExtractToDirectory(Input, OutputDirectory);
         ]]>
       </Code>
     </Task>
