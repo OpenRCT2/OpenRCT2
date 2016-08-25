@@ -41,10 +41,12 @@
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
     <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
 
-    <PublishZip>$(ArtifactsDir)openrct2.zip</PublishZip>
-    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'==''">$(ArtifactsDir)openrct2-symbols.zip</PublishSymbolsZip>
-    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols-$(GIT_COMMIT_SHA1_SHORT).zip</PublishSymbolsZip>
-    <PublishInstallerExe>$(ArtifactsDir)openrct2-install.exe</PublishInstallerExe>
+    <PublishPostfix>-$(Configuration)-$(Platform)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
+    <PublishPostfix>$(PublishPostfix.ToLower())</PublishPostfix>
+    <PublishZip>$(ArtifactsDir)openrct2-portable$(PublishPostfix).zip</PublishZip>
+    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'==''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
+    <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
+    <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
 
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtension)-windows</UploadFilename>
   </PropertyGroup>
@@ -94,10 +96,13 @@
   </Target>
 
   <Target Name="BeforeClean">
+    <Delete Condition="'$(Platform)'=='Win32'" Files="$(TargetDir)openrct2.exe" />
+    <Delete Files="$(TargetDir)curl-ca-bundle.crt" />
     <Delete Files="$(g2Output)" />
     <Delete Files="$(PublishZip)" />
     <Delete Files="$(PublishSymbolsZip)" />
     <Delete Files="$(PublishInstallerExe)" />
+    <RemoveDir Directories="$(TargetDir)data" />
   </Target>
 
   <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus" DependsOnTargets="DownloadLibs">
@@ -135,19 +140,15 @@
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
   <Target Name="PublishPortable" DependsOnTargets="Build;g2;Sign" Inputs="@(PublishItems)" Outputs="$(PublishZip)">
-    <!-- Copy publish files -->
-    <Message Importance="high" Text="Copying publish files..." />
     <MakeDir Directories="$(ArtifactsDir)" />
-
-    <!-- Create zip -->
-    <Message Importance="high" Text="Creating openrct2.zip..." />
+    <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishZip)))..." />
     <_7z Output="$(PublishZip)" Inputs="@(PublishItems)" />
   </Target>
 
   <!-- Target to publish the OpenRCT2 debug symbols -->
   <Target Name="PublishSymbols" DependsOnTargets="Build;Sign" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)">
     <MakeDir Directories="$(ArtifactsDir)" />
-    <Message Importance="high" Text="Creating openrct2-symbols.zip..." />
+    <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishSymbolsZip)))..." />
     <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
   </Target>
 
@@ -162,6 +163,8 @@
       <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
       <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
     </PropertyGroup>
+
+    <MakeDir Directories="$(ArtifactsDir)" />
 
     <!-- Create the installer -->
     <Message Text="Building Windows Installer (NSIS script)" Importance="high" />

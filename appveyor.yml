@@ -25,9 +25,9 @@ configuration: Release
 build:
   project: openrct2.proj
 artifacts:
-- path: .\artifacts\openrct2.zip
+- path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable
-- path: .\artifacts\*.exe
+- path: .\artifacts\openrct2-installer*.exe
   name: OpenRCT2-installer
-- path: .\artifacts\openrct2-symbols-*.zip
+- path: .\artifacts\openrct2-symbols*.zip
   name: OpenRCT2 debug symbols
