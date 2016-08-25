@@ -23,7 +23,7 @@ if ($env:ENCKEY)
     Check-ExitCode
 }
 
-if (${env:OPENRCT2.ORG_TOKEN})
+if (${env:OPENRCT2_ORG_TOKEN})
 {
     if (-not (Test-Path "C:\ProgramData\chocolatey\lib\nsis.portable"))
     {
