@@ -88,8 +88,9 @@
     </UploadArtifacts>
   </ItemGroup>
 
-  <Target Name="Install">
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" />
+  <Target Name="DownloadLibs">
+    <Message Text="Checking / downloading libraries..." Importance="high" />
+    <Exec Command="powershell -ExecutionPolicy Unrestricted -File scripts\ps\install.ps1 -q" StandardOutputImportance="normal" />
   </Target>
 
   <Target Name="BeforeClean">
@@ -99,7 +100,7 @@
     <Delete Files="$(PublishInstallerExe)" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus">
+  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus" DependsOnTargets="DownloadLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
