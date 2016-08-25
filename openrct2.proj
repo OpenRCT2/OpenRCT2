@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Main msbuild project for OpenRCT2 -->
-<!-- Inputs
-       - BUILD_SERVER
+<!-- Inputs (/p: or environment variables)
+       - OPENRCT2_BUILD_SERVER
        - GIT_TAG
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
        - SIGN_PASSWORD
        - OPENRCT2_ORG_TOKEN
+       - NO_NSIS: set to true to prevent the NSIS installer building
   -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="All">
   <!-- Import custom build tasks -->
