@@ -43,3 +43,20 @@ if (${env:OPENRCT2_ORG_TOKEN})
         cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
     }
 }
+
+# Check if OpenRCT2.org API security token is available
+if (${env:OPENRCT2_ORG_TOKEN})
+{
+    # Only upload tagged builds, develop branch or push/ branches
+    if (${env:APPVEYOR_REPO_TAG} -or ${env:APPVEYOR_REPO_BRANCH} -match "^develop$|^push/")
+    {
+        # Remove the OPENRCT2_ORG_TOKEN environment variable so that the msbuild will not
+        # try to upload the artifacts
+        ${env:OPENRCT2_ORG_TOKEN} = $null
+    }
+}
+else
+{
+    # Don't build the NSIS installer for non-uploaded builds
+    ${env:NO_NSIS} = "true"
+}

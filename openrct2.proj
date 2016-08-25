@@ -156,7 +156,8 @@
   <Target Name="PublishInstaller"
           DependsOnTargets="Build;Sign;g2"
           Inputs="@(PublishItems);$(NsisScript)"
-          Outputs="$(PublishInstallerExe)">
+          Outputs="$(PublishInstallerExe)"
+          Condition="'$(NO_NSIS)'!='true'">
     <PropertyGroup>
       <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
       <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
