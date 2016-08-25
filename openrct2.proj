@@ -165,7 +165,10 @@
 
     <!-- Create the installer -->
     <Message Text="Building Windows Installer (NSIS script)" Importance="high" />
-    <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) /DAPPV_EXTRA=$(VersionExtra) /DVERSION_INCLUDE=$(DistDir)windows\win32.txt $(NsisScript)"
+    <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) ^
+         /DAPPV_EXTRA=$(VersionExtra) ^
+         /DPLATFORM=$(Platform) ^
+         $(NsisScript)"
           StandardOutputImportance="normal" />
 
     <!-- Sign the installer -->

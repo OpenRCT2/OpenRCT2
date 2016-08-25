@@ -1,5 +1,0 @@
-!define APPBITS 32          ; Define number of bits for the architecture
-!define EXTRA_VERSION "Vista, 7, 8.1 and 10"
-!define APPARCH "win32"     ; Define the application architecture
-!define BINARY_DIR "${PATH_ROOT}bin"
-InstallDir "$PROGRAMFILES32\OpenRCT2\"
