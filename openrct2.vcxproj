@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project InitialTargets="BeforeBuild;CopyOuputFiles" DefaultTargets="Build;g2" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="CopyOuputFiles">
-    <Copy Condition="'$(Platform)'=='Win32'" SourceFiles="openrct2.exe" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="curl-ca-bundle.crt" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-  </Target>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>

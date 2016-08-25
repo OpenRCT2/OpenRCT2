@@ -64,8 +64,8 @@
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
     <PublishItems Include="$(OutputDll)" Condition="'$(Platform)'=='Win32'" />
-    <PublishItems Include="$(TargetDir)data\**\*" />
-    <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
+    <PublishItems Include="$(TargetDir)data" />
+    <PublishItems Include="$(RootDir)curl-ca-bundle.crt" />
     <PublishItems Include="$(DistDir)changelog.txt" />
     <PublishItems Include="$(DistDir)known_issues.txt" />
     <PublishItems Include="$(DistDir)readme.txt" />
@@ -99,16 +99,23 @@
     <Delete Files="$(PublishInstallerExe)" />
   </Target>
 
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
     </PropertyGroup>
+    <ItemGroup>
+      <CopyItems Condition="'$(Platform)'=='Win32'" Include="$(RootDir)openrct2.exe" />
+      <CopyItems Include="$(RootDir)curl-ca-bundle.crt" />
+      <DataItems Include="$(RootDir)data\**\*" />
+    </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
+    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <Target Name="g2" DependsOnTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
+  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
     <Message Text="Building g2.dat..." />
     <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
           StandardOutputImportance="low" />
@@ -127,25 +134,13 @@
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
   <Target Name="PublishPortable" DependsOnTargets="Build;g2;Sign" Inputs="@(PublishItems)" Outputs="$(PublishZip)">
-    <PropertyGroup>
-      <TempDir>$(ArtifactsDir)temp</TempDir>
-    </PropertyGroup>
-
-    <!-- Clean -->
-    <RemoveDir Directories="$(TempDir)" />
-
     <!-- Copy publish files -->
     <Message Importance="high" Text="Copying publish files..." />
     <MakeDir Directories="$(ArtifactsDir)" />
-    <MakeDir Directories="$(TempDir)" />
-    <Copy SourceFiles="@(PublishItems)" DestinationFolder="$(TempDir)\%(RecursiveDir)" />
 
     <!-- Create zip -->
     <Message Importance="high" Text="Creating openrct2.zip..." />
-    <_7z Output="$(PublishZip)" Inputs="$(TempDir)\*" />
-
-    <!-- Delete the temporary directory -->
-    <RemoveDir Directories="$(TempDir)" />
+    <_7z Output="$(PublishZip)" Inputs="@(PublishItems)" />
   </Target>
 
   <!-- Target to publish the OpenRCT2 debug symbols -->
