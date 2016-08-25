@@ -5,11 +5,10 @@
        - GIT_TAG
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
-       - GIT_COMMIT_SHA1_SHORT
        - SIGN_PASSWORD
        - OPENRCT2_ORG_TOKEN
   -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="All">
   <!-- Import custom build tasks -->
   <Import Project="openrct2.targets" />
 
@@ -20,6 +19,7 @@
     <Version>0.0.5</Version>
 
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'!=''">$(COMPUTERNAME)</BUILD_SERVER>
+    <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_DEFINES Condition="'$(BUILD_SERVER)'!=''">OPENRCT2_BUILD_SERVER="$(BUILD_SERVER)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
@@ -97,6 +97,14 @@
     <Delete Files="$(PublishZip)" />
     <Delete Files="$(PublishSymbolsZip)" />
     <Delete Files="$(PublishInstallerExe)" />
+  </Target>
+
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
+      <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
+    </PropertyGroup>
+    <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
@@ -196,6 +204,11 @@
          --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
          &quot;$(UploadLink)&quot;"
           CustomErrorRegularExpression="&quot;error&quot;:1" />
+  </Target>
+
+  <Target Name="All">
+    <CallTarget Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Targets="PublishAll" />
+    <CallTarget Condition="'$(OPENRCT2_ORG_TOKEN)'!=''" Targets="UploadArtifacts" />
   </Target>
 
 </Project>
