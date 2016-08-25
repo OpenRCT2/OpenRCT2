@@ -62,9 +62,9 @@
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">
+    <PublishItems Include="$(OutputExe)" />
+    <PublishItems Include="$(OutputDll)" Condition="'$(Platform)'=='Win32'" />
     <PublishItems Include="$(TargetDir)data\**\*" />
-    <PublishItems Include="$(TargetDir)openrct2.exe" />
-    <PublishItems Include="$(TargetDir)openrct2.dll" />
     <PublishItems Include="$(TargetDir)curl-ca-bundle.crt" />
     <PublishItems Include="$(DistDir)changelog.txt" />
     <PublishItems Include="$(DistDir)known_issues.txt" />
