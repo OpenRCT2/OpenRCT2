@@ -38,6 +38,7 @@
     <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
     <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
     <OutputExe Condition="'$(Platform)'=='x64'">$(TargetPath)</OutputExe>
+    <OutputSegmentInfo Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_data</OutputSegmentInfo>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
@@ -75,6 +76,7 @@
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
     <PublishItems Include="$(OutputDll)" Condition="'$(Platform)'=='Win32'" />
+    <PublishItems Include="$(OutputSegmentInfo)" Condition="'$(Platform)'=='x64'" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(RootDir)curl-ca-bundle.crt" />
     <PublishItems Include="$(DistDir)changelog.txt" />
@@ -132,7 +134,8 @@
   </Target>
 
   <Target Name="BeforeClean">
-    <Delete Condition="'$(Platform)'=='Win32'" Files="$(TargetDir)openrct2.exe" />
+    <Delete Condition="'$(Platform)'=='Win32'" Files="$(OutputExe)" />
+    <Delete Condition="'$(Platform)'=='x64'" Files="$(OutputSegmentInfo)" />
     <Delete Files="$(TargetDir)curl-ca-bundle.crt" />
     <Delete Files="$(g2Output)" />
     <Delete Files="$(PublishZip)" />
@@ -154,6 +157,23 @@
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
     <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- Target to create the segment information x64 builds currently require -->
+  <Target Name="CreateRCT2SegmentInfo"
+          AfterTargets="Build"
+          Inputs="$(RootDir)openrct2.exe"
+          Outputs="$(OutputSegmentInfo)"
+          Condition="'$(Platform)'=='x64'">
+    <Exec Command="dd if=$(RootDir)openrct2.exe of=$(OutputSegmentInfo) bs=4096 skip=1188 count=318"
+          StandardOutputImportance="normal"
+          StandardErrorImportance="normal" />
+    <Exec Command="dd if=/dev/zero of=$(OutputSegmentInfo) bs=4096 seek=318 count=2630 conv=notrunc"
+          StandardOutputImportance="normal"
+          StandardErrorImportance="normal" />
+    <Exec Command="dd if=$(RootDir)openrct2.exe of=$(OutputSegmentInfo) bs=4096 skip=1506 seek=2948 count=1 conv=notrunc"
+          StandardOutputImportance="normal"
+          StandardErrorImportance="normal" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
