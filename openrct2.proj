@@ -90,15 +90,18 @@
   <ItemGroup Label="Upload Artifacts">
     <UploadArtifacts Include="$(PublishZip)">
       <Name>$(UploadFilename).zip</Name>
-      <FlavourId>1</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='Win32'">1</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='x64'">6</FlavourId>
     </UploadArtifacts>
     <UploadArtifacts Include="$(PublishInstallerExe)">
       <Name>$(UploadFilename).exe</Name>
-      <FlavourId>2</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='Win32'">2</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='x64'">7</FlavourId>
     </UploadArtifacts>
     <UploadArtifacts Include="$(PublishSymbolsZip)">
       <Name>$(UploadFilename)-symbols.zip</Name>
-      <FlavourId>5</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='Win32'">5</FlavourId>
+      <FlavourId Condition="'$(Platform)'=='x64'">10</FlavourId>
     </UploadArtifacts>
   </ItemGroup>
 
