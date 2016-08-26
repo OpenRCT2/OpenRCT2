@@ -23,6 +23,7 @@ if ($env:ENCKEY)
     Check-ExitCode
 }
 
+# Check if OpenRCT2.org API security token is available
 if (${env:OPENRCT2_ORG_TOKEN})
 {
     if (-not (Test-Path "C:\ProgramData\chocolatey\lib\nsis.portable"))
@@ -41,18 +42,6 @@ if (${env:OPENRCT2_ORG_TOKEN})
         7z x nsisxtra.zip > $null
         Check-ExitCode
         cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
-    }
-}
-
-# Check if OpenRCT2.org API security token is available
-if (${env:OPENRCT2_ORG_TOKEN})
-{
-    # Only upload tagged builds, develop branch or push/ branches
-    if (${env:APPVEYOR_REPO_TAG} -or ${env:APPVEYOR_REPO_BRANCH} -match "^develop$|^push/")
-    {
-        # Remove the OPENRCT2_ORG_TOKEN environment variable so that the msbuild will not
-        # try to upload the artifacts
-        ${env:OPENRCT2_ORG_TOKEN} = $null
     }
 }
 else

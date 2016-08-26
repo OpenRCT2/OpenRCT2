@@ -9,7 +9,7 @@
        - OPENRCT2_ORG_TOKEN
        - NO_NSIS: set to true to prevent the NSIS installer building
   -->
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="All">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="PublishAll">
   <!-- Import custom build tasks -->
   <Import Project="openrct2.targets" />
 
@@ -267,11 +267,6 @@
          --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
          &quot;$(UploadLink)&quot;"
           CustomErrorRegularExpression="&quot;error&quot;:1" />
-  </Target>
-
-  <Target Name="All">
-    <CallTarget Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Targets="PublishAll" />
-    <CallTarget Condition="'$(OPENRCT2_ORG_TOKEN)'!=''" Targets="UploadArtifacts" />
   </Target>
 
 </Project>

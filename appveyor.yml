@@ -31,3 +31,6 @@ artifacts:
   name: OpenRCT2-installer
 - path: .\artifacts\openrct2-symbols*.zip
   name: OpenRCT2 debug symbols
+deploy_script:
+- ps: >-
+    .\scripts\ps\appveyor_deploy.ps1
