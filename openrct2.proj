@@ -44,7 +44,8 @@
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
     <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
 
-    <PublishPostfix>-$(Configuration)-$(Platform)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
+    <PublishPostfix>-$(Configuration)-$(Platform)</PublishPostfix>
+    <PublishPostfix Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(PublishPostfix)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
     <PublishPostfix>$(PublishPostfix.ToLower())</PublishPostfix>
     <PublishZip>$(ArtifactsDir)openrct2-portable$(PublishPostfix).zip</PublishZip>
     <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'==''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
@@ -134,13 +135,16 @@
   </Target>
 
   <Target Name="BeforeClean">
-    <Delete Condition="'$(Platform)'=='Win32'" Files="$(OutputExe)" />
-    <Delete Condition="'$(Platform)'=='x64'" Files="$(OutputSegmentInfo)" />
-    <Delete Files="$(TargetDir)curl-ca-bundle.crt" />
-    <Delete Files="$(g2Output)" />
-    <Delete Files="$(PublishZip)" />
-    <Delete Files="$(PublishSymbolsZip)" />
-    <Delete Files="$(PublishInstallerExe)" />
+    <ItemGroup>
+      <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
+      <CleanItems Condition="'$(Platform)'=='x64'" Include="$(OutputSegmentInfo)" />
+      <CleanItems Include="$(TargetDir)curl-ca-bundle.crt" />
+      <CleanItems Include="$(g2Output)" />
+      <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
+      <CleanItems Include="$(ArtifactsDir)openrct2-portable-$(Configuration)-$(Platform)*.zip" />
+      <CleanItems Include="$(ArtifactsDir)openrct2-symbols-$(Configuration)-$(Platform)*.zip" />
+    </ItemGroup>
+    <Delete Files="@(CleanItems)" />
     <RemoveDir Directories="$(TargetDir)data" />
   </Target>
 
