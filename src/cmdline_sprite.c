@@ -99,21 +99,43 @@ static bool sprite_file_open(const utf8 *path)
 	}
 
 	if (spriteFileHeader.num_entries > 0) {
-		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
+		int openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+		rct_g1_element_32bit * openElements = (rct_g1_element_32bit *)malloc(openEntryTableSize);
+		if (openElements == NULL) {
+			SDL_RWclose(file);
+			return false;
+		}
 
-		spriteFileEntries = malloc(entryTableSize);
-		if (SDL_RWread(file, spriteFileEntries, entryTableSize, 1) != 1) {
+		if (SDL_RWread(file, openElements, openEntryTableSize, 1) != 1) {
+			free(openElements);
 			SDL_RWclose(file);
 			return false;
 		}
 
 		spriteFileData = malloc(spriteFileHeader.total_size);
 		if (SDL_RWread(file, spriteFileData, spriteFileHeader.total_size, 1) != 1) {
+			free(spriteFileData);
+			free(openElements);
 			SDL_RWclose(file);
 			return false;
 		}
 
-		sprite_entries_make_absolute();
+		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
+		spriteFileEntries = malloc(entryTableSize);
+		for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
+			rct_g1_element_32bit * inElement = &openElements[i];
+			rct_g1_element * outElement = &spriteFileEntries[i];
+
+			outElement->offset = (uint8*)((uintptr_t)inElement->offset + (uintptr_t)spriteFileData);
+			outElement->width = inElement->width;
+			outElement->height = inElement->height;
+			outElement->x_offset = inElement->x_offset;
+			outElement->y_offset = inElement->y_offset;
+			outElement->flags = inElement->flags;
+			outElement->zoomed_offset = inElement->zoomed_offset;
+		}
+
+		free(openElements);
 	}
 
 	SDL_RWclose(file);
@@ -132,17 +154,32 @@ static bool sprite_file_save(const char *path)
 	}
 
 	if (spriteFileHeader.num_entries > 0) {
-		sprite_entries_make_relative();
-
-		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
-
-		if (SDL_RWwrite(file, spriteFileEntries, entryTableSize, 1) != 1) {
-			sprite_entries_make_absolute();
+		int saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+		rct_g1_element_32bit * saveElements = (rct_g1_element_32bit *)malloc(saveEntryTableSize);
+		if (saveElements == NULL) {
 			SDL_RWclose(file);
 			return false;
-		} else {
-			sprite_entries_make_absolute();
 		}
+
+		for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
+			rct_g1_element * inElement = &spriteFileEntries[i];
+			rct_g1_element_32bit * outElement = &saveElements[i];
+
+			outElement->offset = (uint32)((uintptr_t)inElement->offset - (uintptr_t)spriteFileData);
+			outElement->width = inElement->width;
+			outElement->height = inElement->height;
+			outElement->x_offset = inElement->x_offset;
+			outElement->y_offset = inElement->y_offset;
+			outElement->flags = inElement->flags;
+			outElement->zoomed_offset = inElement->zoomed_offset;
+		}
+
+		if (SDL_RWwrite(file, saveElements, saveEntryTableSize, 1) != 1) {
+			free(saveElements);
+			SDL_RWclose(file);
+			return false;
+		}
+		free(saveElements);
 
 		if (SDL_RWwrite(file, spriteFileData, spriteFileHeader.total_size, 1) != 1) {
 			SDL_RWclose(file);
