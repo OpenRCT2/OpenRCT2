@@ -496,6 +496,12 @@ void openrct2_reset_object_tween_locations()
 	}
 }
 
+void openrct2_get_segment_data_path(char * buffer, size_t bufferSize)
+{
+	platform_get_exe_path(buffer);
+	safe_strcat_path(buffer, "openrct2_data", bufferSize);
+}
+
 /**
  * Loads RCT2's data model and remaps the addresses.
  * @returns true if the data integrity check succeeded, otherwise false.
@@ -539,7 +545,9 @@ bool openrct2_setup_rct2_segment()
 	// TODO: UGLY, UGLY HACK!
 	//off_t file_size = 6750208;
 
-	fdData = open("openrct2_data", O_RDONLY);
+	utf8 segmentDataPath[MAX_PATH];
+	openrct2_get_segment_data_path(segmentDataPath, sizeof(segmentDataPath));
+	fdData = open(segmentDataPath, O_RDONLY);
 	if (fdData < 0)
 	{
 		log_fatal("failed to load openrct2_data");
@@ -614,7 +622,10 @@ bool openrct2_setup_rct2_segment()
 		log_error("VirtualAlloc, segments = %p, GetLastError = 0x%x", segments, GetLastError());
 		return false;
 	}
-	SDL_RWops * rw = SDL_RWFromFile("openrct2_data", "rb");
+
+	utf8 segmentDataPath[MAX_PATH];
+	openrct2_get_segment_data_path(segmentDataPath, sizeof(segmentDataPath));
+	SDL_RWops * rw = SDL_RWFromFile(segmentDataPath, "rb");
 	if (rw == NULL)
 	{
 		log_error("failed to load file");
