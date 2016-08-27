@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 7z Task -->
+  <UsingTask TaskName="_7z"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Inputs Required="true" ParameterType="System.String" />
+      <Output Required="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System"/>
+      <Using Namespace="System.Diagnostics"/>
+      <Using Namespace="System.IO"/>
+      <Code Type="Method" Language="cs">
+        <![CDATA[
+          public override bool Execute()
+          {
+              string appPath = Find7zPath();
+              if (appPath == null)
+              {
+                  Log.LogError("Unable to find 7z.exe.");
+                  return false;
+              }
+
+              var argsSB = new StringBuilder();
+              argsSB.Append("a -tzip -mx9 -mtc=off ");
+              argsSB.Append("\"" + Output + "\" ");
+              foreach (string input in Inputs.Split(';'))
+              {
+                  argsSB.Append("\"" + input + "\" ");
+              }
+              string args = argsSB.ToString();
+
+              Log.LogMessage(MessageImportance.Normal, "7z " + args);
+
+              var psi = new ProcessStartInfo(appPath, args);
+              psi.CreateNoWindow = true;
+              psi.UseShellExecute = false;
+              psi.RedirectStandardOutput = true;
+              psi.RedirectStandardError = true;
+              var process = Process.Start(psi);
+              process.WaitForExit();
+              if (process.ExitCode != 0)
+              {
+                  string appError = process.StandardError.ReadToEnd();
+                  appError = appError.Replace("\r\n", "\n");
+                  appError = appError.Replace("\r", "\n");
+                  appError = appError.Replace("\n", " ");
+                  int colonIndex = appError.IndexOf(":");
+                  if (colonIndex != -1)
+                  {
+                      appError = appError.Substring(colonIndex + 1);
+                  }
+                  appError = appError.Trim();
+                  Log.LogError(appError);
+                  return false;
+              }
+
+              string appOutput = process.StandardOutput.ReadToEnd();
+              Log.LogMessage(MessageImportance.Normal, appOutput);
+              return true;
+          }
+
+          private string Find7zPath()
+          {
+              const string DefaultAppFileName = "7z.exe";
+              string DefaultAppPath = Path.Combine("7-Zip", DefaultAppFileName);
+
+              // HACK needed as SpecialFolder.ProgramFiles returns x86 for a 32-bit process
+              string programFiles = Path.Combine(Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)), "Program Files");
+              string appPath = Path.Combine(programFiles, DefaultAppPath);
+              if (File.Exists(appPath))
+              {
+                  return appPath;
+              }
+
+              programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+              appPath = Path.Combine(programFiles, DefaultAppPath);
+              if (File.Exists(appPath))
+              {
+                  return appPath;
+              }
+              
+              programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+              appPath = Path.Combine(programFiles, DefaultAppPath);
+              if (File.Exists(appPath))
+              {
+                  return appPath;
+              }
+          
+              string[] envPaths = Environment.GetEnvironmentVariable("PATH").Split(';');
+              foreach (string envPath in envPaths)
+              {
+                  appPath = Path.Combine(envPath, DefaultAppFileName);
+                  if (File.Exists(appPath))
+                  {
+                      return appPath;
+                  }
+              }
+              
+              return null;
+          }
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <UsingTask TaskName="Unzip"
+             TaskFactory="CodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Input Required="true" ParameterType="System.String" />
+      <OutputDirectory Required="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.IO.Compression.FileSystem" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          Log.LogMessage(MessageImportance.Normal, String.Format("Extracting '{0}' to '{1}'.", Input, OutputDirectory));
+          System.IO.Compression.ZipFile.ExtractToDirectory(Input, OutputDirectory);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
