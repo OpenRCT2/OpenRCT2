@@ -648,7 +648,7 @@ static bool config_get_section(const utf8string line, const utf8 **sectionName, 
 		if (c == ']') break;
 	}
 
-	*sectionNameSize = ch - *sectionName - 1;
+	*sectionNameSize = (int)(ch - *sectionName - 1);
 	return true;
 }
 
@@ -668,7 +668,7 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
 			if (c == '=') equals = true;
-			*propertyNameSize = ch - *propertyName - 1;
+			*propertyNameSize = (int)(ch - *propertyName - 1);
 			break;
 		} else if (c == '#') {
 			return false;
@@ -699,8 +699,8 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 			if (c != ' ') clast = ch;
 		}
 	}
-	if (!quotes) *valueSize = clast - *value;
-	else *valueSize = ch - *value - 1;
+	if (!quotes) *valueSize = (int)(clast - *value);
+	else *valueSize = (int)(ch - *value - 1);
 	if (quotes) (*valueSize)--;
 	return true;
 }
@@ -711,7 +711,7 @@ static config_section_definition *config_get_section_def(const utf8 *name, int s
 
 	for (i = 0; i < countof(_sectionDefinitions); i++) {
 		const_utf8string sectionName = _sectionDefinitions[i].section_name;
-		const int sectionNameSize = strnlen(sectionName, size);
+		int sectionNameSize = (int)strnlen(sectionName, size);
 		if (sectionNameSize == size && sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
 			return &_sectionDefinitions[i];
 	}
@@ -725,7 +725,7 @@ static config_property_definition *config_get_property_def(config_section_defini
 
 	for (i = 0; i < section->property_definitions_count; i++) {
 		const_utf8string propertyName = section->property_definitions[i].property_name;
-		const int propertyNameSize = strnlen(propertyName, size);
+		int propertyNameSize = (int)strnlen(propertyName, size);
 		if (propertyNameSize == size && propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
 		{
 			return &section->property_definitions[i];
@@ -764,7 +764,7 @@ static void config_set_property(const config_section_definition *section, const 
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
 	if (property->enum_definitions != NULL)
-		if (config_read_enum(destValue, _configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+		if (config_read_enum(destValue, (int)_configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
 			return;
 
 	switch (property->type) {

@@ -272,7 +272,7 @@ public:
                 timeval timeout;
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
-                if (select(_socket + 1, nullptr, &writeFD, nullptr, &timeout) > 0)
+                if (select((int)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
                     error = 0;
                     socklen_t len = sizeof(error);
@@ -368,7 +368,7 @@ public:
             throw Exception("Socket not connected.");
         }
 
-        int readBytes = recv(_socket, (char *)buffer, size, 0);
+        int readBytes = recv(_socket, (char *)buffer, (int)size, 0);
         if (readBytes == 0)
         {
             *sizeReceived = 0;
@@ -439,7 +439,7 @@ private:
         else
         {
             memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = result->ai_addrlen;
+            *ss_len = (int)result->ai_addrlen;
             freeaddrinfo(result);
             return true;
         }

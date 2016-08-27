@@ -719,7 +719,7 @@ void window_close(rct_window* window)
 
 	// Remove window from list and reshift all windows
 	RCT2_NEW_WINDOW--;
-	num_windows = (RCT2_NEW_WINDOW - window);
+	num_windows = (int)(RCT2_NEW_WINDOW - window);
 	if (num_windows > 0)
 		memmove(window, window + 1, num_windows * sizeof(rct_window));
 

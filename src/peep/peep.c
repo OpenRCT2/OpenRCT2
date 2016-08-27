@@ -2333,7 +2333,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			*car_array_pointer++ = i;
 		}
 
-		car_array_size = car_array_pointer - car_array;
+		car_array_size = (uint8)(car_array_pointer - car_array);
 
 		if (car_array_size == 0)return;
 	}

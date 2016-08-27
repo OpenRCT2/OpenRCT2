@@ -216,7 +216,7 @@ static void window_track_list_select(rct_window *w, int index)
 
 static int window_track_list_get_list_item_index_from_position(int x, int y)
 {
-	int maxItems = _trackDesignsCount;
+	int maxItems = (int)_trackDesignsCount;
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Extra item: custom design
 		maxItems++;

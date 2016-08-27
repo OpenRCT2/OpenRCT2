@@ -103,7 +103,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
     }
     
     sawyercoding_chunk_header chunkHeader;
-    int encodedLength;
+    size_t encodedLength;
 
     // 0: Write header chunk
     chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
@@ -232,7 +232,7 @@ void S6Exporter::Export()
     {
         const rct_object_entry * entry = get_loaded_object_entry(i);
         void * entryData = get_loaded_object_chunk(i);
-        if (entryData == (void *)0xFFFFFFFF)
+        if (entryData == (void *)-1)
         {
             Memory::Set(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }

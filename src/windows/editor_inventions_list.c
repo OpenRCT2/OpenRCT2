@@ -321,14 +321,14 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 
 	if (researchItem < 0x10000) {
 		sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
-		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)0xFFFFFFFF)
+		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)-1)
 			return 0;
 
 		return sceneryEntry->name;
 	}
 
 	rideEntry = get_ride_entry(researchItem & 0xFF);
-	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)0xFFFFFFFF)
+	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1)
 		return 0;
 
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
@@ -792,7 +792,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 
 	void *chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex & 0xFF];
 
-	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
+	if (chunk == NULL || chunk == (void*)-1)
 		return;
 
 	rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex & 0xFF].entry;

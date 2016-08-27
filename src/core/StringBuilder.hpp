@@ -57,7 +57,7 @@ public:
      */
     void Append(codepoint_t codepoint)
     {
-        codepoint_t codepointLength = String::GetCodepointLength(codepoint);
+        size_t codepointLength = String::GetCodepointLength(codepoint);
         EnsureCapacity(_length + codepointLength + 1);
         String::WriteCodepoint(_buffer + _length, codepoint);
         _length += codepointLength;

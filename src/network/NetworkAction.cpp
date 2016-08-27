@@ -40,7 +40,7 @@ int NetworkActions::FindCommand(int command)
     });
     if (it != Actions.end())
     {
-        return it - Actions.begin();
+        return (int)(it - Actions.begin());
     }
     return -1;
 }
@@ -57,7 +57,7 @@ int NetworkActions::FindCommandByPermissionName(const std::string &permission_na
     });
     if (it != Actions.end())
     {
-        return it - Actions.begin();
+        return (int)(it - Actions.begin());
     }
     return -1;
 }

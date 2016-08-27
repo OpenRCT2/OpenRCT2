@@ -157,7 +157,7 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 		free(td6);
 		return NULL;
 	}
-	copy(elementData, &readPtr, elementDataLength);
+	copy(elementData, &readPtr, (int)elementDataLength);
 	td6->elements = elementData;
 	td6->elementsSize = elementDataLength;
 

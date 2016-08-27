@@ -2359,7 +2359,7 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 		}
 	}
 
-	uint32 rct2VehiclePtrFormat = ((uint32)vehicleEntry) - offsetof(rct_ride_entry, vehicles);
+	uint32 rct2VehiclePtrFormat = (uint32)((uintptr_t)vehicleEntry - (uintptr_t)offsetof(rct_ride_entry, vehicles));
 	RCT2_GLOBAL(0x00F64DFC, uint32) = rct2VehiclePtrFormat;
 	switch (vehicleEntry->car_visual) {
 	case VEHICLE_VISUAL_DEFAULT:						vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry); break;

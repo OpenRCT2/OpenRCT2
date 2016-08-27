@@ -257,7 +257,7 @@ static void mapgen_place_trees()
 		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
-		if (sceneryEntry == (rct_scenery_entry*)0xFFFFFFFF || sceneryEntry == NULL)
+		if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
 			continue;
 
 		for (j = 0; j < countof(GrassTrees); j++)

@@ -302,7 +302,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
 	if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
 		uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
+		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 	}
 
 	*newPeep_sprite_index = newPeep->sprite_index;

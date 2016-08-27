@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef NO_RCT2
+
 #include "common.h"
 
 #ifdef __WINDOWS__
@@ -200,7 +202,7 @@ static void hookfunc(int address, int newaddress, int stacksize, int registerarg
 	data[i++] = 0xC3; // retn
 
 #ifdef __WINDOWS__
-	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
+	WriteProcessMemory(GetCurrentProcess(), address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
 	memcpy((void *)address, data, i);
@@ -255,3 +257,5 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
 }
+
+#endif

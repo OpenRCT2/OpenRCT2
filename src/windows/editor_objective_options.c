@@ -834,7 +834,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	stex = g_stexEntries[0];
-	if (stex == (rct_stex_entry*)0xFFFFFFFF)
+	if (stex == (rct_stex_entry*)-1)
 		stex = NULL;
 
 	widgets = window_editor_objective_options_widgets[w->page];
@@ -904,7 +904,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	window_editor_objective_options_draw_tab_images(w, dpi);
 
 	stex = g_stexEntries[0];
-	if (stex == (rct_stex_entry*)0xFFFFFFFF)
+	if (stex == (rct_stex_entry*)-1)
 		stex = NULL;
 
 	// Objective label

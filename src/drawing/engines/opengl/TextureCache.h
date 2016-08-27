@@ -101,7 +101,7 @@ public:
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
         {
-            _freeSlots[i] = i;
+            _freeSlots[i] = (GLuint)i;
         }
     }
 

@@ -360,7 +360,7 @@ private:
             header.TotalFileSize = _queryDirectoryResult.TotalFileSize;
             header.FileDateModifiedChecksum = _queryDirectoryResult.FileDateModifiedChecksum;
             header.PathChecksum = _queryDirectoryResult.PathChecksum;
-            header.NumItems = _items.size();
+            header.NumItems = (uint32)_items.size();
             fs.WriteValue(header);
 
             // Write items
@@ -545,7 +545,7 @@ private:
         uint8 objectType = entry->flags & 0x0F;
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
-        chunkHeader.length = dataSize;
+        chunkHeader.length = (uint32)dataSize;
         uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
         size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
 
@@ -797,7 +797,7 @@ extern "C"
                 return 0;
             }
 
-            uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
+            size_t chunkSize = sawyercoding_read_chunk(rw, chunk);
             chunk = Memory::Reallocate(chunk, chunkSize);
             if (chunk == nullptr)
             {

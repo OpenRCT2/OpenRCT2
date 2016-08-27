@@ -317,7 +317,7 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 	for (unsigned int y = 0; y < height; y++) {
 		rle_code *previousCode, *currentCode;
 
-		yOffsets[y] = (dst - buffer);
+		yOffsets[y] = (uint16)(dst - buffer);
 
 		previousCode = NULL;
 		currentCode = (rle_code*)dst;
@@ -537,9 +537,9 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int numbers = (int)floor(log(maxIndex));
 
 		safe_strcpy(outputPath, argv[2], MAX_PATH);
-		int pathLen = strlen(outputPath);
+		size_t pathLen = strlen(outputPath);
 
-		if (pathLen >= MAX_PATH - numbers - 5){
+		if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {
 			fprintf(stderr, "Path too long.\n");
 			return -1;
 		}
@@ -635,7 +635,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		const char *spriteFilePath = argv[1];
 		const char *resourcePath = argv[2];
 		char imagePath[MAX_PATH];
-		int resourceLength = strlen(resourcePath);
+		size_t resourceLength = strlen(resourcePath);
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 		SDL_RWops *file;

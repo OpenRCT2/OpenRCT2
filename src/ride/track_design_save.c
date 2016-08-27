@@ -220,13 +220,13 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
  */
 static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
 {
-	int newElementCount = map_element_get_total_element_count(mapElement);
+	size_t newElementCount = map_element_get_total_element_count(mapElement);
 	if (newElementCount == 0) {
 		return false;
 	}
 
 	// Get number of spare elements left
-	int spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - _trackSavedMapElementsCount;
+	size_t spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - _trackSavedMapElementsCount;
 	if (newElementCount > spareSavedElements) {
 		// No more spare saved elements left
 		return false;
@@ -1264,7 +1264,7 @@ bool track_design_save_to_file(const utf8 *path)
 	// Encode TD6 data
 	uint8 *encodedData = malloc(0x8000);
 	assert(td6Buffer.ptr != NULL);
-	int encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
+	size_t encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
 	// Save encoded TD6 data to file
 	bool result;

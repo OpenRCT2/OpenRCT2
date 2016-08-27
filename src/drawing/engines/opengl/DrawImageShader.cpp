@@ -114,7 +114,7 @@ void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instan
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glBufferData(GL_ARRAY_BUFFER, sizeof(instances[0]) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, instances.size());
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, (GLsizei)instances.size());
 }
 
 #endif /* DISABLE_OPENGL */

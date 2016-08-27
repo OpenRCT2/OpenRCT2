@@ -3072,7 +3072,7 @@ static int ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub
 		return 0;
 	}
 	rct_ride_entry *rideEntry = get_ride_entry(ride_sub_type);
-	if (rideEntry == (rct_ride_entry *)0xFFFFFFFF)
+	if (rideEntry == (rct_ride_entry *)-1)
 	{
 		return 0;
 	}
@@ -5980,7 +5980,7 @@ foundRideEntry:
 
 	ride = get_ride(rideIndex);
 	rideEntry = get_ride_entry(rideEntryIndex);
-	if (rideEntry == (rct_ride_entry *)0xFFFFFFFF)
+	if (rideEntry == (rct_ride_entry *)-1)
 	{
 		log_warning("Invalid request for ride %u", rideIndex);
 		return MONEY32_UNDEFINED;
@@ -6595,7 +6595,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 	price = *edi;
 	secondary_price = (*edx >> 8);
 
-	if (rideEntry == (rct_ride_entry *)0xFFFFFFFF)
+	if (rideEntry == (rct_ride_entry *)-1)
 	{
 		log_warning("Invalid game command for ride %u", ride_number);
 		*ebx = MONEY32_UNDEFINED;

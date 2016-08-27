@@ -701,7 +701,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 
 static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
 {
-	uint32 hash = ((uint32)font * 23) ^ 0xAAAAAAAA;
+	uint32 hash = (uint32)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
 	for (const utf8 *ch = text; *ch != 0; ch++) {
 		hash = ror32(hash, 3) ^ (*ch * 13);
 	}
@@ -1176,7 +1176,7 @@ static const utf8 *ttf_process_glyph_run(rct_drawpixelinfo *dpi, const utf8 *tex
 		ttf_draw_string_raw(dpi, text, info);
 		return ch;
 	} else {
-		int length = ch - text;
+		size_t length = (size_t)(ch - text);
 		memcpy(buffer, text, length);
 		buffer[length] = 0;
 		ttf_draw_string_raw(dpi, buffer, info);
@@ -1339,7 +1339,7 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 
 void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availableWidth)
 {
-	int length = strlen(path);
+	size_t length = strlen(path);
 
 	// Return full string if it fits
 	if (gfx_get_string_width((char*)path) <= availableWidth) {
@@ -1349,7 +1349,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 
 	// Count path separators
 	int path_separators = 0;
-	for (int x = 0; x < length; x++) {
+	for (size_t x = 0; x < length; x++) {
 		if (path[x] == platform_get_path_separator()) {
 			path_separators++;
 		}

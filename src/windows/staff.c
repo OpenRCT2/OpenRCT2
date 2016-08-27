@@ -613,7 +613,7 @@ static void window_staff_set_order(rct_window* w, int order_id)
 	int ax = peep->staff_orders ^ (1 << order_id);
 	int flags = (ax << 8) | 1;
 
-	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 }
 
 /**
@@ -1396,5 +1396,5 @@ void window_staff_options_dropdown(rct_window *w, int widgetIndex, int dropdownI
 
 	rct_peep* peep = GET_PEEP(w->number);
 	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
-	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 }

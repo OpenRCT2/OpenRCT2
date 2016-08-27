@@ -41,14 +41,14 @@ void http_dispose() { }
 
 typedef struct read_buffer {
 	char *ptr;
-	int length;
-	int position;
+	size_t length;
+	size_t position;
 } read_buffer;
 
 typedef struct write_buffer {
 	char *ptr;
-	int length;
-	int capacity;
+	size_t length;
+	size_t capacity;
 } write_buffer;
 
 #ifdef __WINDOWS__
@@ -94,12 +94,12 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 {
 	write_buffer *writeBuffer = (write_buffer*)userdata;
 
-	int newBytesLength = size * nmemb;
+	size_t newBytesLength = size * nmemb;
 	if (newBytesLength > 0) {
-		int newCapacity = writeBuffer->capacity;
-		int newLength = writeBuffer->length + newBytesLength;
+		size_t newCapacity = writeBuffer->capacity;
+		size_t newLength = writeBuffer->length + newBytesLength;
 		while (newLength > newCapacity) {
-			newCapacity = Math::Max(4096, newCapacity * 2);
+			newCapacity = Math::Max<size_t>(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
 			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
@@ -140,7 +140,7 @@ http_json_response *http_request_json(const http_json_request *request)
 		headers = curl_slist_append(headers, "Content-Type: " MIME_TYPE_APPLICATION_JSON);
 
 		char contentLengthHeaderValue[64];
-		snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %d", readBuffer.length);
+		snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %zu", readBuffer.length);
 		headers = curl_slist_append(headers, contentLengthHeaderValue);
 
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, readBuffer.ptr);

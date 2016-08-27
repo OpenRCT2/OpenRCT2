@@ -1108,11 +1108,11 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 
 
-	int string_length = get_string_size(wrapped_string) - 1;
+	size_t string_length = get_string_size(wrapped_string) - 1;
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[512] = { 0 };
-	memcpy(temp_string, wrapped_string, min((size_t)string_length, gTextInput.selection_offset));
+	memcpy(temp_string, wrapped_string, min(string_length, gTextInput.selection_offset));
 	int cur_x = l + gfx_get_string_width(temp_string) + 3;
 
 	int width = 6;

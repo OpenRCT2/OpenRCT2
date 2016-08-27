@@ -858,7 +858,7 @@ static int get_num_track_designs(ride_list_item item)
 		}
 	}
 
-	return track_design_index_get_count_for_ride(item.type, entryPtr);
+	return (int)track_design_index_get_count_for_ride(item.type, entryPtr);
 }
 
 /**

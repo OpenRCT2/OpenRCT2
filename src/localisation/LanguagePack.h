@@ -36,7 +36,7 @@ public:
     ~LanguagePack();
 
     uint16 GetId()    const { return _id;             }
-    uint32 GetCount() const { return _strings.size(); }
+    uint32 GetCount() const { return (uint32)_strings.size(); }
 
     const utf8 * GetString(rct_string_id stringId) const;
 

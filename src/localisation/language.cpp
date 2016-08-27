@@ -288,7 +288,7 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
 
 static utf8 *convert_multibyte_charset(const char *src, int languageId)
 {
-	int reservedLength = (strlen(src) * 4) + 1;
+	size_t reservedLength = (strlen(src) * 4) + 1;
 	utf8 *buffer = (utf8*)malloc(reservedLength);
 	utf8 *dst = buffer;
 	for (const uint8 *ch = (const uint8*)src; *ch != 0;) {
@@ -305,7 +305,7 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 		}
 	}
 	*dst++ = 0;
-	int actualLength = dst - buffer;
+	size_t actualLength = (size_t)(dst - buffer);
 	buffer = (utf8*)realloc(buffer, actualLength);
 
 	return buffer;

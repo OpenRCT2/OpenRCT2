@@ -973,8 +973,8 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
 
     assert(bitsOffset < bitsSize);
 
-    _clipLeft = bitsOffset % (screenDPI->width + screenDPI->pitch);
-    _clipTop = bitsOffset / (screenDPI->width + screenDPI->pitch);
+    _clipLeft = (sint32)(bitsOffset % (screenDPI->width + screenDPI->pitch));
+    _clipTop = (sint32)(bitsOffset / (screenDPI->width + screenDPI->pitch));
 
     _clipRight = _clipLeft + dpi->width;
     _clipBottom = _clipTop + dpi->height;

@@ -134,6 +134,6 @@ void SceneryGroupObject::ReadItems(IStream * stream)
         items.push_back(entry);
     }
 
-    _numItems = items.size();
+    _numItems = (uint32)items.size();
     _items = Memory::DuplicateArray(items.data(), items.size());
 }

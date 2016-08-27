@@ -1273,7 +1273,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		ecx = no_pixels;
 		no_pixels &= 0x7;
 		ecx >>= 3;//SAR
-		int eax = ((int) no_pixels) << 8;
+		uintptr_t eax = ((int) no_pixels) << 8;
 		ecx = -ecx;//Odd
 		eax = (eax & 0xFF00) + *(source_pointer + 1);
 		total_no_pixels -= ecx;

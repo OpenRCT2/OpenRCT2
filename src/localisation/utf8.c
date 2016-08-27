@@ -146,6 +146,6 @@ utf8 *widechar_to_utf8(const wchar_t *src)
 	}
 	*dst++ = 0;
 
-	int size = dst - result;
+	size_t size = (size_t)(dst - result);
 	return realloc(result, size);
 }

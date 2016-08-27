@@ -122,7 +122,7 @@ int scenario_load_and_play_from_path(const char *path)
 	reset_sprite_spatial_index();
 	reset_all_sprite_quadrant_placements();
 
-	int len = strnlen(path, MAX_PATH) + 1;
+	size_t len = strnlen(path, MAX_PATH) + 1;
 	safe_strcpy(_scenarioPath, path, len);
 	if (len - 1 == MAX_PATH)
 	{
@@ -705,7 +705,7 @@ int scenario_get_num_packed_objects_to_write()
 	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		const rct_object_entry *entry = get_loaded_object_entry(i);
 		void *entryData = get_loaded_object_chunk(i);
-		if (entryData != (void*)0xFFFFFFFF && !(entry->flags & 0xF0)) {
+		if (entryData != (void*)-1 && !(entry->flags & 0xF0)) {
 			count++;
 		}
 	}
@@ -721,7 +721,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		const rct_object_entry *entry = get_loaded_object_entry(i);
 		void *entryData = get_loaded_object_chunk(i);
-		if (entryData != (void*)0xFFFFFFFF && !(entry->flags & 0xF0)) {
+		if (entryData != (void*)-1 && !(entry->flags & 0xF0)) {
 			if (!object_saved_packed(rw, entry)) {
 				return 0;
 			}
@@ -736,20 +736,16 @@ int scenario_write_packed_objects(SDL_RWops* rw)
  */
 static int scenario_write_available_objects(FILE *file)
 {
-	uint8 *buffer, *dstBuffer;
-	int i, encodedLength;
-	sawyercoding_chunk_header chunkHeader;
-
 	const int totalEntries = OBJECT_ENTRY_COUNT;
 	const int bufferLength = totalEntries * sizeof(rct_object_entry);
 
 	// Initialise buffers
-	buffer = malloc(bufferLength);
+	uint8 *buffer = malloc(bufferLength);
 	if (buffer == NULL) {
 		log_error("out of memory");
 		return 0;
 	}
-	dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
+	uint8 *dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
 	if (dstBuffer == NULL) {
 		free(buffer);
 		log_error("out of memory");
@@ -758,9 +754,9 @@ static int scenario_write_available_objects(FILE *file)
 
 	// Write entries
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
-	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		void *entryData = get_loaded_object_chunk(i);
-		if (entryData == (void*)0xFFFFFFFF) {
+		if (entryData == (void*)-1) {
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		} else {
 			*dstEntry = *get_loaded_object_entry(i);
@@ -769,9 +765,10 @@ static int scenario_write_available_objects(FILE *file)
 	}
 
 	// Write chunk
+	sawyercoding_chunk_header chunkHeader;
 	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
 	chunkHeader.length = bufferLength;
-	encodedLength = sawyercoding_write_chunk_buffer(dstBuffer, buffer, chunkHeader);
+	size_t encodedLength = sawyercoding_write_chunk_buffer(dstBuffer, buffer, chunkHeader);
 	fwrite(dstBuffer, encodedLength, 1, file);
 
 	// Free buffers

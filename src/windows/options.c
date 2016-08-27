@@ -1074,7 +1074,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				widget->right - widget->left - 3
 			);
 
-			dropdown_set_checked(theme_manager_get_active_available_theme_index(), true);
+			dropdown_set_checked((int)theme_manager_get_active_available_theme_index(), true);
 			widget_invalidate(w, WIDX_THEMES_DROPDOWN);
 			break;
 
@@ -1529,7 +1529,7 @@ static void window_options_invalidate(rct_window *w)
 #endif // __LINUX__
 				set_format_arg(0, uint16, STR_STRING);
 
-			set_format_arg(2, uint32, (uint32)gAudioDevices[gAudioCurrentDevice].name);
+			set_format_arg(2, char , (char*)gAudioDevices[gAudioCurrentDevice].name);
 		}
 
 		// music: on/off
@@ -1770,7 +1770,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		gfx_draw_string_left(dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
 
-		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+		size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
 		set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
 

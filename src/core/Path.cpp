@@ -124,7 +124,7 @@ namespace Path
 #ifdef __WINDOWS__
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(relativePathW, Util::CountOf(absolutePathW), absolutePathW, NULL);
+        DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, NULL);
         Memory::Free(relativePathW);
         if (length == 0)
         {

@@ -44,6 +44,7 @@ extern "C" {
 
 #include "../core/Console.hpp"
 #include "../core/Json.hpp"
+#include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -1050,7 +1051,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		memcpy(header, &buffer[0], size);
 	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
-		int datasize = (std::min)(chunksize, out_size - i);
+		size_t datasize = Math::Min(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
 		packet->Write(&header[i], datasize);
@@ -1555,7 +1556,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
-			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
+			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, (int)strlen(pubkey));
 			if (signature == nullptr || pubkey_rw == nullptr) {
 				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed, invalid data!");
@@ -1617,7 +1618,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 {
 	uint32 size, offset;
 	packet >> size >> offset;
-	int chunksize = packet.size - packet.read;
+	int chunksize = (int)(packet.size - packet.read);
 	if (chunksize <= 0) {
 		return;
 	}
@@ -1652,7 +1653,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		} else {
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
-		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
+		SDL_RWops* rw = SDL_RWFromMem(data, (int)data_size);
 		if (game_load_network(rw)) {
 			game_load_init();
 			game_command_queue.clear();
@@ -2027,7 +2028,7 @@ uint8 network_get_current_player_id()
 
 int network_get_num_players()
 {
-	return gNetwork.player_list.size();
+	return (int)gNetwork.player_list.size();
 }
 
 const char* network_get_player_name(unsigned int index)
@@ -2097,7 +2098,7 @@ int network_get_player_index(uint8 id)
 	if(it == gNetwork.player_list.end()){
 		return -1;
 	}
-	return gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin();
+	return (int)(gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin());
 }
 
 uint8 network_get_player_group(unsigned int index)
@@ -2116,7 +2117,7 @@ int network_get_group_index(uint8 id)
 	if(it == gNetwork.group_list.end()){
 		return -1;
 	}
-	return gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin();
+	return (int)(gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin());
 }
 
 uint8 network_get_group_id(unsigned int index)
@@ -2126,7 +2127,7 @@ uint8 network_get_group_id(unsigned int index)
 
 int network_get_num_groups()
 {
-	return gNetwork.group_list.size();
+	return (int)gNetwork.group_list.size();
 }
 
 const char* network_get_group_name(unsigned int index)
@@ -2358,7 +2359,7 @@ uint8 network_get_default_group()
 
 int network_get_num_actions()
 {
-	return NetworkActions::Actions.size();
+	return (int)NetworkActions::Actions.size();
 }
 
 rct_string_id network_get_action_name_string_id(unsigned int index)

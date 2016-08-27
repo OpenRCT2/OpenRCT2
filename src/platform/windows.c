@@ -536,7 +536,7 @@ void platform_resolve_openrct_data_path()
 		free(customUserDataPathW);
 
 		// Ensure path ends with separator
-		int len = strlen(_userDataDirectoryPath);
+		size_t len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strcat(_userDataDirectoryPath, separator);
 		}
@@ -586,7 +586,7 @@ void platform_resolve_user_data_path()
 		free(customUserDataPathW);
 
 		// Ensure path ends with separator
-		int len = strlen(_userDataDirectoryPath);
+		size_t len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strcat(_userDataDirectoryPath, separator);
 		}

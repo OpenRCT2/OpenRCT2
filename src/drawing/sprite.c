@@ -578,7 +578,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	source_pointer = g1_source->offset;
 	uint8* new_source_pointer_start = malloc(total_no_pixels);
 	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-	intptr_t ebx, ecx;
+	intptr_t ebx;
+	int ecx;
 	while (total_no_pixels>0){
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0){
@@ -592,7 +593,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 		ecx = no_pixels;
 		no_pixels &= 0x7;
 		ecx >>= 3;//SAR
-		int eax = ((int)no_pixels)<<8;
+		uintptr_t eax = ((uintptr_t)no_pixels) << 8;
 		ecx = -ecx;//Odd
 		eax = (eax & 0xFF00) + *(source_pointer+1);
 		total_no_pixels -= ecx;

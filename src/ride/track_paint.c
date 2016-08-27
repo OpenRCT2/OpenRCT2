@@ -1264,6 +1264,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		}
 
 		int rideType = ride->type;
+#ifndef NO_RCT2
 		if (rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER && gUseOriginalRidePaint) {
 			switch (trackType) {
 			case TRACK_ELEM_60_DEG_UP:
@@ -1288,9 +1289,14 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 				return;
 			}
 		}
+#endif
 
+		bool useOriginalRidePaint = false;
+#ifndef NO_RCT2
+		useOriginalRidePaint = gUseOriginalRidePaint;
+#endif
 		TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
-		if (paintFunctionGetter != NULL && !gUseOriginalRidePaint) {
+		if (paintFunctionGetter != NULL && !useOriginalRidePaint) {
 			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
 			if (paintFunction != NULL) {
 				paintFunction(rideIndex, trackSequence, direction, height, mapElement);

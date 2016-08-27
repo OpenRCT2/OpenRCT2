@@ -765,7 +765,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	money32 cost;
 
 	rct_scenery_entry *entry = get_small_scenery_entry(scenery_type);
-	if (entry == (rct_scenery_entry *)0xFFFFFFFF)
+	if (entry == (rct_scenery_entry *)-1)
 	{
 		log_warning("Invalid game command for scenery removal, scenery_type = %u", scenery_type);
 		*ebx = MONEY32_UNDEFINED;
@@ -3684,7 +3684,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	}
 
 	rct_scenery_entry *scenery_entry = get_large_scenery_entry(entry_index);
-	if (scenery_entry == (rct_scenery_entry *)0xFFFFFFFF)
+	if (scenery_entry == (rct_scenery_entry *)-1)
 	{
 		log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
 		*ebx = MONEY32_UNDEFINED;
@@ -4034,13 +4034,13 @@ void map_reorganise_elements()
 			rct_map_element *endElement = startElement;
 			while (!map_element_is_last_for_tile(endElement++));
 
-			num_elements = endElement - startElement;
+			num_elements = (uint32)(endElement - startElement);
 			memcpy(new_elements_pointer, startElement, num_elements * sizeof(rct_map_element));
 			new_elements_pointer += num_elements;
 		}
 	}
 
-	num_elements = (new_elements_pointer - new_map_elements);
+	num_elements = (uint32)(new_elements_pointer - new_map_elements);
 	memcpy(gMapElements, new_map_elements, num_elements * sizeof(rct_map_element));
 	memset(gMapElements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
 

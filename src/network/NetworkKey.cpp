@@ -106,7 +106,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     }
     char * priv_key = new char[size];
     file->read(file, priv_key, 1, size);
-    BIO * bio = BIO_new_mem_buf(priv_key, size);
+    BIO * bio = BIO_new_mem_buf(priv_key, (int)size);
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
@@ -150,7 +150,7 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
     }
     char * pub_key = new char[size];
     file->read(file, pub_key, 1, size);
-    BIO * bio = BIO_new_mem_buf(pub_key, size);
+    BIO * bio = BIO_new_mem_buf(pub_key, (int)size);
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
@@ -382,7 +382,7 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
 
     unsigned char * sig;
     /* Allocate memory for the signature based on size in slen */
-    if (!(sig = (unsigned char*)OPENSSL_malloc(sizeof(unsigned char) * (*out_size))))
+    if (!(sig = (unsigned char*)OPENSSL_malloc((int)(sizeof(unsigned char) * (*out_size)))))
     {
         log_error("Failed to crypto-allocate space fo signature");
         EVP_MD_CTX_destroy(mdctx);

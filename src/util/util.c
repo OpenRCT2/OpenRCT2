@@ -403,15 +403,15 @@ uint32 util_rand() {
 unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
 {
 	int ret = Z_OK;
-	uLongf out_size = *data_out_size;
+	uLongf out_size = (uLong)*data_out_size;
 	if (out_size == 0)
 	{
 		// Try to guesstimate the size needed for output data by applying the
 		// same ratio it would take to compress data_in_size.
-		out_size = data_in_size * data_in_size / compressBound(data_in_size);
+		out_size = (uLong)data_in_size * (uLong)data_in_size / compressBound((uLong)data_in_size);
 		out_size = min(MAX_ZLIB_REALLOC, out_size);
 	}
-	size_t buffer_size = out_size;
+	uLongf buffer_size = out_size;
 	unsigned char *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
@@ -428,7 +428,7 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 			free(buffer);
 			return NULL;
 		}
-		ret = uncompress(buffer, &out_size, data, data_in_size);
+		ret = uncompress(buffer, &out_size, data, (uLong)data_in_size);
 	} while (ret != Z_OK);
 	buffer = realloc(buffer, out_size);
 	*data_out_size = out_size;
@@ -446,8 +446,8 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
 {
 	int ret = Z_OK;
-	uLongf out_size = *data_out_size;
-	size_t buffer_size = compressBound(data_in_size);
+	uLongf out_size = (uLongf)*data_out_size;
+	uLong buffer_size = compressBound((uLong)data_in_size);
 	unsigned char *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
@@ -460,7 +460,7 @@ unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_
 			free(buffer);
 			return NULL;
 		}
-		ret = compress(buffer, &out_size, data, data_in_size);
+		ret = compress(buffer, &out_size, data, (uLong)data_in_size);
 	} while (ret != Z_OK);
 	*data_out_size = out_size;
 	buffer = realloc(buffer, *data_out_size);
