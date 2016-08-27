@@ -20,7 +20,7 @@
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.5</Version>
+    <Version>0.0.5.0</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
     <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
@@ -55,7 +55,7 @@
     <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
     <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
 
-    <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows</UploadFilename>
+    <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
