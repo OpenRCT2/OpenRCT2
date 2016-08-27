@@ -1041,13 +1041,8 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		return;
 	}
 
-	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
-
-	set_format_arg(0, uint32, argument1);
-	set_format_arg(4, uint32, argument2);
-	set_format_arg(8, uint16, 0);
-
 	x = widget->right - widget->left - w->list_information_type;
+	peep_thought_set_format_args(&peep->thoughts[i]);
 	gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, 0);
 }
 
@@ -2012,15 +2007,11 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (thought->type == PEEP_THOUGHT_TYPE_NONE) return;
 		if (thought->var_2 == 0) continue;
 
-		uint32 argument1, argument2;
-		get_arguments_from_thought(*thought, &argument1, &argument2);
-		set_format_arg(0, uint32, argument1);
-		set_format_arg(4, uint32, argument2);
-
 		int width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
 			- window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
 			- 8;
 
+		peep_thought_set_format_args(thought);
 		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
 
 		// If this is the last visible line end drawing.

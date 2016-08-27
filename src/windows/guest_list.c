@@ -774,10 +774,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 						if (thought->var_2 > 5)
 							break;
 
-						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
-
-						set_format_arg(0, uint32, argument_1);
-						set_format_arg(4, uint32, argument_2);
+						peep_thought_set_format_args(&peep->thoughts[j]);
 						gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 118, y - 1, 329);
 						break;
 					}
@@ -867,17 +864,23 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 		get_arguments_from_action(peep, argument_1, argument_2);
 		break;
 	case VIEW_THOUGHTS:
-		if (peep->thoughts[0].var_2 <= 5) {
-			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				get_arguments_from_thought(peep->thoughts[0], argument_1, argument_2);
-				break;
-			}
+	{
+		rct_peep_thought *thought = &peep->thoughts[0];
+		if (thought->var_2 <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE) {
+			// HACK The out arguments here are used to draw the group text so we just return
+			//      gCommonFormatArgs as two uint32s.
+			memset(gCommonFormatArgs, 0, sizeof(*argument_1) + sizeof(*argument_2));
+			peep_thought_set_format_args(thought);
+			memcpy(argument_1, gCommonFormatArgs, sizeof(*argument_1));
+			memcpy(argument_2, gCommonFormatArgs + sizeof(*argument_1), sizeof(*argument_2));
 		}
+		break;
+	}
 	default:
 		*argument_1 = 0;
 		*argument_2 = 0;
+		break;
 	}
-	return;
 }
 
 /**

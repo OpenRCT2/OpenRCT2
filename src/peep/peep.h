@@ -638,7 +638,7 @@ void peep_update_days_in_queue();
 void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
-void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+void peep_thought_set_format_args(rct_peep_thought *thought);
 int get_peep_face_sprite_small(rct_peep *peep);
 int get_peep_face_sprite_large(rct_peep *peep);
 int peep_check_easteregg_name(int index, rct_peep *peep);

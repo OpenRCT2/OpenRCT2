@@ -7181,24 +7181,21 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 * argument_1 (esi & ebx)
 * argument_2 (esi+2)
 */
-void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2)
+void peep_thought_set_format_args(rct_peep_thought *thought)
 {
-	int esi = 0x009AC86C;
+	set_format_arg(0, rct_string_id, PeepThoughts[thought->type]);
 
-	uint8 flags = PeepThoughtToActionMap[thought.type].flags;
+	uint8 flags = PeepThoughtToActionMap[thought->type].flags;
 	if (flags & 1) {
-		rct_ride* ride = get_ride(thought.item);
-		esi = (int)(&(ride->name));
+		rct_ride *ride = get_ride(thought->item);
+		set_format_arg(2, rct_string_id, ride->name);
+		set_format_arg(4, uint32, ride->name_arguments);
 	} else if (flags & 2) {
-		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].singular;
+		set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].singular);
 	} else if (flags & 4) {
-		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].indefinite;
+		set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].indefinite);
 	} else {
-		esi = 0x009AC864; //No thought?
 	}
-
-	*argument_1 = ((PeepThoughts[thought.type] & 0xFFFF) | (((uint32)*((uint16*)esi)) << 16));
-	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
 }
 
 /** rct2: 0x00982004 */
