@@ -18,6 +18,9 @@
 
   <PropertyGroup>
     <Version>0.0.5</Version>
+    <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
+    <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
+    <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
     <TargetLibsVersion>9</TargetLibsVersion>
 
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
@@ -52,7 +55,7 @@
     <PublishSymbolsZip Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(ArtifactsDir)openrct2-symbols$(PublishPostfix).zip</PublishSymbolsZip>
     <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
 
-    <UploadFilename>OpenRCT2-$(Version)$(VersionExtension)-windows</UploadFilename>
+    <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows</UploadFilename>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
@@ -226,9 +229,6 @@
           Outputs="$(PublishInstallerExe)"
           Condition="'$(NO_NSIS)'!='true'">
     <PropertyGroup>
-      <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
-      <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
-      <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
       <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
     </PropertyGroup>
 
