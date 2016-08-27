@@ -3346,6 +3346,9 @@ enum {
 	STR_SEE_THROUGH_PATHS = 5911,
 	STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE = 5912,
 	STR_CHAT = 5913,
+	STR_DUPLICATE = 5914,
+	STR_MOVE_UP = 5915,
+	STR_MOVE_DOWN = 5916,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

@@ -55,7 +55,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "13"
+#define NETWORK_STREAM_VERSION "14"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -111,6 +111,8 @@ public:
 	void AdvertiseHeartbeat();
 	NetworkGroup* AddGroup();
 	void RemoveGroup(uint8 id);
+	NetworkGroup* DuplicateGroup(uint8 id);
+	bool SwapGroup(uint8 id_a, uint8 id_b);
 	uint8 GetDefaultGroup();
 	uint8 GetGroupIDByHash(const std::string &keyhash);
 	void SetDefaultGroup(uint8 id);
