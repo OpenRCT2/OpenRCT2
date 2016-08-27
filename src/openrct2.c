@@ -496,7 +496,7 @@ void openrct2_reset_object_tween_locations()
 	}
 }
 
-void openrct2_get_segment_data_path(char * buffer, size_t bufferSize)
+static void openrct2_get_segment_data_path(char * buffer, size_t bufferSize)
 {
 	platform_get_exe_path(buffer);
 	safe_strcat_path(buffer, "openrct2_data", bufferSize);
