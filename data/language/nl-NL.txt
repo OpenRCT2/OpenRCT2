@@ -1472,11 +1472,11 @@ STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
 STR_1471    :{WINDOW_COLOUR_2}Snelheid:
 STR_1472    :{SMALLFONT}{BLACK}Snelheid van deze attractie
-STR_1473    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}Nog niet beschikbaar
-STR_1475    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}Nog niet beschikbaar
-STR_1477    :{WINDOW_COLOUR_2}Intensiteitswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1473    :{WINDOW_COLOUR_2}Plezierswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Plezierswaarde: {BLACK}Nog niet beschikbaar
+STR_1475    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}Nog niet beschikbaar
+STR_1477    :{WINDOW_COLOUR_2}Spanningswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}Nog niet beschikbaar
 STR_1480    :{SMALLFONT}{OPENQUOTES}Ik kan {STRINGID} niet betalen{ENDQUOTES}
@@ -1657,7 +1657,7 @@ STR_1653    :{SMALLFONT}{OPENQUOTES}...en nu zijn we in {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
 STR_1655    :{SMALLFONT}{BLACK}Voetpaden op land aanleggen
 STR_1656    :{SMALLFONT}{BLACK}Voetpad over bruggen of door tunnels aanleggen
-STR_1657    :{WINDOW_COLOUR_2}Voorkeursintensiteit:
+STR_1657    :{WINDOW_COLOUR_2}Voorkeursspanning:
 STR_1658    :{WINDOW_COLOUR_2}{BLACK}minder dan {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}{BLACK}tussen {COMMA16} en {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}{BLACK}meer dan {COMMA16}
@@ -2313,8 +2313,8 @@ STR_2307    :Ontwerp voor {STRINGID} selecteren
 STR_2308    :Baanontwerpen voor {STRINGID}
 STR_2309    :Nieuw baanontwerp installeren
 STR_2310    :Eigen ontwerp bouwen
-STR_2311    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
-STR_2312    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2311    :{WINDOW_COLOUR_2}Plezierswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2312    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2313    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
@@ -2392,11 +2392,11 @@ STR_2386    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben aan h
 STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
-STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een spanningswaarde van ten minste 6,00
+STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een plezierswaarde van ten minste 6,00
 STR_2391    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
 STR_2392    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
-STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een spanningswaarde van ten minste 7,00
-STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een spanningswaarde van ten minste {POP16}{POP16}{COMMA2DP32}
+STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een plezierswaarde van ten minste 7,00
+STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een plezierswaarde van ten minste {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te bereiken
 STR_2396    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en souvenirs te verdienen
 STR_2397    :Geen
@@ -3127,8 +3127,8 @@ STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
 STR_3124    :{STRINGID} defect
-STR_3125    :{WINDOW_COLOUR_2}Spanningsfactor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%
+STR_3125    :{WINDOW_COLOUR_2}Pleziersfactor: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Spanningsfactor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}+{COMMA16}%
 STR_3128    :Baanontwerp opslaan
 STR_3129    :Baanontwerp en decor opslaan
@@ -3310,7 +3310,7 @@ STR_3304    :{WINDOW_COLOUR_2}Parkwaarde:
 STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomsten:
 STR_3306    :{WINDOW_COLOUR_2}Maandelijkse winst:
 STR_3307    :{WINDOW_COLOUR_2}Minimumlengte:
-STR_3308    :{WINDOW_COLOUR_2}Spanningswaarde:
+STR_3308    :{WINDOW_COLOUR_2}Plezierswaarde:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
@@ -3695,7 +3695,7 @@ STR_5358    :{BLACK}WC:
 STR_5359    :Bez. verwijderen
 STR_5360    :{SMALLFONT}{BLACK}Verwijdert alle bezoekers van de kaart
 STR_5361    :Geef alle bez.:
-STR_5362    :{BLACK}Zet de voorkeursintensiteit van alle bez. op:
+STR_5362    :{BLACK}Zet de voorkeursspanning van alle bez. op:
 STR_5363    :Meer dan 1
 STR_5364    :Minder dan 15
 STR_5365    :{BLACK}Snelh. werknemers:
@@ -3839,7 +3839,7 @@ STR_5502    :Multiplayer
 STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
-STR_5506    :Bezoekers negeren intensiteit
+STR_5506    :Bezoekers negeren spanning
 STR_5507    :Klusjesmannen standaard gras laten maaien
 STR_5508    :Bestanden met incorrecte checksum toch laden
 STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
@@ -4096,7 +4096,7 @@ STR_5791    :{SMALLFONT}{BLACK}Stelt het bouwjaar van alle attracties in op dit 
 STR_5792    :{SMALLFONT}{BLACK}Repareert alle defecte attracties.
 STR_5793    :{SMALLFONT}{BLACK}Wist de crashstatus van alle attracties,{NEWLINE}zodat de bezoekers ze niet als onveilig zien.
 STR_5794    :{SMALLFONT}{BLACK}In sommige scenario's kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
-STR_5795    :{SMALLFONT}{BLACK}Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
+STR_5795    :{SMALLFONT}{BLACK}Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de spanning erg hoog is.
 STR_5796    :{SMALLFONT}{BLACK}Forceert het openen of sluiten van het park.
 STR_5797    :{SMALLFONT}{BLACK}Voorkomt dat het weer verandert.
 STR_5798    :{SMALLFONT}{BLACK}Staat bouwen in pauzemodus toe.
