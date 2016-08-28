@@ -993,7 +993,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int rideIndex);
 int ride_modify(rct_xy_element *input);
-void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
+void ride_get_status(int rideIndex, rct_string_id *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
 int ride_get_total_time(rct_ride *ride);

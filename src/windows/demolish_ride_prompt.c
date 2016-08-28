@@ -132,7 +132,7 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_ride* ride = get_ride(w->number);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	int x = w->x + WW / 2;

@@ -2042,7 +2042,7 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 			break;
 		}
 
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		ride_set_status(w->number, status);
 		break;
@@ -2307,7 +2307,7 @@ static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdo
 			break;
 		}
 
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		ride_set_status(w->number, status);
 		break;
@@ -2403,9 +2403,9 @@ static void window_ride_main_invalidate(rct_window *w)
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
 		w->disabled_widgets |= (1 << 22);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
-	set_format_arg(6, uint16, _rideType + STR_RIDE_NAME_SPIRAL_ROLLER_COASTER);
+	set_format_arg(6, uint16, RideNaming[_rideType].name);
 	uint32 spriteIds[] = {
 		SPR_CLOSED,
 		SPR_OPEN,
@@ -2504,8 +2504,8 @@ static void window_ride_main_invalidate(rct_window *w)
  */
 static rct_string_id window_ride_get_status_overall_view(rct_window *w, void *arguments)
 {
-	int formatSecondary, argument;
-	rct_string_id stringId;
+	int argument;
+	rct_string_id formatSecondary, stringId;
 
 	ride_get_status(w->number, &formatSecondary, &argument);
 	*(uint16*)((uintptr_t)arguments + 0) = formatSecondary;
@@ -2610,9 +2610,9 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 		RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = queueLength;
 		stringId = STR_QUEUE_EMPTY;
 		if (queueLength == 1)
-			stringId++; // TODO: String calculation
+			stringId = STR_QUEUE_ONE_PERSON;
 		else if (queueLength > 1)
-			stringId += 2;// TODO: String calculation
+			stringId = STR_QUEUE_PEOPLE;
 	}
 
 	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;
@@ -2888,7 +2888,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	ride = get_ride(w->number);
 	rideEntry = get_ride_entry_by_ride(ride);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	// Widget setup
@@ -2937,7 +2937,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	if (ride->num_vehicles > 1) {
 		stringId = RideComponentNames[vehicleType].count_plural;
 	}
-	set_format_arg(8, uint16, stringId);
+	set_format_arg(8, rct_string_id, stringId);
 	set_format_arg(10, uint16, ride->num_vehicles);
 
 	window_ride_anchor_border_widgets(w);
@@ -3455,7 +3455,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 	ride = get_ride(w->number);
 	rideEntry = get_ride_entry_by_ride(ride);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	// Widget setup
@@ -3534,9 +3534,9 @@ static void window_ride_operating_invalidate(rct_window *w)
 		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_DROPDOWN_BUTTON;
 		window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_DROPDOWN_BUTTON;
 
-		set_format_arg(10, uint16, STR_FORMAT_SECONDS);
+		set_format_arg(10, rct_string_id, STR_FORMAT_SECONDS);
 		set_format_arg(12, uint16, ride->min_waiting_time);
-		set_format_arg(14, uint16, STR_FORMAT_SECONDS);
+		set_format_arg(14, rct_string_id, STR_FORMAT_SECONDS);
 		set_format_arg(16, uint16, ride->max_waiting_time);
 
 		if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
@@ -3586,7 +3586,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 		break;
 	case RIDE_MODE_RACE:
 		set_format_arg(18, uint16, ride->num_laps);
-		format = STR_RIDE_MODE_COUNT_VALUE;
+		format = STR_NUMBER_OF_LAPS_VALUE;
 		caption = STR_NUMBER_OF_LAPS;
 		tooltip = STR_NUMBER_OF_LAPS_TIP;
 		break;
@@ -3603,13 +3603,12 @@ static void window_ride_operating_invalidate(rct_window *w)
 	case RIDE_MODE_ROTATION:
 	case RIDE_MODE_FORWARD_ROTATION:
 	case RIDE_MODE_BACKWARD_ROTATION:
-		format = STR_ARG18_COMMA16;
+		format = STR_NUMBER_OF_ROTATIONS_VALUE;
 		caption = STR_NUMBER_OF_ROTATIONS;
 		tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
 		break;
 	default:
-		// TODO: should likely be `1744` instead of `1736`,
-		format = STR_RIDE_MODE_COUNT_VALUE;
+		format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
 		caption = STR_MAX_PEOPLE_ON_RIDE;
 		tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
@@ -4097,7 +4096,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			} else {
 				mechanicSprite = &(get_sprite(ride->mechanic)->peep);
 				if (peep_is_mechanic(mechanicSprite)) {
-					set_format_arg(0, uint16, mechanicSprite->name_string_idx);
+					set_format_arg(0, rct_string_id, mechanicSprite->name_string_idx);
 					set_format_arg(2, uint32, mechanicSprite->id);
 					gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, 0);
 				}
@@ -4475,7 +4474,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 	ride = get_ride(w->number);
 	rideEntry = get_ride_entry_by_ride(ride);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	// Track colours
@@ -4615,7 +4614,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 		window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
 	}
 
-	set_format_arg(14, uint16, ColourSchemeNames[colourScheme]);
+	set_format_arg(14, rct_string_id, ColourSchemeNames[colourScheme]);
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -5231,7 +5230,7 @@ static void window_ride_measurements_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	rct_ride *ride = get_ride(w->number);
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
@@ -5354,7 +5353,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 						}
 					}
 					if (numTimes == 0) {
-						set_format_arg(0, uint16, STR_RIDE_TIME_ENTRY);
+						set_format_arg(0, rct_string_id, STR_RIDE_TIME_ENTRY);
 						set_format_arg(2, uint16, 0);
 						numTimes++;
 					} else {
@@ -5383,7 +5382,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					}
 				}
 				if (numLengths == 0) {
-					set_format_arg(0, uint16, STR_RIDE_LENGTH_ENTRY);
+					set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
 					set_format_arg(2, uint16, 0);
 					numLengths++;
 				} else {
@@ -5604,7 +5603,7 @@ static void window_ride_graphs_tooltip(rct_window* w, int widgetIndex, rct_strin
 	rct_string_id message;
 
 	if (widgetIndex == WIDX_GRAPH) {
-		set_format_arg(0, uint16, STR_GRAPH);
+		set_format_arg(0, rct_string_id, STR_GRAPH);
 		measurement = ride_get_measurement(w->number, &message);
 		if (measurement != NULL && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)) {
 			set_format_arg(4, uint16, measurement->vehicle_index + 1);
@@ -5640,7 +5639,7 @@ static void window_ride_graphs_invalidate(rct_window *w)
 
 	ride = get_ride(w->number);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	// Set pressed graph button type
@@ -6083,7 +6082,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	rct_ride *ride = get_ride(w->number);
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	rideEntry = get_ride_entry_by_ride(ride);
@@ -6326,7 +6325,7 @@ static void window_ride_customer_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	rct_ride *ride = get_ride(w->number);
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
 	window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WWT_FLATBTN;
@@ -6407,7 +6406,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Primary shop items sold
 	shopItem = get_ride_entry_by_ride(ride)->shop_item;
 	if (shopItem != SHOP_ITEM_NONE) {
-		set_format_arg(0, uint16, ShopItemStringIds[shopItem].plural);
+		set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
 		set_format_arg(2, uint32, ride->no_primary_items_sold);
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, 0, x, y);
 		y += 10;
@@ -6418,7 +6417,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		RidePhotoItems[ride->type] :
 		get_ride_entry_by_ride(ride)->shop_item_secondary;
 	if (shopItem != SHOP_ITEM_NONE) {
-		set_format_arg(0, uint16, ShopItemStringIds[shopItem].plural);
+		set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
 		set_format_arg(2, uint32, ride->no_secondary_items_sold);
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, 0, x, y);
 		y += 10;

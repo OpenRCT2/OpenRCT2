@@ -482,7 +482,7 @@ void window_staff_list_scrollmouseover(rct_window *w, int scrollIndex, int x, in
 */
 void window_staff_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -611,7 +611,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	set_format_arg(0, uint16, _window_staff_list_selected_type_count);
-	set_format_arg(2, uint16, staffTypeStringId);
+	set_format_arg(2, rct_string_id, staffTypeStringId);
 
 	gfx_draw_string_left(dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, 0, w->x + 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + w->y + 2);
 }
@@ -668,7 +668,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 					format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
 				}
 
-				set_format_arg(0, uint16, peep->name_string_idx);
+				set_format_arg(0, rct_string_id, peep->name_string_idx);
 				set_format_arg(2, uint32, peep->id);
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 107);
 

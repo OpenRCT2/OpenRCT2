@@ -434,7 +434,7 @@ void config_set_defaults()
 				if (username) {
 					destValue->value_string = _strdup(username);
 				} else {
-					destValue->value_string = _strdup(language_get_string(STR_RIDE_COMPONENT_PLAYER_CAPITALISED));
+					destValue->value_string = _strdup(language_get_string(STR_MULTIPLAYER_DEFAULT_NAME));
 				}				
 			}
 			else {

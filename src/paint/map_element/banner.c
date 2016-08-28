@@ -84,7 +84,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	rct_string_id string_id = STR_NO_ENTRY;
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
 	{
-		set_format_arg(0, uint16, gBanners[map_element->properties.banner.index].string_idx);
+		set_format_arg(0, rct_string_id, gBanners[map_element->properties.banner.index].string_idx);
 		string_id = STR_BANNER_TEXT_FORMAT;
 	}
 	if (gConfigGeneral.upper_case_banners) {

@@ -775,7 +775,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
  *
  *  rct2: 0x006AF561
  */
-void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
+void ride_get_status(int rideIndex, rct_string_id *formatSecondary, int *argument)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
@@ -916,14 +916,14 @@ static int ride_check_if_construction_allowed(rct_ride *ride)
 		return 0;
 	}
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
 		return 0;
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED) {
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
 		return 0;
@@ -1775,7 +1775,7 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
 		return 0;
@@ -2420,7 +2420,7 @@ void ride_breakdown_add_news_item(int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_broken_down) {
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
@@ -2449,7 +2449,7 @@ static void ride_breakdown_status_update(int rideIndex)
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING &&
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_4
 		) {
-			set_format_arg(0, uint16, ride->name);
+			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, rideIndex);
@@ -3018,8 +3018,8 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		if (message != NULL) *message = 0;
 		return measurement;
 	} else {
-		set_format_arg(0, uint16, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
-		set_format_arg(2, uint16, RideComponentNames[RideNameConvention[ride->type].station].singular);
+		set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
+		set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
 		return NULL;
 	}
@@ -3193,7 +3193,7 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			continue;
 		if (entrance != 0xFFFF && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
 			// name of ride is parameter of the format string
-			set_format_arg(0, uint16, ride->name);
+			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
@@ -3203,7 +3203,7 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 
 		if (exit != 0xFFFF && !ride_entrance_exit_is_reachable(exit, ride, i)) {
 			// name of ride is parameter of the format string
-			set_format_arg(0, uint16, ride->name);
+			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride_idx);
@@ -3271,7 +3271,7 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	}
 
 	// Name of ride is parameter of the format string
-	set_format_arg(0, uint16, ride->name);
+	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_warnings) {
 	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
@@ -3296,9 +3296,10 @@ static void ride_track_set_map_tooltip(rct_map_element *mapElement)
 	set_map_tooltip_format_arg(2, rct_string_id, ride->name);
 	set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 
-	int arg0, arg1;
-	ride_get_status(rideIndex, &arg0, &arg1);
-	set_map_tooltip_format_arg(8, uint16, (uint16)arg0);
+	rct_string_id formatSecondary;
+	int arg1;
+	ride_get_status(rideIndex, &formatSecondary, &arg1);
+	set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
 	set_map_tooltip_format_arg(10, uint32, arg1);
 }
 
@@ -3322,9 +3323,10 @@ static void ride_station_set_map_tooltip(rct_map_element *mapElement)
 	set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 	set_map_tooltip_format_arg(12, uint16, stationIndex + 1);
 
-	int arg0, arg1;
-	ride_get_status(rideIndex, &arg0, &arg1);
-	set_map_tooltip_format_arg(14, uint16, (uint16)arg0);
+	rct_string_id formatSecondary;
+	int arg1;
+	ride_get_status(rideIndex, &formatSecondary, &arg1);
+	set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
 	set_map_tooltip_format_arg(16, uint32, arg1);
 }
 

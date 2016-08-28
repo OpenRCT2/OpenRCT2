@@ -1027,12 +1027,12 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		TrackFlags;
 	if (trackFlags[type] & TRACK_ELEM_FLAG_0100) {
 		if ((originZ & 0x0F) != 8) {
-			gGameCommandErrorText = 954;
+			gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
 			return MONEY32_UNDEFINED;
 		}
 	} else {
 		if ((originZ & 0x0F) != 0) {
-			gGameCommandErrorText = 954;
+			gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -1777,9 +1777,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 	}
 
 	if ((z & 0xF) != 0) {
-		// ‘Can't construct this here…’
-		// TODO: This string is empty
-		gGameCommandErrorText = 954;
+		gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
 		return MONEY32_UNDEFINED;
 	}
 

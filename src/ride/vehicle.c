@@ -4338,7 +4338,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		ride->last_crash_type = crashType;
 
 	if (numFatalities != 0) {
-		set_format_arg(2, uint16, ride->name);
+		set_format_arg(2, rct_string_id, ride->name);
 		set_format_arg(4, uint32, ride->name_arguments);
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
@@ -5286,9 +5286,11 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 	set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
 	set_map_tooltip_format_arg(12, uint16, vehicleIndex + 1);
 
-	int arg0, arg1;
-	ride_get_status(vehicle->ride, &arg0, &arg1);
-	set_map_tooltip_format_arg(14, uint16, (uint16)arg0);
+	rct_string_id formatSecondary;
+	int arg1;
+	ride_get_status(vehicle->ride, &formatSecondary, &arg1);
+	set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
+	// TODO: odd cast
 	set_map_tooltip_format_arg(16, uint32, (uint16)arg1);
 }
 

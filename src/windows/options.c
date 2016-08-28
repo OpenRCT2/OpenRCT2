@@ -1413,7 +1413,7 @@ static void window_options_invalidate(rct_window *w)
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		set_format_arg(16, uint16, (uint16)gConfigGeneral.fullscreen_width);
 		set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
-		set_format_arg(12, uint16, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
+		set_format_arg(12, rct_string_id, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2){
@@ -1482,7 +1482,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
-		set_format_arg(12, uint16, CurrencyDescriptors[gConfigGeneral.currency_format].stringId);
+		set_format_arg(12, rct_string_id, CurrencyDescriptors[gConfigGeneral.currency_format].stringId);
 
 		// distance: metric / imperial / si
 		{
@@ -1493,7 +1493,7 @@ static void window_options_invalidate(rct_window *w)
 			case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
 			case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
 			}
-			set_format_arg(14, uint16, stringId);
+			set_format_arg(14, rct_string_id, stringId);
 		}
 
 		// temperature: celsius/fahrenheit
@@ -1519,15 +1519,15 @@ static void window_options_invalidate(rct_window *w)
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		// sound devices
 		if (gAudioCurrentDevice == -1 || gAudioDeviceCount == 0) {
-			set_format_arg(0, uint16, STR_SOUND_NONE);
+			set_format_arg(0, rct_string_id, STR_SOUND_NONE);
 		}
 		else {
 #ifndef __LINUX__
 			if (gAudioCurrentDevice == 0)
-				set_format_arg(0, uint16, STR_OPTIONS_SOUND_VALUE_DEFAULT);
+				set_format_arg(0, rct_string_id, STR_OPTIONS_SOUND_VALUE_DEFAULT);
 			else
 #endif // __LINUX__
-				set_format_arg(0, uint16, STR_STRING);
+				set_format_arg(0, rct_string_id, STR_STRING);
 
 			set_format_arg(2, char , (char*)gAudioDevices[gAudioCurrentDevice].name);
 		}

@@ -595,7 +595,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, in
  */
 static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -742,7 +742,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				}
 
 				// Guest name
-				set_format_arg(0, uint16, peep->name_string_idx);
+				set_format_arg(0, rct_string_id, peep->name_string_idx);
 				set_format_arg(2, uint32, peep->id);
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 113);
 
@@ -817,7 +817,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 414);
 
 				// Draw guest count
-				set_format_arg(8, uint16, STR_GUESTS_COUNT_COMMA_SEP);
+				set_format_arg(8, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);
 				gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, 0, 326, y - 1);
 			}
 			y += 21;

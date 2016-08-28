@@ -438,7 +438,8 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y, temperature, format;
+	int x, y, temperature;
+	rct_string_id format;
 
 	// Draw green inset rectangle on panel
 	gfx_fill_rect_inset(
@@ -460,7 +461,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-	set_format_arg(0, short, DateDayNames[day]);
+	set_format_arg(0, rct_string_id, DateDayNames[day]);
 	set_format_arg(2, short, month);
 	set_format_arg(4, short, year);
 	gfx_draw_string_centred(

@@ -1877,7 +1877,7 @@ static void peep_update_falling(rct_peep* peep){
 		if (peep->action == PEEP_ACTION_DROWNING) return;
 
 		if (gConfigNotifications.guest_died) {
-			set_format_arg(0, uint16, peep->name_string_idx);
+			set_format_arg(0, rct_string_id, peep->name_string_idx);
 			set_format_arg(2, uint32, peep->id);
 			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
@@ -2699,9 +2699,9 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(0, rct_string_id, peep->name_string_idx);
 		set_format_arg(2, uint32, peep->id);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		rct_string_id msg_string;
@@ -3792,9 +3792,9 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 	peep_on_enter_or_exit_ride(peep, peep->current_ride, 1);
 
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(0, rct_string_id, peep->name_string_idx);
 		set_format_arg(2, uint32, peep->id);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		if (gConfigNotifications.guest_left_ride) {

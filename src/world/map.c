@@ -4153,13 +4153,13 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 	case MAP_ELEMENT_TYPE_TRACK:
 		ride = get_ride(mapElement->properties.track.ride_index);
 		errorStringId = STR_X_IN_THE_WAY;
-		set_format_arg(0, uint16, ride->name);
+		set_format_arg(0, rct_string_id, ride->name);
 		set_format_arg(2, uint32, ride->name_arguments);
 		break;
 	case MAP_ELEMENT_TYPE_SCENERY:
 		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
-		set_format_arg(0, uint16, sceneryEntry->name);
+		set_format_arg(0, rct_string_id, sceneryEntry->name);
 		break;
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 		switch (mapElement->properties.entrance.type) {
@@ -4177,12 +4177,12 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 	case MAP_ELEMENT_TYPE_FENCE:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
-		set_format_arg(0, uint16, sceneryEntry->name);
+		set_format_arg(0, rct_string_id, sceneryEntry->name);
 		break;
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
-		set_format_arg(0, uint16, sceneryEntry->name);
+		set_format_arg(0, rct_string_id, sceneryEntry->name);
 		break;
 	}
 

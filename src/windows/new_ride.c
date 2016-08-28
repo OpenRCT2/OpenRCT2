@@ -725,7 +725,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
  */
 static void window_new_ride_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -873,8 +873,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	rct_string_id rideName = rideEntry->name;
 	rct_string_id rideDescription = rideEntry->description;
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-		rideName = item.type + 2;
-		rideDescription = item.type + 512;
+		rideName = RideNaming[item.type].name;
+		rideDescription = RideNaming[item.type].description;
 	}
 
 	set_format_arg(0, rct_string_id, rideName);

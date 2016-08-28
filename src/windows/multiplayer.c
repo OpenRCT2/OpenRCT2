@@ -586,7 +586,7 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
 	// Number of players
-	stringId = w->no_list_items == 1 ? STR_RIDE_COMPONENT_PLAYER_COUNT : STR_RIDE_COMPONENT_PLAYER_COUNT_PLURAL;
+	stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
 	x = w->x + 4;
 	y = w->y + w->widgets[WIDX_LIST].bottom + 2;
 	gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], x, y);
@@ -635,9 +635,9 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
 			// Draw last action
 			int action = network_get_player_last_action(i, 2000);
-			set_format_arg(0, uint16, STR_ACTION_NA);
+			set_format_arg(0, rct_string_id, STR_ACTION_NA);
 			if (action != -999) {
-				set_format_arg(0, uint16, network_get_action_name_string_id(action));
+				set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
 			}
 			gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, 256, y - 1, 100);
 
