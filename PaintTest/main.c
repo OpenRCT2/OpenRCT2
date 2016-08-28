@@ -346,7 +346,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 
 				if (newCallCount != oldCallCount) {
 					// TODO: array with errors?
-					sprintf(*error, "Call counts don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+					sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
 					return false;
 				}
 
