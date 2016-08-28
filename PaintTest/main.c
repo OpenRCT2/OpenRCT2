@@ -24,9 +24,32 @@
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
+
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
+
+typedef struct
+{
+	utf8string name;
+	uint32 image_id;
+	rct_xy16 offset;
+	rct_xyz16 bound_box_length;
+	sint16 z_offset;
+	rct_xyz16 bound_box_offset;
+	uint32 rotation;
+} function_call;
+
+static uint8 callCount;
+static function_call calls[256];
 
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
 	return false;
@@ -39,7 +62,18 @@ paint_struct *sub_98196C(
 	sint16 z_offset,
 	uint32 rotation
 ) {
-	printf("sub_98196C(%d)\n", image_id & 0x7FFFF);
+	function_call call = {
+		.name = "sub_98196C",
+		.image_id = image_id,
+		.offset = {x_offset, y_offset},
+		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+		.z_offset = z_offset,
+		.rotation = rotation
+	};
+
+	calls[callCount] = call;
+	callCount++;
+
 	return NULL;
 }
 
@@ -51,7 +85,19 @@ paint_struct *sub_98197C(
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-	printf("sub_98197C(%d)\n", image_id & 0x7FFFF);
+	function_call call = {
+		.name = "sub_98197C",
+		.image_id = image_id,
+		.offset = {x_offset, y_offset},
+		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+		.z_offset = z_offset,
+		.rotation = rotation
+	};
+
+	calls[callCount] = call;
+	callCount++;
+
 	return NULL;
 }
 
@@ -63,7 +109,19 @@ paint_struct *sub_98198C(
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-	printf("sub_98198C(%d)\n", image_id & 0x7FFFF);
+	function_call call = {
+		.name = "sub_98198C",
+		.image_id = image_id,
+		.offset = {x_offset, y_offset},
+		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+		.z_offset = z_offset,
+		.rotation = rotation
+	};
+
+	calls[callCount] = call;
+	callCount++;
+
 	return NULL;
 }
 
@@ -75,7 +133,19 @@ paint_struct *sub_98199C(
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-	printf("sub_98199C(%d)\n", image_id & 0x7FFFF);
+	function_call call = {
+		.name = "sub_98199C",
+		.image_id = image_id,
+		.offset = {x_offset, y_offset},
+		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+		.z_offset = z_offset,
+		.rotation = rotation
+	};
+
+	calls[callCount] = call;
+	callCount++;
+
 	return NULL;
 }
 
@@ -158,7 +228,9 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 		for (int direction = 0; direction < 4; direction++) {
 			TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
-				//newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+				callCount = 0;
+				bzero(calls, sizeof(calls));
 
 				TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
 				uint32 *trackDirectionList = (uint32 *) trackTypeList[trackType];
@@ -174,6 +246,27 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 					rideIndex * sizeof(rct_ride),
 					trackSequence
 				);
+				// segment heights
+				// tunnels
+
+				const uint8 oldCallCount = callCount;
+				const function_call oldCalls[256];
+				bcopy(oldCalls, calls, sizeof(calls));
+
+				callCount = 0;
+
+				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+				const uint8 newCallCount = callCount;
+				const function_call newCalls[256];
+				bcopy(newCalls, calls, sizeof(calls));
+
+				if (newCallCount != oldCallCount) {
+					// TODO: array with errors?
+					sprintf(*error, "Call counts don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+					return false;
+				}
+
 			}
 		}
 	}
@@ -193,7 +286,12 @@ void testRide(int rideType) {
 			continue;
 		}
 
+		utf8string error = malloc(256);
+		bool success = testTrackElement(rideType, trackType, &error);
 
+		if (!success) {
+			printf(ANSI_COLOR_RED);
+		}
 		int sequenceCount = getTrackSequenceCount(rideType, trackType);
 		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			printf("  - %s (%d)", FlatTrackNames[trackType], sequenceCount);
@@ -201,39 +299,13 @@ void testRide(int rideType) {
 			printf("  - %s (%d)", TrackNames[trackType], sequenceCount);
 		}
 
-		utf8string error;
-		bool success = testTrackElement(rideType, trackType, &error);
 
-		if (success == false) {
+		if (!success) {
 			printf(" FAILED!\n    %s", error);
 		}
-		printf("\n");
+		printf(ANSI_COLOR_RESET "\n");
 
 	}
-}
-
-static void log_drawing_call(const char functionName[], registers regs, rct_xyz16 *bounds) {
-
-	uint32 imageId = regs.ebx & 0x7FFFF;
-
-
-	printf("%s\t%d\t%d\t%d\t%d\t%d\t%d\t", functionName, imageId, regs.al, regs.cl, regs.di, regs.si, regs.ah);
-
-	printf("%d", regs.dx);
-
-	if (bounds != NULL) {
-		printf("\t%d\t%d\t%d", bounds->x, bounds->y, bounds->z);
-	} else {
-		printf("\t\t\t");
-	}
-
-	if ((regs.ebp & 0x03) != get_current_rotation()) {
-		printf("\t%d", regs.ebp & 0x03);
-	} else {
-		printf("\tget_current_rotation()");
-	}
-
-	printf("\n");
 }
 
 static int intercept_draw_6c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
@@ -243,7 +315,6 @@ static int intercept_draw_6c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 		log_error("Ebp is different from current rotation");
 	}
 
-	log_drawing_call("sub_98196C", regs, NULL);
 	return (int) sub_98196C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, regs.ebp & 0x03);
 }
 
@@ -256,8 +327,6 @@ static int intercept_draw_7c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 
 	rct_xyz16 boundOffset = {RCT2_GLOBAL(0x009DEA52, sint16), RCT2_GLOBAL(0x009DEA54, sint16), RCT2_GLOBAL(0x009DEA56, sint16)};
 
-	log_drawing_call("sub_98197C", regs, &boundOffset);
-
 	return (int) sub_98197C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
 }
 
@@ -269,8 +338,6 @@ static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 	}
 
 	rct_xyz16 boundOffset = {RCT2_GLOBAL(0x009DEA52, sint16), RCT2_GLOBAL(0x009DEA54, sint16), RCT2_GLOBAL(0x009DEA56, sint16)};
-
-	log_drawing_call("sub_98199C", regs, &boundOffset);
 
 	return (int) sub_98199C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
 }
@@ -316,6 +383,7 @@ void initHooks() {
 }
 
 int main(int argc, const char *argv[]) {
+	initHooks();
 	for (int i = 0; i < 91; i++) {
 		testRide(i);
 	}
