@@ -210,14 +210,10 @@ set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
-# include lib
-include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
-if (APPLE)
-	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
-	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
-endif (APPLE)
+file(GLOB_RECURSE ORCT2_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h" "PaintTest/*.hpp" "src/ride/*/*.c" "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_VEHICLES")
+
 
 if (APPLE AND NOT USE_MMAP)
 	set(PIE_FLAG "-fno-pie")
@@ -319,12 +315,6 @@ else (WIN32)
 	if (NOT APPLE AND NOT USE_MMAP)
 		add_dependencies(${PROJECT} linkable_sections)
 	endif ()
-	add_custom_command(
-		OUTPUT g2.dat
-		COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/
-		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		)
-	add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)
