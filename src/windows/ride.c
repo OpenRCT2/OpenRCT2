@@ -2607,7 +2607,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 	// Queue length
 	if (stringId == 0) {
 		queueLength = ride->queue_length[stationIndex];
-		RCT2_GLOBAL((uintptr_t)arguments + 2, uint16) = queueLength;
+		set_format_arg_body(arguments, 2, (uintptr_t)queueLength, sizeof(uint16));
 		stringId = STR_QUEUE_EMPTY;
 		if (queueLength == 1)
 			stringId = STR_QUEUE_ONE_PERSON;
@@ -2615,7 +2615,7 @@ static rct_string_id window_ride_get_status_station(rct_window *w, void *argumen
 			stringId = STR_QUEUE_PEOPLE;
 	}
 
-	RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = stringId;
+	set_format_arg_body(arguments, 0, (uintptr_t)stringId, sizeof(rct_string_id));
 	return STR_BLACK_STRING;
 }
 
