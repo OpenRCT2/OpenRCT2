@@ -37,15 +37,39 @@ extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
+enum
+{
+	PAINT_98196C,
+	PAINT_98197C,
+	PAINT_98198C,
+	PAINT_98199C,
+
+	SUPPORTS_METAL_A,
+	SUPPORTS_METAL_B,
+	SUPPORTS_WOOD_A,
+	SUPPORTS_WOOD_B,
+};
+
 typedef struct
 {
-	utf8string name;
-	uint32 image_id;
-	rct_xy16 offset;
-	rct_xyz16 bound_box_length;
-	sint16 z_offset;
-	rct_xyz16 bound_box_offset;
-	uint32 rotation;
+	uint8 function;
+	struct paint
+	{
+		uint32 image_id;
+		rct_xy16 offset;
+		rct_xyz16 bound_box_length;
+		sint16 z_offset;
+		rct_xyz16 bound_box_offset;
+		uint32 rotation;
+	} paint;
+	struct supports
+	{
+		int type;
+		uint8 segment;
+		int special;
+		int height;
+		uint32 colour_flags;
+	} supports;
 } function_call;
 
 static uint8 callCount;
@@ -63,12 +87,14 @@ paint_struct *sub_98196C(
 	uint32 rotation
 ) {
 	function_call call = {
-		.name = "sub_98196C",
-		.image_id = image_id,
-		.offset = {x_offset, y_offset},
-		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-		.z_offset = z_offset,
-		.rotation = rotation
+		.function = PAINT_98196C,
+		.paint = {
+			.image_id = image_id,
+			.offset = {x_offset, y_offset},
+			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+			.z_offset = z_offset,
+			.rotation = rotation
+		},
 	};
 
 	calls[callCount] = call;
@@ -86,13 +112,15 @@ paint_struct *sub_98197C(
 	uint32 rotation
 ) {
 	function_call call = {
-		.name = "sub_98197C",
-		.image_id = image_id,
-		.offset = {x_offset, y_offset},
-		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-		.z_offset = z_offset,
-		.rotation = rotation
+		.function = PAINT_98197C,
+		.paint = {
+			.image_id = image_id,
+			.offset = {x_offset, y_offset},
+			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+			.z_offset = z_offset,
+			.rotation = rotation,
+		},
 	};
 
 	calls[callCount] = call;
@@ -110,13 +138,15 @@ paint_struct *sub_98198C(
 	uint32 rotation
 ) {
 	function_call call = {
-		.name = "sub_98198C",
-		.image_id = image_id,
-		.offset = {x_offset, y_offset},
-		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-		.z_offset = z_offset,
-		.rotation = rotation
+		.function = PAINT_98198C,
+		.paint = {
+			.image_id = image_id,
+			.offset = {x_offset, y_offset},
+			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+			.z_offset = z_offset,
+			.rotation = rotation,
+		},
 	};
 
 	calls[callCount] = call;
@@ -134,13 +164,15 @@ paint_struct *sub_98199C(
 	uint32 rotation
 ) {
 	function_call call = {
-		.name = "sub_98199C",
-		.image_id = image_id,
-		.offset = {x_offset, y_offset},
-		.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-		.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-		.z_offset = z_offset,
-		.rotation = rotation
+		.function = PAINT_98199C,
+		.paint = {
+			.image_id = image_id,
+			.offset = {x_offset, y_offset},
+			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
+			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
+			.z_offset = z_offset,
+			.rotation = rotation,
+		},
 	};
 
 	calls[callCount] = call;
@@ -150,18 +182,69 @@ paint_struct *sub_98199C(
 }
 
 bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+
+	function_call call = {
+		.function = SUPPORTS_WOOD_A,
+		.supports = {
+			.type = supportType,
+			.special = special,
+			.height = height,
+			.colour_flags = imageColourFlags,
+		}
+	};
+
+	calls[callCount] = call;
+	callCount++;
 	return false;
 }
 
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags) {
+
+	function_call call = {
+		.function = SUPPORTS_WOOD_B,
+		.supports = {
+			.type = supportType,
+			.special = special,
+			.height = height,
+			.colour_flags = imageColourFlags,
+		}
+	};
+
+	calls[callCount] = call;
+	callCount++;
 	return false;
 }
 
 bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags) {
+
+	function_call call = {
+		.function = SUPPORTS_METAL_A,
+		.supports = {
+			.type = supportType,
+			.segment = segment,
+			.special = special,
+			.height = height,
+			.colour_flags = imageColourFlags,
+		}
+	};
+
+	calls[callCount] = call;
+	callCount++;
 	return false;
 }
 
 bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
+
+	function_call call = {
+		.function = SUPPORTS_METAL_B,
+		.supports = {
+			.type = supportType,
+			.segment = segment,
+			.special = special,
+			.height = height,
+			.colour_flags = imageColourFlags,
+		}
+	};
 	return false;
 }
 
@@ -344,18 +427,22 @@ static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 
 static void intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
+	wooden_a_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
 }
 
 static void intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
+	wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
 }
 
 static void intercept_metal_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
+	metal_a_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
 }
 
 static void intercept_metal_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
+	metal_b_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
 }
 
 
