@@ -114,8 +114,8 @@ static bool OnCrash(const wchar_t * dumpPath,
     HRESULT coInitializeResult = CoInitialize(NULL);
     if (SUCCEEDED(coInitializeResult))
     {
-        ITEMIDLIST * pidl = ILCreateFromPathW(dumpPath);
-        ITEMIDLIST * files[2];
+        LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
+        LPITEMIDLIST files[2];
         uint32 numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
