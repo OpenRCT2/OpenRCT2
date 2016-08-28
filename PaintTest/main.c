@@ -33,6 +33,11 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
+static const uint32 PALETTE_98 = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
+static const uint32 PALETTE_9C = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
+static const uint32 PALETTE_A0 = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
+static const uint32 PALETTE_A4 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
+
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
@@ -73,6 +78,7 @@ typedef struct
 } function_call;
 
 static uint8 callCount;
+static bool assertFunctionCallEquals(function_call expected, function_call actual);
 static function_call calls[256];
 
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
@@ -245,7 +251,161 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 			.colour_flags = imageColourFlags,
 		}
 	};
+
+	calls[callCount] = call;
+	callCount++;
 	return false;
+}
+
+static bool assertFunctionCallEquals(function_call expected, function_call actual) {
+	if (expected.function != actual.function) {
+		return false;
+	}
+
+	uint8 function = expected.function;
+
+	if (function == SUPPORTS_WOOD_A || function == SUPPORTS_WOOD_B) {
+		if (expected.supports.type != actual.supports.type) return false;
+		if (expected.supports.special != actual.supports.special) return false;
+		if (expected.supports.height != actual.supports.height) return false;
+		if (expected.supports.colour_flags != actual.supports.colour_flags) return false;
+
+		return true;
+	}
+
+	if (function == SUPPORTS_METAL_A || function == SUPPORTS_METAL_B) {
+		if (expected.supports.type != actual.supports.type) return false;
+		if (expected.supports.segment != actual.supports.segment) return false;
+		if (expected.supports.special != actual.supports.special) return false;
+		if (expected.supports.height != actual.supports.height) return false;
+		if (expected.supports.colour_flags != actual.supports.colour_flags) return false;
+
+		return true;
+	}
+
+	if (expected.paint.image_id != actual.paint.image_id) return false;
+	if (expected.paint.offset.x != actual.paint.offset.x) return false;
+	if (expected.paint.offset.y != actual.paint.offset.y) return false;
+	if (expected.paint.bound_box_length.x != actual.paint.bound_box_length.x) return false;
+	if (expected.paint.bound_box_length.y != actual.paint.bound_box_length.y) return false;
+	if (expected.paint.bound_box_length.z != actual.paint.bound_box_length.z) return false;
+	if (function != PAINT_98196C) {
+		if (expected.paint.bound_box_offset.x != actual.paint.bound_box_offset.x) return false;
+		if (expected.paint.bound_box_offset.y != actual.paint.bound_box_offset.y) return false;
+		if (expected.paint.bound_box_offset.z != actual.paint.bound_box_offset.z) return false;
+	}
+	if (expected.paint.z_offset != actual.paint.z_offset) return false;
+	if (expected.paint.rotation != actual.paint.rotation) return false;
+
+	return true;
+}
+
+static bool assertFunctionCallArrayEquals(function_call expected[], uint8 expectedCount, function_call actual[], uint8 actualCount) {
+	if (expectedCount != actualCount) {
+		return false;
+	}
+
+	for (int i = 0; i < expectedCount; i++) {
+		function_call expectedCall = expected[i];
+		function_call actualCall = actual[i];
+
+		if (!assertFunctionCallEquals(expectedCall, actualCall)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+static void printImageId(uint32 input, utf8string *out) {
+	uint32 image = input & 0x7FFFF;
+	uint32 palette = input & ~0x7FFFF;
+
+	utf8string paletteName;
+	if (palette == PALETTE_98)paletteName = "PALETTE_98";
+	else if (palette == PALETTE_9C)paletteName = "PALETTE_9C";
+	else if (palette == PALETTE_A0)paletteName = "PALETTE_A0";
+	else if (palette == PALETTE_A4)paletteName = "PALETTE_A4";
+	else {
+		paletteName = malloc(16);
+		sprintf(paletteName, "0x%08X", palette);
+	}
+
+	if (image == 0) {
+		sprintf(*out, "%s", paletteName);
+	} else if(image & 0x70000) {
+		sprintf(*out, "%s | vehicle.base_image_id + %d", paletteName, image & ~0x70000);
+	} else {
+		sprintf(*out, "%s | %d", paletteName, image);
+	}
+}
+
+static void printFunctionCall(utf8string *out, function_call call) {
+	utf8string imageId = malloc(64);
+	printImageId(call.supports.colour_flags, &imageId);
+	switch (call.function) {
+	case SUPPORTS_WOOD_A:
+		sprintf(*out, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
+		return;
+	case SUPPORTS_WOOD_B:
+		sprintf(*out, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
+		return;
+
+	case SUPPORTS_METAL_A:
+		sprintf(*out, "metal_a_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
+		return;
+	case SUPPORTS_METAL_B:
+		sprintf(*out, "metal_b_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
+		return;
+	}
+
+	utf8string name;
+	switch (call.function) {
+	case PAINT_98196C:
+		name = "sub_98196C";
+		break;
+	case PAINT_98197C:
+		name = "sub_98197C";
+		break;
+	case PAINT_98198C:
+		name = "sub_98198C";
+		break;
+	case PAINT_98199C:
+		name = "sub_98199C";
+		break;
+	}
+
+	int strlen;
+
+	printImageId(call.paint.image_id, &imageId);
+	strlen = sprintf(
+		*out,
+		"%s(%s, %d, %d, %d, %d, %d, %d, ",
+		name,
+		imageId,
+		call.paint.offset.x, call.paint.offset.y,
+		call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z,
+		call.paint.z_offset,
+		NULL
+	);
+
+	if (call.function != PAINT_98196C) {
+		strlen += sprintf(
+			*out + strlen,
+			"%d, %d, %d, ",
+			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z
+		);
+	}
+
+	sprintf(*out + strlen, "%d)", call.paint.rotation);
+}
+
+static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
+	for (int i = 0; i < count; i++) {
+		utf8string callOut = malloc(128);
+		printFunctionCall(&callOut, calls[i]);
+		sprintf(*out + strlen(*out), "%s\n", callOut);
+	}
 }
 
 int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
@@ -283,10 +443,10 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	g_currently_drawn_item = &mapElement;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-	RCT2_GLOBAL(0x00F44198, uint32) = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-	RCT2_GLOBAL(0x00F441A0, uint32) = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-	RCT2_GLOBAL(0x00F441A4, uint32) = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
-	RCT2_GLOBAL(0x00F4419C, uint32) = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
+	RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
+	RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
+	RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
+	RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
 
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;
@@ -313,7 +473,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
 
 				callCount = 0;
-				bzero(calls, sizeof(calls));
+				memset(&calls, sizeof(calls), 0);
 
 				TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
 				uint32 *trackDirectionList = (uint32 *) trackTypeList[trackType];
@@ -332,21 +492,28 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 				// segment heights
 				// tunnels
 
-				const uint8 oldCallCount = callCount;
-				const function_call oldCalls[256];
-				bcopy(oldCalls, calls, sizeof(calls));
+				uint8 oldCallCount = callCount;
+				function_call oldCalls[256];
+				memcpy(&oldCalls, &calls, sizeof(calls));
 
 				callCount = 0;
 
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 
-				const uint8 newCallCount = callCount;
-				const function_call newCalls[256];
-				bcopy(newCalls, calls, sizeof(calls));
+				uint8 newCallCount = callCount;
+				function_call newCalls[256];
+				memcpy(&newCalls, &calls, sizeof(calls));
 
-				if (newCallCount != oldCallCount) {
-					// TODO: array with errors?
+				if (!assertFunctionCallArrayEquals(oldCalls, oldCallCount, newCalls, newCallCount)) {
+					utf8string diff = malloc(1024);
+
+					sprintf(diff, "<<< EXPECTED\n");
+					printFunctionCallArray(&diff, oldCalls, oldCallCount);
+					sprintf(diff + strlen(diff), "====\n");
+					printFunctionCallArray(&diff, newCalls, newCallCount);
+					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 					sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+					sprintf(*error + strlen(*error), "\n%s", diff);
 					return false;
 				}
 
@@ -369,7 +536,7 @@ void testRide(int rideType) {
 			continue;
 		}
 
-		utf8string error = malloc(256);
+		utf8string error = malloc(1024);
 		bool success = testTrackElement(rideType, trackType, &error);
 
 		if (!success) {
