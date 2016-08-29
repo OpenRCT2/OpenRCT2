@@ -452,6 +452,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	}
 	uint8 rideIndex = 0;
 	rct_map_element mapElement = {};
+	mapElement.properties.track.type = trackType;
 
 	g_currently_drawn_item = &mapElement;
 
