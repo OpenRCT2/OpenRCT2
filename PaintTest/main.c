@@ -478,6 +478,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 		for (int direction = 0; direction < 4; direction++) {
 			TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
+                RCT2_GLOBAL(0x9DE57C, bool) = true; // Above surface
 
 				callCount = 0;
 				memset(&calls, sizeof(calls), 0);
