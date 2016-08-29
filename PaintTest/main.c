@@ -257,7 +257,19 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 	return false;
 }
 
+static void canonicalizeFunctionCall(function_call *call) {
+	if (call->function != PAINT_98197C) return;
+	if (call->paint.offset.x != call->paint.bound_box_offset.x) return;
+	if (call->paint.offset.y != call->paint.bound_box_offset.y) return;
+	if (call->paint.z_offset != call->paint.bound_box_offset.z) return;
+
+	call->function = PAINT_98196C;
+}
+
 static bool assertFunctionCallEquals(function_call expected, function_call actual) {
+	canonicalizeFunctionCall(&actual);
+	canonicalizeFunctionCall(&expected);
+
 	if (expected.function != actual.function) {
 		return false;
 	}
