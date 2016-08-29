@@ -328,7 +328,6 @@ static void printImageId(uint32 input, utf8string *out) {
 	else if (palette == PALETTE_A0)paletteName = "PALETTE_A0";
 	else if (palette == PALETTE_A4)paletteName = "PALETTE_A4";
 	else {
-		allocated = true;
 		paletteName = malloc(16);
 		sprintf(paletteName, "0x%08X", palette);
 	}
@@ -339,10 +338,6 @@ static void printImageId(uint32 input, utf8string *out) {
 		sprintf(*out, "%s | vehicle.base_image_id + %d", paletteName, image & ~0x70000);
 	} else {
 		sprintf(*out, "%s | %d", paletteName, image);
-	}
-
-	if (allocated) {
-		free(paletteName);
 	}
 }
 
@@ -411,7 +406,6 @@ static void printFunctionCallArray(utf8string *out, function_call calls[], uint8
 		utf8string callOut = malloc(128);
 		printFunctionCall(&callOut, calls[i]);
 		sprintf(*out + strlen(*out), "%s\n", callOut);
-        free(callOut);
 	}
 }
 
@@ -523,7 +517,6 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 					sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
 					sprintf(*error + strlen(*error), "\n%s", diff);
 
-					free(diff);
 					return false;
 				}
 
@@ -563,7 +556,7 @@ void testRide(int rideType) {
 		if (!success) {
 			printf(" FAILED!\n    %s", error);
 		}
-        free(error);
+
 		printf(ANSI_COLOR_RESET "\n");
 
 	}
