@@ -38,6 +38,7 @@ void http_dispose() { }
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
 #define DEFAULT_CA_BUNDLE_PATH "curl-ca-bundle.crt"
+#define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
 typedef struct read_buffer {
 	char *ptr;
@@ -150,6 +151,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
 #ifdef __WINDOWS__
 	// On GNU/Linux (and macOS), curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, _caBundlePath);
