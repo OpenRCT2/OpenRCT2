@@ -74,12 +74,6 @@ extern "C" {
 Network gNetwork;
 
 enum {
-	ADVERTISE_STATUS_DISABLED,
-	ADVERTISE_STATUS_UNREGISTERED,
-	ADVERTISE_STATUS_REGISTERED
-};
-
-enum {
 	MASTER_SERVER_STATUS_OK = 200,
 	MASTER_SERVER_STATUS_INVALID_TOKEN = 401,
 	MASTER_SERVER_STATUS_SERVER_NOT_FOUND = 404,
@@ -108,7 +102,6 @@ Network::Network()
 	status = NETWORK_STATUS_NONE;
 	last_tick_sent_time = 0;
 	last_ping_sent_time = 0;
-	last_advertise_time = 0;
 	client_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
 	client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
@@ -178,6 +171,7 @@ void Network::Close()
 	} else if (mode == NETWORK_MODE_SERVER) {
 		delete listening_socket;
 		listening_socket = nullptr;
+		delete _advertiser;
 	}
 
 	mode = NETWORK_MODE_NONE;
@@ -323,17 +317,9 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
-	advertise_status = ADVERTISE_STATUS_DISABLED;
-	last_advertise_time = 0;
-	last_heartbeat_time = 0;
-	advertise_token = "";
-	advertise_key = GenerateAdvertiseKey();
-
-#ifndef DISABLE_HTTP
 	if (gConfigNetwork.advertise) {
-		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
+		_advertiser = CreateServerAdvertiser(listening_port);
 	}
-#endif
 
 	return true;
 }
@@ -400,17 +386,8 @@ void Network::UpdateServer()
 		Server_Send_PINGLIST();
 	}
 
-	switch (advertise_status) {
-	case ADVERTISE_STATUS_UNREGISTERED:
-		if (last_advertise_time == 0 || SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + MASTER_SERVER_REGISTER_TIME)) {
-			AdvertiseRegister();
-		}
-		break;
-	case ADVERTISE_STATUS_REGISTERED:
-		if (SDL_TICKS_PASSED(SDL_GetTicks(), last_heartbeat_time + MASTER_SERVER_HEARTBEAT_TIME)) {
-			AdvertiseHeartbeat();
-		}
-		break;
+	if (_advertiser != nullptr) {
+		_advertiser->Update();
 	}
 
 	ITcpSocket * tcpSocket = listening_socket->Accept();
@@ -650,102 +627,6 @@ const char *Network::GetMasterServerUrl()
 	} else {
 		return gConfigNetwork.master_server_url;
 	}
-}
-
-void Network::AdvertiseRegister()
-{
-#ifndef DISABLE_HTTP
-	last_advertise_time = SDL_GetTicks();
-
-	// Send the registration request
-	http_json_request request;
-	request.url = GetMasterServerUrl();
-	request.method = HTTP_METHOD_POST;
-
-	json_t *body = json_object();
-	json_object_set_new(body, "key", json_string(advertise_key.c_str()));
-	json_object_set_new(body, "port", json_integer(listening_port));
-	request.body = body;
-
-	http_request_json_async(&request, [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				json_t *jsonToken = json_object_get(response->root, "token");
-				if (json_is_string(jsonToken)) {
-					gNetwork.advertise_token = json_string_value(jsonToken);
-					gNetwork.advertise_status = ADVERTISE_STATUS_REGISTERED;
-				}
-			} else {
-				const char *message = "Invalid response from server";
-				json_t *jsonMessage = json_object_get(response->root, "message");
-				if (json_is_string(jsonMessage)) {
-					message = json_string_value(jsonMessage);
-				}
-				log_warning("Unable to advertise: %s", message);
-			}
-		}
-		http_request_json_dispose(response);
-	});
-
-	json_decref(body);
-#endif
-}
-
-void Network::AdvertiseHeartbeat()
-{
-#ifndef DISABLE_HTTP
-	// Send the heartbeat request
-	http_json_request request;
-	request.url = GetMasterServerUrl();
-	request.method = HTTP_METHOD_PUT;
-
-	json_t *body = json_object();
-	json_object_set_new(body, "token", json_string(advertise_token.c_str()));
-	json_object_set_new(body, "players", json_integer(network_get_num_players()));
-
-	json_t *gameInfo = json_object();
-	json_object_set_new(gameInfo, "mapSize", json_integer(gMapSize - 2));
-	json_object_set_new(gameInfo, "day", json_integer(gDateMonthTicks));
-	json_object_set_new(gameInfo, "month", json_integer(gDateMonthsElapsed));
-	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
-	json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
-	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		money32 cash = DECRYPT_MONEY(gCashEncrypted);
-		json_object_set_new(gameInfo, "cash", json_integer(cash));
-	}
-
-	json_object_set_new(body, "gameInfo", gameInfo);
-	request.body = body;
-
-	gNetwork.last_heartbeat_time = SDL_GetTicks();
-	http_request_json_async(&request, [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				// Master server has successfully updated our server status
-			} else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN) {
-				gNetwork.advertise_status = ADVERTISE_STATUS_UNREGISTERED;
-				log_warning("Master server heartbeat failed: Invalid Token");
-			}
-		}
-		http_request_json_dispose(response);
-	});
-
-	json_decref(body);
-#endif
 }
 
 NetworkGroup* Network::AddGroup()

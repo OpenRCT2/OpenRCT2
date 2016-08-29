@@ -75,6 +75,7 @@ extern "C" {
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
 #include "NetworkPlayer.h"
+#include "NetworkServerAdvertiser.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
 
@@ -107,8 +108,6 @@ public:
 	void KickPlayer(int playerId);
 	void SetPassword(const char* password);
 	void ShutdownClient();
-	void AdvertiseRegister();
-	void AdvertiseHeartbeat();
 	NetworkGroup* AddGroup();
 	void RemoveGroup(uint8 id);
 	uint8 GetDefaultGroup();
@@ -204,12 +203,8 @@ private:
 	std::vector<uint8> chunk_buffer;
 	std::string password;
 	bool _desynchronised = false;
+	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
-	uint32 last_advertise_time = 0;
-	std::string advertise_token;
-	std::string advertise_key;
-	int advertise_status = 0;
-	uint32 last_heartbeat_time = 0;
 	uint8 default_group = 0;
 	SDL_RWops *_chatLogStream;
 	std::string _chatLogPath;
