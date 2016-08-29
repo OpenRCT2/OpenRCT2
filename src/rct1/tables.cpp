@@ -1055,8 +1055,8 @@ namespace RCT1
             { "INTINV  " },                                                             // RIDE_TYPE_INVERTED_IMPULSE_COASTER
             { "WCATC   ", "RCKC     ", "JSTAR1  " },                                    // RIDE_TYPE_MINI_ROLLER_COASTER
             { "PMT1    " },                                                             // RIDE_TYPE_MINE_RIDE
-            { "PREMT1  " },                                                             // RIDE_TYPE_59
-            { },                                                                        // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+            { },                                                                        // RIDE_TYPE_59
+            { "PREMT1  " },                                                             // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
         };
         return preferedRideEntryOrder[rideType];
     }
