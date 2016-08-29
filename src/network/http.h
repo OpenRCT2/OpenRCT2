@@ -22,12 +22,14 @@
 #include "../common.h"
 
 typedef struct http_json_request {
+	void *tag;
 	const char *method;
 	const char *url;
 	const json_t *body;
 } http_json_request;
 
 typedef struct http_json_response {
+	void *tag;
 	int status_code;
 	json_t *root;
 } http_json_response;

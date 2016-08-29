@@ -191,6 +191,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	root = json_loads(writeBuffer.ptr, 0, &error);
 	if (root != NULL) {
 		response = (http_json_response*)malloc(sizeof(http_json_response));
+		response->tag = request->tag;
 		response->status_code = (int)httpStatusCode;
 		response->root = root;
 	}
@@ -209,6 +210,7 @@ void http_request_json_async(const http_json_request *request, void (*callback)(
 	args->request.url = _strdup(request->url);
 	args->request.method = request->method;
 	args->request.body = json_deep_copy(request->body);
+	args->request.tag = request->tag;
 	args->callback = callback;
 
 	SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
