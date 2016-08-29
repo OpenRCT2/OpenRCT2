@@ -1489,8 +1489,6 @@
 		D442714F1CC81B3200D84D28 /* network */ = {
 			isa = PBXGroup;
 			children = (
-				791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */,
-				791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */,
 				D44271501CC81B3200D84D28 /* http.cpp */,
 				D44271511CC81B3200D84D28 /* http.h */,
 				D44271521CC81B3200D84D28 /* network.cpp */,
@@ -1507,6 +1505,8 @@
 				007A05C91CFB2C8B00F419C3 /* NetworkPacket.h */,
 				007A05CA1CFB2C8B00F419C3 /* NetworkPlayer.cpp */,
 				007A05CB1CFB2C8B00F419C3 /* NetworkPlayer.h */,
+				791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */,
+				791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */,
 				007A05CC1CFB2C8B00F419C3 /* NetworkTypes.h */,
 				C61FB7221CF86356004CE991 /* NetworkUser.cpp */,
 				C61FB7231CF86356004CE991 /* NetworkUser.h */,
