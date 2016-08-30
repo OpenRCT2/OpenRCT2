@@ -4224,6 +4224,7 @@ STR_5909    :{SMALLFONT}{BLACK}Permette di cambiare liberamente il tipo di perco
 STR_5910    :Applica
 STR_5911    :Sentieri trasparenti
 STR_5912    :Attiva/disattiva la trasparenza dei sentieri
+STR_5913    :Chat
 
 
 #############
