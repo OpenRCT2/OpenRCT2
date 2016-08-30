@@ -23,11 +23,15 @@
 #include "../drawing/drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
+struct paint_struct;
+typedef struct paint_struct paint_struct;
 
 #ifdef NO_RCT2
 extern void *g_currently_drawn_item;
+extern paint_struct * g_ps_EE7880;
 #else
 	#define g_currently_drawn_item RCT2_GLOBAL(0x9DE578, void*)
+	#define g_ps_EE7880 RCT2_GLOBAL(0xEE7880, paint_struct *)
 #endif
 
 #pragma pack(push, 1)
@@ -49,8 +53,6 @@ struct attached_paint_struct {
 // TODO: drop packing from this when all rendering is done.
 assert_struct_size(attached_paint_struct, 0x12);
 #endif
-
-typedef struct paint_struct paint_struct;
 
 /* size 0x34 */
 struct paint_struct {
