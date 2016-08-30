@@ -36,6 +36,7 @@ paint_string_struct *pss2;
 #ifdef NO_RCT2
 paint_struct *g_paint_structs[512];
 void *g_currently_drawn_item;
+paint_struct * g_ps_EE7880;
 #else
 #define g_paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #endif
@@ -82,7 +83,7 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 {
 	paint_struct * ps = unk_EE7888;
 
-	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32))return NULL;
+	if (ps >= g_ps_EE7880) return NULL;
 
 	ps->image_id = image_id;
 
@@ -199,7 +200,7 @@ paint_struct * sub_98196C(
 	//Not a paint struct but something similar
 	paint_struct *ps = unk_EE7888;
 
-	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+	if (ps >= g_ps_EE7880) {
 		return NULL;
 	}
 
@@ -538,7 +539,7 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
 
 	attached_paint_struct * ps = (attached_paint_struct *)unk_EE7888;
 
-    if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+	if ((paint_struct *)ps >= g_ps_EE7880) {
         return false;
     }
 
@@ -571,7 +572,7 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
 {
 	attached_paint_struct * ps = (attached_paint_struct *)unk_EE7888;
 
-    if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+	if ((paint_struct *)ps >= g_ps_EE7880) {
         return false;
     }
 
@@ -611,7 +612,7 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 {
 	paint_string_struct * ps = (paint_string_struct *)unk_EE7888;
 
-	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+	if ((paint_struct *)ps >= g_ps_EE7880) {
 		return;
 	}
 
