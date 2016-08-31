@@ -54,7 +54,7 @@ private:
     uint8 _smallSceneryTypeToEntryMap[256];
     uint8 _largeSceneryTypeToEntryMap[256];
     uint8 _wallTypeToEntryMap[256];
-    uint8 _pathTypeToEntryMap[16];
+    uint8 _pathTypeToEntryMap[24];
     uint8 _pathAdditionTypeToEntryMap[16];
     uint8 _sceneryThemeTypeToEntryMap[24];
 
