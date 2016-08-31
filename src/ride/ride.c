@@ -743,7 +743,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 {
 	rct_window *w;
 	rct_ride *ride;
-	track_circuit_iterator it;
+	track_circuit_iterator it, slowIt;
 	int rideIndex;
 
 	rideIndex = input->element->properties.track.ride_index;
@@ -756,12 +756,27 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 	if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
 		sub_6C9627();
 
+	bool counter = true;
 	track_circuit_iterator_begin(&it, *input);
+	slowIt = it;
 	while (track_circuit_iterator_next(&it)) {
 		if (!track_is_connected_by_shape(it.last.element, it.current.element)) {
 			*output = it.current;
 			return 1;
 		}
+		//#2081: prevent an infinite loop
+		counter = !counter;
+		if (counter) {
+			track_circuit_iterator_next(&slowIt);
+			if (slowIt.currentZ == it.currentZ &&
+				slowIt.currentDirection == it.currentDirection &&
+				slowIt.current.x == it.current.x &&
+				slowIt.current.y == it.current.y) {
+				*output = it.current;
+				return 1;
+			}
+		}
+
 	}
 	if (!it.looped) {
 		*output = it.last;
