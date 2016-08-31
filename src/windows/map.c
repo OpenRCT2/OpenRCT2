@@ -165,6 +165,12 @@ static rct_window_event_list window_map_events = {
 /** rct2: 0x00F1AD61 */
 static uint8 _activeTool;
 
+/** rct2: 0x00F1AD6C */
+static uint32 _curPixel;
+
+/** rct2: 0x00F1AD68 */
+static uint8 _mapImageData[512][512];
+
 static void window_map_init_map();
 static void window_map_center_on_view_point();
 static void window_map_show_default_scenario_editor_buttons(rct_window *w);
@@ -194,7 +200,6 @@ static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *m
 void window_map_open()
 {
 	rct_window *w;
-	uint32 *map_image_data;
 
 	// Check if window is already open
 	w = window_bring_to_front_by_class(WC_MAP);
@@ -204,11 +209,6 @@ void window_map_open()
 		return;
 	}
 
-	map_image_data = malloc(256 * 256 * sizeof(uint32));
-	if (map_image_data == NULL)
-		return;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*) = map_image_data;
 	w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
 	w->widgets = window_map_widgets;
 	w->enabled_widgets =
@@ -253,7 +253,6 @@ void window_map_open()
 */
 static void window_map_close(rct_window *w)
 {
-	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 		gCurrentToolWidget.window_classification == w->classification &&
 		gCurrentToolWidget.window_number == w->number) {
@@ -872,11 +871,11 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
 
-	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);
-	g1_element->width = 0x200;
-	g1_element->height = 0x200;
-	g1_element->x_offset = 0xFFF8;
-	g1_element->y_offset = 0xFFF8;
+	g1_element->offset = &_mapImageData[0][0];
+	g1_element->width = 512;
+	g1_element->height = 512;
+	g1_element->x_offset = -8;
+	g1_element->y_offset = -8;
 	g1_element->flags = 0;
 
 	gfx_draw_sprite(dpi, 0, 0, 0, 0);
@@ -897,8 +896,8 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
  */
 static void window_map_init_map()
 {
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A, 256 * 256 * sizeof(uint32));
-	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+	memset(_mapImageData, 0x0A, sizeof(_mapImageData));
+	_curPixel = 0;
 }
 
 /**
@@ -1630,32 +1629,35 @@ static uint16 map_window_get_pixel_colour_ride(int x, int y)
 
 static void map_window_set_pixels(rct_window *w)
 {
-	uint16 colour = 0, *destination;
+	uint16 colour = 0;
+	uint8 *destination;
 	int x = 0, y = 0, dx = 0, dy = 0;
 
-	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32) + 255);
+	int pos = (_curPixel * 511) + 255;
+	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
+	destination = &_mapImageData[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
-		x = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		x = _curPixel * 32;
 		y = 0;
 		dx = 0;
 		dy = 32;
 		break;
 	case 1:
 		x = 8192 - 32;
-		y = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		y = _curPixel * 32;
 		dx = -32;
 		dy = 0;
 		break;
 	case 2:
-		x = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		x = (255 - _curPixel) * 32;
 		y = 8192 - 32;
 		dx = 0;
 		dy = -32;
 		break;
 	case 3:
 		x = 0;
-		y = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		y = (255 - _curPixel) * 32;
 		dx = 32;
 		dy = 0;
 		break;
@@ -1676,15 +1678,19 @@ static void map_window_set_pixels(rct_window *w)
 				colour = map_window_get_pixel_colour_ride(x, y);
 				break;
 			}
-			*destination = colour;
+			destination[0] = HIBYTE(colour);
+			destination[1] = LOBYTE(colour);
 		}
 		x += dx;
 		y += dy;
-		destination = (uint16*)((uintptr_t)destination + 513);
+
+		destinationPosition.x++;
+		destinationPosition.y++;
+		destination = &_mapImageData[destinationPosition.y][destinationPosition.x];
 	}
-	RCT2_GLOBAL(0x00F1AD6C, uint32)++;
-	if (RCT2_GLOBAL(0x00F1AD6C, uint32) >= 256)
-		RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+	_curPixel++;
+	if (_curPixel >= 256)
+		_curPixel = 0;
 }
 
 static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY)
