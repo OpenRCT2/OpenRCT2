@@ -7641,13 +7641,17 @@ void ride_update_max_vehicles(int rideIndex)
 		ride->max_trains = maxNumTrains;
 
 		numCarsPerTrain = min(ride->proposed_num_cars_per_train, newCarsPerTrain);
-		numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
 	} else {
 		ride->max_trains = rideEntry->cars_per_flat_ride;
 		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
 		numCarsPerTrain = rideEntry->max_cars_in_train;
-		numVehicles = min(ride->proposed_num_vehicles, rideEntry->cars_per_flat_ride);
+		maxNumTrains = rideEntry->cars_per_flat_ride;
 	}
+	
+	if (gCheatsDisableTrainLengthLimit) {
+		maxNumTrains = 31;
+	}
+	numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
 
 	// Refresh new current num vehicles / num cars per vehicle
 	if (numVehicles != ride->num_vehicles || numCarsPerTrain != ride->num_cars_per_train) {
