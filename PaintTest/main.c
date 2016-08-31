@@ -16,7 +16,6 @@
 
 #include "../src/paint/paint.h"
 #include "../src/ride/track_data.h"
-#include "../src/ride/track_paint.h"
 #include "../src/interface/viewport.h"
 #include "../src/hook.h"
 
@@ -485,7 +484,9 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 		for (int direction = 0; direction < 4; direction++) {
 			TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
-                RCT2_GLOBAL(0x9DE57C, bool) = true; // Above surface
+				RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
+				RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
+				RCT2_GLOBAL(0x9DE57C, bool) = true; // Above surface
 
 				callCount = 0;
 				memset(&calls, sizeof(calls), 0);
@@ -609,24 +610,32 @@ static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 	return (int) sub_98199C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
 }
 
-static void intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
+static uint32 intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
 	wooden_a_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
+
+	return 0;
 }
 
-static void intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
+static uint32 intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
 	wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
+
+	return 0;
 }
 
-static void intercept_metal_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
+static uint32 intercept_metal_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
 	metal_a_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
+
+	return 0;
 }
 
-static void intercept_metal_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
+static uint32 intercept_metal_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
 	metal_b_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
+
+	return 0;
 }
 
 
@@ -646,11 +655,11 @@ void initHooks() {
 	addhook(0x0068778C, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
 	addhook(0x00687902, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
 
-	addhook(0x006629BC, (int) intercept_wooden_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, 0);
-	addhook(0x00662D5C, (int) intercept_wooden_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, 0);
+	addhook(0x006629BC, (int) intercept_wooden_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
+	addhook(0x00662D5C, (int) intercept_wooden_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 
-	addhook(0x00663105, (int) intercept_metal_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, 0);
-	addhook(0x00663584, (int) intercept_metal_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, 0);
+	addhook(0x00663105, (int) intercept_metal_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
+	addhook(0x00663584, (int) intercept_metal_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 }
 
 int main(int argc, const char *argv[]) {
