@@ -162,6 +162,8 @@ static rct_window_event_list window_map_events = {
 	window_map_scrollpaint
 };
 
+/** rct2: 0x00F1AD61 */
+static uint8 _activeTool;
 
 static void window_map_init_map();
 static void window_map_center_on_view_point();
@@ -273,7 +275,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		if (tool_set(w, widgetIndex, 2))
 			break;
-		RCT2_GLOBAL(0xF1AD61, sint8) = 2;
+		_activeTool = 2;
 		// Prevent mountain tool tool size.
 		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize);
 		show_gridlines();
@@ -281,34 +283,34 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		show_construction_rights();
 		break;
 	case WIDX_LAND_OWNED_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 2;
+		_activeTool ^= 2;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 2)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF2;
+		if (_activeTool & 2)
+			_activeTool &= 0xF2;
 
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_SALE_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 8;
+		_activeTool ^= 8;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 8)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF8;
+		if (_activeTool & 8)
+			_activeTool &= 0xF8;
 
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 1;
+		_activeTool ^= 1;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 1)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF1;
+		if (_activeTool & 1)
+			_activeTool &= 0xF1;
 
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 4;
+		_activeTool ^= 4;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 4)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF4;
+		if (_activeTool & 4)
+			_activeTool &= 0xF4;
 
 		window_invalidate(w);
 		break;
@@ -488,7 +490,7 @@ static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 				gMapSelectPositionA.x,
 				GAME_COMMAND_FLAG_APPLY,
 				gMapSelectPositionA.y,
-				RCT2_GLOBAL(0x00F1AD61, uint8),
+				_activeTool,
 				GAME_COMMAND_SET_LAND_OWNERSHIP,
 				gMapSelectPositionB.x,
 				gMapSelectPositionB.y
@@ -607,7 +609,7 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 			gMapSelectPositionA.x,
 			GAME_COMMAND_FLAG_APPLY,
 			gMapSelectPositionA.y,
-			RCT2_GLOBAL(0x00F1AD61, uint8),
+			_activeTool,
 			GAME_COMMAND_SET_LAND_OWNERSHIP,
 			gMapSelectPositionB.x,
 			gMapSelectPositionB.y
@@ -687,16 +689,16 @@ static void window_map_invalidate(rct_window *w)
 	pressedWidgets |= (1ULL << (WIDX_PEOPLE_TAB + w->selected_tab));
 	pressedWidgets |= (1ULL << WIDX_LAND_TOOL);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 3))
+	if (_activeTool & (1 << 3))
 		pressedWidgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 2))
+	if (_activeTool & (1 << 2))
 		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 1))
+	if (_activeTool & (1 << 1))
 		pressedWidgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 0))
+	if (_activeTool & (1 << 0))
 		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
 	w->pressed_widgets = pressedWidgets;
