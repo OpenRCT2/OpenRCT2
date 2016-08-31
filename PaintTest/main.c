@@ -541,11 +541,15 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	return true;
 }
 
-void testRide(int rideType) {
+bool rideIsImplemented(int rideType) {
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-	if (newPaintGetter == 0) {
-		return;
-	}
+	return (newPaintGetter != 0);
+}
+
+bool testRide(int rideType) {
+	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+
+	bool returnSuccess = true;
 
 	printf("- %s (%d)\n", RideNames[rideType], rideType);
 	for (int trackType = 0; trackType < 256; trackType++) {
@@ -558,6 +562,7 @@ void testRide(int rideType) {
 
 		if (!success) {
 			printf(ANSI_COLOR_RED);
+			returnSuccess = false;
 		}
 		int sequenceCount = getTrackSequenceCount(rideType, trackType);
 		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
@@ -574,6 +579,8 @@ void testRide(int rideType) {
 		printf(ANSI_COLOR_RESET "\n");
 
 	}
+
+	return returnSuccess;
 }
 
 static int intercept_draw_6c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
@@ -662,10 +669,19 @@ void initHooks() {
 	addhook(0x00663584, (int) intercept_metal_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 }
 
+#if !defined(USE_GTEST)
+
 int main(int argc, const char *argv[]) {
 	initHooks();
+
+	bool success = true;
 	for (int i = 0; i < 91; i++) {
-		testRide(i);
+		if (!testRide(i)) {
+			success = false;
+		}
 	}
-	return 0;
+
+	return success ? 0 : 1;
 }
+
+#endif

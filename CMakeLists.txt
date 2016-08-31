@@ -210,9 +210,14 @@ set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
+# include lib
+include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h" "PaintTest/*.hpp" "src/ride/*/*.c" "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_VEHICLES")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
+if (APPLE)
+	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
+	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
+endif (APPLE)
 
 
 if (APPLE AND NOT USE_MMAP)
@@ -315,6 +320,12 @@ else (WIN32)
 	if (NOT APPLE AND NOT USE_MMAP)
 		add_dependencies(${PROJECT} linkable_sections)
 	endif ()
+	add_custom_command(
+		OUTPUT g2.dat
+		COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		)
+	add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 endif (WIN32)
 
 if (UNIX AND NOT APPLE)
@@ -352,6 +363,51 @@ install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
 install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
+
+INCLUDE(ExternalProject)
+# Add gtest
+# http://stackoverflow.com/questions/9689183/cmake-googletest
+ExternalProject_Add(
+		googletest
+		URL https://github.com/google/googletest/archive/release-1.7.0.zip
+		TIMEOUT 10
+		# # Force separate output paths for debug and release builds to allow easy
+		# # identification of correct lib in subsequent TARGET_LINK_LIBRARIES commands
+		CMAKE_ARGS -DCMAKE_CXX_FLAGS=-m32
+		#            -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=ReleaseLibs
+		#            -Dgtest_force_shared_crt=ON
+		# Disable install step
+		INSTALL_COMMAND ""
+		# Wrap download, configure and build steps in a script to log output
+		LOG_DOWNLOAD ON
+		LOG_CONFIGURE ON
+		LOG_BUILD ON)
+
+# Specify include dir
+ExternalProject_Get_Property(googletest source_dir)
+set(GTEST_INCLUDE_DIR ${source_dir}/include)
+
+# Library
+ExternalProject_Get_Property(googletest binary_dir)
+set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+set(GTEST_LIBRARY gtest)
+add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
+set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
+		${GTEST_LIBRARY_PATH} )
+add_dependencies(${GTEST_LIBRARY} googletest)
+
+include_directories(${GTEST_INCLUDE_DIR})
+add_definitions(-DUSE_GTEST)
+
+file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
+file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
+file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_VEHICLES")
+string(REPLACE "-Wundef" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+string(REPLACE "-Wundef" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+add_executable(test-paint ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
+target_link_libraries(test-paint gtest)
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
