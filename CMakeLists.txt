@@ -144,14 +144,14 @@ PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
 if (UNIX)
   add_custom_command(
     OUTPUT openrct2_text
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_text bs=4096 skip=1 count=1187
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_text" bs=4096 skip=1 count=1187
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe
   )
   add_custom_command(
     OUTPUT openrct2_data
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 skip=1188 count=318
-    COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 seek=318 count=2630 conv=notrunc
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1188 count=318
+    COMMAND dd if=/dev/zero of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 seek=318 count=2630 conv=notrunc
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe
   )
   add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
