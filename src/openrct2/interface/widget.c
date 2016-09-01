@@ -1034,10 +1034,9 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, sint32 x, sint32 
 void widget_set_enabled(rct_window *w, uint64 widgetIndex, bool enabled)
 {
 	if (enabled) {
-		w->enabled_widgets |= (1ULL << widgetIndex);
 		w->disabled_widgets &= ~(1ULL << widgetIndex);
-	}
-	else {
+		w->enabled_widgets |= (1ULL << widgetIndex);
+	} else {
 		w->enabled_widgets &= ~(1ULL << widgetIndex);
 		w->disabled_widgets |= (1ULL << widgetIndex);
 	}

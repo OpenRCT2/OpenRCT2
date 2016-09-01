@@ -336,7 +336,7 @@
 		D44272521CC81B3200D84D28 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = D442718B1CC81B3200D84D28 /* util.c */; };
 		D44272531CC81B3200D84D28 /* about.c in Sources */ = {isa = PBXBuildFile; fileRef = D442718F1CC81B3200D84D28 /* about.c */; };
 		D44272541CC81B3200D84D28 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271901CC81B3200D84D28 /* banner.c */; };
-		D44272551CC81B3200D84D28 /* changelog.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271911CC81B3200D84D28 /* changelog.c */; };
+		D44272551CC81B3200D84D28 /* textreader.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271911CC81B3200D84D28 /* textreader.c */; };
 		D44272561CC81B3200D84D28 /* cheats.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271921CC81B3200D84D28 /* cheats.c */; };
 		D44272571CC81B3200D84D28 /* clear_scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271931CC81B3200D84D28 /* clear_scenery.c */; };
 		D44272581CC81B3200D84D28 /* demolish_ride_prompt.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271941CC81B3200D84D28 /* demolish_ride_prompt.c */; };
@@ -890,7 +890,7 @@
 		D442718D1CC81B3200D84D28 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		D442718F1CC81B3200D84D28 /* about.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = about.c; sourceTree = "<group>"; };
 		D44271901CC81B3200D84D28 /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
-		D44271911CC81B3200D84D28 /* changelog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = changelog.c; sourceTree = "<group>"; };
+		D44271911CC81B3200D84D28 /* textreader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textreader.c; sourceTree = "<group>"; };
 		D44271921CC81B3200D84D28 /* cheats.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cheats.c; sourceTree = "<group>"; };
 		D44271931CC81B3200D84D28 /* clear_scenery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = clear_scenery.c; sourceTree = "<group>"; };
 		D44271941CC81B3200D84D28 /* demolish_ride_prompt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = demolish_ride_prompt.c; sourceTree = "<group>"; };
@@ -1900,7 +1900,7 @@
 			children = (
 				D442718F1CC81B3200D84D28 /* about.c */,
 				D44271901CC81B3200D84D28 /* banner.c */,
-				D44271911CC81B3200D84D28 /* changelog.c */,
+				D44271911CC81B3200D84D28 /* textreader.c */,
 				D44271921CC81B3200D84D28 /* cheats.c */,
 				D44271931CC81B3200D84D28 /* clear_scenery.c */,
 				D45B202C1D1E92DB00B67CC7 /* custom_currency.c */,
@@ -2808,7 +2808,7 @@
 				C686F8B91CDBC37E009F9BFC /* supports.c in Sources */,
 				D442726E1CC81B3200D84D28 /* maze_construction.c in Sources */,
 				D44272751CC81B3200D84D28 /* news_options.c in Sources */,
-				D44272551CC81B3200D84D28 /* changelog.c in Sources */,
+				D44272551CC81B3200D84D28 /* textreader.c in Sources */,
 				C686F9471CDBC3B7009F9BFC /* top_spin.c in Sources */,
 				D442720E1CC81B3200D84D28 /* rect.c in Sources */,
 				D437A2721DBC29B0001CB2CF /* FileScanner.cpp in Sources */,

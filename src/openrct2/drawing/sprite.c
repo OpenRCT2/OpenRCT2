@@ -403,6 +403,13 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, sint32 image_id, 
 	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, NULL);
 }
 
+void FASTCALL gfx_get_sprite_size(int image_id, int* width, int* height) 
+{
+	rct_g1_element *g1_source = gfx_get_g1_element(image_id & 0x7FFFF);
+	*width = (int)g1_source->width;
+	*height = (int)g1_source->height;
+}
+
 /*
 * rct: 0x0067A46E
 * image_id (ebx) and also (0x00EDF81C)

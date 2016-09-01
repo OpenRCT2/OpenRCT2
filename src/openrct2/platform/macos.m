@@ -188,6 +188,14 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 	}
 }
 
+void platform_open_browser(const char* url) 
+{
+ 	@autoreleasepool
+ 	{
+ 		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+ 	}
+ }
+
 bool platform_has_matching_language(NSString *preferredLocale, uint16* languageIdentifier)
 {
 	@autoreleasepool
