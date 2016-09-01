@@ -166,7 +166,7 @@ static rct_window_event_list window_map_events = {
 static uint8 _activeTool;
 
 /** rct2: 0x00F1AD6C */
-static uint32 _curPixel;
+static uint32 _currentLine;
 
 /** rct2: 0x00F1AD68 */
 static uint8 (*_mapImageData)[512][512];
@@ -903,7 +903,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 static void window_map_init_map()
 {
 	memset(_mapImageData, 0x0A, sizeof(*_mapImageData));
-	_curPixel = 0;
+	_currentLine = 0;
 }
 
 /**
@@ -1639,31 +1639,31 @@ static void map_window_set_pixels(rct_window *w)
 	uint8 *destination;
 	int x = 0, y = 0, dx = 0, dy = 0;
 
-	int pos = (_curPixel * 511) + 255;
+	int pos = (_currentLine * 511) + 255;
 	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
 	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
-		x = _curPixel * 32;
+		x = _currentLine * 32;
 		y = 0;
 		dx = 0;
 		dy = 32;
 		break;
 	case 1:
 		x = 8192 - 32;
-		y = _curPixel * 32;
+		y = _currentLine * 32;
 		dx = -32;
 		dy = 0;
 		break;
 	case 2:
-		x = (255 - _curPixel) * 32;
+		x = (255 - _currentLine) * 32;
 		y = 8192 - 32;
 		dx = 0;
 		dy = -32;
 		break;
 	case 3:
 		x = 0;
-		y = (255 - _curPixel) * 32;
+		y = (255 - _currentLine) * 32;
 		dx = 32;
 		dy = 0;
 		break;
@@ -1694,9 +1694,9 @@ static void map_window_set_pixels(rct_window *w)
 		destinationPosition.y++;
 		destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	}
-	_curPixel++;
-	if (_curPixel >= 256)
-		_curPixel = 0;
+	_currentLine++;
+	if (_currentLine >= 256)
+		_currentLine = 0;
 }
 
 static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY)
