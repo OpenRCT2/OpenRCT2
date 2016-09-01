@@ -262,20 +262,20 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercod
 	return chunkHeader.length + sizeof(sawyercoding_chunk_header);
 }
 
-size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length)
+size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength)
 {
 	// (0 to length - 4): RLE chunk
 	// (length - 4 to length): checksum
-	return decode_chunk_rle(src, dst, length - 4);
+	return decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 }
 
-size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length)
+size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength)
 {
 	size_t decodedLength, i;
 	uint32 *code;
 
 	// Uncompress
-	decodedLength = decode_chunk_rle(src, dst, length - 4);
+	decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
 	// Decode
 	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)
