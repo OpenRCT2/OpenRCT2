@@ -34,11 +34,11 @@ paint_string_struct *pss1;
 paint_string_struct *pss2;
 
 #ifdef NO_RCT2
-paint_struct *g_paint_structs[512];
+static paint_struct *_paint_structs[512];
 void *g_currently_drawn_item;
 paint_struct * g_ps_EE7880;
 #else
-#define g_paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
+#define _paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #endif
 
 static const uint8 BoundBoxDebugColours[] = {
@@ -68,7 +68,7 @@ void painter_setup() {
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
 	for (int i = 0; i < 512; i++) {
-		g_paint_structs[i] = NULL;
+		_paint_structs[i] = NULL;
 	}
 	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
 	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
@@ -322,8 +322,8 @@ paint_struct * sub_98196C(
 
 	ps->var_18 = edi;
 
-	paint_struct *old_ps = g_paint_structs[edi];
-	g_paint_structs[edi] = ps;
+	paint_struct *old_ps = _paint_structs[edi];
+	_paint_structs[edi] = ps;
 	ps->next_quadrant_ps = old_ps;
 
 	if ((uint16)edi < RCT2_GLOBAL(0x00F1AD0C, uint32)) {
@@ -406,8 +406,8 @@ paint_struct * sub_98197C(
 		di = 511;
 
 	ps->var_18 = di;
-	paint_struct* old_ps = g_paint_structs[di];
-	g_paint_structs[di] = ps;
+	paint_struct* old_ps = _paint_structs[di];
+	_paint_structs[di] = ps;
 	ps->next_quadrant_ps = old_ps;
 
 	if ((uint16)di < RCT2_GLOBAL(0x00F1AD0C, uint32)) {
@@ -876,7 +876,7 @@ void sub_688217()
 		return;
 
 	do {
-		ps_next = g_paint_structs[edi];
+		ps_next = _paint_structs[edi];
 		if (ps_next != NULL) {
 			ps->next_quadrant_ps = ps_next;
 			do {
