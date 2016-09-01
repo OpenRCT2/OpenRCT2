@@ -282,3 +282,8 @@ data/g2.dat
 
 # KDE folder settings
 .directory
+
+###############
+## JetBrains ##
+###############
+.idea/
