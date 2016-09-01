@@ -169,7 +169,7 @@ static uint8 _activeTool;
 static uint32 _curPixel;
 
 /** rct2: 0x00F1AD68 */
-static uint8 _mapImageData[512][512];
+static uint8 (*_mapImageData)[512][512];
 
 static void window_map_init_map();
 static void window_map_center_on_view_point();
@@ -206,6 +206,11 @@ void window_map_open()
 	if (w != NULL) {
 		w->selected_tab = 0;
 		w->list_information_type = 0;
+		return;
+	}
+
+	_mapImageData = malloc(sizeof(*_mapImageData));
+	if (_mapImageData == NULL) {
 		return;
 	}
 
@@ -253,6 +258,7 @@ void window_map_open()
 */
 static void window_map_close(rct_window *w)
 {
+	free(_mapImageData);
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 		gCurrentToolWidget.window_classification == w->classification &&
 		gCurrentToolWidget.window_number == w->number) {
@@ -871,7 +877,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
 
-	g1_element->offset = &_mapImageData[0][0];
+	g1_element->offset = (uint8 *) _mapImageData;
 	g1_element->width = 512;
 	g1_element->height = 512;
 	g1_element->x_offset = -8;
@@ -896,7 +902,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
  */
 static void window_map_init_map()
 {
-	memset(_mapImageData, 0x0A, sizeof(_mapImageData));
+	memset(_mapImageData, 0x0A, sizeof(*_mapImageData));
 	_curPixel = 0;
 }
 
@@ -1635,7 +1641,7 @@ static void map_window_set_pixels(rct_window *w)
 
 	int pos = (_curPixel * 511) + 255;
 	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
-	destination = &_mapImageData[destinationPosition.y][destinationPosition.x];
+	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
 		x = _curPixel * 32;
@@ -1686,7 +1692,7 @@ static void map_window_set_pixels(rct_window *w)
 
 		destinationPosition.x++;
 		destinationPosition.y++;
-		destination = &_mapImageData[destinationPosition.y][destinationPosition.x];
+		destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	}
 	_curPixel++;
 	if (_curPixel >= 256)
