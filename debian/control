@@ -4,10 +4,10 @@ Section: misc
 Priority: optional
 Standards-Version: 3.9.2
 Multi-Arch: same
-Build-Depends: debhelper (>= 9), cmake, libsdl2-dev, libsdl2-ttf-dev, gcc, pkg-config, g++-multilib, gcc-multilib, libjansson4 (>= 2.7), libjansson-dev (>= 2.7), libspeex-dev, libspeexdsp-dev, libcurl4-openssl-dev, libcrypto++-dev, libfontconfig1-dev, libfreetype6-dev, libpng-dev
+Build-Depends: debhelper (>= 9), cmake, libsdl2-dev, libsdl2-ttf-dev, gcc, pkg-config, libjansson4 (>= 2.7), libjansson-dev (>= 2.7), libspeex-dev, libspeexdsp-dev, libcurl4-openssl-dev, libcrypto++-dev, libfontconfig1-dev, libfreetype6-dev, libpng-dev, libssl-dev
 
 Package: openrct2
-Architecture: i386
+Architecture: any
 Homepage: https://openrct2.website/
 Vcs-Browser: https://github.com/OpenRCT2/OpenRCT2
 Vcs-Git: https://github.com/OpenRCT2/OpenRCT2

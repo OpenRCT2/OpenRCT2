@@ -24,7 +24,13 @@
 #endif
 
 #ifdef USE_MMAP
-	#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+	#if defined(PLATFORM_64BIT)
+		#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+	#elif defined(PLATFORM_32BIT)
+		#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
+	#else
+		#error "Unknown platform"
+	#endif
 #else
 	#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
 #endif
