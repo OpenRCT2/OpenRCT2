@@ -20,6 +20,7 @@
 #include "../src/ride/ride.h"
 #include "../src/ride/track.h"
 #include "../src/world/sprite.h"
+#include "../src/paint/map_element/map_element.h"
 
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
