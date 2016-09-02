@@ -676,6 +676,10 @@ int main(int argc, const char *argv[]) {
 
 	bool success = true;
 	for (int i = 0; i < 91; i++) {
+		if (!rideIsImplemented(i)) {
+			continue;
+		}
+		
 		if (!testRide(i)) {
 			success = false;
 		}
