@@ -520,8 +520,6 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 					esi += 72;
 					newSegment = esi[segment * 8];
 					if (height <= gSupportSegments[newSegment].height) {
-						esi += 72;
-						newSegment = esi[segment * 8];
 						return false;
 					}
 				}
