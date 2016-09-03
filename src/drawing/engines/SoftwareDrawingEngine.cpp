@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../core/Guard.hpp"
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
 #include "../IDrawingContext.h"
@@ -993,10 +994,9 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     }
     else if (colour & 0x8000000)
     {
-        uintptr_t esi = left - RCT2_GLOBAL(0x1420070, sint16);
-        RCT2_GLOBAL(0xEDF824, uint32) = esi;
-        esi = top - RCT2_GLOBAL(0x1420072, sint16);
-        RCT2_GLOBAL(0xEDF828, uint32) = esi;
+        Guard::Fail("Dead code reached. Please contact a dev. [colour & 0x8000000]", GUARD_LINE);
+        RCT2_GLOBAL(0xEDF824, uint32) = left - RCT2_GLOBAL(0x1420070, sint16);
+        RCT2_GLOBAL(0xEDF828, uint32) = top - RCT2_GLOBAL(0x1420072, sint16);
         left -= dpi->x;
         if (left < 0)
         {
@@ -1025,7 +1025,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         bottom -= top;
         RCT2_GLOBAL(0xEDF824, sint32) &= 0x3F;
         RCT2_GLOBAL(0xEDF828, sint32) &= 0x3F;
-        esi = dpi->width;
+        uintptr_t esi = dpi->width;
         esi += dpi->pitch;
         esi *= top;
         esi += left;
