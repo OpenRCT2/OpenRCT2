@@ -370,8 +370,7 @@ void news_item_open_subject(int type, int subject)
 			window_event_mouse_down_call(window, 4 + subject);
 		break;
 	case NEWS_ITEM_PEEPS:
-		// Open guest list to right tab
-		window_guest_list_open_with_filter(3, subject);;
+		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;
 		break;
 	case NEWS_ITEM_AWARD:
 		window_park_awards_open();

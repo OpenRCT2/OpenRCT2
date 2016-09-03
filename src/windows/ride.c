@@ -6263,13 +6263,13 @@ static void window_ride_customer_mouseup(rct_window *w, int widgetIndex)
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_SHOW_GUESTS_THOUGHTS:
-		window_guest_list_open_with_filter(2, w->number);
+		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_ABOUT_RIDE, w->number);
 		break;
 	case WIDX_SHOW_GUESTS_ON_RIDE:
-		window_guest_list_open_with_filter(0, w->number);
+		window_guest_list_open_with_filter(GLFT_GUESTS_ON_RIDE, w->number);
 		break;
 	case WIDX_SHOW_GUESTS_QUEUING:
-		window_guest_list_open_with_filter(1, w->number);
+		window_guest_list_open_with_filter(GLFT_GUESTS_IN_QUEUE, w->number);
 		break;
 	}
 }

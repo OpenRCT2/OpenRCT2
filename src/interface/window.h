@@ -512,6 +512,14 @@ enum VISIBILITY_CACHE
 	VC_COVERED
 };
 
+enum GUEST_LIST_FILTER_TYPE
+{
+	GLFT_GUESTS_ON_RIDE,
+	GLFT_GUESTS_IN_QUEUE,
+	GLFT_GUESTS_THINKING_ABOUT_RIDE,
+	GLFT_GUESTS_THINKING_X,
+};
+
 typedef void (*modal_callback)(int result);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
