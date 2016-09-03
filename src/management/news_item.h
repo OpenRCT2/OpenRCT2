@@ -57,9 +57,9 @@ typedef struct rct_news_item {
 assert_struct_size(rct_news_item, 12 + 256);
 #pragma pack(pop)
 
-#define MAX_NEWS_ITEMS 60
+#define MAX_NEWS_ITEMS 61
 
-extern rct_news_item *gNewsItems;
+extern rct_news_item gNewsItems[MAX_NEWS_ITEMS];
 
 void news_item_init_queue();
 void news_item_update_current();
