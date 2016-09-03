@@ -124,9 +124,15 @@ typedef struct support_height {
 	uint8 pad;
 } support_height;
 
+#ifndef NO_RCT2
 #define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
 #define gSupportSegments			RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
 #define gSupport					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
+#else
+extern uint8 gPaintInteractionType;
+extern support_height gSupportSegments[9];
+extern support_height gSupport;
+#endif
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];

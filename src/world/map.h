@@ -316,14 +316,14 @@ enum {
 extern const rct_xy16 TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
-#define gWidePathTileLoopX				RCT2_GLOBAL(0x013CE774, uint16)
-#define gWidePathTileLoopY				RCT2_GLOBAL(0x013CE776, uint16)
-#define gGrassSceneryTileLoopPosition	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, uint16)
+extern uint16 gWidePathTileLoopX;
+extern uint16 gWidePathTileLoopY;
+extern uint16 gGrassSceneryTileLoopPosition;
 
-#define gMapSizeUnits		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16)
-#define gMapSizeMinus2		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)
-#define gMapSize			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16)
-#define gMapSizeMaxXY		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16)
+extern sint16 gMapSizeUnits;
+extern sint16 gMapSizeMinus2;
+extern sint16 gMapSize;
+extern sint16 gMapSizeMaxXY;
 
 extern uint16		gMapSelectFlags;
 extern uint16		gMapSelectType;

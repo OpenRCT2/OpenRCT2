@@ -37,6 +37,9 @@ paint_string_struct *pss2;
 static paint_struct *_paint_structs[512];
 void *g_currently_drawn_item;
 paint_struct * g_ps_EE7880;
+uint8 gPaintInteractionType;
+support_height gSupportSegments[9] = { 0 };
+support_height gSupport;
 #else
 #define _paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #endif

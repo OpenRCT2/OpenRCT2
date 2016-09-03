@@ -79,6 +79,15 @@ uint8			gMapSelectArrowDirection;
 
 uint8 gMapGroundFlags;
 
+uint16 gWidePathTileLoopX;
+uint16 gWidePathTileLoopY;
+uint16 gGrassSceneryTileLoopPosition;
+
+sint16 gMapSizeUnits;
+sint16 gMapSizeMinus2;
+sint16 gMapSize;
+sint16 gMapSizeMaxXY;
+
 #if defined(NO_RCT2)
 rct_map_element gMapElements[0x30000];
 rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
