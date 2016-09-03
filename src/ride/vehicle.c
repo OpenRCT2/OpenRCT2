@@ -5753,7 +5753,11 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 	int x = vehicle->track_x;
 	int y = vehicle->track_y;
 	int z = vehicle->track_z;
-	track_begin_end trackBeginEnd;
+	track_begin_end trackBeginEnd, slowTrackBeginEnd;
+	rct_map_element slowMapElement = *mapElement;
+	bool counter = true;
+	int slowX = x;
+	int slowY = y;
 	do {
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			return;
@@ -5768,6 +5772,21 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 		y = trackBeginEnd.end_y;
 		z = trackBeginEnd.begin_z;
 		mapElement = trackBeginEnd.begin_element;
+
+		//#2081: prevent infinite loop
+		counter = !counter;
+		if (counter) {
+			track_block_get_previous(slowX, slowY, &slowMapElement, &slowTrackBeginEnd);
+			slowX = slowTrackBeginEnd.end_x;
+			slowY = slowTrackBeginEnd.end_y;
+			slowMapElement = *(slowTrackBeginEnd.begin_element);
+			if (slowX == x &&
+				slowY == y &&
+				slowMapElement.base_height == mapElement->base_height &&
+				slowMapElement.type == mapElement->type ) {
+				return;
+			}
+		}
 	} while (!track_element_is_block_start(trackBeginEnd.begin_element));
 
 	// Get the start of the track block instead of the end
