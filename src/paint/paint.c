@@ -623,7 +623,7 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 	ps->next = 0;
 	ps->args[0] = amount;
 	ps->args[1] = y;
-	ps->args[2] = (int) y_offsets;
+	ps->args[2] = 0;
 	ps->args[3] = 0;
 	ps->y_offsets = (uint8 *) y_offsets;
 
