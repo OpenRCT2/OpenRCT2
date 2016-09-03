@@ -590,38 +590,17 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
 
-	//
-	if (w->var_4B8 != -1) {
-		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1, 0);
-		if (w->width > 638)
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1 + 638, t + 1, 0);
-		if (w->var_4B9 != -1) {
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1, t + 1, 0);
-			if (w->width > 638)
-				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1, 0);
-		}
+	int press = 0x60;
+	if (w->flags & WF_10)
+		press |= 0x80;
 
-		//
-		int press = 0x70;
-		if (w->flags & WF_10)
-			press |= 0x80;
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, r + 1, t, r + 1, b, ColourMapA[colour].mid_dark);
-	} else {
-		//
-		int press = 0x60;
-		if (w->flags & WF_10)
-			press |= 0x80;
-
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-
-		// Black caption bars look slightly green, this fixes that
-		if (colour == 0)
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
-		else
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
-	}
+	// Black caption bars look slightly green, this fixes that
+	if (colour == 0)
+		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
+	else
+		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 
 	// Draw text
 	if (widget->text == STR_NONE)
