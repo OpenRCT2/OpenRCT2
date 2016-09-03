@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../src/paint/paint.h"
+#include "../src/paint/supports.h"
 #include "../src/ride/track_data.h"
 #include "../src/interface/viewport.h"
 #include "../src/hook.h"
@@ -432,7 +433,7 @@ static void printFunctionCall(utf8string *out, function_call call) {
 		imageId,
 		call.paint.offset.x, call.paint.offset.y,
 		call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z,
-		call.paint.z_offset,
+		call.paint.z_offset
 	);
 
 	if (call.function != PAINT_98196C) {
