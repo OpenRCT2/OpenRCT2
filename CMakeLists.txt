@@ -82,7 +82,12 @@ option(DISABLE_RCT2 "WIP: Try building without using code and data segments from
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
 
-set(COMMON_COMPILE_OPTIONS "-fPIC -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+
+# On mingw all code is already PIC, this will avoid compiler error on redefining this option
+if(NOT MINGW)
+	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
+endif()
 
 if (LAUNCHPAD_BUILD)
 	if (CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -220,7 +225,7 @@ endif (APPLE)
 # set necessary flags to compile code as is
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 ${COMMON_COMPILE_OPTIONS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 ${COMMON_COMPILE_OPTIONS}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M} -fpie")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} -fpie")
 
 if (MINGW)
