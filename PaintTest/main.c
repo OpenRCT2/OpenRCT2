@@ -487,8 +487,13 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	uint8 rideIndex = 0;
 	rct_map_element mapElement = { 0 };
 	mapElement.properties.track.type = trackType;
+	mapElement.base_height = 3;
 
 	g_currently_drawn_item = &mapElement;
+
+	rct_map_element surfaceElement = { 0 };
+	surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+	surfaceElement.base_height = 2;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 	RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
@@ -521,7 +526,8 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
 				RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
 				RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
-				RCT2_GLOBAL(0x9DE57C, bool) = true; // Above surface
+				RCT2_GLOBAL(0x009DE57C, bool) = true; // Above surface
+				RCT2_GLOBAL(0x009E3250, rct_map_element *) = &surfaceElement;
 
 				callCount = 0;
 				memset(&calls, sizeof(calls), 0);
