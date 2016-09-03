@@ -3807,10 +3807,11 @@ const rct_xyz16 junior_rc_diag_right_bank_bound_offsets[4] = {
 	{-16, -16},
 };
 
-/** rct2: 0x008AAF10 */
+/** rct2: 0x008AB1A0 */
 static void junior_rc_diag_left_bank_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets, get_current_rotation());
+	uint8 thickness = direction == 0 ? 0 : 1;
+	track_paint_util_diag_tiles_paint(thickness, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets, get_current_rotation());
 
 	if (trackSequence == 3) {
 		metal_a_supports_paint_setup(direction & 1 ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
@@ -3821,10 +3822,11 @@ static void junior_rc_diag_left_bank_paint_setup(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AAF10 */
+/** rct2: 0x008AB1B0 */
 static void junior_rc_diag_right_bank_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_diag_tiles_paint(1, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets, get_current_rotation());
+	uint8 thickness = direction == 2 ? 0 : 1;
+	track_paint_util_diag_tiles_paint(thickness, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets, get_current_rotation());
 
 	if (trackSequence == 3) {
 		metal_a_supports_paint_setup(direction & 1 ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
