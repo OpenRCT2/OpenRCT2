@@ -46,7 +46,7 @@ static int news_item_get_new_history_slot();
 
 bool news_item_is_valid_idx(int index)
 {
-	if (index > MAX_NEWS_ITEMS) {
+	if (index >= MAX_NEWS_ITEMS) {
 		log_error("Tried to get news item past MAX_NEWS.");
 		return false;
 	}
@@ -157,7 +157,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < MAX_NEWS_ITEMS)
+	if (i < MAX_NEWS_ITEMS - 1)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -402,7 +402,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 		}
 	}
 
-	for (int i = 11; i <= MAX_NEWS_ITEMS; i++) {
+	for (int i = 11; i < MAX_NEWS_ITEMS; i++) {
 		if (!news_item_is_empty(i)) {
 			rct_news_item * const newsItem = news_item_get(i);
 			if (type == newsItem->type && assoc == newsItem->assoc) {
