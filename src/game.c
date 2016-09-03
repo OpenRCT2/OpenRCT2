@@ -67,6 +67,10 @@ bool gInUpdateCode = false;
 int gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 
+#ifdef NO_RCT2
+uint32 gCurrentTicks;
+#endif
+
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	0,

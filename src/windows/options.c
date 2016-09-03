@@ -22,7 +22,6 @@
  *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
  */
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"

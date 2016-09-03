@@ -18,6 +18,9 @@
 #define _DATE_H_
 
 #include "../common.h"
+#ifndef NO_RCT2
+	#include "../addresses.h"
+#endif
 
 enum {
 	MONTH_MARCH,

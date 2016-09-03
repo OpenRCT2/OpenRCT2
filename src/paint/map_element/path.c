@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "map_element.h"
 #include "../../addresses.h"
+#include "map_element.h"
 #include "../../interface/viewport.h"
 #include "../../ride/track.h"
 #include "../../world/footpath.h"

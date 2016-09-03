@@ -18,7 +18,6 @@
 #define _EDITOR_H_
 
 #include "rct2.h"
-#include "addresses.h"
 
 typedef enum {
 	EDITOR_STEP_OBJECT_SELECTION,			// 0

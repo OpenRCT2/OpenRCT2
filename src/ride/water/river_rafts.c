@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../addresses.h"
 #include "../../common.h"
 #include "../../interface/viewport.h"
 #include "../../paint/supports.h"

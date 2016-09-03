@@ -19,7 +19,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../localisation/localisation.h"
 }
 

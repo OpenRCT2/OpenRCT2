@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../addresses.h"
 #include "../paint.h"
 #include "../../interface/viewport.h"
-#include "../../addresses.h"
 #include "map_element.h"
 #include "../../drawing/drawing.h"
 #include "../../ride/ride_data.h"

@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <time.h>
-#include "../addresses.h"
 #include "../game.h"
 #include "date.h"
 #include "string_ids.h"

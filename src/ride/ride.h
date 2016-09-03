@@ -17,7 +17,6 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
-#include "../addresses.h"
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"

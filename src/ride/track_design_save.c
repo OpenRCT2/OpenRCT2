@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"

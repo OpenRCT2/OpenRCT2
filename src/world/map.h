@@ -18,6 +18,9 @@
 #define _MAP_H_
 
 #include "../common.h"
+#ifndef NO_RCT2
+	#include "../addresses.h"
+#endif
 
 #pragma pack(push, 1)
 typedef struct rct_map_element_surface_properties {

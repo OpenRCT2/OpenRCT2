@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../addresses.h"
 #include "map_element.h"
 #include "../paint.h"
 #include "../supports.h"
-#include "../../addresses.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"

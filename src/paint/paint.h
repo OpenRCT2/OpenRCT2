@@ -21,6 +21,9 @@
 #include "../world/map.h"
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
+#ifndef NO_RCT2
+	#include "../addresses.h"
+#endif
 
 typedef struct attached_paint_struct attached_paint_struct;
 struct paint_struct;
