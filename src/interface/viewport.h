@@ -88,11 +88,6 @@ typedef struct viewport_interaction_info {
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 
-#define gSavedViewX				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16)
-#define gSavedViewY				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16)
-#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM, uint8)
-#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ROTATION, uint8)
-#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 extern uint32 gCurrentViewportFlags;
 
 // rct2: 0x014234BC
@@ -101,9 +96,19 @@ extern rct_viewport *g_music_tracking_viewport;
 #ifdef NO_RCT2
 extern paint_struct *unk_EE7884;
 extern paint_struct *unk_EE7888;
+extern sint16 gSavedViewX;
+extern sint16 gSavedViewY;
+extern uint8 gSavedViewZoom;
+extern uint8 gSavedViewRotation;
+extern uint8 gCurrentRotation;
 #else
 	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_struct*)
 	#define unk_EE7888 RCT2_GLOBAL(0x00EE7888, paint_struct*)
+	#define gSavedViewX				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16)
+	#define gSavedViewY				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16)
+	#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM, uint8)
+	#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ROTATION, uint8)
+	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 #endif
 
 void viewport_init_all();

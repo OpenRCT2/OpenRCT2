@@ -48,6 +48,11 @@ rct_map_element *_interaction_element = NULL;
 #ifdef NO_RCT2
 paint_struct *unk_EE7884;
 paint_struct *unk_EE7888;
+sint16 gSavedViewX;
+sint16 gSavedViewY;
+uint8 gSavedViewZoom;
+uint8 gSavedViewRotation;
+uint8 gCurrentRotation;
 #endif
 
 /**
