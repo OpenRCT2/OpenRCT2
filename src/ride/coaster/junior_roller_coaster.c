@@ -2305,6 +2305,20 @@ static void junior_rc_25_deg_down_to_right_bank_paint_setup(uint8 rideIndex, uin
 	junior_rc_left_bank_to_25_deg_up_paint_setup(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
+static const rct_xyz16 junior_rc_left_bank_bound_lengths[4] = {
+	{32, 1, 26},
+	{1, 32, 26},
+	{32, 20, 1},
+	{20, 32, 1},
+};
+
+static const rct_xy16 junior_rc_left_bank_bound_offsets[4] = {
+	{0, 27},
+	{27, 0},
+	{0, 6},
+	{6, 0},
+};
+
 /**
  * rct2: 0x008AB0A0, 0x00521D1F, 0x00521DF4, 0x00521EC9, 0x00521F9E
  */
@@ -2313,14 +2327,19 @@ static void junior_rc_left_bank_paint_setup(uint8 rideIndex, uint8 trackSequence
 	uint32 image_id;
 
 	image_id = junior_rc_track_pieces_left_bank[direction] | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction & 1) {
-		sub_98197C(image_id, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 
+		junior_rc_left_bank_bound_lengths[direction].x, 
+		junior_rc_left_bank_bound_lengths[direction].y, 
+		(sint8)junior_rc_left_bank_bound_lengths[direction].z, 
+		height, 
+		junior_rc_left_bank_bound_offsets[direction].x, 
+		junior_rc_left_bank_bound_offsets[direction].y, 
+		height, get_current_rotation());
 
+	if (direction & 1) {
 		paint_util_push_tunnel_right(height, 0);
 	}
 	else {
-		sub_98197C(image_id, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
-
 		paint_util_push_tunnel_left(height, 0);
 	}
 
