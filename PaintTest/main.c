@@ -256,6 +256,31 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 	return false;
 }
 
+enum {
+	SPRITEGROUP_NONE,
+
+	SPRITEGROUP_FENCE_METAL_B, // 14990
+	SPRITEGROUP_FLOOR_CORK, // 22134
+	SPRITEGROUP_FENCE_ROPE, // 22138
+
+};
+
+static int getSpriteGroup(uint16 spriteIndex) {
+	if (spriteIndex >= 14990 && spriteIndex <= 14993) {
+		return SPRITEGROUP_FENCE_METAL_B;
+	}
+
+	if (spriteIndex >= 22134 && spriteIndex <= 22137) {
+		return SPRITEGROUP_FLOOR_CORK;
+	}
+
+	if (spriteIndex >= 22138 && spriteIndex <= 22141) {
+		return SPRITEGROUP_FENCE_ROPE;
+	}
+
+	return SPRITEGROUP_NONE;
+}
+
 static void canonicalizeFunctionCall(function_call *call) {
 	if (call->function != PAINT_98197C) return;
 	if (call->paint.offset.x != call->paint.bound_box_offset.x) return;
@@ -294,7 +319,17 @@ static bool assertFunctionCallEquals(function_call expected, function_call actua
 		return true;
 	}
 
-	if (expected.paint.image_id != actual.paint.image_id) return false;
+	if (expected.paint.image_id != actual.paint.image_id) {
+		int expectedSpriteGroup = getSpriteGroup(expected.paint.image_id & 0x7FFFF);
+		int actualSpriteGroup = getSpriteGroup(actual.paint.image_id & 0x7FFFF);
+
+		if (expectedSpriteGroup != actualSpriteGroup) return false;
+
+		if (expectedSpriteGroup == SPRITEGROUP_NONE) return false;
+
+		return true;
+	}
+
 	if (expected.paint.offset.x != actual.paint.offset.x) return false;
 	if (expected.paint.offset.y != actual.paint.offset.y) return false;
 	if (expected.paint.bound_box_length.x != actual.paint.bound_box_length.x) return false;
