@@ -366,17 +366,26 @@ install(DIRECTORY data/ DESTINATION share/${PROJECT})
 install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
 
 INCLUDE(ExternalProject)
-# Add gtest
-# http://stackoverflow.com/questions/9689183/cmake-googletest
+
+ExternalProject_Add(
+		googletest-distribution
+		URL https://github.com/google/googletest/archive/release-1.8.0.zip
+		TIMEOUT 10
+		CONFIGURE_COMMAND ""
+		BUILD_COMMAND ""
+		INSTALL_COMMAND ""
+)
+
+# Specify include dir
+ExternalProject_Get_Property(googletest-distribution SOURCE_DIR)
+set(GOOGLETEST_DISTRIB_SOURCE_DIR "${SOURCE_DIR}")
+
 ExternalProject_Add(
 		googletest
-		URL https://github.com/google/googletest/archive/release-1.7.0.zip
-		TIMEOUT 10
-		# # Force separate output paths for debug and release builds to allow easy
-		# # identification of correct lib in subsequent TARGET_LINK_LIBRARIES commands
+		DEPENDS googletest-distribution
+		DOWNLOAD_COMMAND ""
+		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
 		CMAKE_ARGS -DCMAKE_CXX_FLAGS=-m32
-		#            -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE:PATH=ReleaseLibs
-		#            -Dgtest_force_shared_crt=ON
 		# Disable install step
 		INSTALL_COMMAND ""
 		# Wrap download, configure and build steps in a script to log output
@@ -384,13 +393,14 @@ ExternalProject_Add(
 		LOG_CONFIGURE ON
 		LOG_BUILD ON)
 
+
 # Specify include dir
-ExternalProject_Get_Property(googletest source_dir)
-set(GTEST_INCLUDE_DIR ${source_dir}/include)
+set(GTEST_INCLUDE_DIR ${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest/include)
 
 # Library
-ExternalProject_Get_Property(googletest binary_dir)
-set(GTEST_LIBRARY_PATH ${binary_dir}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
+ExternalProject_Get_Property(googletest BINARY_DIR)
+set(GOOGLETEST_BINARY_DIR "${BINARY_DIR}")
+set(GTEST_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
 set(GTEST_LIBRARY gtest)
 add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
 set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION

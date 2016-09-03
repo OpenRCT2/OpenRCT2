@@ -15,6 +15,9 @@
 #pragma endregion
 
 #ifdef USE_GTEST
+#include <algorithm>
+#include <string>
+#include <vector>
 #include "gtest/gtest.h"
 
 extern "C" {
@@ -51,10 +54,15 @@ std::vector<uint8> ReadTestCasesFromDisk() {
     return rides;
 }
 
+inline std::string CustomParamNameFunction(const ::testing::TestParamInfo<uint8>& info) {
+    return std::to_string(info.param);
+}
+
 INSTANTIATE_TEST_CASE_P(
-        Instab,  // Instantiation name can be chosen arbitrarily.
+        ParameterizedTest,  // Instantiation name can be chosen arbitrarily.
         RidePaintTest,
-        testing::ValuesIn(ReadTestCasesFromDisk())
+        testing::ValuesIn(ReadTestCasesFromDisk()),
+		CustomParamNameFunction
 );
 
 #endif // USE_GTEST
