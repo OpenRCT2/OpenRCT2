@@ -569,7 +569,13 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 					sprintf(diff + strlen(diff), "====\n");
 					printFunctionCallArray(&diff, newCalls, newCallCount);
 					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
-					sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+					
+					if (oldCallCount != newCallCount) {
+						sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+					} else {
+						sprintf(*error, "Calls don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+					}
+					
 					sprintf(*error + strlen(*error), "\n%s", diff);
 					
 					free(diff);
