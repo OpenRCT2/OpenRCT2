@@ -480,7 +480,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
 			// These rides chechk neighbouring tiles for tracks
-			*error = "Skipped";
+			sprintf(*error, "Skipped");
 			return false;
 		}
 	}
@@ -562,7 +562,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 				memcpy(&newCalls, &calls, sizeof(calls));
 
 				if (!assertFunctionCallArrayEquals(oldCalls, oldCallCount, newCalls, newCallCount)) {
-					utf8string diff = malloc(1024);
+					utf8string diff = malloc(2048);
 
 					sprintf(diff, "<<< EXPECTED\n");
 					printFunctionCallArray(&diff, oldCalls, oldCallCount);
@@ -571,6 +571,8 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 					sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
 					sprintf(*error + strlen(*error), "\n%s", diff);
+					
+					free(diff);
 
 					return false;
 				}
@@ -598,7 +600,7 @@ bool testRide(int rideType) {
 			continue;
 		}
 
-		utf8string error = malloc(1024);
+		utf8string error = malloc(2048);
 		bool success = testTrackElement(rideType, trackType, &error);
 
 		if (!success) {
@@ -617,6 +619,7 @@ bool testRide(int rideType) {
 			printf(" FAILED!\n    %s", error);
 		}
 
+		free(error);
 		printf(ANSI_COLOR_RESET "\n");
 
 	}
