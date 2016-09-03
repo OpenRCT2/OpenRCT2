@@ -17,6 +17,7 @@
 #include "../src/config.h"
 #include "../src/object.h"
 #include "../src/interface/colour.h"
+#include "../src/interface/viewport.h"
 #include "../src/ride/ride.h"
 #include "../src/ride/track.h"
 #include "../src/world/sprite.h"
