@@ -555,7 +555,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			window_options_open();
 			break;
 		case DDIDX_SCREENSHOT:
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
+			gScreenshotCountdown = 10;
 			break;
 		case DDIDX_GIANT_SCREENSHOT:
 			screenshot_giant();

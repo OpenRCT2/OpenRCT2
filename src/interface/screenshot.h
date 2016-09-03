@@ -19,6 +19,8 @@
 
 #include "../drawing/drawing.h"
 
+extern uint8 gScreenshotCountdown;
+
 void screenshot_check();
 int screenshot_dump();
 int screenshot_dump_png(rct_drawpixelinfo *dpi);

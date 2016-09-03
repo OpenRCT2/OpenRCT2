@@ -19,6 +19,7 @@
 #include "../game.h"
 #include "../editor.h"
 #include "../interface/chat.h"
+#include "../interface/screenshot.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -480,7 +481,7 @@ static void shortcut_show_map()
 
 static void shortcut_screenshot()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) = 2;
+	gScreenshotCountdown = 2;
 }
 
 static void shortcut_reduce_game_speed()

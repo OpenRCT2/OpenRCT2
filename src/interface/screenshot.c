@@ -29,6 +29,8 @@
 #include "screenshot.h"
 #include "viewport.h"
 
+uint8 gScreenshotCountdown = 0;
+
 /**
  *
  *  rct2: 0x006E3AEC
@@ -37,9 +39,9 @@ void screenshot_check()
 {
 	int screenshotIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
+	if (gScreenshotCountdown != 0) {
+		gScreenshotCountdown--;
+		if (gScreenshotCountdown == 0) {
 			// update_rain_animation();
 			screenshotIndex = screenshot_dump();
 
