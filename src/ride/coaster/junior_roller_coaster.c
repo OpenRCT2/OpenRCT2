@@ -2481,9 +2481,9 @@ static void junior_rc_s_bend_left_paint_setup(uint8 rideIndex, uint8 trackSequen
 	rct_xy16 offset = offsetList[trackSequence];
 	rct_xy16 bounds = boundsList[trackSequence];
 	if (direction == 0 || direction == 2) {
-		sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+		sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
 	} else {
-		sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+		sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 1, height, get_current_rotation());
 	}
 
 	if (direction == 0 || direction == 2) {
@@ -2545,9 +2545,9 @@ static void junior_rc_s_bend_right_paint_setup(uint8 rideIndex, uint8 trackSeque
 	rct_xy16 offset = offsetList[trackSequence];
 	rct_xy16 bounds = boundsList[trackSequence];
 	if (direction == 0 || direction == 2) {
-		sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+		sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
 	} else {
-		sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+		sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 1, height, get_current_rotation());
 	}
 
 	if (direction == 0 || direction == 2) {
