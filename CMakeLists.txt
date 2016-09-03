@@ -341,6 +341,7 @@ endif (UNIX AND NOT APPLE)
 
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
+set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 # Link shared libs first
 TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
@@ -397,17 +398,14 @@ set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
 add_dependencies(${GTEST_LIBRARY} googletest)
 
 include_directories(${GTEST_INCLUDE_DIR})
-add_definitions(-DUSE_GTEST)
 
 file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
 file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNO_VEHICLES")
-string(REPLACE "-Wundef" " " CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-string(REPLACE "-Wundef" " " CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 add_executable(test-paint ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
 target_link_libraries(test-paint gtest)
+set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DUSE_GTEST -DNO_VEHICLES")
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
