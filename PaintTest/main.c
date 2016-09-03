@@ -406,7 +406,7 @@ static void printFunctionCall(utf8string *out, function_call call) {
 		return;
 	}
 
-	utf8string name;
+	utf8string name = "_default";
 	switch (call.function) {
 	case PAINT_98196C:
 		name = "sub_98196C";
@@ -433,7 +433,6 @@ static void printFunctionCall(utf8string *out, function_call call) {
 		call.paint.offset.x, call.paint.offset.y,
 		call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z,
 		call.paint.z_offset,
-		NULL
 	);
 
 	if (call.function != PAINT_98196C) {
@@ -485,7 +484,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 		}
 	}
 	uint8 rideIndex = 0;
-	rct_map_element mapElement = {};
+	rct_map_element mapElement = { 0 };
 	mapElement.properties.track.type = trackType;
 
 	g_currently_drawn_item = &mapElement;
@@ -499,10 +498,10 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;
 
-	rct_vehicle vehicle = {};
-	rct_ride ride = {};
+	rct_vehicle vehicle = { 0 };
+	rct_ride ride = { 0 };
 
-	rct_ride_entry rideEntry = {};
+	rct_ride_entry rideEntry = { 0 };
 	rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
 	rideEntry.vehicles[0] = vehicleEntry;
 
