@@ -2619,10 +2619,83 @@ static void junior_rc_left_quarter_turn_3_tiles_paint_setup(uint8 rideIndex, uin
 	junior_rc_right_quarter_turn_3_tiles_paint_setup(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
+const rct_xy16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
+	{
+		{32, 20},
+		{16, 16},
+		{20, 32},
+	},
+	{
+		{20, 32},
+		{16, 16},
+		{32, 20},
+	},
+	{
+		{32, 1},
+		{16, 16},
+		{1, 32},
+	},
+	{
+		{20, 32},
+		{16, 16},
+		{32, 20},
+	}
+};
+
+const rct_xyz16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
+	{
+		{0, 6},
+		{16, 16},
+		{6, 0},
+	},
+	{
+		{6, 0},
+		{16, 0},
+		{0, 6},
+	},
+	{
+		{0, 27},
+		{0,  0, 27},
+		{27, 0},
+	},
+	{
+		{6, 0},
+		{0,  16},
+		{0, 6},
+	}
+};
+
 /** rct2: 0x008AA0D0, 0x00523EA0, 0x005240CC, 0x0052430F, 0x00524500*/
 static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_right_quarter_turn_3_tiles_paint(1, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_banked_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesOffsets, get_current_rotation());
+	uint8 thickness[4][4] = { 
+		{
+			1,
+			1,
+			1,
+			1
+		},
+		{
+			1,
+			1,
+			1,
+			1
+		},
+		{
+			26,
+			1,
+			1,
+			26
+		},
+		{
+			1,
+			1,
+			1,
+			1
+		}
+	};
+	
+	track_paint_util_right_quarter_turn_3_tiles_paint(thickness[direction][trackSequence], height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), junior_rc_track_pieces_banked_quarter_turn_3_tiles, NULL, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths, junior_rc_right_quarter_turn_3_tiles_bank_offsets, get_current_rotation());
 	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
 
 	if (direction == 1 && trackSequence == 3) {
