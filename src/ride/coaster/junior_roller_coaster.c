@@ -3352,7 +3352,7 @@ static const rct_xyz16 junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] =
 	},
 	{
 		{0, 27},
-		{0,  0},
+		{0,  0, 27},
 		{4,  4, 27},
 		{0,  16, 27},
 	},
