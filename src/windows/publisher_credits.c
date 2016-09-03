@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/widget.h"

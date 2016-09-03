@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "../world/sprite.h"
 #include "cable_lift.h"
 #include "ride.h"

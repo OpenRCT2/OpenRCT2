@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "paint.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
@@ -21,7 +22,6 @@
 #include "../interface/viewport.h"
 #include "map_element/map_element.h"
 #include "sprite/sprite.h"
-#include "../addresses.h"
 
 const uint32 construction_markers[] = {
 	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_USE_PALETTE << 28, // White

@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "map_element.h"
 #include "../../addresses.h"
+#include "map_element.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"

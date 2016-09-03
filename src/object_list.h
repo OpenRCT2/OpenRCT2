@@ -20,6 +20,9 @@
 	extern rct_water_type				*gWaterEntries[1];
 	extern rct_stex_entry				*gStexEntries[1];
 #else
+
+	#include "addresses.h"
+
 	#define gRideEntries				RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,				rct_ride_entry*)
 	#define gSmallSceneryEntries		RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES,	rct_small_scenery_entry*)
 	#define gLargeSceneryEntries		RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES,	rct_large_scenery_entry*)

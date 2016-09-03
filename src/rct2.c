@@ -17,7 +17,6 @@
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <time.h>
-#include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
 #include "config.h"

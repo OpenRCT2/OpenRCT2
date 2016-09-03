@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../addresses.h"
 
 #ifdef __WINDOWS__
 #include <windows.h>
@@ -23,7 +24,6 @@
 #include <errno.h>
 #endif // __WINDOWS__
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../util/util.h"

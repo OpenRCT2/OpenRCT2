@@ -130,7 +130,11 @@ extern rct_string_id gErrorStringId;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[68];
 
+#ifndef NO_RCT2
 #define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+#else
+extern uint32 gCurrentTicks;
+#endif
 
 extern uint16 gTicksSinceLastUpdate;
 extern uint32 gLastTickCount;

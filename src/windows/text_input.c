@@ -21,7 +21,6 @@
  * that is used for inputing new text for ride names and peep names.
  */
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../platform/platform.h"
 #include "../interface/window.h"

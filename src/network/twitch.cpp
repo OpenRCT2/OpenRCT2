@@ -35,7 +35,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../config.h"
     #include "../drawing/drawing.h"
     #include "../game.h"

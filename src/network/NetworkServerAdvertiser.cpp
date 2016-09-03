@@ -25,7 +25,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../config.h"
     #include "../localisation/date.h"
     #include "../management/finance.h"

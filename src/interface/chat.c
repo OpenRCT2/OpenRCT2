@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "chat.h"
 #include "../addresses.h"
+#include "chat.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../interface/themes.h"

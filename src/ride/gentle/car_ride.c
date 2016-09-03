@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../addresses.h"
 #include "../../common.h"
 #include "../track_paint.h"
 #include "../track.h"

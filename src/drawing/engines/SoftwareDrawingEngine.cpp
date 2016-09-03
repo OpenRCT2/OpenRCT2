@@ -22,6 +22,7 @@
 
 extern "C"
 {
+    #include "../../addresses.h"
     #include "../../config.h"
     #include "../../game.h"
     #include "../../interface/screenshot.h"

@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../common.h"
 #include "../../addresses.h"
+#include "../../common.h"
 #include "../../config.h"
 #include "../../interface/viewport.h"
 #include "../../world/sprite.h"

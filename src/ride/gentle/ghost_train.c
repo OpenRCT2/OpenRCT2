@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../addresses.h"
 #include "../track_paint.h"
 #include "../track.h"
 #include "../vehicle_paint.h"

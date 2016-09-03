@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../paint.h"
 #include "../../addresses.h"
+#include "../paint.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"

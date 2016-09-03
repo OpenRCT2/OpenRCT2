@@ -17,7 +17,6 @@
 #include <stdarg.h>
 #include <SDL_scancode.h>
 
-#include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"

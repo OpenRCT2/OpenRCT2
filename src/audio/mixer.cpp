@@ -15,7 +15,6 @@
 #pragma endregion
 
 extern "C" {
-	#include "../addresses.h"
 	#include "../config.h"
 	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"

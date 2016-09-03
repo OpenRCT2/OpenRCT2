@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "../paint/paint.h"
 #include "../drawing/drawing.h"
 #include "../world/sprite.h"
