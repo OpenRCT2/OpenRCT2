@@ -979,8 +979,8 @@ void S4Importer::ImportParkFlags()
     }
 
     // News items
-    rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
-    for (int i = 0; i < 61; i++)
+    rct_news_item *newsItems = gNewsItems;
+    for (int i = 0; i < MAX_NEWS_ITEMS; i++)
     {
         newsItems[i] = _s4.messages[i];
     }
