@@ -96,9 +96,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_CONSTRUCTION_MARKER_DROPDOWN,
 	WIDX_DAY_NIGHT_CHECKBOX,
 	WIDX_UPPER_CASE_BANNERS_CHECKBOX,
-	WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
 	WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
-	
+	WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX,
+
 	// Culture / Units
 	WIDX_LANGUAGE = WIDX_PAGE_START,
 	WIDX_LANGUAGE_DROPDOWN,
@@ -232,8 +232,8 @@ static rct_widget window_options_rendering_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	FRAME_RENDERING_START + 46,		FRAME_RENDERING_START + 54,		STR_DROPDOWN_GLYPH,				STR_CONSTRUCTION_MARKER_COLOUR_TIP },
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 60,		FRAME_RENDERING_START + 71,		STR_CYCLE_DAY_NIGHT,			STR_CYCLE_DAY_NIGHT_TIP },				// Cycle day-night
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 75,		FRAME_RENDERING_START + 86,		STR_UPPERCASE_BANNERS,			STR_UPPERCASE_BANNERS_TIP },			// Uppercase banners
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 90,		FRAME_RENDERING_START + 101,	STR_DISABLE_LIGHTNING_EFFECT,	STR_DISABLE_LIGHTNING_EFFECT_TIP },		// Disable lightning effect
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 105,	FRAME_RENDERING_START + 116,	STR_RENDER_WEATHER_EFFECTS,		STR_RENDER_WEATHER_EFFECTS_TIP },		// Render weather effects
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 90,		FRAME_RENDERING_START + 101,	STR_RENDER_WEATHER_EFFECTS,		STR_RENDER_WEATHER_EFFECTS_TIP },		// Render weather effects
+	{ WWT_CHECKBOX,			1,	31,		290,	FRAME_RENDERING_START + 105,	FRAME_RENDERING_START + 116,	STR_DISABLE_LIGHTNING_EFFECT,	STR_DISABLE_LIGHTNING_EFFECT_TIP },		// Disable lightning effect
 #undef FRAME_RENDERING_START
 	{ WIDGETS_END },
 };
@@ -465,8 +465,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
 	(1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
-	(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX) |
-	(1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX),
+	(1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) | 
+	(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_LANGUAGE) |
@@ -657,7 +657,11 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
 			gConfigGeneral.render_weather_effects ^= 1;
 			gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
+			if (!gConfigGeneral.render_weather_effects) {
+				gConfigGeneral.disable_lightning_effect = true;
+			}
 			config_save_default();
+			window_invalidate(w);
 			gfx_invalidate_screen();
 			break;
 		}
@@ -1470,9 +1474,21 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
-		widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
 		widget_set_checkbox_value(w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-
+		widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+		if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom) {
+			widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+			if (!gConfigGeneral.disable_lightning_effect) {
+				gConfigGeneral.disable_lightning_effect = true;
+				config_save_default();
+			}
+			w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+			w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+		}
+		else {
+			w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+			w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+		}
 		// construction marker: white/translucent
 		static const rct_string_id construction_marker_colours[] = {
 			STR_CONSTRUCTION_MARKER_COLOUR_WHITE,
@@ -1486,8 +1502,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_rendering_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_rendering_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
-		window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_rendering_widgets[WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_rendering_widgets[WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX].type = WWT_CHECKBOX;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
