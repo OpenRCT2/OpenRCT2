@@ -547,6 +547,8 @@ extern uint16 gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];
 
+extern bool gDisableErrorWindowSound;
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();

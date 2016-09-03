@@ -1496,7 +1496,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			for (; zAttemptRange != 0; zAttemptRange--){
 				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
 
-				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+				gDisableErrorWindowSound = true;
 				gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 				int cost = game_do_command(
 					cur_grid_x,
@@ -1507,7 +1507,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 					gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000),
 					gSceneryPlaceZ
 				);
-				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+				gDisableErrorWindowSound = false;
 
 				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
@@ -1567,10 +1567,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		for (; zAttemptRange != 0; zAttemptRange--) {
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, RCT2_GLOBAL(0x00F64F15, uint16));
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
@@ -1604,10 +1604,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		for (; zAttemptRange != 0; zAttemptRange--) {
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);

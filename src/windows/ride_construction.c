@@ -3832,7 +3832,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			if (w == NULL)
 				break;
 
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			gDisableErrorWindowSound = true;
 
 			gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
@@ -3844,7 +3844,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 				_currentTrackBeginZ,
 				0);
 
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+			gDisableErrorWindowSound = false;
 
 			if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
 				rct_string_id errorText = gGameCommandErrorText;
@@ -3895,9 +3895,9 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 		if (w == NULL)
 			break;
 
-		RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+		gDisableErrorWindowSound = true;
 		window_event_mouse_up_call(w, WIDX_CONSTRUCT);
-		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+		gDisableErrorWindowSound = false;
 
 		if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
 			rct_string_id errorText = gGameCommandErrorText;

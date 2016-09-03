@@ -46,14 +46,11 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
 				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
 
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 			// redraw_rain();
 		}
 	}

@@ -21,6 +21,8 @@
 #include "../interface/window.h"
 #include "error.h"
 
+bool gDisableErrorWindowSound = false;
+
 enum {
 	WIDX_BACKGROUND
 };
@@ -131,8 +133,9 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
-	if (!(RCT2_GLOBAL(0x009A8C29, uint8) & 1))
+	if (!gDisableErrorWindowSound) {
 		audio_play_sound_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+	}
 }
 
 /**
