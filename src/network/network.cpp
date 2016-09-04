@@ -172,6 +172,7 @@ void Network::Close()
 		delete listening_socket;
 		listening_socket = nullptr;
 		delete _advertiser;
+		_advertiser = nullptr;
 	}
 
 	mode = NETWORK_MODE_NONE;
