@@ -29,6 +29,7 @@ extern "C"
     #include "../localisation/date.h"
     #include "../management/finance.h"
     #include "../peep/peep.h"
+    #include "../util/util.h"
     #include "../world/map.h"
     #include "../world/park.h"
     #include "http.h"
@@ -231,7 +232,7 @@ private:
         char key[17];
         for (int i = 0; i < 16; i++)
         {
-            int hexCharIndex = rand() % Util::CountOf(hexChars);
+            int hexCharIndex = util_rand() % Util::CountOf(hexChars);
             key[i] = hexChars[hexCharIndex];
         }
         key[Util::CountOf(key) - 1] = 0;
