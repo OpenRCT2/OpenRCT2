@@ -59,17 +59,19 @@ bool gPeepPathFindIgnoreForeignQueues;
 uint8 gPeepPathFindQueueRideIndex;
 bool gPeepPathFindSingleChoiceSection;
 // uint32 gPeepPathFindAltStationNum;
-bool _peepPathFindIsStaff;
-uint8 _peepPathFindQueueRideIndex;
-sint8 _peepPathFindNumJunctions;
-sint32 _peepPathFindTilesChecked;
-uint8 _peepPathFindFewestNumSteps;
+static bool _peepPathFindIsStaff;
+static uint8 _peepPathFindQueueRideIndex;
+static sint8 _peepPathFindNumJunctions;
+static sint32 _peepPathFindTilesChecked;
+static uint8 _peepPathFindFewestNumSteps;
 
 /* A junction history for the peep pathfinding heuristic search
  * The magic number 16 is the largest value returned by
  * peep_pathfind_get_max_number_junctions() which should eventually
  * be declared properly. */
-rct_xyz8 _peepPathFindHistory[16];
+static rct_xyz8 _peepPathFindHistory[16];
+
+static uint16 _unk_F1EE18;
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -81,6 +83,13 @@ enum {
 	PATH_SEARCH_WIDE,
 	PATH_SEARCH_RIDE_QUEUE,
 	PATH_SEARCH_OTHER = 10
+};
+
+enum {
+	F1EE18_DESTINATION_REACHED	= 1 << 0,
+	F1EE18_OUTSIDE_PARK			= 1 << 1,
+	F1EE18_RIDE_EXIT			= 1 << 2,
+	F1EE18_RIDE_ENTRANCE		= 1 << 3,
 };
 
 static void sub_68F41A(rct_peep *peep, int index);
@@ -2021,7 +2030,7 @@ static void peep_update_sitting(rct_peep* peep){
 		//691541
 
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+		if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 		int ebx = peep->var_37 & 0x7;
 		int x = (peep->x & 0xFFE0) + _981F2C[ebx].x;
@@ -4804,7 +4813,7 @@ static void peep_update_watering(rct_peep* peep){
 		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+		if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 		peep->sprite_direction = (peep->var_37 & 3) << 3;
 		peep->action = PEEP_ACTION_STAFF_WATERING;
@@ -4860,7 +4869,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+		if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 		peep->sprite_direction = (peep->var_37 & 3) << 3;
 		peep->action = PEEP_ACTION_STAFF_EMPTY_BIN;
@@ -4998,7 +5007,7 @@ static void peep_update_picked(rct_peep* peep){
 static void peep_update_leaving_park(rct_peep* peep){
 	if (peep->var_37 != 0){
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
+		if (!(_unk_F1EE18 & F1EE18_OUTSIDE_PARK)) return;
 		peep_sprite_remove(peep);
 		return;
 	}
@@ -5020,7 +5029,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 	window_invalidate_by_class(WC_GUEST_LIST);
 
 	sub_693C9E(peep);
-	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 2))return;
+	if (!(_unk_F1EE18 & F1EE18_OUTSIDE_PARK)) return;
 	peep_sprite_remove(peep);
 }
 
@@ -5033,7 +5042,7 @@ static void peep_update_watching(rct_peep* peep){
 		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+		if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 		peep->destination_x = peep->x;
 		peep->destination_y = peep->y;
@@ -5117,7 +5126,7 @@ static void peep_update_watching(rct_peep* peep){
 static void peep_update_entering_park(rct_peep* peep){
 	if (peep->var_37 != 1){
 		sub_693C9E(peep);
-		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
+		if ((_unk_F1EE18 & F1EE18_OUTSIDE_PARK)) {
 			gNumGuestsHeadingForPark--;
 			peep_sprite_remove(peep);
 		}
@@ -5523,7 +5532,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		if (!checkForPath(peep))return;
 
 		sub_693C9E(peep);
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+		if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 		peep->sub_state = 1;
 	}
@@ -5698,7 +5707,11 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 
 		sub_693C9E(peep);
 
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 0xC))return;
+		if (!(_unk_F1EE18 & F1EE18_RIDE_EXIT) &&
+			!(_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
+		) {
+			return;
+		}
 
 		rct_map_element* map_element = RCT2_GLOBAL(0x00F1EE1A, rct_map_element*);
 
@@ -5711,7 +5724,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 		if (peep->current_ride_station != exit_index)
 			return;
 
-		if (RCT2_GLOBAL(0xF1EE18, uint16)&(1 << 3)){
+		if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE) {
 			if (ride->exits[exit_index] != 0xFFFF)return;
 		}
 
@@ -5811,7 +5824,11 @@ static void peep_update_answering(rct_peep* peep){
 
 		sub_693C9E(peep);
 
-		if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 0xC))return;
+		if (!(_unk_F1EE18 & F1EE18_RIDE_EXIT) &&
+			!(_unk_F1EE18 & F1EE18_RIDE_ENTRANCE)
+		) {
+			return;
+		}
 
 		rct_map_element* map_element = RCT2_GLOBAL(0x00F1EE1A, rct_map_element*);
 
@@ -5824,7 +5841,7 @@ static void peep_update_answering(rct_peep* peep){
 		if (peep->current_ride_station != exit_index)
 			return;
 
-		if (RCT2_GLOBAL(0xF1EE18, uint16)&(1 << 3)){
+		if (_unk_F1EE18 & F1EE18_RIDE_ENTRANCE) {
 			if (ride->exits[exit_index] != 0xFFFF)return;
 		}
 
@@ -6075,7 +6092,7 @@ static void peep_update_patrolling(rct_peep* peep){
 	if (!checkForPath(peep))return;
 
 	sub_693C9E(peep);
-	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+	if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 	if ((peep->next_var_29 & 0x18) == 8){
 		rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
@@ -6250,7 +6267,7 @@ static void peep_update_walking(rct_peep* peep){
 	}
 
 	sub_693C9E(peep);
-	if (!(RCT2_GLOBAL(0xF1EE18, uint16) & 1))return;
+	if (!(_unk_F1EE18 & F1EE18_DESTINATION_REACHED)) return;
 
 	if ((peep->next_var_29 & 0x18) == 8){
 		rct_map_element* map_element = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
@@ -7709,11 +7726,11 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 	uint8 rideIndex = map_element->properties.entrance.ride_index;
 
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
-		RCT2_GLOBAL(0x00F1EE18, uint8) |= (1 << 2);
+		_unk_F1EE18 |= F1EE18_RIDE_EXIT;
 		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
 	}
 	else if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE){
-		RCT2_GLOBAL(0x00F1EE18, uint8) |= (1 << 3);
+		_unk_F1EE18 |= F1EE18_RIDE_ENTRANCE;
 		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
 	}
 
@@ -9522,7 +9539,7 @@ static int guest_path_finding(rct_peep* peep)
  */
 static int sub_693C9E(rct_peep *peep)
 {
-	RCT2_GLOBAL(0x00F1EE18, uint16) = 0;
+	_unk_F1EE18 = 0;
 	RCT2_GLOBAL(0x00F1AEF1, uint8) = peep->action;
 
 	if (peep->action == PEEP_ACTION_NONE_1)
@@ -9535,7 +9552,7 @@ static int sub_693C9E(rct_peep *peep)
 
 	sint16 x, y, xy_dist;
 	if (!peep_update_action(&x, &y, &xy_dist, peep)){
-		RCT2_GLOBAL(0x00F1EE18, uint16) |= 1;
+		_unk_F1EE18 |= F1EE18_DESTINATION_REACHED;
 		uint8 result = 0;
 		if (peep->type == PEEP_TYPE_GUEST){
 			result = guest_path_finding(peep);
@@ -9561,7 +9578,7 @@ static int sub_693C9E(rct_peep *peep)
 
 	if (x < 32 || y < 32 || x >= gMapSizeUnits || y >= gMapSizeUnits){
 		if (peep->outside_of_park == 1){
-			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
+			_unk_F1EE18 |= F1EE18_OUTSIDE_PARK;
 		}
 		return peep_return_to_center_of_tile(peep);
 	}
