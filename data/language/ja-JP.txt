@@ -1015,8 +1015,8 @@ STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
 STR_1011    :Close all
 STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_1013    :閉まる公園
+STR_1014    :オープン公園
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1196,9 +1196,9 @@ STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
+STR_1194    :閉まる
 STR_1195    :Test Run
-STR_1196    :Open
+STR_1196    :開く
 STR_1197    :Broken Down
 STR_1198    :Crashed!
 STR_1199    :{COMMA16} person on ride
@@ -2055,23 +2055,23 @@ STR_2046    :a Park Map
 STR_2047    :an On-Ride Photo
 STR_2048    :an Umbrella
 STR_2049    :a Drink
-STR_2050    :a Burger
+STR_2050    :バーガー
 STR_2051    :some Chips
 STR_2052    :an Ice Cream
 STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
-STR_2055    :some Rubbish
+STR_2055    :くず
 STR_2056    :an Empty Burger Box
 STR_2057    :a Pizza
 STR_2058    :a Voucher
 STR_2059    :some Popcorn
-STR_2060    :a Hot Dog
+STR_2060    :ホットドッグ
 STR_2061    :a Tentacle
 STR_2062    :a Hat
 STR_2063    :a Toffee Apple
 STR_2064    :a T-Shirt
 STR_2065    :a Doughnut
-STR_2066    :a Coffee
+STR_2066    :コーヒー
 STR_2067    :an Empty Cup
 STR_2068    :some Fried Chicken
 STR_2069    :some Lemonade
