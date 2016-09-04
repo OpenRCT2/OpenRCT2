@@ -71,6 +71,7 @@ static uint8 _peepPathFindFewestNumSteps;
  * be declared properly. */
 static rct_xyz8 _peepPathFindHistory[16];
 
+static uint8 _unk_F1AEF1;
 static uint16 _unk_F1EE18;
 static rct_map_element * _peepRideEntranceExitElement;
 static uint32 _peepRideConsideration[8];
@@ -7697,7 +7698,7 @@ static int peep_update_queue_position(rct_peep* peep){
 
 	peep->action = PEEP_ACTION_NONE_1;
 	peep->next_action_sprite_type = 2;
-	if (RCT2_GLOBAL(0x00F1AEF1, uint8) != 0xFE)
+	if (_unk_F1AEF1 != PEEP_ACTION_NONE_1)
 		invalidate_sprite_2((rct_sprite*)peep);
 	return 1;
 }
@@ -9538,7 +9539,7 @@ static int guest_path_finding(rct_peep* peep)
 static int sub_693C9E(rct_peep *peep)
 {
 	_unk_F1EE18 = 0;
-	RCT2_GLOBAL(0x00F1AEF1, uint8) = peep->action;
+	_unk_F1AEF1 = peep->action;
 
 	if (peep->action == PEEP_ACTION_NONE_1)
 		peep->action = PEEP_ACTION_NONE_2;
