@@ -50,6 +50,7 @@ money32 gTotalIncomeFromAdmissions;
 money32 gParkValue;
 money32 gCompanyValue;
 
+sint16 gParkRatingCasualtyPenalty;
 uint8 gParkRatingHistory[32];
 uint8 gGuestsInParkHistory[32];
 
@@ -303,7 +304,7 @@ int calculate_park_rating()
 		result -= 600 - (4 * (150 - min(150, num_litter)));
 	}
 
-	result -= RCT2_GLOBAL(0x0135882E, sint16);
+	result -= gParkRatingCasualtyPenalty;
 	result = clamp(0, result, 999);
 	return result;
 }

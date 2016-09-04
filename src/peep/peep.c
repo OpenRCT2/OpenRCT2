@@ -1882,10 +1882,7 @@ static void peep_update_falling(rct_peep* peep){
 			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
 
-		RCT2_GLOBAL(0x135882E, uint16) += 25;
-		if (RCT2_GLOBAL(0x135882E, uint16) > 1000){
-			RCT2_GLOBAL(0x135882E, uint16) = 1000;
-		}
+		gParkRatingCasualtyPenalty = min(gParkRatingCasualtyPenalty + 25, 1000);
 		peep_remove(peep);
 		return;
 	}

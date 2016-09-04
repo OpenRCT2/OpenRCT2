@@ -4342,8 +4342,8 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		set_format_arg(4, uint32, ride->name_arguments);
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
-		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {
-			RCT2_GLOBAL(0x135882E, uint16) += 200;
+		if (gParkRatingCasualtyPenalty < 500) {
+			gParkRatingCasualtyPenalty += 200;
 		}
 	}
 

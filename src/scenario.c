@@ -269,7 +269,7 @@ void scenario_begin()
 	staff_reset_stats();
 	gLastEntranceStyle = RIDE_ENTRANCE_STYLE_PLAIN;
 	memset(RCT2_ADDRESS(0x001358102, void), 0, 20);
-	RCT2_GLOBAL(0x00135882E, uint16) = 0;
+	gParkRatingCasualtyPenalty = 0;
 
 	// Open park with free entry when there is no money
 	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
@@ -434,8 +434,9 @@ static void scenario_day_update()
 		break;
 	}
 
-	uint16 unk = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-	RCT2_GLOBAL(0x00135882E, uint16) = RCT2_GLOBAL(0x00135882E, uint16) > unk ? RCT2_GLOBAL(0x00135882E, uint16) - unk : 0;
+	// Lower the casualty penalty
+	uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+	gParkRatingCasualtyPenalty = max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
 }

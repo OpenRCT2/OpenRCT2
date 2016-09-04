@@ -260,7 +260,7 @@ typedef struct rct_s6_data {
 	char scenario_completed_name[32];
 	money32 cash;
 	uint8 pad_013587FC[50];
-	uint16 word_0135882E;
+	uint16 park_rating_casualty_penalty;
 	uint16 map_size_units;
 	uint16 map_size_minus_2;
 	uint16 map_size;

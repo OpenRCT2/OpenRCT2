@@ -278,7 +278,7 @@ void S6Importer::Import()
     memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
     gCashEncrypted = _s6.cash;
     // pad_013587FC
-    RCT2_GLOBAL(0x0135882E, uint16) = _s6.word_0135882E;
+    gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
     gMapSizeUnits = _s6.map_size_units;
     gMapSizeMinus2 = _s6.map_size_minus_2;
     gMapSize = _s6.map_size;

@@ -59,6 +59,7 @@ extern money32 gTotalIncomeFromAdmissions;
 extern money32 gParkValue;
 extern money32 gCompanyValue;
 
+extern sint16 gParkRatingCasualtyPenalty;
 extern uint8 gParkRatingHistory[32];
 extern uint8 gGuestsInParkHistory[32];
 extern int _guestGenerationProbability;

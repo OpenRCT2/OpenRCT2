@@ -360,7 +360,7 @@ void S6Exporter::Export()
     memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
     _s6.cash = gCashEncrypted;
     // pad_013587FC
-    _s6.word_0135882E = RCT2_GLOBAL(0x0135882E, uint16);
+    _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
     _s6.map_size_units = gMapSizeUnits;
     _s6.map_size_minus_2 = gMapSizeMinus2;
     _s6.map_size = gMapSize;
