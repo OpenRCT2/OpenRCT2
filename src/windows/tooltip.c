@@ -88,14 +88,14 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 		return;
 
 	RCT2_GLOBAL(0x0142006C, sint32) = -1;
-	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	char* buffer = gCommonStringFormatBuffer;
 
 	format_string(buffer, id, gCommonFormatArgs);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	int tooltip_text_width;
 	tooltip_text_width = gfx_get_string_width_new_lined(buffer);
-	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	buffer = gCommonStringFormatBuffer;
 	tooltip_text_width = min(tooltip_text_width, 196);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;

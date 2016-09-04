@@ -220,7 +220,7 @@ int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, i
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 	gfx_draw_string(dpi, buffer, 255, dpi->x, dpi->y);
-	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	buffer = gCommonStringFormatBuffer;
 	format_string(buffer, STR_STRING, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -252,7 +252,7 @@ int chat_string_wrapped_get_height(void *args, int width)
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
-	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	buffer = gCommonStringFormatBuffer;
 	format_string(buffer, STR_STRING, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;

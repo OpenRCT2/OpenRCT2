@@ -11690,7 +11690,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	rct_peep* peep = GET_PEEP(sprite_index);
 	set_format_arg(0, uint32, peep->id);
-	utf8* curName = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
+	utf8* curName = gCommonStringFormatBuffer;
 	rct_string_id curId = peep->name_string_idx;
 	format_string(curName, curId, gCommonFormatArgs);
 

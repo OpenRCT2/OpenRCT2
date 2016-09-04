@@ -31,6 +31,7 @@
 #include "localisation.h"
 #include "../management/marketing.h"
 
+char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];
 uint8 gMapTooltipFormatArgs[40];
 

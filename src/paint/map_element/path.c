@@ -397,14 +397,14 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 				string_id = STR_RIDE_ENTRANCE_NAME;
 			}
 			if (gConfigGeneral.upper_case_banners) {
-				format_string_to_upper(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+				format_string_to_upper(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
 			} else {
-				format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+				format_string(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
 			}
 
 			gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-			uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
+			uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
 			uint16 scroll = (gCurrentTicks / 2) % string_width;
 
 			sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());

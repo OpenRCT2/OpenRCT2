@@ -221,7 +221,7 @@ void scenario_begin()
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
 			if ((intptr_t)stex != -1) {
-				char *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+				char *buffer = gCommonStringFormatBuffer;
 
 				// Set localised park name
 				format_string(buffer, stex->park_name, 0);
