@@ -203,7 +203,6 @@ void finance_init() {
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
 	strcpy(gScenarioCompletedBy, "?");
-	finance_update_loan_hash();
 }
 
 /**
@@ -255,19 +254,6 @@ void finance_update_daily_profit()
 	gWeeklyProfitAverageDivisor += 1;
 
 	window_invalidate_by_class(WC_FINANCES);
-}
-
-// This subroutine is used to mark loan changes as 'legitimate', to prevent cheat detection from incorrectly interfering
-void finance_update_loan_hash()
-{
-	sint32 value = 0x70093A;
-	value -= gInitialCash;
-	value = ror32(value, 5);
-	value -= gBankLoan;
-	value = ror32(value, 7);
-	value += gMaxBankLoan;
-	value = ror32(value, 3);
-	RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, sint32) = value;
 }
 
 void finance_set_loan(money32 loan)
@@ -328,7 +314,6 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 		gBankLoan = newLoan;
 		gInitialCash = money;
 		gCashEncrypted = ENCRYPT_MONEY(money);
-		finance_update_loan_hash();
 
 		window_invalidate_by_class(WC_FINANCES);
 		gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;

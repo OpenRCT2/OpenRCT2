@@ -199,8 +199,6 @@ void scenario_begin()
 	RCT2_GLOBAL(0x013587D0, money32) = gInitialCash - gBankLoan;
 	gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 
-	finance_update_loan_hash();
-
 	safe_strcpy(gScenarioDetails, gS6Info->details, 256);
 	safe_strcpy(gScenarioName, gS6Info->name, 64);
 
@@ -261,7 +259,6 @@ void scenario_begin()
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
 	strcpy(gScenarioCompletedBy, "?");
-	finance_update_loan_hash();
 	park_reset_history();
 	finance_reset_history();
 	award_reset();

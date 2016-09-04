@@ -356,7 +356,6 @@ static void editor_clear_map_for_editing()
 
 		gInitialCash = min(gInitialCash, 100000);
 		finance_reset_cash_to_initial();
-		finance_update_loan_hash();
 
 		gBankLoan = clamp(
 			MONEY(0,00),

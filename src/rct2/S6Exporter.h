@@ -45,4 +45,5 @@ private:
     rct_s6_data _s6;
 
     void Save(SDL_RWops *rw, bool isScenario);
+    static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
 };

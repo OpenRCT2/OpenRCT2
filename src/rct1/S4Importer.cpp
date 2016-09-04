@@ -686,7 +686,6 @@ void S4Importer::ImportFinance()
     gBankLoan = _s4.loan;
     gMaxBankLoan = _s4.max_loan;
     gInitialCash = _s4.cash;
-    finance_update_loan_hash();
 
     gCompanyValue = _s4.company_value;
     gParkValue = _s4.park_value;

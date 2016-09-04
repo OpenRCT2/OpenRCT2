@@ -70,7 +70,6 @@ void finance_reset_history();
 void finance_init();
 void finance_update_daily_profit();
 void finance_shift_expenditure_table();
-void finance_update_loan_hash();
 void finance_reset_cash_to_initial();
 
 void finance_set_loan(money32 loan);

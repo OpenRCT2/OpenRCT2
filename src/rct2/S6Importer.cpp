@@ -270,7 +270,7 @@ void S6Importer::Import()
     // _s6.cd_key
     _gameVersion = _s6.game_version_number;
     gScenarioCompanyValueRecord = _s6.completed_company_value_record;
-    RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32) = _s6.loan_hash;
+    // _s6.loan_hash;
     RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) = _s6.ride_count;
     // pad_013587CA
     RCT2_GLOBAL(0x013587D0, uint32) = _s6.dword_013587D0;

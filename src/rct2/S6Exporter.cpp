@@ -352,7 +352,7 @@ void S6Exporter::Export()
     // _s6.cd_key
     // _s6.game_version_number
     _s6.completed_company_value_record = gScenarioCompanyValueRecord;
-    _s6.loan_hash = RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32);
+    _s6.loan_hash = GetLoanHash(gInitialCash, gBankLoan, gMaxBankLoan);
     _s6.ride_count = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16);
     // pad_013587CA
     _s6.dword_013587D0 = RCT2_GLOBAL(0x013587D0, uint32);
@@ -437,6 +437,18 @@ void S6Exporter::Export()
 
     scenario_fix_ghosts(&_s6);
     game_convert_strings_to_rct2(&_s6);
+}
+
+uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan)
+{
+    sint32 value = 0x70093A;
+    value -= initialCash;
+    value = ror32(value, 5);
+    value -= bankLoan;
+    value = ror32(value, 7);
+    value += maxBankLoan;
+    value = ror32(value, 3);
+    return value;
 }
 
 extern "C"
