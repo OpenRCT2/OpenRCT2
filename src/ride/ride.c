@@ -138,6 +138,10 @@ int gRideRemoveTrackPieceCallbackZ;
 int gRideRemoveTrackPieceCallbackDirection;
 int gRideRemoveTrackPieceCallbackType;
 
+money16 gTotalRideValue;
+uint32 gSamePriceThroughoutParkA;
+uint32 gSamePriceThroughoutParkB;
+
 money32 _currentTrackPrice;
 
 uint16 _numCurrentPossibleRideConfigurations;
