@@ -181,10 +181,12 @@ extern const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4];
 
 extern const uint8 mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
 extern const rct_xy16 defaultRightQuarterTurn5TilesOffsets[4][5];
+extern const rct_xyz16 defaultRightQuarterTurn5TilesBoundOffsets[4][5];
 extern const rct_xy16 defaultRightQuarterTurn5TilesBoundLengths[4][5];
 
 extern const uint8 mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
 extern const rct_xy16 defaultRightQuarterTurn3TilesOffsets[4][3];
+extern const rct_xyz16 defaultRightQuarterTurn3TilesBoundOffsets[4][3];
 extern const rct_xy16 defaultRightQuarterTurn3TilesBoundLengths[4][3];
 
 extern const rct_xy16 defaultRightHelixUpSmallQuarterBoundLengths[4][3][2];
@@ -213,9 +215,9 @@ void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation);
 
-void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xy16 boundsOffsets[4][5], uint8 rotation);
+void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation);
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
-void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xy16 boundsOffsets[4][3], uint8 rotation);
+void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xyz16 boundsOffsets[4][3], uint8 rotation);
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType);
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
