@@ -50,7 +50,7 @@ enum {
 
 #define MAX_AWARDS 4
 
-extern rct_award *gCurrentAwards;
+extern rct_award gCurrentAwards[MAX_AWARDS];
 
 bool award_is_positive(int type);
 void award_reset();

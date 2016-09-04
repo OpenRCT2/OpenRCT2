@@ -2546,7 +2546,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
 			if (track_type_is_invented(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0) {
-				RCT2_GLOBAL((uintptr_t)arguments + 0, rct_string_id) = STR_STOPPED_BY_BLOCK_BRAKES;
+				*(rct_string_id*)(uintptr_t)arguments = STR_STOPPED_BY_BLOCK_BRAKES;
 				return STR_BLACK_STRING;
 			}
 		}

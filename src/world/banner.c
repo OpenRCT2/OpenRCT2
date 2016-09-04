@@ -14,14 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "banner.h"
 #include "map.h"
 
-rct_banner *gBanners = RCT2_ADDRESS(0x0135A124, rct_banner);
+rct_banner gBanners[MAX_BANNERS];
 
 /**
  *

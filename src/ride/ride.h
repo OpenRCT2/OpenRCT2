@@ -920,9 +920,9 @@ rct_ride_measurement *get_ride_measurement(int index);
 	for (i = 0; i < MAX_RIDES; i++) \
 		if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
-#define gTotalRideValue				RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16)
-#define gSamePriceThroughoutParkA	RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32)
-#define gSamePriceThroughoutParkB	RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32)
+extern money16 gTotalRideValue;
+extern uint32 gSamePriceThroughoutParkA;
+extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[255];
 

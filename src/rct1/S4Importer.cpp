@@ -967,7 +967,7 @@ void S4Importer::ImportParkFlags()
     }
 
     // Awards
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < MAX_AWARDS; i++)
     {
         gCurrentAwards[i] = _s4.awards[i];
     }

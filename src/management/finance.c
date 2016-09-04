@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

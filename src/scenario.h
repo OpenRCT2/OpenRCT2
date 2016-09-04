@@ -243,7 +243,7 @@ typedef struct rct_s6_data {
 	money32 income_from_admissions;
 	money32 company_value;
 	uint8 peep_warning_throttle[16];
-	rct_award awards[4];
+	rct_award awards[MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 word_01358774;
