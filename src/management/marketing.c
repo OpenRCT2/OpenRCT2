@@ -37,8 +37,8 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
 
 static const int AdvertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
 
-uint8 *gMarketingCampaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
-uint8 *gMarketingCampaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
+uint8 gMarketingCampaignDaysLeft[20];
+uint8 gMarketingCampaignRideIndex[22];
 
 int marketing_get_campaign_guest_generation_probability(int campaign)
 {

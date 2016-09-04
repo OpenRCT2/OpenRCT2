@@ -268,7 +268,7 @@ void scenario_begin()
 	park_calculate_size();
 	staff_reset_stats();
 	gLastEntranceStyle = RIDE_ENTRANCE_STYLE_PLAIN;
-	memset(RCT2_ADDRESS(0x001358102, void), 0, 20);
+	memset(gMarketingCampaignDaysLeft, 0, 20);
 	gParkRatingCasualtyPenalty = 0;
 
 	// Open park with free entry when there is no money

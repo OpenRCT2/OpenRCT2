@@ -41,8 +41,8 @@ enum{
 #define CAMPAIGN_ACTIVE_FLAG (1 << 7)
 
 extern const money16 AdvertisingCampaignPricePerWeek[6];
-extern uint8 *gMarketingCampaignDaysLeft;
-extern uint8 *gMarketingCampaignRideIndex;
+extern uint8 gMarketingCampaignDaysLeft[20];
+extern uint8 gMarketingCampaignRideIndex[22];
 
 int marketing_get_campaign_guest_generation_probability(int campaign);
 void marketing_update();
