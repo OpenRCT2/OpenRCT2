@@ -436,9 +436,9 @@ extern int gScenarioListCapacity;
 extern scenario_index_entry *gScenarioList;
 
 extern rct_s6_info *gS6Info;
-extern char *gScenarioName;
-extern char *gScenarioDetails;
-extern char *gScenarioCompletedBy;
+extern char gScenarioName[64];
+extern char gScenarioDetails[256];
+extern char gScenarioCompletedBy[32];
 extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 extern uint32 gLastAutoSaveTick;

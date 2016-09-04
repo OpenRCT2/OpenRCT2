@@ -59,9 +59,9 @@ static char _scenarioPath[MAX_PATH];
 const char *_scenarioFileName = "";
 
 rct_s6_info *gS6Info = RCT2_ADDRESS(0x0141F570, rct_s6_info);
-char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
-char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
-char *gScenarioCompletedBy = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char);
+char gScenarioName[64];
+char gScenarioDetails[256];
+char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
@@ -259,7 +259,7 @@ void scenario_begin()
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, uint16) = 63;
+	strcpy(gScenarioCompletedBy, "?");
 	finance_update_loan_hash();
 	park_reset_history();
 	finance_reset_history();

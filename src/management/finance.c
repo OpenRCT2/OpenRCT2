@@ -202,9 +202,7 @@ void finance_init() {
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, uint16) = 0x3F;
-
+	strcpy(gScenarioCompletedBy, "?");
 	finance_update_loan_hash();
 }
 
