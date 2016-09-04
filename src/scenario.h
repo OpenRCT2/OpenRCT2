@@ -255,7 +255,7 @@ typedef struct rct_s6_data {
 	uint32 loan_hash;
 	uint16 ride_count;
 	uint8 pad_013587CA[6];
-	uint32 dword_013587D0;
+	money32 historical_profit;
 	uint8 pad_013587D4[4];
 	char scenario_completed_name[32];
 	money32 cash;

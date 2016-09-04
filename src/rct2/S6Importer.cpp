@@ -273,7 +273,7 @@ void S6Importer::Import()
     // _s6.loan_hash;
     RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) = _s6.ride_count;
     // pad_013587CA
-    RCT2_GLOBAL(0x013587D0, uint32) = _s6.dword_013587D0;
+    gHistoricalProfit = _s6.historical_profit;
     // pad_013587D4
     memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
     gCashEncrypted = _s6.cash;

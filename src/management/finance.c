@@ -54,6 +54,7 @@ uint8 gBankLoanInterestRate;
 money32 gMaxBankLoan;
 money32 gCurrentExpenditure;
 money32 gCurrentProfit;
+money32 gHistoricalProfit;
 money32 gWeeklyProfitAverageDividend;
 uint16 gWeeklyProfitAverageDivisor;
 money32 gCashHistory[128];
@@ -194,7 +195,7 @@ void finance_init() {
 	gBankLoan = MONEY(10000,00);
 	gMaxBankLoan = MONEY(20000,00);
 
-	RCT2_GLOBAL(0x013587D0, uint32) = 0;
+	gHistoricalProfit = 0;
 
 	gBankLoanInterestRate = 10;
 	gParkValue = 0;
@@ -335,7 +336,7 @@ void finance_shift_expenditure_table()
 		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
 			sum += gExpenditureTable[i];
 		}
-		RCT2_GLOBAL(0x013587D0, money32) += sum;
+		gHistoricalProfit += sum;
 	}
 
 	// Shift the table

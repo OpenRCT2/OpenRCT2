@@ -52,6 +52,13 @@ extern uint8 gBankLoanInterestRate;
 extern money32 gMaxBankLoan;
 extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
+
+/**
+ * The total profit for the entire scenario that preceeds
+ * the current financial table.
+ */
+extern money32 gHistoricalProfit;
+
 extern money32 gWeeklyProfitAverageDividend;
 extern uint16 gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[128];
