@@ -11525,8 +11525,6 @@ static int peep_compare(const void *sprite_index_a, const void *sprite_index_b)
  */
 void peep_update_name_sort(rct_peep *peep)
 {
-	RCT2_GLOBAL(0x009C383C, uint8) = 49;
-
 	// Remove peep from sprite list
 	uint16 nextSpriteIndex = peep->next;
 	uint16 prevSpriteIndex = peep->previous;
@@ -11579,8 +11577,6 @@ void peep_update_name_sort(rct_peep *peep)
 	peep->previous = SPRITE_INDEX_NULL;
 
 finish_peep_sort:
-	RCT2_GLOBAL(0x009C383C, uint8) = 48;
-
 	// This is required at the moment because this function reorders peeps in the sprite list
 	openrct2_reset_object_tween_locations();
 }

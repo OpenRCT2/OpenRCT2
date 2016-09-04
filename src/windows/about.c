@@ -134,11 +134,9 @@ static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 17;
 
 	// Version
-	RCT2_GLOBAL(0x009C383C, uint8) = 49;
 	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
 
 	// Credits
-	RCT2_GLOBAL(0x009C383C, uint8) = 48;
 	y += 10;
 	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
 	y += 79;
