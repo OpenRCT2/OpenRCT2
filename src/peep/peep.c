@@ -4374,6 +4374,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 			return true;
 		}
 
+		uint8 direction = 0;
 		track_begin_end trackBeginEnd;
 		while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd)) {
 			uint8 trackType = trackBeginEnd.begin_element->properties.track.type;
@@ -4382,7 +4383,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 				input.y = trackBeginEnd.begin_y;
 				input.element = trackBeginEnd.begin_element;
 
-				RCT2_GLOBAL(0xF43914, uint32) = trackBeginEnd.begin_element->type & 3;
+				direction = trackBeginEnd.begin_element->type & 3;
 				continue;
 			}
 
@@ -4393,7 +4394,6 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		uint16 destinationX = input.x + 16;
 		uint16 destinationY = input.y + 16;
 
-		uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
 		rct_xy16 offset = _992A3C[direction];
 
 		destinationX -= offset.x;
