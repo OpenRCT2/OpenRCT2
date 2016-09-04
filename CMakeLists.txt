@@ -90,9 +90,6 @@ if(NOT MINGW)
 endif()
 
 if (LAUNCHPAD_BUILD)
-	if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=pointer-to-int-cast -Wno-error=int-to-pointer-cast")
-	endif()
 	# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=date-time")
 else()
