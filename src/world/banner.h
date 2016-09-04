@@ -42,7 +42,7 @@ enum{
 	BANNER_FLAG_2 = (1 << 2)
 };
 
-extern rct_banner *gBanners;
+extern rct_banner gBanners[MAX_BANNERS];
 
 void banner_init();
 int create_new_banner(uint8 flags);
