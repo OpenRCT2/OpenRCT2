@@ -11671,9 +11671,6 @@ static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 
 money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3) {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-	if (state == 1) {
-		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
-	}
 
 	utf8* fullText = RCT2_ADDRESS(0x00F1AEF6, utf8);
 	//if (flags & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
