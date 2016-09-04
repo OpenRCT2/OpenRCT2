@@ -80,9 +80,27 @@ option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purpos
 option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "WIP: Try building without using code and data segments from vanilla.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
+option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
+
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+
+# On mingw all code is already PIC, this will avoid compiler error on redefining this option
+if(NOT MINGW)
+	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
+endif()
+
+if (LAUNCHPAD_BUILD)
+	# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
+	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=date-time")
+else()
+	if (FORCE64)
+		set(TARGET_M "-m64")
+	else ()
+		set(TARGET_M "-m32")
+	endif()
+endif()
 
 if (FORCE64)
-	set(TARGET_M "-m64")
 	set(OBJ_FORMAT "elf64-x86-64")
 	set(LINKER_SCRIPT "ld_script_x86_64.xc")
 	if ((APPLE OR WIN32) AND NOT USE_MMAP)
@@ -90,7 +108,6 @@ if (FORCE64)
 		set(USE_MMAP ON)
 	endif()
 else ()
-	set(TARGET_M "-m32")
 	set(OBJ_FORMAT "elf32-i386")
 	set(LINKER_SCRIPT "ld_script_i386.xc")
 endif ()
@@ -203,10 +220,10 @@ if (APPLE)
 endif (APPLE)
 
 # set necessary flags to compile code as is
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-pie -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-pie -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 ${COMMON_COMPILE_OPTIONS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 ${COMMON_COMPILE_OPTIONS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} -fpie")
 
 if (MINGW)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")

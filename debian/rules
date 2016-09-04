@@ -2,12 +2,10 @@
 
 BUILDDIR=build_dir
 
-build:
-	scripts/linux/install.sh
-	mkdir $(BUILDDIR)
-	cd $(BUILDDIR); cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-	make -C $(BUILDDIR)
-	touch build
+extra_flags := $(if $(filter i386,$(DEB_HOST_ARCH)),-DLAUNCHPAD_BUILD=on,-DLAUNCHPAD_BUILD=on -DUSE_MMAP=on -DDISABLE_RCT2=on)
+
+override_dh_auto_configure:
+	dh_auto_configure -a -- $(extra_flags)
 
 %:
 	dh $@
