@@ -365,56 +365,12 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
 install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
 
-INCLUDE(ExternalProject)
-
-ExternalProject_Add(
-		googletest-distribution
-		URL https://github.com/google/googletest/archive/release-1.8.0.zip
-		TIMEOUT 10
-		CONFIGURE_COMMAND ""
-		BUILD_COMMAND ""
-		INSTALL_COMMAND ""
-)
-
-# Specify include dir
-ExternalProject_Get_Property(googletest-distribution SOURCE_DIR)
-set(GOOGLETEST_DISTRIB_SOURCE_DIR "${SOURCE_DIR}")
-
-ExternalProject_Add(
-		googletest
-		DEPENDS googletest-distribution
-		DOWNLOAD_COMMAND ""
-		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
-		CMAKE_ARGS -DCMAKE_CXX_FLAGS=-m32
-		# Disable install step
-		INSTALL_COMMAND ""
-		# Wrap download, configure and build steps in a script to log output
-		LOG_DOWNLOAD ON
-		LOG_CONFIGURE ON
-		LOG_BUILD ON)
-
-
-# Specify include dir
-set(GTEST_INCLUDE_DIR ${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest/include)
-
-# Library
-ExternalProject_Get_Property(googletest BINARY_DIR)
-set(GOOGLETEST_BINARY_DIR "${BINARY_DIR}")
-set(GTEST_LIBRARY_PATH ${GOOGLETEST_BINARY_DIR}/${CMAKE_FIND_LIBRARY_PREFIXES}gtest.a)
-set(GTEST_LIBRARY gtest)
-add_library(${GTEST_LIBRARY} UNKNOWN IMPORTED)
-set_property(TARGET ${GTEST_LIBRARY} PROPERTY IMPORTED_LOCATION
-		${GTEST_LIBRARY_PATH} )
-add_dependencies(${GTEST_LIBRARY} googletest)
-
-include_directories(${GTEST_INCLUDE_DIR})
 
 file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
 file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h")
 
 add_executable(test-paint ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
-target_link_libraries(test-paint gtest)
 set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DUSE_GTEST -DNO_VEHICLES")
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)

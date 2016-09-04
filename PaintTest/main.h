@@ -17,3 +17,5 @@
 bool testRide(int rideType);
 void initHooks();
 bool rideIsImplemented(int rideType);
+bool rideSupportsTrackType(int rideType, int trackType);
+bool testTrackPainting(int rideType, int trackType);

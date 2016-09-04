@@ -476,6 +476,18 @@ int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
 	return sequenceCount;
 }
 
+bool rideSupportsTrackType(int rideType, int trackType) {
+	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+
+	if (newPaintGetter == NULL) {
+		return false;
+	}
+
+	bool supportsTrackType = (newPaintGetter(trackType, 0) != NULL);
+
+	return supportsTrackType;
+}
+
 bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
@@ -593,6 +605,26 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 bool rideIsImplemented(int rideType) {
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	return (newPaintGetter != 0);
+}
+
+bool testTrackPainting(int rideType, int trackType) {
+	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+	if (newPaintGetter == NULL) {
+		return false;
+	}
+
+	if (newPaintGetter(trackType, 0) == NULL) {
+		return false;
+	}
+
+	utf8string error = malloc(2048);
+	bool success = testTrackElement(rideType, trackType, &error);
+	if (!success) {
+		printf("%s\n", error);
+	}
+	free(error);
+
+	return success;
 }
 
 bool testRide(int rideType) {
