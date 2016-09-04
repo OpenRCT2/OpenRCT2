@@ -275,6 +275,14 @@ typedef struct rct_xyz16 {
 } rct_xyz16;
 assert_struct_size(rct_xyz16, 6);
 
+typedef struct rct_xy32 {
+	sint32 x, y;
+} rct_xy32;
+
+typedef struct rct_xyz32 {
+	sint32 x, y, z;
+} rct_xyz32;
+
 typedef struct rct_xy_element {
 	int x, y;
 	rct_map_element *element;
@@ -492,6 +500,7 @@ bool map_large_scenery_get_origin(
 );
 
 void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation);
+rct_xy32 translate_3d_to_2d_with_z(sint32 rotation, rct_xyz32 pos);
 
 rct_map_element *map_get_track_element_at(int x, int y, int z);
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType);

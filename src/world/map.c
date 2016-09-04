@@ -4905,6 +4905,30 @@ static void translate_3d_to_2d(int rotation, int *x, int *y)
 	*y = ry;
 }
 
+rct_xy32 translate_3d_to_2d_with_z(sint32 rotation, rct_xyz32 pos)
+{
+	rct_xy32 result;
+	switch (rotation & 3) {
+	case 0:
+		result.x = pos.y - pos.x;
+		result.y = (pos.x + pos.y) / 2 - pos.z;
+		break;
+	case 1:
+		result.x = -pos.x - pos.y;
+		result.y = (pos.y - pos.x) / 2 - pos.z;
+		break;
+	case 2:
+		result.x = pos.x - pos.y;
+		result.y = (-pos.x - pos.y) / 2 - pos.z;
+		break;
+	case 3:
+		result.x = pos.x + pos.y;
+		result.y = (pos.x - pos.y) / 2 - pos.z;
+		break;
+	}
+	return result;
+}
+
 static void map_invalidate_tile_under_zoom(int x, int y, int z0, int z1, int maxZoom)
 {
 	if (gOpenRCT2Headless) return;

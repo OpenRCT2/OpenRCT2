@@ -1687,11 +1687,11 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 
 	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
-	int left, top, right, bottom;
 
-	int center_x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
-	int center_y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
-	int center_z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
+	rct_xyz32 centre;
+	centre.x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
+	centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
+	centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
 	int width = gTrackPreviewMax.x - gTrackPreviewMin.x;
 	int height = gTrackPreviewMax.y - gTrackPreviewMin.y;
@@ -1710,19 +1710,12 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	width = 370 << zoom_level;
 	height = 217 << zoom_level;
 
-	int x = center_y - center_x - width / 2;
-	int y = (center_y + center_x) / 2 - center_z - height / 2;
-
-	gCurrentRotation = 0;
-
 	view->width = 370;
 	view->height = 217;
 	view->view_width = width;
 	view->view_height = height;
 	view->x = 0;
 	view->y = 0;
-	view->view_x = x;
-	view->view_y = y;
 	view->zoom = zoom_level;
 	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
 
@@ -1734,57 +1727,25 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	dpi->pitch = 0;
 	dpi->bits = pixels;
 
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
+	rct_xy32 offset = { width / 2, height / 2 };
+	for (int i = 0; i < 4; i++) {
+		gCurrentRotation = i;
 
-	viewport_paint(view, dpi, left, top, right, bottom);
+		rct_xy32 pos2d = translate_3d_to_2d_with_z(i, centre);
+		pos2d.x -= offset.x;
+		pos2d.y -= offset.y;
 
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+		sint32 left = pos2d.x;
+		sint32 top = pos2d.y;
+		sint32 right = left + width;
+		sint32 bottom = top + height;
 
-	gCurrentRotation = 1;
-	x = -center_y - center_x - width / 2;
-	y = (center_y - center_x) / 2 - center_z - height / 2;
+		view->view_x = left;
+		view->view_y = top;
+		viewport_paint(view, dpi, left, top, right, bottom);
 
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 2;
-	x =  center_x - center_y - width / 2;
-	y = (-center_y - center_x) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 3;
-	x = center_x + center_y - width / 2;
-	y = (center_x - center_y) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
+		dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+	}
 
 	ride_delete(rideIndex);
 	track_design_preview_restore_map(mapBackup);
