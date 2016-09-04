@@ -71,6 +71,7 @@ static uint8 _peepPathFindFewestNumSteps;
  * be declared properly. */
 static rct_xyz8 _peepPathFindHistory[16];
 
+static uint8 _unk_F1AEF0;
 static uint8 _unk_F1AEF1;
 static uint16 _unk_F1EE18;
 static rct_map_element * _peepRideEntranceExitElement;
@@ -1527,7 +1528,7 @@ const rct_xy16 word_981D7C[4] = {
  * @param peep (esi)
  */
 static int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep){
-	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->action_sprite_image_offset;
+	_unk_F1AEF0 = peep->action_sprite_image_offset;
 	if (peep->action == 0xFE){
 		peep->action = 0xFF;
 	}
@@ -7745,7 +7746,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 		if (peep->state == PEEP_STATE_QUEUING){
 			peep->sub_state = 11;
-			peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+			peep->action_sprite_image_offset = _unk_F1AEF0;
 			return 1;
 		}
 
@@ -7759,7 +7760,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			return peep_return_to_center_of_tile(peep);
 		}
 
-		peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+		peep->action_sprite_image_offset = _unk_F1AEF0;
 		peep->var_79 = rideIndex;
 
 		rct_ride* ride = get_ride(rideIndex);
@@ -8245,7 +8246,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 	else{
 		if (peep->guest_heading_to_ride_id == rideIndex)
 			peep->guest_heading_to_ride_id = 0xFF;
-		peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
+		peep->action_sprite_image_offset = _unk_F1AEF0;
 		peep_decrement_num_riders(peep);
 		peep->current_ride = rideIndex;
 		peep->state = PEEP_STATE_BUYING;
