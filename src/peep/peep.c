@@ -72,6 +72,7 @@ static uint8 _peepPathFindFewestNumSteps;
 static rct_xyz8 _peepPathFindHistory[16];
 
 static uint16 _unk_F1EE18;
+static rct_map_element * _peepRideEntranceExitElement;
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -5713,7 +5714,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 			return;
 		}
 
-		rct_map_element* map_element = RCT2_GLOBAL(0x00F1EE1A, rct_map_element*);
+		rct_map_element* map_element = _peepRideEntranceExitElement;
 
 		if (peep->current_ride !=
 			map_element->properties.entrance.ride_index)
@@ -5830,7 +5831,7 @@ static void peep_update_answering(rct_peep* peep){
 			return;
 		}
 
-		rct_map_element* map_element = RCT2_GLOBAL(0x00F1EE1A, rct_map_element*);
+		rct_map_element* map_element = _peepRideEntranceExitElement;
 
 		if (peep->current_ride !=
 			map_element->properties.entrance.ride_index)
@@ -7727,11 +7728,11 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
 		_unk_F1EE18 |= F1EE18_RIDE_EXIT;
-		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
+		_peepRideEntranceExitElement = map_element;
 	}
 	else if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE){
 		_unk_F1EE18 |= F1EE18_RIDE_ENTRANCE;
-		RCT2_GLOBAL(0x00F1EE1A, rct_map_element*) = map_element;
+		_peepRideEntranceExitElement = map_element;
 	}
 
 	if (entranceType == ENTRANCE_TYPE_RIDE_EXIT){
