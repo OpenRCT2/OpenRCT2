@@ -2430,30 +2430,25 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (peep_update_action(&x, &y, &xy_distance, peep))
 	{
+		uint16 distanceThreshold = 16;
 		if (ride_entry != NULL) {
 			uint8 vehicle = ride_entry->default_vehicle;
-
 			if (ride_entry->vehicles[vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
 				ride_entry->vehicles[vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)) {
-				RCT2_GLOBAL(0xF1AECA, uint16) = 0x1C;
-			} else {
-				RCT2_GLOBAL(0xF1AECA, uint16) = 0x10;
+				distanceThreshold = 28;
 			}
-		} else {
-			RCT2_GLOBAL(0xF1AECA, uint16) = 0x10;
 		}
 
-		if (peep->sub_state == 1 &&
-			xy_distance < RCT2_GLOBAL(0xF1AECA, uint16))
-				peep->sub_state = 2;
+		if (peep->sub_state == 1 && xy_distance < distanceThreshold) {
+			peep->sub_state = 2;
+		}
 
 		invalidate_sprite_2((rct_sprite*)peep);
 
 		sint16 z = ride->station_heights[peep->current_ride_station] * 8;
 
-		RCT2_GLOBAL(0xF1AECA, uint16) += 4;
-
-		if (xy_distance < RCT2_GLOBAL(0xF1AECA, uint16)){
+		distanceThreshold += 4;
+		if (xy_distance < distanceThreshold) {
 			z += RideData5[ride->type].z;
 		}
 
