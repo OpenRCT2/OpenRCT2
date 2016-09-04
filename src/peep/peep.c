@@ -73,6 +73,7 @@ static rct_xyz8 _peepPathFindHistory[16];
 
 static uint16 _unk_F1EE18;
 static rct_map_element * _peepRideEntranceExitElement;
+static uint32 _peepRideConsideration[8];
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -11131,14 +11132,9 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	if (peep_has_food(peep)) return;
 	if (peep->x == (sint16)0x8000) return;
 
-	RCT2_GLOBAL(0x00F1AD98, uint32) = 0;
-	RCT2_GLOBAL(0x00F1AD9C, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA4, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA8, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADAC, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
+	for (int i = 0; i < countof(_peepRideConsideration); i++) {
+		_peepRideConsideration[i] = 0;
+	}
 
 	// FIX  Originally checked for a toy, likely a mistake and should be a map,
 	//      but then again this seems to only allow the peep to go on
@@ -11148,7 +11144,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (!peep_has_ridden(peep, i)) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+				_peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -11163,7 +11159,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
 						int rideIndex = mapElement->properties.track.ride_index;
-						RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
+						_peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
 			}
@@ -11176,7 +11172,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			if (ride->excitement == (ride_rating)0xFFFF) continue;
 			if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8,00)) continue;
 
-			RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+			_peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
 		}
 	}
 
@@ -11185,7 +11181,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
+		if (!(_peepRideConsideration[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = get_ride(i);
@@ -11249,14 +11245,9 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		}
 	}
 
-	RCT2_GLOBAL(0x00F1AD98, uint32) = 0;
-	RCT2_GLOBAL(0x00F1AD9C, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA4, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA8, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADAC, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
+	for (int i = 0; i < countof(_peepRideConsideration); i++) {
+		_peepRideConsideration[i] = 0;
+	}
 
 	// FIX Originally checked for a toy,.likely a mistake and should be a map
 	if ((peep->item_standard_flags & PEEP_ITEM_MAP) && rideType != RIDE_TYPE_FIRST_AID) {
@@ -11264,7 +11255,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->type == rideType) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+				_peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -11281,7 +11272,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = get_ride(rideIndex);
 						if (ride->type == rideType) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
+							_peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -11294,7 +11285,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
+		if (!(_peepRideConsideration[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = get_ride(i);
@@ -11361,14 +11352,9 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F1AD98, uint32) = 0;
-	RCT2_GLOBAL(0x00F1AD9C, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA4, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADA8, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADAC, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB0, uint32) = 0;
-	RCT2_GLOBAL(0x00F1ADB4, uint32) = 0;
+	for (int i = 0; i < countof(_peepRideConsideration); i++) {
+		_peepRideConsideration[i] = 0;
+	}
 
 	// FIX Originally checked for a toy,.likely a mistake and should be a map
 	if (peep->item_standard_flags & PEEP_ITEM_MAP) {
@@ -11376,7 +11362,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride_type_has_flag(ride->type, rideTypeFlags)) {
-				RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] |= (1u << (i & 0x1F));
+				_peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
 			}
 		}
 	} else {
@@ -11393,7 +11379,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 						int rideIndex = mapElement->properties.track.ride_index;
 						ride = get_ride(rideIndex);
 						if (ride_type_has_flag(ride->type, rideTypeFlags)) {
-							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
+							_peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
 					} while (!map_element_is_last_for_tile(mapElement++));
 				}
@@ -11406,7 +11392,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	uint8 *nextPotentialRide = potentialRides;
 	int numPotentialRides = 0;
 	for (int i = 0; i < MAX_RIDES; i++) {
-		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
+		if (!(_peepRideConsideration[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
 		rct_ride *ride = get_ride(i);
