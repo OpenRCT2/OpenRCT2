@@ -286,7 +286,7 @@ void S6Importer::Import()
     gSamePriceThroughoutParkA = _s6.same_price_throughout;
     _suggestedGuestMaximum = _s6.suggested_max_guests;
     gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
-    RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = _s6.last_entrance_style;
+    gLastEntranceStyle = _s6.last_entrance_style;
     // rct1_water_colour
     // pad_01358842
     memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));

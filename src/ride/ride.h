@@ -973,6 +973,8 @@ extern int gRideRemoveTrackPieceCallbackZ;
 extern int gRideRemoveTrackPieceCallbackDirection;
 extern int gRideRemoveTrackPieceCallbackType;
 
+extern uint8 gLastEntranceStyle;
+
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
 int ride_get_max_queue_time(rct_ride *ride);

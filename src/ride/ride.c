@@ -175,6 +175,8 @@ uint8 gRideEntranceExitPlaceStationIndex;
 uint8 gRideEntranceExitPlacePreviousRideConstructionState;
 uint8 gRideEntranceExitPlaceDirection;
 
+uint8 gLastEntranceStyle;
+
 // Static function declarations
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
 static void ride_breakdown_status_update(int rideIndex);
@@ -6560,7 +6562,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	case 6:
 		if (apply) {
 			ride->entrance_style = value;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = value;
+			gLastEntranceStyle = value;
 			gfx_invalidate_screen();
 		}
 		break;
