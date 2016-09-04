@@ -64,6 +64,7 @@ char gScenarioDetails[256];
 char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
+uint16 gSavedAge;
 uint32 gLastAutoSaveTick = 0;
 
 #if defined(NO_RCT2)

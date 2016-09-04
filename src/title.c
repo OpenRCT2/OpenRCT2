@@ -539,7 +539,7 @@ void title_update()
 	window_map_tooltip_update_visibility();
 	window_dispatch_update_all();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16)++;
+	gSavedAge++;
 
 	// Input
 	game_handle_input();

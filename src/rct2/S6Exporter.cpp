@@ -388,7 +388,7 @@ void S6Exporter::Export()
     memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;
     memcpy(_s6.rides, gRideList, sizeof(_s6.rides));
-    _s6.saved_age = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16);
+    _s6.saved_age = gSavedAge;
     _s6.saved_view_x = gSavedViewX;
     _s6.saved_view_y = gSavedViewY;
     _s6.saved_view_zoom = gSavedViewZoom;

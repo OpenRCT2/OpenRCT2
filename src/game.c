@@ -387,7 +387,7 @@ void game_logic_update()
 	climate_update_sound();
 	editor_open_windows_for_current_step();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16)++;
+	gSavedAge++;
 
 	// Update windows
 	//window_dispatch_update_all();

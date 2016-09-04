@@ -98,7 +98,7 @@ void invalidate_sprite_2(rct_sprite *sprite)
  */
 void reset_sprite_list()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
+	gSavedAge = 0;
 	memset(sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < NUM_SPRITE_LISTS; i++) {
