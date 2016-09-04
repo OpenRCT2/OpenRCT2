@@ -932,6 +932,37 @@ const rct_xy16 defaultRightQuarterTurn5TilesOffsets[4][5] = {
 	}
 };
 
+const rct_xyz16 defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
+	{
+		{0, 6},
+		{0,  16},
+		{0,  0},
+		{16, 0},
+		{6, 0},
+	},
+	{
+		{6, 0},
+		{16, 0},
+		{0,  16},
+		{0,  0},
+		{0, 6},
+	},
+	{
+		{0, 6},
+		{0,  0},
+		{16, 16},
+		{0,  0},
+		{6, 0},
+	},
+	{
+		{6, 0},
+		{0,  0},
+		{16, 0},
+		{0,  16},
+		{0, 6},
+	}
+};
+
 const rct_xy16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
 	{
 		{32, 20},
@@ -964,7 +995,7 @@ const rct_xy16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
 };
 
 static const sint8 right_quarter_turn_5_tiles_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
-void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xy16 boundsOffsets[4][5], uint8 rotation)
+void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation)
 {
 	int index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 	if (index < 0) {
@@ -974,9 +1005,9 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 h
 	uint32 imageId = sprites[direction][index] | colourFlags;
 	rct_xy16 offset = (offsets == NULL ? (rct_xy16){0, 0} : offsets[direction][index]);
 	rct_xy16 boundsLength = boundsLengths[direction][index];
-	rct_xy16 boundsOffset = (boundsOffsets == NULL ? offset : boundsOffsets[direction][index]);
+	rct_xyz16 boundsOffset = (boundsOffsets == NULL ? (rct_xyz16) { .x = offset.x, .y = offset.y, .z = 0 } : boundsOffsets[direction][index]);
 
-	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height, rotation);
+	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
