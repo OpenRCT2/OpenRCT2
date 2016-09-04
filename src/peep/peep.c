@@ -9204,6 +9204,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
  *  param dist is not used.
  */
 static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
+	rct_xy16 result;
 	rct_map_element *mapElement = map_get_first_element_at(*x / 32, *y / 32);
 
 	bool found = false;
@@ -9231,9 +9232,9 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	while (1){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH){
 			lastPathElement = mapElement;
-			RCT2_GLOBAL(0x00F3EFE4, sint16) = nextX;
-			RCT2_GLOBAL(0x00F3EFE6, sint16) = nextY;
-			RCT2_GLOBAL(0x00F3EFEC, uint32) = direction;
+			result.x = nextX;
+			result.y = nextY;
+			// result.direction = direction;
 			if (footpath_element_is_sloped(mapElement)){
 				if (footpath_element_get_slope_direction(mapElement) == direction){
 					baseZ += 2;
@@ -9315,8 +9316,8 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 	if (!footpath_element_is_queue(mapElement))
 		return;
 
-	*x = RCT2_GLOBAL(0x00F3EFE4, sint16);
-	*y = RCT2_GLOBAL(0x00F3EFE6, sint16);
+	*x = result.x;
+	*y = result.y;
 	*z = mapElement->base_height;
 }
 
