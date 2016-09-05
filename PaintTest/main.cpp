@@ -109,9 +109,8 @@ int main(int argc, char *argv[]) {
 			continue;
 		}
 
-		TestCase testCase = {
-				.rideType = rideType
-		};
+		TestCase testCase = {0};
+		testCase.rideType = rideType;
 
 		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			testCase.trackTypes.push_back(RideConstructionDefaultTrackType[rideType]);
