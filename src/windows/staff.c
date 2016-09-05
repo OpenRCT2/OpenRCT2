@@ -1293,7 +1293,7 @@ void window_staff_viewport_init(rct_window* w){
 	}
 	else{
 		viewport_flags = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+		if (gConfigGeneral.always_show_gridlines)
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 
@@ -1351,8 +1351,6 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			no_entries++;
 		}
 	}
-	// Save number of entrys. Not required any more.
-	RCT2_GLOBAL(0xF43926, uint16) = no_entries;
 
 	rct_peep* peep = GET_PEEP(w->number);
 	int item_checked = 0;
