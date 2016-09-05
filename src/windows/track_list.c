@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../editor.h"
 #include "../interface/themes.h"
@@ -116,10 +115,6 @@ void window_track_list_open(ride_list_item item)
 	_window_track_list_item = item;
 	track_list_load_designs(item);
 
-	if (RCT2_GLOBAL(0x00F635ED, uint8) & 1) {
-		window_error_open(STR_WARNING, STR_TOO_MANY_TRACK_DESIGNS_OF_THIS_TYPE);
-	}
-
 	int x, y;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		x = gScreenWidth / 2 - 300;
@@ -198,7 +193,8 @@ static void window_track_list_select(rct_window *w, int index)
 		index--;
 	}
 
-	if (RCT2_GLOBAL(0x00F44153, uint8) != 0) {
+	rct_track_td6 *td6 = _loadedTrackDesign;
+	if (td6 != NULL && (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)) {
 		gTrackDesignSceneryToggle = true;
 	}
 
@@ -427,7 +423,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
 
-	RCT2_GLOBAL(0x00F44153, uint8) = 0;
 	// Warnings
 	if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
@@ -436,7 +431,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
-		RCT2_GLOBAL(0x00F44153, uint8) = 1;
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../editor.h"
 #include "../interface/themes.h"
@@ -235,12 +234,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
 
-	RCT2_GLOBAL(0x00F44153, uint8) = 0;
-
 	// Warnings
 	rct_track_td6 *td6 = _trackDesign;
 	if (td6->track_flags & 1) {
-		RCT2_GLOBAL(0x00F44153, uint8) = 1;
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
