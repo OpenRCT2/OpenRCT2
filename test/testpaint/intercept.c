@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "intercept.h"
-#include "../src/paint/paint.h"
-#include "../src/paint/supports.h"
-#include "../src/ride/track_data.h"
-#include "../src/interface/viewport.h"
-#include "../src/hook.h"
+#include "../../src/paint/paint.h"
+#include "../../src/paint/supports.h"
+#include "../../src/ride/track_data.h"
+#include "../../src/interface/viewport.h"
+#include "../../src/hook.h"
 
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)

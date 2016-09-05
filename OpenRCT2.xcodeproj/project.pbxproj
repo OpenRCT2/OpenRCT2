@@ -1151,7 +1151,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C64FDA5E1D6D99F400F259B9 /* PaintTest */ = {
+		8546F74A1D7E1D220004004C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C64FDA5E1D6D99F400F259B9 /* Paint */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		C64FDA5E1D6D99F400F259B9 /* Paint */ = {
 			isa = PBXGroup;
 			children = (
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
@@ -1161,7 +1169,8 @@
 				85AFA2101D7DB83E00221B42 /* intercept.h */,
 				85AFA20F1D7DB83E00221B42 /* main.cpp */,
 			);
-			path = PaintTest;
+			name = Paint;
+			path = test/testpaint;
 			sourceTree = "<group>";
 		};
 		C650B2141CCABBDD00B4D91C /* rct1 */ = {
@@ -2062,8 +2071,8 @@
 			children = (
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
+				8546F74A1D7E1D220004004C /* Tests */,
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
-				C64FDA5E1D6D99F400F259B9 /* PaintTest */,
 				D497D0791C20FD52002BF46A /* Products */,
 			);
 			sourceTree = "<group>";

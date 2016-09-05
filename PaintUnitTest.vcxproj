@@ -117,14 +117,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="PaintTest\data.h" />
-    <ClInclude Include="PaintTest\intercept.h" />
+    <ClInclude Include="test\testpaint\data.h" />
+    <ClInclude Include="test\testpaint\intercept.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PaintTest\compat.c" />
-    <ClCompile Include="PaintTest\data.c" />
-    <ClCompile Include="PaintTest\intercept.c" />
-    <ClCompile Include="PaintTest\main.cpp" />
+    <ClCompile Include="test\testpaint\compat.c" />
+    <ClCompile Include="test\testpaint\data.c" />
+    <ClCompile Include="test\testpaint\intercept.c" />
+    <ClCompile Include="test\testpaint\main.cpp" />
     <ClCompile Include="src\addresses.c" />
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\hook.c" />

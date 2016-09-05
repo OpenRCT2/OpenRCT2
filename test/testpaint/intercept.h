@@ -14,13 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _TEST_PAINT_DATA_H_
-#define _TEST_PAINT_DATA_H_
+#ifndef _TEST_PAINT_INTERCEPT_H_
+#define _TEST_PAINT_INTERCEPT_H_
 
-#include "../src/common.h"
+#include "../../src/common.h"
 
-extern const utf8string RideNames[91];
-extern const utf8string TrackNames[256];
-extern const utf8string FlatTrackNames[256];
+bool testRide(int rideType);
+void initHooks();
+bool rideIsImplemented(int rideType);
+bool rideSupportsTrackType(int rideType, int trackType);
+bool testTrackPainting(int rideType, int trackType);
 
-#endif // #endif _TEST_PAINT_DATA_H_
+#endif // #endif _TEST_PAINT_INTERCEPT_H_

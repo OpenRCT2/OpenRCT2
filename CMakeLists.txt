@@ -368,11 +368,11 @@ install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
 
 file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
-file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h")
+file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
 
-add_executable(test-paint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
-set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
-add_dependencies(test-paint segfiles)
+add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
+set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
+add_dependencies(testpaint segfiles)
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)

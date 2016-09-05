@@ -21,11 +21,11 @@
 extern "C" {
 #include "data.h"
 #include "intercept.h"
-#include "../src/rct2.h"
-#include "../src/ride/ride.h"
-#include "../src/ride/ride_data.h"
-#include "../src/ride/track.h"
-#include "../src/ride/track_data.h"
+#include "../../src/rct2.h"
+#include "../../src/ride/ride.h"
+#include "../../src/ride/ride_data.h"
+#include "../../src/ride/track.h"
+#include "../../src/ride/track_data.h"
 }
 
 typedef struct {
