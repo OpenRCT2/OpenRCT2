@@ -17,6 +17,9 @@
 #pragma once
 
 #include "../common.h"
+
+#if __cplusplus
+
 #include "../core/List.hpp"
 
 namespace RCT1
@@ -41,5 +44,12 @@ namespace RCT1
 
     const List<const char *> GetSceneryObjects(uint8 sceneryType);
 
-	const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
+    const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
+
+#else
+
+    const char * rct1_get_ride_type_object(uint8 rideType);
+    const char * rct1_get_vehicle_object(uint8 vehicleType);
+
+#endif
