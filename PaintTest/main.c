@@ -750,24 +750,3 @@ void initHooks() {
 	addhook(0x00663105, (int) intercept_metal_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 	addhook(0x00663584, (int) intercept_metal_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 }
-
-#if !defined(USE_GTEST)
-
-int main(int argc, const char *argv[]) {
-	initHooks();
-
-	bool success = true;
-	for (int i = 0; i < 91; i++) {
-		if (!rideIsImplemented(i)) {
-			continue;
-		}
-		
-		if (!testRide(i)) {
-			success = false;
-		}
-	}
-
-	return success ? 0 : 1;
-}
-
-#endif

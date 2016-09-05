@@ -371,7 +371,7 @@ file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_
 file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "PaintTest/*.h")
 
 add_executable(test-paint ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
-set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DUSE_GTEST -DNO_VEHICLES")
+set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)

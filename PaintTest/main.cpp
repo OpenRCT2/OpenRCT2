@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifdef USE_GTEST
-
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -38,20 +36,76 @@ extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
+enum CLIColour {
+	RED,
+	GREEN,
+};
+
+bool gTestColor = true;
+
+bool CStringEquals(const char *lhs, const char *rhs) {
+	if (lhs == NULL) return rhs == NULL;
+
+	if (rhs == NULL) return false;
+
+	return strcmp(lhs, rhs) == 0;
+}
+
+bool ShouldUseColor() {
+	if (gTestColor == false) {
+		return false;
+	}
+
+	const char* const term = getenv("TERM");
+	const bool term_supports_color =
+		CStringEquals(term, "xterm") ||
+		CStringEquals(term, "xterm-color") ||
+		CStringEquals(term, "xterm-256color") ||
+		CStringEquals(term, "screen") ||
+		CStringEquals(term, "screen-256color") ||
+		CStringEquals(term, "tmux") ||
+		CStringEquals(term, "tmux-256color") ||
+		CStringEquals(term, "rxvt-unicode") ||
+		CStringEquals(term, "rxvt-unicode-256color") ||
+		CStringEquals(term, "linux") ||
+		CStringEquals(term, "cygwin");
+
+	return term_supports_color;
+}
+
+const char* GetAnsiColorCode(CLIColour color) {
+	switch (color) {
+		case RED:     return "1";
+		case GREEN:   return "2";
+		default:            return NULL;
+	};
+}
+
+void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	if(!ShouldUseColor()) {
+		vprintf(fmt, args);
+		va_end(args);
+		return;
+	}
+
+	printf("\033[0;3%sm", GetAnsiColorCode(colour));
+	vprintf(fmt, args);
+	printf("\033[m");
+	va_end(args);
+}
+
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
-	bool gTestColor = true;
 	for (int i = 0; i < argc; ++i) {
 		char *arg = argv[i];
 		if (strcmp(arg, "--gtest_color=no") == 0) {
 			gTestColor = false;
 		}
 	}
-
-	const utf8 *ansiRed = gTestColor ? "\x1b[31m" : "";
-	const utf8 *ansiGreen = gTestColor ? "\x1b[32m" : "";
-	const utf8 *ansiReset = gTestColor ? "\x1b[0m" : "";
 
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
 		if (!rideIsImplemented(rideType)) {
@@ -81,15 +135,19 @@ int main(int argc, char *argv[]) {
 		testCount += tc.trackTypes.size();
 	}
 
-	printf("%s[==========]%s Running %d tests from %d test cases.\n", ansiGreen, ansiReset, testCount, testCaseCount);
-	printf("%s[----------]%s Global test environment set-up.\n", ansiGreen, ansiReset);
+	ColouredPrintF(CLIColour::GREEN, "[==========] ");
+	printf("Running %d tests from %d test cases.\n", testCount, testCaseCount);
+
+	ColouredPrintF(CLIColour::GREEN, "[----------] ");
+	printf("Global test environment set-up.\n");
 	initHooks();
 
 	int successCount = 0;
 	std::vector<utf8string> failures;
 	for (auto &&tc : testCases) {
 		const utf8string rideTypeName = RideNames[tc.rideType];
-		printf("%s[----------]%s %lu tests from %s\n", ansiGreen, ansiReset, tc.trackTypes.size(), rideTypeName);
+		ColouredPrintF(CLIColour::GREEN, "[----------] ");
+		printf("%lu tests from %s\n", tc.trackTypes.size(), rideTypeName);
 
 		for (auto &&trackType : tc.trackTypes) {
 			utf8string trackTypeName;
@@ -99,34 +157,44 @@ int main(int argc, char *argv[]) {
 				trackTypeName = TrackNames[trackType];
 			}
 
-			printf("%s[ RUN      ]%s %s.%s\n", ansiGreen, ansiReset, rideTypeName, trackTypeName);
+			ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
+			printf("%s.%s\n", rideTypeName, trackTypeName);
 			bool success = testTrackPainting(tc.rideType, trackType);
 			if (!success) {
-				printf("%s[  FAILED  ]%s %s.%s (0 ms)\n", ansiRed, ansiReset, rideTypeName, trackTypeName);
 				utf8string testCaseName = new utf8[64];
 				sprintf(testCaseName, "%s.%s", rideTypeName, trackTypeName);
+
+				ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
+				printf("%s (0 ms)\n", testCaseName);
 				failures.push_back(testCaseName);
 			} else {
-				printf("%s[       OK ]%s %s.%s (0 ms)\n", ansiGreen, ansiReset, rideTypeName, trackTypeName);
+				ColouredPrintF(CLIColour::GREEN, "[       OK ] ");
+				printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
 				successCount++;
 			}
 		}
 
-		printf("%s[----------]%s %lu tests from %s (0 ms total)\n", ansiGreen, ansiReset, tc.trackTypes.size(),
-			   rideTypeName);
+		ColouredPrintF(CLIColour::GREEN, "[----------] ");
+		printf("%lu tests from %s (0 ms total)\n",  tc.trackTypes.size(), rideTypeName);
 	}
 	printf("\n");
 
-	printf("%s[----------]%s Global test environment tear-down\n", ansiGreen, ansiReset);
-	printf("%s[==========]%s %d tests from %d test cases ran. (0 ms total).\n", ansiGreen, ansiReset, testCount,
-		   testCaseCount);
-	printf("%s[  PASSED  ]%s %d tests.\n", ansiGreen, ansiReset, successCount);
+	ColouredPrintF(CLIColour::GREEN, "[----------] ");
+	printf("Global test environment tear-down\n");
+
+	ColouredPrintF(CLIColour::GREEN, "[==========] ");
+	printf("%d tests from %d test cases ran. (0 ms total).\n", testCount, testCaseCount);
+
+	ColouredPrintF(CLIColour::GREEN, "[  PASSED  ] ");
+	printf("%d tests.\n", successCount);
 
 	if (failures.size() > 0) {
-		printf("%s[  FAILED  ]%s %lu tests, listed below:\n", ansiRed, ansiReset, failures.size());
+		ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
+		printf("%lu tests, listed below:\n", failures.size());
 
 		for (auto &&failure : failures) {
-			printf("%s[  FAILED  ]%s %s\n", ansiRed, ansiReset, failure);
+			ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
+			printf("%s\n", failure);
 			delete(failure);
 		}
 
@@ -139,5 +207,3 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
-
-#endif // USE_GTEST
