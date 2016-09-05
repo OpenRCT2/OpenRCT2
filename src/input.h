@@ -92,6 +92,7 @@ extern widget_ref gTooltipWidget;
 extern sint32 gTooltipCursorX;
 extern sint32 gTooltipCursorY;
 
+extern uint8 gCurrentCursor;
 extern uint8 gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 

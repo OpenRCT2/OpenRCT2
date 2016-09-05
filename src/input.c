@@ -74,6 +74,7 @@ widget_ref gTooltipWidget;
 sint32 gTooltipCursorX;
 sint32 gTooltipCursorY;
 
+uint8 gCurrentCursor;
 uint8 gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
@@ -1557,18 +1558,15 @@ int get_next_key()
 *
 *  rct2: 0x006ED990
 */
-void sub_6ED990(uint8 cursor_id){
-	if (gInputState == INPUT_STATE_RESIZING)
-	{
-		cursor_id = CURSOR_DIAGONAL_ARROWS;	//resize icon
+void sub_6ED990(uint8 cursor_id)
+{
+	if (gInputState == INPUT_STATE_RESIZING) {
+		cursor_id = CURSOR_DIAGONAL_ARROWS;
 	}
-
-	if (cursor_id == RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8))
-	{
-		return;
+	if (cursor_id != gCurrentCursor) {
+		gCurrentCursor = cursor_id;
+		platform_set_cursor(cursor_id);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor_id;
-	platform_set_cursor(cursor_id);
 }
 
 

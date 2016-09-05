@@ -723,7 +723,7 @@ void platform_toggle_windowed_mode()
  */
 void platform_set_cursor(uint8 cursor)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor;
+	gCurrentCursor = cursor;
 	SDL_SetCursor(_cursors[cursor]);
 }
 /**
