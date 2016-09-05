@@ -19,6 +19,7 @@
 #include <vector>
 
 extern "C" {
+#include "data.h"
 #include "intercept.h"
 #include "../src/rct2.h"
 #include "../src/ride/ride.h"
@@ -31,10 +32,6 @@ typedef struct {
 	uint8 rideType;
 	std::vector<uint8> trackTypes;
 } TestCase;
-
-extern const utf8string RideNames[91];
-extern const utf8string TrackNames[256];
-extern const utf8string FlatTrackNames[256];
 
 enum CLIColour {
 	RED,

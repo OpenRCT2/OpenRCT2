@@ -494,6 +494,7 @@
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
 		85AFA20F1D7DB83E00221B42 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		85AFA2101D7DB83E00221B42 /* intercept.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intercept.h; sourceTree = "<group>"; };
+		85AFA2141D7DDFA100221B42 /* data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1155,6 +1156,7 @@
 			children = (
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
 				C64FDAC91D6DA92D00F259B9 /* data.c */,
+				85AFA2141D7DDFA100221B42 /* data.h */,
 				C64FDAC71D6DA72400F259B9 /* intercept.c */,
 				85AFA2101D7DB83E00221B42 /* intercept.h */,
 				85AFA20F1D7DB83E00221B42 /* main.cpp */,
