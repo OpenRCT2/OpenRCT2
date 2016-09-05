@@ -1311,34 +1311,31 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
  */
 static void window_map_place_park_entrance_tool_down(int x, int y)
 {
+	park_remove_ghost_entrance();
+
 	sint16 mapX, mapY, mapZ;
 	int direction;
-	money32 price;
-
-	park_remove_ghost_entrance();
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
-	if (mapX == (sint16)0x8000)
-		return;
-
-	gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-	price = game_do_command(
-		mapX,
-		GAME_COMMAND_FLAG_APPLY | (direction << 8),
-		mapY,
-		mapZ,
-		GAME_COMMAND_PLACE_PARK_ENTRANCE,
-		0,
-		0
-	);
-	if (price == MONEY32_UNDEFINED)
-		return;
-
-	audio_play_sound_at_location(
-		SOUND_PLACE_ITEM,
-		gCommandPosition.z,
-		RCT2_GLOBAL(0x009DEA64, uint16),
-		gScreenAge
-	);
+	if (mapX != (sint16)0x8000) {
+		gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+		money32 price = game_do_command(
+			mapX,
+			GAME_COMMAND_FLAG_APPLY | (direction << 8),
+			mapY,
+			mapZ,
+			GAME_COMMAND_PLACE_PARK_ENTRANCE,
+			0,
+			0
+		);
+		if (price != MONEY32_UNDEFINED) {
+			audio_play_sound_at_location(
+				SOUND_PLACE_ITEM,
+				gCommandPosition.x,
+				gCommandPosition.y,
+				gCommandPosition.z
+			);
+		}
+	}
 }
 
 /**
