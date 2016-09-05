@@ -74,7 +74,7 @@ static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
 static int editor_read_s6(const char *path);
-static void editor_clear_map_for_editing();
+static void editor_clear_map_for_editing(bool fromSave);
 
 /**
  *
@@ -279,7 +279,7 @@ bool editor_load_landscape(const utf8 *path)
 static int editor_load_landscape_from_sv4(const char *path)
 {
 	rct1_load_saved_game(path);
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(true);
 
 	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
@@ -293,7 +293,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 static int editor_load_landscape_from_sc4(const char *path)
 {
 	rct1_load_scenario(path);
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(false);
 
 	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
@@ -314,7 +314,7 @@ static int editor_read_s6(const char *path)
 		return 0;
 	}
 
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(true);
 
 	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
@@ -325,10 +325,8 @@ static int editor_read_s6(const char *path)
 	return 1;
 }
 
-static void editor_clear_map_for_editing()
+static void editor_clear_map_for_editing(bool fromSave)
 {
-	rct_s6_header *s6Header = RCT2_ADDRESS(0x009E34E4, rct_s6_header);
-
 	map_remove_all_rides();
 
 	//
@@ -361,7 +359,7 @@ static void editor_clear_map_for_editing()
 	gNumGuestsHeadingForPark = 0;
 	gNumGuestsInParkLastWeek = 0;
 	gGuestChangeModifier = 0;
-	if (s6Header->type != S6_TYPE_SCENARIO) {
+	if (fromSave) {
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
 
