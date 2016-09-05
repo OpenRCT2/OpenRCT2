@@ -14,24 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "main.h"
 #include "../src/paint/paint.h"
 #include "../src/paint/supports.h"
 #include "../src/ride/track_data.h"
 #include "../src/interface/viewport.h"
 #include "../src/hook.h"
 
-
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
-
-
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
 
 static const uint32 PALETTE_98 = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
 static const uint32 PALETTE_9C = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
@@ -455,7 +446,7 @@ static void printFunctionCallArray(utf8string *out, function_call calls[], uint8
 	}
 }
 
-int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
+static int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
 	int sequenceCount = 0;
 	const rct_preview_track **trackBlocks;
 
@@ -488,7 +479,7 @@ bool rideSupportsTrackType(int rideType, int trackType) {
 	return supportsTrackType;
 }
 
-bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
+static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
 			// These rides chechk neighbouring tiles for tracks
@@ -542,7 +533,7 @@ bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 				RCT2_GLOBAL(0x009E3250, rct_map_element *) = &surfaceElement;
 
 				callCount = 0;
-				memset(&calls, sizeof(calls), 0);
+				memset(&calls, 0, sizeof(calls));
 
 				TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
 				uint32 *trackDirectionList = (uint32 *) trackTypeList[trackType];
@@ -625,44 +616,6 @@ bool testTrackPainting(int rideType, int trackType) {
 	free(error);
 
 	return success;
-}
-
-bool testRide(int rideType) {
-	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-
-	bool returnSuccess = true;
-
-	printf("- %s (%d)\n", RideNames[rideType], rideType);
-	for (int trackType = 0; trackType < 256; trackType++) {
-		if (newPaintGetter(trackType, 0) == NULL) {
-			continue;
-		}
-
-		utf8string error = malloc(2048);
-		bool success = testTrackElement(rideType, trackType, &error);
-
-		if (!success) {
-			printf(ANSI_COLOR_RED);
-			returnSuccess = false;
-		}
-		int sequenceCount = getTrackSequenceCount(rideType, trackType);
-		if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-			printf("  - %s (%d)", FlatTrackNames[trackType], sequenceCount);
-		} else {
-			printf("  - %s (%d)", TrackNames[trackType], sequenceCount);
-		}
-
-
-		if (!success) {
-			printf(" FAILED!\n    %s", error);
-		}
-
-		free(error);
-		printf(ANSI_COLOR_RESET "\n");
-
-	}
-
-	return returnSuccess;
 }
 
 static int intercept_draw_6c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {

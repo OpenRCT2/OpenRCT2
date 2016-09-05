@@ -14,8 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef _TEST_PAINT_MAIN_H_
+#define _TEST_PAINT_MAIN_H_
+
+#include "../src/common.h"
+
 bool testRide(int rideType);
 void initHooks();
 bool rideIsImplemented(int rideType);
 bool rideSupportsTrackType(int rideType, int trackType);
 bool testTrackPainting(int rideType, int trackType);
+
+#endif // #endif _TEST_PAINT_MAIN_H_
