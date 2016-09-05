@@ -19,7 +19,7 @@
 #include <vector>
 
 extern "C" {
-#include "main.h"
+#include "intercept.h"
 #include "../src/rct2.h"
 #include "../src/ride/ride.h"
 #include "../src/ride/ride_data.h"

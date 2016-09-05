@@ -105,7 +105,7 @@
 		C64FDAC21D6DA0B800F259B9 /* diagnostic.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270FE1CC81B3200D84D28 /* diagnostic.c */; };
 		C64FDAC31D6DA41000F259B9 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717D1CC81B3200D84D28 /* track_paint.c */; };
 		C64FDAC51D6DA55E00F259B9 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC41D6DA55E00F259B9 /* compat.c */; };
-		C64FDAC81D6DA72400F259B9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC71D6DA72400F259B9 /* main.c */; };
+		C64FDAC81D6DA72400F259B9 /* intercept.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC71D6DA72400F259B9 /* intercept.c */; };
 		C64FDACA1D6DA92D00F259B9 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC91D6DA92D00F259B9 /* data.c */; };
 		C64FDACB1D6DBCC700F259B9 /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271121CC81B3200D84D28 /* hook.c */; };
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
@@ -493,14 +493,14 @@
 		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
 		85AFA20F1D7DB83E00221B42 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		85AFA2101D7DB83E00221B42 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		85AFA2101D7DB83E00221B42 /* intercept.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intercept.h; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
 		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C64FDAC41D6DA55E00F259B9 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compat.c; sourceTree = "<group>"; };
-		C64FDAC71D6DA72400F259B9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		C64FDAC71D6DA72400F259B9 /* intercept.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = intercept.c; sourceTree = "<group>"; };
 		C64FDAC91D6DA92D00F259B9 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = data.c; sourceTree = "<group>"; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S4Importer.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -1155,9 +1155,9 @@
 			children = (
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
 				C64FDAC91D6DA92D00F259B9 /* data.c */,
+				C64FDAC71D6DA72400F259B9 /* intercept.c */,
+				85AFA2101D7DB83E00221B42 /* intercept.h */,
 				85AFA20F1D7DB83E00221B42 /* main.cpp */,
-				C64FDAC71D6DA72400F259B9 /* main.c */,
-				85AFA2101D7DB83E00221B42 /* main.h */,
 			);
 			path = PaintTest;
 			sourceTree = "<group>";
@@ -2373,7 +2373,7 @@
 				C64FDA6F1D6D9A2100F259B9 /* lay_down_roller_coaster.c in Sources */,
 				C64FDA701D6D9A2100F259B9 /* lim_launched_roller_coaster.c in Sources */,
 				C64FDA711D6D9A2100F259B9 /* looping_roller_coaster.c in Sources */,
-				C64FDAC81D6DA72400F259B9 /* main.c in Sources */,
+				C64FDAC81D6DA72400F259B9 /* intercept.c in Sources */,
 				C64FDA721D6D9A2100F259B9 /* mine_ride.c in Sources */,
 				C64FDA731D6D9A2100F259B9 /* mine_train_coaster.c in Sources */,
 				C64FDA741D6D9A2100F259B9 /* mini_roller_coaster.c in Sources */,

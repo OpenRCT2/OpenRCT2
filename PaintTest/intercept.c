@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "main.h"
+#include "intercept.h"
 #include "../src/paint/paint.h"
 #include "../src/paint/supports.h"
 #include "../src/ride/track_data.h"
