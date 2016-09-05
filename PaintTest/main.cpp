@@ -94,6 +94,36 @@ static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
 	va_end(args);
 }
 
+#if defined(__WINDOWS__)
+int main(int argc, char *argv[]);
+
+#define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
+
+static HMODULE _dllModule = NULL;
+
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+{
+	_dllModule = (HMODULE)hModule;
+	return TRUE;
+}
+
+__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	
+	if (_dllModule == NULL) {
+		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
+
+	int gExitCode = main(0, NULL);
+	
+	exit(gExitCode);
+	return gExitCode;
+}
+
+#endif
+
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
