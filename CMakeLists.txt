@@ -372,6 +372,7 @@ file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "PaintTest/*.c" "PaintTest/*.cpp" "Pa
 
 add_executable(test-paint ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES})
 set_target_properties(test-paint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
+add_dependencies(test-paint segfiles)
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
