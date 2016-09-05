@@ -85,7 +85,7 @@ sint32 gTooltipCursorY;
 uint8 gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
-static void game_get_next_input(int *x, int *y, int *state);
+static int game_get_next_input(int *x, int *y);
 static void input_widget_over(int x, int y, rct_window *w, int widgetIndex);
 static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
 static void input_widget_over_flatbutton_invalidate();
@@ -129,59 +129,48 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
  */
 void game_handle_input()
 {
-	rct_window *w;
-	int x, y, state;
-
-	if (RCT2_GLOBAL(0x009DEA64, uint16) & 2) {
-		RCT2_GLOBAL(0x009DEA64, uint16) &= ~2;
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 2, 0);
-	}
-
-	for (w = g_window_list; w < gWindowNextSlot; w++)
+	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
 		window_event_unknown_07_call(w);
+	}
 
 	sub_6EA73F();
 
-	for (;;) {
-		game_get_next_input(&x, &y, &state);
-		if (state == 0) {
-			break;
-		}
-
+	int x, y, state;
+	while ((state = game_get_next_input(&x, &y)) != 0) {
 		game_handle_input_mouse(x, y, state & 0xFF);
 	}
 
 	if (gInputFlags & INPUT_FLAG_5) {
 		game_handle_input_mouse(x, y, state);
-	}
-	else if (x != 0x80000000) {
-		x = clamp(0, x, (int)gScreenWidth - 1);
-		y = clamp(0, y, (int)gScreenHeight - 1);
+	} else if (x != 0x80000000) {
+		x = clamp(0, x, gScreenWidth - 1);
+		y = clamp(0, y, gScreenHeight - 1);
 
 		game_handle_input_mouse(x, y, state);
 		process_mouse_over(x, y);
 		process_mouse_tool(x, y);
 	}
 
-	for (w = g_window_list; w < gWindowNextSlot; w++)
+	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
 		window_event_unknown_08_call(w);
+	}
 }
 
 /**
  *
  *  rct2: 0x006E83C7
 */
-static void game_get_next_input(int *x, int *y, int *state)
+static int game_get_next_input(int *x, int *y)
 {
 	rct_mouse_data *input = get_mouse_input();
 	if (input == NULL) {
 		*x = gCursorState.x;
 		*y = gCursorState.y;
-		*state = 0;
+		return 0;
 	} else {
 		*x = input->x;
 		*y = input->y;
-		*state = input->state;
+		return input->state;
 	}
 }
 
