@@ -75,8 +75,8 @@ void window_map_tooltip_update_visibility()
 {
 	int cursorX, cursorY, inputFlags;
 
-	cursorX = RCT2_GLOBAL(0x0142406C, sint32);
-	cursorY = RCT2_GLOBAL(0x01424070, sint32);
+	cursorX = gCursorState.x;
+	cursorY = gCursorState.y;
 	inputFlags = gInputFlags;
 
 	// Check for cursor movement
@@ -113,8 +113,8 @@ static void window_map_tooltip_open()
 
 	width = 200;
 	height = 44;
-	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
-	y = RCT2_GLOBAL(0x01424070, sint32) + 15;
+	x = gCursorState.x - (width / 2);
+	y = gCursorState.y + 15;
 
 	w = window_find_by_class(WC_MAP_TOOLTIP);
 	if (w == NULL) {

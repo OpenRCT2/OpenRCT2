@@ -3859,7 +3859,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 					zAttempts == 0 ||
 					z < 0
 					) {
-					audio_play_sound_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
+					audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
 					w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 					if (w != NULL){
 						tool_set(w, 23, 12);
@@ -3931,7 +3931,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 				_currentTrackCovered = saveCurrentTrackCovered;
 				_currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-				audio_play_sound_panned(SOUND_ERROR, RCT2_GLOBAL(0x0142406C, sint32), x, y, z);
+				audio_play_sound_panned(SOUND_ERROR, gCursorState.x, x, y, z);
 				break;
 			} else if (zAttempts >= 0) {
 				z += 16;

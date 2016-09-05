@@ -326,9 +326,6 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.motion.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.motion.y / gConfigGeneral.window_scale);
-
 			gCursorState.x = (int)(e.motion.x / gConfigGeneral.window_scale);
 			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
 			break;
@@ -384,9 +381,6 @@ void platform_process_messages()
 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * gScreenHeight);
-
 			gCursorState.x = (int)(e.tfinger.x * gScreenWidth);
 			gCursorState.y = (int)(e.tfinger.y * gScreenHeight);
 			break;

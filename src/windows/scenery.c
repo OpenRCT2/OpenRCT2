@@ -729,13 +729,13 @@ static void window_scenery_event_07(rct_window *w)
  */
 static void window_scenery_update(rct_window *w)
 {
-	rct_window *other = window_find_from_point(RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
+	rct_window *other = window_find_from_point(gCursorState.x, gCursorState.y);
 	if (other == w) {
-		int window_x = RCT2_GLOBAL(0x0142406C, int) - w->x + 26;
-		int window_y = RCT2_GLOBAL(0x01424070, int) - w->y;
+		int window_x = gCursorState.x - w->x + 26;
+		int window_y = gCursorState.y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			int widgetIndex = window_find_widget_from_point(w, RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
+			int widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {

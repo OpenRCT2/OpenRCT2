@@ -119,10 +119,10 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].right = width;
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
-	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
+	x = gCursorState.x - (width / 2);
 	x = clamp(0, x, gScreenWidth);
 
-	y = RCT2_GLOBAL(0x01424070, sint32) + 26;
+	y = gCursorState.y + 26;
 	y = max(22, y);
 	maxY = gScreenHeight - height;
 	if (y > maxY) {
