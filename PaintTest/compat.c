@@ -30,6 +30,7 @@ rct_map_element *gMapElements = (rct_map_element *) RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element **) RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
 rct_ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+sint16 gMapSizeUnits;
 
 
 const rct_xy16 TileDirectionDelta[] = {
