@@ -85,6 +85,8 @@ sint32 gTooltipCursorY;
 uint8 gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
+static sint16 _clickRepeatTicks;
+
 static int game_get_next_input(int *x, int *y);
 static void input_widget_over(int x, int y, rct_window *w, int widgetIndex);
 static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
@@ -1029,7 +1031,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 			gPressedWidget.widget_index = widgetIndex;
 			gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
 			gInputState = INPUT_STATE_WIDGET_PRESSED;
-			RCT2_GLOBAL(0x009DE528, uint16) = 1;
+			_clickRepeatTicks = 1;
 
 			widget_invalidate_by_number(windowClass, windowNumber, widgetIndex);
 			window_event_mouse_down_call(w, widgetIndex);
@@ -1185,14 +1187,15 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		if (w->disabled_widgets & (1ULL << widgetIndex))
 			break;
 
-		if (RCT2_GLOBAL(0x009DE528, uint16) != 0)
-			RCT2_GLOBAL(0x009DE528, uint16)++;
+		if (_clickRepeatTicks != 0) {
+			_clickRepeatTicks++;
 
-		if (w->hold_down_widgets & (1ULL << widgetIndex) &&
-			RCT2_GLOBAL(0x009DE528, uint16) >= 16 &&
-			!(RCT2_GLOBAL(0x009DE528, uint16) & 3)
-			) {
-			window_event_mouse_down_call(w, widgetIndex);
+			// Handle click repeat
+			if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) != 0) {
+				if (w->hold_down_widgets & (1ULL << widgetIndex)) {
+					window_event_mouse_down_call(w, widgetIndex);
+				}
+			}
 		}
 
 		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED) {
@@ -1289,7 +1292,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		return;
 	}
 
-	RCT2_GLOBAL(0x009DE528, uint16) = 0;
+	_clickRepeatTicks = 0;
 	if (gInputState != INPUT_STATE_DROPDOWN_ACTIVE){
 		// Hold down widget and drag outside of area??
 		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED){
