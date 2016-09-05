@@ -43,7 +43,7 @@ enum CLIColour {
 
 bool gTestColor = true;
 
-bool CStringEquals(const char *lhs, const char *rhs) {
+static bool CStringEquals(const char *lhs, const char *rhs) {
 	if (lhs == NULL) return rhs == NULL;
 
 	if (rhs == NULL) return false;
@@ -51,7 +51,7 @@ bool CStringEquals(const char *lhs, const char *rhs) {
 	return strcmp(lhs, rhs) == 0;
 }
 
-bool ShouldUseColor() {
+static bool ShouldUseColor() {
 	if (gTestColor == false) {
 		return false;
 	}
@@ -73,7 +73,7 @@ bool ShouldUseColor() {
 	return term_supports_color;
 }
 
-const char* GetAnsiColorCode(CLIColour color) {
+static const char* GetAnsiColorCode(CLIColour color) {
 	switch (color) {
 		case RED:     return "1";
 		case GREEN:   return "2";
@@ -81,7 +81,7 @@ const char* GetAnsiColorCode(CLIColour color) {
 	};
 }
 
-void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
+static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 	for (auto &&tc : testCases) {
 		const utf8string rideTypeName = RideNames[tc.rideType];
 		ColouredPrintF(CLIColour::GREEN, "[----------] ");
-		printf("%lu tests from %s\n", tc.trackTypes.size(), rideTypeName);
+		printf("%d tests from %s\n", (int)tc.trackTypes.size(), rideTypeName);
 
 		for (auto &&trackType : tc.trackTypes) {
 			utf8string trackTypeName;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		ColouredPrintF(CLIColour::GREEN, "[----------] ");
-		printf("%lu tests from %s (0 ms total)\n",  tc.trackTypes.size(), rideTypeName);
+		printf("%d tests from %s (0 ms total)\n",  (int)tc.trackTypes.size(), rideTypeName);
 	}
 	printf("\n");
 
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
 
 	if (failures.size() > 0) {
 		ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
-		printf("%lu tests, listed below:\n", failures.size());
+		printf("%d tests, listed below:\n", (int)failures.size());
 
 		for (auto &&failure : failures) {
 			ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
 
 		printf("\n");
 
-		printf("%lu FAILED TESTS\n", failures.size());
+		printf("%d FAILED TESTS\n", (int)failures.size());
 
 		return 1;
 	}
