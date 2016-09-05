@@ -16,6 +16,7 @@
 
 #include "../addresses.h"
 #include "../cursors.h"
+#include "../editor.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -180,7 +181,7 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
 static void research_rides_setup(){
 	// Reset all objects to not required
 	for (uint8 object_type = OBJECT_TYPE_RIDE; object_type < 11; object_type++){
-		uint8* in_use = RCT2_ADDRESS(0x0098DA38, uint8*)[object_type];
+		uint8* in_use = gEditorSelectedObjects[object_type];
 		for (uint8 num_objects = object_entry_group_counts[object_type]; num_objects != 0; num_objects--){
 			*in_use++ = 0;
 		}
@@ -190,7 +191,7 @@ static void research_rides_setup(){
 	for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
 		rct_ride* ride = get_ride(rideIndex);
 		if (ride->type == RIDE_TYPE_NULL)continue;
-		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
+		gEditorSelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
 	}
 
 	for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++){
@@ -218,7 +219,7 @@ static void research_rides_setup(){
 					continue;
 
 				// If master ride not in use
-				if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
+				if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
 					continue;
 
 				if (ride_base_type == master_ride->ride_type[0] ||
@@ -232,7 +233,7 @@ static void research_rides_setup(){
 
 		if (!master_found){
 			// If not in use
-			if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
+			if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
 				continue;
 			if (ride_base_type != ride_entry->ride_type[0] &&
 				ride_base_type != ride_entry->ride_type[1] &&

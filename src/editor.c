@@ -42,6 +42,32 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+uint8 _editorSelectedRides[128];
+uint8 _editorSelectedSmallScenery[252];
+uint8 _editorSelectedLargeScenery[128];
+uint8 _editorSelectedWalls[128];
+uint8 _editorSelectedBanners[32];
+uint8 _editorSelectedFootpaths[16];
+uint8 _editorSelectedFootpathAdditions[15];
+uint8 _editorSelectedSceneryGroups[19];
+uint8 _editorSelectedParkEntrances[1];
+uint8 _editorSelectedWaters[1];
+uint8 _editorSelectedStexs[1];
+
+uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT] = {
+	_editorSelectedRides,
+	_editorSelectedSmallScenery,
+	_editorSelectedLargeScenery,
+	_editorSelectedWalls,
+	_editorSelectedBanners,
+	_editorSelectedFootpaths,
+	_editorSelectedFootpathAdditions,
+	_editorSelectedSceneryGroups,
+	_editorSelectedParkEntrances,
+	_editorSelectedWaters,
+	_editorSelectedStexs,
+};
+
 void editor_convert_save_to_scenario_callback(int result);
 static void set_all_land_owned();
 static int editor_load_landscape_from_sv4(const char *path);

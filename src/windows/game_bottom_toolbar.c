@@ -319,9 +319,11 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
  */
 void window_game_bottom_toolbar_invalidate_news_item()
 {
-	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
-		news_item_is_queue_empty() ? WWT_EMPTY : WWT_IMGBTN;
-	widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+	if (gScreenFlags == SCREEN_FLAGS_PLAYING) {
+		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
+			news_item_is_queue_empty() ? WWT_EMPTY : WWT_IMGBTN;
+		widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+	}
 }
 
 /**

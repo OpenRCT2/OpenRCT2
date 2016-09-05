@@ -537,14 +537,14 @@ static void setup_in_use_selection_flags()
 {
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-			RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] = 0;
+			gEditorSelectedObjects[object_type][i] = 0;
 		}
 	}
 
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
 			if (object_entry_groups[object_type].chunks[i] != (uint8*)-1) {
-				RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] |= (1 << 1);
+				gEditorSelectedObjects[object_type][i] |= (1 << 1);
 			}
 		}
 	}
@@ -564,43 +564,43 @@ static void setup_in_use_selection_flags()
 			type = iter.element->properties.path.type;
 			type >>= 4;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 
 			if (footpath_element_has_path_scenery(iter.element)) {
 				uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
-				RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
+				gEditorSelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
 			type = iter.element->properties.scenery.type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
 				break;
 
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
 
 			type = iter.element->properties.entrance.path_type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:
 			type = iter.element->properties.fence.type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_WALLS][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 			type = iter.element->properties.scenerymultiple.type & 0x3FF;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
 			break;
 		case MAP_ELEMENT_TYPE_BANNER:
 			banner = &gBanners[iter.element->properties.banner.index];
 			type = banner->type;
 			assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
 			break;
 		}
 	} while (map_element_iterator_next(&iter));
@@ -609,7 +609,7 @@ static void setup_in_use_selection_flags()
 		rct_ride* ride = get_ride(ride_index);
 		if (ride->type != RIDE_TYPE_NULL) {
 			uint8 type = ride->subtype;
-			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+			gEditorSelectedObjects[OBJECT_TYPE_RIDE][type] |= (1 << 0);
 		}
 	}
 
@@ -622,12 +622,12 @@ static void setup_in_use_selection_flags()
 
 		uint8 entryType, entryIndex;
 		if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 0)) {
+			if (gEditorSelectedObjects[entryType][entryIndex] & (1 << 0)) {
 				*selectionFlags |=
 					OBJECT_SELECTION_FLAG_IN_USE |
 					OBJECT_SELECTION_FLAG_SELECTED;
 			}
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 1)) {
+			if (gEditorSelectedObjects[entryType][entryIndex] & (1 << 1)) {
 				*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
 			}
 		}
