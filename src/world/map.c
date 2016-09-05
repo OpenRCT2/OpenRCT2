@@ -92,8 +92,8 @@ sint16 gMapSizeMaxXY;
 rct_map_element gMapElements[0x30000];
 rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
 #else
-rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
-rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
+rct_map_element *gMapElements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
+rct_map_element **gMapElementTilePointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
 #endif
 rct_xy16 *gMapSelectionTiles = RCT2_ADDRESS(0x009DE596, rct_xy16);
 rct2_peep_spawn *gPeepSpawns = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);

@@ -28,7 +28,7 @@ rct_gx g2;
 #ifdef NO_RCT2
 	rct_g1_element *g1Elements = NULL;
 #else
-	rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 #endif
 
 static const uint32 fadeSprites[] = {
