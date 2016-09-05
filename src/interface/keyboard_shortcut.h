@@ -19,6 +19,9 @@
 
 #define SHORTCUT_UNDEFINED 0xFFFF
 
+/** The current shortcut being changed. */
+extern uint8 gKeyboardShortcutChangeId;
+
 void keyboard_shortcut_set(int key);
 void keyboard_shortcut_handle(int key);
 void keyboard_shortcut_handle_command(int shortcutIndex);

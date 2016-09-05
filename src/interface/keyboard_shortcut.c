@@ -31,6 +31,8 @@
 #include "../platform/platform.h"
 #include "../ride/track_paint.h"
 
+uint8 gKeyboardShortcutChangeId;
+
 typedef void (*shortcut_action)();
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT];
@@ -52,7 +54,7 @@ void keyboard_shortcut_set(int key)
 	}
 
 	// Map shortcut to this key
-	gShortcutKeys[RCT2_GLOBAL(0x009DE511, uint8)] = key;
+	gShortcutKeys[gKeyboardShortcutChangeId] = key;
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
 	config_shortcut_keys_save();
