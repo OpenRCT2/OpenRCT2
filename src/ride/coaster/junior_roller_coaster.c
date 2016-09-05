@@ -4570,15 +4570,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direc
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
 		return junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup;
 
-	case TRACK_ELEM_FLAT_TO_60_DEG_UP:
-		return junior_rc_flat_to_60_deg_up_paint_setup;
-	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-		return junior_rc_60_deg_up_to_flat_paint_setup;
-	case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
-		return junior_rc_flat_to_60_deg_down_paint_setup;
-	case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
-		return junior_rc_60_deg_down_to_flat_paint_setup;
-
 	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
 		return junior_rc_left_half_banked_helix_up_small_paint_setup;
 	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
