@@ -340,11 +340,12 @@ void platform_process_messages()
 			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
+		{
+			int x = (int)(e.button.x / gConfigGeneral.window_scale);
+			int y = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				store_mouse_input(1);
+				store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 				break;
@@ -352,18 +353,20 @@ void platform_process_messages()
 				gCursorState.middle = CURSOR_PRESSED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				store_mouse_input(3);
+				store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 				break;
 			}
 			break;
+		}
 		case SDL_MOUSEBUTTONUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
+		{
+			int x = (int)(e.button.x / gConfigGeneral.window_scale);
+			int y = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				store_mouse_input(2);
+				store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 				break;
@@ -371,12 +374,13 @@ void platform_process_messages()
 				gCursorState.middle = CURSOR_RELEASED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				store_mouse_input(4);
+				store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
 				gCursorState.right = CURSOR_RELEASED;
 				gCursorState.old = 4;
 				break;
 			}
 			break;
+		}
 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
@@ -387,39 +391,43 @@ void platform_process_messages()
 			gCursorState.y = (int)(e.tfinger.y * gScreenHeight);
 			break;
 		case SDL_FINGERDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
+		{
+			int x = (int)(e.tfinger.x * gScreenWidth);
+			int y = (int)(e.tfinger.y * gScreenHeight);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
-										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+				&& e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
 
 			if (gCursorState.touchIsDouble) {
-				store_mouse_input(3);
+				store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 			} else {
-				store_mouse_input(1);
+				store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 			}
 			gCursorState.touch = true;
 			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
 			break;
+		}
 		case SDL_FINGERUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
+		{
+			int x = (int)(e.tfinger.x * gScreenWidth);
+			int y = (int)(e.tfinger.y * gScreenHeight);
 
 			if (gCursorState.touchIsDouble) {
-				store_mouse_input(4);
+				store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 4;
 			} else {
-				store_mouse_input(2);
+				store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 			}
 			gCursorState.touch = true;
 			break;
+		}
 #endif
 		case SDL_KEYDOWN:
 			if (gTextInputCompositionActive) break;

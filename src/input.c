@@ -39,14 +39,6 @@
 #include "world/scenery.h"
 #include "openrct2.h"
 
-enum {
-	MOUSE_STATE_RELEASED,
-	MOUSE_STATE_LEFT_PRESS,
-	MOUSE_STATE_LEFT_RELEASE,
-	MOUSE_STATE_RIGHT_PRESS,
-	MOUSE_STATE_RIGHT_RELEASE
-};
-
 typedef struct rct_mouse_data {
 	uint32 x;
 	uint32 y;
@@ -138,7 +130,7 @@ void game_handle_input()
 	sub_6EA73F();
 
 	int x, y, state;
-	while ((state = game_get_next_input(&x, &y)) != 0) {
+	while ((state = game_get_next_input(&x, &y)) != MOUSE_STATE_RELEASED) {
 		game_handle_input_mouse(x, y, state & 0xFF);
 	}
 
@@ -1111,8 +1103,7 @@ void process_mouse_over(int x, int y)
 				break;
 
 			case WWT_SCROLL:
-				RCT2_GLOBAL(0x9DE558, uint16) = x;
-				RCT2_GLOBAL(0x9DE55A, uint16) = y;
+			{
 				int output_scroll_area, scroll_id;
 				int scroll_x, scroll_y;
 				widget_scroll_get_part(window, &window->widgets[widgetId], x, y, &scroll_x, &scroll_y, &output_scroll_area, &scroll_id);
@@ -1127,6 +1118,7 @@ void process_mouse_over(int x, int y)
 				if (cursorId == -1)
 					cursorId = CURSOR_ARROW;
 				break;
+			}
 			default:
 				cursorId = window_event_cursor_call(window, widgetId, x, y);
 				if (cursorId == -1)
@@ -1598,7 +1590,7 @@ void invalidate_scroll()
 /**
 * rct2: 0x00406C96
 */
-void store_mouse_input(int state)
+void store_mouse_input(int state, int x, int y)
 {
 	uint32 writeIndex = _mouseInputQueueWriteIndex;
 	uint32 nextWriteIndex = (writeIndex + 1) % countof(_mouseInputQueue);
@@ -1606,8 +1598,8 @@ void store_mouse_input(int state)
 	// Check if the queue is full
 	if (nextWriteIndex != _mouseInputQueueReadIndex) {
 		rct_mouse_data *item = &_mouseInputQueue[writeIndex];
-		item->x = RCT2_GLOBAL(0x01424318, uint32);
-		item->y = RCT2_GLOBAL(0x0142431C, uint32);
+		item->x = x;
+		item->y = y;
 		item->state = state;
 
 		_mouseInputQueueWriteIndex = nextWriteIndex;
