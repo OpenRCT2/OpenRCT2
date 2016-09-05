@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-#if __cplusplus
+#ifdef __cplusplus
 
 #include "../core/List.hpp"
 
