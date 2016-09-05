@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <SDL_keycode.h>
-#include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
 #include "cursors.h"
@@ -1054,7 +1053,6 @@ void process_mouse_over(int x, int y)
 
 	if (window != NULL) {
 		widgetId = window_find_widget_from_point(window, x, y);
-		RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
 		if (widgetId != -1) {
 			switch (window->widgets[widgetId].type){
 
