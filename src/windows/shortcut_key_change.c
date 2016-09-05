@@ -82,7 +82,7 @@ void window_shortcut_change_open(int selected_key){
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	// Save the item we are selecting for new window
 	gKeyboardShortcutChangeId = selected_key;
-	rct_window* w = window_create_auto_pos(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+	rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
 	w->widgets = window_shortcut_change_widgets;
 	w->enabled_widgets = (1 << 2);
@@ -119,5 +119,5 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + 30;
 
 	set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, RCT2_GLOBAL(0x9DEB8D, uint8));
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, 0);
 }
