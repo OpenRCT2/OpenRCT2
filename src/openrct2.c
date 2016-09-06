@@ -594,7 +594,7 @@ bool openrct2_setup_rct2_segment()
 	}
 #if !defined(USE_MMAP)
 	// section: text
-	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC | PROT_WRITE);
 	if (err != 0)
 	{
 		perror("mprotect");

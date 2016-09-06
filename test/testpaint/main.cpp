@@ -18,6 +18,11 @@
 #include <string>
 #include <vector>
 
+#if defined(__unix__)
+#include <unistd.h>
+#include <sys/mman.h>
+#endif // defined(__unix__)
+
 extern "C" {
 #include "data.h"
 #include "intercept.h"
@@ -124,6 +129,99 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 #endif
 
+char *segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+
+static uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
+{
+	size_t i;
+	uint32 checksum = 0;
+	for (i = 0; i < length; i++)
+		checksum += buffer[i];
+
+	return checksum;
+}
+
+/**
+ * Loads RCT2's data model and remaps the addresses.
+ * @returns true if the data integrity check succeeded, otherwise false.
+ */
+static bool openrct2_setup_rct2_segment()
+{
+	// OpenRCT2 on Linux and macOS is wired to have the original Windows PE sections loaded
+	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
+	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
+	int err = 0;
+
+#if defined(__unix__)
+	int pageSize = getpagesize();
+	int numPages = (len + pageSize - 1) / pageSize;
+	unsigned char *dummy = (unsigned char *)malloc(numPages);
+
+	err = mincore((void *)segments, len, dummy);
+	bool pagesMissing = false;
+	if (err != 0)
+	{
+		err = errno;
+#ifdef __LINUX__
+		// On Linux ENOMEM means all requested range is unmapped
+		if (err != ENOMEM)
+		{
+			pagesMissing = true;
+			perror("mincore");
+		}
+#else
+		pagesMissing = true;
+		perror("mincore");
+#endif // __LINUX__
+	} else {
+		for (int i = 0; i < numPages; i++)
+		{
+			if (dummy[i] != 1)
+			{
+				pagesMissing = true;
+				void *start = (void *)(segments + i * pageSize);
+				void *end = (void *)(segments + (i + 1) * pageSize - 1);
+				log_warning("required page %p - %p is not in memory!", start, end);
+			}
+		}
+	}
+	free(dummy);
+	if (pagesMissing)
+	{
+		log_error("At least one of required pages was not found in memory. This can cause segfaults later on.");
+	}
+
+	// section: text
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+
+	// section: rw data
+	err = mprotect((void *)segments, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+#endif // defined(__unix__)
+
+	// Check that the expected data is at various addresses.
+	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
+	// calls, which can be changed by windows/wine loader.
+	const uint32 c1 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
+	const uint32 c2 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
+	const uint32 exp_c1 = 10114815;
+	const uint32 exp_c2 = 23564;
+	if (c1 != exp_c1 || c2 != exp_c2) {
+		log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
+		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
+		return false;
+	}
+
+	return true;
+}
+
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
@@ -166,6 +264,7 @@ int main(int argc, char *argv[]) {
 
 	ColouredPrintF(CLIColour::GREEN, "[----------] ");
 	printf("Global test environment set-up.\n");
+	openrct2_setup_rct2_segment();
 	initHooks();
 
 	int successCount = 0;
