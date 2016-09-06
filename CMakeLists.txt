@@ -365,14 +365,15 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
 install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
 
+if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (NOT FORCE64))
+	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
+	file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
+	file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
 
-file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
-file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c")
-file(GLOB_RECURSE ORCT2_PAINT_TEST_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
-
-add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_PAINT_TEST_SOURCES} ${RCT2_SECTIONS})
-set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
-add_dependencies(testpaint segfiles)
+	add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_TESTPAINT_SOURCES} ${RCT2_SECTIONS})
+	set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES")
+	add_dependencies(testpaint segfiles)
+endif ()
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
