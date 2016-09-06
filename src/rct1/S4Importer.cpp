@@ -16,6 +16,7 @@
 
 #include "S4Importer.h"
 
+#include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/List.hpp"
@@ -337,8 +338,14 @@ void S4Importer::AddEntryForRideType(uint8 rideType)
     if (_rideTypeToRideEntryMap[rideType] == 255)
     {
         const char * entryName = RCT1::GetRideTypeObject(rideType);
-        _rideTypeToRideEntryMap[rideType] = (uint8)_rideEntries.GetCount();
-        _rideEntries.Add(entryName);
+
+        size_t entryIndex = _rideEntries.IndexOf(entryName, ObjectNameComparer);
+        if (entryIndex == SIZE_MAX)
+        {
+            entryIndex = _rideEntries.GetCount();
+            _rideEntries.Add(entryName);
+        }
+        _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
     }
 }
 
@@ -349,12 +356,14 @@ void S4Importer::AddEntryForVehicleType(uint8 rideType, uint8 vehicleType)
     {
         const char * entryName = RCT1::GetVehicleObject(vehicleType);
 
-        uint8 rideEntryIndex = (uint8)_rideEntries.GetCount();
-        _vehicleTypeToRideEntryMap[vehicleType] = rideEntryIndex;
-        _rideEntries.Add(entryName);
-
-        // Just overwrite this with the vehicle entry for now...
-        _rideTypeToRideEntryMap[rideType] = rideEntryIndex;
+        size_t entryIndex = _rideEntries.IndexOf(entryName, ObjectNameComparer);
+        if (entryIndex == SIZE_MAX)
+        {
+            entryIndex = _rideEntries.GetCount();
+            _rideEntries.Add(entryName);
+        }
+        _vehicleTypeToRideEntryMap[vehicleType] = (uint8)entryIndex;
+        _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
     }
 }
 
@@ -440,9 +449,17 @@ void S4Importer::AddEntriesForSceneryTheme(uint8 sceneryThemeType)
     else
     {
         const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-
-        _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
-        _sceneryGroupEntries.Add(entryName);
+        uint8 entryIndex = (uint8)_sceneryGroupEntries.GetCount();
+        if (entryIndex >= 19)
+        {
+            Console::WriteLine("Warning: More than 19 (max scenery groups) in RCT1 park.");
+            Console::WriteLine("         [%s] scenery group not added.", entryName);
+        }
+        else
+        {
+            _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
+            _sceneryGroupEntries.Add(entryName);
+        }
     }
 }
 
@@ -472,6 +489,7 @@ void S4Importer::ImportRide(rct_ride * dst, rct1_ride * src)
     }
 
     rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);
+    Guard::Assert(rideEntry != nullptr && rideEntry != (rct_ride_entry*)-1);
 
     // Ride name
     dst->name = 0;
@@ -752,7 +770,7 @@ void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
         entry.checksum = 0;
 
         Object * object = objectManager->LoadObject(&entry);
-        if (object == nullptr)
+        if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
         {
             log_error("Failed to load %s.", objectName);
             throw Exception("Failed to load object.");
@@ -814,11 +832,10 @@ void S4Importer::ImportResearch()
         case RCT1_RESEARCH_CATEGORY_THEME:
         {
             uint8 rct1SceneryTheme = researchItem->item;
-            if (rct1SceneryTheme != RCT1_SCENERY_THEME_GENERAL &&
-                rct1SceneryTheme != RCT1_SCENERY_THEME_JUMPING_FOUNTAINS &&
-                rct1SceneryTheme != RCT1_SCENERY_THEME_GARDEN_CLOCK)
+            uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
+            if (sceneryGroupEntryIndex != 254 &&
+                sceneryGroupEntryIndex != 255)
             {
-                uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
                 research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
             }
             break;
