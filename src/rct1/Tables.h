@@ -47,9 +47,12 @@ namespace RCT1
     const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
 
-#else
+extern "C" {
+#endif
 
     const char * rct1_get_ride_type_object(uint8 rideType);
     const char * rct1_get_vehicle_object(uint8 vehicleType);
 
+#ifdef __cplusplus
+}
 #endif
