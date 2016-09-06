@@ -164,6 +164,64 @@ typedef struct rct1_ride {
 } rct1_ride;
 assert_struct_size(rct1_ride, 0x260);
 
+typedef struct rct1_unk_sprite {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction; //direction of sprite? 0x1e
+	uint8 pad_1F[3]; // 0x1f
+	rct_string_id name_string_idx;	// 0x22
+	uint16 var_24;
+	uint16 frame;					// 0x26
+	uint8 var_28[3];
+	uint8 var_2B;
+	uint8 pad_2C[0x45];
+	uint8 var_71;
+} rct1_unk_sprite;
+
+typedef struct rct1_peep {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	uint8 pad_14[0xEC];
+} rct1_peep;
+assert_struct_size(rct1_peep, 0x100);
+
+typedef union rct1_sprite {
+	uint8 pad_00[0x100];
+	rct1_unk_sprite unknown;
+	rct1_peep peep;
+} rct1_sprite;
+assert_struct_size(rct1_sprite, 0x100);
+
 typedef struct rct1_research_item {
 	uint8 item;
 	uint8 related_ride;
@@ -185,7 +243,7 @@ typedef struct rct1_s4 {
 	uint32 random_b;
 	rct_map_element map_elements[0xC000];
 	uint32 unk_counter;
-	rct_sprite sprites[5000];
+	rct1_sprite sprites[5000];
 	uint16 next_sprite_index;
 	uint16 first_vehicle_sprite_index;
 	uint16 first_peep_sprite_index;

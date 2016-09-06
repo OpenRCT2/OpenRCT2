@@ -41,6 +41,7 @@ extern "C"
     #include "../management/marketing.h"
     #include "../object.h"
     #include "../object/ObjectManager.h"
+    #include "../peep/peep.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
     #include "../util/sawyercoding.h"
@@ -144,6 +145,7 @@ public:
 
         ImportRides();
         ImportRideMeasurements();
+        ImportSprites();
         ImportMapElements();
         ImportMapAnimations();
         ImportPeepSpawns();
@@ -721,6 +723,83 @@ private:
         // {
         //     dst->altitude[i] /= 2;
         // }
+    }
+
+    void ImportSprites()
+    {
+        ImportPeeps();
+    }
+
+    void ImportPeeps()
+    {
+        for (int i = 0; i < 5000; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                rct1_peep *srcPeep = &_s4.sprites[i].peep;
+                if (srcPeep->x != (sint16)0x8000)
+                {
+                    rct_peep *peep = (rct_peep*)create_sprite(1);
+                    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+
+                    ImportPeep(peep, srcPeep);
+                }
+            }
+        }
+    }
+
+    void ImportPeep(rct_peep * dst, rct1_peep * src)
+    {
+        dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
+        dst->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
+        dst->outside_of_park = 1;
+        dst->state = PEEP_STATE_FALLING;
+        dst->action = PEEP_ACTION_NONE_2;
+        dst->special_sprite = 0;
+        dst->action_sprite_image_offset = 0;
+        dst->no_action_frame_no = 0;
+        dst->action_sprite_type = 0;
+        dst->peep_flags = 0;
+        dst->favourite_ride = 0xFF;
+        dst->favourite_ride_rating = 0;
+
+        const rct_sprite_bounds* spriteBounds = g_sprite_entries[dst->sprite_type].sprite_bounds;
+        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+
+        dst->sprite_direction = 0;
+
+        rct_xyz16 position = { src->x, src->y, src->z };
+
+        sprite_move(position.x, position.y, position.z, (rct_sprite*)dst);
+        invalidate_sprite_2((rct_sprite*)dst);
+
+        dst->var_41 = (scenario_rand() & 0x1F) + 45;
+        dst->var_C4 = 0;
+        dst->var_79 = 0xFF;
+        dst->type = PEEP_TYPE_GUEST;
+        dst->previous_ride = 0xFF;
+        dst->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
+        dst->window_invalidate_flags = 0;
+
+        dst->time_in_park = -1;
+        dst->pathfind_goal.x = 0xFF;
+        dst->pathfind_goal.y = 0xFF;
+        dst->pathfind_goal.z = 0xFF;
+        dst->pathfind_goal.direction = 0xFF;
+        dst->guest_heading_to_ride_id = 0xFF;
+
+        dst->tshirt_colour = 12;
+        dst->trousers_colour = 15;
+
+        uint8 energy = (scenario_rand() & 0x3F) + 65;
+        dst->energy = energy;
+        dst->energy_growth_rate = energy;
+
+        peep_update_name_sort(dst);
+
+        gNumGuestsInPark++;
     }
 
     void ImportPeepSpawns()
