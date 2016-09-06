@@ -71,8 +71,11 @@ namespace Guard
         char buffer[512];
         strcpy(buffer, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
         strcat(buffer, version);
-        strcat(buffer, "\r\n");
-        vsprintf((char *)strchr(buffer, 0), message, args);
+        if (message != nullptr)
+        {
+            strcat(buffer, "\r\n");
+            vsprintf((char *)strchr(buffer, 0), message, args);
+        }
         int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)
         {
