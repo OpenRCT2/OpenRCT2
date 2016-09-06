@@ -92,7 +92,7 @@ static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
 
 static char *_changelogText = NULL;
-static long _changelogTextSize = 0;
+static size_t _changelogTextSize = 0;
 static char **_changelogLines = NULL;
 static int _changelogNumLines = 0;
 static int _changelogLongestLineWidth = 0;
@@ -208,7 +208,7 @@ static bool window_changelog_read_file()
 	window_changelog_dispose_file();
 	utf8 path[MAX_PATH];
 	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
-	if (!readentirefile(path, (void**)&_changelogText, (int*)&_changelogTextSize)) {
+	if (!readentirefile(path, (void**)&_changelogText, &_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");
 		return false;
 	}

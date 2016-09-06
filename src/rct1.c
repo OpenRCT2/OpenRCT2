@@ -27,7 +27,7 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 	size_t length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
+	if (!readentirefile(path, (void**)&buffer, &length)) {
 		gErrorType = ERROR_TYPE_FILE_LOAD;
 		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
@@ -57,7 +57,7 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	size_t length, decodedLength;
 	bool success;
 
-	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
+	if (!readentirefile(path, (void**)&buffer, &length)) {
 		gErrorType = ERROR_TYPE_FILE_LOAD;
 		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;

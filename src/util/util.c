@@ -142,10 +142,10 @@ void path_remove_extension(utf8 *path)
 		log_warning("No extension found. (path = %s)", path);
 }
 
-bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
+bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
 {
 	SDL_RWops *fp;
-	int fpLength;
+	size_t fpLength;
 	void *fpBuffer;
 
 	// Open file
@@ -154,7 +154,7 @@ bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 		return 0;
 
 	// Get length
-	fpLength = (int)SDL_RWsize(fp);
+	fpLength = SDL_RWsize(fp);
 
 	// Read whole file into a buffer
 	fpBuffer = malloc(fpLength);

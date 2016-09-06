@@ -34,7 +34,7 @@ const char *path_get_extension(const utf8 *path);
 void path_set_extension(utf8 *path, const utf8 *newExtension);
 void path_append_extension(utf8 *path, const utf8 *newExtension);
 void path_remove_extension(utf8 *path);
-bool readentirefile(const utf8 *path, void **outBuffer, int *outLength);
+bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 
 int bitscanforward(int source);
 int bitcount(int source);
