@@ -19,8 +19,12 @@
 
 #include "../../src/common.h"
 
+#define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
+#define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
+
 bool testRide(int rideType);
 void initHooks();
+int getTrackSequenceCount(uint8 rideType, uint8 trackType);
 bool rideIsImplemented(int rideType);
 bool rideSupportsTrackType(int rideType, int trackType);
 bool testTrackPainting(int rideType, int trackType);

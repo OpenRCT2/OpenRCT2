@@ -84,6 +84,7 @@
     <ClCompile Include="compat.c" />
     <ClCompile Include="data.c" />
     <ClCompile Include="intercept.c" />
+    <ClCompile Include="intercept_2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="..\..\src\addresses.c" />
     <ClCompile Include="..\..\src\diagnostic.c" />

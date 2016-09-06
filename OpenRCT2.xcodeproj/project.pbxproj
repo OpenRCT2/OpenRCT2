@@ -19,6 +19,7 @@
 		791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */; };
 		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		85AFA2111D7DB83E00221B42 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AFA20F1D7DB83E00221B42 /* main.cpp */; };
+		85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; };
 		C61FB7211CF618BA004CE991 /* libssl.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -495,6 +496,7 @@
 		85AFA20F1D7DB83E00221B42 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		85AFA2101D7DB83E00221B42 /* intercept.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intercept.h; sourceTree = "<group>"; };
 		85AFA2141D7DDFA100221B42 /* data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
+		85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = intercept_2.cpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1165,6 +1167,7 @@
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
 				C64FDAC91D6DA92D00F259B9 /* data.c */,
 				85AFA2141D7DDFA100221B42 /* data.h */,
+				85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */,
 				C64FDAC71D6DA72400F259B9 /* intercept.c */,
 				85AFA2101D7DB83E00221B42 /* intercept.h */,
 				85AFA20F1D7DB83E00221B42 /* main.cpp */,
@@ -2417,6 +2420,7 @@
 				C64FDA8E1D6D9A2100F259B9 /* mini_golf.c in Sources */,
 				C64FDA8F1D6D9A2100F259B9 /* mini_helicopters.c in Sources */,
 				C64FDA901D6D9A2100F259B9 /* monorail_cycles.c in Sources */,
+				85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */,
 				C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */,
 				C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */,
 				C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */,

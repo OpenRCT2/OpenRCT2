@@ -21,8 +21,6 @@
 #include "../../src/interface/viewport.h"
 #include "../../src/hook.h"
 
-#define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
-#define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
 static const uint32 PALETTE_98 = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
 static const uint32 PALETTE_9C = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
@@ -446,7 +444,7 @@ static void printFunctionCallArray(utf8string *out, function_call calls[], uint8
 	}
 }
 
-static int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
+int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
 	int sequenceCount = 0;
 	const rct_preview_track **trackBlocks;
 
@@ -478,6 +476,9 @@ bool rideSupportsTrackType(int rideType, int trackType) {
 
 	return supportsTrackType;
 }
+
+
+extern bool testSupportSegments(uint8 rideType, uint8 trackType);
 
 static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
@@ -588,6 +589,11 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 			}
 		}
+	}
+
+	bool segmentSuccess = testSupportSegments(rideType, trackType);
+	if (!segmentSuccess) {
+		return false;
 	}
 
 	return true;
