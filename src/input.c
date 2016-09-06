@@ -1625,13 +1625,13 @@ void game_handle_edge_scroll()
 	// Scroll left / right
 	if (gCursorState.x == 0)
 		scrollX = -1;
-	else if (gCursorState.x == gScreenWidth - 1)
+	else if (gCursorState.x >= gScreenWidth - 1)
 		scrollX = 1;
 
 	// Scroll up / down
 	if (gCursorState.y == 0)
 		scrollY = -1;
-	else if (gCursorState.y == gScreenHeight - 1)
+	else if (gCursorState.y >= gScreenHeight - 1)
 		scrollY = 1;
 
 	// Scroll viewport
