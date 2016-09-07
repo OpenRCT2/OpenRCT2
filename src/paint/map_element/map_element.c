@@ -33,6 +33,13 @@
 #include "../../game.h"
 #include "../supports.h"
 
+#ifdef NO_RCT2
+tunnel_entry gLeftTunnels[65];
+uint8 gLeftTunnelCount;
+tunnel_entry gRightTunnels[65];
+uint8 gRightTunnelCount;
+#endif
+
 static void blank_tiles_paint(int x, int y);
 static void sub_68B3FB(int x, int y);
 
@@ -134,9 +141,11 @@ static void sub_68B3FB(int x, int y)
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
-	RCT2_GLOBAL(0x141F56A, uint16_t) = 0;
-	RCT2_GLOBAL(0x9E3138, uint8_t) = 0xFF;
-	RCT2_GLOBAL(0x9E30B6, uint8_t) = 0xFF;
+	gLeftTunnelCount = 0;
+	gRightTunnelCount = 0;
+	gLeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+	gRightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+
 	RCT2_GLOBAL(0x9E323C, uint8_t) = 0xFF;
 	RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
 	RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
@@ -302,16 +311,16 @@ static void sub_68B3FB(int x, int y)
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
 {
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56A, uint8)++;
+	gLeftTunnels[gLeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+	gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
+	gLeftTunnelCount++;
 }
 
 void paint_util_push_tunnel_right(uint16 height, uint8 type)
 {
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56B, uint8)++;
+	gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+	gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
+	gRightTunnelCount++;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)

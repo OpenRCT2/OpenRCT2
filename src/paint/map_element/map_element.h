@@ -62,6 +62,23 @@ enum
 	TUNNEL_14 = 0x0E
 };
 
+typedef struct tunnel_entry {
+	uint8 height;
+	uint8 type;
+} tunnel_entry;
+
+#ifdef NO_RCT2
+extern tunnel_entry gLeftTunnels[65];
+extern uint8 gLeftTunnelCount;
+extern tunnel_entry gRightTunnels[65];
+extern uint8 gRightTunnelCount;
+#else
+#define gLeftTunnels				RCT2_ADDRESS(0x009E3138, tunnel_entry)
+#define gLeftTunnelCount			RCT2_GLOBAL(0x0141F56A, uint8)
+#define gRightTunnels				RCT2_ADDRESS(0x009E30B6, tunnel_entry)
+#define gRightTunnelCount			RCT2_GLOBAL(0x0141F56B, uint8)
+#endif
+
 extern bool gShowSupportSegmentHeights;
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type);
