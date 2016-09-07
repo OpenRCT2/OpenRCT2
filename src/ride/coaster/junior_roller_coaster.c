@@ -1720,7 +1720,6 @@ static void junior_rc_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uin
 
 /* rct2: 0x00515629, 0x00514D22, 0x005151B9 */
 static void paint_junior_rc_station_track(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 	rct_ride * ride = get_ride(rideIndex);
 	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 	uint32 imageId = entranceStyle->base_image_id;

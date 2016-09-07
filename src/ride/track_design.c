@@ -45,10 +45,7 @@ typedef struct map_backup {
 	uint8 current_rotation;
 } map_backup;
 
-static const rct_object_entry DefaultMazeObjectEntry = { 0x80, { "HMAZE   " }, 0 };
-
 rct_track_td6 *gActiveTrackDesign;
-uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;
 rct_xyz16 gTrackPreviewMin;
 rct_xyz16 gTrackPreviewMax;
@@ -329,7 +326,7 @@ static void track_design_load_scenery_objects(rct_track_td6 *td6)
 
 	// Load ride object
 	rct_object_entry * rideEntry = &td6->vehicle_object;
-	void * loadedObject = object_manager_load_object(rideEntry);
+	object_manager_load_object(rideEntry);
 
 	// Load scenery objects
 	rct_td6_scenery_element *scenery = td6->scenery_elements;

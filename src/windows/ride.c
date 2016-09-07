@@ -2225,7 +2225,6 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
  */
 static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
-	rct_ride *ride = get_ride(w->number);
 	switch (widgetIndex) {
 	case WIDX_VIEW_DROPDOWN:
 		window_ride_show_view_dropdown(w, widget);
@@ -2703,10 +2702,6 @@ static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_ride_vehicle_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_ride *ride;
-
-	ride = get_ride(w->number);
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
@@ -2835,14 +2830,8 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
  */
 static void window_ride_vehicle_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_ride *ride;
-	rct_ride_entry *rideEntry;
-
 	if (dropdownIndex == -1)
 		return;
-
-	ride = get_ride(w->number);
-	rideEntry = get_ride_entry_by_ride(ride);
 
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
@@ -4908,13 +4897,11 @@ static void window_ride_music_mousedown(int widgetIndex, rct_window *w, rct_widg
  */
 static void window_ride_music_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_ride *ride;
 	uint8 musicStyle;
 
 	if (widgetIndex != WIDX_MUSIC_DROPDOWN || dropdownIndex == -1)
 		return;
 
-	ride = get_ride(w->number);
 	musicStyle = window_ride_current_music_style_order[dropdownIndex];
 	gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 	game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
@@ -5949,10 +5936,8 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
 static void window_ride_income_increase_secondary_price(rct_window *w)
 {
 	rct_ride *ride;
-	rct_ride_entry *ride_type;
 
 	ride = get_ride(w->number);
-	ride_type = get_ride_entry(ride->subtype);
 
 	money16 price = ride->price_secondary;
 	if (price < MONEY(20, 00))
@@ -5968,10 +5953,8 @@ static void window_ride_income_increase_secondary_price(rct_window *w)
 static void window_ride_income_decrease_secondary_price(rct_window *w)
 {
 	rct_ride *ride;
-	rct_ride_entry *ride_type;
 
 	ride = get_ride(w->number);
-	ride_type = get_ride_entry(ride->subtype);
 
 	money16 price = ride->price_secondary;
 	if (price > MONEY(0, 00))

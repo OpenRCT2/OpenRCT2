@@ -364,11 +364,8 @@ static void title_do_next_script_opcode()
 		break;
 	case TITLE_SCRIPT_LOAD:
 		{
-			const uint8 *loadPtr;
 			char *ch, filename[32], path[MAX_PATH];
 			char separator = platform_get_path_separator();
-
-			loadPtr = _currentScript - 1;
 
 			// Get filename
 			ch = filename;

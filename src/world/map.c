@@ -3169,7 +3169,6 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 
 	int trackType = trackElement->properties.track.type;
 	int sequence = trackElement->properties.track.sequence & 0x0F;
-	int typeAndSequence = (trackType << 4) | sequence;
 	direction = (edge - trackElement->type) & 3;
 	rct_ride *ride = get_ride(trackElement->properties.track.ride_index);
 

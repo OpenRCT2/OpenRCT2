@@ -110,8 +110,6 @@ public:
 
     bool LoadObjects(const rct_object_entry * entries, size_t count) override
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
-
         // Find all the required objects
         size_t numRequiredObjects;
         auto requiredObjects = new const ObjectRepositoryItem *[OBJECT_ENTRY_COUNT];
@@ -159,8 +157,6 @@ public:
                 Object * loadedObject = ori->LoadedObject;
                 if (loadedObject != nullptr)
                 {
-                    size_t index = GetLoadedObjectIndex(loadedObject);
-
                     UnloadObject(loadedObject);
                     numObjectsUnloaded++;
                 }
