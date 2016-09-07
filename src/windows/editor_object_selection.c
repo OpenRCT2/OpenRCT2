@@ -478,8 +478,6 @@ void window_editor_object_selection_open()
  */
 static void setup_track_manager_objects()
 {
-	uint8 ride_list[128] = { 0 };
-
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
 	for (int i = 0; i < numObjects; i++) {

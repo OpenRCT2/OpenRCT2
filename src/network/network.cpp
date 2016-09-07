@@ -704,16 +704,13 @@ void Network::SaveGroups()
 		}
 		json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
 		json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
-		bool result;
 		try
 		{
 			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-			result = true;
 		}
 		catch (Exception ex)
 		{
 			log_error("Unable to save %s: %s", path, ex.GetMessage());
-			result = false;
 		}
 
 		json_decref(jsonGroupsCfg);

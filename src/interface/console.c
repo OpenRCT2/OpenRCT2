@@ -458,13 +458,9 @@ static int cc_rides(const utf8 **argv, int argc)
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
-				int subtype;
 				bool int_valid[3] = { 0 };
 				int ride_index = console_parse_int(argv[2], &int_valid[0]);
 				int type = console_parse_int(argv[3], &int_valid[1]);
-				if (argc > 4) {
-					subtype = console_parse_int(argv[4], &int_valid[2]);
-				}
 				if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
 				} else if (ride_index < 0) {
@@ -472,7 +468,6 @@ static int cc_rides(const utf8 **argv, int argc)
 				} else {
 					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 					int res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-					rct_ride *ride = get_ride(ride_index);
 					if (res == MONEY32_UNDEFINED) {
 						console_printf("That didn't work");
 					}
@@ -907,10 +902,6 @@ static int cc_load_object(const utf8 **argv, int argc) {
 			gSilentResearch = false;
 		}
 		else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
-			rct_scenery_set_entry *scenerySetEntry;
-
-			scenerySetEntry = get_scenery_group_entry(groupIndex);
-
 			research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
 
 			gSilentResearch = true;

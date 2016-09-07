@@ -164,7 +164,6 @@ int viewport_interaction_left_click(int x, int y)
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info)
 {
 	rct_map_element *mapElement;
-	rct_sprite *sprite;
 	rct_scenery_entry *sceneryEntry;
 	rct_banner *banner;
 	rct_ride *ride;
@@ -183,7 +182,6 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	info->x = mapCoord.x;
 	info->y = mapCoord.y;
 	mapElement = info->mapElement;
-	sprite = (rct_sprite*)mapElement;
 
 	switch (info->type) {
 	case VIEWPORT_INTERACTION_ITEM_SPRITE:

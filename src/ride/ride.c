@@ -994,14 +994,8 @@ static int ride_create_ride(ride_list_item listItem)
  */
 void ride_construct_new(ride_list_item listItem)
 {
-	int rideIndex;
-
 	game_command_callback = game_command_callback_ride_construct_new;
-	rideIndex = ride_create_ride(listItem);
-
-	// moved to game_command_callback_ride_construct_new:
-	/*if (rideIndex != -1)
-		ride_construct(rideIndex);*/
+	ride_create_ride(listItem);
 }
 
 /**
@@ -1782,7 +1776,6 @@ int ride_modify(rct_xy_element *input)
 	rct_xy_element mapElement, endOfTrackElement;
 	rct_ride *ride;
 	rct_ride_entry *rideType;
-	rct_window *constructionWindow;
 
 	mapElement = *input;
 	rideIndex = mapElement.element->properties.track.ride_index;
@@ -1809,7 +1802,7 @@ int ride_modify(rct_xy_element *input)
 	if (map_element_get_type(mapElement.element) == MAP_ELEMENT_TYPE_ENTRANCE)
 		return ride_modify_entrance_or_exit(mapElement.element, mapElement.x, mapElement.y);
 
-	constructionWindow = ride_create_or_find_construction_window(rideIndex);
+	ride_create_or_find_construction_window(rideIndex);
 
 	if (ride->type == RIDE_TYPE_MAZE)
 		return ride_modify_maze(mapElement.element, mapElement.x, mapElement.y);
@@ -2120,7 +2113,7 @@ static const rct_xy16 ride_spiral_slide_main_tile_offset[][4] = {
  */
 static void ride_spiral_slide_update(rct_ride *ride)
 {
-	int i, x, y, z;
+	int i, x, y;
 	rct_map_element *mapElement;
 	rct_peep *peep;
 
@@ -2145,7 +2138,6 @@ static void ride_spiral_slide_update(rct_ride *ride)
 
 		x = ride->station_starts[i] & 0xFF;
 		y = ride->station_starts[i] >> 8;
-		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
 		int rotation = map_element_get_direction(mapElement);

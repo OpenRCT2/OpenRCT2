@@ -339,7 +339,7 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, int x
  */
 int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, rct_string_id format, int colour)
 {
-	int font_height, line_height, line_width, line_y, num_lines;
+	int font_height, line_height, line_y, num_lines;
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
 	if (gCurrentFontSpriteBase >= 0) {
@@ -353,8 +353,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-	// line_width unused here
-	line_width = gfx_wrap_string(buffer, width, &num_lines, &font_height);
+	gfx_wrap_string(buffer, width, &num_lines, &font_height);
 	line_height = font_get_line_height(font_height);
 
 	if (*buffer == FORMAT_OUTLINE) {

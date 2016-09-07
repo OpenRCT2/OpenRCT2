@@ -1502,15 +1502,6 @@ void sub_6A759F()
  */
 static void footpath_unown(int x, int y, rct_map_element *pathElement)
 {
-	int ownershipUnk = 0;
-	int z = pathElement->base_height;
-	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
-	if (surfaceElement->base_height != z) {
-		z -= 2;
-		if (surfaceElement->base_height != z) {
-			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
-		}
-	}
 	map_buy_land_rights(x, y, x, y, 6, 1);
 }
 

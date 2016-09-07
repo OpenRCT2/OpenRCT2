@@ -1265,7 +1265,6 @@ static void window_ride_construction_resize(rct_window *w)
 static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride = get_ride(_currentRideIndex);
-	int rideType;
 
 	window_ride_construction_update_enabled_track_pieces();
 	switch (widgetIndex) {
@@ -1327,7 +1326,6 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		break;
 	case WIDX_SLOPE_DOWN_STEEP:
 		sub_6C9627();
-		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE | 0x100;
@@ -1425,7 +1423,6 @@ static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, r
 		break;
 	case WIDX_SLOPE_UP_STEEP:
 		sub_6C9627();
-		rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
 		if (is_track_enabled(TRACK_HELIX_SMALL)) {
 			if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT) {
 				_currentTrackCurve = TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE | 0x100;

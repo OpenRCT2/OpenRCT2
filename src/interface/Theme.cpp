@@ -849,12 +849,8 @@ extern "C"
             windowTheme = &desc->DefaultTheme;
         }
 
-        bool transparent = false;
         for (int i = 0; i < 6; i++) {
             window->colours[i] = windowTheme->Colours[i];
-            if (windowTheme->Colours[i] & COLOUR_FLAG_TRANSLUCENT) {
-                transparent = true;
-            }
         }
         // Some windows need to be transparent even if the colours aren't.
         // There doesn't seem to be any side-effects for all windows being transparent

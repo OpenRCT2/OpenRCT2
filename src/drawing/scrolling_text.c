@@ -83,13 +83,11 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 {
 	uint32 oldestId = 0xFFFFFFFF;
 	int scrollIndex = -1;
-	rct_draw_scroll_text* oldestScroll = NULL;
 	for (int i = 0; i < 32; i++) {
 		rct_draw_scroll_text *scrollText = &gDrawScrollTextList[i];
 		if (oldestId >= scrollText->id) {
 			oldestId = scrollText->id;
 			scrollIndex = i;
-			oldestScroll = scrollText;
 		}
 
 		// If exact match return the matching index

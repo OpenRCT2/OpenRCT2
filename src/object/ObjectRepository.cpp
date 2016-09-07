@@ -494,7 +494,7 @@ private:
     {
         if (fixChecksum)
         {
-            int realChecksum = object_calculate_checksum(entry, data, dataSize);
+            uint32 realChecksum = object_calculate_checksum(entry, data, dataSize);
             if (realChecksum != entry->checksum)
             {
                 char objectName[9];
@@ -515,7 +515,7 @@ private:
 
                 try
                 {
-                    int newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    uint32 newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
                         Guard::Fail("CalculateExtraBytesToFixChecksum failed to fix checksum.", GUARD_LINE);

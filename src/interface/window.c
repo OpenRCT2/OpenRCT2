@@ -853,7 +853,6 @@ void window_close_all_except_class(rct_windowclass cls)
 rct_window *window_find_from_point(int x, int y)
 {
 	rct_window *w;
-	rct_widget *widget;
 	int widget_index;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
@@ -864,8 +863,6 @@ rct_window *window_find_from_point(int x, int y)
 			widget_index = window_find_widget_from_point(w, x, y);
 			if (widget_index == -1)
 				continue;
-
-			widget = &w->widgets[widget_index];
 		}
 
 		return w;
