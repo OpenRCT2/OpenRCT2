@@ -1318,11 +1318,19 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			log_verbose("eax: %d", eax);
 		}
 
+		tunnel_entry backupLeftTunnels[65];
+		tunnel_entry backupRightTunnels[65];
+
+		memcpy(backupLeftTunnels, gLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(backupRightTunnels, gRightTunnels, sizeof(tunnel_entry) * 65);
+
 		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
+		memcpy(gLeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(gRightTunnels, backupRightTunnels, sizeof(tunnel_entry) * 65);
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
