@@ -163,7 +163,7 @@ void scenario_begin()
 	mainWindow->saved_view_x = gSavedViewX;
 	mainWindow->saved_view_y = gSavedViewY;
 
-	uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
+	sint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
 	mainWindow->viewport->zoom = gSavedViewZoom;
 	gCurrentRotation = gSavedViewRotation;
 	if (zoomDifference != 0) {

@@ -532,11 +532,8 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		break;
 	case WIDX_INTEREST_RATE_INCREASE:
 		if (gBankLoanInterestRate < 80) {
-			if (gBankLoanInterestRate < 0) {
-				gBankLoanInterestRate = 0;
-			} else {
-				gBankLoanInterestRate++;
-			}
+			// gBankLoanInterestRate is unsigned, so cannot be less than zero
+			gBankLoanInterestRate++;
 		} else {
 			window_error_open(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
 		}
@@ -674,7 +671,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
-		sint16 interestRate = clamp(INT16_MIN, (sint16)gBankLoanInterestRate, INT16_MAX);
+		sint16 interestRate = gBankLoanInterestRate;
 		gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, 0, x, y);
 	}
 }

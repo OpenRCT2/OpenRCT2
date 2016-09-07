@@ -864,14 +864,8 @@ void game_load_init()
 	mainWindow->viewport->zoom = gSavedViewZoom;
 	gCurrentRotation = gSavedViewRotation;
 	if (zoomDifference != 0) {
-		if (zoomDifference < 0) {
-			zoomDifference = -zoomDifference;
-			mainWindow->viewport->view_width >>= zoomDifference;
-			mainWindow->viewport->view_height >>= zoomDifference;
-		} else {
-			mainWindow->viewport->view_width <<= zoomDifference;
-			mainWindow->viewport->view_height <<= zoomDifference;
-		}
+		mainWindow->viewport->view_width <<= zoomDifference;
+		mainWindow->viewport->view_height <<= zoomDifference;
 	}
 	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
 	mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
