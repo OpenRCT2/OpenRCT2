@@ -867,6 +867,9 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 			peep_thought_set_format_args(thought);
 			memcpy(argument_1, gCommonFormatArgs, sizeof(*argument_1));
 			memcpy(argument_2, gCommonFormatArgs + sizeof(*argument_1), sizeof(*argument_2));
+		} else {
+			*argument_1 = 0;
+			*argument_2 = 0;
 		}
 		break;
 	}
