@@ -1321,16 +1321,33 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		tunnel_entry backupLeftTunnels[65];
 		tunnel_entry backupRightTunnels[65];
 
+#ifdef __MINGW32__
+		// The other code crashes mingw 4.8.2, as available on Travis
+		for (int i = 0; i < 65; i++) {
+			backupLeftTunnels[i] = gLeftTunnels[i];
+			backupRightTunnels[i] = gRightTunnels[i];
+		}
+#else
 		memcpy(backupLeftTunnels, gLeftTunnels, sizeof(tunnel_entry) * 65);
 		memcpy(backupRightTunnels, gRightTunnels, sizeof(tunnel_entry) * 65);
+#endif
 
 		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
+
+#ifdef __MINGW32__
+		// The other code crashes mingw 4.8.2, as available on Travis
+		for (int i = 0; i < 65; i++) {
+			gLeftTunnels[i] = backupLeftTunnels[i];
+			gRightTunnels[i] = backupRightTunnels[i];
+		}
+#else
 		memcpy(gLeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * 65);
 		memcpy(gRightTunnels, backupRightTunnels, sizeof(tunnel_entry) * 65);
+#endif
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
