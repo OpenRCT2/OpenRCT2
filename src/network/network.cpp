@@ -291,7 +291,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	}
 	catch (Exception ex)
 	{
-		Console::Error::WriteLine(ex.GetMsg());
+		Console::Error::WriteLine(ex.GetMessage());
 		Close();
 		return false;
 	}
@@ -754,7 +754,7 @@ void Network::LoadGroups()
 	try {
 		json = Json::ReadFromFile(path);
 	} catch (const Exception& e) {
-		log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMsg());
+		log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
 		// Hardcoded permission groups
 		SetupDefaultGroups();
 		return;

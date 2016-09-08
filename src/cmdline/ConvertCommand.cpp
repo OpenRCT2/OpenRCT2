@@ -130,7 +130,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine(ex.GetMsg());
+            Console::Error::WriteLine(ex.GetMessage());
             return EXITCODE_FAIL;
         }
     }

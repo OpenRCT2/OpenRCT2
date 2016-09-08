@@ -28,6 +28,7 @@
     #include <winsock2.h>
     #include <ws2tcpip.h>
 
+    #undef GetMessage
     #define LAST_SOCKET_ERROR() WSAGetLastError()
     #undef EWOULDBLOCK
     #define EWOULDBLOCK WSAEWOULDBLOCK
@@ -321,7 +322,7 @@ public:
                 }
                 catch (Exception ex)
                 {
-                    req->Socket->_error = std::string(ex.GetMsg());
+                    req->Socket->_error = std::string(ex.GetMessage());
                 }
 
                 SDL_UnlockMutex(req->Socket->_connectMutex);
