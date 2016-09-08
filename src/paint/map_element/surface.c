@@ -681,7 +681,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		curHeight += stru_97B570[tunnelType][0];
 
 		// TODO: Should probably be done by just keeping track of the current index
-		memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
+		memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
