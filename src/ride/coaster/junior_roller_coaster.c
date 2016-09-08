@@ -1782,13 +1782,15 @@ static void junior_rc_25_deg_up_paint_setup(uint8 rideIndex, uint8 trackSequence
 
 	image_id |= junior_rc_track_pieces_25_deg_up[isChained][direction];
 	
+	sint8 tunnel_height[4] = { -8, 8, 8, -8 };
+	uint8 tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
 	if (direction & 1) {
 		sub_98196C(image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
-		paint_util_push_tunnel_right(height, TUNNEL_2);
+		paint_util_push_tunnel_right(height + tunnel_height[direction], tunnel_type[direction]);
 	}
 	else {
 		sub_98196C(image_id, 0, 6, 32, 20, 1, height, get_current_rotation());
-		paint_util_push_tunnel_left(height, TUNNEL_1);
+		paint_util_push_tunnel_left(height + tunnel_height[direction], tunnel_type[direction]);
 	}
 
 	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
