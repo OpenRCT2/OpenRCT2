@@ -479,6 +479,7 @@ bool rideSupportsTrackType(int rideType, int trackType) {
 
 
 extern bool testSupportSegments(uint8 rideType, uint8 trackType);
+extern bool testTunnels(uint8 rideType, uint8 trackType);
 
 static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
@@ -593,6 +594,11 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
+		return false;
+	}
+
+	bool tunnelSuccess = testTunnels(rideType, trackType);
+	if (!tunnelSuccess) {
 		return false;
 	}
 

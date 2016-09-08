@@ -46,6 +46,18 @@ namespace Intercept2
         sint16 slope;
     };
 
+    enum {
+        TUNNELCALL_SKIPPED,
+        TUNNELCALL_NONE,
+        TUNNELCALL_CALL,
+    };
+
+    struct TunnelCall {
+        uint8 call;
+        uint8 height;
+        uint8 type;
+    };
+
     bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
     {
         if (lhs.height != rhs.height) {
@@ -171,6 +183,93 @@ namespace Intercept2
 
             sprintf(*out + strlen(*out), ", 0x%02X\n", call.slope);
         }
+    }
+
+    static bool tunnelCallsLineUp(TunnelCall tunnelCalls[4][4])
+    {
+        for (int side = 0; side < 4; ++side) {
+            TunnelCall * referenceCall = nullptr;
+            for (int direction = 0; direction < 4; ++direction) {
+                if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED) {
+                    continue;
+                }
+
+                if (referenceCall == nullptr) {
+                    referenceCall = &tunnelCalls[direction][side];
+                    continue;
+                }
+
+                if (referenceCall->call != tunnelCalls[direction][side].call) return false;
+
+                if (referenceCall->call == TUNNELCALL_CALL) {
+                    if (referenceCall->type != tunnelCalls[direction][side].type) return false;
+                    if (referenceCall->height != tunnelCalls[direction][side].height) return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static utf8string getTunnelEdgeString(TunnelCall edge) {
+        utf8string out = new utf8[5];
+
+        switch(edge.call) {
+            case TUNNELCALL_SKIPPED:
+                sprintf(out, "     ");
+                break;
+
+            case TUNNELCALL_NONE:
+                sprintf(out, "  -  ");
+                break;
+
+            case TUNNELCALL_CALL:
+                sprintf(out, "  %d  ", edge.height);
+                break;
+        }
+
+        return out;
+    }
+
+    static void printTunnelCalls(TunnelCall tunnelCalls[4][4])
+    {
+        for (int direction = 0; direction < 4; ++direction) {
+            printf("        +        ");
+        }
+        printf("\n");
+
+        for (int direction = 0; direction < 4; ++direction) {
+            utf8string tlEdge = getTunnelEdgeString(tunnelCalls[direction][2]);
+            utf8string trEdge = getTunnelEdgeString(tunnelCalls[direction][3]);
+            printf("   %s %s   ", tlEdge, trEdge);
+            delete tlEdge;
+            delete trEdge;
+        }
+        printf("\n");
+
+        for (int direction = 0; direction < 4; ++direction) {
+            printf("  +           +  ");
+        }
+        printf("\n");
+
+        for (int direction = 0; direction < 4; ++direction) {
+            utf8string brEdge = getTunnelEdgeString(tunnelCalls[direction][0]);
+            utf8string blEdge = getTunnelEdgeString(tunnelCalls[direction][1]);
+            printf("   %s %s   ", blEdge, brEdge);
+            delete blEdge;
+            delete brEdge;
+        }
+        printf("\n");
+
+        for (int direction = 0; direction < 4; ++direction) {
+            printf("        +        ");
+        }
+        printf("\n");
+
+        for (int direction = 0; direction < 4; ++direction) {
+            printf("   direction %d   ", direction);
+        }
+        printf("\n");
     }
 
     static bool testSupportSegments(uint8 rideType, uint8 trackType)
@@ -322,6 +421,106 @@ namespace Intercept2
 
         return true;
     }
+
+    static bool testTunnels(uint8 rideType, uint8 trackType)
+    {
+        uint8 rideIndex = 0;
+        rct_map_element mapElement = {0};
+        mapElement.properties.track.type = trackType;
+        mapElement.base_height = 3;
+
+        g_currently_drawn_item = &mapElement;
+
+        rct_map_element surfaceElement = {0};
+        surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+        surfaceElement.base_height = 2;
+
+        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
+        RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
+        RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
+        RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+
+        rct_drawpixelinfo dpi = {.zoom_level = 1};
+        unk_140E9A8 = &dpi;
+
+        rct_vehicle vehicle = {0};
+        rct_ride ride = {0};
+
+        rct_ride_entry rideEntry = {0};
+        rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
+        rideEntry.vehicles[0] = vehicleEntry;
+
+
+        gRideList[0] = ride;
+        gRideEntries[0] = &rideEntry;
+
+        int height = 48;
+
+        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+        int sequenceCount = getTrackSequenceCount(rideType, trackType);
+
+
+        for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
+            TunnelCall tileTunnelCalls[4][4];
+
+            for (int direction = 0; direction < 4; direction++) {
+                gLeftTunnelCount = 0;
+                gRightTunnelCount = 0;
+
+                TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
+                uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
+
+                // Have to call from this point as it pushes esi and expects callee to pop it
+                RCT2_CALLPROC_X(
+                    0x006C4934,
+                    rideType,
+                    (int) trackDirectionList,
+                    direction,
+                    height,
+                    (int) &mapElement,
+                    rideIndex * sizeof(rct_ride),
+                    trackSequence
+                );
+
+                uint8 rightIndex = (4 - direction) % 4;
+                uint8 leftIndex = (rightIndex + 1) % 4;
+
+                for (int i = 0; i < 4; ++i) {
+                    tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
+                }
+
+                if (gRightTunnelCount == 0) {
+                    tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
+                } else if (gRightTunnelCount == 1) {
+                    tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
+                    tileTunnelCalls[direction][rightIndex].height = gRightTunnels[0].height;
+                    tileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
+                } else {
+                    printf("Multiple tunnels on one side aren't supported.\n");
+                    return false;
+                }
+
+                if (gLeftTunnelCount == 0) {
+                    tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
+                } else if (gLeftTunnelCount == 1) {
+                    tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
+                    tileTunnelCalls[direction][leftIndex].height = gLeftTunnels[0].height;
+                    tileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
+                } else {
+                    printf("Multiple tunnels on one side aren't supported.\n");
+                    return false;
+                }
+            }
+
+            if (!tunnelCallsLineUp(tileTunnelCalls)) {
+                printf("Tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n", trackSequence);
+                printTunnelCalls(tileTunnelCalls);
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 
@@ -331,4 +530,10 @@ extern "C"
     {
         return Intercept2::testSupportSegments(rideType, trackType);
     }
+
+    bool testTunnels(uint8 rideType, uint8 trackType)
+    {
+        return Intercept2::testTunnels(rideType, trackType);
+    }
+
 }
