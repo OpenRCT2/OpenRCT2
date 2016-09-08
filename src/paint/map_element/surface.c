@@ -633,7 +633,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			// Normal walls
 			while (curHeight > tunnelArray[0].height) {
 				// TODO: Should probably be done by just keeping track of the current index
-				memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
+				memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
 			if (curHeight != tunnelArray[0].height) {
@@ -903,7 +903,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			// Normal walls
 			while (curHeight > tunnelArray[0].height) {
 				// TODO: Should probably be done by just keeping track of the current index
-				memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
+				memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
 			sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
@@ -949,7 +949,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 		curHeight += stru_97B570[tunnelType][0];
 
 		// TODO: Should probably be done by just keeping track of the current index
-		memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
+		memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
