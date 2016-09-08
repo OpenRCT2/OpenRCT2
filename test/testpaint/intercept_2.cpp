@@ -40,6 +40,12 @@ namespace Intercept2
         sint16 slope;
     };
 
+    struct SupportCall
+    {
+        sint32 height;
+        sint16 slope;
+    };
+
     bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
     {
         if (lhs.height != rhs.height) {
@@ -132,6 +138,17 @@ namespace Intercept2
         return true;
     }
 
+    static bool supportCallsMatch(SupportCall tileSupportCalls[4])
+    {
+        SupportCall baseCall = tileSupportCalls[0];
+        for (int i = 1; i < 4; i++) {
+            if (tileSupportCalls[i].height != baseCall.height) return false;
+            if (tileSupportCalls[i].slope != baseCall.slope) return false;
+        }
+
+        return true;
+    }
+
     static void printSegmentSupports(utf8string * out, std::vector<SegmentSupportCall> segmentCalls)
     {
         for (auto &&call : segmentCalls) {
@@ -197,12 +214,16 @@ namespace Intercept2
 
         for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
             std::vector<SegmentSupportCall> tileSegmentSupportCalls[4];
+            SupportCall tileGeneralSupportCalls[4];
 
             for (int direction = 0; direction < 4; direction++) {
                 for (int s = 0; s < 9; ++s) {
                     gSupportSegments[s].height = 0;
                     gSupportSegments[s].slope = 0xFF;
                 }
+
+                gSupport.height = 0;
+                gSupport.slope = 0xFF;
 
                 TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
                 uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
@@ -220,6 +241,15 @@ namespace Intercept2
                 );
 
                 tileSegmentSupportCalls[direction] = getSegmentCalls(gSupportSegments, direction);
+
+                tileGeneralSupportCalls[direction].height = -1;
+                tileGeneralSupportCalls[direction].slope = -1;
+                if (gSupport.height != 0) {
+                    tileGeneralSupportCalls[direction].height = gSupport.height;
+                }
+                if (gSupport.slope != 0xFF) {
+                    tileGeneralSupportCalls[direction].height = gSupport.height;
+                }
             }
 
             if (!segmentCallsMatch(tileSegmentSupportCalls)) {
@@ -255,6 +285,39 @@ namespace Intercept2
                     return false;
                 }
             }
+
+            if (!supportCallsMatch(tileGeneralSupportCalls)) {
+                // TODO: if 3 directions do share the output, use that.
+                printf("Original support calls didn't match. [trackSequence:%d]\n", trackSequence);
+                continue;
+            }
+
+            SupportCall referenceGeneralSupportCall = tileGeneralSupportCalls[0];
+
+
+            for (int direction = 0; direction < 4; direction++) {
+                gSupport.height = 0;
+                gSupport.slope = 0xFF;
+
+                TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
+                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+                if (referenceGeneralSupportCall.height != -1) {
+                    if (gSupport.height != referenceGeneralSupportCall.height) {
+                        printf("General support heights didn't match. [direction:%d trackSequence:%d]\n", direction,
+                               trackSequence);
+                        return false;
+                    }
+                }
+                if (referenceGeneralSupportCall.slope != -1) {
+                    if (gSupport.slope != referenceGeneralSupportCall.slope) {
+                        printf("General support slopes didn't match. [direction:%d trackSequence:%d]\n", direction,
+                               trackSequence);
+                        return false;
+                    }
+                }
+            }
+
         }
 
         return true;
