@@ -539,7 +539,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
-	uint32 tunnelArray;
+	tunnel_entry * tunnelArray;
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
@@ -553,7 +553,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			tunnelBounds.x = 32;
 			tunnelTopBoundBoxOffset.y = 31;
 
-			tunnelArray = 0x9E3138;
+			tunnelArray = gLeftTunnels;
 			break;
 
 		case EDGE_BOTTOMRIGHT:
@@ -568,7 +568,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			tunnelBounds.y = 32;
 			tunnelTopBoundBoxOffset.x = 31;
 
-			tunnelArray = 0x009E30B6;
+			tunnelArray = gRightTunnels;
 			break;
 
 		default:
@@ -629,15 +629,14 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			return;
 		}
 
-		if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+		if (curHeight != tunnelArray[0].height) {
 			// Normal walls
-			while (curHeight > RCT2_GLOBAL(tunnelArray, uint8)) {
-				for (int offset = 0; offset <= 0x7E; offset += 4) {
-					RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-				}
+			while (curHeight > tunnelArray[0].height) {
+				// TODO: Should probably be done by just keeping track of the current index
+				memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
-			if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+			if (curHeight != tunnelArray[0].height) {
 				sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
 				curHeight++;
@@ -646,7 +645,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		}
 		
 		// Tunnels
-		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
+		uint8 tunnelType = tunnelArray[0].type;
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
 		sint16 zOffset = curHeight;
 
@@ -681,9 +680,8 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 
 		curHeight += stru_97B570[tunnelType][0];
 
-		for (int offset = 0; offset <= 0x7E; offset += 4) {
-			RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-		}
+		// TODO: Should probably be done by just keeping track of the current index
+		memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
@@ -801,7 +799,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
-	uint32 tunnelArray;
+	tunnel_entry * tunnelArray;
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
@@ -815,7 +813,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			tunnelBounds.x = 32;
 			tunnelTopBoundBoxOffset.y = 31;
 
-			tunnelArray = 0x9E3138;
+			tunnelArray = gLeftTunnels;
 			break;
 
 		case EDGE_BOTTOMRIGHT:
@@ -830,7 +828,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			tunnelBounds.y = 32;
 			tunnelTopBoundBoxOffset.x = 31;
 
-			tunnelArray = 0x009E30B6;
+			tunnelArray = gRightTunnels;
 			break;
 
 		default:
@@ -901,12 +899,11 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			return;
 		}
 
-		if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+		if (curHeight != tunnelArray[0].height) {
 			// Normal walls
-			while (curHeight > RCT2_GLOBAL(tunnelArray, uint8)) {
-				for (int offset = 0; offset <= 0x7E; offset += 4) {
-					RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-				}
+			while (curHeight > tunnelArray[0].height) {
+				// TODO: Should probably be done by just keeping track of the current index
+				memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
 			sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
@@ -916,7 +913,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 		}
 
 		// Tunnels
-		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
+		uint8 tunnelType = tunnelArray[0].type;
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
 		sint16 zOffset = curHeight;
 
@@ -951,9 +948,8 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 
 		curHeight += stru_97B570[tunnelType][0];
 
-		for (int offset = 0; offset <= 0x7E; offset += 4) {
-			RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-		}
+		// TODO: Should probably be done by just keeping track of the current index
+		memcpy(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
@@ -1322,16 +1318,19 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			log_verbose("eax: %d", eax);
 		}
 
-		for (int i = 0; i <= 0x7C; i += 4) {
-			RCT2_GLOBAL(0x009E2F30 + i, uint32) = RCT2_GLOBAL(0x009E3138 + i, uint32);
-			RCT2_GLOBAL(0x009E2EAE + i, uint32) = RCT2_GLOBAL(0x009E30B6 + i, uint32);
-		}
+		tunnel_entry backupLeftTunnels[65];
+		tunnel_entry backupRightTunnels[65];
+
+		memcpy(backupLeftTunnels, gLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(backupRightTunnels, gRightTunnels, sizeof(tunnel_entry) * 65);
 
 		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
+		memcpy(gLeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(gRightTunnels, backupRightTunnels, sizeof(tunnel_entry) * 65);
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
@@ -1355,11 +1354,6 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
 			paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);
-
-			for (int i = 0; i <= 0x7C; i += 4) {
-				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
-				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
-			}
 
 			// This wasn't in the original, but the code depended on globals that were only set in a different conditional
 			uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
