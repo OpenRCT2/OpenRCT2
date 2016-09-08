@@ -657,9 +657,6 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
 			gConfigGeneral.render_weather_effects ^= 1;
 			gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
-			if (!gConfigGeneral.render_weather_effects) {
-				gConfigGeneral.disable_lightning_effect = true;
-			}
 			config_save_default();
 			window_invalidate(w);
 			gfx_invalidate_screen();
@@ -1478,10 +1475,6 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
 		if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom) {
 			widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-			if (!gConfigGeneral.disable_lightning_effect) {
-				gConfigGeneral.disable_lightning_effect = true;
-				config_save_default();
-			}
 			w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
 			w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
 		}
