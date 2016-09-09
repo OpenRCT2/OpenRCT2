@@ -13,10 +13,8 @@
   <!-- Import custom build tasks -->
   <Import Project="openrct2.targets" />
 
-  <!-- Import the C++ project for OpenRCT2 -->
-  <Import Project="openrct2.vcxproj" />
-
   <PropertyGroup>
+    <Platform Condition="'$(PLATFORM)'==''">Win32</Platform>
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
@@ -36,6 +34,7 @@
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
     <ArtifactsDir>$(RootDir)artifacts\</ArtifactsDir>
+    <TargetDir>$(RootDir)bin\</TargetDir>
 
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
@@ -141,7 +140,7 @@
     <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
   </Target>
 
-  <Target Name="BeforeClean">
+  <Target Name="Clean">
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
       <CleanItems Condition="'$(Platform)'=='x64'" Include="$(OutputSegmentInfo)" />
@@ -154,9 +153,10 @@
     <Delete Files="@(CleanItems)" />
     <Delete Files="%(SignItems.Identity).signed" />
     <RemoveDir Directories="$(TargetDir)data" />
+    <MSBuild Projects="openrct2.sln" Targets="Clean" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="InitializeBuildStatus" DependsOnTargets="CheckLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="CheckLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
@@ -169,6 +169,20 @@
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
     <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
+
+    <!-- tests -->
+    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)testpaint\" />
+  </Target>
+
+  <Target Name="Build">
+    <MSBuild Projects="openrct2.sln" Targets="Build" />
+  </Target>
+  <Target Name="Rebuild">
+    <MSBuild Projects="openrct2.sln" Targets="Rebuild" />
+  </Target>
+
+  <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
+    <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
   </Target>
 
   <!-- Target to create the segment information x64 builds currently require -->
