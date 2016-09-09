@@ -14,6 +14,7 @@
   <Import Project="openrct2.targets" />
 
   <PropertyGroup>
+    <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">Win32</Platform>
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
@@ -40,7 +41,7 @@
 
     <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
     <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
-    <OutputExe Condition="'$(Platform)'=='x64'">$(TargetPath)</OutputExe>
+    <OutputExe Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_x64.exe</OutputExe>
     <OutputSegmentInfo Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_data</OutputSegmentInfo>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
@@ -74,7 +75,7 @@
   <ItemGroup Label="Symbol Items">
     <SymbolItems Condition="'$(Platform)'=='Win32'" Include="$(OutputDll)" />
     <SymbolItems Include="$(OutputExe)" />
-    <SymbolItems Include="$(TargetDir)$(TargetName).pdb" />
+    <SymbolItems Include="$([System.IO.Path]::ChangeExtension($(OutputExe), '.pdb'))" />
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">
