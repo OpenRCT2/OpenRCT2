@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -777,8 +776,9 @@ void window_guest_viewport_init(rct_window* w){
 	}
 	else{
 		viewport_flags = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+		if (gConfigGeneral.always_show_gridlines) {
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+		}
 	}
 
 	window_event_invalidate_call(w);
