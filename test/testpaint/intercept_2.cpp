@@ -308,14 +308,16 @@ namespace Intercept2
         RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
         RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
 
-        rct_drawpixelinfo dpi = {.zoom_level = 1};
+        rct_drawpixelinfo dpi = { 0 };
+        dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
         rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
+        rct_ride_entry_vehicle vehicleEntry { 0 };
+        vehicleEntry.base_image_id = 0x70000;
         rideEntry.vehicles[0] = vehicleEntry;
 
 
@@ -472,14 +474,16 @@ namespace Intercept2
         RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
         RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
 
-        rct_drawpixelinfo dpi = {.zoom_level = 1};
+        rct_drawpixelinfo dpi { 0 };
+        dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
         rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
+        rct_ride_entry_vehicle vehicleEntry { 0 };
+        vehicleEntry.base_image_id = 0x70000;
         rideEntry.vehicles[0] = vehicleEntry;
 
 
@@ -660,14 +664,16 @@ namespace Intercept2
         RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
         RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
 
-        rct_drawpixelinfo dpi = {.zoom_level = 1};
+        rct_drawpixelinfo dpi = { 0 };
+        dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
         rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
+        rct_ride_entry_vehicle vehicleEntry = { 0 };
+        vehicleEntry.base_image_id = 0x70000;
         rideEntry.vehicles[0] = vehicleEntry;
 
 
