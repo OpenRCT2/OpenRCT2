@@ -691,7 +691,7 @@ private:
                 uint32 * dst = (uint32 *)pixels;
                 for (int i = _width * _height; i > 0; i--)
                 {
-                    *dst++ = *(uint32 *)(&_paletteHWMapped[*src++]);
+                    *dst++ = _paletteHWMapped[*src++];
                 }
             }
             else
