@@ -4647,15 +4647,19 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
 		} else {
 			spriteIndex = TrackColourPreviews[ride->type].track;
-			spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
-			spriteIndex |= 0xA0000000;
-			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+			if (spriteIndex != 0) {
+				spriteIndex |= (trackColour.additional << 24) | (trackColour.main << 19);
+				spriteIndex |= 0xA0000000;
+				gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+			}
 
 			// Supports
 			spriteIndex = TrackColourPreviews[ride->type].supports;
-			spriteIndex |= trackColour.supports << 19;
-			spriteIndex |= 0x20000000;
-			gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+			if (spriteIndex != 0) {
+				spriteIndex |= trackColour.supports << 19;
+				spriteIndex |= 0x20000000;
+				gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+			}
 		}
 	} else {
 		x = w->x + (widget->left + widget->right) / 2 - 8;
