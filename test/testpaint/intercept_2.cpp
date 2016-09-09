@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <vector>
+#include <algorithm>
 
 extern "C" {
     #include "intercept.h"
@@ -58,7 +59,7 @@ namespace Intercept2
         uint8 type;
     };
 
-    bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
+    static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
     {
         if (lhs.height != rhs.height) {
             return lhs.height < rhs.height;
@@ -635,7 +636,7 @@ namespace Intercept2
         }
 
         if (height < 0) {
-            sprintf(out, "height - %d", abs(height));
+            sprintf(out, "height - %d", int(abs(height)));
             return;
         }
     }

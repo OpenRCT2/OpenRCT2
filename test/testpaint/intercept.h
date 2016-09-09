@@ -28,5 +28,8 @@ int getTrackSequenceCount(uint8 rideType, uint8 trackType);
 bool rideIsImplemented(int rideType);
 bool rideSupportsTrackType(int rideType, int trackType);
 bool testTrackPainting(int rideType, int trackType);
+bool testSupportSegments(uint8 rideType, uint8 trackType);
+bool testTunnels(uint8 rideType, uint8 trackType);
+bool testVerticalTunnels(uint8 rideType, uint8 trackType);
 
 #endif // #endif _TEST_PAINT_INTERCEPT_H_
