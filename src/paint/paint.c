@@ -121,9 +121,6 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	int right = left + g1Element->width;
 	int top = bottom + g1Element->height;
 
-	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
-	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
-
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (right <= dpi->x)return NULL;
@@ -273,9 +270,6 @@ paint_struct * sub_98196C(
 
 	sint16 right = left + g1Element->width;
 	sint16 top = bottom + g1Element->height;
-
-	RCT2_GLOBAL(0xF1AD1C, sint16) = left;
-	RCT2_GLOBAL(0xF1AD1E, sint16) = bottom;
 
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
