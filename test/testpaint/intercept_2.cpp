@@ -229,15 +229,15 @@ namespace Intercept2
 
     static utf8string getTunnelEdgeString(TunnelCall edge)
     {
-        utf8string out = new utf8[5];
+        utf8string out = new utf8[6];
 
         switch (edge.call) {
             case TUNNELCALL_SKIPPED:
-                sprintf(out, "     ");
+                sprintf(out, "%s", "     ");
                 break;
 
             case TUNNELCALL_NONE:
-                sprintf(out, "  -  ");
+                sprintf(out, "%s", "  -  ");
                 break;
 
             case TUNNELCALL_CALL:
@@ -259,8 +259,8 @@ namespace Intercept2
             utf8string tlEdge = getTunnelEdgeString(tunnelCalls[direction][2]);
             utf8string trEdge = getTunnelEdgeString(tunnelCalls[direction][3]);
             printf("   %s %s   ", tlEdge, trEdge);
-            delete tlEdge;
-            delete trEdge;
+            delete [] tlEdge;
+            delete [] trEdge;
         }
         printf("\n");
 
@@ -273,8 +273,8 @@ namespace Intercept2
             utf8string brEdge = getTunnelEdgeString(tunnelCalls[direction][0]);
             utf8string blEdge = getTunnelEdgeString(tunnelCalls[direction][1]);
             printf("   %s %s   ", blEdge, brEdge);
-            delete blEdge;
-            delete brEdge;
+            delete [] blEdge;
+            delete [] brEdge;
         }
         printf("\n");
 
@@ -293,12 +293,14 @@ namespace Intercept2
     {
         uint8 rideIndex = 0;
         rct_map_element mapElement = {0};
+        mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
         mapElement.properties.track.type = trackType;
         mapElement.base_height = 3;
 
         g_currently_drawn_item = &mapElement;
 
         rct_map_element surfaceElement = {0};
+        surfaceElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
         surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
         surfaceElement.base_height = 2;
 
@@ -459,6 +461,7 @@ namespace Intercept2
     {
         uint8 rideIndex = 0;
         rct_map_element mapElement = {0};
+        mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
         mapElement.properties.track.type = trackType;
         mapElement.base_height = 3;
 
@@ -649,6 +652,7 @@ namespace Intercept2
     {
         uint8 rideIndex = 0;
         rct_map_element mapElement = {0};
+        mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
         mapElement.properties.track.type = trackType;
         mapElement.base_height = 3;
 

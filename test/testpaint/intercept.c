@@ -492,6 +492,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	}
 	uint8 rideIndex = 0;
 	rct_map_element mapElement = { 0 };
+	mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 	mapElement.properties.track.type = trackType;
 	mapElement.base_height = 3;
 

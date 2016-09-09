@@ -320,7 +320,7 @@ int main(int argc, char *argv[]) {
 		for (auto &&failure : failures) {
 			ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
 			printf("%s\n", failure);
-			delete(failure);
+			delete [] failure;
 		}
 
 		printf("\n");
