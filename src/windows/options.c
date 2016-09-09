@@ -1842,10 +1842,11 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top
 		);
 		gfx_draw_string_left(dpi, STR_WINDOW_LIMIT, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top + 1);
+		set_format_arg(0, sint16, gConfigGeneral.window_limit);
 		gfx_draw_string_left(
 			dpi,
 			STR_COMMA16,
-			&gConfigGeneral.window_limit,
+			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_WINDOW_LIMIT].left + 1,
 			w->y + window_options_misc_widgets[WIDX_WINDOW_LIMIT].top
