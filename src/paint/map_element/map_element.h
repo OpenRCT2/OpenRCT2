@@ -72,17 +72,20 @@ extern tunnel_entry gLeftTunnels[65];
 extern uint8 gLeftTunnelCount;
 extern tunnel_entry gRightTunnels[65];
 extern uint8 gRightTunnelCount;
+extern uint8 gVerticalTunnelHeight;
 #else
 #define gLeftTunnels				RCT2_ADDRESS(0x009E3138, tunnel_entry)
 #define gLeftTunnelCount			RCT2_GLOBAL(0x0141F56A, uint8)
 #define gRightTunnels				RCT2_ADDRESS(0x009E30B6, tunnel_entry)
 #define gRightTunnelCount			RCT2_GLOBAL(0x0141F56B, uint8)
+#define gVerticalTunnelHeight		RCT2_GLOBAL(0x009E323C, uint8)
 #endif
 
 extern bool gShowSupportSegmentHeights;
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type);
 void paint_util_push_tunnel_right(uint16 height, uint8 type);
+void paint_util_set_vertical_tunnel(uint16 height);
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope);
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope);
