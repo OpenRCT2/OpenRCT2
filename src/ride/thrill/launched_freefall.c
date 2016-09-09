@@ -112,7 +112,7 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 		imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
-		RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+		paint_util_set_vertical_tunnel(height + 32);
 
 		height -= 64;
 	}
@@ -152,7 +152,7 @@ static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSe
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-	RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	paint_util_set_vertical_tunnel(height + 32);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 

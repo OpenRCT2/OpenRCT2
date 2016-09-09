@@ -38,6 +38,7 @@ tunnel_entry gLeftTunnels[65];
 uint8 gLeftTunnelCount;
 tunnel_entry gRightTunnels[65];
 uint8 gRightTunnelCount;
+uint8 gVerticalTunnelHeight;
 #endif
 
 static void blank_tiles_paint(int x, int y);
@@ -146,7 +147,8 @@ static void sub_68B3FB(int x, int y)
 	gLeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
 	gRightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
 
-	RCT2_GLOBAL(0x9E323C, uint8_t) = 0xFF;
+	gVerticalTunnelHeight = 0xFF;
+
 	RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
 	RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
 	RCT2_GLOBAL(0x9DE574, uint16_t) = x;
@@ -321,6 +323,11 @@ void paint_util_push_tunnel_right(uint16 height, uint8 type)
 	gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
 	gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
 	gRightTunnelCount++;
+}
+
+void paint_util_set_vertical_tunnel(uint16 height)
+{
+	gVerticalTunnelHeight = height / 16;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)

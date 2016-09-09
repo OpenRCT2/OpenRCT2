@@ -1037,7 +1037,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
 	bool has_surface = false;
-	if (RCT2_GLOBAL(0x9E323C, uint8) * 16 == height) {
+	if (gVerticalTunnelHeight * 16 == height) {
 		// Vertical tunnels
 		sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
 		sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
