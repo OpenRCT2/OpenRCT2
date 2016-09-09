@@ -211,6 +211,21 @@ namespace Intercept2
         return true;
     }
 
+    static void getTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4])
+    {
+        for (int side = 0; side < 4; ++side) {
+            for (int direction = 0; direction < 4; ++direction) {
+                if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED) {
+                    continue;
+                }
+
+                (*out)[side].call = tunnelCalls[direction][side].call;
+                (*out)[side].type = tunnelCalls[direction][side].type;
+                (*out)[side].height = tunnelCalls[direction][side].height;
+            }
+        }
+    }
+
     static utf8string getTunnelEdgeString(TunnelCall edge) {
         utf8string out = new utf8[5];
 
@@ -224,7 +239,7 @@ namespace Intercept2
                 break;
 
             case TUNNELCALL_CALL:
-                sprintf(out, "  %d  ", edge.height);
+                sprintf(out, " %d,%X ", edge.height, edge.type);
                 break;
         }
 
@@ -422,6 +437,20 @@ namespace Intercept2
         return true;
     }
 
+    static bool tunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4])
+    {
+        for (int side = 0; side < 4; side++) {
+            if (expected[side].call != actual[side].call) return false;
+
+            if (expected[side].call == TUNNELCALL_CALL) {
+                if (expected[side].type != actual[side].type) return false;
+                if (expected[side].height != actual[side].height) return false;
+            }
+        }
+
+        return true;
+    }
+
     static bool testTunnels(uint8 rideType, uint8 trackType)
     {
         uint8 rideIndex = 0;
@@ -489,7 +518,6 @@ namespace Intercept2
                 for (int i = 0; i < 4; ++i) {
                     tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
                 }
-
                 if (gRightTunnelCount == 0) {
                     tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
                 } else if (gRightTunnelCount == 1) {
@@ -513,11 +541,72 @@ namespace Intercept2
                 }
             }
 
-            if (!tunnelCallsLineUp(tileTunnelCalls)) {
-                printf("Tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n", trackSequence);
-                printTunnelCalls(tileTunnelCalls);
+            TunnelCall newTileTunnelCalls[4][4];
+            for (int direction = 0; direction < 4; direction++) {
+                gLeftTunnelCount = 0;
+                gRightTunnelCount = 0;
+
+                TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
+                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+                uint8 rightIndex = (4 - direction) % 4;
+                uint8 leftIndex = (rightIndex + 1) % 4;
+
+                for (int i = 0; i < 4; ++i) {
+                    newTileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
+                }
+
+                if (gRightTunnelCount == 0) {
+                    newTileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
+                } else if (gRightTunnelCount == 1) {
+                    newTileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
+                    newTileTunnelCalls[direction][rightIndex].height = gRightTunnels[0].height;
+                    newTileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
+                } else {
+                    printf("Multiple tunnels on one side aren't supported.\n");
+                    return false;
+                }
+
+                if (gLeftTunnelCount == 0) {
+                    newTileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
+                } else if (gLeftTunnelCount == 1) {
+                    newTileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
+                    newTileTunnelCalls[direction][leftIndex].height = gLeftTunnels[0].height;
+                    newTileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
+                } else {
+                    printf("Multiple tunnels on one side aren't supported.\n");
+                    return false;
+                }
+            }
+
+            if (!tunnelCallsLineUp(newTileTunnelCalls)) {
+                printf("Decompiled tunnel calls don\'t line up. [trackSequence:%d].\n", trackSequence);
+                printTunnelCalls(newTileTunnelCalls);
                 return false;
             }
+
+
+            if (!tunnelCallsLineUp(tileTunnelCalls)) {
+                printf("Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n", trackSequence);
+                printTunnelCalls(tileTunnelCalls);
+                continue;
+            }
+
+            TunnelCall referencePattern[4];
+            getTunnelCallReferencePattern(tileTunnelCalls, &referencePattern);
+
+            TunnelCall actualPattern[4];
+            getTunnelCallReferencePattern(newTileTunnelCalls, &actualPattern);
+
+            if(!tunnelPatternsMatch(referencePattern, actualPattern)) {
+                printf("Tunnel calls don't match expected pattern. [trackSequence:%d]\n", trackSequence);
+                printf("expected:\n");
+                printTunnelCalls(tileTunnelCalls);
+                printf("actual:\n");
+                printTunnelCalls(newTileTunnelCalls);
+                return false;
+            }
+
         }
         return true;
     }
