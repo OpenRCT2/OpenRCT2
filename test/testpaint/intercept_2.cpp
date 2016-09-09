@@ -226,10 +226,11 @@ namespace Intercept2
         }
     }
 
-    static utf8string getTunnelEdgeString(TunnelCall edge) {
+    static utf8string getTunnelEdgeString(TunnelCall edge)
+    {
         utf8string out = new utf8[5];
 
-        switch(edge.call) {
+        switch (edge.call) {
             case TUNNELCALL_SKIPPED:
                 sprintf(out, "     ");
                 break;
@@ -587,7 +588,8 @@ namespace Intercept2
 
 
             if (!tunnelCallsLineUp(tileTunnelCalls)) {
-                printf("Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n", trackSequence);
+                printf("Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n",
+                       trackSequence);
                 printTunnelCalls(tileTunnelCalls);
                 continue;
             }
@@ -598,7 +600,7 @@ namespace Intercept2
             TunnelCall actualPattern[4];
             getTunnelCallReferencePattern(newTileTunnelCalls, &actualPattern);
 
-            if(!tunnelPatternsMatch(referencePattern, actualPattern)) {
+            if (!tunnelPatternsMatch(referencePattern, actualPattern)) {
                 printf("Tunnel calls don't match expected pattern. [trackSequence:%d]\n", trackSequence);
                 printf("expected:\n");
                 printTunnelCalls(tileTunnelCalls);
@@ -610,8 +612,148 @@ namespace Intercept2
         }
         return true;
     }
-}
 
+    static bool verticalTunnelHeightIsConsistent(uint8 heights[4])
+    {
+        for (int i = 1; i < 4; ++i) {
+            if (heights[i] != heights[0]) return false;
+        }
+
+        return true;
+    }
+
+    static void printRelativeHeight(utf8string out, sint16 height)
+    {
+        if (height == 0) {
+            sprintf(out, "height");
+            return;
+        }
+
+        if (height > 0) {
+            sprintf(out, "height + %d", height);
+            return;
+        }
+
+        if (height < 0) {
+            sprintf(out, "height - %d", abs(height));
+            return;
+        }
+    }
+
+    static bool testVerticalTunnels(uint8 rideType, uint8 trackType)
+    {
+        uint8 rideIndex = 0;
+        rct_map_element mapElement = {0};
+        mapElement.properties.track.type = trackType;
+        mapElement.base_height = 3;
+
+        g_currently_drawn_item = &mapElement;
+
+        rct_map_element surfaceElement = {0};
+        surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+        surfaceElement.base_height = 2;
+
+        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
+        RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
+        RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
+        RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+
+        rct_drawpixelinfo dpi = {.zoom_level = 1};
+        unk_140E9A8 = &dpi;
+
+        rct_vehicle vehicle = {0};
+        rct_ride ride = {0};
+
+        rct_ride_entry rideEntry = {0};
+        rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
+        rideEntry.vehicles[0] = vehicleEntry;
+
+
+        gRideList[0] = ride;
+        gRideEntries[0] = &rideEntry;
+
+        int height = 48;
+
+        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+        int sequenceCount = getTrackSequenceCount(rideType, trackType);
+
+
+        for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
+            uint8 verticalTunnelHeight[4];
+
+            for (int direction = 0; direction < 4; direction++) {
+                gVerticalTunnelHeight = 0;
+
+                TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
+                uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
+
+                // Have to call from this point as it pushes esi and expects callee to pop it
+                RCT2_CALLPROC_X(
+                    0x006C4934,
+                    rideType,
+                    (int) trackDirectionList,
+                    direction,
+                    height,
+                    (int) &mapElement,
+                    rideIndex * sizeof(rct_ride),
+                    trackSequence
+                );
+
+                verticalTunnelHeight[direction] = gVerticalTunnelHeight;
+            }
+
+            if (!verticalTunnelHeightIsConsistent(verticalTunnelHeight)) {
+                printf(
+                    "Original vertical tunnel height is inconsistent, skipping test. [trackSequence:%d]\n",
+                    trackSequence
+                );
+                continue;
+            }
+
+            uint8 referenceHeight = verticalTunnelHeight[0];
+            for (int direction = 0; direction < 4; direction++) {
+                gVerticalTunnelHeight = 0;
+
+                TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
+                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+                if (gVerticalTunnelHeight != referenceHeight) {
+                    if (referenceHeight == 0) {
+                        printf(
+                            "Expected no vertical tunnel. [trackSequence:%d direction:%d]\n",
+                            trackSequence,
+                            direction
+                        );
+
+                        return false;
+                    }
+
+                    utf8string strExpectedTunnelHeight = new utf8[16];
+                    utf8string strActualTunnelHeight = new utf8[16];
+                    printRelativeHeight(strExpectedTunnelHeight, (referenceHeight * 16) - 48);
+                    printRelativeHeight(strActualTunnelHeight, (gVerticalTunnelHeight * 16) - 48);
+
+                    printf(
+                        "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
+                        strExpectedTunnelHeight,
+                        strActualTunnelHeight,
+                        trackSequence,
+                        direction
+                    );
+
+                    delete []strExpectedTunnelHeight;
+                    delete []strActualTunnelHeight;
+
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+}
 
 extern "C"
 {
@@ -623,6 +765,11 @@ extern "C"
     bool testTunnels(uint8 rideType, uint8 trackType)
     {
         return Intercept2::testTunnels(rideType, trackType);
+    }
+
+    bool testVerticalTunnels(uint8 rideType, uint8 trackType)
+    {
+        return Intercept2::testVerticalTunnels(rideType, trackType);
     }
 
 }
