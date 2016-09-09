@@ -757,14 +757,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Objective related financial information
 	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
-		// Last month's profit from food, drink and merchandise
-		money32 lastMonthProfit = 0;
-		if (gDateMonthsElapsed != 0) {
-			lastMonthProfit += RCT2_GLOBAL(0x01357898, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x0135789C, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A4, money32);
-		}
+		money32 lastMonthProfit = finance_get_last_month_shop_profit();
 		set_format_arg(0, money32, lastMonthProfit);
 		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, 0, w->x + 280, w->y + 229);
 	} else {

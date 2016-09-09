@@ -86,4 +86,6 @@ money32 finance_get_maximum_loan();
 money32 finance_get_current_cash();
 void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
+money32 finance_get_last_month_shop_profit();
+
 #endif
