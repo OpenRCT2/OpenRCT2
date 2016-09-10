@@ -118,8 +118,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-
 	// argv = CommandLineToArgvA(lpCmdLine, &argc);
 	argv = (char**)windows_get_command_line_args(&argc);
 	runGame = cmdline_run((const char **)argv, argc);
@@ -775,7 +773,6 @@ utf8 *platform_open_directory_browser(utf8 *title)
 int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
 {
 	char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
-	LOGFONTA lf;
 	HKEY hKey;
 	DWORD type, size;
 
@@ -783,14 +780,6 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcat(subkeyInfogrames, source);
 	strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\");
 	strcat(subkeyFishTechGroup, source);
-
-	memset(&lf, 0, sizeof(lf));
-	lf.lfCharSet = charset;
-	lf.lfHeight = 12;
-	lf.lfWeight = 400;
-	strcpy(lf.lfFaceName, font);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
 
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
 		return 0;
