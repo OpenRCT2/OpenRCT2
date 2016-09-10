@@ -131,6 +131,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	// Entrance
 
 	// Fence
+	WIDX_FENCE_BUTTON_HEIGHT_INCREASE = PAGE_WIDGETS,
 
 	// Large
 
@@ -278,11 +279,12 @@ static rct_widget window_tile_inspector_widgets_entrance[] = {
 };
 
 #define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
-#define FEN_GBPT (FEN_GBPB + 16 + 0 * 21)		// Fence group box properties top
+#define FEN_GBPT (FEN_GBPB + 16 + 1 * 21)		// Fence group box properties top
 #define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
 #define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Fence group box info top
 static rct_widget window_tile_inspector_widgets_fence[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
+	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 0, 0),	STR_TILE_INSPECTOR_RAISE_LOWER,	STR_NONE }, // WIDX_FENCE_BUTTON_HEIGHT_INCREASE
 	{ WIDGETS_END },
 };
 
@@ -362,7 +364,6 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
-
 static void window_tile_inspector_set_page(rct_window *w, const page);
 static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
@@ -401,10 +402,10 @@ static uint64 window_tile_inspector_page_enabled_widgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) /*| (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL)*/ | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_BUTTON_HEIGHT_INCREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE),
@@ -513,8 +514,8 @@ static void rotate_element(int index)
 	{
 	case MAP_ELEMENT_TYPE_PATH:
 		if (footpath_element_is_sloped(mapElement)) {
-			new_rotation = (footpath_element_get_slope_direction(mapElement) + 1) & 3;
-			mapElement->properties.path.type &= ~3;
+			new_rotation = (footpath_element_get_slope_direction(mapElement) + 1) & MAP_ELEMENT_DIRECTION_MASK;
+			mapElement->properties.path.type &= ~MAP_ELEMENT_DIRECTION_MASK;
 			mapElement->properties.path.type |= new_rotation;
 		}
 		path_edges = mapElement->properties.path.edges & 0xF;
@@ -528,8 +529,8 @@ static void rotate_element(int index)
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 	case MAP_ELEMENT_TYPE_FENCE:
 	case MAP_ELEMENT_TYPE_BANNER:
-		new_rotation = (mapElement->type + 1) & 0x3;
-		mapElement->type &= ~0x3;
+		new_rotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
+		mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
 		mapElement->type |= new_rotation;
 		break;
 	}
@@ -591,6 +592,133 @@ static void sort_elements(rct_window *w)
 			currentElement--;
 			otherElement--;
 		}
+	}
+}
+
+// Copied from track.c (track_remove), and modified for raising/lowering
+void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
+{
+	uint8 type = mapElement->properties.track.type;
+	uint8 sequence = mapElement->properties.track.sequence;
+	sint16 originX = window_tile_inspector_tile_x << 5;
+	sint16 originY = window_tile_inspector_tile_y << 5;
+	sint16 originZ = mapElement->base_height * 8;
+	uint8 rotation = map_element_get_direction(mapElement);
+
+	sint16 trackpieceZ = originZ;
+	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
+
+	switch (type)
+	{
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		type = TRACK_ELEM_END_STATION;
+		break;
+	}
+
+	uint8 rideIndex = mapElement->properties.track.ride_index;
+	type = mapElement->properties.track.type;
+	RCT2_GLOBAL(0x00F44139, uint8) = type;
+	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
+	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
+
+	rct_ride* ride = get_ride(rideIndex);
+	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+	trackBlock += mapElement->properties.track.sequence & 0xF;
+
+	uint8 originDirection = map_element_get_direction(mapElement);
+	switch (originDirection)
+	{
+	case 0:
+		originX -= trackBlock->x;
+		originY -= trackBlock->y;
+		break;
+	case 1:
+		originX -= trackBlock->y;
+		originY += trackBlock->x;
+		break;
+	case 2:
+		originX += trackBlock->x;
+		originY += trackBlock->y;
+		break;
+	case 3:
+		originX += trackBlock->y;
+		originY -= trackBlock->x;
+		break;
+	}
+
+	originZ -= trackBlock->z;
+
+	trackBlock = get_track_def_from_ride(ride, type);
+	for (; trackBlock->index != 255; trackBlock++)
+	{
+		sint16 x = originX, y = originY, z = originZ;
+
+		switch (originDirection)
+		{
+		case 0:
+			x += trackBlock->x;
+			y += trackBlock->y;
+			break;
+		case 1:
+			x += trackBlock->y;
+			y -= trackBlock->x;
+			break;
+		case 2:
+			x -= trackBlock->x;
+			y -= trackBlock->y;
+			break;
+		case 3:
+			x -= trackBlock->y;
+			y += trackBlock->x;
+			break;
+		}
+
+		z += trackBlock->z;
+
+		map_invalidate_tile_full(x, y);
+		RCT2_GLOBAL(0x00F441C4, sint16) = x;
+		RCT2_GLOBAL(0x00F441C6, sint16) = y;
+
+		trackpieceZ = z;
+
+		bool found = false;
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do
+		{
+			if (mapElement->base_height != z / 8)
+				continue;
+
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+				continue;
+
+			if ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) != rotation)
+				continue;
+
+			if ((mapElement->properties.track.sequence & 0xF) != trackBlock->index)
+				continue;
+
+			if (mapElement->properties.track.type != type)
+				continue;
+
+			found = true;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+
+		if (!found)
+		{
+			log_error("Track map element part not found!");
+			return;
+		}
+
+		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
+		assert(map_get_surface_element_at(x / 32, y / 32) != NULL);
+
+		// Keep?
+		//invalidate_test_results(rideIndex);
+
+		mapElement->base_height += offset;
+		mapElement->clearance_height += offset;
 	}
 }
 
@@ -727,14 +855,24 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 			widget_invalidate(w, widgetIndex);
 			break;
 		case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
-			mapElement->base_height++;
-			mapElement->clearance_height++;
-			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL)) {
+				track_block_height_offset(mapElement, 1);
+			}
+			else {
+				mapElement->base_height++;
+				mapElement->clearance_height++;
+				map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			}
 			break;
 		case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
-			mapElement->base_height--;
-			mapElement->clearance_height--;
-			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			if (widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL)) {
+				track_block_height_offset(mapElement, -1);
+			}
+			else {
+				mapElement->base_height--;
+				mapElement->clearance_height--;
+				map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			}
 			break;
 		case WIDX_TRACK_CHECK_CHAIN_LIFT:
 			mapElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
@@ -745,7 +883,19 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 
 	case PAGE_SCENERY:
 	case PAGE_ENTRANCE:
+		break;
 	case PAGE_FENCE:
+		// Get fence element
+		mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+		mapElement += w->selected_list_item;
+
+		switch (widgetIndex) {
+		case WIDX_FENCE_BUTTON_HEIGHT_INCREASE:
+			mapElement->base_height++;
+			mapElement->clearance_height++;
+			break;
+		} // switch widget index
+		break;
 	case PAGE_LARGE_SCENERY:
 	case PAGE_BANNER:
 	case PAGE_CORRUPT:

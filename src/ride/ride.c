@@ -768,6 +768,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output)
 	track_circuit_iterator it, slowIt;
 	int rideIndex;
 
+	assert(map_element_get_type(input->element) == MAP_ELEMENT_TYPE_TRACK);
 	rideIndex = input->element->properties.track.ride_index;
 	ride = get_ride(rideIndex);
 
