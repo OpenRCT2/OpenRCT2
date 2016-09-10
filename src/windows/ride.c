@@ -1922,10 +1922,8 @@ static void window_ride_init_viewport(rct_window *w)
 		w->viewport = 0;
 
 		viewport_update_pointers();
-	}
-	else{
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
-			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+	} else if (gConfigGeneral.always_show_gridlines) {
+		viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 
 	window_event_invalidate_call(w);

@@ -295,21 +295,15 @@ void game_update()
 		if (gGameSpeed > 1)
 			continue;
 
-		// Possibly smooths viewport scrolling, I don't see a difference though
-		if (RCT2_GLOBAL(0x009E2D74, uint32) == 1) {
-			RCT2_GLOBAL(0x009E2D74, uint32) = 0;
-			break;
-		} else {
-			if (gInputState == INPUT_STATE_RESET ||
-				gInputState == INPUT_STATE_NORMAL
-			) {
-				if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
-					gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
-					break;
-				}
-			} else {
+		if (gInputState == INPUT_STATE_RESET ||
+			gInputState == INPUT_STATE_NORMAL
+		) {
+			if (gInputFlags & INPUT_FLAG_VIEWPORT_SCROLLING) {
+				gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 				break;
 			}
+		} else {
+			break;
 		}
 	}
 
