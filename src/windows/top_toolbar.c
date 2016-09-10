@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -268,7 +267,10 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex);
 money32 selection_lower_land(uint8 flags);
 money32 selection_raise_land(uint8 flags);
 
-static bool _menuDropdownIncludesTwitch;
+static bool		_menuDropdownIncludesTwitch;
+static uint8	_unkF64F0E;
+static sint16	_unkF64F0A;
+static uint16	_unkF64F15;
 
 /**
  * Creates the main game top toolbar window.
@@ -1309,8 +1311,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		if (*grid_x == (sint16)0x8000)
 			return;
 
-		RCT2_GLOBAL(0x00F64F15, uint8) = gWindowScenerySecondaryColour;
-		RCT2_GLOBAL(0x00F64F16, uint8) = gWindowSceneryTertiaryColour;
+		_unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
 		// Also places it in lower but think thats for clobering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
@@ -1569,7 +1570,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, RCT2_GLOBAL(0x00F64F15, uint16));
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
 			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -1633,16 +1634,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-		registers regs = {
-			.eax = gridX,
-			.ebx = flags,
-			.ecx = gridY,
-			.edx = parameter_2,
-			.esi = GAME_COMMAND_PLACE_BANNER,
-			.edi = parameter_3
-		};
 		game_command_callback = game_command_callback_place_banner;
-		game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
+		game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
 		break;
 	}
 	}
@@ -2188,7 +2181,7 @@ static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, ui
 			parameter_2,
 			GAME_COMMAND_PLACE_FENCE,
 			gSceneryPlaceZ,
-			RCT2_GLOBAL(0x00F64F15, uint16));
+			_unkF64F15);
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
@@ -2319,16 +2312,16 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 0)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			(parameter2 & 0xFF) == _unkF64F0E &&
+			gSceneryPlaceZ == _unkF64F0A &&
 			gSceneryPlaceObject == selected_tab){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(0x00F64F0E, uint8) = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0E = (parameter2 & 0xFF);
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 &&
@@ -2396,7 +2389,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
 			(parameter2 & 0xFF) == gSceneryGhostWallRotation &&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16)
+			gSceneryPlaceZ == _unkF64F0A
 			){
 			return;
 		}
@@ -2404,7 +2397,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 
 		gSceneryGhostWallRotation = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 &&
@@ -2457,7 +2450,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 3)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			gSceneryPlaceZ == _unkF64F0A &&
 			(parameter3 & 0xFFFF) == gSceneryPlaceObject
 		) {
 			return;
@@ -2466,7 +2459,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 
 		gSceneryPlaceObject = (parameter3 & 0xFFFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 && gSceneryShiftPressed) {
