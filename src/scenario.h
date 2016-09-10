@@ -272,7 +272,7 @@ typedef struct rct_s6_data {
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
 	rct_research_item research_items[500];
-	uint16 word_01359208;
+	uint16 map_base_z;
 	char scenario_name[64];
 	char scenario_description[256];
 	uint8 current_interest_rate;

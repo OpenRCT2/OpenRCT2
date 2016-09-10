@@ -760,7 +760,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 		}
 		uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height / 16) | COLOUR_GREY << 19 | 0x20000000;
 		imageId += get_height_marker_offset();
-		imageId -= RCT2_GLOBAL(0x01359208, uint16);
+		imageId -= gMapBaseZ;
 		sub_98196C(imageId, 16, 16, 1, 1, 0, height, get_current_rotation());
 	}
 

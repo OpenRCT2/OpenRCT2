@@ -290,7 +290,7 @@ void S6Importer::Import()
     // rct1_water_colour
     // pad_01358842
     memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
-    RCT2_GLOBAL(0x01359208, uint16) = _s6.word_01359208;
+    gMapBaseZ = _s6.map_base_z;
     memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
     memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
     gBankLoanInterestRate = _s6.current_interest_rate;

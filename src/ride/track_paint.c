@@ -1292,7 +1292,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 				uint16 ax = RideData5[ride->type].z_offset;
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
 				ebx += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
-				ebx -= RCT2_GLOBAL(0x01359208, uint16);
+				ebx -= gMapBaseZ;
 				sub_98197C(ebx, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047, get_current_rotation());
 			}
 		}

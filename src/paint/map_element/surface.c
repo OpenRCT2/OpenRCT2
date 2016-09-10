@@ -1030,7 +1030,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		int image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
 		image_id += get_height_marker_offset();
-		image_id -= RCT2_GLOBAL(0x01359208, uint16);
+		image_id -= gMapBaseZ;
 
 		sub_98196C(image_id, 16, 16, 1, 1, 0, height, rotation);
 	}

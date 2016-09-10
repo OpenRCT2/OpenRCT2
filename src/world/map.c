@@ -87,6 +87,7 @@ sint16 gMapSizeUnits;
 sint16 gMapSizeMinus2;
 sint16 gMapSize;
 sint16 gMapSizeMaxXY;
+sint16 gMapBaseZ;
 
 #if defined(NO_RCT2)
 rct_map_element gMapElements[0x30000];
@@ -383,7 +384,7 @@ void map_init(int size)
 	gMapSizeMinus2 = size * 32 - 2;
 	gMapSize = size;
 	gMapSizeMaxXY = size * 32 - 33;
-	RCT2_GLOBAL(0x01359208, sint16) = 7;
+	gMapBaseZ = 7;
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
 	climate_reset(CLIMATE_WARM);

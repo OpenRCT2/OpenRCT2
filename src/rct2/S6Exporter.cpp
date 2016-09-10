@@ -372,7 +372,7 @@ void S6Exporter::Export()
     // rct1_water_colour
     // pad_01358842
     memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
-    _s6.word_01359208 = RCT2_GLOBAL(0x01359208, uint16);
+    _s6.map_base_z = gMapBaseZ;
     memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
     memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
     _s6.current_interest_rate = gBankLoanInterestRate;

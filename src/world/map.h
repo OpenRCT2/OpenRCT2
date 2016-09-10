@@ -338,6 +338,7 @@ extern sint16 gMapSizeUnits;
 extern sint16 gMapSizeMinus2;
 extern sint16 gMapSize;
 extern sint16 gMapSizeMaxXY;
+extern sint16 gMapBaseZ;
 
 extern uint16		gMapSelectFlags;
 extern uint16		gMapSelectType;

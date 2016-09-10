@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -5351,7 +5350,6 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 						//therefore we set the last entry to use the no-separator format now, post-format
 						set_format_arg(0 + ((numTimes - 1) * 4), uint16, STR_RIDE_TIME_ENTRY);
 					}
-					RCT2_GLOBAL(0x013CE94E + (numTimes * 4), uint16) = STR_RIDE_TIME_ENTRY;
 					set_format_arg(0 + (numTimes * 4), uint16, 0);
 					set_format_arg(2 + (numTimes * 4), uint16, 0);
 					set_format_arg(4 + (numTimes * 4), uint16, 0);
@@ -5380,7 +5378,6 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					//therefore we set the last entry to use the no-separator format now, post-format
 					set_format_arg(0 + ((numLengths - 1) * 4), uint16, STR_RIDE_LENGTH_ENTRY);
 				}
-				RCT2_GLOBAL(0x013CE94E + (numLengths * 4), uint16) = STR_RIDE_LENGTH_ENTRY;
 				set_format_arg(0 + (numLengths * 4), uint16, 0);
 				set_format_arg(2 + (numLengths * 4), uint16, 0);
 				set_format_arg(4 + (numLengths * 4), uint16, 0);
@@ -5690,7 +5687,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	int x, y, width, time, listType, colour, top, bottom, tmp;
 	rct_string_id stringId;
 
-	gfx_clear(dpi, RCT2_GLOBAL(0x0141FC9D, uint8) * 0x01010101);
+	gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker * 0x01010101);
 
 	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
 	listType = w->list_information_type & 0xFF;
@@ -5705,14 +5702,17 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	}
 
 	// Vertical grid lines
+	const uint8 lightColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_light;
+	const uint8 darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
+
 	time = 0;
 	for (x = 0; x < dpi->x + dpi->width; x += 80) {
 		if (x + 80 >= dpi->x) {
-			gfx_fill_rect(dpi, x +  0, dpi->y, x +  0, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FCA0, uint8));
-			gfx_fill_rect(dpi, x + 16, dpi->y, x + 16, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
-			gfx_fill_rect(dpi, x + 32, dpi->y, x + 32, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
-			gfx_fill_rect(dpi, x + 48, dpi->y, x + 48, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
-			gfx_fill_rect(dpi, x + 64, dpi->y, x + 64, dpi->y + dpi->height - 1, RCT2_GLOBAL(0x0141FC9F, uint8));
+			gfx_fill_rect(dpi, x +  0, dpi->y, x +  0, dpi->y + dpi->height - 1, lightColour);
+			gfx_fill_rect(dpi, x + 16, dpi->y, x + 16, dpi->y + dpi->height - 1, darkColour);
+			gfx_fill_rect(dpi, x + 32, dpi->y, x + 32, dpi->y + dpi->height - 1, darkColour);
+			gfx_fill_rect(dpi, x + 48, dpi->y, x + 48, dpi->y + dpi->height - 1, darkColour);
+			gfx_fill_rect(dpi, x + 64, dpi->y, x + 64, dpi->y + dpi->height - 1, darkColour);
 		}
 		time += 5;
 	}
@@ -5726,18 +5726,12 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 	// Scale modifier
 	if (listType == GRAPH_ALTITUDE) {
-		short unk = RCT2_GLOBAL(0x01359208, uint16);
-		yUnit -= RCT2_GLOBAL(0x01359208, uint16);
-		unk *= 2;
-		yUnit -= unk;
+		yUnit -= gMapBaseZ * 3;
 	}
 
 	for (y = widget->bottom - widget->top - 13; y >= 8; y -= yInterval, yUnit += yUnitInterval) {
 		// Minor / major line
-		colour = yUnit == 0 ?
-			RCT2_GLOBAL(0x0141FCA0, uint8) :
-			RCT2_GLOBAL(0x0141FC9F, uint8);
-
+		colour = yUnit == 0 ? lightColour : darkColour;
 		gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width - 1, y, colour);
 
 		sint16 scaled_yUnit = yUnit;

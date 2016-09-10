@@ -1284,7 +1284,7 @@ private:
             }
             mapElement++;
         }
-        RCT2_GLOBAL(0x01359208, uint16) = 7;
+        gMapBaseZ = 7;
     }
 
     void FixPaths()

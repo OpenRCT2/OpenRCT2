@@ -262,7 +262,7 @@ void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS,sint16) +
 				0x20101689;
 
-			image_id -= RCT2_GLOBAL(0x01359208, sint16);
+			image_id -= gMapBaseZ;
 
 			sub_98197C(image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64, get_current_rotation());
 		}
