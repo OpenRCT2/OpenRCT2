@@ -926,8 +926,13 @@ extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[255];
 
+#ifdef NO_RCT2
+extern rct_ride gRideList[255];
+#else
 extern rct_ride *gRideList;
-extern rct_ride_measurement *gRideMeasurements;
+#endif
+
+extern rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 extern uint16 gRideCount;
 
 extern money32 _currentTrackPrice;

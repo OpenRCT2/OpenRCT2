@@ -129,8 +129,14 @@ static const int RideInspectionInterval[] = {
 	10, 20, 30, 45, 60, 120, 0, 0
 };
 
-rct_ride* gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
-rct_ride_measurement *gRideMeasurements = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement);
+#ifdef NO_RCT2
+rct_ride gRideList[MAX_RIDES];
+#else
+rct_ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+#endif
+
+rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
+
 uint16 gRideCount;
 bool gGotoStartPlacementMode = false;
 int gRideRemoveTrackPieceCallbackX;
