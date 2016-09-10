@@ -39,6 +39,9 @@
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint32 gCurrentViewportFlags = 0;
+uint8 gShowGridLinesRefCount;
+uint8 gShowLandRightsRefCount;
+uint8 gShowConstuctionRightsRefCount;
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
@@ -857,7 +860,7 @@ rct_xy16 viewport_coord_to_map_coord(int x, int y, int z)
  */
 void show_gridlines()
 {
-	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
+	if (gShowGridLinesRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
@@ -866,7 +869,7 @@ void show_gridlines()
 			}
 		}
 	}
-	RCT2_GLOBAL(0x009E32B0, uint8)++;
+	gShowGridLinesRefCount++;
 }
 
 /**
@@ -875,8 +878,8 @@ void show_gridlines()
  */
 void hide_gridlines()
 {
-	RCT2_GLOBAL(0x009E32B0, uint8)--;
-	if (RCT2_GLOBAL(0x009E32B0, uint8) == 0) {
+	gShowGridLinesRefCount--;
+	if (gShowGridLinesRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (!gConfigGeneral.always_show_gridlines) {
@@ -893,7 +896,7 @@ void hide_gridlines()
  */
 void show_land_rights()
 {
-	if (RCT2_GLOBAL(0x009E32B2, uint8) == 0) {
+	if (gShowLandRightsRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
@@ -902,7 +905,7 @@ void show_land_rights()
 			}
 		}
 	}
-	RCT2_GLOBAL(0x009E32B2, uint8)++;
+	gShowLandRightsRefCount++;
 }
 
 /**
@@ -911,8 +914,8 @@ void show_land_rights()
  */
 void hide_land_rights()
 {
-	RCT2_GLOBAL(0x009E32B2, uint8)--;
-	if (RCT2_GLOBAL(0x009E32B2, uint8) == 0) {
+	gShowLandRightsRefCount--;
+	if (gShowLandRightsRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
@@ -929,7 +932,7 @@ void hide_land_rights()
  */
 void show_construction_rights()
 {
-	if (RCT2_GLOBAL(0x009E32B3, uint8) == 0) {
+	if (gShowConstuctionRightsRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
@@ -938,7 +941,7 @@ void show_construction_rights()
 			}
 		}
 	}
-	RCT2_GLOBAL(0x009E32B3, uint8)++;
+	gShowConstuctionRightsRefCount++;
 }
 
 /**
@@ -947,8 +950,8 @@ void show_construction_rights()
  */
 void hide_construction_rights()
 {
-	RCT2_GLOBAL(0x009E32B3, uint8)--;
-	if (RCT2_GLOBAL(0x009E32B3, uint8) == 0) {
+	gShowConstuctionRightsRefCount--;
+	if (gShowConstuctionRightsRefCount == 0) {
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
 			if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {

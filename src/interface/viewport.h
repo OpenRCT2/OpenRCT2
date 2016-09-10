@@ -90,6 +90,14 @@ typedef struct viewport_interaction_info {
 
 extern uint32 gCurrentViewportFlags;
 
+/**
+ * A reference counter for whether something is forcing the grid lines to show. When the counter
+ * is decremented to 0, the grid lines are hidden.
+ */
+extern uint8 gShowGridLinesRefCount;
+extern uint8 gShowLandRightsRefCount;
+extern uint8 gShowConstuctionRightsRefCount;
+
 // rct2: 0x014234BC
 extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 extern rct_viewport *g_music_tracking_viewport;
