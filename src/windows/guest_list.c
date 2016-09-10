@@ -14,18 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../peep/peep.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 enum {
 	PAGE_INDIVIDUAL,
@@ -152,6 +151,7 @@ static uint16 _window_guest_list_groups_num_guests[240];
 static uint32 _window_guest_list_groups_argument_1[240];
 static uint32 _window_guest_list_groups_argument_2[240];
 static uint8 _window_guest_list_groups_guest_faces[240 * 58];
+static uint8 _window_guest_list_group_index[240];
 
 static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
@@ -926,7 +926,7 @@ static void window_guest_list_find_groups()
 		memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[groupIndex], 4);
 		memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[groupIndex], 4);
 
-		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
+		_window_guest_list_group_index[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
@@ -969,7 +969,7 @@ static void window_guest_list_find_groups()
 
 		int argument_1 = _window_guest_list_groups_argument_1[groupIndex];
 		int argument_2 = _window_guest_list_groups_argument_2[groupIndex];
-		int bl = RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex];
+		int bl = _window_guest_list_group_index[groupIndex];
 		int temp;
 
 		do {
@@ -990,8 +990,8 @@ static void window_guest_list_find_groups()
 			memcpy(&(_window_guest_list_groups_guest_faces[groupIndex * 56]), &(_window_guest_list_groups_guest_faces[swap_position * 56]), 56);
 			memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
 
-			temp = RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position];
-			RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position] = bl;
+			temp = _window_guest_list_group_index[swap_position];
+			_window_guest_list_group_index[swap_position] = bl;
 			bl = temp;
 		} while (++swap_position <= groupIndex);
 
