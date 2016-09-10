@@ -464,6 +464,8 @@ static money32	_trackPlaceCost;
 static bool		_autoOpeningShop;
 static uint8	_rideConstructionState2;
 
+static uint32	_currentDisabledSpecialTrackPieces;
+
 // This variable is updated separately from ride->num_stations because the latter
 // is unreliable if currently in station construction mode
 static bool _stationConstructed;
@@ -2718,10 +2720,10 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		if (result == MONEY32_UNDEFINED)
 			return result;
 
-		RCT2_GLOBAL(0x00F440C5, uint16) = x;
-		RCT2_GLOBAL(0x00F440C7, uint16) = y;
-		RCT2_GLOBAL(0x00F440C9, uint16) = z;
-		RCT2_GLOBAL(0x00F440CB, uint8) = trackDirection;
+		_unkF440C5.x = x;
+		_unkF440C5.y = y;
+		_unkF440C5.z = z;
+		_unkF440C5.direction = trackDirection;
 		_currentTrackSelectionFlags |= 2;
 		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
@@ -2733,14 +2735,14 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		if (result == MONEY32_UNDEFINED)
 			return result;
 
-		RCT2_GLOBAL(0x00F440C5, uint16) = x;
-		RCT2_GLOBAL(0x00F440C7, uint16) = y;
+		_unkF440C5.x = x;
+		_unkF440C5.y = y;
 		z += ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
 			FlatTrackCoordinates[trackType].z_begin:
 			TrackCoordinates[trackType].z_begin;
 
-		RCT2_GLOBAL(0x00F440C9, uint16) = z;
-		RCT2_GLOBAL(0x00F440CB, uint8) = trackDirection;
+		_unkF440C5.z = z;
+		_unkF440C5.direction = trackDirection;
 		_currentTrackSelectionFlags |= 2;
 		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
@@ -2966,14 +2968,14 @@ static void window_ride_construction_update_possible_ride_configurations()
 			continue;
 
 		_currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-		RCT2_GLOBAL(0x00F4409C, uint32) |= (1 << currentPossibleRideConfigurationIndex);
+		_currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
 		if (
 			_currentTrackPieceDirection < 4 &&
 			slope == _previousTrackSlopeEnd &&
 			bank == _previousTrackBankEnd &&
 			(trackType != TRACK_ELEM_TOWER_BASE || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_29))
 		) {
-			RCT2_GLOBAL(0x00F4409C, uint32) &= ~(1 << currentPossibleRideConfigurationIndex);
+			_currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
 			_numCurrentPossibleSpecialTrackPieces++;
 		}
 		currentPossibleRideConfigurationIndex++;
@@ -3510,7 +3512,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		widget->right - widget->left
 	);
 
-	gDropdownItemsDisabled = (uint64)RCT2_GLOBAL(0x00F4409C, uint32);
+	gDropdownItemsDisabled = _currentDisabledSpecialTrackPieces;
 	gDropdownDefaultIndex = defaultIndex;
 }
 
@@ -3747,10 +3749,10 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	unk = gRideEntranceExitPlaceStationIndex;
 	if (
 		!(_currentTrackSelectionFlags & 4) ||
-		x != RCT2_GLOBAL(0x00F440BF, uint16) ||
-		y != RCT2_GLOBAL(0x00F440C1, uint16) ||
-		direction != RCT2_GLOBAL(0x00F440C3, uint8) ||
-		unk != RCT2_GLOBAL(0x00F440C4, uint8)
+		x != _unkF440BF.x ||
+		y != _unkF440BF.y ||
+		direction != _unkF440BF.direction ||
+		unk != _unkF440C4
 	) {
 		_currentTrackPrice = ride_get_entrance_or_exit_price(
 			_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, unk
@@ -3983,9 +3985,9 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 
 	game_command_callback = game_command_callback_place_ride_entrance_or_exit;
 	game_do_command(
-		RCT2_GLOBAL(0x00F44188, uint16),
+		_unkF44188.x,
 		(GAME_COMMAND_FLAG_APPLY) | ((gRideEntranceExitPlaceDirection ^ 2) << 8),
-		RCT2_GLOBAL(0x00F4418A, uint16),
+		_unkF44188.y,
 		gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
 		gRideEntranceExitPlaceStationIndex,

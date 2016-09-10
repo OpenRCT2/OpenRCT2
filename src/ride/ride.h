@@ -965,6 +965,11 @@ extern uint8 _currentBrakeSpeed;
 extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 
+extern rct_xy16 _unkF44188;
+extern rct_xyzd16 _unkF440BF;
+extern uint8 _unkF440C4;
+extern rct_xyzd16 _unkF440C5;
+
 extern uint8 gRideEntranceExitPlaceType;
 extern uint8 gRideEntranceExitPlaceRideIndex;
 extern uint8 gRideEntranceExitPlaceStationIndex;

@@ -178,6 +178,11 @@ uint8 _currentBrakeSpeed;
 uint8 _currentBrakeSpeed2;
 uint8 _currentSeatRotationAngle;
 
+rct_xy16 _unkF44188;
+rct_xyzd16 _unkF440BF;
+uint8 _unkF440C4;
+rct_xyzd16 _unkF440C5;
+
 uint8 gRideEntranceExitPlaceType;
 uint8 gRideEntranceExitPlaceRideIndex;
 uint8 gRideEntranceExitPlaceStationIndex;
@@ -1347,12 +1352,12 @@ void sub_6C96C0()
 	if (_currentTrackSelectionFlags & 4) {
 		_currentTrackSelectionFlags &= ~4;
 		game_do_command(
-			RCT2_GLOBAL(0x00F440BF, uint16),
+			_unkF440BF.x,
 			(GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-			RCT2_GLOBAL(0x00F440C1, uint16),
+			_unkF440BF.y,
 			_currentRideIndex,
 			GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-			RCT2_GLOBAL(0x00F440C4, uint8),
+			_unkF440C4,
 			0
 		);
 	}
@@ -1361,9 +1366,9 @@ void sub_6C96C0()
 
 		rideIndex = _currentRideIndex;
 
-		x = RCT2_GLOBAL(0x00F440C5, uint16);
-		y = RCT2_GLOBAL(0x00F440C7, uint16);
-		z = RCT2_GLOBAL(0x00F440C9, uint16);
+		x = _unkF440C5.x;
+		y = _unkF440C5.y;
+		z = _unkF440C5.z;
 
 		ride = get_ride(rideIndex);
 		if (ride->type == RIDE_TYPE_MAZE) {
@@ -1372,7 +1377,7 @@ void sub_6C96C0()
 			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 		} else {
-			direction = RCT2_GLOBAL(0x00F440CB, uint8);
+			direction = _unkF440C5.direction;
 			if (!(direction & 4)) {
 				x -= TileDirectionDelta[direction].x;
 				y -= TileDirectionDelta[direction].y;
@@ -7072,10 +7077,10 @@ money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int directi
 	);
 	if (result != MONEY32_UNDEFINED) {
 		_currentTrackSelectionFlags |= (1 << 2);
-		RCT2_GLOBAL(0x00F440BF, uint16) = x;
-		RCT2_GLOBAL(0x00F440C1, uint16) = y;
-		RCT2_GLOBAL(0x00F440C3, uint8) = direction;
-		RCT2_GLOBAL(0x00F440C4, uint8) = di & 0xFF;
+		_unkF440BF.x = x;
+		_unkF440BF.y = y;
+		_unkF440BF.direction = direction;
+		_unkF440C4 = di & 0xFF;
 	}
 	return result;
 }
@@ -7149,10 +7154,10 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 
 	word_F4418C = mapX;
 	word_F4418E = mapY;
-	RCT2_GLOBAL(0x00F44188, uint16) = floor2(mapX, 32);
-	RCT2_GLOBAL(0x00F4418A, uint16) = floor2(mapY, 32);
-	*outX = RCT2_GLOBAL(0x00F44188, uint16);
-	*outY = RCT2_GLOBAL(0x00F4418A, uint16);
+	_unkF44188.x = floor2(mapX, 32);
+	_unkF44188.y = floor2(mapY, 32);
+	*outX = _unkF44188.x;
+	*outY = _unkF44188.y;
 
 	if (ride->type == RIDE_TYPE_NULL)
 		return;
@@ -7173,8 +7178,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 		}
 
 		for (int i = 0; i < 4; i++) {
-			mapX = RCT2_GLOBAL(0x00F44188, uint16) + TileDirectionDelta[direction].x;
-			mapY = RCT2_GLOBAL(0x00F4418A, uint16) + TileDirectionDelta[direction].y;
+			mapX = _unkF44188.x + TileDirectionDelta[direction].x;
+			mapY = _unkF44188.y + TileDirectionDelta[direction].y;
 			if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32)) {
 				mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
 				do {

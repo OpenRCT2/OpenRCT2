@@ -272,6 +272,12 @@ typedef struct rct_xyz16 {
 } rct_xyz16;
 assert_struct_size(rct_xyz16, 6);
 
+typedef struct rct_xyzd16 {
+	sint16 x, y, z;
+	uint8 direction;
+} rct_xyzd16;
+assert_struct_size(rct_xyzd16, 7);
+
 typedef struct rct_xy32 {
 	sint32 x, y;
 } rct_xy32;
