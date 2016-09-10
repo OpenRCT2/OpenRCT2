@@ -424,7 +424,7 @@ namespace Intercept2
 
                 if (referenceGeneralSupportCall.height != -1) {
                     if (gSupport.height != referenceGeneralSupportCall.height) {
-                        printf("General support heights didn't match. [direction:%d trackSequence:%d]\n", direction,
+                        printf("General support heights didn't match. (expected %d, actual: %d) [direction:%d trackSequence:%d]\n", referenceGeneralSupportCall.height,gSupport.height, direction,
                                trackSequence);
                         return false;
                     }
