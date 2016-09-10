@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
@@ -245,7 +244,7 @@ void window_map_open()
 	w->map.rotation = get_current_rotation();
 
 	window_map_init_map();
-	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
+	gWindowSceneryRotation = 0;
 	window_map_center_on_view_point();
 
 	// Reset land tool size

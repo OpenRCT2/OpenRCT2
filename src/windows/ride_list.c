@@ -637,14 +637,10 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
-			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
-
 			set_format_arg(2, uint16, ride->reliability >> 8);
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
-			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
-
 			set_format_arg(2, uint16, ride->downtime);
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
