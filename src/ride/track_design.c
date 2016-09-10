@@ -59,6 +59,12 @@ static money32 _trackDesignPlaceCost;
 static sint16 _trackDesignPlaceZ;
 static sint16 word_F44129;
 
+/** rct2: 0x009DEA6F */
+bool gTrackDesignSavingSelectingScenery = false;
+
+/** rct2: 0x00F64DE8 */
+uint8 gTrackDesignSavingRideIndex;
+
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 static map_backup *track_design_preview_backup_map();
 static void track_design_preview_restore_map(map_backup *backup);

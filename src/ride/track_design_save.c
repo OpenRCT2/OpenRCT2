@@ -160,7 +160,7 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSavingSelectingScenery) {
 		if (!track_design_save_copy_scenery_to_td6(_trackDesign)) {
 			free(_trackDesign->track_elements);
 			free(_trackDesign->entrance_elements);

@@ -563,7 +563,7 @@ void sub_68B089()
 	int i;
 	rct_map_element *mapElementFirst, *mapElement;
 
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
+	if (gTrackDesignSavingSelectingScenery)
 		return;
 
 	i = RCT2_GLOBAL(0x0010E63B8, uint32);

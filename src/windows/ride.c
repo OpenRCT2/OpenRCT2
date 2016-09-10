@@ -4982,7 +4982,7 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
   when al == 0*/
 static void cancel_scenery_selection(){
 	gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
-	RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
+	gTrackDesignSavingSelectingScenery = false;
 	audio_unpause_sounds();
 
 	rct_window* main_w = window_get_main();
@@ -5001,17 +5001,17 @@ static void cancel_scenery_selection(){
  */
 static void setup_scenery_selection(rct_window* w)
 {
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
+	if (gTrackDesignSavingSelectingScenery) {
 		cancel_scenery_selection();
 	}
 
 	while (tool_set(w, 0, 12));
 
-	RCT2_GLOBAL(0x00F64DE8, uint8) = (uint8)w->number;
+	gTrackDesignSavingRideIndex = (uint8)w->number;
 
 	track_design_save_init();
 	gGamePaused |= GAME_PAUSED_SAVING_TRACK;
-	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
+	gTrackDesignSavingSelectingScenery = true;
 
 	audio_pause_sounds();
 
@@ -5039,7 +5039,7 @@ static void window_ride_measurements_design_reset()
  */
 static void window_ride_measurements_design_select_nearby_scenery()
 {
-	track_design_save_select_nearby_scenery(RCT2_GLOBAL(0x00F64DE8, uint8));
+	track_design_save_select_nearby_scenery(gTrackDesignSavingRideIndex);
 }
 
 /**
@@ -5048,7 +5048,7 @@ static void window_ride_measurements_design_select_nearby_scenery()
  */
 void window_ride_measurements_design_cancel()
 {
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1)
+	if (gTrackDesignSavingSelectingScenery)
 		cancel_scenery_selection();
 }
 
@@ -5224,7 +5224,7 @@ static void window_ride_measurements_invalidate(rct_window *w)
 
 	window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
 	window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_EMPTY;
-	if ((RCT2_GLOBAL(0x009DEA6F, uint8) & 1) && RCT2_GLOBAL(0x00F64DE8, uint8) == w->number) {
+	if (gTrackDesignSavingSelectingScenery && gTrackDesignSavingRideIndex == w->number) {
 		window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].type = WWT_DROPDOWN_BUTTON;
 		window_ride_measurements_widgets[WIDX_RESET_SELECTION].type = WWT_DROPDOWN_BUTTON;
 		window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type = WWT_DROPDOWN_BUTTON;
