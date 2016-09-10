@@ -391,6 +391,11 @@ extern uint32 _vehicleMotionTrackFlags;
 extern sint32 _vehicleVelocityF64E08;
 extern sint32 _vehicleVelocityF64E0C;
 extern sint32 _vehicleUnkF64E10;
+extern uint8 _vehicleVAngleEndF64E36;
+extern uint8 _vehicleBankEndF64E37;
+extern uint8 _vehicleF64E2C;
+extern rct_vehicle * _vehicleFrontVehicle;
+extern rct_xyz16 unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)
