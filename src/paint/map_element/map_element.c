@@ -34,6 +34,8 @@
 #include "../supports.h"
 
 #ifdef NO_RCT2
+bool gDidPassSurface;
+rct_map_element * gSurfaceElement;
 tunnel_entry gLeftTunnels[65];
 uint8 gLeftTunnelCount;
 tunnel_entry gRightTunnels[65];
@@ -228,7 +230,7 @@ static void sub_68B3FB(int x, int y)
 
 	RCT2_GLOBAL(0x9DE568, sint16) = x;
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
-	RCT2_GLOBAL(0x9DE57C, uint16) = 0;
+	gDidPassSurface = false;
 	do {
 		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
 		int height = map_element->base_height * 8;

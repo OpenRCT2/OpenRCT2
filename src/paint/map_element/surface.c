@@ -964,8 +964,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-	RCT2_GLOBAL(0x9DE57C, uint16) |= 1; // Probably a boolean indicating 'above surface'
-	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
+	gDidPassSurface = true;
+	gSurfaceElement = mapElement;
 
 	uint16 zoomLevel = dpi->zoom_level;
 

@@ -449,7 +449,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 			unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
+			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, paint_struct*) == NULL) {
 				sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				hasSupports = true;
 			} else {
