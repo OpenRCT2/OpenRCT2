@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
@@ -302,6 +301,8 @@ static const uint32 staffCostumeNames[] = {
 	STR_STAFF_OPTION_COSTUME_SHERIFF,
 	STR_STAFF_OPTION_COSTUME_PIRATE,
 };
+
+static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
 
 /**
 *
@@ -1334,34 +1335,35 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 
 	init_scenery();
 
-	int ebx = 0;
+	uint32 entertainerCostumes = 0;
 	for (int i = 0; i < 19; i++) {
 		if (window_scenery_tab_entries[i][0] != -1) {
 			rct_scenery_set_entry* scenery_entry = get_scenery_group_entry(i);
-			ebx |= scenery_entry->var_10A;
+			entertainerCostumes |= scenery_entry->entertainer_costumes;
 		}
 	}
 
-	uint8* ebp = RCT2_ADDRESS(0xF4391B, uint8);
-	uint16 no_entries = 0;
-	for (uint8 i = 0; i < 32; ++i){
-		if (ebx & (1 << i)){
-			*ebp++ = i;
-			no_entries++;
+	uint8 *costume = _availableCostumes;
+	uint16 numCostumes = 0;
+	for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+		if (entertainerCostumes & (1 << i)) {
+			// For some reason the flags are +4 from the actual costume IDs
+			*costume++ = (i - 4);
+			numCostumes++;
 		}
 	}
 
 	rct_peep* peep = GET_PEEP(w->number);
-	int item_checked = 0;
+	int itemsChecked = 0;
 	//This will be moved below where Items Checked is when all
 	//of dropdown related functions are finished. This prevents
 	//the dropdown from not working on first click.
-	for (int i = 0; i < no_entries; ++i){
-		int eax = RCT2_ADDRESS(0xF4391B, uint8)[i];
-		if (eax == peep->sprite_type){
-			item_checked = 1 << i;
+	for (int i = 0; i < numCostumes; ++i){
+		uint8 costume = _availableCostumes[i];
+		if (costume == peep->sprite_type) {
+			itemsChecked = 1 << i;
 		}
-		gDropdownItemsArgs[i] = staffCostumeNames[eax - 4];
+		gDropdownItemsArgs[i] = staffCostumeNames[costume];
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 	}
 
@@ -1372,10 +1374,10 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	int y = widget->top + w->y;
 	int extray = widget->bottom - widget->top + 1;
 	int width = widget->right - widget->left - 3;
-	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, no_entries, width);
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
 	// See above note.
-	gDropdownItemsChecked = item_checked;
+	gDropdownItemsChecked = itemsChecked;
 }
 
 /**
@@ -1392,6 +1394,6 @@ void window_staff_options_dropdown(rct_window *w, int widgetIndex, int dropdownI
 		return;
 
 	rct_peep* peep = GET_PEEP(w->number);
-	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
+	int costume = _availableCostumes[dropdownIndex] | 0x80;
 	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 }

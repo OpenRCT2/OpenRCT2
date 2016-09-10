@@ -1321,9 +1321,10 @@ void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 colour_t staff_get_colour(uint8 staffType)
 {
 	switch (staffType) {
-	case STAFF_TYPE_HANDYMAN:	return gStaffHandymanColour;
-	case STAFF_TYPE_MECHANIC:	return gStaffMechanicColour;
-	case STAFF_TYPE_SECURITY:	return gStaffSecurityColour;
+	case STAFF_TYPE_HANDYMAN:		return gStaffHandymanColour;
+	case STAFF_TYPE_MECHANIC:		return gStaffMechanicColour;
+	case STAFF_TYPE_SECURITY:		return gStaffSecurityColour;
+	case STAFF_TYPE_ENTERTAINER:	return 0;
 	default:
 		assert(false);
 		return 0;
