@@ -164,6 +164,7 @@ uint8 _currentTrackSlopeEnd;
 uint8 _currentTrackBankEnd;
 uint8 _currentTrackLiftHill;
 uint8 _currentTrackCovered;
+uint8 _selectedTrackType;
 
 uint8 _previousTrackBankEnd;
 uint8 _previousTrackSlopeEnd;
@@ -172,6 +173,9 @@ uint16 _previousTrackPieceX;
 uint16 _previousTrackPieceY;
 uint16 _previousTrackPieceZ;
 
+uint8 _currentlyShowingBrakeSpeed;
+uint8 _currentBrakeSpeed;
+uint8 _currentBrakeSpeed2;
 uint8 _currentSeatRotationAngle;
 
 uint8 gRideEntranceExitPlaceType;

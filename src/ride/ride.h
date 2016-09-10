@@ -951,6 +951,7 @@ extern uint8 _currentTrackSlopeEnd;
 extern uint8 _currentTrackBankEnd;
 extern uint8 _currentTrackLiftHill;
 extern uint8 _currentTrackCovered;
+extern uint8 _selectedTrackType;
 
 extern uint8 _previousTrackBankEnd;
 extern uint8 _previousTrackSlopeEnd;
@@ -959,6 +960,9 @@ extern uint16 _previousTrackPieceX;
 extern uint16 _previousTrackPieceY;
 extern uint16 _previousTrackPieceZ;
 
+extern uint8 _currentlyShowingBrakeSpeed;
+extern uint8 _currentBrakeSpeed;
+extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 
 extern uint8 gRideEntranceExitPlaceType;
