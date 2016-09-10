@@ -38,6 +38,7 @@
 rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot;
+rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
@@ -2261,7 +2262,7 @@ void window_update_viewport_ride_music()
 			continue;
 
 		g_music_tracking_viewport = viewport;
-		RCT2_GLOBAL(0x00F438A8, rct_window*) = w;
+		gWindowAudioExclusive = w;
 
 		switch (viewport->zoom) {
 		case 0:

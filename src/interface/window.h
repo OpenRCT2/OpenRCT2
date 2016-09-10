@@ -537,6 +537,7 @@ extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 
 extern rct_window * gWindowFirst;
 extern rct_window * gWindowNextSlot;
+extern rct_window * gWindowAudioExclusive;
 
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;

@@ -81,6 +81,13 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 rct_vehicle *gCurrentVehicle;
 
+static uint8 _vehicleBreakdown;
+uint8 _vehicleStationIndex;
+uint32 _vehicleMotionTrackFlags;
+sint32 _vehicleVelocityF64E08;
+sint32 _vehicleVelocityF64E0C;
+sint32 _vehicleUnkF64E10;
+
 const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
 const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
 const uint8 byte_9A3A18[] = {
@@ -445,14 +452,14 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 				sint16 y = g_music_tracking_viewport->view_y;
 				sint16 w = g_music_tracking_viewport->view_width / 4;
 				sint16 h = g_music_tracking_viewport->view_height / 4;
-				if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
+				if (!gWindowAudioExclusive->classification) {
 					x -= w;
 					y -= h;
 				}
 				if (x < vehicle->sprite_right && y < vehicle->sprite_bottom) {
 					sint16 w2 = g_music_tracking_viewport->view_width + x;
 					sint16 h2 = g_music_tracking_viewport->view_height + y;
-					if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
+					if (!gWindowAudioExclusive->classification) {
 						w2 += w + w;
 						h2 += h + h;
 					}
@@ -574,7 +581,7 @@ void vehicle_sounds_update()
 		g_music_tracking_viewport = viewport;
 		if (viewport != (rct_viewport*)-1) {
 			if (window) {
-				RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
+				gWindowAudioExclusive = window;
 				gVolumeAdjustZoom = 0;
 				if (viewport->zoom) {
 					gVolumeAdjustZoom = 35;
@@ -1364,9 +1371,9 @@ static void vehicle_update(rct_vehicle *vehicle)
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
 		vehicle_update_measurements(vehicle);
 
-	RCT2_GLOBAL(0x00F64E34, uint8) = 255;
+	_vehicleBreakdown = 255;
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
-		RCT2_GLOBAL(0x00F64E34, uint8) = ride->breakdown_reason_pending;
+		_vehicleBreakdown = ride->breakdown_reason_pending;
 		if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) ||
 				(
@@ -2600,7 +2607,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (vehicle->velocity <= speed) {
 				vehicle->acceleration = 15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+					if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 					}
@@ -2614,7 +2621,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (vehicle->velocity >= speed) {
 				vehicle->acceleration = -15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+					if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 					}
@@ -2635,7 +2642,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 
 		if (shouldLaunch) {
-			if (!(flags & (1 << 3)) || (RCT2_GLOBAL(0x00F64E1C, uint8) != vehicle->current_station)) {
+			if (!(flags & (1 << 3)) || _vehicleStationIndex != vehicle->current_station) {
 				vehicle_finish_departing(vehicle);
 				return;
 			}
@@ -2929,7 +2936,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 	vehicle_check_if_missing(vehicle);
 
 	rct_ride* ride = get_ride(vehicle->ride);
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
+	if (_vehicleBreakdown == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
 		return;
 
 	if (vehicle->sub_state == 2) {
@@ -3032,7 +3039,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 					if (vehicle->velocity >= ride->lift_hill_speed * -31079) {
 						vehicle->acceleration = -15539;
 
-						if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+						if (_vehicleBreakdown == 0) {
 							vehicle->var_B8 &= ~(1 << 1);
 							vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						}
@@ -3045,7 +3052,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 			if (vehicle->velocity <= ride->lift_hill_speed * 31079) {
 				vehicle->acceleration = 15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+					if (_vehicleBreakdown == 0) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->var_B8 &= ~(1 << 1);
 					}
@@ -3071,7 +3078,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		return;
 
 	vehicle->status = VEHICLE_STATUS_ARRIVING;
-	vehicle->current_station = RCT2_GLOBAL(0x00F64E1C, uint8);
+	vehicle->current_station = _vehicleStationIndex;
 	vehicle_invalidate_window(vehicle);
 	vehicle->var_C0 = 0;
 
@@ -3084,8 +3091,9 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006D8C36
  */
-static void vehicle_update_arriving(rct_vehicle* vehicle) {
-	RCT2_GLOBAL(0x00F64E35, uint8) = 1;
+static void vehicle_update_arriving(rct_vehicle* vehicle)
+{
+	uint8 unkF64E35 = 1;
 	rct_ride* ride = get_ride(vehicle->ride);
 
 	switch (ride->mode) {
@@ -3117,8 +3125,10 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 		ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
 		ride->inspection_station == vehicle->current_station &&
-		ride->mechanic_status != RIDE_MECHANIC_STATUS_4)
-		RCT2_GLOBAL(0x00F64E35, uint8) = 0;
+		ride->mechanic_status != RIDE_MECHANIC_STATUS_4
+	) {
+		unkF64E35 = 0;
+	}
 
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -3140,7 +3150,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		else
 			velocity_diff /= 16;
 
-		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		if (unkF64E35 == 0) {
 			goto loc_6D8E36;
 		}
 
@@ -3168,7 +3178,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		else
 			velocity_diff /= 16;
 
-		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		if (unkF64E35 == 0) {
 			goto loc_6D8E36;
 		}
 
@@ -3197,13 +3207,15 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
  loc_6D8E36:
 	flags = vehicle_update_track_motion(vehicle, NULL);
 	if (flags & (1 << 7) &&
-		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		unkF64E35 == 0
+	) {
 		vehicle_update_collision_setup(vehicle);
 		return;
 	}
 
 	if (flags & (1 << 0) &&
-		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		unkF64E35 == 0
+	) {
 		vehicle->status = VEHICLE_STATUS_DEPARTING;
 		vehicle->sub_state = 1;
 		vehicle_invalidate_window(vehicle);
@@ -3462,7 +3474,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 	if (vehicle->sub_state == 2)
 		return;
 
-	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == RCT2_GLOBAL(0x00F64E1C, uint8))
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == _vehicleStationIndex)
 		return;
 
 	vehicle->sub_state = 2;
@@ -3523,19 +3535,19 @@ static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
  */
 static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 {
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	_vehicleMotionTrackFlags = 0;
 	vehicle->velocity += vehicle->acceleration;
-	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
+	_vehicleVelocityF64E08 = vehicle->velocity;
+	_vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
 
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	if (vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_7 | VEHICLE_ENTRY_FLAG_B_8)) {
 		sub_6D63D4(vehicle);
 	}
 
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleUnkF64E10 = 1;
 	vehicle->acceleration = 0;
-	vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+	vehicle->remaining_distance += _vehicleVelocityF64E0C;
 	if (vehicle->remaining_distance >= 0x368A) {
 		vehicle->var_B8 &= ~(1 << 1);
 		unk_F64E20->x = vehicle->x;
@@ -3712,7 +3724,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			if (vehicle->remaining_distance < 0x368A) {
 				break;
 			}
-			RCT2_GLOBAL(0x00F64E10, uint32)++;
+			_vehicleUnkF64E10++;
 		}
 
 		sprite_move(
@@ -3750,8 +3762,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 		}
 		vehicle->acceleration = ecx;
 	}
-	// eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	// ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	// eax = _vehicleMotionTrackFlags;
+	// ebx = _vehicleStationIndex;
 }
 
  /**
@@ -3909,7 +3921,7 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
  *  rct2: 0x006D9413
  */
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	rct_ride* ride = get_ride(vehicle->ride);
@@ -3993,7 +4005,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
  *  rct2: 0x006D94F2
  */
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	assert(vehicle->current_time >= -1);
@@ -4019,7 +4031,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006D92FF
  */
 static void vehicle_update_rotating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	rct_ride* ride = get_ride(vehicle->ride);
@@ -4037,7 +4049,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 	}
 
 	sint32 var_4C = (sint16)vehicle->current_time;
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_CONTROL_FAILURE) {
+	if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE) {
 		var_4C += (ride->breakdown_sound_modifier >> 6) + 1;
 	}
 	var_4C++;
@@ -4054,7 +4066,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 
 	vehicle->current_time = -1;
 	vehicle->var_CE++;
-	if (RCT2_GLOBAL(0x00F64E34, uint8) != BREAKDOWN_CONTROL_FAILURE) {
+	if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
 			al = vehicle->var_CE + 1;
@@ -4098,7 +4110,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
  */
 static void vehicle_update_space_rings_operating(rct_vehicle *vehicle)
 {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	uint8 spriteType = SpaceRingsTimeToSpriteMap[vehicle->current_time + 1];
@@ -4121,7 +4133,7 @@ static void vehicle_update_space_rings_operating(rct_vehicle *vehicle)
  *  rct2: 0x006D9641
  */
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	if (vehicle->vehicle_sprite_type != 0) {
@@ -4188,7 +4200,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006d9781
  */
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	if ((uint16)(vehicle->current_time + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
@@ -4207,7 +4219,7 @@ static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006D9547
  */
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	const top_spin_time_to_sprite_map * edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
@@ -4240,7 +4252,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
 {
 	int currentTime, totalTime;
 
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	totalTime = RideFilmLength[vehicle->sub_state];
@@ -4262,7 +4274,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
  */
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
 {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	int currentTime = vehicle->current_time + 1;
@@ -5329,7 +5341,7 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *  rct2: 0x006DA44E
  */
 static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	_vehicleMotionTrackFlags = 0;
 	rct_ride* ride = get_ride(vehicle->ride);
 
 	sint32 nextVelocity = vehicle->velocity + vehicle->acceleration;
@@ -5339,9 +5351,9 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	}
 	vehicle->velocity = nextVelocity;
 
-	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity / 1024) * 42;
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleVelocityF64E08 = nextVelocity;
+	_vehicleVelocityF64E0C = (nextVelocity / 1024) * 42;
+	_vehicleUnkF64E10 = 1;
 
 	vehicle->acceleration = 0;
 	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) ||
@@ -5399,7 +5411,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		}
 	}
 
-	vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+	vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
 	if (vehicle->remaining_distance >= 13962) {
 		vehicle->var_B8 &= ~(1 << 1);
@@ -5428,7 +5440,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			if (vehicle->remaining_distance < 13962) {
 				break;
 			}
-			RCT2_GLOBAL(0x00F64E10, uint32)++;
+			_vehicleUnkF64E10++;
 		}
 
 		if (vehicle->remaining_distance >= 13962) {
@@ -5477,7 +5489,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 		vehicle->acceleration = -eax;
-		return RCT2_GLOBAL(0x00F64E18, uint32);
+		return _vehicleMotionTrackFlags;
 	}
 
 	sint32 ebx = (vehicle->speed * vehicle->friction) >> 2;
@@ -5490,7 +5502,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	_eax /= ebx;
 
 	vehicle->acceleration = _eax - eax;
-	return RCT2_GLOBAL(0x00F64E18, uint32);
+	return _vehicleMotionTrackFlags;
 }
 
 
@@ -5586,7 +5598,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->vehicle_sprite_type != 8) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	} else if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_2) {
@@ -5606,7 +5618,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->vehicle_sprite_type != 8 && vehicle->vehicle_sprite_type != 55) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	}
@@ -5643,7 +5655,7 @@ static void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
 	// If the site is in a "train blocking" state
 	if (is_block_brake_closed) {
 		// Slow it down till completely stop the car
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 		vehicle->acceleration = 0;
 		// If the vehicle is slow enough, stop it. If not, slow it down
 		if (vehicle->velocity <= 0x20000) {
@@ -5673,7 +5685,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 	// Is chair lift type
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
 		sint32 velocity = ride->speed << 16;
-		if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+		if (_vehicleBreakdown == 0) {
 			velocity = 0;
 		}
 		vehicle->velocity = velocity;
@@ -5703,7 +5715,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 		break;
 	case TRACK_ELEM_END_STATION:
 		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 
 		break;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
@@ -5744,8 +5756,8 @@ static void update_velocity(rct_vehicle *vehicle)
 	}
 	vehicle->velocity = nextVelocity;
 
-	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity >> 10) * 42;
+	_vehicleVelocityF64E08 = nextVelocity;
+	_vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
 static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehicle, rct_map_element *mapElement)
@@ -5928,7 +5940,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
  */
 static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 {
-	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	sint32 dword_F64E08 = _vehicleVelocityF64E08;
 	vehicle->var_4E += (-vehicle->swinging_car_var_0) >> 6;
 	int swingAmount = vehicle_get_swing_amount(vehicle);
 	if (swingAmount < 0) {
@@ -6335,7 +6347,7 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int spinningInertia = vehicleEntry->spinning_inertia;
 	int trackType = vehicle->track_type >> 2;
-	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	sint32 dword_F64E08 = _vehicleVelocityF64E08;
 	int unk;
 	switch (off_9A2E84[trackType]) {
 	case loc_6D665A:
@@ -6440,7 +6452,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	switch (vehicleEntry->var_11) {
 	case 1: // loc_6D652B
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 20) & 3;
 		if (vehicle->var_C5 != al) {
 			ah = al;
@@ -6472,7 +6484,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 2: // loc_6D6424
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 18) & 2;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6480,7 +6492,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 3: // loc_6D6482
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		eax = ((*var_C8 >> 13) & 0xFF) * 6;
 		ah = (eax >> 8) & 0xFF;
 		if (vehicle->var_C5 != ah) {
@@ -6489,7 +6501,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 4: // loc_6D64F7
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		eax = ((*var_C8 >> 13) & 0xFF) * 7;
 		ah = (eax >> 8) & 0xFF;
 		if (vehicle->var_C5 != ah) {
@@ -6498,7 +6510,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 5: // loc_6D6453
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 19) & 1;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6516,7 +6528,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 7: // loc_6D63F5
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 18) & 3;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6525,7 +6537,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		break;
 	case 8: // loc_6D64B6
 		if (vehicle->num_peeps != 0) {
-			*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+			*var_C8 += _vehicleVelocityF64E08;
 			eax = ((*var_C8 >> 13) & 0xFF) << 2;
 			ah = (eax >> 8) & 0xFF;
 			if (vehicle->var_C5 != ah) {
@@ -6706,7 +6718,7 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 
 static void vehicle_update_play_water_splash_sound()
 {
-	if (RCT2_GLOBAL(0x00F64E08, sint32) <= 0x20364) {
+	if (_vehicleVelocityF64E08 <= 0x20364) {
 		return;
 	}
 
@@ -6969,7 +6981,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 {
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-	vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / RCT2_GLOBAL(0x00F64E10, sint32));
+	vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / _vehicleUnkF64E10);
 	if (vehicle->var_CD == 2) {
 		return;
 	}
@@ -6979,7 +6991,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
 	rct_map_element *mapElement = NULL;
 	if (map_is_location_valid(vehicle->track_x, vehicle->track_y)) {
@@ -6996,8 +7008,8 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 		return;
 	}
 
-	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
-		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
+	if (_vehicleStationIndex == 0xFF) {
+		_vehicleStationIndex = (mapElement->properties.track.sequence >> 4) & 7;
 	}
 
 	if (trackType == TRACK_ELEM_TOWER_BASE &&
@@ -7011,12 +7023,12 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 			input.y = vehicle->track_y;
 			input.element = mapElement;
 			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
 			}
 		}
 
 		if (vehicle->track_progress <= 3) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 
@@ -7027,9 +7039,9 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 	}
 
 	uint16 ax = vehicle->track_progress;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		if (ax <= 22) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	} else {
 		uint16 cx = 17;
@@ -7041,7 +7053,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
 		}
 
 		if (ax > cx) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 }
@@ -7068,7 +7080,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehi
 	}
 
 	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == gCurrentVehicle) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
 
 	if (track_element_is_block_start(mapElement)) {
@@ -7236,10 +7248,10 @@ loc_6DAEB9:
 			vehicle->vehicle_type ^= 1;
 			vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 		}
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0x40000) {
-			vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 8;
+		if (_vehicleVelocityF64E08 >= 0x40000) {
+			vehicle->acceleration = -_vehicleVelocityF64E08 * 8;
 		}
-		else if (RCT2_GLOBAL(0x00F64E08, sint32) < 0x20000) {
+		else if (_vehicleVelocityF64E08 < 0x20000) {
 			vehicle->acceleration = 0x50000;
 		}
 	}
@@ -7250,8 +7262,8 @@ loc_6DAEB9:
 			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
 			)) {
 			regs.eax = vehicle->break_speed << 16;
-			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
-				vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+			if (regs.eax < _vehicleVelocityF64E08) {
+				vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
 			}
 			else if (!(gCurrentTicks & 0x0F)) {
 				if (RCT2_GLOBAL(0x00F64E2C, uint8) == 0) {
@@ -7271,7 +7283,7 @@ loc_6DAEB9:
 		if (!vehicle->is_child) {
 			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)) {
 				if (vehicle->track_progress >= 8) {
-					vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+					vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
 					if (vehicle->track_progress >= 24) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
 						vehicle->vertical_drop_countdown = 90;
@@ -7372,7 +7384,7 @@ loc_6DAEB9:
 
 	// vehicle == frontVehicle
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->prev_vehicle_on_ride;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16 *)&regs.bp)) {
 				goto loc_6DB967;
@@ -7387,20 +7399,20 @@ loc_6DAEB9:
 
 	regs.ebx = dword_9A2970[regs.ebx];
 	vehicle->acceleration += regs.ebx;
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DAEB9;
 
 loc_6DB94A:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance = 0xFFFFFFFF;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DB967:
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 
 	// Might need to be bp rather than vehicle, but hopefully not
@@ -7410,7 +7422,7 @@ loc_6DB967:
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
@@ -7423,7 +7435,7 @@ loc_6DB967:
 		vehicle->velocity = head->velocity >> 1;
 		head->velocity = newHeadVelocity;
 	}
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
 	return false;
 }
 
@@ -7545,11 +7557,11 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 	}
 
 	if (track_element_is_lift_hill(mapElement)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+		if (_vehicleVelocityF64E08 < 0) {
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				trackType = mapElement->properties.track.type;
 				if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN)) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
+					_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
 				}
 			}
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
@@ -7559,8 +7571,8 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
 			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-				if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+				if (_vehicleVelocityF64E08 < 0) {
+					_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
 				}
 			}
 		}
@@ -7591,7 +7603,7 @@ static bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride
 loc_6DBA33:;
 	uint16 trackType = vehicle->track_type >> 2;
 	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
-		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
+		sint32 unkVelocity = _vehicleVelocityF64E08;
 		if (unkVelocity < -524288) {
 			unkVelocity = abs(unkVelocity);
 			vehicle->acceleration = unkVelocity * 2;
@@ -7600,8 +7612,8 @@ loc_6DBA33:;
 
 	if (trackType == TRACK_ELEM_BRAKES) {
 		regs.eax = -(vehicle->break_speed << 16);
-		if (regs.eax > RCT2_GLOBAL(0x00F64E08, sint32)) {
-			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -16;
+		if (regs.eax > _vehicleVelocityF64E08) {
+			regs.eax = _vehicleVelocityF64E08 * -16;
 			vehicle->acceleration = regs.eax;
 		}
 	}
@@ -7646,7 +7658,7 @@ loc_6DBA33:;
 	}
 
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+		if (_vehicleVelocityF64E08 < 0) {
 			regs.bp = vehicle->next_vehicle_on_ride;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp)) {
 				goto loc_6DBE7F;
@@ -7660,20 +7672,20 @@ loc_6DBA33:;
 	}
 	regs.ebx = dword_9A2970[regs.ebx];
 	vehicle->acceleration += regs.ebx;
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DBA33;
 
 loc_6DBE5E:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DBE7F:
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 
 	rct_vehicle *v3 = GET_VEHICLE(regs.bp);
@@ -7683,20 +7695,20 @@ loc_6DBE7F:
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
 
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) {
 		vehicle->velocity -= vehicle->velocity >> 2;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 	else {
 		sint32 v3Velocity = v3->velocity;
 		v3->velocity = v4->velocity >> 1;
 		v4->velocity = v3Velocity >> 1;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 
 	return false;
@@ -7719,20 +7731,20 @@ static int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outS
 	rct_map_element *mapElement = NULL;
 
 	gCurrentVehicle = vehicle;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	_vehicleMotionTrackFlags = 0;
 	vehicle->velocity += vehicle->acceleration;
-	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	_vehicleVelocityF64E08 = vehicle->velocity;
+	_vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
+	if (_vehicleVelocityF64E08 < 0) {
 		vehicle = vehicle_get_tail(vehicle);
 	}
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
 
 loc_6DC40E:
 	regs.ebx = vehicle->vehicle_sprite_type;
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleUnkF64E10 = 1;
 	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
-	vehicle->remaining_distance = RCT2_GLOBAL(0x00F64E0C, sint32) + vehicle->remaining_distance;
+	vehicle->remaining_distance = _vehicleVelocityF64E0C + vehicle->remaining_distance;
 	if ((sint32)vehicle->remaining_distance < 0) {
 		goto loc_6DCA7A;
 	}
@@ -7992,7 +8004,7 @@ loc_6DC743:
 	}
 
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->prev_vehicle_on_ride;
 			vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp);
 		}
@@ -8011,13 +8023,13 @@ loc_6DC99A:
 		goto loc_6DCDE4;
 	}
 	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DC462;
 
 loc_6DC9BC:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= 0x20;
+	_vehicleMotionTrackFlags |= 0x20;
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DCD2B;
@@ -8077,8 +8089,8 @@ loc_6DCA9A:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+			if (_vehicleVelocityF64E08 < 0) {
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
 			}
 		}
 	}
@@ -8132,7 +8144,7 @@ loc_6DCC2C:
 	}
 
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->var_44;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp)) {
 				goto loc_6DCD6B;
@@ -8145,32 +8157,32 @@ loc_6DCD2B:
 		goto loc_6DCDE4;
 	}
 	vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DCA9A;
 
 loc_6DCD4A:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DC99A;
 
 loc_6DCD6B:
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	rct_vehicle *vEBP = GET_VEHICLE(regs.bp);
 	rct_vehicle *vEDI = gCurrentVehicle;
 	regs.eax = abs(vEDI->velocity - vEBP->velocity);
 	if (regs.eax > 0xE0000) {
 		if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 		}
 	}
 	vEDI->velocity = vEBP->velocity >> 1;
 	vEBP->velocity = vEDI->velocity >> 1;
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	goto loc_6DC99A;
 
 loc_6DCDE4:
@@ -8178,7 +8190,7 @@ loc_6DCDE4:
 	vehicle_invalidate(vehicle);
 
 loc_6DCE02:
-	vehicle->acceleration /= RCT2_GLOBAL(0x00F64E10, uint32);
+	vehicle->acceleration /= _vehicleUnkF64E10;
 	if (vehicle->var_CD == 2) {
 		goto loc_6DCEB2;
 	}
@@ -8186,7 +8198,7 @@ loc_6DCE02:
 	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		goto loc_6DCEB2;
 	}
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 	if (trackType != TRACK_ELEM_END_STATION) {
 		goto loc_6DCEB2;
 	}
@@ -8194,7 +8206,7 @@ loc_6DCE02:
 		goto loc_6DCEB2;
 	}
 	regs.ax = vehicle->track_progress;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		goto loc_6DCE62;
 	}
 	regs.cx = 8;
@@ -8209,7 +8221,7 @@ loc_6DCE62:
 	}
 
 loc_6DCE68:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 	regs.al = vehicle->track_x >> 5;
 	regs.ah = vehicle->track_y >> 5;
 	regs.dl = vehicle->track_z >> 3;
@@ -8220,14 +8232,14 @@ loc_6DCE68:
 		if ((uint16)regs.dl != ride->station_heights[i]) {
 			continue;
 		}
-		RCT2_GLOBAL(0x00F64E1C, uint32) = i;
+		_vehicleStationIndex = i;
 	}
 
 loc_6DCEB2:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 	}
-	if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+	if (_vehicleVelocityF64E08 >= 0) {
 		regs.si = vehicle->next_vehicle_on_train;
 		if ((uint16)regs.si == SPRITE_INDEX_NULL) {
 			goto loc_6DCEFF;
@@ -8331,8 +8343,8 @@ loc_6DCEFF:
 
 loc_6DD069:
 	vehicle->acceleration = regs.ecx;
-	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	regs.eax = _vehicleMotionTrackFlags;
+	regs.ebx = _vehicleStationIndex;
 
 	if (outStation != NULL) *outStation = regs.ebx;
 	return regs.eax;
@@ -8356,14 +8368,14 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
 	gCurrentVehicle = vehicle;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
-	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
+	_vehicleMotionTrackFlags = 0;
+	_vehicleStationIndex = 0xFF;
 
 	vehicle_update_track_motion_up_stop_check(vehicle);
 	check_and_apply_block_section_stop_site(vehicle);
 	update_velocity(vehicle);
 
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		vehicle = vehicle_get_tail(vehicle);
 	}
 	// This will be the front vehicle even when traveling
@@ -8388,9 +8400,9 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 			sub_6D63D4(car);
 		}
 		car->acceleration = dword_9A2970[car->vehicle_sprite_type];
-		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+		_vehicleUnkF64E10 = 1;
 
-		regs.eax = RCT2_GLOBAL(0x00F64E0C, sint32) + car->remaining_distance;
+		regs.eax = _vehicleVelocityF64E0C + car->remaining_distance;
 		car->remaining_distance = regs.eax;
 
 		car->var_B8 &= ~(1 << 1);
@@ -8411,7 +8423,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 					}
 					regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 					car->acceleration += regs.ebx;
-					RCT2_GLOBAL(0x00F64E10, uint32)++;
+					_vehicleUnkF64E10++;
 					continue;
 				}
 			}
@@ -8428,7 +8440,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 				}
 				regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 				car->acceleration = regs.ebx;
-				RCT2_GLOBAL(0x00F64E10, uint32)++;
+				_vehicleUnkF64E10++;
 				continue;
 			}
 		}
@@ -8441,9 +8453,9 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 		// loc_6DC0F7
 		if (car->update_flags & VEHICLE_UPDATE_FLAG_0) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 		}
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			spriteId = car->next_vehicle_on_train;
 		}
 		else {
@@ -8645,8 +8657,8 @@ loc_6DC316:
 
 	vehicle->acceleration = regs.ecx;
 
-	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	regs.eax = _vehicleMotionTrackFlags;
+	regs.ebx = _vehicleStationIndex;
 
 	// hook_setreturnregisters(&regs);
 	if (outStation != NULL) *outStation = regs.ebx;
