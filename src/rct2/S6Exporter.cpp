@@ -154,7 +154,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         // 6:
         chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
         chunkHeader.length = 0x27104C;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.dword_010E63B8, chunkHeader);
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.next_free_map_element_pointer_index, chunkHeader);
         SDL_RWwrite(rw, buffer, encodedLength, 1);
 
         // 7:
@@ -204,7 +204,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         // 6: Everything else...
         chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
         chunkHeader.length = 0x2E8570;
-        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.dword_010E63B8, chunkHeader);
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.next_free_map_element_pointer_index, chunkHeader);
         SDL_RWwrite(rw, buffer, encodedLength, 1);
     }
 
@@ -251,7 +251,7 @@ void S6Exporter::Export()
 
     memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
 
-    _s6.dword_010E63B8 = RCT2_GLOBAL(0x0010E63B8, uint32);
+    _s6.next_free_map_element_pointer_index = gNextFreeMapElementPointerIndex;
     for (int i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));

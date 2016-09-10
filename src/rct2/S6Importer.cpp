@@ -123,7 +123,7 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
     sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
     sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
-    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 3048816);
+    sawyercoding_read_chunk_safe(rw, &_s6.next_free_map_element_pointer_index, 3048816);
 }
 
 void S6Importer::LoadScenario(SDL_RWops *rw)
@@ -146,7 +146,7 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
     sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
     sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
-    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 2560076);
+    sawyercoding_read_chunk_safe(rw, &_s6.next_free_map_element_pointer_index, 2560076);
     sawyercoding_read_chunk_safe(rw, &_s6.guests_in_park, 4);
     sawyercoding_read_chunk_safe(rw, &_s6.last_guests_in_park, 8);
     sawyercoding_read_chunk_safe(rw, &_s6.park_rating, 2);
@@ -169,7 +169,7 @@ void S6Importer::Import()
 
     memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
 
-    RCT2_GLOBAL(0x0010E63B8, uint32) = _s6.dword_010E63B8;
+    gNextFreeMapElementPointerIndex = _s6.next_free_map_element_pointer_index;
     for (int i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));

@@ -143,7 +143,7 @@ typedef struct rct_s6_data {
 	rct_map_element map_elements[0x30000];
 
 	// SC6[6]
-	uint32 dword_010E63B8;
+	uint32 next_free_map_element_pointer_index;
 	rct_sprite sprites[10000];
 	uint16 sprite_lists_head[6];
 	uint16 sprite_lists_count[6];

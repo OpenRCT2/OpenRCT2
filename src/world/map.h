@@ -357,10 +357,11 @@ extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
 #endif
 
-extern rct_xy16 *gMapSelectionTiles;
-extern rct2_peep_spawn *gPeepSpawns;
+extern rct_xy16 gMapSelectionTiles[300];
+extern rct2_peep_spawn gPeepSpawns[2];
 
 extern rct_map_element *gNextFreeMapElement;
+extern uint32 gNextFreeMapElementPointerIndex;
 
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
