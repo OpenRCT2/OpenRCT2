@@ -287,7 +287,7 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 		window_staff_list_cancel_tools(w);
 		break;
 	case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-		window_dropdown_show_colour(w, widget, w->colours[1], gStaffColours[_windowStaffListSelectedTab]);
+		window_dropdown_show_colour(w, widget, w->colours[1], staff_get_colour(_windowStaffListSelectedTab));
 		break;
 	}
 
@@ -504,7 +504,7 @@ void window_staff_list_invalidate(rct_window *w)
 	if (tabIndex < 3) {
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-			((uint32)gStaffColours[tabIndex] << 19) | 0x60000000 | SPR_PALETTE_BTN;
+			((uint32)staff_get_colour(tabIndex) << 19) | 0x60000000 | SPR_PALETTE_BTN;
 	}
 	if (_quick_fire_mode)
 		w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -678,7 +678,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 175, y - 1, 305);
 
 				// True if a patrol path is set for the worker
-				if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2) {
+				if (gStaffModes[peep->staff_id] & 2) {
 					gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, 110, y - 1, 0);
 				}
 

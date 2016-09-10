@@ -1851,7 +1851,7 @@ void peep_sprite_remove(rct_peep* peep){
 	else{
 		window_invalidate_by_class(WC_STAFF_LIST);
 
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] = 0;
+		gStaffModes[peep->staff_id] = 0;
 		peep->type = 0xFF;
 		staff_update_greyed_patrol_areas();
 		peep->type = PEEP_TYPE_STAFF;

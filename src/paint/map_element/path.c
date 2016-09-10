@@ -740,12 +740,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 			staffType = staff->staff_type;
 		}
 
-		x = (x & 0x1F80) >> 7;
-		y = (y & 0x1F80) >> 1;
-		int offset = (x | y) >> 5;
-		int bitIndex = (x | y) & 0x1F;
-		int ebx = (staffType + 200) * 512;
-		if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[offset] & (1 << bitIndex)) {
+		if (staff_is_patrol_area_set(200 + staffType, x, y)) {
 			uint32 imageId = 2618;
 			int height = map_element->base_height * 8;
 			if (footpath_element_is_sloped(map_element)) {

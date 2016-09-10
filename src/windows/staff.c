@@ -550,7 +550,7 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Disable clear patrol area if no area is set.
-	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
+	if (!(gStaffModes[peep->staff_id] & 2)) {
 		gDropdownItemsDisabled |= (1ULL << 1);
 	}
 }
@@ -568,12 +568,11 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
 	// Clear patrol
 	if (dropdownIndex == 1) {
 		rct_peep* peep = GET_PEEP(w->number);
-
-		for (int i = 0; i < 128; i++)
-		{
-			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (peep->staff_id * 512), uint32)[i] = 0;
+		uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (peep->staff_id * 512));
+		for (int i = 0; i < 128; i++) {
+			addr[i] = 0;
 		}
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
+		gStaffModes[peep->staff_id] &= ~2;
 
 		gfx_invalidate_screen();
 		staff_update_greyed_patrol_areas();
