@@ -47,16 +47,6 @@ void font_sprite_initialise_characters()
 	}
 
 	scrolling_text_initialise_bitmaps();
-
-	for (int i = 0; i < 32; i++) {
-		rct_g1_element* g1 = &g1Elements[0x606 + i];
-		uint8* unknown_pointer = RCT2_ADDRESS(0x009C3852, uint8) + 0xA12 * i;
-		g1->offset = unknown_pointer;
-		g1->width = 64;
-		g1->height = 40;
-		*((uint16*)unknown_pointer) = 0xFFFF;
-		*((uint32*)(unknown_pointer + 0x0E)) = 0;
-	}
 }
 
 int font_sprite_get_codepoint_offset(int codepoint)
