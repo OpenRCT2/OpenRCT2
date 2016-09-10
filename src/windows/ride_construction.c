@@ -3742,7 +3742,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	gMapSelectArrowDirection = direction ^ 2;
 	gMapSelectArrowPosition.x = x;
 	gMapSelectArrowPosition.y = y;
-	gMapSelectArrowPosition.z = RCT2_GLOBAL(0x00F44190, uint8) * 8;
+	gMapSelectArrowPosition.z = _unkF44188.z * 8;
 	map_invalidate_selection_rect();
 
 	direction = gRideEntranceExitPlaceDirection ^ 2;

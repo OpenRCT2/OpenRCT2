@@ -178,7 +178,7 @@ uint8 _currentBrakeSpeed;
 uint8 _currentBrakeSpeed2;
 uint8 _currentSeatRotationAngle;
 
-rct_xy16 _unkF44188;
+rct_xyz16 _unkF44188;
 rct_xyzd16 _unkF440BF;
 uint8 _unkF440C4;
 rct_xyzd16 _unkF440C5;
@@ -5684,7 +5684,7 @@ int ride_get_refund_price(int ride_id)
 {
 	uint8 oldpaused = gGamePaused;
 	gGamePaused = 0;
-	RCT2_GLOBAL(0x00F4413A, money32) = 0;
+	money32 refundPrice = 0;
 
 	map_element_iterator it;
 
@@ -5703,7 +5703,7 @@ int ride_get_refund_price(int ride_id)
 		uint8 type = it.element->properties.track.type;
 
 		if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
-			RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+			refundPrice += game_do_command(
 				x,
 				GAME_COMMAND_FLAG_APPLY | (rotation << 8),
 				y,
@@ -5716,7 +5716,7 @@ int ride_get_refund_price(int ride_id)
 		}
 
 		// Using GAME_COMMAND_FLAG_2 for below commands as a HACK to stop fences from being removed
-		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+		refundPrice += game_do_command(
 			x,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (0 << 8),
 			y,
@@ -5725,7 +5725,7 @@ int ride_get_refund_price(int ride_id)
 			z,
 			0);
 
-		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+		refundPrice += game_do_command(
 			x,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
 			y + 16,
@@ -5734,7 +5734,7 @@ int ride_get_refund_price(int ride_id)
 			z,
 			0);
 
-		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+		refundPrice += game_do_command(
 			x + 16,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
 			y + 16,
@@ -5743,7 +5743,7 @@ int ride_get_refund_price(int ride_id)
 			z,
 			0);
 
-		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
+		refundPrice += game_do_command(
 			x + 16,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
 			y,
@@ -5754,7 +5754,7 @@ int ride_get_refund_price(int ride_id)
 		map_element_iterator_restart_for_tile(&it);
 	}
 	gGamePaused = oldpaused;
-	return RCT2_GLOBAL(0x00F4413A, int);
+	return refundPrice;
 }
 
 /**
@@ -7166,7 +7166,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 	if (stationStartXY == 0xFFFF)
 		return;
 
-	RCT2_GLOBAL(0x00F44190, uint8) = stationHeight;
+	_unkF44188.z = stationHeight;
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
 		mapX = (word_F4418C & 0x1F) - 16;
@@ -8148,7 +8148,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 	// Remember when in Unknown station num mode rideIndex is unknown and z is set
 	// When in known station num mode rideIndex is known and z is unknown
 
-	RCT2_GLOBAL(0x009E32B8, uint32) = 0;
+	money32 cost = 0;
 	gCommandPosition.x = x;
 	gCommandPosition.y = y;
 
@@ -8172,7 +8172,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 
 		sint16 clear_z = z / 8 + (is_exit ? 5 : 7);
 		
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, RCT2_ADDRESS(0x009E32B8, money32))) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost)) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -8270,7 +8270,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 
 		sint8 clear_z = (z / 8) + (is_exit ? 5 : 7);
 
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, RCT2_ADDRESS(0x009E32B8, money32))) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost)) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -8325,7 +8325,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 	}
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	return RCT2_GLOBAL(0x009E32B8, money32);
+	return cost;
 }
 
 /**
