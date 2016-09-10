@@ -801,14 +801,14 @@ void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * f
 		imageId += 51;
 	}
 
-	if (!RCT2_GLOBAL(0x9DE57C, bool)) {
+	if (!gDidPassSurface) {
 		boundBoxOffset.x = 3;
 		boundBoxOffset.y = 3;
 		boundBoxSize.x = 26;
 		boundBoxSize.y = 26;
 	}
 
-	if (!hasFences || !RCT2_GLOBAL(0x9DE57C, bool)) {
+	if (!hasFences || !gDidPassSurface) {
 		sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 	} else {
 		uint32 image_id;
@@ -915,14 +915,14 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 	}
 
 	// Below Surface
-	if (!RCT2_GLOBAL(0x9DE57C, bool)) {
+	if (!gDidPassSurface) {
 		boundBoxOffset.x = 3;
 		boundBoxOffset.y = 3;
 		boundBoxSize.x = 26;
 		boundBoxSize.y = 26;
 	}
 
-	if (!hasFences || !RCT2_GLOBAL(0x9DE57C, bool)) {
+	if (!hasFences || !gDidPassSurface) {
 		sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 	}
 	else {

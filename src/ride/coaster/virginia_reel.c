@@ -271,7 +271,7 @@ static void paint_virginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSequ
 	}
 
 	if (direction == 1 || direction == 2) {
-		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+		gWoodenSupportsPrependTo = ps;
 	}
 
 	switch (direction) {
@@ -316,14 +316,14 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 t
 			break;
 		case 1:
 			ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
-			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+			gWoodenSupportsPrependTo = ps;
 
 			wooden_a_supports_paint_setup(1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 			paint_util_push_tunnel_right(height, TUNNEL_8);
 			break;
 		case 2:
 			ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
-			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+			gWoodenSupportsPrependTo = ps;
 
 			wooden_a_supports_paint_setup(0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 			paint_util_push_tunnel_left(height, TUNNEL_8);
@@ -360,7 +360,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(uint8 rideIndex, uint8 t
 	}
 
 	if (direction == 1 || direction == 2) {
-		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+		gWoodenSupportsPrependTo = ps;
 	}
 
 	switch (direction) {

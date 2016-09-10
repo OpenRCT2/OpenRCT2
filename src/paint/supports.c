@@ -321,6 +321,10 @@ const uint16 word_97B3C4[] = {
 	0,
 };
 
+#ifdef NO_RCT2
+paint_struct * gWoodenSupportsPrependTo;
+#endif
+
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
@@ -449,14 +453,14 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 			unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
+			if (byte_97B23C[special].var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
 				sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				hasSupports = true;
 			} else {
 				hasSupports = true;
 				paint_struct* ps = sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				if (ps != NULL) {
-					paint_struct* edi = RCT2_GLOBAL(0x009DEA58, paint_struct*);
+					paint_struct* edi = gWoodenSupportsPrependTo;
 					edi->var_20 = ps;
 				}
 			}

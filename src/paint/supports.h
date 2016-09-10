@@ -20,6 +20,12 @@
 #include "../common.h"
 #include "../world/footpath.h"
 
+#ifdef NO_RCT2
+extern paint_struct * gWoodenSupportsPrependTo;
+#else
+#define gWoodenSupportsPrependTo		RCT2_GLOBAL(0x009DEA58, paint_struct *)
+#endif
+
 bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags);
 bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags);

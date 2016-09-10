@@ -173,7 +173,7 @@ static void paint_go_karts_track_25_deg_up(uint8 rideIndex, uint8 trackSequence,
 	}
 
 	if (direction == 1 || direction == 2) {
-		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+		gWoodenSupportsPrependTo = ps;
 	}
 
 	imageId = go_karts_track_pieces_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
@@ -220,7 +220,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackS
 	}
 
 	if (direction == 1 || direction == 2) {
-		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+		gWoodenSupportsPrependTo = ps;
 	}
 
 	imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
@@ -267,7 +267,7 @@ static void paint_go_karts_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
 	}
 
 	if (direction == 1 || direction == 2) {
-		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+		gWoodenSupportsPrependTo = ps;
 	}
 
 	imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][1] | gTrackColours[SCHEME_TRACK];
