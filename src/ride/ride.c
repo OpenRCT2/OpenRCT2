@@ -913,9 +913,6 @@ void ride_init_all()
 		ride->type = RIDE_TYPE_NULL;
 	}
 
-	RCT2_GLOBAL(0x0138B590, sint8) = 0;
-	RCT2_GLOBAL(0x0138B591, sint8) = 0;
-
 	for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
 		ride_measurement = get_ride_measurement(i);
 		ride_measurement->ride_index = 255;
@@ -1919,8 +1916,6 @@ int sub_6CC3FB(int rideIndex)
 	_rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
-	RCT2_GLOBAL(0x00F44159, uint8) = 0;
-	RCT2_GLOBAL(0x00F4415C, uint8) = 0;
 
 	sub_6C84CE();
 	return 1;
@@ -6358,12 +6353,6 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			window_close_by_number(WC_RIDE, ride_id);
 			window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, ride_id);
 			window_close_by_class(WC_NEW_CAMPAIGN);
-			if(RCT2_GLOBAL(0x01358103, uint8) && ride_id == RCT2_GLOBAL(0x01358117, uint8)){
-				RCT2_GLOBAL(0x01358103, uint8) = 0;
-			}
-			if(RCT2_GLOBAL(0x01358107, uint8) && ride_id == RCT2_GLOBAL(0x0135811B, uint8)){
-				RCT2_GLOBAL(0x01358107, uint8) = 0;
-			}
 			ride_clear_for_construction(ride_id);
 			ride_remove_peeps(ride_id);
 			ride_stop_peeps_queuing(ride_id);
@@ -7894,8 +7883,6 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
  */
 void sub_6CB945(int rideIndex)
 {
-	RCT2_GLOBAL(0x00F441C2, uint8) = rideIndex;
-
 	rct_ride* ride = get_ride(rideIndex);
 	if (ride->type != RIDE_TYPE_MAZE) {
 		for (uint8 stationId = 0; stationId < 4; ++stationId) {
