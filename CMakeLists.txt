@@ -82,7 +82,7 @@ option(DISABLE_RCT2 "WIP: Try building without using code and data segments from
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
 
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Wformat=2 -Wformat-security")
 
 # On mingw all code is already PIC, this will avoid compiler error on redefining this option
 if(NOT MINGW)
