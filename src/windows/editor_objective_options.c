@@ -424,10 +424,10 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
-		window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info->name, 64);
+		window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
 		break;
 	case WIDX_DETAILS:
-		window_text_input_raw_open(w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gS6Info->details, 256);
+		window_text_input_raw_open(w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gS6Info.details, 256);
 		break;
 	}
 }
@@ -562,7 +562,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 		5,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	dropdown_set_checked(gS6Info->category, true);
+	dropdown_set_checked(gS6Info.category, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window *w)
@@ -737,8 +737,8 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 		}
 		break;
 	case WIDX_CATEGORY_DROPDOWN:
-		if (gS6Info->category != (uint8)dropdownIndex) {
-			gS6Info->category = (uint8)dropdownIndex;
+		if (gS6Info.category != (uint8)dropdownIndex) {
+			gS6Info.category = (uint8)dropdownIndex;
 			window_invalidate(w);
 		}
 		break;
@@ -787,8 +787,6 @@ static void window_editor_objective_options_main_update(rct_window *w)
  */
 static void window_editor_objective_options_main_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	rct_s6_info *s6Info = gS6Info;
-
 	if (text == NULL)
 		return;
 
@@ -796,24 +794,24 @@ static void window_editor_objective_options_main_textinput(rct_window *w, int wi
 	case WIDX_PARK_NAME:
 		park_set_name(text);
 
-		if (s6Info->name[0] == 0)
-			format_string(s6Info->name, gParkName, &gParkNameArgs);
+		if (gS6Info.name[0] == 0)
+			format_string(gS6Info.name, gParkName, &gParkNameArgs);
 		break;
 	case WIDX_SCENARIO_NAME:
-		strncpy(s6Info->name, text, 64);
-		if (strnlen(s6Info->name, 64) == 64)
+		strncpy(gS6Info.name, text, 64);
+		if (strnlen(gS6Info.name, 64) == 64)
 		{
-			s6Info->name[64 - 1] = '\0';
-			log_warning("Truncated S6 name: %s", s6Info->name);
+			gS6Info.name[64 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", gS6Info.name);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_DETAILS:
-		strncpy(s6Info->details, text, 256);
-		if (strnlen(s6Info->details, 256) == 256)
+		strncpy(gS6Info.details, text, 256);
+		if (strnlen(gS6Info.details, 256) == 256)
 		{
-			s6Info->details[256 - 1] = '\0';
-			log_warning("Truncated S6 name: %s", s6Info->details);
+			gS6Info.details[256 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", gS6Info.details);
 		}
 		window_invalidate(w);
 		break;
@@ -1019,7 +1017,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(2, uint32, gParkNameArgs);
 	} else {
 		set_format_arg(0, rct_string_id, STR_STRING);
-		set_format_arg(2, const char *, gS6Info->name);
+		set_format_arg(2, const char *, gS6Info.name);
 	}
 
 	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, 0, x, y, width);
@@ -1039,7 +1037,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(2, uint32, gParkNameArgs);
 	} else {
 		set_format_arg(0, rct_string_id, STR_STRING);
-		set_format_arg(2, const char *, gS6Info->details);
+		set_format_arg(2, const char *, gS6Info.details);
 	}
 	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
 
@@ -1051,7 +1049,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Scenario category value
 	x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
 	y = w->y + w->widgets[WIDX_CATEGORY].top;
-	stringId = ScenarioCategoryStringIds[gS6Info->category];
+	stringId = ScenarioCategoryStringIds[gS6Info.category];
 	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 }
 

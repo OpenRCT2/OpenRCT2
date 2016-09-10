@@ -53,7 +53,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };
@@ -174,7 +174,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };

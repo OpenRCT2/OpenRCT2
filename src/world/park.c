@@ -146,8 +146,8 @@ void park_init()
 	finance_reset_history();
 	award_reset();
 
-	gS6Info->name[0] = '\0';
-	format_string(gS6Info->details, STR_NO_DETAILS_YET, NULL);
+	gS6Info.name[0] = '\0';
+	format_string(gS6Info.details, STR_NO_DETAILS_YET, NULL);
 }
 
 /**

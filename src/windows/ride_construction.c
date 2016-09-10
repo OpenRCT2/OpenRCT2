@@ -499,7 +499,7 @@ static void loc_6C7502(int al);
 static void ride_construction_set_brakes_speed(int brakesSpeed);
 static void ride_construction_tooldown_entrance_exit(int screenX, int screenY);
 
-uint8 *_currentPossibleRideConfigurations = RCT2_ADDRESS(0x00F4407C, uint8);
+static uint8 _currentPossibleRideConfigurations[32];
 
 static const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
 	STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180,
@@ -3793,8 +3793,6 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			selectedTile++;
 		}
 	}
-
-	RCT2_GLOBAL(0x00F440E2, uint16) = z;
 
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;

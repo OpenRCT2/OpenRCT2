@@ -1689,7 +1689,7 @@ static void window_editor_object_selection_manage_tracks()
 		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
-	gS6Info->editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
+	gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
 	int entry_index = 0;
 	for (; ((intptr_t)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);

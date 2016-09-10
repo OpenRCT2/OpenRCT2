@@ -162,10 +162,10 @@ private:
         date_reset();
         window_guest_list_init_vars_b();
         window_staff_list_init_vars();
-        gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         window_new_ride_init_vars();
-        RCT2_GLOBAL(0x0141F571, uint8) = 4;
+        gS6Info.category = SCENARIO_CATEGORY_OTHER;
         news_item_init_queue();
     }
 
@@ -1082,10 +1082,8 @@ private:
 
     void ImportScenarioNameDetails()
     {
-        rct_s6_info * s6Info = gS6Info;
-
-        String::Set(s6Info->name, sizeof(s6Info->name), _s4.scenario_name);
-        String::Set(s6Info->details, sizeof(s6Info->details), "");
+        String::Set(gS6Info.name, sizeof(gS6Info.name), _s4.scenario_name);
+        String::Set(gS6Info.details, sizeof(gS6Info.details), "");
 
         int scNumber = GetSCNumber();
         if (scNumber != -1)
@@ -1098,11 +1096,11 @@ private:
                 {
                     if (localisedStringIds[0] != STR_NONE)
                     {
-                        String::Set(s6Info->name, sizeof(s6Info->name), language_get_string(localisedStringIds[0]));
+                        String::Set(gS6Info.name, sizeof(gS6Info.name), language_get_string(localisedStringIds[0]));
                     }
                     if (localisedStringIds[2] != STR_NONE)
                     {
-                        String::Set(s6Info->details, sizeof(s6Info->details), language_get_string(localisedStringIds[2]));
+                        String::Set(gS6Info.details, sizeof(gS6Info.details), language_get_string(localisedStringIds[2]));
                     }
                 }
             }

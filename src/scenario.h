@@ -435,7 +435,7 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern scenario_index_entry *gScenarioList;
 
-extern rct_s6_info *gS6Info;
+extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
 extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];

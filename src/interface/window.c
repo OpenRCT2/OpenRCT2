@@ -802,7 +802,7 @@ void window_close_top()
 	window_close_by_class(WC_DROPDOWN);
 
 	if (gScreenFlags & 2)
-		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
 			return;
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {

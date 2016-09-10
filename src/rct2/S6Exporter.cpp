@@ -227,7 +227,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 
 void S6Exporter::Export()
 {
-    _s6.info = *gS6Info;
+    _s6.info = gS6Info;
 
     for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {

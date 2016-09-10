@@ -136,7 +136,7 @@ static void shortcut_close_all_floating_windows()
 {
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
 		window_close_all();
-	else if (gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+	else if (gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
 		window_close_top();
 }
 
@@ -168,7 +168,7 @@ static void shortcut_zoom_view_out()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -183,7 +183,7 @@ static void shortcut_zoom_view_in()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -328,7 +328,7 @@ static void shortcut_adjust_land()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -343,7 +343,7 @@ static void shortcut_adjust_water()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -358,7 +358,7 @@ static void shortcut_build_scenery()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -373,7 +373,7 @@ static void shortcut_build_paths()
 {
 	rct_window *window;
 
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 			window = window_find_by_class(WC_TOP_TOOLBAR);
 			if (window != NULL) {
@@ -476,7 +476,7 @@ static void shortcut_show_recent_messages()
 
 static void shortcut_show_map()
 {
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
 		if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
 			window_map_open();
 }
@@ -527,7 +527,7 @@ static void shortcut_quick_save_game()
 		save_game();
 	}
 	else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-		window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info->name);
+		window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
 	}
 }
 

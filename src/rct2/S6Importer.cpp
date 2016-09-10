@@ -158,8 +158,8 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
 void S6Importer::Import()
 {
-    RCT2_GLOBAL(0x009E34E4, rct_s6_header) = _s6.header;
-    *gS6Info = _s6.info;
+    // _s6.header
+    gS6Info = _s6.info;
 
     gDateMonthsElapsed = _s6.elapsed_months;
     gDateMonthTicks = _s6.current_day;

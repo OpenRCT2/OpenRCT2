@@ -438,7 +438,7 @@ static void vehicle_invalidate(rct_vehicle *vehicle)
  */
 static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info->editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
 				sint16 x = g_music_tracking_viewport->view_x;
@@ -829,7 +829,7 @@ void vehicle_update_all()
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return;
 
 
