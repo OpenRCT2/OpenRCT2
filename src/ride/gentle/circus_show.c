@@ -37,7 +37,7 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 		g_currently_drawn_item = GET_VEHICLE(ride->vehicles[0]);
 	}
 
-	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
 	if (imageColourFlags == 0x20000000) {
 		imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
 	}
@@ -61,9 +61,9 @@ static void paint_circus_show(uint8 rideIndex, uint8 trackSequence, uint8 direct
 
 	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32_t), NULL);
 
-	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
+	track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F4419C, uint32), height, fenceSpritesRope, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
 
 	switch (trackSequence) {
 		case 1: paint_circus_show_tent(rideIndex, direction, 32, 32, height); break;

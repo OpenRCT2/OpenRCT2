@@ -93,23 +93,23 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	uint32 imageId = SPR_FLOOR_METAL | RCT2_GLOBAL(0x00F4419C, uint32);
+	uint32 imageId = SPR_FLOOR_METAL | gTrackColours[SCHEME_SUPPORTS];
 	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, launched_freefall_fence_sprites, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, launched_freefall_fence_sprites, get_current_rotation());
 
 	if (trackSequence == 0) {
-		imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
 
 		height += 32;
-		imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
 		height += 32;
-		imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
 		paint_util_set_vertical_tunnel(height + 32);
@@ -141,12 +141,12 @@ static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSe
 		return;
 	}
 
-	uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
 	sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
 	rct_map_element * nextMapElement = mapElement + 1;
 	if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height) {
-		uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | gTrackColours[SCHEME_TRACK];
 		sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 	}
 

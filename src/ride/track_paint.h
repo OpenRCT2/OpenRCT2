@@ -171,6 +171,19 @@ enum {
 	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3 = 28880,
 };
 
+enum {
+	SCHEME_TRACK = 0,
+	SCHEME_SUPPORTS = 1,
+	SCHEME_MISC = 2,
+	SCHEME_3 = 3,
+};
+
+#ifdef NO_RCT2
+extern uint32 gTrackColours[4];
+#else
+#define gTrackColours	RCT2_ADDRESS(0x00F44198, uint32)
+#endif
+
 extern const uint32 floorSpritesCork[];
 
 extern const uint32 fenceSpritesRope[];
