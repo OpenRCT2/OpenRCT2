@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "addresses.h"
 #include "audio/audio.h"
 #include "cheats.h"
 #include "config.h"
@@ -781,7 +780,6 @@ bool game_load_save(const utf8 *path)
 {
 	log_verbose("loading saved game, %s", path);
 
-	safe_strcpy(RCT2_ADDRESS(0x0141EF68, char), path, MAX_PATH);
 	safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, MAX_PATH);
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
@@ -867,8 +865,6 @@ void game_load_init()
 	window_update_all();
 
 	gGameSpeed = 1;
-
-	scenario_set_filename(RCT2_ADDRESS(0x0135936C, char));
 }
 
 /**

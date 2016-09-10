@@ -440,6 +440,7 @@ extern char gScenarioName[64];
 extern char gScenarioDetails[256];
 extern char gScenarioCompletedBy[32];
 extern char gScenarioSavePath[MAX_PATH];
+extern char gScenarioExpansionPacks[3256];
 extern int gFirstTimeSave;
 extern uint16 gSavedAge;
 extern uint32 gLastAutoSaveTick;

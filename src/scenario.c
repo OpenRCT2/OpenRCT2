@@ -63,6 +63,7 @@ char gScenarioName[64];
 char gScenarioDetails[256];
 char gScenarioCompletedBy[32];
 char gScenarioSavePath[MAX_PATH];
+char gScenarioExpansionPacks[3256];
 int gFirstTimeSave = 1;
 uint16 gSavedAge;
 uint32 gLastAutoSaveTick = 0;
@@ -301,7 +302,7 @@ static void scenario_end()
 void scenario_set_filename(const char *value)
 {
 	substitute_path(_scenarioPath, gRCT2AddressScenariosPath, value);
-	_scenarioFileName = path_get_filename(_scenarioPath);
+	_scenarioFileName = path_get_filename(value);
 }
 
 /**

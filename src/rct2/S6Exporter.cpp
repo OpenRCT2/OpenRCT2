@@ -382,8 +382,8 @@ void S6Exporter::Export()
     memcpy(_s6.park_entrance_y, gParkEntranceY, sizeof(_s6.park_entrance_y));
     memcpy(_s6.park_entrance_z, gParkEntranceZ, sizeof(_s6.park_entrance_z));
     memcpy(_s6.park_entrance_direction, gParkEntranceDirection, sizeof(_s6.park_entrance_direction));
-    memcpy(_s6.scenario_filename, RCT2_ADDRESS(0x0135936C, char), sizeof(_s6.scenario_filename));
-    memcpy(_s6.saved_expansion_pack_names, RCT2_ADDRESS(0x0135946C, uint8), sizeof(_s6.saved_expansion_pack_names));
+    strncpy(_s6.scenario_filename, _scenarioFileName, sizeof(_s6.scenario_filename) - 1);
+    memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
     memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;

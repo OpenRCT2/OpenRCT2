@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../ride/ride.h"
@@ -700,7 +699,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 {
 	int i, countA, countB;
 	rct_ride *ride, *otherRide;
-	char *bufferA, *bufferB;
+	char bufferA[128], bufferB[128];
 
 	countA = countB = 0;
 	FOR_ALL_RIDES(i, ride) {
@@ -730,8 +729,6 @@ static void window_ride_list_refresh_list(rct_window *w)
 		int current_list_position = list_index;
 		switch (w->list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			bufferA = gCommonStringFormatBuffer;
-			bufferB = RCT2_ADDRESS(0x0141EF68, char);
 			format_string_to_upper(bufferA, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
 				otherRide = get_ride(w->list_item_positions[current_list_position]);
