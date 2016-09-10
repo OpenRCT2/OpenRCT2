@@ -265,7 +265,7 @@ void S6Importer::Import()
     memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));
     gLandPrice = _s6.land_price;
     gConstructionRightsPrice = _s6.construction_rights_price;
-    RCT2_GLOBAL(0x01358774, uint16) = _s6.word_01358774;
+    // unk_01358774
     // pad_01358776
     // _s6.cd_key
     _gameVersion = _s6.game_version_number;

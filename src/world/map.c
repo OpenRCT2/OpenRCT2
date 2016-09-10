@@ -118,6 +118,8 @@ money32 gLandRightsCost;
 
 rct_xyz16 gCommandPosition;
 
+uint8 gUnk9E2E28;
+
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void clear_elements_at(int x, int y);
@@ -1867,16 +1869,15 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY))
 		return 0;
 
-	RCT2_GLOBAL(0x009E2E28, uint8) = 0;
-
 	// Clamp to maximum addressable element to prevent long loop spamming the log
 	x1 = clamp(0, x1, gMapSizeUnits);
 	y1 = clamp(0, y1, gMapSizeUnits);
 	x2 = min(x2, gMapSizeUnits);
 	y2 = min(y2, gMapSizeUnits);
+	gUnk9E2E28 = 0;
 	map_buy_land_rights(x1, y1, x2, y2, 6, flags | (newOwnership << 8));
 
-	if (!(RCT2_GLOBAL(0x9E2E28, uint8) & 1)) {
+	if (!(gUnk9E2E28 & 1)) {
 		return 0;
 	}
 

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
@@ -70,10 +69,10 @@ int _suggestedGuestMaximum;
  */
 int _guestGenerationProbability;
 
-sint16 *gParkEntranceX = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16);
-sint16 *gParkEntranceY = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16);
-sint16 *gParkEntranceZ = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16);
-uint8 *gParkEntranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8);
+sint16 gParkEntranceX[4];
+sint16 gParkEntranceY[4];
+sint16 gParkEntranceZ[4];
+uint8 gParkEntranceDirection[4];
 
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
@@ -142,7 +141,6 @@ void park_init()
 	gScenarioObjectiveNumGuests = 1000;
 	gLandPrice = MONEY(90, 00);
 	gConstructionRightsPrice = MONEY(40,00);
-	RCT2_GLOBAL(0x01358774, uint16) = 0;
 	gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
 	finance_reset_history();
@@ -364,13 +362,12 @@ money32 calculate_company_value()
 void reset_park_entrances()
 {
 	gParkName = 0;
-
-	for (short i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		gParkEntranceX[i] = 0x8000;
 	}
-
-	gPeepSpawns[0].x = UINT16_MAX;
-	RCT2_GLOBAL(0x013573F8, uint16) = 0xFFFF;
+	for (int i = 0; i < 2; i++) {
+		gPeepSpawns[i].x = UINT16_MAX;
+	}
 }
 
 /**
@@ -1076,7 +1073,7 @@ static money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags
 		update_park_fences(x + 32, y);
 		update_park_fences(x, y + 32);
 		update_park_fences(x, y - 32);
-		RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
+		gUnk9E2E28 |= 1;
 		return 0;
 	}
 }

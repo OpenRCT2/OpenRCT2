@@ -347,7 +347,7 @@ void S6Exporter::Export()
     memcpy(_s6.awards, gCurrentAwards, sizeof(_s6.awards));
     _s6.land_price = gLandPrice;
     _s6.construction_rights_price = gConstructionRightsPrice;
-    _s6.word_01358774 = RCT2_GLOBAL(0x01358774, uint16);
+    // unk_01358774
     // pad_01358776
     // _s6.cd_key
     // _s6.game_version_number

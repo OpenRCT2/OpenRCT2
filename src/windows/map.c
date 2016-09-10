@@ -351,7 +351,9 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 			break;
 
 		gLandToolSize = 0;
-		if (gPeepSpawns[0].x != UINT16_MAX && RCT2_GLOBAL(0x13573F8, sint16) != -1) {
+		if (gPeepSpawns[0].x != UINT16_MAX &&
+			gPeepSpawns[1].x != UINT16_MAX
+		) {
 			gLandToolSize = 1;
 		}
 
