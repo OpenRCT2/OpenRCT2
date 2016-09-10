@@ -299,20 +299,20 @@ static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, u
 	uint32 imageId;
 
 	if (direction & 1) {
-		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 20, 32, 2, height, 6, 0, height, get_current_rotation());
 
-		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_SIDE_NW_SE : SPR_RIVER_RAFTS_FLAT_SIDE_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_SIDE_NW_SE : SPR_RIVER_RAFTS_FLAT_SIDE_SE_NW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
 	} else {
-		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 20, 2, height, 0, 6, height, get_current_rotation());
 
-		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SIDE_SW_NE : SPR_RIVER_RAFTS_FLAT_SIDE_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SIDE_SW_NE : SPR_RIVER_RAFTS_FLAT_SIDE_NE_SW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
 	}
 
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	if (direction & 1) {
 		paint_util_push_tunnel_right(height, TUNNEL_6);
@@ -330,22 +330,22 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 	rct_ride *ride = get_ride(rideIndex);
 
 	if (direction & 1) {
-		uint32 imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3, get_current_rotation());
 
-		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 	} else {
-		uint32 imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3, get_current_rotation());
 
-		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 	}
 
 	track_paint_util_draw_station_platform(ride, direction, height, 7, mapElement);
 	
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	if (direction & 1) {
 		paint_util_push_tunnel_right(height, TUNNEL_6);
@@ -360,8 +360,8 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 /** rct2: 0x0089B1D0 */
 static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsLeftQuarterTurn5_Top);
-	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsLeftQuarterTurn5_Side);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
 
 	if (trackSequence != 1 && trackSequence != 4) {
 		static const uint8 supportTypes[][7] = {
@@ -371,7 +371,7 @@ static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, u
 			{ 1, 0xFF, 4, 2, 0xFF, 4, 0 },
 		};
 		uint8 supportType = supportTypes[direction][trackSequence];
-		wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+		wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	}
 
 	switch (trackSequence) {
@@ -390,8 +390,8 @@ static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, u
 /** rct2: 0x0089B1D0 */
 static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsRightQuarterTurn5_Top);
-	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsRightQuarterTurn5_Side);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
 
 	if (trackSequence != 1 && trackSequence != 4) {
 		static const uint8 supportTypes[][7] = {
@@ -401,7 +401,7 @@ static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, 
 			{ 1, 0xFF, 3, 5, 0xFF, 3, 0 },
 		};
 		uint8 supportType = supportTypes[direction][trackSequence];
-		wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+		wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	}
 
 	switch (trackSequence) {
@@ -423,7 +423,7 @@ static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequen
 	imageId += (direction & 1) * 4;
 	imageId += (direction & 2) ? 35 : 0;
 	imageId += (direction & 2) ? -trackSequence : trackSequence;
-	imageId |= RCT2_GLOBAL(0x00F44198, uint32);
+	imageId |= gTrackColours[SCHEME_TRACK];
 
 	uint32 sideImageId = imageId;
 	sideImageId += (direction & 2) ? -16 : 16;
@@ -454,7 +454,7 @@ static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequen
 	}
 
 	uint8 supportType = supportTypes[direction][trackSequence];
-	wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	switch (trackSequence) {
 	case 0:

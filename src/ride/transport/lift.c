@@ -60,11 +60,11 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 	trackSequence = track_map_3x3[direction][trackSequence];
 
 	if (trackSequence == 0) {
-		paint_lift_cage(direction, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+		paint_lift_cage(direction, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
-		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 32, get_current_rotation());
+		paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
 
-		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 64, get_current_rotation());
+		paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
 
 		paint_util_set_vertical_tunnel(height + 96);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -79,10 +79,10 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
-	uint32 imageId = SPR_FLOOR_METAL_B | RCT2_GLOBAL(0x00F4419C, uint32);
+	uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-		track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesMetalB, get_current_rotation());
+		track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
 	int blockedSegments = 0;
 	switch (trackSequence) {
@@ -107,7 +107,7 @@ static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8
 		return;
 	}
 
-	paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+	paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 

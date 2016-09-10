@@ -43,16 +43,16 @@ static void paint_boat_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 	uint32 imageId;
 
 	if (direction & 1) {
-		imageId = SPR_BOAT_RIDE_FLAT_BACK_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_BOAT_RIDE_FLAT_BACK_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 4, 0, height, get_current_rotation());
 
-		imageId = SPR_BOAT_RIDE_FLAT_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_BOAT_RIDE_FLAT_FRONT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 28, 0, height, get_current_rotation());
 	} else {
-		imageId = SPR_BOAT_RIDE_FLAT_BACK_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_BOAT_RIDE_FLAT_BACK_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 4, height, get_current_rotation());
 
-		imageId = SPR_BOAT_RIDE_FLAT_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_BOAT_RIDE_FLAT_FRONT_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 28, height, get_current_rotation());
 	}
 
@@ -85,31 +85,31 @@ static void paint_boat_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint
 	uint32 imageId;
 	switch (direction) {
 		case 0:
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
 			break;
 		case 1:
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
 			break;
 		case 2:
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
 			break;
 		case 3:
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
 
-			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 			break;
 	}
