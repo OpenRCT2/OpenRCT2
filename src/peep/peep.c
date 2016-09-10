@@ -1444,7 +1444,7 @@ static void peep_state_reset(rct_peep* peep){
  */
 static void peep_check_if_lost(rct_peep* peep){
 	if (!(peep->peep_flags & PEEP_FLAGS_LOST)){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) < 2)return;
+		if (gRideCount < 2) return;
 		peep->peep_flags ^= PEEP_FLAGS_21;
 
 		if (!(peep->peep_flags & PEEP_FLAGS_21)) return;
@@ -6569,7 +6569,7 @@ void peep_problem_warnings_update()
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
 	uint8 *warning_throttle = gPeepWarningThrottle;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
+	gRideCount = ride_get_count(); // refactor this to somewhere else
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
 		if (peep->outside_of_park != 0 || peep->thoughts[0].var_2 > 5)

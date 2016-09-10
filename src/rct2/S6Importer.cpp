@@ -271,7 +271,7 @@ void S6Importer::Import()
     _gameVersion = _s6.game_version_number;
     gScenarioCompanyValueRecord = _s6.completed_company_value_record;
     // _s6.loan_hash;
-    RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) = _s6.ride_count;
+    gRideCount = _s6.ride_count;
     // pad_013587CA
     gHistoricalProfit = _s6.historical_profit;
     // pad_013587D4
