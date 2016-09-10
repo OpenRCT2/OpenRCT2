@@ -65,7 +65,7 @@ static void read_and_convert_gxdat(SDL_RWops *file, size_t count, rct_g1_element
  *
  *  rct2: 0x00678998
  */
-int gfx_load_g1()
+bool gfx_load_g1()
 {
 	log_verbose("loading g1 graphics");
 
@@ -119,15 +119,16 @@ int gfx_load_g1()
 			for (i = 0; i < header.num_entries; i++)
 				g1Elements[i].offset += (uintptr_t)_g1Buffer;
 
-			// Successful
-			return 1;
+			return true;
 		}
 		SDL_RWclose(file);
 	}
 
-	// Unsuccessful
 	log_fatal("Unable to load g1 graphics");
-	return 0;
+	if (!gOpenRCT2Headless) {
+		platform_show_messagebox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+	}
+	return false;
 }
 
 void gfx_unload_g1()
@@ -143,7 +144,7 @@ void gfx_unload_g2()
 	SafeFree(g2.elements);
 }
 
-int gfx_load_g2()
+bool gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");
 
@@ -173,15 +174,16 @@ int gfx_load_g2()
 			for (i = 0; i < g2.header.num_entries; i++)
 				g2.elements[i].offset += (uintptr_t)g2.data;
 
-			// Successful
-			return 1;
+			return true;
 		}
 		SDL_RWclose(file);
 	}
 
-	// Unsuccessful
 	log_fatal("Unable to load g2 graphics");
-	return 0;
+	if (!gOpenRCT2Headless) {
+		platform_show_messagebox("Unable to load g2.dat");
+	}
+	return false;
 }
 
 /**

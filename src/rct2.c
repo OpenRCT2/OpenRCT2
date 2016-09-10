@@ -143,25 +143,29 @@ void rct2_dispose()
 	gfx_unload_g1();
 }
 
-int rct2_init()
+bool rct2_init()
 {
 	log_verbose("initialising game");
 
 	gScenarioTicks = 0;
 	util_srand((unsigned int)time(0));
 	if (!rct2_init_directories())
-		return 0;
+		return false;
 
 	if (!rct2_startup_checks())
-		return 0;
+		return false;
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
 	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 	// config_load();
 
-	gfx_load_g1();
-	gfx_load_g2();
+	if (!gfx_load_g1()) {
+		return false;
+	}
+	if (!gfx_load_g2()) {
+		return false;
+	}
 
 	object_list_load();
 	scenario_load_list();
@@ -196,7 +200,7 @@ int rct2_init()
 	}
 
 	log_verbose("initialising game finished");
-	return 1;
+	return true;
 }
 
 /**

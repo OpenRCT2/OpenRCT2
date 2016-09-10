@@ -184,8 +184,8 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
 
 // sprite
-int gfx_load_g1();
-int gfx_load_g2();
+bool gfx_load_g1();
+bool gfx_load_g2();
 void gfx_unload_g1();
 void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
