@@ -248,6 +248,8 @@ extern const rct_xy8 ScenerySubTileOffsets[];
 
 extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
 
+extern money32 gClearSceneryCost;
+
 void init_scenery();
 void scenery_update_tile(int x, int y);
 void scenery_update_age(int x, int y, rct_map_element *mapElement);

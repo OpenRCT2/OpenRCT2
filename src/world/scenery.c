@@ -61,6 +61,8 @@ sint16 gSceneryCtrlPressZ;
 
 uint8 gSceneryGroundFlags;
 
+money32 gClearSceneryCost;
+
 // rct2: 0x009A3E74
 const rct_xy8 ScenerySubTileOffsets[] = {
 	{  7,  7 },

@@ -114,6 +114,7 @@ uint8 gLandToolTerrainSurface;
 uint8 gLandToolTerrainEdge;
 money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
+money32 gLandRightsCost;
 
 rct_xyz16 gCommandPosition;
 

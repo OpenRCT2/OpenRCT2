@@ -1660,8 +1660,8 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gClearSceneryCost != MONEY32_UNDEFINED) {
+			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;
@@ -1722,10 +1722,11 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	int ecx = gMapSelectPositionA.y;
 	int edi = gMapSelectPositionB.x;
 	int ebp = gMapSelectPositionB.y;
-	money32 cost = game_do_command(eax, 0, ecx, 0, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
+	int clear = (gClearSmallScenery << 0) | (gClearLargeScenery << 1) | (gClearFootpath << 2);
+	money32 cost = game_do_command(eax, 0, ecx, clear, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
-	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
-		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
+	if (gClearSceneryCost != cost) {
+		gClearSceneryCost = cost;
 		window_invalidate_by_class(WC_CLEAR_SCENERY);
 		return;
 	}
@@ -1739,8 +1740,8 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gClearSceneryCost != MONEY32_UNDEFINED) {
+			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;

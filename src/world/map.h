@@ -373,6 +373,7 @@ extern uint8 gLandToolTerrainSurface;
 extern uint8 gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
+extern money32 gLandRightsCost;
 
 extern rct_xyz16 gCommandPosition;
 

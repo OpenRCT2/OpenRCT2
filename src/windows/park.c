@@ -760,8 +760,8 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gLandRightsCost != MONEY32_UNDEFINED) {
+			gLandRightsCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;
@@ -818,7 +818,7 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 	if (!state_changed)
 		return;
 
-	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
+	gLandRightsCost = game_do_command(
 		gMapSelectPositionA.x,
 		0x4,
 		gMapSelectPositionA.y,
@@ -826,7 +826,7 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 		GAME_COMMAND_BUY_LAND_RIGHTS,
 		gMapSelectPositionB.x,
 		gMapSelectPositionB.y
-		);
+	);
 }
 
 /**
