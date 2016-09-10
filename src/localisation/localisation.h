@@ -35,7 +35,6 @@ void format_string(char *dest, rct_string_id format, void *args);
 void format_string_raw(char *dest, char *src, void *args);
 void format_string_to_upper(char *dest, rct_string_id format, void *args);
 void generate_string_file();
-void error_string_quit(int error, rct_string_id format);
 utf8 *get_string_end(const utf8 *text);
 size_t get_string_size(const utf8 *text);
 int get_string_length(const utf8 *text);

@@ -599,8 +599,6 @@ static void platform_create_window()
 	if (width == -1) width = 640;
 	if (height == -1) height = 480;
 
-	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
-
 	// Create window in window first rather than fullscreen so we have the display the window is on first
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
@@ -614,9 +612,6 @@ static void platform_create_window()
 	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 	SDL_SetWindowMinimumSize(gWindow, 720, 480);
 	platform_init_window_icon();
-
-	// Set the update palette function pointer
-	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;
 
 	// Initialise the surface, palette and draw buffer
 	platform_resize(width, height);

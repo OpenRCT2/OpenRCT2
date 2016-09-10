@@ -4017,8 +4017,8 @@ void map_reorganise_elements()
 	rct_map_element* new_map_elements = malloc(0x30000 * sizeof(rct_map_element));
 	rct_map_element* new_elements_pointer = new_map_elements;
 
-	if (new_map_elements == NULL || new_map_elements == (rct_map_element*)-1){
-		error_string_quit(4370, 0xFFFF);
+	if (new_map_elements == NULL) {
+		log_fatal("Unable to allocate memory for map elements.");
 		return;
 	}
 

@@ -1161,27 +1161,6 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 	}
 }
 
-/**
- *
- *  rct2: 0x006E37F7
- *  error  (eax)
- *  format (bx)
- */
-void error_string_quit(int error, rct_string_id format)
-{
-	RCT2_GLOBAL(0x14241A0, uint32) = error;
-	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
-
-	char* error_string = RCT2_ADDRESS(0x1424080, char);
-	*error_string = 0;
-
-	if (format != 0xFFFF){
-		format_string(error_string, format, gCommonFormatArgs);
-	}
-	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
-	rct2_exit();
-}
-
 void generate_string_file()
 {
 	FILE* f;
