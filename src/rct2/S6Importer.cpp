@@ -323,7 +323,7 @@ void S6Importer::Import()
     memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
     // unk_13CA73E
     // pad_13CA73F
-    RCT2_GLOBAL(0x013CA740, uint8) = _s6.byte_13CA740;
+    gUnk13CA740 = _s6.byte_13CA740;
     gClimate = _s6.climate;
     // pad_13CA741;
     memcpy(RCT2_ADDRESS(0x013CA742, uint8), _s6.byte_13CA742, sizeof(_s6.byte_13CA742));

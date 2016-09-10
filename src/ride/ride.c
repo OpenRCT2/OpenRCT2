@@ -5119,7 +5119,7 @@ static void loc_6B51C0(int rideIndex)
 
 	ride = get_ride(rideIndex);
 
-	if (RCT2_GLOBAL(0x0141F568, uint8) != RCT2_GLOBAL(0x013CA740, uint8))
+	if (gUnk141F568 != gUnk13CA740)
 		return;
 
 	w = window_get_main();
@@ -5170,7 +5170,7 @@ static void loc_6B51C0(int rideIndex)
  */
 static void ride_scroll_to_track_error(rct_xy_element *trackElement)
 {
-	if (!gGameCommandIsNetworked && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
+	if (!gGameCommandIsNetworked && gUnk141F568 == gUnk13CA740) {
 		rct_window *w = window_get_main();
 		if (w != NULL) {
 			window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);

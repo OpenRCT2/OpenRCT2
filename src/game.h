@@ -145,6 +145,9 @@ extern bool gInUpdateCode;
 extern int gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
 
+extern uint8 gUnk13CA740;
+extern uint8 gUnk141F568;
+
 void game_increase_game_speed();
 void game_reduce_game_speed();
 

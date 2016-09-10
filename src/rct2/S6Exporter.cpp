@@ -405,7 +405,7 @@ void S6Exporter::Export()
     memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
     // unk_13CA73E
     // pad_13CA73F
-    _s6.byte_13CA740 = RCT2_GLOBAL(0x013CA740, uint8);
+    _s6.byte_13CA740 = gUnk13CA740;
     _s6.climate = gClimate;
     // pad_13CA741;
     memcpy(_s6.byte_13CA742, RCT2_ADDRESS(0x013CA742, uint8), sizeof(_s6.byte_13CA742));

@@ -67,6 +67,9 @@ bool gInUpdateCode = false;
 int gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 
+uint8 gUnk13CA740;
+uint8 gUnk141F568;
+
 #ifdef NO_RCT2
 uint32 gCurrentTicks;
 #endif
@@ -342,7 +345,7 @@ void game_update()
 	window_map_tooltip_update_visibility();
 
 	// Input
-	RCT2_GLOBAL(0x0141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
+	gUnk141F568 = gUnk13CA740;
 	game_handle_input();
 }
 
@@ -414,7 +417,7 @@ void game_logic_update()
 static int game_check_affordability(int cost)
 {
 	if (cost <= 0)return cost;
-	if (RCT2_GLOBAL(0x141F568, uint8) & 0xF0)return cost;
+	if (gUnk141F568 & 0xF0) return cost;
 	if (cost <= (sint32)(DECRYPT_MONEY(gCashEncrypted)))return cost;
 
 	set_format_arg(0, uint32, cost);
@@ -545,7 +548,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			if (!(flags & 0x20)) {
 				// Update money balance
 				finance_payment(cost, gCommandExpenditureType);
-				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
+				if (gUnk141F568 == gUnk13CA740) {
 					// Create a +/- money text effect
 					if (cost != 0)
 						money_effect_create(cost);
@@ -570,7 +573,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	game_command_callback = 0;
 
 	// Show error window
-	if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+	if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740 && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
 		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
 	gGameCommandErrorText = STR_NONE;

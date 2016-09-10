@@ -9664,7 +9664,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	}
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 
-	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
+	gUnk141F568 = gUnk13CA740;
 	finance_payment(-amount, gCommandExpenditureType);
 
 	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
