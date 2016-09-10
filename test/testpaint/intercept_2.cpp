@@ -127,7 +127,7 @@ namespace Intercept2
     static bool SegmentCallEquals(std::vector<SegmentSupportCall> lhs, std::vector<SegmentSupportCall> rhs)
     {
         if (lhs.size() != rhs.size()) return false;
-        for (int i = 0; i < lhs.size(); ++i) {
+        for (size_t i = 0; i < lhs.size(); ++i) {
             if (lhs[i].segments != rhs[i].segments)
                 return false;
             if (lhs[i].height != rhs[i].height)
