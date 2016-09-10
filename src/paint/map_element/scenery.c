@@ -52,7 +52,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	boxoffset.y = 0;
 	boxoffset.z = height;
 	int baseImageid = 0;
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (!track_design_save_contains_map_element(mapElement)) {
 			baseImageid = 0x21700000;
 		}

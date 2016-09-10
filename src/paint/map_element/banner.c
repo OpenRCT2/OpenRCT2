@@ -35,7 +35,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
-	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
+	if (dpi->zoom_level > 1 || gTrackDesignSaveMode) return;
 
 	height -= 16;
 

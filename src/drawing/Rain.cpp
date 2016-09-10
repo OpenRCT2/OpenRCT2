@@ -174,7 +174,7 @@ void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer)
 {
     // Get rain draw function and draw rain
     uint32 rainType = gClimateCurrentRainLevel;
-    if (rainType > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
+    if (rainType > 0 && !gTrackDesignSaveMode)
     {
         DrawRainAnimation(dpi, rainDrawer, rainType);
     }

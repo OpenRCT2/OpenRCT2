@@ -1281,7 +1281,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
 	}
 
-	if (!(RCT2_GLOBAL(0x009DEA6F, uint8) & 1) || rideIndex == RCT2_GLOBAL(0x00F64DE8, uint8)) {
+	if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
 		trackType = mapElement->properties.track.type;
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;

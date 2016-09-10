@@ -590,7 +590,7 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (dpi->zoom_level <= 1) {
-		if (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1)) {
+		if (!gTrackDesignSaveMode) {
 			uint8 additions = map_element->properties.path.additions & 0xF;
 			if (additions != 0) {
 				gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
@@ -680,9 +680,9 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	uint32 sceneryImageFlags = 0;
 	uint32 imageFlags = 0;
 
-	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (map_element->type & 1) {
-			if (map_element->properties.path.ride_index != RCT2_GLOBAL(0x00F64DE8, uint8)) {
+			if (map_element->properties.path.ride_index != gTrackDesignSaveRideIndex) {
 				return;
 			}
 		}

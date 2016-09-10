@@ -161,7 +161,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     paint_util_set_general_support_height(height, 0x20);
 
     uint32 dword_141F710 = 0;
-    if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) {
+    if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_map_element(map_element)) {
             dword_141F710 = 0x21700000;
         }

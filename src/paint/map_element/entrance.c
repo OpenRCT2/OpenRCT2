@@ -34,8 +34,8 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
 {
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
-	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1){
-		if (map_element->properties.entrance.ride_index != RCT2_GLOBAL(0x00F64DE8, uint8))
+	if (gTrackDesignSaveMode) {
+		if (map_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
 			return;
 	}
 
@@ -160,7 +160,7 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
  *  rct2: 0x006658ED
  */
 static void park_entrance_paint(uint8 direction, int height, rct_map_element* map_element){
-	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
+	if (gTrackDesignSaveMode)
 		return;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;

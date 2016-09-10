@@ -32,6 +32,9 @@
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 
+bool gTrackDesignSaveMode = false;
+uint8 gTrackDesignSaveRideIndex = 255;
+
 static size_t _trackSavedMapElementsCount;
 #ifdef NO_RCT2
 	static rct_map_element *_trackSavedMapElements[TRACK_MAX_SAVED_MAP_ELEMENTS];
@@ -160,7 +163,7 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (!track_design_save_copy_scenery_to_td6(_trackDesign)) {
 			free(_trackDesign->track_elements);
 			free(_trackDesign->entrance_elements);

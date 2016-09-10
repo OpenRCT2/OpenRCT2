@@ -1354,7 +1354,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
 
 		RCT2_GLOBAL(0x009E3298, uint16) = waterHeight;
-		if ((RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) == 0) {
+		if (!gTrackDesignSaveMode) {
 			RCT2_GLOBAL(0x0141E9DC, uint16) = waterHeight;
 
 			int image_offset = 0;
@@ -1382,8 +1382,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		}
 	}
 
-	if (mapElement->properties.surface.ownership & 0x0F
-	    && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1)) {
+	if ((mapElement->properties.surface.ownership & 0x0F) &&
+		!gTrackDesignSaveMode
+	) {
 		// Owned land boundary fences
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
