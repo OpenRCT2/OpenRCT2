@@ -84,8 +84,6 @@ void viewport_init_all()
 	gMapSelectFlags = 0;
 	gStaffDrawPatrolAreas = 0xFFFF;
 	textinput_cancel();
-	format_string(RCT2_ADDRESS(0x0141FA44, char), STR_CANCEL, NULL);
-	format_string(RCT2_ADDRESS(0x0141F944, char), STR_OK, NULL);
 }
 
 /**
