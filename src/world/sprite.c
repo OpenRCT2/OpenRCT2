@@ -21,22 +21,21 @@
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../openrct2.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
-#include "../openrct2.h"
 
-uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
-uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
+uint16 gSpriteListHead[6];
+uint16 gSpriteListCount[6];
+uint16 gSpriteSpatialIndex[0x10001];
 
-uint16 *gSpriteSpatialIndex = RCT2_ADDRESS(0xF1EF60, uint16);
-
-rct_sprite* sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+static rct_sprite _spriteList[MAX_SPRITES];
 
 rct_sprite *get_sprite(size_t sprite_idx)
 {
 	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
-	return &sprite_list[sprite_idx];
+	return &_spriteList[sprite_idx];
 }
 
 uint16 sprite_get_first_in_quadrant(int x, int y)
@@ -99,7 +98,7 @@ void invalidate_sprite_2(rct_sprite *sprite)
 void reset_sprite_list()
 {
 	gSavedAge = 0;
-	memset(sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
+	memset(_spriteList, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < NUM_SPRITE_LISTS; i++) {
 		gSpriteListHead[i] = SPRITE_INDEX_NULL;

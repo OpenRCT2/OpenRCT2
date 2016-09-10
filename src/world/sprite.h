@@ -404,9 +404,9 @@ rct_sprite *get_sprite(size_t sprite_idx);
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];
 
-extern uint16 *gSpriteListHead;
-extern uint16 *gSpriteListCount;
-extern uint16 *gSpriteSpatialIndex;
+extern uint16 gSpriteListHead[6];
+extern uint16 gSpriteListCount[6];
+extern uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
