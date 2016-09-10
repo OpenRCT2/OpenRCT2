@@ -23,6 +23,8 @@
 
 interface IStringReader
 {
+    virtual ~IStringReader() = default;
+
     virtual bool TryPeek(codepoint_t * outCodepoint)       abstract;
     virtual bool TryRead(codepoint_t * outCodepoint)       abstract;
     virtual void Skip()                                    abstract;
