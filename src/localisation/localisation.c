@@ -1106,7 +1106,7 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		*args += (format & 0xC00) >> 9;
 		format &= ~0xC00;
 
-		strcpy(*dest, RCT2_ADDRESS(0x135A8F4 + (format * 32), char));
+		safe_strcpy(*dest, &gUserStrings[format * 32], 32);
 		*dest = strchr(*dest, 0) + 1;
 	} else if (format < 0xE000) {
 		// Real name
