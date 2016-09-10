@@ -5190,14 +5190,13 @@ static void ride_scroll_to_track_error(rct_xy_element *trackElement)
  */
 static rct_map_element *loc_6B4F6B(int rideIndex, int x, int y)
 {
-	rct_map_element *mapElement;
-
-	mapElement = map_get_first_element_at(x / 32, y / 32);
+	rct_ride * ride = get_ride(rideIndex);
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
 
-		if (RCT2_GLOBAL(0x00F43484, uint32) & 0x80000) {
+		if (RideProperties[ride->type].flags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 			if (!(FlatRideTrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
 				continue;
 		} else {
@@ -5501,7 +5500,6 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	RCT2_GLOBAL(0x00F43484, uint32) = RideProperties[ride->type].flags;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (ride->overall_view != (uint16)-1) {
