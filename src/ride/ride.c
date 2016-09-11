@@ -3646,29 +3646,6 @@ void ride_music_update_final()
 	if (!(gScreenFlags & 2)) {
 		// TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
 		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & 1)) {
-			// set to stop music if volume <= 1 ?
-			while (1) {
-				int v8 = 0;
-				int v9 = 1;
-				rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
-				while (ride_music_params < gRideMusicParamsListEnd) {
-					if (ride_music_params->ride_id != (uint8)-1) {
-						rct_ride_music_info* ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
-						if (RCT2_ADDRESS(0x009AA0B1, uint8*)[ride_music_info->path_id]) { // file_on_cdrom[]
-							v8++;
-							if (v9 >= ride_music_params->volume) {
-								v9 = ride_music_params->volume;
-								edi = ride_music_params;
-							}
-						}
-					}
-					ride_music_params++;
-				}
-				if (v8 <= 1) {
-					break;
-				}
-				edi->ride_id = -1;
-			}
 			while (1) {
 				int v8 = 0;
 				int v9 = 1;
@@ -7969,7 +7946,8 @@ void sub_6CB945(int rideIndex)
 		}
 	}
 
-	uint16 *locationList = RCT2_ADDRESS(0x00F441B0, uint16);
+	uint16 locations[9];
+	uint16 *locationList = locations;
 	for (uint8 stationId = 0; stationId < 4; ++stationId) {
 		if (ride->entrances[stationId] != 0xFFFF) {
 			*locationList++ = ride->entrances[stationId];
@@ -7983,7 +7961,7 @@ void sub_6CB945(int rideIndex)
 	}
 	*locationList++ = 0xFFFF;
 
-	locationList = RCT2_ADDRESS(0x00F441B0, uint16);
+	locationList = locations;
 	for (; *locationList != 0xFFFF; locationList++) {
 		uint16* locationList2 = locationList;
 		locationList2++;
