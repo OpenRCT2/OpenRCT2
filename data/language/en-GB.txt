@@ -4228,6 +4228,164 @@ STR_5916    :{COMMA16} player
 STR_5917    :{COMMA16} players
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Lifetime Statistics
+STR_5921    :Gameplay
+STR_5922    :Ride Construction
+STR_5923    :Guest
+STR_5924    :Scenery
+STR_5925    :Landscaping
+STR_5926    :Financial
+STR_5927    :Ride
+STR_5928    :Cheats
+STR_5929    :Staff
+STR_5930    :Highest Year Reached
+STR_5931    :Times Played
+STR_5932    :Park Entries
+STR_5933    :Park Exits
+STR_5934    :Scenarios Won
+STR_5935    :Scenarios Failed
+STR_5936    :Zooms Executed
+STR_5937    :Rotations Executed
+STR_5938    :Land Area Purchased
+STR_5939    :Construction Rights Area Purchased
+STR_5940    :Marketing Campaigns Created
+STR_5941    :Balloons Purchased
+STR_5942    :Maps Purchased
+STR_5943    :Umbrellas Purchased
+STR_5944    :Hats Purchased
+STR_5945    :Shirts Purchased
+STR_5946    :On-Ride Photos Purchased
+STR_5947    :Food Purchased
+STR_5948    :Drink Purchased
+STR_5949    :Pictures Taken
+STR_5950    :Times Littered
+STR_5951    :Times Vomited
+STR_5952    :Vandalism Caused
+STR_5953    :Guests Followed
+STR_5954    :Highest Guest Number
+STR_5955    :Guest Deaths
+STR_5956    :Guests Combusted
+STR_5957    :Accidental Deaths
+STR_5958    :Guests Drowned
+STR_5959    :Trash Thrown Away
+STR_5960    :Squares Painted
+STR_5961    :Hill Tool Uses
+STR_5962    :Volume of Land Moved (M^3)
+STR_5963    :Volume of Land Moved (ft^3)
+STR_5964    :Volume of Water Moved (m^3)
+STR_5965    :Volume of Water Moved (ft^3)
+STR_5966    :Rides Researched
+STR_5967    :Rides Opened
+STR_5968    :Rides Closed
+STR_5969    :Total Ride Customers
+STR_5970    :Ride Breakdowns
+STR_5971    :Total Shop Customers
+STR_5972    :Number of Circuits Completed
+STR_5973    :Number of Rotations Completed
+STR_5974    :Rides Crashed
+STR_5975    :Total Rides Built
+STR_5976    :Gentle Rides Built
+STR_5977    :Transport Rides Built
+STR_5978    :Thrill Rides Built
+STR_5979    :Roller Coasters Built
+STR_5980    :Water Rides Built
+STR_5981    :Total Shops and Stalls Built
+STR_5982    :Food Stalls Built
+STR_5983    :Drink Stalls Built
+STR_5984    :Restrooms Built
+STR_5985    :Info Kiosks Built
+STR_5986    :Souvenir Shops Built
+STR_5987    :Balloon Stalls Built
+STR_5988    :First Aid Stations Built
+STR_5989    :ATMs Built
+STR_5990    :Rides Demolished
+STR_5991    :Shops and Stalls Demolished
+STR_5992    :Pieces Painted
+STR_5993    :Small Curve Pieces Placed
+STR_5994    :Medium Curve Pieces Placed
+STR_5995    :Large Curve Pieces Placed
+STR_5996    :Straight Pieces Placed
+STR_5997    :Uphill Pieces Placed
+STR_5998    :Downhill Pieces Placed
+STR_5999    :Level Pieces Placed
+STR_6000    :Total Pieces Placed
+STR_6001    :Special Pieces Placed
+STR_6002    :Inversions Placed
+STR_6003    :Banked Pieces Placed
+STR_6004    :Scenery Deleted
+STR_6005    :Footpaths Deleted
+STR_6006    :Queues Deleted
+STR_6007    :Number of Objects Placed
+STR_6008    :Trees Placed
+STR_6009    :Scenery Painted
+STR_6010    :Paths Placed
+STR_6011    :Queues Placed
+STR_6012    :Walls Placed
+STR_6013    :Mr. Bones Placed
+STR_6014    :Fences Placed
+STR_6015    :Money Spent on Landscaping
+STR_6016    :Money Spent on Scenery
+STR_6017    :Money Spent on Research
+STR_6018    :Money Spent on Staff Salaries
+STR_6019    :Money Spent to Build Rides
+STR_6020    :Money Spent Running Rides
+STR_6021    :Money Spent on Land Purchase
+STR_6022    :Money Earned from Entrance Tickets
+STR_6023    :Money Earned from Shop Sales
+STR_6024    :Money Spent on Shop Stock
+STR_6025    :Money Earned from Food and Drink Sales
+STR_6026    :Money Spent on Marketing
+STR_6027    :Value of Loans Taken
+STR_6028    :Value of Loans Repaid
+STR_6029    :Money Spent on Loan Interest
+STR_6030    :Money Earned from Ride Tickets
+STR_6031    :Money Earned from Umbrella Sales
+STR_6032    :Total Staff Hired
+STR_6033    :Handymen Hired
+STR_6044    :Mechanics Hired
+STR_6045    :Entertainers Hired
+STR_6046    :Security Guards Hired
+STR_6047    :Total Staff Fired
+STR_6048    :Handymen Fired
+STR_6049    :Mechanics Fired
+STR_6050    :Entertainers Fired
+STR_6051    :Security Guards Fired
+STR_6052    :Areas Assigned
+STR_6053    :Lawns Mown
+STR_6054    :Gardens Watered
+STR_6055    :Litter Swept
+STR_6056    :Bins Emptied
+STR_6057    :Rides Inspected
+STR_6058    :Rides Fixed
+STR_6059    :Bins Overflowing
+STR_6060    :Rainstorms
+STR_6061    :Thunderstorms
+STR_6062    :Ride Breakdown Messages
+STR_6063    :Followed Guest Messages
+STR_6064    :'Still hasn't been fixed' Messages
+STR_6065    :Crash Messages
+STR_6066    :Death Messages
+STR_6067    :Research Messages
+STR_6068    :Marketing Campaign Messages
+STR_6069    :Park Rating Warning Messages
+STR_6070    :Park Award Messages
+STR_6071    :No Path Messages
+STR_6072    :Park Value Messages
+STR_6073    :Twitch Chat Messages
+STR_6074    :Guest Complaint Messages
+STR_6075    :Entrance Fee Too High Messages
+STR_6076    :Safety Cut-Outs
+STR_6077    :Restraints Stuck Open
+STR_6078    :Restrains Stuck Closed
+STR_6079    :Doors Stuck Open
+STR_6080    :Doors Stuck Closed
+STR_6081    :Vehicle Malfunctions
+STR_6082    :Brakes Failures
+STR_6083    :Control Failures
+STR_6084    :Shops and Stalls Researched
+STR_6085    :Scenery Researched
+STR_6086    :Lines Left
+STR_6087    :Awards Earned
 
 #############
 # Scenarios #
