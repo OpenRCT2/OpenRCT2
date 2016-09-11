@@ -156,7 +156,7 @@ const char *language_get_string(rct_string_id id)
 
 bool language_open(int id)
 {
-	static const char *languagePath = "%s/language/%s.txt";
+	#define LANGUAGE_PATH  "%s/language/%s.txt"
 	char filename[MAX_PATH];
 	char dataPath[MAX_PATH];
 
@@ -166,11 +166,12 @@ bool language_open(int id)
 
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
-		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale);
+		sprintf(filename, LANGUAGE_PATH, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale);
 		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
-	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].locale);
+	sprintf(filename, LANGUAGE_PATH, dataPath, LanguagesDescriptors[id].locale);
+	#undef LANGUAGE_PATH
 	_languageCurrent = LanguagePack::FromFile(id, filename);
 	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;
