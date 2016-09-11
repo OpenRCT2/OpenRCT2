@@ -428,6 +428,7 @@
     <ClInclude Include="src\localisation\LanguagePack.h" />
     <ClInclude Include="src\localisation\localisation.h" />
     <ClInclude Include="src\localisation\string_ids.h" />
+    <ClInclude Include="src\localisation\user.h" />
     <ClInclude Include="src\management\award.h" />
     <ClInclude Include="src\management\finance.h" />
     <ClInclude Include="src\management\marketing.h" />
