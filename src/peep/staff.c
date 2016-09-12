@@ -575,10 +575,6 @@ static uint8 staff_get_valid_patrol_directions(rct_peep* peep, sint16 x, sint16 
 		directions = 0xF;
 	}
 
-	// For backwards compatibility. 
-	// Remove when all references to 0x00F43910 removed
-	RCT2_GLOBAL(0x00F43910, uint32) = directions;
-
 	return directions;
 }
 
