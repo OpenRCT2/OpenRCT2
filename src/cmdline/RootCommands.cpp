@@ -340,13 +340,6 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 
     // Update RCT2 path in config
-
-    // TODO remove this when we get rid of config_apply_to_old_addresses
-    if (!openrct2_setup_rct2_segment()) {
-        Console::Error::WriteLine("Unable to load RCT2 data sector");
-        return EXITCODE_FAIL;
-    }
-
     config_set_defaults();
     config_open_default();
     String::DiscardDuplicate(&gConfigGeneral.game_path, path);

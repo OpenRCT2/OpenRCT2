@@ -257,11 +257,7 @@ void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 		if (RCT2_ADDRESS(0x0097B974, uint8)[ebx] & 0xF){
 
 			int z = map_element->base_height * 8 + 3;
-			uint32 image_id =
-				z / 16 +
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS,sint16) +
-				0x20101689;
-
+			uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
 			image_id -= gMapBaseZ;
 
 			sub_98197C(image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64, get_current_rotation());

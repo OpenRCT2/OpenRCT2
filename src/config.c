@@ -345,8 +345,6 @@ static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, c
 static void utf8_skip_whitespace(utf8 **outch);
 static void utf8_skip_non_whitespace(utf8 **outch);
 
-void config_apply_to_old_addresses();
-
 static int rwopsreadc(SDL_RWops *file)
 {
 	int c = 0;
@@ -480,7 +478,6 @@ bool config_open_default()
 
 	config_get_default_path(path);
 	if (config_open(path)) {
-		config_apply_to_old_addresses();
 		currency_load_custom_currency_config();
 		return true;
 	}
@@ -494,7 +491,6 @@ bool config_save_default()
 
 	config_get_default_path(path);
 	if (config_save(path)) {
-		config_apply_to_old_addresses();
 		return true;
 	}
 
@@ -961,38 +957,6 @@ bool config_find_or_browse_install_directory()
 
 	return true;
 }
-
-#pragma region Obsolete
-
-/**
- * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
- * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
- */
-void config_apply_to_old_addresses()
-{
-#if !defined(NO_RCT2)
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = get_height_marker_offset();
-
-	int configFlags = 0;
-	if (gConfigGeneral.always_show_gridlines)
-		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-	if (!gConfigGeneral.landscape_smoothing)
-		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-	if (gConfigGeneral.show_height_as_units)
-		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-	if (gConfigGeneral.save_plugin_data)
-		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
-#endif // !defined(NO_RCT2)
-}
-
-#pragma endregion
 
 #pragma region Shortcuts
 
