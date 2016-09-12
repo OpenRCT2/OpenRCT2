@@ -610,7 +610,6 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 	uint8 rotation = map_element_get_direction(mapElement);
 
 	sint16 trackpieceZ = originZ;
-	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
 	switch (type)
 	{
@@ -622,9 +621,6 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 
 	uint8 rideIndex = mapElement->properties.track.ride_index;
 	type = mapElement->properties.track.type;
-	RCT2_GLOBAL(0x00F44139, uint8) = type;
-	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
-	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
 
 	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
@@ -681,8 +677,6 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 		z += trackBlock->z;
 
 		map_invalidate_tile_full(x, y);
-		RCT2_GLOBAL(0x00F441C4, sint16) = x;
-		RCT2_GLOBAL(0x00F441C6, sint16) = y;
 
 		trackpieceZ = z;
 
@@ -738,7 +732,6 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 	uint8 rotation = map_element_get_direction(mapElement);
 
 	sint16 trackpieceZ = originZ;
-	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
 	switch (type)
 	{
@@ -750,9 +743,6 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 
 	uint8 rideIndex = mapElement->properties.track.ride_index;
 	type = mapElement->properties.track.type;
-	RCT2_GLOBAL(0x00F44139, uint8) = type;
-	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
-	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
 
 	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
@@ -809,8 +799,6 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 		z += trackBlock->z;
 
 		map_invalidate_tile_full(x, y);
-		RCT2_GLOBAL(0x00F441C4, sint16) = x;
-		RCT2_GLOBAL(0x00F441C6, sint16) = y;
 
 		trackpieceZ = z;
 
