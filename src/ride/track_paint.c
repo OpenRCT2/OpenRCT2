@@ -1322,33 +1322,6 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		}
 
 		int rideType = ride->type;
-#ifndef NO_RCT2
-		if (rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER && gUseOriginalRidePaint) {
-			switch (trackType) {
-			case TRACK_ELEM_60_DEG_UP:
-			case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
-			case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
-			case TRACK_ELEM_60_DEG_DOWN:
-			case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
-			case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
-			case TRACK_ELEM_DIAG_60_DEG_UP:
-			case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
-			case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-			case TRACK_ELEM_DIAG_60_DEG_DOWN:
-			case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
-			case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
-				rideType = RIDE_TYPE_WATER_COASTER;
-				break;
-
-			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
-			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-			case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
-			case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
-				return;
-			}
-		}
-#endif
-
 		bool useOriginalRidePaint = false;
 #ifndef NO_RCT2
 		useOriginalRidePaint = gUseOriginalRidePaint;
