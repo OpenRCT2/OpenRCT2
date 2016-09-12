@@ -23,6 +23,8 @@
 #include "../../src/world/sprite.h"
 #include "../../src/paint/map_element/map_element.h"
 
+#define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
+
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
@@ -31,7 +33,9 @@ rct_map_element **gMapElementTilePointers = (rct_map_element **) RCT2_ADDRESS_TI
 rct_ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 sint16 gMapSizeUnits;
-
+sint16 gMapBaseZ;
+bool gTrackDesignSaveMode = false;
+uint8 gTrackDesignSaveRideIndex = 255;
 
 const rct_xy16 TileDirectionDelta[] = {
 	{-32, 0},

@@ -359,10 +359,10 @@ static void printImageId(uint32 input, utf8string *out) {
 
 	bool allocated = false;
 	utf8string paletteName;
-	if (palette == PALETTE_98)paletteName = "PALETTE_98";
-	else if (palette == PALETTE_9C)paletteName = "PALETTE_9C";
-	else if (palette == PALETTE_A0)paletteName = "PALETTE_A0";
-	else if (palette == PALETTE_A4)paletteName = "PALETTE_A4";
+	if (palette == PALETTE_98)paletteName = "SCHEME_TRACK";
+	else if (palette == PALETTE_9C)paletteName = "SCHEME_SUPPORTS";
+	else if (palette == PALETTE_A0)paletteName = "SCHEME_MISC";
+	else if (palette == PALETTE_A4)paletteName = "SCHEME_3";
 	else {
 		paletteName = malloc(16);
 		sprintf(paletteName, "0x%08X", palette);
@@ -503,10 +503,10 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	surfaceElement.base_height = 2;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-	RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
-	RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
-	RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
-	RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+	gTrackColours[SCHEME_TRACK] = PALETTE_98;
+	gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
+	gTrackColours[SCHEME_MISC] = PALETTE_A4;
+    gTrackColours[SCHEME_3] = PALETTE_9C;
 
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;

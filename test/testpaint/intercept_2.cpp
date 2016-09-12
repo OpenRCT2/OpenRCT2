@@ -305,10 +305,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
-        RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
-        RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
-        RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = PALETTE_98;
+        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
+        gTrackColours[SCHEME_MISC] = PALETTE_A4;
+        gTrackColours[SCHEME_3] = PALETTE_9C;
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
@@ -472,10 +472,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
-        RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
-        RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
-        RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = PALETTE_98;
+        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
+        gTrackColours[SCHEME_MISC] = PALETTE_A4;
+        gTrackColours[SCHEME_3] = PALETTE_9C;
 
         rct_drawpixelinfo dpi { 0 };
         dpi.zoom_level = 1;
@@ -663,10 +663,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        RCT2_GLOBAL(0x00F44198, uint32) = PALETTE_98;
-        RCT2_GLOBAL(0x00F441A0, uint32) = PALETTE_A0;
-        RCT2_GLOBAL(0x00F441A4, uint32) = PALETTE_A4;
-        RCT2_GLOBAL(0x00F4419C, uint32) = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = PALETTE_98;
+        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
+        gTrackColours[SCHEME_MISC] = PALETTE_A4;
+        gTrackColours[SCHEME_3] = PALETTE_9C;
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
