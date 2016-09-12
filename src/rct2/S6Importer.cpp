@@ -326,7 +326,7 @@ void S6Importer::Import()
     gUnk13CA740 = _s6.byte_13CA740;
     gClimate = _s6.climate;
     // pad_13CA741;
-    memcpy(RCT2_ADDRESS(0x013CA742, uint8), _s6.byte_13CA742, sizeof(_s6.byte_13CA742));
+    // byte_13CA742
     // pad_013CA747
     gClimateUpdateTimer = _s6.climate_update_timer;
     gClimateCurrentWeather = _s6.current_weather;

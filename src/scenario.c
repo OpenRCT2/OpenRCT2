@@ -251,7 +251,6 @@ void scenario_begin()
 	strcpy(gRCT2AddressSavedGamesPath2 + strlen(gRCT2AddressSavedGamesPath2), gScenarioSavePath);
 	strcat(gRCT2AddressSavedGamesPath2, ".SV6");
 
-	memset(RCT2_ADDRESS(0x001357848, void), 0, 56);
 	gCurrentExpenditure = 0;
 	gCurrentProfit = 0;
 	gWeeklyProfitAverageDividend = 0;
