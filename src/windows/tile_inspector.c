@@ -230,7 +230,7 @@ static rct_widget window_tile_inspector_widgets_surface[] = {
 #define PAT_GBPB PADDING_BOTTOM					// Path group box properties bottom
 #define PAT_GBPT (PAT_GBPB + 16 + 3 * 21)		// Path group box properties top
 #define PAT_GBDB (PAT_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define PAT_GBDT (PAT_GBDB + 20 + 1 * 11)		// Path group box info top
+#define PAT_GBDT (PAT_GBDB + 20 + 2 * 11)		// Path group box info top
 static rct_widget window_tile_inspector_widgets_path[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT
@@ -1372,14 +1372,21 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		case PAGE_PATH: {
+			// Details
+			// Path name
+			rct_string_id path_name_id = get_footpath_entry(footpath_element_get_type(mapElement))->string_idx;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &path_name_id, 12, x, y);
+
+			// Path addition
 			if (footpath_element_has_path_scenery(mapElement)) {
 				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(mapElement);
 				rct_string_id addition_name_id = get_footpath_item_entry(pathAdditionType)->name;
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &addition_name_id, 12, x, y);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &addition_name_id, 12, x, y + 11);
 			}
 			else
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, 12, x, y);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, 12, x, y + 11);
 
+			// Properties
 			// Raise / lower label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_PATH_SPINNER_HEIGHT].top;
