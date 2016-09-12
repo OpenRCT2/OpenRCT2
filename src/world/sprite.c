@@ -26,7 +26,7 @@
 #include "fountain.h"
 #include "sprite.h"
 
-#if NO_RCT2
+#ifdef NO_RCT2
 uint16 gSpriteListHead[6];
 uint16 gSpriteListCount[6];
 static rct_sprite _spriteList[MAX_SPRITES];
