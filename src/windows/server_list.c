@@ -695,6 +695,9 @@ static int server_compare(const void *a, const void *b)
 
 static void sort_servers()
 {
+	if (_serverEntries == NULL) {
+		return;
+	}
 	qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
 }
 

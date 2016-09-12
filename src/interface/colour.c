@@ -16,10 +16,9 @@
 
 #include "../drawing/drawing.h"
 #include "colour.h"
-#include "../addresses.h"
 
-rct_colour_map_a *ColourMapA = RCT2_ADDRESS(0x0141FC44, rct_colour_map_a);
-rct_colour_map_b *ColourMapB = RCT2_ADDRESS(0x0141FD44, rct_colour_map_b);
+rct_colour_map_a ColourMapA[32] = { 0 };
+rct_colour_map_b ColourMapB[32] = { 0 };
 
 void colours_init_maps()
 {

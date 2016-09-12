@@ -610,7 +610,7 @@ bool staff_is_patrol_area_set(int staffIndex, int x, int y)
 	int peepOffset = staffIndex * 128;
 	int offset = (x | y) >> 5;
 	int bitIndex = (x | y) & 0x1F;
-	return gStaffPatrolAreas[peepOffset + offset] & (1 << bitIndex);
+	return gStaffPatrolAreas[peepOffset + offset] & (((uint32)1) << bitIndex);
 }
 
 void staff_set_patrol_area(int staffIndex, int x, int y, bool value)
