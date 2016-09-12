@@ -943,8 +943,6 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 
 	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
-		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
-
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
 			uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){

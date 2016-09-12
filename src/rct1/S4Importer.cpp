@@ -1261,17 +1261,6 @@ private:
 
     void FixZ()
     {
-        // The following code would be useful if we imported sprites
-        // for (int i = 0; i < MAX_SPRITES; i++)
-        // {
-        //     rct_unk_sprite * sprite = &(g_sprite_list[i].unknown);
-        //     if (sprite->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
-        //         rct_peep * peep = (rct_peep*)sprite;
-        //         peep->next_z /= 2;
-        //         RCT2_GLOBAL((int)peep + 0xCE, uint8) /= 2;
-        //     }
-        // }
-
         rct_map_element * mapElement = gMapElements;
         while (mapElement < gNextFreeMapElement)
         {
