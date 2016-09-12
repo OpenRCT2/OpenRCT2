@@ -167,8 +167,8 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	ps->var_20 = NULL;
 	ps->sprite_type = gPaintInteractionType;
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
-	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
-	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->map_x = gPaintMapPosition.x;
+	ps->map_y = gPaintMapPosition.y;
 	ps->mapElement = g_currently_drawn_item;
 
 	return ps;
@@ -288,8 +288,8 @@ paint_struct * sub_98196C(
 	ps->var_20 = NULL;
 	ps->sprite_type = gPaintInteractionType;
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
-	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
-	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->map_x = gPaintMapPosition.x;
+	ps->map_y = gPaintMapPosition.y;
 	ps->mapElement = g_currently_drawn_item;
 
 	g_ps_F1AD28 = ps;

@@ -34,6 +34,7 @@
 #include "../supports.h"
 
 #ifdef NO_RCT2
+rct_xy16 gPaintMapPosition;
 bool gDidPassSurface;
 rct_map_element * gSurfaceElement;
 tunnel_entry gLeftTunnels[65];
@@ -153,8 +154,8 @@ static void sub_68B3FB(int x, int y)
 
 	RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
 	RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
-	RCT2_GLOBAL(0x9DE574, uint16_t) = x;
-	RCT2_GLOBAL(0x9DE576, uint16_t) = y;
+	gPaintMapPosition.x = x;
+	gPaintMapPosition.y = y;
 
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
 	uint8 rotation = get_current_rotation();
@@ -235,7 +236,7 @@ static void sub_68B3FB(int x, int y)
 		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
 		int height = map_element->base_height * 8;
 
-		uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
+		rct_xy16 dword_9DE574 = gPaintMapPosition;
 		g_currently_drawn_item = map_element;
 		//setup the painting of for example: the underground, signs, rides, scenery, etc.
 		switch (map_element_get_type(map_element))
@@ -274,7 +275,7 @@ static void sub_68B3FB(int x, int y)
 			// An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
 			return;
 		}
-		RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
+		gPaintMapPosition = dword_9DE574;
 	} while (!map_element_is_last_for_tile(map_element++));
 
 	if (!gShowSupportSegmentHeights) {

@@ -68,6 +68,7 @@ typedef struct tunnel_entry {
 } tunnel_entry;
 
 #ifdef NO_RCT2
+extern rct_xy16 gPaintMapPosition;
 extern bool gDidPassSurface;
 extern rct_map_element * gSurfaceElement;
 extern tunnel_entry gLeftTunnels[65];
@@ -76,6 +77,7 @@ extern tunnel_entry gRightTunnels[65];
 extern uint8 gRightTunnelCount;
 extern uint8 gVerticalTunnelHeight;
 #else
+#define gPaintMapPosition					RCT2_GLOBAL(0x009DE574, rct_xy16)
 #define gDidPassSurface				RCT2_GLOBAL(0x009DE57C, bool)
 #define gSurfaceElement				RCT2_GLOBAL(0x009E3250, rct_map_element *)
 #define gLeftTunnels				RCT2_ADDRESS(0x009E3138, tunnel_entry)
