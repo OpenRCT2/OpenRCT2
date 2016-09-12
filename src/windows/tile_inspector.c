@@ -366,7 +366,7 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex
 static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
-static void window_tile_inspector_set_page(rct_window *w, const page);
+static void window_tile_inspector_set_page(rct_window *w, const int page);
 static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list window_tile_inspector_events = {
@@ -1130,7 +1130,7 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, 
 	*height = window_tile_inspector_item_count * LIST_ITEM_HEIGHT;
 }
 
-static void window_tile_inspector_set_page(rct_window *w, const page)
+static void window_tile_inspector_set_page(rct_window *w, const int page)
 {
 	w->page = page;
 	w->widgets = tile_inspector_widgets[page];
