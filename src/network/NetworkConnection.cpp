@@ -121,7 +121,17 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
         packet->size = (uint16)packet->data->size();
         if (front)
         {
-            _outboundPackets.push_front(std::move(packet));
+            // If the first packet was already partially sent add new packet to second position
+            if (_outboundPackets.size() > 0 && _outboundPackets.front()->transferred > 0)
+            {
+                auto it = _outboundPackets.begin();
+                it++; // Second position
+                _outboundPackets.insert(it, std::move(packet));
+            }
+            else
+            {
+                _outboundPackets.push_front(std::move(packet));
+            }
         }
         else
         {
