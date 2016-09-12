@@ -404,7 +404,7 @@ rct_sprite *get_sprite(size_t sprite_idx);
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];
 
-#if NO_RCT2
+#ifdef NO_RCT2
 extern uint16 gSpriteListHead[6];
 extern uint16 gSpriteListCount[6];
 #else
