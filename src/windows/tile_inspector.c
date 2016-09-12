@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
