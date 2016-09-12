@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -935,9 +934,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	gCommandPosition.z = originZ;
 	sint16 trackpieceZ = originZ;
 	direction &= 3;
-	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
-	RCT2_GLOBAL(0x00F441D9, uint32) = properties_2;
-	RCT2_GLOBAL(0x00F441DD, uint32) = properties_3;
 	gTrackGroundFlags = 0;
 
 	uint64 enabledTrackPieces = 0;
@@ -945,7 +941,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	enabledTrackPieces <<= 32;
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[ride->type];
 	uint32 rideTypeFlags = RideProperties[ride->type].flags;
-	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
 		gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
@@ -1438,7 +1433,6 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 	gCommandPosition.y = originY + 16;
 	gCommandPosition.z = originZ;
 	sint16 trackpieceZ = originZ;
-	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
 	switch (type){
 	case TRACK_ELEM_BEGIN_STATION:
@@ -1500,9 +1494,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 
 	uint8 rideIndex = mapElement->properties.track.ride_index;
 	type = mapElement->properties.track.type;
-	RCT2_GLOBAL(0x00F44139, uint8) = type;
-	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
-	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
+	bool isLiftHill = track_element_is_lift_hill(mapElement);
 
 	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
@@ -1558,8 +1550,6 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 		z += trackBlock->z;
 
 		map_invalidate_tile_full(x, y);
-		RCT2_GLOBAL(0x00F441C4, sint16) = x;
-		RCT2_GLOBAL(0x00F441C6, sint16) = y;
 
 		trackpieceZ = z;
 
@@ -1666,7 +1656,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-			if (!(RCT2_GLOBAL(0x00F4414C, uint8) & (1 << 7)))
+			if (!isLiftHill)
 				break;
 			// Fall through
 		case TRACK_ELEM_CABLE_LIFT_HILL:
