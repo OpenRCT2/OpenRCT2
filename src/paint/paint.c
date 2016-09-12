@@ -32,9 +32,9 @@ paint_struct * g_ps_F1AD28;
 attached_paint_struct * g_aps_F1AD2C;
 paint_string_struct *pss1;
 paint_string_struct *pss2;
-uint32 _F1AD0C;
 
 #ifdef NO_RCT2
+uint32 _F1AD0C;
 uint32 _F1AD10;
 static paint_struct *_paint_structs[512];
 void *g_currently_drawn_item;
@@ -44,6 +44,7 @@ support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
 #else
 #define _paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
+#define _F1AD0C RCT2_GLOBAL(0xF1AD0C, uint32)
 #define _F1AD10 RCT2_GLOBAL(0xF1AD10, uint32)
 #endif
 
