@@ -146,3 +146,8 @@ bool ride_type_has_flag(int rideType, int flag)
 {
 	return (RideProperties[rideType].flags & flag) != 0;
 }
+
+sint16 get_height_marker_offset()
+{
+	return 0;
+}
