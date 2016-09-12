@@ -307,7 +307,7 @@ typedef struct rct_s6_data {
 	uint8 pad_13CA73F;
 	uint8 byte_13CA740;
 	uint8 pad_13CA741;
-	uint8 byte_13CA742[4];
+	uint8 byte_13CA742[4]; // unused
 	uint8 climate;
 	uint8 pad_013CA747;
 	uint16 climate_update_timer;

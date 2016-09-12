@@ -408,7 +408,7 @@ void S6Exporter::Export()
     _s6.byte_13CA740 = gUnk13CA740;
     _s6.climate = gClimate;
     // pad_13CA741;
-    memcpy(_s6.byte_13CA742, RCT2_ADDRESS(0x013CA742, uint8), sizeof(_s6.byte_13CA742));
+    // byte_13CA742
     // pad_013CA747
     _s6.climate_update_timer = gClimateUpdateTimer;
     _s6.current_weather = gClimateCurrentWeather;
