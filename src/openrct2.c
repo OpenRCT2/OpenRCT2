@@ -75,7 +75,7 @@ EVP_MD_CTX *gHashCTX = NULL;
 int _finished;
 
 // Used for object movement tweening
-static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
+static rct_xyz16 _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
 
 static void openrct2_loop();
 static void openrct2_setup_rct2_hooks();
@@ -405,21 +405,13 @@ static void openrct2_loop()
 
 			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
 				// Get the original position of each sprite
-				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					_spritelocations1[i].x = get_sprite(i)->unknown.x;
-					_spritelocations1[i].y = get_sprite(i)->unknown.y;
-					_spritelocations1[i].z = get_sprite(i)->unknown.z;
-				}
+				store_sprite_locations(_spritelocations1);
 
 				// Update the game so the sprite positions update
 				rct2_update();
 
 				// Get the next position of each sprite
-				for (uint16 i = 0; i < MAX_SPRITES; i++) {
-					_spritelocations2[i].x = get_sprite(i)->unknown.x;
-					_spritelocations2[i].y = get_sprite(i)->unknown.y;
-					_spritelocations2[i].z = get_sprite(i)->unknown.z;
-				}
+				store_sprite_locations(_spritelocations2);
 
 				uncapTick += 25;
 			}

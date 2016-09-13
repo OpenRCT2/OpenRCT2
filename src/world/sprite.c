@@ -44,6 +44,18 @@ rct_sprite *get_sprite(size_t sprite_idx)
 	return &_spriteList[sprite_idx];
 }
 
+void store_sprite_locations(rct_xyz16 * sprite_locations)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		// skip going through `get_sprite` to not get stalled on assert,
+		// this can get very expensive for busy parks with uncap FPS option on
+		const rct_sprite *sprite = &_spriteList[i];
+		sprite_locations[i].x = sprite->unknown.x;
+		sprite_locations[i].y = sprite->unknown.y;
+		sprite_locations[i].z = sprite->unknown.z;
+	}
+}
+
 uint16 sprite_get_first_in_quadrant(int x, int y)
 {
 	int offset = ((x & 0x1FE0) << 3) | (y >> 5);

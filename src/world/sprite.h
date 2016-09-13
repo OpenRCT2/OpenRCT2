@@ -400,6 +400,7 @@ enum {
 };
 
 rct_sprite *get_sprite(size_t sprite_idx);
+void store_sprite_locations(rct_xyz16 *sprite_locations);
 
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];
