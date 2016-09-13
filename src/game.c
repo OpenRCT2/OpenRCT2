@@ -1066,6 +1066,7 @@ void game_load_or_quit_no_save_prompt()
 			gInputFlags &= ~INPUT_FLAG_5;
 		}
 		gGameSpeed = 1;
+		gFirstTimeSave = 1;
 		title_load();
 		break;
 	default:
