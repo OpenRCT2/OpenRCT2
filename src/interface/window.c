@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
@@ -562,21 +561,24 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	uint16 screenWidth = gScreenWidth;
 	uint16 screenHeight = gScreenHeight;
 
-	if (cls & 0x80) {
-		cls &= ~0x80;
-		rct_window *w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
-		if (w != NULL) {
-			if (w->x > -60 && w->x < gScreenWidth - 20) {
-				if (w->y < gScreenHeight - 20) {
-					int x = w->x;
-					if (w->x + width > gScreenWidth)
-						x = gScreenWidth - 20 - width;
-					int y = w->y;
-					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
-				}
-			}
-		}
-	}
+	// TODO dead code, looks like it is cascading the new window offset from an existing window
+	// we will have to re-implement this in our own way.
+	//
+	// if (cls & 0x80) {
+	// 	cls &= ~0x80;
+	// 	rct_window *w = window_find_by_number(0, 0);
+	// 	if (w != NULL) {
+	// 		if (w->x > -60 && w->x < gScreenWidth - 20) {
+	// 			if (w->y < gScreenHeight - 20) {
+	// 				int x = w->x;
+	// 				if (w->x + width > gScreenWidth)
+	// 					x = gScreenWidth - 20 - width;
+	// 				int y = w->y;
+	// 				return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// Place window in an empty corner of the screen
 	int x = 0;
