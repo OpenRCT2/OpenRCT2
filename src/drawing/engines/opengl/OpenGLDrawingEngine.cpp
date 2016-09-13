@@ -503,7 +503,6 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 {
     _engine = engine;
-    _textureCache = new TextureCache();
 }
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
@@ -522,6 +521,7 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 
 void OpenGLDrawingContext::Initialise()
 {
+    _textureCache = new TextureCache();
     _drawImageShader = new DrawImageShader();
     _drawLineShader = new DrawLineShader();
     _fillRectShader = new FillRectShader();
