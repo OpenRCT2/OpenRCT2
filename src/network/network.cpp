@@ -553,7 +553,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 void Network::SendPacketToClients(NetworkPacket& packet, bool front)
 {
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(std::move(NetworkPacket::Duplicate(packet)), front);
+		(*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
 	}
 }
 
@@ -830,7 +830,7 @@ void Network::CloseChatLog()
 void Network::Client_Send_TOKEN()
 {
 	log_verbose("requesting token");
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN;
 	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
 	server_connection.QueuePacket(std::move(packet));
@@ -838,7 +838,7 @@ void Network::Client_Send_TOKEN()
 
 void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char *sig, size_t sigsize)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
 	packet->WriteString(NETWORK_STREAM_ID);
 	packet->WriteString(name);
@@ -853,7 +853,7 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.Challenge.size();
 	packet->Write(connection.Challenge.data(), connection.Challenge.size());
 	connection.QueuePacket(std::move(packet));
@@ -865,7 +865,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 	if (connection.Player) {
 		new_playerid = connection.Player->id;
 	}
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << (uint8)new_playerid;
 	if (connection.AuthStatus == NETWORK_AUTH_BADVERSION) {
 		packet->WriteString(NETWORK_STREAM_ID);
@@ -931,7 +931,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
 		size_t datasize = Math::Min(chunksize, out_size - i);
-		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+		std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
 		packet->Write(&header[i], datasize);
 		if (connection) {
@@ -946,7 +946,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 
 void Network::Client_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
 	server_connection.QueuePacket(std::move(packet));
@@ -954,7 +954,7 @@ void Network::Client_Send_CHAT(const char* text)
 
 void Network::Server_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
 	SendPacketToClients(*packet);
@@ -962,7 +962,7 @@ void Network::Server_Send_CHAT(const char* text)
 
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << callback;
 	server_connection.QueuePacket(std::move(packet));
@@ -970,7 +970,7 @@ void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << playerid << callback;
 	SendPacketToClients(*packet);
@@ -979,7 +979,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 void Network::Server_Send_TICK()
 {
 	last_tick_sent_time = SDL_GetTicks();
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	uint32 flags = 0;
 	// Simple counter which limits how often a sprite checksum gets sent.
@@ -1002,7 +1002,7 @@ void Network::Server_Send_TICK()
 
 void Network::Server_Send_PLAYERLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PLAYERLIST << (uint8)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		player_list[i]->Write(*packet);
@@ -1012,7 +1012,7 @@ void Network::Server_Send_PLAYERLIST()
 
 void Network::Client_Send_PING()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	server_connection.QueuePacket(std::move(packet));
 }
@@ -1020,7 +1020,7 @@ void Network::Client_Send_PING()
 void Network::Server_Send_PING()
 {
 	last_ping_sent_time = SDL_GetTicks();
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		(*it)->PingTime = SDL_GetTicks();
@@ -1030,7 +1030,7 @@ void Network::Server_Send_PING()
 
 void Network::Server_Send_PINGLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PINGLIST << (uint8)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		*packet << player_list[i]->id << player_list[i]->ping;
@@ -1040,7 +1040,7 @@ void Network::Server_Send_PINGLIST()
 
 void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_SETDISCONNECTMSG;
 	packet->WriteString(msg);
 	connection.QueuePacket(std::move(packet));
@@ -1048,7 +1048,7 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
 
 void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
 #ifndef DISABLE_HTTP
 	json_t* obj = json_object();
@@ -1076,14 +1076,14 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 
 void Network::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_SHOWERROR << title << message;
 	connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GROUPLIST << (uint8)group_list.size() << default_group;
 	for (unsigned int i = 0; i < group_list.size(); i++) {
 		group_list[i]->Write(*packet);
@@ -1093,7 +1093,7 @@ void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 
 void Network::Server_Send_EVENT_PLAYER_JOINED(const char *playerName)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_EVENT;
 	*packet << (uint16)SERVER_EVENT_PLAYER_JOINED;
 	packet->WriteString(playerName);
@@ -1102,7 +1102,7 @@ void Network::Server_Send_EVENT_PLAYER_JOINED(const char *playerName)
 
 void Network::Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_EVENT;
 	*packet << (uint16)SERVER_EVENT_PLAYER_DISCONNECTED;
 	packet->WriteString(playerName);
@@ -1805,7 +1805,7 @@ void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& 
 void Network::Client_Send_GAMEINFO()
 {
 	log_verbose("requesting gameinfo");
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
 	server_connection.QueuePacket(std::move(packet));
 }

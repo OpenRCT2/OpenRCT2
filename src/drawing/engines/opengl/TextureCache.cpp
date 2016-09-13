@@ -197,7 +197,7 @@ CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight)
     log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
 #endif
 
-    _atlases.push_back(std::move(Atlas(atlasIndex, atlasSize)));
+    _atlases.emplace_back(atlasIndex, atlasSize);
     _atlases.back().Initialise(_atlasesTextureDimensions, _atlasesTextureDimensions);
 
     // Enlarge texture array to support new atlas
