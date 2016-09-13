@@ -557,7 +557,6 @@
 		D44270EA1CC81B3200D84D28 /* IStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IStream.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EB1CC81B3200D84D28 /* Json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Json.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EC1CC81B3200D84D28 /* Json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Json.hpp; sourceTree = "<group>"; usesTabs = 0; };
-		D44270ED1CC81B3200D84D28 /* List.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = List.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EE1CC81B3200D84D28 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EF1CC81B3200D84D28 /* Memory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F01CC81B3200D84D28 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1369,7 +1368,6 @@
 				D44270EA1CC81B3200D84D28 /* IStream.hpp */,
 				D44270EB1CC81B3200D84D28 /* Json.cpp */,
 				D44270EC1CC81B3200D84D28 /* Json.hpp */,
-				D44270ED1CC81B3200D84D28 /* List.hpp */,
 				D44270EE1CC81B3200D84D28 /* Math.hpp */,
 				D44270EF1CC81B3200D84D28 /* Memory.hpp */,
 				D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */,

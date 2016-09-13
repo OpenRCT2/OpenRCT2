@@ -14,10 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <vector>
+#include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
-#include "../core/List.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -51,10 +53,38 @@ extern "C"
     #include "../ride/ride_data.h"
 }
 
-static bool ObjectNameComparer(const char * a, const char * b)
+class EntryList
 {
-    return String::Equals(a, b, true);
-}
+private:
+    std::vector<const char *> _entries;
+
+public:
+    size_t GetCount() const
+    {
+        return _entries.size();
+    }
+
+    const std::vector<const char *> & GetEntries() const
+    {
+        return _entries;
+    }
+
+    size_t GetOrAddEntry(const char * entryName)
+    {
+        size_t entryIndex = Collections::IndexOf(_entries, entryName, true);
+        if (entryIndex == SIZE_MAX)
+        {
+            entryIndex = _entries.size();
+            _entries.push_back(entryName);
+        }
+        return entryIndex;
+    }
+
+    void AddRange(std::initializer_list<const char *> initializerList)
+    {
+        Collections::AddRange(_entries, initializerList);
+    }
+};
 
 class S4Importer : public IS4Importer
 {
@@ -64,13 +94,13 @@ private:
     uint8        _gameVersion;
 
     // Lists of dynamic object entries
-    List<const char *> _rideEntries;
-    List<const char *> _smallSceneryEntries;
-    List<const char *> _largeSceneryEntries;
-    List<const char *> _wallEntries;
-    List<const char *> _pathEntries;
-    List<const char *> _pathAdditionEntries;
-    List<const char *> _sceneryGroupEntries;
+    EntryList _rideEntries;
+    EntryList _smallSceneryEntries;
+    EntryList _largeSceneryEntries;
+    EntryList _wallEntries;
+    EntryList _pathEntries;
+    EntryList _pathAdditionEntries;
+    EntryList _sceneryGroupEntries;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     uint8 _rideTypeToRideEntryMap[96];
@@ -335,7 +365,7 @@ private:
             if (sceneryTheme != 0 &&
                 _sceneryThemeTypeToEntryMap[sceneryTheme] == 255) continue;
 
-            List<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
+            std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
             {
                 rct_object_entry * foundEntry = object_list_find_by_name(objectName);
@@ -349,17 +379,13 @@ private:
                     case OBJECT_TYPE_PATHS:
                     case OBJECT_TYPE_PATH_BITS:
                     {
-                        List<const char *> * entries = GetEntryList(objectType);
+                        EntryList * entries = GetEntryList(objectType);
 
-                        // Ran out of available entries
-                        if (entries->GetCount() >= (size_t)object_entry_group_counts[objectType])
+                        // Check if there are spare entries available
+                        size_t maxEntries = (size_t)object_entry_group_counts[objectType];
+                        if (entries->GetCount() < maxEntries)
                         {
-                            break;
-                        }
-
-                        if (!entries->Contains(objectName, ObjectNameComparer))
-                        {
-                            entries->Add(objectName);
+                            entries->GetOrAddEntry(objectName);
                         }
                         break;
                     }
@@ -375,13 +401,8 @@ private:
         if (_rideTypeToRideEntryMap[rideType] == 255)
         {
             const char * entryName = RCT1::GetRideTypeObject(rideType);
+            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
 
-            size_t entryIndex = _rideEntries.IndexOf(entryName, ObjectNameComparer);
-            if (entryIndex == SIZE_MAX)
-            {
-                entryIndex = _rideEntries.GetCount();
-                _rideEntries.Add(entryName);
-            }
             _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
         }
     }
@@ -392,13 +413,8 @@ private:
         if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
         {
             const char * entryName = RCT1::GetVehicleObject(vehicleType);
+            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
 
-            size_t entryIndex = _rideEntries.IndexOf(entryName, ObjectNameComparer);
-            if (entryIndex == SIZE_MAX)
-            {
-                entryIndex = _rideEntries.GetCount();
-                _rideEntries.Add(entryName);
-            }
             _vehicleTypeToRideEntryMap[vehicleType] = (uint8)entryIndex;
             _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
         }
@@ -410,8 +426,9 @@ private:
         if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
         {
             const char * entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
-            _smallSceneryTypeToEntryMap[smallSceneryType] = (uint8)_smallSceneryEntries.GetCount();
-            _smallSceneryEntries.Add(entryName);
+            size_t entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
+
+            _smallSceneryTypeToEntryMap[smallSceneryType] = (uint8)entryIndex;
         }
     }
 
@@ -421,8 +438,9 @@ private:
         if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
         {
             const char * entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
-            _largeSceneryTypeToEntryMap[largeSceneryType] = (uint8)_largeSceneryEntries.GetCount();
-            _largeSceneryEntries.Add(entryName);
+            size_t entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
+
+            _largeSceneryTypeToEntryMap[largeSceneryType] = (uint8)entryIndex;
         }
     }
 
@@ -432,8 +450,9 @@ private:
         if (_wallTypeToEntryMap[wallType] == 255)
         {
             const char * entryName = RCT1::GetWallObject(wallType);
-            _wallTypeToEntryMap[wallType] = (uint8)_wallEntries.GetCount();
-            _wallEntries.Add(entryName);
+            size_t entryIndex = _wallEntries.GetOrAddEntry(entryName);
+
+            _wallTypeToEntryMap[wallType] = (uint8)entryIndex;
         }
     }
 
@@ -443,17 +462,9 @@ private:
         if (_pathTypeToEntryMap[pathType] == 255)
         {
             const char * entryName = RCT1::GetPathObject(pathType);
+            size_t entryIndex = _pathEntries.GetOrAddEntry(entryName);
 
-            size_t index = _pathEntries.IndexOf(entryName, ObjectNameComparer);
-            if (index != SIZE_MAX)
-            {
-                _pathTypeToEntryMap[pathType] = (uint8)index;
-            }
-            else
-            {
-                _pathTypeToEntryMap[pathType] = (uint8)_pathEntries.GetCount();
-                _pathEntries.Add(entryName);
-            }
+            _pathTypeToEntryMap[pathType] = (uint8)entryIndex;
         }
     }
 
@@ -467,8 +478,9 @@ private:
             if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == 255)
             {
                 const char * entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
-                _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = (uint8)_pathAdditionEntries.GetCount();
-                _pathAdditionEntries.Add(entryName);
+                size_t entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
+
+                _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = (uint8)entryIndex;
             }
 
             _pathAdditionTypeToEntryMap[pathAdditionType] = _pathAdditionTypeToEntryMap[normalisedPathAdditionType];
@@ -486,16 +498,15 @@ private:
         else
         {
             const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-            uint8 entryIndex = (uint8)_sceneryGroupEntries.GetCount();
-            if (entryIndex >= 19)
+            if (_sceneryGroupEntries.GetCount() >= 19)
             {
                 Console::WriteLine("Warning: More than 19 (max scenery groups) in RCT1 park.");
                 Console::WriteLine("         [%s] scenery group not added.", entryName);
             }
             else
             {
-                _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
-                _sceneryGroupEntries.Add(entryName);
+                size_t entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
+                _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)entryIndex;
             }
         }
     }
@@ -779,7 +790,7 @@ private:
         LoadObjects(OBJECT_TYPE_PATHS, _pathEntries);
         LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
         LoadObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries);
-        LoadObjects(OBJECT_TYPE_BANNERS, List<const char *>({
+        LoadObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
             "BN1     ",
             "BN2     ",
             "BN3     ",
@@ -790,11 +801,16 @@ private:
             "BN8     ",
             "BN9     "
         }));
-        LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, List<const char *>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, List<const char *>({ "WTRCYAN " }));
+        LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }));
+        LoadObjects(OBJECT_TYPE_WATER, std::vector<const char *>({ "WTRCYAN " }));
     }
 
-    void LoadObjects(uint8 objectType, List<const char *> entries)
+    void LoadObjects(uint8 objectType, const EntryList &entries)
+    {
+        LoadObjects(objectType, entries.GetEntries());
+    }
+
+    void LoadObjects(uint8 objectType, const std::vector<const char *> &entries)
     {
         IObjectManager * objectManager = GetObjectManager();
 
@@ -1516,7 +1532,7 @@ private:
         }
     }
 
-    List<const char *> * GetEntryList(uint8 objectType)
+    EntryList * GetEntryList(uint8 objectType)
     {
         switch (objectType) {
         case OBJECT_TYPE_RIDE:          return &_rideEntries;
@@ -1640,7 +1656,7 @@ extern "C"
      */
     int vehicle_preference_compare(uint8 rideType, const char * a, const char * b)
     {
-        List<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
+        std::vector<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
         for (const char * object : rideEntryOrder)
         {
             if (String::Equals(object, a, true))
