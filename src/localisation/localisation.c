@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../common.h"
-#include "../addresses.h"
 
 #ifdef __WINDOWS__
 #include <windows.h>
@@ -1122,7 +1121,6 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		// ?
 		log_error("Localisation CALLPROC reached. Please contact a dev");
 		assert(false);
-		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
 	}
 }
 
@@ -1159,40 +1157,6 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 		*ch = toupper(*ch);
 		ch++;
 	}
-}
-
-void generate_string_file()
-{
-	FILE* f;
-	uint8** str;
-	uint8* c;
-	int i;
-
-	f = fopen("english.txt", "w");
-
-	for (i = 0; i < 4442; i++) {
-		str = (RCT2_ADDRESS(0x009BF2D4, uint8*) + (i * 4));
-		if (*str == (uint8*)-1)
-			continue;
-		c = *str;
-
-		fprintf(f, "STR_%04d    :", i);
-		while (*c != '\0') {
-			const char *token = format_get_token(*c);
-			if (token != NULL) {
-				fprintf(f, "{%s}", token);
-			} else {
-				if (*c < 32 || *c > 127)
-					fprintf(f, "{%d}", *c);
-				else
-					fputc(*c, f);
-			}
-			c++;
-		}
-		fputc('\n', f);
-	}
-
-	fclose(f);
 }
 
 /**
