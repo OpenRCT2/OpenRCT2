@@ -41,7 +41,7 @@ extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
 
 extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91];
-extern const uint32 RideTypeTrackPaintFunctionsOld[91];
+extern const uint32 * RideTypeTrackPaintFunctionsOld[91];
 
 typedef struct track_descriptor {
 	bool starts_diagonal;
