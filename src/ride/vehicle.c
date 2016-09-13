@@ -4041,29 +4041,29 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	const uint8* edi;
+	const uint8* timeToSpriteMap;
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1) {
-		edi = Rotation1TimeToSpriteMaps[vehicle->sub_state];
+		timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2) {
-		edi = Rotation2TimeToSpriteMaps[vehicle->sub_state];
+		timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else {
-		edi = Rotation3TimeToSpriteMaps[vehicle->sub_state];
+		timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
 	}
 
-	sint32 var_4C = (sint16)vehicle->current_time;
+	sint32 time = (sint16)vehicle->current_time;
 	if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE) {
-		var_4C += (ride->breakdown_sound_modifier >> 6) + 1;
+		time += (ride->breakdown_sound_modifier >> 6) + 1;
 	}
-	var_4C++;
+	time++;
 
-	uint8 al = edi[(uint32)var_4C];
-	if (al != 0xFF) {
-		vehicle->current_time = (uint16)var_4C;
-		if (al == vehicle->vehicle_sprite_type)
+	uint8 sprite = timeToSpriteMap[(uint32)time];
+	if (sprite != 0xFF) {
+		vehicle->current_time = (uint16)time;
+		if (sprite == vehicle->vehicle_sprite_type)
 			return;
-		vehicle->vehicle_sprite_type = al;
+		vehicle->vehicle_sprite_type = sprite;
 		vehicle_invalidate(vehicle);
 		return;
 	}
@@ -4073,11 +4073,11 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 	if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			al = vehicle->var_CE + 1;
+			sprite = vehicle->var_CE + 1;
 			if (ride->type == RIDE_TYPE_ENTERPRISE)
-				al += 9;
+				sprite += 9;
 
-			if (al < ride->rotations)
+			if (sprite < ride->rotations)
 				shouldStop = false;
 		}
 
