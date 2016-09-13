@@ -962,9 +962,9 @@ namespace RCT1
         return map[waterType];
     }
 
-    const List<const char *> GetPreferedRideEntryOrder(uint8 rideType)
+    const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType)
     {
-        static const List<const char *> preferedRideEntryOrder[] =
+        static const std::vector<const char *> preferedRideEntryOrder[] =
         {
             { "SPDRCR  "},                                                              // RIDE_TYPE_SPIRAL_ROLLER_COASTER
             { "TOGST   "},                                                              // RIDE_TYPE_STAND_UP_ROLLER_COASTER
@@ -1061,9 +1061,9 @@ namespace RCT1
         return preferedRideEntryOrder[rideType];
     }
 
-    const List<const char *> GetSceneryObjects(uint8 sceneryType)
+    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType)
     {
-        static const List<const char *> map[] =
+        static const std::vector<const char *> map[] =
         {
             // RCT1_SCENERY_THEME_GENERAL (trees, shrubs, garden, walls, fence, path accessories)
             { "TIC     ", "TLC     ", "TMC     ", "TMP     ", "TITC    ", "TGHC    ", "TAC     ", "TGHC2   ", "TCJ     ", "TMBJ    ", "TCF     ", "TCL     ", "TRF     ", "TRF2    ", "TEL     ", "TAP     ", "TSP     ", "TMZP    ", "TCRP    ", "TBP     ", "TLP     ", "TWP     ", "TAS     ", "TMG     ", "TWW     ", "TSB     ", "TVL     ", "TCY     ", "TNS     ", "TWN     ", "TCE     ", "TCO     ", "THL     ", "TCC     ", "TF1     ", "TF2     ", "TCT     ", "TH1     ", "TH2     ", "TPM     ", "TROPT1  ",

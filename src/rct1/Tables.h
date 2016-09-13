@@ -20,7 +20,7 @@
 
 #ifdef __cplusplus
 
-#include "../core/List.hpp"
+#include <vector>
 
 namespace RCT1
 {
@@ -42,9 +42,9 @@ namespace RCT1
     const char * GetPathAddtionObject(uint8 pathAdditionType);
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
 
-    const List<const char *> GetSceneryObjects(uint8 sceneryType);
+    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
 
-    const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
+    const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
 
 extern "C" {
