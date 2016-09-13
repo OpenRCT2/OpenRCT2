@@ -239,6 +239,7 @@
     <ClCompile Include="src\ride\thrill\twist.c" />
     <ClCompile Include="src\ride\track.c" />
     <ClCompile Include="src\ride\track_data.c" />
+    <ClCompile Include="src\ride\track_data_old.c" />
     <ClCompile Include="src\ride\track_design.c" />
     <ClCompile Include="src\ride\track_design_save.c" />
     <ClCompile Include="src\ride\track_design_index.c" />
