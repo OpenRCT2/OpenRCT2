@@ -372,7 +372,6 @@
     <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />
     <ClInclude Include="src\core\Json.hpp" />
-    <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
     <ClInclude Include="src\core\MemoryStream.h" />
