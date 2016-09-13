@@ -82,10 +82,12 @@ enum {
 };
 
 enum {
-	IMAGE_TYPE_NO_BACKGROUND = 0,
-	IMAGE_TYPE_USE_PALETTE= (1 << 1),
-	IMAGE_TYPE_MIX_BACKGROUND = (1<<2),
-	IMAGE_TYPE_UNKNOWN = (1<<3)
+	IMAGE_TYPE_DEFAULT = 0,
+	IMAGE_TYPE_REMAP = (1 << 29),
+	IMAGE_TYPE_TRANSPARENT = (1 << 30),
+	IMAGE_TYPE_REMAP_2_PLUS = (1 << 31) 
+	// REMAP_2_PLUS + REMAP = REMAP 2
+	// REMAP_2_PLUS = REMAP 3
 };
 
 typedef struct rct_g1_header {
@@ -117,7 +119,9 @@ typedef struct rct_palette {
 	rct_palette_entry entries[256];
 } rct_palette;
 
-#define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
+#define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
+#define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | ((primaryId << 19) | (scondaryId << 24)))
+#define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | ((primaryId << 19) | (scondaryId << 24)))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
 

@@ -24,8 +24,8 @@
 #include "sprite/sprite.h"
 
 const uint32 construction_markers[] = {
-	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_USE_PALETTE << 28, // White
-	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_MIX_BACKGROUND << 28, // Translucent
+	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
+	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
 };
 
 paint_struct * g_ps_F1AD28;
