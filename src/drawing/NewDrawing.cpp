@@ -92,11 +92,13 @@ extern "C"
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                 {
                     _drawingEngineType = DRAWING_ENGINE_NONE;
+                    log_error(ex.GetMessage());
                     log_fatal("Unable to initialise a drawing engine.");
                     exit(-1);
                 }
                 else
                 {
+                    log_error(ex.GetMessage());
                     log_error("Unable to initialise drawing engine. Falling back to software.");
 
                     // Fallback to software
