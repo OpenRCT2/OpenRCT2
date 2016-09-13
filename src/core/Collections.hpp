@@ -18,6 +18,7 @@
 
 #include <initializer_list>
 #include "../common.h"
+#include "String.hpp"
 
 namespace Collections
 {
@@ -63,7 +64,7 @@ namespace Collections
         if (ignoreCase)
         {
             return Contains(collection, item,
-                [](const auto &a, const auto &b)
+                [](const char * a, const char * b)
                 {
                     return String::Equals(a, b, true);
                 });
@@ -71,7 +72,7 @@ namespace Collections
         else
         {
             return Contains(collection, item,
-                [](const auto &a, const auto &b)
+                [](const char * a, const char * b)
                 {
                     return String::Equals(a, b, false);
                 });
@@ -84,7 +85,7 @@ namespace Collections
         if (ignoreCase)
         {
             return IndexOf(collection, item,
-                [](const auto &a, const auto &b)
+                [](const char * a, const char * b)
                 {
                     return String::Equals(a, b, true);
                 });
@@ -92,7 +93,7 @@ namespace Collections
         else
         {
             return IndexOf(collection, item,
-                [](const auto &a, const auto &b)
+                [](const char * a, const char * b)
                 {
                     return String::Equals(a, b, false);
                 });
