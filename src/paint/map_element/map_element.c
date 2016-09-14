@@ -153,8 +153,10 @@ static void sub_68B3FB(int x, int y)
 
 	gVerticalTunnelHeight = 0xFF;
 
-	RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
-	RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
+#ifndef NO_RCT2
+	RCT2_GLOBAL(0x009DE56A, uint16) = x;
+	RCT2_GLOBAL(0x009DE56E, uint16) = y;
+#endif
 	gPaintMapPosition.x = x;
 	gPaintMapPosition.y = y;
 
@@ -183,8 +185,8 @@ static void sub_68B3FB(int x, int y)
 	dx >>= 1;
 	// Display little yellow arrow when building footpaths?
 	if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
-		RCT2_GLOBAL(0x9DE56A, uint16) == gMapSelectArrowPosition.x &&
-		RCT2_GLOBAL(0x9DE56E, uint16) == gMapSelectArrowPosition.y
+		gPaintMapPosition.x == gMapSelectArrowPosition.x &&
+		gPaintMapPosition.y == gMapSelectArrowPosition.y
 	) {
 		uint8 arrowRotation =
 			(rotation

@@ -1696,7 +1696,7 @@ static const uint32 junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4]
 
 /* rct2: 0x00518394 */
 static void junior_rc_flat_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement){
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint32 imageId = 0;
 	bool isChained = mapElement->type & (1 << 7);
 
@@ -1793,7 +1793,7 @@ static void junior_rc_25_deg_up_paint_setup(uint8 rideIndex, uint8 trackSequence
 		paint_util_push_tunnel_left(height + tunnel_height[direction], tunnel_type[direction]);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
@@ -1821,7 +1821,7 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 track
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
@@ -1861,7 +1861,7 @@ static void junior_rc_25_deg_up_to_flat_paint_setup(uint8 rideIndex, uint8 track
 		paint_util_push_tunnel_left(tunnelHeight, tunnelType);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
@@ -1976,7 +1976,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(uint8 rideIndex, uint8 track
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2016,7 +2016,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(uint8 rideIndex, uint8 trac
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2188,7 +2188,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2228,7 +2228,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2279,7 +2279,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(uint8 rideIndex, uint8 
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2330,7 +2330,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(uint8 rideIndex, uint8
 		}
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -2410,7 +2410,7 @@ static void junior_rc_left_bank_paint_setup(uint8 rideIndex, uint8 trackSequence
 		paint_util_push_tunnel_left(height, 0);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -3202,7 +3202,7 @@ static void junior_rc_brake_paint_setup(uint8 rideIndex, uint8 trackSequence, ui
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -3233,7 +3233,7 @@ static void junior_rc_block_brake_paint_setup(uint8 rideIndex, uint8 trackSequen
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -4041,7 +4041,7 @@ static void junior_rc_60_deg_up_paint_setup(uint8 rideIndex, uint8 trackSequence
 		break;
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	sint8 support[4] = { 35, 29, 25, 32};
 	if (track_paint_util_should_paint_supports(pos)) {
@@ -4130,7 +4130,7 @@ static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(uint8 rideIndex, uint8 
 		break;
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	sint8 support[4] = { 12, 12, 12, 14};
 	if (track_paint_util_should_paint_supports(pos)) {
@@ -4198,7 +4198,7 @@ static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 
 		break;
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(pos)) {
 		metal_a_supports_paint_setup(direction & 1 ? 2 : 1, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -4384,7 +4384,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(uint8 rideIndex, uint8 track
 		break;
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	sint8 support[4] = { 12, 12, 12, 14};
 	if (track_paint_util_should_paint_supports(pos)) {
@@ -4453,7 +4453,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(uint8 rideIndex, uint8 track
 		break;
 	}
 
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(pos)) {
 		metal_a_supports_paint_setup(direction & 1 ? 2 : 1, 4, 20, height - 5, gTrackColours[SCHEME_SUPPORTS]);

@@ -166,7 +166,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 
 static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint8 trackType = mapElement->properties.track.type;
 	rct_ride * ride = get_ride(rideIndex);
 	uint32 imageId;
@@ -245,7 +245,7 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
 
 static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint8 trackType = mapElement->properties.track.type;
 	rct_ride * ride = get_ride(rideIndex);
 	uint32 imageId;

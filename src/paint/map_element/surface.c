@@ -1023,7 +1023,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
 	if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
-		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
 		int dx = map_element_height(x + 16, y + 16) & 0xFFFF;
 		dx += 3;
@@ -1096,8 +1096,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			case 6:
 				// loc_660C6A
 			{
-				sint16 x = RCT2_GLOBAL(0x009DE56A, sint16) & 0x20;
-				sint16 y = RCT2_GLOBAL(0x009DE56E, sint16) & 0x20;
+				sint16 x = gPaintMapPosition.x & 0x20;
+				sint16 y = gPaintMapPosition.y & 0x20;
 				int index = (y | (x << 1)) >> 5;
 
 				if (branch == 6) {
@@ -1120,7 +1120,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		sint32 staffIndex = gStaffDrawPatrolAreas;
 		bool is_staff_list = staffIndex & 0x8000;
 		uint8 staffType = staffIndex & 0x7FFF;
-		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
 		uint32 image_id = 0x20000000;
 		uint8 patrolColour = 7;
@@ -1146,7 +1146,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
 		gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
 	) {
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 		for (int i = 0; i < 2; ++i) {
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
@@ -1168,7 +1168,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
 			paint_attach_to_previous_ps(2625 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			paint_struct * backup = g_ps_F1AD28;
 			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
 			sub_98196C(22955, 16, 16, 1, 1, 0, height, rotation);
@@ -1184,7 +1184,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			paint_attach_to_previous_ps(2644 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = g_ps_F1AD28;
-			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			int height = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
 			sub_98196C(22956, 16, 16, 1, 1, 0, height + 3, rotation);
 			g_ps_F1AD28 = backup;
@@ -1197,7 +1197,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
 		// loc_660FB8:
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 		if (pos.x >= gMapSelectPositionA.x &&
 			pos.x <= gMapSelectPositionB.x &&
 			pos.y >= gMapSelectPositionA.y &&
@@ -1259,7 +1259,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 		rct_xy16 * tile;
 		for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
