@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../interface/colour.h"
+#include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
@@ -914,7 +914,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, tex
 
 	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
 		unk_9ABDA4 = &info->palette;
-		RCT2_GLOBAL(0x00EDF81C, uint32) = IMAGE_TYPE_REMAP;
+		gUnkEDF81C = IMAGE_TYPE_REMAP;
 
 		int x = info->x;
 		int y = info->y;

@@ -58,6 +58,8 @@ uint8 gSavedViewRotation;
 uint8 gCurrentRotation;
 #endif
 
+uint32 gUnkEDF81C;
+
 /**
  * This is not a viewport function. It is used to setup many variables for
  * multiple things.
@@ -1253,7 +1255,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 	}
 
 	uint8 *offset = image->offset + (yStartPoint * image->width) + xStartPoint;
-	uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+	uint32 ebx = gUnkEDF81C;
 
 	if (!(image->flags & 2)) {
 		return sub_679236_679662_679B0D_679FF1(ebx, image, offset);
@@ -1309,7 +1311,7 @@ static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 	RCT2_GLOBAL(0x00141F569, uint8) = 0;
 	imageId &= 0xBFFFFFFF;
 	if (imageId & 0x20000000) {
-		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+		gUnkEDF81C = 0x20000000;
 		int index = (imageId >> 19) & 0x7F;
 		if (imageId & 0x80000000) {
 			index &= 0x1F;
@@ -1317,7 +1319,7 @@ static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 		int g1Index = palette_to_g1_offset[index];
 		unk_9ABDA4 = g1Elements[g1Index].offset;
 	} else {
-		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
+		gUnkEDF81C = 0;
 	}
 	RCT2_GLOBAL(0x00141F569, uint8) = sub_679074(dpi, imageId, x, y);
 }

@@ -119,6 +119,8 @@ extern uint8 gCurrentRotation;
 	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 #endif
 
+extern uint32 gUnkEDF81C;
+
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite);

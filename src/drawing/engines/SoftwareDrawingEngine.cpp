@@ -27,6 +27,7 @@ extern "C"
     #include "../../config.h"
     #include "../../game.h"
     #include "../../interface/screenshot.h"
+    #include "../../interface/viewport.h"
     #include "../../interface/window.h"
     #include "../../intro.h"
     #include "../drawing.h"
@@ -1082,7 +1083,7 @@ void SoftwareDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, u
     memset(palette, colour, 256);
     palette[0] = 0;
 
-    RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+    gUnkEDF81C = 0x20000000;
     image &= 0x7FFFF;
     gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
 }
