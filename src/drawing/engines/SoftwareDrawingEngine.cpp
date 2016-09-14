@@ -23,7 +23,6 @@
 
 extern "C"
 {
-    #include "../../addresses.h"
     #include "../../config.h"
     #include "../../game.h"
     #include "../../interface/screenshot.h"
@@ -878,8 +877,6 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     if (bottom < dpi->y) return;
     if (top >= dpi->y + dpi->height) return;
 
-    colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
-
     uint16 crossPattern = 0;
 
     int startX = left - dpi->x;
@@ -992,64 +989,6 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
             patternY = (patternY + 1) % 16;
             dst = nextdst;
         }
-    }
-    else if (colour & 0x8000000)
-    {
-        Guard::Fail("Dead code reached. Please contact a dev. [colour & 0x8000000]", GUARD_LINE);
-        RCT2_GLOBAL(0xEDF824, uint32) = left - RCT2_GLOBAL(0x1420070, sint16);
-        RCT2_GLOBAL(0xEDF828, uint32) = top - RCT2_GLOBAL(0x1420072, sint16);
-        left -= dpi->x;
-        if (left < 0)
-        {
-            RCT2_GLOBAL(0xEDF824, sint32) -= left;
-            left = 0;
-        }
-        right -= dpi->x;
-        right++;
-        if (right > dpi->width)
-        {
-            right = dpi->width;
-        }
-        right -= left;
-        top -= dpi->y;
-        if (top < 0)
-        {
-            RCT2_GLOBAL(0xEDF828, sint32) -= top;
-            top = 0;
-        }
-        bottom -= dpi->y;
-        bottom++;
-        if (bottom > dpi->height)
-        {
-            bottom = dpi->height;
-        }
-        bottom -= top;
-        RCT2_GLOBAL(0xEDF824, sint32) &= 0x3F;
-        RCT2_GLOBAL(0xEDF828, sint32) &= 0x3F;
-        uintptr_t esi = dpi->width;
-        esi += dpi->pitch;
-        esi *= top;
-        esi += left;
-        esi += (uintptr_t)dpi->bits;
-        RCT2_GLOBAL(0xEDF82C, sint32) = right;
-        RCT2_GLOBAL(0xEDF830, sint32) = bottom;
-        left = dpi->width;
-        left += dpi->pitch;
-        left -= right;
-        RCT2_GLOBAL(0xEDF834, sint32) = left;
-        colour &= 0xFF;
-        colour--;
-        right = colour;
-        colour <<= 8;
-        right |= colour;
-        RCT2_GLOBAL(0xEDF838, sint32) = right;
-        //right <<= 4;
-        esi = RCT2_GLOBAL(0xEDF828, sint32);
-        esi *= 0x40;
-        left = 0;
-        esi += (uintptr_t)g1Elements[right].offset;//???
-        //Not finished
-        //Start of loop
     }
     else
     {
