@@ -1373,14 +1373,14 @@ static void sub_68862C()
  */
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
-	RCT2_GLOBAL(0x9AC154, uint16_t) = flags & 0xFFFF;
-	RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
+	RCT2_GLOBAL(0x9AC154, uint16) = flags & 0xFFFF;
+	RCT2_GLOBAL(0x9AC148, uint8) = 0;
 	rct_window* window = window_find_from_point(screenX, screenY);
 	if (window != NULL && window->viewport != NULL)
 	{
 		rct_viewport* myviewport = window->viewport;
-		RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
-		RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
+		RCT2_GLOBAL(0x9AC138 + 4, sint16) = screenX;
+		RCT2_GLOBAL(0x9AC138 + 6, sint16) = screenY;
 		screenX -= (int)myviewport->x;
 		screenY -= (int)myviewport->y;
 		if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
@@ -1389,16 +1389,16 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			screenY <<= myviewport->zoom;
 			screenX += (int)myviewport->view_x;
 			screenY += (int)myviewport->view_y;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = myviewport->zoom;
 			screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 			screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) = screenX;
+			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16) = screenY;
 			rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-			dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
+			dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16);
 			dpi->height = 1;
-			dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
-			dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
+			dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+			dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16);
 			dpi->width = 1;
 			g_ps_EE7880 = RCT2_ADDRESS(0xF1A4CC, paint_struct);
 			unk_140E9A8 = dpi;
@@ -1409,9 +1409,9 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
-	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
-	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, int16_t);
-	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, int16_t);
+	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8);
+	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, sint16);
+	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, sint16);
 	if (mapElement != NULL) *mapElement = _interaction_element;
 }
 

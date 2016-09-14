@@ -79,7 +79,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	scrollingMode += direction;
 
 	set_format_arg(0, uint32, 0);
-	set_format_arg(4, uint32_t, 0);
+	set_format_arg(4, uint32, 0);
 
 	rct_string_id string_id = STR_NO_ENTRY;
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))

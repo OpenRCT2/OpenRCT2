@@ -121,8 +121,8 @@ typedef uint8 colour_t;
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
-#define LOBYTE(w) ((uint8_t)(w))
-#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
+#define LOBYTE(w) ((uint8)(w))
+#define HIBYTE(w) ((uint8)(((uint16)(w)>>8)&0xFF))
 #endif // __BYTE_ORDER__
 
 #ifndef RCT2_ENDIANESS

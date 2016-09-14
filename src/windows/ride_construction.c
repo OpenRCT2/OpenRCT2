@@ -2280,7 +2280,7 @@ static void window_ride_construction_draw_track_piece(
 	dpi->x += x - width / 2;
 	dpi->y += y - height / 2 - 16;
 	unk_140E9A8 = dpi;
-	uint32_t d = unknown << 16;
+	uint32 d = unknown << 16;
 	d |= rideIndex;
 	d |= trackType << 8;
 
