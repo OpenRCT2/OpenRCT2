@@ -259,7 +259,7 @@ rct_sprite *create_sprite(uint8 bl)
 	size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
 	if ((bl & 2) != 0) {
 		// 69EC96;
-		sint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
+		uint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
 		if (cx >= gSpriteListCount[SPRITE_LIST_NULL]) {
 			return NULL;
 		}

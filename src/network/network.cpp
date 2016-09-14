@@ -589,7 +589,6 @@ void Network::KickPlayer(int playerId)
 			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			(*it)->Socket->Disconnect();
-			(*it)->SendQueuedPackets();
 			break;
 		}
 	}
@@ -1044,6 +1043,7 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
 	*packet << (uint32)NETWORK_COMMAND_SETDISCONNECTMSG;
 	packet->WriteString(msg);
 	connection.QueuePacket(std::move(packet));
+	connection.SendQueuedPackets();
 }
 
 void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
