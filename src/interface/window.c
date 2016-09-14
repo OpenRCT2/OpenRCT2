@@ -1675,8 +1675,6 @@ static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, 
 			return;
 	}
 
-	RCT2_GLOBAL(0x01420070, sint32) = w->x;
-
 	// Invalidate modifies the window colours so first get the correct
 	// colour before setting the global variables for the string painting
 	window_event_invalidate_call(w);
