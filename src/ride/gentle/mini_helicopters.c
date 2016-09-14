@@ -60,7 +60,7 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 /** rct2: 0x0081F348 */
 static void paint_mini_helicopters_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint32 imageId;
 
 	if (direction & 1) {
@@ -84,7 +84,7 @@ static void paint_mini_helicopters_track_flat(uint8 rideIndex, uint8 trackSequen
 /** rct2: 0x0081F368 */
 static void paint_mini_helicopters_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint32 imageId;
 
 	switch (direction) {
@@ -121,7 +121,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(uint8 rideIndex, uint
 /** rct2: 0x0081F358 */
 static void paint_mini_helicopters_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint32 imageId;
 
 	switch (direction) {
@@ -158,7 +158,7 @@ static void paint_mini_helicopters_track_25_deg_up(uint8 rideIndex, uint8 trackS
 /** rct2: 0x0081F378 */
 static void paint_mini_helicopters_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint32 imageId;
 
 	switch (direction) {
