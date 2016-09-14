@@ -30,11 +30,15 @@ struct paint_struct;
 typedef struct paint_struct paint_struct;
 
 #ifdef NO_RCT2
-extern void *g_currently_drawn_item;
-extern paint_struct * g_ps_EE7880;
+	extern void *g_currently_drawn_item;
+	extern paint_struct * g_ps_EE7880;
+	extern sint16 gUnk9DE568;
+	extern sint16 gUnk9DE56C;
 #else
-	#define g_currently_drawn_item RCT2_GLOBAL(0x9DE578, void*)
-	#define g_ps_EE7880 RCT2_GLOBAL(0xEE7880, paint_struct *)
+	#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
+	#define g_ps_EE7880				RCT2_GLOBAL(0x00EE7880, paint_struct *)
+	#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
+	#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
 #endif
 
 #pragma pack(push, 1)

@@ -130,8 +130,8 @@ static void blank_tiles_paint(int x, int y)
 	dx -= 20;
 	dx -= dpi->height;
 	if (dx >= dpi->y) return;
-	RCT2_GLOBAL(0x9DE568, sint16) = x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = y;
+	gUnk9DE568 = x;
+	gUnk9DE56C = y;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
@@ -198,8 +198,8 @@ static void sub_68B3FB(int x, int y)
 			0x20900C27;
 		int arrowZ = gMapSelectArrowPosition.z;
 
-		RCT2_GLOBAL(0x9DE568, sint16) = x;
-		RCT2_GLOBAL(0x9DE56C, sint16) = y;
+		gUnk9DE568 = x;
+		gUnk9DE56C = y;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
@@ -232,8 +232,8 @@ static void sub_68B3FB(int x, int y)
 	if (dx >= dpi->y)
 		return;
 
-	RCT2_GLOBAL(0x9DE568, sint16) = x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = y;
+	gUnk9DE568 = x;
+	gUnk9DE56C = y;
 	gDidPassSurface = false;
 	do {
 		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;

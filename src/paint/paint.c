@@ -111,8 +111,8 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 			rotate_map_coordinates(&offset.x, &offset.y, 1);
 			break;
 	}
-	offset.x += RCT2_GLOBAL(0x9DE568, sint16);
-	offset.y += RCT2_GLOBAL(0x9DE56C, sint16);
+	offset.x += gUnk9DE568;
+	offset.y += gUnk9DE56C;
 
 	rct_xy16 map = coordinate_3d_to_2d(&offset, rotation);
 
@@ -157,13 +157,13 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 			break;
 	}
 
-	ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + gUnk9DE568;
 	ps->bound_box_z = boundBoxOffset.z;
 	ps->bound_box_z_end = boundBoxOffset.z + boundBoxSize.z;
-	ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + gUnk9DE56C;
 	ps->flags = 0;
-	ps->bound_box_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->bound_box_x = boundBoxOffset.x + gUnk9DE568;
+	ps->bound_box_y = boundBoxOffset.y + gUnk9DE56C;
 	ps->attached_ps = NULL;
 	ps->var_20 = NULL;
 	ps->sprite_type = gPaintInteractionType;
@@ -254,8 +254,8 @@ paint_struct * sub_98196C(
 			break;
 	}
 
-	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
-	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
+	coord_3d.x += gUnk9DE568;
+	coord_3d.y += gUnk9DE56C;
 
 	ps->bound_box_x_end = coord_3d.x + boundBox.x;
 	ps->bound_box_y_end = coord_3d.y + boundBox.y;
@@ -625,7 +625,7 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 	ps->args[3] = 0;
 	ps->y_offsets = (uint8 *) y_offsets;
 
-	rct_xyz16 position = {.x = RCT2_GLOBAL(0x9DE568, sint16), .y = RCT2_GLOBAL(0x9DE56C, sint16), .z = z};
+	rct_xyz16 position = {.x = gUnk9DE568, .y = gUnk9DE56C, .z = z};
 	rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
 
 	ps->x = coord.x + offset_x;

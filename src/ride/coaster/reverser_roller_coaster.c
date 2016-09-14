@@ -32,7 +32,7 @@ void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicl
 	x = (v1->x + v2->x) / 2;
 	y = (v1->y + v2->y) / 2;
 	z = (v1->z + v2->z) / 2;
-	RCT2_GLOBAL(0x9DE568, sint16) = x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = y;
+	gUnk9DE568 = x;
+	gUnk9DE56C = y;
 	vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry);
 }

@@ -205,8 +205,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG15) {
 				// 6E02F6:
 				int image_id = gCurrentTicks;
-				image_id += RCT2_GLOBAL(0x009DE568, sint16) / 4;
-				image_id += RCT2_GLOBAL(0x009DE56C, sint16) / 4;
+				image_id += gUnk9DE568 / 4;
+				image_id += gUnk9DE56C / 4;
 				image_id = (image_id / 4) & 15;
 				image_id += entry->image;
 				if (dword_F64EB0 != 0) {
@@ -220,7 +220,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				int esi = gCurrentTicks;
 				if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG22)) {
 					// 6E01F8:
-					esi += ((RCT2_GLOBAL(0x9DE568, sint16) / 4) + (RCT2_GLOBAL(0x9DE56C, sint16) / 4));
+					esi += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
 					esi += (mapElement->type & 0xC0) / 16;
 				}
 				// 6E0222:

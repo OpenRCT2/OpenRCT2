@@ -974,8 +974,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
 	rct_xy16 base = {
-		.x = RCT2_GLOBAL(0x9DE568, sint16),
-		.y = RCT2_GLOBAL(0x9DE56C, sint16)
+		.x = gUnk9DE568,
+		.y = gUnk9DE56C
 	};
 
 	corner_height ch = corner_heights[surfaceShape];

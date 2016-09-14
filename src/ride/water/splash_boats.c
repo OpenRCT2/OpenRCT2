@@ -34,7 +34,7 @@ void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int
 	}
 	g_currently_drawn_item = vehicle;
 	imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
-	RCT2_GLOBAL(0x9DE568, sint16) = vehicle->x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = vehicle->y;
+	gUnk9DE568 = vehicle->x;
+	gUnk9DE56C = vehicle->y;
 	vehicle_paint(vehicle, imageDirection);
 }
