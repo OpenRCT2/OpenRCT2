@@ -1319,8 +1319,8 @@ STR_1313    :플레이어
 STR_1314    :플레이어
 STR_1315    :플레이어
 STR_1316    :플레이어
-STR_1317    :{COMMA16} 플레이어
-STR_1318    :{COMMA16} 플레이어
+STR_1317    :{COMMA16}명 접속 중
+STR_1318    :{COMMA16}명 접속 중
 STR_1319    :플레이어 {COMMA16}
 STR_1320    :코스
 STR_1321    :코스
@@ -4220,6 +4220,12 @@ STR_5910    :적용
 STR_5911    :보도 숨기기
 STR_5912    :보도 숨기기
 STR_5913    :대화
+STR_5914    :알 수 없는 놀이기구
+STR_5915    :플레이어
+STR_5916    :{COMMA16}명 접속 중
+STR_5917    :{COMMA16}명 접속 중
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #
