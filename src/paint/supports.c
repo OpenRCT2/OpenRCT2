@@ -18,6 +18,7 @@
 #include "../interface/viewport.h"
 #include "../paint/paint.h"
 #include "supports.h"
+#include "map_element/map_element.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 const rct_xy8 loc_97AF20[] = {
@@ -345,7 +346,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		return false;
 	}
 
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
 		return false;
 	}
 
@@ -496,7 +497,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		return false;
 	}
 
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
 		return false;
 	}
 

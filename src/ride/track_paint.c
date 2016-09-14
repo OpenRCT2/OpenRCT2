@@ -422,7 +422,7 @@ void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 
 bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
 {
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 3)) {
+	if (!(g141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
 		return false;
 	}
 
