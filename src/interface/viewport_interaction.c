@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../cheats.h"
 #include "../editor.h"
 #include "../game.h"
+#include "../input.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -27,9 +28,7 @@
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
-#include "../input.h"
 #include "viewport.h"
-#include "../cheats.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
 static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y);
@@ -582,7 +581,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
 void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
 {
 	sint16 my_x, my_y;
-	int z = 0, interactionType;
+	int interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
@@ -592,32 +591,22 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F1AD3E, uint8) = interactionType;
-	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
-
+	sint16 originalZ = 0;
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-		z = myMapElement->properties.surface.terrain;
-		z = (z & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
+		originalZ = (myMapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) << 4;
 	}
-
-	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
 	for (int i = 0; i < 5; i++) {
-		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 4) {
+		sint16 z = originalZ;
+		if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER) {
 			z = map_element_height(map_pos.x, map_pos.y);
-		} else {
-			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
 		}
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+		map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
+		map_pos.y = clamp(my_y, map_pos.y, my_y + 31);
 	}
 
 	// Determine to which edge the cursor is closest
