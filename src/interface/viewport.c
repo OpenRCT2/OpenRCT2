@@ -1502,19 +1502,14 @@ void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewp
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F1AD34, sint16) = my_x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = my_y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = my_x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = my_y + 31;
-
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
 	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
 	for (int i = 0; i < 5; i++) {
 		int z = map_element_height(map_pos.x, map_pos.y);
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+		map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
+		map_pos.y = clamp(my_y, map_pos.y, my_y + 31);
 	}
 
 	*x = map_pos.x;
