@@ -14,17 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
-#include "../paint.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
-#include "../supports.h"
 #include "../../ride/ride_data.h"
 #include "../../world/entrance.h"
 #include "../../world/footpath.h"
+#include "../paint.h"
+#include "../supports.h"
 #include "map_element.h"
+
+static uint32 _unk9E32BC;
 
 /**
  *
@@ -56,12 +57,12 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
 	image_id = (colour_1 << 19) | (colour_2 << 24) | 0xA0000000;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
+	_unk9E32BC = 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id = construction_markers[gConfigGeneral.construction_marker_colour];
-		RCT2_GLOBAL(0x009E32BC, uint32) = image_id;
+		_unk9E32BC = image_id;
 		if (transparant_image_id)
 			transparant_image_id = image_id;
 	}
@@ -143,7 +144,7 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
 		sub_98199C(scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
 	}
 
-	image_id = RCT2_GLOBAL(0x009E32BC, uint32);
+	image_id = _unk9E32BC;
 	if (image_id == 0) {
 		image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
 	}
@@ -164,12 +165,12 @@ static void park_entrance_paint(uint8 direction, int height, rct_map_element* ma
 		return;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
-	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
+	_unk9E32BC = 0;
 	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
-		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
+		_unk9E32BC = ghost_id;
 	}
 
 	rct_footpath_entry* path_entry = get_footpath_entry(map_element->properties.entrance.path_type);
