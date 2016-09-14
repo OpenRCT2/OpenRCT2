@@ -100,7 +100,7 @@ int font_sprite_get_codepoint_width(int fontSpriteBase, int codepoint)
 
 int font_sprite_get_codepoint_sprite(int fontSpriteBase, int codepoint)
 {
-	return SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+	return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
 }
 
 int font_get_size_from_sprite_base(uint16 spriteBase)

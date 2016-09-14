@@ -218,7 +218,7 @@ static bool sprite_file_export(int spriteIndex, const char *outPath)
 	dpi.zoom_level = 0;
 
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_NO_BACKGROUND, 0, spriteHeader->height, 0, spriteHeader->width);
+	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
 
 	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;

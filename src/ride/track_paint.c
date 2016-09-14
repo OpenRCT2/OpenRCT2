@@ -1242,8 +1242,8 @@ void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint
 	uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
 
 	uint32 colourFlags2 = gTrackColours[SCHEME_TRACK];
-	if (colourFlags2 & ((uint32)IMAGE_TYPE_UNKNOWN << 28)) {
-		colourFlags |= colourFlags2 & ((uint32)IMAGE_TYPE_UNKNOWN << 28 | 0x1F << 24);
+	if (colourFlags2 & IMAGE_TYPE_REMAP_2_PLUS) {
+		colourFlags |= colourFlags2 & (IMAGE_TYPE_REMAP_2_PLUS | (0x1F << 24));
 	}
 
 	uint32 imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame] | colourFlags;

@@ -104,17 +104,17 @@ static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
-            if (image_type & IMAGE_TYPE_USE_PALETTE) {//In the .exe these are all unraveled loops
+            if (image_type & IMAGE_TYPE_REMAP) {//In the .exe these are all unraveled loops
                 for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
                     uint8 al = *source_pointer;
                     uint8 ah = *dest_pointer;
-                    if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+                    if (image_type & IMAGE_TYPE_TRANSPARENT)
                         al = palette_pointer[(((uint16)al << 8) | ah) - 0x100];
                     else
                         al = palette_pointer[al];
                     *dest_pointer = al;
                 }
-            } else if (image_type & IMAGE_TYPE_MIX_BACKGROUND) {//In the .exe these are all unraveled loops
+            } else if (image_type & IMAGE_TYPE_TRANSPARENT) {//In the .exe these are all unraveled loops
                 //Doesn't use source pointer ??? mix with background only?
                 //Not Tested
 
@@ -181,24 +181,24 @@ extern "C"
                                              int source_x_start,
                                              int width)
     {
-        if (image_type & IMAGE_TYPE_USE_PALETTE)
+        if (image_type & IMAGE_TYPE_REMAP)
         {
-            if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+            if (image_type & IMAGE_TYPE_TRANSPARENT)
             {
-                DrawRLESpriteHelper1(IMAGE_TYPE_USE_PALETTE | IMAGE_TYPE_MIX_BACKGROUND);
+                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
             }
             else
             {
-                DrawRLESpriteHelper1(IMAGE_TYPE_USE_PALETTE);
+                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
             }
         }
-        else if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+        else if (image_type & IMAGE_TYPE_TRANSPARENT)
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_MIX_BACKGROUND);
+            DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
         }
         else
         {
-            DrawRLESpriteHelper1(0);
+            DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
         }
     }
 }

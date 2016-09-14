@@ -64,7 +64,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 
 	uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
 	if (imageColourFlags == 0x20000000) {
-		imageColourFlags = (uint32)(IMAGE_TYPE_UNKNOWN | IMAGE_TYPE_USE_PALETTE) << 28;
+		imageColourFlags = IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP;
 		imageColourFlags |= ride->vehicle_colours[0].trim_colour << 19;
 		imageColourFlags |= ride->vehicle_colours[0].body_colour << 24;
 	}
