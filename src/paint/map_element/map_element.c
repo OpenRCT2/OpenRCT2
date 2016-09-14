@@ -34,6 +34,7 @@
 #include "../supports.h"
 
 #ifdef NO_RCT2
+uint8 g141E9DB;
 rct_xy16 gPaintMapPosition;
 bool gDidPassSurface;
 rct_map_element * gSurfaceElement;
@@ -63,7 +64,7 @@ void map_element_paint_setup(int x, int y)
 	) {
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_force_set_general_support_height(-1, 0);
-		RCT2_GLOBAL(0x0141E9DB, uint8) = 0;
+		g141E9DB = 0;
 		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
 
 		sub_68B3FB(x, y);
@@ -87,7 +88,7 @@ void sub_68B2B7(int x, int y)
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_force_set_general_support_height(-1, 0);
 		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
-		RCT2_GLOBAL(0x0141E9DB, uint8) = 2;
+		g141E9DB = G141E9DB_FLAG_2;
 
 		sub_68B3FB(x, y);
 	} else {

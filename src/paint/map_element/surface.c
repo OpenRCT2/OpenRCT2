@@ -1506,7 +1506,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
+	g141E9DB |= G141E9DB_FLAG_1;
 
 	switch (surfaceShape) {
 		default:
