@@ -59,7 +59,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	int image_id = SPR_TERRAIN_DIRT | gTrackColours[SCHEME_MISC];
 	sub_98196C(image_id, 0, 0, 32, 32, 0, height, rotation);
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
+	wooden_a_supports_paint_setup((rotation & 1) ? 0 : 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
