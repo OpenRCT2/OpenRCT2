@@ -39,6 +39,8 @@ uint32 _F1AD10;
 static paint_struct *_paint_structs[512];
 void *g_currently_drawn_item;
 paint_struct * g_ps_EE7880;
+sint16 gUnk9DE568;
+sint16 gUnk9DE56C;
 uint8 gPaintInteractionType;
 support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
