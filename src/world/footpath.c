@@ -82,7 +82,7 @@ static const uint8 connected_path_count[] = {
 	4, // 0b1111
 };
 
-static int entrance_get_directions(rct_map_element *mapElement)
+int entrance_get_directions(rct_map_element *mapElement)
 {
 	uint8 entranceType = mapElement->properties.entrance.type;
 	uint8 sequence = mapElement->properties.entrance.index & 0x0F;

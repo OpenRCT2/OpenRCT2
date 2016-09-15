@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
@@ -252,11 +251,8 @@ void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
 		dpi->zoom_level == 0){
-		uint32 ebx =
-			(map_element->properties.entrance.type << 4) |
-			(map_element->properties.entrance.index & 0xF);
 
-		if (RCT2_ADDRESS(0x0097B974, uint8)[ebx] & 0xF){
+		if (entrance_get_directions(map_element) & 0xF){
 
 			int z = map_element->base_height * 8 + 3;
 			uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
