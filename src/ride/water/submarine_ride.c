@@ -120,7 +120,7 @@ static void submarine_ride_paint_track_flat(uint8 rideIndex, uint8 trackSequence
 static void submarine_ride_paint_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	track_paint_util_left_quarter_turn_3_tiles_paint(3, height - 16, direction, trackSequence, gTrackColours[SCHEME_TRACK], trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, get_current_rotation());
-	track_paint_util_left_quarter_turn_3_tiles_tunnel(height - 16, direction, trackSequence);
+	track_paint_util_left_quarter_turn_3_tiles_tunnel(height - 16, TUNNEL_0, direction, trackSequence);
 
 	switch (trackSequence) {
 		case 0:

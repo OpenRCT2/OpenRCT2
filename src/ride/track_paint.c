@@ -1185,24 +1185,24 @@ void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 he
 	}
 }
 
-void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 tunnelType, uint8 direction, uint8 trackSequence)
 {
 	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, tunnelType);
 	}
 
 
 	if (direction == 2 && trackSequence == 3) {
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, tunnelType);
 	}
 
 
 	if (direction == 3 && trackSequence == 0) {
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, tunnelType);
 	}
 
 	if (direction == 3 && trackSequence == 3) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, tunnelType);
 	}
 }
 
