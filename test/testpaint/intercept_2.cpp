@@ -345,8 +345,7 @@ namespace Intercept2
                 gSupport.height = 0;
                 gSupport.slope = 0xFF;
 
-                TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
-                uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
+                uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
                 // Have to call from this point as it pushes esi and expects callee to pop it
                 RCT2_CALLPROC_X(
@@ -506,8 +505,7 @@ namespace Intercept2
                 gLeftTunnelCount = 0;
                 gRightTunnelCount = 0;
 
-                TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
-                uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
+                uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
                 // Have to call from this point as it pushes esi and expects callee to pop it
                 RCT2_CALLPROC_X(
@@ -696,8 +694,7 @@ namespace Intercept2
             for (int direction = 0; direction < 4; direction++) {
                 gVerticalTunnelHeight = 0;
 
-                TRACK_PAINT_FUNCTION ** trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
-                uint32 * trackDirectionList = (uint32 *) trackTypeList[trackType];
+                uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
                 // Have to call from this point as it pushes esi and expects callee to pop it
                 RCT2_CALLPROC_X(

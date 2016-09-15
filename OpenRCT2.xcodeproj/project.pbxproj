@@ -17,6 +17,7 @@
 		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
 		00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EFEE701CF1D80B0035213B /* NetworkKey.cpp */; };
 		791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */; };
+		85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		85AFA2111D7DB83E00221B42 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AFA20F1D7DB83E00221B42 /* main.cpp */; };
 		85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */; };
@@ -2410,6 +2411,7 @@
 				C64FDA841D6D9A2100F259B9 /* car_ride.c in Sources */,
 				C64FDA851D6D9A2100F259B9 /* circus_show.c in Sources */,
 				C64FDA861D6D9A2100F259B9 /* crooked_house.c in Sources */,
+				85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */,
 				C64FDA871D6D9A2100F259B9 /* dodgems.c in Sources */,
 				C64FDA881D6D9A2100F259B9 /* ferris_wheel.c in Sources */,
 				C64FDA891D6D9A2100F259B9 /* flying_saucers.c in Sources */,

@@ -533,14 +533,13 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 			for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
 				RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
 				RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
-				RCT2_GLOBAL(0x009DE57C, bool) = true; // Above surface
-				RCT2_GLOBAL(0x009E3250, rct_map_element *) = &surfaceElement;
+				gDidPassSurface = true; // Above surface
+				gSurfaceElement = &surfaceElement;
 
 				callCount = 0;
 				memset(&calls, 0, sizeof(calls));
 
-				TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION **) RideTypeTrackPaintFunctionsOld[rideType];
-				uint32 *trackDirectionList = (uint32 *) trackTypeList[trackType];
+				uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
 				// Have to call from this point as it pushes esi and expects callee to pop it
 				RCT2_CALLPROC_X(
@@ -593,6 +592,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 			}
 		}
 	}
+
+	sprintf(*error, "");
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {

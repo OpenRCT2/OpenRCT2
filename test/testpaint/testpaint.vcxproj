@@ -157,6 +157,7 @@
     <ClCompile Include="..\..\src\ride\thrill\top_spin.c" />
     <ClCompile Include="..\..\src\ride\thrill\twist.c" />
     <ClCompile Include="..\..\src\ride\track_data.c" />
+    <ClCompile Include="..\..\src\ride\track_data_old.c" />
     <ClCompile Include="..\..\src\ride\track_paint.c" />
     <ClCompile Include="..\..\src\ride\transport\chairlift.c" />
     <ClCompile Include="..\..\src\ride\transport\lift.c" />
