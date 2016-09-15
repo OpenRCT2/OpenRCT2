@@ -230,7 +230,7 @@ static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(uint8 rideInd
 			break;
 	}
 
-	paint_util_set_general_support_height(height + 16, 0x20);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 static const uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
