@@ -1011,12 +1011,11 @@ void viewport_set_visibility(uint8 mode)
 
 /**
  * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
+ * Origninaly checked 0x0141F569 at start
  *  rct2: 0x00688697
  */
 static void store_interaction_info(paint_struct *ps)
 {
-	if (RCT2_GLOBAL(0x0141F569, uint8) == 0) return;
-
 	if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_NONE
 		|| ps->sprite_type == 11 // 11 as a type seems to not exist, maybe part of the typo mentioned later on.
 		|| ps->sprite_type > VIEWPORT_INTERACTION_ITEM_BANNER) return;
@@ -1306,9 +1305,8 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
  *
  *  rct2: 0x00679023
  */
-static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 {
-	RCT2_GLOBAL(0x00141F569, uint8) = 0;
 	imageId &= 0xBFFFFFFF;
 	if (imageId & 0x20000000) {
 		gUnkEDF81C = 0x20000000;
@@ -1321,7 +1319,7 @@ static void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 	} else {
 		gUnkEDF81C = 0;
 	}
-	RCT2_GLOBAL(0x00141F569, uint8) = sub_679074(dpi, imageId, x, y);
+	return sub_679074(dpi, imageId, x, y);
 }
 
 /**
@@ -1339,20 +1337,21 @@ static void sub_68862C()
 		next_ps = ps;
 		while (next_ps != NULL) {
 			ps = next_ps;
-			sub_679023(dpi, ps->image_id, ps->x, ps->y);
-			store_interaction_info(ps);
+			if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
+				store_interaction_info(ps);
 
 			next_ps = ps->var_20;
 		}
 
 		for (attached_paint_struct *attached_ps = ps->attached_ps; attached_ps != NULL; attached_ps = attached_ps->next) {
-			sub_679023(
+			if (sub_679023(
 				dpi,
 				attached_ps->image_id,
 				(attached_ps->x + ps->x) & 0xFFFF,
 				(attached_ps->y + ps->y) & 0xFFFF
-			);
-			store_interaction_info(ps);
+			)) {
+				store_interaction_info(ps);
+			}
 		}
 
 		ps = old_ps;
