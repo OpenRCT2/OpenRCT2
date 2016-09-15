@@ -142,7 +142,7 @@ static void paint_go_karts_track_flat(uint8 rideIndex, uint8 trackSequence, uint
 		imageId = SPR_GO_KARTS_FLAT_FRONT_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	} else {
 		imageId = SPR_GO_KARTS_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
@@ -150,7 +150,7 @@ static void paint_go_karts_track_flat(uint8 rideIndex, uint8 trackSequence, uint
 		imageId = SPR_GO_KARTS_FLAT_FRONT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
 
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, TUNNEL_6);
 	}
 
 	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -180,7 +180,7 @@ static void paint_go_karts_track_25_deg_up(uint8 rideIndex, uint8 trackSequence,
 	if (direction == 0 || direction == 2) {
 		sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
 	} else {
-		sub_98197C(imageId, 0, 0, 1, 32, 1, height, 29, 0, height + 2, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
 	}
 
 	switch (direction) {
@@ -227,7 +227,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackS
 	if (direction == 0 || direction == 2) {
 		sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
 	} else {
-		sub_98197C(imageId, 0, 0, 1, 32, 1, height, 29, 0, height + 2, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
 	}
 
 	switch (direction) {
@@ -274,7 +274,7 @@ static void paint_go_karts_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
 	if (direction == 0 || direction == 2) {
 		sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
 	} else {
-		sub_98197C(imageId, 0, 0, 1, 32, 1, height, 29, 0, height + 2, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 1, 32, 11, height, 29, 0, height + 2, get_current_rotation());
 	}
 
 	switch (direction) {
@@ -352,11 +352,11 @@ static void paint_go_karts_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 	if (direction == 0 || direction == 2) {
 		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	} else {
 		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
 
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, TUNNEL_6);
 	}
 
 	if (direction == 0 || direction == 2) {
@@ -446,7 +446,7 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8
 			break;
 		case 3:
 			imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW | gTrackColours[SCHEME_TRACK];
-			sub_98197C(imageId, 0, 0, 30, 30, 1, height, 0, 0, height, get_current_rotation());
+			sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 			imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW | gTrackColours[SCHEME_TRACK];
 			sub_98197C(imageId, 0, 0, 1, 1, 3, height, 29, 29, height + 2, get_current_rotation());
