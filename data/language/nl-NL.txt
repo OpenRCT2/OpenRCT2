@@ -4214,6 +4214,12 @@ STR_5910    :Toepassen
 STR_5911    :Doorzichtige paden
 STR_5912    :Doorzichtige paden
 STR_5913    :Chat
+STR_5914    :Onbekende attractie
+STR_5915    :Speler
+STR_5916    :{COMMA16} speler
+STR_5917    :{COMMA16} spelers
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

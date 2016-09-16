@@ -4182,6 +4182,12 @@ STR_5910    :Aplicar
 STR_5911    :Ver a través de senderos
 STR_5912    :Alternar vista a través de senderos
 STR_5913    :Chat
+STR_5914    :Atracción Desconocida
+STR_5915    :Jugador
+STR_5916    :{COMMA16} jugador
+STR_5917    :{COMMA16} jugadores
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 ##############
 # Escenarios #
