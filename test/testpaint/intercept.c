@@ -669,7 +669,11 @@ static int intercept_draw_7c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 		log_error("Ebp is different from current rotation");
 	}
 
-	rct_xyz16 boundOffset = {RCT2_GLOBAL(0x009DEA52, sint16), RCT2_GLOBAL(0x009DEA54, sint16), RCT2_GLOBAL(0x009DEA56, sint16)};
+	rct_xyz16 boundOffset = {
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
+	};
 
 	return (int) sub_98197C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
 }
@@ -681,7 +685,11 @@ static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 		log_error("Ebp is different from current rotation");
 	}
 
-	rct_xyz16 boundOffset = {RCT2_GLOBAL(0x009DEA52, sint16), RCT2_GLOBAL(0x009DEA54, sint16), RCT2_GLOBAL(0x009DEA56, sint16)};
+	rct_xyz16 boundOffset = {
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
+	};
 
 	return (int) sub_98199C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
 }
