@@ -23,6 +23,7 @@
 #include "../../paint/supports.h"
 #include "../ride_data.h"
 
+#ifndef NO_VEHICLES
 /**
  *
  *  rct2: 0x006D44D5
@@ -66,6 +67,7 @@ void vehicle_visual_submarine(int x, int imageDirection, int y, int z, rct_vehic
 
 	assert(vehicleEntry->effect_visual == 1);
 }
+#endif
 
 static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {

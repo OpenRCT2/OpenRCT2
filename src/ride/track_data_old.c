@@ -3204,8 +3204,8 @@ static const uint32 _OldLaunchedFreefallTrackPaintFunctions[256] = {
 	0,
 	0,
 	0,
-	0,
-	0,
+	0x006FD1F8,	// TRACK_ELEM_TOWER_BASE
+	0x006FD208,	// TRACK_ELEM_TOWER_SECTION
 	0,
 	0,
 	0,

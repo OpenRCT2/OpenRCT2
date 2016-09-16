@@ -14,29 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
-#include "../../config.h"
-#include "../../interface/viewport.h"
-#include "../../world/sprite.h"
-#include "../../paint/paint.h"
-#include "../vehicle_paint.h"
+#ifndef _TEST_PAINT_INTERCEPT_H_
+#define _TEST_PAINT_INTERCEPT_H_
 
-#ifndef NO_VEHICLES
-/**
- *
- *  rct2: 0x006D4295
- */
-void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
-{
-	if (vehicle->is_child) {
-		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
-	} else {
-		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
-	}
-	g_currently_drawn_item = vehicle;
-	imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
-	gUnk9DE568 = vehicle->x;
-	gUnk9DE56C = vehicle->y;
-	vehicle_paint(vehicle, imageDirection);
-}
-#endif
+#include "../../src/common.h"
+
+#define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
+#define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
+
+bool testRide(int rideType);
+void initHooks();
+int getTrackSequenceCount(uint8 rideType, uint8 trackType);
+bool rideIsImplemented(int rideType);
+bool rideSupportsTrackType(int rideType, int trackType);
+bool testTrackPainting(int rideType, int trackType);
+bool testSupportSegments(uint8 rideType, uint8 trackType);
+bool testTunnels(uint8 rideType, uint8 trackType);
+bool testVerticalTunnels(uint8 rideType, uint8 trackType);
+
+#endif // #endif _TEST_PAINT_INTERCEPT_H_
