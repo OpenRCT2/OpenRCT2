@@ -110,7 +110,7 @@ static void submarine_ride_paint_track_flat(uint8 rideIndex, uint8 trackSequence
 	}
 
 	if (track_paint_util_should_paint_supports(position)) {
-		metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 4, -1, heightLower, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, heightLower, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
