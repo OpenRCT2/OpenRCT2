@@ -229,7 +229,7 @@ namespace Intercept2
 
     static utf8string getTunnelEdgeString(TunnelCall edge)
     {
-        utf8string out = new utf8[6];
+        utf8string out = new utf8[32];
 
         switch (edge.call) {
             case TUNNELCALL_SKIPPED:
