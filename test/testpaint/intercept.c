@@ -249,6 +249,7 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 enum {
 	SPRITEGROUP_NONE,
 
+	SPRITEGROUP_FENCE_METAL_A, // 14568
 	SPRITEGROUP_FENCE_METAL_B, // 14990
 	SPRITEGROUP_FLOOR_CORK, // 22134
 	SPRITEGROUP_FENCE_ROPE, // 22138
@@ -256,6 +257,10 @@ enum {
 };
 
 static int getSpriteGroup(uint16 spriteIndex) {
+	if (spriteIndex >= 14568 && spriteIndex <= 14571) {
+		return SPRITEGROUP_FENCE_METAL_A;
+	}
+
 	if (spriteIndex >= 14990 && spriteIndex <= 14993) {
 		return SPRITEGROUP_FENCE_METAL_B;
 	}

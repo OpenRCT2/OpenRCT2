@@ -587,17 +587,17 @@ namespace Intercept2
                 }
             }
 
-            if (!tunnelCallsLineUp(newTileTunnelCalls)) {
-                printf("Decompiled tunnel calls don\'t line up. [trackSequence:%d].\n", trackSequence);
-                printTunnelCalls(newTileTunnelCalls);
-                return false;
-            }
-
 
             if (!tunnelCallsLineUp(tileTunnelCalls)) {
                 printf("Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n",
                        trackSequence);
                 printTunnelCalls(tileTunnelCalls);
+
+                if (!tunnelCallsLineUp(newTileTunnelCalls)) {
+                    printf("Decompiled tunnel calls don\'t line up. [trackSequence:%d].\n", trackSequence);
+                    printTunnelCalls(newTileTunnelCalls);
+                    return false;
+                }
                 continue;
             }
 
