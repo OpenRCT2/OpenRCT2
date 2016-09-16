@@ -119,8 +119,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-
 	int gExitCode = main(0, NULL);
 	
 	exit(gExitCode);
