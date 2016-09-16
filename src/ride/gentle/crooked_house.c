@@ -82,7 +82,7 @@ static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 dire
 
 	switch(trackSequence) {
 		case 3: sub_88ABA4(direction, 32, 224, 0, height); break;
-		case 5: sub_88ABA4(direction, 0, 224, 1, height); break;
+		//case 5: sub_88ABA4(direction, 0, 224, 1, height); break;
 		case 6: sub_88ABA4(direction, 224, 32, 4, height); break;
 		case 7: sub_88ABA4(direction, 224, 224, 2, height); break;
 		//case 8: sub_88ABA4(rideIndex, 224, 0, 3, height); break;
