@@ -465,16 +465,23 @@ int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
 	return sequenceCount;
 }
 
-bool rideSupportsTrackType(int rideType, int trackType) {
+bool rideSupportsTrackType(int rideType, int trackType)
+{
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 
 	if (newPaintGetter == NULL) {
 		return false;
 	}
 
-	bool supportsTrackType = (newPaintGetter(trackType, 0) != NULL);
+	if (newPaintGetter(trackType, 0) == NULL) {
+		return false;
+	}
 
-	return supportsTrackType;
+	if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0) {
+		return false;
+	}
+
+	return true;
 }
 
 
