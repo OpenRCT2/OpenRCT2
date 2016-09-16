@@ -535,6 +535,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 				RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
 				gDidPassSurface = true; // Above surface
 				gSurfaceElement = &surfaceElement;
+				g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 
 				callCount = 0;
 				memset(&calls, 0, sizeof(calls));

@@ -344,6 +344,7 @@ namespace Intercept2
 
                 gSupport.height = 0;
                 gSupport.slope = 0xFF;
+                g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 
                 uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
