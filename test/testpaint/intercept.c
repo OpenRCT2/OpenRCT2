@@ -22,10 +22,10 @@
 #include "../../src/hook.h"
 
 
-static const uint32 PALETTE_98 = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-static const uint32 PALETTE_9C = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-static const uint32 PALETTE_A0 = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-static const uint32 PALETTE_A4 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
@@ -359,10 +359,10 @@ static void printImageId(uint32 input, utf8string *out) {
 
 	bool allocated = false;
 	utf8string paletteName;
-	if (palette == PALETTE_98)paletteName = "SCHEME_TRACK";
-	else if (palette == PALETTE_9C)paletteName = "SCHEME_SUPPORTS";
-	else if (palette == PALETTE_A0)paletteName = "SCHEME_MISC";
-	else if (palette == PALETTE_A4)paletteName = "SCHEME_3";
+	if (palette == DEFAULT_SCHEME_TRACK)paletteName = "SCHEME_TRACK";
+	else if (palette == DEFAULT_SCHEME_SUPPORTS)paletteName = "SCHEME_SUPPORTS";
+	else if (palette == DEFAULT_SCHEME_MISC)paletteName = "SCHEME_MISC";
+	else if (palette == DEFAULT_SCHEME_3)paletteName = "SCHEME_3";
 	else {
 		paletteName = malloc(16);
 		sprintf(paletteName, "0x%08X", palette);
@@ -510,10 +510,10 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	surfaceElement.base_height = 2;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-	gTrackColours[SCHEME_TRACK] = PALETTE_98;
-	gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
-	gTrackColours[SCHEME_MISC] = PALETTE_A4;
-    gTrackColours[SCHEME_3] = PALETTE_9C;
+	gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+	gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+	gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+    gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;

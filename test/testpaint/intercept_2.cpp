@@ -29,10 +29,10 @@ extern "C" {
 namespace Intercept2
 {
 
-    static const uint32 PALETTE_98 = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-    static const uint32 PALETTE_9C = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-    static const uint32 PALETTE_A0 = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-    static const uint32 PALETTE_A4 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
+    static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
+    static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
+    static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
+    static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
     struct SegmentSupportCall
     {
@@ -305,10 +305,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = PALETTE_98;
-        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
-        gTrackColours[SCHEME_MISC] = PALETTE_A4;
-        gTrackColours[SCHEME_3] = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
@@ -472,10 +472,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = PALETTE_98;
-        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
-        gTrackColours[SCHEME_MISC] = PALETTE_A4;
-        gTrackColours[SCHEME_3] = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
         rct_drawpixelinfo dpi { 0 };
         dpi.zoom_level = 1;
@@ -662,10 +662,10 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = PALETTE_98;
-        gTrackColours[SCHEME_SUPPORTS] = PALETTE_A0;
-        gTrackColours[SCHEME_MISC] = PALETTE_A4;
-        gTrackColours[SCHEME_3] = PALETTE_9C;
+        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
