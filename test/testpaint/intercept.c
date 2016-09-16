@@ -531,6 +531,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 	int height = 48;
 
+	sprintf(*error, "rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
+
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
 	for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
@@ -585,9 +587,9 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 					
 					if (oldCallCount != newCallCount) {
-						sprintf(*error, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
 					} else {
-						sprintf(*error, "Calls don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d]", direction, trackSequence);
 					}
 					
 					sprintf(*error + strlen(*error), "\n%s", diff);
@@ -601,7 +603,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 		}
 	}
 
-	sprintf(*error, "");
+	sprintf(*error + strlen(*error), "");
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
