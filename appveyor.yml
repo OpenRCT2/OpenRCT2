@@ -15,6 +15,7 @@ environment:
   GIT_TAG: $(APPVEYOR_REPO_TAG_NAME)
   GIT_BRANCH: $(APPVEYOR_REPO_BRANCH)
   GIT_COMMIT_SHA1: $(APPVEYOR_REPO_COMMIT)
+  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
 install:
 - ps: >-
     .\scripts\ps\appveyor_install.ps1
