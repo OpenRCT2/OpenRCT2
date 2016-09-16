@@ -470,7 +470,7 @@ namespace Intercept2
         return true;
     }
 
-    static sint16 getTunnelOffset(uint baseHeight, tunnel_entry calls[3])
+    static sint16 getTunnelOffset(uint32 baseHeight, tunnel_entry calls[3])
     {
         for (sint16 offset = -56; offset <= 56; offset += 8) {
             if (calls[0].height != (baseHeight - 8 + offset) / 16) continue;
