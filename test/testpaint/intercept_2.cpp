@@ -55,7 +55,7 @@ namespace Intercept2
 
     struct TunnelCall {
         uint8 call;
-        uint8 height;
+        sint16 offset;
         uint8 type;
     };
 
@@ -204,7 +204,7 @@ namespace Intercept2
 
                 if (referenceCall->call == TUNNELCALL_CALL) {
                     if (referenceCall->type != tunnelCalls[direction][side].type) return false;
-                    if (referenceCall->height != tunnelCalls[direction][side].height) return false;
+                    if (referenceCall->offset != tunnelCalls[direction][side].offset) return false;
                 }
             }
         }
@@ -222,7 +222,7 @@ namespace Intercept2
 
                 (*out)[side].call = tunnelCalls[direction][side].call;
                 (*out)[side].type = tunnelCalls[direction][side].type;
-                (*out)[side].height = tunnelCalls[direction][side].height;
+                (*out)[side].offset = tunnelCalls[direction][side].offset;
             }
         }
     }
@@ -241,7 +241,20 @@ namespace Intercept2
                 break;
 
             case TUNNELCALL_CALL:
-                sprintf(out, " %d,%X ", edge.height, edge.type);
+                if (edge.offset == 0) {
+                    sprintf(out, "  0/%X ", edge.type);
+                } else {
+                    utf8string offset = new utf8[3];
+                    if (edge.offset < 0) {
+                        sprintf(offset, "%d", edge.offset);
+                    } else {
+                        sprintf(offset, "+%d", edge.offset);
+                    }
+
+                    sprintf(out, "%3s/%X ", offset, edge.type);
+
+                    delete[] offset;
+                }
                 break;
         }
 
@@ -450,11 +463,25 @@ namespace Intercept2
 
             if (expected[side].call == TUNNELCALL_CALL) {
                 if (expected[side].type != actual[side].type) return false;
-                if (expected[side].height != actual[side].height) return false;
+                if (expected[side].offset != actual[side].offset) return false;
             }
         }
 
         return true;
+    }
+
+    static sint16 getTunnelOffset(uint baseHeight, tunnel_entry calls[3])
+    {
+        for (sint16 offset = -56; offset <= 56; offset += 8) {
+            if (calls[0].height != (baseHeight - 8 + offset) / 16) continue;
+            if (calls[1].height != (baseHeight + 0 + offset) / 16) continue;
+            if (calls[2].height != (baseHeight + 8 + offset) / 16) continue;
+
+            return offset;
+        }
+
+        log_error("Unknown tunnel height. (%d, %d, %d)", calls[0].height, calls[1].height, calls[2].height);
+        return 0;
     }
 
     static bool testTunnels(uint8 rideType, uint8 trackType)
@@ -508,17 +535,19 @@ namespace Intercept2
 
                 uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
-                // Have to call from this point as it pushes esi and expects callee to pop it
-                RCT2_CALLPROC_X(
-                    0x006C4934,
-                    rideType,
-                    (int) trackDirectionList,
-                    direction,
-                    height,
-                    (int) &mapElement,
-                    rideIndex * sizeof(rct_ride),
-                    trackSequence
-                );
+                for (int offset = -8; offset <= 8; offset += 8) {
+                    // Have to call from this point as it pushes esi and expects callee to pop it
+                    RCT2_CALLPROC_X(
+                        0x006C4934,
+                        rideType,
+                        (int) trackDirectionList,
+                        direction,
+                        height + offset,
+                        (int) &mapElement,
+                        rideIndex * sizeof(rct_ride),
+                        trackSequence
+                    );
+                }
 
                 uint8 rightIndex = (4 - direction) % 4;
                 uint8 leftIndex = (rightIndex + 1) % 4;
@@ -528,9 +557,9 @@ namespace Intercept2
                 }
                 if (gRightTunnelCount == 0) {
                     tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
-                } else if (gRightTunnelCount == 1) {
+                } else if (gRightTunnelCount == 3) {
                     tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
-                    tileTunnelCalls[direction][rightIndex].height = gRightTunnels[0].height;
+                    tileTunnelCalls[direction][rightIndex].offset = getTunnelOffset(height, gRightTunnels);
                     tileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
                 } else {
                     printf("Multiple tunnels on one side aren't supported.\n");
@@ -539,9 +568,9 @@ namespace Intercept2
 
                 if (gLeftTunnelCount == 0) {
                     tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
-                } else if (gLeftTunnelCount == 1) {
+                } else if (gLeftTunnelCount == 3) {
                     tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
-                    tileTunnelCalls[direction][leftIndex].height = gLeftTunnels[0].height;
+                    tileTunnelCalls[direction][leftIndex].offset = getTunnelOffset(height, gLeftTunnels);
                     tileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
                 } else {
                     printf("Multiple tunnels on one side aren't supported.\n");
@@ -555,7 +584,11 @@ namespace Intercept2
                 gRightTunnelCount = 0;
 
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
-                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+
+                for (int offset = -8; offset <= 8; offset += 8) {
+                    // TODO: move tunnel pushing to interface so we don't have to check the output 3 times
+                    newPaintFunction(rideIndex, trackSequence, direction, height + offset, &mapElement);
+                }
 
                 uint8 rightIndex = (4 - direction) % 4;
                 uint8 leftIndex = (rightIndex + 1) % 4;
@@ -566,9 +599,9 @@ namespace Intercept2
 
                 if (gRightTunnelCount == 0) {
                     newTileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
-                } else if (gRightTunnelCount == 1) {
+                } else if (gRightTunnelCount == 3) {
                     newTileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
-                    newTileTunnelCalls[direction][rightIndex].height = gRightTunnels[0].height;
+                    newTileTunnelCalls[direction][rightIndex].offset = getTunnelOffset(height, gRightTunnels);
                     newTileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
                 } else {
                     printf("Multiple tunnels on one side aren't supported.\n");
@@ -577,9 +610,9 @@ namespace Intercept2
 
                 if (gLeftTunnelCount == 0) {
                     newTileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
-                } else if (gLeftTunnelCount == 1) {
+                } else if (gLeftTunnelCount == 3) {
                     newTileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
-                    newTileTunnelCalls[direction][leftIndex].height = gLeftTunnels[0].height;
+                    newTileTunnelCalls[direction][leftIndex].offset = getTunnelOffset(height, gLeftTunnels);
                     newTileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
                 } else {
                     printf("Multiple tunnels on one side aren't supported.\n");
