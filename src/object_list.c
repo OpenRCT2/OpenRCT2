@@ -108,6 +108,9 @@ const rct_object_entry_group object_entry_groups[] = {
 	(void**)(gStexEntries				), _objectEntriesStexs,	// scenario text	0x009ADAE4, 0xF4287C
 };
 
+/** rct2: 0x0098DA64 */
+static const utf8 HexCharacters[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
 int check_object_entry(const rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
@@ -130,14 +133,14 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
 
 	for (uint8 i = 0; i < 4; ++i){
 		uint8 flag_part = (object->flags >> (i * 8)) & 0xFF;
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part >> 4];
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[flag_part & 0xF];
+		*string_buffer++ = HexCharacters[flag_part >> 4];
+		*string_buffer++ = HexCharacters[flag_part & 0xF];
 	}
 
 	for (uint8 i = 0; i < 4; ++i){
 		uint8 checksum_part = (object->checksum >> (i * 8)) & 0xFF;
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part >> 4];
-		*string_buffer++ = RCT2_ADDRESS(0x0098DA64, char)[checksum_part & 0xF];
+		*string_buffer++ = HexCharacters[checksum_part >> 4];
+		*string_buffer++ = HexCharacters[checksum_part & 0xF];
 	}
 	*string_buffer++ = '\0';
 }
