@@ -17,6 +17,7 @@
 #ifndef _PAINT_MAP_ELEMENT_H
 #define _PAINT_MAP_ELEMENT_H
 
+#include "../../addresses.h"
 #include "../../common.h"
 #include "../../world/map.h"
 

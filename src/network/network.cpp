@@ -31,7 +31,6 @@ extern "C" {
 #include "network.h"
 
 extern "C" {
-#include "../addresses.h"
 }
 
 #ifndef DISABLE_NETWORK

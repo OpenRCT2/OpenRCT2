@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../addresses.h"
 #include "../common.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"

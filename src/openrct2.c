@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
 #include "config.h"
@@ -50,8 +49,11 @@
 #endif // defined(__unix__) || defined(__MACOSX__)
 
 int gExitCode;
-int fdData;
-char *segments = (void *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+
+#if defined(__unix__) && !defined(NO_RCT2)
+	static int fdData;
+	static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+#endif
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -352,7 +354,7 @@ void openrct2_dispose()
 #ifndef DISABLE_NETWORK
 	EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
 	munmap(segments, 12079104);
 	close(fdData);
 #endif
@@ -504,7 +506,7 @@ bool openrct2_setup_rct2_segment()
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	int err = 0;
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
 
@@ -554,7 +556,7 @@ bool openrct2_setup_rct2_segment()
 	}
 #endif // defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__))
 
-#if defined(__unix__)
+#if defined(__unix__) && !defined(NO_RCT2)
 	int pageSize = getpagesize();
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
@@ -630,6 +632,7 @@ bool openrct2_setup_rct2_segment()
 	SDL_RWclose(rw);
 #endif // defined(USE_MMAP) && defined(__WINDOWS__)
 
+#if !defined(NO_RCT2) && defined(USE_MMAP)
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.
@@ -642,7 +645,7 @@ bool openrct2_setup_rct2_segment()
 		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
 		return false;
 	}
-
+#endif
 	return true;
 }
 

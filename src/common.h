@@ -89,4 +89,57 @@
 	#define FASTCALL
 #endif // PLATFORM_X86
 
+/**
+ * x86 register structure, only used for easy interop to RCT2 code.
+ */
+#pragma pack(push, 1)
+typedef struct registers {
+	union {
+		int eax;
+		short ax;
+		struct {
+			char al;
+			char ah;
+		};
+	};
+	union {
+		int ebx;
+		short bx;
+		struct {
+			char bl;
+			char bh;
+		};
+	};
+	union {
+		int ecx;
+		short cx;
+		struct {
+			char cl;
+			char ch;
+		};
+	};
+	union {
+		int edx;
+		short dx;
+		struct {
+			char dl;
+			char dh;
+		};
+	};
+	union {
+		int esi;
+		short si;
+	};
+	union {
+		int edi;
+		short di;
+	};
+	union {
+		int ebp;
+		short bp;
+	};
+} registers;
+assert_struct_size(registers, 7 * 4);
+#pragma pack(pop)
+
 #endif
