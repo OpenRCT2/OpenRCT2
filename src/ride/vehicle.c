@@ -368,6 +368,19 @@ static const unk_9a36c4 Unk9A36C4[] = {
 	{-1, -1, 12327},
 };
 
+/** rct2: 0x009A37C4 */
+static const rct_xy16 Unk9A37C4[] = {
+	{ 0,  0},
+	{ 0, +1},
+	{+1,  0},
+	{ 0, -1},
+	{ 0, -1},
+	{-1,  0},
+	{-1,  0},
+	{ 0, +1},
+	{ 0, +1},
+};
+
 /** rct2: 0x009A37E4 */
 static const sint32 Unk9A37E4[] = {
 	2147483647,
@@ -5727,12 +5740,15 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		return true;
 	}
 
-	uint16 location = (y / 32) | ((x / 32) << 8);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
 
 
 	uint8 rideIndex = vehicle->ride;
-	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
-		uint16 spriteIdx = gSpriteSpatialIndex[location];
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		uint16 spriteIdx = gSpriteSpatialIndex[location.xy];
 		while (spriteIdx != 0xFFFF) {
 			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
 			spriteIdx = vehicle2->next_in_quadrant;
@@ -5763,7 +5779,6 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 				return true;
 			}
 		}
-		location += *ebp;
 	}
 
 	return false;
@@ -7031,14 +7046,16 @@ static bool vehicle_update_motion_collision_detection(
 		return true;
 	}
 
-	uint16 eax = ((x / 32) << 8) + (y / 32);
-	// TODO change to using a better technique
-	uint32* ebp = RCT2_ADDRESS(0x009A37C4, uint32);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
+
 	bool mayCollide = false;
 	uint16 collideId = 0xFFFF;
 	rct_vehicle* collideVehicle = NULL;
-	for(; ebp <= RCT2_ADDRESS(0x009A37E4, uint32); ebp++){
-		collideId = gSpriteSpatialIndex[eax];
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		collideId = gSpriteSpatialIndex[location.xy];
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
@@ -7095,9 +7112,6 @@ static bool vehicle_update_motion_collision_detection(
 		if (mayCollide == true) {
 			break;
 		}
-
-		// TODO change this
-		eax += *ebp;
 	}
 
 	if (mayCollide == false) {
