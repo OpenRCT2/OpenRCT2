@@ -2052,9 +2052,6 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_ride_main_resize(rct_window *w)
 {
-	rct_viewport *viewport;
-	int width, height;
-
 	const int offset = gCheatsAllowArbitraryRideTypeChanges ? 15 : 0;
 	w->flags |= WF_RESIZABLE;
 	int minHeight = 180 + offset;
@@ -2062,16 +2059,10 @@ static void window_ride_main_resize(rct_window *w)
 		minHeight = 200 + offset + RCT1_LIGHT_OFFSET - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
 	window_set_resize(w, 316, minHeight, 500, 450);
 
-	viewport = w->viewport;
+	rct_viewport *viewport = w->viewport;
 	if (viewport != NULL) {
-		width = w->width - 30;
-		height = w->height - (75 + offset);
-		if (viewport->width != width || viewport->height != height) {
-			viewport->width = width;
-			viewport->height = height;
-			viewport->view_width = width << viewport->zoom;
-			viewport->view_height = height << viewport->zoom;
-		}
+		viewport->width = 0;
+		w->viewport = NULL;
 	}
 
 	window_ride_init_viewport(w);
