@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/themes.h"

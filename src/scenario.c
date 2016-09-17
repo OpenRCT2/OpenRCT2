@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "addresses.h"
 #include "cheats.h"
 #include "config.h"
 #include "game.h"

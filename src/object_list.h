@@ -1,5 +1,6 @@
 #pragma once
 
+#include "addresses.h"
 #include "ride/ride.h"
 #include "world/banner.h"
 #include "world/entrance.h"
@@ -21,7 +22,6 @@
 	extern rct_stex_entry				*gStexEntries[1];
 #else
 
-	#include "addresses.h"
 
 	#define gRideEntries				RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,				rct_ride_entry*)
 	#define gSmallSceneryEntries		RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES,	rct_small_scenery_entry*)

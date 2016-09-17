@@ -17,6 +17,7 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
+#include "addresses.h"
 #include "common.h"
 #include "management/award.h"
 #include "management/finance.h"
