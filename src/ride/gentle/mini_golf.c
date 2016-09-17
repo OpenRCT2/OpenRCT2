@@ -1021,7 +1021,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direc
 /**
  * rct2: 0x006D42F0
  */
-void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
+void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle)
 {
 	if (vehicle->num_peeps == 0) {
 		return;
@@ -1050,7 +1050,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 /**
  * rct2: 0x006D43C6
  */
-void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
+void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle)
 {
 	if (vehicle->mini_golf_current_animation != 1) {
 		return;
