@@ -38,7 +38,6 @@
 #include "window.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
-uint32 gCurrentViewportFlags = 0;
 uint8 gShowGridLinesRefCount;
 uint8 gShowLandRightsRefCount;
 uint8 gShowConstuctionRightsRefCount;
@@ -56,6 +55,7 @@ sint16 gSavedViewY;
 uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 uint8 gCurrentRotation;
+uint32 gCurrentViewportFlags = 0;
 #endif
 
 uint32 gUnkEDF81C;
@@ -692,10 +692,6 @@ const sint32 WeatherColours[] = {
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
 	gCurrentViewportFlags = viewport->flags;
-	//This should still be updated until the rest of supports, etc, is reverse-engineered. Otherwise
-	// supports for unimplemented rollercoasters will still appear even if "invisible supports"
-	// are enabled.
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = (uint16)viewport->flags;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
 
 	uint16 width = right - left;
