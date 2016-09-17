@@ -29,7 +29,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../audio/audio.h"
     #include "../cheats.h"
     #include "../editor.h"

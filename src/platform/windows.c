@@ -24,7 +24,6 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include "../addresses.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
 #include "../util/util.h"

@@ -16,7 +16,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../interface/window.h"
     #include "../world/climate.h"
     #include "drawing.h"

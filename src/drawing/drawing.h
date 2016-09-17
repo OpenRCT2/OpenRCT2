@@ -19,9 +19,6 @@
 
 #include "../common.h"
 #include "font.h"
-#ifndef NO_RCT2
-	#include "../addresses.h"
-#endif
 
 // For g1 only enable packing when still relying on vanilla
 #ifndef NO_RCT2
