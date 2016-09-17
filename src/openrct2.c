@@ -49,8 +49,11 @@
 #endif // defined(__unix__) || defined(__MACOSX__)
 
 int gExitCode;
-int fdData;
-char *segments = (void *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+
+#ifdef USE_MMAP
+	static int fdData;
+	static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+#endif
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
