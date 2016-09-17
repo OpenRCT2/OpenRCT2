@@ -1727,9 +1727,6 @@ static void paint_junior_rc_station_track(uint8 rideIndex, uint8 trackSequence, 
 		imageId &= 0x7FFFF;
 	}
 
-	RCT2_GLOBAL(0x00F441E8, uint32) = imageId;
-	RCT2_GLOBAL(0x00F441E4, uint32) = imageId;
-
 	bool isBraked = (bool)(mapElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
 
 	if (direction == 0 || direction == 2) {

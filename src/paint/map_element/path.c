@@ -955,10 +955,9 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 		5
 	};
 
-	RCT2_GLOBAL(0x00F3EF6C, rct_footpath_entry*) = footpathEntry;
 	for (sint8 i = 3; i > -1; --i) {
 		if (!(edges & (1 << i))) {
-			path_b_supports_paint_setup(supports[i], ax, height, imageFlags);
+			path_b_supports_paint_setup(supports[i], ax, height, imageFlags, footpathEntry);
 		}
 	}
 

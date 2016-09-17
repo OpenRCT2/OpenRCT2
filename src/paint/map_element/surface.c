@@ -1345,7 +1345,6 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 #endif
 	}
 
-	RCT2_GLOBAL(0x009E3298, uint16) = 0;
 	if (mapElement->properties.surface.terrain & 0x1F) {
 		// loc_6615A9: (water height)
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
@@ -1353,9 +1352,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		uint16 localHeight = height + 16;
 		uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
 
-		RCT2_GLOBAL(0x009E3298, uint16) = waterHeight;
 		if (!gTrackDesignSaveMode) {
-			RCT2_GLOBAL(0x0141E9DC, uint16) = waterHeight;
+			gUnk141E9DC = waterHeight;
 
 			int image_offset = 0;
 			if (waterHeight <= localHeight) {

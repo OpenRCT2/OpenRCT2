@@ -424,7 +424,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 	// Draw repeated supports for left over space
 	while (height != 0) {
-		if ((z & 16) == 0 && height >= 2 && z + 16 != RCT2_GLOBAL(0x00141E9DC, uint16)) {
+		if ((z & 16) == 0 && height >= 2 && z + 16 != gUnk141E9DC) {
 			// Full support
 			int imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
 			uint8 ah = special == 2 ? 23 : 28;
@@ -505,9 +505,9 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	int originalSegment = segment;
 
 	const uint8 rotation = get_current_rotation();
-	RCT2_GLOBAL(0x009E3294, sint16) = -1;
+	sint16 unk9E3294 = -1;
 	if (height < gSupportSegments[segment].height){
-		RCT2_GLOBAL(0x009E3294, sint16) = height;
+		unk9E3294 = height;
 
 		height -= word_97B142[supportType];
 		if (height < 0)
@@ -621,7 +621,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		height += z;
 	}
 
-	gSupportSegments[segment].height = RCT2_GLOBAL(0x009E3294, sint16);
+	gSupportSegments[segment].height = unk9E3294;
 	gSupportSegments[segment].slope = 0x20;
 
 	height = originalHeight;
@@ -684,19 +684,28 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
  */
 bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground)
 {
+#if NO_RCT2
+	return 0;
+#else
 	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
 	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x006A2ECC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**
  *
  *  rct2: 0x006A326B
  */
-bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry)
 {
+#if NO_RCT2
+	return 0;
+#else
+	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
 	int eax = special, ebx = supportType, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
