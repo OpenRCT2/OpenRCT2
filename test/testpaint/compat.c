@@ -73,7 +73,6 @@ int object_entry_group_counts[] = {
 
 
 general_configuration gConfigGeneral;
-uint32 gCurrentViewportFlags = 0;
 uint16 gMapSelectFlags;
 uint16 gMapSelectType;
 rct_xy16 gMapSelectPositionA;

@@ -60,6 +60,9 @@ uint32 gCurrentViewportFlags = 0;
 
 uint32 gUnkEDF81C;
 
+static rct_drawpixelinfo _viewportDpi1;
+static rct_drawpixelinfo _viewportDpi2;
+
 /**
  * This is not a viewport function. It is used to setup many variables for
  * multiple things.
@@ -692,7 +695,7 @@ const sint32 WeatherColours[] = {
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
 	gCurrentViewportFlags = viewport->flags;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
+	_viewportDpi1.zoom_level = viewport->zoom;
 
 	uint16 width = right - left;
 	uint16 height = bottom - top;
@@ -703,14 +706,14 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	left &= bitmask;
 	top &= bitmask;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) = left;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16) = top;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16) = width;
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16) = height;
+	_viewportDpi1.x = left;
+	_viewportDpi1.y = top;
+	_viewportDpi1.width = width;
+	_viewportDpi1.height = height;
 
 	width >>= viewport->zoom;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16) = (dpi->width + dpi->pitch) - width;
+	_viewportDpi1.pitch = (dpi->width + dpi->pitch) - width;
 
 	sint16 x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
 	x >>= viewport->zoom;
@@ -722,21 +725,21 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 
 	uint8* original_bits_pointer = x - dpi->x + (y - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
 
-	rct_drawpixelinfo* dpi2 = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-	dpi2->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16);
-	dpi2->height = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_HEIGHT, uint16);
-	dpi2->zoom_level = (uint8)RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+	rct_drawpixelinfo* dpi2 = &_viewportDpi2;
+	dpi2->y = _viewportDpi1.y;
+	dpi2->height = _viewportDpi1.height;
+	dpi2->zoom_level = (uint8)_viewportDpi1.zoom_level;
 
 	//Splits the screen into 32 pixel columns and renders them.
-	for (x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) & 0xFFFFFFE0;
-		x < RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+	for (x = _viewportDpi1.x & 0xFFFFFFE0;
+		x < _viewportDpi1.x + _viewportDpi1.width;
 		x += 32){
 
-		int start_x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16);
-		int width_col = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_WIDTH, uint16);
+		int start_x = _viewportDpi1.x;
+		int width_col = _viewportDpi1.width;
 		uint8 * bits_pointer = original_bits_pointer;
-		int pitch = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_PITCH, uint16);
-		int zoom = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
+		int pitch = _viewportDpi1.pitch;
+		int zoom = _viewportDpi1.zoom_level;
 		if (x >= start_x){
 			int left_pitch = x - start_x;
 			width_col -= left_pitch;
@@ -1384,16 +1387,16 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			screenY <<= myviewport->zoom;
 			screenX += (int)myviewport->view_x;
 			screenY += (int)myviewport->view_y;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = myviewport->zoom;
+			_viewportDpi1.zoom_level = myviewport->zoom;
 			screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 			screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16) = screenX;
-			RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16) = screenY;
-			rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-			dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, sint16);
+			_viewportDpi1.x = screenX;
+			_viewportDpi1.y = screenY;
+			rct_drawpixelinfo* dpi = &_viewportDpi2;
+			dpi->y = _viewportDpi1.y;
 			dpi->height = 1;
-			dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16);
-			dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, sint16);
+			dpi->zoom_level = _viewportDpi1.zoom_level;
+			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
 			g_ps_EE7880 = RCT2_ADDRESS(0xF1A4CC, paint_struct);
 			unk_140E9A8 = dpi;
