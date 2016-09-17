@@ -47,13 +47,14 @@ rct_viewport *g_music_tracking_viewport;
 
 rct_map_element *_interaction_element = NULL;
 
-#ifdef NO_RCT2
-paint_struct *unk_EE7884;
-paint_struct *unk_EE7888;
 sint16 gSavedViewX;
 sint16 gSavedViewY;
 uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
+
+#ifdef NO_RCT2
+paint_struct *unk_EE7884;
+paint_struct *unk_EE7888;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
 #endif
