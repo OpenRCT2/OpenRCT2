@@ -20,7 +20,6 @@
     InstallDir "$PROGRAMFILES32\OpenRCT2\"
 !else
     !define OPENRCT2_EXE            "openrct2_x64.exe"
-    !define OPENRCT2_SEGMENT_INFO   "openrct2_data"
     !define APPBITS                 64
     !define APPARCH                 "win64"
 
@@ -160,9 +159,6 @@ Section "!OpenRCT2" Section1
 !ifdef OPENRCT2_DLL
     File /oname=${OPENRCT2_DLL} ${BINARY_DIR}\${OPENRCT2_DLL}
 !endif
-!ifdef OPENRCT2_SEGMENT_INFO
-    File /oname=${OPENRCT2_SEGMENT_INFO} ${BINARY_DIR}\${OPENRCT2_SEGMENT_INFO}
-!endif
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -232,9 +228,6 @@ Section "Uninstall"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
 !ifdef OPENRCT2_DLL
     Delete "$INSTDIR\${OPENRCT2_DLL}"
-!endif
-!ifdef OPENRCT2_SEGMENT_INFO
-    Delete "$INSTDIR\${OPENRCT2_SEGMENT_INFO}"
 !endif
     Delete "$INSTDIR\INSTALL.LOG"
 

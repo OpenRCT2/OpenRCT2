@@ -17,6 +17,8 @@
 #ifndef _ADDRESSES_H_
 #define _ADDRESSES_H_
 
+#ifndef NO_RCT2
+
 #include "common.h"
 
 #ifdef _MSC_VER
@@ -708,5 +710,7 @@ static int RCT2_CALLFUNC_Z(int address, const registers *in, registers *out)
 	*out = *in;
 	return RCT2_CALLFUNC_Y(address, out);
 }
+
+#endif
 
 #endif

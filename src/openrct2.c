@@ -630,6 +630,7 @@ bool openrct2_setup_rct2_segment()
 	SDL_RWclose(rw);
 #endif // defined(USE_MMAP) && defined(__WINDOWS__)
 
+#if !defined(NO_RCT2) || defined(USE_MMAP)
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.
@@ -642,7 +643,7 @@ bool openrct2_setup_rct2_segment()
 		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
 		return false;
 	}
-
+#endif
 	return true;
 }
 

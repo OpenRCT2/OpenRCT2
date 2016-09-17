@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef NO_RCT2
+
 #include "addresses.h"
 
 #if defined(__GNUC__)
@@ -230,3 +232,5 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 	// lahf only modifies ah, zero out the rest
 	return result & 0xFF00;
 }
+
+#endif // NO_RCT2

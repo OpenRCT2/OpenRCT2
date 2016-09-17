@@ -42,7 +42,6 @@
     <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
     <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
     <OutputExe Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_x64.exe</OutputExe>
-    <OutputSegmentInfo Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_data</OutputSegmentInfo>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
@@ -81,7 +80,6 @@
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
     <PublishItems Include="$(OutputDll)" Condition="'$(Platform)'=='Win32'" />
-    <PublishItems Include="$(OutputSegmentInfo)" Condition="'$(Platform)'=='x64'" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(RootDir)curl-ca-bundle.crt" />
     <PublishItems Include="$(DistDir)changelog.txt" />
@@ -144,7 +142,6 @@
   <Target Name="Clean">
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
-      <CleanItems Condition="'$(Platform)'=='x64'" Include="$(OutputSegmentInfo)" />
       <CleanItems Include="$(TargetDir)curl-ca-bundle.crt" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
@@ -184,23 +181,6 @@
 
   <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
-  </Target>
-
-  <!-- Target to create the segment information x64 builds currently require -->
-  <Target Name="CreateRCT2SegmentInfo"
-          AfterTargets="Build"
-          Inputs="$(RootDir)openrct2.exe"
-          Outputs="$(OutputSegmentInfo)"
-          Condition="'$(Platform)'=='x64'">
-    <Exec Command="dd if=$(RootDir)openrct2.exe of=$(OutputSegmentInfo) bs=4096 skip=1188 count=318"
-          StandardOutputImportance="normal"
-          StandardErrorImportance="normal" />
-    <Exec Command="dd if=/dev/zero of=$(OutputSegmentInfo) bs=4096 seek=318 count=2630 conv=notrunc"
-          StandardOutputImportance="normal"
-          StandardErrorImportance="normal" />
-    <Exec Command="dd if=$(RootDir)openrct2.exe of=$(OutputSegmentInfo) bs=4096 skip=1506 seek=2948 count=1 conv=notrunc"
-          StandardOutputImportance="normal"
-          StandardErrorImportance="normal" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
