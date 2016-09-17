@@ -98,6 +98,8 @@ extern uint8 gVerticalTunnelHeight;
 
 extern bool gShowSupportSegmentHeights;
 
+extern const rct_xy16 BannerBoundBoxes[][2];
+
 void paint_util_push_tunnel_left(uint16 height, uint8 type);
 void paint_util_push_tunnel_right(uint16 height, uint8 type);
 void paint_util_set_vertical_tunnel(uint16 height);
