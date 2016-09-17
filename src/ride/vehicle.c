@@ -326,6 +326,213 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 	SwingingTimeToSpriteMap_11,
 };
 
+typedef struct {
+	sint16 x;
+	sint16 y;
+	uint32 distance;
+} unk_9a36c4;
+
+/** rct2: 0x009A36C4 */
+static const unk_9a36c4 Unk9A36C4[] = {
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, 0, 8716},
+	{-1, -1, 12327},
+};
+
+/** rct2: 0x009A37C4 */
+static const rct_xy16 Unk9A37C4[] = {
+	{ 0,  0},
+	{ 0, +1},
+	{+1,  0},
+	{ 0, -1},
+	{ 0, -1},
+	{-1,  0},
+	{-1,  0},
+	{ 0, +1},
+	{ 0, +1},
+};
+
+/** rct2: 0x009A37E4 */
+static const sint32 Unk9A37E4[] = {
+	2147483647,
+	2106585154,
+	1985590284,
+	1636362342,
+	1127484953,
+	2106585154,
+	1985590284,
+	1636362342,
+	1127484953,
+	58579923,
+	0,
+	-555809667,
+	-1073741824,
+	-1518500249,
+	-1859775391,
+	-2074309916,
+	-2147483647,
+	58579923,
+	0,
+	-555809667,
+	-1073741824,
+	-1518500249,
+	-1859775391,
+	-2074309916,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	2144540595,
+	2139311823,
+	2144540595,
+	2139311823,
+	2135719507,
+	2135719507,
+	2125953864,
+	2061796213,
+	1411702590,
+	2125953864,
+	2061796213,
+	1411702590,
+	1985590284,
+	1636362342,
+	1127484953,
+	2115506168,
+};
+
+/** rct2: 0x009A38D4 */
+static const sint32 Unk9A38D4[] = {
+	0,
+	417115092,
+	817995863,
+	1390684831,
+	1827693544,
+	-417115092,
+	-817995863,
+	-1390684831,
+	-1827693544,
+	2066040965,
+	2147483647,
+	2074309916,
+	1859775393,
+	1518500249,
+	1073741824,
+	555809666,
+	0,
+	-2066040965,
+	-2147483647,
+	-2074309916,
+	-1859775393,
+	-1518500249,
+	-1073741824,
+	-555809666,
+	1073741824,
+	1859775393,
+	2147483647,
+	1859775393,
+	1073741824,
+	-1073741824,
+	-1859775393,
+	-2147483647,
+	-1859775393,
+	-1073741824,
+	1073741824,
+	1859775393,
+	2147483647,
+	1859775393,
+	1073741824,
+	-1073741824,
+	-1859775393,
+	-2147483647,
+	-1859775393,
+	-1073741824,
+	112390610,
+	187165532,
+	-112390610,
+	-187165532,
+	224473165,
+	-224473165,
+	303325208,
+	600568389,
+	1618265062,
+	-303325208,
+	-600568389,
+	-1618265062,
+	-817995863,
+	-1390684831,
+	-1827693544,
+	369214930,
+};
+
+/** rct2: 0x009A39C4 */
+static const sint32 Unk9A39C4[] = {
+	2147483647,
+	2096579710,
+	1946281152,
+	2096579710,
+	1946281152,
+	1380375879,
+	555809667,
+	-372906620,
+	-1231746017,
+	-1859775391,
+	1380375879,
+	555809667,
+	-372906620,
+	-1231746017,
+	-1859775391,
+	0,
+	2096579710,
+	1946281152,
+	2096579710,
+	1946281152,
+};
+
 static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {
@@ -2902,12 +3109,12 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		int x = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
 		int y = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
 
-		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->vehicle_sprite_type] >> 15;
+		int ecx = Unk9A37E4[trainVehicle->vehicle_sprite_type] >> 15;
 		x *= ecx;
 		y *= ecx;
 		x >>= 16;
 		y >>= 16;
-		ecx = RCT2_ADDRESS(0x009A38D4, sint32)[trainVehicle->vehicle_sprite_type] >> 23;
+		ecx = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
 		x *= edx;
 		y *= edx;
 		ecx *= edx;
@@ -3642,8 +3849,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			}
 
 			int edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
-			x = vehicle->x + RCT2_ADDRESS(0x009A36C4, sint16)[edi * 4];
-			y = vehicle->y + RCT2_ADDRESS(0x009A36C6, sint16)[edi * 4];
+			x = vehicle->x + Unk9A36C4[edi].x;
+			y = vehicle->y + Unk9A36C4[edi].y;
 			z = vehicle->z;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, NULL)) {
 				vehicle->remaining_distance = 0;
@@ -3722,7 +3929,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 				vehicle->track_y = dx;
 			}
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
+			vehicle->remaining_distance -= Unk9A36C4[edi].distance;
 			unk_F64E20.x = x;
 			unk_F64E20.y = y;
 			if (vehicle->remaining_distance < 0x368A) {
@@ -4765,8 +4972,8 @@ produceScream:
  */
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 {
-	int gForceVert = (((sint64)0x280000) * RCT2_ADDRESS(0x009A37E4, sint32)[vehicle->vehicle_sprite_type]) >> 32;
-	gForceVert = (((sint64)gForceVert) * RCT2_ADDRESS(0x009A39C4, sint32)[vehicle->bank_rotation]) >> 32;
+	int gForceVert = (((sint64)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
+	gForceVert = (((sint64)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
 	int lateralFactor = 0, vertFactor = 0;
 
 	// Note shr has meant some of the below functions cast a known negative number to
@@ -5398,10 +5605,10 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			.z = vehicle->z
 		};
 
-		location.x += RCT2_ADDRESS(0x009A36C4, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36C6, sint16)[oldC4 * 4];
-		location.x += RCT2_ADDRESS(0x009A36CC, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36CE, sint16)[oldC4 * 4];
+		location.x += Unk9A36C4[oldC4].x;
+		location.y += Unk9A36C4[oldC4].y;
+		location.x += Unk9A36C4[oldC4 + 1].x;
+		location.y += Unk9A36C4[oldC4 + 1].y;
 
 		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
 			vehicle_invalidate(vehicle);
@@ -5431,13 +5638,13 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			direction |= vehicle->var_35 & 1;
 
 			rct_xyz16 location = unk_F64E20;
-			location.x += RCT2_ADDRESS(0x009A36C4, sint16)[direction * 4];
-			location.y += RCT2_ADDRESS(0x009A36C6, sint16)[direction * 4];
+			location.x += Unk9A36C4[direction].x;
+			location.y += Unk9A36C4[direction].y;
 
 			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
 				break;
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, sint16)[direction * 4];
+			vehicle->remaining_distance -= Unk9A36C4[direction].distance;
 			unk_F64E20.x = location.x;
 			unk_F64E20.y = location.y;
 			if (vehicle->remaining_distance < 13962) {
@@ -5533,12 +5740,15 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		return true;
 	}
 
-	uint16 location = (y / 32) | ((x / 32) << 8);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
 
 
 	uint8 rideIndex = vehicle->ride;
-	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
-		uint16 spriteIdx = gSpriteSpatialIndex[location];
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		uint16 spriteIdx = gSpriteSpatialIndex[location.xy];
 		while (spriteIdx != 0xFFFF) {
 			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
 			spriteIdx = vehicle2->next_in_quadrant;
@@ -5569,7 +5779,6 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 				return true;
 			}
 		}
-		location += *ebp;
 	}
 
 	return false;
@@ -6789,6 +6998,8 @@ static void sub_6DB807(rct_vehicle *vehicle)
 	sprite_move(x, y, z, (rct_sprite*)vehicle);
 }
 
+extern const rct_xy16 duck_move_offset[];
+
 /**
  * Collision Detection
  *  rct2: 0x006DD078
@@ -6837,14 +7048,16 @@ static bool vehicle_update_motion_collision_detection(
 		return true;
 	}
 
-	uint16 eax = ((x / 32) << 8) + (y / 32);
-	// TODO change to using a better technique
-	uint32* ebp = RCT2_ADDRESS(0x009A37C4, uint32);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
+
 	bool mayCollide = false;
 	uint16 collideId = 0xFFFF;
 	rct_vehicle* collideVehicle = NULL;
-	for(; ebp <= RCT2_ADDRESS(0x009A37E4, uint32); ebp++){
-		collideId = gSpriteSpatialIndex[eax];
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		collideId = gSpriteSpatialIndex[location.xy];
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
@@ -6889,8 +7102,8 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (direction < 0x14) continue;
 
-			uint32 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->x);
-			uint32 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->y);
+			uint32 next_x_diff = abs(x + duck_move_offset[(4 + vehicle->sprite_direction) >> 3].x - collideVehicle->x);
+			uint32 next_y_diff = abs(y + duck_move_offset[(4 + vehicle->sprite_direction) >> 3].y - collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
@@ -6901,9 +7114,6 @@ static bool vehicle_update_motion_collision_detection(
 		if (mayCollide == true) {
 			break;
 		}
-
-		// TODO change this
-		eax += *ebp;
 	}
 
 	if (mayCollide == false) {
