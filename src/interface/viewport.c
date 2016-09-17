@@ -246,11 +246,6 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-static void sub_683326(int left, int top, int right, int bottom)
-{
-	RCT2_CALLPROC_X(0x00683359, left, top, right, bottom, 0, 0, 0);
-}
-
 static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int x, int y)
 {
 	// sub-divide by intersecting windows
