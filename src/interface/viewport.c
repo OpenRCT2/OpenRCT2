@@ -770,7 +770,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 			}
 			gfx_clear(dpi2, colour);
 		}
-		g_ps_EE7880 = RCT2_ADDRESS(0xF1A4CC, paint_struct);
+		g_ps_EE7880 = &gUnkF1A4CC;
 		unk_140E9A8 = dpi2;
 		painter_setup();
 		viewport_paint_setup();
@@ -1399,7 +1399,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->zoom_level = _viewportDpi1.zoom_level;
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
-			g_ps_EE7880 = RCT2_ADDRESS(0xF1A4CC, paint_struct);
+			g_ps_EE7880 = &gUnkF1A4CC;
 			unk_140E9A8 = dpi;
 			painter_setup();
 			viewport_paint_setup();
