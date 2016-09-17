@@ -62,6 +62,13 @@ uint32 gUnkEDF81C;
 
 static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
+static uint8 _unk9AC148;
+static uint8 _unk9AC149;
+static sint16 _unk9AC14C;
+static sint16 _unk9AC14E;
+static uint16 _unk9AC154;
+static sint16 _unk9ABDAE;
+
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -1026,11 +1033,11 @@ static void store_interaction_info(paint_struct *ps)
 	else
 		mask = 1 << (ps->sprite_type - 1);
 
-	if (!(RCT2_GLOBAL(0x009AC154, uint16) & mask)) {
-		RCT2_GLOBAL(0x009AC148, uint8) = ps->sprite_type;
-		RCT2_GLOBAL(0x009AC149, uint8) = ps->var_29;
-		RCT2_GLOBAL(0x009AC14C, uint32) = ps->map_x;
-		RCT2_GLOBAL(0x009AC14E, uint32) = ps->map_y;
+	if (!(_unk9AC154 & mask)) {
+		_unk9AC148 = ps->sprite_type;
+		_unk9AC149 = ps->var_29;
+		_unk9AC14C = ps->map_x;
+		_unk9AC14E = ps->map_y;
 		_interaction_element = ps->mapElement;
 	}
 }
@@ -1215,7 +1222,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 	sint16 xStartPoint = 0;
 	sint16 xEndPoint = image->width;
 	if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-		RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+		_unk9ABDAE = 0;
 	}
 
 	x += image->x_offset;
@@ -1228,7 +1235,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		}
 
 		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-			RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+			_unk9ABDAE -= x;
 		}
 
 		xStartPoint -= x;
@@ -1244,7 +1251,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		}
 
 		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
-			RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+			_unk9ABDAE += x;
 		}
 	}
 
@@ -1371,14 +1378,12 @@ static void sub_68862C()
  */
 void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
-	RCT2_GLOBAL(0x9AC154, uint16) = flags & 0xFFFF;
-	RCT2_GLOBAL(0x9AC148, uint8) = 0;
+	_unk9AC154 = flags & 0xFFFF;
+	_unk9AC148 = 0;
 	rct_window* window = window_find_from_point(screenX, screenY);
 	if (window != NULL && window->viewport != NULL)
 	{
 		rct_viewport* myviewport = window->viewport;
-		RCT2_GLOBAL(0x9AC138 + 4, sint16) = screenX;
-		RCT2_GLOBAL(0x9AC138 + 6, sint16) = screenY;
 		screenX -= (int)myviewport->x;
 		screenY -= (int)myviewport->y;
 		if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
@@ -1407,9 +1412,9 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
-	if (interactionType != NULL) *interactionType = RCT2_GLOBAL(0x9AC148, uint8);
-	if (x != NULL) *x = RCT2_GLOBAL(0x9AC14C, sint16);
-	if (y != NULL) *y = RCT2_GLOBAL(0x9AC14E, sint16);
+	if (interactionType != NULL) *interactionType = _unk9AC148;
+	if (x != NULL) *x = _unk9AC14C;
+	if (y != NULL) *y = _unk9AC14E;
 	if (mapElement != NULL) *mapElement = _interaction_element;
 }
 
