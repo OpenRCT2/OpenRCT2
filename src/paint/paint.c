@@ -34,6 +34,7 @@ paint_string_struct *pss1;
 paint_string_struct *pss2;
 
 #ifdef NO_RCT2
+static paint_struct _unkEE788C[4000];
 uint32 _F1AD0C;
 uint32 _F1AD10;
 static paint_struct *_paint_structs[512];
@@ -45,7 +46,9 @@ paint_struct gUnkF1A4CC;
 uint8 gPaintInteractionType;
 support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
+
 #else
+#define _unkEE788C RCT2_ADDRESS(0x00EE788C, paint_struct)
 #define _paint_structs (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
 #define _F1AD0C RCT2_GLOBAL(0xF1AD0C, uint32)
 #define _F1AD10 RCT2_GLOBAL(0xF1AD10, uint32)
@@ -74,7 +77,7 @@ bool gPaintBoundingBoxes;
  *  rct2: 0x0068615B
  */
 void painter_setup() {
-	unk_EE7888 = RCT2_ADDRESS(0x00EE788C, paint_struct);
+	unk_EE7888 = _unkEE788C;
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
 	for (int i = 0; i < 512; i++) {
