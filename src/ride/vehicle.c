@@ -326,6 +326,48 @@ static const sint8 * SwingingTimeToSpriteMaps[] = {
 	SwingingTimeToSpriteMap_11,
 };
 
+typedef struct {
+	sint16 x;
+	sint16 y;
+	uint32 distance;
+} unk_9a36c4;
+
+/** rct2: 0x009A36C4 */
+static const unk_9a36c4 Unk9A36C4[] = {
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, 0, 8716},
+	{-1, -1, 12327},
+};
+
 static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
 {
 	if (cd >= countof(gTrackVehicleInfo)) {
@@ -3642,8 +3684,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			}
 
 			int edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
-			x = vehicle->x + RCT2_ADDRESS(0x009A36C4, sint16)[edi * 4];
-			y = vehicle->y + RCT2_ADDRESS(0x009A36C6, sint16)[edi * 4];
+			x = vehicle->x + Unk9A36C4[edi].x;
+			y = vehicle->y + Unk9A36C4[edi].y;
 			z = vehicle->z;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, NULL)) {
 				vehicle->remaining_distance = 0;
@@ -3722,7 +3764,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 				vehicle->track_y = dx;
 			}
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
+			vehicle->remaining_distance -= Unk9A36C4[edi].distance;
 			unk_F64E20.x = x;
 			unk_F64E20.y = y;
 			if (vehicle->remaining_distance < 0x368A) {
@@ -5398,10 +5440,10 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			.z = vehicle->z
 		};
 
-		location.x += RCT2_ADDRESS(0x009A36C4, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36C6, sint16)[oldC4 * 4];
-		location.x += RCT2_ADDRESS(0x009A36CC, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36CE, sint16)[oldC4 * 4];
+		location.x += Unk9A36C4[oldC4].x;
+		location.y += Unk9A36C4[oldC4].y;
+		location.x += Unk9A36C4[oldC4 + 1].x;
+		location.y += Unk9A36C4[oldC4 + 1].y;
 
 		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
 			vehicle_invalidate(vehicle);
@@ -5431,13 +5473,13 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			direction |= vehicle->var_35 & 1;
 
 			rct_xyz16 location = unk_F64E20;
-			location.x += RCT2_ADDRESS(0x009A36C4, sint16)[direction * 4];
-			location.y += RCT2_ADDRESS(0x009A36C6, sint16)[direction * 4];
+			location.x += Unk9A36C4[direction].x;
+			location.y += Unk9A36C4[direction].y;
 
 			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
 				break;
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, sint16)[direction * 4];
+			vehicle->remaining_distance -= Unk9A36C4[direction].distance;
 			unk_F64E20.x = location.x;
 			unk_F64E20.y = location.y;
 			if (vehicle->remaining_distance < 13962) {
