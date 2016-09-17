@@ -684,7 +684,7 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
  */
 bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground)
 {
-#if NO_RCT2
+#ifdef NO_RCT2
 	return 0;
 #else
 	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
@@ -700,7 +700,7 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
  */
 bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry)
 {
-#if NO_RCT2
+#ifdef NO_RCT2
 	return 0;
 #else
 	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
