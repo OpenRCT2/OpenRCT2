@@ -476,9 +476,13 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
  */
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
 	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x00662D5C, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**
@@ -673,9 +677,13 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
  */
 bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
 	int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**

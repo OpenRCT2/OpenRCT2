@@ -74,6 +74,54 @@
 	#endif // !defined(_MSC_VER)
 #endif
 
+
+typedef struct registers {
+	union {
+		int eax;
+		short ax;
+		struct {
+			char al;
+			char ah;
+		};
+	};
+	union {
+		int ebx;
+		short bx;
+		struct {
+			char bl;
+			char bh;
+		};
+	};
+	union {
+		int ecx;
+		short cx;
+		struct {
+			char cl;
+			char ch;
+		};
+	};
+	union {
+		int edx;
+		short dx;
+		struct {
+			char dl;
+			char dh;
+		};
+	};
+	union {
+		int esi;
+		short si;
+	};
+	union {
+		int edi;
+		short di;
+	};
+	union {
+		int ebp;
+		short bp;
+	};
+} registers;
+
 #ifdef PLATFORM_X86
 	#ifndef FASTCALL
 		#ifdef __GNUC__
