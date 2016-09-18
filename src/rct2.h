@@ -279,6 +279,7 @@ extern uint8 gSavePromptMode;
 extern sint32 gScreenWidth;
 extern sint32 gScreenHeight;
 
+extern char gRCT2AddressAppPath[];
 extern char gRCT2AddressSavedGamesPath[];
 extern char gRCT2AddressSavedGamesPath2[];
 extern char gRCT2AddressScenariosPath[];

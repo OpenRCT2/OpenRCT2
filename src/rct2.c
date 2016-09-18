@@ -114,6 +114,7 @@ uint8 gSavePromptMode;
 sint32 gScreenWidth;
 sint32 gScreenHeight;
 
+char gRCT2AddressAppPath[MAX_PATH];
 char gRCT2AddressSavedGamesPath[MAX_PATH];
 char gRCT2AddressSavedGamesPath2[MAX_PATH];
 char gRCT2AddressScenariosPath[MAX_PATH];
@@ -211,22 +212,23 @@ int rct2_init_directories()
 {
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
-	// check install directory
-	if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
-		log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
-		if (!config_find_or_browse_install_directory()) {
-			utf8 path[MAX_PATH];
-			config_get_default_path(path);
-			log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
-			return 0;
-	}
-	}
-
 	char separator[] = {platform_get_path_separator(), 0};
 
-	char gRCT2AddressAppPath[MAX_PATH] = { 0 };
-
-	strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path);
+	if (str_is_null_or_empty(gCustomRCT2DataPath)) {
+		// check install directory
+		if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
+			log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
+			if (!config_find_or_browse_install_directory()) {
+				utf8 path[MAX_PATH];
+				config_get_default_path(path);
+				log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
+				return 0;
+			}
+		}
+		strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path);
+	} else {
+		strcpy(gRCT2AddressAppPath, gCustomRCT2DataPath);
+	}
 	strcat(gRCT2AddressAppPath, separator);
 
 	strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath);
@@ -475,34 +477,8 @@ void rct2_update()
 const utf8 *get_file_path(int pathId)
 {
 	static utf8 path[MAX_PATH];
-	strcpy(path, gConfigGeneral.game_path);
-
-	// Make sure base path is terminated with a slash
-	if (strlen(path) == 0 || path[strlen(path) - 1] != platform_get_path_separator()) {
-		if (strlen(path) >= MAX_PATH - 1) {
-			log_error("Path for %s too long", RCT2FilePaths[pathId]);
-			path[0] = '\0';
-			return path;
-		}
-
-		char separator[] = {platform_get_path_separator(), 0};
-		strcat(path, separator);
-	}
-
-	// Concatenate file path
-	if (strlen(path) + strlen(RCT2FilePaths[pathId]) > MAX_PATH) {
-		log_error("Path for %s too long", RCT2FilePaths[pathId]);
-		path[0] = '\0';
-		return path;
-	}
-
-	char *pathp = path + strnlen(path, sizeof(path));
-	strcat(path, RCT2FilePaths[pathId]);
-	while (*pathp) {
-		if (*pathp == '\\') *pathp = platform_get_path_separator();
-		pathp++;
-	}
-
+	strcpy(path, gRCT2AddressAppPath);
+	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
 	return path;
 }
 
