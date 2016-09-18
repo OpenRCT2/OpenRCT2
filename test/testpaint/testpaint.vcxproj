@@ -86,6 +86,7 @@
     <ClInclude Include="intercept.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\paint\paint_helpers.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="data.c" />
     <ClCompile Include="intercept.c" />

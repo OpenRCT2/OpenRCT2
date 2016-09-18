@@ -524,36 +524,6 @@ paint_struct * sub_98199C(
 	return ps;
 }
 
-paint_struct * sub_98197C_rotated(
-	uint8 direction,
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
-{
-	if (direction & 1) {
-		return sub_98197C(image_id, x_offset, y_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
-	} else {
-		return sub_98197C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
-	}
-}
-
-paint_struct * sub_98199C_rotated(
-	uint8 direction,
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
-{
-	if (direction & 1) {
-		return sub_98199C(image_id, x_offset, y_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
-	} else {
-		return sub_98199C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
-	}
-}
-
 /**
  * rct2: 0x006881D0
  *
