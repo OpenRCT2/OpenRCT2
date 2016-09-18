@@ -83,13 +83,46 @@ static const char* GetAnsiColorCode(CLIColour color) {
 	};
 }
 
+#ifdef __WINDOWS__
+
+static WORD GetCurrentWindowsConsoleAttribute(HANDLE hConsoleOutput)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(hConsoleOutput, &csbi);
+	return csbi.wAttributes;
+}
+
+static WORD GetWindowsConsoleAttribute(CLIColour color, WORD defaultAttr)
+{
+	switch (color) {
+	case RED:     return FOREGROUND_RED;
+	case GREEN:   return FOREGROUND_GREEN;
+	default:      return defaultAttr;
+	};
+}
+
+#endif
+
 static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
 
 	if(!ShouldUseColor()) {
-		vprintf(fmt, args);
-		va_end(args);
+		if (gTestColor) {
+#ifdef __WINDOWS__
+			HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+			WORD defaultAttr = GetCurrentWindowsConsoleAttribute(hStdOut);
+			SetConsoleTextAttribute(hStdOut, GetWindowsConsoleAttribute(colour, defaultAttr));
+#endif
+			vprintf(fmt, args);
+#ifdef __WINDOWS__
+			SetConsoleTextAttribute(hStdOut, defaultAttr);
+#endif
+			va_end(args);
+		} else {
+			vprintf(fmt, args);
+			va_end(args);
+		}
 		return;
 	}
 
