@@ -4257,23 +4257,23 @@ STR_5945    :{WINDOW_COLOUR_2}Connected edges:
 STR_5946    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
 STR_5948    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
-STR_5949    :<removed string - do not use>
-STR_5950    :{WINDOW_COLOUR_2}Chain lift
-STR_5951    :{WINDOW_COLOUR_2}Apply changes to entire track piece
-STR_5952    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
-STR_5953    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
-STR_5954    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
-STR_5955    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5956    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
-STR_5957    :Southwest
-STR_5958    :Northwest
-STR_5959    :Northeast
-STR_5960    :Southeast
-STR_5961    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5962    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5963    :{WINDOW_COLOUR_2}Collission detection:
-STR_5964    :{WINDOW_COLOUR_2}Raised Corners:
-STR_5965    :{WINDOW_COLOUR_2}Diagonal
+STR_5949    :{WINDOW_COLOUR_2}Chain lift
+STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
+STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
+STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5956    :Southwest
+STR_5957    :Northwest
+STR_5958    :Northeast
+STR_5959    :Southeast
+STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
+STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Collission detection:
+STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Entrance type: {STRINGID}
 
 #############
 # Scenarios #
