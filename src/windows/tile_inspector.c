@@ -464,8 +464,7 @@ static uint64 window_tile_inspector_page_disabled_widgets[] = {
 	(1ULL << WIDX_BUTTON_ROTATE),
 };
 
-void window_tile_inspector_open()
-{
+void window_tile_inspector_open() {
 	rct_window* window;
 
 	// Check if window is already open
@@ -498,12 +497,10 @@ void window_tile_inspector_open()
 	window_tile_inspector_auto_set_buttons(window);
 }
 
-static void window_tile_inspector_load_tile(rct_window* w)
-{
+static void window_tile_inspector_load_tile(rct_window* w) {
 	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 	int numItems = 0;
-	do
-	{
+	do {
 		numItems++;
 	} while (!map_element_is_last_for_tile(element++));
 
@@ -533,8 +530,7 @@ static void corrupt_element() {
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
-static void remove_element(int index)
-{
+static void remove_element(int index) {
 	assert(index < window_tile_inspector_item_count);
 	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 	mapElement += index;
@@ -543,15 +539,13 @@ static void remove_element(int index)
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
-static void rotate_element(int index)
-{
+static void rotate_element(int index) {
 	uint8 new_rotation, path_edges, path_corners;
 
 	assert(index < window_tile_inspector_item_count);
 	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 	mapElement += index;
-	switch (map_element_get_type(mapElement))
-	{
+	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_PATH:
 		if (footpath_element_is_sloped(mapElement)) {
 			new_rotation = (footpath_element_get_slope_direction(mapElement) + 1) & MAP_ELEMENT_DIRECTION_MASK;
@@ -579,8 +573,7 @@ static void rotate_element(int index)
 }
 
 // Swap element with its parent
-static void swap_elements(sint16 first, sint16 second)
-{
+static void swap_elements(sint16 first, sint16 second) {
 	rct_map_element *mapElement;
 	rct_map_element *firstElement = NULL;
 	rct_map_element *secondElement = NULL;
@@ -614,20 +607,17 @@ static void swap_elements(sint16 first, sint16 second)
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
-static void sort_elements(rct_window *w)
-{
+static void sort_elements(rct_window *w) {
 	const rct_map_element *const firstElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
 	// Bubble sort
-	for (int loop_start = 1; loop_start < window_tile_inspector_item_count; loop_start++)
-	{
+	for (int loop_start = 1; loop_start < window_tile_inspector_item_count; loop_start++) {
 		int current_id = loop_start;
 		const rct_map_element *currentElement = firstElement + current_id;
 		const rct_map_element *otherElement = currentElement - 1;
 
 		// While current element's base height is lower, or (when their baseheight is the same) the other map element's clearance height is lower...
-		while (current_id > 0 && (otherElement->base_height > currentElement->base_height || (otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height)))
-		{
+		while (current_id > 0 && (otherElement->base_height > currentElement->base_height || (otherElement->base_height == currentElement->base_height && otherElement->clearance_height > currentElement->clearance_height))) {
 			swap_elements(current_id - 1, current_id);
 			current_id--;
 			currentElement--;
@@ -638,8 +628,7 @@ static void sort_elements(rct_window *w)
 
 // Copied from track.c (track_remove), and modified for raising/lowering
 // Not sure if this should be in this file, track.c, or maybe another one
-static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
-{
+static void track_block_height_offset(rct_map_element *mapElement, uint8 offset) {
 	uint8 type = mapElement->properties.track.type;
 	uint8 sequence = mapElement->properties.track.sequence;
 	sint16 originX = window_tile_inspector_tile_x << 5;
@@ -649,8 +638,7 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 
 	sint16 trackpieceZ = originZ;
 
-	switch (type)
-	{
+	switch (type) {
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		type = TRACK_ELEM_END_STATION;
@@ -665,8 +653,7 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 	trackBlock += mapElement->properties.track.sequence & 0xF;
 
 	uint8 originDirection = map_element_get_direction(mapElement);
-	switch (originDirection)
-	{
+	switch (originDirection) {
 	case 0:
 		originX -= trackBlock->x;
 		originY -= trackBlock->y;
@@ -688,12 +675,10 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 	originZ -= trackBlock->z;
 
 	trackBlock = get_track_def_from_ride(ride, type);
-	for (; trackBlock->index != 255; trackBlock++)
-	{
+	for (; trackBlock->index != 255; trackBlock++) {
 		sint16 x = originX, y = originY, z = originZ;
 
-		switch (originDirection)
-		{
+		switch (originDirection) {
 		case 0:
 			x += trackBlock->x;
 			y += trackBlock->y;
@@ -720,8 +705,7 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 
 		bool found = false;
 		mapElement = map_get_first_element_at(x / 32, y / 32);
-		do
-		{
+		do {
 			if (mapElement->base_height != z / 8)
 				continue;
 
@@ -741,8 +725,7 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 			break;
 		} while (!map_element_is_last_for_tile(mapElement++));
 
-		if (!found)
-		{
+		if (!found) {
 			log_error("Track map element part not found!");
 			return;
 		}
@@ -760,8 +743,7 @@ static void track_block_height_offset(rct_map_element *mapElement, uint8 offset)
 
 // Sets chainlift for entire block
 // Basically a copy of the above function, with just two different lines... should probably be combined somehow
-static void track_block_set_lift(rct_map_element *mapElement, bool chain)
-{
+static void track_block_set_lift(rct_map_element *mapElement, bool chain) {
 	uint8 type = mapElement->properties.track.type;
 	uint8 sequence = mapElement->properties.track.sequence;
 	sint16 originX = window_tile_inspector_tile_x << 5;
@@ -771,8 +753,7 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 
 	sint16 trackpieceZ = originZ;
 
-	switch (type)
-	{
+	switch (type) {
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		type = TRACK_ELEM_END_STATION;
@@ -787,8 +768,7 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 	trackBlock += mapElement->properties.track.sequence & 0xF;
 
 	uint8 originDirection = map_element_get_direction(mapElement);
-	switch (originDirection)
-	{
+	switch (originDirection) {
 	case 0:
 		originX -= trackBlock->x;
 		originY -= trackBlock->y;
@@ -810,12 +790,10 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 	originZ -= trackBlock->z;
 
 	trackBlock = get_track_def_from_ride(ride, type);
-	for (; trackBlock->index != 255; trackBlock++)
-	{
+	for (; trackBlock->index != 255; trackBlock++) {
 		sint16 x = originX, y = originY, z = originZ;
 
-		switch (originDirection)
-		{
+		switch (originDirection) {
 		case 0:
 			x += trackBlock->x;
 			y += trackBlock->y;
@@ -842,8 +820,7 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 
 		bool found = false;
 		mapElement = map_get_first_element_at(x / 32, y / 32);
-		do
-		{
+		do {
 			if (mapElement->base_height != z / 8)
 				continue;
 
@@ -863,8 +840,7 @@ static void track_block_set_lift(rct_map_element *mapElement, bool chain)
 			break;
 		} while (!map_element_is_last_for_tile(mapElement++));
 
-		if (!found)
-		{
+		if (!found) {
 			log_error("Track map element part not found!");
 			return;
 		}
@@ -905,8 +881,7 @@ static void toggle_quarter_collision(rct_map_element *const mapElement, const in
 	mapElement->flags ^= 1 << ((index + 6 - get_current_rotation()) % 4);
 }
 
-static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
-{
+static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		tool_cancel();
@@ -1155,8 +1130,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	} // switch page
 }
 
-static void window_tile_inspector_resize(rct_window *w)
-{
+static void window_tile_inspector_resize(rct_window *w) {
 	w->min_width = WW;
 	w->min_height = MIN_WH;
 	if (w->width < w->min_width) {
@@ -1169,20 +1143,18 @@ static void window_tile_inspector_resize(rct_window *w)
 	}
 }
 
-static void window_tile_inspector_update(rct_window *w)
-{
+static void window_tile_inspector_update(rct_window *w) {
 	// Check if the mouse is hovering over the list
 	if (!widget_is_highlighted(w, WIDX_LIST)) {
 		window_tile_inspector_highlighted_index = -1;
 		widget_invalidate(w, WIDX_LIST);
 	}
 
-	if(gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
+	if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
 		window_close(w);
 }
 
-static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y)
-{
+static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y) {
 	int direction;
 	short mapX, mapY;
 
@@ -1206,8 +1178,7 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 	map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y)
-{
+static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y) {
 	int direction;
 	short mapX, mapY;
 
@@ -1225,22 +1196,19 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 	window_tile_inspector_auto_set_buttons(w);
 }
 
-static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
-{
+static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height) {
 	*width = WW - 30;
 	*height = window_tile_inspector_item_count * LIST_ITEM_HEIGHT;
 }
 
-static void window_tile_inspector_set_page(rct_window *w, const int page)
-{
+static void window_tile_inspector_set_page(rct_window *w, const int page) {
 	w->page = page;
 	w->widgets = tile_inspector_widgets[page];
 	w->enabled_widgets = window_tile_inspector_page_enabled_widgets[page];
 	w->disabled_widgets = window_tile_inspector_page_disabled_widgets[page];
 }
 
-static void window_tile_inspector_auto_set_buttons(rct_window *w)
-{
+static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 	// X and Y spinners
 	bool tile_is_selected = (window_tile_inspector_tile_x != -1) && (window_tile_inspector_tile_y != -1);
 	widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (tile_is_selected && (window_tile_inspector_tile_x < 255)));
@@ -1260,8 +1228,7 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 	widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
 }
 
-static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
-{
+static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y) {
 	// Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
 	const sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
 	int page;
@@ -1285,8 +1252,7 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex
 	window_invalidate(w);
 }
 
-static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
-{
+static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y) {
 	sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
 	if (index < 0 || index >= window_tile_inspector_item_count)
 		window_tile_inspector_highlighted_index = -1;
@@ -1296,8 +1262,7 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex
 	widget_invalidate(w, WIDX_LIST);
 }
 
-static void window_tile_inspector_invalidate(rct_window *w)
-{
+static void window_tile_inspector_invalidate(rct_window *w) {
 	colour_scheme_update(w);
 
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1473,8 +1438,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	}
 }
 
-static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
-{
+static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 	window_draw_widgets(w, dpi);
 
 	// Set medium font size
@@ -1482,7 +1446,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Draw column headers
 	rct_widget *widget;
-	if ((widget= &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY) {
+	if ((widget = &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY) {
 		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY) {
@@ -1509,8 +1473,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &window_tile_inspector_tile_y, 12, w->x + 105, w->y + 24);
 	}
 
-	if (w->selected_list_item != -1)
-	{
+	if (w->selected_list_item != -1) {
 		// X and Y of first element in detail box
 		int x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 		int y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
@@ -1536,7 +1499,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) land_ownership = STR_LAND_SALE;
 			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) land_ownership = STR_CONSTRUCTION_RIGHTS_OWNED;
 			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) land_ownership = STR_CONSTRUCTION_RIGHTS_SALE;
-			else land_ownership = STR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
+			else land_ownership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &land_ownership, 12, x, y + 22);
 
 			// Water level
@@ -1623,8 +1586,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case PAGE_SCENERY:
-		{
+		case PAGE_SCENERY: {
 			// Details
 			// Age
 			sint16 age = mapElement->properties.scenery.age;
@@ -1683,8 +1645,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
-{
+static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex) {
 	int x = 3;
 	int y = LIST_ITEM_HEIGHT * (window_tile_inspector_item_count - 1);
 	int i = 0;
