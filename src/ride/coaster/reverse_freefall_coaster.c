@@ -13,3 +13,77 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../config.h"
+#include "../../drawing/drawing.h"
+#include "../../paint/supports.h"
+#include "../../interface/viewport.h"
+#include "../../paint/map_element/map_element.h"
+#include "../../paint/paint.h"
+#include "../../interface/window.h"
+#include "../../localisation/localisation.h"
+#include "../../sprites.h"
+#include "../../world/map.h"
+#include "../../world/sprite.h"
+#include "../ride_data.h"
+#include "../track_data.h"
+#include "../track_paint.h"
+
+enum {
+	SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,
+	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE = 22163,
+};
+
+static const uint32 reverse_freefall_rc_track_pieces_station[4] = {
+	SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
+	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
+	SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
+	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
+};
+
+static void paint_reverse_freefall_rc_station_track(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+{
+	rct_ride * ride = get_ride(rideIndex);
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+	uint32 imageId = entranceStyle->base_image_id;
+	if (!(gTrackColours[SCHEME_MISC] & (1 << 29))) {
+		imageId &= 0x7FFFF;
+	}
+
+	if (direction == 0 || direction == 2) {
+		// height -= 2 (height - 2)
+		imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
+		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+		// height += 2 (height)
+
+		imageId = reverse_freefall_rc_track_pieces_station[direction] | gTrackColours[SCHEME_TRACK];
+		sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+	} else if (direction == 1 || direction == 3) {
+		// height -= 2 (height - 2)
+		imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
+		sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
+		// height += 2 (height)
+
+		imageId = reverse_freefall_rc_track_pieces_station[direction] | gTrackColours[SCHEME_TRACK];
+		sub_98199C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+	}
+
+	wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	paint_util_push_tunnel_right(height, TUNNEL_6);
+
+	track_paint_util_draw_station_platform(ride, direction, height, 5, mapElement);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction)
+{
+	switch (trackType) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return paint_reverse_freefall_rc_station_track;
+	}
+	return NULL;
+}
