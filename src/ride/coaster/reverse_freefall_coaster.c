@@ -262,30 +262,40 @@ static void paint_reverse_freefall_rc_station(uint8 rideIndex, uint8 trackSequen
 
 static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
+	TESTPAINT_IGNORE_ALL();
+
 	static const sint8 bbHeights03[] = { 1, 6, 14, 37, 64 };
 	static const sint8 bbHeights12[] = { 1, 6, 14, 27, 59 };
 	static const sint32 supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
+	static const sint32 tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
 	uint32 supportsImageId = reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction] | gTrackColours[SCHEME_SUPPORTS];
 	uint32 trackImageId = reverse_freefall_rc_track_pieces_slope[trackSequence][direction] | gTrackColours[SCHEME_TRACK];
-
+	sint8 bbHeight;
+	bool isDirection03 = (direction == 0 || direction == 3);
 	switch (trackSequence) {
 	case 0:
 	case 1:
 	case 2:
 	case 3:
 	case 4:
-		if (direction == 0 || direction == 3) {
-			sint8 bbHeight = bbHeights03[trackSequence];
+		if (isDirection03) {
+			bbHeight = bbHeights03[trackSequence];
 			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-			paint_util_push_tunnel_left(height, TUNNEL_6);
+
+			sint32 tunnelOffset = tunnelOffsets03[trackSequence];
+			if (direction & 1) {
+				paint_util_push_tunnel_right(height + tunnelOffset, TUNNEL_6);
+			} else {
+				paint_util_push_tunnel_left(height + tunnelOffset, TUNNEL_6);
+			}
 		} else {
-			sint8 bbHeight = bbHeights12[trackSequence];
-			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-			paint_util_push_tunnel_right(height, TUNNEL_6);
+			bbHeight = bbHeights12[trackSequence];
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 		}
+
 		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
@@ -299,15 +309,15 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 				floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
 			}
 			sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
-			sub_98199C(supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11, 3, height);
 		} else {
-			sub_98197C(supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11, 3, height);
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
 		break;
 	case 6:
-		if (direction == 0 || direction == 3) {
+		if (isDirection03) {
 			sub_98197C_rotated(direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
 			sub_98199C_rotated(direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
 		} else {
