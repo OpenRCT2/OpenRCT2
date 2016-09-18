@@ -32,6 +32,8 @@
 enum {
 	SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,
 	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE = 22163,
+	SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
+	SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE = 22165,
 };
 
 static const uint32 reverse_freefall_rc_track_pieces_station[4] = {
@@ -41,7 +43,30 @@ static const uint32 reverse_freefall_rc_track_pieces_station[4] = {
 	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
 };
 
-static void paint_reverse_freefall_rc_station_track(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
+{
+	uint32 imageId = 0;
+	bool isChained = mapElement->type & (1 << 7);
+
+	if (direction & 1) {
+		imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
+		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	} else {
+		imageId += SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
+		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		wooden_a_supports_paint_setup((direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void paint_reverse_freefall_rc_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	rct_ride * ride = get_ride(rideIndex);
 	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -68,7 +93,7 @@ static void paint_reverse_freefall_rc_station_track(uint8 rideIndex, uint8 track
 		sub_98199C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 	}
 
-	wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	wooden_a_supports_paint_setup((direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	paint_util_push_tunnel_right(height, TUNNEL_6);
 
 	track_paint_util_draw_station_platform(ride, direction, height, 5, mapElement);
@@ -80,10 +105,12 @@ static void paint_reverse_freefall_rc_station_track(uint8 rideIndex, uint8 track
 TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction)
 {
 	switch (trackType) {
+	case TRACK_ELEM_FLAT:
+		return paint_reverse_freefall_rc_flat;
 	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
-		return paint_reverse_freefall_rc_station_track;
+		return paint_reverse_freefall_rc_station;
 	}
 	return NULL;
 }
