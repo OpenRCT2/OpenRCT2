@@ -4259,6 +4259,15 @@ STR_5947    :{WINDOW_COLOUR_2}Apply changes to entire track piece
 STR_5948    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
 STR_5949    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
 STR_5950    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
+STR_5951    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5953    :Southwest
+STR_5954    :Northwest
+STR_5955    :Northeast
+STR_5956    :Southeast
+STR_5957    :{WINDOW_COLOUR_2}Quadrant placement:
+STR_5958    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
+STR_5959    :{WINDOW_COLOUR_2}Collission detection:
 
 #TODO: Fix rebase
 STR_5920    :Render weather effects
