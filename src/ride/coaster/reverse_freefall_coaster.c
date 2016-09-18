@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../config.h"
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
 #include "../../interface/viewport.h"
@@ -266,11 +265,12 @@ static void paint_reverse_freefall_rc_station(uint8 rideIndex, uint8 trackSequen
 
 static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
+	static const sint8 bbHeights03[] = { 1, 6, 14, 37, 64 };
+	static const sint8 bbHeights12[] = { 1, 6, 14, 27, 59 };
 	static const sint32 supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
 
 	uint32 supportsImageId = reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction] | gTrackColours[SCHEME_SUPPORTS];
 	uint32 trackImageId = reverse_freefall_rc_track_pieces_slope[trackSequence][direction] | gTrackColours[SCHEME_TRACK];
-	uint32 floorImageId;
 
 	switch (trackSequence) {
 	case 0:
@@ -278,13 +278,15 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 	case 2:
 	case 3:
 	case 4:
-		if (!(direction & 1)) {
-			sub_98197C(supportsImageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
-			sub_98199C(trackImageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+		if (direction == 0 || direction == 3) {
+			sint8 bbHeight = bbHeights03[trackSequence];
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 		} else {
-			sub_98197C(supportsImageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
-			sub_98199C(trackImageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+			sint8 bbHeight = bbHeights12[trackSequence];
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 			paint_util_push_tunnel_right(height, TUNNEL_6);
 		}
 		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -293,6 +295,7 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 		break;
 	case 5:
 		if (wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
+			uint32 floorImageId;
 			if (direction & 1) {
 				floorImageId = SPR_FLOOR_PLANKS_90_DEG | gTrackColours[SCHEME_SUPPORTS];
 			} else {
@@ -307,12 +310,12 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
 		break;
 	case 6:
-		if (!(direction & 1)) {
-			sub_98197C(supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128, get_current_rotation());
-			sub_98199C(trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128, get_current_rotation());
+		if (direction == 0 || direction == 3) {
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
 		} else {
-			sub_98197C(supportsImageId, 0, 0, 20, 5, 79, height, 6, 0, height, get_current_rotation());
-			sub_98199C(trackImageId, 0, 0, 20, 5, 79, height, 6, 0, height, get_current_rotation());
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
 		}
 		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -333,11 +336,7 @@ static void paint_reverse_freefall_rc_vertical(uint8 rideIndex, uint8 trackSeque
 		break;
 	case 1:
 		trackImageId = reverse_freefall_rc_track_pieces_vertical[direction] | gTrackColours[SCHEME_TRACK];
-		if (!(direction & 1)) {
-			sub_98197C(trackImageId, 0, 0, 2, 20, 79, height, 0, 6, height, get_current_rotation());
-		} else {
-			sub_98197C(trackImageId, 0, 0, 20, 2, 79, height, 6, 0, height, get_current_rotation());
-		}
+		sub_98197C_rotated(direction, trackImageId, 0, 0, 2, 20, 79, height, 0, 6, height);
 		paint_util_set_vertical_tunnel(height + 80);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 80, 0x20);
