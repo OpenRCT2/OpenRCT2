@@ -827,7 +827,7 @@ void window_close_all()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
@@ -841,7 +841,7 @@ void window_close_all_except_class(rct_windowclass cls)
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++){
 		if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
