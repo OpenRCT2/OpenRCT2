@@ -209,11 +209,11 @@ static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence,
 	if (direction & 1) {
 		uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, TUNNEL_6);
 	} else {
 		uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}
 
 	wooden_a_supports_paint_setup((direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -282,8 +282,8 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 		} else {
 			sint8 bbHeight = bbHeights12[trackSequence];
-			sub_98197C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-			sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
 			paint_util_push_tunnel_right(height, TUNNEL_6);
 		}
 		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -333,7 +333,11 @@ static void paint_reverse_freefall_rc_vertical(uint8 rideIndex, uint8 trackSeque
 		break;
 	case 1:
 		trackImageId = reverse_freefall_rc_track_pieces_vertical[direction] | gTrackColours[SCHEME_TRACK];
-		sub_98197C_rotated(direction, trackImageId, 0, 0, 2, 20, 79, height, 0, 6, height);
+		if (direction == 0 || direction == 3) {
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 2, 20, 79, height, 0, 6, height);
+		} else {
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 2, 20, 79, height, 30, 6, height);
+		}
 		paint_util_set_vertical_tunnel(height + 80);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 80, 0x20);
