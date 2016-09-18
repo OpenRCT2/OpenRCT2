@@ -4222,6 +4222,12 @@ STR_5910    :Použít
 STR_5911    :Průhledné cesty
 STR_5912    :Přěpnout průhledné cesty
 STR_5913    :Chat
+STR_5914    :Neznámá atrakce
+STR_5915    :Hráč
+STR_5916    :{COMMA16} hráč
+STR_5917    :{COMMA16} hráči
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 
 ###############################################################################
