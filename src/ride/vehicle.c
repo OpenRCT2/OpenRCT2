@@ -6997,7 +6997,7 @@ static void sub_6DB807(rct_vehicle *vehicle)
 	sprite_move(x, y, z, (rct_sprite*)vehicle);
 }
 
-extern const rct_xy16 duck_move_offset[];
+extern const rct_xy16 duck_move_offset[4];
 
 /**
  * Collision Detection
@@ -7101,8 +7101,10 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (direction < 0x14) continue;
 
-			uint32 next_x_diff = abs(x + duck_move_offset[(4 + vehicle->sprite_direction) >> 3].x - collideVehicle->x);
-			uint32 next_y_diff = abs(y + duck_move_offset[(4 + vehicle->sprite_direction) >> 3].y - collideVehicle->y);
+			uint32 offsetSpriteDirection = (vehicle->sprite_direction + 4) & 31;
+			uint32 offsetDirection = offsetSpriteDirection >> 3;
+			uint32 next_x_diff = abs(x + duck_move_offset[offsetDirection].x - collideVehicle->x);
+			uint32 next_y_diff = abs(y + duck_move_offset[offsetDirection].y - collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
