@@ -206,15 +206,12 @@ static const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
 
 static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
-	uint32 imageId = 0;
-	bool isChained = mapElement->type & (1 << 7);
-
 	if (direction & 1) {
-		imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
+		uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 		paint_util_push_tunnel_right(height, TUNNEL_0);
 	} else {
-		imageId += SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
+		uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
