@@ -720,6 +720,28 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     auto texture = _textureCache->GetOrLoadImageTexture(image);
     command.texColour = texture;
 
+    bool special = false;
+    if (!(image & IMAGE_TYPE_REMAP_2_PLUS) && (image & IMAGE_TYPE_REMAP)) {
+        if (((image >> 19) & 0x7F) == 32) {
+            special = true;
+        }
+    }
+
+    if (!((image & IMAGE_TYPE_REMAP_2_PLUS) && !(image & IMAGE_TYPE_REMAP))) {
+        tertiaryColour = 0;
+    }
+
+    texture = _textureCache->GetOrLoadPaletteTexture(image, tertiaryColour, special);
+    command.texPalette = texture;
+
+    if (image & IMAGE_TYPE_TRANSPARENT) {
+        command.flags |= (1 << 3);
+    }
+    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP)){
+        command.flags |= (1 << 1);
+    }
+    command.flags |= special << 2;
+
     command.bounds[0] = left;
     command.bounds[1] = top;
     command.bounds[2] = right;
@@ -955,6 +977,15 @@ void OpenGLDrawingContext::FlushImages()
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};
         instance.mask = command.mask;
+        instance.texPaletteAtlas = command.texPalette.index;
+        if (instance.flags != 0) {
+            instance.texPaletteBounds = {
+                command.texPalette.normalizedBounds.x,
+                command.texPalette.normalizedBounds.y,
+                (command.texPalette.normalizedBounds.z - command.texPalette.normalizedBounds.x) / (float)(command.texPalette.bounds.z - command.texPalette.bounds.x),
+                (command.texPalette.normalizedBounds.w - command.texPalette.normalizedBounds.y) / (float)(command.texPalette.bounds.w - command.texPalette.bounds.y)
+            };
+        }
 
         instances.push_back(instance);
     }

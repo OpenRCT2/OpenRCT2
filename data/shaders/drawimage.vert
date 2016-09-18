@@ -7,6 +7,8 @@ in int   ivTexColourAtlas;
 in vec4  ivTexColourBounds;
 in int   ivTexMaskAtlas;
 in vec4  ivTexMaskBounds;
+in int   ivTexPaletteAtlas;
+in vec4  ivTexPaletteBounds;
 in int   ivFlags;
 in vec4  ivColour;
 in ivec4 ivBounds;
@@ -23,6 +25,8 @@ flat out int   fTexColourAtlas;
 out vec2       fTexColourCoords;
 flat out int   fTexMaskAtlas;
 out vec2       fTexMaskCoords;
+flat out int   fTexPaletteAtlas;
+flat out vec4  fTexPaletteBounds;
 flat out int   fMask;
 
 void main()
@@ -64,6 +68,8 @@ void main()
     fMask = ivMask;
     fTexColourAtlas = ivTexColourAtlas;
     fTexMaskAtlas = ivTexMaskAtlas;
+    fTexPaletteAtlas = ivTexPaletteAtlas;
+    fTexPaletteBounds = ivTexPaletteBounds;
 
     gl_Position = vec4(pos, 0.0, 1.0);
 }
