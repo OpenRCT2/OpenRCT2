@@ -32,7 +32,14 @@ enum {
 	SPR_REVERSE_FREEFALL_RC_STATION_NW_SE = 22163,
 	SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
 	SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE = 22165,
-
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE = 22166,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE = 22167,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW = 22168,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW = 22169,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE = 22170,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE = 22171,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW = 22172,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SE_NW = 22173,
 	SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_0 = 22174,
 	SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_1 = 22175,
 	SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_2 = 22176,
@@ -184,6 +191,20 @@ static const uint32 reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
 	},
 };
 
+static const uint32 reverse_freefall_rc_track_pieces_vertical[4] = {
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW,
+};
+
+static const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW,
+	SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SE_NW,
+};
+
 static void paint_reverse_freefall_rc_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	uint32 imageId = 0;
@@ -302,7 +323,26 @@ static void paint_reverse_freefall_rc_slope(uint8 rideIndex, uint8 trackSequence
 
 static void paint_reverse_freefall_rc_vertical(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
-	// 0x00768E04
+	uint32 supportsImageId, trackImageId;
+	switch (trackSequence) {
+	case 0:
+		supportsImageId = reverse_freefall_rc_track_pieces_vertical_supports[direction] | gTrackColours[SCHEME_SUPPORTS];
+		sub_98197C(supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height, get_current_rotation());
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + 80, 0x20);
+		break;
+	case 1:
+		trackImageId = reverse_freefall_rc_track_pieces_vertical[direction] | gTrackColours[SCHEME_TRACK];
+		if (!(direction & 1)) {
+			sub_98197C(trackImageId, 0, 0, 2, 20, 79, height, 0, 6, height, get_current_rotation());
+		} else {
+			sub_98197C(trackImageId, 0, 0, 20, 2, 79, height, 6, 0, height, get_current_rotation());
+		}
+		paint_util_set_vertical_tunnel(height + 80);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + 80, 0x20);
+		break;
+	}
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction)
