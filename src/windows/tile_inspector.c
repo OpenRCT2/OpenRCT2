@@ -146,6 +146,9 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_SCENERY_CHECK_COLLISION_W,
 
 	// Entrance
+	WIDX_ENTRANCE_SPINNER_HEIGHT = PAGE_WIDGETS,
+	WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE,
+	WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE,
 
 	// Fence
 	WIDX_FENCE_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -308,11 +311,14 @@ static rct_widget windowTileInspectorWidgetsScenery[] = {
 };
 
 #define ENT_GBPB PADDING_BOTTOM					// Entrance group box properties bottom
-#define ENT_GBPT (ENT_GBPB + 16 + 0 * 21)		// Entrance group box properties top
+#define ENT_GBPT (ENT_GBPB + 16 + 1 * 21)		// Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Entrance group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20 + 0 * 11)		// Entrance group box info top
+#define ENT_GBDT (ENT_GBDB + 20 + 1 * 11)		// Entrance group box info top
 static rct_widget windowTileInspectorWidgetsEntrance[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
+	{ WWT_SPINNER,			1,	GBS(WH - ENT_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - ENT_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - ENT_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE
 	{ WIDGETS_END },
 };
 
@@ -453,7 +459,7 @@ static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
@@ -1110,6 +1116,20 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		break;
 
 	case PAGE_ENTRANCE:
+		switch (widgetIndex) {
+		case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
+			mapElement->base_height++;
+			mapElement->clearance_height++;
+			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			break;
+		case WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE:
+			mapElement->base_height--;
+			mapElement->clearance_height--;
+			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
+			break;
+		} // switch widget index
 		break;
 
 	case PAGE_FENCE:
@@ -1417,7 +1437,12 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		break;
 	}
 	case PAGE_ENTRANCE:
-
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
+		w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
 		break;
 	case PAGE_FENCE:
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1630,6 +1655,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			break;
 		}
 
+		case PAGE_ENTRANCE: {
+			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, 12, x, y);
+		}
+
 		case PAGE_FENCE: {
 			// Properties
 			// Raise / lower label
@@ -1692,12 +1722,6 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			typeName = buffer;
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
-			//snprintf(
-			//	buffer, sizeof(buffer),
-			//	"Entrance (%s)",
-			//	language_get_string(EntranceTypes[mapElement->properties.entrance.type])
-			//);
-			//type_name = buffer;
 			typeName = "Entrance";
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:

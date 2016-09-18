@@ -3613,6 +3613,7 @@ enum {
 	STR_TILE_INSPECTOR_COLLISSION = 5962,
 	STR_TILE_INSPECTOR_SURFACE_CORNERS = 5963,
 	STR_TILE_INSPECTOR_SURFACE_DIAGONAL = 5964,
+	STR_TILE_INSPECTOR_ENTRANCE_TYPE = 5965,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
