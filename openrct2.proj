@@ -56,6 +56,11 @@
     <PublishInstallerExe>$(ArtifactsDir)openrct2-installer$(PublishPostfix).exe</PublishInstallerExe>
 
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
+
+    <!-- Set openrct2.sln properties -->
+    <SlnProperties>Configuration=$(Configuration)</SlnProperties>
+    <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
+    <SlnProperties>$(SlnProperties);OPENRCT2_DEFINES=$(OPENRCT2_DEFINES)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
@@ -151,7 +156,7 @@
     <Delete Files="@(CleanItems)" />
     <Delete Files="%(SignItems.Identity).signed" />
     <RemoveDir Directories="$(TargetDir)data" />
-    <MSBuild Projects="openrct2.sln" Targets="Clean" />
+    <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
 
   <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="CheckLibs">
@@ -173,10 +178,10 @@
   </Target>
 
   <Target Name="Build">
-    <MSBuild Projects="openrct2.sln" Targets="Build" />
+    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
   </Target>
   <Target Name="Rebuild">
-    <MSBuild Projects="openrct2.sln" Targets="Rebuild" />
+    <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
   <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
