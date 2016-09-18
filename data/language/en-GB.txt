@@ -4273,7 +4273,14 @@ STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Collission detection:
 STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrance type: {STRINGID}
+STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
+STR_5967    :Middle
+STR_5968    :Left
+STR_5969    :Right
+STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

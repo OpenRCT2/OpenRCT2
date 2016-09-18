@@ -59,6 +59,12 @@ static const rct_string_id entranceTypeStringIds[] = {
 	STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
 };
 
+static const rct_string_id parkEntrancePartStringIds[] = {
+	STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
+	STR_TILE_INSPECTOR_ENTRANCE_LEFT,
+	STR_TILE_INSPECTOR_ENTRANCE_RIGHT
+};
+
 enum WINDOW_TILE_INSPECTOR_PAGES {
 	PAGE_DEFAULT,
 	PAGE_SURFACE,
@@ -313,7 +319,7 @@ static rct_widget windowTileInspectorWidgetsScenery[] = {
 #define ENT_GBPB PADDING_BOTTOM					// Entrance group box properties bottom
 #define ENT_GBPT (ENT_GBPB + 16 + 1 * 21)		// Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Entrance group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20 + 1 * 11)		// Entrance group box info top
+#define ENT_GBDT (ENT_GBDB + 20 + 3 * 11)		// Entrance group box info top
 static rct_widget windowTileInspectorWidgetsEntrance[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - ENT_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
@@ -1656,8 +1662,40 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 		}
 
 		case PAGE_ENTRANCE: {
+			// Entrance type
 			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, 12, x, y);
+
+			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
+				// Park entrance ID
+				int middleX = windowTileInspectorTileX << 5;
+				int middleY = windowTileInspectorTileY << 5;
+				// TODO: Make this work with Left/Right park entrance parts
+				sint16 parkEntranceIndex = park_get_entrance_index(middleX, middleY, mapElement->base_height * 8);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, 12, x, y + 11);
+			}
+			else {
+				sint16 rideEntranceIndex = (mapElement->properties.entrance.index & 0x30) >> 4;
+				if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+					// Ride entrance ID
+					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, 12, x, y + 11);
+				}
+				else {
+					// Ride exit ID
+					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, 12, x, y + 11);
+				}
+			}
+
+			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
+				// Entrance part
+				rct_string_id entrancePart = parkEntrancePartStringIds[mapElement->properties.entrance.index & 0x0F];
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, 12, x, y + 22);
+			}
+			else {
+				// Ride ID
+				sint16 rideId = mapElement->properties.entrance.ride_index;
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, 12, x, y + 22);
+			}
 		}
 
 		case PAGE_FENCE: {
