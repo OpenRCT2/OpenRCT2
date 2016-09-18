@@ -168,4 +168,18 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 void viewport_draw_money_effects();
 void viewport_paint_setup();
 
+// TESTING
+#ifdef __TESTPAINT__
+	void testpaint_clear_ignore();
+	void testpaint_ignore(uint8 direction, uint8 trackSequence);
+	void testpaint_ignore_all();
+	bool testpaint_is_ignored(uint8 direction, uint8 trackSequence);
+
+	#define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
+	#define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
+#else
+	#define TESTPAINT_IGNORE(direction, trackSequence)
+	#define TESTPAINT_IGNORE_ALL()
+#endif
+
 #endif

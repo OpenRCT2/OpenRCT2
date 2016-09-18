@@ -576,7 +576,12 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 				callCount = 0;
 
+				testpaint_clear_ignore();
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+				if (testpaint_is_ignored(direction, trackSequence)) {
+					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d]\n", direction, trackSequence);
+					continue;
+				}
 
 				uint8 newCallCount = callCount;
 				function_call newCalls[256];
