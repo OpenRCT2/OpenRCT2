@@ -4268,6 +4268,8 @@ STR_5956    :Southeast
 STR_5957    :{WINDOW_COLOUR_2}Quadrant placement:
 STR_5958    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
 STR_5959    :{WINDOW_COLOUR_2}Collission detection:
+STR_5960    :{WINDOW_COLOUR_2}Raised Corners:
+STR_5961    :{WINDOW_COLOUR_2}Diagonal
 
 #TODO: Fix rebase
 STR_5920    :Render weather effects
