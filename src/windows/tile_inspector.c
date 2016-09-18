@@ -101,7 +101,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	PAGE_WIDGETS,
 
 	// Surface
-	WIDX_SURFACE_BUTTON_REMOVE_FENCES = PAGE_WIDGETS,
+	WIDX_SURFACE_SPINNER_HEIGHT = PAGE_WIDGETS,
+	WIDX_SURFACE_SPINNER_HEIGHT_INCREASE,
+	WIDX_SURFACE_SPINNER_HEIGHT_DECREASE,
+	WIDX_SURFACE_BUTTON_REMOVE_FENCES,
 	WIDX_SURFACE_BUTTON_RESTORE_FENCES,
 	WIDX_SURFACE_CHECK_CORNER_N,
 	WIDX_SURFACE_CHECK_CORNER_E,
@@ -232,18 +235,21 @@ static rct_widget window_tile_inspector_widgets[] = {
 
 // Group boxes .top and .bottom for a given window height offsets from the bottom
 #define SUR_GBPB PADDING_BOTTOM					// Surface group box properties bottom
-#define SUR_GBPT (SUR_GBPB + 16 + 3 * 21)		// Surface group box properties top
+#define SUR_GBPT (SUR_GBPB + 16 + 4 * 21)		// Surface group box properties top
 #define SUR_GBDB (SUR_GBPT + GROUPBOX_PADDING)	// Surface group box details bottom
 #define SUR_GBDT (SUR_GBDB + 20 + 4 * 11)		// Surface group box details top
 static rct_widget window_tile_inspector_widgets_surface[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 0, 0),	STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
-	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 1, 0),	STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
+	{ WWT_SPINNER,			1,	GBS(WH - SUR_GBPT, 1, 0),				STR_NONE,					STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - SUR_GBPT, 1, 0),				STR_NUMERIC_UP,				STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - SUR_GBPT, 1, 0),				STR_NUMERIC_DOWN,			STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_DECREASE
+	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 0, 1),	STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
+	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 1, 1),	STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
 	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 0),	STR_NONE,	STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_N
 	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 2, GBBT(WH - SUR_GBPT, 2) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_E
 	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 2),	STR_NONE,	STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_S
 	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 0, GBBT(WH - SUR_GBPT, 2) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_W
-	{ WWT_CHECKBOX,			1,	GBBF(WH - SUR_GBPT, 0, 2),	STR_TILE_INSPECTOR_SURFACE_DIAGONAL,	STR_NONE }, // WIDX_SURFACE_CHECK_DIAGONAL
+	{ WWT_CHECKBOX,			1,	GBBF(WH - SUR_GBPT, 0, 4),	STR_TILE_INSPECTOR_SURFACE_DIAGONAL,	STR_NONE }, // WIDX_SURFACE_CHECK_DIAGONAL
 	{ WIDGETS_END },
 };
 
@@ -434,7 +440,7 @@ static rct_window_event_list window_tile_inspector_events = {
 
 static uint64 window_tile_inspector_page_enabled_widgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
@@ -972,27 +978,45 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	switch (w->page) {
 	case PAGE_SURFACE:
 		switch (widgetIndex) {
+		case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
+			mapElement->base_height++;
+			mapElement->clearance_height++;
+			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			break;
+		case WIDX_SURFACE_SPINNER_HEIGHT_DECREASE:
+			mapElement->base_height--;
+			mapElement->clearance_height--;
+			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			widget_invalidate(w, WIDX_PATH_SPINNER_HEIGHT);
+			break;
 		case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
 			mapElement->properties.surface.ownership &= ~0xF;
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			break;
-
 		case WIDX_SURFACE_BUTTON_RESTORE_FENCES:
 			update_park_fences(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			break;
-
 		case WIDX_SURFACE_CHECK_CORNER_N:
 		case WIDX_SURFACE_CHECK_CORNER_E:
 		case WIDX_SURFACE_CHECK_CORNER_S:
 		case WIDX_SURFACE_CHECK_CORNER_W:
 			mapElement->properties.surface.slope ^= 1 << (((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 6 - get_current_rotation()) % 4);
+			if (mapElement->properties.surface.slope & 0x0F) {
+				mapElement->clearance_height = mapElement->base_height + 2;
+			}
+			else {
+				mapElement->clearance_height = mapElement->base_height;
+			}
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			widget_invalidate(w, widgetIndex);
 			break;
-
 		case WIDX_SURFACE_CHECK_DIAGONAL:
 			mapElement->properties.surface.slope ^= 0x10;
+			if (mapElement->properties.surface.slope & 0x10) {
+				mapElement->clearance_height = mapElement->base_height + 4;
+			}
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			widget_invalidate(w, widgetIndex);
 			break;
@@ -1307,18 +1331,26 @@ static void window_tile_inspector_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case PAGE_SURFACE:
-		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].top = GBBT(properties_anchor, 0);
-		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].bottom = GBBB(properties_anchor, 0);
-		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].top = GBBT(properties_anchor, 0);
-		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].bottom = GBBB(properties_anchor, 0);
-		w->widgets[WIDX_SURFACE_CHECK_CORNER_N].top = GBBT(properties_anchor, 1) + 7 * 0;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(properties_anchor, 0) + 3;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(properties_anchor, 0) - 3;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(properties_anchor, 0) + 4;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(properties_anchor, 0) + 8;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].top = GBBB(properties_anchor, 0) - 8;
+		w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(properties_anchor, 0) - 4;
+		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].top = GBBT(properties_anchor, 1);
+		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].bottom = GBBB(properties_anchor, 1);
+		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].top = GBBT(properties_anchor, 1);
+		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].bottom = GBBB(properties_anchor, 1);
+		w->widgets[WIDX_SURFACE_CHECK_CORNER_N].top = GBBT(properties_anchor, 2) + 7 * 0;
 		w->widgets[WIDX_SURFACE_CHECK_CORNER_N].bottom = w->widgets[WIDX_SURFACE_CHECK_CORNER_N].top + 13;
-		w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top = GBBT(properties_anchor, 1) + 7 * 1;
+		w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top = GBBT(properties_anchor, 2) + 7 * 1;
 		w->widgets[WIDX_SURFACE_CHECK_CORNER_E].bottom = w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top + 13;
-		w->widgets[WIDX_SURFACE_CHECK_CORNER_S].top = GBBT(properties_anchor, 1) + 7 * 2;
+		w->widgets[WIDX_SURFACE_CHECK_CORNER_S].top = GBBT(properties_anchor, 2) + 7 * 2;
 		w->widgets[WIDX_SURFACE_CHECK_CORNER_S].bottom = w->widgets[WIDX_SURFACE_CHECK_CORNER_S].top + 13;
-		w->widgets[WIDX_SURFACE_CHECK_CORNER_W].top = GBBT(properties_anchor, 1) + 7 * 1;
+		w->widgets[WIDX_SURFACE_CHECK_CORNER_W].top = GBBT(properties_anchor, 2) + 7 * 1;
 		w->widgets[WIDX_SURFACE_CHECK_CORNER_W].bottom = w->widgets[WIDX_SURFACE_CHECK_CORNER_W].top + 13;
+		w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top = GBBT(properties_anchor, 3) + 7 * 1;
+		w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_N, mapElement->properties.surface.slope & (1 << ((4 + 2 - get_current_rotation()) % 4)));
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_E, mapElement->properties.surface.slope & (1 << ((4 + 3 - get_current_rotation()) % 4)));
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_S, mapElement->properties.surface.slope & (1 << ((4 + 0 - get_current_rotation()) % 4)));
@@ -1512,6 +1544,16 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &water_level, 12, x, y + 33);
 
 			// Properties
+			// Raise / lower label
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+
+			// Current base height
+			x = w->x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
+			int base_height = mapElement->base_height;
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &base_height, 12, x, y);
+
 			// Raised corners
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top;
