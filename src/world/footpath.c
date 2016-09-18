@@ -220,7 +220,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement->properties.path.additions = pathItemType;
 		mapElement->properties.path.addition_status = 255;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-		if (flags & (1 << 6))
+		if (flags & GAME_COMMAND_FLAG_GHOST)
 			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
 		footpath_queue_chain_reset();
