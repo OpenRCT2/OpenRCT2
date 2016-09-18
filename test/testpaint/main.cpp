@@ -133,11 +133,70 @@ static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
 }
 
 #if defined(__WINDOWS__)
+
+#include <shellapi.h>
+
 int main(int argc, char *argv[]);
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = NULL;
+
+utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
+{
+	if (codepoint <= 0x7F) {
+		dst[0] = (utf8)codepoint;
+		return dst + 1;
+	} else if (codepoint <= 0x7FF) {
+		dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+		dst[1] = 0x80 | (codepoint & 0x3F);
+		return dst + 2;
+	} else if (codepoint <= 0xFFFF) {
+		dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+		dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[2] = 0x80 | (codepoint & 0x3F);
+		return dst + 3;
+	} else {
+		dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+		dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+		dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[3] = 0x80 | (codepoint & 0x3F);
+		return dst + 4;
+	}
+}
+
+utf8 *widechar_to_utf8(const wchar_t *src)
+{
+	utf8 *result = (utf8 *)malloc((wcslen(src) * 4) + 1);
+	utf8 *dst = result;
+
+	for (; *src != 0; src++) {
+		dst = utf8_write_codepoint(dst, *src);
+	}
+	*dst++ = 0;
+
+	size_t size = (size_t)(dst - result);
+	return (utf8 *)realloc(result, size);
+}
+
+utf8 **windows_get_command_line_args(int *outNumArgs)
+{
+	int argc;
+
+	// Get command line arguments as widechar
+	LPWSTR commandLine = GetCommandLineW();
+	LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
+
+	// Convert to UTF-8
+	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
+	for (int i = 0; i < argc; i++) {
+		argvUtf8[i] = widechar_to_utf8(argvW[i]);
+	}
+	LocalFree(argvW);
+
+	*outNumArgs = argc;
+	return argvUtf8;
+}
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
@@ -152,7 +211,16 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
 
-	int gExitCode = main(0, NULL);
+	int argc;
+	char ** argv = (char**)windows_get_command_line_args(&argc);
+
+	int gExitCode = main(argc, argv);
+
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
 	
 	exit(gExitCode);
 	return gExitCode;
@@ -256,14 +324,25 @@ static bool openrct2_setup_rct2_segment()
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
+	uint8 specificRideType = 0xFF;
 	for (int i = 0; i < argc; ++i) {
 		char *arg = argv[i];
 		if (strcmp(arg, "--gtest_color=no") == 0) {
 			gTestColor = false;
 		}
+		else if (strcmp(arg, "--ride-type") == 0) {
+			if (i + 1 < argc) {
+				i++;
+				specificRideType = atoi(argv[i]);
+			}
+		}
 	}
 
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
+		if (specificRideType != 0xFF && rideType != specificRideType) {
+			continue;
+		}
+
 		if (!rideIsImplemented(rideType)) {
 			continue;
 		}
