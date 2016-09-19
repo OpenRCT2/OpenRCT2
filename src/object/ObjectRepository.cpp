@@ -846,6 +846,7 @@ extern "C"
             Memory::Free(chunkData);
             return false;
         }
+        Memory::Free(chunkData);
 
         return true;
     }
