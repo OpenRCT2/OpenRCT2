@@ -4222,6 +4222,12 @@ STR_5910    :Aplicar
 STR_5911    :Ver através dos caminhos
 STR_5912    :Alternar ver através dos caminhos
 STR_5913    :Bate-papo
+STR_5914    :Atração desconhecida
+STR_5915    :Jogador
+STR_5916    :{COMMA16} jogador
+STR_5917    :{COMMA16} jogadores
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #
