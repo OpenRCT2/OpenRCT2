@@ -204,6 +204,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 		return water_rc_track_25_deg_up_to_flat;
 
+	case TRACK_ELEM_DIAG_FLAT:
+	case TRACK_ELEM_DIAG_25_DEG_UP:
+	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+		// TODO
+		return NULL;
+
 	//////////////////////////////////////////////////////
 	// Use Junior RC
 	//////////////////////////////////////////////////////
@@ -268,13 +275,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
 	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
 	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
-	case TRACK_ELEM_DIAG_FLAT:
-	case TRACK_ELEM_DIAG_25_DEG_UP:
 	case TRACK_ELEM_DIAG_60_DEG_UP:
-	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_DIAG_25_DEG_DOWN:
 	case TRACK_ELEM_DIAG_60_DEG_DOWN:
 	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
