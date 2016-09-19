@@ -670,7 +670,13 @@ uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 
 	uint8 groupId = GetDefaultGroup();
 	if (networkUser != nullptr && networkUser->GroupId.HasValue()) {
-		groupId = networkUser->GroupId.GetValue();
+		const uint8 assignedGroup = networkUser->GroupId.GetValue();
+		if (GetGroupByID(assignedGroup) != nullptr) {
+			groupId = assignedGroup;
+		} else {
+			log_warning("User %s is assigned to non-existent group %u. Assigning to default group (%u)",
+						keyhash.c_str(), assignedGroup, groupId);
+		}
 	}
 	return groupId;
 }
