@@ -1260,6 +1260,53 @@ void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint
 	}
 }
 
+static int pick_ride_type_for_drawing(int rideType, int trackType)
+{
+	if (rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER) {
+		switch(trackType) {
+			case TRACK_ELEM_HALF_LOOP_UP:
+			case TRACK_ELEM_HALF_LOOP_DOWN:
+			case TRACK_ELEM_LEFT_CORKSCREW_UP:
+			case TRACK_ELEM_RIGHT_CORKSCREW_UP:
+			case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
+			case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
+			case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
+			case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+			case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
+			case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+			case TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN:
+			case TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN:
+			case TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP:
+			case TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP:
+			case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
+			case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
+				rideType = RIDE_TYPE_TWISTER_ROLLER_COASTER;
+		}
+	}
+	if (rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER) {
+		switch(trackType) {
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_BRAKE_FOR_DROP:
+				rideType = RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER;
+		}
+	}
+
+	if (rideType == RIDE_TYPE_MINI_ROLLER_COASTER) {
+		switch(trackType) {
+			case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
+			case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
+				rideType = RIDE_TYPE_SPIRAL_ROLLER_COASTER;
+		}
+	}
+
+	return rideType;
+}
+
 /**
  *
  *  rct2: 0x006C4794
@@ -1301,8 +1348,8 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		}
 
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
-        gTrackColours[SCHEME_SUPPORTS] = (ride->track_colour_supports[trackColourScheme] << 19) | 0x20000000;
+		gTrackColours[SCHEME_TRACK] = (ride->track_colour_main[trackColourScheme] << 19) | (ride->track_colour_additional[trackColourScheme] << 24) | 0xA0000000;
+		gTrackColours[SCHEME_SUPPORTS] = (ride->track_colour_supports[trackColourScheme] << 19) | 0x20000000;
 		gTrackColours[SCHEME_MISC] = 0x20000000;
 		gTrackColours[SCHEME_3] = 0x20C00000;
 		if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
@@ -1320,7 +1367,8 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 			gTrackColours[SCHEME_3] = ghost_id;
 		}
 
-		int rideType = ride->type;
+		int rideType = pick_ride_type_for_drawing(ride->type, trackType);
+
 		bool useOriginalRidePaint = false;
 #ifndef NO_RCT2
 		useOriginalRidePaint = gUseOriginalRidePaint;
