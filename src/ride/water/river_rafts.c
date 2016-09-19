@@ -291,7 +291,7 @@ static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
 };
 
 /** rct2: 0x0089B170 */
-void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
