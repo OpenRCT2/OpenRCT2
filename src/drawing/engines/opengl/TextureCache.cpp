@@ -70,7 +70,7 @@ CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 ter
     if ((image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT)) == 0)
         return CachedTextureInfo{ 0 };
 
-    uint32 uniquePaletteId = 0; 
+    uint32 uniquePaletteId = image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT); 
     if (!(image & IMAGE_TYPE_REMAP_2_PLUS)) {
         uniquePaletteId = (image >> 19) & 0xFF;
         if (!(image & IMAGE_TYPE_TRANSPARENT)) {

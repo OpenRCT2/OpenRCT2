@@ -662,7 +662,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
             zoomedDPI.pitch = _dpi->pitch;
             zoomedDPI.zoom_level = _dpi->zoom_level - 1;
             SetDPI(&zoomedDPI);
-            DrawSprite((image << 28) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
+            DrawSprite((image & 0xE0000000) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
             return;
         }
         if (g1Element->flags & (1 << 5))
