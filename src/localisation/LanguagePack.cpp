@@ -25,6 +25,7 @@ extern "C"
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "LanguagePack.h"
 #include <SDL.h>
@@ -42,7 +43,7 @@ constexpr int           ScenarioOverrideMaxStringCount = 3;
 
 LanguagePack * LanguagePack::FromFile(uint16 id, const utf8 * path)
 {
-    assert(path != nullptr);
+    Guard::ArgumentNotNull(path);
 
     // Load file directly into memory
     utf8 * fileData = nullptr;
@@ -81,7 +82,7 @@ LanguagePack * LanguagePack::FromText(uint16 id, const utf8 * text)
 
 LanguagePack::LanguagePack(uint16 id, const utf8 * text)
 {
-    assert(text != nullptr);
+    Guard::ArgumentNotNull(text);
 
     _id = id;
     _stringData = nullptr;
@@ -185,8 +186,8 @@ const utf8 * LanguagePack::GetString(rct_string_id stringId) const
 
 rct_string_id LanguagePack::GetObjectOverrideStringId(const char * objectIdentifier, uint8 index)
 {
-    assert(objectIdentifier != nullptr);
-    assert(index < ObjectOverrideMaxStringCount);
+    Guard::ArgumentNotNull(objectIdentifier);
+    Guard::Assert(index < ObjectOverrideMaxStringCount);
 
     int ooIndex = 0;
     for (const ObjectOverride &objectOverride : _objectOverrides)
@@ -207,13 +208,13 @@ rct_string_id LanguagePack::GetObjectOverrideStringId(const char * objectIdentif
 
 rct_string_id LanguagePack::GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8 index)
 {
-    assert(scenarioFilename != nullptr);
-    assert(index < ScenarioOverrideMaxStringCount);
+    Guard::ArgumentNotNull(scenarioFilename);
+    Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
     int ooIndex = 0;
     for (const ScenarioOverride &scenarioOverride : _scenarioOverrides)
     {
-        if (_stricmp(scenarioOverride.filename, scenarioFilename) == 0)
+        if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
         {
             if (scenarioOverride.strings[index] == nullptr)
             {
@@ -229,7 +230,7 @@ rct_string_id LanguagePack::GetScenarioOverrideStringId(const utf8 * scenarioFil
 
 LanguagePack::ObjectOverride * LanguagePack::GetObjectOverride(const char * objectIdentifier)
 {
-    assert(objectIdentifier != nullptr);
+    Guard::ArgumentNotNull(objectIdentifier);
 
     for (size_t i = 0; i < _objectOverrides.size(); i++)
     {
@@ -244,7 +245,7 @@ LanguagePack::ObjectOverride * LanguagePack::GetObjectOverride(const char * obje
 
 LanguagePack::ScenarioOverride * LanguagePack::GetScenarioOverride(const utf8 * scenarioIdentifier)
 {
-    assert(scenarioIdentifier != nullptr);
+    Guard::ArgumentNotNull(scenarioIdentifier);
 
     for (size_t i = 0; i < _scenarioOverrides.size(); i++)
     {
@@ -453,7 +454,7 @@ void LanguagePack::ParseGroupScenario(IStringReader * reader)
             _scenarioOverrides.push_back(ScenarioOverride());
             _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
             Memory::Set(_currentScenarioOverride, 0, sizeof(ScenarioOverride));
-            _currentScenarioOverride->filename = sb.GetString();
+            _currentScenarioOverride->filename = std::string(sb.GetBuffer());
         }
     }
 }
@@ -493,7 +494,7 @@ void LanguagePack::ParseString(IStringReader *reader)
     reader->Skip();
 
     // Validate identifier
-    const utf8 *identifier = sb.GetBuffer();
+    const utf8 * identifier = sb.GetBuffer();
 
     int stringId;
     if (_currentGroup == nullptr)
@@ -506,13 +507,13 @@ void LanguagePack::ParseString(IStringReader *reader)
     }
     else
     {
-        if (strcmp(identifier, "STR_NAME") == 0) { stringId = 0; }
-        else if (strcmp(identifier, "STR_DESC") == 0) { stringId = 1; }
-        else if (strcmp(identifier, "STR_CPTY") == 0) { stringId = 2; }
+        if (String::Equals(identifier, "STR_NAME")) { stringId = 0; }
+        else if (String::Equals(identifier, "STR_DESC")) { stringId = 1; }
+        else if (String::Equals(identifier, "STR_CPTY")) { stringId = 2; }
 
-        else if (strcmp(identifier, "STR_SCNR") == 0) { stringId = 0; }
-        else if (strcmp(identifier, "STR_PARK") == 0) { stringId = 1; }
-        else if (strcmp(identifier, "STR_DTLS") == 0) { stringId = 2; }
+        else if (String::Equals(identifier, "STR_SCNR")) { stringId = 0; }
+        else if (String::Equals(identifier, "STR_PARK")) { stringId = 1; }
+        else if (String::Equals(identifier, "STR_DTLS")) { stringId = 2; }
         else {
             // Ignore line entirely
             return;

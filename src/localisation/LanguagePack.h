@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 
 extern "C"
@@ -60,7 +61,7 @@ private:
 
     struct ScenarioOverride
     {
-        const utf8 * filename;
+        std::string filename;
         union {
             const utf8 * strings[3];
             struct {
