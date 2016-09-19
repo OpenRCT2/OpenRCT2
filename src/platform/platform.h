@@ -44,6 +44,12 @@
 
 #define TOUCH_DOUBLE_TIMEOUT 300
 
+#ifdef __WINDOWS__
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
+
 typedef struct resolution {
 	int width, height;
 } resolution;
