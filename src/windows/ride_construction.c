@@ -2310,7 +2310,9 @@ static void sub_6CBCE2(
 	gCurrentViewportFlags = 0;
 	trackDirection &= 3;
 
+#ifndef NO_RCT2
 	g_ps_EE7880 = &gUnkF1A4CC;
+#endif
 	painter_setup();
 
 	ride = get_ride(rideIndex);
