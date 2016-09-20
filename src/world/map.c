@@ -4442,6 +4442,28 @@ static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int 
 	map_invalidate_tile(x, y, z0, z1);
 }
 
+void map_remove_provisional_elements()
+{
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+	{
+		footpath_provisional_remove();
+		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+	}
+}
+
+void map_restore_provisional_elements()
+{
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+	{
+		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
+		footpath_provisional_set(gFootpathProvisionalType,
+				gFootpathProvisionalPosition.x,
+				gFootpathProvisionalPosition.y,
+				gFootpathProvisionalPosition.z,
+				gFootpathProvisionalSlope);
+	}
+}
+
 int map_element_get_banner_index(rct_map_element *mapElement)
 {
 	rct_scenery_entry* sceneryEntry;

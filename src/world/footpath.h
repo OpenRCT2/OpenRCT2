@@ -52,6 +52,8 @@ enum {
 
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
+extern uint8 gFootpathProvisionalType;
+extern uint8 gFootpathProvisionalSlope;
 extern uint8 gFootpathConstructionMode;
 extern uint16 gFootpathSelectedId;
 extern uint8 gFootpathSelectedType;

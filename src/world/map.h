@@ -407,6 +407,8 @@ rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type,
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
+void map_remove_provisional_elements();
+void map_restore_provisional_elements();
 void map_update_path_wide_flags();
 bool map_is_location_valid(int x, int y);
 bool map_is_location_owned(int x, int y, int z);
