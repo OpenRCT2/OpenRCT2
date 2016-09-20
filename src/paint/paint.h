@@ -26,17 +26,18 @@
 typedef struct attached_paint_struct attached_paint_struct;
 struct paint_struct;
 typedef struct paint_struct paint_struct;
+typedef union paint_entry paint_entry;
 
 #ifdef NO_RCT2
 	extern void *g_currently_drawn_item;
-	extern paint_struct * gEndOfPaintStructArray;
+	extern paint_entry * gEndOfPaintStructArray;
 	extern sint16 gUnk9DE568;
 	extern sint16 gUnk9DE56C;
-	extern paint_struct gPaintStructs[4000];
+	extern paint_entry gPaintStructs[4000];
 #else
-	#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_struct)
+	#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
 	#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
-	#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_struct *)
+	#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_entry *)
 	#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
 	#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
 #endif
@@ -113,6 +114,12 @@ struct paint_string_struct {
 assert_struct_size(paint_string_struct, 0x1e);
 #endif
 #pragma pack(pop)
+
+union paint_entry{
+	paint_struct basic;
+	attached_paint_struct attached;
+	paint_string_struct string;
+};
 
 typedef struct sprite_bb {
 	uint32 sprite_id;

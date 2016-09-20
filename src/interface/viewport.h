@@ -110,8 +110,8 @@ extern paint_struct *gNextFreePaintStruct;
 extern uint8 gCurrentRotation;
 extern uint32 gCurrentViewportFlags;
 #else
-	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_struct*)
-	#define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_struct*)
+	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_entry*)
+	#define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_entry*)
 	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 	#define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint32)
 #endif

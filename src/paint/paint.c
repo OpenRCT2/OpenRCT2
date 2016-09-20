@@ -92,9 +92,8 @@ void painter_setup() {
  */
 static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
 {
-	paint_struct * ps = gNextFreePaintStruct;
-
-	if (ps >= gEndOfPaintStructArray) return NULL;
+	if (gNextFreePaintStruct >= gEndOfPaintStructArray) return NULL;
+	paint_struct * ps = &gNextFreePaintStruct->basic;
 
 	ps->image_id = image_id;
 
@@ -205,13 +204,11 @@ paint_struct * sub_98196C(
 	g_ps_F1AD28 = 0;
 	g_aps_F1AD2C = NULL;
 
-	//Not a paint struct but something similar
-	paint_struct *ps = gNextFreePaintStruct;
-
-	if (ps >= gEndOfPaintStructArray) {
+	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
 		return NULL;
 	}
 
+	paint_struct *ps = &gNextFreePaintStruct->basic;
 	ps->image_id = image_id;
 
 	uint32 image_element = image_id & 0x7FFFF;
@@ -541,13 +538,11 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
     if (g_aps_F1AD2C == NULL) {
         return paint_attach_to_previous_ps(image_id, x, y);
     }
-
-	attached_paint_struct * ps = (attached_paint_struct *)gNextFreePaintStruct;
-
-	if ((paint_struct *)ps >= gEndOfPaintStructArray) {
+	
+	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
         return false;
     }
-
+	attached_paint_struct * ps = &gNextFreePaintStruct->attached;
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
@@ -575,11 +570,10 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
  */
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
 {
-	attached_paint_struct * ps = (attached_paint_struct *)gNextFreePaintStruct;
-
-	if ((paint_struct *)ps >= gEndOfPaintStructArray) {
+	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
         return false;
     }
+	attached_paint_struct * ps = &gNextFreePaintStruct->attached;
 
     ps->image_id = image_id;
     ps->x = x;
@@ -615,11 +609,10 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
  */
 void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
 {
-	paint_string_struct * ps = (paint_string_struct *)gNextFreePaintStruct;
-
-	if ((paint_struct *)ps >= gEndOfPaintStructArray) {
-		return;
-	}
+	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
+        return;
+    }
+	paint_string_struct * ps = &gNextFreePaintStruct->string;
 
 	ps->string_id = string_id;
 	ps->next = 0;
@@ -762,7 +755,7 @@ void viewport_paint_setup()
 static void sub_688217_helper(uint16 ax, uint8 flag)
 {
 	paint_struct *ps, *ps_temp;
-	paint_struct *ps_next = unk_EE7884;
+	paint_struct *ps_next = &unk_EE7884->basic;
 
 	do {
 		ps = ps_next;
@@ -871,10 +864,10 @@ static void sub_688217_helper(uint16 ax, uint8 flag)
  */
 void sub_688217()
 {
-	paint_struct *ps = gNextFreePaintStruct;
+
 	paint_struct *ps_next;
-	gNextFreePaintStruct++;
-	unk_EE7884 = ps;
+	unk_EE7884 = gNextFreePaintStruct++;
+	paint_struct *ps = &unk_EE7884->basic;
 	ps->next_quadrant_ps = NULL;
 	uint32 edi = _F1AD0C;
 	if (edi == -1)
@@ -951,7 +944,7 @@ static void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_
 /* rct2: 0x00688485 */
 void paint_quadrant_ps() {
 	rct_drawpixelinfo* dpi = unk_140E9A8;
-	paint_struct* ps = unk_EE7884;
+	paint_struct* ps = &unk_EE7884->basic;
 	paint_struct* previous_ps = ps->next_quadrant_ps;
 
 	for (ps = ps->next_quadrant_ps; ps;) {

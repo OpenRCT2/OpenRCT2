@@ -1330,7 +1330,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 static void sub_68862C()
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
-	paint_struct *ps = unk_EE7884, *old_ps, *next_ps;
+	paint_struct *ps = &unk_EE7884->basic, *old_ps, *next_ps;
 
 	while ((ps = ps->next_quadrant_ps) != NULL) {
 		old_ps = ps;
