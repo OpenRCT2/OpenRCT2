@@ -26,11 +26,11 @@
     <TargetLibsVersion>9</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
-    <OPENRCT2_DEFINES Condition="'$(BUILD_SERVER)'!=''">OPENRCT2_BUILD_SERVER="$(BUILD_SERVER)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
-    <OPENRCT2_DEFINES Condition="'$(GIT_BRANCH)'!=''">OPENRCT2_BRANCH="$(GIT_BRANCH)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
-    <OPENRCT2_DEFINES Condition="'$(GIT_COMMIT_SHA1)'!=''">OPENRCT2_COMMIT_SHA1="$(GIT_COMMIT_SHA1)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
-    <OPENRCT2_DEFINES Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">OPENRCT2_COMMIT_SHA1_SHORT="$(GIT_COMMIT_SHA1_SHORT)";$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
-    <OPENRCT2_DEFINES Condition="'$(Configuration)'=='Release'">USE_BREAKPAD;$(OPENRCT2_DEFINES)</OPENRCT2_DEFINES>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(GIT_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(GIT_COMMIT_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(GIT_COMMIT_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
@@ -60,7 +60,7 @@
     <!-- Set openrct2.sln properties -->
     <SlnProperties>Configuration=$(Configuration)</SlnProperties>
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
-    <SlnProperties>$(SlnProperties);OPENRCT2_DEFINES=$(OPENRCT2_DEFINES)</SlnProperties>
+    <SlnProperties>$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
@@ -178,9 +178,11 @@
   </Target>
 
   <Target Name="Build">
+    <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
   </Target>
   <Target Name="Rebuild">
+    <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
