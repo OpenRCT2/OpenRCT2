@@ -914,7 +914,6 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, tex
 
 	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
 		unk_9ABDA4 = &info->palette;
-		gUnkEDF81C = IMAGE_TYPE_REMAP;
 
 		int x = info->x;
 		int y = info->y;
