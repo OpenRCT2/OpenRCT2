@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stack>
+#include "../core/String.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
@@ -106,8 +107,8 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
-LanguagePack *_languageFallback = nullptr;
-LanguagePack *_languageCurrent = nullptr;
+ILanguagePack *_languageFallback = nullptr;
+ILanguagePack *_languageCurrent = nullptr;
 
 const utf8 BlackUpArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
 const utf8 BlackDownArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
@@ -158,11 +159,11 @@ bool language_open(int id)
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
 		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale);
-		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
+		_languageFallback = LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
 	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].locale);
-	_languageCurrent = LanguagePack::FromFile(id, filename);
+	_languageCurrent = LanguagePackFactory::FromFile(id, filename);
 	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;
 
