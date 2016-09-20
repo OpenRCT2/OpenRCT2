@@ -24,23 +24,8 @@
 #include "../drawing/drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
-struct paint_struct;
 typedef struct paint_struct paint_struct;
 typedef union paint_entry paint_entry;
-
-#ifdef NO_RCT2
-	extern void *g_currently_drawn_item;
-	extern paint_entry * gEndOfPaintStructArray;
-	extern sint16 gUnk9DE568;
-	extern sint16 gUnk9DE56C;
-	extern paint_entry gPaintStructs[4000];
-#else
-	#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
-	#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
-	#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_entry *)
-	#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
-	#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
-#endif
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -137,6 +122,20 @@ typedef struct support_height {
 	uint8 slope;
 	uint8 pad;
 } support_height;
+
+#ifdef NO_RCT2
+extern void *g_currently_drawn_item;
+extern paint_entry * gEndOfPaintStructArray;
+extern sint16 gUnk9DE568;
+extern sint16 gUnk9DE56C;
+extern paint_entry gPaintStructs[4000];
+#else
+#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
+#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
+#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_entry *)
+#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
+#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
+#endif
 
 #ifndef NO_RCT2
 #define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)

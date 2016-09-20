@@ -33,12 +33,12 @@ paint_string_struct *pss1;
 paint_string_struct *pss2;
 
 #ifdef NO_RCT2
-paint_struct gPaintStructs[4000];
+paint_entry gPaintStructs[4000];
 uint32 _F1AD0C;
 uint32 _F1AD10;
 static paint_struct *_paint_struct_quadrants[512];
 void *g_currently_drawn_item;
-paint_struct * gEndOfPaintStructArray;
+paint_entry * gEndOfPaintStructArray;
 sint16 gUnk9DE568;
 sint16 gUnk9DE56C;
 paint_struct gUnkF1A4CC;

@@ -52,8 +52,8 @@ uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-paint_struct *unk_EE7884;
-paint_struct *gNextFreePaintStruct;
+paint_entry *unk_EE7884;
+paint_entry *gNextFreePaintStruct;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
 #endif

@@ -105,8 +105,8 @@ extern uint8 gSavedViewZoom;
 extern uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-extern paint_struct *unk_EE7884;
-extern paint_struct *gNextFreePaintStruct;
+extern paint_entry *unk_EE7884;
+extern paint_entry *gNextFreePaintStruct;
 extern uint8 gCurrentRotation;
 extern uint32 gCurrentViewportFlags;
 #else
