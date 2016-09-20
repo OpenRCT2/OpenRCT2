@@ -4223,6 +4223,12 @@ STR_5910    :Appliquer
 STR_5911    :Allées transparentes
 STR_5912    :Allées transparentes
 STR_5913    :Chat
+STR_5914    :Attraction inconnue
+STR_5915    :Joueur
+STR_5916    :{COMMA16} joueur
+STR_5917    :{COMMA16} joueurs
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

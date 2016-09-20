@@ -4230,6 +4230,12 @@ STR_5910    :应用
 STR_5911    :半透明道路
 STR_5912    :开启/关闭'半透明道路'选项
 STR_5913    :聊天
+STR_5914    :未知的游乐设施
+STR_5915    :玩家
+STR_5916    :{COMMA16}位玩家
+STR_5917    :{COMMA16}位玩家
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #
