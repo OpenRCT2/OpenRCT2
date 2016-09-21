@@ -59,7 +59,6 @@ uint8 gPeepPathFindQueueRideIndex;
 bool gPeepPathFindSingleChoiceSection;
 // uint32 gPeepPathFindAltStationNum;
 static bool _peepPathFindIsStaff;
-static uint8 _peepPathFindQueueRideIndex;
 static sint8 _peepPathFindNumJunctions;
 static sint32 _peepPathFindTilesChecked;
 static uint8 _peepPathFindFewestNumSteps;
@@ -79,14 +78,18 @@ static uint8 _peepPotentialRides[256];
 
 enum {
 	PATH_SEARCH_DEAD_END,
-	PATH_SEARCH_RIDE_EXIT,
-	PATH_SEARCH_RIDE_ENTRANCE,
-	PATH_SEARCH_JUNCTION,
-	PATH_SEARCH_PARK_EXIT,
-	PATH_SEARCH_LIMIT_REACHED,
 	PATH_SEARCH_WIDE,
+	PATH_SEARCH_THIN,
+	PATH_SEARCH_JUNCTION,
 	PATH_SEARCH_RIDE_QUEUE,
-	PATH_SEARCH_OTHER = 10
+	PATH_SEARCH_RIDE_ENTRANCE,
+	PATH_SEARCH_RIDE_EXIT,
+	PATH_SEARCH_PARK_EXIT,
+	PATH_SEARCH_SHOP_ENTRANCE,
+	PATH_SEARCH_LIMIT_REACHED,
+	PATH_SEARCH_LOOP,
+	PATH_SEARCH_OTHER,
+	PATH_SEARCH_FAILED
 };
 
 enum {
@@ -8412,14 +8415,15 @@ static bool is_valid_path_z_and_direction(rct_map_element *mapElement, int curre
 /**
  *
  * Returns:
- *   6 - wide path
- *   7 - ride queue
- *   10 - other
+ *   1 - PATH_SEARCH_WIDE (path with wide flag set)
+ *   4 - PATH_SEARCH_RIDE_QUEUE (queue path connected to a ride)
+ *   11 - PATH_SEARCH_OTHER (other path than the above)
+ *   12 - PATH_SEARCH_FAILED (no path element found)
  *
  *  rct2: 0x00694BAE
  *
- * Returns the destination path tile type tile a peep can get to from x,y,z /
- * inputMapElement in the given direction following single width paths only.
+ * Returns the type of the next footpath tile a peep can get to from x,y,z /
+ * inputMapElement in the given direction.
  */
 static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rct_map_element *mapElement, uint8 chosenDirection)
 {
@@ -8444,21 +8448,22 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
 		return PATH_SEARCH_OTHER;
 	} while (!map_element_is_last_for_tile(nextMapElement++));
 
-	return PATH_SEARCH_OTHER;
+	return PATH_SEARCH_FAILED;
 }
 
 /**
  *
  * Returns:
- *   0 - dead end?
- *   1 - ride exit
- *   2 - ride entrance
- *   3 - path junction
- *   4 - park entrance / exit
- *   5 - search limit reached
- *   6 - wide path
- *   7 - ride queue
- * For return values 1, 2 the rideIndex is stored in outRideIndex.
+ *   0 - PATH_SEARCH_DEAD_END (path is a dead end, i.e. < 2 edges)
+ *   1 - PATH_SEARCH_WIDE (path with wide flag set)
+ *   3 - PATH_SEARCH_JUNCTION (path is a junction, i.e. > 2 edges)
+ *   5 - PATH_SEARCH_RIDE_ENTRANCE (map element is a ride entrance)
+ *   6 - PATH_SEARCH_RIDE_EXIT (map element is a ride exit)
+ *   7 - PATH_SEARCH_PARK_EXIT park entrance / exit (map element is a park entrance/exit)
+ *   8 - PATH_SEARCH_SHOP_ENTRANCE (map element is a shop entrance)
+ *   9 - PATH_SEARCH_LIMIT_REACHED (search limit reached without reaching path end)
+ *   12 - PATH_SEARCH_FAILED (no path element found)
+ * For return values 5, 6 & 8 the rideIndex is stored in outRideIndex.
  *
  *  rct2: 0x006949B9
  * 
@@ -8486,7 +8491,7 @@ static uint8 footpath_element_dest_in_dir(
 			rct_ride *ride = get_ride(rideIndex);
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 				*outRideIndex = rideIndex;
-				return PATH_SEARCH_RIDE_ENTRANCE;
+				return PATH_SEARCH_SHOP_ENTRANCE;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
@@ -8531,27 +8536,31 @@ static uint8 footpath_element_dest_in_dir(
 				}
 				return footpath_element_dest_in_dir(x, y, z, mapElement, direction, outRideIndex, level + 1);
 			}
+			return PATH_SEARCH_DEAD_END;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	return PATH_SEARCH_DEAD_END;
+	return PATH_SEARCH_FAILED;
 }
 
 /**
  * Returns:
- *   0 - dead end?
- *   1 - ride exit
- *   2 - ride entrance
- *   3 - path junction
- *   4 - park entrance / exit
- *   5 - search limit reached
- *   6 - wide path
- * For return values 1, 2 the rideIndex is stored in outRideIndex.
+ *   0 - PATH_SEARCH_DEAD_END (path is a dead end, i.e. < 2 edges)
+ *   1 - PATH_SEARCH_WIDE (path with wide flag set)
+ *   3 - PATH_SEARCH_JUNCTION (path is a junction, i.e. > 2 edges)
+ *   5 - PATH_SEARCH_RIDE_ENTRANCE (map element is a ride entrance)
+ *   6 - PATH_SEARCH_RIDE_EXIT (map element is a ride exit)
+ *   7 - PATH_SEARCH_PARK_EXIT park entrance / exit (map element is a park entrance/exit)
+ *   8 - PATH_SEARCH_SHOP_ENTRANCE (map element is a shop entrance)
+ *   9 - PATH_SEARCH_LIMIT_REACHED (search limit reached without reaching path end)
+ *   12 - PATH_SEARCH_FAILED (no path element found)
+ * For return values 5, 6 & 8 the rideIndex is stored in outRideIndex.
  *
  *  rct2: 0x006949A4
  *
- * Returns the destination path tile type tile a peep can get to from x,y,z /
- * inputMapElement in the given direction following single width paths only.
+ * Returns the destination tile type a peep can get to from x,y,z /
+ * inputMapElement in the given direction following single width paths only
+ * and stopping as soon as a path junction is encountered.
  * Note that a junction is a path with > 2 reachable neighbouring path tiles,
  * so wide paths have LOTS of junctions.
  * This is useful for finding out what is at the end of a short single
@@ -8597,6 +8606,7 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
 		return 8;
 
+	// PEEP_FLAGS_2? It's cleared here but not set anywhere!
 	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
 			peep->peep_flags &= ~PEEP_FLAGS_2;
@@ -8619,6 +8629,44 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 }
 
 /**
+ * Returns if the path as xzy is a 'thin' junction.
+ * A junction is considered 'thin' if it has more than 2 edges
+ * leading to non-wide path elements; edges leading to non-path elements
+ * (e.g. ride/shop entrances) or ride queues are not counted, since entrances
+ * and ride queues coming off a path should not result in the path being
+ * considered a junction.
+ */
+static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uint8 z) {
+	uint8 edges = path_get_permitted_edges(path);
+
+	int test_edge = bitscanforward(edges);
+	if (test_edge == -1) return false;
+
+	bool thin_junction = false;
+	int thin_count = 0;
+	do
+	{
+		int fp_result = footpath_element_next_in_direction(x, y, z, path, test_edge);
+
+		/* Ignore non-paths (e.g. ride entrances, shops), wide paths
+		 * and ride queues (per ignoreQueues) when counting
+		 * neighbouring tiles. */
+		if (fp_result != PATH_SEARCH_FAILED &&
+			fp_result != PATH_SEARCH_WIDE &&
+			fp_result != PATH_SEARCH_RIDE_QUEUE) {
+			thin_count++;
+		}
+
+		if (thin_count > 2) {
+			thin_junction = true;
+			break;
+		}
+		edges &= ~(1 << test_edge);
+	} while ((test_edge = bitscanforward(edges)) != -1);
+	return thin_junction;
+}
+
+/**
  * Returns the best (smallest) score reachable from Tile x,y,z in direction
  * test_edge, within the limits of the search.
  *
@@ -8626,6 +8674,14 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
  * heuristic used (when the primary heuristic gives equal scores) is the number
  * of steps. i.e. the search gets as close as possible to the goal in as few
  * steps as possible.
+ *
+ * Each tile is checked to determine if the goal is reached.
+ * When the goal is not reached the search result is only updated at the END
+ * of each search path (some map element that is not a path or a path at which
+ * a search limit is reached), NOT at each step along the way.
+ * This means that the search ignores thin paths that are "no through paths"
+ * no matter how close to the goal they get, but will follow possible "through
+ * paths".
  *
  * The implementation is essentially an A* path finding algorithm over the
  * path layout in xyz; however a best score is tracked via the score parameter
@@ -8651,244 +8707,358 @@ static uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
  *   - _peepPathFindHistory - the starting point and all junctions navigated
  *     in the current search path - used to detect path loops.
  *
+ * The score is only updated when:
+ *   - the goal is reached;
+ *   - a wide tile is encountered with a better search result - the goal may
+ *     still be reachable from here;
+ *   - a junction is encountered with a better search result and
+ *     maxNumJunctions is exceeded - the goal may still be reachable from here;
+ *   - returning from a recursive call if a search limit (i.e. either
+ *     maxNumStep or maxTilesChecked) was reached and the current tile has a
+ *     better search result and the goal may still be reachable from here
+ *     (i.e. not a dead end path tile).
+ *
  *  rct2: 0x0069A997
  */
-static uint16 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, int test_edge) {
+static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 *score, int test_edge) {
+	uint searchResult = PATH_SEARCH_FAILED;
+
 	x += TileDirectionDelta[test_edge].x;
 	y += TileDirectionDelta[test_edge].y;
 
-
 	++counter;
-	if (--_peepPathFindTilesChecked < 0) {
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Return from %d,%d,%d; TilesChecked < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return score;
-	}
+	_peepPathFindTilesChecked--;
 
-	/* If counter (# steps taken) exceeds the limit, the current search
-	 * path ends here */
-	if (counter > 200) {
+	/* If the maxNumSteps or maxTilesChecked limits are exceeded the
+	 * search ends here. Return the searchResult with the original score. */
+	if (counter > 200 || _peepPathFindTilesChecked < 0) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Return from %d,%d,%d; counter > 200; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			log_info("[%03d] Return from %d,%d,%d; Search limit exceeded", counter, x >> 5, y >> 5, z);
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return score;
+		searchResult = PATH_SEARCH_LIMIT_REACHED;
+		return searchResult;
 	}
 
 	/* If this is where the search started this is a search loop and the
-	 * current search path ends here */
+	 * current search path ends here.
+	 * Return the searchResult with the original score. */
 	if ((_peepPathFindHistory[0].x == (uint8)(x >> 5)) &&
 		(_peepPathFindHistory[0].y == (uint8)(y >> 5)) &&
 		(_peepPathFindHistory[0].z == (uint8)z)) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Return from %d,%d,%d; At start; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			log_info("[%03d] Return from %d,%d,%d; At start", counter, x >> 5, y >> 5, z);
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return score;
+		searchResult = PATH_SEARCH_LOOP;
+		return searchResult;
 	}
 
+	/* Get the next map element in the direction of test_edge, ignoring
+	 * map elements that are not of interest, which includes wide paths
+	 * and foreign ride queues (depending on gPathFindIgnoreForeignQueues */
+	bool found = false;
+	uint8 rideIndex = 0xFF;
+	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
+
+		switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_TRACK:
+			if (z != mapElement->base_height) continue;
+			/* More details about the mapElement are not needed.
+			 * If in the future it would be useful to know
+			 * whether the map element is a shop, the following
+			 * commented out code will do it. */
+			//rideIndex = mapElement->properties.track.ride_index;
+			//rct_ride *ride = get_ride(rideIndex);
+			//if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+			//	searchResult = PATH_SEARCH_SHOP_ENTRANCE;
+			//} else {
+				searchResult = PATH_SEARCH_OTHER;
+			//}
+			found = true;
+			break;
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+			if (z != mapElement->base_height) continue;
+			int direction;
+			searchResult = PATH_SEARCH_OTHER;
+			switch (mapElement->properties.entrance.type) {
+			case ENTRANCE_TYPE_RIDE_ENTRANCE:
+				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+				if (direction == test_edge) {
+					/* The rideIndex will be useful for
+					 * adding transport rides later. */
+					uint8 rideIndex = mapElement->properties.entrance.ride_index;
+					searchResult = PATH_SEARCH_RIDE_ENTRANCE;
+				}
+				break;
+			/* More details for other entrance types are not needed.
+			 * If in the future it would be useful to know
+			 * whether the map element is a ride exit or a park
+			 * entrance/exit, the following commented out code
+			 * will do it. */
+			//case ENTRANCE_TYPE_RIDE_EXIT:
+			//	direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+			//	if (direction == test_edge) {
+			//		searchResult = PATH_SEARCH_RIDE_EXIT;
+			//	}
+			//	break;
+			//case ENTRANCE_TYPE_PARK_ENTRANCE:
+			//	searchResult = PATH_SEARCH_PARK_EXIT;
+			}
+			found = true;
+			break;
+		case MAP_ELEMENT_TYPE_PATH:
+			if (!is_valid_path_z_and_direction(mapElement, z, test_edge)) continue;
+
+			// Path may be sloped, so set z to path base height.
+			z = mapElement->base_height;
+
+			if (footpath_element_is_wide(mapElement)) {
+				searchResult = PATH_SEARCH_WIDE;
+				found = true;
+				break;
+			}
+
+			searchResult = PATH_SEARCH_THIN;
+
+			uint8 numEdges = bitcount(path_get_permitted_edges(mapElement));
+
+			if (numEdges < 2) {
+				searchResult = PATH_SEARCH_DEAD_END;
+			} else if (numEdges > 2) {
+				searchResult = PATH_SEARCH_JUNCTION;
+			} else { // numEdges == 2
+				if (footpath_element_is_queue(mapElement) && mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
+					if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF)) {
+						// Path is a queue we aren't interested in
+						/* The rideIndex will be useful for
+						* adding transport rides later. */
+						rideIndex = mapElement->properties.path.ride_index;
+						searchResult = PATH_SEARCH_RIDE_QUEUE;
+					}
+				}
+			}
+			found = true;
+			break;
+		}
+
+		if (found) {
+			break;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (!found) {
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_info("[%03d] Return from %d,%d,%d; No map element found", counter, x >> 5, y >> 5, z);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		return searchResult; // PATH_SEARCH_FAILED
+	}
+
+	/* At this point the map element is found. */
+
+	uint height = z;
+	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+		// Adjust height for goal comparison according to the path slope.
+		if (footpath_element_is_sloped(mapElement)) {
+			if (footpath_element_get_slope_direction(mapElement) == test_edge) {
+				height += 2;
+			}
+		}
+	}
+
+	// Calculate the heuristic score of this map element.
 	uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
 	uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
 	if (x_delta < y_delta) x_delta >>= 4;
 	else y_delta >>= 4;
 	uint16 new_score = x_delta + y_delta;
-	uint16 z_delta = abs(gPeepPathFindGoalPosition.z - z);
+	uint16 z_delta = abs(gPeepPathFindGoalPosition.z - height);
 	z_delta <<= 1;
 	new_score += z_delta;
 
-	if (new_score < score || (new_score == score && counter < _peepPathFindFewestNumSteps)) {
-		score = new_score;
-		_peepPathFindFewestNumSteps = counter;
-		/* If this tile is the search goal (score == 0) the current
-		 * search path ends here */
-		if (score == 0) {
-			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				log_information("[%03d] Return from %d,%d,%d; At goal; Score: %d\n", counter, x >> 5, y >> 5, z, score);
-			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			return score;
+	/* If this map element is the search goal the current search path ends here.
+	 * Return the searchResult with the new score. */
+	if (new_score == 0) {
+		if (new_score < *score || counter < _peepPathFindFewestNumSteps) {
+			_peepPathFindFewestNumSteps = counter;
 		}
-	}
-
-	/* Get the next tile in the direction of test_edge, ignoring
-	 * tiles that are not of interest, which includes wide tiles
-	 * and foreign ride queues (depending on gPathFindIgnoreForeignQueues */
-	bool found = false;
-	rct_map_element *path = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if (map_element_get_type(path) != MAP_ELEMENT_TYPE_PATH) continue;
-
-		/* zaxcav: recommend restructuring these nested conditions
-		 * for logical clarity. */
-		/* i.e. as follows:
-		if (footpath_element_is_sloped(path) {
-			if (footpath_element_get_slope_direction(path) == test_edge) && (path->base_height != z)) continue;
-			elseif ((footpath_element_get_slope_direction(path) ^ 2) == test_edge) && (path->base_height + 2 != z)) continue;
-		} elseif (footpath_element_is_wide(path)) continue;
-		*/
-		if (footpath_element_is_sloped(path) &&
-			footpath_element_get_slope_direction(path) != test_edge) {
-			if ((footpath_element_get_slope_direction(path) ^ 2) != test_edge) continue;
-			if (path->base_height + 2 != z) continue;
-		} else {
-			if (path->base_height != z) continue;
-			if (footpath_element_is_wide(path)) continue;
-		}
-
-		if (footpath_element_is_queue(path) && path->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
-			if (gPeepPathFindIgnoreForeignQueues && (path->properties.path.ride_index != 0xFF)) {
-				// Path is a queue we aren't interested in
-				continue;
-			}
-		}
-
-		found = true;
-		break;
-	} while (!map_element_is_last_for_tile(path++));
-
-	/* If no tile of interest (for continuing the current search path)
-	 * was found, the current search path ends here. */
-	if (!found) {
+		*score = new_score;
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Return from %d,%d,%d; Not found; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			log_info("[%03d] Return from %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *score);
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return score;
+		return searchResult;
 	}
 
-	/* Get all the permitted_edges of the next tile */
-	uint8 edges = path_get_permitted_edges(path);
-	z = path->base_height;
+	/* At this point the map element tile is not the goal. */
+
+	/* If this map element is not a path, the search cannot be
+	 * continued, so return the searchResult with the original score. */
+	if (searchResult != PATH_SEARCH_DEAD_END &&
+		searchResult != PATH_SEARCH_THIN &&
+		searchResult != PATH_SEARCH_JUNCTION &&
+		searchResult != PATH_SEARCH_WIDE) {
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_info("[%03d] Return from %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		return searchResult;
+	}
+
+	/* At this point the map element is a path. */
+
+	/* If this is a wide path the search ends here but the goal
+	 * could still be reachable from here.
+	 * If this is the best result so far, return the searchResult with
+	 * the new score. */
+	if (searchResult == PATH_SEARCH_WIDE) {
+		if (new_score < *score ||
+			(new_score == *score &&
+			 counter < _peepPathFindFewestNumSteps)) {
+			*score = new_score;
+			_peepPathFindFewestNumSteps = counter;
+		}
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_info("[%03d] Return from %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		return searchResult;
+	}
+
+	/* At this point the map element is a non-wide path.*/
+
+	/* Get all the permitted_edges of the map element. */
+	uint8 edges = path_get_permitted_edges(mapElement);
 
 	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		log_information("[%03d] Path %d,%d,%d; 0123:%d%d%d%d; Reverse: %d\n", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+		log_info("[%03d] Path %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
 	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-	/* Remove the reverse edge (i.e. the edge back to the previous tile
-	 * in the current search path */
+	/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
 	edges &= ~(1 << (test_edge ^ 2));
 	test_edge = bitscanforward(edges);
 
-	/* If there are no other edges, this is a dead end - the current search
-	 * path ends here. */
+	/* If there are no other edges the current search ends here.
+	 * Return the searchResult with the original score. */
 	if (test_edge == -1) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Return from %d,%d,%d; Dead end; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+			log_info("[%03d] Return from %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return score;
+		searchResult = PATH_SEARCH_DEAD_END; // this should be superfluous.
+		return searchResult;
 	}
 
-	/* If there is only a single remaining edge, continue the current
-	 * search path by following it (recursive call). */
-	if ((edges & ~(1 << test_edge)) == 0) {
-		if (footpath_element_is_sloped(path) &&
-			footpath_element_get_slope_direction(path) == test_edge) {
-			z += 2;
-		}
-		_peepPathFindQueueRideIndex = true;
-
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_information("[%03d] Recurse from %d,%d,%d direction: %d; Segment; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return peep_pathfind_heuristic_search(x, y, z, counter, score, test_edge);
-	}
-
-	/* At this point it is known that the tile being examined is not
-	 * the goal, not a dead end, and not a single tile wide path.
-         * It must be a junction of tiles. */
-
-	/* Determine if this is a 'thin' junction.
-         * A junction is considered 'thin' if it has more than 2 edges
-	 * leading to non-wide path elements; furthermore, ride queues are not
-	 * counted, since a ride queue coming off a path should not result in
-	 * the path being considered a junction.
-	 *
-	 * A 'thin' junction is considered a junction with respect to
-	 * the search limit _peepPathFindNumJunctions ; junctions that are not
-	 * 'thin' per the above definition are treated like a path segment with
-	 * respect to the search limits. */
-	uint8 prescan_edges = path_get_permitted_edges(path);
-	int prescan_edge = bitscanforward(prescan_edges);
 	bool thin_junction = false;
-	int thin_count = 0;
-	do
-	{
-		int fp_result = footpath_element_next_in_direction(x, y, z, path, prescan_edge);
-		if (fp_result != PATH_SEARCH_WIDE && fp_result != PATH_SEARCH_RIDE_QUEUE) {
-			thin_count++;
-		}
+	if (searchResult == PATH_SEARCH_JUNCTION) {
+		/* Check if this is a thin junction. And perform additional
+		 * necessary checks. */
+		thin_junction = path_is_thin_junction(mapElement, x, y, z);
 
-		if (thin_count > 2) {
-			thin_junction = true;
-			break;
-		}
-		prescan_edges &= ~(1 << prescan_edge);
-	} while ((prescan_edge = bitscanforward(prescan_edges)) != -1);
+		if (thin_junction == true) {
+			/* The current search path is passing through a thin
+			 * junction on this map element. Only 'thin' junctions
+			 * are counted towards the junction search limit. */
+			--_peepPathFindNumJunctions;
 
-	/* The current search path is passing through a thin junction on
-	 * this tile, so decrement the search parameter */
-	if (thin_junction == true) {
-		--_peepPathFindNumJunctions;
-
-		/* If junction search limit is reached, the current search
-		 * path ends here */
-		if (_peepPathFindNumJunctions < 0) {
-			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				log_information("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d\n", counter, x >> 5, y >> 5, z, score);
-			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			return score;
-		}
-
-		/* Check the pathfind_history to see if this junction has been
-		 * previously passed through in the current search path.
-		 * i.e. this is a loop in the current search path.
-		 * If so, the current search path ends here. */
-		for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum < 16; junctionNum++) {
-			if ((_peepPathFindHistory[junctionNum].x == (uint8)(x >> 5)) &&
-				(_peepPathFindHistory[junctionNum].y == (uint8)(y >> 5)) &&
-				(_peepPathFindHistory[junctionNum].z == (uint8)z)) {
+			/* If the junction search limit is reached, the
+			 * current search path ends here. The goal may still
+			 * be reachable from here.
+			 * If this is the best result so far, return the
+			 * searchResult with the new score. */
+			if (_peepPathFindNumJunctions < 0) {
+				if (new_score < *score ||
+					(new_score == *score &&
+					 counter < _peepPathFindFewestNumSteps)) {
+					*score = new_score;
+					_peepPathFindFewestNumSteps = counter;
+				}
 				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					log_information("[%03d] Return from %d,%d,%d; Loop; Score: %d\n", counter, x >> 5, y >> 5, z, score);
+					log_info("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *score);
 				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				return score;
+				return searchResult;
+			}
+
+			/* Check the pathfind_history to see if this junction has been
+			 * previously passed through in the current search path.
+			 * i.e. this is a loop in the current search path.
+			 * If so, the current search path ends here.
+			 * Return the searchResult with the original score. */
+			for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum < 16; junctionNum++) {
+				if ((_peepPathFindHistory[junctionNum].x == (uint8)(x >> 5)) &&
+					(_peepPathFindHistory[junctionNum].y == (uint8)(y >> 5)) &&
+					(_peepPathFindHistory[junctionNum].z == (uint8)z)) {
+					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+						log_info("[%03d] Return from %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					searchResult = PATH_SEARCH_LOOP;
+					return searchResult;
+				}
+			}
+
+			/* This junction was NOT previously visited in the current
+			 * search path, so add the junction to the history.
+			 * Note: the last junction that can be visited is not needed
+			 * for future comparisons (since the search path will end when
+			 * a further junction is encountered), so the starting point
+			 * can be stored in _peepPathFindHistory[0]. */
+			if (_peepPathFindNumJunctions > 0) {
+				_peepPathFindHistory[_peepPathFindNumJunctions].x = (uint8)(x >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].y = (uint8)(y >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].z = (uint8)z;
 			}
 		}
-
-		/* This junction has NOT previously visited in the current
-		 * search path, so add the junction to the history.
-		 * Note: the last junction that can be visited is not needed
-		 * for future comparisons (since the search path will end when
-		 * a further junction is encountered), so the starting point
-		 * can be stored in _peepPathFindHistory[0]. */
-		if (_peepPathFindNumJunctions > 0) {
-			_peepPathFindHistory[_peepPathFindNumJunctions].x = (uint8)(x >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].y = (uint8)(y >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].z = (uint8)z;
-		}
 	}
 
-	/* Continue searching down each edge of the junction (recursive call).
-	 * If any edge returns with a score of 0 the search path ends. */
+	/* Continue searching down each remaining edge of the path
+	 * (recursive call). */
+	uint8 continueResult;
 	do {
 		edges &= ~(1 << test_edge);
 		sint8 savedNumJunctions = _peepPathFindNumJunctions;
 		uint8 height = z;
-		_peepPathFindQueueRideIndex = false;
-		if (footpath_element_is_sloped(path) &&
-			footpath_element_get_slope_direction(path) == test_edge) {
+		if (footpath_element_is_sloped(mapElement) &&
+			footpath_element_get_slope_direction(mapElement) == test_edge) {
 			height += 2;
 		}
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (searchResult == PATH_SEARCH_JUNCTION) {
 			if (thin_junction == true)
-				log_information("[%03d] Recurse from %d,%d,%d direction: %d; Thin-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
 			else
-				log_information("[%03d] Recurse from %d,%d,%d direction: %d; Wide-Junction; Score: %d\n", counter, x >> 5, y >> 5, z, test_edge, score);
+				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
+		} else {
+			log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		score = peep_pathfind_heuristic_search(x, y, height, counter, score, test_edge);
-		_peepPathFindNumJunctions = savedNumJunctions;
-	} while ((test_edge = bitscanforward(edges)) != -1);
 
-	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		log_information("[%03d] Return from %d,%d,%d; Best Junction; Score: %d\n", counter, x >> 5, y >> 5, z, score);
-	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-	return score;
+		uint16 savedScore = *score;
+		uint8 savedSteps = _peepPathFindFewestNumSteps;
+		continueResult = peep_pathfind_heuristic_search(x, y, height, counter, score, test_edge);
+		_peepPathFindNumJunctions = savedNumJunctions;
+
+		if (continueResult == PATH_SEARCH_LIMIT_REACHED) {
+			/* When continueResult is PATH_SEARCH_LIMIT_REACHED the
+			 * search limit was reached without checking another
+			 * map element.  This means the last tile checked in
+			 * the current path search is the current map element.
+			 * Update the best search result if appropriate and
+			 * keep searchResult (discarding continueResult). */
+			if (new_score < *score || (new_score == *score && counter < _peepPathFindFewestNumSteps)) {
+				*score = new_score;
+				_peepPathFindFewestNumSteps = counter;
+			}
+		} else {
+			/* When continueResult is not PATH_SEARCH_LIMIT_REACHED
+			 * it is the search result of the last map element
+			 * checked in the search path. If it has a different
+			 * (i.e. better) search result, update searchResult. */
+			if (*score < savedScore || _peepPathFindFewestNumSteps < savedSteps ) {
+				searchResult = continueResult;
+			}
+		}
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			log_info("[%03d] Return to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *score);
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+	} while ((test_edge = bitscanforward(edges)) != -1);
+	return searchResult;
 }
 
 /**
@@ -8904,10 +9074,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 	sint8 maxNumJunctions = peep_pathfind_get_max_number_junctions(peep);
 
 	/* The max number of tiles to check - a whole-search limit.
-	 * Mainly to limit the performance impact of the path finding.
-	 * WARNING: Exceeding this limit can cause path finding problems.
-	 * FUTURE: fix how this limit is applied so all possible directions
-	 * are always searched. */
+	 * Mainly to limit the performance impact of the path finding. */
 	sint32 maxTilesChecked = (peep->type == PEEP_TYPE_STAFF) ? 50000 : 15000;
 	// Used to allow walking through no entry banners
 	_peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
@@ -8918,27 +9085,38 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		.z = (uint8)(gPeepPathFindGoalPosition.z)
 	};
 
+	// Get the path element at this location
+	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
+	bool found = false;
+	do {
+		if (dest_map_element->base_height != z) continue;
+		if (map_element_get_type(dest_map_element) != MAP_ELEMENT_TYPE_PATH) continue;
+		found = true;
+		break;
+	} while (!map_element_is_last_for_tile(dest_map_element++));
+	// Peep is not on a path.
+	if (!found) return -1;
+
+	/* Determine if the path is a thin junction.
+	 * Only 'thin' junctions are remembered in peep->pathfind_history. */
+	bool isThin = path_is_thin_junction(dest_map_element, x, y, z);
+
 	uint8 edges = 0xF;
-	if (peep->pathfind_goal.x == goal.x &&
+	if (isThin && peep->pathfind_goal.x == goal.x &&
 		peep->pathfind_goal.y == goal.y &&
 		peep->pathfind_goal.z == goal.z
 	) {
 		/* Use of peep->pathfind_history[]:
 		 * When walking to a goal, the peep pathfind_history stores
-		 * the last 4 junctions that the peep walked through.
-		 * For each these 4 junctions the peep remembers those edges it
-		 * has not yet taken.
-                 * If a peep returns to one of the 4 junctions that it
+		 * the last 4 thin junctions that the peep walked through.
+		 * For each of these 4 thin junctions the peep remembers
+		 * those edges it has not yet taken.
+                 * If a peep returns to one of the 4 thin junctions that it
 		 * remembers, it will only choose from the directions that it
-		 * did not try yet. i.e. it avoids walking around in circles!
-		 * ASIDE: unlike the (new) loop detection in the search
-		 * heuristic (which considers only loops between 'thin'
-		 * junctions and so handles thin paths and wide paths equally),
-		 * this considers all path junctions - so wide paths make this
-		 * next to useless.
-		 * FUTURE: either update this to work on 'thin' junctions too
-		 * or remove it as obsoleted by the (new) loop detection in the
-		 * search heuristic. */
+		 * did not try yet.
+		 * This forces to the peep pathfinding to try the "next best"
+		 * direction after trying the "best" direction(s) and finding
+		 * that the goal could not be reached. */
 
 		/* If the peep remembers walking through this junction
 		 * previously while heading for its goal, retrieve the
@@ -8952,18 +9130,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			}
 		}
 	}
-
-	// Get the path element at this location
-	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
-	bool found = false;
-	do {
-		if (dest_map_element->base_height != z) continue;
-		if (map_element_get_type(dest_map_element) != MAP_ELEMENT_TYPE_PATH) continue;
-		found = true;
-		break;
-	} while (!map_element_is_last_for_tile(dest_map_element++));
-	// Peep is not on a path.
-	if (!found) return -1;
 
 	// Remove any edges that are not permitted
 	edges &= path_get_permitted_edges(dest_map_element);
@@ -8979,7 +9145,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint8 best_sub = 0xFF;
 
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d\n", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+			log_verbose(stderr, "Pathfind start for goal %d,%d,%d from %d,%d,%d\n", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		/* Call the search heuristic on each edge, keeping track of the
@@ -8987,6 +9153,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		 * or for different edges with equal value, the edge with the
 		 * least steps (best_sub). */
 		int numEdges = bitcount(edges);
+		bool goalReachable = false;
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
@@ -8998,7 +9165,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			}
 
 			_peepPathFindFewestNumSteps = 255;
-			_peepPathFindQueueRideIndex = false;
 			/* Divide the maxTilesChecked global search limit
 			 * between the remaining edges to ensure the search
 			 * covers all of the remaining edges. */
@@ -9015,23 +9181,39 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			_peepPathFindHistory[0].y = (uint8)(y >> 5);
 			_peepPathFindHistory[0].z = (uint8)z;
 
-			uint16 score = peep_pathfind_heuristic_search(x, y, height, 0, 0xFFFF, test_edge);
+			uint16 score = 0xFFFF;
+			uint8 searchResult = peep_pathfind_heuristic_search(x, y, height, 0, &score, test_edge);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-				log_verbose("Pathfind test edge: %d score: %d steps: %d\n", test_edge, score, _peepPathFindFewestNumSteps);
+				log_verbose(stderr,"Pathfind test edge: %d score: %d steps: %d searchResult: %d\n", test_edge, score, _peepPathFindFewestNumSteps, searchResult);
 			#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-			if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
-				chosen_edge = test_edge;
-				best_score = score;
-				best_sub = _peepPathFindFewestNumSteps;
+			if (score == 0 ||
+				searchResult == PATH_SEARCH_THIN ||
+				searchResult == PATH_SEARCH_JUNCTION ||
+				searchResult == PATH_SEARCH_WIDE) {
+				if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
+					chosen_edge = test_edge;
+					best_score = score;
+					best_sub = _peepPathFindFewestNumSteps;
+				}
 			}
 		}
+
+		/* Check if the heuristic search failed. e.g. all connected
+		 * paths are within the search limits and none reaches the
+		 * goal. */
+		if (best_score == 0xFFFF) {
+			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				log_verbose(stderr, "Pathfind heuristic search failed.\n");
+			#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+			return -1;
+		}
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-			log_verbose("Pathfind best edge %d with score %d\n", chosen_edge, best_score);
+			log_verbose(stderr, "Pathfind best edge %d with score %d\n", chosen_edge, best_score);
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
-	/* This is a new goal for the peep. Store it and reset the peep's
+	/* If this is a new goal for the peep. Store it and reset the peep's
 	 * pathfind_history. */
 	if (peep->pathfind_goal.direction > 3 ||
 		peep->pathfind_goal.x != goal.x ||
@@ -9047,27 +9229,29 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
 	}
 
-	/* Peep remembers this location, so remove the chosen_edge from
-	 * those left to try. */
-	for (int i = 0; i < 4; ++i) {
-		if (peep->pathfind_history[i].x == x >> 5 &&
-			peep->pathfind_history[i].y == y >> 5 &&
-			peep->pathfind_history[i].z == z
-		) {
-			peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
-			return chosen_edge;
+	if (isThin) {
+		for (int i = 0; i < 4; ++i) {
+			if (peep->pathfind_history[i].x == x >> 5 &&
+				peep->pathfind_history[i].y == y >> 5 &&
+				peep->pathfind_history[i].z == z
+			) {
+				/* Peep remembers this junction, so remove the
+				 * chosen_edge from those left to try. */
+				peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+				return chosen_edge;
+			}
 		}
-	}
 
-	/* Peep does not remember this junction, so forget a junction and
-	 * remember this junction. */
-	int i = peep->pathfind_goal.direction++;
-	peep->pathfind_goal.direction &= 3;
-	peep->pathfind_history[i].x = x >> 5;
-	peep->pathfind_history[i].y = y >> 5;
-	peep->pathfind_history[i].z = z;
-	peep->pathfind_history[i].direction = 0xF;
-	peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+		/* Peep does not remember this junction, so forget a junction
+		 * and remember this junction. */
+		int i = peep->pathfind_goal.direction++;
+		peep->pathfind_goal.direction &= 3;
+		peep->pathfind_history[i].x = x >> 5;
+		peep->pathfind_history[i].y = y >> 5;
+		peep->pathfind_history[i].z = z;
+		peep->pathfind_history[i].direction = 0xF;
+		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+	}
 
 	return chosen_edge;
 }
@@ -9387,6 +9571,9 @@ static int guest_path_finding(rct_peep* peep)
 		return peep_move_one_tile(direction, peep);
 	}
 
+	// Peep still has multiple edges to choose from.
+
+	// Peep is outside the park.
 	// loc_694F19:
 	if (peep->outside_of_park != 0){
 		switch (peep->state) {
@@ -9399,7 +9586,7 @@ static int guest_path_finding(rct_peep* peep)
 		}
 	}
 
-	/* Peep is inside the park and at a 'thin' junction:
+	/* Peep is inside the park.
 	 * If the peep does not have food, randomly cull the useless directions
 	 * (dead ends, ride exits, wide paths) from the edges.
 	 * In principle, peeps with food are not paying as much attention to
@@ -9455,6 +9642,7 @@ static int guest_path_finding(rct_peep* peep)
 	if (ride->status != RIDE_STATUS_OPEN)
 		return guest_path_find_aimless(peep, edges);
 
+	// The ride is open.
 	gPeepPathFindQueueRideIndex = rideIndex;
 
 	/* Find the ride's closest entrance station to the peep.
