@@ -455,6 +455,7 @@ static int cc_rides(const utf8 **argv, int argc)
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
 				console_printf("rides set type <ride id> <ride type>");
+				console_printf("rides set friction <ride id> <friction value>");
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
