@@ -680,8 +680,25 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     sint32 left = x + drawOffsetX;
     sint32 top = y + drawOffsetY;
+
+    int zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
+        top -= ~zoom_mask;
+    }
+
+    if (!(g1Element->flags & G1_FLAG_RLE_COMPRESSION)) {
+        top &= zoom_mask;
+        left += ~zoom_mask;
+    }
+
+    left &= zoom_mask;
+
     sint32 right = left + drawWidth;
     sint32 bottom = top + drawHeight;
+
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION) {
+        bottom += top & ~zoom_mask;
+    }
 
     if (left > right)
     {
