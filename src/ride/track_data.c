@@ -33304,7 +33304,7 @@ const uint16 TrackFlags[] = {
 	/* TRACK_ELEM_25_DEG_UP_RIGHT_BANKED                               */	TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_0100 | TRACK_ELEM_FLAG_8000,
 	/* TRACK_ELEM_WATERFALL                                            */	0,
 	/* TRACK_ELEM_RAPIDS                                               */	0,
-	/* TRACK_ELEM_ON_RIDE_PHOTO                                        */	TRACK_ELEM_FLAG_0200,
+	/* TRACK_ELEM_ON_RIDE_PHOTO                                        */	0,
 	/* TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED                              */	TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_0100 | TRACK_ELEM_FLAG_8000,
 	/* TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED                             */	TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_0100 | TRACK_ELEM_FLAG_8000,
 	/* TRACK_ELEM_WATER_SPLASH                                         */	0,
