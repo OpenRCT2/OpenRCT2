@@ -52,8 +52,8 @@ uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-paint_struct *unk_EE7884;
-paint_struct *unk_EE7888;
+paint_entry *unk_EE7884;
+paint_entry *gNextFreePaintStruct;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
 #endif
@@ -769,7 +769,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 			}
 			gfx_clear(dpi2, colour);
 		}
-		g_ps_EE7880 = &gUnkF1A4CC;
+		gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
 		unk_140E9A8 = dpi2;
 		painter_setup();
 		viewport_paint_setup();
@@ -1330,7 +1330,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 static void sub_68862C()
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
-	paint_struct *ps = unk_EE7884, *old_ps, *next_ps;
+	paint_struct *ps = &unk_EE7884->basic, *old_ps, *next_ps;
 
 	while ((ps = ps->next_quadrant_ps) != NULL) {
 		old_ps = ps;
@@ -1398,7 +1398,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->zoom_level = _viewportDpi1.zoom_level;
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
-			g_ps_EE7880 = &gUnkF1A4CC;
+			gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
 			unk_140E9A8 = dpi;
 			painter_setup();
 			viewport_paint_setup();

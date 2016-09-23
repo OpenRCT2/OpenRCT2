@@ -105,18 +105,16 @@ extern uint8 gSavedViewZoom;
 extern uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-extern paint_struct *unk_EE7884;
-extern paint_struct *unk_EE7888;
+extern paint_entry *unk_EE7884;
+extern paint_entry *gNextFreePaintStruct;
 extern uint8 gCurrentRotation;
 extern uint32 gCurrentViewportFlags;
 #else
-	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_struct*)
-	#define unk_EE7888 RCT2_GLOBAL(0x00EE7888, paint_struct*)
+	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_entry*)
+	#define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_entry*)
 	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 	#define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint32)
 #endif
-
-extern uint32 gUnkEDF81C;
 
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
