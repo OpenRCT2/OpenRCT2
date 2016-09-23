@@ -9,7 +9,7 @@
 - Feature: Add ride console command for diagnostics and changing vehicle type.
 - Feature: Allow selecting corners when using the mountain tool.
 - Feature: Allow setting ownership of map edges.
-- Feature: Allow up to 255 cars per train and 32 track units per station
+- Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
 - Feature: Filter Object Selection Window by "Selected only" and "Non-selected only"
 - Feature: Allow raising terrain to 64 in-game units.
