@@ -126,6 +126,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
             numPeepLoadingPositions = stream->ReadValue<uint16>();
         }
         _peepLoadingPositions[i] = stream->ReadArray<sint8>(numPeepLoadingPositions);
+        _peepLoadingPositionsCount[i] = numPeepLoadingPositions;
     }
 
     GetImageTable()->Read(context, stream);
@@ -354,6 +355,9 @@ void RideObject::Load()
                 set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
             }
             vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
+#ifdef NO_RCT2
+            vehicleEntry->peep_loading_positions_count = _peepLoadingPositionsCount[i];
+#endif
         }
     }
 }

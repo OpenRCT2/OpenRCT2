@@ -2778,6 +2778,9 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
         return;
     }
 
+#ifdef NO_RCT2
+    assert(peep->current_seat < vehicle_type->peep_loading_positions_count);
+#endif
     sint8 load_position = vehicle_type->peep_loading_positions[peep->current_seat];
 
     switch (vehicle->sprite_direction / 8){
