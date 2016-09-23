@@ -292,7 +292,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 	return;
 }
 
-static uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour) {
+uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour) {
 	int image_type = (image_id & 0xE0000000);
 	if (image_type == 0)
 		return NULL;

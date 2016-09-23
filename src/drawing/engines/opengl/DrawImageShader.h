@@ -28,6 +28,8 @@ struct DrawImageInstance {
     vec4f texColourBounds;
     int texMaskAtlas;
     vec4f texMaskBounds;
+    int texPaletteAtlas;
+    vec4f texPaletteBounds;
     int flags;
     vec4f colour;
     vec4i bounds;
@@ -47,6 +49,8 @@ private:
     GLuint vTexColourBounds;
     GLuint vTexMaskAtlas;
     GLuint vTexMaskBounds;
+    GLuint vTexPaletteAtlas;
+    GLuint vTexPaletteBounds;
     GLuint vFlags;
     GLuint vColour;
     GLuint vBounds;

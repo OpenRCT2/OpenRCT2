@@ -174,7 +174,6 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	ps->map_x = gPaintMapPosition.x;
 	ps->map_y = gPaintMapPosition.y;
 	ps->mapElement = g_currently_drawn_item;
-
 	return ps;
 }
 
