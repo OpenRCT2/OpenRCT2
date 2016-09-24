@@ -16,9 +16,17 @@
 
 #include "../../config.h"
 #include "../../interface/viewport.h"
-#include "../../world/sprite.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
+#include "../../world/sprite.h"
+#include "../track.h"
+#include "../track_paint.h"
 #include "../vehicle_paint.h"
+
+TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int direction)
+{
+	return NULL;
+}
 
 #ifndef NO_VEHICLES
 /**
