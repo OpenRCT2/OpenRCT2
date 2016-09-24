@@ -25,6 +25,22 @@
 
 TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int direction)
 {
+	switch (trackType) {
+
+	//////////////////////////////////////////////////////
+	// Use River Rafts
+	//////////////////////////////////////////////////////
+	case TRACK_ELEM_FLAT:
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_S_BEND_LEFT:
+	case TRACK_ELEM_S_BEND_RIGHT:
+		return get_track_paint_function_river_rafts(trackType, direction);
+	}
+
 	return NULL;
 }
 
