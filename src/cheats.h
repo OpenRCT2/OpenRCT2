@@ -20,6 +20,7 @@
 #include "common.h"
 
 extern bool gCheatsSandboxMode;
+extern bool gServerCheatsDisableClearanceChecks;
 extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
 extern bool gCheatsShowAllOperatingModes;

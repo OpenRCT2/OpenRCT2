@@ -3636,6 +3636,8 @@ enum {
 	STR_FILEBROWSER_ACTION_NEW_FOLDER = 5985,
 	STR_FILEBROWSER_FOLDER_NAME_PROMPT = 5986,
 	STR_UNABLE_TO_CREATE_FOLDER = 5987,
+	STR_ALLOW_USING_DISABLE_CLEARANCE = 5988,
+	STR_ACTION_ALLOW_ADJUSTING_CLIENT_PREFS = 5989,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

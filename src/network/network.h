@@ -34,6 +34,12 @@ enum {
 	NETWORK_STATUS_CONNECTED
 };
 
+// This should really be a part of NetworkPlayer header, but it is C++ and wouldn't be
+// accessible from C.
+enum CLIENT_PREFS {
+	CLIENT_PREF_DISABLE_CLEARENCE,
+};
+
 #define NETWORK_DEFAULT_PORT 11753
 
 #ifdef __cplusplus
@@ -55,7 +61,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "15"
+#define NETWORK_STREAM_VERSION "16"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -287,6 +293,7 @@ const char* network_get_group_name(unsigned int index);
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_adjust_client_prefs(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 uint8 network_get_default_group();
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
@@ -296,6 +303,11 @@ void network_set_pickup_peep(uint8 playerid, rct_peep* peep);
 rct_peep* network_get_pickup_peep(uint8 playerid);
 void network_set_pickup_peep_old_x(uint8 playerid, int x);
 int network_get_pickup_peep_old_x(uint8 playerid);
+void network_save_server_prefs();
+void network_apply_client_prefs(int game_command_playerid);
+void network_restore_server_prefs();
+void network_init_client_prefs();
+uintptr_t network_get_user_pref(int user, int pref);
 
 void network_send_map();
 void network_send_chat(const char* text);

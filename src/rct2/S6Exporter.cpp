@@ -546,7 +546,7 @@ extern "C"
         SDL_WriteLE32(rw, _guestGenerationProbability);
         SDL_WriteLE32(rw, _suggestedGuestMaximum);
         SDL_WriteU8(rw, gCheatsSandboxMode);
-        SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+        SDL_WriteU8(rw, gServerCheatsDisableClearanceChecks);
         SDL_WriteU8(rw, gCheatsDisableSupportLimits);
         SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
         SDL_WriteU8(rw, gCheatsEnableChainLiftOnAllTrack);

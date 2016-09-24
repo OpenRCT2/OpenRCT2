@@ -510,7 +510,7 @@ extern "C"
         _guestGenerationProbability = SDL_ReadLE32(rw);
         _suggestedGuestMaximum = SDL_ReadLE32(rw);
         gCheatsSandboxMode = SDL_ReadU8(rw) != 0;
-        gCheatsDisableClearanceChecks = SDL_ReadU8(rw) != 0;
+        gServerCheatsDisableClearanceChecks = SDL_ReadU8(rw) != 0;
         gCheatsDisableSupportLimits = SDL_ReadU8(rw) != 0;
         gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw) != 0;
         gCheatsEnableChainLiftOnAllTrack = SDL_ReadU8(rw) != 0;

@@ -87,6 +87,8 @@ enum {
 	SERVER_EVENT_PLAYER_DISCONNECTED,
 };
 
+static bool network_save_cheatsDisableClearanceChecks;
+
 void network_chat_show_connected_message();
 void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
@@ -2258,6 +2260,48 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	*ebx = 0;
 }
 
+void game_command_adjust_client_prefs(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	uint8 playerid = (uint8)*eax;
+	CLIENT_PREFS pref = CLIENT_PREFS(*ecx);
+	int pref_value = *edx;
+	int flags = *ebx;
+	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
+	// TODO: should validate player can only request pref change for himself
+
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		if (flags & GAME_COMMAND_FLAG_APPLY) {
+			switch (pref) {
+			case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
+				if (gServerCheatsDisableClearanceChecks) {
+					player->user_prefs[pref] = pref_value != 0;
+					// only set saved state, it will be restored to proper value when we're done.
+					if (playerid == network_get_current_player_id()) {
+						network_save_cheatsDisableClearanceChecks = player->user_prefs[pref] != 0;
+					}
+				} else {
+					*ebx = MONEY32_UNDEFINED;
+					return;
+				}
+				break;
+			default:
+				log_warning("Unknown client preference %d, your build may be outdated", pref);
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
+		}
+	} else {
+		if (flags & GAME_COMMAND_FLAG_APPLY) {
+			switch (pref) {
+			case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
+				gCheatsDisableClearanceChecks = pref_value != 0;
+				break;
+			}
+		}
+	}
+	*ebx = 0;
+}
+
 uint8 network_get_default_group()
 {
 	return gNetwork.GetDefaultGroup();
@@ -2408,6 +2452,57 @@ const utf8 * network_get_server_provider_name() { return gNetwork.ServerProvider
 const utf8 * network_get_server_provider_email() { return gNetwork.ServerProviderEmail.c_str(); }
 const utf8 * network_get_server_provider_website() { return gNetwork.ServerProviderWebsite.c_str(); }
 
+void network_save_server_prefs() {
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		return;
+	}
+	network_save_cheatsDisableClearanceChecks = gCheatsDisableClearanceChecks;
+}
+
+void network_apply_client_prefs(int game_command_playerid) {
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		return;
+	}
+	NetworkPlayer *player = gNetwork.GetPlayerByID(game_command_playerid);
+	if (player == nullptr) {
+		log_warning("invalid player %d", game_command_playerid);
+		return;
+	}
+	for (const auto &it : player->user_prefs) {
+		switch (it.first) {
+			case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
+				// Even if a server does not allow using disable clearance and so this cannot be *set*,
+				// a client can still have this setting on, so we need to check anyway.
+				if (gServerCheatsDisableClearanceChecks) {
+					gCheatsDisableClearanceChecks = it.second != 0;
+				}
+				break;
+		}
+	}
+}
+
+void network_restore_server_prefs() {
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		return;
+	}
+	gCheatsDisableClearanceChecks = network_save_cheatsDisableClearanceChecks;
+}
+
+uintptr_t network_get_user_pref(int user, int pref) {
+	if (network_get_mode() == NETWORK_MODE_NONE) {
+		return 0;
+	}
+	NetworkPlayer *player = gNetwork.GetPlayerByID(user);
+	if (player == nullptr) {
+		return 0;
+	}
+	const auto it = player->user_prefs.find(pref);
+	if (it != player->user_prefs.cend()) {
+		return it->second;
+	}
+	return 0;
+}
+
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
 int network_get_status() { return NETWORK_STATUS_NONE; }
@@ -2440,6 +2535,7 @@ const char* network_get_group_name(unsigned int index) { return ""; };
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 void game_command_modify_groups(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 void game_command_kick_player(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
+void game_command_adjust_client_prefs(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 uint8 network_get_default_group() { return 0; }
 int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
@@ -2463,4 +2559,9 @@ const utf8 * network_get_server_greeting() { return nullptr; }
 const utf8 * network_get_server_provider_name() { return nullptr; }
 const utf8 * network_get_server_provider_email() { return nullptr; }
 const utf8 * network_get_server_provider_website() { return nullptr; }
+void network_save_server_prefs() { }
+void network_apply_client_prefs(int) { }
+void network_restore_server_prefs() { }
+void network_init_client_prefs() { }
+uintptr_t network_get_user_pref(int user, int pref) { }
 #endif /* DISABLE_NETWORK */

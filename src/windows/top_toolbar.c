@@ -586,7 +586,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		case DDIDX_DISABLE_CLEARANCE_CHECKS:
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, 0, GAME_COMMAND_CHEAT, 0, 0);
+			game_do_command(network_get_current_player_id(), GAME_COMMAND_FLAG_APPLY, CLIENT_PREF_DISABLE_CLEARENCE, !gCheatsDisableClearanceChecks, GAME_COMMAND_ADJUST_CLIENT_PREFS, 0, 0);
 			break;
 		case DDIDX_DISABLE_SUPPORT_LIMITS:
 			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, 0, GAME_COMMAND_CHEAT, 0, 0);

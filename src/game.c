@@ -558,11 +558,16 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		game_command_playerid = network_get_current_player_id();
 	}
 
+	network_save_server_prefs();
+	network_apply_client_prefs(game_command_playerid);
+
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
 	// First call for validity and price check
 	new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 	cost = *ebx;
+
+	network_restore_server_prefs();
 
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
@@ -595,8 +600,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				}
 			}
 
+			// Server settings have already been saved this tick, no need to save them again
+			network_apply_client_prefs(game_command_playerid);
 			// Second call to actually perform the operation
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+			network_restore_server_prefs();
 
 			// Do the callback (required for multiplayer to work correctly), but only for top level commands
 			if (gGameCommandNestLevel == 1) {
