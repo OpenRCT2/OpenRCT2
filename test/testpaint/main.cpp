@@ -39,6 +39,7 @@ typedef struct {
 } TestCase;
 
 enum CLIColour {
+	DEFAULT,
 	RED,
 	GREEN,
 };
@@ -53,9 +54,16 @@ static bool CStringEquals(const char *lhs, const char *rhs) {
 	return strcmp(lhs, rhs) == 0;
 }
 
-static bool ShouldUseColor() {
-	if (gTestColor == false) {
-		return false;
+enum COLOUR_METHOD {
+	COLOUR_METHOD_NONE,
+	COLOUR_METHOD_ANSI,
+	COLOUR_METHOD_WINDOWS,
+};
+
+static COLOUR_METHOD GetColourMethod()
+{
+	if (!gTestColor) {
+		return COLOUR_METHOD_NONE;
 	}
 
 	const char* const term = getenv("TERM");
@@ -72,7 +80,15 @@ static bool ShouldUseColor() {
 		CStringEquals(term, "linux") ||
 		CStringEquals(term, "cygwin");
 
-	return term_supports_color;
+	if (term_supports_color) {
+		return COLOUR_METHOD_ANSI;
+	}
+
+#ifdef __WINDOWS__
+	return COLOUR_METHOD_WINDOWS;
+#else
+	return COLOUR_METHOD_NONE;
+#endif
 }
 
 static const char* GetAnsiColorCode(CLIColour color) {
@@ -103,32 +119,28 @@ static WORD GetWindowsConsoleAttribute(CLIColour color, WORD defaultAttr)
 
 #endif
 
-static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
+static void ColouredPrintF(CLIColour colour, const char* fmt, ...)
+{
 	va_list args;
 	va_start(args, fmt);
 
-	if(!ShouldUseColor()) {
-		if (gTestColor) {
-#ifdef __WINDOWS__
-			HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-			WORD defaultAttr = GetCurrentWindowsConsoleAttribute(hStdOut);
-			SetConsoleTextAttribute(hStdOut, GetWindowsConsoleAttribute(colour, defaultAttr));
-#endif
-			vprintf(fmt, args);
-#ifdef __WINDOWS__
-			SetConsoleTextAttribute(hStdOut, defaultAttr);
-#endif
-			va_end(args);
-		} else {
-			vprintf(fmt, args);
-			va_end(args);
-		}
-		return;
-	}
+	COLOUR_METHOD colourMethod = GetColourMethod();
 
-	printf("\033[0;3%sm", GetAnsiColorCode(colour));
-	vprintf(fmt, args);
-	printf("\033[m");
+	if (colour == CLIColour::DEFAULT || colourMethod == COLOUR_METHOD_NONE) {
+		vprintf(fmt, args);
+	} else if (colourMethod == COLOUR_METHOD_ANSI) {
+		printf("\033[0;3%sm", GetAnsiColorCode(colour));
+		vprintf(fmt, args);
+		printf("\033[m");
+	} else if (colourMethod == COLOUR_METHOD_WINDOWS) {
+#ifdef __WINDOWS__
+		HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		WORD defaultAttr = GetCurrentWindowsConsoleAttribute(hStdOut);
+		SetConsoleTextAttribute(hStdOut, GetWindowsConsoleAttribute(colour, defaultAttr));
+		vprintf(fmt, args);
+		SetConsoleTextAttribute(hStdOut, defaultAttr);
+#endif
+	}
 	va_end(args);
 }
 
@@ -321,6 +333,22 @@ static bool openrct2_setup_rct2_segment()
 	return true;
 }
 
+void PrintRideTypes()
+{
+	for (uint8 rideType = 0; rideType < 91; rideType++) {
+		CLIColour colour = CLIColour::DEFAULT;
+		bool implemented = rideIsImplemented(rideType);
+		const char * rideName = RideNames[rideType];
+		const char * status = "";
+		if (implemented) {
+			status = " [IMPLEMENTED]";
+			colour = CLIColour::GREEN;
+		}
+
+		ColouredPrintF(colour, "%2d: %-30s%s\n", rideType, rideName, status);
+	}
+}
+
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
@@ -334,6 +362,9 @@ int main(int argc, char *argv[]) {
 			if (i + 1 < argc) {
 				i++;
 				specificRideType = atoi(argv[i]);
+			} else {
+				PrintRideTypes();
+				return 2;
 			}
 		}
 	}
