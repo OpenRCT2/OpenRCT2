@@ -20,6 +20,8 @@
 		85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
 		85AFA2111D7DB83E00221B42 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AFA20F1D7DB83E00221B42 /* main.cpp */; };
+		85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
+		85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
 		85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; };
@@ -497,6 +499,7 @@
 		85AFA20F1D7DB83E00221B42 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		85AFA2101D7DB83E00221B42 /* intercept.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intercept.h; sourceTree = "<group>"; };
 		85AFA2141D7DDFA100221B42 /* data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
+		85B468FB1D96822F000F1DB5 /* paint_helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
 		85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = intercept_2.cpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
@@ -1193,6 +1196,7 @@
 			children = (
 				C686F8971CDBC37E009F9BFC /* map_element */,
 				C686F8A41CDBC37E009F9BFC /* sprite */,
+				85B468FB1D96822F000F1DB5 /* paint_helpers.c */,
 				C686F8A21CDBC37E009F9BFC /* paint.c */,
 				C686F8AA1CDBC37E009F9BFC /* supports.c */,
 				C686F8A31CDBC37E009F9BFC /* paint.h */,
@@ -2446,6 +2450,7 @@
 				C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */,
 				C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */,
 				C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */,
+				85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */,
 				C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */,
 				C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */,
 				C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */,
@@ -2569,6 +2574,7 @@
 				C686F91C1CDBC3B7009F9BFC /* mini_suspended_coaster.c in Sources */,
 				D44271FA1CC81B3200D84D28 /* RootCommands.cpp in Sources */,
 				D442726B1CC81B3200D84D28 /* map.c in Sources */,
+				85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */,
 				D464FEE71D31A6AA00CBABAC /* FootpathItemObject.cpp in Sources */,
 				D442721E1CC81B3200D84D28 /* Theme.cpp in Sources */,
 				C686F9271CDBC3B7009F9BFC /* virginia_reel.c in Sources */,
@@ -2801,6 +2807,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 					"NO_VEHICLES=1",
+					__TESTPAINT__,
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -2854,6 +2861,7 @@
 					OPENGL_NO_LINK,
 					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
 					"NO_VEHICLES=1",
+					__TESTPAINT__,
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
