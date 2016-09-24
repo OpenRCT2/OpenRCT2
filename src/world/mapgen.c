@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
+#include "../common.h"
+#include <SDL.h>
+
 #include "../object.h"
 #include "../util/util.h"
 #include "map.h"
@@ -122,7 +124,7 @@ void mapgen_generate(mapgen_settings *settings)
 	int x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
-	util_srand((unsigned int)time(NULL));
+	util_srand((int)SDL_GetTicks());
 
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
