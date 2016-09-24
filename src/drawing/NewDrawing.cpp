@@ -43,6 +43,11 @@ extern "C"
 
 extern "C"
 {
+    sint32 drawing_engine_get_type()
+    {
+        return _drawingEngineType;
+    }
+
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);

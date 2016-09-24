@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../editor.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -623,7 +624,7 @@ static bool track_list_load_design_for_preview(utf8 *path)
 	_loadedTrackDesign = NULL;
 
 	_loadedTrackDesign = track_design_open(path);
-	if (_loadedTrackDesign != NULL) {
+	if (_loadedTrackDesign != NULL && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
 		track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels);
 		return true;
 	}
