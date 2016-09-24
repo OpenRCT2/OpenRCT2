@@ -2150,6 +2150,8 @@ void window_resize_gui(int width, int height)
 	if (optionsWind != NULL) {
 		optionsWind->x = width - 80;
 	}
+
+	gfx_invalidate_screen();
 }
 
 /**

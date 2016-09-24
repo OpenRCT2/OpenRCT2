@@ -44,6 +44,9 @@
 #include "windows/error.h"
 
 static const int gRandomShowcase = 0;
+
+bool gTitleHideVersionInfo = false;
+
 sint32 gTitleScriptCommand = -1;
 uint8 gTitleScriptSave = 0xFF;
 sint32 gTitleScriptSkipTo = -1;
@@ -88,8 +91,6 @@ static uint8 *generate_random_script();
 
 #pragma endregion
 
-static void title_create_windows();
-
 static uint8 *title_script_load();
 
 /**
@@ -129,6 +130,7 @@ void title_load()
 	//stop_other_sounds();
 	viewport_init_all();
 	news_item_init_queue();
+	window_main_open();
 	title_create_windows();
 	title_init_showcase();
 	gfx_invalidate_screen();
@@ -147,14 +149,14 @@ void title_load()
  * tutorial, toolbox and exit.
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
  */
-static void title_create_windows()
+void title_create_windows()
 {
-	window_main_open();
 	window_title_menu_open();
 	window_title_exit_open();
 	window_title_options_open();
 	window_title_logo_open();
 	window_resize_gui(gScreenWidth, gScreenHeight);
+	gTitleHideVersionInfo = false;
 }
 
 /**

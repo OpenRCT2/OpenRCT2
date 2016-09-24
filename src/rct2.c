@@ -295,7 +295,7 @@ void rct2_draw(rct_drawpixelinfo *dpi)
 	chat_draw(dpi);
 	console_draw(dpi);
 
-	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
+	if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo) {
 		DrawOpenRCT2(dpi, 0, gScreenHeight - 20);
 	}
 

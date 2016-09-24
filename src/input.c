@@ -1453,9 +1453,7 @@ void title_handle_keyboard_input()
 				window_text_input_key(w, key);
 			}
 			
-			if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
-				keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
-			}
+			keyboard_shortcut_handle(key);
 		}
 	}
 }
