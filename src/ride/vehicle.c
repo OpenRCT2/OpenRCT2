@@ -2949,7 +2949,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
 		return;
 
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_27))
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
 		return;
 
 	vehicle->lost_time_out++;
