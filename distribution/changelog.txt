@@ -1,5 +1,6 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: Ability to disable rendering of weather effects and gloom
 - Feature: New view option: "See-Through Paths"
 - Feature: Add cheat to reset date.
 - Feature: Add OpenGL drawing engine.

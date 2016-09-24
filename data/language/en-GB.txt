@@ -4228,6 +4228,8 @@ STR_5916    :{COMMA16} player
 STR_5917    :{COMMA16} players
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Render weather effects
+STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
 
 #############
 # Scenarios #
