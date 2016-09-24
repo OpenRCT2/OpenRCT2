@@ -397,8 +397,12 @@ namespace Intercept2
                     gSupportSegments[s].slope = 0xFF;
                 }
 
+                testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
                 newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+                if (testpaint_is_ignored(direction, trackSequence)) {
+                    continue;
+                }
 
                 std::vector<SegmentSupportCall> newCalls = getSegmentCalls(gSupportSegments, direction);
 
@@ -432,8 +436,12 @@ namespace Intercept2
                 gSupport.height = 0;
                 gSupport.slope = 0xFF;
 
+                testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
                 newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+                if (testpaint_is_ignored(direction, trackSequence)) {
+                    continue;
+                }
 
                 if (referenceGeneralSupportCall.height != -1) {
                     if (gSupport.height != referenceGeneralSupportCall.height) {
@@ -583,6 +591,7 @@ namespace Intercept2
                 gLeftTunnelCount = 0;
                 gRightTunnelCount = 0;
 
+                testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
 
                 for (int offset = -8; offset <= 8; offset += 8) {
@@ -757,8 +766,12 @@ namespace Intercept2
             for (int direction = 0; direction < 4; direction++) {
                 gVerticalTunnelHeight = 0;
 
+                testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
                 newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
+                if (testpaint_is_ignored(direction, trackSequence)) {
+                    continue;
+                }
 
                 if (gVerticalTunnelHeight != referenceHeight) {
                     if (referenceHeight == 0) {
@@ -795,6 +808,44 @@ namespace Intercept2
         return true;
     }
 
+    struct IgnoredEntry
+    {
+        uint8 Direction;
+        uint8 TrackSequence;
+    };
+
+    static bool _ignoredAll;
+    static std::vector<IgnoredEntry> _ignoredEntries;
+
+    static void testClearIgnore()
+    {
+        _ignoredAll = false;
+        _ignoredEntries.clear();
+    }
+
+    static void testIgnore(uint8 direction, uint8 trackSequence)
+    {
+        _ignoredEntries.push_back({ direction, trackSequence });
+    }
+
+    static void testIgnoreAll()
+    {
+        _ignoredAll = true;
+    }
+
+    static bool testIsIgnored(uint8 direction, uint8 trackSequence)
+    {
+        if (_ignoredAll) return true;
+        for (const IgnoredEntry &entry : _ignoredEntries)
+        {
+            if (entry.Direction == direction &&
+                entry.TrackSequence == trackSequence)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 extern "C"
@@ -814,4 +865,23 @@ extern "C"
         return Intercept2::testVerticalTunnels(rideType, trackType);
     }
 
+    void testpaint_clear_ignore()
+    {
+        Intercept2::testClearIgnore();
+    }
+
+    void testpaint_ignore(uint8 direction, uint8 trackSequence)
+    {
+        Intercept2::testIgnore(direction, trackSequence);
+    }
+
+    void testpaint_ignore_all()
+    {
+        Intercept2::testIgnoreAll();
+    }
+
+    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+    {
+        return Intercept2::testIsIgnored(direction, trackSequence);
+    }
 }

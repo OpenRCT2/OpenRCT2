@@ -151,6 +151,7 @@
     <ClCompile Include="src\paint\map_element\scenery_multiple.c" />
     <ClCompile Include="src\paint\map_element\surface.c" />
     <ClCompile Include="src\paint\paint.c" />
+    <ClCompile Include="src\paint\paint_helpers.c" />
     <ClCompile Include="src\paint\sprite\litter.c" />
     <ClCompile Include="src\paint\sprite\misc.c" />
     <ClCompile Include="src\paint\sprite\peep.c" />

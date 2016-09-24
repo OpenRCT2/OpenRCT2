@@ -39,6 +39,7 @@ typedef struct {
 } TestCase;
 
 enum CLIColour {
+	DEFAULT,
 	RED,
 	GREEN,
 };
@@ -53,9 +54,16 @@ static bool CStringEquals(const char *lhs, const char *rhs) {
 	return strcmp(lhs, rhs) == 0;
 }
 
-static bool ShouldUseColor() {
-	if (gTestColor == false) {
-		return false;
+enum COLOUR_METHOD {
+	COLOUR_METHOD_NONE,
+	COLOUR_METHOD_ANSI,
+	COLOUR_METHOD_WINDOWS,
+};
+
+static COLOUR_METHOD GetColourMethod()
+{
+	if (!gTestColor) {
+		return COLOUR_METHOD_NONE;
 	}
 
 	const char* const term = getenv("TERM");
@@ -72,7 +80,15 @@ static bool ShouldUseColor() {
 		CStringEquals(term, "linux") ||
 		CStringEquals(term, "cygwin");
 
-	return term_supports_color;
+	if (term_supports_color) {
+		return COLOUR_METHOD_ANSI;
+	}
+
+#ifdef __WINDOWS__
+	return COLOUR_METHOD_WINDOWS;
+#else
+	return COLOUR_METHOD_NONE;
+#endif
 }
 
 static const char* GetAnsiColorCode(CLIColour color) {
@@ -83,28 +99,116 @@ static const char* GetAnsiColorCode(CLIColour color) {
 	};
 }
 
-static void ColouredPrintF(CLIColour colour, const char* fmt, ...) {
+#ifdef __WINDOWS__
+
+static WORD GetCurrentWindowsConsoleAttribute(HANDLE hConsoleOutput)
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(hConsoleOutput, &csbi);
+	return csbi.wAttributes;
+}
+
+static WORD GetWindowsConsoleAttribute(CLIColour color, WORD defaultAttr)
+{
+	switch (color) {
+	case RED:     return FOREGROUND_RED;
+	case GREEN:   return FOREGROUND_GREEN;
+	default:      return defaultAttr;
+	};
+}
+
+#endif
+
+static void ColouredPrintF(CLIColour colour, const char* fmt, ...)
+{
 	va_list args;
 	va_start(args, fmt);
 
-	if(!ShouldUseColor()) {
-		vprintf(fmt, args);
-		va_end(args);
-		return;
-	}
+	COLOUR_METHOD colourMethod = GetColourMethod();
 
-	printf("\033[0;3%sm", GetAnsiColorCode(colour));
-	vprintf(fmt, args);
-	printf("\033[m");
+	if (colour == CLIColour::DEFAULT || colourMethod == COLOUR_METHOD_NONE) {
+		vprintf(fmt, args);
+	} else if (colourMethod == COLOUR_METHOD_ANSI) {
+		printf("\033[0;3%sm", GetAnsiColorCode(colour));
+		vprintf(fmt, args);
+		printf("\033[m");
+	} else if (colourMethod == COLOUR_METHOD_WINDOWS) {
+#ifdef __WINDOWS__
+		HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+		WORD defaultAttr = GetCurrentWindowsConsoleAttribute(hStdOut);
+		SetConsoleTextAttribute(hStdOut, GetWindowsConsoleAttribute(colour, defaultAttr));
+		vprintf(fmt, args);
+		SetConsoleTextAttribute(hStdOut, defaultAttr);
+#endif
+	}
 	va_end(args);
 }
 
 #if defined(__WINDOWS__)
+
+#include <shellapi.h>
+
 int main(int argc, char *argv[]);
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = NULL;
+
+utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
+{
+	if (codepoint <= 0x7F) {
+		dst[0] = (utf8)codepoint;
+		return dst + 1;
+	} else if (codepoint <= 0x7FF) {
+		dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+		dst[1] = 0x80 | (codepoint & 0x3F);
+		return dst + 2;
+	} else if (codepoint <= 0xFFFF) {
+		dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+		dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[2] = 0x80 | (codepoint & 0x3F);
+		return dst + 3;
+	} else {
+		dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+		dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+		dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+		dst[3] = 0x80 | (codepoint & 0x3F);
+		return dst + 4;
+	}
+}
+
+utf8 *widechar_to_utf8(const wchar_t *src)
+{
+	utf8 *result = (utf8 *)malloc((wcslen(src) * 4) + 1);
+	utf8 *dst = result;
+
+	for (; *src != 0; src++) {
+		dst = utf8_write_codepoint(dst, *src);
+	}
+	*dst++ = 0;
+
+	size_t size = (size_t)(dst - result);
+	return (utf8 *)realloc(result, size);
+}
+
+utf8 **windows_get_command_line_args(int *outNumArgs)
+{
+	int argc;
+
+	// Get command line arguments as widechar
+	LPWSTR commandLine = GetCommandLineW();
+	LPWSTR *argvW = CommandLineToArgvW(commandLine, &argc);
+
+	// Convert to UTF-8
+	utf8 **argvUtf8 = (utf8**)malloc(argc * sizeof(utf8*));
+	for (int i = 0; i < argc; i++) {
+		argvUtf8[i] = widechar_to_utf8(argvW[i]);
+	}
+	LocalFree(argvW);
+
+	*outNumArgs = argc;
+	return argvUtf8;
+}
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
@@ -119,7 +223,16 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
 
-	int gExitCode = main(0, NULL);
+	int argc;
+	char ** argv = (char**)windows_get_command_line_args(&argc);
+
+	int gExitCode = main(argc, argv);
+
+	// Free argv
+	for (int i = 0; i < argc; i++) {
+		free(argv[i]);
+	}
+	free(argv);
 	
 	exit(gExitCode);
 	return gExitCode;
@@ -220,17 +333,47 @@ static bool openrct2_setup_rct2_segment()
 	return true;
 }
 
+void PrintRideTypes()
+{
+	for (uint8 rideType = 0; rideType < 91; rideType++) {
+		CLIColour colour = CLIColour::DEFAULT;
+		bool implemented = rideIsImplemented(rideType);
+		const char * rideName = RideNames[rideType];
+		const char * status = "";
+		if (implemented) {
+			status = " [IMPLEMENTED]";
+			colour = CLIColour::GREEN;
+		}
+
+		ColouredPrintF(colour, "%2d: %-30s%s\n", rideType, rideName, status);
+	}
+}
+
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
+	uint8 specificRideType = 0xFF;
 	for (int i = 0; i < argc; ++i) {
 		char *arg = argv[i];
 		if (strcmp(arg, "--gtest_color=no") == 0) {
 			gTestColor = false;
 		}
+		else if (strcmp(arg, "--ride-type") == 0) {
+			if (i + 1 < argc) {
+				i++;
+				specificRideType = atoi(argv[i]);
+			} else {
+				PrintRideTypes();
+				return 2;
+			}
+		}
 	}
 
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
+		if (specificRideType != 0xFF && rideType != specificRideType) {
+			continue;
+		}
+
 		if (!rideIsImplemented(rideType)) {
 			continue;
 		}

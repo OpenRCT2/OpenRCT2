@@ -246,6 +246,7 @@ void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direc
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
+TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
@@ -264,6 +265,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction);
@@ -283,6 +285,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int di
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 
 #endif
