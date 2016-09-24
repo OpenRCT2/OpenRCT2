@@ -5747,7 +5747,7 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		location.x += Unk9A37C4[i].x;
 		location.y += Unk9A37C4[i].y;
 
-		uint16 spriteIdx = gSpriteSpatialIndex[location.xy];
+		uint16 spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
 		while (spriteIdx != 0xFFFF) {
 			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
 			spriteIdx = vehicle2->next_in_quadrant;
@@ -7056,7 +7056,7 @@ static bool vehicle_update_motion_collision_detection(
 		location.x += Unk9A37C4[i].x;
 		location.y += Unk9A37C4[i].y;
 
-		collideId = gSpriteSpatialIndex[location.xy];
+		collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
