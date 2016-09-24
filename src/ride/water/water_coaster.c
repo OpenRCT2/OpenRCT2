@@ -282,7 +282,7 @@ static void water_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8
 	sint8 tunnel_height[4] = { -8, 8, 8, -8 };
 	uint8 tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
 	sub_98196C_rotated(direction, image_id, 0, 6, 32, 20, 1, height);
-	paint_util_push_tunnel_left(height + tunnel_height[direction], tunnel_type[direction]);
+	paint_util_push_tunnel_rotated(direction, height + tunnel_height[direction], tunnel_type[direction]);
 
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		int supportType = direction & 1 ? 2 : 1;
