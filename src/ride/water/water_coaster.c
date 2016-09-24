@@ -204,6 +204,51 @@ static const uint32 water_rc_track_pieces_diag_25_deg_up_to_flat[2][4] = {
 	},
 };
 
+static const uint32 water_rc_track_pieces_diag_25_deg_down[2][4] = {
+	{
+		SPR_WATER_RC_DIAG_25_DEG_UP_E_W,
+		SPR_WATER_RC_DIAG_25_DEG_UP_S_N,
+		SPR_WATER_RC_DIAG_25_DEG_UP_W_E,
+		SPR_WATER_RC_DIAG_25_DEG_UP_N_S,
+	},
+	{
+		SPR_WATER_RC_DIAG_25_DEG_UP_CHAIN_E_W,
+		SPR_WATER_RC_DIAG_25_DEG_UP_CHAIN_S_N,
+		SPR_WATER_RC_DIAG_25_DEG_UP_CHAIN_W_E,
+		SPR_WATER_RC_DIAG_25_DEG_UP_CHAIN_N_S,
+	},
+};
+
+static const uint32 water_rc_track_pieces_diag_flat_to_25_deg_down[2][4] = {
+	{
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_E_W,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_S_N,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_W_E,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_N_S,
+	},
+	{
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_E_W,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_S_N,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_W_E,
+		SPR_WATER_RC_DIAG_25_DEG_UP_TO_FLAT_CHAIN_N_S,
+	},
+};
+
+static const uint32 water_rc_track_pieces_diag_25_deg_down_to_flat[2][4] = {
+	{
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_E_W,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_S_N,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_W_E,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_N_S,
+	},
+	{
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_E_W,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_S_N,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_W_E,
+		SPR_WATER_RC_DIAG_FLAT_TO_25_DEG_UP_CHAIN_N_S,
+	},
+};
+
 static const uint8 water_rc_diag_support_segment[] = {1, 0, 2, 3};
 
 static const int water_rc_diag_blocked_segments[] = {
@@ -233,7 +278,7 @@ static void water_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8
 	bool isChained = track_element_is_lift_hill(mapElement);
 	uint32 image_id = gTrackColours[SCHEME_TRACK];
 	image_id |= water_rc_track_pieces_25_deg_up[isChained][direction];
-	
+
 	sint8 tunnel_height[4] = { -8, 8, 8, -8 };
 	uint8 tunnel_type[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
 	sub_98196C_rotated(direction, image_id, 0, 6, 32, 20, 1, height);
@@ -271,7 +316,7 @@ static void water_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequenc
 	bool isChained = track_element_is_lift_hill(mapElement);
 	uint32 image_id = gTrackColours[SCHEME_TRACK];
 	image_id |= water_rc_track_pieces_25_deg_up_to_flat[isChained][direction];
-	
+
 	uint8 tunnelType;
 	sint16 tunnelHeight;
 	if (direction == 1 || direction == 2) {
@@ -291,6 +336,21 @@ static void water_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequenc
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+static void water_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+	water_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void water_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+	water_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void water_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+	water_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void water_rc_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
@@ -343,7 +403,7 @@ static void water_rc_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, 
 
 static void water_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bool isChained = mapElement->type & (1 << 7);
+	bool isChained = track_element_is_lift_hill(mapElement);
 	track_paint_util_diag_tiles_paint(
 		1,
 		height,
@@ -367,7 +427,7 @@ static void water_rc_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSe
 
 static void water_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bool isChained = mapElement->type & (1 << 7);
+	bool isChained = track_element_is_lift_hill(mapElement);
 	track_paint_util_diag_tiles_paint(
 		1,
 		height,
@@ -389,6 +449,78 @@ static void water_rc_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSe
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+static void water_rc_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	track_paint_util_diag_tiles_paint(
+		1,
+		height,
+		direction,
+		trackSequence,
+		gTrackColours[SCHEME_TRACK],
+		water_rc_track_pieces_diag_25_deg_down[isChained],
+		defaultDiagTileOffsets,
+		defaultDiagBoundLengths,
+		0,
+		get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(direction & 1 ? 2 : 1, water_rc_diag_support_segment[direction], 8, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	int blockedSegments = water_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+static void water_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	track_paint_util_diag_tiles_paint(
+		1,
+		height,
+		direction,
+		trackSequence,
+		gTrackColours[SCHEME_TRACK],
+		water_rc_track_pieces_diag_flat_to_25_deg_down[isChained],
+		defaultDiagTileOffsets,
+		defaultDiagBoundLengths,
+		0,
+		get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(direction & 1 ? 2 : 1, water_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	int blockedSegments = water_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+static void water_rc_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bool isChained = track_element_is_lift_hill(mapElement);
+	track_paint_util_diag_tiles_paint(
+		1,
+		height,
+		direction,
+		trackSequence,
+		gTrackColours[SCHEME_TRACK],
+		water_rc_track_pieces_diag_25_deg_down_to_flat[isChained],
+		defaultDiagTileOffsets,
+		defaultDiagBoundLengths,
+		0,
+		get_current_rotation());
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(direction & 1 ? 2 : 1, water_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	int blockedSegments = water_rc_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direction)
 {
 	switch (trackType) {
@@ -400,6 +532,12 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 		return water_rc_track_flat_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 		return water_rc_track_25_deg_up_to_flat;
+	case TRACK_ELEM_25_DEG_DOWN:
+		return water_rc_track_25_deg_down;
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+		return water_rc_track_flat_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+		return water_rc_track_25_deg_down_to_flat;
 	case TRACK_ELEM_DIAG_FLAT:
 		return water_rc_track_diag_flat;
 	case TRACK_ELEM_DIAG_25_DEG_UP:
@@ -408,6 +546,12 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 		return water_rc_track_diag_flat_to_25_deg_up;
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 		return water_rc_track_diag_25_deg_up_to_flat;
+	case TRACK_ELEM_DIAG_25_DEG_DOWN:
+		return water_rc_track_diag_25_deg_down;
+	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+		return water_rc_track_diag_flat_to_25_deg_down;
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+		return water_rc_track_diag_25_deg_down_to_flat;
 
 	//////////////////////////////////////////////////////
 	// Use Junior RC
@@ -418,12 +562,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 	case TRACK_ELEM_60_DEG_UP:
 	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
 	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
-	case TRACK_ELEM_25_DEG_DOWN:
 	case TRACK_ELEM_60_DEG_DOWN:
-	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
 	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
 	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
-	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
 	case TRACK_ELEM_FLAT_TO_LEFT_BANK:
@@ -480,12 +621,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direct
 	case TRACK_ELEM_DIAG_60_DEG_UP:
 	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-	case TRACK_ELEM_DIAG_25_DEG_DOWN:
 	case TRACK_ELEM_DIAG_60_DEG_DOWN:
-	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
 	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
 	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
 	case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
 	case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
 	case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
