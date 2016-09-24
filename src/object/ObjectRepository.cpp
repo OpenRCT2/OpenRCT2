@@ -48,8 +48,9 @@ extern "C"
     #include "../util/sawyercoding.h"
 }
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 9;
+constexpr uint16 OBJECT_REPOSITORY_VERSION = 10;
 
+#pragma pack(push, 1)
 struct ObjectRepositoryHeader
 {
     uint16  Version;
@@ -60,6 +61,8 @@ struct ObjectRepositoryHeader
     uint32  PathChecksum;
     uint32  NumItems;
 };
+assert_struct_size(ObjectRepositoryHeader, 28);
+#pragma pack(pop)
 
 struct QueryDirectoryResult
 {
