@@ -6264,7 +6264,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_maze,			// RIDE_TYPE_MAZE
 	get_track_paint_function_spiral_slide,	// RIDE_TYPE_SPIRAL_SLIDE
 	get_track_paint_function_go_karts,		// RIDE_TYPE_GO_KARTS
-	0,						// RIDE_TYPE_LOG_FLUME
+	get_track_paint_function_log_flume,		// RIDE_TYPE_LOG_FLUME
 	get_track_paint_function_river_rapids,	// RIDE_TYPE_RIVER_RAPIDS
 	get_track_paint_function_dodgems,		// RIDE_TYPE_DODGEMS
 	get_track_paint_function_pirate_ship,	// RIDE_TYPE_PIRATE_SHIP
