@@ -1452,8 +1452,9 @@ void title_handle_keyboard_input()
 			if (w != NULL) {
 				window_text_input_key(w, key);
 			}
-			
-			keyboard_shortcut_handle(key);
+			else if (!gUsingWidgetTextBox) {
+				keyboard_shortcut_handle(key);
+			}
 		}
 	}
 }
