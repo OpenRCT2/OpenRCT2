@@ -367,7 +367,7 @@ static void title_do_next_script_opcode()
 	case TITLE_SCRIPT_LOAD:
 		{
 			char *ch, filename[32], path[MAX_PATH];
-			char separator = platform_get_path_separator();
+			char separator[2] = {platform_get_path_separator(), '\0'};
 
 			// Get filename
 			ch = filename;
@@ -382,7 +382,7 @@ static void title_do_next_script_opcode()
 			else {
 				platform_get_user_directory(path, "title sequences");
 				strcat(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name);
-				strncat(path, &separator, 1);
+				strcat(path, separator);
 			}
 
 			strcat(path, filename);
