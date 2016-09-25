@@ -1126,7 +1126,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			y -= gTrackPreviewOrigin.y;
 
 			// Rotate entrance coordinates backwards to the correct direction
-			rotate_map_coordinates(&x, &y, _trackSaveDirection ^ 2);
+			rotate_map_coordinates(&x, &y, (0 - _trackSaveDirection) & 3);
 			entrance->x = x;
 			entrance->y = y;
 
