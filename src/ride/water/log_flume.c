@@ -30,6 +30,15 @@ enum {
 	SPR_LOG_FLUME_FLAT_FRONT_NW_SE = 21001,
 	SPR_LOG_FLUME_FLAT_FRONT_NE_SW = 21002,
 	SPR_LOG_FLUME_FLAT_FRONT_SE_NW = 21003,
+
+	SPR_LOG_FLUME_REVERSER_SW_NE = 21004,
+	SPR_LOG_FLUME_REVERSER_NW_SE = 21005,
+	SPR_LOG_FLUME_REVERSER_NE_SW = 21006,
+	SPR_LOG_FLUME_REVERSER_SE_NW = 21007,
+	SPR_LOG_FLUME_REVERSER_FRONT_SW_NE = 21008,
+	SPR_LOG_FLUME_REVERSER_FRONT_NW_SE = 21009,
+	SPR_LOG_FLUME_REVERSER_FRONT_NE_SW = 21010,
+	SPR_LOG_FLUME_REVERSER_FRONT_SE_NW = 21011,
 };
 
 static const uint32 LogFlumeTrackFlatImageIds[4][2] =
@@ -111,6 +120,29 @@ static void paint_log_flume_track_on_ride_photo(uint8 rideIndex, uint8 trackSequ
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+static void paint_log_flume_track_reverser(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] =
+	{
+		{ SPR_LOG_FLUME_REVERSER_SW_NE, SPR_LOG_FLUME_REVERSER_FRONT_SW_NE },
+		{ SPR_LOG_FLUME_REVERSER_NW_SE, SPR_LOG_FLUME_REVERSER_FRONT_NW_SE },
+		{ SPR_LOG_FLUME_REVERSER_NE_SW, SPR_LOG_FLUME_REVERSER_FRONT_NE_SW },
+		{ SPR_LOG_FLUME_REVERSER_SE_NW, SPR_LOG_FLUME_REVERSER_FRONT_SE_NW },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+
+	metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int trackType, int direction)
 {
 	switch (trackType) {
@@ -124,7 +156,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int trackType, int direc
 
 	case TRACK_ELEM_ON_RIDE_PHOTO:
 		return paint_log_flume_track_on_ride_photo;
-
+	case TRACK_ELEM_LOG_FLUME_REVERSER:
+		return paint_log_flume_track_reverser;
 	}
 
 	return NULL;
