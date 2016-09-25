@@ -62,6 +62,18 @@ enum {
 	SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE = 21033,
 	SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW = 21034,
 	SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW = 21035,
+	SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_NE_SW = 21036,
+	SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SE_NW = 21037,
+	SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SW_NE = 21038,
+	SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_NW_SE = 21039,
+	SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_NE_SW = 21040,
+	SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SE_NW = 21041,
+	SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SW_NE = 21042,
+	SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_NW_SE = 21043,
+	SPR_LOG_FLUME_25_DEG_DOWN_NE_SW = 21044,
+	SPR_LOG_FLUME_25_DEG_DOWN_SE_NW = 21045,
+	SPR_LOG_FLUME_25_DEG_DOWN_SW_NE = 21046,
+	SPR_LOG_FLUME_25_DEG_DOWN_NW_SE = 21047,
 };
 
 static const uint32 LogFlumeTrackFlatImageIds[4][2] =
@@ -198,6 +210,87 @@ static void paint_log_flume_track_25_deg_up_to_flat(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+static void paint_log_flume_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] =
+	{
+		{ SPR_LOG_FLUME_25_DEG_DOWN_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_NW_SE, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_NE_SW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SW_NE },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+
+	metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+static void paint_log_flume_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] =
+	{
+		{ SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SW_NE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
+		{ SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_NW_SE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
+		{ SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_NE_SW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
+		{ SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+
+	metal_a_supports_paint_setup(3, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+static void paint_log_flume_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] =
+	{
+		{ SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SW_NE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_NW_SE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_NE_SW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
+		{ SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+
+	metal_a_supports_paint_setup(3, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
 static void paint_log_flume_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = SPR_STATION_BASE_D | 0x20000000;
@@ -263,6 +356,12 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int trackType, int direc
 		return paint_log_flume_track_flat_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 		return paint_log_flume_track_25_deg_up_to_flat;
+	case TRACK_ELEM_25_DEG_DOWN:
+		return paint_log_flume_track_25_deg_down;
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+		return paint_log_flume_track_flat_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+		return paint_log_flume_track_25_deg_down_to_flat;
 
 	case TRACK_ELEM_ON_RIDE_PHOTO:
 		return paint_log_flume_track_on_ride_photo;
