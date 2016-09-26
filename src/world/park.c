@@ -812,19 +812,13 @@ static void park_remove_entrance_segment(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
-	mapElement = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
-			continue;
-		if (mapElement->base_height != z)
-			continue;
-		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
-			continue;
+	mapElement = map_get_park_entrance_element_at(x, y, z, true);
+	if (mapElement == NULL)
+		return;
 
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-		map_element_remove(mapElement);
-		update_park_fences(x, y);
-	} while (!map_element_is_last_for_tile(mapElement++));
+	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+	map_element_remove(mapElement);
+	update_park_fences(x, y);
 }
 
 /**

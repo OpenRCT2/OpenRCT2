@@ -404,6 +404,7 @@ rct_map_element *map_get_surface_element_at(int x, int y);
 rct_map_element* map_get_path_element_at(int x, int y, int z);
 rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction);
 rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type, uint8 quadrant);
+rct_map_element *map_get_park_entrance_element_at(int x, int y, int z, bool ghost);
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
