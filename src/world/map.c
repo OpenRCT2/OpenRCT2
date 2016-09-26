@@ -5122,6 +5122,23 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 		}
 	}
 
+	// Check that entrance element does not already exist at this location
+	rct_map_element* entranceElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(entranceElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+
+		if (entranceElement->base_height != zLow)
+			continue;
+
+		if (entranceElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+
+		if (entranceElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+		return MONEY32_UNDEFINED;
+	} while (!map_element_is_last_for_tile(entranceElement++));
+
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
@@ -5166,6 +5183,23 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 			return MONEY32_UNDEFINED;
 		}
 	}
+	
+	// Check that entrance element does not already exist at this location
+	entranceElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(entranceElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+
+		if (entranceElement->base_height != zLow)
+			continue;
+
+		if (entranceElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+
+		if (entranceElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+		return MONEY32_UNDEFINED;
+	} while (!map_element_is_last_for_tile(entranceElement++));
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 
@@ -5204,6 +5238,23 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 			return MONEY32_UNDEFINED;
 		}
 	}
+		
+	// Check that entrance element does not already exist at this location
+	entranceElement = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(entranceElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+
+		if (entranceElement->base_height != zLow)
+			continue;
+
+		if (entranceElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+
+		if (entranceElement->flags & MAP_ELEMENT_FLAG_GHOST)
+			continue;
+		return MONEY32_UNDEFINED;
+	} while (!map_element_is_last_for_tile(entranceElement++));
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 
