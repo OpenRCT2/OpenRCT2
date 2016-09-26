@@ -3621,6 +3621,8 @@ enum {
 	STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID = 5970,
 	STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID = 5971,
 	STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID = 5972,
+	STR_TILE_INSPECTOR_CLAMP_TO_NEXT = 5973,
+	STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP = 5974,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

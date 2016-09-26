@@ -4281,6 +4281,8 @@ STR_5969    :Right
 STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5973    :Clamp to next
+STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 
 #############
 # Scenarios #

@@ -375,7 +375,7 @@ static rct_widget windowTileInspectorWidgetsBanner[] = {
 };
 
 #define COR_GBPB PADDING_BOTTOM					// Corrupt element group box properties bottom
-#define COR_GBPT (COR_GBPB + 16 + 1 * 21)		// Corrupt element group box properties top
+#define COR_GBPT (COR_GBPB + 16 + 2 * 21)		// Corrupt element group box properties top
 #define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Corrupt element group box info bottom
 #define COR_GBDT (COR_GBDB + 20 + 0 * 11)		// Corrupt element group box info top
 static rct_widget windowTileInspectorWidgetsCorrupt[] = {
@@ -383,6 +383,7 @@ static rct_widget windowTileInspectorWidgetsCorrupt[] = {
 	{ WWT_SPINNER,			1,	GBS(WH - COR_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - COR_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - COR_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE
+	{ WWT_CLOSEBOX,			1,	GBB(WH - SUR_GBPT, 0, 1),	STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
 	{ WIDGETS_END },
 };
 
@@ -1223,6 +1224,11 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
 			break;
+		case WIDX_CORRUPT_BUTTON_CLAMP:
+			if (!map_element_is_last_for_tile(mapElement)) {
+				mapElement->base_height = mapElement->clearance_height = (mapElement + 1)->base_height;
+			}
+			break;
 		} // switch widget index
 		break;
 	} // switch page
@@ -1548,6 +1554,8 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+		w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].top = GBBT(propertiesAnchor, 1);
+		w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].bottom = GBBB(propertiesAnchor, 1);
 		break;
 	}
 }
