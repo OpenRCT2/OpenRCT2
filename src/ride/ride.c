@@ -5305,7 +5305,7 @@ static int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplyi
 
 	if (
 		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
-		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 		) {
 		if (!ride_create_cable_lift(rideIndex, isApplying))
@@ -5436,7 +5436,7 @@ static int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplyi
 
 	if (
 		(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_10) &&
-		(ride->lifecycle_flags & RIDE_LIFECYCLE_16) &&
+		(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
 	) {
 		if (!ride_create_cable_lift(rideIndex, isApplying))

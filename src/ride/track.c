@@ -966,7 +966,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 				return MONEY32_UNDEFINED;
 			}
 		} else if (type == TRACK_ELEM_CABLE_LIFT_HILL) {
-			if (ride->lifecycle_flags & RIDE_LIFECYCLE_16) {
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) {
 				gGameCommandErrorText = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
 				return MONEY32_UNDEFINED;
 			}
@@ -1137,7 +1137,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		gTrackGroundFlags = bh;
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
-			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_0200) {
+			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND) {
 				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
@@ -1145,7 +1145,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 		else {
-			if (TrackFlags[type] & TRACK_ELEM_FLAG_0200) {
+			if (TrackFlags[type] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND) {
 				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
@@ -1154,7 +1154,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
-			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_0001) {
+			if (FlatTrackFlags[type] & TRACK_ELEM_FLAG_ONLY_UNDERWATER) {
 				if (!(gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
@@ -1162,7 +1162,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 		else {
-			if (TrackFlags[type] & TRACK_ELEM_FLAG_0001) { // No element has this flag
+			if (TrackFlags[type] & TRACK_ELEM_FLAG_ONLY_UNDERWATER) { // No element has this flag
 				if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
@@ -1265,7 +1265,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		case TRACK_ELEM_CABLE_LIFT_HILL:
 			if (trackBlock->index != 0)
 				break;
-			ride->lifecycle_flags |= RIDE_LIFECYCLE_16;
+			ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
 			ride->cable_lift_x = x;
 			ride->cable_lift_y = y;
 			ride->cable_lift_z = baseZ;
@@ -1637,7 +1637,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
 			break;
 		case TRACK_ELEM_CABLE_LIFT_HILL:
-			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_16;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
 			break;
 		case 216:
 			ride->num_block_brakes--;
