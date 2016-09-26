@@ -20,6 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../util/util.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "finance.h"
@@ -202,7 +203,7 @@ void finance_init() {
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
-	strcpy(gScenarioCompletedBy, "?");
+	safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
 }
 
 /**

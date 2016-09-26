@@ -38,6 +38,7 @@ extern "C"
     #include "../ride/ride_ratings.h"
     #include "../scenario.h"
     #include "../util/sawyercoding.h"
+    #include "../util/util.h"
     #include "../world/climate.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
@@ -381,7 +382,7 @@ void S6Exporter::Export()
     memcpy(_s6.park_entrance_y, gParkEntranceY, sizeof(_s6.park_entrance_y));
     memcpy(_s6.park_entrance_z, gParkEntranceZ, sizeof(_s6.park_entrance_z));
     memcpy(_s6.park_entrance_direction, gParkEntranceDirection, sizeof(_s6.park_entrance_direction));
-    strncpy(_s6.scenario_filename, _scenarioFileName, sizeof(_s6.scenario_filename) - 1);
+    safe_strcpy(_s6.scenario_filename, _scenarioFileName, sizeof(_s6.scenario_filename));
     memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
     memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));

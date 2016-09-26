@@ -180,15 +180,15 @@ bool track_design_index_rename(const utf8 *path, const utf8 *newName)
 	}
 
 	utf8 newPath[MAX_PATH];
-	const char *lastPathSep = strrchr(path, platform_get_path_separator());
+	const char *lastPathSep = strrchr(path, *PATH_SEPARATOR);
 	if (lastPathSep == NULL) {
 		gGameCommandErrorText = STR_CANT_RENAME_TRACK_DESIGN;
 		return false;
 	}
 	size_t directoryLength = (size_t)(lastPathSep - path + 1);
 	memcpy(newPath, path, directoryLength);
-	strcpy(newPath + directoryLength, newName);
-	strcat(newPath, ".td6");
+	safe_strcpy(newPath + directoryLength, newName, sizeof(newPath) - directoryLength);
+	path_append_extension(newPath, ".td6", sizeof(newPath));
 
 	if (!platform_file_move(path, newPath)) {
 		gGameCommandErrorText = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
@@ -271,7 +271,7 @@ static void track_design_index_scan()
 	track_design_index_include(directory);
 
 	// Get track directory from user directory
-	platform_get_user_directory(directory, "track");
+	platform_get_user_directory(directory, "track", sizeof(directory));
 	track_design_index_include(directory);
 
 	// Sort items by ride type then by filename
@@ -360,6 +360,6 @@ static void track_design_index_dispose()
 
 static void track_design_index_get_path(utf8 * buffer, size_t bufferLength)
 {
-	platform_get_user_directory(buffer, NULL);
-	safe_strcat(buffer, "tracks.idx", bufferLength);
+	platform_get_user_directory(buffer, NULL, bufferLength);
+	safe_strcat_path(buffer, "tracks.idx", bufferLength);
 }

@@ -256,14 +256,13 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 		}
 
-		// TODO: How does this work? 2525 is '???'
-		rct_string_id templateStringId = STR_SHORTCUT_KEY_UNKNOWN;
-		char *templateString = (char*)language_get_string(templateStringId);
-		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
+		char templateString[128];
+		keyboard_shortcut_format_string(templateString, 128, gShortcutKeys[i]);
 
 		set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
 		set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
-		set_format_arg(4, rct_string_id, templateStringId);
+		set_format_arg(4, rct_string_id, STR_STRING);
+		set_format_arg(6, char *, templateString);
 		gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, 0, y - 1);
 	}
 }

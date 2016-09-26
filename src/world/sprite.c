@@ -207,7 +207,7 @@ const char * sprite_checksum()
 	char *x = (char *)_spriteChecksum;
 	for (unsigned int i = 0; i < size; i++)
 	{
-		sprintf(x, "%02x", localhash[i]);
+		snprintf(x, EVP_MAX_MD_SIZE + 1, "%02x", localhash[i]);
 		x += 2;
 	}
 	*x = '\0';

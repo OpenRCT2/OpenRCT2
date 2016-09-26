@@ -204,59 +204,55 @@ int rct2_init_directories()
 {
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
-	char separator[] = {platform_get_path_separator(), 0};
-
 	if (str_is_null_or_empty(gCustomRCT2DataPath)) {
 		// check install directory
 		if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
 			log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
 			if (!config_find_or_browse_install_directory()) {
 				utf8 path[MAX_PATH];
-				config_get_default_path(path);
+				config_get_default_path(path, sizeof(path));
 				log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
 				return 0;
 			}
 		}
-		strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path);
+		safe_strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path, sizeof(gRCT2AddressAppPath));
 	} else {
-		strcpy(gRCT2AddressAppPath, gCustomRCT2DataPath);
+		safe_strcpy(gRCT2AddressAppPath, gCustomRCT2DataPath, sizeof(gRCT2AddressAppPath));
 	}
-	strcat(gRCT2AddressAppPath, separator);
+	path_end_with_separator(gRCT2AddressAppPath, sizeof(gRCT2AddressAppPath));
 
-	strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath);
-	strcat(gRCT2AddressSavedGamesPath, "Saved Games");
-	strcat(gRCT2AddressSavedGamesPath, separator);
+	safe_strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressSavedGamesPath));
+	safe_strcat_path(gRCT2AddressSavedGamesPath, "Saved Games", sizeof(gRCT2AddressSavedGamesPath));
+	path_end_with_separator(gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath));
 
-	strcpy(gRCT2AddressScenariosPath, gRCT2AddressAppPath);
-	strcat(gRCT2AddressScenariosPath, "Scenarios");
-	strcat(gRCT2AddressScenariosPath, separator);
-	strcat(gRCT2AddressScenariosPath, "*.SC6");
+	safe_strcpy(gRCT2AddressScenariosPath, gRCT2AddressAppPath, sizeof(gRCT2AddressScenariosPath));
+	safe_strcat_path(gRCT2AddressScenariosPath, "Scenarios", sizeof(gRCT2AddressScenariosPath));
+	safe_strcat_path(gRCT2AddressScenariosPath, "*.SC6", sizeof(gRCT2AddressScenariosPath));
 
-	strcpy(gRCT2AddressLandscapesPath, gRCT2AddressAppPath);
-	strcat(gRCT2AddressLandscapesPath, "Landscapes");
-	strcat(gRCT2AddressLandscapesPath, separator);
-	strcat(gRCT2AddressLandscapesPath, "*.SC6");
+	safe_strcpy(gRCT2AddressLandscapesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressLandscapesPath));
+	safe_strcat_path(gRCT2AddressLandscapesPath, "Landscapes", sizeof(gRCT2AddressLandscapesPath));
+	safe_strcat_path(gRCT2AddressLandscapesPath, "*.SC6", sizeof(gRCT2AddressLandscapesPath));
 
-	strcpy(gRCT2AddressObjectDataPath, gRCT2AddressAppPath);
-	strcat(gRCT2AddressObjectDataPath, "ObjData");
-	strcat(gRCT2AddressObjectDataPath, separator);
-	strcat(gRCT2AddressObjectDataPath, "*.DAT");
+	safe_strcpy(gRCT2AddressObjectDataPath, gRCT2AddressAppPath, sizeof(gRCT2AddressObjectDataPath));
+	safe_strcat_path(gRCT2AddressObjectDataPath, "ObjData", sizeof(gRCT2AddressObjectDataPath));
+	safe_strcat_path(gRCT2AddressObjectDataPath, "*.DAT", sizeof(gRCT2AddressObjectDataPath));
 
-	strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath);
-	strcat(gRCT2AddressTracksPath, "Tracks");
-	strcat(gRCT2AddressTracksPath, separator);
-	strcat(gRCT2AddressTracksPath, "*.TD?");
+	safe_strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath, sizeof(gRCT2AddressTracksPath));
+	safe_strcat_path(gRCT2AddressTracksPath, "Tracks", sizeof(gRCT2AddressTracksPath));
+	safe_strcat_path(gRCT2AddressTracksPath, "*.TD?", sizeof(gRCT2AddressTracksPath));
 
-	strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath);
+	safe_strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath2));
 	return 1;
 }
 
-void substitute_path(char *dest, const char *path, const char *filename)
+void substitute_path(char *dest, size_t size, const char *path, const char *filename)
 {
-	while (*path != '*') {
+	size_t written = 0;
+	while (*path != '*' && *path != '\0' && written < size) {
 		*dest++ = *path++;
+		++written;
 	}
-	strcpy(dest, filename);
+	safe_strcpy(dest, filename, size - written);
 }
 
 /**
@@ -331,7 +327,7 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
 	
-	sprintf(ch, "%d", _currentFPS);
+	snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
 	// Draw Text
 	int stringWidth = gfx_get_string_width(buffer);
@@ -351,7 +347,7 @@ bool rct2_open_file(const char *path)
 	extension++;
 
 	if (_stricmp(extension, "sv6") == 0) {
-		strcpy((char*)gRCT2AddressSavedGamesPath2, path);
+		safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, sizeof(gRCT2AddressSavedGamesPath2));
 		if (game_load_save(path)) {
 			gFirstTimeSave = 0;
 			return true;
@@ -359,7 +355,7 @@ bool rct2_open_file(const char *path)
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
-		strcpy(scenarioBasic.path, path);
+		safe_strcpy(scenarioBasic.path, path, sizeof(scenarioBasic.path));
 		if (scenario_load_and_play_from_path(scenarioBasic.path)) {
 			return true;
 		}
@@ -471,7 +467,7 @@ void rct2_update()
 const utf8 *get_file_path(int pathId)
 {
 	static utf8 path[MAX_PATH];
-	strcpy(path, gRCT2AddressAppPath);
+	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
 	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
 	return path;
 }

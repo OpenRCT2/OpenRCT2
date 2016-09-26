@@ -62,7 +62,7 @@ void http_init()
 
 #ifdef __WINDOWS__
 	// Find SSL certificate bundle
-	platform_get_exe_path(_caBundlePath);
+	platform_get_exe_path(_caBundlePath, sizeof(_caBundlePath));
 	Path::Append(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
 	if (!platform_file_exists(_caBundlePath)) {
 		String::Set(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);

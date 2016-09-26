@@ -116,7 +116,7 @@ bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
 int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
-void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);
+void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 rct_object_entry *object_list_find_by_name(const char *name);
 rct_object_entry *object_list_find(rct_object_entry *entry);

@@ -248,7 +248,7 @@ NetworkUser * NetworkUserManager::GetOrAddUser(const std::string &hash)
 
 void NetworkUserManager::GetStorePath(utf8 * buffer, size_t bufferSize)
 {
-    platform_get_user_directory(buffer, nullptr);
+    platform_get_user_directory(buffer, nullptr, bufferSize);
     Path::Append(buffer, bufferSize, USER_STORE_FILENAME);
 }
 

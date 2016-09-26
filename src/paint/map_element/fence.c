@@ -367,9 +367,9 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     utf8 signString[MAX_PATH];
     rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
     if (gConfigGeneral.upper_case_banners) {
-        format_string_to_upper(signString, stringId, gCommonFormatArgs);
+        format_string_to_upper(signString, MAX_PATH, stringId, gCommonFormatArgs);
     } else {
-        format_string(signString, stringId, gCommonFormatArgs);
+        format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

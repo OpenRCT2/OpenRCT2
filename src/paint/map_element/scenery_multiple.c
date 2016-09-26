@@ -21,6 +21,7 @@
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
+#include "../../util/util.h"
 #include "../../world/map.h"
 #include "../../world/scenery.h"
 
@@ -88,9 +89,9 @@ static int scenery_multiple_sign_text_height(const utf8 *str, rct_large_scenery_
 
 static const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_scenery_text *text, bool height)
 {
-	static utf8 fitStr[32] = {0};
+	static utf8 fitStr[32];
 	utf8 *fitStrEnd = fitStr;
-	strncpy(fitStr, str, sizeof(fitStr) - 1);
+	safe_strcpy(fitStr, str, sizeof(fitStr));
 	int w = 0;
 	uint32 codepoint;
 	while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, (const utf8**)&fitStrEnd)) != 0) {
@@ -262,16 +263,16 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			stringId = ride->name;
 			set_format_arg(0, uint32, ride->name_arguments);
 		}
-		utf8 signString[MAX_PATH] = {0};
-		format_string(signString, stringId, gCommonFormatArgs);
+		utf8 signString[MAX_PATH];
+		format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
 		rct_large_scenery_text *text = entry->large_scenery.text;
 		int y_offset = (text->offset[(direction & 1)].y * 2);
 		if (text->var_C & 0x1) {
 			// Draw vertical sign:
 			y_offset += 1;
-			utf8 fitStr[32] = {0};
+			utf8 fitStr[32];
 			const utf8 *fitStrPtr = fitStr;
-			strncpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr) - 1);
+			safe_strcpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr));
 			int height = scenery_multiple_sign_text_height(fitStr, text);
 			uint32 codepoint;
 			while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
@@ -355,9 +356,9 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	utf8 signString[MAX_PATH];
 	rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
 	if (gConfigGeneral.upper_case_banners) {
-		format_string_to_upper(signString, stringId, gCommonFormatArgs);
+		format_string_to_upper(signString, MAX_PATH, stringId, gCommonFormatArgs);
 	} else {
-		format_string(signString, stringId, gCommonFormatArgs);
+		format_string(signString, MAX_PATH, stringId, gCommonFormatArgs);
 	}
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

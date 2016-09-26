@@ -24,9 +24,6 @@
     #include <breakpad/client/windows/handler/exception_handler.h>
     #include <string>
     #include <ShlObj.h>
-#elif defined(__LINUX__)
-    #include <breakpad/client/linux/handler/exception_handler.h>
-    #define BREAKPAD_PATH "/tmp"
 #else
     #error Breakpad support not implemented yet for this platform
 #endif
@@ -68,12 +65,12 @@ static bool OnCrash(const wchar_t * dumpPath,
     // Get filenames
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
-    wsprintfW(dumpFilePath, L"%s%s.dmp", dumpPath, miniDumpId);
-    wsprintfW(saveFilePath, L"%s%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s%s.dmp", dumpPath, miniDumpId);
+    swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s%s.sv6", dumpPath, miniDumpId);
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    wsprintfW(dumpFilePathNew, L"%s%s(%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short);
+    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
@@ -141,7 +138,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
-    platform_get_user_directory(userDirectory, NULL);
+    platform_get_user_directory(userDirectory, NULL, sizeof(userDirectory));
 
     wchar_t * userDirectoryW = utf8_to_widechar(userDirectory);
     auto result = std::wstring(userDirectoryW);

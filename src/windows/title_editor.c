@@ -295,7 +295,6 @@ void window_title_editor_close(rct_window *w)
 static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 {
 	char path[MAX_PATH];
-	char separator = platform_get_path_separator();
 	int defaultPreset, playing, inTitle, i, commandEditorOpen;
 
 	defaultPreset = (gCurrentTitleSequence < TITLE_SEQUENCE_DEFAULT_PRESETS);
@@ -360,12 +359,11 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			}
 			else {
 				// TODO: This should probably use a constant
-				platform_get_user_directory(path, "title sequences");
-				strcat(path, gConfigTitleSequences.presets[gCurrentTitleSequence].name);
-				strncat(path, &separator, 1);
+				platform_get_user_directory(path, "title sequences", sizeof(path));
+				safe_strcat_path(path, gConfigTitleSequences.presets[gCurrentTitleSequence].name, sizeof(path));
 			}
 
-			strcat(path, gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item]);
+			safe_strcat_path(path, gConfigTitleSequences.presets[gCurrentTitleSequence].saves[w->selected_list_item], sizeof(path));
 			game_load_save(path);
 			window_title_editor_open(1);
 		}
@@ -905,10 +903,10 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 
 			set_format_arg(0, uintptr_t, &title->saves[i]);
 			if (selected || hover) {
-				format_string(buffer, STR_STRING, gCommonFormatArgs);
+				format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
 			}
 			else {
-				format_string(buffer + 1, STR_STRING, gCommonFormatArgs);
+				format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
 				buffer[0] = FORMAT_BLACK;
 			}
 			set_format_arg(0, uintptr_t, &buffer);
@@ -980,10 +978,10 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			}
 
 			if ((selected || hover) && !error) {
-				format_string(buffer, commandName, gCommonFormatArgs);
+				format_string(buffer, 256, commandName, gCommonFormatArgs);
 			}
 			else {
-				format_string(buffer + 1, commandName, gCommonFormatArgs);
+				format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
 				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
 			}
 			set_format_arg(0, uintptr_t, &buffer);

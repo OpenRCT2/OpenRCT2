@@ -277,7 +277,7 @@ public:
         if (_context == nullptr)
         {
             char szRequiredVersion[32];
-            sprintf(szRequiredVersion, "OpenGL %d.%d", requiredVersion.Major, requiredVersion.Minor);
+            snprintf(szRequiredVersion, 32, "OpenGL %d.%d", requiredVersion.Major, requiredVersion.Minor);
             throw Exception(std::string(szRequiredVersion) + std::string(" not available."));
         }
         SDL_GL_MakeCurrent(_window, _context);

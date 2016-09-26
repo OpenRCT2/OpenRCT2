@@ -107,11 +107,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
-		format_string(text_input, existing_text, &existing_args);
-
-	// In order to prevent strings that exceed the maxLength
-	// from crashing the game.
-	text_input[maxLength - 1] = '\0';
+		format_string(text_input, maxLength, existing_text, &existing_args);
 
 	utf8_remove_format_codes(text_input, false);
 

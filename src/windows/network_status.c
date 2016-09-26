@@ -145,7 +145,7 @@ static void window_network_status_update(rct_window *w)
 
 static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	strcpy(_password, "");
+	_password[0] = '\0';
 	switch (widgetIndex) {
 	case WIDX_PASSWORD:
 		if (text != NULL)
@@ -177,7 +177,7 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	char buffer[sizeof(window_network_status_text) + 10];
 	char* lineCh = buffer;
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
-	strcpy(lineCh, window_network_status_text);
+	safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
 	gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
 	int x = w->x + (w->width / 2);
 	int y = w->y + (w->height / 2);

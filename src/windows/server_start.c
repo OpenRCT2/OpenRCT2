@@ -140,7 +140,7 @@ void window_server_start_open()
 	window->page = 0;
 	window->list_information_type = 0;
 
-	sprintf(_port, "%u", gConfigNetwork.default_port);
+	snprintf(_port, 7, "%u", gConfigNetwork.default_port);
 	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 

@@ -205,7 +205,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		size_t lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
 		lineCh = lineBuffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-		strncpy(lineCh, ch, lineLength);
+		memcpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
 		gfx_draw_string(dpi, lineBuffer, 100, x, y);	  //Value 100 outlines the letters
@@ -226,7 +226,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 	// Draw current line
 	lineCh = lineBuffer;
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-	strcpy(lineCh, _consoleCurrentLine);
+	safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
 	gfx_draw_string(dpi, lineBuffer, 255, x, y);
 
 	// Draw caret
@@ -301,8 +301,9 @@ void console_write(const utf8 *src)
 	if (charactersToWrite > charactersRemainingInBuffer) {
 		memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
 		_consoleBufferPointer -= bufferShift;
+		charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
 	}
-	strcpy(_consoleBufferPointer, src);
+	safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
 	_consoleBufferPointer += charactersToWrite;
 	console_update_scroll();
 }
@@ -315,14 +316,14 @@ void console_writeline(const utf8 *src)
 
 void console_writeline_error(const utf8 *src)
 {
-	strcpy(_consoleErrorBuffer + 1, src);
+	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
 	_consoleErrorBuffer[0] = FORMAT_RED;
 	console_writeline(_consoleErrorBuffer);
 }
 
 void console_writeline_warning(const utf8 *src)
 {
-	strcpy(_consoleErrorBuffer + 1, src);
+	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
 	_consoleErrorBuffer[0] = FORMAT_YELLOW;
 	console_writeline(_consoleErrorBuffer);
 }
@@ -331,7 +332,7 @@ void console_printf(const utf8 *format, ...)
 {
 	va_list list;
 	va_start(list, format);
-	vsprintf(_consolePrintfBuffer, format, list);
+	vsnprintf(_consolePrintfBuffer, sizeof(_consolePrintfBuffer), format, list);
 	va_end(list);
 	console_writeline(_consolePrintfBuffer);
 }
@@ -449,7 +450,7 @@ static int cc_rides(const utf8 **argv, int argc)
 			int i;
 			FOR_ALL_RIDES(i, ride) {
 				char name[128];
-				format_string(name, ride->name, &ride->name_arguments);
+				format_string(name, 128, ride->name, &ride->name_arguments);
 				console_printf("rides %03d type: %02u subtype %03u name %s", i, ride->type, ride->subtype, name);
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
@@ -515,7 +516,7 @@ static int cc_staff(const utf8 **argv, int argc)
 			int i;
 			FOR_ALL_STAFF(i, peep) {
 				char name[128];
-				format_string(name, peep->name_string_idx, &peep->id);
+				format_string(name, 128, peep->name_string_idx, &peep->id);
 				console_printf("staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
@@ -1178,7 +1179,7 @@ void console_execute_silent(const utf8 *src)
 		utf8 output[128];
 		utf8 *dst = output;
 		dst = utf8_write_codepoint(dst, FORMAT_TOPAZ);
-		strcpy(dst, "Unknown command. Type help to list available commands.");
+		safe_strcpy(dst, "Unknown command. Type help to list available commands.", sizeof(output) - (dst - output));
 		console_writeline(output);
 	}
 }

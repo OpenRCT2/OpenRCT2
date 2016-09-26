@@ -70,7 +70,7 @@ GLuint OpenGLShader::GetShaderId()
 
 void OpenGLShader::GetPath(char * buffer, size_t bufferSize, const char * name)
 {
-    platform_get_openrct_data_path(buffer);
+    platform_get_openrct_data_path(buffer, bufferSize);
     Path::Append(buffer, bufferSize, "shaders");
     Path::Append(buffer, bufferSize, name);
     if (_type == GL_VERTEX_SHADER)

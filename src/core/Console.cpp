@@ -88,7 +88,7 @@ namespace Console
 
         void WriteLine()
         {
-            fputs(platform_get_new_line(), stderr);
+            fputs(PLATFORM_NEWLINE, stderr);
         }
 
         void WriteLine(const utf8 * format, ...)

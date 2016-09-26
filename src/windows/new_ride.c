@@ -33,6 +33,7 @@
 #include "../ride/ride_data.h"
 #include "../sprites.h"
 #include "../ride/track_data.h"
+#include "../util/util.h"
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
@@ -311,7 +312,7 @@ static void window_new_ride_populate_list()
 		}
 
 		char preferredVehicleName[9];
-		strcpy(preferredVehicleName,"        ");
+		safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
 
 		if (ride_type_is_invented(rideType)) {
 			int dh = 0;
@@ -338,11 +339,11 @@ static void window_new_ride_populate_list()
 				// Skip if the vehicle isn't the preferred vehicle for this generic track type
 				if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
 					if (strcmp(preferredVehicleName, "        \0") == 0) {
-						strcpy(preferredVehicleName, rideEntryName);
+						safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
 						preferredVehicleName[8] = 0;
 					} else {
 						if (vehicle_preference_compare(rideType, preferredVehicleName, rideEntryName) == 1) {
-							strcpy(preferredVehicleName, rideEntryName);
+							safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
 							preferredVehicleName[8] = 0;
 						} else {
 							continue;

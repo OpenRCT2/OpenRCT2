@@ -1094,7 +1094,7 @@ void viewport_draw_money_effects()
 	draw_pixel_info_crop_by_zoom(&dpi);
 
 	do {
-		format_string(buffer, ps->string_id, &ps->args);
+		format_string(buffer, 256, ps->string_id, &ps->args);
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 		bool forceSpriteFont = false;

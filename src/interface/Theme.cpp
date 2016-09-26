@@ -644,7 +644,7 @@ namespace ThemeManager
 
     void GetThemePath(utf8 * buffer, size_t bufferSize)
     {
-        platform_get_user_directory(buffer, "themes");
+        platform_get_user_directory(buffer, "themes", bufferSize);
     }
 }
 

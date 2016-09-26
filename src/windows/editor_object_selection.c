@@ -1446,13 +1446,13 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 			if (ridePage) {
 				// Draw ride type
 				rct_string_id rideTypeStringId = get_ride_type_string_id(listItem->repositoryItem);
-				strcpy(buffer, language_get_string(rideTypeStringId));
+				safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
 				gfx_draw_string(dpi, bufferWithColour, colour, x, y);
 				x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
 			}
 
 			// Draw text
-			strcpy(buffer, listItem->repositoryItem->Name);
+			safe_strcpy(buffer, listItem->repositoryItem->Name, 256 - (buffer - bufferWithColour));
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 				while (*buffer != 0 && *buffer != 9)
 					buffer++;
@@ -1629,7 +1629,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 
 		if (bh != 0 && !(flags & (1 << 1))) {
 			char objectName[64];
-			object_create_identifier_name(objectName, &item->ObjectEntry);
+			object_create_identifier_name(objectName, 64, &item->ObjectEntry);
 			set_format_arg(0, const char *, objectName);
 			set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
 			return 0;

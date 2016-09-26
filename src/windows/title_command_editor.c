@@ -25,6 +25,7 @@
 #include "../interface/themes.h"
 #include "../interface/title_sequences.h"
 #include "../title.h"
+#include "../util/util.h"
 #include "dropdown.h"
 
 typedef struct TITLE_COMMAND_ORDER {
@@ -448,7 +449,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 			window_invalidate(w);
 		}
 		else {
-			strcpy(textbox1Buffer, text);
+			safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
 		}
 		break;
 	case WIDX_TEXTBOX_X:
@@ -459,7 +460,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 			window_invalidate(w);
 		}
 		else {
-			strcpy(textbox1Buffer, text);
+			safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
 		}
 		break;
 	case WIDX_TEXTBOX_Y:
@@ -470,7 +471,7 @@ static void window_title_command_editor_textinput(rct_window *w, int widgetIndex
 			window_invalidate(w);
 		}
 		else {
-			strcpy(textbox2Buffer, text);
+			safe_strcpy(textbox2Buffer, text, sizeof(textbox2Buffer));
 		}
 		break;
 	}

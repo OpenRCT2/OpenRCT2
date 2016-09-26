@@ -19,6 +19,7 @@
 #include "../openrct2.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
+#include "../util/util.h"
 #include "drawing.h"
 
 void *_g1Buffer = NULL;
@@ -152,10 +153,9 @@ bool gfx_load_g2()
 	unsigned int i;
 
 	char path[MAX_PATH];
-	char dataPath[MAX_PATH];
 
-	platform_get_openrct_data_path(dataPath);
-	sprintf(path, "%s%cg2.dat", dataPath, platform_get_path_separator());
+	platform_get_openrct_data_path(path, sizeof(path));
+	safe_strcat_path(path, "g2.dat", MAX_PATH);
 	file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
 		if (SDL_RWread(file, &g2.header, 8, 1) == 1) {

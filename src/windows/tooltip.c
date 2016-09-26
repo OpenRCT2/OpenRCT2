@@ -88,7 +88,7 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 
 	char* buffer = gCommonStringFormatBuffer;
 
-	format_string(buffer, id, gCommonFormatArgs);
+	format_string(buffer, 256, id, gCommonFormatArgs);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	int tooltip_text_width;
