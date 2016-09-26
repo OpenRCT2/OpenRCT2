@@ -34,6 +34,8 @@ void sub_6A7642(int x, int y, rct_map_element *mapElement);
 
 uint8 gFootpathProvisionalFlags;
 rct_xyz16 gFootpathProvisionalPosition;
+uint8 gFootpathProvisionalType;
+uint8 gFootpathProvisionalSlope;
 uint8 gFootpathConstructionMode;
 uint16 gFootpathSelectedId;
 uint8 gFootpathSelectedType;
@@ -220,7 +222,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement->properties.path.additions = pathItemType;
 		mapElement->properties.path.addition_status = 255;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-		if (flags & (1 << 6))
+		if (flags & GAME_COMMAND_FLAG_GHOST)
 			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
 		footpath_queue_chain_reset();
@@ -614,9 +616,11 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY);
 	if (cost != MONEY32_UNDEFINED) {
+		gFootpathProvisionalType = type;
 		gFootpathProvisionalPosition.x = x;
 		gFootpathProvisionalPosition.y = y;
 		gFootpathProvisionalPosition.z = z & 0xFF;
+		gFootpathProvisionalSlope = slope;
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
 		if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND) {
