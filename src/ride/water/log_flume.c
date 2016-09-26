@@ -412,6 +412,78 @@ static void paint_log_flume_track_s_bend_left(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void paint_log_flume_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][4][2] =
+	{
+		{	{ 21124, 21108 },
+			{ 21096, 21112 },
+			{ 21095, 21111 },
+			{ 21131, 21115 }	},
+		{	{ 21125, 21109 },
+			{ 21097, 21113 },
+			{ 21094, 21110 },
+			{ 21130, 21114 }	},
+		{	{ 21126, 21110 },
+			{ 21098, 21114 },
+			{ 21093, 21109 },
+			{ 21129, 21113 }	},
+		{	{ 21127, 21111 },
+			{ 21099, 21115 },
+			{ 21092, 21108 },
+			{ 21128, 21112 }	},
+	};
+
+	uint32 imageId = imageIds[trackSequence][direction][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[trackSequence][direction][1] | gTrackColours[SCHEME_TRACK];
+	sint16 bboy;
+
+	switch (trackSequence) {
+	case 0:
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+		metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+		break;
+	case 1:
+		bboy = (direction == 2 || direction == 3) ? 0 : 6;
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+		if (direction == 0 || direction == 1) {
+			metal_a_supports_paint_setup(3, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		}
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+		break;
+	case 2:
+		bboy = (direction == 0 || direction == 1) ? 0 : 6;
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+		if (direction == 2 || direction == 3) {
+			metal_a_supports_paint_setup(3, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		}
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+		break;
+	case 3:
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+		metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+		break;
+	}
+
+	if (trackSequence == 0) {
+		if (direction == 0 || direction == 3) {
+			paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+		}
+	} else if (trackSequence == 3) {
+		if (direction == 1 || direction == 2) {
+			paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+		}
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void paint_log_flume_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = SPR_STATION_BASE_D | 0x20000000;
@@ -485,6 +557,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int trackType, int direc
 		return paint_log_flume_track_25_deg_down_to_flat;
 	case TRACK_ELEM_S_BEND_LEFT:
 		return paint_log_flume_track_s_bend_left;
+	case TRACK_ELEM_S_BEND_RIGHT:
+		return paint_log_flume_track_s_bend_right;
 
 	case TRACK_ELEM_ON_RIDE_PHOTO:
 		return paint_log_flume_track_on_ride_photo;
