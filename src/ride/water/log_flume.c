@@ -531,6 +531,53 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(uint8 rideIndex, uin
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void paint_log_flume_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][3] =
+	{
+		{ 21057, 21058, 21059 },
+		{ 21048, 21049, 21050 },
+		{ 21051, 21052, 21053 },
+		{ 21054, 21055, 21056 }
+	};
+
+	static const uint32 imageIdsFront[4][3] =
+	{
+		{ 21069, 21070, 21071 },
+		{ 21060, 21061, 21062 },
+		{ 21063, 21064, 21065 },
+		{ 21066, 21067, 21068 }
+	};
+
+	track_paint_util_right_quarter_turn_3_tiles_paint_2(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIds, get_current_rotation());
+	track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(0, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIdsFront, get_current_rotation(), 27);
+
+	if (trackSequence != 1 && trackSequence != 2) {
+		metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	switch (trackSequence) {
+	case 0:
+		if (direction == 0 || direction == 3) {
+			paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+		}
+		break;
+	case 3:
+		if (direction == 0 || direction == 1) {
+			paint_util_push_tunnel_rotated(direction ^ 1, height, TUNNEL_0);
+		}
+		break;
+	}
+
+	switch (trackSequence) {
+	case 0: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0); break;
+	case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void paint_log_flume_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = SPR_STATION_BASE_D | 0x20000000;
@@ -608,7 +655,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int trackType, int direc
 		return paint_log_flume_track_s_bend_right;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
 		return paint_log_flume_track_left_quarter_turn_3_tiles;
-
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+		return paint_log_flume_track_right_quarter_turn_3_tiles;
 	case TRACK_ELEM_ON_RIDE_PHOTO:
 		return paint_log_flume_track_on_ride_photo;
 	case TRACK_ELEM_LOG_FLUME_REVERSER:
