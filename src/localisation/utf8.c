@@ -68,6 +68,7 @@ utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
 	}
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 /**
  * Inserts the given codepoint at the given address, shifting all characters after along.
  * @returns the size of the inserted codepoint.
@@ -80,6 +81,7 @@ int utf8_insert_codepoint(utf8 *dst, uint32 codepoint)
 	utf8_write_codepoint(dst, codepoint);
 	return shift;
 }
+#endif
 
 bool utf8_is_codepoint_start(const utf8 *text)
 {

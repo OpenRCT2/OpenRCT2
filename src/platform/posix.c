@@ -52,12 +52,13 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 int main(int argc, const char **argv)
 {
 	int run_game = cmdline_run(argv, argc);
+
+#ifndef SPRITE_EXPORTER_ONLY
 	if (run_game == 1)
 	{
 		openrct2_launch();
 	}
-
-	exit(gExitCode);
+#endif
 	return gExitCode;
 }
 
@@ -672,6 +673,7 @@ static wchar_t *regular_to_wchar(const char* src)
 	return w_buffer;
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 /**
  * Default directory fallback is:
  *   - (command line argument)
@@ -791,6 +793,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }
+#endif
 
 time_t platform_file_get_modified_time(const utf8* path){
 	struct stat buf;

@@ -68,6 +68,7 @@ void platform_get_exe_path(utf8 *outPath)
 	safe_strcpy(outPath, exePath, exeDelimiterIndex + 1);
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 bool platform_check_steam_overlay_attached() {
 	void* processHandle = dlopen(NULL, RTLD_NOW);
 
@@ -240,6 +241,8 @@ uint8 platform_get_locale_measurement_format(){
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
+#endif
+
 static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
 	size_t n_chars;
@@ -304,6 +307,7 @@ static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	return dtype;
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
 	int exit_value;
 	char executable[MAX_PATH];
@@ -551,5 +555,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 	FcFini();
 	return found;
 }
+
+#endif
 
 #endif
