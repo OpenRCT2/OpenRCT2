@@ -332,25 +332,25 @@ static void paint_log_flume_track_s_bend_left(uint8 rideIndex, uint8 trackSequen
 	static const uint32 imageIds[4][4][2] =
 	{
 		{	{ 21116, 21100 },
-			{ 21088, 21104 },
-			{ 21087, 21103 },
-			{ 21123, 21107 }	},
-		{	{ 21117, 21101 },
+			{ 21117, 21101 },
+			{ 21118, 21102 },
+			{ 21119, 21103 }	},
+		{	{ 21088, 21104 },
 			{ 21089, 21105 },
-			{ 21086, 21102 },
-			{ 21122, 21106 }	},
-		{	{ 21118, 21102 },
 			{ 21090, 21106 },
+			{ 21091, 21107 }	},
+		{	{ 21087, 21103 },
+			{ 21086, 21102 },
 			{ 21085, 21101 },
-			{ 21121, 21105 }	},
-		{	{ 21119, 21103 },
-			{ 21091, 21107 },
-			{ 21084, 21100 },
+			{ 21084, 21100 }	},
+		{	{ 21123, 21107 },
+			{ 21122, 21106 },
+			{ 21121, 21105 },
 			{ 21120, 21104 }	},
 	};
 
-	uint32 imageId = imageIds[trackSequence][direction][0] | gTrackColours[SCHEME_TRACK];
-	uint32 frontImageId = imageIds[trackSequence][direction][1] | gTrackColours[SCHEME_TRACK];
+	uint32 imageId = imageIds[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][trackSequence][1] | gTrackColours[SCHEME_TRACK];
 	sint16 bboy;
 
 	switch (trackSequence) {
@@ -404,25 +404,25 @@ static void paint_log_flume_track_s_bend_right(uint8 rideIndex, uint8 trackSeque
 	static const uint32 imageIds[4][4][2] =
 	{
 		{	{ 21124, 21108 },
-			{ 21096, 21112 },
-			{ 21095, 21111 },
-			{ 21131, 21115 }	},
-		{	{ 21125, 21109 },
+			{ 21125, 21109 },
+			{ 21126, 21110 },
+			{ 21127, 21111 }	},
+		{	{ 21096, 21112 },
 			{ 21097, 21113 },
-			{ 21094, 21110 },
-			{ 21130, 21114 }	},
-		{	{ 21126, 21110 },
 			{ 21098, 21114 },
+			{ 21099, 21115 }	},
+		{	{ 21095, 21111 },
+			{ 21094, 21110 },
 			{ 21093, 21109 },
-			{ 21129, 21113 }	},
-		{	{ 21127, 21111 },
-			{ 21099, 21115 },
-			{ 21092, 21108 },
+			{ 21092, 21108 }	},
+		{	{ 21131, 21115 },
+			{ 21130, 21114 },
+			{ 21129, 21113 },
 			{ 21128, 21112 }	},
 	};
 
-	uint32 imageId = imageIds[trackSequence][direction][0] | gTrackColours[SCHEME_TRACK];
-	uint32 frontImageId = imageIds[trackSequence][direction][1] | gTrackColours[SCHEME_TRACK];
+	uint32 imageId = imageIds[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = imageIds[direction][trackSequence][1] | gTrackColours[SCHEME_TRACK];
 	sint16 bboy;
 
 	switch (trackSequence) {
