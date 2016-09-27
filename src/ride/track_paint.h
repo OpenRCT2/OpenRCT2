@@ -256,6 +256,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direc
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_dingy_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);

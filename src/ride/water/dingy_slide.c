@@ -13,3 +13,18 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../interface/viewport.h"
+#include "../../paint/paint.h"
+#include "../../paint/supports.h"
+#include "../../world/sprite.h"
+#include "../track.h"
+#include "../track_paint.h"
+
+TRACK_PAINT_FUNCTION get_track_paint_function_dingy_slide(int trackType, int direction)
+{
+	switch (trackType) {
+	}
+
+	return NULL;
+}
