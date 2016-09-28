@@ -20,6 +20,12 @@
 #include "../common.h"
 #include "../world/map.h"
 
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+// Some variables used for the path finding debugging.
+extern bool gPathFindDebug;
+extern utf8 gPathFindDebugPeepName[256];
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 #define PEEP_MAX_THOUGHTS 5
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25

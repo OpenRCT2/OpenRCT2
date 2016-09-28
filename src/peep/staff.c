@@ -20,6 +20,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/string_ids.h"
+#include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
@@ -1094,7 +1095,21 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		gPeepPathFindIgnoreForeignQueues = false;
 		gPeepPathFindQueueRideIndex = 255;
 
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		/* Determine if the pathfinding debugging is wanted for this peep. */
+		/* For staff, there is no tracking button (any other similar
+		 * suitable existing mechanism?), so fall back to a crude
+		 * string comparison with a compile time hardcoded name. */
+		format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+
+		gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 		int pathfindDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		gPathFindDebug = false;
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		if (pathfindDirection == -1) {
 			return staff_mechanic_direction_path_rand(peep, pathDirections);

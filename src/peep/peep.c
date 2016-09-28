@@ -39,6 +39,12 @@
 #include "peep.h"
 #include "staff.h"
 
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+bool gPathFindDebug = false;
+utf8 gPathFindDebugPeepName[256];
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+
 uint8 gGuestChangeModifier;
 uint16 gNumGuestsInPark;
 uint16 gNumGuestsInParkLastWeek;
@@ -60,6 +66,7 @@ bool gPeepPathFindSingleChoiceSection;
 // uint32 gPeepPathFindAltStationNum;
 static bool _peepPathFindIsStaff;
 static sint8 _peepPathFindNumJunctions;
+static sint8 _peepPathFindMaxJunctions;
 static sint32 _peepPathFindTilesChecked;
 static uint8 _peepPathFindFewestNumSteps;
 
@@ -67,7 +74,10 @@ static uint8 _peepPathFindFewestNumSteps;
  * The magic number 16 is the largest value returned by
  * peep_pathfind_get_max_number_junctions() which should eventually
  * be declared properly. */
-static rct_xyz8 _peepPathFindHistory[16];
+static struct {
+	rct_xyz8 location;
+	uint8 direction;
+} _peepPathFindHistory[16];
 
 static uint8 _unk_F1AEF0;
 static uint8 _unk_F1AEF1;
@@ -91,6 +101,9 @@ enum {
 	PATH_SEARCH_OTHER,
 	PATH_SEARCH_FAILED
 };
+
+// Some text descriptions corresponding to the above enum for understandable debug messages
+const char *gPathFindSearchText[] = {"DeadEnd", "Wide", "Thin", "Junction", "RideQueue", "RideEntrance", "RideExit", "ParkEntryExit", "ShopEntrance", "LimitReached", "PathLoop", "Other", "Failed"};
 
 enum {
 	F1EE18_DESTINATION_REACHED	= 1 << 0,
@@ -8702,15 +8715,16 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *     wide path. This means peeps heading for a destination will only leave
  *     thin paths if walking 1 tile onto a wide path is closer than following
  *     non-wide paths;
- *   - gPathFindIgnoreForeignQueues
+ *   - gPeepPathFindIgnoreForeignQueues
  *   - gPeepPathFindQueueRideIndex - the ride the peep is heading for
- *   - _peepPathFindHistory - the starting point and all junctions navigated
- *     in the current search path - used to detect path loops.
+ *   - _peepPathFindHistory - the search path telemetry consisting of the
+ *     starting point and all thin junctions with directions navigated
+ *     in the current search path - also used to detect path loops.
  *
  * The score is only updated when:
  *   - the goal is reached;
  *   - a wide tile is encountered with a better search result - the goal may
- *     still be reachable from here;
+ *     still be reachable from here; TODO: ignore unless current tile is also wide.
  *   - a junction is encountered with a better search result and
  *     maxNumJunctions is exceeded - the goal may still be reachable from here;
  *   - returning from a recursive call if a search limit (i.e. either
@@ -8718,9 +8732,23 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *     better search result and the goal may still be reachable from here
  *     (i.e. not a dead end path tile).
  *
+ * The following variables provide telemetry information on the search path:
+ *   - Variable endXYZ tracks the end location of the search path.
+ *   - Variable endSteps tracks the number of steps to the end of the search path.
+ *   - Variable endJunctions tracks the number of junctions passed through in the
+ *     search path.
+ *   - Variables junctionList and directionList track the junctions and
+ *     corresponding directions of the search path.
+ * Note: Algorithm optimisations use these variables for the current search path
+ * and the "best so far" search path at different times.
+ * The final return values of these variables from the initial call correspond
+ * to the best search result found.
+ * Other than debugging purposes, these could potentially be used to visualise
+ * the pathfinding on the map.
+ *
  *  rct2: 0x0069A997
  */
-static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 *score, int test_edge) {
+static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
 	uint searchResult = PATH_SEARCH_FAILED;
 
 	x += TileDirectionDelta[test_edge].x;
@@ -8733,7 +8761,9 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 	 * search ends here. Return the searchResult with the original score. */
 	if (counter > 200 || _peepPathFindTilesChecked < 0) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
 			log_info("[%03d] Return from %d,%d,%d; Search limit exceeded", counter, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		searchResult = PATH_SEARCH_LIMIT_REACHED;
 		return searchResult;
@@ -8742,11 +8772,13 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 	/* If this is where the search started this is a search loop and the
 	 * current search path ends here.
 	 * Return the searchResult with the original score. */
-	if ((_peepPathFindHistory[0].x == (uint8)(x >> 5)) &&
-		(_peepPathFindHistory[0].y == (uint8)(y >> 5)) &&
-		(_peepPathFindHistory[0].z == (uint8)z)) {
+	if ((_peepPathFindHistory[0].location.x == (uint8)(x >> 5)) &&
+		(_peepPathFindHistory[0].location.y == (uint8)(y >> 5)) &&
+		(_peepPathFindHistory[0].location.z == (uint8)z)) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
 			log_info("[%03d] Return from %d,%d,%d; At start", counter, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		searchResult = PATH_SEARCH_LOOP;
 		return searchResult;
@@ -8754,7 +8786,7 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 
 	/* Get the next map element in the direction of test_edge, ignoring
 	 * map elements that are not of interest, which includes wide paths
-	 * and foreign ride queues (depending on gPathFindIgnoreForeignQueues */
+	 * and foreign ride queues (depending on gPeepPathFindIgnoreForeignQueues) */
 	bool found = false;
 	uint8 rideIndex = 0xFF;
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
@@ -8847,9 +8879,13 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
+	/* No map element could be found.
+	 * Return the searchResult with the original score. */
 	if (!found) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
 			log_info("[%03d] Return from %d,%d,%d; No map element found", counter, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return searchResult; // PATH_SEARCH_FAILED
 	}
@@ -8879,12 +8915,25 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 	/* If this map element is the search goal the current search path ends here.
 	 * Return the searchResult with the new score. */
 	if (new_score == 0) {
-		if (new_score < *score || counter < _peepPathFindFewestNumSteps) {
-			_peepPathFindFewestNumSteps = counter;
+		*endScore = new_score;
+		*endSteps = counter;
+		// Update the end x,y,z
+		endXYZ->x = x >> 5;
+		endXYZ->y = y >> 5;
+		endXYZ->z = z;
+		// TODO: Doing the following when the call returns to the previous thin junction (below) should be equivalent to doing it here. i.e. reduce code duplication.
+		*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+		for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+			uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+			junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+			junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+			junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+			directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 		}
-		*score = new_score;
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_info("[%03d] Return from %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *score);
+		if (gPathFindDebug) {
+			log_info("[%03d] Return from %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return searchResult;
 	}
@@ -8898,7 +8947,9 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 		searchResult != PATH_SEARCH_JUNCTION &&
 		searchResult != PATH_SEARCH_WIDE) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
 			log_info("[%03d] Return from %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return searchResult;
 	}
@@ -8907,17 +8958,32 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 
 	/* If this is a wide path the search ends here but the goal
 	 * could still be reachable from here.
-	 * If this is the best result so far, return the searchResult with
-	 * the new score. */
+	 * Return the searchResult with the new score. */
 	if (searchResult == PATH_SEARCH_WIDE) {
-		if (new_score < *score ||
-			(new_score == *score &&
-			 counter < _peepPathFindFewestNumSteps)) {
-			*score = new_score;
-			_peepPathFindFewestNumSteps = counter;
+		/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
+		 * i.e. search across wide paths from a wide path to get onto a thin path,
+		 * thereafter stay on thin paths. */
+		if (false) { // TODO: Check that the current tile is also Wide.
+			*endScore = new_score;
+			*endSteps = counter;
+			// Update the end x,y,z
+			endXYZ->x = x >> 5;
+			endXYZ->y = y >> 5;
+			endXYZ->z = z;
+			// TODO: Doing the following when the call returns to the previous thin junction (below) should be equivalent to doing it here. i.e. reduce code duplication.
+			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+			}
 		}
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_info("[%03d] Return from %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *score);
+		if (gPathFindDebug) {
+			log_info("[%03d] Return from %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return searchResult;
 	}
@@ -8928,7 +8994,9 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 	uint8 edges = path_get_permitted_edges(mapElement);
 
 	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+	if (gPathFindDebug) {
 		log_info("[%03d] Path %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+	}
 	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
 	/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
@@ -8939,7 +9007,9 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 	 * Return the searchResult with the original score. */
 	if (test_edge == -1) {
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
 			log_info("[%03d] Return from %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		searchResult = PATH_SEARCH_DEAD_END; // this should be superfluous.
 		return searchResult;
@@ -8951,26 +9021,35 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 		 * necessary checks. */
 		thin_junction = path_is_thin_junction(mapElement, x, y, z);
 
-		if (thin_junction == true) {
+		if (thin_junction) {
 			/* The current search path is passing through a thin
 			 * junction on this map element. Only 'thin' junctions
 			 * are counted towards the junction search limit. */
-			--_peepPathFindNumJunctions;
 
 			/* If the junction search limit is reached, the
 			 * current search path ends here. The goal may still
 			 * be reachable from here.
-			 * If this is the best result so far, return the
-			 * searchResult with the new score. */
-			if (_peepPathFindNumJunctions < 0) {
-				if (new_score < *score ||
-					(new_score == *score &&
-					 counter < _peepPathFindFewestNumSteps)) {
-					*score = new_score;
-					_peepPathFindFewestNumSteps = counter;
+			 * Return the searchResult with the new score. */
+			if (_peepPathFindNumJunctions <= 0) {
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// TODO: Doing the following when the call returns to the previous thin junction (below) should be equivalent to doing it here. i.e. reduce code duplication.
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 				}
 				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					log_info("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *score);
+				if (gPathFindDebug) {
+					log_info("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+				}
 				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 				return searchResult;
 			}
@@ -8980,12 +9059,14 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 			 * i.e. this is a loop in the current search path.
 			 * If so, the current search path ends here.
 			 * Return the searchResult with the original score. */
-			for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum < 16; junctionNum++) {
-				if ((_peepPathFindHistory[junctionNum].x == (uint8)(x >> 5)) &&
-					(_peepPathFindHistory[junctionNum].y == (uint8)(y >> 5)) &&
-					(_peepPathFindHistory[junctionNum].z == (uint8)z)) {
+			for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
+				if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
+					(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
+					(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
 					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					if (gPathFindDebug) {
 						log_info("[%03d] Return from %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+					}
 					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 					searchResult = PATH_SEARCH_LOOP;
 					return searchResult;
@@ -8993,44 +9074,76 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 			}
 
 			/* This junction was NOT previously visited in the current
-			 * search path, so add the junction to the history.
-			 * Note: the last junction that can be visited is not needed
-			 * for future comparisons (since the search path will end when
-			 * a further junction is encountered), so the starting point
-			 * can be stored in _peepPathFindHistory[0]. */
-			if (_peepPathFindNumJunctions > 0) {
-				_peepPathFindHistory[_peepPathFindNumJunctions].x = (uint8)(x >> 5);
-				_peepPathFindHistory[_peepPathFindNumJunctions].y = (uint8)(y >> 5);
-				_peepPathFindHistory[_peepPathFindNumJunctions].z = (uint8)z;
-			}
+			 * search path, so add the junction to the history. */
+			_peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
+			_peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
+			_peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
+			// .direction take is added below.
+
+			_peepPathFindNumJunctions--;
 		}
 	}
 
 	/* Continue searching down each remaining edge of the path
 	 * (recursive call). */
-	uint8 continueResult;
+
+	/* Following variables store the best result so far when
+	 * recursing over the multiple edges of a junction, including
+	 * the path finding telemetry for that result (i.e. the search
+	 * path result, end location, thin junctions and directions in
+	 * the search path).
+	 * No initialisation is performed. The first successful
+	 * search result will be the "best so far" by default. */
+	uint8 bestSoFarResult; // searchResult
+	uint16 bestSoFarScore; // score
+	uint8 bestSoFarSteps; // steps taken
+	rct_xyz8 bestSoFarXYZ; // end XYZ
+	uint8 bestSoFarJunctions; // num of thin junctions traversed
+	rct_xyz8 savedJunctionList[16]; // list of thin junctions traversed
+	uint8 savedDirectionList[16]; // list of directions taken at each thin junction
+
+	/* Following boolean indicates whether a successful search
+	 * result has been found yet. i.e. when false there is no
+	 * "best so far" result. */
+	bool endFound = false;
+
+	/* Now loop through each of the junction edges. */
 	do {
 		edges &= ~(1 << test_edge);
 		sint8 savedNumJunctions = _peepPathFindNumJunctions;
+
 		uint8 height = z;
 		if (footpath_element_is_sloped(mapElement) &&
 			footpath_element_get_slope_direction(mapElement) == test_edge) {
 			height += 2;
 		}
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (searchResult == PATH_SEARCH_JUNCTION) {
-			if (thin_junction == true)
-				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
-			else
-				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
-		} else {
-			log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+		if (gPathFindDebug) {
+			if (searchResult == PATH_SEARCH_JUNCTION) {
+				if (thin_junction)
+					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
+				else
+					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
+			} else {
+				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+			}
 		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-		uint16 savedScore = *score;
-		uint8 savedSteps = _peepPathFindFewestNumSteps;
-		continueResult = peep_pathfind_heuristic_search(x, y, height, counter, score, test_edge);
+		if (thin_junction) {
+			/* Add the current test_edge to the history. */
+			_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
+		}
+
+		// Clear the results for the recursive call.
+		// TODO: This should be unnecessary. Leaving the existing value should not affect the search. Additionally, leaving the telemetry data intact will eliminate the need to restore it from the "best so far" variables at the end.
+		*endScore = 0xFFFF;
+		*endJunctions = 0;
+		memset(junctionList, 0x00, sizeof(junctionList[16]));
+		memset(directionList, 0x00, sizeof(directionList[16]));
+		memset(endXYZ, 0x00, sizeof(*endXYZ));
+
+		uint8 continueResult = peep_pathfind_heuristic_search(x, y, height, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
 		_peepPathFindNumJunctions = savedNumJunctions;
 
 		if (continueResult == PATH_SEARCH_LIMIT_REACHED) {
@@ -9040,25 +9153,93 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 			 * the current path search is the current map element.
 			 * Update the best search result if appropriate and
 			 * keep searchResult (discarding continueResult). */
-			if (new_score < *score || (new_score == *score && counter < _peepPathFindFewestNumSteps)) {
-				*score = new_score;
-				_peepPathFindFewestNumSteps = counter;
+			*endScore = new_score;
+			*endSteps = counter;
+			// Update the end x,y,z
+			endXYZ->x = x >> 5;
+			endXYZ->y = y >> 5;
+			endXYZ->z = z;
+			// TODO: Doing the following below should be equivalent to doing it here. i.e. reduce code duplication.
+			*endJunctions = _peepPathFindMaxJunctions - savedNumJunctions;
+			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 			}
-		} else {
-			/* When continueResult is not PATH_SEARCH_LIMIT_REACHED
-			 * it is the search result of the last map element
-			 * checked in the search path. If it has a different
-			 * (i.e. better) search result, update searchResult. */
-			if (*score < savedScore || _peepPathFindFewestNumSteps < savedSteps ) {
-				searchResult = continueResult;
-			}
+			continueResult = searchResult;
 		}
+
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			log_info("[%03d] Return to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *score);
+		if (gPathFindDebug) {
+			log_info("[%03d] Return to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
+		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
+		// TODO: Combine the following two conditionals into a single, compound conditional to reduce code duplication.
+		// The first result is stored in bestSoFar.
+		if (!endFound && *endScore < 0xFFFF) {
+			endFound = true;
+
+			bestSoFarScore = *endScore;
+			bestSoFarSteps = *endSteps;
+			bestSoFarXYZ.x = endXYZ->x;
+			bestSoFarXYZ.y = endXYZ->y;
+			bestSoFarXYZ.z = endXYZ->z;
+			// TODO: Store the "bestSoFar" telemetry directly into the return parameters (i.e. eliminate the need to store the best so far telemetry and eliminate the need to restore the best so far result at the end) from the global variables (i.e. reduce code duplication).
+			bestSoFarJunctions = *endJunctions;
+			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+				savedJunctionList[junctInd].x = junctionList[junctInd].x;
+				savedJunctionList[junctInd].y = junctionList[junctInd].y;
+				savedJunctionList[junctInd].z = junctionList[junctInd].z;
+				savedDirectionList[junctInd] = directionList[junctInd];
+			}
+			bestSoFarResult = continueResult;
+
+			continue;
+		}
+
+		if (endFound && *endScore < 0xFFFF &&
+			searchResult == PATH_SEARCH_JUNCTION) {
+			/* Junction. Check if this edge is the best so far. */
+			if (*endScore < bestSoFarScore || (*endScore == bestSoFarScore && *endSteps < bestSoFarSteps )) {
+				bestSoFarScore = *endScore;
+				bestSoFarSteps = *endSteps;
+				bestSoFarXYZ.x = endXYZ->x;
+				bestSoFarXYZ.y = endXYZ->y;
+				bestSoFarXYZ.z = endXYZ->z;
+				// TODO: Store the "bestSoFar" telemetry directly into the return parameters (i.e. eliminate the need to store the best so far telemetry and eliminate the need to restore the best so far result at the end) from the global variables (i.e. reduce code duplication).
+				bestSoFarJunctions = *endJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					savedJunctionList[junctInd].x = junctionList[junctInd].x;
+					savedJunctionList[junctInd].y = junctionList[junctInd].y;
+					savedJunctionList[junctInd].z = junctionList[junctInd].z;
+					savedDirectionList[junctInd] = directionList[junctInd];
+				}
+				bestSoFarResult = continueResult;
+			}
+		}
 	} while ((test_edge = bitscanforward(edges)) != -1);
-	return searchResult;
+
+	if (endFound) {
+		/* Restore the bestSoFar result. */
+		*endScore = bestSoFarScore;
+		*endSteps = bestSoFarSteps;
+		endXYZ->x = bestSoFarXYZ.x;
+		endXYZ->y = bestSoFarXYZ.y;
+		endXYZ->z = bestSoFarXYZ.z;
+		// TODO: If the "bestSoFar" telemetry is stored directly into the parameters there will be no need to restore it here.
+		*endJunctions = bestSoFarJunctions;
+		for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+			junctionList[junctInd].x = savedJunctionList[junctInd].x;
+			junctionList[junctInd].y = savedJunctionList[junctInd].y;
+			junctionList[junctInd].z = savedJunctionList[junctInd].z;
+			directionList[junctInd] = savedDirectionList[junctInd];
+		}
+		return bestSoFarResult;
+	}
+	return PATH_SEARCH_FAILED;
 }
 
 /**
@@ -9071,7 +9252,7 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 {
 	// The max number of thin junctions searched - a per-search-path limit.
-	sint8 maxNumJunctions = peep_pathfind_get_max_number_junctions(peep);
+	_peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
 
 	/* The max number of tiles to check - a whole-search limit.
 	 * Mainly to limit the performance impact of the path finding. */
@@ -9084,6 +9265,12 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		.y = (uint8)(gPeepPathFindGoalPosition.y >> 5),
 		.z = (uint8)(gPeepPathFindGoalPosition.z)
 	};
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	if (gPathFindDebug) {
+		log_verbose("Choose direction for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+	}
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	// Get the path element at this location
 	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
@@ -9126,6 +9313,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 					peep->pathfind_history[i].y == y / 32 &&
 					peep->pathfind_history[i].z == z) {
 				edges = peep->pathfind_history[i].direction & 0xF;
+				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				if (gPathFindDebug) {
+					log_verbose("Getting untried edges from pf_history for %d,%d,%d: %d", x >> 5, y >> 5, z, edges);
+				}
+				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				break;
 			}
 		}
@@ -9144,8 +9336,20 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint16 best_score = 0xFFFF;
 		uint8 best_sub = 0xFF;
 
+		uint8 bestJunctions = 0;
+		rct_xyz8 bestJunctionList[16];
+		memset(bestJunctionList, 0x0, sizeof(bestJunctionList));
+		uint8 bestDirectionList[16];
+		memset(bestDirectionList, 0x0, sizeof(bestDirectionList));
+		rct_xyz8 bestXYZ;
+		bestXYZ.x = 0;
+		bestXYZ.y = 0;
+		bestXYZ.z = 0;
+
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-			log_verbose(stderr, "Pathfind start for goal %d,%d,%d from %d,%d,%d\n", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+		if (gPathFindDebug) {
+			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
+		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		/* Call the search heuristic on each edge, keeping track of the
@@ -9169,32 +9373,70 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			 * between the remaining edges to ensure the search
 			 * covers all of the remaining edges. */
 			_peepPathFindTilesChecked = maxTilesChecked / numEdges;
-			_peepPathFindNumJunctions = maxNumJunctions;
+			_peepPathFindNumJunctions = _peepPathFindMaxJunctions;
 
 			// Initialise _peepPathFindHistory.
 			memset(_peepPathFindHistory, 0xFF, sizeof(_peepPathFindHistory));
 
 			/* The pathfinding will only use elements
-			 * 1..maxNumJunctions, so the starting point is
-			 * placed in element 0 */
-			_peepPathFindHistory[0].x = (uint8)(x >> 5);
-			_peepPathFindHistory[0].y = (uint8)(y >> 5);
-			_peepPathFindHistory[0].z = (uint8)z;
+			 * 1.._peepPathFindMaxJunctions, so the starting point
+			 * is placed in element 0 */
+			_peepPathFindHistory[0].location.x = (uint8)(x >> 5);
+			_peepPathFindHistory[0].location.y = (uint8)(y >> 5);
+			_peepPathFindHistory[0].location.z = (uint8)z;
+			_peepPathFindHistory[0].direction = 0xF;
 
 			uint16 score = 0xFFFF;
-			uint8 searchResult = peep_pathfind_heuristic_search(x, y, height, 0, &score, test_edge);
+			/* Variable endXYZ contains the end location of the
+			 * search path. */
+			rct_xyz8 endXYZ;
+			endXYZ.x = 0;
+			endXYZ.y = 0;
+			endXYZ.z = 0;
+
+			uint8 endSteps = 255;
+
+			/* Variable bestJunctions is the number of junctions
+			 * pass through in the search path.
+			 * Variables bestJunctionList and bestDirectionList
+			 * contain the junctions and corresponding directions
+			 * of the search path.
+			 * In the future these could be used to visualise the
+			 * pathfinding on the map. */
+			uint8 endJunctions = 0;
+			rct_xyz8 endJunctionList[16];
+			memset(endJunctionList, 0x0, sizeof(endJunctionList));
+			uint8 endDirectionList[16];
+			memset(endDirectionList, 0x0, sizeof(endDirectionList));
+
+			uint8 searchResult = peep_pathfind_heuristic_search(x, y, height, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-				log_verbose(stderr,"Pathfind test edge: %d score: %d steps: %d searchResult: %d\n", test_edge, score, _peepPathFindFewestNumSteps, searchResult);
+			if (gPathFindDebug) {
+				log_verbose("Pathfind test edge: %d score: %d steps: %d searchResult: %s end: %d,%d,%d junctions: %d", test_edge, score, endSteps, gPathFindSearchText[searchResult], endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
+				for (uint8 listIdx = 0; listIdx < endJunctions; listIdx++) {
+					log_info("Junction#%d %d,%d,%d Direction %d", listIdx + 1, endJunctionList[listIdx].x, endJunctionList[listIdx].y, endJunctionList[listIdx].z, endDirectionList[listIdx]);
+				}
+			}
 			#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 			if (score == 0 ||
 				searchResult == PATH_SEARCH_THIN ||
 				searchResult == PATH_SEARCH_JUNCTION ||
-				searchResult == PATH_SEARCH_WIDE) {
-				if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
+				(searchResult == PATH_SEARCH_WIDE && false)) { // TODO: Here check that the current tile is also Wide
+				if (score < best_score || (score == best_score && endSteps < best_sub)) {
 					chosen_edge = test_edge;
 					best_score = score;
-					best_sub = _peepPathFindFewestNumSteps;
+					best_sub = endSteps;
+					bestJunctions = endJunctions;
+					for (uint8 index = 0; index < endJunctions; index++) {
+						bestJunctionList[index].x = endJunctionList[index].x;
+						bestJunctionList[index].y = endJunctionList[index].y;
+						bestJunctionList[index].z = endJunctionList[index].z;
+						bestDirectionList[index] = endDirectionList[index];
+					}
+					bestXYZ.x = endXYZ.x;
+					bestXYZ.y = endXYZ.y;
+					bestXYZ.z = endXYZ.z;
 				}
 			}
 		}
@@ -9204,12 +9446,20 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		 * goal. */
 		if (best_score == 0xFFFF) {
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-				log_verbose(stderr, "Pathfind heuristic search failed.\n");
+			if (gPathFindDebug) {
+				log_verbose("Pathfind heuristic search failed.");
+			}
 			#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			return -1;
 		}
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-			log_verbose(stderr, "Pathfind best edge %d with score %d\n", chosen_edge, best_score);
+		if (gPathFindDebug) {
+			log_verbose("Pathfind best edge %d with score %d", chosen_edge, best_score);
+			for (uint8 listIdx = 0; listIdx < bestJunctions; listIdx++) {
+				log_verbose("Junction#%d %d,%d,%d Direction %d", listIdx + 1, bestJunctionList[listIdx].x, bestJunctionList[listIdx].y, bestJunctionList[listIdx].z, bestDirectionList[listIdx]);
+			}
+			log_verbose("End at %d,%d,%d", bestXYZ.x, bestXYZ.y, bestXYZ.z);
+		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
@@ -9227,6 +9477,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 
 		// Clear pathfinding history
 		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_verbose("New goal; clearing pf_history.");
+		}
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
 	if (isThin) {
@@ -9238,6 +9493,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				/* Peep remembers this junction, so remove the
 				 * chosen_edge from those left to try. */
 				peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				if (gPathFindDebug) {
+					log_verbose("Removing edge %d from existing pf_history for %d,%d,%d.", chosen_edge, x >> 5, y >> 5, z);
+				}
+				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				return chosen_edge;
 			}
 		}
@@ -9251,6 +9511,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].z = z;
 		peep->pathfind_history[i].direction = 0xF;
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_verbose("Storing new pf_history for %d,%d,%d without edge %d.", x >> 5, y >> 5, z, chosen_edge);
+		}
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
 	return chosen_edge;
@@ -9712,7 +9977,21 @@ static int guest_path_finding(rct_peep* peep)
 	gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z };
 	gPeepPathFindIgnoreForeignQueues = true;
 
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	/* Determine if the pathfinding debugging is wanted for this peep. */
+	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+	 * determine for which guest(s) the pathfinding debugging will
+	 * be output for. */
+	format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	gPathFindDebug = false;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	if (direction == -1){
 		return guest_path_find_aimless(peep, edges);
 	}
