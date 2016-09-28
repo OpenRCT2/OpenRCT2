@@ -4762,6 +4762,27 @@ rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction)
 	return NULL;
 }
 
+rct_map_element *map_get_park_entrance_element_at(int x, int y, int z, bool ghost) 
+{
+	rct_map_element* mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+			continue;
+
+		if (mapElement->base_height != z)
+			continue;
+
+		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+			continue;
+
+		if ((ghost == false) && (mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+			continue;
+		
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+	return NULL;
+}
+
 rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type, uint8 quadrant)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -5116,14 +5137,31 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 
 	sint8 zLow = (z & 0xFF) * 2;
 	sint8 zHigh = zLow + 12;
-	if (!gCheatsDisableClearanceChecks) {
-		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-			return MONEY32_UNDEFINED;
+
+	for (uint8 index = 0; index < 3; index++) {
+		if (index == 1) {
+			x += TileDirectionDelta[(direction - 1) & 0x3].x;
+			y += TileDirectionDelta[(direction - 1) & 0x3].y;
 		}
-	}
+		else if (index == 2) {
+			x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
+			y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+		}
 
-	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (!gCheatsDisableClearanceChecks) {
+			if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+				return MONEY32_UNDEFINED;
+			}
+		}
 
+		// Check that entrance element does not already exist at this location
+		rct_map_element* entranceElement = map_get_park_entrance_element_at(x, y, zLow, false);
+		if (entranceElement != NULL)
+			return MONEY32_UNDEFINED;
+
+		if (!(flags & GAME_COMMAND_FLAG_APPLY))
+			continue;
+		
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 			surfaceElement->properties.surface.ownership = 0;
@@ -5139,7 +5177,7 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 
 		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
 		newElement->type |= direction;
-		newElement->properties.entrance.index = 0;
+		newElement->properties.entrance.index = index;
 		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
 		newElement->properties.entrance.path_type = gFootpathSelectedId & 0xFF;
 
@@ -5155,85 +5193,10 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 
 		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
 
-		map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
-	}
-
-	x += TileDirectionDelta[(direction - 1) & 0x3].x;
-	y += TileDirectionDelta[(direction - 1) & 0x3].y;
-
-	if (!gCheatsDisableClearanceChecks) {
-		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-			return MONEY32_UNDEFINED;
+		if (index == 0) {
+			map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, x, y, zLow);
 		}
 	}
-
-	if (flags & GAME_COMMAND_FLAG_APPLY) {
-
-		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
-			surfaceElement->properties.surface.ownership = 0;
-		}
-
-		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
-		assert(newElement != NULL);
-		newElement->clearance_height = zHigh;
-
-		if (flags & GAME_COMMAND_FLAG_GHOST) {
-			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-		}
-
-		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-		newElement->type |= direction;
-		newElement->properties.entrance.index = 1;
-		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-
-		update_park_fences(x, y);
-		update_park_fences(x - 32, y);
-		update_park_fences(x + 32, y);
-		update_park_fences(x, y - 32);
-		update_park_fences(x, y + 32);
-
-		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
-	}
-
-	x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-	y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
-
-	if (!gCheatsDisableClearanceChecks) {
-		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-			return MONEY32_UNDEFINED;
-		}
-	}
-
-	if (flags & GAME_COMMAND_FLAG_APPLY) {
-
-		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
-			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
-			surfaceElement->properties.surface.ownership = 0;
-		}
-
-		rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, 0xF);
-		assert(newElement != NULL);
-		newElement->clearance_height = zHigh;
-
-		if (flags & GAME_COMMAND_FLAG_GHOST) {
-			newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
-		}
-
-		newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-		newElement->type |= direction;
-		newElement->properties.entrance.index = 2;
-		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-
-		update_park_fences(x, y);
-		update_park_fences(x - 32, y);
-		update_park_fences(x + 32, y);
-		update_park_fences(x, y - 32);
-		update_park_fences(x, y + 32);
-
-		map_invalidate_tile(x, y, newElement->base_height * 8, newElement->clearance_height * 8);
-	}
-
 	return 0;
 }
 
