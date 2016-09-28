@@ -8748,7 +8748,7 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *
  *  rct2: 0x0069A997
  */
-static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
+static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_element *currentMapElement, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
 	uint searchResult = PATH_SEARCH_FAILED;
 
 	x += TileDirectionDelta[test_edge].x;
@@ -8956,14 +8956,16 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 
 	/* At this point the map element is a path. */
 
-	/* If this is a wide path the search ends here but the goal
-	 * could still be reachable from here.
-	 * Return the searchResult with the new score. */
+	/* If this is a wide path the search ends here. */
 	if (searchResult == PATH_SEARCH_WIDE) {
 		/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
 		 * i.e. search across wide paths from a wide path to get onto a thin path,
 		 * thereafter stay on thin paths. */
-		if (false) { // TODO: Check that the current tile is also Wide.
+		/* So, if the current path is also wide the goal could still
+		 * be reachable from here.
+		 * Return the searchResult with the new score.
+		 * Otherwise, return the original score. */
+		if (footpath_element_is_wide(currentMapElement)) {
 			*endScore = new_score;
 			*endSteps = counter;
 			// Update the end x,y,z
@@ -9143,7 +9145,7 @@ static uint8 peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, uint8 c
 		memset(directionList, 0x00, sizeof(directionList[16]));
 		memset(endXYZ, 0x00, sizeof(*endXYZ));
 
-		uint8 continueResult = peep_pathfind_heuristic_search(x, y, height, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+		uint8 continueResult = peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
 		_peepPathFindNumJunctions = savedNumJunctions;
 
 		if (continueResult == PATH_SEARCH_LIMIT_REACHED) {
@@ -9409,7 +9411,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			uint8 endDirectionList[16];
 			memset(endDirectionList, 0x0, sizeof(endDirectionList));
 
-			uint8 searchResult = peep_pathfind_heuristic_search(x, y, height, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+			uint8 searchResult = peep_pathfind_heuristic_search(x, y, height, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
 				log_verbose("Pathfind test edge: %d score: %d steps: %d searchResult: %s end: %d,%d,%d junctions: %d", test_edge, score, endSteps, gPathFindSearchText[searchResult], endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
@@ -9422,7 +9424,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			if (score == 0 ||
 				searchResult == PATH_SEARCH_THIN ||
 				searchResult == PATH_SEARCH_JUNCTION ||
-				(searchResult == PATH_SEARCH_WIDE && false)) { // TODO: Here check that the current tile is also Wide
+				searchResult == PATH_SEARCH_WIDE) {
 				if (score < best_score || (score == best_score && endSteps < best_sub)) {
 					chosen_edge = test_edge;
 					best_score = score;
