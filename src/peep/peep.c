@@ -1900,6 +1900,9 @@ static void peep_update_falling(rct_peep* peep){
 
 	// If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
 	rct_map_element *map_element = map_get_first_element_at(peep->x / 32, peep->y / 32);
+	if (map_element == NULL) {
+		return;
+	}
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
 
