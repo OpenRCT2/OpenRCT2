@@ -2252,11 +2252,11 @@ static void window_ride_construction_draw_track_piece(
 	y = 4112 + (y / 2);
 	z = 1024 + z;
 
-	short bx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-		FlatRideTrackDefinitions[trackType].special :
-		TrackDefinitions[trackType].special;
+	short previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		FlatRideTrackDefinitions[trackType].preview_z_offset :
+		TrackDefinitions[trackType].preview_z_offset;
+	z -= previewZOffset;
 
-	z -= bx;
 	int start_x = x;
 	switch (get_current_rotation()) {
 	case 0:

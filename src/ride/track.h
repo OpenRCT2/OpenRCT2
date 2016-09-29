@@ -28,7 +28,7 @@ typedef struct rct_trackdefinition {
 	uint8 vangle_start;
 	uint8 bank_end;
 	uint8 bank_start;
-	uint8 special;
+	sint8 preview_z_offset;
 	uint8 pad[2];
 } rct_trackdefinition;
 assert_struct_size(rct_trackdefinition, 8);
