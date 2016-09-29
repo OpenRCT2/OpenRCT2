@@ -107,10 +107,15 @@ const rct_object_entry_group object_entry_groups[] = {
 	(void**)(gStexEntries				), _objectEntriesStexs,	// scenario text	0x009ADAE4, 0xF4287C
 };
 
-int check_object_entry(const rct_object_entry *entry)
+bool object_entry_is_empty(const rct_object_entry *entry)
 {
-	uint32 *dwords = (uint32*)entry;
-	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;
+	uint64 a, b;
+	memcpy(&a, (uint8 *)entry, 8);
+	memcpy(&b, (uint8 *)entry + 4, 8);
+
+	if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF) return true;
+	if (a == 0 && b == 0) return true;
+	return false;
 }
 
 /**

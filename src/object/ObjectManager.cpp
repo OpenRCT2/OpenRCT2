@@ -413,7 +413,7 @@ private:
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
-            if (check_object_entry(entry))
+            if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository->FindObject(entry);
                 if (ori == nullptr)
