@@ -31,6 +31,9 @@ enum {
 	SPR_DINGHY_SLIDE_FLAT_CHAIN_FRONT_SW_NE = 19726,
 	SPR_DINGHY_SLIDE_FLAT_CHAIN_FRONT_NW_SE = 19727,
 
+	SPR_DINGHY_SLIDE_STATION_SW_NE = 19732,
+	SPR_DINGHY_SLIDE_STATION_NW_SE = 19733,
+
 	SPR_DINGHY_SLIDE_FLAT_COVERED_SW_NE = 19736,
 	SPR_DINGHY_SLIDE_FLAT_COVERED_NW_SE = 19737,
 	SPR_DINGHY_SLIDE_FLAT_COVERED_FRONT_SW_NE = 19738,
@@ -188,6 +191,29 @@ static void dinghy_slide_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void dinghy_slide_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
+		{ SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
+		{ SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
+		{ SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
+	};
+
+	sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	sub_98196C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+
+	metal_a_supports_paint_setup(0, 5 + (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(0, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
+
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
@@ -656,6 +682,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int trackType, int di
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:
 		return dinghy_slide_track_flat;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return dinghy_slide_track_station;
 	case TRACK_ELEM_25_DEG_UP:
 		return dinghy_slide_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
