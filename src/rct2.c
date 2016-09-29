@@ -360,15 +360,17 @@ bool rct2_open_file(const char *path)
 
 	if (_stricmp(extension, "sv6") == 0) {
 		strcpy((char*)gRCT2AddressSavedGamesPath2, path);
-		game_load_save(path);
-		gFirstTimeSave = 0;
-		return true;
+		if (game_load_save(path)) {
+			gFirstTimeSave = 0;
+			return true;
+		}
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
 		strcpy(scenarioBasic.path, path);
-		scenario_load_and_play_from_path(scenarioBasic.path);
-		return true;
+		if (scenario_load_and_play_from_path(scenarioBasic.path)) {
+			return true;
+		}
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
 		// TODO track design install
 		return true;
