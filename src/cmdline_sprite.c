@@ -439,7 +439,9 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 
 int cmdline_for_sprite(const char **argv, int argc)
 {
+#ifndef SPRITE_EXPORTER_ONLY
 	gOpenRCT2Headless = true;
+#endif
 	if (argc == 0)
 		return -1;
 

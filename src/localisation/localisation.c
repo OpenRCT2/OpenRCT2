@@ -1174,6 +1174,7 @@ utf8 *get_string_end(const utf8 *text)
 	return (utf8*)(ch - 1);
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 /**
  * Return the number of bytes (including the null terminator) in the given UTF-8 string.
  */
@@ -1285,3 +1286,5 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 
 	return result;
 }
+
+#endif

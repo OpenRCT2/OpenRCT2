@@ -82,10 +82,12 @@ static const CommandLineOptionDefinition StandardOptions[]
 
 static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
+#ifndef SPRITE_EXPORTER_ONLY
 static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
+#endif
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
 
@@ -109,6 +111,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     // Main commands
     DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
     DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
+#ifndef SPRITE_EXPORTER_ONLY
     DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
 #ifndef DISABLE_NETWORK
     DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
@@ -123,6 +126,7 @@ const CommandLineCommand CommandLine::RootCommands[]
 
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
+#endif
     DefineSubCommand("sprite",     CommandLine::SpriteCommands    ),
 
     CommandTableEnd
@@ -172,6 +176,7 @@ exitcode_t CommandLine::HandleCommandDefault()
         result = EXITCODE_OK;
     }
 
+#ifndef SPRITE_EXPORTER_ONLY
     gOpenRCT2Headless = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
@@ -198,6 +203,7 @@ exitcode_t CommandLine::HandleCommandDefault()
         String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
         Memory::Free(_password);
     }
+#endif
 
     return result;
 }
@@ -210,12 +216,14 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
         return result;
     }
 
+#ifndef SPRITE_EXPORTER_ONLY
     const char * parkUri;
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
         gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     }
+#endif
 
     return EXITCODE_CONTINUE; 
 }
@@ -234,12 +242,15 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
         Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
+#ifndef SPRITE_EXPORTER_ONLY
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
     gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
+#endif
     return EXITCODE_CONTINUE;
 }
 
+#ifndef SPRITE_EXPORTER_ONLY
 exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -247,13 +258,14 @@ exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator)
     {
         return result;
     }
-
     gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
     return EXITCODE_CONTINUE;
 }
+#endif
 
 #ifndef DISABLE_NETWORK
 
+#ifndef SPRITE_EXPORTER_ONLY
 exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -297,9 +309,11 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
     String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
     return EXITCODE_CONTINUE;
 }
+#endif
 
 #endif // DISABLE_NETWORK
 
+#ifndef SPRITE_EXPORTER_ONLY
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -388,6 +402,7 @@ static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerat
     return EXITCODE_OK;
 }
 #endif // defined(__WINDOWS__) && !defined(__MINGW32__)
+#endif
 
 static void PrintAbout()
 {
@@ -409,7 +424,9 @@ static void PrintAbout()
 static void PrintVersion()
 {
     char buffer[256];
+#ifndef SPRITE_EXPORTER_ONLY
     openrct2_write_full_version_info(buffer, sizeof(buffer));
+#endif
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
 #ifdef NO_RCT2
@@ -424,8 +441,11 @@ static void PrintLaunchInformation()
     time_t      timer;
     struct tm * tmInfo;
 
+
+#ifndef SPRITE_EXPORTER_ONLY
     // Print name and version information
     openrct2_write_full_version_info(buffer, sizeof(buffer));
+#endif
     Console::WriteFormat("%s", buffer);
     Console::WriteLine();
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);

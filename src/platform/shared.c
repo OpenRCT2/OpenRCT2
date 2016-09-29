@@ -32,6 +32,10 @@
 #include "../world/climate.h"
 #include "platform.h"
 
+int gExitCode;
+
+#ifndef SPRITE_EXPORTER_ONLY
+
 typedef void(*update_palette_func)(const uint8*, int, int);
 
 openrct2_cursor gCursorState;
@@ -811,3 +815,5 @@ uint8 platform_get_currency_value(const char *currCode) {
 	
 	return CURRENCY_POUNDS;
 }
+
+#endif

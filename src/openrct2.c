@@ -48,8 +48,6 @@
 #include <unistd.h>
 #endif // defined(__unix__) || defined(__MACOSX__)
 
-int gExitCode;
-
 #if defined(__unix__) && !defined(NO_RCT2)
 	static int fdData;
 	static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);

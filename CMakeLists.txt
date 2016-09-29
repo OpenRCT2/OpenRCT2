@@ -371,6 +371,27 @@ if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (NOT FORCE64))
 	add_dependencies(testpaint segfiles)
 endif ()
 
+# A target that can be used just to generate g2.dat, it may be needed
+# separately from openrct2 proper
+file(GLOB_RECURSE ORCT2_PLATFORM_SOURCES "src/platform/*.c")
+file(GLOB_RECURSE ORCT2_CORE_SOURCES "src/core/*.cpp")
+set(ORCT2_SPRITE_EXPORTER_SOURCES
+    "src/cmdline_sprite.c"
+    "src/cmdline/SpriteCommands.cpp"
+    "src/cmdline/RootCommands.cpp"
+    "src/cmdline/CommandLine.cpp"
+    "src/diagnostic.c"
+    "src/drawing/drawing_fast.cpp"
+    "src/image_io.c"
+    "src/localisation/utf8.c"
+    "src/util/sawyercoding.c"
+    "src/util/util.c"
+    )
+add_executable(sprite_exporter EXCLUDE_FROM_ALL ${ORCT2_SPRITE_EXPORTER_SOURCES} ${ORCT2_PLATFORM_SOURCES} ${ORCT2_CORE_SOURCES})
+set_target_properties(sprite_exporter PROPERTIES COMPILE_FLAGS "-DSPRITE_EXPORTER_ONLY -DNO_RCT2")
+# if creating a static binary, precede libraries with -static, then name all the libs
+TARGET_LINK_LIBRARIES(sprite_exporter ${STATIC_START} ${SDL2LIBS} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
+
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)
 set(CPACK_PACKAGE_VERSION_PATCH 5)
