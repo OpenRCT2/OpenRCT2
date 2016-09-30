@@ -258,8 +258,7 @@ static void paint_ghost_train_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-/** rct2: 0x00770C1C */
-static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_up_to_flat_shared(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -281,23 +280,21 @@ static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 		metal_a_supports_paint_setup(3, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
-	switch (direction) {
-		case 0:
-			paint_util_push_tunnel_left(height - 8, TUNNEL_0);
-			break;
-		case 1:
-			paint_util_push_tunnel_right(height + 8, TUNNEL_12);
-			break;
-		case 2:
-			paint_util_push_tunnel_left(height + 8, TUNNEL_12);
-			break;
-		case 3:
-			paint_util_push_tunnel_right(height - 8, TUNNEL_0);
-			break;
-	}
-
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+/** rct2: 0x00770C1C */
+static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	paint_ghost_train_track_25_deg_up_to_flat_shared(rideIndex, trackSequence, direction, height, mapElement);
+
+	switch (direction) {
+		case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_0); break;
+		case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_12); break;
+		case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_12); break;
+		case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_0); break;
+	}
 }
 
 /** rct2: 0x00770C2C */
@@ -309,7 +306,14 @@ static void paint_ghost_train_track_25_deg_down(uint8 rideIndex, uint8 trackSequ
 /** rct2: 0x00770C3C */
 static void paint_ghost_train_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	paint_ghost_train_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+	paint_ghost_train_track_25_deg_up_to_flat_shared(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+
+	switch ((direction + 2) % 4) {
+		case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_0); break;
+		case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_0); break;
+		case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_0); break;
+		case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_0); break;
+	}
 }
 
 /** rct2: 0x00770C4C */
