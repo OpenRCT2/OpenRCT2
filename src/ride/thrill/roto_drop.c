@@ -103,20 +103,26 @@ static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE) | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
 
-		height += 32;
 		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | gTrackColours[SCHEME_TRACK];
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 32, 8, 8, height + 32, get_current_rotation());
 
-		height += 32;
 		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | gTrackColours[SCHEME_TRACK];
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
-		paint_util_set_vertical_tunnel(height + 32);
+		paint_util_set_vertical_tunnel(height + 96);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+#ifdef __TESTPAINT__
+		paint_util_set_general_support_height(height + 32, 0x20);
+#else
+		paint_util_set_general_support_height(height + 96, 0x20);
+#endif
+
+		return;
 	}
 
 	int blockedSegments = 0;
 	switch (trackSequence) {
-		case 0: blockedSegments = SEGMENTS_ALL; break;
 		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
 		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
 		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
