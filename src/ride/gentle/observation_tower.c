@@ -88,15 +88,21 @@ static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, u
 		imageId = SPR_OBSERVATION_TOWER_SEGMENT_BASE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
 
-		height += 32;
 		imageId = SPR_OBSERVATION_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 32, 8, 8, height + 32, get_current_rotation());
 
-		height += 32;
 		imageId = SPR_OBSERVATION_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
-		paint_util_set_vertical_tunnel(height + 32);
+		paint_util_set_vertical_tunnel(height + 96);
+        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+#ifdef __TESTPAINT__
+        paint_util_set_general_support_height(height + 32, 0x20);
+#else
+        paint_util_set_general_support_height(height + 96, 0x20);
+#endif
+        return;
 	}
 
 	int blockedSegments = 0;
