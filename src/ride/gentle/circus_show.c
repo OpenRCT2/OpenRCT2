@@ -37,12 +37,13 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 	}
 
 	uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
+    uint32 imageId = ride_type->vehicles[0].base_image_id;
 	if (imageColourFlags == 0x20000000) {
 		imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+        imageId += direction;
 	}
 
-	uint32 imageId = (ride_type->vehicles[0].base_image_id + direction) | imageColourFlags;
-	sub_98197C(imageId, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
+	sub_98197C(imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
 
 	g_currently_drawn_item = savedMapElement;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
