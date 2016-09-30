@@ -940,6 +940,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[ride->type];
 	enabledTrackPieces <<= 32;
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[ride->type];
+	enabledTrackPieces &= ride_entry_get_supported_track_pieces(rideEntry);
 	uint32 rideTypeFlags = RideProperties[ride->type].flags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {

@@ -1104,6 +1104,8 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
 uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex, int numCarsPerTrain, int position);
 void ride_update_max_vehicles(int rideIndex);
+uint64 ride_entry_get_supported_track_pieces(rct_ride_entry* rideEntry);
+
 
 void ride_set_ride_entry(int rideIndex, int rideEntry);
 void ride_set_num_vehicles(int rideIndex, int numVehicles);
