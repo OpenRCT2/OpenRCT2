@@ -9267,7 +9267,7 @@ static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
 				if (!footpath_element_is_sloped(mapElement))
 					break;
 
-				if (footpath_element_get_slope_direction(mapElement) != direction)
+				if (footpath_element_get_slope_direction(mapElement) != (direction ^ 2))
 					break;
 
 				baseZ -= 2;
