@@ -251,6 +251,7 @@ enum {
 
 	SPRITEGROUP_FENCE_METAL_A, // 14568
 	SPRITEGROUP_FENCE_METAL_B, // 14990
+	SPRITEGROUP_FENCE_SPIRAL_SLIDE, // 20564
 	SPRITEGROUP_FLOOR_CORK, // 22134
 	SPRITEGROUP_FENCE_ROPE, // 22138
 
@@ -263,6 +264,10 @@ static int getSpriteGroup(uint16 spriteIndex) {
 
 	if (spriteIndex >= 14990 && spriteIndex <= 14993) {
 		return SPRITEGROUP_FENCE_METAL_B;
+	}
+
+	if (spriteIndex >= 20564 && spriteIndex <= 20567) {
+		return SPRITEGROUP_FENCE_SPIRAL_SLIDE;
 	}
 
 	if (spriteIndex >= 22134 && spriteIndex <= 22137) {
