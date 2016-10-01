@@ -187,6 +187,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_CORRUPT_BUTTON_CLAMP,
 };
 
+// Window sizes
 #define WW 400
 #define WH 280
 #define MIN_WW WW
@@ -194,15 +195,12 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define MIN_WH 240
 #define MAX_WH 800
 
+// Button space for top buttons
 #define BW (WW - 5)		// Button's right side
 #define BX (BW - 23)	// Button's left side
 #define BY 17			// Button's Top
 #define BH (BY + 23)	// Button's Bottom
 #define BS 24
-
-#define PADDING_BOTTOM 15
-#define GROUPBOX_PADDING 6
-#define LIST_ITEM_HEIGHT 11
 
 // Column offsets for the table headers
 #define COL_X_TYPE 3					// Type
@@ -211,6 +209,32 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 #define COL_X_GF   (COL_X_CH + 20)		// Ghost flag
 #define COL_X_BF   (COL_X_GF + 12)		// Broken flag
 #define COL_X_LF   (COL_X_BF + 12)		// Last for tile flag
+
+#define PADDING_BOTTOM 15
+#define GROUPBOX_PADDING 6
+#define HORIZONTAL_GROUPBOX_PADDING 5
+#define VERTICAL_GROUPBOX_PADDING 4
+#define LIST_ITEM_HEIGHT 11
+#define BUTTONW 130
+#define BUTTONH 17
+
+// Calculates the .left, .right, .top and .bottom for buttons in a group box.
+// Buttons are used as reference points for all other widgets in the group boxes.
+#define GBBL(col)				(12 + col * (BUTTONW + HORIZONTAL_GROUPBOX_PADDING))
+#define GBBR(col)				(GBBL(col) + BUTTONW)
+#define GBBT(GROUPTOP, row)		((GROUPTOP) + 14 + row * (BUTTONH + VERTICAL_GROUPBOX_PADDING))
+#define GBBB(GROUPTOP, row)		(GBBT((GROUPTOP), row) + BUTTONH)
+#define GBB(GROUPTOP, col, row)	GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
+#define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
+
+// Spinners and dropdowns use the buttons as a reference
+#define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box spinner / dropdown field
+#define GBSI(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8 // Group box spinner increase
+#define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4 // Group box spinner decrease
+#define GBDB(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBB(GBT, row) - 4 // Group box dropdown button
+
+// Checkbox - given topleft corner
+#define CHK(x, y) x, x + 13, y + 2, y + 15
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
 	{ WWT_FRAME,		0,	0,				WW - 1,				0,				WH - 1,		0xFFFFFFFF,					STR_NONE },					/* panel / background */	\
@@ -244,23 +268,6 @@ static rct_widget windowTileInspectorWidgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
-
-// Calculates the .left, .right, .top and .bottom for buttons in a group box
-#define GBBL(col)				(12 + col * 115)
-#define GBBR(col)				(GBBL(col) + 110)
-#define GBBT(GROUPTOP, row)		((GROUPTOP) + 14 + row * 21)
-#define GBBB(GROUPTOP, row)		(GBBT((GROUPTOP), row) + 17)
-#define GBB(GROUPTOP, col, row)	GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
-#define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
-
-// Spinners and dropdowns use the buttons as a reference
-#define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box spinner / dropdown field
-#define GBSI(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8 // Group box spinner increase
-#define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4 // Group box spinner decrease
-#define GBDB(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBB(GBT, row) - 4 // Group box dropdown button
-
-// Checkbox - given topleft corner
-#define CHK(x, y) x, x + 13, y + 2, y + 15
 
 // Group boxes .top and .bottom for a given window height offsets from the bottom
 #define SUR_GBPB PADDING_BOTTOM					// Surface group box properties bottom
@@ -1714,7 +1721,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Raise / lower label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
@@ -1747,7 +1754,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Raise / lower label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_PATH_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
@@ -1781,7 +1788,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
@@ -1815,7 +1822,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / Lower
 			y = w->y + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
@@ -1874,7 +1881,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].left + 3;
@@ -1893,7 +1900,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
@@ -1907,7 +1914,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
@@ -1921,7 +1928,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;

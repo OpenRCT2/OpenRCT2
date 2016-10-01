@@ -4249,7 +4249,7 @@ STR_5937    :Not owned and not for sale
 STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
 STR_5939    :Remove park fences
 STR_5940    :Restore park fences
-STR_5941    :{WINDOW_COLOUR_2}Raise / lower:
+STR_5941    :{WINDOW_COLOUR_2}Base height:
 STR_5942    :{WINDOW_COLOUR_2}Path name: {BLACK}{STRINGID}
 STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
 STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
