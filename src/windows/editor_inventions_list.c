@@ -419,7 +419,9 @@ static void move_research_item(rct_research_item *beforeItem)
 	rct_window *w;
 	rct_research_item *researchItem, draggedItem;
 
-	if (_editorInventionsListDraggedItem == beforeItem - 1)
+	// We only really care about `_editorInventionsListDraggedItem == beforeItem - 1`,
+	// but this would cause a GCC warning due to -Warray-bounds
+	if (_editorInventionsListDraggedItem < beforeItem)
 		return;
 
 	// Back up the dragged item
