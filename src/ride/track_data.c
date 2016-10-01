@@ -6257,7 +6257,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_BOBSLEIGH_COASTER
 	get_track_paint_function_observation_tower,	// RIDE_TYPE_OBSERVATION_TOWER
 	0,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
-	0,						// RIDE_TYPE_DINGHY_SLIDE
+	get_track_paint_function_dinghy_slide,		// RIDE_TYPE_DINGHY_SLIDE
 	0,						// RIDE_TYPE_MINE_TRAIN_COASTER
 	get_track_paint_function_chairlift,		// RIDE_TYPE_CHAIRLIFT
 	0,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
