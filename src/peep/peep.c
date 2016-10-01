@@ -7297,7 +7297,7 @@ const int face_sprite_large[] = {
 static int get_face_sprite_offset(rct_peep *peep){
 
 	// ANGRY
-	if (peep->angriness) return PEEP_FACE_OFFSET_ANGRY;
+	if (peep->angriness > 0) return PEEP_FACE_OFFSET_ANGRY;
 
 	// VERY_VERY_SICK
 	if (peep->nausea > 200) return PEEP_FACE_OFFSET_VERY_VERY_SICK;
