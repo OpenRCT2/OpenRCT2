@@ -629,6 +629,7 @@ static void window_ride_customer_invalidate(rct_window *w);
 static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_ride_set_colours();
+static void window_ride_set_page(rct_window *w, int page);
 
 // 0x0098DFD4
 static rct_window_event_list window_ride_main_events = {
@@ -1595,20 +1596,12 @@ rct_window *window_ride_main_open(int rideIndex)
 		}
 	}
 
-	w->page = WINDOW_RIDE_PAGE_MAIN;
-	w->width = 316;
-	w->height = 180;
-	window_invalidate(w);
-	w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
-	w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
-	w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
-	w->event_handlers = window_ride_page_events[WINDOW_RIDE_PAGE_MAIN];
-	w->pressed_widgets = 0;
-	window_ride_disable_tabs(w);
-	window_init_scroll_widgets(w);
+	if (w->page != WINDOW_RIDE_PAGE_MAIN) {
+		window_ride_set_page(w, WINDOW_RIDE_PAGE_MAIN);
+	}
+
 	w->ride.view = 0;
 	window_ride_init_viewport(w);
-
 	return w;
 }
 
