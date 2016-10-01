@@ -5679,7 +5679,7 @@ int ride_get_refund_price(int ride_id)
 		uint8 type = it.element->properties.track.type;
 
 		if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
-			refundPrice += game_do_command(
+			money32 removePrice = game_do_command(
 				x,
 				GAME_COMMAND_FLAG_APPLY | (rotation << 8),
 				y,
@@ -5687,6 +5687,11 @@ int ride_get_refund_price(int ride_id)
 				GAME_COMMAND_REMOVE_TRACK,
 				z,
 				0);
+			if (removePrice == MONEY32_UNDEFINED) {
+				map_element_remove(it.element);
+			} else {
+				refundPrice += removePrice;
+			}
 			map_element_iterator_restart_for_tile(&it);
 			continue;
 		}
