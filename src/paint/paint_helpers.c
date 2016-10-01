@@ -26,7 +26,7 @@ paint_struct * sub_98196C_rotated(
 	sint16 z_offset)
 {
 	if (direction & 1) {
-		return sub_98196C(image_id, x_offset, y_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, get_current_rotation());
+		return sub_98196C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, get_current_rotation());
 	} else {
 		return sub_98196C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, get_current_rotation());
 	}

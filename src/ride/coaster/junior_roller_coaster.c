@@ -1808,13 +1808,11 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 track
 
 	image_id |= junior_rc_track_pieces_flat_to_25_deg_up[isChained][direction];
 	
-	if (direction & 1) {
-		sub_98196C(image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
-		paint_util_push_tunnel_right(height, TUNNEL_0);
-	}
-	else {
-		sub_98196C(image_id, 0, 6, 32, 20, 1, height, get_current_rotation());
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+	sub_98196C_rotated(direction, image_id, 0, 6, 32, 20, 1, height);
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
 	}
 
 	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
