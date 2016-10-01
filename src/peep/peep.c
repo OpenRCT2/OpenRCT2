@@ -5364,7 +5364,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 		(map_element->base_height << 3) + 32,
 		map_element->base_height << 3);
 
-	peep->angriness = 0x10;
+	peep->angriness = 16;
 
 	return;
 }
