@@ -977,8 +977,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 			if (peep->nausea <= 130)peep->nausea = 130;
 		}
 
-		if (peep->var_F3 != 0)
-			peep->var_F3--;
+		if (peep->angriness != 0)
+			peep->angriness--;
 
 		if (peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING){
 			peep->var_F2++;
@@ -5364,7 +5364,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 		(map_element->base_height << 3) + 32,
 		map_element->base_height << 3);
 
-	peep->var_F3 = 0x10;
+	peep->angriness = 16;
 
 	return;
 }
@@ -7031,7 +7031,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->no_of_drinks = 0;
 	peep->no_of_souvenirs = 0;
 	peep->var_F2 = 0;
-	peep->var_F3 = 0;
+	peep->angriness = 0;
 	peep->var_F4 = 0;
 
 	uint8 tshirt_colour = scenario_rand() % countof(tshirt_colours);
@@ -7297,7 +7297,7 @@ const int face_sprite_large[] = {
 static int get_face_sprite_offset(rct_peep *peep){
 
 	// ANGRY
-	if (peep->var_F3) return PEEP_FACE_OFFSET_ANGRY;
+	if (peep->angriness > 0) return PEEP_FACE_OFFSET_ANGRY;
 
 	// VERY_VERY_SICK
 	if (peep->nausea > 200) return PEEP_FACE_OFFSET_VERY_VERY_SICK;

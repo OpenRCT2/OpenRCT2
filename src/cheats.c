@@ -259,6 +259,12 @@ static void cheat_set_guest_parameter(int parameter, int value)
 		switch(parameter) {
 			case GUEST_PARAMETER_HAPPINESS:
 				peep->happiness = value;
+				// Clear the 'red-faced with anger' status if we're making the guest happy
+				if (value > 0)
+				{
+					peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+					peep->angriness = 0;
+				}
 				break;
 			case GUEST_PARAMETER_ENERGY:
 				peep->energy = value;

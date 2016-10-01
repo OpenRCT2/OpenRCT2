@@ -551,7 +551,7 @@ typedef struct rct_peep {
 	uint8 voucher_type;				// 0xF0
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
 	uint8 var_F2;
-	uint8 var_F3;
+	uint8 angriness;
 	uint8 var_F4;
 	uint8 days_in_queue;			// 0xF5
 	uint8 balloon_colour;			// 0xF6
