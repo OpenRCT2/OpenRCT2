@@ -773,6 +773,29 @@ void game_fix_save_vars() {
 			}
 		}
 	}
+
+	// Fix invalid research items
+	for (int i = 0; i < 500; i++) {
+		rct_research_item *researchItem = &gResearchItems[i];
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR) continue;
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_END) continue;
+		if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2) break;
+		if (researchItem->entryIndex & 0x10000) {
+			uint8 entryIndex = researchItem->entryIndex & 0xFF;
+			rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
+			if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1) {
+				research_remove(researchItem->entryIndex);
+				i--;
+			}
+		} else {
+			uint8 entryIndex = researchItem->entryIndex;
+			rct_scenery_set_entry *sceneryGroupEntry = get_scenery_group_entry(entryIndex);
+			if (sceneryGroupEntry == NULL || sceneryGroupEntry == (rct_scenery_set_entry*)-1) {
+				research_remove(researchItem->entryIndex);
+				i--;
+			}
+		}
+	}
 }
 
 /**
