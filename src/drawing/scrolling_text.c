@@ -1365,7 +1365,7 @@ static const sint16 _scrollpos37[] = {
 	-1,
 };
 
-static const sint16* _scrollPositions[38] = {
+static const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 	_scrollpos0,
 	_scrollpos1,
 	_scrollpos2,
@@ -1416,6 +1416,8 @@ static const sint16* _scrollPositions[38] = {
  */
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
+	assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
+
 	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	if (dpi->zoom_level != 0) return SPR_SCROLLING_TEXT_DEFAULT;

@@ -83,6 +83,10 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	if (direction >= 2 || (map_element->flags & MAP_ELEMENT_FLAG_GHOST)) return;
 
 	uint16 scrollingMode = banner_scenery->banner.scrolling_mode;
+	if (scrollingMode >= MAX_SCROLLING_TEXT_MODES) {
+		return;
+	}
+
 	scrollingMode += direction;
 
 	set_format_arg(0, uint32, 0);

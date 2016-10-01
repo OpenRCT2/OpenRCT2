@@ -122,6 +122,8 @@ typedef struct rct_palette {
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
 
+#define MAX_SCROLLING_TEXT_MODES 38
+
 extern sint16 gCurrentFontSpriteBase;
 extern uint16 gCurrentFontFlags;
 
