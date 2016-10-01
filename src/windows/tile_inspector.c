@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "dropdown.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
@@ -63,6 +64,12 @@ static const rct_string_id parkEntrancePartStringIds[] = {
 	STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
 	STR_TILE_INSPECTOR_ENTRANCE_LEFT,
 	STR_TILE_INSPECTOR_ENTRANCE_RIGHT
+};
+
+static const rct_string_id fenceSlopeStringIds[] = {
+	STR_TILE_INSPECTOR_FENCE_FLAT,
+	STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT,
+	STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT
 };
 
 enum WINDOW_TILE_INSPECTOR_PAGES {
@@ -160,6 +167,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_FENCE_SPINNER_HEIGHT = PAGE_WIDGETS,
 	WIDX_FENCE_SPINNER_HEIGHT_INCREASE,
 	WIDX_FENCE_SPINNER_HEIGHT_DECREASE,
+	WIDX_FENCE_DROPDOWN_SLOPE,
+	WIDX_FENCE_DROPDOWN_SLOPE_BUTTON,
 
 	// Large
 	WIDX_LARGE_SCENERY_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -244,10 +253,11 @@ static rct_widget windowTileInspectorWidgets[] = {
 #define GBB(GROUPTOP, col, row)	GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
 #define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
 
-// Same, but for spinners and their increase/decrease buttons
-#define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3
-#define GBSI(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8
-#define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4
+// Spinners and dropdowns use the buttons as a reference
+#define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3 // Group box spinner / dropdown field
+#define GBSI(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8 // Group box spinner increase
+#define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4 // Group box spinner decrease
+#define GBDB(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBB(GBT, row) - 4 // Group box dropdown button
 
 // Checkbox - given topleft corner
 #define CHK(x, y) x, x + 13, y + 2, y + 15
@@ -339,14 +349,16 @@ static rct_widget windowTileInspectorWidgetsEntrance[] = {
 };
 
 #define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
-#define FEN_GBPT (FEN_GBPB + 16 + 1 * 21)		// Fence group box properties top
+#define FEN_GBPT (FEN_GBPB + 16 + 2 * 21)		// Fence group box properties top
 #define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
 #define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Fence group box info top
 static rct_widget windowTileInspectorWidgetsFence[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - FEN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT
-	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_INCREASE
-	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_DECREASE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_INCREASE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(WH - FEN_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT_DECREASE
+	{ WWT_DROPDOWN,			1,  GBS(WH - FEN_GBPT, 1, 1),	STR_NONE,										STR_NONE }, // WIDX_FENCE_DROPDOWN_SLOPE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBDB(WH - FEN_GBPT, 1, 1),	STR_DROPDOWN_GLYPH,								STR_NONE }, // WIDX_FENCE_DROPDOWN_SLOPE_BUTTON
 	{ WIDGETS_END },
 };
 
@@ -436,7 +448,9 @@ static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapEle
 
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
+static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
 static void window_tile_inspector_update(rct_window *w);
+static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
@@ -452,8 +466,8 @@ static rct_window_event_list windowTileInspectorEvents = {
 	NULL,
 	window_tile_inspector_mouseup,
 	window_tile_inspector_resize,
-	NULL,
-	NULL,
+	window_tile_inspector_mousedown,
+	window_tile_inspector_dropdown,
 	NULL,
 	window_tile_inspector_update,
 	NULL,
@@ -486,7 +500,7 @@ static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE_BUTTON),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
@@ -1247,6 +1261,40 @@ static void window_tile_inspector_resize(rct_window *w) {
 	}
 }
 
+static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_widget* widget) {
+	switch (w->page) {
+	case PAGE_FENCE:
+		switch (widgetIndex) {
+		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
+			// Use dropdown instead of dropdown button
+			widget--;
+
+			// Fill dropdown list
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_FENCE_FLAT;
+			gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_FENCE_SLOPED_LEFT;
+			gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_FENCE_SLOPED_RIGHT;
+			window_dropdown_show_text_custom_width(
+				w->x + widget->left,
+				w->y + widget->top,
+				widget->bottom - widget->top + 1,
+				w->colours[1],
+				DROPDOWN_FLAG_STAY_OPEN,
+				3,
+				widget->right - widget->left - 3
+			);
+
+			// Set current value as checked
+			rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+			dropdown_set_checked((mapElement->type & 0xC0) >> 6, true);
+			break;
+		}
+		break;
+	}
+}
+
 static void window_tile_inspector_update(rct_window *w) {
 	// Check if the mouse is hovering over the list
 	if (!widget_is_highlighted(w, WIDX_LIST)) {
@@ -1256,6 +1304,35 @@ static void window_tile_inspector_update(rct_window *w) {
 
 	if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
 		window_close(w);
+}
+
+static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int dropdownIndex) {
+	if (dropdownIndex == -1) {
+		return;
+	}
+
+	// Get selected element
+	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+
+	switch (w->page) {
+	case PAGE_SCENERY:
+		assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY);
+
+		// TODO: Small scenery quarter position
+		break;
+
+	case PAGE_FENCE:
+		assert(map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE);
+
+		switch (widgetIndex) {
+		case WIDX_FENCE_DROPDOWN_SLOPE_BUTTON:
+			printf("Dropdown index: %d\n", dropdownIndex);
+			mapElement->type &= ~0xC0;
+			mapElement->type |= dropdownIndex << 6;
+			break;
+		}
+		break;
+	}
 }
 
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y) {
@@ -1530,6 +1607,11 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_FENCE_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].text = fenceSlopeStringIds[(mapElement->type & 0xC0) >> 6];
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
+		w->widgets[WIDX_FENCE_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
 		break;
 	case PAGE_LARGE_SCENERY:
 		w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1798,6 +1880,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			x = w->x + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
 			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+
+			// Slope label
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_SLOPE, NULL, 12, x, y);
 			break;
 		}
 
