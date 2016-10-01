@@ -244,7 +244,7 @@ namespace Intercept2
                 if (edge.offset == 0) {
                     sprintf(out, "  0/%X ", edge.type);
                 } else {
-                    utf8string offset = new utf8[3];
+                    utf8string offset = new utf8[16];
                     if (edge.offset < 0) {
                         sprintf(offset, "%d", edge.offset);
                     } else {
