@@ -68,8 +68,11 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 		paint_util_set_vertical_tunnel(height + 96);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-		// Original set support height to (height + 32). Caused supports to code with lift cage.
+#ifdef __TESTPAINT__
+		paint_util_set_general_support_height(height + 32, 0x20);
+#else
 		paint_util_set_general_support_height(height + 96, 0x20);
+#endif
 
 		return;
 	}

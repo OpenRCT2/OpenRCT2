@@ -2164,13 +2164,9 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 
 	image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 	if (direction & 1) {
 		sub_98197C(image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
-
-		paint_util_push_tunnel_right(height, 0);
 	}
 	else {
 		sub_98197C(image_id, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
-
-		paint_util_push_tunnel_left(height, 0);
 	}
 	
 	if (junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] != 0) {
@@ -2190,6 +2186,13 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8 
 		metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
+	switch(direction) {
+		case 0: paint_util_push_tunnel_left(height, TUNNEL_0); break;
+		case 1: paint_util_push_tunnel_right(height, TUNNEL_2); break;
+		case 2: paint_util_push_tunnel_left(height, TUNNEL_2); break;
+		case 3: paint_util_push_tunnel_right(height, TUNNEL_0); break;
+	}
+
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
@@ -2204,13 +2207,9 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8
 	image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 	if (direction & 1) {
 		sub_98197C(image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
-
-		paint_util_push_tunnel_right(height, TUNNEL_2);
 	}
 	else {
 		sub_98197C(image_id, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
-
-		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 	
 	if (junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] != 0) {
@@ -2228,6 +2227,13 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(uint8 rideIndex, uint8
 	if (track_paint_util_should_paint_supports(pos)) {
 		int edi = direction & 1 ? 2 : 1;
 		metal_a_supports_paint_setup(edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+
+	switch(direction) {
+		case 0: paint_util_push_tunnel_left(height, TUNNEL_0); break;
+		case 1: paint_util_push_tunnel_right(height, TUNNEL_2); break;
+		case 2: paint_util_push_tunnel_left(height, TUNNEL_2); break;
+		case 3: paint_util_push_tunnel_right(height, TUNNEL_0); break;
 	}
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -3014,19 +3020,19 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(uint8 rideI
 	}
 
 	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
-	}
-
-	if (direction == 0 && trackSequence == 3) {
-		paint_util_push_tunnel_right(height + 8, TUNNEL_0);
-	}
-
-	if (direction == 1 && trackSequence == 3) {
 		paint_util_push_tunnel_left(height + 8, TUNNEL_0);
 	}
 
-	if (direction == 3 && trackSequence == 0) {
+	if (direction == 0 && trackSequence == 3) {
 		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height + 8, TUNNEL_0);
 	}
 
 	int blockedSegments = 0;
@@ -3129,19 +3135,19 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(uint8 rideI
 	}
 
 	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
-	}
-
-	if (direction == 0 && trackSequence == 6) {
-		paint_util_push_tunnel_right(height + 8, TUNNEL_0);
-	}
-
-	if (direction == 1 && trackSequence == 6) {
 		paint_util_push_tunnel_left(height + 8, TUNNEL_0);
 	}
 
-	if (direction == 3 && trackSequence == 0) {
+	if (direction == 0 && trackSequence == 6) {
 		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	if (direction == 1 && trackSequence == 6) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height + 8, TUNNEL_0);
 	}
 
 	switch (trackSequence) {
