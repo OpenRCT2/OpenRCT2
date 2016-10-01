@@ -182,7 +182,30 @@ enum {
 	SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_0 = 19881,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_1 = 19882,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_2 = 19883,
-
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_0 = 19884,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_1 = 19885,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_2 = 19886,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_0 = 19887,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_1 = 19888,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_2 = 19889,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_0 = 19890,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_1 = 19891,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_2 = 19892,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_0 = 19893,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_1 = 19894,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_2 = 19895,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_0 = 19896,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_1 = 19897,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_2 = 19898,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_0 = 19899,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_1 = 19900,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_2 = 19901,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_0 = 19902,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_1 = 19903,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_2 = 19904,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_0 = 19905,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_1 = 19906,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_2 = 19907,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_0 = 19908,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_1 = 19909,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_2 = 19910,
@@ -223,7 +246,46 @@ enum {
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_2 = 19945,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_3 = 19946,
 	SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_4 = 19947,
-
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_0 = 19948,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_1 = 19949,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_2 = 19950,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_3 = 19951,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_4 = 19952,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_0 = 19953,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_1 = 19954,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_2 = 19955,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_3 = 19956,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_4 = 19957,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_0 = 19958,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_1 = 19959,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_2 = 19960,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_3 = 19961,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_4 = 19962,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_0 = 19963,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_1 = 19964,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_2 = 19965,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_3 = 19966,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_4 = 19967,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_0 = 19968,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_1 = 19969,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_2 = 19970,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_3 = 19971,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_4 = 19972,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_0 = 19973,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_1 = 19974,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_2 = 19975,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_3 = 19976,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_4 = 19977,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_0 = 19978,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_1 = 19979,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_2 = 19980,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_3 = 19981,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_4 = 19982,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_0 = 19983,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_1 = 19984,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_2 = 19985,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_3 = 19986,
+	SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_4 = 19987,
 	SPR_DINGHY_SLIDE_S_BEND_SW_SE_SW_SEQ_3 = 19988,
 	SPR_DINGHY_SLIDE_S_BEND_SW_SE_SW_SEQ_2 = 19989,
 	SPR_DINGHY_SLIDE_S_BEND_SW_SE_SW_SEQ_1 = 19990,
@@ -672,8 +734,7 @@ static void dinghy_slide_track_right_quarter_turn_5(uint8 rideIndex, uint8 track
 
 static void dinghy_slide_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	static const uint8 tsMap[] = { 6, 4, 5, 3, 1, 2, 0 };
-	trackSequence = tsMap[trackSequence];
+	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
 	dinghy_slide_track_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
@@ -1125,6 +1186,109 @@ static void dinghy_slide_track_25_deg_down_to_flat_covered(uint8 rideIndex, uint
 	dinghy_slide_track_flat_to_25_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void dinghy_slide_track_right_quarter_turn_5_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const sprite_bb imageIds[4][5] = {
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_0, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_1, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_2, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_3, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_4, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_0, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_1, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_2, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_3, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_4, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_0, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_1, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_3, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_4, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_0, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_1, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_2, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_3, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_4, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+		}
+	};
+	static const sprite_bb frontImageIds[4][5] = {
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_0, { 0, 0, 0 }, {  0,  6, 27 }, { 32, 30, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_1, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_2, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_3, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_4, { 0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_0, { 0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_2, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_3, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_4, { 0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_0, { 0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_1, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_3, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_4, { 0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_0, { 0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_1, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_3, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_4, { 0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+		}
+	};
+
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+
+	switch (trackSequence) {
+	case 0:
+	case 6:
+		metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		break;
+	}
+
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+	if (direction == 0 && trackSequence == 6) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+	if (direction == 1 && trackSequence == 6) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	switch (trackSequence) {
+	case 0: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0); break;
+	case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0); break;
+	case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+	case 6: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0); break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void dinghy_slide_track_left_quarter_turn_5_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+	dinghy_slide_track_right_quarter_turn_5_covered(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+}
+
 static void dinghy_slide_track_s_bend_left_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][4][2] =
@@ -1269,6 +1433,81 @@ static void dinghy_slide_track_s_bend_right_covered(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void dinghy_slide_track_right_quarter_turn_3_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const sprite_bb imageIds[4][3] = {
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_0, {  0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_1, {  0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_2, {  0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_0, {  0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_1, {  0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_2, {  0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_0, {  0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_1, {  0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_2, {  0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_0, {  0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_1, {  0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_2, {  0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 2 } },
+		}
+	};
+	static const sprite_bb frontImageIds[4][3] = {
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_0, {  0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_1, {  0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_2, {  0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_0, {  0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_1, {  0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_2, {  0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_0, {  0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_1, {  0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_2, {  0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+		},
+		{
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_0, {  0, 0, 0 }, {  6,  0, 27 }, { 20, 32, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_1, {  0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 } },
+			{ SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_2, {  0, 0, 0 }, {  0,  6, 27 }, { 32, 20, 0 } },
+		}
+	};
+
+	track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+	track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+
+	switch (trackSequence) {
+	case 0:
+	case 3:
+		metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		break;
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+	case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC; break;
+	case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
+	case 3: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void dinghy_slide_track_left_quarter_turn_3_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+	dinghy_slide_track_right_quarter_turn_3_covered(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+}
+
 static void dinghy_slide_track_60_deg_down_to_25_deg_down_covered(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	dinghy_slide_track_25_deg_up_to_60_deg_up_covered(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
@@ -1346,15 +1585,17 @@ TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int trackType, int di
 	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
 		return dinghy_slide_track_25_deg_down_to_flat_covered;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
+		return dinghy_slide_track_left_quarter_turn_5_covered;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-		return NULL;
+		return dinghy_slide_track_right_quarter_turn_5_covered;
 	case TRACK_ELEM_S_BEND_LEFT_COVERED:
 		return dinghy_slide_track_s_bend_left_covered;
 	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
 		return dinghy_slide_track_s_bend_right_covered;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
+		return dinghy_slide_track_left_quarter_turn_3_covered;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
-		return NULL;
+		return dinghy_slide_track_right_quarter_turn_3_covered;
 	}
 
 	return NULL;
