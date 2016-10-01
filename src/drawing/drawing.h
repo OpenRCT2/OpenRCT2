@@ -189,6 +189,7 @@ void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
+void gfx_object_check_all_images_freed();
 void sub_68371D();
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);

@@ -37,6 +37,7 @@ struct ImageList
 
 static bool                 _initialised = false;
 static std::list<ImageList> _freeLists;
+static uint32               _allocatedImageCount;
 
 #ifdef DEBUG
 static std::list<ImageList> _allocatedLists;
@@ -52,6 +53,23 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
         });
     return contains;
 }
+
+static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
+{
+    auto foundItem = std::find_if(
+        _allocatedLists.begin(),
+        _allocatedLists.end(),
+        [baseImageId, count](const ImageList &imageList) -> bool
+        {
+            return imageList.BaseId == baseImageId && imageList.Count == count;
+        });
+    if (foundItem != _allocatedLists.end())
+    {
+        _allocatedLists.erase(foundItem);
+        return true;
+    }
+    return false;
+}
 #endif
 
 static uint32 AllocateImageList(uint32 count)
@@ -66,6 +84,7 @@ static uint32 AllocateImageList(uint32 count)
 #ifdef DEBUG
         _allocatedLists.clear();
 #endif
+        _allocatedImageCount = 0;
     }
 
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
@@ -84,6 +103,7 @@ static uint32 AllocateImageList(uint32 count)
 #ifdef DEBUG
             _allocatedLists.push_back({ imageList.BaseId, count });
 #endif
+            _allocatedImageCount += count;
             return imageList.BaseId;
         }
     }
@@ -96,10 +116,11 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
 
 #ifdef DEBUG
-    bool contains = AllocatedListContains(baseImageId, count);
+    bool contains = AllocatedListRemove(baseImageId, count);
     Guard::Assert(contains, GUARD_LINE);
 #endif
-    
+    _allocatedImageCount -= count;
+
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         if (it->BaseId + it->Count == baseImageId) 
@@ -114,8 +135,7 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
             return;
         }
     }
-    
-    // TODO validate that this was an allocated list
+
     _freeLists.push_back({ baseImageId, count });
 }
 
@@ -143,7 +163,7 @@ extern "C"
 
     void gfx_object_free_images(uint32 baseImageId, uint32 count)
     {
-        if (baseImageId != 0)
+        if (baseImageId != INVALID_IMAGE_ID)
         {
             // Zero the G1 elements so we don't have invalid pointers
             // and data lying about
@@ -155,6 +175,18 @@ extern "C"
             }
 
             FreeImageList(baseImageId, count);
+        }
+    }
+
+    void gfx_object_check_all_images_freed()
+    {
+        if (_allocatedImageCount != 0)
+        {
+#if DEBUG
+            Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
+#else
+            Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
+#endif
         }
     }
 }
