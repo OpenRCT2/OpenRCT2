@@ -693,56 +693,7 @@ static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence
 static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	paint_river_rapids_track_flat(rideIndex, trackSequence, direction, height, mapElement);
-
-	uint32 imageId;
-
-	const bool takingPhoto = (bool) (mapElement->properties.track.sequence & 0xF0);
-	switch (direction) {
-		case 0:
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_SW_NE | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 26, 0, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_SW_NE | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 26, 31, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S : SPR_ON_RIDE_PHOTO_CAMERA_S) | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 6, 0, 1, 1, 19, height + 13, get_current_rotation());
-			break;
-
-		case 1:
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_NW_SE | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 0, 6, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_NW_SE | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 31, 6, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W : SPR_ON_RIDE_PHOTO_CAMERA_W) | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 0, 26, 1, 1, 19, height + 13, get_current_rotation());
-			break;
-
-		case 2:
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_NE_SW | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 6, 0, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_NE_SW | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 6, 31, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N : SPR_ON_RIDE_PHOTO_CAMERA_N) | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 26, 31, 1, 1, 19, height + 13, get_current_rotation());
-			break;
-
-		case 3:
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_SE_NW | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 0, 26, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = SPR_ON_RIDE_PHOTO_SIGN_SE_NW | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 31, 26, 1, 1, 19, height + 13, get_current_rotation());
-
-			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E : SPR_ON_RIDE_PHOTO_CAMERA_E) | gTrackColours[SCHEME_MISC];
-			sub_98196C(imageId, 31, 6, 1, 1, 19, height + 13, get_current_rotation());
-			break;
-	}
-
+	track_paint_util_onride_photo_paint(direction, height + 13, mapElement);
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
