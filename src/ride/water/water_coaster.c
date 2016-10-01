@@ -299,7 +299,12 @@ static void water_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequenc
 	uint32 image_id = gTrackColours[SCHEME_TRACK];
 	image_id |= water_rc_track_pieces_flat_to_25_deg_up[isChained][direction];
 	sub_98196C_rotated(direction, image_id, 0, 6, 32, 20, 1, height);
-	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+	}
 
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		int supportType = direction & 1 ? 2 : 1;
