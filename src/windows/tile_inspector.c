@@ -372,7 +372,7 @@ static rct_widget windowTileInspectorWidgetsFence[] = {
 #define LAR_GBPB PADDING_BOTTOM					// Large scenery group box properties bottom
 #define LAR_GBPT (LAR_GBPB + 16 + 1 * 21)		// Large scenery group box properties top
 #define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Large scenery group box info bottom
-#define LAR_GBDT (LAR_GBDB + 20 + 0 * 11)		// Large scenery group box info top
+#define LAR_GBDT (LAR_GBDB + 20 + 3 * 11)		// Large scenery group box info top
 static rct_widget windowTileInspectorWidgetsLargeScenery[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - LAR_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT
@@ -1708,8 +1708,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 		int y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 
 		// Get map element
-		rct_map_element *mapElement = window_tile_inspector_get_selected_element(w);
-		mapElement += w->selected_list_item;
+		rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 		switch (w->page) {
 		case PAGE_SURFACE: {
@@ -1902,13 +1901,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			sint16 fenceType = mapElement->properties.fence.type;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, 12, x, y);
 
-			// Banner text
+			// Banner info
 			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
 			if (fenceEntry.flags & WALL_SCENERY_BANNER) {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, 12, x, y + 11);
 			}
 			else {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_BANNER_NONE, NULL, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, 12, x, y + 11);
 			}
 
 			// Properties
@@ -1930,6 +1929,28 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 
 		case PAGE_LARGE_SCENERY:
 		{
+			// Details
+			// Type
+			sint16 largeSceneryType = mapElement->properties.scenerymultiple.type & 0x03FF;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, 12, x, y);
+
+			// Part ID
+			sint16 pieceID = (mapElement->properties.scenerymultiple.type & 0xFC00) >> 10;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, 12, x, y + 11);
+
+			// Banner info
+			rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
+			if (largeSceneryEntry->large_scenery.var_11 != 0xFF) {
+				const int bannerIndex = (mapElement->type & 0xC0) |
+					((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+					((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+				//window_sign_open(bannerIndex);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, 12, x, y + 22);
+			}
+			else {
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, 12, x, y + 22);
+			}
+
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;

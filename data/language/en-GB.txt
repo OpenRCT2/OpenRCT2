@@ -4290,6 +4290,8 @@ STR_5978    :Left side up
 STR_5979    :{WINDOW_COLOUR_2}Fence type: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Not a banner
+STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
 
 #############
 # Scenarios #
