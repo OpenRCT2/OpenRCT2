@@ -181,10 +181,10 @@ static uint32 air_powered_vertical_rc_get_support_colour()
 static void air_powered_vertical_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
-		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE },
+		SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+		SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+		SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+		SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
 	};
 
 	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
@@ -405,10 +405,10 @@ static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(uint8 rideI
 static void air_powered_vertical_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
-		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW },
-		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW },
+		SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE,
+		SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE,
+		SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW,
+		SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW,
 	};
 
 	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
@@ -434,10 +434,10 @@ static void air_powered_vertical_rc_track_right_bank(uint8 rideIndex, uint8 trac
 static void air_powered_vertical_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
-		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE },
-		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE },
+		SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
+		SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
+		SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
+		SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
 	};
 
 	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
