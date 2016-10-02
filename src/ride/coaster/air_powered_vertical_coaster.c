@@ -124,6 +124,26 @@ enum {
 	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_4 = 22289,
 	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_6 = 22290,
 	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_5 = 22291,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_0 = 22292,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_1 = 22293,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_2 = 22294,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_3 = 22295,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_4 = 22296,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_0 = 22297,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_1 = 22298,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_2 = 22299,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_3 = 22300,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_4 = 22301,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_0 = 22302,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_1 = 22303,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_2 = 22304,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_3 = 22305,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_4 = 22306,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_0 = 22307,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_1 = 22308,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_2 = 22309,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_3 = 22310,
+	SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_4 = 22311,
 };
 
 static uint32 air_powered_vertical_rc_get_support_colour()
@@ -177,6 +197,62 @@ static void air_powered_vertical_rc_track_station(uint8 rideIndex, uint8 trackSe
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const sprite_bb imageIds[4][5] = {
+		{
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_0, {  0,  2, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_1, {  0, 16, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_2, {  0,  0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_3, { 16,  0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_4, {  2,  0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+		},
+		{
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_0, { 2,   0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_1, { 16,  0, 0 }, { 0, 0, 0 }, { 16, 34, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_2, { 0,  16, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_3, { 0,   0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NW_SW_PART_4, { 0,   2, 0 }, { 0, 0, 0 }, { 32, 27, 2 } },
+		},
+		{
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_0, { 0,   2, 0 }, { 0, 0, 0 }, { 32, 27, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_1, { 0,   0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_2, { 16, 16, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_3, { 0,   0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_NE_NW_PART_4, { 2,   0, 0 }, { 0, 0, 0 }, { 27, 32, 2 } },
+		},
+		{
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_0, {  2,  0, 0 }, { 0, 0, 0 }, { 27, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_1, {  0,  0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_2, { 16,  0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_3, {  0, 16, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+			{ SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SE_NE_PART_4, {  0,  2, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+		}
+	};
+
+	track_paint_util_right_quarter_turn_5_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+	track_paint_util_right_quarter_turn_5_tiles_wooden_supports(height, direction, trackSequence);
+	track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
+
+	switch (trackSequence) {
+	case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	case 1: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	case 4: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+	case 6: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+	air_powered_vertical_rc_track_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
 static void air_powered_vertical_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -600,7 +676,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackT
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return air_powered_vertical_rc_track_station;
-
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+		return air_powered_vertical_rc_track_left_quarter_turn_5;
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+		return air_powered_vertical_rc_track_right_quarter_turn_5;
 	case TRACK_ELEM_FLAT_TO_LEFT_BANK:
 		return air_powered_vertical_rc_track_flat_to_left_bank;
 	case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
@@ -609,6 +688,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackT
 		return air_powered_vertical_rc_track_left_bank_to_flat;
 	case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
 		return air_powered_vertical_rc_track_right_bank_to_flat;
+	case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+	case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+		return NULL;
 	case TRACK_ELEM_LEFT_BANK:
 		return air_powered_vertical_rc_track_left_bank;
 	case TRACK_ELEM_RIGHT_BANK:
