@@ -71,7 +71,70 @@ enum {
 	SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_NW_SE = 22359,
 	SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_NE_SW = 22360,
 	SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_SE_NW = 22361,
+
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_0 = 22240,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_1 = 22241,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_2 = 22242,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_3 = 22243,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_4 = 22244,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_6 = 22245,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_0 = 22246,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_1 = 22247,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_2 = 22248,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_3 = 22249,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_4 = 22250,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_6 = 22251,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_0 = 22252,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_1 = 22253,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_2 = 22254,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_3 = 22255,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_4 = 22256,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_6 = 22257,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_0 = 22258,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_1 = 22259,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_2 = 22260,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_3 = 22261,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_4 = 22262,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_6 = 22263,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_0 = 22264,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_1 = 22265,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_2 = 22266,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_3 = 22267,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_4 = 22268,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_6 = 22269,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_5 = 22270,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_0 = 22271,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_1 = 22272,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_2 = 22273,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_3 = 22274,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_4 = 22275,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_6 = 22276,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_5 = 22277,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_0 = 22278,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_1 = 22279,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_2 = 22280,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_3 = 22281,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_4 = 22282,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_6 = 22283,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_5 = 22284,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_0 = 22285,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_1 = 22286,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_2 = 22287,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_3 = 22288,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_4 = 22289,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_6 = 22290,
+	SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_5 = 22291,
 };
+
+static uint32 air_powered_vertical_rc_get_support_colour()
+{
+	uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
+	uint32 trackColour = gTrackColours[SCHEME_TRACK];
+	if (trackColour & 0x80000000) {
+		colourFlags |= (trackColour & 0x9F000000);
+	}
+	return colourFlags;
+}
 
 static void air_powered_vertical_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
@@ -225,6 +288,194 @@ static void air_powered_vertical_rc_track_brakes(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void air_powered_vertical_rc_track_vertical_slope_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 trackImageIds[7][4] = {
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_0,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_0,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_0,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_0,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_1,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_2,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_3,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_4,
+		},
+		{
+			0,
+			0,
+			0,
+			0
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NE_SW_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SE_NW_6,
+		},
+	};
+
+	static const uint32 supportImageIds[7][4] = {
+		{
+			22264,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_0,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_0,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_0,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_1,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_1,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_2,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_2,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_3,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_3,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_4,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_4,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_5,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_5,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_5,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_5,
+		},
+		{
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SW_NE_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NE_SW_6,
+			SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_SE_NW_6,
+		},
+	};
+
+	static const sint8 bbHeights03[] = { 1, 6, 14, 37, 76 };
+	static const sint8 bbHeights12[] = { 1, 6, 14, 27, 59 };
+	static const sint32 supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
+
+	uint32 supportsImageId = supportImageIds[trackSequence][direction] | air_powered_vertical_rc_get_support_colour();
+	uint32 trackImageId = trackImageIds[trackSequence][direction] | gTrackColours[SCHEME_TRACK];
+	sint8 bbHeight;
+	bool isDirection03 = (direction == 0 || direction == 3);
+	switch (trackSequence) {
+	case 0:
+		// HACK this might be a mistake in original code
+		if (direction & 1) {
+			bbHeight = bbHeights12[trackSequence];
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+
+			wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+			paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+			paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+			break;
+		}
+	case 1:
+	case 2:
+	case 3:
+		if (isDirection03) {
+			bbHeight = bbHeights03[trackSequence];
+
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+		} else {
+			bbHeight = bbHeights12[trackSequence];
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+		}
+
+		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+		if (trackSequence == 0) {
+			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+		}
+
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+		break;
+	case 4:
+		if (isDirection03) {
+			bbHeight = bbHeights03[trackSequence];
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+		} else {
+			bbHeight = bbHeights12[trackSequence];
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+		}
+
+		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+		break;
+	case 5:
+		if (wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
+			uint32 floorImageId;
+			if (direction & 1) {
+				floorImageId = SPR_FLOOR_PLANKS_90_DEG | gTrackColours[SCHEME_SUPPORTS];
+			} else {
+				floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
+			}
+			sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 26, 26, 126, height, isDirection03 ? 3 : 3, 3, height);
+		} else {
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 26, 26, 126, height, isDirection03 ? 3 : 3, 3, height);
+		}
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+		break;
+	case 6:
+		if (isDirection03) {
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+			sub_98199C_rotated(direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+		} else {
+			sub_98197C_rotated(direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+		}
+		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+		paint_util_set_vertical_tunnel(height + 240);
+
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+		break;
+	}
+}
+
 static void air_powered_vertical_rc_track_vertical_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -234,22 +485,14 @@ static void air_powered_vertical_rc_track_vertical_up(uint8 rideIndex, uint8 tra
 		{ SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SE_NW_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SE_NW_SEQ_1 },
 	};
 
+	uint32 imageId;
 	switch (trackSequence) {
 	case 0:
-	{
-		uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
-		uint32 trackColour = gTrackColours[SCHEME_TRACK];
-		if (trackColour & 0x80000000) {
-			colourFlags |= (trackColour & 0x9F000000);
-		}
-
-		uint32 imageId = imageIds[direction][0] | colourFlags;
+		imageId = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour();
 		sub_98197C_rotated(direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
 		break;
-	}
 	case 1:
-	{
-		uint32 imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+		imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 		if (direction == 0 || direction == 3) {
 			sub_98197C_rotated(direction, imageId, 0, 0, 2, 20, 79, height, 0, 6, height);
 		} else {
@@ -258,7 +501,6 @@ static void air_powered_vertical_rc_track_vertical_up(uint8 rideIndex, uint8 tra
 
 		paint_util_set_vertical_tunnel(height + 80);
 		break;
-	}
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -291,16 +533,10 @@ static void air_powered_vertical_rc_track_vertical_top(uint8 rideIndex, uint8 tr
 		},
 	};
 
-	uint32 colourFlags, trackColour, imageIdS, imageIdT;
+	uint32 imageIdS, imageIdT;
 	switch (trackSequence) {
 	case 0:
-		colourFlags = gTrackColours[SCHEME_SUPPORTS];
-		trackColour = gTrackColours[SCHEME_TRACK];
-		if (trackColour & 0x80000000) {
-			colourFlags |= (trackColour & 0x9F000000);
-		}
-
-		imageIdS = imageIds[direction][0] | colourFlags;
+		imageIdS = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour();
 		imageIdT = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
 		if (direction == 0) {
 			sub_98197C_rotated(direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
@@ -329,13 +565,7 @@ static void air_powered_vertical_rc_track_vertical_top(uint8 rideIndex, uint8 tr
 		paint_util_set_vertical_tunnel(height + 80);
 		break;
 	case 3:
-		colourFlags = gTrackColours[SCHEME_SUPPORTS];
-		trackColour = gTrackColours[SCHEME_TRACK];
-		if (trackColour & 0x80000000) {
-			colourFlags |= (trackColour & 0x9F000000);
-		}
-
-		imageIdS = imageIds[direction][4] | colourFlags;
+		imageIdS = imageIds[direction][4] | air_powered_vertical_rc_get_support_colour();
 		imageIdT = imageIds[direction][5] | gTrackColours[SCHEME_TRACK];
 		if (direction == 0) {
 			sub_98197C_rotated(direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
@@ -354,6 +584,11 @@ static void air_powered_vertical_rc_track_vertical_top(uint8 rideIndex, uint8 tr
 static void air_powered_vertical_rc_track_vertical_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	air_powered_vertical_rc_track_vertical_up(rideIndex, trackSequence ^ 1, (direction + 2) & 3, height, mapElement);
+}
+
+static void air_powered_vertical_rc_track_vertical_slope_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	air_powered_vertical_rc_track_vertical_slope_up(rideIndex, 6 - trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackType, int direction)
@@ -378,16 +613,18 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackT
 		return air_powered_vertical_rc_track_left_bank;
 	case TRACK_ELEM_RIGHT_BANK:
 		return air_powered_vertical_rc_track_right_bank;
-
 	case TRACK_ELEM_BRAKES:
 		return air_powered_vertical_rc_track_brakes;
-
+	case TRACK_ELEM_REVERSE_WHOA_BELLY_SLOPE:
+		return air_powered_vertical_rc_track_vertical_slope_up;
 	case TRACK_ELEM_REVERSE_WHOA_BELLY_VERTICAL:
 		return air_powered_vertical_rc_track_vertical_up;
 	case TRACK_ELEM_AIR_THRUST_TOP_CAP:
 		return air_powered_vertical_rc_track_vertical_top;
 	case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN:
 		return air_powered_vertical_rc_track_vertical_down;
+	case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
+		return air_powered_vertical_rc_track_vertical_slope_down;
 	}
 	return NULL;
 }
