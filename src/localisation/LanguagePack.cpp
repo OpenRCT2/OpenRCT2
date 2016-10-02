@@ -469,8 +469,8 @@ public:
 
                     _objectOverrides.push_back(ObjectOverride());
                     _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
-                    memset(_currentObjectOverride, 0, sizeof(ObjectOverride));
-                    memcpy(_currentObjectOverride->name, _currentGroup, 8);
+                    Memory::Set(_currentObjectOverride, 0, sizeof(ObjectOverride));
+                    Memory::Copy(_currentObjectOverride->name, _currentGroup, 8);
                 }
             }
         }
@@ -515,8 +515,8 @@ public:
 
                 _scenarioOverrides.push_back(ScenarioOverride());
                 _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
-                Memory::Set(_currentScenarioOverride, 0, sizeof(ScenarioOverride));
                 _currentScenarioOverride->filename = std::string(sb.GetBuffer());
+                Memory::Set(_currentScenarioOverride->strings, 0, sizeof(_currentScenarioOverride->strings));
             }
         }
     }
