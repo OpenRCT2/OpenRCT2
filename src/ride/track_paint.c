@@ -1030,6 +1030,52 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int dire
 				rotation);
 }
 
+void track_paint_util_right_quarter_turn_5_tiles_paint_3(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
+{
+	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
+	if (sprite < 0) {
+		return;
+	}
+
+	const sprite_bb *spriteBB = &sprites[direction][sprite];
+	uint32 imageId = spriteBB->sprite_id | colourFlags;
+	sub_98196C(imageId,
+				(sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y,
+				spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z,
+				height + spriteBB->offset.z,
+				rotation);
+}
+
+void track_paint_util_right_quarter_turn_5_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, tunnelType);
+	}
+	if (direction == 0 && trackSequence == 6) {
+		paint_util_push_tunnel_right(height, tunnelType);
+	}
+	if (direction == 1 && trackSequence == 6) {
+		paint_util_push_tunnel_left(height, tunnelType);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height, tunnelType);
+	}
+}
+
+void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(sint16 height, uint8 direction, uint8 trackSequence)
+{
+	if (trackSequence != 1 && trackSequence != 4) {
+		static const uint8 supportTypes[][7] = {
+			{ 0, 0xFF, 4, 2, 0xFF, 4, 1 },
+			{ 1, 0xFF, 5, 3, 0xFF, 5, 0 },
+			{ 0, 0xFF, 2, 4, 0xFF, 2, 1 },
+			{ 1, 0xFF, 3, 5, 0xFF, 3, 0 },
+		};
+		uint8 supportType = supportTypes[direction][trackSequence];
+		wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+}
+
 const uint8 mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {3, 1, 2, 0};
 
 const rct_xy16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
