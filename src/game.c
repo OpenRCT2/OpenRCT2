@@ -310,7 +310,6 @@ void game_update()
 	scenario_autosave_check();
 
 	network_update();
-	news_item_update_current();
 	window_dispatch_update_all();
 
 	gGameCommandNestLevel = 0;
@@ -376,6 +375,7 @@ void game_logic_update()
 	research_update();
 	ride_ratings_update_all();
 	ride_measurements_update();
+	news_item_update_current();
 	///////////////////////////
 	gInUpdateCode = false;
 	///////////////////////////

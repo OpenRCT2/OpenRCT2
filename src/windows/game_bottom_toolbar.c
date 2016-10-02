@@ -269,11 +269,13 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
 	if (news_item_is_queue_empty()) {
+		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
 	} else {
 		newsItem = news_item_get(0);
+		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
@@ -320,8 +322,6 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 void window_game_bottom_toolbar_invalidate_news_item()
 {
 	if (gScreenFlags == SCREEN_FLAGS_PLAYING) {
-		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
-			news_item_is_queue_empty() ? WWT_EMPTY : WWT_IMGBTN;
 		widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
 	}
 }
