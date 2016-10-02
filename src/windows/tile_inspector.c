@@ -2052,6 +2052,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		const bool ghost = (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
 		const bool broken = (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
 		const bool last = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
+		gfx_clip_string(buffer, w->widgets[WIDX_COLUMN_TYPE].right - w->widgets[WIDX_COLUMN_TYPE].left - COL_X_TYPE);
 		gfx_draw_string(dpi, typeName, 12, x + COL_X_TYPE + 3, y); // 3px padding
 		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x + COL_X_BH, y);
 		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, 12, x + COL_X_CH, y);
