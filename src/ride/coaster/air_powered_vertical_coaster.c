@@ -33,6 +33,23 @@ enum {
 	SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE = 22229,
 	SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE = 22230,
 	SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE = 22231,
+
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SW_NE = 22334,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NW_SE = 22335,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NE_SW = 22336,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SE_NW = 22337,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SW_NE = 22338,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NW_SE = 22339,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NE_SW = 22340,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SE_NW = 22341,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE = 22342,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE = 22343,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW = 22344,
+	SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW = 22345,
+	SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE = 22346,
+	SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE = 22347,
+	SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW = 22348,
+	SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW = 22349,
 };
 
 static void air_powered_vertical_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -78,6 +95,95 @@ static void air_powered_vertical_rc_track_station(uint8 rideIndex, uint8 trackSe
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void air_powered_vertical_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+
+	if (direction == 0 || direction == 1) {
+		imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
+		{ SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
+	};
+
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+
+	if (direction == 2 || direction == 3) {
+		imageId = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	air_powered_vertical_rc_track_flat_to_right_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void air_powered_vertical_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	air_powered_vertical_rc_track_flat_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void air_powered_vertical_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4] = {
+		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW },
+		{ SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW },
+	};
+
+	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
+	if (direction == 0 || direction == 1) {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+	} else {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void air_powered_vertical_rc_track_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	air_powered_vertical_rc_track_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
 static void air_powered_vertical_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -107,6 +213,19 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackT
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return air_powered_vertical_rc_track_station;
+
+	case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+		return air_powered_vertical_rc_track_flat_to_left_bank;
+	case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+		return air_powered_vertical_rc_track_flat_to_right_bank;
+	case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+		return air_powered_vertical_rc_track_left_bank_to_flat;
+	case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+		return air_powered_vertical_rc_track_right_bank_to_flat;
+	case TRACK_ELEM_LEFT_BANK:
+		return air_powered_vertical_rc_track_left_bank;
+	case TRACK_ELEM_RIGHT_BANK:
+		return air_powered_vertical_rc_track_right_bank;
 
 	case TRACK_ELEM_BRAKES:
 		return air_powered_vertical_rc_track_brakes;
