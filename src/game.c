@@ -460,6 +460,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	flags = *ebx;
 
 	if (gGameCommandNestLevel == 0) {
+		gGameCommandErrorText = STR_NONE;
 		gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;
 	}
 	
@@ -572,7 +573,6 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740 && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
 		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
-	gGameCommandErrorText = STR_NONE;
 	return MONEY32_UNDEFINED;
 }
 
