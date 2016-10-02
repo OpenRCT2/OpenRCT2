@@ -2057,20 +2057,26 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
 	NetworkGroup* fromgroup = gNetwork.GetGroupByID(game_command_playerid);
 	if (!player) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (!gNetwork.GetGroupByID(groupid)) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (groupid == 0 && fromgroup && fromgroup->Id != 0) {
 		gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2106,6 +2112,8 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 			NetworkGroup* newgroup = gNetwork.AddGroup();
 			if (!newgroup) {
+				gGameCommandErrorTitle = STR_CANT_DO_THIS;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2114,12 +2122,14 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	case 1:{ // remove group
 		if (groupid == 0) {
 			gGameCommandErrorTitle = STR_THIS_GROUP_CANNOT_BE_MODIFIED;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 		for (auto it = gNetwork.player_list.begin(); it != gNetwork.player_list.end(); it++) {
 			if((*it)->group == groupid) {
 				gGameCommandErrorTitle = STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2134,6 +2144,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		bool allvalue = (*edx >> 1) & 1;
 		if (groupid == 0) { // cant change admin group permissions
 			gGameCommandErrorTitle = STR_THIS_GROUP_CANNOT_BE_MODIFIED;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2143,6 +2154,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			mygroup = gNetwork.GetGroupByID(player->group);
 			if (!mygroup || (mygroup && !mygroup->CanPerformAction(index))) {
 				gGameCommandErrorTitle = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2201,6 +2213,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	case 4:{ // set default group
 		if (groupid == 0) {
 			gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2221,6 +2234,7 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
 	if (player && player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_KICK_THE_HOST;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
