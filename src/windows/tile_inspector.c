@@ -358,7 +358,7 @@ static rct_widget windowTileInspectorWidgetsEntrance[] = {
 #define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
 #define FEN_GBPT (FEN_GBPB + 16 + 2 * 21)		// Fence group box properties top
 #define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
-#define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Fence group box info top
+#define FEN_GBDT (FEN_GBDB + 20 + 2 * 11)		// Fence group box info top
 static rct_widget windowTileInspectorWidgetsFence[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - FEN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_FENCE_SPINNER_HEIGHT
@@ -1841,6 +1841,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 		}
 
 		case PAGE_ENTRANCE: {
+			// Details
 			// Entrance type
 			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, 12, x, y);
@@ -1878,6 +1879,20 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 		}
 
 		case PAGE_FENCE: {
+			// Details
+			// Type
+			sint16 fenceType = mapElement->properties.fence.type;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, 12, x, y);
+
+			// Banner text
+			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
+			if (fenceEntry.flags & WALL_SCENERY_BANNER) {
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, 12, x, y + 11);
+			}
+			else {
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_BANNER_NONE, NULL, 12, x, y + 11);
+			}
+
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top;

@@ -10858,7 +10858,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if (map_element_get_direction(mapElement) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 4 <= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
@@ -10879,7 +10879,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		// TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
 		if (peep->next_z + 4 >= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
@@ -10926,7 +10926,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) {
 				continue;
 			}
 		}
@@ -10949,7 +10949,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 6 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
@@ -10995,7 +10995,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) {
 				continue;
 			}
 		}
@@ -11017,7 +11017,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 8 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
