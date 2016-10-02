@@ -443,6 +443,7 @@ static int windowTileInspectorTileY = -1;
 static int windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 
+static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w);
 static void window_tile_inspector_load_tile(rct_window* w);
 static void window_tile_inspector_insert_corrupt_element(rct_window *w);
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
@@ -559,6 +560,11 @@ void window_tile_inspector_open() {
 	window_tile_inspector_auto_set_buttons(window);
 }
 
+static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w) {
+	assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount);
+	return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+}
+
 static void window_tile_inspector_load_tile(rct_window* w) {
 	rct_map_element *element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 	int numItems = 0;
@@ -587,7 +593,7 @@ static void window_tile_inspector_insert_corrupt_element(rct_window *w) {
 	curruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
 
 	// Set the base height to be the same as the selected element
-	rct_map_element *selectedElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+	rct_map_element *const selectedElement = window_tile_inspector_get_selected_element(w);
 	curruptElement->base_height = curruptElement->clearance_height = selectedElement->base_height;
 
 	// Move the corrupt element up until the selected list item is reached
@@ -601,8 +607,7 @@ static void window_tile_inspector_insert_corrupt_element(rct_window *w) {
 
 static void window_tile_inspector_remove_element(int index) {
 	assert(index < windowTileInspectorElementCount);
-	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-	mapElement += index;
+	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + index;
 	map_element_remove(mapElement);
 	windowTileInspectorElementCount--;
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
@@ -612,8 +617,7 @@ static void window_tile_inspector_rotate_element(int index) {
 	uint8 newRotation, pathEdges, pathCorners;
 
 	assert(index < windowTileInspectorElementCount);
-	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-	mapElement += index;
+	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + index;
 	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_PATH:
 		if (footpath_element_is_sloped(mapElement)) {
@@ -772,7 +776,7 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 		trackpieceZ = z;
 
 		bool found = false;
-		mapElement = map_get_first_element_at(x / 32, y / 32);
+		mapElement = map_get_first_element_at(x >> 5, y >> 5);
 		do {
 			if (mapElement->base_height != z / 8)
 				continue;
@@ -799,7 +803,7 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 		}
 
 		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		assert(map_get_surface_element_at(x / 32, y / 32) != NULL);
+		assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL);
 
 		// Keep?
 		//invalidate_test_results(ride_index);
@@ -886,7 +890,7 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 		trackpieceZ = z;
 
 		bool found = false;
-		mapElement = map_get_first_element_at(x / 32, y / 32);
+		mapElement = map_get_first_element_at(x >> 5, y >> 5);
 		do {
 			if (mapElement->base_height != z / 8)
 				continue;
@@ -913,7 +917,7 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 		}
 
 		// track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when you decrease the map size.
-		assert(map_get_surface_element_at(x / 32, y / 32) != NULL);
+		assert(map_get_surface_element_at(x >> 5, y >> 5) != NULL);
 
 		// Keep?
 		//invalidate_test_results(ride_index);
@@ -1006,7 +1010,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 	}
 
 	// Get the selected map element
-	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	// Page widgets
 	switch (w->page) {
@@ -1294,7 +1298,7 @@ static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_
 			);
 
 			// Set current value as checked
-			rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+			rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 			dropdown_set_checked((mapElement->type & 0xC0) >> 6, true);
 			break;
 		}
@@ -1319,7 +1323,7 @@ static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int d
 	}
 
 	// Get selected element
-	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
 	case PAGE_SCENERY:
@@ -1410,6 +1414,21 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 	// Move Down button
 	widget_set_enabled(w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < windowTileInspectorElementCount - 1));
 	widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
+
+	// Page widgets
+	switch (w->page) {
+	case PAGE_FENCE: {
+		const rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
+		const uint8 fenceType = mapElement->properties.fence.type;
+		const rct_wall_scenery_entry wallEntry = get_wall_entry(fenceType)->wall;
+		const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE, canBeSloped);
+		widget_invalidate(w, WIDX_FENCE_DROPDOWN_SLOPE);
+		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE_BUTTON, canBeSloped);
+		widget_invalidate(w, WIDX_FENCE_DROPDOWN_SLOPE_BUTTON);
+		break;
+	}
+	} // switch page
 }
 
 static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y) {
@@ -1424,8 +1443,7 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex
 		w->selected_list_item = index;
 
 		// Get type of selected map element to select the correct page
-		rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
-		mapElement += index;
+		rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 		page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
 	}
 
@@ -1476,7 +1494,7 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 	// needed here, as only the mouseup and invalidate functions would be different.
 	const int detailsAnchor = w->widgets[WIDX_GROUPBOX_DETAILS].top;
 	const int propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
-	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
+	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
 	switch (w->page) {
 	case PAGE_SURFACE:
@@ -1690,7 +1708,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 		int y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 
 		// Get map element
-		rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+		rct_map_element *mapElement = window_tile_inspector_get_selected_element(w);
 		mapElement += w->selected_list_item;
 
 		switch (w->page) {
