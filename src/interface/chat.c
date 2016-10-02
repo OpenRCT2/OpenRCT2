@@ -146,13 +146,10 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	
 	// Draw current chat input
 	if (gChatOpen) {
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
-
 		safe_strcpy(lineCh, _chatCurrentLine, sizeof(_chatCurrentLine));
 		y = _chatBottom - inputLineHeight - 5;
 
-		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, 255);
+		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, COLOUR_FLAG_OUTLINE + COLOUR_WHITE);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 		
 		//TODO: Show caret if the input text have multiple lines
