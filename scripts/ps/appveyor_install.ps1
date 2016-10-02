@@ -49,3 +49,7 @@ else
     # Don't build the NSIS installer for non-uploaded builds
     ${env:NO_NSIS} = "true"
 }
+
+$env:GIT_TAG            = $env:APPVEYOR_REPO_TAG_NAME
+$env:GIT_BRANCH         = $env:APPVEYOR_REPO_BRANCH
+$env:GIT_COMMIT_SHA1    = $env:APPVEYOR_REPO_COMMIT

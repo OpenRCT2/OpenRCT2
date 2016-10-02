@@ -12,9 +12,6 @@ environment:
   OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
   BUILD_SERVER: AppVeyor
-  GIT_TAG: $(APPVEYOR_REPO_TAG_NAME)
-  GIT_BRANCH: $(APPVEYOR_REPO_BRANCH)
-  GIT_COMMIT_SHA1: $(APPVEYOR_REPO_COMMIT)
   PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
 install:
 - ps: >-
