@@ -152,6 +152,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		safe_strcpy(lineCh, _chatCurrentLine, sizeof(_chatCurrentLine));
 		y = _chatBottom - inputLineHeight - 5;
 
+		lineCh = lineBuffer;
 		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, 255);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 		
