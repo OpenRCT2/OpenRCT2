@@ -932,7 +932,7 @@ static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapEle
 	// index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
 	assert(index >= 0 && index < 4);
 
-	const int clickedDirection = (4 + index - get_current_rotation()) % 4;
+	const int clickedDirection = (index - get_current_rotation()) & 3;
 
 	// Set quadrant index
 	mapElement->type &= ~MAP_ELEMENT_QUADRANT_MASK;
@@ -940,7 +940,7 @@ static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapEle
 
 	// Update collision
 	mapElement->flags &= 0xF0;
-	mapElement->flags |= 1 << ((index + 6 - get_current_rotation()) % 4);
+	mapElement->flags |= 1 << ((index + 6 - get_current_rotation()) & 3);
 
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 }
@@ -1040,7 +1040,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		case WIDX_SURFACE_CHECK_CORNER_E:
 		case WIDX_SURFACE_CHECK_CORNER_S:
 		case WIDX_SURFACE_CHECK_CORNER_W:
-			mapElement->properties.surface.slope ^= 1 << (((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 6 - get_current_rotation()) % 4);
+			mapElement->properties.surface.slope ^= 1 << (((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
 			if (mapElement->properties.surface.slope & 0x0F) {
 				mapElement->clearance_height = mapElement->base_height + 2;
 			}
@@ -1080,7 +1080,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		case WIDX_PATH_CHECK_EDGE_W:
 		case WIDX_PATH_CHECK_EDGE_N:
 			widget_set_checkbox_value(w, widgetIndex, !widget_is_pressed(w, widgetIndex));
-			mapElement->properties.path.edges ^= (1 << (4 + (((widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2 - get_current_rotation() + 4) % 4))) & 0xF0;
+			mapElement->properties.path.edges ^= (1 << (4 + (((widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2 - get_current_rotation()) & 3))) & 0xF0;
 			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 			break;
 		case WIDX_PATH_CHECK_EDGE_NE:
@@ -1088,7 +1088,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		case WIDX_PATH_CHECK_EDGE_SW:
 		case WIDX_PATH_CHECK_EDGE_NW:
 			widget_set_checkbox_value(w, widgetIndex, !widget_is_pressed(w, widgetIndex));
-			mapElement->properties.path.edges ^= (1 << (((widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2 - get_current_rotation() + 4) % 4)) & 0x0F;
+			mapElement->properties.path.edges ^= (1 << (((widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2 - get_current_rotation()) & 3)) & 0x0F;
 			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 			break;
 		} // switch widget index
@@ -1161,7 +1161,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		case WIDX_SCENERY_CHECK_COLLISION_E:
 		case WIDX_SCENERY_CHECK_COLLISION_S:
 		case WIDX_SCENERY_CHECK_COLLISION_W:
-			mapElement->flags ^= 1 << (((widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N) + 6 - get_current_rotation()) % 4);
+			mapElement->flags ^= 1 << (((widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N) + 2 - get_current_rotation()) & 3);
 			window_invalidate(w);
 			break;
 		} // switch widget index
@@ -1518,10 +1518,10 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_SURFACE_CHECK_CORNER_W].bottom = w->widgets[WIDX_SURFACE_CHECK_CORNER_W].top + 13;
 		w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top = GBBT(propertiesAnchor, 3) + 7 * 1;
 		w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
-		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_N, mapElement->properties.surface.slope & (1 << ((4 + 2 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_E, mapElement->properties.surface.slope & (1 << ((4 + 3 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_S, mapElement->properties.surface.slope & (1 << ((4 + 0 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_W, mapElement->properties.surface.slope & (1 << ((4 + 1 - get_current_rotation()) % 4)));
+		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_N, mapElement->properties.surface.slope & (1 << ((2 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_E, mapElement->properties.surface.slope & (1 << ((3 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_S, mapElement->properties.surface.slope & (1 << ((0 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_W, mapElement->properties.surface.slope & (1 << ((1 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_DIAGONAL, mapElement->properties.surface.slope & 0x10);
 		break;
 	case PAGE_PATH:
@@ -1547,14 +1547,14 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_PATH_CHECK_EDGE_W].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
 		w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 1) + 7 * 1;
 		w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NE, mapElement->properties.path.edges & (1 << ((0 + 4 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SE, mapElement->properties.path.edges & (1 << ((1 + 4 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SW, mapElement->properties.path.edges & (1 << ((2 + 4 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NW, mapElement->properties.path.edges & (1 << ((3 + 4 - get_current_rotation()) % 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_E, mapElement->properties.path.edges & (1 << ((0 + 4 - get_current_rotation()) % 4 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_S, mapElement->properties.path.edges & (1 << ((1 + 4 - get_current_rotation()) % 4 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_W, mapElement->properties.path.edges & (1 << ((2 + 4 - get_current_rotation()) % 4 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & (1 << ((3 + 4 - get_current_rotation()) % 4 + 4)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NE, mapElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SE, mapElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SW, mapElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NW, mapElement->properties.path.edges & (1 << ((3 - get_current_rotation()) & 3)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_E, mapElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3 + 4)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_S, mapElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3 + 4)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_W, mapElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3 + 4)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & (1 << ((3 - get_current_rotation()) & 3 + 4)));
 		break;
 	case PAGE_TRACK:
 		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
@@ -1589,10 +1589,10 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 1;
 		w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].bottom = w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].top + 13;
 		// This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3 inclusive
-		bool N = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((0 + 4 - get_current_rotation()) % 4) << 6;
-		bool E = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((1 + 4 - get_current_rotation()) % 4) << 6;
-		bool S = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((2 + 4 - get_current_rotation()) % 4) << 6;
-		bool W = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((3 + 4 - get_current_rotation()) % 4) << 6;
+		bool N = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((0 - get_current_rotation()) & 3) << 6;
+		bool E = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((1 - get_current_rotation()) & 3) << 6;
+		bool S = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((2 - get_current_rotation()) & 3) << 6;
+		bool W = (mapElement->type & MAP_ELEMENT_QUADRANT_MASK) == ((3 - get_current_rotation()) & 3) << 6;
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_N, N);
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_E, E);
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_S, S);
@@ -1607,10 +1607,10 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].top + 13;
 		w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
 		w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top + 13;
-		N = mapElement->flags & (1 << ((2 + 4 - get_current_rotation()) % 4));
-		E = mapElement->flags & (1 << ((3 + 4 - get_current_rotation()) % 4));
-		S = mapElement->flags & (1 << ((0 + 4 - get_current_rotation()) % 4));
-		W = mapElement->flags & (1 << ((1 + 4 - get_current_rotation()) % 4));
+		N = mapElement->flags & (1 << ((2 - get_current_rotation()) & 3));
+		E = mapElement->flags & (1 << ((3 - get_current_rotation()) & 3));
+		S = mapElement->flags & (1 << ((0 - get_current_rotation()) & 3));
+		W = mapElement->flags & (1 << ((1 - get_current_rotation()) & 3));
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_N, N);
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_E, E);
 		widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_S, S);
