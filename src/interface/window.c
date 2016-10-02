@@ -1794,20 +1794,14 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 	w->max_height = maxHeight;
 
 	// Clamp width and height to minimum and maximum
-	if (w->width < minWidth) {
-		w->width = minWidth;
+	int width = clamp(minWidth, w->width, maxWidth);
+	int height = clamp(minHeight, w->height, maxHeight);
+
+	// Resize window if size has changed
+	if (w->width != width || w->height != height) {
 		window_invalidate(w);
-	}
-	if (w->height < minHeight) {
-		w->height = minHeight;
-		window_invalidate(w);
-	}
-	if (w->width > maxWidth) {
-		w->width = maxWidth;
-		window_invalidate(w);
-	}
-	if (w->height > maxHeight) {
-		w->height = maxHeight;
+		w->width = width;
+		w->height = height;
 		window_invalidate(w);
 	}
 }
