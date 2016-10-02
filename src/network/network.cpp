@@ -755,29 +755,32 @@ void Network::LoadGroups()
 	strcat(path, "groups.json");
 
 	json_t * json = nullptr;
-	try {
-		json = Json::ReadFromFile(path);
-	} catch (const Exception& e) {
-		log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
-		// Hardcoded permission groups
+	if (platform_file_exists(path)) {
+		try {
+			json = Json::ReadFromFile(path);
+		} catch (const Exception &e) {
+			log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
+		}
+	}
+
+	if (json == nullptr) {
 		SetupDefaultGroups();
-		return;
-	}
+	} else {
+		json_t * json_groups = json_object_get(json, "groups");
+		size_t groupCount = (size_t)json_array_size(json_groups);
+		for (size_t i = 0; i < groupCount; i++) {
+			json_t * jsonGroup = json_array_get(json_groups, i);
 
-	json_t * json_groups = json_object_get(json, "groups");
-	size_t groupCount = (size_t)json_array_size(json_groups);
-	for (size_t i = 0; i < groupCount; i++) {
-		json_t * jsonGroup = json_array_get(json_groups, i);
-
-		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
-		group_list.push_back(std::move(newgroup));
+			std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
+			group_list.push_back(std::move(newgroup));
+		}
+		json_t * jsonDefaultGroup = json_object_get(json, "default_group");
+		default_group = (uint8)json_integer_value(jsonDefaultGroup);
+		if (GetGroupByID(default_group) == nullptr) {
+			default_group = 0;
+		}
+		json_decref(json);
 	}
-	json_t * jsonDefaultGroup = json_object_get(json, "default_group");
-	default_group = (uint8)json_integer_value(jsonDefaultGroup);
-	if (GetGroupByID(default_group) == nullptr) {
-		default_group = 0;
-	}
-	json_decref(json);
 }
 
 void Network::BeginChatLog()
