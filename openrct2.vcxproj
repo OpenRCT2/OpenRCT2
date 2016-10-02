@@ -260,7 +260,7 @@
     <ClCompile Include="src\ride\water\river_rapids.c" />
     <ClCompile Include="src\ride\water\splash_boats.c" />
     <ClCompile Include="src\ride\water\submarine_ride.c" />
-    <ClCompile Include="src\ride\water\water_coaster.c" />
+    <ClCompile Include="src\ride\coaster\water_coaster.c" />
     <ClCompile Include="src\scenario.c" />
     <ClCompile Include="src\scenario_list.c" />
     <ClCompile Include="src\windows\changelog.c" />
