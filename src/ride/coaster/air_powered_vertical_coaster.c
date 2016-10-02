@@ -31,6 +31,8 @@ enum {
 	SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
 	SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE = 22228,
 	SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE = 22229,
+	SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE = 22230,
+	SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE = 22231,
 };
 
 static void air_powered_vertical_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -76,6 +78,26 @@ static void air_powered_vertical_rc_track_station(uint8 rideIndex, uint8 trackSe
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void air_powered_vertical_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4] = {
+		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE },
+		{ SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE },
+	};
+
+	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackType, int direction)
 {
 	switch (trackType) {
@@ -85,6 +107,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackT
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return air_powered_vertical_rc_track_station;
+
+	case TRACK_ELEM_BRAKES:
+		return air_powered_vertical_rc_track_brakes;
 	}
 	return NULL;
 }
