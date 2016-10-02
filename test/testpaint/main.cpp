@@ -333,7 +333,7 @@ static bool openrct2_setup_rct2_segment()
 	return true;
 }
 
-void PrintRideTypes()
+static void PrintRideTypes()
 {
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
 		CLIColour colour = CLIColour::DEFAULT;
