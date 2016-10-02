@@ -3572,6 +3572,8 @@ enum {
 	STR_COMMA16 = 5919,
 	STR_RENDER_WEATHER_EFFECTS = 5920,
 	STR_RENDER_WEATHER_EFFECTS_TIP = 5921,
+	STR_MAX_VEHICLES_TIP = 5922,
+	STR_MAX_CARS_PER_TRAIN_TIP = 5923,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

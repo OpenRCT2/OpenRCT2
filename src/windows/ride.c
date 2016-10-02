@@ -246,10 +246,10 @@ static rct_widget window_ride_vehicle_widgets[] = {
 	{ WWT_DROPDOWN,			1,	7,		308,	50,		61,		0xFFFFFFFF,									STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	51,		60,		STR_DROPDOWN_GLYPH,							STR_NONE										},
 	{ WWT_SCROLL,			1,	7,		308,	141,	183,	0,											STR_NONE										},
-	{ WWT_SPINNER,			1,	7,		151,	190,	201,	STR_RIDE_VEHICLE_COUNT,						STR_NONE										},
+	{ WWT_SPINNER,			1,	7,		151,	190,	201,	STR_RIDE_VEHICLE_COUNT,						STR_MAX_VEHICLES_TIP							},
 	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	191,	195,	STR_NUMERIC_UP,								STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	196,	200,	STR_NUMERIC_DOWN,							STR_NONE										},
-	{ WWT_SPINNER,			1,	164,	308,	190,	201,	STR_1_CAR_PER_TRAIN,						STR_NONE										},
+	{ WWT_SPINNER,			1,	164,	308,	190,	201,	STR_1_CAR_PER_TRAIN,						STR_MAX_CARS_PER_TRAIN_TIP										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	195,	STR_NUMERIC_UP,								STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	196,	200,	STR_NUMERIC_DOWN,							STR_NONE										},
 
@@ -2878,7 +2878,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	}
 
 	// Trains
-	if (rideEntry->cars_per_flat_ride > 1) {
+	if (rideEntry->cars_per_flat_ride > 1 || gCheatsDisableTrainLengthLimit) {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_SPINNER;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WWT_DROPDOWN_BUTTON;
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DECREASE].type = WWT_DROPDOWN_BUTTON;
@@ -2909,6 +2909,22 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	}
 	set_format_arg(8, rct_string_id, stringId);
 	set_format_arg(10, uint16, ride->num_vehicles);
+
+	stringId = RideComponentNames[vehicleType].count;
+	if (ride->max_trains > 1) {
+		stringId = RideComponentNames[vehicleType].count_plural;
+	}
+	set_format_arg(12, rct_string_id, stringId);
+	set_format_arg(14, uint16, ride->max_trains);
+
+	set_format_arg(16, uint16, max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
+
+	stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
+	if ((ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars > 1) {
+		stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
+	}
+
+	set_format_arg(18, rct_string_id, stringId);
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
