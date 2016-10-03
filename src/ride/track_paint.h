@@ -238,6 +238,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 h
 void track_paint_util_right_quarter_turn_3_tiles_paint_2(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
 void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset);
 void track_paint_util_right_quarter_turn_3_tiles_paint_3(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
+void track_paint_util_right_quarter_turn_3_tiles_paint_4(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3]);
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType);
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
 void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation, sint32 heightOffset);
@@ -257,6 +258,7 @@ typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int d
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);

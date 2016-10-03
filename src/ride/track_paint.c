@@ -1222,6 +1222,22 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(sint16 height, int dire
 	sub_98197C(spriteBB->sprite_id | colourFlags, (sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y, spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z, spriteBB->offset.z + height, spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z, rotation);
 }
 
+void track_paint_util_right_quarter_turn_3_tiles_paint_4(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[4][3])
+{
+	sint8 sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+	if (sprite < 0) {
+		return;
+	}
+
+	const sprite_bb *spriteBB = &sprites[direction][sprite];
+	uint32 imageId = spriteBB->sprite_id | colourFlags;
+	sub_98196C(imageId,
+				(sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y,
+				spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z,
+				height + spriteBB->offset.z,
+				rotation);
+}
+
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType)
 {
 	if (direction == 0 && trackSequence == 0) {
