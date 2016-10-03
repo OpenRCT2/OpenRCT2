@@ -102,9 +102,6 @@ enum {
 	PATH_SEARCH_FAILED
 };
 
-// Some text descriptions corresponding to the above enum for understandable debug messages
-const char *gPathFindSearchText[] = {"DeadEnd", "Wide", "Thin", "Junction", "RideQueue", "RideEntrance", "RideExit", "ParkEntryExit", "ShopEntrance", "LimitReached", "PathLoop", "Other", "Failed"};
-
 enum {
 	F1EE18_DESTINATION_REACHED	= 1 << 0,
 	F1EE18_OUTSIDE_PARK			= 1 << 1,
