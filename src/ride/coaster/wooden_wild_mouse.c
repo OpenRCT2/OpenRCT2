@@ -31,27 +31,61 @@ enum {
 	SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE = 28536,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_SW_NE = 28537,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_SW_NE = 28538,
-
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE = 28539,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE = 28540,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_NE_SW = 28541,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_NE_SW = 28542,
-
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_NE_SW = 28543,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NE_SW = 28544,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_NE_SW = 28545,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_FRONT_NE_SW = 28546,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE = 28547,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_SW_NE = 28548,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_NW_SE = 28549,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_NW_SE = 28550,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_SE_NW = 28551,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_SE_NW = 28552,
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE = 28553,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE = 28554,
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW = 28555,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_SE_NW = 28556,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW = 28557,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_SE_NW = 28558,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE = 28559,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_FRONT_NW_SE = 28560,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_NE_SW = 28561,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_NE_SW = 28562,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE = 28563,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_NW_SE = 28564,
 
 	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SW_NE = 28577,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SW_NE = 28578,
-
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE = 28579,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE = 28580,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NE_SW = 28581,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NE_SW = 28582,
-
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NE_SW = 28583,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NE_SW = 28584,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NE_SW = 28585,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_FRONT_NE_SW = 28586,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE = 28587,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_SW_NE = 28588,
 	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NW_SE = 28589,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NW_SE = 28590,
-
+	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SE_NW = 28591,
 	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SE_NW = 28592,
-
-	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SE_NW = 28620,
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NW_SE = 28593,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NW_SE = 28594,
+	SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW = 28595,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SE_NW = 28596,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW = 28597,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_SE_NW = 28598,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NW_SE = 28599,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_FRONT_NW_SE = 28600,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NE_SW = 28601,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_NE_SW = 28602,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NW_SE = 28603,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_NW_SE = 28604,
 };
 
 static void wooden_wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -160,6 +194,184 @@ static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
+static void wooden_wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+
+	wooden_a_supports_paint_setup(direction & 1, 1 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
+static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4][2] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE, 0 },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE, SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_NE_SW, SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_SE_NW, 0 },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE, 0 },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NW_SE, SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NE_SW, SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SE_NW, 0 },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId;
+	if (direction == 0 || direction == 3) {
+		imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+	} else {
+		imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+		imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 72, 0x20);
+}
+
+static void wooden_wild_mouse_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4][2] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_SW_NE, 0 },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_NW_SE, SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_FRONT_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_NE_SW, SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_FRONT_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_SE_NW, 0 },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_SW_NE, 0 },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_NW_SE, SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_FRONT_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_NE_SW, SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_FRONT_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_UP_TO_25_DEG_CHAIN_SE_NW, 0 },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId;
+	if (direction == 0 || direction == 3) {
+		imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+	} else {
+		imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+		imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
+		sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 72, 0x20);
+}
+
+static void wooden_wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+
+	wooden_a_supports_paint_setup(direction & 1, 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+static void wooden_wild_mouse_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_wild_mouse_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction)
 {
 	switch (trackType) {
@@ -173,6 +385,26 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, i
 		return wooden_wild_mouse_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
 		return wooden_wild_mouse_track_60_deg_up;
+	case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+		return wooden_wild_mouse_track_flat_to_25_deg_up;
+	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+		return wooden_wild_mouse_track_25_deg_up_to_60_deg_up;
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+		return wooden_wild_mouse_track_60_deg_up_to_25_deg_up;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+		return wooden_wild_mouse_track_25_deg_up_to_flat;
+	case TRACK_ELEM_25_DEG_DOWN:
+		return wooden_wild_mouse_track_25_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN:
+		return wooden_wild_mouse_track_60_deg_down;
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+		return wooden_wild_mouse_track_flat_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+		return wooden_wild_mouse_track_25_deg_down_to_60_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+		return wooden_wild_mouse_track_60_deg_down_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+		return wooden_wild_mouse_track_25_deg_down_to_flat;
 	}
 	return NULL;
 }
