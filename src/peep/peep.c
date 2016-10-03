@@ -2272,7 +2272,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	}
 
 	uint8 car_array_size = 0xFF;
-	uint8 car_array[12];
+	uint8 car_array[255];
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
 		if (ride->num_riders >= ride->operation_option)
