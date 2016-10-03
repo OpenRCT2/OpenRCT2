@@ -8615,12 +8615,12 @@ const uint8* ride_seek_available_modes(rct_ride *ride)
 }
 
 // Gets the approximate value of customers per hour for this ride. Multiplies ride_customers_in_last_5_minutes() by 12.
-const uint32 ride_customers_per_hour(const rct_ride *ride) {
+uint32 ride_customers_per_hour(const rct_ride *ride) {
 	return ride_customers_in_last_5_minutes(ride) * 12;
 }
 
 // Calculates the number of customers for this ride in the last 5 minutes (or more correctly 9600 game ticks)
-const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
+uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	uint32 sum = ride->num_customers[0]
 	             + ride->num_customers[1]
 	             + ride->num_customers[2]
