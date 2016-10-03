@@ -192,10 +192,6 @@ bool rct2_init()
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 
-	if (!gOpenRCT2Headless) {
-		title_load();
-	}
-
 	log_verbose("initialising game finished");
 	return true;
 }

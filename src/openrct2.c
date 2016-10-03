@@ -283,13 +283,16 @@ void openrct2_launch()
 		switch (gOpenRCT2StartupAction) {
 		case STARTUP_ACTION_INTRO:
 			gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+			title_load();
 			break;
 		case STARTUP_ACTION_TITLE:
-			gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+			title_load();
 			break;
 		case STARTUP_ACTION_OPEN:
 			assert(gOpenRCT2StartupActionPath != NULL);
 			if (!rct2_open_file(gOpenRCT2StartupActionPath)) {
+				fprintf(stderr, "Failed to load '%s'", gOpenRCT2StartupActionPath);
+				title_load();
 				break;
 			}
 
@@ -315,7 +318,9 @@ void openrct2_launch()
 			if (strlen(gOpenRCT2StartupActionPath) == 0) {
 				editor_load();
 			} else {
-				editor_load_landscape(gOpenRCT2StartupActionPath);
+				if (!editor_load_landscape(gOpenRCT2StartupActionPath)) {
+					title_load();
+				}
 			}
 			break;
 		}
