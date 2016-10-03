@@ -84,8 +84,7 @@ void editor_load()
 {
 	rct_window *mainWindow;
 
-	audio_pause_sounds();
-	audio_unpause_sounds();
+	audio_stop_all_music_and_sounds();
 	object_manager_unload_all_objects();
 	object_list_load();
 	map_init(150);
@@ -168,6 +167,7 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
+	audio_stop_all_music_and_sounds();
 	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
 	gScreenAge = 0;
 
@@ -207,6 +207,7 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
+	audio_stop_all_music_and_sounds();
 	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
 	gScreenAge = 0;
 

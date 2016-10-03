@@ -289,7 +289,6 @@ void game_update()
 	// Update the game one or more times
 	for (i = 0; i < numUpdates; i++) {
 		game_logic_update();
-		audio_start_title_music();
 
 		if (gGameSpeed > 1)
 			continue;
@@ -853,6 +852,7 @@ void game_load_init()
 	rct_window *mainWindow;
 
 	gScreenFlags = SCREEN_FLAGS_PLAYING;
+	audio_stop_all_music_and_sounds();
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();

@@ -125,15 +125,14 @@ void title_load()
 	window_staff_list_init_vars();
 	map_update_tile_pointers();
 	reset_sprite_spatial_index();
-	audio_stop_ride_music();
-	audio_stop_crowd_sound();
-	//stop_other_sounds();
+	audio_stop_all_music_and_sounds();
 	viewport_init_all();
 	news_item_init_queue();
 	window_main_open();
 	title_create_windows();
 	title_init_showcase();
 	gfx_invalidate_screen();
+	audio_start_title_music();
 	gScreenAge = 0;
 
 	if (gOpenRCT2ShowChangelog) {
@@ -529,7 +528,6 @@ void title_update()
 		for (i = 0; i < numUpdates; i++) {
 			game_logic_update();
 		}
-		audio_start_title_music();
 	}
 
 	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;

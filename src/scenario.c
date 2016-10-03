@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "audio/audio.h"
 #include "cheats.h"
 #include "config.h"
 #include "game.h"
@@ -150,7 +151,10 @@ void scenario_begin()
 {
 	rct_window *mainWindow;
 
+	audio_stop_title_music();
+
 	gScreenFlags = SCREEN_FLAGS_PLAYING;
+	audio_stop_all_music_and_sounds();
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();

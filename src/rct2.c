@@ -151,11 +151,6 @@ bool rct2_init()
 
 	gScenarioTicks = 0;
 	util_srand((unsigned int)time(0));
-	if (!rct2_init_directories())
-		return false;
-
-	if (!rct2_startup_checks())
-		return false;
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();

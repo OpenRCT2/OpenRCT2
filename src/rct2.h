@@ -288,6 +288,8 @@ extern char gRCT2AddressObjectDataPath[];
 extern char gRCT2AddressTracksPath[];
 
 bool rct2_init();
+int rct2_init_directories();
+int rct2_startup_checks();
 void rct2_dispose();
 void rct2_update();
 void substitute_path(char *dest, const char *path, const char *filename);
