@@ -142,4 +142,6 @@ typedef struct registers {
 assert_struct_size(registers, 7 * 4);
 #pragma pack(pop)
 
+#define UNUSED(x) ((void)(x))
+
 #endif
