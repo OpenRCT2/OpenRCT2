@@ -400,6 +400,41 @@ extern "C"
         return result;
     }
 
+    bool game_load_sv6_path(const char * path)
+    {
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->FixIssues = true;
+            s6Importer->LoadSavedGame(path);
+            s6Importer->Import();
+
+            openrct2_reset_object_tween_locations();
+            result = true;
+        }
+        catch (ObjectLoadException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (IOException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (Exception)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        }
+        delete s6Importer;
+
+        gScreenAge = 0;
+        gLastAutoSaveTick = SDL_GetTicks();
+        return result;
+    }
+
     /**
      *
      *  rct2: 0x00676053
