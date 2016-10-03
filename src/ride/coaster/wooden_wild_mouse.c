@@ -29,6 +29,29 @@
 enum {
 	SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE = 28535,
 	SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE = 28536,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_SW_NE = 28537,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_SW_NE = 28538,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_NE_SW = 28541,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_NE_SW = 28542,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_NW_SE = 28549,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_NW_SE = 28550,
+	SPR_WOODEN_WILD_MOUSE_25_DEG_SE_NW = 28551,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_SE_NW = 28552,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SW_NE = 28577,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SW_NE = 28578,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NE_SW = 28581,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NE_SW = 28582,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NW_SE = 28589,
+	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NW_SE = 28590,
+
+	SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SE_NW = 28592,
+
+	SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SE_NW = 28620,
 };
 
 static void wooden_wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -67,6 +90,76 @@ static void wooden_wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void wooden_wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_SE_NW },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_25_DEG_CHAIN_SE_NW },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+
+	wooden_a_supports_paint_setup(direction & 1, 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4] = {
+		{
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_SE_NW },
+		},
+		{
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SW_NE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NW_SE },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_NE_SW },
+			{ SPR_WOODEN_WILD_MOUSE_60_DEG_CHAIN_SE_NW },
+		},
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
+	if (direction == 0 || direction == 3) {
+		sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+	} else {
+		sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
+	}
+
+	wooden_a_supports_paint_setup(direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 104, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction)
 {
 	switch (trackType) {
@@ -76,6 +169,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, i
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return wooden_wild_mouse_track_station;
+	case TRACK_ELEM_25_DEG_UP:
+		return wooden_wild_mouse_track_25_deg_up;
+	case TRACK_ELEM_60_DEG_UP:
+		return wooden_wild_mouse_track_60_deg_up;
 	}
 	return NULL;
 }
