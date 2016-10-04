@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
 
-def platformVersion = 16
-
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "org.openrct2.android"
@@ -13,8 +11,8 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments "-DTARGET_PLATFORM_VERSION=${platformVersion}"
                 abiFilters 'armeabi-v7a'
+                targets 'openrct2'
             }
         }
     }
@@ -64,11 +62,10 @@ def downloadLibrarySources(name, url, md5, archiveRoot) {
 }
 
 task downloadLibraries {
-    downloadLibrarySources('sdl','http://hg.libsdl.org/SDL/archive/6ad89111cb4f.tar.gz' ,'550e74892c81ec705c5ac44542bc96bb','SDL-6ad89111cb4f')
+   // downloadLibrarySources('sdl','http://hg.libsdl.org/SDL/archive/6ad89111cb4f.tar.gz' ,'550e74892c81ec705c5ac44542bc96bb','SDL-6ad89111cb4f')
     downloadLibrarySources('sdl-ttf','http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz' ,'34c5fdc8508c7e14356579477f9ca2b0d6c06ffc','SDL2_ttf-2.0.14')
     downloadLibrarySources('freetype','http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.gz','8b0c80b64042b7c39b9fa9debe6305c3','freetype-2.6.3')
     downloadLibrarySources('speexdsp','https://github.com/xiph/speexdsp/archive/SpeexDSP-1.2rc3.tar.gz','ef6d9b7f74f038e3e8a4840255b968e19728cd3c','speexdsp-SpeexDSP-1.2rc3')
-    downloadLibrarySources('png', 'http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.gz?download', 'a49e4cc48d968c79def53d082809c9f2', 'libpng-1.6.23')
     downloadLibrarySources('jansson', 'https://github.com/akheron/jansson/archive/v2.7.tar.gz', '0f0f818af0bfa5e07c4ddcc7a4e0ded9c4e62caf', 'jansson-2.7')
 
     dependsOn {
@@ -76,42 +73,9 @@ task downloadLibraries {
     }
 }
 
-
 dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'com.android.support:appcompat-v7:24.0.0'
-}
-
-task createSegmentFile() {
-    ext.srcFile = file('../../../openrct2.exe')
-    ext.destFile = new File(buildDir, "openrct2_load")
-    inputs.file srcFile
-    outputs.file destFile
-
-    doLast {
-        delete(destFile)
-        exec {
-            executable "dd"
-            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1", "count=1187"
-        }
-        exec {
-            executable "dd"
-            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1188", "seek=1187", "count=318"
-        }
-        exec {
-            executable "dd"
-            args "if=/dev/zero", "of=${destFile}", "bs=4096", "seek=1505", "count=2630", "conv=notrunc"
-        }
-        exec {
-            executable "dd"
-            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1506", "seek=4135", "count=1", "conv=notrunc"
-        }
-    }
-}
-
-task copySegmentFile(type: Copy) {
-    from createSegmentFile
-    into 'src/main/assets'
 }
 
 task copyLanguageAssets(type: Copy) {
@@ -121,10 +85,8 @@ task copyLanguageAssets(type: Copy) {
 
 project.afterEvaluate {
     mergeDebugAssets.dependsOn copyLanguageAssets
-    mergeDebugAssets.dependsOn copySegmentFile
 
     mergeReleaseAssets.dependsOn copyLanguageAssets
-    mergeReleaseAssets.dependsOn copySegmentFile
 }
 
 project.afterEvaluate {

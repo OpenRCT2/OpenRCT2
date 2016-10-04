@@ -61,10 +61,8 @@ void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *f
 	int chars = printf(buf, "[%s:%d (%s)]: ", file, line, function);
 
 	va_start(args, format);
-	vsnprintf(buf, 1024 - chars, format, args);
+	__android_log_vprint(_android_log_priority[diagnosticLevel], file, format, args);
 	va_end(args);
-
-	__android_log_print(_android_log_priority[diagnosticLevel], file, buf);
 }
 
 #else

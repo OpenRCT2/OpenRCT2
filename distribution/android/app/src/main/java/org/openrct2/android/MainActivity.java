@@ -44,7 +44,6 @@ public class MainActivity extends SDLActivity {
 
         File dataDir = new File("/sdcard/openrct2/");
         try {
-            copyAsset(getAssets(), "openrct2_load", dataDir, "openrct2_load");
             copyAsset(getAssets(), "data", dataDir, "");
         } catch (IOException e) {
             Log.e(TAG, "Error extracting files", e);
@@ -91,7 +90,6 @@ public class MainActivity extends SDLActivity {
         return new String[]{
                 "speexdsp",
                 "jansson",
-                "png16d",
 
                 "SDL2-2.0",
 

@@ -95,13 +95,14 @@ matrix:
           android:
             components:
               - tools # to get the new `repository-11.xml`
-              - tools # to install Android SDK tools 25.1.x (x = 7 right now)
+              - tools # to install latest Android SDK tools (currently at 25.2.2)
               - platform-tools
-              - build-tools-24.0.0
-              - android-23
+              - build-tools-24.0.3
+              - android-24
               - extra-android-m2repository
           jdk: oraclejdk8
           before_script:
+            # Dependencies in https://dl.google.com/android/repository/repository2-1.xml
             # Install the NDK.
             - pushd ~
             - wget http://dl.google.com/android/repository/android-ndk-r12b-linux-x86_64.zip
@@ -113,8 +114,8 @@ matrix:
             - pushd "$ANDROID_HOME"
             - mkdir cmake
             - cd cmake
-            - wget https://dl.google.com/android/repository/cmake-3.4.2909474-linux-x86_64.zip
-            - unzip -qo cmake-3.4.2909474-linux-x86_64.zip
+            - wget https://dl.google.com/android/repository/cmake-3.6.3155560-linux-x86_64.zip
+            - unzip -qo cmake-3.6.3155560-linux-x86_64.zip
             - popd
 
             - 'cd distribution/android'

@@ -78,11 +78,41 @@ add_library(SDL2_ttf SHARED ${SDL2_ttf_LIB_SRCS})
 target_link_libraries(SDL2_ttf SDL2 freetype)
 
 # png
-set(PNG_STATIC OFF)
-set(PNG_TESTS OFF)
-add_subdirectory(${lib_src_DIR}/png ${lib_build_DIR}/png)
-include_directories("${lib_src_DIR}/png")
-include_directories("${lib_build_DIR}/png") # Generated config file
+include(ExternalProject)
+ExternalProject_Add(png_ext
+    PREFIX "${CMAKE_BINARY_DIR}/png"
+    URL ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.25.tar.gz
+
+    CMAKE_CACHE_ARGS
+      -DCMAKE_MAKE_PROGRAM:STRING=${CMAKE_MAKE_PROGRAM}
+      -DANDROID_ABI:STRING=${ANDROID_ABI}
+      -DANDROID_NDK:PATH=${ANDROID_NDK}
+      -DANDROID_NATIVE_API_LEVEL:STRING=${ANDROID_NATIVE_API_LEVEL}
+      -DANDROID_TOOLCHAIN:STRING=gcc
+      -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE}
+      -DCMAKE_BUILD_TYPE:STRING=Release
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/contrib
+      -DPNG_SHARED:BOOL=OFF
+      -DPNG_STATIC:BOOL=ON
+      -DPNG_TESTS:BOOL=OFF
+
+    BUILD_BYPRODUCTS
+        ${CMAKE_BINARY_DIR}/contrib/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png${CMAKE_STATIC_LIBRARY_SUFFIX}
+
+    LOG_DOWNLOAD 1
+    LOG_UPDATE 1
+    LOG_CONFIGURE 1
+    LOG_BUILD 1
+    LOG_TEST 1
+    LOG_INSTALL 1
+)
+
+add_library(png STATIC IMPORTED)
+set_target_properties(png PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/contrib/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(png png_ext)
+include_directories("${CMAKE_BINARY_DIR}/contrib/include")
 
 # speexdsp
 set(SPEEXDSP_ROOT "${lib_src_DIR}/speexdsp")
@@ -101,7 +131,7 @@ include_directories(${lib_src_DIR}/jansson/src)
 # now build app's shared lib
 include_directories(./ndk_helper
                     ${ANDROID_NDK}/sources/android/cpufeatures)
-add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS)
+add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_RCT2)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fPIC")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -fexceptions -fno-rtti -Wno-unknown-pragmas -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing -fexceptions -fPIC")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)

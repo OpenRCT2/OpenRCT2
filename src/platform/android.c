@@ -17,6 +17,8 @@
 #ifdef __ANDROID__
 
 #include "platform.h"
+#include "../config.h"
+#include "../localisation/language.h"
 #include <wchar.h>
 #include <jni.h>
 
@@ -74,11 +76,16 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
     strcpy(out, "/sdcard/openrct2");
 }
 
-uint8 platform_get_locale_currency(){
+
+uint16 platform_get_locale_language() {
+    return LANGUAGE_ENGLISH_UK;
+}
+
+uint8 platform_get_locale_currency() {
 	return platform_get_currency_value(NULL);
 }
 
-uint8 platform_get_locale_measurement_format(){
+uint8 platform_get_locale_measurement_format() {
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
