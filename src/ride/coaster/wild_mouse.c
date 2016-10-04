@@ -119,6 +119,10 @@ enum {
 	SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_SE_NW = 16991,
 	SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_FRONT_NW_SE = 16992,
 	SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_FRONT_NE_SW = 16993,
+	SPR_WILD_MOUSE_QUARTER_TURN_1_SW_NE = 16994,
+	SPR_WILD_MOUSE_QUARTER_TURN_1_NW_SE = 16995,
+	SPR_WILD_MOUSE_QUARTER_TURN_1_NE_SW = 16996,
+	SPR_WILD_MOUSE_QUARTER_TURN_1_SE_NW = 16997,
 };
 
 static const uint32 _wild_mouse_brakes_image_ids[4] = {
@@ -385,6 +389,42 @@ static void wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSeq
 	wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4] = {
+		SPR_WILD_MOUSE_QUARTER_TURN_1_SW_NE,
+		SPR_WILD_MOUSE_QUARTER_TURN_1_NW_SE,
+		SPR_WILD_MOUSE_QUARTER_TURN_1_NE_SW,
+		SPR_WILD_MOUSE_QUARTER_TURN_1_SE_NW,
+	};
+	static uint8 supportType[] = { 5, 2, 3, 4 };
+
+	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
+	switch (direction) {
+	case 0:
+		sub_98197C(imageId, 0, 0, 26, 24, 2, height, 6, 2, height, get_current_rotation());
+		break;
+	case 1:
+		sub_98196C(imageId, 0, 0, 26, 26, 2, height, get_current_rotation());
+		break;
+	case 2:
+		sub_98197C(imageId, 0, 0, 24, 26, 2, height, 2, 6, height, get_current_rotation());
+		break;
+	case 3:
+		sub_98197C(imageId, 0, 0, 24, 24, 2, height, 6, 6, height, get_current_rotation());
+		break;
+	}
+	metal_a_supports_paint_setup(0, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
+	track_paint_util_left_quarter_turn_1_tile_tunnel(height, direction, trackSequence);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wild_mouse_track_right_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_left_quarter_turn_1(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+}
+
 static void wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -547,6 +587,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int dire
 		return wild_mouse_track_60_deg_down_to_25_deg_down;
 	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
 		return wild_mouse_track_25_deg_down_to_flat;
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+		return wild_mouse_track_left_quarter_turn_1;
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+		return wild_mouse_track_right_quarter_turn_1;
 	case TRACK_ELEM_FLAT_TO_60_DEG_UP:
 		return wild_mouse_track_flat_to_60_deg_up;
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
