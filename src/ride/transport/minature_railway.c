@@ -627,6 +627,37 @@ const rct_xy16 minature_railway_right_quarter_turn_5_tiles_offsets[4][5] = {
 	}
 };
 
+const rct_xyz16 minature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
+	{
+		{0, 2, 0},
+		{0,  16, 0},
+		{0,  0, 0},
+		{16, 0, 0},
+		{2, 0, 0},
+	},
+	{
+		{2, 0, 0},
+		{16, 0, 0},
+		{0,  16, 0},
+		{0,  0, 0},
+		{0, 2, 0},
+	},
+	{
+		{0, 2, 0},
+		{0,  0, 0},
+		{16, 16, 0},
+		{0,  0, 0},
+		{2, 0, 0},
+	},
+	{
+		{2, 0, 0},
+		{0,  0, 0},
+		{16, 0, 0},
+		{0,  16, 0},
+		{0, 2, 0},
+	}
+};
+
 const rct_xy16 minature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
 	{
 		{32, 32},
@@ -682,9 +713,9 @@ static const uint32 minature_railway_right_quarter_turn_5_tiles_track_floor[4][5
 	},
 	{
 		SPR_FLOOR_PLANKS_90_DEG,
-		SPR_FLOOR_PLANKS_W_SEGMENT,
 		SPR_FLOOR_PLANKS_E_SEGMENT,
 		SPR_FLOOR_PLANKS_W_SEGMENT,
+		SPR_FLOOR_PLANKS_E_SEGMENT,
 		SPR_FLOOR_PLANKS
 	},
 };
@@ -705,10 +736,12 @@ static void paint_minature_railway_track_right_quarter_turn_5_tiles(uint8 rideIn
 	if (right_quarter_turn_5_supports_type[direction][trackSequence] != -1){
 		bool isSupported = wooden_a_supports_paint_setup(right_quarter_turn_5_supports_type[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-		if (isSupported == false) {
+		if (isSupported == false || (trackSequence == 3 && direction == 2)) {
 			track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], minature_railway_track_pieces_flat_quarter_turn_5_tiles, minature_railway_right_quarter_turn_5_tiles_offsets, minature_railway_right_quarter_turn_5_tiles_bound_lengths, NULL, get_current_rotation());
 		}
 		else {
+			track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], minature_railway_right_quarter_turn_5_tiles_track_floor, NULL, minature_railway_right_quarter_turn_5_tiles_bound_lengths, minature_railway_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
+			
 			int index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
 			uint32 imageId = minature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index] | gTrackColours[SCHEME_TRACK];
 			rct_xy16 offset = minature_railway_right_quarter_turn_5_tiles_offsets[direction][index];
@@ -1202,8 +1235,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_minature_railway(int trackType, in
 		case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
 			return paint_minature_railway_track_25_deg_down_to_flat;
 
-		//case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
-		//	return paint_minature_railway_track_left_quarter_turn_5_tiles;
+		case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+			return paint_minature_railway_track_left_quarter_turn_5_tiles;
 		case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
 			return paint_minature_railway_track_right_quarter_turn_5_tiles;
 
