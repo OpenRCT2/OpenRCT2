@@ -8743,8 +8743,8 @@ bool ride_has_adjacent_station(rct_ride *ride)
 			}
 			/* Check the first side of the station */
 			int direction = (stationElement->type + 1) & 3;
-			uint adjStationX = stationX + TileDirectionDelta[direction].x;
-			uint adjStationY = stationY + TileDirectionDelta[direction].y;
+			int adjStationX = stationX + TileDirectionDelta[direction].x;
+			int adjStationY = stationY + TileDirectionDelta[direction].y;
 			if (check_adjacent_station(adjStationX, adjStationY, stationZ)) {
 				found = true;
 				break;
