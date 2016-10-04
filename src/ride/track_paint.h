@@ -228,6 +228,7 @@ void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int
 void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement);
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation);
+void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour);
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation);
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
