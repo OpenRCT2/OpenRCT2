@@ -286,6 +286,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twist(int trackType, int direction
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction);
