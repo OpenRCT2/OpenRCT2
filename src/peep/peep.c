@@ -8878,7 +8878,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 
 	/* At this point the map element is found. */
 
-	uint height = z;
+	uint8 height = z;
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 		// Adjust height for goal comparison according to the path slope.
 		if (footpath_element_is_sloped(mapElement)) {
