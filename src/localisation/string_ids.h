@@ -3632,6 +3632,7 @@ enum {
 	STR_TILE_INSPECTOR_ENTRY_BANNER_NONE = 5981,
 	STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE = 5982,
 	STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID = 5983,
+	STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS = 5984,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

@@ -384,7 +384,7 @@ static rct_widget windowTileInspectorWidgetsLargeScenery[] = {
 #define BAN_GBPB PADDING_BOTTOM					// Banner group box properties bottom
 #define BAN_GBPT (BAN_GBPB + 16 + 1 * 21)		// Banner group box properties top
 #define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Banner group box info bottom
-#define BAN_GBDT (BAN_GBDB + 20 + 0 * 11)		// Banner group box info top
+#define BAN_GBDT (BAN_GBDB + 20 + 1 * 11)		// Banner group box info top
 static rct_widget windowTileInspectorWidgetsBanner[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_SPINNER,			1,	GBS(WH - BAN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT
@@ -635,10 +635,15 @@ static void window_tile_inspector_rotate_element(int index) {
 	case MAP_ELEMENT_TYPE_SCENERY:
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 	case MAP_ELEMENT_TYPE_FENCE:
-	case MAP_ELEMENT_TYPE_BANNER:
 		newRotation = (mapElement->type + 1) & MAP_ELEMENT_DIRECTION_MASK;
 		mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
 		mapElement->type |= newRotation;
+		break;
+	case MAP_ELEMENT_TYPE_BANNER:
+		mapElement->properties.banner.flags ^= mapElement->properties.banner.position;
+		mapElement->properties.banner.position++;
+		mapElement->properties.banner.position &= 3;
+		mapElement->properties.banner.flags ^= mapElement->properties.banner.position;
 		break;
 	}
 
@@ -1965,6 +1970,17 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 
 		case PAGE_BANNER:
 		{
+			// Details
+			// Banner info
+			const uint8 bannerIndex = mapElement->properties.banner.index;
+			if (gBanners[bannerIndex].flags & BANNER_FLAG_NO_ENTRY) {
+				rct_string_id noEntryStringIdx = STR_NO_ENTRY;
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &noEntryStringIdx, 12, x, y);
+			}
+			else {
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, 12, x, y);
+			}
+
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
@@ -1974,6 +1990,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			x = w->x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
 			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+
+			// Blocked paths
+			y += 28;
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, NULL, 12, x, y);
 			break;
 		}
 
