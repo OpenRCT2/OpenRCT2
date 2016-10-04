@@ -33,6 +33,9 @@ enum {
 	SPR_WILD_MOUSE_BRAKES_NW_SE = 16903,
 	SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE = 16904,
 	SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE = 16905,
+
+	SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE = 16908,
+	SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE = 16909,
 };
 
 static const uint32 _wild_mouse_brakes_image_ids[4] = {
@@ -103,6 +106,25 @@ static void wild_mouse_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void wild_mouse_track_rotation_control_toggle(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4] = {
+		SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE,
+		SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE,
+		SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE,
+		SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE,
+	};
+
+	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void wild_mouse_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = _wild_mouse_block_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK];
@@ -128,7 +150,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int dire
 	case TRACK_ELEM_BRAKES:
 		return wild_mouse_track_brakes;
 	case TRACK_ELEM_ROTATION_CONTROL_TOGGLE:
-		return NULL;
+		return wild_mouse_track_rotation_control_toggle;
 	case TRACK_ELEM_BLOCK_BRAKES:
 		return wild_mouse_track_block_brakes;
 	}
