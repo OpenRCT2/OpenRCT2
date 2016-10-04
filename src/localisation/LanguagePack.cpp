@@ -61,7 +61,7 @@ struct ScenarioOverride
     };
 };
 
-class LanguagePack : public ILanguagePack
+class LanguagePack final : public ILanguagePack
 {
 private:
     uint16 _id;

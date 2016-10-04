@@ -27,7 +27,7 @@
 typedef struct evp_pkey_st EVP_PKEY;
 typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
 
-class NetworkKey
+class NetworkKey final
 {
 public:
     NetworkKey();

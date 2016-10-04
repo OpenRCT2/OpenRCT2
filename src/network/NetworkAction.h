@@ -20,7 +20,7 @@
 #include <string>
 #include "../common.h"
 
-class NetworkAction
+class NetworkAction final
 {
 public:
     rct_string_id       Name;
@@ -28,7 +28,7 @@ public:
     std::vector<int>    Commands;
 };
 
-class NetworkActions
+class NetworkActions final
 {
 public:
     static const std::vector<NetworkAction> Actions;

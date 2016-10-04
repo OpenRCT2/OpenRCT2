@@ -36,7 +36,7 @@ struct DrawImageInstance {
     int mask;
 };
 
-class DrawImageShader : public OpenGLShaderProgram
+class DrawImageShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;

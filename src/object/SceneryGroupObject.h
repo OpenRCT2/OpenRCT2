@@ -25,7 +25,7 @@ extern "C"
 
 struct ObjectRepositoryItem;
 
-class SceneryGroupObject : public Object
+class SceneryGroupObject final : public Object
 {
 private:
     rct_scenery_set_entry   _legacyType = { 0 };
@@ -33,7 +33,7 @@ private:
     rct_object_entry *      _items = nullptr;
 
 public:
-    explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { }
     ~SceneryGroupObject();
 
     void * GetLegacyData()  override { return &_legacyType; }

@@ -27,7 +27,7 @@ extern "C"
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
  */
-class S6Exporter
+class S6Exporter final
 {
 public:
     bool ExportObjects;

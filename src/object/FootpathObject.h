@@ -23,13 +23,13 @@ extern "C"
     #include "../world/footpath.h"
 }
 
-class FootpathObject : public Object
+class FootpathObject final : public Object
 {
 private:
     rct_footpath_entry _legacyType = { 0 };
 
 public:
-    explicit FootpathObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit FootpathObject(const rct_object_entry &entry) : Object(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
 

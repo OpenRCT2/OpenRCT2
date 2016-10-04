@@ -73,7 +73,7 @@ struct CachedTextureInfo
 // Represents a texture atlas that images of a given maximum size can be allocated from
 // Atlases are all stored in the same 2D texture array, occupying the specified index
 // Slots in atlases are always squares.
-class Atlas
+class Atlas final
 {
 private:
     GLuint _index;
@@ -183,7 +183,7 @@ private:
     }
 };
 
-class TextureCache
+class TextureCache final
 {
 private:
     bool _atlasesTextureInitialised = false;

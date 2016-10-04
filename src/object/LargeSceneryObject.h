@@ -23,7 +23,7 @@ extern "C"
     #include "../world/scenery.h"
 }
 
-class LargeSceneryObject : public SceneryObject
+class LargeSceneryObject final : public SceneryObject
 {
 private:
     rct_scenery_entry           _legacyType = { 0 };
@@ -32,7 +32,7 @@ private:
     rct_large_scenery_tile *    _tiles = nullptr;
 
 public:
-    explicit LargeSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { };
+    explicit LargeSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
     ~LargeSceneryObject();
 
     void * GetLegacyData()  override { return &_legacyType; }

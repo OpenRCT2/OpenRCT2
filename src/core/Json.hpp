@@ -30,7 +30,7 @@ namespace Json
     void     WriteToFile(const utf8 * path, const json_t * json, size_t flags = 0);
 }
 
-class JsonException : public Exception
+class JsonException final : public Exception
 {
 private:
     json_error_t _jsonError = { 0 };
