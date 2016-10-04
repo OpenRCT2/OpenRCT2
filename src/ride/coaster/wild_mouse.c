@@ -123,6 +123,18 @@ enum {
 	SPR_WILD_MOUSE_QUARTER_TURN_1_NW_SE = 16995,
 	SPR_WILD_MOUSE_QUARTER_TURN_1_NE_SW = 16996,
 	SPR_WILD_MOUSE_QUARTER_TURN_1_SE_NW = 16997,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0 = 16998,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1 = 16999,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_2 = 17000,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_0 = 17001,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_1 = 17002,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_2 = 17003,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_0 = 17004,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_1 = 17005,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_2 = 17006,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0 = 17007,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1 = 17008,
+	SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2 = 17009,
 };
 
 static const uint32 _wild_mouse_brakes_image_ids[4] = {
@@ -389,6 +401,58 @@ static void wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSeq
 	wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void wild_mouse_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const sprite_bb imageIds[4][3] = {
+		{
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_2, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 3 } },
+		},
+		{
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_0, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_1, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_2, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 3 } },
+		},
+		{
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_0, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_1, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_2, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 3 } },
+		},
+		{
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0, { 0, 0, 0 }, {  6,  0, 0 }, { 20, 32, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 3 } },
+			{ SPR_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 0, 0 }, {  0,  6, 0 }, { 32, 20, 3 } },
+		}
+	};
+	static uint8 supportType[] = { 4, 5, 2, 3 };
+
+	track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+
+	switch (trackSequence) {
+	case 0:
+	case 3:
+		metal_a_supports_paint_setup(0, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
+		break;
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+	case 0: blockedSegments = SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0; break;
+	case 2: blockedSegments = SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4; break;
+	case 3: blockedSegments = SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4; break;
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wild_mouse_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
+	wild_mouse_track_right_quarter_turn_3(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+}
+
 static void wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -587,6 +651,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int dire
 		return wild_mouse_track_60_deg_down_to_25_deg_down;
 	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
 		return wild_mouse_track_25_deg_down_to_flat;
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+		return wild_mouse_track_left_quarter_turn_3;
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+		return wild_mouse_track_right_quarter_turn_3;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
 		return wild_mouse_track_left_quarter_turn_1;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
