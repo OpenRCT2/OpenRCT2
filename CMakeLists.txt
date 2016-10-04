@@ -123,7 +123,7 @@ else (DISABLE_NETWORK)
 	if (WIN32)
 		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
 	endif (WIN32)
-	# If you are on OS X, CMake might try using system-provided OpenSSL.
+	# If you are on macOS, CMake might try using system-provided OpenSSL.
 	# This is too old and will not work.
 	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 endif (DISABLE_NETWORK)
@@ -148,7 +148,7 @@ endif (NOT PNG_FOUND)
 PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
 
-# Handle creating the rct2 text and data files on OS X and Linux
+# Handle creating the rct2 text and data files on macOS and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
 # were derived.
 if ((NOT DISABLE_RCT2) AND UNIX)

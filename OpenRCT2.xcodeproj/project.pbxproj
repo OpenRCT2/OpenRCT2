@@ -617,7 +617,7 @@
 		C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Importer.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
 		D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
 		D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
@@ -1112,7 +1112,7 @@
 		D464FEE41D31A6AA00CBABAC /* WaterObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterObject.h; sourceTree = "<group>"; };
 		D46F2A9D1D39A25A00A36AB7 /* peep_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
+		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = TcpSocket.h; sourceTree = "<group>"; usesTabs = 0; };
 		D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoftwareDrawingEngine.cpp; sourceTree = "<group>"; };
@@ -2115,6 +2115,7 @@
 				D4EC48E51C2637710024B507 /* title */,
 			);
 			name = data;
+			path = ../data;
 			sourceTree = "<group>";
 		};
 		D4EC48811C2634870024B507 /* include */ = {
@@ -2334,20 +2335,20 @@
 			);
 			name = "Setup AppIcon";
 			outputPaths = (
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
+			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
 		};
 		D4EC48E91C264FC20024B507 /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3011,7 +3012,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/distribution/macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3060,7 +3061,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/distribution/macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
