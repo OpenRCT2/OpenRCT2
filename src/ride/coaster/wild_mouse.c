@@ -36,6 +36,65 @@ enum {
 
 	SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE = 16908,
 	SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE = 16909,
+	SPR_WILD_MOUSE_FLAT_CHAIN_SW_NE = 16910,
+	SPR_WILD_MOUSE_FLAT_CHAIN_NW_SE = 16911,
+
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE = 16914,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE = 16915,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_NE_SW = 16916,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW = 16917,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE = 16918,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE = 16919,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_NE_SW = 16920,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW = 16921,
+	SPR_WILD_MOUSE_25_DEG_SW_NE = 16922,
+	SPR_WILD_MOUSE_25_DEG_NW_SE = 16923,
+	SPR_WILD_MOUSE_25_DEG_NE_SW = 16924,
+	SPR_WILD_MOUSE_25_DEG_SE_NW = 16925,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE = 16926,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE = 16927,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NE_SW = 16928,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SE_NW = 16929,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE = 16930,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NE_SW = 16931,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SW_NE = 16932,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NW_SE = 16933,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NE_SW = 16934,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SE_NW = 16935,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NW_SE = 16936,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NE_SW = 16937,
+	SPR_WILD_MOUSE_60_DEG_SW_NE = 16938,
+	SPR_WILD_MOUSE_60_DEG_NW_SE = 16939,
+	SPR_WILD_MOUSE_60_DEG_NE_SW = 16940,
+	SPR_WILD_MOUSE_60_DEG_SE_NW = 16941,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE = 16942,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NW_SE = 16943,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NE_SW = 16944,
+	SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW = 16945,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE = 16946,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NW_SE = 16947,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NE_SW = 16948,
+	SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW = 16949,
+	SPR_WILD_MOUSE_25_DEG_CHAIN_SW_NE = 16950,
+	SPR_WILD_MOUSE_25_DEG_CHAIN_NW_SE = 16951,
+	SPR_WILD_MOUSE_25_DEG_CHAIN_NE_SW = 16952,
+	SPR_WILD_MOUSE_25_DEG_CHAIN_SE_NW = 16953,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE = 16954,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NW_SE = 16955,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NE_SW = 16956,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SE_NW = 16957,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NW_SE = 16958,
+	SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NE_SW = 16959,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SW_NE = 16960,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NW_SE = 16961,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NE_SW = 16962,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SE_NW = 16963,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NW_SE = 16964,
+	SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NE_SW = 16965,
+	SPR_WILD_MOUSE_60_DEG_CHAIN_SW_NE = 16966,
+	SPR_WILD_MOUSE_60_DEG_CHAIN_NW_SE = 16967,
+	SPR_WILD_MOUSE_60_DEG_CHAIN_NE_SW = 16968,
+	SPR_WILD_MOUSE_60_DEG_CHAIN_SE_NW = 16969,
 };
 
 static const uint32 _wild_mouse_brakes_image_ids[4] = {
@@ -54,14 +113,16 @@ static const uint32 _wild_mouse_block_brakes_image_ids[4] = {
 
 static void wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	static const uint32 imageIds[4] = {
-		SPR_WILD_MOUSE_FLAT_SW_NE,
-		SPR_WILD_MOUSE_FLAT_NW_SE,
-		SPR_WILD_MOUSE_FLAT_SW_NE,
-		SPR_WILD_MOUSE_FLAT_NW_SE,
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_FLAT_SW_NE, SPR_WILD_MOUSE_FLAT_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_FLAT_NW_SE, SPR_WILD_MOUSE_FLAT_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_FLAT_SW_NE, SPR_WILD_MOUSE_FLAT_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_FLAT_NW_SE, SPR_WILD_MOUSE_FLAT_CHAIN_NW_SE },
 	};
 
-	uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
 	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		metal_a_supports_paint_setup(0, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -92,6 +153,212 @@ static void wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence, uint8
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_25_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_25_DEG_NW_SE, SPR_WILD_MOUSE_25_DEG_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_25_DEG_NE_SW, SPR_WILD_MOUSE_25_DEG_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_25_DEG_SE_NW, SPR_WILD_MOUSE_25_DEG_CHAIN_SE_NW },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, -9, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
+static void wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_60_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_60_DEG_NW_SE, SPR_WILD_MOUSE_60_DEG_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_60_DEG_NE_SW, SPR_WILD_MOUSE_60_DEG_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_60_DEG_SE_NW, SPR_WILD_MOUSE_60_DEG_CHAIN_SE_NW },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	if (direction == 0 || direction == 3) {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	} else {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		if (direction == 0 || direction == 3) {
+			metal_a_supports_paint_setup(0, 4, -33, height, gTrackColours[SCHEME_SUPPORTS]);
+		} else {
+			metal_a_supports_paint_setup(0, 4, 32, height, gTrackColours[SCHEME_SUPPORTS]);
+		}
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 104, 0x20);
+}
+
+static void wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_FLAT_TO_25_DEG_NE_SW, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, -4, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
+static void wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SE_NW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SE_NW },
+	};
+	static const uint32 frontImageIds[4][2] = {
+		{ 0, 0 },
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NW_SE },
+		{ SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NE_SW },
+		{ 0, 0 },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	if (direction == 0 || direction == 3) {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	} else {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, -13, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 72, 0x20);
+}
+
+static void wild_mouse_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SE_NW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SE_NW },
+	};
+	static const uint32 frontImageIds[4][2] = {
+		{ 0, 0 },
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NW_SE },
+		{ SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NE_SW },
+		{ 0, 0 },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	uint32 frontImageId = frontImageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	if (direction == 0 || direction == 3) {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	} else {
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+		sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+	}
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, -21, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 72, 0x20);
+}
+
+static void wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ SPR_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE },
+		{ SPR_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NW_SE },
+		{ SPR_WILD_MOUSE_25_DEG_TO_FLAT_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NE_SW },
+		{ SPR_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW },
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[direction][isChained] | gTrackColours[SCHEME_TRACK];
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
+		metal_a_supports_paint_setup(0, 4, -7, height, gTrackColours[SCHEME_SUPPORTS]);
+	}
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+static void wild_mouse_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wild_mouse_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void wild_mouse_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -146,7 +413,30 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int dire
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return wild_mouse_track_station;
-
+	case TRACK_ELEM_25_DEG_UP:
+		return wild_mouse_track_25_deg_up;
+	case TRACK_ELEM_60_DEG_UP:
+		return wild_mouse_track_60_deg_up;
+	case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+		return wild_mouse_track_flat_to_25_deg_up;
+	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+		return wild_mouse_track_25_deg_up_to_60_deg_up;
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+		return wild_mouse_track_60_deg_up_to_25_deg_up;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+		return wild_mouse_track_25_deg_up_to_flat;
+	case TRACK_ELEM_25_DEG_DOWN:
+		return wild_mouse_track_25_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN:
+		return wild_mouse_track_60_deg_down;
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+		return wild_mouse_track_flat_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+		return wild_mouse_track_25_deg_down_to_60_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+		return wild_mouse_track_60_deg_down_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+		return wild_mouse_track_25_deg_down_to_flat;
 	case TRACK_ELEM_BRAKES:
 		return wild_mouse_track_brakes;
 	case TRACK_ELEM_ROTATION_CONTROL_TOGGLE:
