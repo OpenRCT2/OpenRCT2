@@ -8689,3 +8689,76 @@ money16 ride_get_price(rct_ride * ride)
 	}
 	return ride->price;
 }
+
+/**
+ * Check for an adjacent station at x,y,z(+-2).
+ */
+static bool check_adjacent_station(int x, int y, int z) {
+	bool foundMapElement = false;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement != NULL) {
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+			if (z != mapElement->base_height &&
+				z != mapElement->base_height - 2 &&
+				z != mapElement->base_height + 2
+			) {
+				continue;
+			}
+
+			foundMapElement = true;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+	if (!foundMapElement) {
+		return false;
+	}
+
+	int rideIndex = mapElement->properties.track.ride_index;
+	rct_ride *ride = get_ride(rideIndex);
+	if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Return whether ride has at least one adjacent station to it.
+ */
+bool ride_has_adjacent_station(rct_ride *ride)
+{
+	bool found = false;
+
+	/* Loop through all of the ride stations, checking for an
+	 * adjacent station anywhere. */
+	for (int stationNum = 0; stationNum <= 3; stationNum++) {
+		if (ride->station_starts[stationNum] != 0xFFFF) {
+			uint16 stationX = (ride->station_starts[stationNum] & 0xFF) * 32;
+			uint16 stationY = (ride->station_starts[stationNum] >> 8) * 32;
+			uint8 stationZ = ride->station_heights[stationNum];
+
+			rct_map_element *stationElement = map_get_track_element_at(stationX, stationY, stationZ);
+			if (stationElement == NULL) {
+				continue;
+			}
+			/* Check the first side of the station */
+			int direction = (stationElement->type + 1) & 3;
+			uint adjStationX = stationX + TileDirectionDelta[direction].x;
+			uint adjStationY = stationY + TileDirectionDelta[direction].y;
+			if (check_adjacent_station(adjStationX, adjStationY, stationZ)) {
+				found = true;
+				break;
+			}
+			/* Check the other side of the station */
+			direction ^= 2;
+			adjStationX = stationX + TileDirectionDelta[direction].x;
+			adjStationY = stationY + TileDirectionDelta[direction].y;
+			if (check_adjacent_station(adjStationX, adjStationY, stationZ)) {
+				found = true;
+				break;
+			}
+		}
+	}
+
+	return found;
+}
