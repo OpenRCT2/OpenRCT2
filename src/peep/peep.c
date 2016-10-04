@@ -8748,7 +8748,7 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *  rct2: 0x0069A997
  */
 static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_element *currentMapElement, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
-	uint searchResult = PATH_SEARCH_FAILED;
+	uint8 searchResult = PATH_SEARCH_FAILED;
 
 	x += TileDirectionDelta[test_edge].x;
 	y += TileDirectionDelta[test_edge].y;
