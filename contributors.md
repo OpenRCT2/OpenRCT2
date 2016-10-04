@@ -6,7 +6,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Duncan Frost (duncanspumpkin) - Developer, merger, issue management
 * Michael Steenbeek (Gymnasiast) - Developer, issue management, translation management
 * Michał Janiszewski (janisozaur) - Developer, CI, Linux management, issue management
-* Lewis Fox (LRFLEW) - Developer, OSX management
+* Lewis Fox (LRFLEW) - Developer, macOS management
+* Marijn van der Werf (marijnvdwerf) - Developer
 * (zsilencer) - Developer
 
 ## Implementation (RCT2)
@@ -52,6 +53,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
+* (zaxcav) - New pathfinding algorithm
 
 ## Bug fixes
 * (halfbro)
@@ -70,13 +72,13 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Daniel Trujillo Viedma (gDanix)
 
 ## Toolchain
-* (Balletie) - OSX
-* Kevin Burke (kevinburke) - OSX, Unix
-* Miso Zmiric (mzmiric5) - OSX
+* (Balletie) - macOS
+* Kevin Burke (kevinburke) - macOS, Unix
+* Miso Zmiric (mzmiric5) - macOS
 * Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
-* Lewis Fox (LRFLEW) - OSX
+* Lewis Fox (LRFLEW) - macOS
 
 ## Documentation
 * (honzi)
@@ -95,7 +97,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
-* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van de Werf (marijnvdwerf), (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
+* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)

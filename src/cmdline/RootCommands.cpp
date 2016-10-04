@@ -49,6 +49,7 @@ static uint32 _port            = 0;
 static utf8 * _password        = nullptr;
 static utf8 * _userDataPath    = nullptr;
 static utf8 * _openrctDataPath = nullptr;
+static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
 
 #ifdef USE_BREAKPAD
@@ -72,6 +73,7 @@ static const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
 #endif // USE_BREAKPAD
@@ -173,17 +175,26 @@ exitcode_t CommandLine::HandleCommandDefault()
     gOpenRCT2Headless = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
-    if (_userDataPath != NULL) {
+    if (_userDataPath != nullptr)
+    {
         String::Set(gCustomUserDataPath, sizeof(gCustomUserDataPath), _userDataPath);
         Memory::Free(_userDataPath);
     }
 
-    if (_openrctDataPath != NULL) {
+    if (_openrctDataPath != nullptr)
+    {
         String::Set(gCustomOpenrctDataPath, sizeof(gCustomOpenrctDataPath), _openrctDataPath);
         Memory::Free(_openrctDataPath);
     }
 
-    if (_password != NULL) {
+    if (_rct2DataPath != nullptr)
+    {
+        String::Set(gCustomRCT2DataPath, sizeof(gCustomRCT2DataPath), _rct2DataPath);
+        Memory::Free(_rct2DataPath);
+    }
+
+    if (_password != nullptr)
+    {
         String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
         Memory::Free(_password);
     }
@@ -340,13 +351,6 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 
     // Update RCT2 path in config
-
-    // TODO remove this when we get rid of config_apply_to_old_addresses
-    if (!openrct2_setup_rct2_segment()) {
-        Console::Error::WriteLine("Unable to load RCT2 data sector");
-        return EXITCODE_FAIL;
-    }
-
     config_set_defaults();
     config_open_default();
     String::DiscardDuplicate(&gConfigGeneral.game_path, path);

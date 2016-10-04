@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
-#include "../world/map.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/themes.h"
+#include "../world/map.h"
+#include "../world/scenery.h"
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
@@ -111,7 +111,7 @@ void window_clear_scenery_open()
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
-	RCT2_GLOBAL(0x00F1AD62, uint32) = MONEY32_UNDEFINED;
+	gClearSceneryCost = MONEY32_UNDEFINED;
 
 	gClearSmallScenery = true;
 	gClearLargeScenery = false;
@@ -245,8 +245,11 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw cost amount
 	x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5 + 27;
-	if (RCT2_GLOBAL(0x00F1AD62, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(0x00F1AD62, uint32) != 0)
-		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, RCT2_ADDRESS(0x00F1AD62, void));
+	if (gClearSceneryCost != MONEY32_UNDEFINED &&
+		gClearSceneryCost != 0
+	) {
+		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, &gClearSceneryCost);
+	}
 }
 
 /**

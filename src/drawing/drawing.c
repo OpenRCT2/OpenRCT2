@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "../interface/window.h"
@@ -26,6 +25,9 @@
 // HACK These were originally passed back through registers
 int gLastDrawStringX;
 int gLastDrawStringY;
+
+sint16 gCurrentFontSpriteBase;
+uint16 gCurrentFontFlags;
 
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;

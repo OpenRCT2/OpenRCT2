@@ -28,7 +28,7 @@ typedef struct rct_trackdefinition {
 	uint8 vangle_start;
 	uint8 bank_end;
 	uint8 bank_start;
-	uint8 special;
+	sint8 preview_z_offset;
 	uint8 pad[2];
 } rct_trackdefinition;
 assert_struct_size(rct_trackdefinition, 8);
@@ -184,7 +184,7 @@ enum {
 };
 
 enum {
-	TRACK_ELEM_FLAG_0001 = (1 << 0),
+	TRACK_ELEM_FLAG_ONLY_UNDERWATER = (1 << 0),
 	TRACK_ELEM_FLAG_TURN_LEFT = (1 << 1),
 	TRACK_ELEM_FLAG_TURN_RIGHT = (1 << 2),
 	TRACK_ELEM_FLAG_TURN_BANKED = (1 << 3),
@@ -193,7 +193,7 @@ enum {
 	TRACK_ELEM_FLAG_UP = (1 << 6),
 	TRACK_ELEM_FLAG_INVERSION = (1 << 7),
 	TRACK_ELEM_FLAG_0100 = (1 << 8),
-	TRACK_ELEM_FLAG_0200 = (1 << 9),
+	TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
 	TRACK_ELEM_FLAG_0400 = (1 << 10),
 	TRACK_ELEM_FLAG_HELIX = (1 << 11),
 	TRACK_ELEM_FLAG_1000 = (1 << 12),

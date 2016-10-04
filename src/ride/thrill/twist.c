@@ -48,7 +48,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 	}
 
 
-	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
 	if (imageColourFlags == 0x20000000) {
 		imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
 	}
@@ -84,27 +84,27 @@ static void paint_twist(uint8 rideIndex, uint8 trackSequence, uint8 direction, i
 
 	const uint8 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	uint32 imageId;
 
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F441A0, uint32), height, floorSpritesCork, get_current_rotation());
+	track_paint_util_paint_floor(edges, gTrackColours[SCHEME_MISC], height, floorSpritesCork, get_current_rotation());
 
 	switch (trackSequence) {
 		case 7:
 			if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-				imageId = SPR_FENCE_ROPE_SW | RCT2_GLOBAL(0x00F441A0, uint32);
+				imageId = SPR_FENCE_ROPE_SW | gTrackColours[SCHEME_MISC];
 				sub_98197C(imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3, get_current_rotation());
 			}
 			if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
-				imageId = SPR_FENCE_ROPE_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+				imageId = SPR_FENCE_ROPE_SE | gTrackColours[SCHEME_MISC];
 				sub_98197C(imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, get_current_rotation());
 			}
 			break;
 		default:
-			track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, fenceSpritesRope, get_current_rotation());
+			track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 			break;
 	}
 

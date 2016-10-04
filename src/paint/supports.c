@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../interface/viewport.h"
 #include "../paint/paint.h"
 #include "supports.h"
+#include "map_element/map_element.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 const rct_xy8 loc_97AF20[] = {
@@ -321,6 +321,10 @@ const uint16 word_97B3C4[] = {
 	0,
 };
 
+#ifdef NO_RCT2
+paint_struct * gWoodenSupportsPrependTo;
+#endif
+
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
@@ -341,7 +345,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		return false;
 	}
 
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
 		return false;
 	}
 
@@ -419,7 +423,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 	// Draw repeated supports for left over space
 	while (height != 0) {
-		if ((z & 16) == 0 && height >= 2 && z + 16 != RCT2_GLOBAL(0x00141E9DC, uint16)) {
+		if ((z & 16) == 0 && height >= 2 && z + 16 != gUnk141E9DC) {
 			// Full support
 			int imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
 			uint8 ah = special == 2 ? 23 : 28;
@@ -449,14 +453,14 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 			unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
+			if (byte_97B23C[special].var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
 				sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				hasSupports = true;
 			} else {
 				hasSupports = true;
 				paint_struct* ps = sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				if (ps != NULL) {
-					paint_struct* edi = RCT2_GLOBAL(0x009DEA58, paint_struct*);
+					paint_struct* edi = gWoodenSupportsPrependTo;
 					edi->var_20 = ps;
 				}
 			}
@@ -472,9 +476,13 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
  */
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
 	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x00662D5C, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**
@@ -492,16 +500,17 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		return false;
 	}
 
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
 		return false;
 	}
 
 	sint16 originalHeight = height;
+	int originalSegment = segment;
 
 	const uint8 rotation = get_current_rotation();
-	RCT2_GLOBAL(0x009E3294, sint16) = -1;
+	sint16 unk9E3294 = -1;
 	if (height < gSupportSegments[segment].height){
-		RCT2_GLOBAL(0x009E3294, sint16) = height;
+		unk9E3294 = height;
 
 		height -= word_97B142[supportType];
 		if (height < 0)
@@ -520,8 +529,6 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 					esi += 72;
 					newSegment = esi[segment * 8];
 					if (height <= gSupportSegments[newSegment].height) {
-						esi += 72;
-						newSegment = esi[segment * 8];
 						return false;
 					}
 				}
@@ -617,10 +624,11 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		height += z;
 	}
 
-	gSupportSegments[segment].height = RCT2_GLOBAL(0x009E3294, sint16);
+	gSupportSegments[segment].height = unk9E3294;
 	gSupportSegments[segment].slope = 0x20;
 
 	height = originalHeight;
+	segment = originalSegment;
 	if (special == 0)
 		return true;
 
@@ -669,9 +677,13 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
  */
 bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
 	int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**
@@ -679,19 +691,28 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
  */
 bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
 	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
 	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x006A2ECC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }
 
 /**
  *
  *  rct2: 0x006A326B
  */
-bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry)
 {
+#ifdef NO_RCT2
+	return 0;
+#else
+	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
 	int eax = special, ebx = supportType, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
+#endif
 }

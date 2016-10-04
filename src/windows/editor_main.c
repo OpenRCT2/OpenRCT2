@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -77,9 +76,9 @@ void window_editor_main_open()
 	window->viewport->flags |= 0x0400;
 
 	gCurrentRotation = 0;
-	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
-	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
-	RCT2_GLOBAL(0x009E32B3, uint8) = 0;
+	gShowGridLinesRefCount = 0;
+	gShowLandRightsRefCount = 0;
+	gShowConstuctionRightsRefCount = 0;
 	gFootpathSelectedType = 0;
 
 	window_top_toolbar_open();

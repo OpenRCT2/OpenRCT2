@@ -37,7 +37,6 @@ public:
 
     const char * what()       const throw() override { return _message.c_str(); }
     const char * GetMessage() const                  { return _message.c_str(); }
-    const char * GetMsg()     const                  { return _message.c_str(); }
 
 private:
     std::string _message;

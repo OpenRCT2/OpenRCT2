@@ -234,7 +234,7 @@ xcuserdata
 .DS_Store
 
 # We link logo files to .xcassets in Xcode project, so don't sync them
-distribution/osx/Assets.xcassets/AppIcon.appiconset/*.png
+distribution/macos/Assets.xcassets/AppIcon.appiconset/*.png
 
 # Extra Xcode-specific lib files
 libxc
@@ -282,3 +282,8 @@ data/g2.dat
 
 # KDE folder settings
 .directory
+
+###############
+## JetBrains ##
+###############
+.idea/

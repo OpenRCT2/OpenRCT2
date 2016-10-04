@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../world/map.h"
@@ -99,7 +98,7 @@ void window_viewport_open()
 {
 	rct_window *w, *mainWindow;
 	rct_viewport *mainViewport;
-	int x, y, rotation;
+	int x, y;
 
 	w = window_create_auto_pos(
 		INITIAL_WIDTH, INITIAL_HEIGHT,
@@ -114,8 +113,6 @@ void window_viewport_open()
 		(1 << WIDX_ZOOM_OUT) |
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
-
-	rotation = get_current_rotation();
 
 	// Create viewport
 	viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);

@@ -17,7 +17,6 @@
 #ifndef _RIDE_H_
 #define _RIDE_H_
 
-#include "../addresses.h"
 #include "../common.h"
 #include "../peep/peep.h"
 #include "../world/map.h"
@@ -404,7 +403,7 @@ enum {
 	RIDE_LIFECYCLE_MUSIC = 1 << 13,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE = 1 << 14,
 	RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK = 1 << 15,
-	RIDE_LIFECYCLE_16 = 1 << 16,
+	RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED = 1 << 16,
 	RIDE_LIFECYCLE_CABLE_LIFT = 1 << 17,
 	RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18, // Used for the Award for Best Custom-designed Rides
 	RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
@@ -782,7 +781,7 @@ enum {
 	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
 	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
 	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
-	RIDE_TYPE_FLAG_27 = 1 << 27,
+	RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
 	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,								// used only by lift
 	RIDE_TYPE_FLAG_30 = 1 << 30,
@@ -921,14 +920,20 @@ rct_ride_measurement *get_ride_measurement(int index);
 	for (i = 0; i < MAX_RIDES; i++) \
 		if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
-#define gTotalRideValue				RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16)
-#define gSamePriceThroughoutParkA	RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32)
-#define gSamePriceThroughoutParkB	RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32)
+extern money16 gTotalRideValue;
+extern uint32 gSamePriceThroughoutParkA;
+extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[255];
 
+#ifdef NO_RCT2
+extern rct_ride gRideList[255];
+#else
 extern rct_ride *gRideList;
-extern rct_ride_measurement *gRideMeasurements;
+#endif
+
+extern rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
+extern uint16 gRideCount;
 
 extern money32 _currentTrackPrice;
 
@@ -951,6 +956,7 @@ extern uint8 _currentTrackSlopeEnd;
 extern uint8 _currentTrackBankEnd;
 extern uint8 _currentTrackLiftHill;
 extern uint8 _currentTrackCovered;
+extern uint8 _selectedTrackType;
 
 extern uint8 _previousTrackBankEnd;
 extern uint8 _previousTrackSlopeEnd;
@@ -959,7 +965,15 @@ extern uint16 _previousTrackPieceX;
 extern uint16 _previousTrackPieceY;
 extern uint16 _previousTrackPieceZ;
 
+extern uint8 _currentlyShowingBrakeSpeed;
+extern uint8 _currentBrakeSpeed;
+extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
+
+extern rct_xyz16 _unkF44188;
+extern rct_xyzd16 _unkF440BF;
+extern uint8 _unkF440C4;
+extern rct_xyzd16 _unkF440C5;
 
 extern uint8 gRideEntranceExitPlaceType;
 extern uint8 gRideEntranceExitPlaceRideIndex;
@@ -973,6 +987,8 @@ extern int gRideRemoveTrackPieceCallbackY;
 extern int gRideRemoveTrackPieceCallbackZ;
 extern int gRideRemoveTrackPieceCallbackDirection;
 extern int gRideRemoveTrackPieceCallbackType;
+
+extern uint8 gLastEntranceStyle;
 
 int ride_get_count();
 int ride_get_total_queue_length(rct_ride *ride);
@@ -993,7 +1009,7 @@ int ride_find_track_gap(rct_xy_element *input, rct_xy_element *output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int rideIndex);
 int ride_modify(rct_xy_element *input);
-void ride_get_status(int rideIndex, int *formatSecondary, int *argument);
+void ride_get_status(int rideIndex, rct_string_id *formatSecondary, int *argument);
 rct_peep *ride_get_assigned_mechanic(rct_ride *ride);
 int ride_get_total_length(rct_ride *ride);
 int ride_get_total_time(rct_ride *ride);

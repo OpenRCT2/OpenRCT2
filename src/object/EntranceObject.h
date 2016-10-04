@@ -23,13 +23,13 @@ extern "C"
     #include "../world/entrance.h"
 }
 
-class EntranceObject : public Object
+class EntranceObject final : public Object
 {
 private:
     rct_entrance_type _legacyType = { 0 };
 
 public:
-    explicit EntranceObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit EntranceObject(const rct_object_entry &entry) : Object(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
 

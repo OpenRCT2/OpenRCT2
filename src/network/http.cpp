@@ -38,17 +38,18 @@ void http_dispose() { }
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
 #define DEFAULT_CA_BUNDLE_PATH "curl-ca-bundle.crt"
+#define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
 typedef struct read_buffer {
 	char *ptr;
-	int length;
-	int position;
+	size_t length;
+	size_t position;
 } read_buffer;
 
 typedef struct write_buffer {
 	char *ptr;
-	int length;
-	int capacity;
+	size_t length;
+	size_t capacity;
 } write_buffer;
 
 #ifdef __WINDOWS__
@@ -94,12 +95,12 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 {
 	write_buffer *writeBuffer = (write_buffer*)userdata;
 
-	int newBytesLength = size * nmemb;
+	size_t newBytesLength = size * nmemb;
 	if (newBytesLength > 0) {
-		int newCapacity = writeBuffer->capacity;
-		int newLength = writeBuffer->length + newBytesLength;
+		size_t newCapacity = writeBuffer->capacity;
+		size_t newLength = writeBuffer->length + newBytesLength;
 		while (newLength > newCapacity) {
-			newCapacity = Math::Max(4096, newCapacity * 2);
+			newCapacity = Math::Max<size_t>(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
 			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
@@ -140,7 +141,7 @@ http_json_response *http_request_json(const http_json_request *request)
 		headers = curl_slist_append(headers, "Content-Type: " MIME_TYPE_APPLICATION_JSON);
 
 		char contentLengthHeaderValue[64];
-		snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %d", readBuffer.length);
+		snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %zu", readBuffer.length);
 		headers = curl_slist_append(headers, contentLengthHeaderValue);
 
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, readBuffer.ptr);
@@ -150,6 +151,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
+	curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
 #ifdef __WINDOWS__
 	// On GNU/Linux (and macOS), curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, _caBundlePath);
@@ -191,6 +193,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	root = json_loads(writeBuffer.ptr, 0, &error);
 	if (root != NULL) {
 		response = (http_json_response*)malloc(sizeof(http_json_response));
+		response->tag = request->tag;
 		response->status_code = (int)httpStatusCode;
 		response->root = root;
 	}
@@ -209,6 +212,7 @@ void http_request_json_async(const http_json_request *request, void (*callback)(
 	args->request.url = _strdup(request->url);
 	args->request.method = request->method;
 	args->request.body = json_deep_copy(request->body);
+	args->request.tag = request->tag;
 	args->callback = callback;
 
 	SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {

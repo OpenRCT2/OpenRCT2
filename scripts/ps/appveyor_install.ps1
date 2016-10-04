@@ -23,7 +23,8 @@ if ($env:ENCKEY)
     Check-ExitCode
 }
 
-if (${env:OPENRCT2.ORG_TOKEN})
+# Check if OpenRCT2.org API security token is available
+if (${env:OPENRCT2_ORG_TOKEN})
 {
     if (-not (Test-Path "C:\ProgramData\chocolatey\lib\nsis.portable"))
     {
@@ -43,3 +44,12 @@ if (${env:OPENRCT2.ORG_TOKEN})
         cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
     }
 }
+else
+{
+    # Don't build the NSIS installer for non-uploaded builds
+    ${env:NO_NSIS} = "true"
+}
+
+$env:GIT_TAG            = $env:APPVEYOR_REPO_TAG_NAME
+$env:GIT_BRANCH         = $env:APPVEYOR_REPO_BRANCH
+$env:GIT_COMMIT_SHA1    = $env:APPVEYOR_REPO_COMMIT

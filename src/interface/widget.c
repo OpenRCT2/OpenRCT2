@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../input.h"
 #include "../sprites.h"
@@ -538,7 +537,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
 		gfx_draw_string_left(dpi, widget->text, gCommonFormatArgs, colour, l, t);
-		textRight = l + gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char)) + 1;
+		textRight = l + gfx_get_string_width(gCommonStringFormatBuffer) + 1;
 	}
 
 	// Border
@@ -590,38 +589,17 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
 
-	//
-	if (w->var_4B8 != -1) {
-		gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1, t + 1, 0);
-		if (w->width > 638)
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B8)) << 19, l + 1 + 638, t + 1, 0);
-		if (w->var_4B9 != -1) {
-			gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1, t + 1, 0);
-			if (w->width > 638)
-				gfx_draw_sprite(dpi, *((char*)(0x013CA742 + w->var_4B9)) << 19, l + 1 + 638, t + 1, 0);
-		}
+	int press = 0x60;
+	if (w->flags & WF_10)
+		press |= 0x80;
 
-		//
-		int press = 0x70;
-		if (w->flags & WF_10)
-			press |= 0x80;
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-		gfx_fill_rect(dpi, r + 1, t, r + 1, b, ColourMapA[colour].mid_dark);
-	} else {
-		//
-		int press = 0x60;
-		if (w->flags & WF_10)
-			press |= 0x80;
-
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-
-		// Black caption bars look slightly green, this fixes that
-		if (colour == 0)
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
-		else
-			gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
-	}
+	// Black caption bars look slightly green, this fixes that
+	if (colour == 0)
+		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
+	else
+		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
 
 	// Draw text
 	if (widget->text == STR_NONE)
@@ -1108,11 +1086,11 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 
 
-	int string_length = get_string_size(wrapped_string) - 1;
+	size_t string_length = get_string_size(wrapped_string) - 1;
 
 	// Make a copy of the string for measuring the width.
 	char temp_string[512] = { 0 };
-	memcpy(temp_string, wrapped_string, min((size_t)string_length, gTextInput.selection_offset));
+	memcpy(temp_string, wrapped_string, min(string_length, gTextInput.selection_offset));
 	int cur_x = l + gfx_get_string_width(temp_string) + 3;
 
 	int width = 6;

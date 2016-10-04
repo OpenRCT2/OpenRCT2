@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
 #include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
@@ -84,7 +83,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	//si
 	uint8 lengthY = 24;
 
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 image_id = gTrackColours[SCHEME_MISC];
 	if (image_id == 0x20000000) {
 		image_id =
 			0xA0000000 |
@@ -99,7 +98,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	image_id += 572;
 	sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
+	image_id = gTrackColours[SCHEME_MISC];
 	if (image_id == 0x20000000) {
 		image_id =
 			0xA0000000 |
@@ -139,7 +138,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		seatImageId = image_id;
 	}
 
-	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
+	image_id = gTrackColours[SCHEME_MISC];
 	if (image_id == 0x20000000) {
 		image_id =
 			0xA0000000 |
@@ -219,7 +218,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		}
 	}
 
-	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
+	image_id = gTrackColours[SCHEME_MISC];
 	if (image_id == 0x20000000) {
 		image_id =
 			0xA0000000 |
@@ -235,7 +234,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
 	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
+	image_id = gTrackColours[SCHEME_MISC];
 	if (image_id == 0x20000000) {
 		image_id =
 			0xA0000000 |
@@ -262,13 +261,13 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride *ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
+	track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, fenceSpritesRope, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
 	switch (trackSequence) {
 		case 1: top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement); break;

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -268,7 +267,10 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex);
 money32 selection_lower_land(uint8 flags);
 money32 selection_raise_land(uint8 flags);
 
-static bool _menuDropdownIncludesTwitch;
+static bool		_menuDropdownIncludesTwitch;
+static uint8	_unkF64F0E;
+static sint16	_unkF64F0A;
+static uint16	_unkF64F15;
 
 /**
  * Creates the main game top toolbar window.
@@ -470,7 +472,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[1] = STR_EXTRA_VIEWPORT;
 		numItems = 2;
 
-		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 			gDropdownItemsFormat[2] = STR_MAPGEN_WINDOW_TITLE;
 			numItems++;
 		}
@@ -541,7 +543,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			break;
 		case DDIDX_SAVE_GAME_AS:
 			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info->name);
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
 			}
 			else {
 				tool_cancel();
@@ -555,7 +557,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			window_options_open();
 			break;
 		case DDIDX_SCREENSHOT:
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, sint8) = 10;
+			gScreenshotCountdown = 10;
 			break;
 		case DDIDX_GIANT_SCREENSHOT:
 			screenshot_giant();
@@ -671,7 +673,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
-		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_LAND].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_WATER].type = WWT_EMPTY;
@@ -680,12 +682,12 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
 		}
 
-		if (gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if (gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
 		}
 
-		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_EMPTY;
@@ -1309,8 +1311,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 		if (*grid_x == (sint16)0x8000)
 			return;
 
-		RCT2_GLOBAL(0x00F64F15, uint8) = gWindowScenerySecondaryColour;
-		RCT2_GLOBAL(0x00F64F16, uint8) = gWindowSceneryTertiaryColour;
+		_unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
 		// Also places it in lower but think thats for clobering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
@@ -1496,7 +1497,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			for (; zAttemptRange != 0; zAttemptRange--){
 				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
 
-				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+				gDisableErrorWindowSound = true;
 				gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 				int cost = game_do_command(
 					cur_grid_x,
@@ -1507,7 +1508,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 					gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000),
 					gSceneryPlaceZ
 				);
-				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+				gDisableErrorWindowSound = false;
 
 				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
@@ -1567,10 +1568,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		for (; zAttemptRange != 0; zAttemptRange--) {
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, RCT2_GLOBAL(0x00F64F15, uint16));
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, _unkF64F15);
+			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
@@ -1604,10 +1605,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		for (; zAttemptRange != 0; zAttemptRange--) {
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+			gDisableErrorWindowSound = true;
 			gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+			gDisableErrorWindowSound = false;
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
@@ -1633,16 +1634,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-		registers regs = {
-			.eax = gridX,
-			.ebx = flags,
-			.ecx = gridY,
-			.edx = parameter_2,
-			.esi = GAME_COMMAND_PLACE_BANNER,
-			.edi = parameter_3
-		};
 		game_command_callback = game_command_callback_place_banner;
-		game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
+		game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
 		break;
 	}
 	}
@@ -1660,8 +1653,8 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gClearSceneryCost != MONEY32_UNDEFINED) {
+			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;
@@ -1722,10 +1715,11 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 	int ecx = gMapSelectPositionA.y;
 	int edi = gMapSelectPositionB.x;
 	int ebp = gMapSelectPositionB.y;
-	money32 cost = game_do_command(eax, 0, ecx, 0, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
+	int clear = (gClearSmallScenery << 0) | (gClearLargeScenery << 1) | (gClearFootpath << 2);
+	money32 cost = game_do_command(eax, 0, ecx, clear, GAME_COMMAND_CLEAR_SCENERY, edi, ebp);
 
-	if (RCT2_GLOBAL(0x00F1AD62, money32) != cost){
-		RCT2_GLOBAL(0x00F1AD62, money32) = cost;
+	if (gClearSceneryCost != cost) {
+		gClearSceneryCost = cost;
 		window_invalidate_by_class(WC_CLEAR_SCENERY);
 		return;
 	}
@@ -1739,8 +1733,8 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gClearSceneryCost != MONEY32_UNDEFINED) {
+			gClearSceneryCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;
@@ -2187,7 +2181,7 @@ static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, ui
 			parameter_2,
 			GAME_COMMAND_PLACE_FENCE,
 			gSceneryPlaceZ,
-			RCT2_GLOBAL(0x00F64F15, uint16));
+			_unkF64F15);
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
@@ -2318,16 +2312,16 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 0)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			(parameter2 & 0xFF) == _unkF64F0E &&
+			gSceneryPlaceZ == _unkF64F0A &&
 			gSceneryPlaceObject == selected_tab){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(0x00F64F0E, uint8) = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0E = (parameter2 & 0xFF);
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 &&
@@ -2395,7 +2389,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
 			(parameter2 & 0xFF) == gSceneryGhostWallRotation &&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16)
+			gSceneryPlaceZ == _unkF64F0A
 			){
 			return;
 		}
@@ -2403,7 +2397,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 
 		gSceneryGhostWallRotation = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 &&
@@ -2456,7 +2450,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		if ((gSceneryGhostType & (1 << 3)) &&
 			mapTile.x == gSceneryGhostPosition.x &&
 			mapTile.y == gSceneryGhostPosition.y &&
-			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			gSceneryPlaceZ == _unkF64F0A &&
 			(parameter3 & 0xFFFF) == gSceneryPlaceObject
 		) {
 			return;
@@ -2465,7 +2459,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery_remove_ghost_tool_placement();
 
 		gSceneryPlaceObject = (parameter3 & 0xFFFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
+		_unkF64F0A = gSceneryPlaceZ;
 
 		bl = 1;
 		if (gSceneryPlaceZ != 0 && gSceneryShiftPressed) {

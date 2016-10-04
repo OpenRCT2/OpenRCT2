@@ -17,6 +17,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "addresses.h"
 #include "common.h"
 #include "platform/platform.h"
 #include "scenario.h"
@@ -130,7 +131,11 @@ extern rct_string_id gErrorStringId;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[68];
 
+#ifndef NO_RCT2
 #define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+#else
+extern uint32 gCurrentTicks;
+#endif
 
 extern uint16 gTicksSinceLastUpdate;
 extern uint32 gLastTickCount;
@@ -140,6 +145,9 @@ extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern int gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
+
+extern uint8 gUnk13CA740;
+extern uint8 gUnk141F568;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();
@@ -157,6 +165,7 @@ void game_increase_game_speed();
 void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
+bool game_load_sv6_path(const char * path);
 int game_load_sv6(SDL_RWops* rw);
 int game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);

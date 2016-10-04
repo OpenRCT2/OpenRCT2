@@ -20,8 +20,8 @@
 #include "../common.h"
 #include "peep.h"
 
-#define STAFF_MAX_COUNT 0xC8
-#define STAFF_TYPE_COUNT 0x04
+#define STAFF_MAX_COUNT		200
+#define STAFF_TYPE_COUNT	4
 
 enum STAFF_MODE {
 	STAFF_MODE_NONE,
@@ -45,14 +45,27 @@ enum STAFF_ORDERS{
 	STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
-extern uint32 *gStaffPatrolAreas;
-extern uint8 *gStaffModes;
-#define gStaffDrawPatrolAreas	RCT2_GLOBAL(0x009DEA50, uint16)
+enum ENTERTAINER_COSTUME {
+	ENTERTAINER_COSTUME_PANDA,
+	ENTERTAINER_COSTUME_TIGER,
+	ENTERTAINER_COSTUME_ELEPHANT,
+	ENTERTAINER_COSTUME_ROMAN,
+	ENTERTAINER_COSTUME_GORILLA,
+	ENTERTAINER_COSTUME_SNOWMAN,
+	ENTERTAINER_COSTUME_KNIGHT,
+	ENTERTAINER_COSTUME_ASTRONAUT,
+	ENTERTAINER_COSTUME_BANDIT,
+	ENTERTAINER_COSTUME_SHERIFF,
+	ENTERTAINER_COSTUME_PIRATE,
+	ENTERTAINER_COSTUME_COUNT,
+};
 
-#define gStaffColours			RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)
-#define gStaffHandymanColour	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)
-#define gStaffMechanicColour	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, colour_t)
-#define gStaffSecurityColour	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, colour_t)
+extern uint32 gStaffPatrolAreas[204 * 128];
+extern uint8 gStaffModes[204];
+extern uint16 gStaffDrawPatrolAreas;
+extern colour_t gStaffHandymanColour;
+extern colour_t gStaffMechanicColour;
+extern colour_t gStaffSecurityColour;
 
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
@@ -69,5 +82,9 @@ int staff_is_location_in_patrol(rct_peep *mechanic, int x, int y);
 int staff_path_finding(rct_peep* peep);
 void staff_reset_stats();
 bool staff_is_patrol_area_set(int staffIndex, int x, int y);
+void staff_set_patrol_area(int staffIndex, int x, int y, bool value);
+void staff_toggle_patrol_area(int staffIndex, int x, int y);
+colour_t staff_get_colour(uint8 staffType);
+void staff_set_colour(uint8 staffType, colour_t value);
 
 #endif

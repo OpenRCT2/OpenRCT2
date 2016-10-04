@@ -219,13 +219,11 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle)
 
 static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-
-	for (; vehicle->remaining_distance >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; vehicle->remaining_distance >= 13962; _vehicleUnkF64E10++) {
 		uint8 trackType = vehicle->track_type >> 2;
 		if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
 			vehicle->track_progress == 160) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 1);
+			_vehicleMotionTrackFlags |= (1 << 1);
 		}
 
 		uint16 trackProgress = vehicle->track_progress + 1;
@@ -233,8 +231,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		const rct_vehicle_info *moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 		uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 		if (trackProgress >= trackTotalProgress) {
-			RCT2_GLOBAL(0x00F64E36, uint8) = TrackDefinitions[trackType].vangle_end;
-			RCT2_GLOBAL(0x00F64E37, uint8) = TrackDefinitions[trackType].bank_end;
+			_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
+			_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 			rct_map_element* trackElement =
 				map_get_track_element_at_of_type_seq(
 					vehicle->track_x,
@@ -255,8 +253,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
 				return false;
 
-			if (TrackDefinitions[output.element->properties.track.type].vangle_start != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				TrackDefinitions[output.element->properties.track.type].bank_start != RCT2_GLOBAL(0x00F64E37, uint8))
+			if (TrackDefinitions[output.element->properties.track.type].vangle_start != _vehicleVAngleEndF64E36 ||
+				TrackDefinitions[output.element->properties.track.type].bank_start != _vehicleBankEndF64E37)
 				return false;
 
 			vehicle->track_x = output.x;
@@ -281,17 +279,17 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 
 		uint8 bx = 0;
 		unk.z += RideData5[ride->type].z_offset;
-		if (unk.x != unk_F64E20->x)
+		if (unk.x != unk_F64E20.x)
 			bx |= (1 << 0);
-		if (unk.y != unk_F64E20->y)
+		if (unk.y != unk_F64E20.y)
 			bx |= (1 << 1);
-		if (unk.z != unk_F64E20->z)
+		if (unk.z != unk_F64E20.z)
 			bx |= (1 << 2);
 
 		vehicle->remaining_distance -= dword_9A2930[bx];
-		unk_F64E20->x = unk.x;
-		unk_F64E20->y = unk.y;
-		unk_F64E20->z = unk.z;
+		unk_F64E20.x = unk.x;
+		unk_F64E20.y = unk.y;
+		unk_F64E20.z = unk.z;
 
 		vehicle->sprite_direction = moveInfo->direction;
 		vehicle->bank_rotation = moveInfo->bank_rotation;
@@ -306,16 +304,14 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 
 static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-
-	for (; vehicle->remaining_distance < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
+	for (; vehicle->remaining_distance < 0; _vehicleUnkF64E10++) {
 		uint16 trackProgress = vehicle->track_progress - 1;
 		const rct_vehicle_info *moveInfo;
 
 		if ((sint16)trackProgress == -1) {
 			uint8 trackType = vehicle->track_type >> 2;
-			RCT2_GLOBAL(0x00F64E36, uint8) = TrackDefinitions[trackType].vangle_start;
-			RCT2_GLOBAL(0x00F64E37, uint8) = TrackDefinitions[trackType].bank_start;
+			_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
+			_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 			rct_map_element* trackElement =
 				map_get_track_element_at_of_type_seq(
 					vehicle->track_x,
@@ -334,8 +330,8 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 			if (!track_block_get_previous(input.x, input.y, input.element, &output))
 				return false;
 
-			if (TrackDefinitions[output.begin_element->properties.track.type].vangle_end != RCT2_GLOBAL(0x00F64E36, uint8) ||
-				TrackDefinitions[output.begin_element->properties.track.type].bank_end != RCT2_GLOBAL(0x00F64E37, uint8))
+			if (TrackDefinitions[output.begin_element->properties.track.type].vangle_end != _vehicleVAngleEndF64E36 ||
+				TrackDefinitions[output.begin_element->properties.track.type].bank_end != _vehicleBankEndF64E37)
 				return false;
 
 			vehicle->track_x = output.begin_x;
@@ -345,7 +341,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 			vehicle->track_type |= output.begin_element->properties.track.type << 2;
 
 			if (output.begin_element->properties.track.type == TRACK_ELEM_END_STATION) {
-				RCT2_GLOBAL(0x00F64E18, uint32) = (1 << 0);
+				_vehicleMotionTrackFlags = (1 << 0);
 			}
 
 			moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
@@ -367,17 +363,17 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 
 		uint8 bx = 0;
 		unk.z += RideData5[ride->type].z_offset;
-		if (unk.x != unk_F64E20->x)
+		if (unk.x != unk_F64E20.x)
 			bx |= (1 << 0);
-		if (unk.y != unk_F64E20->y)
+		if (unk.y != unk_F64E20.y)
 			bx |= (1 << 1);
-		if (unk.z != unk_F64E20->z)
+		if (unk.z != unk_F64E20.z)
 			bx |= (1 << 2);
 
 		vehicle->remaining_distance += dword_9A2930[bx];
-		unk_F64E20->x = unk.x;
-		unk_F64E20->y = unk.y;
-		unk_F64E20->z = unk.z;
+		unk_F64E20.x = unk.x;
+		unk_F64E20.y = unk.y;
+		unk_F64E20.z = unk.z;
 
 		vehicle->sprite_direction = moveInfo->direction;
 		vehicle->bank_rotation = moveInfo->bank_rotation;
@@ -396,32 +392,31 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  */
 int cable_lift_update_track_motion(rct_vehicle *cableLift)
 {
-	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
+	_vehicleF64E2C = 0;
 	gCurrentVehicle = cableLift;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
-	RCT2_GLOBAL(0x00F64E1C, uint32) = (uint32)-1;
+	_vehicleMotionTrackFlags = 0;
+	_vehicleStationIndex = 0xFF;
 
 	cableLift->velocity += cableLift->acceleration;
-	RCT2_GLOBAL(0x00F64E08, sint32) = cableLift->velocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (cableLift->velocity / 1024) * 42;
+	_vehicleVelocityF64E08 = cableLift->velocity;
+	_vehicleVelocityF64E0C = (cableLift->velocity / 1024) * 42;
 
 	rct_vehicle* frontVehicle = cableLift;
 	if (cableLift->velocity < 0) {
 		frontVehicle = vehicle_get_tail(cableLift);
 	}
 
-	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = frontVehicle;
+	_vehicleFrontVehicle = frontVehicle;
 
 	for (rct_vehicle* vehicle = frontVehicle;;) {
 		vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
-		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
-		vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+		_vehicleUnkF64E10 = 1;
+		vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
 		if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962) {
-			rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-			unk_F64E20->x = vehicle->x;
-			unk_F64E20->y = vehicle->y;
-			unk_F64E20->z = vehicle->z;
+			unk_F64E20.x = vehicle->x;
+			unk_F64E20.y = vehicle->y;
+			unk_F64E20.z = vehicle->z;
 			invalidate_sprite_2((rct_sprite*)vehicle);
 
 			while (true) {
@@ -430,11 +425,11 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 						break;
 					}
 					else {
-						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
-						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance - 13962;
+						_vehicleMotionTrackFlags |= (1 << 5);
+						_vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
 						vehicle->remaining_distance = 13962;
 						vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
-						RCT2_GLOBAL(0x00F64E10, uint32)++;
+						_vehicleUnkF64E10++;
 						continue;
 					}
 				}
@@ -443,24 +438,24 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 						break;
 					}
 					else {
-						RCT2_GLOBAL(0x00F64E18, uint32) |= (1 << 5);
-						RCT2_GLOBAL(0x00F64E0C, uint32) -= vehicle->remaining_distance + 1;
+						_vehicleMotionTrackFlags |= (1 << 5);
+						_vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
 						vehicle->remaining_distance = -1;
 						vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
-						RCT2_GLOBAL(0x00F64E10, uint32)++;
+						_vehicleUnkF64E10++;
 					}
 				}
 			}
 			sprite_move(
-				unk_F64E20->x,
-				unk_F64E20->y,
-				unk_F64E20->z,
+				unk_F64E20.x,
+				unk_F64E20.y,
+				unk_F64E20.z,
 				(rct_sprite*)vehicle);
 
 			invalidate_sprite_2((rct_sprite*)vehicle);
 		}
-		vehicle->acceleration /= RCT2_GLOBAL(0x00F64E10, uint32);
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		vehicle->acceleration /= _vehicleUnkF64E10;
+		if (_vehicleVelocityF64E08 >= 0) {
 			if (vehicle->next_vehicle_on_train == 0xFFFF)
 				break;
 			vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
@@ -495,5 +490,5 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	ecx -= edx / frictionTotal;
 
 	cableLift->acceleration = ecx;
-	return RCT2_GLOBAL(0x00F64E18, uint32);
+	return _vehicleMotionTrackFlags;
 }

@@ -14,18 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../peep/peep.h"
 #include "../sprites.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 enum {
 	PAGE_INDIVIDUAL,
@@ -146,11 +145,13 @@ static int _window_guest_list_selected_view;     // 0x00F1EE13
 static int _window_guest_list_num_pages;         // 0x00F1EE08
 static int _window_guest_list_num_groups;        // 0x00F1AF22
 static bool _window_guest_list_tracking_only;
+static uint16 _window_guest_list_filter_arguments[4];
 
 static uint16 _window_guest_list_groups_num_guests[240];
 static uint32 _window_guest_list_groups_argument_1[240];
 static uint32 _window_guest_list_groups_argument_2[240];
 static uint8 _window_guest_list_groups_guest_faces[240 * 58];
+static uint8 _window_guest_list_group_index[240];
 
 static int window_guest_list_is_peep_in_filter(rct_peep* peep);
 static void window_guest_list_find_groups();
@@ -225,88 +226,78 @@ void window_guest_list_open()
 }
 
 /**
-* type == 0 -> guests on ride
-* type == 1 -> guests in queue
-* type == 2 -> guests thinking about ride
-* type == 3 -> guests thinking X, opened from news item
-* index is number of the ride or index of the thought
-* values of eax and edx probably determine the filter name string
-*
-*  rct2: 0x006993BA
-*/
+ *
+ *  rct2: 0x006993BA
+ *
+ * @param index The number of the ride or index of the thought
+ */
 void window_guest_list_open_with_filter(int type, int index)
 {
-	uint32 eax, edx;
-
 	window_guest_list_open();
 
 	_window_guest_list_selected_page = 0;
 	_window_guest_list_num_pages = 1;
 	_window_guest_list_tracking_only = false;
 
-	RCT2_GLOBAL(0x009AC7E0, uint8) = 0;
-	RCT2_GLOBAL(0x009AC7F0, uint8) = 0;
-
-	rct_ride *ride = NULL;
-	if (type != 3) {	// common for cases 0, 1, 2
-		ride = get_ride(index & 0x000000FF);
-		eax = ride->name;
-		edx = ride->name_arguments;
-	}
-
-	switch(type)
+	switch(type) {
+	case GLFT_GUESTS_ON_RIDE:
 	{
-	case 0:
+		rct_ride *ride = get_ride(index & 0x000000FF);
+		_window_guest_list_filter_arguments[0] = STR_ON_RIDE;
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)) {
+			_window_guest_list_filter_arguments[0] = STR_IN_RIDE;
+		}
+		_window_guest_list_filter_arguments[1] = ride->name;
+		_window_guest_list_filter_arguments[2] = ride->name_arguments_type_name;
+		_window_guest_list_filter_arguments[3] = ride->name_arguments_number;
+
 		_window_guest_list_selected_filter = 0;
-
-		eax = (eax << 16) + STR_ON_RIDE;
-
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
-			eax = (eax << 16) + STR_IN_RIDE;
-
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
-
 		_window_guest_list_highlighted_index = 0xFFFF;
 		_window_guest_list_selected_tab = 0;
 		_window_guest_list_selected_view = 0;
 		break;
-	case 1:
+	}
+	case GLFT_GUESTS_IN_QUEUE:
+	{
+		rct_ride *ride = get_ride(index & 0x000000FF);
+		_window_guest_list_filter_arguments[0] = STR_QUEUING_FOR;
+		_window_guest_list_filter_arguments[1] = ride->name;
+		_window_guest_list_filter_arguments[2] = ride->name_arguments_type_name;
+		_window_guest_list_filter_arguments[3] = ride->name_arguments_number;
+
 		_window_guest_list_selected_filter = 0;
-
-		eax = (eax << 16) + STR_QUEUING_FOR;
-
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
-
 		_window_guest_list_highlighted_index = 0xFFFF;
 		_window_guest_list_selected_tab = 0;
 		_window_guest_list_selected_view = 0;
 		break;
-	case 2:
+	}
+	case GLFT_GUESTS_THINKING_ABOUT_RIDE:
+	{
+		rct_ride *ride = get_ride(index & 0x000000FF);
+		_window_guest_list_filter_arguments[0] = STR_NONE;
+		_window_guest_list_filter_arguments[1] = ride->name;
+		_window_guest_list_filter_arguments[2] = ride->name_arguments_type_name;
+		_window_guest_list_filter_arguments[3] = ride->name_arguments_number;
+
 		_window_guest_list_selected_filter = 1;
-
-		eax = (eax << 16) + STR_NONE;
-
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
-
 		_window_guest_list_highlighted_index = 0xFFFF;
 		_window_guest_list_selected_tab = 0;
 		_window_guest_list_selected_view = 1;
 		break;
-	case 3:
+	}
+	case GLFT_GUESTS_THINKING_X:
+	{
+		_window_guest_list_filter_arguments[0] = PeepThoughts[(index & 0x000000FF)];
+		_window_guest_list_filter_arguments[1] = 0;
+		_window_guest_list_filter_arguments[2] = 0;
+		_window_guest_list_filter_arguments[3] = 0;
+
 		_window_guest_list_selected_filter = 1;
-
-		index = PeepThoughts[(index & 0x000000FF)];
-
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = index;
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = 0;
-
 		_window_guest_list_highlighted_index = 0xFFFF;
 		_window_guest_list_selected_tab = 0;
 		_window_guest_list_selected_view = 1;
 		break;
+	}
 	}
 }
 
@@ -484,7 +475,6 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		}
 		w->var_492 = numGuests;
 		y = numGuests * 10;
-		RCT2_GLOBAL(0x00F1EE09, uint32) = numGuests;
 		_window_guest_list_num_pages = (int) ceilf((float)numGuests / 3173);
 		if (_window_guest_list_num_pages == 0)
 			_window_guest_list_selected_page = 0;
@@ -561,8 +551,8 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 	case PAGE_SUMMARISED:
 		i = y / 21;
 		if (i < _window_guest_list_num_groups) {
-			RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[i];
-			RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[i];
+			memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[i], 4);
+			memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[i], 4);
 			_window_guest_list_selected_filter = _window_guest_list_selected_view;
 			_window_guest_list_selected_tab = PAGE_INDIVIDUAL;
 			window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
@@ -595,7 +585,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, in
  */
 static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -673,17 +663,18 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3;
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
 		if (_window_guest_list_selected_filter != -1) {
-			if (RCT2_GLOBAL(0x00F1EDF6, sint16) != -1)
+			if (_window_guest_list_filter_arguments[0] != 0xFFFF) {
 				format = filterNames[_window_guest_list_selected_filter]; // Not sure whether the index will ever be 2
-			else
+			} else {
 				format = STR_GUESTS_FILTER_THINKING_ABOUT;
+			}
 		} else {
 			format = STR_ALL_GUESTS;
 		}
 	} else {
 		format = STR_ALL_GUESTS_SUMMARISED;
 	}
-	gfx_draw_string_left_clipped(dpi, format, RCT2_ADDRESS(0x00F1EDF6, void), 0, x, y, 310);
+	gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments, 0, x, y, 310);
 
 	// Number of guests (list items)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
@@ -742,7 +733,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				}
 
 				// Guest name
-				set_format_arg(0, uint16, peep->name_string_idx);
+				set_format_arg(0, rct_string_id, peep->name_string_idx);
 				set_format_arg(2, uint32, peep->id);
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 113);
 
@@ -774,10 +765,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 						if (thought->var_2 > 5)
 							break;
 
-						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
-
-						set_format_arg(0, uint32, argument_1);
-						set_format_arg(4, uint32, argument_2);
+						peep_thought_set_format_args(&peep->thoughts[j]);
 						gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 118, y - 1, 329);
 						break;
 					}
@@ -820,7 +808,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 414);
 
 				// Draw guest count
-				set_format_arg(8, uint16, STR_GUESTS_COUNT_COMMA_SEP);
+				set_format_arg(8, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);
 				gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, 0, 326, y - 1);
 			}
 			y += 21;
@@ -845,11 +833,14 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 
 	_window_guest_list_selected_view = temp;
 
-	if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0xFFFF && _window_guest_list_selected_filter == 1)
+	if (_window_guest_list_filter_arguments[0] == 0xFFFF && _window_guest_list_selected_filter == 1)
 		argument1 |= 0xFFFF;
 
-	if (argument1 == RCT2_GLOBAL(0x00F1EDF6, uint32) && argument2 == RCT2_GLOBAL(0x00F1EDFA, uint32))
+	uint32 check1 = _window_guest_list_filter_arguments[0] | (_window_guest_list_filter_arguments[1] << 16);
+	uint32 check2 = _window_guest_list_filter_arguments[2] | (_window_guest_list_filter_arguments[3] << 16);
+	if (argument1 == check1 && argument2 == check2) {
 		return 0;
+	}
 	return 1;
 }
 
@@ -867,17 +858,26 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 		get_arguments_from_action(peep, argument_1, argument_2);
 		break;
 	case VIEW_THOUGHTS:
-		if (peep->thoughts[0].var_2 <= 5) {
-			if (peep->thoughts[0].type != PEEP_THOUGHT_TYPE_NONE) {
-				get_arguments_from_thought(peep->thoughts[0], argument_1, argument_2);
-				break;
-			}
+	{
+		rct_peep_thought *thought = &peep->thoughts[0];
+		if (thought->var_2 <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE) {
+			// HACK The out arguments here are used to draw the group text so we just return
+			//      gCommonFormatArgs as two uint32s.
+			memset(gCommonFormatArgs, 0, sizeof(*argument_1) + sizeof(*argument_2));
+			peep_thought_set_format_args(thought);
+			memcpy(argument_1, gCommonFormatArgs, sizeof(*argument_1));
+			memcpy(argument_2, gCommonFormatArgs + sizeof(*argument_1), sizeof(*argument_2));
+		} else {
+			*argument_1 = 0;
+			*argument_2 = 0;
 		}
+		break;
+	}
 	default:
 		*argument_1 = 0;
 		*argument_2 = 0;
+		break;
 	}
-	return;
 }
 
 /**
@@ -923,10 +923,10 @@ static void window_guest_list_find_groups()
 		peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
 
 		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
-		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
-		RCT2_GLOBAL(0x00F1EDFA, uint32) = _window_guest_list_groups_argument_2[groupIndex];
+		memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[groupIndex], 4);
+		memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[groupIndex], 4);
 
-		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
+		_window_guest_list_group_index[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
 		_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
@@ -951,7 +951,7 @@ static void window_guest_list_find_groups()
 			_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep2) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 		}
 
-		if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0) {
+		if (_window_guest_list_filter_arguments[0] == 0) {
 			_window_guest_list_num_groups--;
 			continue;
 		}
@@ -969,7 +969,7 @@ static void window_guest_list_find_groups()
 
 		int argument_1 = _window_guest_list_groups_argument_1[groupIndex];
 		int argument_2 = _window_guest_list_groups_argument_2[groupIndex];
-		int bl = RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex];
+		int bl = _window_guest_list_group_index[groupIndex];
 		int temp;
 
 		do {
@@ -990,8 +990,8 @@ static void window_guest_list_find_groups()
 			memcpy(&(_window_guest_list_groups_guest_faces[groupIndex * 56]), &(_window_guest_list_groups_guest_faces[swap_position * 56]), 56);
 			memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
 
-			temp = RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position];
-			RCT2_ADDRESS(0x00F1AF26, uint8)[swap_position] = bl;
+			temp = _window_guest_list_group_index[swap_position];
+			_window_guest_list_group_index[swap_position] = bl;
 			bl = temp;
 		} while (++swap_position <= groupIndex);
 

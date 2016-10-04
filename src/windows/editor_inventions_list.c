@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../cursors.h"
+#include "../editor.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -180,7 +180,7 @@ static int research_item_is_always_researched(rct_research_item *researchItem)
 static void research_rides_setup(){
 	// Reset all objects to not required
 	for (uint8 object_type = OBJECT_TYPE_RIDE; object_type < 11; object_type++){
-		uint8* in_use = RCT2_ADDRESS(0x0098DA38, uint8*)[object_type];
+		uint8* in_use = gEditorSelectedObjects[object_type];
 		for (uint8 num_objects = object_entry_group_counts[object_type]; num_objects != 0; num_objects--){
 			*in_use++ = 0;
 		}
@@ -190,7 +190,7 @@ static void research_rides_setup(){
 	for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
 		rct_ride* ride = get_ride(rideIndex);
 		if (ride->type == RIDE_TYPE_NULL)continue;
-		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
+		gEditorSelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
 	}
 
 	for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++){
@@ -218,7 +218,7 @@ static void research_rides_setup(){
 					continue;
 
 				// If master ride not in use
-				if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
+				if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
 					continue;
 
 				if (ride_base_type == master_ride->ride_type[0] ||
@@ -232,7 +232,7 @@ static void research_rides_setup(){
 
 		if (!master_found){
 			// If not in use
-			if (!(RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
+			if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0)))
 				continue;
 			if (ride_base_type != ride_entry->ride_type[0] &&
 				ride_base_type != ride_entry->ride_type[1] &&
@@ -321,14 +321,14 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 
 	if (researchItem < 0x10000) {
 		sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
-		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)0xFFFFFFFF)
+		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)-1)
 			return 0;
 
 		return sceneryEntry->name;
 	}
 
 	rideEntry = get_ride_entry(researchItem & 0xFF);
-	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)0xFFFFFFFF)
+	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1)
 		return 0;
 
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
@@ -419,7 +419,9 @@ static void move_research_item(rct_research_item *beforeItem)
 	rct_window *w;
 	rct_research_item *researchItem, draggedItem;
 
-	if (_editorInventionsListDraggedItem == beforeItem - 1)
+	// We only really care about `_editorInventionsListDraggedItem == beforeItem - 1`,
+	// but this would cause a GCC warning due to -Warray-bounds
+	if (_editorInventionsListDraggedItem < beforeItem)
 		return;
 
 	// Back up the dragged item
@@ -689,7 +691,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, int scr
  */
 static void window_editor_inventions_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -792,7 +794,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 
 	void *chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex & 0xFF];
 
-	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
+	if (chunk == NULL || chunk == (void*)-1)
 		return;
 
 	rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex & 0xFF].entry;

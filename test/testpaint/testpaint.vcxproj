@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{57E60BA1-FB76-4316-909E-C1449C142327}</ProjectGuid>
+    <RootNamespace>testpaint</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\testpaint\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>openrct2</TargetName>
+    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\testpaint\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>openrct2</TargetName>
+    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>__TESTPAINT__;DEBUG;NO_VEHICLES;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4200</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>__TESTPAINT__;NO_VEHICLES;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4200</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="data.h" />
+    <ClInclude Include="intercept.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\paint\paint_helpers.c" />
+    <ClCompile Include="compat.c" />
+    <ClCompile Include="data.c" />
+    <ClCompile Include="intercept.c" />
+    <ClCompile Include="intercept_2.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\..\src\addresses.c" />
+    <ClCompile Include="..\..\src\diagnostic.c" />
+    <ClCompile Include="..\..\src\hook.c" />
+    <ClCompile Include="..\..\src\paint\map_element\map_element.c" />
+    <ClCompile Include="..\..\src\ride\coaster\air_powered_vertical_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\bobsleigh_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\compact_inverted_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\corkscrew_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\flying_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\giga_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\heartline_twister_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\inverted_hairpin_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\inverted_impulse_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\inverted_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\junior_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\lay_down_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\lim_launched_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\looping_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\mine_ride.c" />
+    <ClCompile Include="..\..\src\ride\coaster\mine_train_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\mini_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\mini_suspended_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\multi_dimension_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\reverser_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\reverse_freefall_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\side_friction_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\spiral_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\stand_up_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\steeplechase.c" />
+    <ClCompile Include="..\..\src\ride\coaster\suspended_swinging_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\twister_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\vertical_drop_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\virginia_reel.c" />
+    <ClCompile Include="..\..\src\ride\coaster\wild_mouse.c" />
+    <ClCompile Include="..\..\src\ride\coaster\wooden_roller_coaster.c" />
+    <ClCompile Include="..\..\src\ride\coaster\wooden_wild_mouse.c" />
+    <ClCompile Include="..\..\src\ride\gentle\car_ride.c" />
+    <ClCompile Include="..\..\src\ride\gentle\circus_show.c" />
+    <ClCompile Include="..\..\src\ride\gentle\crooked_house.c" />
+    <ClCompile Include="..\..\src\ride\gentle\dodgems.c" />
+    <ClCompile Include="..\..\src\ride\gentle\ferris_wheel.c" />
+    <ClCompile Include="..\..\src\ride\gentle\flying_saucers.c" />
+    <ClCompile Include="..\..\src\ride\gentle\ghost_train.c" />
+    <ClCompile Include="..\..\src\ride\gentle\haunted_house.c" />
+    <ClCompile Include="..\..\src\ride\gentle\maze.c" />
+    <ClCompile Include="..\..\src\ride\gentle\merry_go_round.c" />
+    <ClCompile Include="..\..\src\ride\gentle\mini_golf.c" />
+    <ClCompile Include="..\..\src\ride\gentle\mini_helicopters.c" />
+    <ClCompile Include="..\..\src\ride\gentle\monorail_cycles.c" />
+    <ClCompile Include="..\..\src\ride\gentle\observation_tower.c" />
+    <ClCompile Include="..\..\src\ride\gentle\space_rings.c" />
+    <ClCompile Include="..\..\src\ride\gentle\spiral_slide.c" />
+    <ClCompile Include="..\..\src\ride\ride_data.c" />
+    <ClCompile Include="..\..\src\ride\shops\facility.c" />
+    <ClCompile Include="..\..\src\ride\shops\misc.c" />
+    <ClCompile Include="..\..\src\ride\shops\shop.c" />
+    <ClCompile Include="..\..\src\ride\thrill\3d_cinema.c" />
+    <ClCompile Include="..\..\src\ride\thrill\enterprise.c" />
+    <ClCompile Include="..\..\src\ride\thrill\go_karts.c" />
+    <ClCompile Include="..\..\src\ride\thrill\launched_freefall.c" />
+    <ClCompile Include="..\..\src\ride\thrill\magic_carpet.c" />
+    <ClCompile Include="..\..\src\ride\thrill\motion_simulator.c" />
+    <ClCompile Include="..\..\src\ride\thrill\pirate_ship.c" />
+    <ClCompile Include="..\..\src\ride\thrill\roto_drop.c" />
+    <ClCompile Include="..\..\src\ride\thrill\swinging_inverter_ship.c" />
+    <ClCompile Include="..\..\src\ride\thrill\top_spin.c" />
+    <ClCompile Include="..\..\src\ride\thrill\twist.c" />
+    <ClCompile Include="..\..\src\ride\track_data.c" />
+    <ClCompile Include="..\..\src\ride\track_data_old.c" />
+    <ClCompile Include="..\..\src\ride\track_paint.c" />
+    <ClCompile Include="..\..\src\ride\transport\chairlift.c" />
+    <ClCompile Include="..\..\src\ride\transport\lift.c" />
+    <ClCompile Include="..\..\src\ride\transport\minature_railway.c" />
+    <ClCompile Include="..\..\src\ride\transport\monorail.c" />
+    <ClCompile Include="..\..\src\ride\transport\suspended_monorail.c" />
+    <ClCompile Include="..\..\src\ride\water\boat_ride.c" />
+    <ClCompile Include="..\..\src\ride\water\dingy_slide.c" />
+    <ClCompile Include="..\..\src\ride\water\log_flume.c" />
+    <ClCompile Include="..\..\src\ride\water\river_rafts.c" />
+    <ClCompile Include="..\..\src\ride\water\river_rapids.c" />
+    <ClCompile Include="..\..\src\ride\water\splash_boats.c" />
+    <ClCompile Include="..\..\src\ride\water\submarine_ride.c" />
+    <ClCompile Include="..\..\src\ride\water\water_coaster.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

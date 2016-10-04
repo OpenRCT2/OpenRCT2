@@ -23,7 +23,7 @@
 #include <map>
 #include <string>
 
-class NetworkUser
+class NetworkUser final
 {
 public:
     std::string         Hash;
@@ -37,7 +37,7 @@ public:
     json_t * ToJson(json_t * json) const;
 };
 
-class NetworkUserManager
+class NetworkUserManager final
 {
 public:
     ~NetworkUserManager();

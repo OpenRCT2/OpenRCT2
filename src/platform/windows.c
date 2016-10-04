@@ -24,7 +24,6 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include "../addresses.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
 #include "../util/util.h"
@@ -117,8 +116,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	if (_dllModule == NULL) {
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 
 	// argv = CommandLineToArgvA(lpCmdLine, &argc);
 	argv = (char**)windows_get_command_line_args(&argc);
@@ -536,7 +533,7 @@ void platform_resolve_openrct_data_path()
 		free(customUserDataPathW);
 
 		// Ensure path ends with separator
-		int len = strlen(_userDataDirectoryPath);
+		size_t len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strcat(_userDataDirectoryPath, separator);
 		}
@@ -586,7 +583,7 @@ void platform_resolve_user_data_path()
 		free(customUserDataPathW);
 
 		// Ensure path ends with separator
-		int len = strlen(_userDataDirectoryPath);
+		size_t len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strcat(_userDataDirectoryPath, separator);
 		}
@@ -775,7 +772,6 @@ utf8 *platform_open_directory_browser(utf8 *title)
 int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
 {
 	char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
-	LOGFONTA lf;
 	HKEY hKey;
 	DWORD type, size;
 
@@ -783,14 +779,6 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	strcat(subkeyInfogrames, source);
 	strcpy(subkeyFishTechGroup, "Software\\Fish Technology Group\\");
 	strcat(subkeyFishTechGroup, source);
-
-	memset(&lf, 0, sizeof(lf));
-	lf.lfCharSet = charset;
-	lf.lfHeight = 12;
-	lf.lfWeight = 400;
-	strcpy(lf.lfFaceName, font);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_HFONT, HFONT) = CreateFontIndirectA(&lf);
 
 	if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyInfogrames, &hKey) != ERROR_SUCCESS)
 		return 0;

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -80,9 +79,9 @@ void window_main_open()
 	viewport_create(window, window->x, window->y, window->width, window->height, 0,0x0FFF,0x0FFF, 0, 0x1, -1);
 	window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
 	gCurrentRotation = 0;
-	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
-	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
-	RCT2_GLOBAL(0x009E32B3, uint8) = 0;
+	gShowGridLinesRefCount = 0;
+	gShowLandRightsRefCount = 0;
+	gShowConstuctionRightsRefCount = 0;
 	gFootpathSelectedType = 0;
 }
 

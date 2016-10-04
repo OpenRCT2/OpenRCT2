@@ -39,6 +39,11 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 [OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest stable and the develop branch. There is also a cross platform [Launcher](https://github.com/LRFLEW/OpenRCT2Launcher/releases) available that will automatically update your build of the game so that you always have the latest version.
 
+Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
+* ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
+* Ubuntu PPA: [`master` branch](https://launchpad.net/~openrct2/+archive/ubuntu/master) and [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (`develop` branch builds are temporarily on hold due to [missing functionality in bzr](https://bugs.launchpad.net/ubuntu/+source/bzr-git/+bug/1084403))
+* OpenSUSE OBS: [games/openrct2](https://build.opensuse.org/package/view_file/games/openrct2/openrct2.spec)
+
 # 3 Building the game
 
 ## 3.1 Building prerequisites
@@ -48,7 +53,8 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 ### Windows:
 - Vista / 7 / 8 / 10
 - Visual Studio 2015 Update 2 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
-- [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
+- [7-Zip](http://www.7-zip.org/) (for deployment only)
+- [NSIS](http://nsis.sourceforge.net/) (for deployment only)
 
 ### Mac:
 - [Homebrew](http://brew.sh)
@@ -66,13 +72,18 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ## 3.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS2015, run PowerShell and then navigate to the repository.
-3. Run the ```setenv.ps1``` script in the repository to set up your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
-4. Run ```install``` to download the required dependencies to build OpenRCT2.
-5. Run ```build all``` to build all the required components for OpenRCT2.
-6. Run ```run``` to run OpenRCT2.
+2. Open a new Developer Command Prompt for VS2015, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
+3. Run `msbuild openrct2.proj /t:build`.
 
-These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have used the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such ```g2.dat``` or language files.
+Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`.
+
+Other examples:
+```
+msbuild openrct2.proj /t:clean
+msbuild openrct2.proj /t:rebuild /p:configuration=release /p:platform=x64
+msbuild openrct2.proj /t:g2
+msbuild openrct2.proj /t:PublishPortable
+```
 
 ### Mac:
 We support native builds for macOS (limited to i386 only for now).

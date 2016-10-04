@@ -42,7 +42,7 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 void vehicle_visual_splash_effect(int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_submarine(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat);
-void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat);
+void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle);
+void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle);
 
 #endif

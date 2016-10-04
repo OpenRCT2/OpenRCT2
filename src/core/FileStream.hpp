@@ -30,7 +30,7 @@ enum
 /**
  * A stream for reading and writing to files. Wraps an SDL_RWops, SDL2's cross platform file stream.
  */
-class FileStream : public IStream
+class FileStream final : public IStream
 {
 private:
     SDL_RWops * _file;

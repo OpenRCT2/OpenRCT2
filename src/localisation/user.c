@@ -14,14 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "localisation.h"
 #include "user.h"
 
-utf8 *gUserStrings = RCT2_ADDRESS(0x0135A8F4, char);
+utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
 
 static bool user_string_exists(const utf8 *text);
 

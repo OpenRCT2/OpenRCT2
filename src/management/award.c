@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
@@ -68,7 +67,7 @@ static const rct_string_id AwardNewsStrings[] = {
 	STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-rct_award *gCurrentAwards = RCT2_ADDRESS(RCT2_ADDRESS_AWARD_LIST, rct_award);
+rct_award gCurrentAwards[MAX_AWARDS];
 
 bool award_is_positive(int type)
 {

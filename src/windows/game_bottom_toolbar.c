@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -270,11 +269,13 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
 	if (news_item_is_queue_empty()) {
+		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
 	} else {
 		newsItem = news_item_get(0);
+		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
 		window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
 		window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
@@ -320,9 +321,9 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
  */
 void window_game_bottom_toolbar_invalidate_news_item()
 {
-	window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type =
-		news_item_is_queue_empty() ? WWT_EMPTY : WWT_IMGBTN;
-	widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+	if (gScreenFlags == SCREEN_FLAGS_PLAYING) {
+		widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
+	}
 }
 
 /**
@@ -438,7 +439,8 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y, temperature, format;
+	int x, y, temperature;
+	rct_string_id format;
 
 	// Draw green inset rectangle on panel
 	gfx_fill_rect_inset(
@@ -460,7 +462,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-	set_format_arg(0, short, DateDayNames[day]);
+	set_format_arg(0, rct_string_id, DateDayNames[day]);
 	set_format_arg(2, short, month);
 	set_format_arg(4, short, year);
 	gfx_draw_string_centred(

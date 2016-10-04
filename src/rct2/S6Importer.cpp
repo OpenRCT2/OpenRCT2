@@ -122,7 +122,7 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
     sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
     sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
-    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 3048816);
+    sawyercoding_read_chunk_safe(rw, &_s6.next_free_map_element_pointer_index, 3048816);
 }
 
 void S6Importer::LoadScenario(SDL_RWops *rw)
@@ -145,7 +145,7 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
     sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
     sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
-    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 2560076);
+    sawyercoding_read_chunk_safe(rw, &_s6.next_free_map_element_pointer_index, 2560076);
     sawyercoding_read_chunk_safe(rw, &_s6.guests_in_park, 4);
     sawyercoding_read_chunk_safe(rw, &_s6.last_guests_in_park, 8);
     sawyercoding_read_chunk_safe(rw, &_s6.park_rating, 2);
@@ -157,8 +157,8 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
 void S6Importer::Import()
 {
-    RCT2_GLOBAL(0x009E34E4, rct_s6_header) = _s6.header;
-    *gS6Info = _s6.info;
+    // _s6.header
+    gS6Info = _s6.info;
 
     gDateMonthsElapsed = _s6.elapsed_months;
     gDateMonthTicks = _s6.current_day;
@@ -168,7 +168,7 @@ void S6Importer::Import()
 
     memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
 
-    RCT2_GLOBAL(0x0010E63B8, uint32) = _s6.dword_010E63B8;
+    gNextFreeMapElementPointerIndex = _s6.next_free_map_element_pointer_index;
     for (int i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
@@ -264,20 +264,20 @@ void S6Importer::Import()
     memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));
     gLandPrice = _s6.land_price;
     gConstructionRightsPrice = _s6.construction_rights_price;
-    RCT2_GLOBAL(0x01358774, uint16) = _s6.word_01358774;
+    // unk_01358774
     // pad_01358776
     // _s6.cd_key
     _gameVersion = _s6.game_version_number;
     gScenarioCompanyValueRecord = _s6.completed_company_value_record;
-    RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32) = _s6.loan_hash;
-    RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) = _s6.ride_count;
+    // _s6.loan_hash;
+    gRideCount = _s6.ride_count;
     // pad_013587CA
-    RCT2_GLOBAL(0x013587D0, uint32) = _s6.dword_013587D0;
+    gHistoricalProfit = _s6.historical_profit;
     // pad_013587D4
     memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
     gCashEncrypted = _s6.cash;
     // pad_013587FC
-    RCT2_GLOBAL(0x0135882E, uint16) = _s6.word_0135882E;
+    gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
     gMapSizeUnits = _s6.map_size_units;
     gMapSizeMinus2 = _s6.map_size_minus_2;
     gMapSize = _s6.map_size;
@@ -285,11 +285,11 @@ void S6Importer::Import()
     gSamePriceThroughoutParkA = _s6.same_price_throughout;
     _suggestedGuestMaximum = _s6.suggested_max_guests;
     gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
-    RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = _s6.last_entrance_style;
+    gLastEntranceStyle = _s6.last_entrance_style;
     // rct1_water_colour
     // pad_01358842
     memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
-    RCT2_GLOBAL(0x01359208, uint16) = _s6.word_01359208;
+    gMapBaseZ = _s6.map_base_z;
     memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
     memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
     gBankLoanInterestRate = _s6.current_interest_rate;
@@ -299,13 +299,13 @@ void S6Importer::Import()
     memcpy(gParkEntranceY, _s6.park_entrance_y, sizeof(_s6.park_entrance_y));
     memcpy(gParkEntranceZ, _s6.park_entrance_z, sizeof(_s6.park_entrance_z));
     memcpy(gParkEntranceDirection, _s6.park_entrance_direction, sizeof(_s6.park_entrance_direction));
-    memcpy(RCT2_ADDRESS(0x0135936C, char), _s6.scenario_filename, sizeof(_s6.scenario_filename));
-    memcpy(RCT2_ADDRESS(0x0135946C, uint8), _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
+    scenario_set_filename(_s6.scenario_filename);
+    memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
     memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
     memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
     gCurrentTicks = _s6.game_ticks_1;
     memcpy(gRideList, _s6.rides, sizeof(_s6.rides));
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = _s6.saved_age;
+    gSavedAge = _s6.saved_age;
     gSavedViewX = _s6.saved_view_x;
     gSavedViewY = _s6.saved_view_y;
     gSavedViewZoom = _s6.saved_view_zoom;
@@ -322,10 +322,10 @@ void S6Importer::Import()
     memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
     // unk_13CA73E
     // pad_13CA73F
-    RCT2_GLOBAL(0x013CA740, uint8) = _s6.byte_13CA740;
+    gUnk13CA740 = _s6.byte_13CA740;
     gClimate = _s6.climate;
     // pad_13CA741;
-    memcpy(RCT2_ADDRESS(0x013CA742, uint8), _s6.byte_13CA742, sizeof(_s6.byte_13CA742));
+    // byte_13CA742
     // pad_013CA747
     gClimateUpdateTimer = _s6.climate_update_timer;
     gClimateCurrentWeather = _s6.current_weather;
@@ -395,6 +395,41 @@ extern "C"
         delete s6Importer;
 
         // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
+        gScreenAge = 0;
+        gLastAutoSaveTick = SDL_GetTicks();
+        return result;
+    }
+
+    bool game_load_sv6_path(const char * path)
+    {
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->FixIssues = true;
+            s6Importer->LoadSavedGame(path);
+            s6Importer->Import();
+
+            openrct2_reset_object_tween_locations();
+            result = true;
+        }
+        catch (ObjectLoadException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (IOException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (Exception)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        }
+        delete s6Importer;
+
         gScreenAge = 0;
         gLastAutoSaveTick = SDL_GetTicks();
         return result;

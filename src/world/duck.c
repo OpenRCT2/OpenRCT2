@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../localisation/date.h"
@@ -36,7 +35,7 @@ static void duck_update_double_drink(rct_duck *duck);
 static void duck_update_fly_away(rct_duck *duck);
 
 // rct2: 0x009A3B04
-static const rct_xy16 duck_move_offset[] = {
+const rct_xy16 duck_move_offset[4] = {
 	{ -1,  0 },
 	{ 0,  1 },
 	{ 1,  0 },

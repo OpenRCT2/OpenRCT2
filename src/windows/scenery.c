@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
@@ -729,13 +728,13 @@ static void window_scenery_event_07(rct_window *w)
  */
 static void window_scenery_update(rct_window *w)
 {
-	rct_window *other = window_find_from_point(RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
+	rct_window *other = window_find_from_point(gCursorState.x, gCursorState.y);
 	if (other == w) {
-		int window_x = RCT2_GLOBAL(0x0142406C, int) - w->x + 26;
-		int window_y = RCT2_GLOBAL(0x01424070, int) - w->y;
+		int window_x = gCursorState.x - w->x + 26;
+		int window_y = gCursorState.y - w->y;
 
 		if (window_y < 44 || window_x <= w->width) {
-			int widgetIndex = window_find_widget_from_point(w, RCT2_GLOBAL(0x0142406C, int), RCT2_GLOBAL(0x01424070, int));
+			int widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL) {
 				w->scenery.hover_counter++;
 				if (w->scenery.hover_counter < 8) {
@@ -886,10 +885,10 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 	case WIDX_SCENERY_TAB_17:
 	case WIDX_SCENERY_TAB_18:
 	case WIDX_SCENERY_TAB_19:
-		set_format_arg(0, uint16, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
+		set_format_arg(0, rct_string_id, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
 		break;
 	case WIDX_SCENERY_TAB_20:
-		set_format_arg(0, uint16, STR_MISCELLANEOUS);
+		set_format_arg(0, rct_string_id, STR_MISCELLANEOUS);
 		break;
 	}
 }
@@ -1078,7 +1077,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + w->width - 0x1A, w->y + w->height - 13);
 	}
 
-	set_format_arg(0, uint16, sceneryEntry->name);
+	set_format_arg(0, rct_string_id, sceneryEntry->name);
 	gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
 }

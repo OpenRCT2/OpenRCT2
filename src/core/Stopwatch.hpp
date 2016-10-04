@@ -24,7 +24,7 @@ extern "C"
 /**
  * Class to accuately measure elapsed time with high precision.
  */
-class Stopwatch
+class Stopwatch final
 {
 private:
     /** Number of ticks in a second. */

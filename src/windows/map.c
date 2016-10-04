@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
@@ -162,6 +161,14 @@ static rct_window_event_list window_map_events = {
 	window_map_scrollpaint
 };
 
+/** rct2: 0x00F1AD61 */
+static uint8 _activeTool;
+
+/** rct2: 0x00F1AD6C */
+static uint32 _currentLine;
+
+/** rct2: 0x00F1AD68 */
+static uint8 (*_mapImageData)[512][512];
 
 static void window_map_init_map();
 static void window_map_center_on_view_point();
@@ -192,7 +199,6 @@ static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *m
 void window_map_open()
 {
 	rct_window *w;
-	uint32 *map_image_data;
 
 	// Check if window is already open
 	w = window_bring_to_front_by_class(WC_MAP);
@@ -202,11 +208,11 @@ void window_map_open()
 		return;
 	}
 
-	map_image_data = malloc(256 * 256 * sizeof(uint32));
-	if (map_image_data == NULL)
+	_mapImageData = malloc(sizeof(*_mapImageData));
+	if (_mapImageData == NULL) {
 		return;
+	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*) = map_image_data;
 	w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
 	w->widgets = window_map_widgets;
 	w->enabled_widgets =
@@ -238,7 +244,7 @@ void window_map_open()
 	w->map.rotation = get_current_rotation();
 
 	window_map_init_map();
-	RCT2_GLOBAL(0x00F64F05, uint8) = 0;
+	gWindowSceneryRotation = 0;
 	window_map_center_on_view_point();
 
 	// Reset land tool size
@@ -251,7 +257,7 @@ void window_map_open()
 */
 static void window_map_close(rct_window *w)
 {
-	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
+	free(_mapImageData);
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 		gCurrentToolWidget.window_classification == w->classification &&
 		gCurrentToolWidget.window_number == w->number) {
@@ -273,7 +279,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		if (tool_set(w, widgetIndex, 2))
 			break;
-		RCT2_GLOBAL(0xF1AD61, sint8) = 2;
+		_activeTool = 2;
 		// Prevent mountain tool tool size.
 		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize);
 		show_gridlines();
@@ -281,34 +287,34 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		show_construction_rights();
 		break;
 	case WIDX_LAND_OWNED_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 2;
+		_activeTool ^= 2;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 2)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF2;
+		if (_activeTool & 2)
+			_activeTool &= 0xF2;
 
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_SALE_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 8;
+		_activeTool ^= 8;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 8)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF8;
+		if (_activeTool & 8)
+			_activeTool &= 0xF8;
 
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 1;
+		_activeTool ^= 1;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 1)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF1;
+		if (_activeTool & 1)
+			_activeTool &= 0xF1;
 
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
-		RCT2_GLOBAL(0xF1AD61, sint8) ^= 4;
+		_activeTool ^= 4;
 
-		if (RCT2_GLOBAL(0xF1AD61, sint8) & 4)
-			RCT2_GLOBAL(0xF1AD61, sint8) &= 0xF4;
+		if (_activeTool & 4)
+			_activeTool &= 0xF4;
 
 		window_invalidate(w);
 		break;
@@ -344,7 +350,9 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 			break;
 
 		gLandToolSize = 0;
-		if (gPeepSpawns[0].x != UINT16_MAX && RCT2_GLOBAL(0x13573F8, sint16) != -1) {
+		if (gPeepSpawns[0].x != UINT16_MAX &&
+			gPeepSpawns[1].x != UINT16_MAX
+		) {
 			gLandToolSize = 1;
 		}
 
@@ -488,7 +496,7 @@ static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 				gMapSelectPositionA.x,
 				GAME_COMMAND_FLAG_APPLY,
 				gMapSelectPositionA.y,
-				RCT2_GLOBAL(0x00F1AD61, uint8),
+				_activeTool,
 				GAME_COMMAND_SET_LAND_OWNERSHIP,
 				gMapSelectPositionB.x,
 				gMapSelectPositionB.y
@@ -607,7 +615,7 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 			gMapSelectPositionA.x,
 			GAME_COMMAND_FLAG_APPLY,
 			gMapSelectPositionA.y,
-			RCT2_GLOBAL(0x00F1AD61, uint8),
+			_activeTool,
 			GAME_COMMAND_SET_LAND_OWNERSHIP,
 			gMapSelectPositionB.x,
 			gMapSelectPositionB.y
@@ -660,7 +668,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
  */
 static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, short, STR_MAP);
+	set_format_arg(0, rct_string_id, STR_MAP);
 }
 
 /**
@@ -687,16 +695,16 @@ static void window_map_invalidate(rct_window *w)
 	pressedWidgets |= (1ULL << (WIDX_PEOPLE_TAB + w->selected_tab));
 	pressedWidgets |= (1ULL << WIDX_LAND_TOOL);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 3))
+	if (_activeTool & (1 << 3))
 		pressedWidgets |= (1 << WIDX_LAND_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 2))
+	if (_activeTool & (1 << 2))
 		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 1))
+	if (_activeTool & (1 << 1))
 		pressedWidgets |= (1 << WIDX_LAND_OWNED_CHECKBOX);
 
-	if (RCT2_GLOBAL(0x00F1AD61, uint8) & (1 << 0))
+	if (_activeTool & (1 << 0))
 		pressedWidgets |= (1 << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
 	w->pressed_widgets = pressedWidgets;
@@ -870,11 +878,11 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;
 
-	g1_element->offset = RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint8*);
-	g1_element->width = 0x200;
-	g1_element->height = 0x200;
-	g1_element->x_offset = 0xFFF8;
-	g1_element->y_offset = 0xFFF8;
+	g1_element->offset = (uint8 *) _mapImageData;
+	g1_element->width = 512;
+	g1_element->height = 512;
+	g1_element->x_offset = -8;
+	g1_element->y_offset = -8;
 	g1_element->flags = 0;
 
 	gfx_draw_sprite(dpi, 0, 0, 0, 0);
@@ -895,8 +903,8 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
  */
 static void window_map_init_map()
 {
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, void*), 0x0A, 256 * 256 * sizeof(uint32));
-	RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+	memset(_mapImageData, 0x0A, sizeof(*_mapImageData));
+	_currentLine = 0;
 }
 
 /**
@@ -1304,34 +1312,31 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
  */
 static void window_map_place_park_entrance_tool_down(int x, int y)
 {
+	park_remove_ghost_entrance();
+
 	sint16 mapX, mapY, mapZ;
 	int direction;
-	money32 price;
-
-	park_remove_ghost_entrance();
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
-	if (mapX == (sint16)0x8000)
-		return;
-
-	gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-	price = game_do_command(
-		mapX,
-		GAME_COMMAND_FLAG_APPLY | (direction << 8),
-		mapY,
-		mapZ,
-		GAME_COMMAND_PLACE_PARK_ENTRANCE,
-		0,
-		0
-	);
-	if (price == MONEY32_UNDEFINED)
-		return;
-
-	audio_play_sound_at_location(
-		SOUND_PLACE_ITEM,
-		gCommandPosition.z,
-		RCT2_GLOBAL(0x009DEA64, uint16),
-		gScreenAge
-	);
+	if (mapX != (sint16)0x8000) {
+		gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+		money32 price = game_do_command(
+			mapX,
+			GAME_COMMAND_FLAG_APPLY | (direction << 8),
+			mapY,
+			mapZ,
+			GAME_COMMAND_PLACE_PARK_ENTRANCE,
+			0,
+			0
+		);
+		if (price != MONEY32_UNDEFINED) {
+			audio_play_sound_at_location(
+				SOUND_PLACE_ITEM,
+				gCommandPosition.x,
+				gCommandPosition.y,
+				gCommandPosition.z
+			);
+		}
+	}
 }
 
 /**
@@ -1628,32 +1633,35 @@ static uint16 map_window_get_pixel_colour_ride(int x, int y)
 
 static void map_window_set_pixels(rct_window *w)
 {
-	uint16 colour = 0, *destination;
+	uint16 colour = 0;
+	uint8 *destination;
 	int x = 0, y = 0, dx = 0, dy = 0;
 
-	destination = (uint16*)((RCT2_GLOBAL(0x00F1AD6C, uint32) * 511) + RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32) + 255);
+	int pos = (_currentLine * 511) + 255;
+	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
+	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
 	case 0:
-		x = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		x = _currentLine * 32;
 		y = 0;
 		dx = 0;
 		dy = 32;
 		break;
 	case 1:
 		x = 8192 - 32;
-		y = RCT2_GLOBAL(0x00F1AD6C, uint32) * 32;
+		y = _currentLine * 32;
 		dx = -32;
 		dy = 0;
 		break;
 	case 2:
-		x = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		x = (255 - _currentLine) * 32;
 		y = 8192 - 32;
 		dx = 0;
 		dy = -32;
 		break;
 	case 3:
 		x = 0;
-		y = (255 - RCT2_GLOBAL(0x00F1AD6C, uint32)) * 32;
+		y = (255 - _currentLine) * 32;
 		dx = 32;
 		dy = 0;
 		break;
@@ -1674,15 +1682,19 @@ static void map_window_set_pixels(rct_window *w)
 				colour = map_window_get_pixel_colour_ride(x, y);
 				break;
 			}
-			*destination = colour;
+			destination[0] = HIBYTE(colour);
+			destination[1] = LOBYTE(colour);
 		}
 		x += dx;
 		y += dy;
-		destination = (uint16*)((uintptr_t)destination + 513);
+
+		destinationPosition.x++;
+		destinationPosition.y++;
+		destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	}
-	RCT2_GLOBAL(0x00F1AD6C, uint32)++;
-	if (RCT2_GLOBAL(0x00F1AD6C, uint32) >= 256)
-		RCT2_GLOBAL(0x00F1AD6C, uint32) = 0;
+	_currentLine++;
+	if (_currentLine >= 256)
+		_currentLine = 0;
 }
 
 static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY)

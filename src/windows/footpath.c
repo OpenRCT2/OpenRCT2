@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
@@ -852,7 +851,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
 		// If we start the path on a slope, the arrow is slightly raised, so we
 		// expect the path to be slightly raised as well.
-		uint8_t slope = mapElement->properties.surface.slope;
+		uint8 slope = mapElement->properties.surface.slope;
 		z = mapElement->base_height;
 		if (slope & 0x10) {
 			// Steep diagonal slope

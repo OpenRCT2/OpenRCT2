@@ -39,6 +39,7 @@ extern utf8 gOpenRCT2StartupActionPath[512];
 extern utf8 gExePath[MAX_PATH];
 extern utf8 gCustomUserDataPath[MAX_PATH];
 extern utf8 gCustomOpenrctDataPath[MAX_PATH];
+extern utf8 gCustomRCT2DataPath[MAX_PATH];
 extern utf8 gCustomPassword[MAX_PATH];
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2ShowChangelog;

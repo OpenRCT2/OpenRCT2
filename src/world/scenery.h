@@ -176,7 +176,7 @@ typedef struct rct_scenery_set_entry {
 	uint8 var_107;
 	uint8 var_108;					// 0x108, order?
 	uint8 pad_109;
-	uint32 var_10A;
+	uint32 entertainer_costumes;	// 0x10A
 } rct_scenery_set_entry;
 assert_struct_size(rct_scenery_set_entry, 14 + 2 * 0x80);
 #pragma pack(pop)
@@ -247,6 +247,8 @@ extern uint8 gSceneryGroundFlags;
 extern const rct_xy8 ScenerySubTileOffsets[];
 
 extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
+
+extern money32 gClearSceneryCost;
 
 void init_scenery();
 void scenery_update_tile(int x, int y);

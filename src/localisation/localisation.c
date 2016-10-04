@@ -23,7 +23,6 @@
 #include <errno.h>
 #endif // __WINDOWS__
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../util/util.h"
@@ -31,6 +30,7 @@
 #include "localisation.h"
 #include "../management/marketing.h"
 
+char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];
 uint8 gMapTooltipFormatArgs[40];
 
@@ -304,6 +304,17 @@ const rct_string_id DateGameMonthNames[MONTH_COUNT] = {
 	STR_MONTH_AUGUST,
 	STR_MONTH_SEPTEMBER,
 	STR_MONTH_OCTOBER,
+};
+
+const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
+	STR_MONTH_SHORT_MAR,
+	STR_MONTH_SHORT_APR,
+	STR_MONTH_SHORT_MAY,
+	STR_MONTH_SHORT_JUN,
+	STR_MONTH_SHORT_JUL,
+	STR_MONTH_SHORT_AUG,
+	STR_MONTH_SHORT_SEP,
+	STR_MONTH_SHORT_OCT,
 };
 
 #pragma region Format codes
@@ -970,7 +981,7 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		value = *((uint16*)*args);
 		*args += 2;
 
-		format_string_part(dest, value, args);
+		format_string_part(dest, (rct_string_id)value, args);
 		(*dest)--;
 		break;
 	case FORMAT_STRING:
@@ -988,14 +999,14 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		value = *((uint16*)*args);
 		*args += 2;
 
-		format_date(dest, value);
+		format_date(dest, (uint16)value);
 		break;
 	case FORMAT_MONTH:
 		// Pop argument
 		value = *((uint16*)*args);
 		*args += 2;
 
-		strcpy(*dest, language_get_string(DateGameMonthNames[date_get_month(value)]));
+		strcpy(*dest, language_get_string(DateGameMonthNames[date_get_month((int)value)]));
 		*dest += strlen(*dest);
 		break;
 	case FORMAT_VELOCITY:
@@ -1003,7 +1014,7 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		value = *((sint16*)*args);
 		*args += 2;
 
-		format_velocity(dest, value);
+		format_velocity(dest, (uint16)value);
 		break;
 	case FORMAT_POP16:
 		*args += 2;
@@ -1016,21 +1027,21 @@ static void format_string_code(unsigned int format_code, char **dest, char **arg
 		value = *((uint16*)*args);
 		*args += 2;
 
-		format_duration(dest, value);
+		format_duration(dest, (uint16)value);
 		break;
 	case FORMAT_REALTIME:
 		// Pop argument
 		value = *((uint16*)*args);
 		*args += 2;
 
-		format_realtime(dest, value);
+		format_realtime(dest, (uint16)value);
 		break;
 	case FORMAT_LENGTH:
 		// Pop argument
 		value = *((sint16*)*args);
 		*args += 2;
 
-		format_length(dest, value);
+		format_length(dest, (sint16)value);
 		break;
 	case FORMAT_SPRITE:
 		// Pop argument
@@ -1094,7 +1105,7 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		*args += (format & 0xC00) >> 9;
 		format &= ~0xC00;
 
-		strcpy(*dest, RCT2_ADDRESS(0x135A8F4 + (format * 32), char));
+		safe_strcpy(*dest, &gUserStrings[format * 32], 32);
 		*dest = strchr(*dest, 0) + 1;
 	} else if (format < 0xE000) {
 		// Real name
@@ -1110,7 +1121,6 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		// ?
 		log_error("Localisation CALLPROC reached. Please contact a dev");
 		assert(false);
-		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
 	}
 }
 
@@ -1147,61 +1157,6 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 		*ch = toupper(*ch);
 		ch++;
 	}
-}
-
-/**
- *
- *  rct2: 0x006E37F7
- *  error  (eax)
- *  format (bx)
- */
-void error_string_quit(int error, rct_string_id format)
-{
-	RCT2_GLOBAL(0x14241A0, uint32) = error;
-	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
-
-	char* error_string = RCT2_ADDRESS(0x1424080, char);
-	*error_string = 0;
-
-	if (format != 0xFFFF){
-		format_string(error_string, format, gCommonFormatArgs);
-	}
-	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
-	rct2_exit();
-}
-
-void generate_string_file()
-{
-	FILE* f;
-	uint8** str;
-	uint8* c;
-	int i;
-
-	f = fopen("english.txt", "w");
-
-	for (i = 0; i < 4442; i++) {
-		str = (RCT2_ADDRESS(0x009BF2D4, uint8*) + (i * 4));
-		if (*str == (uint8*)0xFFFFFFFF)
-			continue;
-		c = *str;
-
-		fprintf(f, "STR_%04d    :", i);
-		while (*c != '\0') {
-			const char *token = format_get_token(*c);
-			if (token != NULL) {
-				fprintf(f, "{%s}", token);
-			} else {
-				if (*c < 32 || *c > 127)
-					fprintf(f, "{%d}", *c);
-				else
-					fputc(*c, f);
-			}
-			c++;
-		}
-		fputc('\n', f);
-	}
-
-	fclose(f);
 }
 
 /**
@@ -1248,7 +1203,7 @@ int get_string_length(const utf8 *text)
 
 utf8 *win1252_to_utf8_alloc(const char *src)
 {
-	int reservedSpace = (strlen(src) * 4) + 1;
+	size_t reservedSpace = (strlen(src) * 4) + 1;
 	utf8 *result = malloc(reservedSpace);
 	int actualSpace = win1252_to_utf8(result, src, reservedSpace);
 	return (utf8*)realloc(result, actualSpace);
@@ -1271,8 +1226,8 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 			intermediateBuffer = heapBuffer;
 		}
 	}
-	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
-	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, (int)bufferCount);
+	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, (int)maxBufferLength, NULL, NULL);
 
 	free(heapBuffer);
 #else

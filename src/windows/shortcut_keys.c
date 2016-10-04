@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
@@ -37,7 +36,7 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,					STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_OPTIONS,				STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_SHORTCUTS_TITLE,		STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
 	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	SCROLL_VERTICAL,			STR_SHORTCUT_LIST_TIP },
 	{ WWT_DROPDOWN_BUTTON,	0,	4,		153,	WH-15,	WH - 4,		STR_SHORTCUT_ACTION_RESET,	STR_SHORTCUT_ACTION_RESET_TIP },
@@ -197,7 +196,7 @@ static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 */
 static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -262,9 +261,9 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		char *templateString = (char*)language_get_string(templateStringId);
 		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
-		set_format_arg(0, uint16, STR_SHORTCUT_ENTRY_FORMAT);
-		set_format_arg(2, uint16, ShortcutStringIds[i]);
-		set_format_arg(4, uint16, templateStringId);
+		set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
+		set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
+		set_format_arg(4, rct_string_id, templateStringId);
 		gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, 0, y - 1);
 	}
 }

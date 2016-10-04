@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
@@ -32,6 +31,54 @@ rct_widget window_music_credits_widgets[] = {
 	{ WWT_CLOSEBOX,	0,	497,	507,	2,	13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
 	{ WWT_SCROLL,	0,	4,		505,	18,	309,	SCROLL_VERTICAL,							STR_NONE },				// scroll
 	{ WIDGETS_END },
+};
+
+static const rct_string_id music_credits[] = {
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_MARCH_CHILDREN_OF_THE_REGIMENT,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_HEYKENS_SERENADE,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_IN_CONTINENTAL_MOOD,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_WEDDING_JOURNEY,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_TALES_FROM_THE_VIENNA_WOODS,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_SLAVONIC_DANCE,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_DAS_ALPENHORN,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_THE_BLOND_SAILOR,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_OVERTURE_POET_AND_PEASANT,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_WALTZ_MEDLEY,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_BELLA_BELLA_BIMBA,
+};
+
+static const rct_string_id music_credits_rct2[] = {
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_RCT2_TITLE_MUSIC,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_DODGEMS_BEAT,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_MIS_SUMMERS_HEAT,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_PHARAOS_TOMB,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_CAESARS_MARCH,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_DRIFTING_TO_HEAVEN,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_INVADERS,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_ETERNAL_TOYBOX,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_JUNGLE_JUICE,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_NINJAS_NOODLES,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_VOYAGE_TO_ANDROMEDA,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_BRIMBLES_BEAT,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_ATLANTIS,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_WILD_WEST_KID,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_VAMPIRES_LAIR,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_BLOCKUBSTER,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_AIRTIME_ROCK,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_SEARCHLIGHT_RAG,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_FLIGHT_OF_FANTASY,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_BIG_ROCK,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_HYPOTHERMIA,
+	STR_MUSIC_ACKNOWLEDGEMENTS_SAMPLES_COURTESY,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_LAST_SLEIGH_RIDE,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_PIPES_OF_GLENCAIRN,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_TRAFFIC_JAM,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_TOCCATA,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_SPACE_ROCK,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_MANIC_MECHANIC,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_TECHNO_TORTURE,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_SWEET_DREAMS,
+	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_WHAT_SHALL_WE_DO_WITH_THE_DRUNKEN_SAILOR,
 };
 
 static void window_music_credits_mouseup(rct_window *w, int widgetIndex);
@@ -138,36 +185,28 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	// TODO: Clean up string addition
 	int x = 245;
 
 	int y = 2;
-	int string = STR_MUSIC_ACKNOWLEDGEMENTS_LINE_0;
-	for (int i = 0; i < 12; i++) {
-		gfx_draw_string_centred(dpi, string, x, y, 0, 0);
+
+	for (int i = 0; i < countof(music_credits); i++) {
+		gfx_draw_string_centred(dpi, music_credits[i], x, y, 0, 0);
 		y += 10;
-		if (i == 10) { // Add 4 more space before "Original recordings ...".
-			y += 4;
-		}
-		string += 1;
 	}
+
+	// Add 4 more space before "Original recordings ...".
+	y += 4;
+	gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, 0, 0);
+	y += 10;
 
 	// Draw the separator
 	y += 5;
 	gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], 0x20);
 	y += 11;
 
-	for (int i = 0; i < 31; i++) {
-		if (i == 21) { // Move special courtesy to below Hypothermia.
-			gfx_draw_string_centred(dpi, string + 4, x, y, 0, 0);
-			y += 10;
-			continue;
-		} else if (i == 25) { // Remove special courtesy and blank line.
-			string += 2;
-		}
-		gfx_draw_string_centred(dpi, string, x, y, 0, 0);
+	for (int i = 0; i < countof(music_credits_rct2); i++) {
+		gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, 0, 0);
 		y += 10;
-		string += 1;
 	}
 
 }

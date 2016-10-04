@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../management/news_item.h"
 #include "../localisation/localisation.h"
@@ -250,7 +249,7 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
  */
 static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -291,8 +290,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], 0x24);
 
 		// Date text
-		set_format_arg(0, uint16, DateDayNames[newsItem->day - 1]);
-		set_format_arg(2, uint16, DateGameMonthNames[(newsItem->month_year % 8)]);
+		set_format_arg(0, rct_string_id, DateDayNames[newsItem->day - 1]);
+		set_format_arg(2, rct_string_id, DateGameMonthNames[(newsItem->month_year % 8)]);
 		gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, 2, 4, y);
 
 		// Item text

@@ -29,7 +29,7 @@ enum MEMORY_ACCESS
 /**
  * A stream for reading and writing to files. Wraps an SDL_RWops, SDL2's cross platform file stream.
  */
-class MemoryStream : public IStream
+class MemoryStream final : public IStream
 {
 private:
     uint16  _access;

@@ -15,12 +15,12 @@
 #pragma endregion
 
 #include <stack>
+#include "../core/String.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
 extern "C" {
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../object.h"
@@ -107,12 +107,8 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
-LanguagePack *_languageFallback = nullptr;
-LanguagePack *_languageCurrent = nullptr;
-
-// This is `const char**` in reality, but needs to be represented as uint32's
-// for 64 bit builds
-const uint32 *_languageOriginal = RCT2_ADDRESS(0x009BF2D4, uint32);
+ILanguagePack *_languageFallback = nullptr;
+ILanguagePack *_languageCurrent = nullptr;
 
 const utf8 BlackUpArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
 const utf8 BlackDownArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
@@ -144,14 +140,10 @@ const char *language_get_string(rct_string_id id)
 		openrctString = _languageCurrent->GetString(id);
 	if (openrctString == nullptr && _languageFallback != nullptr)
 		openrctString = _languageFallback->GetString(id);
+	if (openrctString == nullptr)
+		openrctString = "(undefined string)";
 
-	if (id >= STR_OPENRCT2_BEGIN_STRING_ID) {
-		return openrctString != nullptr ? openrctString : "(undefined string)";
-	} else {
-		const char *rct = RCT2_ADDRESS((uintptr_t)_languageOriginal[id], char);
-		const char *str = (id != STR_EMPTY && (openrctString == nullptr || strlen(openrctString)) == 0 ? rct : openrctString);
-		return str == nullptr ? "" : str;
-	}
+	return openrctString;
 }
 
 bool language_open(int id)
@@ -167,11 +159,11 @@ bool language_open(int id)
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
 		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale);
-		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
+		_languageFallback = LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
 	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].locale);
-	_languageCurrent = LanguagePack::FromFile(id, filename);
+	_languageCurrent = LanguagePackFactory::FromFile(id, filename);
 	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;
 
@@ -288,7 +280,7 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
 
 static utf8 *convert_multibyte_charset(const char *src, int languageId)
 {
-	int reservedLength = (strlen(src) * 4) + 1;
+	size_t reservedLength = (strlen(src) * 4) + 1;
 	utf8 *buffer = (utf8*)malloc(reservedLength);
 	utf8 *dst = buffer;
 	for (const uint8 *ch = (const uint8*)src; *ch != 0;) {
@@ -305,7 +297,7 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 		}
 	}
 	*dst++ = 0;
-	int actualLength = dst - buffer;
+	size_t actualLength = (size_t)(dst - buffer);
 	buffer = (utf8*)realloc(buffer, actualLength);
 
 	return buffer;

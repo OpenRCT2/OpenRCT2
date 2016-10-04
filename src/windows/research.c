@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
@@ -353,7 +352,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
 		y += 15;
 
-		set_format_arg(0, uint16, STR_RESEARCH_STAGE_UNKNOWN);
+		set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
 		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
 	} else {
 		// Research type
@@ -381,7 +380,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		y += 15;
 
 		// Expected
-		set_format_arg(0, uint16, STR_RESEARCH_STAGE_UNKNOWN);
+		set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
 		if (gResearchProgressStage != 0) {
 			uint16 expectedDay = gResearchExpectedDay;
 			if (expectedDay != 255) {

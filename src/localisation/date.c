@@ -15,10 +15,12 @@
 #pragma endregion
 
 #include <time.h>
-#include "../addresses.h"
 #include "../game.h"
 #include "date.h"
 #include "string_ids.h"
+
+uint16 gDateMonthTicks;
+uint16 gDateMonthsElapsed;
 
 // rct2: 0x00993988
 const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };

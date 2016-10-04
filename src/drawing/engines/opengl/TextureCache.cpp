@@ -52,14 +52,48 @@ void TextureCache::InvalidateImage(uint32 image)
 
 CachedTextureInfo TextureCache::GetOrLoadImageTexture(uint32 image)
 {
-    auto kvp = _imageTextureMap.find(image & 0x7FFFF);
+    image &= 0x7FFFF;
+    auto kvp = _imageTextureMap.find(image);
     if (kvp != _imageTextureMap.end())
     {
         return kvp->second;
     }
 
     auto cacheInfo = LoadImageTexture(image);
-    _imageTextureMap[image & 0x7FFFF] = cacheInfo;
+    _imageTextureMap[image] = cacheInfo;
+
+    return cacheInfo;
+}
+
+CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special)
+{
+    if ((image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT)) == 0)
+        return CachedTextureInfo{ 0 };
+
+    uint32 uniquePaletteId = image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT); 
+    if (!(image & IMAGE_TYPE_REMAP_2_PLUS)) {
+        uniquePaletteId = (image >> 19) & 0xFF;
+        if (!(image & IMAGE_TYPE_TRANSPARENT)) {
+            uniquePaletteId &= 0x7F;
+        }
+    }
+    else {
+        uniquePaletteId |= ((image >> 19) & 0x1F); 
+        uniquePaletteId |= ((image >> 24) & 0x1F) << 8;
+
+        if (!(image & IMAGE_TYPE_REMAP)) {
+            uniquePaletteId |= tertiaryColour << 16;
+        }
+    }
+
+    auto kvp = _paletteTextureMap.find(uniquePaletteId);
+    if (kvp != _paletteTextureMap.end())
+    {
+        return kvp->second;
+    }
+
+    auto cacheInfo = LoadPaletteTexture(image, tertiaryColour, special);
+    _paletteTextureMap[uniquePaletteId] = cacheInfo;
 
     return cacheInfo;
 }
@@ -141,6 +175,20 @@ CachedTextureInfo TextureCache::LoadImageTexture(uint32 image)
     return cacheInfo;
 }
 
+CachedTextureInfo TextureCache::LoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special)
+{
+    rct_drawpixelinfo dpi;
+    dpi.bits = gfx_draw_sprite_get_palette(image, tertiaryColour);
+    dpi.width = 256;
+    dpi.height = special ? 5 : 1;
+    auto cacheInfo = AllocateImage(dpi.width, dpi.height);
+    
+    glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
+    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    
+    return cacheInfo;
+}
+
 CachedTextureInfo TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
 {
     rct_drawpixelinfo * dpi = GetGlyphAsDPI(image, palette);
@@ -197,7 +245,7 @@ CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight)
     log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
 #endif
 
-    _atlases.push_back(std::move(Atlas(atlasIndex, atlasSize)));
+    _atlases.emplace_back(atlasIndex, atlasSize);
     _atlases.back().Initialise(_atlasesTextureDimensions, _atlasesTextureDimensions);
 
     // Enlarge texture array to support new atlas

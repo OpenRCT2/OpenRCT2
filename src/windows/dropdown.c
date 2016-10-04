@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -158,10 +157,6 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 {
 	rct_window* w;
 
-	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(RCT2_ADDRESS(0x009DEBA4, void), gDropdownItemsFormat, 40 * 2);
-	memcpy(RCT2_ADDRESS(0x009DEBF4, void), gDropdownItemsArgs, 40 * 8);
-
 	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
 		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
@@ -228,10 +223,6 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 {
 	int width, height;
 	rct_window* w;
-
-	// Copy the formats and arguments until all use of it is decompiled
-	memcpy(RCT2_ADDRESS(0x009DEBA4, void), gDropdownItemsFormat, 40 * 2);
-	memcpy(RCT2_ADDRESS(0x009DEBF4, void), gDropdownItemsArgs, 40 * 8);
 
 	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)

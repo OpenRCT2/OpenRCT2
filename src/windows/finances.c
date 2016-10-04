@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/graph.h"
@@ -695,7 +694,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			continue;
 
 		// Month heading
-		set_format_arg(0, uint16, STR_FINANCES_SUMMARY_MONTH_HEADING);
+		set_format_arg(0, rct_string_id, STR_FINANCES_SUMMARY_MONTH_HEADING);
 		set_format_arg(2, uint16, monthyear);
 		draw_string_right_underline(
 			dpi,
@@ -757,14 +756,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Objective related financial information
 	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
-		// Last month's profit from food, drink and merchandise
-		money32 lastMonthProfit = 0;
-		if (gDateMonthsElapsed != 0) {
-			lastMonthProfit += RCT2_GLOBAL(0x01357898, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x0135789C, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A4, money32);
-		}
+		money32 lastMonthProfit = finance_get_last_month_shop_profit();
 		set_format_arg(0, money32, lastMonthProfit);
 		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, 0, w->x + 280, w->y + 229);
 	} else {
@@ -1196,7 +1188,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 			continue;
 
 		noCampaignsActive = 0;
-		set_format_arg(0, uint16, gParkName);
+		set_format_arg(0, rct_string_id, gParkName);
 		set_format_arg(2, uint32, gParkNameArgs);
 
 		// Set special parameters
@@ -1204,11 +1196,11 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
 			ride = get_ride(gMarketingCampaignRideIndex[i]);
-			set_format_arg(0, uint16, ride->name);
+			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			set_format_arg(0, uint16, ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural);
+			set_format_arg(0, rct_string_id, ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural);
 			break;
 		}
 

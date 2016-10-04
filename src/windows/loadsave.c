@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <time.h>
-#include "../addresses.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
@@ -275,7 +274,6 @@ static bool browse(bool isSave, char *path)
 
 static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
-	int result = 0;
 	char path[MAX_PATH];
 
 	bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
@@ -432,7 +430,7 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 
 static void window_loadsave_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 static void window_loadsave_invalidate(rct_window *w)
@@ -762,7 +760,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		save_path(&gConfigGeneral.last_save_scenario_directory, path);
 		int parkFlagsBackup = gParkFlags;
 		gParkFlags &= ~PARK_FLAGS_18;
-		gS6Info->editor_step = 255;
+		gS6Info.editor_step = 255;
 		rw = SDL_RWFromFile(path, "wb+");
 		int success = 0;
 		if (rw != NULL) {
@@ -778,7 +776,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			title_load();
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
-			gS6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+			gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;

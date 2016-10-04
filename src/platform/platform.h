@@ -44,6 +44,12 @@
 
 #define TOUCH_DOUBLE_TIMEOUT 300
 
+#ifdef __WINDOWS__
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
+
 typedef struct resolution {
 	int width, height;
 } resolution;
@@ -194,6 +200,7 @@ datetime64 platform_get_datetime_now_utc();
 		#define WIN32_LEAN_AND_MEAN
 	#endif
 	#include <windows.h>
+	#undef GetMessage
 
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();

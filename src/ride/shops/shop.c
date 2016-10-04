@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
 #include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
@@ -32,13 +31,13 @@
  */
 static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
-	bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
+	bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
 	rct_ride *ride = get_ride(rideIndex);
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 
-	uint32 imageId = RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = gTrackColours[SCHEME_TRACK];
 	if (imageId & 0x80000000) {
 		imageId &= 0x60FFFFFF;
 	}
@@ -46,7 +45,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	imageId += direction;
 
 	if (hasSupports) {
-		uint32 foundationImageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | RCT2_GLOBAL(0x00F441A4, uint32);
+		uint32 foundationImageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
 		sub_98197C(foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
 
 		sub_98199C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());

@@ -15,7 +15,6 @@
 #pragma endregion
 
 extern "C" {
-	#include "../addresses.h"
 	#include "../config.h"
 	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"
@@ -231,11 +230,11 @@ unsigned long Source_SampleStream::Read(unsigned long offset, const uint8** data
 		currentposition = newposition;
 	}
 	*data = buffer;
-	int read = SDL_RWread(rw, buffer, 1, length);
-	if (read == -1) {
+	size_t read = SDL_RWread(rw, buffer, 1, length);
+	if (read == (size_t)-1) {
 		return 0;
 	}
-	return read;
+	return (unsigned long)read;
 }
 
 bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
@@ -464,7 +463,7 @@ void Mixer::Init(const char* device)
 	format.channels = have.channels;
 	format.freq = have.freq;
 	const char* filename = get_file_path(PATH_ID_CSS1);
-	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
+	for (int i = 0; i < (int)Util::CountOf(css1sources); i++) {
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadCSS1(filename, i)) {
 			source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
@@ -542,7 +541,7 @@ bool Mixer::LoadMusic(size_t pathId)
 		return false;
 	}
 	if (!musicsources[pathId]) {
-		const char* filename = get_file_path(pathId);
+		const char* filename = get_file_path((int)pathId);
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadWAV(filename)) {
 			musicsources[pathId] = source_sample;

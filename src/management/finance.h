@@ -52,6 +52,13 @@ extern uint8 gBankLoanInterestRate;
 extern money32 gMaxBankLoan;
 extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
+
+/**
+ * The total profit for the entire scenario that preceeds
+ * the current financial table.
+ */
+extern money32 gHistoricalProfit;
+
 extern money32 gWeeklyProfitAverageDividend;
 extern uint16 gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[128];
@@ -70,7 +77,6 @@ void finance_reset_history();
 void finance_init();
 void finance_update_daily_profit();
 void finance_shift_expenditure_table();
-void finance_update_loan_hash();
 void finance_reset_cash_to_initial();
 
 void finance_set_loan(money32 loan);
@@ -79,5 +85,7 @@ money32 finance_get_current_loan();
 money32 finance_get_maximum_loan();
 money32 finance_get_current_cash();
 void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+money32 finance_get_last_month_shop_profit();
 
 #endif

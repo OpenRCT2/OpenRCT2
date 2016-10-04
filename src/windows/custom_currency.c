@@ -198,7 +198,7 @@ static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
 			WIDX_RATE,
 			STR_RATE_INPUT_TITLE,
 			STR_RATE_INPUT_DESC,
-			5182,
+			STR_FORMAT_INTEGER,
 			(uint32)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
 			CURRENCY_RATE_MAX_NUM_DIGITS
 		);

@@ -19,7 +19,6 @@
 
 extern "C"
 {
-    #include "../addresses.h"
     #include "../localisation/localisation.h"
 }
 
@@ -53,6 +52,7 @@ void WaterObject::Load()
 
 void WaterObject::Unload()
 {
+    gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
     language_free_object_string(_legacyType.string_idx);
 
     _legacyType.string_idx = 0;

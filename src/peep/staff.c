@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../scenario.h"
@@ -28,8 +27,12 @@
 #include "peep.h"
 #include "staff.h"
 
-uint32 *gStaffPatrolAreas = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS, uint32);
-uint8 *gStaffModes = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8);
+uint32 gStaffPatrolAreas[204 * 128];
+uint8 gStaffModes[204];
+uint16 gStaffDrawPatrolAreas;
+colour_t gStaffHandymanColour;
+colour_t gStaffMechanicColour;
+colour_t gStaffSecurityColour;
 
 /**
  *
@@ -38,10 +41,10 @@ uint8 *gStaffModes = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8);
 void staff_reset_modes()
 {
 	for (int i = 0; i < 200; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_NONE;
+		gStaffModes[i] = STAFF_MODE_NONE;
 
 	for (int i = 200; i < 204; i++)
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] = STAFF_MODE_WALK;
+		gStaffModes[i] = STAFF_MODE_WALK;
 
 	staff_update_greyed_patrol_areas();
 }
@@ -60,7 +63,7 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	colour = (*edx >> 8) & 0xFF;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		gStaffColours[staffType] = colour;
+		staff_set_colour(staffType, colour);
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
@@ -165,7 +168,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
 	int i;
 	for (i = 0; i < STAFF_MAX_COUNT; ++i) {
-		if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] & 1))
+		if (!(gStaffModes[i] & 1))
 			break;
 	}
 
@@ -279,7 +282,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = gStaffColours[clamp(STAFF_TYPE_HANDYMAN, staff_type, STAFF_TYPE_SECURITY)];
+		uint8 colour = staff_get_colour(staff_type);
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
@@ -292,17 +295,17 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
 		newPeep->staff_id = newStaffId;
 
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[newStaffId] = STAFF_MODE_WALK;
+		gStaffModes[newStaffId] = STAFF_MODE_WALK;
 
-		for (int i = 0; i < 0x80; ++i) {
-			int addr = RCT2_ADDRESS_STAFF_PATROL_AREAS + (newStaffId << 9) + i * 4;
-			RCT2_GLOBAL(addr, uint32) = 0;
+		for (int i = 0; i < 128; i++) {
+			uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (newStaffId << 9) + i * 4);
+			*addr = 0;
 		}
 	}
 
 	if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
 		uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
+		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 	}
 
 	*newPeep_sprite_index = newPeep->sprite_index;
@@ -407,21 +410,17 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 		rct_peep *peep = &sprite->peep;
 		int patrolOffset = peep->staff_id * (64 * 64 / 8);
-		int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
-		int mask = 1u << (patrolIndex & 0x1F);
-		int base = patrolIndex >> 5;
 
-		uint32 *patrolBits = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4), uint32);
-		*patrolBits ^= mask;
+		staff_toggle_patrol_area(peep->staff_id, x, y);
 
 		int ispatrolling = 0;
 		for(int i = 0; i < 128; i++){
-			ispatrolling |= RCT2_GLOBAL(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (i * 4), uint32);
+			ispatrolling |= *((uint32*)((uintptr_t)gStaffPatrolAreas + patrolOffset + (i * 4)));
 		}
 
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
+		gStaffModes[peep->staff_id] &= ~2;
 		if(ispatrolling){
-			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] |= 2;
+			gStaffModes[peep->staff_id] |= 2;
 		}
 
 		for(int y2 = 0; y2 < 4; y2++){
@@ -502,8 +501,10 @@ void staff_update_greyed_patrol_areas()
 
 	for (int staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
 	{
-		for (int i = 0; i < 128; ++i)
-			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] = 0;
+		uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + ((staff_type + STAFF_MAX_COUNT) * 512));
+		for (int i = 0; i < 128; i++) {
+			addr[i] = 0;
+		}
 
 		for (uint16 sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
 		{
@@ -511,9 +512,10 @@ void staff_update_greyed_patrol_areas()
 
 			if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
 			{
-				for (int i = 0; i < 128; ++i)
-					RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] |= RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (peep->staff_id * 512), uint32)[i];
-
+				uint32 *addr2 = (uint32*)((uintptr_t)gStaffPatrolAreas + (peep->staff_id * 512));
+				for (int i = 0; i < 128; i++) {
+					addr[i] |= addr2[i];
+				}
 			}
 		}
 	}
@@ -524,13 +526,7 @@ static int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 	// Patrol quads are stored in a bit map (8 patrol quads per byte)
 	// Each patrol quad is 4x4
 	// Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map
-	int patrolOffset = peep->staff_id * (64 * 64 / 8);
-	int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
-	int mask = 1u << (patrolIndex & 0x1F);
-	int base = patrolIndex >> 5;
-
-	uint32 *patrolBits = RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + patrolOffset + (base * 4), uint32);
-	return (*patrolBits & mask) != 0;
+	return staff_is_patrol_area_set(peep->staff_id, x, y);
 }
 
 /**
@@ -544,7 +540,7 @@ int staff_is_location_in_patrol(rct_peep *staff, int x, int y)
 		return 0;
 
 	// Check if staff has patrol area
-	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[staff->staff_id] & 2))
+	if (!(gStaffModes[staff->staff_id] & 2))
 		return 1;
 
 	return staff_is_location_in_patrol_area(staff, x, y);
@@ -578,10 +574,6 @@ static uint8 staff_get_valid_patrol_directions(rct_peep* peep, sint16 x, sint16 
 		directions = 0xF;
 	}
 
-	// For backwards compatibility. 
-	// Remove when all references to 0x00F43910 removed
-	RCT2_GLOBAL(0x00F43910, uint32) = directions;
-
 	return directions;
 }
 
@@ -613,7 +605,34 @@ bool staff_is_patrol_area_set(int staffIndex, int x, int y)
 	int peepOffset = staffIndex * 128;
 	int offset = (x | y) >> 5;
 	int bitIndex = (x | y) & 0x1F;
-	return gStaffPatrolAreas[peepOffset + offset] & (1 << bitIndex);
+	return gStaffPatrolAreas[peepOffset + offset] & (((uint32)1) << bitIndex);
+}
+
+void staff_set_patrol_area(int staffIndex, int x, int y, bool value)
+{
+	x = (x & 0x1F80) >> 7;
+	y = (y & 0x1F80) >> 1;
+
+	int peepOffset = staffIndex * 128;
+	int offset = (x | y) >> 5;
+	int bitIndex = (x | y) & 0x1F;
+	uint32 *addr = &gStaffPatrolAreas[peepOffset + offset];
+	if (value) {
+		*addr |= (1 << bitIndex);
+	} else {
+		*addr &= ~(1 << bitIndex);
+	}
+}
+
+void staff_toggle_patrol_area(int staffIndex, int x, int y)
+{
+	x = (x & 0x1F80) >> 7;
+	y = (y & 0x1F80) >> 1;
+
+	int peepOffset = staffIndex * 128;
+	int offset = (x | y) >> 5;
+	int bitIndex = (x | y) & 0x1F;
+	gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
 }
 
 /**
@@ -1292,4 +1311,35 @@ void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)ebp,
 		(uint8*)edi
 	);
+}
+
+colour_t staff_get_colour(uint8 staffType)
+{
+	switch (staffType) {
+	case STAFF_TYPE_HANDYMAN:		return gStaffHandymanColour;
+	case STAFF_TYPE_MECHANIC:		return gStaffMechanicColour;
+	case STAFF_TYPE_SECURITY:		return gStaffSecurityColour;
+	case STAFF_TYPE_ENTERTAINER:	return 0;
+	default:
+		assert(false);
+		return 0;
+	}
+}
+
+void staff_set_colour(uint8 staffType, colour_t value)
+{
+	switch (staffType) {
+	case STAFF_TYPE_HANDYMAN:
+		gStaffHandymanColour = value;
+		break;
+	case STAFF_TYPE_MECHANIC:
+		gStaffMechanicColour = value;
+		break;
+	case STAFF_TYPE_SECURITY:
+		gStaffSecurityColour = value;
+		break;
+	default:
+		assert(false);
+		break;
+	}
 }

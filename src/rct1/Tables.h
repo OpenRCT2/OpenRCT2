@@ -17,7 +17,10 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/List.hpp"
+
+#ifdef __cplusplus
+
+#include <vector>
 
 namespace RCT1
 {
@@ -39,7 +42,17 @@ namespace RCT1
     const char * GetPathAddtionObject(uint8 pathAdditionType);
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
 
-    const List<const char *> GetSceneryObjects(uint8 sceneryType);
+    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
 
-	const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
+    const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
+
+extern "C" {
+#endif
+
+    const char * rct1_get_ride_type_object(uint8 rideType);
+    const char * rct1_get_vehicle_object(uint8 vehicleType);
+
+#ifdef __cplusplus
+}
+#endif

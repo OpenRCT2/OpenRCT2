@@ -26,7 +26,7 @@ extern "C"
 
 class NetworkPacket;
 
-class NetworkPlayer
+class NetworkPlayer final
 {
 public:
     uint8       id                  = 0;

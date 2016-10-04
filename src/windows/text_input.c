@@ -21,7 +21,6 @@
  * that is used for inputing new text for ride names and peep names.
  */
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../platform/platform.h"
 #include "../interface/window.h"
@@ -280,16 +279,16 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 1;
 
 	char* wrap_pointer = wrapped_string;
-	int char_count = 0;
+	size_t char_count = 0;
 	uint8 cur_drawn = 0;
 
 	int cursorX, cursorY;
 	for (int line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
-		int string_length = get_string_size(wrap_pointer) - 1;
+		size_t string_length = get_string_size(wrap_pointer) - 1;
 
-		if (!cur_drawn && (gTextInput.selection_offset <= (size_t)(char_count + string_length))) {
+		if (!cur_drawn && (gTextInput.selection_offset <= char_count + string_length)) {
 			// Make a copy of the string for measuring the width.
 			char temp_string[512] = { 0 };
 			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);

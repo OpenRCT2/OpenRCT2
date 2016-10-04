@@ -281,4 +281,6 @@ void audio_toggle_all_sounds();
 */
 void audio_unpause_sounds();
 
+void audio_stop_all_music_and_sounds();
+
 #endif

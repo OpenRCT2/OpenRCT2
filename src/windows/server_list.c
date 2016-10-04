@@ -695,6 +695,9 @@ static int server_compare(const void *a, const void *b)
 
 static void sort_servers()
 {
+	if (_serverEntries == NULL) {
+		return;
+	}
 	qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
 }
 
@@ -718,13 +721,13 @@ static void join_server(char *address)
 
 	char *colon = strrchr(address, ':');
 	if (colon != NULL && (endbracket != NULL || dot != NULL)) {
-		address = substr(address, colon - address);
+		address = substr(address, (int)(colon - address));
 		sscanf(colon + 1, "%d", &port);
 		addresscopied = true;
 	}
 
 	if (startbracket && endbracket) {
-		address = substr(startbracket + 1, endbracket - startbracket - 1);
+		address = substr(startbracket + 1, (int)(endbracket - startbracket - 1));
 		addresscopied = true;
 	}
 
@@ -802,7 +805,7 @@ static void fetch_servers_callback(http_json_response* response)
 		return;
 	}
 
-	int count = json_array_size(jsonServers);
+	int count = (int)json_array_size(jsonServers);
 	for (int i = 0; i < count; i++) {
 		json_t *server = json_array_get(jsonServers, i);
 		if (!json_is_object(server)) {

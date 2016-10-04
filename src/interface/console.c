@@ -17,7 +17,6 @@
 #include <stdarg.h>
 #include <SDL_scancode.h>
 
-#include "../addresses.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"
@@ -203,7 +202,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 			break;
 		drawLines++;
 
-		int lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
+		size_t lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
 		lineCh = lineBuffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
 		strncpy(lineCh, ch, lineLength);
@@ -296,9 +295,9 @@ static void console_write_prompt()
 
 void console_write(const utf8 *src)
 {
-	int charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-	int charactersToWrite = strlen(src);
-	int bufferShift = charactersToWrite - charactersRemainingInBuffer;
+	size_t charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
+	size_t charactersToWrite = strlen(src);
+	size_t bufferShift = charactersToWrite - charactersRemainingInBuffer;
 	if (charactersToWrite > charactersRemainingInBuffer) {
 		memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
 		_consoleBufferPointer -= bufferShift;
@@ -456,16 +455,13 @@ static int cc_rides(const utf8 **argv, int argc)
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
 				console_printf("rides set type <ride id> <ride type>");
+				console_printf("rides set friction <ride id> <friction value>");
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
-				int subtype;
 				bool int_valid[3] = { 0 };
 				int ride_index = console_parse_int(argv[2], &int_valid[0]);
 				int type = console_parse_int(argv[3], &int_valid[1]);
-				if (argc > 4) {
-					subtype = console_parse_int(argv[4], &int_valid[2]);
-				}
 				if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
 				} else if (ride_index < 0) {
@@ -473,7 +469,6 @@ static int cc_rides(const utf8 **argv, int argc)
 				} else {
 					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 					int res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-					rct_ride *ride = get_ride(ride_index);
 					if (res == MONEY32_UNDEFINED) {
 						console_printf("That didn't work");
 					}
@@ -908,10 +903,6 @@ static int cc_load_object(const utf8 **argv, int argc) {
 			gSilentResearch = false;
 		}
 		else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
-			rct_scenery_set_entry *scenerySetEntry;
-
-			scenerySetEntry = get_scenery_group_entry(groupIndex);
-
 			research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
 
 			gSilentResearch = true;
@@ -1125,7 +1116,7 @@ void console_execute_silent(const utf8 *src)
 				break;
 			end++;
 		}
-		int length = end - start;
+		size_t length = end - start;
 
 		if (length > 0) {
 			utf8 *arg = malloc(length + 1);

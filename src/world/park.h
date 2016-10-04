@@ -59,15 +59,16 @@ extern money32 gTotalIncomeFromAdmissions;
 extern money32 gParkValue;
 extern money32 gCompanyValue;
 
+extern sint16 gParkRatingCasualtyPenalty;
 extern uint8 gParkRatingHistory[32];
 extern uint8 gGuestsInParkHistory[32];
 extern int _guestGenerationProbability;
 extern int _suggestedGuestMaximum;
 
-extern sint16 *gParkEntranceX;
-extern sint16 *gParkEntranceY;
-extern sint16 *gParkEntranceZ;
-extern uint8 *gParkEntranceDirection;
+extern sint16 gParkEntranceX[4];
+extern sint16 gParkEntranceY[4];
+extern sint16 gParkEntranceZ[4];
+extern uint8 gParkEntranceDirection[4];
 
 extern bool gParkEntranceGhostExists;
 extern rct_xyz16 gParkEntranceGhostPosition;

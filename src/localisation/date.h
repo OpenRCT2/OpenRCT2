@@ -49,8 +49,8 @@ extern const sint16 days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
 
-#define gDateMonthTicks			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)
-#define gDateMonthsElapsed		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)
+extern uint16 gDateMonthTicks;
+extern uint16 gDateMonthsElapsed;
 
 extern openrct_timeofday gRealTimeOfDay;
 

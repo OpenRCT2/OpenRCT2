@@ -19,7 +19,7 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-class CopyFramebufferShader : public OpenGLShaderProgram
+class CopyFramebufferShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;

@@ -31,6 +31,9 @@
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 
+bool gTrackDesignSaveMode = false;
+uint8 gTrackDesignSaveRideIndex = 255;
+
 static size_t _trackSavedMapElementsCount;
 #ifdef NO_RCT2
 	static rct_map_element *_trackSavedMapElements[TRACK_MAX_SAVED_MAP_ELEMENTS];
@@ -159,7 +162,7 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (!track_design_save_copy_scenery_to_td6(_trackDesign)) {
 			free(_trackDesign->track_elements);
 			free(_trackDesign->entrance_elements);
@@ -220,13 +223,13 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
  */
 static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
 {
-	int newElementCount = map_element_get_total_element_count(mapElement);
+	size_t newElementCount = map_element_get_total_element_count(mapElement);
 	if (newElementCount == 0) {
 		return false;
 	}
 
 	// Get number of spare elements left
-	int spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - _trackSavedMapElementsCount;
+	size_t spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - _trackSavedMapElementsCount;
 	if (newElementCount > spareSavedElements) {
 		// No more spare saved elements left
 		return false;
@@ -1122,7 +1125,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			x -= gTrackPreviewOrigin.x;
 			y -= gTrackPreviewOrigin.y;
 
-			rotate_map_coordinates(&x, &y, _trackSaveDirection);
+			// Rotate entrance coordinates backwards to the correct direction
+			rotate_map_coordinates(&x, &y, (0 - _trackSaveDirection) & 3);
 			entrance->x = x;
 			entrance->y = y;
 
@@ -1264,7 +1268,7 @@ bool track_design_save_to_file(const utf8 *path)
 	// Encode TD6 data
 	uint8 *encodedData = malloc(0x8000);
 	assert(td6Buffer.ptr != NULL);
-	int encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
+	size_t encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
 	// Save encoded TD6 data to file
 	bool result;

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -481,7 +480,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gInitialCash < MONEY(1000000,00)) {
 			gInitialCash += MONEY(500,00);
 			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_INCREASE_CASH, STR_NONE);
 		}
@@ -491,7 +489,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gInitialCash > MONEY(0,00)) {
 			gInitialCash -= MONEY(500,00);
 			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_REDUCE_CASH, STR_NONE);
 		}
@@ -501,7 +498,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gBankLoan < MONEY(5000000,00)) {
 			gBankLoan += MONEY(1000,00);
 			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
 		}
@@ -511,7 +507,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gBankLoan > MONEY(0,00)) {
 			gBankLoan -= MONEY(1000,00);
 			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
 		}
@@ -521,7 +516,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gMaxBankLoan < MONEY(5000000,00)) {
 			gMaxBankLoan += MONEY(1000,00);
 			gBankLoan = min(gBankLoan, gMaxBankLoan);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
 		}
@@ -531,7 +525,6 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		if (gMaxBankLoan > MONEY(0,00)) {
 			gMaxBankLoan -= MONEY(1000,00);
 			gBankLoan = min(gBankLoan, gMaxBankLoan);
-			finance_update_loan_hash();
 		} else {
 			window_error_open(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
 		}

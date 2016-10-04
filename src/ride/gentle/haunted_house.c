@@ -61,7 +61,7 @@ static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint
 		frameNum = vehicle->vehicle_sprite_type;
 	}
 
-	uint32 imageId = (baseImageId + direction) | RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 imageId = (baseImageId + direction) | gTrackColours[SCHEME_MISC];
 	haunted_house_bound_box boundBox = haunted_house_data[part];
 	sub_98197C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
@@ -73,7 +73,7 @@ static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint
 			case 2: imageId = baseImageId + 39 + frameNum; break;
 			case 3: imageId = baseImageId + 57 + frameNum; break;
 		}
-		imageId = imageId | RCT2_GLOBAL(0x00F441A0, uint32);
+		imageId = imageId | gTrackColours[SCHEME_MISC];
 		sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 	}
 
@@ -90,13 +90,13 @@ static void paint_haunted_house(uint8 rideIndex, uint8 trackSequence, uint8 dire
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
+	track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, fenceSpritesRope, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
 	switch (trackSequence) {
 		case 3: paint_haunted_house_structure(rideIndex, direction, 32, -32, 0, height + 3); break;

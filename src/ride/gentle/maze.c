@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
 #include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
@@ -56,10 +55,10 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 	uint32 rotation = get_current_rotation();
 	// draw ground
-	int image_id = SPR_TERRAIN_DIRT | RCT2_GLOBAL(0x00F441A0, uint32);
+	int image_id = SPR_TERRAIN_DIRT | gTrackColours[SCHEME_MISC];
 	sub_98196C(image_id, 0, 0, 32, 32, 0, height, rotation);
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
+	wooden_a_supports_paint_setup((rotation & 1) ? 0 : 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
@@ -71,7 +70,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		case 3: base_image_id = SPR_MAZE_BASE_WOOD; break;
 	}
 
-	base_image_id |= RCT2_GLOBAL(0x00F441A0, uint32);
+	base_image_id |= gTrackColours[SCHEME_MISC];
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTER;

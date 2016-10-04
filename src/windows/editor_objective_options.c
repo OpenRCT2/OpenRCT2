@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -112,13 +111,13 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
-	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,					STR_NONE											},
-	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								},
-	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								},
-	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
-	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,				STR_NONE											},
+	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,								STR_NONE								},
+	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_PRESERVED_RIDES_TITLE,	STR_WINDOW_TITLE_TIP					},
+	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP					},
+	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE								},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP	},
+	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SELECT_RIDES_TO_BE_PRESERVED_TIP	},
+	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,						STR_NONE								},
 	{ WIDGETS_END }
 };
 
@@ -424,12 +423,10 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
-		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->name, 64);
-		window_text_input_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, STR_PLACEHOLDER, 0, 64);
+		window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
 		break;
 	case WIDX_DETAILS:
-		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->details, 256);
-		window_text_input_open(w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, STR_PLACEHOLDER, 0, 256);
+		window_text_input_raw_open(w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, gS6Info.details, 256);
 		break;
 	}
 }
@@ -564,7 +561,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 		5,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	dropdown_set_checked(gS6Info->category, true);
+	dropdown_set_checked(gS6Info.category, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window *w)
@@ -739,8 +736,8 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 		}
 		break;
 	case WIDX_CATEGORY_DROPDOWN:
-		if (gS6Info->category != (uint8)dropdownIndex) {
-			gS6Info->category = (uint8)dropdownIndex;
+		if (gS6Info.category != (uint8)dropdownIndex) {
+			gS6Info.category = (uint8)dropdownIndex;
 			window_invalidate(w);
 		}
 		break;
@@ -789,8 +786,6 @@ static void window_editor_objective_options_main_update(rct_window *w)
  */
 static void window_editor_objective_options_main_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	rct_s6_info *s6Info = gS6Info;
-
 	if (text == NULL)
 		return;
 
@@ -798,24 +793,24 @@ static void window_editor_objective_options_main_textinput(rct_window *w, int wi
 	case WIDX_PARK_NAME:
 		park_set_name(text);
 
-		if (s6Info->name[0] == 0)
-			format_string(s6Info->name, gParkName, &gParkNameArgs);
+		if (gS6Info.name[0] == 0)
+			format_string(gS6Info.name, gParkName, &gParkNameArgs);
 		break;
 	case WIDX_SCENARIO_NAME:
-		strncpy(s6Info->name, text, 64);
-		if (strnlen(s6Info->name, 64) == 64)
+		strncpy(gS6Info.name, text, 64);
+		if (strnlen(gS6Info.name, 64) == 64)
 		{
-			s6Info->name[64 - 1] = '\0';
-			log_warning("Truncated S6 name: %s", s6Info->name);
+			gS6Info.name[64 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", gS6Info.name);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_DETAILS:
-		strncpy(s6Info->details, text, 256);
-		if (strnlen(s6Info->details, 256) == 256)
+		strncpy(gS6Info.details, text, 256);
+		if (strnlen(gS6Info.details, 256) == 256)
 		{
-			s6Info->details[256 - 1] = '\0';
-			log_warning("Truncated S6 name: %s", s6Info->details);
+			gS6Info.details[256 - 1] = '\0';
+			log_warning("Truncated S6 name: %s", gS6Info.details);
 		}
 		window_invalidate(w);
 		break;
@@ -834,7 +829,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	stex = g_stexEntries[0];
-	if (stex == (rct_stex_entry*)0xFFFFFFFF)
+	if (stex == (rct_stex_entry*)-1)
 		stex = NULL;
 
 	widgets = window_editor_objective_options_widgets[w->page];
@@ -904,7 +899,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	window_editor_objective_options_draw_tab_images(w, dpi);
 
 	stex = g_stexEntries[0];
-	if (stex == (rct_stex_entry*)0xFFFFFFFF)
+	if (stex == (rct_stex_entry*)-1)
 		stex = NULL;
 
 	// Objective label
@@ -1004,9 +999,9 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_PARK_NAME].left - 16;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->park_name);
+		set_format_arg(0, rct_string_id, stex->park_name);
 	} else {
-		set_format_arg(0, uint16, gParkName);
+		set_format_arg(0, rct_string_id, gParkName);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
 	gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, 0, x, y, width);
@@ -1017,12 +1012,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->scenario_name);
+		set_format_arg(0, rct_string_id, stex->scenario_name);
+		set_format_arg(2, uint32, gParkNameArgs);
 	} else {
-		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->name, 64);
-		set_format_arg(0, uint16, STR_PLACEHOLDER);
+		set_format_arg(0, rct_string_id, STR_STRING);
+		set_format_arg(2, const char *, gS6Info.name);
 	}
-	set_format_arg(2, uint32, gParkNameArgs);
+
 	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, 0, x, y, width);
 
 	// Scenario details label
@@ -1036,12 +1032,12 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_DETAILS].left - 4;
 
 	if (stex != NULL) {
-		set_format_arg(0, uint16, stex->details);
+		set_format_arg(0, rct_string_id, stex->details);
+		set_format_arg(2, uint32, gParkNameArgs);
 	} else {
-		safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gS6Info->details, 256);
-		set_format_arg(0, uint16, STR_PLACEHOLDER);
+		set_format_arg(0, rct_string_id, STR_STRING);
+		set_format_arg(2, const char *, gS6Info.details);
 	}
-	set_format_arg(2, uint32, gParkNameArgs);
 	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
 
 	// Scenario category label
@@ -1052,7 +1048,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Scenario category value
 	x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
 	y = w->y + w->widgets[WIDX_CATEGORY].top;
-	stringId = ScenarioCategoryStringIds[gS6Info->category];
+	stringId = ScenarioCategoryStringIds[gS6Info.category];
 	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
 }
 

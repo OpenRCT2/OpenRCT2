@@ -59,29 +59,32 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 	trackSequence = track_map_3x3[direction][trackSequence];
 
 	if (trackSequence == 0) {
-		paint_lift_cage(direction, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+		paint_lift_cage(direction, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
-		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 32, get_current_rotation());
+		paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
 
-		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 64, get_current_rotation());
+		paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
 
-		RCT2_GLOBAL(0x9E323C, uint16) = (((height + 96) >> 4) & 0x00FF) | (6 << 8);
+		paint_util_set_vertical_tunnel(height + 96);
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-		// Original set support height to (height + 32). Caused supports to code with lift cage.
+#ifdef __TESTPAINT__
+		paint_util_set_general_support_height(height + 32, 0x20);
+#else
 		paint_util_set_general_support_height(height + 96, 0x20);
+#endif
 
 		return;
 	}
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	uint32 imageId = SPR_FLOOR_METAL_B | RCT2_GLOBAL(0x00F4419C, uint32);
+	uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-		track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesMetalB, get_current_rotation());
+		track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
 	int blockedSegments = 0;
 	switch (trackSequence) {
@@ -106,11 +109,11 @@ static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8
 		return;
 	}
 
-	paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+	paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-	RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	paint_util_set_vertical_tunnel(height + 32);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 

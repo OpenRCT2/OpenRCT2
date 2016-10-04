@@ -4111,8 +4111,8 @@ STR_5806    :Omschakelen naar venstermodus
 STR_5807    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Aantal winkels en kraampjes: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {BLACK}{COMMA16}
-STR_5810    :Tot 255 karretjes per trein toestaan
-STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je achtbaantreinen tot 255 karretjes hebben,{NEWLINE}ongeacht de normale limiet of de grootte van het station.
+STR_5810    :Voertuiglimieten uitschakelen
+STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je{NEWLINE}tot 255 karretjes per trein en 31{NEWLINE}treinen per attractie hebben
 STR_5812    :Status multiplayer tonen
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4214,6 +4214,16 @@ STR_5910    :Toepassen
 STR_5911    :Doorzichtige paden
 STR_5912    :Doorzichtige paden
 STR_5913    :Chat
+STR_5914    :Onbekende attractie
+STR_5915    :Speler
+STR_5916    :{COMMA16} speler
+STR_5917    :{COMMA16} spelers
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Toon weereffecten
+STR_5921    :{SMALLFONT}{BLACK}Als dit aanstaat worden regen en verduisterde kleuren niet getoond tijdens stormen
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {COMMA16} {STRINGID} per trein
 
 #############
 # Scenarios #

@@ -26,7 +26,7 @@ extern "C"
 /**
  * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
  */
-class S6Importer
+class S6Importer final
 {
 public:
     bool FixIssues;

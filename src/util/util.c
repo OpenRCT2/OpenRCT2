@@ -142,10 +142,10 @@ void path_remove_extension(utf8 *path)
 		log_warning("No extension found. (path = %s)", path);
 }
 
-bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
+bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
 {
 	SDL_RWops *fp;
-	int fpLength;
+	size_t fpLength;
 	void *fpBuffer;
 
 	// Open file
@@ -154,7 +154,7 @@ bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 		return 0;
 
 	// Get length
-	fpLength = (int)SDL_RWsize(fp);
+	fpLength = (size_t)SDL_RWsize(fp);
 
 	// Read whole file into a buffer
 	fpBuffer = malloc(fpLength);
@@ -403,15 +403,15 @@ uint32 util_rand() {
 unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
 {
 	int ret = Z_OK;
-	uLongf out_size = *data_out_size;
+	uLongf out_size = (uLong)*data_out_size;
 	if (out_size == 0)
 	{
 		// Try to guesstimate the size needed for output data by applying the
 		// same ratio it would take to compress data_in_size.
-		out_size = data_in_size * data_in_size / compressBound(data_in_size);
+		out_size = (uLong)data_in_size * (uLong)data_in_size / compressBound((uLong)data_in_size);
 		out_size = min(MAX_ZLIB_REALLOC, out_size);
 	}
-	size_t buffer_size = out_size;
+	uLongf buffer_size = out_size;
 	unsigned char *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
@@ -428,7 +428,7 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 			free(buffer);
 			return NULL;
 		}
-		ret = uncompress(buffer, &out_size, data, data_in_size);
+		ret = uncompress(buffer, &out_size, data, (uLong)data_in_size);
 	} while (ret != Z_OK);
 	buffer = realloc(buffer, out_size);
 	*data_out_size = out_size;
@@ -446,8 +446,8 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
 {
 	int ret = Z_OK;
-	uLongf out_size = *data_out_size;
-	size_t buffer_size = compressBound(data_in_size);
+	uLongf out_size = (uLongf)*data_out_size;
+	uLong buffer_size = compressBound((uLong)data_in_size);
 	unsigned char *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
@@ -460,7 +460,7 @@ unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_
 			free(buffer);
 			return NULL;
 		}
-		ret = compress(buffer, &out_size, data, data_in_size);
+		ret = compress(buffer, &out_size, data, (uLong)data_in_size);
 	} while (ret != Z_OK);
 	*data_out_size = out_size;
 	buffer = realloc(buffer, *data_out_size);

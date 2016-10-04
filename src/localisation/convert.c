@@ -47,7 +47,7 @@ int rct2_to_utf8(utf8 *dst, const char *src)
 		dst = utf8_write_codepoint(dst, codepoint);
 	}
 	dst = utf8_write_codepoint(dst, 0);
-	return dst - start;
+	return (int)(dst - start);
 }
 
 int utf8_to_rct2(char *dst, const utf8 *src)
@@ -66,7 +66,7 @@ int utf8_to_rct2(char *dst, const utf8 *src)
 		}
 	}
 	*dst++ = 0;
-	return dst - start;
+	return (int)(dst - start);
 }
 
 static int encoding_search_compare(const void *pKey, const void *pEntry)

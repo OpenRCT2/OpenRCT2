@@ -230,7 +230,6 @@ namespace String
     utf8 * Trim(utf8 * str)
     {
         utf8 * firstNonWhitespace = nullptr;
-        utf8 * lastNonWhitespace = nullptr;
 
         codepoint_t codepoint;
         utf8 * ch = str;
@@ -243,7 +242,6 @@ namespace String
                 {
                     firstNonWhitespace = ch;
                 }
-                lastNonWhitespace = ch;
             }
             ch = nextCh;
         }

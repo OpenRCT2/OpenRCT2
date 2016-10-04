@@ -386,6 +386,16 @@ uint16 vehicle_get_move_info_size(int cd, int typeAndDirection);
 bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
 extern rct_vehicle *gCurrentVehicle;
+extern uint8 _vehicleStationIndex;
+extern uint32 _vehicleMotionTrackFlags;
+extern sint32 _vehicleVelocityF64E08;
+extern sint32 _vehicleVelocityF64E0C;
+extern sint32 _vehicleUnkF64E10;
+extern uint8 _vehicleVAngleEndF64E36;
+extern uint8 _vehicleBankEndF64E37;
+extern uint8 _vehicleF64E2C;
+extern rct_vehicle * _vehicleFrontVehicle;
+extern rct_xyz16 unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

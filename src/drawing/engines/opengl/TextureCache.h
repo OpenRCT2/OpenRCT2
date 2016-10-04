@@ -73,7 +73,7 @@ struct CachedTextureInfo
 // Represents a texture atlas that images of a given maximum size can be allocated from
 // Atlases are all stored in the same 2D texture array, occupying the specified index
 // Slots in atlases are always squares.
-class Atlas
+class Atlas final
 {
 private:
     GLuint _index;
@@ -101,7 +101,7 @@ public:
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
         {
-            _freeSlots[i] = i;
+            _freeSlots[i] = (GLuint)i;
         }
     }
 
@@ -183,7 +183,7 @@ private:
     }
 };
 
-class TextureCache
+class TextureCache final
 {
 private:
     bool _atlasesTextureInitialised = false;
@@ -196,6 +196,7 @@ private:
 
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
     std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+    std::unordered_map<uint32, CachedTextureInfo> _paletteTextureMap;
 
     SDL_Color _palette[256];
 
@@ -206,7 +207,8 @@ public:
     void InvalidateImage(uint32 image);
     CachedTextureInfo GetOrLoadImageTexture(uint32 image);
     CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
-    
+    CachedTextureInfo GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
+
     GLuint GetAtlasesTexture();
 
 private:
@@ -214,6 +216,7 @@ private:
     void EnlargeAtlasesTexture(GLuint newEntries);
     CachedTextureInfo LoadImageTexture(uint32 image);
     CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
+    CachedTextureInfo LoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
     CachedTextureInfo AllocateImage(int imageWidth, int imageHeight);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
     rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);

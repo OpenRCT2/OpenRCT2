@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../drawing/drawing.h"
@@ -359,7 +358,7 @@ void window_themes_open()
 
 static void window_themes_mouseup(rct_window *w, int widgetIndex)
 {
-	int activeAvailableThemeIndex;
+	size_t activeAvailableThemeIndex;
 	const utf8 * activeThemeName;
 
 	switch (widgetIndex) {
@@ -507,7 +506,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			widget->right - widget->left - 3
 		);
 
-		dropdown_set_checked(theme_manager_get_active_available_theme_index(), true);
+		dropdown_set_checked((int)theme_manager_get_active_available_theme_index(), true);
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
 		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
@@ -680,7 +679,7 @@ static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 
 void window_themes_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 void window_themes_invalidate(rct_window *w)
@@ -765,7 +764,7 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_themes_draw_tab_images(dpi, w);
 
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
-		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+		size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
 		set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
 		gfx_draw_string_left(dpi, STR_THEMES_LABEL_CURRENT_THEME, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);

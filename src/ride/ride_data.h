@@ -54,6 +54,11 @@ typedef struct rct_ride_name_convention {
 	ride_component_type station;
 } rct_ride_name_convention;
 
+typedef struct rct_ride_name {
+	rct_string_id name;
+	rct_string_id description;
+} rct_ride_name;
+
 typedef struct rct_ride_entrance_definition {
 	uint32 sprite_index;
 	uint16 height;
@@ -139,6 +144,7 @@ extern const uint8 rideBonusValue[0x60];
 
 extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
 extern const rct_ride_name_convention RideNameConvention[96];
+extern const rct_ride_name RideNaming[91];
 extern const uint8 RideAvailableModes[];
 extern const uint8 AllRideModesAvailable[];
 extern const uint8 RideAvailableBreakdowns[];
