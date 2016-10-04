@@ -1023,6 +1023,11 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		break;
 	}
 
+	// Only element-specific widgets from now on
+	if (w->page == PAGE_DEFAULT) {
+		return;
+	}
+
 	// Get the selected map element
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
