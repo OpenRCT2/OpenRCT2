@@ -45,7 +45,7 @@ struct DirtyGrid
     uint8 * Blocks;
 };
 
-class RainDrawer : public IRainDrawer
+class RainDrawer final : public IRainDrawer
 {
 private:
     struct RainPixel
@@ -156,7 +156,7 @@ public:
     }
 };
 
-class SoftwareDrawingContext : public IDrawingContext
+class SoftwareDrawingContext final : public IDrawingContext
 {
 private:
     SoftwareDrawingEngine * _engine;
@@ -179,7 +179,7 @@ public:
     void SetDPI(rct_drawpixelinfo * dpi);
 };
 
-class SoftwareDrawingEngine : public IDrawingEngine
+class SoftwareDrawingEngine final : public IDrawingEngine
 {
 private:
     bool _hardwareDisplay;

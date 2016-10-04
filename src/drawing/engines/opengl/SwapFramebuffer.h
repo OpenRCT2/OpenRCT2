@@ -30,7 +30,7 @@ class OpenGLFramebuffer;
  * When you need to bind the current frame to a shader, call SwapCopy and
  * then bind the value of GetSourceTexture to your shader.
  */
-class SwapFramebuffer
+class SwapFramebuffer final
 {
 private:
     sint32              _width;

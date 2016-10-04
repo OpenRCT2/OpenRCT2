@@ -21,7 +21,7 @@
 #include "NetworkTypes.h"
 #include "../common.h"
 
-class NetworkPacket
+class NetworkPacket final
 {
 public:
     uint16                              size;

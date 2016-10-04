@@ -23,13 +23,13 @@ extern "C"
     #include "../world/water.h"
 }
 
-class WaterObject : public Object
+class WaterObject final : public Object
 {
 private:
     rct_water_type _legacyType = { 0 };
 
 public:
-    explicit WaterObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit WaterObject(const rct_object_entry &entry) : Object(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
 
