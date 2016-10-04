@@ -179,6 +179,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BANNER_SPINNER_HEIGHT = PAGE_WIDGETS,
 	WIDX_BANNER_SPINNER_HEIGHT_INCREASE,
 	WIDX_BANNER_SPINNER_HEIGHT_DECREASE,
+	WIDX_BANNER_CHECK_BLOCK_NE,
+	WIDX_BANNER_CHECK_BLOCK_SE,
+	WIDX_BANNER_CHECK_BLOCK_SW,
+	WIDX_BANNER_CHECK_BLOCK_NW,
 
 	// Corrupt
 	WIDX_CORRUPT_SPINNER_HEIGHT = PAGE_WIDGETS,
@@ -382,7 +386,7 @@ static rct_widget windowTileInspectorWidgetsLargeScenery[] = {
 };
 
 #define BAN_GBPB PADDING_BOTTOM					// Banner group box properties bottom
-#define BAN_GBPT (BAN_GBPB + 16 + 1 * 21)		// Banner group box properties top
+#define BAN_GBPT (BAN_GBPB + 16 + 3 * 21)		// Banner group box properties top
 #define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Banner group box info bottom
 #define BAN_GBDT (BAN_GBDB + 20 + 1 * 11)		// Banner group box info top
 static rct_widget windowTileInspectorWidgetsBanner[] = {
@@ -390,6 +394,11 @@ static rct_widget windowTileInspectorWidgetsBanner[] = {
 	{ WWT_SPINNER,			1,	GBS(WH - BAN_GBPT, 1, 0),	STR_NONE,										STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - BAN_GBPT, 1, 0),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_INCREASE
 	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - BAN_GBPT, 1, 0),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_DECREASE
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3,	GBBT(WH - BAN_GBPT, 1) + 7 * 1),	STR_NONE,		STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NE
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3,	GBBT(WH - BAN_GBPT, 1) + 7 * 3),	STR_NONE,		STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SE
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1,	GBBT(WH - BAN_GBPT, 1) + 7 * 3),	STR_NONE,		STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SW
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 1,	GBBT(WH - BAN_GBPT, 1) + 7 * 1),	STR_NONE,		STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NW
+
 	{ WIDGETS_END },
 };
 
@@ -510,7 +519,7 @@ static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE_BUTTON),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
 };
 
@@ -640,10 +649,10 @@ static void window_tile_inspector_rotate_element(int index) {
 		mapElement->type |= newRotation;
 		break;
 	case MAP_ELEMENT_TYPE_BANNER:
-		mapElement->properties.banner.flags ^= mapElement->properties.banner.position;
+		mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
 		mapElement->properties.banner.position++;
 		mapElement->properties.banner.position &= 3;
-		mapElement->properties.banner.flags ^= mapElement->properties.banner.position;
+		mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
 		break;
 	}
 
@@ -1237,6 +1246,14 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 			widget_invalidate(w, WIDX_FENCE_SPINNER_HEIGHT);
 			break;
+		case WIDX_BANNER_CHECK_BLOCK_NE:
+		case WIDX_BANNER_CHECK_BLOCK_SE:
+		case WIDX_BANNER_CHECK_BLOCK_SW:
+		case WIDX_BANNER_CHECK_BLOCK_NW:
+			mapElement->properties.banner.flags ^= 1 << ((widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE - get_current_rotation()) & 3);
+			map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+			widget_invalidate(w, widgetIndex);
+			break;
 		} // switch widget index
 		break;
 
@@ -1658,6 +1675,10 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].bottom = GBBT(propertiesAnchor, 0) + 8;
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].top = GBBB(propertiesAnchor, 0) - 8;
 		w->widgets[WIDX_BANNER_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
+		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_NE, !(mapElement->properties.banner.flags & (1 << ((0 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_SE, !(mapElement->properties.banner.flags & (1 << ((1 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_SW, !(mapElement->properties.banner.flags & (1 << ((2 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_BANNER_CHECK_BLOCK_NW, !(mapElement->properties.banner.flags & (1 << ((3 - get_current_rotation()) & 3))));
 		break;
 	case PAGE_CORRUPT:
 		w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
