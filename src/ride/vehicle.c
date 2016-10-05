@@ -2283,29 +2283,17 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
  */
 static bool try_add_synchronised_station(int x, int y, int z)
 {
-	bool foundMapElement = false;
-	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	if (mapElement != NULL) {
-		do {
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
-			if (z != mapElement->base_height &&
-				z != mapElement->base_height - 2 &&
-				z != mapElement->base_height + 2
-			) {
-				continue;
-			}
-
-			foundMapElement = true;
-			break;
-		} while (!map_element_is_last_for_tile(mapElement++));
-	}
-	if (!foundMapElement) {
+	rct_map_element *mapElement = get_station_platform(x, y, z, 2);
+	if (mapElement == NULL) {
+		/* No station platform element found,
+		 * so no station to synchronise */
 		return false;
 	}
 
 	int rideIndex = mapElement->properties.track.ride_index;
 	rct_ride *ride = get_ride(rideIndex);
 	if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+		/* Ride is not set to synchronise with adjacent stations. */
 		return false;
 	}
 
