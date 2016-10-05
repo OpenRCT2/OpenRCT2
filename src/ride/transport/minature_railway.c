@@ -48,6 +48,22 @@ enum
 	SPR_MINATURE_RAILWAY_QUARTER_TURN_5_TILES_SE_NE_PART_2 = 23360,
 	SPR_MINATURE_RAILWAY_QUARTER_TURN_5_TILES_SE_NE_PART_3 = 23361,
 	SPR_MINATURE_RAILWAY_QUARTER_TURN_5_TILES_SE_NE_PART_4 = 23362,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_0 = 23363,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_1 = 23364,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_2 = 23365,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_3 = 23366,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_0 = 23367,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_1 = 23368,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_2 = 23369,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_3 = 23370,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_0 = 23371,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_1 = 23372,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_2 = 23373,
+	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_3 = 23374,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_0 = 23375,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_1 = 23376,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_2 = 23377,
+	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_3 = 23378,
 	SPR_MINATURE_RAILWAY_25_DEG_UP_SW_NE = 23379,
 	SPR_MINATURE_RAILWAY_FLAT_TO_25_DEG_UP_SW_NE = 23380,
 	SPR_MINATURE_RAILWAY_25_DEG_UP_NE_SW = 23381,
@@ -60,38 +76,20 @@ enum
 	SPR_MINATURE_RAILWAY_FLAT_TO_25_DEG_UP_SE_NW = 23388,
 	SPR_MINATURE_RAILWAY_25_DEG_UP_TO_FLAT_SE_NW = 23389,
 	SPR_MINATURE_RAILWAY_25_DEG_UP_TO_FLAT_NW_SE = 23390,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_0 = 23385,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_1 = 23386,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_2 = 23387,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_3 = 23388,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_0 = 23367,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_1 = 23368,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_2 = 23369,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_3 = 23370,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_0 = 23371,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_1 = 23372,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_2 = 23373,
-	SPR_MINATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_3 = 23374,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_0 = 23397,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_1 = 23398,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_2 = 23399,
-	SPR_MINATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_3 = 23400,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 23401,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 23402,
-
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 23391,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 23392,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 23393,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 23394,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 23395,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 23396,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 23397,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 23398,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 23399,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 23400,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 23401,
+	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 23402,
 	SPR_MINATURE_RAILWAY_FLAT_NO_BASE_SW_NE = 23403,
-	SPR_MINATURE_RAILWAY_FLAT_NO_BASE_NW_SE = 23404,
-
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 23403,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 23404,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 23405,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 23406,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 23407,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 23408,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 23409,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 23410,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 23411,
-	SPR_MINATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 23412,
+	SPR_MINATURE_RAILWAY_FLAT_NO_BASE_NW_SE = 23404,	
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_0 = 23413,
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_1 = 23414,
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_2 = 23415,
@@ -871,88 +869,166 @@ static void paint_minature_railway_track_s_bend_left(uint8 rideIndex, uint8 trac
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AE24C */
+static const sint8 s_bend_right_supports_type[4][4] = {
+	{0, 4, 2, 0},
+	{1, 5, 3, 1},
+	{0, 4, 2, 0},
+	{1, 5, 3, 1}
+};
+
+static const uint32 minature_railway_s_bend_right_tiles_track_floor[2][4] = {
+	{
+		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS_S_SEGMENT,
+		SPR_FLOOR_PLANKS_N_SEGMENT,
+		SPR_FLOOR_PLANKS
+	},
+	{
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_W_SEGMENT,
+		SPR_FLOOR_PLANKS_E_SEGMENT,
+		SPR_FLOOR_PLANKS_90_DEG,
+	}
+};
+
+/** rct2: 0x008AD160 */
 static void paint_minature_railway_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (direction == 2 || direction == 3) {
 		trackSequence = 3 - trackSequence;
 	}
 
+	bool isSupported = wooden_a_supports_paint_setup(s_bend_right_supports_type[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
 	const rct_xy16 offsetList[] = {
-		{0, 6},
+		{0, 2},
 		{0, 6},
 		{0, 0},
-		{0, 6},
+		{0, 2},
 	};
 
 	const rct_xy16 boundsList[] = {
-		{32, 20},
+		{32, 27},
 		{32, 26},
 		{32, 26},
-		{32, 20},
+		{32, 27},
 	};
 
 	uint32 imageId = minature_railway_track_pieces_s_bend_right[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
 	rct_xy16 offset = offsetList[trackSequence];
 	rct_xy16 bounds = boundsList[trackSequence];
-	if (direction == 0 || direction == 2) {
-		sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
-	} else {
-		sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+	if (isSupported == false) {
+		sub_98197C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+	}
+	else {
+		imageId = minature_railway_s_bend_right_tiles_track_floor[direction & 1][trackSequence] | gTrackColours[SCHEME_SUPPORTS];
+		sub_98197C_rotated(direction, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
+
+		imageId = minature_railway_track_pieces_s_bend_right[direction & 1][trackSequence] | gTrackColours[SCHEME_TRACK];
+		sub_98199C_rotated(direction, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
 	}
 
 	if (direction == 0 || direction == 2) {
 		if (trackSequence == 0) {
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 		}
-
-		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-		}
 	} else {
 		if (trackSequence == 3) {
 			paint_util_push_tunnel_right(height, TUNNEL_6);
-		}
-
-		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(3, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	}
 
 	int blockedSegments = 0;
 	switch (trackSequence) {
-		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 0: blockedSegments = SEGMENTS_ALL; break;
 		case 1: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
 		case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4; break;
-		case 3: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8; break;
+		case 3: blockedSegments = SEGMENTS_ALL; break;
 	}
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AE29C */
+static const uint32 minature_railway_right_quarter_turn_3_tile_track_floor[4][3] = {
+	{
+		SPR_FLOOR_PLANKS_S_SEGMENT,
+		0,
+		SPR_FLOOR_PLANKS_S_SEGMENT,
+	},
+	{
+		SPR_FLOOR_PLANKS_W_SEGMENT,
+		0,
+		SPR_FLOOR_PLANKS_W_SEGMENT,
+	},
+	{
+		SPR_FLOOR_PLANKS_N_SEGMENT,
+		0,
+		SPR_FLOOR_PLANKS_N_SEGMENT,
+	},
+	{
+		SPR_FLOOR_PLANKS_E_SEGMENT,
+		0,
+		SPR_FLOOR_PLANKS_E_SEGMENT,
+	}
+};
+
+const rct_xyz16 minature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = {
+	{
+		{0, 6, 0},
+		{16, 16, 0},
+		{6, 0, 0},
+	},
+	{
+		{6, 0, 0},
+		{16, 0, 0},
+		{0, 6, 0},
+	},
+	{
+		{0, 6, 0},
+		{0,  0, 0},
+		{6, 0, 0},
+	},
+	{
+		{6, 0, 0},
+		{0,  16, 0},
+		{0, 6, 0},
+	}
+};
+
+/** rct2: 0x008AD1B0 */
 static void paint_minature_railway_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], minature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
-	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
-
-	switch (trackSequence) {
-		case 0:
-		case 3:
-			metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			break;
+	bool isSupported = false;
+	if (trackSequence != 1 && trackSequence != 2)
+	{
+		const uint8 supportType[] = { 4, 5, 2, 3 };
+		isSupported = wooden_a_supports_paint_setup(supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	}
+	if (isSupported == false) {
+		track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], minature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+	}
+	else {
+		track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], minature_railway_right_quarter_turn_3_tile_track_floor, NULL, defaultRightQuarterTurn3TilesBoundLengths, minature_railway_right_quarter_turn_3_tile_bound_offsets, get_current_rotation());
+	
+		static const sint8 right_quarter_turn_3_tiles_sprite_map[] = {0, -1, 1, 2};
+
+		int index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+
+		uint32 imageId = minature_railway_track_pieces_flat_quarter_turn_3_tiles[direction][index] | gTrackColours[SCHEME_TRACK];
+		rct_xy16 offset = defaultRightQuarterTurn3TilesOffsets[direction][index];
+		rct_xy16 boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][index];
+		rct_xyz16 boundsOffset = { .x = offset.x, .y = offset.y, .z = 0 };
+
+		sub_98199C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, 3, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, get_current_rotation());
+	}
+	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
 
 	int blockedSegments = 0;
 	switch (trackSequence) {
-		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 0: blockedSegments = SEGMENTS_ALL; break;
 		case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
-		case 3: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
+		case 3: blockedSegments = SEGMENTS_ALL; break;
 	}
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
@@ -1259,13 +1335,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_minature_railway(int trackType, in
 
 		case TRACK_ELEM_S_BEND_LEFT:
 			return paint_minature_railway_track_s_bend_left;
-		//case TRACK_ELEM_S_BEND_RIGHT:
-		//	return paint_minature_railway_track_s_bend_right;
+		case TRACK_ELEM_S_BEND_RIGHT:
+			return paint_minature_railway_track_s_bend_right;
 
-		//case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
-		//	return paint_minature_railway_track_left_quarter_turn_3_tiles;
-		//case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
-		//	return paint_minature_railway_track_right_quarter_turn_3_tiles;
+		case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+			return paint_minature_railway_track_left_quarter_turn_3_tiles;
+		case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+			return paint_minature_railway_track_right_quarter_turn_3_tiles;
 
 		//case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
 		//	return paint_minature_railway_track_left_eighth_to_diag;
