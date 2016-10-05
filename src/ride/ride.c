@@ -5954,6 +5954,9 @@ static money32 ride_create(int type, int subType, int flags, int *outRideIndex, 
 			}
 		}
 		subType = availableRideEntries[0];
+		if (subType == 255) {
+			return MONEY32_UNDEFINED;
+		}
 	}
 
 foundRideEntry:
@@ -5961,7 +5964,7 @@ foundRideEntry:
 	rideIndex = ride_get_empty_slot();
 	if (subType >= 128)
 	{
-		log_warning("Invalid request for ride type %u", subType);
+		log_warning("Invalid request for ride entry %u", subType);
 		return MONEY32_UNDEFINED;
 	}
 	if (rideIndex == -1) {

@@ -332,16 +332,15 @@ static void window_track_list_update(rct_window *w)
  */
 static void window_track_list_invalidate(rct_window *w)
 {
-	rct_ride_entry *entry;
-	rct_string_id stringId;
-
 	colour_scheme_update(w);
 
-	entry = get_ride_entry(_window_track_list_item.entry_index);
-
-	stringId = entry->name;
-	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
-		stringId = _window_track_list_item.type + 2;
+	rct_string_id stringId = STR_NONE;
+	rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
+	if (entry != NULL && entry != (rct_ride_entry*)-1) {
+		stringId = entry->name;
+		if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
+			stringId = _window_track_list_item.type + 2;
+	}
 
 	set_format_arg(0, rct_string_id, stringId);
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
