@@ -111,14 +111,28 @@ void platform_get_time_local(rct2_time *out_time)
 	out_time->hour = timeinfo->tm_hour;
 }
 
+static size_t platform_utf8_to_multibyte(const utf8 *path, char *buffer, size_t buffer_size)
+{
+	wchar_t *wpath = utf8_to_widechar(path);
+	setlocale(LC_CTYPE, "");
+	size_t len = wcstombs(NULL, wpath, 0);
+	bool truncated = false;
+	if (len > buffer_size - 1) {
+		truncated = true;
+		len = buffer_size - 1;
+	}
+	wcstombs(buffer, wpath, len);
+	buffer[len] = '\0';
+	if (truncated)
+		log_warning("truncated string %s", buffer);
+	free(wpath);
+	return len;
+}
+
 bool platform_file_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	bool exists = access(buffer, F_OK) != -1;
 	log_verbose("file '%s' exists = %i", buffer, exists);
 	return exists;
@@ -126,12 +140,8 @@ bool platform_file_exists(const utf8 *path)
 
 bool platform_directory_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	struct stat dirinfo;
 	int result = stat(buffer, &dirinfo);
 	log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
@@ -144,12 +154,8 @@ bool platform_directory_exists(const utf8 *path)
 
 bool platform_original_game_data_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	char checkPath[MAX_PATH];
 	safe_strcpy(checkPath, buffer, MAX_PATH);
 	safe_strcat_path(checkPath, "Data", MAX_PATH);
@@ -166,14 +172,9 @@ static mode_t getumask()
 
 bool platform_ensure_directory_exists(const utf8 *path)
 {
-	mode_t mask = getumask();
-
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
+	mode_t mask = getumask();
 	log_verbose("%s", buffer);
 	const int result = mkdir(buffer, mask);
 	if (result == 0 || (result == -1 && errno == EEXIST))
@@ -299,16 +300,9 @@ static int winfilter(const struct dirent *d)
 
 int platform_enumerate_files_begin(const utf8 *pattern)
 {
+	char npattern[MAX_PATH];
+	platform_utf8_to_multibyte(pattern, npattern, MAX_PATH);
 	enumerate_file_info *enumFileInfo;
-	wchar_t *wpattern = utf8_to_widechar(pattern);
-	int length = min(utf8_length(pattern), MAX_PATH);
-	char *npattern = malloc(length+1);
-	int converted;
-	converted = wcstombs(npattern, wpattern, length);
-	npattern[length] = '\0';
-	if (converted == MAX_PATH) {
-		log_warning("truncated string %s", npattern);
-	}
 	log_verbose("begin file search, pattern: %s", npattern);
 
 	char *file_name = strrchr(npattern, *PATH_SEPARATOR);
@@ -363,8 +357,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			free(dir_name);
 			free(g_file_pattern);
 			g_file_pattern = NULL;
-			free(wpattern);
-			free(npattern);
 			return i;
 		}
 	}
@@ -372,8 +364,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	free(dir_name);
 	free(g_file_pattern);
 	g_file_pattern = NULL;
-	free(wpattern);
-	free(npattern);
 	return -1;
 }
 
@@ -452,16 +442,9 @@ static int dirfilter(const struct dirent *d)
 
 int platform_enumerate_directories_begin(const utf8 *directory)
 {
+	char npattern[MAX_PATH];
+	int length = platform_utf8_to_multibyte(directory, npattern, MAX_PATH) + 1;
 	enumerate_file_info *enumFileInfo;
-	wchar_t *wpattern = utf8_to_widechar(directory);
-	int length = min(utf8_length(directory), MAX_PATH);
-	char *npattern = malloc(length+1);
-	int converted;
-	converted = wcstombs(npattern, wpattern, length);
-	npattern[length - 1] = '\0';
-	if (converted == MAX_PATH) {
-		log_warning("truncated string %s", npattern);
-	}
 	log_verbose("begin directory listing, path: %s", npattern);
 
 	// TODO: add some checking for stringness and directoryness
@@ -496,14 +479,10 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			}
 			enumFileInfo->handle = 0;
 			enumFileInfo->active = 1;
-			free(wpattern);
-			free(npattern);
 			return i;
 		}
 	}
 
-	free(wpattern);
-	free(npattern);
 	return -1;
 }
 
