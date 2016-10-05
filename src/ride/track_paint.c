@@ -1270,6 +1270,37 @@ void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 dir
 	}
 }
 
+void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height - 8, tunnelType0);
+	}
+	if (direction == 0 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height + 8, tunnelType3);
+	}
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height + 8, tunnelType3);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height - 8, tunnelType0);
+	}
+}
+
+void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height + 8, tunnelType0);
+	}
+	if (direction == 0 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height - 8, tunnelType3);
+	}
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height - 8, tunnelType3);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height + 8, tunnelType0);
+	}
+}
 
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)

@@ -493,18 +493,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(uint8 rideIndex, u
 			sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
 	}
 
-	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height + 8, TUNNEL_2);
-	}
-	if (direction == 0 && trackSequence == 3) {
-		paint_util_push_tunnel_right(height - 8, TUNNEL_1);
-	}
-	if (direction == 1 && trackSequence == 3) {
-		paint_util_push_tunnel_left(height - 8, TUNNEL_1);
-	}
-	if (direction == 3 && trackSequence == 0) {
-		paint_util_push_tunnel_right(height + 8, TUNNEL_2);
-	}
+	track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(height, direction, trackSequence, TUNNEL_2, TUNNEL_1);
 
 	switch (trackSequence) {
 	case 0:
@@ -558,18 +547,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uin
 			sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
 	}
 
-	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height - 8, TUNNEL_1);
-	}
-	if (direction == 0 && trackSequence == 3) {
-		paint_util_push_tunnel_right(height + 8, TUNNEL_2);
-	}
-	if (direction == 1 && trackSequence == 3) {
-		paint_util_push_tunnel_left(height + 8, TUNNEL_2);
-	}
-	if (direction == 3 && trackSequence == 0) {
-		paint_util_push_tunnel_right(height - 8, TUNNEL_1);
-	}
+	track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
 
 	switch (trackSequence) {
 	case 0:
