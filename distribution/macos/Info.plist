@@ -24,5 +24,7 @@
 	<string>OpenRCT2 is licensed under the GNU General Public License version 3</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
