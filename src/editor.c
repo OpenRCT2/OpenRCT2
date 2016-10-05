@@ -309,7 +309,7 @@ static int editor_load_landscape_from_sc4(const char *path)
  */
 static int editor_read_s6(const char *path)
 {
-	bool loadResult;
+	bool loadResult = false;
 	const char *extension = path_get_extension(path);
 	if (_stricmp(extension, ".sc6") == 0) {
 		loadResult = scenario_load(path);
