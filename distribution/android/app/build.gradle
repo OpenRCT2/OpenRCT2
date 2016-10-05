@@ -11,6 +11,7 @@ android {
 
         externalNativeBuild {
             cmake {
+                arguments '-DANDROID_STL=c++_static', '-DDEBUG_LEVEL=3'
                 abiFilters 'armeabi-v7a'
                 targets 'openrct2'
             }
