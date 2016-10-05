@@ -545,6 +545,13 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
+
+	for (int chainLift = 0; chainLift < 2; chainLift++) {
+		if (chainLift == 0) {
+			mapElement.type &= ~0x80;
+		} else {
+			mapElement.type |= 0x80;
+		}
 	for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
 		gCurrentRotation = currentRotation;
 		for (int direction = 0; direction < 4; direction++) {
@@ -584,7 +591,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 				testpaint_clear_ignore();
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
-					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d]\n", direction, trackSequence);
+					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
 					continue;
 				}
 
@@ -602,9 +609,9 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 					
 					if (oldCallCount != newCallCount) {
-						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d]", newCallCount, oldCallCount, direction, trackSequence, chainLift);
 					} else {
-						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d chainLift:%d]", direction, trackSequence, chainLift);
 					}
 					
 					sprintf(*error + strlen(*error), "\n%s", diff);
@@ -616,6 +623,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 			}
 		}
+	}
 	}
 
 	sprintf(*error + strlen(*error), "");
