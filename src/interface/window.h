@@ -120,6 +120,8 @@ typedef struct coordinate_focus {
 	sint16 z; //0x486
 	uint8 rotation;//0x488
 	uint8 zoom;//0x489
+	sint16 width;
+	sint16 height;
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0

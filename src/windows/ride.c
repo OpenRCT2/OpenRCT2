@@ -1856,7 +1856,8 @@ static void window_ride_init_viewport(rct_window *w)
 	focus.sprite.sprite_id = -1;
 	focus.coordinate.zoom = 0;
 	focus.coordinate.rotation = get_current_rotation();
-
+	focus.coordinate.width = 0;
+	focus.coordinate.height = 0;
 
 	if (eax >= 0 && eax < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
 		focus.sprite.sprite_id = ride->vehicles[eax];
@@ -1902,16 +1903,20 @@ static void window_ride_init_viewport(rct_window *w)
 
 	uint16 viewport_flags = 0;
 
-	if (w->viewport != 0){
+	if (w->viewport != NULL) {
 		if (focus.coordinate.x == w->viewport_focus_coordinates.x &&
 			focus.coordinate.y == w->viewport_focus_coordinates.y &&
 			focus.coordinate.z == w->viewport_focus_coordinates.z &&
 			focus.coordinate.rotation == w->viewport_focus_coordinates.rotation &&
-			focus.coordinate.zoom == w->viewport_focus_coordinates.zoom )
+			focus.coordinate.zoom == w->viewport_focus_coordinates.zoom &&
+			focus.coordinate.width == w->width &&
+			focus.coordinate.height == w->height
+		) {
 			return;
+		}
 		viewport_flags = w->viewport->flags;
 		w->viewport->width = 0;
-		w->viewport = 0;
+		w->viewport = NULL;
 
 		viewport_update_pointers();
 	} else if (gConfigGeneral.always_show_gridlines) {
@@ -1925,6 +1930,8 @@ static void window_ride_init_viewport(rct_window *w)
 	w->viewport_focus_coordinates.z = focus.coordinate.z;
 	w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
 	w->viewport_focus_coordinates.zoom = focus.coordinate.zoom;
+	w->viewport_focus_coordinates.width = w->width;
+	w->viewport_focus_coordinates.height = w->height;
 
 	//rct2: 0x006aec9c only used here so brought it into the function
 	if (!w->viewport && ride->overall_view != 0xFFFF){
@@ -2051,13 +2058,6 @@ static void window_ride_main_resize(rct_window *w)
 	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
 		minHeight = 200 + offset + RCT1_LIGHT_OFFSET - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
 	window_set_resize(w, 316, minHeight, 500, 450);
-
-	rct_viewport *viewport = w->viewport;
-	if (viewport != NULL) {
-		viewport->width = 0;
-		w->viewport = NULL;
-	}
-
 	window_ride_init_viewport(w);
 }
 
