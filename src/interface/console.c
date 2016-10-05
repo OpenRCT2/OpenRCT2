@@ -659,6 +659,12 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "window_limit") == 0) {
 			console_printf("window_limit %d", gConfigGeneral.window_limit);
 		}
+		else if (strcmp(argv[0], "render_weather_effects") == 0) {
+			console_printf("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+		}
+		else if (strcmp(argv[0], "render_weather_gloom") == 0) {
+			console_printf("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -830,6 +836,16 @@ static int cc_set(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			window_set_window_limit(int_val[0]);
 			console_execute_silent("get window_limit");
+		}
+		else if (strcmp(argv[0], "render_weather_effects") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.render_weather_effects = (int_val[0] != 0);
+			config_save_default();
+			console_execute_silent("get render_weather_effects");
+		}
+		else if (strcmp(argv[0], "render_weather_gloom") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
+			config_save_default();
+			console_execute_silent("get render_weather_gloom");
 		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
@@ -1015,6 +1031,8 @@ utf8* console_variable_table[] = {
 	"location",
 	"window_scale",
 	"window_limit",
+	"render_weather_effects",
+	"render_weather_gloom",
 };
 utf8* console_window_table[] = {
 	"object_selection",
