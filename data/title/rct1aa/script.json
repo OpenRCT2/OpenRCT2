@@ -1,0 +1,181 @@
+[
+  { "command": "loadrct1", "saveIndex": 45 },
+  { "command": "location", "x": 62, "y": 53},
+  { "command": "wait", "seconds": 11},
+  
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 78, "y": 45 },
+  { "command": "wait", "seconds": 16 },
+  
+  { "command": "loadrct1", "saveIndex": 42 },
+  { "command": "location", "x": 52, "y": 28},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "loadrct1", "saveIndex": 48 },
+  { "command": "location", "x": 68, "y": 45},
+  { "command": "wait", "seconds": 11}, 
+  
+  { "command": "loadrct1", "saveIndex": 44 },
+  { "command": "location", "x": 69, "y": 93},
+  { "command": "wait", "seconds": 17},
+  
+  { "command": "loadrct1", "saveIndex": 51 },
+  { "command": "location", "x": 97, "y": 72},
+  { "command": "rotate", "rotations": 3 },
+  { "command": "wait", "seconds": 12},
+  
+  { "command": "location", "x": 74, "y": 71},
+  { "command": "rotate", "rotations": 2 },
+  { "command": "wait", "seconds": 12},
+  
+  { "command": "location", "x": 67, "y": 90},
+  { "command": "rotate", "rotations": 2 },
+  { "command": "wait", "seconds": 12},
+  
+  { "command": "loadrct1", "saveIndex": 65 },
+  { "command": "location", "x": 94, "y": 64},
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "loadrct1", "saveIndex": 59 },
+  { "command": "location", "x": 96, "y": 22},
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 90, "y": 29},
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "loadrct1", "saveIndex": 53 },
+  { "command": "location", "x": 47, "y": 52},
+  { "command": "wait", "seconds": 12},
+  
+  { "command": "loadrct1", "saveIndex": 47 },
+  { "command": "location", "x": 67, "y": 59},
+  { "command": "wait", "seconds": 19},
+  
+  { "command": "loadrct1", "saveIndex": 41 },
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 72, "y": 61},
+  { "command": "wait", "seconds": 8},
+  
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 68, "y": 70},
+  { "command": "wait", "seconds": 8},
+  
+  { "command": "location", "x": 58, "y": 56},
+  { "command": "wait", "seconds": 8},
+
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 44, "y": 70},
+  { "command": "wait", "seconds": 8},
+  
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 43, "y": 90},
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "loadrct1", "saveIndex": 58 },
+  { "command": "location", "x": 49, "y": 46},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "loadrct1", "saveIndex": 60 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 38, "y": 57},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 3 },
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 47, "y": 99},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 90, "y": 48},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 86, "y": 43},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 57, "y": 50},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 86, "y": 64},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 7 },
+  { "command": "location", "x": 48, "y": 44},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 64, "y": 41},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 8 },
+  { "command": "rotate", "rotations": 2 },
+  { "command": "location", "x": 56, "y": 64},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 9 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 96, "y": 88},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 84, "y": 95},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 10 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 64, "y": 37},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 11 },
+  { "command": "location", "x": 84, "y": 56},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 34, "y": 36},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 33, "y": 65},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 12 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 50, "y": 50},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 35, "y": 39},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 62, "y": 39},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 15 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 57, "y": 94},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 44, "y": 84},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 76, "y": 59},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 76, "y": 48},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 17 },
+  { "command": "location", "x": 80, "y": 49},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 60, "y": 62},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "loadrct1", "saveIndex": 18 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 50, "y": 77},
+  { "command": "wait", "seconds": 15},
+
+  { "command": "restart" }
+  
+]

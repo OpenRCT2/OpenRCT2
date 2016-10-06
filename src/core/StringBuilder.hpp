@@ -96,6 +96,17 @@ public:
     }
 
     /**
+     * Creates a new StringBuilder which is a substring, beginning at start (inclusive )and ending at end (non-inclusive)
+     */
+    StringBuilder * SubString(size_t start, size_t end) const
+    {
+        size_t length = end - start;
+        StringBuilder* builder = new StringBuilder(length);
+        builder->Append(&_buffer[start], length);
+        return builder;
+    }
+
+    /**
      * Clears the current string, but preserves the allocated memory for another string.
      */
     void Clear()
