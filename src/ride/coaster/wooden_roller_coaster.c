@@ -27,17 +27,11 @@
 #include "../track_paint.h"
 
 enum {
-	SPR_WOODEN_RC_FLAT_RAILS_SW_NE = 24619,
-	SPR_WOODEN_RC_FLAT_RAILS_NW_SE = 24620,
-	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE = 24615,
-	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE = 24616,
-	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW = 24617,
-	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW = 24618,
+	SPR_WOODEN_RC_25_DEG_FRONT_NW_SE = 23569,
+	SPR_WOODEN_RC_25_DEG_FRONT_NE_SW = 23570,
 
-	SPR_WOODEN_RC_BRAKES_RAILS_SW_NE = 24621,
-	SPR_WOODEN_RC_BRAKES_RAILS_NW_SE = 24622,
-	SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE = 24623,
-	SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE = 24624,
+	SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE = 23603,
+	SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW = 23604,
 
 	SPR_WOODEN_RC_FLAT_CHAIN_SW_NE = 23749,
 	SPR_WOODEN_RC_FLAT_CHAIN_NW_SE = 23750,
@@ -50,8 +44,45 @@ enum {
 	SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE = 23757,
 	SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE = 23758,
 
+	SPR_WOODEN_RC_25_DEG_SW_NE = 23545,
+	SPR_WOODEN_RC_25_DEG_NW_SE = 23546,
+	SPR_WOODEN_RC_25_DEG_NE_SW = 23547,
+	SPR_WOODEN_RC_25_DEG_SE_NW = 23548,
+
+	SPR_WOODEN_RC_25_DEG_CHAIN_SW_NE = 23579,
+	SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE = 23580,
+	SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW = 23581,
+	SPR_WOODEN_RC_25_DEG_CHAIN_SE_NW = 23582,
+
 	SPR_WOODEN_RC_STATION_SW_NE = 23973,
 	SPR_WOODEN_RC_STATION_NW_SE = 23974,
+
+	SPR_WOODEN_RC_25_DEG_RAILS_SW_NE = 24411,
+	SPR_WOODEN_RC_25_DEG_RAILS_NW_SE = 24412,
+	SPR_WOODEN_RC_25_DEG_RAILS_NE_SW = 24413,
+	SPR_WOODEN_RC_25_DEG_RAILS_SE_NW = 24414,
+
+	SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NW_SE = 24435,
+	SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NE_SW = 24436,
+
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SW_NE = 24445,
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE = 24446,
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW = 24447,
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SE_NW = 24448,
+
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NW_SE = 24469,
+	SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NE_SW = 24470,
+
+	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE = 24615,
+	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE = 24616,
+	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW = 24617,
+	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW = 24618,
+	SPR_WOODEN_RC_FLAT_RAILS_SW_NE = 24619,
+	SPR_WOODEN_RC_FLAT_RAILS_NW_SE = 24620,
+	SPR_WOODEN_RC_BRAKES_RAILS_SW_NE = 24621,
+	SPR_WOODEN_RC_BRAKES_RAILS_NW_SE = 24622,
+	SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE = 24623,
+	SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE = 24624,
 
 	SPR_WOODEN_RC_STATION_RAILS_SW_NE = 24839,
 	SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
@@ -128,6 +159,46 @@ static void wooden_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void wooden_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4][4] = {
+		{
+			{ SPR_WOODEN_RC_25_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_RAILS_SW_NE, 0 },
+			{ SPR_WOODEN_RC_25_DEG_NW_SE, SPR_WOODEN_RC_25_DEG_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NW_SE },
+			{ SPR_WOODEN_RC_25_DEG_NE_SW, SPR_WOODEN_RC_25_DEG_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NE_SW },
+			{ SPR_WOODEN_RC_25_DEG_SE_NW, SPR_WOODEN_RC_25_DEG_RAILS_SE_NW, 0 },
+		},
+		{
+			{ SPR_WOODEN_RC_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SW_NE, 0 },
+			{ SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
+			{ SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
+			{ SPR_WOODEN_RC_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SE_NW, 0 },
+		}
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	uint32 imageId = imageIds[isChained][direction][0] | wooden_rc_get_track_colour();
+	uint32 railsImageId = imageIds[isChained][direction][1] | wooden_rc_get_rails_colour();
+	sub_98197C_rotated(direction, imageId, 0, 0, 32, 25, 2, height, 0, 3, height);
+	sub_98199C_rotated(direction, railsImageId, 0, 0, 32, 25, 2, height, 0, 3, height);
+	if (direction == 1 || direction == 2) {
+		imageId = imageIds[isChained][direction][2] | wooden_rc_get_track_colour();
+		railsImageId = imageIds[isChained][direction][3] | wooden_rc_get_rails_colour();
+		sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 9, height, 0, 26, height + 5);
+		sub_98199C_rotated(direction, railsImageId, 0, 0, 32, 1, 9, height, 0, 26, height + 5);
+	}
+	wooden_a_supports_paint_setup(direction & 1, 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_8);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+}
+
 static void wooden_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -170,6 +241,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int trackType, int direc
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return wooden_rc_track_station;
+	case TRACK_ELEM_25_DEG_UP:
+		return wooden_rc_track_25_deg_up;
 	case TRACK_ELEM_BRAKES:
 		return wooden_rc_track_brakes;
 	case TRACK_ELEM_BLOCK_BRAKES:
