@@ -187,8 +187,6 @@ static void paint_log_flume_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 
 static void paint_log_flume_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_ride *ride = get_ride(rideIndex);
-
 	uint32 imageId = LogFlumeTrackFlatImageIds[direction][0] | gTrackColours[SCHEME_TRACK];
 	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3);
 
