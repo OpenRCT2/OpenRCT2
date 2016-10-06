@@ -21,7 +21,6 @@
 #include "../../src/interface/viewport.h"
 #include "../../src/hook.h"
 
-
 static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
 static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
 static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
@@ -339,7 +338,7 @@ static bool assertFunctionCallArrayEquals(function_call expected[], uint8 expect
 	return true;
 }
 
-static void printImageId(uint32 input, utf8string *out) {
+static void printImageId(uint32 input, utf8string out, size_t len) {
 	uint32 image = input & 0x7FFFF;
 	uint32 palette = input & ~0x7FFFF;
 
@@ -350,34 +349,34 @@ static void printImageId(uint32 input, utf8string *out) {
 	else if (palette == DEFAULT_SCHEME_3)paletteName = "SCHEME_3";
 	else {
 		paletteName = malloc(16);
-		sprintf(paletteName, "0x%08X", palette);
+		snprintf(paletteName, 16, "0x%08X", palette);
 	}
 
 	if (image == 0) {
-		sprintf(*out, "%s", paletteName);
+		snprintf(out, len, "%s", paletteName);
 	} else if (image & 0x70000) {
-		sprintf(*out, "%s | vehicle.base_image_id + %d", paletteName, image & ~0x70000);
+		snprintf(out, len, "%s | vehicle.base_image_id + %d", paletteName, image & ~0x70000);
 	} else {
-		sprintf(*out, "%s | %d", paletteName, image);
+		snprintf(out, len, "%s | %d", paletteName, image);
 	}
 }
 
-static void printFunctionCall(utf8string *out, function_call call) {
+static void printFunctionCall(utf8string out, size_t len, function_call call) {
 	utf8string imageId = malloc(64);
-	printImageId(call.supports.colour_flags, &imageId);
+	printImageId(call.supports.colour_flags, imageId, 64);
 	switch (call.function) {
 	case SUPPORTS_WOOD_A:
-		sprintf(*out, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
+		snprintf(out, len, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
 		return;
 	case SUPPORTS_WOOD_B:
-		sprintf(*out, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
+		snprintf(out, len, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
 		return;
 
 	case SUPPORTS_METAL_A:
-		sprintf(*out, "metal_a_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
+		snprintf(out, len, "metal_a_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
 		return;
 	case SUPPORTS_METAL_B:
-		sprintf(*out, "metal_b_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
+		snprintf(out, len, "metal_b_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
 		return;
 	}
 
@@ -397,11 +396,12 @@ static void printFunctionCall(utf8string *out, function_call call) {
 		break;
 	}
 
-	int strlen;
+	size_t slen;
 
-	printImageId(call.paint.image_id, &imageId);
-	strlen = sprintf(
-		*out,
+	printImageId(call.paint.image_id, imageId, 64);
+	slen = snprintf(
+		out,
+		len,
 		"%s(%s, %d, %d, %d, %d, %d, %d, ",
 		name,
 		imageId,
@@ -409,30 +409,37 @@ static void printFunctionCall(utf8string *out, function_call call) {
 		call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z,
 		call.paint.z_offset
 	);
+	if (slen >= len) return;
 
 	if (call.function != PAINT_98196C) {
-		strlen += sprintf(
-			*out + strlen,
-			"%d, %d, %d, ",
-			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z
-		);
+		if (slen < len)
+			slen += snprintf(
+				out + slen,
+				len - slen,
+				"%d, %d, %d, ",
+				call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z
+			);
 	}
 
-	sprintf(*out + strlen, "%d)", call.paint.rotation);
+	if (slen < len)
+		slen += snprintf(out + slen, len - slen, "%d)", call.paint.rotation);
 
 	if (call.function != PAINT_98196C) {
-		sprintf(*out + strlen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
-			call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
-			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
-			call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
+		if (slen < len)
+			snprintf(out + slen, len - slen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
+				call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
+				call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
+				call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
 	}
 }
 
-static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
+static void printFunctionCallArray(utf8string out, size_t len, function_call calls[], uint8 count) {
 	for (int i = 0; i < count; i++) {
 		utf8string callOut = malloc(1024);
-		printFunctionCall(&callOut, calls[i]);
-		sprintf(*out + strlen(*out), "%s\n", callOut);
+		printFunctionCall(callOut, 1024, calls[i]);
+		size_t slen = strlen(out);
+		if (slen < len)
+			snprintf(out + slen, len - slen, "%s\n", callOut);
 	}
 }
 
@@ -481,11 +488,11 @@ extern bool testSupportSegments(uint8 rideType, uint8 trackType);
 extern bool testTunnels(uint8 rideType, uint8 trackType);
 extern bool testVerticalTunnels(uint8 rideType, uint8 trackType);
 
-static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error) {
+static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, size_t len) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
 			// These rides chechk neighbouring tiles for tracks
-			sprintf(*error, "Skipped");
+			snprintf(error, len, "Skipped");
 			return false;
 		}
 	}
@@ -522,7 +529,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 	int height = 48;
 
-	sprintf(*error, "rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
+	snprintf(error, len, "rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
 
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
@@ -572,7 +579,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 				testpaint_clear_ignore();
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
-					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
+					snprintf(error, len, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
 					continue;
 				}
 
@@ -583,19 +590,31 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 				if (!assertFunctionCallArrayEquals(oldCalls, oldCallCount, newCalls, newCallCount)) {
 					utf8string diff = malloc(2048);
 
-					sprintf(diff, "<<< EXPECTED\n");
-					printFunctionCallArray(&diff, oldCalls, oldCallCount);
-					sprintf(diff + strlen(diff), "====\n");
-					printFunctionCallArray(&diff, newCalls, newCallCount);
-					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
+					snprintf(diff, 2048, "<<< EXPECTED\n");
+					printFunctionCallArray(diff, 2048, oldCalls, oldCallCount);
+					
+					size_t slen = strlen(diff);
+					if (slen < 2048)
+						snprintf(diff + slen, 2048 - slen, "====\n");
+					printFunctionCallArray(diff, 2048, newCalls, newCallCount);
+					
+					slen = strlen(diff);
+					if (slen < 2048)
+						snprintf(diff + slen, 2048 - slen, ">>> ACTUAL\n");
 					
 					if (oldCallCount != newCallCount) {
-						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d]", newCallCount, oldCallCount, direction, trackSequence, chainLift);
+						slen = strlen(error);
+						if (slen < len)
+							snprintf(error + slen, len - slen, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d]", newCallCount, oldCallCount, direction, trackSequence, chainLift);
 					} else {
-						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d chainLift:%d]", direction, trackSequence, chainLift);
+						slen = strlen(error);
+						if (slen < len)
+							snprintf(error + slen, len - slen, "Calls don't match [direction:%d trackSequence:%d chainLift:%d]", direction, trackSequence, chainLift);
 					}
 					
-					sprintf(*error + strlen(*error), "\n%s", diff);
+					slen = strlen(error);
+					if (slen < len)
+						snprintf(error + slen, len - slen, "\n%s", diff);
 					
 					free(diff);
 
@@ -640,7 +659,7 @@ bool testTrackPainting(int rideType, int trackType) {
 	}
 
 	utf8string error = malloc(2048);
-	bool success = testTrackElement(rideType, trackType, &error);
+	bool success = testTrackElement(rideType, trackType, error, 2048);
 	if (!success) {
 		printf("%s\n", error);
 	}

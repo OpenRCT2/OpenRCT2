@@ -132,27 +132,37 @@ namespace Intercept2
         return true;
     }
 
-    static void printSegmentSupports(utf8string * out, std::vector<SegmentSupportCall> segmentCalls)
+    static void printSegmentSupports(utf8string out, size_t len, std::vector<SegmentSupportCall> segmentCalls)
     {
         for (auto &&call : segmentCalls) {
             int segmentsPrinted = 0;
             for (int i = 0; i < 9; i++) {
                 if (call.segments & segment_offsets[i]) {
                     if (segmentsPrinted > 0) {
-                        sprintf(*out + strlen(*out), " | ");
+                        size_t slen = strlen(out);
+                        if (slen < len)
+                            snprintf(out + slen, len - slen, " | ");
                     }
-                    sprintf(*out + strlen(*out), "SEGMENT_%02X", 0xB4 + 4 * i);
+                    size_t slen = strlen(out);
+                    if (slen < len)
+                        snprintf(out + slen, slen - len, "SEGMENT_%02X", 0xB4 + 4 * i);
                     segmentsPrinted++;
                 }
             }
 
             if (call.height == 0xFFFF) {
-                sprintf(*out + strlen(*out), ", 0xFFFF");
+                size_t slen = strlen(out);
+                if (slen < len)
+                    snprintf(out + slen, len - slen, ", 0xFFFF");
             } else {
-                sprintf(*out + strlen(*out), ", %d", call.height);
+                size_t slen = strlen(out);
+                if (slen < len)
+                    snprintf(out + slen, len - slen, ", %d", call.height);
             }
 
-            sprintf(*out + strlen(*out), ", 0x%02X\n", call.slope);
+            size_t slen = strlen(out);
+            if (slen < len)
+                snprintf(out + slen, len - slen, ", 0x%02X\n", call.slope);
         }
     }
 
@@ -203,25 +213,25 @@ namespace Intercept2
 
         switch (edge.call) {
             case TUNNELCALL_SKIPPED:
-                sprintf(out, "%s", "     ");
+                snprintf(out, 32, "%s", "     ");
                 break;
 
             case TUNNELCALL_NONE:
-                sprintf(out, "%s", "  -  ");
+                snprintf(out, 32, "%s", "  -  ");
                 break;
 
             case TUNNELCALL_CALL:
                 if (edge.offset == 0) {
-                    sprintf(out, "  0/%X ", edge.type);
+                    snprintf(out, 32, "  0/%X ", edge.type);
                 } else {
                     utf8string offset = new utf8[16];
                     if (edge.offset < 0) {
-                        sprintf(offset, "%d", edge.offset);
+                        snprintf(offset, 16, "%d", edge.offset);
                     } else {
-                        sprintf(offset, "+%d", edge.offset);
+                        snprintf(offset, 16, "+%d", edge.offset);
                     }
 
-                    sprintf(out, "%3s/%X ", offset, edge.type);
+                    snprintf(out, 32, "%3s/%X ", offset, edge.type);
 
                     delete[] offset;
                 }
@@ -384,11 +394,17 @@ namespace Intercept2
                 if (!SegmentCallEquals(tileSegmentSupportCalls[0], newCalls)) {
                     // TODO put this into *error
                     utf8string diff = new utf8[2048];
-                    sprintf(diff, "<<< EXPECTED\n");
-                    printSegmentSupports(&diff, tileSegmentSupportCalls[0]);
-                    sprintf(diff + strlen(diff), "====\n");
-                    printSegmentSupports(&diff, newCalls);
-                    sprintf(diff + strlen(diff), ">>> ACTUAL\n");
+                    snprintf(diff, 2048, "<<< EXPECTED\n");
+                    printSegmentSupports(diff, 2048, tileSegmentSupportCalls[0]);
+                    
+                    size_t slen = strlen(diff);
+                    if (slen < 2048)
+                        snprintf(diff + slen, 2048 - slen, "====\n");
+                    printSegmentSupports(diff, 2048, newCalls);
+                    
+                    slen = strlen(diff);
+                    if (slen < 2048)
+                        snprintf(diff + strlen(diff), 2048 - slen, ">>> ACTUAL\n");
 
                     printf("Segment support heights didn't match. [direction:%d trackSequence:%d chainLift:%d]\n", direction,
                            trackSequence, chainLift);
@@ -645,20 +661,20 @@ namespace Intercept2
         return true;
     }
 
-    static void printRelativeHeight(utf8string out, sint16 height)
+    static void printRelativeHeight(utf8string out, size_t len, sint16 height)
     {
         if (height == 0) {
-            sprintf(out, "height");
+            snprintf(out, len, "height");
             return;
         }
 
         if (height > 0) {
-            sprintf(out, "height + %d", height);
+            snprintf(out, len, "height + %d", height);
             return;
         }
 
         if (height < 0) {
-            sprintf(out, "height - %d", int(abs(height)));
+            snprintf(out, len, "height - %d", int(abs(height)));
             return;
         }
     }
@@ -755,8 +771,8 @@ namespace Intercept2
 
                     utf8string strExpectedTunnelHeight = new utf8[16];
                     utf8string strActualTunnelHeight = new utf8[16];
-                    printRelativeHeight(strExpectedTunnelHeight, (referenceHeight * 16) - 48);
-                    printRelativeHeight(strActualTunnelHeight, (gVerticalTunnelHeight * 16) - 48);
+                    printRelativeHeight(strExpectedTunnelHeight, 16, (referenceHeight * 16) - 48);
+                    printRelativeHeight(strActualTunnelHeight, 16, (gVerticalTunnelHeight * 16) - 48);
 
                     printf(
                         "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
