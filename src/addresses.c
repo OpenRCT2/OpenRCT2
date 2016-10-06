@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef NO_RCT2
+
 #include "addresses.h"
 
 #if defined(__GNUC__)
@@ -26,9 +28,14 @@
 #define DISABLE_OPT
 #endif // defined(__GNUC__)
 
+// This variable serves a purpose of identifying a crash if it has happened inside original code.
+// When switching to original code, stack frame pointer is modified and prevents breakpad from providing stack trace.
+volatile int _originalAddress = 0;
+
 int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
 	int result = 0;
+	_originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER
 	__asm {
@@ -74,6 +81,7 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 	);
 	#endif
 #endif // PLATFORM_X86
+	_originalAddress = 0;
 	// lahf only modifies ah, zero out the rest
 	return result & 0xFF00;
 }
@@ -81,6 +89,7 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	int result = 0;
+	_originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER
 	__asm {
@@ -227,6 +236,9 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 	);
 	#endif
 #endif // PLATFORM_X86
+	_originalAddress = 0;
 	// lahf only modifies ah, zero out the rest
 	return result & 0xFF00;
 }
+
+#endif // NO_RCT2

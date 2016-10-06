@@ -16,10 +16,102 @@
 		008BF72B1CDAA5C30019A2AD /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7271CDAA5C30019A2AD /* track_design_save.c */; };
 		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
 		00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EFEE701CF1D80B0035213B /* NetworkKey.cpp */; };
+		791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */; };
+		85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
+		8594C0601D885CF600235E93 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = 8594C05F1D885CF600235E93 /* track_data_old.c */; };
+		85AFA2111D7DB83E00221B42 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85AFA20F1D7DB83E00221B42 /* main.cpp */; };
+		85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
+		85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
+		85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; };
 		C61FB7211CF618BA004CE991 /* libssl.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
+		C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */; };
+		C64FDA651D6D9A2100F259B9 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BC1CDBC3B7009F9BFC /* bobsleigh_coaster.c */; };
+		C64FDA661D6D9A2100F259B9 /* compact_inverted_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BD1CDBC3B7009F9BFC /* compact_inverted_coaster.c */; };
+		C64FDA671D6D9A2100F259B9 /* corkscrew_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BE1CDBC3B7009F9BFC /* corkscrew_roller_coaster.c */; };
+		C64FDA681D6D9A2100F259B9 /* flying_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BF1CDBC3B7009F9BFC /* flying_roller_coaster.c */; };
+		C64FDA691D6D9A2100F259B9 /* giga_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C01CDBC3B7009F9BFC /* giga_coaster.c */; };
+		C64FDA6A1D6D9A2100F259B9 /* heartline_twister_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C11CDBC3B7009F9BFC /* heartline_twister_coaster.c */; };
+		C64FDA6B1D6D9A2100F259B9 /* inverted_hairpin_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C21CDBC3B7009F9BFC /* inverted_hairpin_coaster.c */; };
+		C64FDA6C1D6D9A2100F259B9 /* inverted_impulse_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C31CDBC3B7009F9BFC /* inverted_impulse_coaster.c */; };
+		C64FDA6D1D6D9A2100F259B9 /* inverted_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C41CDBC3B7009F9BFC /* inverted_roller_coaster.c */; };
+		C64FDA6E1D6D9A2100F259B9 /* junior_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C51CDBC3B7009F9BFC /* junior_roller_coaster.c */; };
+		C64FDA6F1D6D9A2100F259B9 /* lay_down_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C61CDBC3B7009F9BFC /* lay_down_roller_coaster.c */; };
+		C64FDA701D6D9A2100F259B9 /* lim_launched_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C71CDBC3B7009F9BFC /* lim_launched_roller_coaster.c */; };
+		C64FDA711D6D9A2100F259B9 /* looping_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C81CDBC3B7009F9BFC /* looping_roller_coaster.c */; };
+		C64FDA721D6D9A2100F259B9 /* mine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8C91CDBC3B7009F9BFC /* mine_ride.c */; };
+		C64FDA731D6D9A2100F259B9 /* mine_train_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CA1CDBC3B7009F9BFC /* mine_train_coaster.c */; };
+		C64FDA741D6D9A2100F259B9 /* mini_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CB1CDBC3B7009F9BFC /* mini_roller_coaster.c */; };
+		C64FDA751D6D9A2100F259B9 /* mini_suspended_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CC1CDBC3B7009F9BFC /* mini_suspended_coaster.c */; };
+		C64FDA761D6D9A2100F259B9 /* multi_dimension_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CD1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c */; };
+		C64FDA771D6D9A2100F259B9 /* reverse_freefall_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CE1CDBC3B7009F9BFC /* reverse_freefall_coaster.c */; };
+		C64FDA781D6D9A2100F259B9 /* reverser_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CF1CDBC3B7009F9BFC /* reverser_roller_coaster.c */; };
+		C64FDA791D6D9A2100F259B9 /* side_friction_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D01CDBC3B7009F9BFC /* side_friction_roller_coaster.c */; };
+		C64FDA7A1D6D9A2100F259B9 /* spiral_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D11CDBC3B7009F9BFC /* spiral_roller_coaster.c */; };
+		C64FDA7B1D6D9A2100F259B9 /* stand_up_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D21CDBC3B7009F9BFC /* stand_up_roller_coaster.c */; };
+		C64FDA7C1D6D9A2100F259B9 /* steeplechase.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D31CDBC3B7009F9BFC /* steeplechase.c */; };
+		C64FDA7D1D6D9A2100F259B9 /* suspended_swinging_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D41CDBC3B7009F9BFC /* suspended_swinging_coaster.c */; };
+		C64FDA7E1D6D9A2100F259B9 /* twister_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D51CDBC3B7009F9BFC /* twister_roller_coaster.c */; };
+		C64FDA7F1D6D9A2100F259B9 /* vertical_drop_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D61CDBC3B7009F9BFC /* vertical_drop_roller_coaster.c */; };
+		C64FDA801D6D9A2100F259B9 /* virginia_reel.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D71CDBC3B7009F9BFC /* virginia_reel.c */; };
+		C64FDA811D6D9A2100F259B9 /* wild_mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D81CDBC3B7009F9BFC /* wild_mouse.c */; };
+		C64FDA821D6D9A2100F259B9 /* wooden_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D91CDBC3B7009F9BFC /* wooden_roller_coaster.c */; };
+		C64FDA831D6D9A2100F259B9 /* wooden_wild_mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8DA1CDBC3B7009F9BFC /* wooden_wild_mouse.c */; };
+		C64FDA841D6D9A2100F259B9 /* car_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8DC1CDBC3B7009F9BFC /* car_ride.c */; };
+		C64FDA851D6D9A2100F259B9 /* circus_show.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8DD1CDBC3B7009F9BFC /* circus_show.c */; };
+		C64FDA861D6D9A2100F259B9 /* crooked_house.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8DE1CDBC3B7009F9BFC /* crooked_house.c */; };
+		C64FDA871D6D9A2100F259B9 /* dodgems.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8DF1CDBC3B7009F9BFC /* dodgems.c */; };
+		C64FDA881D6D9A2100F259B9 /* ferris_wheel.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E01CDBC3B7009F9BFC /* ferris_wheel.c */; };
+		C64FDA891D6D9A2100F259B9 /* flying_saucers.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E11CDBC3B7009F9BFC /* flying_saucers.c */; };
+		C64FDA8A1D6D9A2100F259B9 /* ghost_train.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E21CDBC3B7009F9BFC /* ghost_train.c */; };
+		C64FDA8B1D6D9A2100F259B9 /* haunted_house.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E31CDBC3B7009F9BFC /* haunted_house.c */; };
+		C64FDA8C1D6D9A2100F259B9 /* maze.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E41CDBC3B7009F9BFC /* maze.c */; };
+		C64FDA8D1D6D9A2100F259B9 /* merry_go_round.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E51CDBC3B7009F9BFC /* merry_go_round.c */; };
+		C64FDA8E1D6D9A2100F259B9 /* mini_golf.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E61CDBC3B7009F9BFC /* mini_golf.c */; };
+		C64FDA8F1D6D9A2100F259B9 /* mini_helicopters.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E71CDBC3B7009F9BFC /* mini_helicopters.c */; };
+		C64FDA901D6D9A2100F259B9 /* monorail_cycles.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E81CDBC3B7009F9BFC /* monorail_cycles.c */; };
+		C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E91CDBC3B7009F9BFC /* observation_tower.c */; };
+		C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EA1CDBC3B7009F9BFC /* space_rings.c */; };
+		C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */; };
+		C64FDA941D6D9A2100F259B9 /* facility.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8ED1CDBC3B7009F9BFC /* facility.c */; };
+		C64FDA951D6D9A2100F259B9 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EE1CDBC3B7009F9BFC /* misc.c */; };
+		C64FDA961D6D9A2100F259B9 /* shop.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EF1CDBC3B7009F9BFC /* shop.c */; };
+		C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */; };
+		C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F21CDBC3B7009F9BFC /* enterprise.c */; };
+		C64FDA991D6D9A2100F259B9 /* go_karts.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F31CDBC3B7009F9BFC /* go_karts.c */; };
+		C64FDA9A1D6D9A2100F259B9 /* launched_freefall.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F41CDBC3B7009F9BFC /* launched_freefall.c */; };
+		C64FDA9B1D6D9A2100F259B9 /* magic_carpet.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F51CDBC3B7009F9BFC /* magic_carpet.c */; };
+		C64FDA9C1D6D9A2100F259B9 /* motion_simulator.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F61CDBC3B7009F9BFC /* motion_simulator.c */; };
+		C64FDA9D1D6D9A2100F259B9 /* pirate_ship.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F71CDBC3B7009F9BFC /* pirate_ship.c */; };
+		C64FDA9E1D6D9A2100F259B9 /* roto_drop.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F81CDBC3B7009F9BFC /* roto_drop.c */; };
+		C64FDA9F1D6D9A2100F259B9 /* swinging_inverter_ship.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F91CDBC3B7009F9BFC /* swinging_inverter_ship.c */; };
+		C64FDAA01D6D9A2100F259B9 /* top_spin.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FA1CDBC3B7009F9BFC /* top_spin.c */; };
+		C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FB1CDBC3B7009F9BFC /* twist.c */; };
+		C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FD1CDBC3B7009F9BFC /* chairlift.c */; };
+		C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
+		C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */; };
+		C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
+		C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
+		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
+		C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9041CDBC3B7009F9BFC /* dingy_slide.c */; };
+		C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9051CDBC3B7009F9BFC /* log_flume.c */; };
+		C64FDAAA1D6D9A2100F259B9 /* river_rafts.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9061CDBC3B7009F9BFC /* river_rafts.c */; };
+		C64FDAAB1D6D9A2100F259B9 /* river_rapids.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9071CDBC3B7009F9BFC /* river_rapids.c */; };
+		C64FDAAC1D6D9A2100F259B9 /* splash_boats.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9081CDBC3B7009F9BFC /* splash_boats.c */; };
+		C64FDAAD1D6D9A2100F259B9 /* submarine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9091CDBC3B7009F9BFC /* submarine_ride.c */; };
+		C64FDAAE1D6D9A2100F259B9 /* water_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F90A1CDBC3B7009F9BFC /* water_coaster.c */; };
+		C64FDABC1D6D9C8800F259B9 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270CD1CC81B3200D84D28 /* addresses.c */; };
+		C64FDABE1D6D9CD900F259B9 /* ride_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271731CC81B3200D84D28 /* ride_data.c */; };
+		C64FDABF1D6D9CEA00F259B9 /* map_element.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F89B1CDBC37E009F9BFC /* map_element.c */; };
+		C64FDAC01D6D9E3B00F259B9 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717B1CC81B3200D84D28 /* track_data.c */; };
+		C64FDAC21D6DA0B800F259B9 /* diagnostic.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270FE1CC81B3200D84D28 /* diagnostic.c */; };
+		C64FDAC31D6DA41000F259B9 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717D1CC81B3200D84D28 /* track_paint.c */; };
+		C64FDAC51D6DA55E00F259B9 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC41D6DA55E00F259B9 /* compat.c */; };
+		C64FDAC81D6DA72400F259B9 /* intercept.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC71D6DA72400F259B9 /* intercept.c */; };
+		C64FDACA1D6DA92D00F259B9 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C64FDAC91D6DA92D00F259B9 /* data.c */; };
+		C64FDACB1D6DBCC700F259B9 /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271121CC81B3200D84D28 /* hook.c */; };
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
@@ -354,6 +446,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C64FDA5B1D6D99F400F259B9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		D41B74201C210B190080A7B9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -392,10 +493,22 @@
 		008BF7291CDAA5C30019A2AD /* track_design.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_design.h; sourceTree = "<group>"; };
 		00EFEE701CF1D80B0035213B /* NetworkKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkKey.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		00EFEE711CF1D80B0035213B /* NetworkKey.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkKey.h; sourceTree = "<group>"; usesTabs = 0; };
+		791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkServerAdvertiser.cpp; sourceTree = "<group>"; };
+		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
+		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
+		85AFA20F1D7DB83E00221B42 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		85AFA2101D7DB83E00221B42 /* intercept.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = intercept.h; sourceTree = "<group>"; };
+		85AFA2141D7DDFA100221B42 /* data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
+		85B468FB1D96822F000F1DB5 /* paint_helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
+		85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = intercept_2.cpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
+		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C64FDAC41D6DA55E00F259B9 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compat.c; sourceTree = "<group>"; };
+		C64FDAC71D6DA72400F259B9 /* intercept.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = intercept.c; sourceTree = "<group>"; };
+		C64FDAC91D6DA92D00F259B9 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = data.c; sourceTree = "<group>"; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S4Importer.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -504,7 +617,7 @@
 		C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Importer.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
 		D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
 		D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
@@ -554,7 +667,6 @@
 		D44270EA1CC81B3200D84D28 /* IStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IStream.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EB1CC81B3200D84D28 /* Json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Json.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EC1CC81B3200D84D28 /* Json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Json.hpp; sourceTree = "<group>"; usesTabs = 0; };
-		D44270ED1CC81B3200D84D28 /* List.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = List.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EE1CC81B3200D84D28 /* Math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Math.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270EF1CC81B3200D84D28 /* Memory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Memory.hpp; sourceTree = "<group>"; usesTabs = 0; };
 		D44270F01CC81B3200D84D28 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1000,7 +1112,7 @@
 		D464FEE41D31A6AA00CBABAC /* WaterObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterObject.h; sourceTree = "<group>"; };
 		D46F2A9D1D39A25A00A36AB7 /* peep_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
+		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = TcpSocket.h; sourceTree = "<group>"; usesTabs = 0; };
 		D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoftwareDrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1018,6 +1130,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C64FDA5A1D6D99F400F259B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D497D0751C20FD52002BF46A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1038,6 +1157,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8546F74A1D7E1D220004004C /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C64FDA5E1D6D99F400F259B9 /* Paint */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
+		C64FDA5E1D6D99F400F259B9 /* Paint */ = {
+			isa = PBXGroup;
+			children = (
+				C64FDAC41D6DA55E00F259B9 /* compat.c */,
+				C64FDAC91D6DA92D00F259B9 /* data.c */,
+				85AFA2141D7DDFA100221B42 /* data.h */,
+				85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */,
+				C64FDAC71D6DA72400F259B9 /* intercept.c */,
+				85AFA2101D7DB83E00221B42 /* intercept.h */,
+				85AFA20F1D7DB83E00221B42 /* main.cpp */,
+			);
+			name = Paint;
+			path = test/testpaint;
+			sourceTree = "<group>";
+		};
 		C650B2141CCABBDD00B4D91C /* rct1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1054,6 +1196,7 @@
 			children = (
 				C686F8971CDBC37E009F9BFC /* map_element */,
 				C686F8A41CDBC37E009F9BFC /* sprite */,
+				85B468FB1D96822F000F1DB5 /* paint_helpers.c */,
 				C686F8A21CDBC37E009F9BFC /* paint.c */,
 				C686F8AA1CDBC37E009F9BFC /* supports.c */,
 				C686F8A31CDBC37E009F9BFC /* paint.h */,
@@ -1366,7 +1509,6 @@
 				D44270EA1CC81B3200D84D28 /* IStream.hpp */,
 				D44270EB1CC81B3200D84D28 /* Json.cpp */,
 				D44270EC1CC81B3200D84D28 /* Json.hpp */,
-				D44270ED1CC81B3200D84D28 /* List.hpp */,
 				D44270EE1CC81B3200D84D28 /* Math.hpp */,
 				D44270EF1CC81B3200D84D28 /* Memory.hpp */,
 				D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */,
@@ -1502,6 +1644,8 @@
 				007A05C91CFB2C8B00F419C3 /* NetworkPacket.h */,
 				007A05CA1CFB2C8B00F419C3 /* NetworkPlayer.cpp */,
 				007A05CB1CFB2C8B00F419C3 /* NetworkPlayer.h */,
+				791166F91D7486EF005912EA /* NetworkServerAdvertiser.cpp */,
+				791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */,
 				007A05CC1CFB2C8B00F419C3 /* NetworkTypes.h */,
 				C61FB7221CF86356004CE991 /* NetworkUser.cpp */,
 				C61FB7231CF86356004CE991 /* NetworkUser.h */,
@@ -1559,6 +1703,7 @@
 				D44271721CC81B3200D84D28 /* ride.h */,
 				D44271771CC81B3200D84D28 /* station.c */,
 				D44271781CC81B3200D84D28 /* station.h */,
+				8594C05F1D885CF600235E93 /* track_data_old.c */,
 				D442717B1CC81B3200D84D28 /* track_data.c */,
 				D442717C1CC81B3200D84D28 /* track_data.h */,
 				008BF7261CDAA5C30019A2AD /* track_design_index.c */,
@@ -1934,6 +2079,7 @@
 			children = (
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
+				8546F74A1D7E1D220004004C /* Tests */,
 				D41B73ED1C21017D0080A7B9 /* Libraries */,
 				D497D0791C20FD52002BF46A /* Products */,
 			);
@@ -1944,6 +2090,7 @@
 			isa = PBXGroup;
 			children = (
 				D497D0781C20FD52002BF46A /* OpenRCT2.app */,
+				C64FDA5D1D6D99F400F259B9 /* PaintTest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1968,6 +2115,7 @@
 				D4EC48E51C2637710024B507 /* title */,
 			);
 			name = data;
+			path = ../data;
 			sourceTree = "<group>";
 		};
 		D4EC48811C2634870024B507 /* include */ = {
@@ -2012,6 +2160,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C64FDA5C1D6D99F400F259B9 /* PaintTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C64FDA631D6D99F400F259B9 /* Build configuration list for PBXNativeTarget "PaintTest" */;
+			buildPhases = (
+				C64FDAC61D6DA64A00F259B9 /* Create Segment Files */,
+				C64FDA591D6D99F400F259B9 /* Sources */,
+				C64FDA5A1D6D99F400F259B9 /* Frameworks */,
+				C64FDA5B1D6D99F400F259B9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PaintTest;
+			productName = PaintTest;
+			productReference = C64FDA5D1D6D99F400F259B9 /* PaintTest */;
+			productType = "com.apple.product-type.tool";
+		};
 		D497D0771C20FD52002BF46A /* OpenRCT2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D497D0891C20FD53002BF46A /* Build configuration list for PBXNativeTarget "OpenRCT2" */;
@@ -2041,9 +2207,12 @@
 		D497D0701C20FD52002BF46A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
+					C64FDA5C1D6D99F400F259B9 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					D497D0771C20FD52002BF46A = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -2063,6 +2232,7 @@
 			projectRoot = "";
 			targets = (
 				D497D0771C20FD52002BF46A /* OpenRCT2 */,
+				C64FDA5C1D6D99F400F259B9 /* PaintTest */,
 			);
 		};
 /* End PBXProject section */
@@ -2084,6 +2254,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C64FDAC61D6DA64A00F259B9 /* Create Segment Files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/openrct2.exe",
+			);
+			name = "Create Segment Files";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/openrct2_text",
+				"$(DERIVED_FILE_DIR)/openrct2_data",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "dd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_text\" bs=4096 skip=1 count=1187\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1188 count=318\ndd if=/dev/zero of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 seek=318 count=2630 conv=notrunc\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc";
+		};
 		D40F4E1D1C2528D5009582C9 /* Create Segment Files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2127,10 +2314,11 @@
 			name = "Get Git Variables";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/gitversion.h",
+				"$(DERIVED_FILE_DIR)/Info.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"";
+			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2148,20 +2336,20 @@
 			);
 			name = "Setup AppIcon";
 			outputPaths = (
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
-				"$(SRCROOT)/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
+				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/osx/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
+			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
 		};
 		D4EC48E91C264FC20024B507 /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2180,6 +2368,102 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C64FDA591D6D99F400F259B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C64FDACB1D6DBCC700F259B9 /* hook.c in Sources */,
+				C64FDAC31D6DA41000F259B9 /* track_paint.c in Sources */,
+				C64FDAC21D6DA0B800F259B9 /* diagnostic.c in Sources */,
+				C64FDAC01D6D9E3B00F259B9 /* track_data.c in Sources */,
+				C64FDABF1D6D9CEA00F259B9 /* map_element.c in Sources */,
+				C64FDABE1D6D9CD900F259B9 /* ride_data.c in Sources */,
+				C64FDABC1D6D9C8800F259B9 /* addresses.c in Sources */,
+				C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */,
+				C64FDA651D6D9A2100F259B9 /* bobsleigh_coaster.c in Sources */,
+				C64FDA661D6D9A2100F259B9 /* compact_inverted_coaster.c in Sources */,
+				C64FDA671D6D9A2100F259B9 /* corkscrew_roller_coaster.c in Sources */,
+				85AFA2111D7DB83E00221B42 /* main.cpp in Sources */,
+				C64FDA681D6D9A2100F259B9 /* flying_roller_coaster.c in Sources */,
+				C64FDA691D6D9A2100F259B9 /* giga_coaster.c in Sources */,
+				C64FDA6A1D6D9A2100F259B9 /* heartline_twister_coaster.c in Sources */,
+				C64FDA6B1D6D9A2100F259B9 /* inverted_hairpin_coaster.c in Sources */,
+				C64FDA6C1D6D9A2100F259B9 /* inverted_impulse_coaster.c in Sources */,
+				C64FDA6D1D6D9A2100F259B9 /* inverted_roller_coaster.c in Sources */,
+				C64FDA6E1D6D9A2100F259B9 /* junior_roller_coaster.c in Sources */,
+				C64FDA6F1D6D9A2100F259B9 /* lay_down_roller_coaster.c in Sources */,
+				C64FDA701D6D9A2100F259B9 /* lim_launched_roller_coaster.c in Sources */,
+				C64FDA711D6D9A2100F259B9 /* looping_roller_coaster.c in Sources */,
+				C64FDAC81D6DA72400F259B9 /* intercept.c in Sources */,
+				C64FDA721D6D9A2100F259B9 /* mine_ride.c in Sources */,
+				C64FDA731D6D9A2100F259B9 /* mine_train_coaster.c in Sources */,
+				C64FDA741D6D9A2100F259B9 /* mini_roller_coaster.c in Sources */,
+				C64FDA751D6D9A2100F259B9 /* mini_suspended_coaster.c in Sources */,
+				C64FDA761D6D9A2100F259B9 /* multi_dimension_roller_coaster.c in Sources */,
+				C64FDA771D6D9A2100F259B9 /* reverse_freefall_coaster.c in Sources */,
+				C64FDA781D6D9A2100F259B9 /* reverser_roller_coaster.c in Sources */,
+				C64FDA791D6D9A2100F259B9 /* side_friction_roller_coaster.c in Sources */,
+				C64FDACA1D6DA92D00F259B9 /* data.c in Sources */,
+				C64FDA7A1D6D9A2100F259B9 /* spiral_roller_coaster.c in Sources */,
+				C64FDA7B1D6D9A2100F259B9 /* stand_up_roller_coaster.c in Sources */,
+				C64FDA7C1D6D9A2100F259B9 /* steeplechase.c in Sources */,
+				C64FDA7D1D6D9A2100F259B9 /* suspended_swinging_coaster.c in Sources */,
+				C64FDA7E1D6D9A2100F259B9 /* twister_roller_coaster.c in Sources */,
+				C64FDA7F1D6D9A2100F259B9 /* vertical_drop_roller_coaster.c in Sources */,
+				C64FDA801D6D9A2100F259B9 /* virginia_reel.c in Sources */,
+				C64FDA811D6D9A2100F259B9 /* wild_mouse.c in Sources */,
+				C64FDA821D6D9A2100F259B9 /* wooden_roller_coaster.c in Sources */,
+				C64FDA831D6D9A2100F259B9 /* wooden_wild_mouse.c in Sources */,
+				C64FDA841D6D9A2100F259B9 /* car_ride.c in Sources */,
+				C64FDA851D6D9A2100F259B9 /* circus_show.c in Sources */,
+				C64FDA861D6D9A2100F259B9 /* crooked_house.c in Sources */,
+				85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */,
+				C64FDA871D6D9A2100F259B9 /* dodgems.c in Sources */,
+				C64FDA881D6D9A2100F259B9 /* ferris_wheel.c in Sources */,
+				C64FDA891D6D9A2100F259B9 /* flying_saucers.c in Sources */,
+				C64FDA8A1D6D9A2100F259B9 /* ghost_train.c in Sources */,
+				C64FDA8B1D6D9A2100F259B9 /* haunted_house.c in Sources */,
+				C64FDA8C1D6D9A2100F259B9 /* maze.c in Sources */,
+				C64FDA8D1D6D9A2100F259B9 /* merry_go_round.c in Sources */,
+				C64FDA8E1D6D9A2100F259B9 /* mini_golf.c in Sources */,
+				C64FDA8F1D6D9A2100F259B9 /* mini_helicopters.c in Sources */,
+				C64FDA901D6D9A2100F259B9 /* monorail_cycles.c in Sources */,
+				85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */,
+				C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */,
+				C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */,
+				C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */,
+				C64FDA941D6D9A2100F259B9 /* facility.c in Sources */,
+				C64FDAC51D6DA55E00F259B9 /* compat.c in Sources */,
+				C64FDA951D6D9A2100F259B9 /* misc.c in Sources */,
+				C64FDA961D6D9A2100F259B9 /* shop.c in Sources */,
+				C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */,
+				C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */,
+				C64FDA991D6D9A2100F259B9 /* go_karts.c in Sources */,
+				C64FDA9A1D6D9A2100F259B9 /* launched_freefall.c in Sources */,
+				C64FDA9B1D6D9A2100F259B9 /* magic_carpet.c in Sources */,
+				C64FDA9C1D6D9A2100F259B9 /* motion_simulator.c in Sources */,
+				C64FDA9D1D6D9A2100F259B9 /* pirate_ship.c in Sources */,
+				C64FDA9E1D6D9A2100F259B9 /* roto_drop.c in Sources */,
+				C64FDA9F1D6D9A2100F259B9 /* swinging_inverter_ship.c in Sources */,
+				C64FDAA01D6D9A2100F259B9 /* top_spin.c in Sources */,
+				C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */,
+				C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */,
+				C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */,
+				C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */,
+				C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */,
+				C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */,
+				85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */,
+				C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */,
+				C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */,
+				C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */,
+				C64FDAAA1D6D9A2100F259B9 /* river_rafts.c in Sources */,
+				C64FDAAB1D6D9A2100F259B9 /* river_rapids.c in Sources */,
+				C64FDAAC1D6D9A2100F259B9 /* splash_boats.c in Sources */,
+				C64FDAAD1D6D9A2100F259B9 /* submarine_ride.c in Sources */,
+				C64FDAAE1D6D9A2100F259B9 /* water_coaster.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D497D0741C20FD52002BF46A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2198,6 +2482,7 @@
 				D464FEEA1D31A6AA00CBABAC /* LargeSceneryObject.cpp in Sources */,
 				C686F9371CDBC3B7009F9BFC /* monorail_cycles.c in Sources */,
 				D49766891D03BABB002222CD /* rain.cpp in Sources */,
+				791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */,
 				D44272441CC81B3200D84D28 /* cable_lift.c in Sources */,
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
@@ -2291,6 +2576,7 @@
 				C686F91C1CDBC3B7009F9BFC /* mini_suspended_coaster.c in Sources */,
 				D44271FA1CC81B3200D84D28 /* RootCommands.cpp in Sources */,
 				D442726B1CC81B3200D84D28 /* map.c in Sources */,
+				85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */,
 				D464FEE71D31A6AA00CBABAC /* FootpathItemObject.cpp in Sources */,
 				D442721E1CC81B3200D84D28 /* Theme.cpp in Sources */,
 				C686F9271CDBC3B7009F9BFC /* virginia_reel.c in Sources */,
@@ -2385,6 +2671,7 @@
 				D464FEF41D31A6AA00CBABAC /* WallObject.cpp in Sources */,
 				D44272011CC81B3200D84D28 /* Guard.cpp in Sources */,
 				D43407E01D0E14BE00C2B3D4 /* TextureCache.cpp in Sources */,
+				8594C0601D885CF600235E93 /* track_data_old.c in Sources */,
 				D44272951CC81B3200D84D28 /* track_manage.c in Sources */,
 				D44272851CC81B3200D84D28 /* staff.c in Sources */,
 				D442725F1CC81B3200D84D28 /* editor_scenario_options.c in Sources */,
@@ -2510,6 +2797,114 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		C64FDA611D6D99F400F259B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"NO_VEHICLES=1",
+					__TESTPAINT__,
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					rct2_text,
+					__text,
+					"$(DERIVED_FILE_DIR)/openrct2_text",
+					"-segaddr",
+					rct2_text,
+					0x401000,
+					"-segprot",
+					rct2_text,
+					rwx,
+					rx,
+					"-sectcreate",
+					rct2_data,
+					__data,
+					"$(DERIVED_FILE_DIR)/openrct2_data",
+					"-segaddr",
+					rct2_data,
+					0x8a4000,
+					"-segprot",
+					rct2_data,
+					rw,
+					rw,
+					"-segaddr",
+					__TEXT,
+					0x2000000,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C64FDA621D6D99F400F259B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					"NO_VEHICLES=1",
+					__TESTPAINT__,
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					rct2_text,
+					__text,
+					"$(DERIVED_FILE_DIR)/openrct2_text",
+					"-segaddr",
+					rct2_text,
+					0x401000,
+					"-segprot",
+					rct2_text,
+					rwx,
+					rx,
+					"-sectcreate",
+					rct2_data,
+					__data,
+					"$(DERIVED_FILE_DIR)/openrct2_data",
+					"-segaddr",
+					rct2_data,
+					0x8a4000,
+					"-segprot",
+					rct2_data,
+					rw,
+					rw,
+					"-segaddr",
+					__TEXT,
+					0x2000000,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		D497D0871C20FD53002BF46A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2522,9 +2917,12 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2569,9 +2967,12 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2612,7 +3013,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2661,7 +3062,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2702,6 +3103,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C64FDA631D6D99F400F259B9 /* Build configuration list for PBXNativeTarget "PaintTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C64FDA611D6D99F400F259B9 /* Debug */,
+				C64FDA621D6D99F400F259B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D497D0731C20FD52002BF46A /* Build configuration list for PBXProject "OpenRCT2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

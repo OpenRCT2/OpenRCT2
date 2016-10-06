@@ -26,7 +26,6 @@
 #include <pwd.h>
 #include <time.h>
 #include <SDL_syswm.h>
-#include "../addresses.h"
 #include "../config.h"
 #include "../localisation/language.h"
 #include "../openrct2.h"

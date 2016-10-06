@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
@@ -35,7 +34,9 @@
 #include "../sprites.h"
 #include "../ride/track_data.h"
 
-#define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
+static uint8 _windowNewRideCurrentTab;
+static ride_list_item _windowNewRideHighlightedItem[6];
+static ride_list_item _windowNewRideListItems[384];
 
 #pragma region Ride type view order
 
@@ -270,13 +271,13 @@ static bool _trackSelectionByType;
 *
 *  rct2: 0x006ACA58
 */
-void window_new_ride_init_vars() {
+void window_new_ride_init_vars()
+{
 	// If we are in the track designer, default to the Roller Coaster tab
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8) = WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER;
-	}
-	else {
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8) = WINDOW_NEW_RIDE_PAGE_TRANSPORT;
+		_windowNewRideCurrentTab = WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER;
+	} else {
+		_windowNewRideCurrentTab = WINDOW_NEW_RIDE_PAGE_TRANSPORT;
 	}
 
 	for (short i = 0; i < 6; i++) {
@@ -284,10 +285,8 @@ void window_new_ride_init_vars() {
 		Reset what is highlighted in each tab.
 		Each 16bit number represents the item in its respective tab.
 		*/
-		RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, uint16)[i] = 0xFFFF;
+		_windowNewRideHighlightedItem[i] = (ride_list_item){ 255, 255 };
 	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_INFORMATION_TYPE, uint8) = 0;
 }
 
 /**
@@ -297,8 +296,8 @@ void window_new_ride_init_vars() {
  */
 static void window_new_ride_populate_list()
 {
-	uint8 currentCategory = _window_new_ride_current_tab;
-	ride_list_item *nextListItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	uint8 currentCategory = _windowNewRideCurrentTab;
+	ride_list_item *nextListItem = _windowNewRideListItems;
 
 	// For each ride type in the view order list
 	for (int i = 0; i < countof(RideTypeViewOrder); i++) {
@@ -390,9 +389,9 @@ static void window_new_ride_scroll_to_focused_ride(rct_window *w)
 
 	// Find row index of the focused ride type
 	rct_widget *listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
-	int focusRideType = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, uint16)[_window_new_ride_current_tab];
+	int focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
 	int count = 0, row = 0;
-	ride_list_item *listItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	ride_list_item *listItem = _windowNewRideListItems;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
 		if (listItem->type == focusRideType) {
 			row = count / 5;
@@ -450,9 +449,9 @@ rct_window *window_new_ride_open()
 
 	window_new_ride_populate_list();
 
-	w->new_ride.highlighted_ride_id = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, sint16)[_window_new_ride_current_tab];
+	w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
 	if (w->new_ride.highlighted_ride_id == -1)
-		w->new_ride.highlighted_ride_id = RCT2_GLOBAL(0x00F43523, sint16);
+		w->new_ride.highlighted_ride_id = _windowNewRideListItems[0].ride_type_and_entry;
 
 	w->width = 1;
 	window_new_ride_refresh_widget_sizing(w);
@@ -490,12 +489,11 @@ void window_new_ride_focus(ride_list_item rideItem)
 	else
 		window_new_ride_set_page(w, gRideCategories[rideType->ride_type[0]]);
 
-	ride_list_item *listItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	ride_list_item *listItem = _windowNewRideListItems;
 	while (listItem->type != RIDE_TYPE_NULL) {
 		if (listItem->type == rideItem.type && listItem->entry_index == rideItem.entry_index) {
-			RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, uint8) = rideItem.type;
-			RCT2_GLOBAL(0x00F43826, uint8) = rideItem.entry_index;
-			w->new_ride.highlighted_ride_id = (rideItem.entry_index << 8) | rideItem.type;
+			_windowNewRideHighlightedItem[0] = rideItem;
+			w->new_ride.highlighted_ride_id = rideItem.ride_type_and_entry;
 			window_new_ride_scroll_to_focused_ride(w);
 		}
 		listItem++;
@@ -504,15 +502,15 @@ void window_new_ride_focus(ride_list_item rideItem)
 
 static void window_new_ride_set_page(rct_window *w, int page)
 {
-	_window_new_ride_current_tab = page;
+	_windowNewRideCurrentTab = page;
 	w->frame_no = 0;
 	w->new_ride.highlighted_ride_id = -1;
 	w->new_ride.selected_ride_countdown = -1;
 	window_new_ride_populate_list();
 	if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-		w->new_ride.highlighted_ride_id = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, sint16)[page];
+		w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[page].ride_type_and_entry;
 		if (w->new_ride.highlighted_ride_id == -1)
-			w->new_ride.highlighted_ride_id = RCT2_GLOBAL(0x00F43523, sint16);
+			w->new_ride.highlighted_ride_id = _windowNewRideListItems[0].ride_type_and_entry;
 	}
 
 	window_new_ride_refresh_widget_sizing(w);
@@ -529,7 +527,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window *w)
 	int width, height;
 
 	// Show or hide unrelated widgets
-	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
+	if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		window_new_ride_widgets[WIDX_RIDE_LIST].type = WWT_SCROLL;
 		window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WWT_EMPTY;
 		window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WWT_EMPTY;
@@ -576,7 +574,7 @@ static void window_new_ride_set_pressed_tab(rct_window *w)
 	int i;
 	for (i = 0; i < WINDOW_NEW_RIDE_PAGE_COUNT; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _window_new_ride_current_tab);
+	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
 const int ThrillRidesTabAnimationSequence[] = {
@@ -589,7 +587,7 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w
 
 	if (w->widgets[widgetIndex].type != WWT_EMPTY && !(w->disabled_widgets & (1LL << widgetIndex))) {
 		int frame = 0;
-		if (_window_new_ride_current_tab == page)
+		if (_windowNewRideCurrentTab == page)
 			frame = w->frame_no / window_new_ride_tab_animation_divisor[page];
 
 		spriteIndex += page == WINDOW_NEW_RIDE_PAGE_THRILL ?
@@ -648,10 +646,10 @@ static void window_new_ride_mousedown(int widgetIndex, rct_window *w, rct_widget
 static void window_new_ride_update(rct_window *w)
 {
 	w->frame_no++;
-	if (w->frame_no >= window_new_ride_tab_animation_loops[_window_new_ride_current_tab])
+	if (w->frame_no >= window_new_ride_tab_animation_loops[_windowNewRideCurrentTab])
 		w->frame_no = 0;
 
-	widget_invalidate(w, WIDX_TAB_1 + _window_new_ride_current_tab);
+	widget_invalidate(w, WIDX_TAB_1 + _windowNewRideCurrentTab);
 
 	if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);
@@ -668,7 +666,7 @@ static void window_new_ride_update(rct_window *w)
  */
 static void window_new_ride_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
 {
-	ride_list_item *listItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	ride_list_item *listItem = _windowNewRideListItems;
 
 	int count = 0;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
@@ -690,7 +688,7 @@ static void window_new_ride_scrollmousedown(rct_window *w, int scrollIndex, int 
 	if (item.type == 255 && item.entry_index == 255)
 		return;
 
-	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
+	_windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
 	w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
@@ -715,7 +713,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
 		return;
 
 	w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
-	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
+	_windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
 	window_invalidate(w);
 }
 
@@ -725,7 +723,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
  */
 static void window_new_ride_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -738,12 +736,12 @@ static void window_new_ride_invalidate(rct_window *w)
 
 	window_new_ride_set_pressed_tab(w);
 
-	window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_window_new_ride_current_tab];
+	window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_windowNewRideCurrentTab];
 	window_new_ride_widgets[WIDX_TAB_7].type = WWT_TAB;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 		window_new_ride_widgets[WIDX_TAB_7].type = WWT_EMPTY;
 
-	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
+	if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
 		uint32 typeId = gResearchLastItemSubject;
 		if (typeId != 0xFFFFFFFF) {
@@ -762,7 +760,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	window_new_ride_draw_tab_images(dpi, w);
 
-	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
+	if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		ride_list_item item = { .ride_type_and_entry = w->new_ride.highlighted_ride_id };
 		if (item.type != 255 || item.entry_index != 255)
 			window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
@@ -777,14 +775,14 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
+	if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
 		return;
 
 	gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light * 0x1010101);
 
 	int x = 1;
 	int y = 1;
-	ride_list_item *listItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	ride_list_item *listItem = _windowNewRideListItems;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
 		rct_ride_entry *rideEntry;
 		// Draw flat button rectangle
@@ -836,7 +834,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 	int index = column + (row * 5);
 
-	ride_list_item *listItem = RCT2_ADDRESS(0x00F43523, ride_list_item);
+	ride_list_item *listItem = _windowNewRideListItems;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
 		if (index-- == 0)
 			return *listItem;
@@ -858,7 +856,7 @@ static int get_num_track_designs(ride_list_item item)
 		}
 	}
 
-	return track_design_index_get_count_for_ride(item.type, entryPtr);
+	return (int)track_design_index_get_count_for_ride(item.type, entryPtr);
 }
 
 /**
@@ -873,8 +871,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	rct_string_id rideName = rideEntry->name;
 	rct_string_id rideDescription = rideEntry->description;
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-		rideName = item.type + 2;
-		rideDescription = item.type + 512;
+		rideName = RideNaming[item.type].name;
+		rideDescription = RideNaming[item.type].description;
 	}
 
 	set_format_arg(0, rct_string_id, rideName);

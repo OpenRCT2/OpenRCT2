@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build0;Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="Build0">
-    <Copy SourceFiles="openrct2.exe" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
-  </Target>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -123,6 +119,7 @@
     <ClCompile Include="src\network\NetworkKey.cpp" />
     <ClCompile Include="src\network\NetworkPacket.cpp" />
     <ClCompile Include="src\network\NetworkPlayer.cpp" />
+    <ClCompile Include="src\network\NetworkServerAdvertiser.cpp" />
     <ClCompile Include="src\network\NetworkUser.cpp" />
     <ClCompile Include="src\network\TcpSocket.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
@@ -154,6 +151,7 @@
     <ClCompile Include="src\paint\map_element\scenery_multiple.c" />
     <ClCompile Include="src\paint\map_element\surface.c" />
     <ClCompile Include="src\paint\paint.c" />
+    <ClCompile Include="src\paint\paint_helpers.c" />
     <ClCompile Include="src\paint\sprite\litter.c" />
     <ClCompile Include="src\paint\sprite\misc.c" />
     <ClCompile Include="src\paint\sprite\peep.c" />
@@ -242,6 +240,7 @@
     <ClCompile Include="src\ride\thrill\twist.c" />
     <ClCompile Include="src\ride\track.c" />
     <ClCompile Include="src\ride\track_data.c" />
+    <ClCompile Include="src\ride\track_data_old.c" />
     <ClCompile Include="src\ride\track_design.c" />
     <ClCompile Include="src\ride\track_design_save.c" />
     <ClCompile Include="src\ride\track_design_index.c" />
@@ -366,6 +365,7 @@
     <ClInclude Include="src\cmdline_sprite.h" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\core\Collections.hpp" />
     <ClInclude Include="src\core\Console.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
@@ -374,7 +374,6 @@
     <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />
     <ClInclude Include="src\core\Json.hpp" />
-    <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
     <ClInclude Include="src\core\MemoryStream.h" />
@@ -431,6 +430,7 @@
     <ClInclude Include="src\localisation\LanguagePack.h" />
     <ClInclude Include="src\localisation\localisation.h" />
     <ClInclude Include="src\localisation\string_ids.h" />
+    <ClInclude Include="src\localisation\user.h" />
     <ClInclude Include="src\management\award.h" />
     <ClInclude Include="src\management\finance.h" />
     <ClInclude Include="src\management\marketing.h" />
@@ -442,6 +442,7 @@
     <ClInclude Include="src\network\NetworkGroup.h" />
     <ClInclude Include="src\network\NetworkPacket.h" />
     <ClInclude Include="src\network\NetworkPlayer.h" />
+    <ClInclude Include="src\network\NetworkServerAdvertiser.h" />
     <ClInclude Include="src\network\NetworkTypes.h" />
     <ClInclude Include="src\network\NetworkUser.h" />
     <ClInclude Include="src\network\TcpSocket.h" />
@@ -605,13 +606,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <MinimalRebuild>false</MinimalRebuild>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -632,11 +634,12 @@
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers />
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -652,13 +655,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>USE_MMAP;$(OpenRCT2_DEFINES);DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <MinimalRebuild>false</MinimalRebuild>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -683,11 +687,12 @@
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers />
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>USE_MMAP;$(OpenRCT2_DEFINES);OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

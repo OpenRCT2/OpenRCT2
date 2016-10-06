@@ -75,28 +75,34 @@ static void paint_observation_tower_base(uint8 rideIndex, uint8 trackSequence, u
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	uint32 imageId = SPR_FLOOR_METAL_B | RCT2_GLOBAL(0x00F4419C, uint32);
+	uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
 	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesMetalB, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
 	if (trackSequence == 0) {
-		imageId = SPR_OBSERVATION_TOWER_SEGMENT_BASE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_OBSERVATION_TOWER_SEGMENT_BASE | gTrackColours[SCHEME_TRACK];
 		sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
 
-		height += 32;
-		imageId = SPR_OBSERVATION_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		imageId = SPR_OBSERVATION_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 32, 8, 8, height + 32, get_current_rotation());
 
-		height += 32;
-		imageId = SPR_OBSERVATION_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+		imageId = SPR_OBSERVATION_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
-		RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+		paint_util_set_vertical_tunnel(height + 96);
+        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+#ifdef __TESTPAINT__
+        paint_util_set_general_support_height(height + 32, 0x20);
+#else
+        paint_util_set_general_support_height(height + 96, 0x20);
+#endif
+        return;
 	}
 
 	int blockedSegments = 0;
@@ -123,18 +129,18 @@ static void paint_observation_tower_section(uint8 rideIndex, uint8 trackSequence
 		return;
 	}
 
-	uint32 imageId = SPR_OBSERVATION_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = SPR_OBSERVATION_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
 	sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
 	rct_map_element * nextMapElement = mapElement + 1;
 	if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height) {
-		uint32 imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | gTrackColours[SCHEME_TRACK];
 		sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-	RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	paint_util_set_vertical_tunnel(height + 32);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 

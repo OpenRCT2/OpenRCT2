@@ -17,6 +17,7 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
+#include "addresses.h"
 #include "common.h"
 #include "management/award.h"
 #include "management/finance.h"
@@ -143,7 +144,7 @@ typedef struct rct_s6_data {
 	rct_map_element map_elements[0x30000];
 
 	// SC6[6]
-	uint32 dword_010E63B8;
+	uint32 next_free_map_element_pointer_index;
 	rct_sprite sprites[10000];
 	uint16 sprite_lists_head[6];
 	uint16 sprite_lists_count[6];
@@ -243,7 +244,7 @@ typedef struct rct_s6_data {
 	money32 income_from_admissions;
 	money32 company_value;
 	uint8 peep_warning_throttle[16];
-	rct_award awards[4];
+	rct_award awards[MAX_AWARDS];
 	money16 land_price;
 	money16 construction_rights_price;
 	uint16 word_01358774;
@@ -255,12 +256,12 @@ typedef struct rct_s6_data {
 	uint32 loan_hash;
 	uint16 ride_count;
 	uint8 pad_013587CA[6];
-	uint32 dword_013587D0;
+	money32 historical_profit;
 	uint8 pad_013587D4[4];
 	char scenario_completed_name[32];
 	money32 cash;
 	uint8 pad_013587FC[50];
-	uint16 word_0135882E;
+	uint16 park_rating_casualty_penalty;
 	uint16 map_size_units;
 	uint16 map_size_minus_2;
 	uint16 map_size;
@@ -272,7 +273,7 @@ typedef struct rct_s6_data {
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
 	rct_research_item research_items[500];
-	uint16 word_01359208;
+	uint16 map_base_z;
 	char scenario_name[64];
 	char scenario_description[256];
 	uint8 current_interest_rate;
@@ -307,7 +308,7 @@ typedef struct rct_s6_data {
 	uint8 pad_13CA73F;
 	uint8 byte_13CA740;
 	uint8 pad_13CA741;
-	uint8 byte_13CA742[4];
+	uint8 byte_13CA742[4]; // unused
 	uint8 climate;
 	uint8 pad_013CA747;
 	uint16 climate_update_timer;
@@ -321,7 +322,7 @@ typedef struct rct_s6_data {
 	uint8 next_weather_gloom;
 	uint8 current_rain_level;
 	uint8 next_rain_level;
-	rct_news_item news_items[61];
+	rct_news_item news_items[MAX_NEWS_ITEMS];
 	uint8 pad_13CE730[64];
 	uint32 rct1_scenario_flags;
 	uint16 wide_path_tile_loop_x;
@@ -435,12 +436,14 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern scenario_index_entry *gScenarioList;
 
-extern rct_s6_info *gS6Info;
-extern char *gScenarioName;
-extern char *gScenarioDetails;
-extern char *gScenarioCompletedBy;
+extern rct_s6_info gS6Info;
+extern char gScenarioName[64];
+extern char gScenarioDetails[256];
+extern char gScenarioCompletedBy[32];
 extern char gScenarioSavePath[MAX_PATH];
+extern char gScenarioExpansionPacks[3256];
 extern int gFirstTimeSave;
+extern uint16 gSavedAge;
 extern uint32 gLastAutoSaveTick;
 
 extern const char *_scenarioFileName;

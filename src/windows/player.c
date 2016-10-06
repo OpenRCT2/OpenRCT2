@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -383,7 +382,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + 90;
 	int y = w->y + 24;
 
-	set_format_arg(0, uint16, STR_PING);
+	set_format_arg(0, rct_string_id, STR_PING);
 	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
 	char ping[64];
 	sprintf(ping, "%d ms", network_get_player_ping(player));
@@ -394,9 +393,9 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + w->height - 13;
 	int width = w->width - 8;
 	int lastaction = network_get_player_last_action(player, 0);
-	set_format_arg(0, uint16, STR_ACTION_NA);
+	set_format_arg(0, rct_string_id, STR_ACTION_NA);
 	if (lastaction != -999) {
-		set_format_arg(0, uint16, network_get_action_name_string_id(lastaction));
+		set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
 	}
 	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, 0, x, y, width);
 

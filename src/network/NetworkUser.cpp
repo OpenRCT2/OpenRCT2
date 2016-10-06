@@ -112,7 +112,7 @@ void NetworkUserManager::Load()
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.GetMsg());
+            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.GetMessage());
         }
     }
 }

@@ -20,7 +20,7 @@
 #include "../common.h"
 
 struct file_info;
-class FileEnumerator
+class FileEnumerator final
 {
 private:
     struct DirectoryState

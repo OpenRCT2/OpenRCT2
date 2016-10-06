@@ -99,21 +99,43 @@ static bool sprite_file_open(const utf8 *path)
 	}
 
 	if (spriteFileHeader.num_entries > 0) {
-		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
+		int openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+		rct_g1_element_32bit * openElements = (rct_g1_element_32bit *)malloc(openEntryTableSize);
+		if (openElements == NULL) {
+			SDL_RWclose(file);
+			return false;
+		}
 
-		spriteFileEntries = malloc(entryTableSize);
-		if (SDL_RWread(file, spriteFileEntries, entryTableSize, 1) != 1) {
+		if (SDL_RWread(file, openElements, openEntryTableSize, 1) != 1) {
+			free(openElements);
 			SDL_RWclose(file);
 			return false;
 		}
 
 		spriteFileData = malloc(spriteFileHeader.total_size);
 		if (SDL_RWread(file, spriteFileData, spriteFileHeader.total_size, 1) != 1) {
+			free(spriteFileData);
+			free(openElements);
 			SDL_RWclose(file);
 			return false;
 		}
 
-		sprite_entries_make_absolute();
+		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
+		spriteFileEntries = malloc(entryTableSize);
+		for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
+			rct_g1_element_32bit * inElement = &openElements[i];
+			rct_g1_element * outElement = &spriteFileEntries[i];
+
+			outElement->offset = (uint8*)((uintptr_t)inElement->offset + (uintptr_t)spriteFileData);
+			outElement->width = inElement->width;
+			outElement->height = inElement->height;
+			outElement->x_offset = inElement->x_offset;
+			outElement->y_offset = inElement->y_offset;
+			outElement->flags = inElement->flags;
+			outElement->zoomed_offset = inElement->zoomed_offset;
+		}
+
+		free(openElements);
 	}
 
 	SDL_RWclose(file);
@@ -132,17 +154,32 @@ static bool sprite_file_save(const char *path)
 	}
 
 	if (spriteFileHeader.num_entries > 0) {
-		sprite_entries_make_relative();
-
-		int entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
-
-		if (SDL_RWwrite(file, spriteFileEntries, entryTableSize, 1) != 1) {
-			sprite_entries_make_absolute();
+		int saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+		rct_g1_element_32bit * saveElements = (rct_g1_element_32bit *)malloc(saveEntryTableSize);
+		if (saveElements == NULL) {
 			SDL_RWclose(file);
 			return false;
-		} else {
-			sprite_entries_make_absolute();
 		}
+
+		for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
+			rct_g1_element * inElement = &spriteFileEntries[i];
+			rct_g1_element_32bit * outElement = &saveElements[i];
+
+			outElement->offset = (uint32)((uintptr_t)inElement->offset - (uintptr_t)spriteFileData);
+			outElement->width = inElement->width;
+			outElement->height = inElement->height;
+			outElement->x_offset = inElement->x_offset;
+			outElement->y_offset = inElement->y_offset;
+			outElement->flags = inElement->flags;
+			outElement->zoomed_offset = inElement->zoomed_offset;
+		}
+
+		if (SDL_RWwrite(file, saveElements, saveEntryTableSize, 1) != 1) {
+			free(saveElements);
+			SDL_RWclose(file);
+			return false;
+		}
+		free(saveElements);
 
 		if (SDL_RWwrite(file, spriteFileData, spriteFileHeader.total_size, 1) != 1) {
 			SDL_RWclose(file);
@@ -181,7 +218,7 @@ static bool sprite_file_export(int spriteIndex, const char *outPath)
 	dpi.zoom_level = 0;
 
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_NO_BACKGROUND, 0, spriteHeader->height, 0, spriteHeader->width);
+	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
 
 	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
@@ -280,7 +317,7 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 	for (unsigned int y = 0; y < height; y++) {
 		rle_code *previousCode, *currentCode;
 
-		yOffsets[y] = (dst - buffer);
+		yOffsets[y] = (uint16)(dst - buffer);
 
 		previousCode = NULL;
 		currentCode = (rle_code*)dst;
@@ -500,9 +537,9 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int numbers = (int)floor(log(maxIndex));
 
 		safe_strcpy(outputPath, argv[2], MAX_PATH);
-		int pathLen = strlen(outputPath);
+		size_t pathLen = strlen(outputPath);
 
-		if (pathLen >= MAX_PATH - numbers - 5){
+		if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {
 			fprintf(stderr, "Path too long.\n");
 			return -1;
 		}
@@ -598,7 +635,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		const char *spriteFilePath = argv[1];
 		const char *resourcePath = argv[2];
 		char imagePath[MAX_PATH];
-		int resourceLength = strlen(resourcePath);
+		size_t resourceLength = strlen(resourcePath);
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 		SDL_RWops *file;

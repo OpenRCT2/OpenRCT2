@@ -120,6 +120,8 @@ typedef struct coordinate_focus {
 	sint16 z; //0x486
 	uint8 rotation;//0x488
 	uint8 zoom;//0x489
+	sint16 width;
+	sint16 height;
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
@@ -512,6 +514,14 @@ enum VISIBILITY_CACHE
 	VC_COVERED
 };
 
+enum GUEST_LIST_FILTER_TYPE
+{
+	GLFT_GUESTS_ON_RIDE,
+	GLFT_GUESTS_IN_QUEUE,
+	GLFT_GUESTS_THINKING_ABOUT_RIDE,
+	GLFT_GUESTS_THINKING_X,
+};
+
 typedef void (*modal_callback)(int result);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
@@ -529,6 +539,7 @@ extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 
 extern rct_window * gWindowFirst;
 extern rct_window * gWindowNextSlot;
+extern rct_window * gWindowAudioExclusive;
 
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
@@ -538,6 +549,8 @@ extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];
+
+extern bool gDisableErrorWindowSound;
 
 void window_dispatch_update_all();
 void window_update_all_viewports();

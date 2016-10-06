@@ -21,7 +21,7 @@
 
 class OpenGLFramebuffer;
 
-class FillRectShader : public OpenGLShaderProgram
+class FillRectShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;

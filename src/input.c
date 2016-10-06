@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include <SDL_keycode.h>
-#include "addresses.h"
 #include "audio/audio.h"
 #include "config.h"
 #include "cursors.h"
@@ -38,14 +37,6 @@
 #include "world/sprite.h"
 #include "world/scenery.h"
 #include "openrct2.h"
-
-enum {
-	MOUSE_STATE_RELEASED,
-	MOUSE_STATE_LEFT_PRESS,
-	MOUSE_STATE_LEFT_RELEASE,
-	MOUSE_STATE_RIGHT_PRESS,
-	MOUSE_STATE_RIGHT_RELEASE
-};
 
 typedef struct rct_mouse_data {
 	uint32 x;
@@ -82,10 +73,13 @@ widget_ref gTooltipWidget;
 sint32 gTooltipCursorX;
 sint32 gTooltipCursorY;
 
+uint8 gCurrentCursor;
 uint8 gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
-static void game_get_next_input(int *x, int *y, int *state);
+static sint16 _clickRepeatTicks;
+
+static int game_get_next_input(int *x, int *y);
 static void input_widget_over(int x, int y, rct_window *w, int widgetIndex);
 static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
 static void input_widget_over_flatbutton_invalidate();
@@ -129,59 +123,48 @@ static void input_update_tooltip(rct_window *w, int widgetIndex, int x, int y);
  */
 void game_handle_input()
 {
-	rct_window *w;
-	int x, y, state;
-
-	if (RCT2_GLOBAL(0x009DEA64, uint16) & 2) {
-		RCT2_GLOBAL(0x009DEA64, uint16) &= ~2;
-		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 2, 0);
-	}
-
-	for (w = g_window_list; w < gWindowNextSlot; w++)
+	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
 		window_event_unknown_07_call(w);
+	}
 
 	sub_6EA73F();
 
-	for (;;) {
-		game_get_next_input(&x, &y, &state);
-		if (state == 0) {
-			break;
-		}
-
+	int x, y, state;
+	while ((state = game_get_next_input(&x, &y)) != MOUSE_STATE_RELEASED) {
 		game_handle_input_mouse(x, y, state & 0xFF);
 	}
 
 	if (gInputFlags & INPUT_FLAG_5) {
 		game_handle_input_mouse(x, y, state);
-	}
-	else if (x != 0x80000000) {
-		x = clamp(0, x, (int)gScreenWidth - 1);
-		y = clamp(0, y, (int)gScreenHeight - 1);
+	} else if (x != 0x80000000) {
+		x = clamp(0, x, gScreenWidth - 1);
+		y = clamp(0, y, gScreenHeight - 1);
 
 		game_handle_input_mouse(x, y, state);
 		process_mouse_over(x, y);
 		process_mouse_tool(x, y);
 	}
 
-	for (w = g_window_list; w < gWindowNextSlot; w++)
+	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
 		window_event_unknown_08_call(w);
+	}
 }
 
 /**
  *
  *  rct2: 0x006E83C7
 */
-static void game_get_next_input(int *x, int *y, int *state)
+static int game_get_next_input(int *x, int *y)
 {
 	rct_mouse_data *input = get_mouse_input();
 	if (input == NULL) {
 		*x = gCursorState.x;
 		*y = gCursorState.y;
-		*state = 0;
+		return 0;
 	} else {
 		*x = input->x;
 		*y = input->y;
-		*state = input->state;
+		return input->state;
 	}
 }
 
@@ -1040,7 +1023,7 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 			gPressedWidget.widget_index = widgetIndex;
 			gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
 			gInputState = INPUT_STATE_WIDGET_PRESSED;
-			RCT2_GLOBAL(0x009DE528, uint16) = 1;
+			_clickRepeatTicks = 1;
 
 			widget_invalidate_by_number(windowClass, windowNumber, widgetIndex);
 			window_event_mouse_down_call(w, widgetIndex);
@@ -1070,7 +1053,6 @@ void process_mouse_over(int x, int y)
 
 	if (window != NULL) {
 		widgetId = window_find_widget_from_point(window, x, y);
-		RCT2_GLOBAL(0x1420046, sint16) = (widgetId & 0xFFFF);
 		if (widgetId != -1) {
 			switch (window->widgets[widgetId].type){
 
@@ -1120,8 +1102,7 @@ void process_mouse_over(int x, int y)
 				break;
 
 			case WWT_SCROLL:
-				RCT2_GLOBAL(0x9DE558, uint16) = x;
-				RCT2_GLOBAL(0x9DE55A, uint16) = y;
+			{
 				int output_scroll_area, scroll_id;
 				int scroll_x, scroll_y;
 				widget_scroll_get_part(window, &window->widgets[widgetId], x, y, &scroll_x, &scroll_y, &output_scroll_area, &scroll_id);
@@ -1136,6 +1117,7 @@ void process_mouse_over(int x, int y)
 				if (cursorId == -1)
 					cursorId = CURSOR_ARROW;
 				break;
+			}
 			default:
 				cursorId = window_event_cursor_call(window, widgetId, x, y);
 				if (cursorId == -1)
@@ -1196,14 +1178,15 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		if (w->disabled_widgets & (1ULL << widgetIndex))
 			break;
 
-		if (RCT2_GLOBAL(0x009DE528, uint16) != 0)
-			RCT2_GLOBAL(0x009DE528, uint16)++;
+		if (_clickRepeatTicks != 0) {
+			_clickRepeatTicks++;
 
-		if (w->hold_down_widgets & (1ULL << widgetIndex) &&
-			RCT2_GLOBAL(0x009DE528, uint16) >= 16 &&
-			!(RCT2_GLOBAL(0x009DE528, uint16) & 3)
-			) {
-			window_event_mouse_down_call(w, widgetIndex);
+			// Handle click repeat
+			if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) != 0) {
+				if (w->hold_down_widgets & (1ULL << widgetIndex)) {
+					window_event_mouse_down_call(w, widgetIndex);
+				}
+			}
 		}
 
 		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED) {
@@ -1300,7 +1283,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		return;
 	}
 
-	RCT2_GLOBAL(0x009DE528, uint16) = 0;
+	_clickRepeatTicks = 0;
 	if (gInputState != INPUT_STATE_DROPDOWN_ACTIVE){
 		// Hold down widget and drag outside of area??
 		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED){
@@ -1469,9 +1452,8 @@ void title_handle_keyboard_input()
 			if (w != NULL) {
 				window_text_input_key(w, key);
 			}
-			
-			if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
-				keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
+			else if (!gUsingWidgetTextBox) {
+				keyboard_shortcut_handle(key);
 			}
 		}
 	}
@@ -1573,18 +1555,15 @@ int get_next_key()
 *
 *  rct2: 0x006ED990
 */
-void sub_6ED990(uint8 cursor_id){
-	if (gInputState == INPUT_STATE_RESIZING)
-	{
-		cursor_id = CURSOR_DIAGONAL_ARROWS;	//resize icon
+void sub_6ED990(uint8 cursor_id)
+{
+	if (gInputState == INPUT_STATE_RESIZING) {
+		cursor_id = CURSOR_DIAGONAL_ARROWS;
 	}
-
-	if (cursor_id == RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8))
-	{
-		return;
+	if (cursor_id != gCurrentCursor) {
+		gCurrentCursor = cursor_id;
+		platform_set_cursor(cursor_id);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor_id;
-	platform_set_cursor(cursor_id);
 }
 
 
@@ -1606,7 +1585,7 @@ void invalidate_scroll()
 /**
 * rct2: 0x00406C96
 */
-void store_mouse_input(int state)
+void store_mouse_input(int state, int x, int y)
 {
 	uint32 writeIndex = _mouseInputQueueWriteIndex;
 	uint32 nextWriteIndex = (writeIndex + 1) % countof(_mouseInputQueue);
@@ -1614,8 +1593,8 @@ void store_mouse_input(int state)
 	// Check if the queue is full
 	if (nextWriteIndex != _mouseInputQueueReadIndex) {
 		rct_mouse_data *item = &_mouseInputQueue[writeIndex];
-		item->x = RCT2_GLOBAL(0x01424318, uint32);
-		item->y = RCT2_GLOBAL(0x0142431C, uint32);
+		item->x = x;
+		item->y = y;
 		item->state = state;
 
 		_mouseInputQueueWriteIndex = nextWriteIndex;
@@ -1645,13 +1624,13 @@ void game_handle_edge_scroll()
 	// Scroll left / right
 	if (gCursorState.x == 0)
 		scrollX = -1;
-	else if (gCursorState.x == gScreenWidth - 1)
+	else if (gCursorState.x >= gScreenWidth - 1)
 		scrollX = 1;
 
 	// Scroll up / down
 	if (gCursorState.y == 0)
 		scrollY = -1;
-	else if (gCursorState.y == gScreenHeight - 1)
+	else if (gCursorState.y >= gScreenHeight - 1)
 		scrollY = 1;
 
 	// Scroll viewport

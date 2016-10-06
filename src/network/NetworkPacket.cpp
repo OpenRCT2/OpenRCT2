@@ -74,7 +74,7 @@ bool NetworkPacket::CommandRequiresAuth()
     }
 }
 
-void NetworkPacket::Write(const uint8 * bytes, uint32 size)
+void NetworkPacket::Write(const uint8 * bytes, size_t size)
 {
     data->insert(data->end(), bytes, bytes + size);
 }
@@ -84,7 +84,7 @@ void NetworkPacket::WriteString(const utf8 * string)
     Write((uint8 *)string, strlen(string) + 1);
 }
 
-const uint8 * NetworkPacket::Read(uint32 size)
+const uint8 * NetworkPacket::Read(size_t size)
 {
     if (read + size > NetworkPacket::size)
     {

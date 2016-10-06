@@ -4213,6 +4213,12 @@ STR_5910    :Anwenden
 STR_5911    :Wege ausblenden
 STR_5912    :Wege ein-/ausblenden
 STR_5913    :Chat
+STR_5914    :Unbekannte Bahn
+STR_5915    :Spieler
+STR_5916    :{COMMA16} Spieler
+STR_5917    :{COMMA16} Spieler
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

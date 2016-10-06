@@ -19,7 +19,7 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-class DrawLineShader : public OpenGLShaderProgram
+class DrawLineShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;

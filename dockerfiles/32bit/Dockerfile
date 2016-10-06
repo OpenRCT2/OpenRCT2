@@ -11,6 +11,7 @@ RUN useradd -mg root travis
 RUN usermod -aG wheel travis
 RUN sed -i 's/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers
 
-RUN pacman -S --noconfirm lib32-curl lib32-sdl2 lib32-speex lib32-fontconfig lib32-openssl lib32-libpng && pacman -Sc
+# sdl2_ttf (x86_64) is needed to satisfy compile-time dependencies, even if we don't use it
+RUN pacman -S --noconfirm lib32-curl lib32-sdl2 lib32-speex lib32-fontconfig lib32-openssl lib32-libpng sdl2_ttf && pacman -Sc
 USER travis
 RUN yaourt -S --noconfirm lib32-jansson lib32-sdl2_ttf && rm -rf /tmp/yaourt-tmp-travis && sudo pacman -Sc

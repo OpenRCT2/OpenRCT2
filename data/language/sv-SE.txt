@@ -4104,7 +4104,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
-STR_5811    :{SMALLFONT}{BLACK}Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg
+STR_5811    :{SMALLFONT}{BLACK}Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och{NEWLINE}31 tåg per attraktion
 STR_5812    :Visa flerspelarfönstret
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4208,6 +4208,16 @@ STR_5910    :Verkställ
 STR_5911    :Dölj Gångvägar
 STR_5912    :Växla synlighet av gångvägar
 STR_5913    :Chatt
+STR_5914    :Okänd åktur
+STR_5915    :Spelare
+STR_5916    :{COMMA16} spelare
+STR_5917    :{COMMA16} spelare
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Visa väder effekter
+STR_5921    :{SMALLFONT}{BLACK}Om aktiverad, regn och mörkare färger kommer att visas när det stormar.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per tåg
 
 #############
 # Scenarion #

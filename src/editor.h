@@ -17,8 +17,8 @@
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
+#include "object.h"
 #include "rct2.h"
-#include "addresses.h"
 
 typedef enum {
 	EDITOR_STEP_OBJECT_SELECTION,			// 0
@@ -30,6 +30,8 @@ typedef enum {
 	EDITOR_STEP_ROLLERCOASTER_DESIGNER,		// 6
 	EDITOR_STEP_TRACK_DESIGNS_MANAGER		// 7
 } RCT2_EDITOR_STEP;
+
+extern uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
 
 void editor_load();
 void editor_convert_save_to_scenario();

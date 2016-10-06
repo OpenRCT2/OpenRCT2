@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2", "openrct2.vcxproj", "{D24D94F6-2A74-480C-B512-629C306CE92F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testpaint", "test\testpaint\testpaint.vcxproj", "{57E60BA1-FB76-4316-909E-C1449C142327}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2202A816-377D-4FA0-A7AF-7D4105F8A4FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{480B577D-4E4A-4757-9A42-28A9AD33E6B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,8 +27,18 @@ Global
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.Build.0 = Release|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|x64.ActiveCfg = Release|x64
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|x64.Build.0 = Release|x64
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Debug|Win32.ActiveCfg = Debug|Win32
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Debug|Win32.Build.0 = Debug|Win32
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Debug|x64.ActiveCfg = Debug|Win32
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Release|Win32.ActiveCfg = Release|Win32
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Release|Win32.Build.0 = Release|Win32
+		{57E60BA1-FB76-4316-909E-C1449C142327}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D24D94F6-2A74-480C-B512-629C306CE92F} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
+		{57E60BA1-FB76-4316-909E-C1449C142327} = {480B577D-4E4A-4757-9A42-28A9AD33E6B0}
 	EndGlobalSection
 EndGlobal

@@ -17,7 +17,6 @@
 #include "map_element.h"
 #include "../paint.h"
 #include "../supports.h"
-#include "../../addresses.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
@@ -194,7 +193,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | 0xA0000000;
 	rct_xyz16 boxlength;
 	rct_xyz16 boxoffset;
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (!track_design_save_contains_map_element(mapElement)) {
 			ebp = 0x21700000;
 			image_id &= 0x7FFFF;

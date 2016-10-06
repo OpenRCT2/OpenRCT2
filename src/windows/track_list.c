@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../editor.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -116,10 +116,6 @@ void window_track_list_open(ride_list_item item)
 	_window_track_list_item = item;
 	track_list_load_designs(item);
 
-	if (RCT2_GLOBAL(0x00F635ED, uint8) & 1) {
-		window_error_open(STR_WARNING, STR_TOO_MANY_TRACK_DESIGNS_OF_THIS_TYPE);
-	}
-
 	int x, y;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		x = gScreenWidth / 2 - 300;
@@ -198,7 +194,8 @@ static void window_track_list_select(rct_window *w, int index)
 		index--;
 	}
 
-	if (RCT2_GLOBAL(0x00F44153, uint8) != 0) {
+	rct_track_td6 *td6 = _loadedTrackDesign;
+	if (td6 != NULL && (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)) {
 		gTrackDesignSceneryToggle = true;
 	}
 
@@ -216,7 +213,7 @@ static void window_track_list_select(rct_window *w, int index)
 
 static int window_track_list_get_list_item_index_from_position(int x, int y)
 {
-	int maxItems = _trackDesignsCount;
+	int maxItems = (int)_trackDesignsCount;
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Extra item: custom design
 		maxItems++;
@@ -317,7 +314,7 @@ static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, in
  */
 static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 static void window_track_list_update(rct_window *w)
@@ -335,18 +332,17 @@ static void window_track_list_update(rct_window *w)
  */
 static void window_track_list_invalidate(rct_window *w)
 {
-	rct_ride_entry *entry;
-	rct_string_id stringId;
-
 	colour_scheme_update(w);
 
-	entry = get_ride_entry(_window_track_list_item.entry_index);
+	rct_string_id stringId = STR_NONE;
+	rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
+	if (entry != NULL && entry != (rct_ride_entry*)-1) {
+		stringId = entry->name;
+		if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
+			stringId = _window_track_list_item.type + 2;
+	}
 
-	stringId = entry->name;
-	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
-		stringId = _window_track_list_item.type + 2;
-
-	set_format_arg(0, uint16, stringId);
+	set_format_arg(0, rct_string_id, stringId);
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
@@ -427,7 +423,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
 
-	RCT2_GLOBAL(0x00F44153, uint8) = 0;
 	// Warnings
 	if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
@@ -436,7 +431,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
-		RCT2_GLOBAL(0x00F44153, uint8) = 1;
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
@@ -484,7 +478,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		set_format_arg(0, uint16, STR_RIDE_LENGTH_ENTRY);
+		set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
 		set_format_arg(2, uint16, td6->ride_length);
 		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
 		y += 10;
@@ -629,7 +623,7 @@ static bool track_list_load_design_for_preview(utf8 *path)
 	_loadedTrackDesign = NULL;
 
 	_loadedTrackDesign = track_design_open(path);
-	if (_loadedTrackDesign != NULL) {
+	if (_loadedTrackDesign != NULL && drawing_engine_get_type() != DRAWING_ENGINE_OPENGL) {
 		track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels);
 		return true;
 	}

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
@@ -24,6 +23,7 @@
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
 #include "../rct1.h"
+#include "../rct1/Tables.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../windows/error.h"
@@ -45,10 +45,7 @@ typedef struct map_backup {
 	uint8 current_rotation;
 } map_backup;
 
-static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
-
 rct_track_td6 *gActiveTrackDesign;
-uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;
 rct_xyz16 gTrackPreviewMin;
 rct_xyz16 gTrackPreviewMax;
@@ -62,6 +59,7 @@ static money32 _trackDesignPlaceCost;
 static sint16 _trackDesignPlaceZ;
 static sint16 word_F44129;
 
+static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 static map_backup *track_design_preview_backup_map();
 static void track_design_preview_restore_map(map_backup *backup);
 static void track_design_preview_clear_map();
@@ -157,7 +155,7 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 		free(td6);
 		return NULL;
 	}
-	copy(elementData, &readPtr, elementDataLength);
+	copy(elementData, &readPtr, (int)elementDataLength);
 	td6->elements = elementData;
 	td6->elementsSize = elementDataLength;
 
@@ -229,19 +227,17 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 		}
 
 		// Convert RCT1 vehicle type to RCT2 vehicle type
-		rct_object_entry *vehicle_object;
+		rct_object_entry vehicleObject = { 0x80, { "        " }, 0 };
 		if (td6->type == RIDE_TYPE_MAZE) {
-			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
+			const char * name = rct1_get_ride_type_object(td6->type);
+			assert(name != NULL);
+			memcpy(vehicleObject.name, name, min(strlen(name), 8));
 		} else {
-			int vehicle_type = td6->vehicle_type;
-			if (vehicle_type == RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN &&
-				td6->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
-				) {
-				vehicle_type = RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN;
-			}
-			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
+			const char * name = rct1_get_vehicle_object(td6->vehicle_type);
+			assert(name != NULL);
+			memcpy(vehicleObject.name, name, min(strlen(name), 8));
 		}
-		memcpy(&td6->vehicle_object, vehicle_object, sizeof(rct_object_entry));
+		memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
 
 		// Further vehicle colour fixes
 		for (int i = 0; i < 32; i++) {
@@ -330,7 +326,7 @@ static void track_design_load_scenery_objects(rct_track_td6 *td6)
 
 	// Load ride object
 	rct_object_entry * rideEntry = &td6->vehicle_object;
-	void * loadedObject = object_manager_load_object(rideEntry);
+	object_manager_load_object(rideEntry);
 
 	// Load scenery objects
 	rct_td6_scenery_element *scenery = td6->scenery_elements;
@@ -1316,8 +1312,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 	}
 
 	rct_ride *ride = get_ride(rideIndex);
-	const utf8 *ride_name = RCT2_ADDRESS(0x009E3504, const utf8);
-	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
+	rct_string_id new_ride_name = user_string_allocate(132, "");
 	if (new_ride_name != 0) {
 		rct_string_id old_name = ride->name;
 		ride->name = new_ride_name;
@@ -1685,13 +1680,10 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	td6->cost = cost;
 	td6->track_flags = flags & 7;
 
-	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
-	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
-	int left, top, right, bottom;
-
-	int center_x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
-	int center_y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
-	int center_z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
+	rct_xyz32 centre;
+	centre.x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
+	centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
+	centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
 	int width = gTrackPreviewMax.x - gTrackPreviewMin.x;
 	int height = gTrackPreviewMax.y - gTrackPreviewMin.y;
@@ -1710,81 +1702,44 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	width = 370 << zoom_level;
 	height = 217 << zoom_level;
 
-	int x = center_y - center_x - width / 2;
-	int y = (center_y + center_x) / 2 - center_z - height / 2;
+	rct_viewport view;
+	view.width = 370;
+	view.height = 217;
+	view.view_width = width;
+	view.view_height = height;
+	view.x = 0;
+	view.y = 0;
+	view.zoom = zoom_level;
+	view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
 
-	gCurrentRotation = 0;
+	rct_drawpixelinfo dpi;
+	dpi.zoom_level = zoom_level;
+	dpi.x = 0;
+	dpi.y = 0;
+	dpi.width = 370;
+	dpi.height = 217;
+	dpi.pitch = 0;
+	dpi.bits = pixels;
 
-	view->width = 370;
-	view->height = 217;
-	view->view_width = width;
-	view->view_height = height;
-	view->x = 0;
-	view->y = 0;
-	view->view_x = x;
-	view->view_y = y;
-	view->zoom = zoom_level;
-	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
+	rct_xy32 offset = { width / 2, height / 2 };
+	for (int i = 0; i < 4; i++) {
+		gCurrentRotation = i;
 
-	dpi->zoom_level = zoom_level;
-	dpi->x = 0;
-	dpi->y = 0;
-	dpi->width = 370;
-	dpi->height = 217;
-	dpi->pitch = 0;
-	dpi->bits = pixels;
+		rct_xy32 pos2d = translate_3d_to_2d_with_z(i, centre);
+		pos2d.x -= offset.x;
+		pos2d.y -= offset.y;
 
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
+		sint32 left = pos2d.x;
+		sint32 top = pos2d.y;
+		sint32 right = left + width;
+		sint32 bottom = top + height;
 
-	viewport_paint(view, dpi, left, top, right, bottom);
+		view.view_x = left;
+		view.view_y = top;
+		viewport_paint(&view, &dpi, left, top, right, bottom);
 
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 1;
-	x = -center_y - center_x - width / 2;
-	y = (center_y - center_x) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 2;
-	x =  center_x - center_y - width / 2;
-	y = (-center_y - center_x) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 3;
-	x = center_x + center_y - width / 2;
-	y = (center_x - center_y) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
+		dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
+	}
 
 	ride_delete(rideIndex);
 	track_design_preview_restore_map(mapBackup);

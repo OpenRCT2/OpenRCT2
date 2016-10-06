@@ -4078,8 +4078,8 @@ STR_5806    :Alternar Modo de Pantalla Completa
 STR_5807    :{WINDOW_COLOUR_2}Número de Juegos/Atracciones: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de Tiendas y Puestos: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de Quioscos y Otras Facilidades: {BLACK}{COMMA16}
-STR_5810    :Desactivar límite de longitud de los trenes
-STR_5811    :{SMALLFONT}{BLACK}Si se activa, puedes tener hasta 255 vagones por tren.
+STR_5810    :Desactivar límite de vehículos
+STR_5811    :{SMALLFONT}{BLACK}Si se activa, puedes tener hasta 255 vagones por tren y 31 trenes por atracción.
 STR_5812    :Mostrar ventana Multijugador
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4182,6 +4182,16 @@ STR_5910    :Aplicar
 STR_5911    :Ver a través de senderos
 STR_5912    :Alternar vista a través de senderos
 STR_5913    :Chat
+STR_5914    :Atracción Desconocida
+STR_5915    :Jugador
+STR_5916    :{COMMA16} jugador
+STR_5917    :{COMMA16} jugadores
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Efectos de Clima
+STR_5921    :{SMALLFONT}{BLACK}Si se activa, la lluvia y los colores oscuros se renderizarán durante una tormenta
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {COMMA16} {STRINGID} por tren
 
 ##############
 # Escenarios #

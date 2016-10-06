@@ -1,11 +1,13 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: Ability to disable rendering of weather effects and gloom
 - Feature: New view option: "See-Through Paths"
 - Feature: Add cheat to reset date.
 - Feature: Add OpenGL drawing engine.
 - Feature: Implementation of the user-defined currency
 - Feature: Add ability to rotate map elements with the tile inspector.
 - Feature: Add ride console command for diagnostics and changing vehicle type.
+- Feature: Allow selecting corners when using the mountain tool.
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
@@ -28,6 +30,7 @@
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
+- Fix: [#2081] Game hangs when track has infinite loop.
 - Fix: [#2754] Dragging scrollview fails when scaled.
 - Fix: [#3210] Scenery window scrolls too far.
 - Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch (original bug).

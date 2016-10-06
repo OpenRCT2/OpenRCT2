@@ -62,6 +62,14 @@ enum {
 	PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
 };
 
+enum MOUSE_STATE {
+	MOUSE_STATE_RELEASED,
+	MOUSE_STATE_LEFT_PRESS,
+	MOUSE_STATE_LEFT_RELEASE,
+	MOUSE_STATE_RIGHT_PRESS,
+	MOUSE_STATE_RIGHT_RELEASE
+};
+
 typedef struct widget_ref {
 	rct_windowclass window_classification;
 	rct_windownumber window_number;
@@ -84,6 +92,7 @@ extern widget_ref gTooltipWidget;
 extern sint32 gTooltipCursorX;
 extern sint32 gTooltipCursorY;
 
+extern uint8 gCurrentCursor;
 extern uint8 gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
@@ -91,7 +100,7 @@ void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
 
-void store_mouse_input(int state);
+void store_mouse_input(int state, int x, int y);
 
 void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y);
 

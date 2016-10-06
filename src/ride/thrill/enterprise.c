@@ -44,7 +44,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 		imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
 	}
 
-	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
 	if (imageColourFlags == 0x20000000) {
 		imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
 	}
@@ -81,13 +81,13 @@ static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 	int edges = edges_4x4[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
+	track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesRope, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesRope, get_current_rotation());
 
 	switch (trackSequence) {
 		case 5: paint_enterprise_structure(ride, 16, 16, height, mapElement); break;

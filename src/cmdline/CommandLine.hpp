@@ -25,7 +25,7 @@ extern "C"
 /**
  * Class for enumerating and retrieving values for a set of command line arguments.
  */
-class CommandLineArgEnumerator
+class CommandLineArgEnumerator final
 {
 private:
     const char * const * _arguments;

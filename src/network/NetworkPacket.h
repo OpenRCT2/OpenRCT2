@@ -21,13 +21,13 @@
 #include "NetworkTypes.h"
 #include "../common.h"
 
-class NetworkPacket
+class NetworkPacket final
 {
 public:
     uint16                              size;
     std::shared_ptr<std::vector<uint8>> data;
-    uint32                              transferred;
-    sint32                              read;
+    size_t                              transferred;
+    size_t                              read;
 
     static std::unique_ptr<NetworkPacket> Allocate();
     static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
@@ -40,10 +40,10 @@ public:
     void Clear();
     bool CommandRequiresAuth();
 
-    const uint8 * Read(uint32 size);
+    const uint8 * Read(size_t size);
     const utf8 *  ReadString();
 
-    void Write(const uint8 * bytes, uint32 size);
+    void Write(const uint8 * bytes, size_t size);
     void WriteString(const utf8 * string);
 
     template <typename T>

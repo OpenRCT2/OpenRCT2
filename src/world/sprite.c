@@ -21,22 +21,39 @@
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../openrct2.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"
-#include "../openrct2.h"
 
+#ifdef NO_RCT2
+uint16 gSpriteListHead[6];
+uint16 gSpriteListCount[6];
+static rct_sprite _spriteList[MAX_SPRITES];
+#else
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
+static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+#endif
 
-uint16 *gSpriteSpatialIndex = RCT2_ADDRESS(0xF1EF60, uint16);
-
-rct_sprite* sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *get_sprite(size_t sprite_idx)
 {
 	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
-	return &sprite_list[sprite_idx];
+	return &_spriteList[sprite_idx];
+}
+
+void store_sprite_locations(rct_xyz16 * sprite_locations)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		// skip going through `get_sprite` to not get stalled on assert,
+		// this can get very expensive for busy parks with uncap FPS option on
+		const rct_sprite *sprite = &_spriteList[i];
+		sprite_locations[i].x = sprite->unknown.x;
+		sprite_locations[i].y = sprite->unknown.y;
+		sprite_locations[i].z = sprite->unknown.z;
+	}
 }
 
 uint16 sprite_get_first_in_quadrant(int x, int y)
@@ -98,8 +115,8 @@ void invalidate_sprite_2(rct_sprite *sprite)
  */
 void reset_sprite_list()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
-	memset(sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
+	gSavedAge = 0;
+	memset(_spriteList, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < NUM_SPRITE_LISTS; i++) {
 		gSpriteListHead[i] = SPRITE_INDEX_NULL;
@@ -254,7 +271,7 @@ rct_sprite *create_sprite(uint8 bl)
 	size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
 	if ((bl & 2) != 0) {
 		// 69EC96;
-		sint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
+		uint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
 		if (cx >= gSpriteListCount[SPRITE_LIST_NULL]) {
 			return NULL;
 		}

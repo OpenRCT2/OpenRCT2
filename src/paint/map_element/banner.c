@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../paint.h"
-#include "../../addresses.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
@@ -23,6 +22,14 @@
 #include "../../paint/map_element/map_element.h"
 #include "../../world/banner.h"
 #include "../../world/scenery.h"
+
+/** rct2: 0x0098D884 */
+const rct_xy16 BannerBoundBoxes[][2] = {
+	{{ 1,  2}, { 1, 29}},
+	{{ 2, 32}, {29, 32}},
+	{{32,  2}, {32, 29}},
+	{{ 2,  1}, {29,  1}},
+};
 
 /**
  *
@@ -35,7 +42,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
-	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
+	if (dpi->zoom_level > 1 || gTrackDesignSaveMode) return;
 
 	height -= 16;
 
@@ -44,8 +51,8 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	direction += map_element->properties.banner.position;
 	direction &= 3;
 
-	boundBoxOffsetX = RCT2_ADDRESS(0x98D884, uint16)[direction * 4];
-	boundBoxOffsetY = RCT2_ADDRESS(0x98D884 + 2, uint16)[direction * 4];
+	boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
+	boundBoxOffsetY = BannerBoundBoxes[direction][0].y;
 	boundBoxOffsetZ = height + 2;
 
 	uint32 base_id = (direction << 1) + banner_scenery->image;
@@ -63,8 +70,8 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	}
 
 	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
-	boundBoxOffsetX = RCT2_ADDRESS(0x98D888, uint16)[direction * 4];
-	boundBoxOffsetY = RCT2_ADDRESS(0x98D888 + 2, uint16)[direction * 4];
+	boundBoxOffsetX = BannerBoundBoxes[direction][1].x;
+	boundBoxOffsetY = BannerBoundBoxes[direction][1].y;
 
 	image_id++;
 	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
@@ -76,26 +83,30 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	if (direction >= 2 || (map_element->flags & MAP_ELEMENT_FLAG_GHOST)) return;
 
 	uint16 scrollingMode = banner_scenery->banner.scrolling_mode;
+	if (scrollingMode >= MAX_SCROLLING_TEXT_MODES) {
+		return;
+	}
+
 	scrollingMode += direction;
 
 	set_format_arg(0, uint32, 0);
-	set_format_arg(4, uint32_t, 0);
+	set_format_arg(4, uint32, 0);
 
 	rct_string_id string_id = STR_NO_ENTRY;
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
 	{
-		set_format_arg(0, uint16, gBanners[map_element->properties.banner.index].string_idx);
+		set_format_arg(0, rct_string_id, gBanners[map_element->properties.banner.index].string_idx);
 		string_id = STR_BANNER_TEXT_FORMAT;
 	}
 	if (gConfigGeneral.upper_case_banners) {
-		format_string_to_upper(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+		format_string_to_upper(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
 	} else {
-		format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+		format_string(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
 	}
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
+	uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
 	uint16 scroll = (gCurrentTicks / 2) % string_width;
 
 	sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());

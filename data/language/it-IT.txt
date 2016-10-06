@@ -4224,6 +4224,13 @@ STR_5909    :{SMALLFONT}{BLACK}Permette di cambiare liberamente il tipo di perco
 STR_5910    :Applica
 STR_5911    :Sentieri trasparenti
 STR_5912    :Attiva/disattiva la trasparenza dei sentieri
+STR_5913    :Chat
+STR_5914    :Attrazione sconosciuta
+STR_5915    :Giocatore
+STR_5916    :{COMMA16} giocatore
+STR_5917    :{COMMA16} giocatori
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 
 #############

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../ride/ride.h"
@@ -437,7 +436,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int
  */
 static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -524,7 +523,8 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y, format, formatSecondary, argument;
+	int i, y, argument;
+	rct_string_id format, formatSecondary;
 	rct_ride *ride;
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
@@ -636,14 +636,10 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
-			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
-
 			set_format_arg(2, uint16, ride->reliability >> 8);
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
-			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
-
 			set_format_arg(2, uint16, ride->downtime);
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
@@ -660,7 +656,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
 			format = STR_RED_OUTLINED_STRING;
 
-		set_format_arg(0, uint16, formatSecondary);
+		set_format_arg(0, rct_string_id, formatSecondary);
 		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 160, y - 1, 157);
 		y += 10;
 	}
@@ -703,7 +699,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 {
 	int i, countA, countB;
 	rct_ride *ride, *otherRide;
-	char *bufferA, *bufferB;
+	char bufferA[128], bufferB[128];
 
 	countA = countB = 0;
 	FOR_ALL_RIDES(i, ride) {
@@ -733,8 +729,6 @@ static void window_ride_list_refresh_list(rct_window *w)
 		int current_list_position = list_index;
 		switch (w->list_information_type) {
 		case INFORMATION_TYPE_STATUS:
-			bufferA = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-			bufferB = RCT2_ADDRESS(0x0141EF68, char);
 			format_string_to_upper(bufferA, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
 				otherRide = get_ride(w->list_item_positions[current_list_position]);
@@ -892,7 +886,7 @@ static void window_ride_list_close_all(rct_window *w)
 			continue;
 
 		gGameCommandErrorTitle = STR_CANT_CLOSE;
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_CLOSED);
@@ -911,7 +905,7 @@ static void window_ride_list_open_all(rct_window *w)
 			continue;
 
 		gGameCommandErrorTitle = STR_CANT_OPEN;
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 
 		ride_set_status(i, RIDE_STATUS_OPEN);

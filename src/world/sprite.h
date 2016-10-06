@@ -400,13 +400,20 @@ enum {
 };
 
 rct_sprite *get_sprite(size_t sprite_idx);
+void store_sprite_locations(rct_xyz16 *sprite_locations);
 
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];
 
+#ifdef NO_RCT2
+extern uint16 gSpriteListHead[6];
+extern uint16 gSpriteListCount[6];
+#else
 extern uint16 *gSpriteListHead;
 extern uint16 *gSpriteListCount;
-extern uint16 *gSpriteSpatialIndex;
+#endif
+
+extern uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();

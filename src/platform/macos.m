@@ -104,7 +104,6 @@ void platform_show_messagebox(char *message)
 		NSAlert *alert = [[[NSAlert alloc] init] autorelease];
 		[alert addButtonWithTitle:@"OK"];
 		alert.messageText = [NSString stringWithUTF8String:message];
-		alert.alertStyle = NSWarningAlertStyle;
 		[alert runModal];
 	}
 }

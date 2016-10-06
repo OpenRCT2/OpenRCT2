@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"
@@ -326,9 +325,6 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.motion.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.motion.y / gConfigGeneral.window_scale);
-
 			gCursorState.x = (int)(e.motion.x / gConfigGeneral.window_scale);
 			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
 			break;
@@ -340,11 +336,12 @@ void platform_process_messages()
 			gCursorState.wheel += e.wheel.y * 128;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
+		{
+			int x = (int)(e.button.x / gConfigGeneral.window_scale);
+			int y = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				store_mouse_input(1);
+				store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 				break;
@@ -352,18 +349,20 @@ void platform_process_messages()
 				gCursorState.middle = CURSOR_PRESSED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				store_mouse_input(3);
+				store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 				break;
 			}
 			break;
+		}
 		case SDL_MOUSEBUTTONUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.button.x / gConfigGeneral.window_scale);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.button.y / gConfigGeneral.window_scale);
+		{
+			int x = (int)(e.button.x / gConfigGeneral.window_scale);
+			int y = (int)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
-				store_mouse_input(2);
+				store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 				break;
@@ -371,55 +370,57 @@ void platform_process_messages()
 				gCursorState.middle = CURSOR_RELEASED;
 				break;
 			case SDL_BUTTON_RIGHT:
-				store_mouse_input(4);
+				store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
 				gCursorState.right = CURSOR_RELEASED;
 				gCursorState.old = 4;
 				break;
 			}
 			break;
+		}
 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * gScreenHeight);
-
 			gCursorState.x = (int)(e.tfinger.x * gScreenWidth);
 			gCursorState.y = (int)(e.tfinger.y * gScreenHeight);
 			break;
 		case SDL_FINGERDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
+		{
+			int x = (int)(e.tfinger.x * gScreenWidth);
+			int y = (int)(e.tfinger.y * gScreenHeight);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
-										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+				&& e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
 
 			if (gCursorState.touchIsDouble) {
-				store_mouse_input(3);
+				store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
 				gCursorState.right = CURSOR_PRESSED;
 				gCursorState.old = 2;
 			} else {
-				store_mouse_input(1);
+				store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
 				gCursorState.left = CURSOR_PRESSED;
 				gCursorState.old = 1;
 			}
 			gCursorState.touch = true;
 			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
 			break;
+		}
 		case SDL_FINGERUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
+		{
+			int x = (int)(e.tfinger.x * gScreenWidth);
+			int y = (int)(e.tfinger.y * gScreenHeight);
 
 			if (gCursorState.touchIsDouble) {
-				store_mouse_input(4);
+				store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 4;
 			} else {
-				store_mouse_input(2);
+				store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
 				gCursorState.left = CURSOR_RELEASED;
 				gCursorState.old = 3;
 			}
 			gCursorState.touch = true;
 			break;
+		}
 #endif
 		case SDL_KEYDOWN:
 			if (gTextInputCompositionActive) break;
@@ -597,8 +598,6 @@ static void platform_create_window()
 	if (width == -1) width = 640;
 	if (height == -1) height = 480;
 
-	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
-
 	// Create window in window first rather than fullscreen so we have the display the window is on first
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
@@ -612,9 +611,6 @@ static void platform_create_window()
 	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 	SDL_SetWindowMinimumSize(gWindow, 720, 480);
 	platform_init_window_icon();
-
-	// Set the update palette function pointer
-	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;
 
 	// Initialise the surface, palette and draw buffer
 	platform_resize(width, height);
@@ -715,7 +711,7 @@ void platform_toggle_windowed_mode()
  */
 void platform_set_cursor(uint8 cursor)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor;
+	gCurrentCursor = cursor;
 	SDL_SetCursor(_cursors[cursor]);
 }
 /**

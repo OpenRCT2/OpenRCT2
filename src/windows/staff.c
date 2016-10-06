@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/viewport.h"
@@ -303,6 +302,8 @@ static const uint32 staffCostumeNames[] = {
 	STR_STAFF_OPTION_COSTUME_PIRATE,
 };
 
+static uint8 _availableCostumes[ENTERTAINER_COSTUME_COUNT];
+
 /**
 *
 *  rct2: 0x006BEE98
@@ -550,7 +551,7 @@ void window_staff_overview_mousedown(int widgetIndex, rct_window* w, rct_widget*
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Disable clear patrol area if no area is set.
-	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] & 2)) {
+	if (!(gStaffModes[peep->staff_id] & 2)) {
 		gDropdownItemsDisabled |= (1ULL << 1);
 	}
 }
@@ -568,12 +569,11 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
 	// Clear patrol
 	if (dropdownIndex == 1) {
 		rct_peep* peep = GET_PEEP(w->number);
-
-		for (int i = 0; i < 128; i++)
-		{
-			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (peep->staff_id * 512), uint32)[i] = 0;
+		uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (peep->staff_id * 512));
+		for (int i = 0; i < 128; i++) {
+			addr[i] = 0;
 		}
-		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[peep->staff_id] &= ~2;
+		gStaffModes[peep->staff_id] &= ~2;
 
 		gfx_invalidate_screen();
 		staff_update_greyed_patrol_areas();
@@ -613,7 +613,7 @@ static void window_staff_set_order(rct_window* w, int order_id)
 	int ax = peep->staff_orders ^ (1 << order_id);
 	int flags = (ax << 8) | 1;
 
-	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+	game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 }
 
 /**
@@ -742,7 +742,7 @@ void window_staff_stats_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -777,7 +777,7 @@ void window_staff_options_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	switch (peep->staff_type){
@@ -852,7 +852,7 @@ void window_staff_overview_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -1293,7 +1293,7 @@ void window_staff_viewport_init(rct_window* w){
 	}
 	else{
 		viewport_flags = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+		if (gConfigGeneral.always_show_gridlines)
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
 	}
 
@@ -1335,36 +1335,35 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 
 	init_scenery();
 
-	int ebx = 0;
+	uint32 entertainerCostumes = 0;
 	for (int i = 0; i < 19; i++) {
 		if (window_scenery_tab_entries[i][0] != -1) {
 			rct_scenery_set_entry* scenery_entry = get_scenery_group_entry(i);
-			ebx |= scenery_entry->var_10A;
+			entertainerCostumes |= scenery_entry->entertainer_costumes;
 		}
 	}
 
-	uint8* ebp = RCT2_ADDRESS(0xF4391B, uint8);
-	uint16 no_entries = 0;
-	for (uint8 i = 0; i < 32; ++i){
-		if (ebx & (1 << i)){
-			*ebp++ = i;
-			no_entries++;
+	uint8 *costume = _availableCostumes;
+	uint16 numCostumes = 0;
+	for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+		if (entertainerCostumes & (1 << i)) {
+			// For some reason the flags are +4 from the actual costume IDs
+			*costume++ = (i - 4);
+			numCostumes++;
 		}
 	}
-	// Save number of entrys. Not required any more.
-	RCT2_GLOBAL(0xF43926, uint16) = no_entries;
 
 	rct_peep* peep = GET_PEEP(w->number);
-	int item_checked = 0;
+	int itemsChecked = 0;
 	//This will be moved below where Items Checked is when all
 	//of dropdown related functions are finished. This prevents
 	//the dropdown from not working on first click.
-	for (int i = 0; i < no_entries; ++i){
-		int eax = RCT2_ADDRESS(0xF4391B, uint8)[i];
-		if (eax == peep->sprite_type){
-			item_checked = 1 << i;
+	for (int i = 0; i < numCostumes; ++i){
+		uint8 costume = _availableCostumes[i];
+		if (costume == peep->sprite_type) {
+			itemsChecked = 1 << i;
 		}
-		gDropdownItemsArgs[i] = staffCostumeNames[eax - 4];
+		gDropdownItemsArgs[i] = staffCostumeNames[costume];
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 	}
 
@@ -1375,10 +1374,10 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	int y = widget->top + w->y;
 	int extray = widget->bottom - widget->top + 1;
 	int width = widget->right - widget->left - 3;
-	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, no_entries, width);
+	window_dropdown_show_text_custom_width(x, y, extray, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
 	// See above note.
-	gDropdownItemsChecked = item_checked;
+	gDropdownItemsChecked = itemsChecked;
 }
 
 /**
@@ -1395,6 +1394,6 @@ void window_staff_options_dropdown(rct_window *w, int widgetIndex, int dropdownI
 		return;
 
 	rct_peep* peep = GET_PEEP(w->number);
-	int costume = (RCT2_ADDRESS(0xF4391B, uint8)[dropdownIndex] - 4) | 0x80;
-	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, (int)peep, 0);
+	int costume = _availableCostumes[dropdownIndex] | 0x80;
+	game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 }

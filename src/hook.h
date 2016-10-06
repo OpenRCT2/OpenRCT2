@@ -17,6 +17,8 @@
 #ifndef _HOOK_H_
 #define _HOOK_H_
 
+#ifndef NO_RCT2
+
 enum REGISTER_ARGS {
 	EAX = 1 << 0,
 	EBX = 1 << 1,
@@ -29,5 +31,7 @@ enum REGISTER_ARGS {
 };
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister);
+
+#endif
 
 #endif

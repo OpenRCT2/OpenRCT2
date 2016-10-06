@@ -79,10 +79,12 @@ enum {
 };
 
 enum {
-	IMAGE_TYPE_NO_BACKGROUND = 0,
-	IMAGE_TYPE_USE_PALETTE= (1 << 1),
-	IMAGE_TYPE_MIX_BACKGROUND = (1<<2),
-	IMAGE_TYPE_UNKNOWN = (1<<3)
+	IMAGE_TYPE_DEFAULT = 0,
+	IMAGE_TYPE_REMAP = (1 << 29),
+	IMAGE_TYPE_TRANSPARENT = (1 << 30),
+	IMAGE_TYPE_REMAP_2_PLUS = (1 << 31) 
+	// REMAP_2_PLUS + REMAP = REMAP 2
+	// REMAP_2_PLUS = REMAP 3
 };
 
 typedef struct rct_g1_header {
@@ -114,12 +116,16 @@ typedef struct rct_palette {
 	rct_palette_entry entries[256];
 } rct_palette;
 
-#define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
+#define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
+#define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | ((primaryId << 19) | (scondaryId << 24)))
+#define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | ((primaryId << 19) | (scondaryId << 24)))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
 
-#define gCurrentFontSpriteBase		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16)
-#define gCurrentFontFlags			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16)
+#define MAX_SCROLLING_TEXT_MODES 38
+
+extern sint16 gCurrentFontSpriteBase;
+extern uint16 gCurrentFontFlags;
 
 extern uint8 gGamePalette[256 * 4];
 extern uint32 gPaletteEffectFrame;
@@ -176,13 +182,14 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
 
 // sprite
-int gfx_load_g1();
-int gfx_load_g2();
+bool gfx_load_g1();
+bool gfx_load_g2();
 void gfx_unload_g1();
 void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);
+void gfx_object_check_all_images_freed();
 void sub_68371D();
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
@@ -191,6 +198,7 @@ void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, i
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 colour);
 
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
+uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
 

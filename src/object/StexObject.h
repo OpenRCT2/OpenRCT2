@@ -23,13 +23,13 @@ extern "C"
     #include "../scenario.h"
 }
 
-class StexObject : public Object
+class StexObject final : public Object
 {
 private:
     rct_stex_entry _legacyType = { 0 };
 
 public:
-    explicit StexObject(const rct_object_entry &entry) : Object(entry) { };
+    explicit StexObject(const rct_object_entry &entry) : Object(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
 

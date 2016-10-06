@@ -95,14 +95,14 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
 		}
 	}
 
-	uint32 colourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+	uint32 colourFlags = gTrackColours[SCHEME_MISC];
 	if (colourFlags == 0x20000000) {
 		colourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
 	}
 
 	swinging_inverter_ship_bound_box boundBox = swinging_inverter_ship_bounds[direction];
 	vehicleImageId = vehicleImageId | colourFlags;
-	uint32 frameImageId = swinging_inverter_ship_frame_sprites[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 frameImageId = swinging_inverter_ship_frame_sprites[direction] | gTrackColours[SCHEME_TRACK];
 
 	if (direction & 2) {
 		sub_98197C(vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
@@ -127,31 +127,31 @@ static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, u
 
 	if (relativeTrackSequence != 1 && relativeTrackSequence != 3) {
 		if (direction & 1) {
-			metal_a_supports_paint_setup(0, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
-			metal_a_supports_paint_setup(0, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup(0, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(0, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		} else {
-			metal_a_supports_paint_setup(0, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
-			metal_a_supports_paint_setup(0, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup(0, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(0, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		}
 
-		imageId = SPR_STATION_BASE_D | RCT2_GLOBAL(0x00F4419C, uint32);
+		imageId = SPR_STATION_BASE_D | gTrackColours[SCHEME_SUPPORTS];
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 		switch (direction) {
 			case 0:
-				imageId = SPR_STATION_PLATFORM_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+				imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_TRACK];
 				sub_98196C(imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
 				break;
 			case 1:
-				imageId = SPR_STATION_PLATFORM_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_TRACK];
 				sub_98196C(imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
 				break;
 			case 2:
-				imageId = SPR_STATION_PLATFORM_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+				imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_TRACK];
 				sub_98199C(imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height, get_current_rotation());
 				break;
 			case 3:
-				imageId = SPR_STATION_PLATFORM_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_TRACK];
 				sub_98199C(imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height, get_current_rotation());
 				break;
 		}

@@ -40,6 +40,8 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourBounds));
     glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskAtlas));
     glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskBounds));
+    glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteAtlas));
+    glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteBounds));
     glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
     glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
     glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
@@ -51,6 +53,8 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glEnableVertexAttribArray(vTexColourBounds);
     glEnableVertexAttribArray(vTexMaskAtlas);
     glEnableVertexAttribArray(vTexMaskBounds);
+    glEnableVertexAttribArray(vTexPaletteAtlas);
+    glEnableVertexAttribArray(vTexPaletteBounds);
     glEnableVertexAttribArray(vFlags);
     glEnableVertexAttribArray(vColour);
     glEnableVertexAttribArray(vBounds);
@@ -61,6 +65,8 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribDivisor(vTexColourBounds, 1);
     glVertexAttribDivisor(vTexMaskAtlas, 1);
     glVertexAttribDivisor(vTexMaskBounds, 1);
+    glVertexAttribDivisor(vTexPaletteAtlas, 1);
+    glVertexAttribDivisor(vTexPaletteBounds, 1);
     glVertexAttribDivisor(vFlags, 1);
     glVertexAttribDivisor(vColour, 1);
     glVertexAttribDivisor(vBounds, 1);
@@ -91,6 +97,8 @@ void DrawImageShader::GetLocations()
     vTexColourBounds    = GetAttributeLocation("ivTexColourBounds");
     vTexMaskAtlas       = GetAttributeLocation("ivTexMaskAtlas");
     vTexMaskBounds      = GetAttributeLocation("ivTexMaskBounds");
+    vTexPaletteAtlas    = GetAttributeLocation("ivTexPaletteAtlas");
+    vTexPaletteBounds   = GetAttributeLocation("ivTexPaletteBounds");
     vFlags              = GetAttributeLocation("ivFlags");
     vColour             = GetAttributeLocation("ivColour");
     vBounds             = GetAttributeLocation("ivBounds");
@@ -114,7 +122,7 @@ void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instan
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glBufferData(GL_ARRAY_BUFFER, sizeof(instances[0]) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, instances.size());
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, (GLsizei)instances.size());
 }
 
 #endif /* DISABLE_OPENGL */

@@ -21,7 +21,7 @@
 #include "NetworkPacket.h"
 #include "../common.h"
 
-class NetworkGroup
+class NetworkGroup final
 {
 public:
     std::array<uint8, 8>    ActionsAllowed;

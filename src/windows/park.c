@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../localisation/date.h"
@@ -597,7 +596,7 @@ static void window_park_set_disabled_tabs(rct_window *w)
 
 static void window_park_prepare_window_title_text()
 {
-	set_format_arg(0, uint16, gParkName);
+	set_format_arg(0, rct_string_id, gParkName);
 	set_format_arg(2, uint32, gParkNameArgs);
 }
 
@@ -760,8 +759,8 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
 	if (mapTile.x == (sint16)0x8000){
-		if (RCT2_GLOBAL(0x00F1AD62, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(0x00F1AD62, money32) = MONEY32_UNDEFINED;
+		if (gLandRightsCost != MONEY32_UNDEFINED) {
+			gLandRightsCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
 		}
 		return;
@@ -818,7 +817,7 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 	if (!state_changed)
 		return;
 
-	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
+	gLandRightsCost = game_do_command(
 		gMapSelectPositionA.x,
 		0x4,
 		gMapSelectPositionA.y,
@@ -826,7 +825,7 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 		GAME_COMMAND_BUY_LAND_RIGHTS,
 		gMapSelectPositionB.x,
 		gMapSelectPositionB.y
-		);
+	);
 }
 
 /**
@@ -971,7 +970,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 	window_park_set_pressed_tab(w);
 
 	// Set open / close park button state
-	set_format_arg(0, uint16, gParkName);
+	set_format_arg(0, rct_string_id, gParkName);
 	set_format_arg(2, uint32, gParkNameArgs);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
 	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
@@ -1055,7 +1054,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Draw park closed / open label
-	set_format_arg(0, uint16, park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+	set_format_arg(0, rct_string_id, park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
 	labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
 	gfx_draw_string_centred_clipped(
@@ -1771,8 +1770,8 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario description
 	x = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
-	safe_strcpy(RCT2_ADDRESS(0x009BC677, char), gScenarioDetails, 256);
-	set_format_arg(0, short, STR_PLACEHOLDER);
+	set_format_arg(0, rct_string_id, STR_STRING);
+	set_format_arg(2, const char *, gScenarioDetails);
 	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, 0);
 	y += 5;
 
@@ -1781,9 +1780,9 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 10;
 
 	// Objective
-	set_format_arg(0, short, gScenarioObjectiveNumGuests);
+	set_format_arg(0, uint16, gScenarioObjectiveNumGuests);
 	set_format_arg(2, short, date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
-	set_format_arg(4, int, gScenarioObjectiveCurrency);
+	set_format_arg(4, money32, gScenarioObjectiveCurrency);
 
 	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], 0);
 	y += 5;
@@ -1795,7 +1794,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_string_left_wrapped(dpi, NULL, x, y, 222, STR_OBJECTIVE_FAILED, 0);
 		} else {
 			// Objective completed
-			set_format_arg(0, int, gScenarioCompletedCompanyValue);
+			set_format_arg(0, money32, gScenarioCompletedCompanyValue);
 			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, 0);
 		}
 	}

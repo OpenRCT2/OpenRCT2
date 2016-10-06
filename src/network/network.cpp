@@ -31,7 +31,6 @@ extern "C" {
 #include "network.h"
 
 extern "C" {
-#include "../addresses.h"
 }
 
 #ifndef DISABLE_NETWORK
@@ -44,6 +43,7 @@ extern "C" {
 
 #include "../core/Console.hpp"
 #include "../core/Json.hpp"
+#include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -71,12 +71,6 @@ extern "C" {
 #pragma comment(lib, "Ws2_32.lib")
 
 Network gNetwork;
-
-enum {
-	ADVERTISE_STATUS_DISABLED,
-	ADVERTISE_STATUS_UNREGISTERED,
-	ADVERTISE_STATUS_REGISTERED
-};
 
 enum {
 	MASTER_SERVER_STATUS_OK = 200,
@@ -107,7 +101,6 @@ Network::Network()
 	status = NETWORK_STATUS_NONE;
 	last_tick_sent_time = 0;
 	last_ping_sent_time = 0;
-	last_advertise_time = 0;
 	client_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
 	client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
@@ -177,6 +170,8 @@ void Network::Close()
 	} else if (mode == NETWORK_MODE_SERVER) {
 		delete listening_socket;
 		listening_socket = nullptr;
+		delete _advertiser;
+		_advertiser = nullptr;
 	}
 
 	mode = NETWORK_MODE_NONE;
@@ -295,7 +290,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	}
 	catch (Exception ex)
 	{
-		Console::Error::WriteLine(ex.GetMsg());
+		Console::Error::WriteLine(ex.GetMessage());
 		Close();
 		return false;
 	}
@@ -322,17 +317,9 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
-	advertise_status = ADVERTISE_STATUS_DISABLED;
-	last_advertise_time = 0;
-	last_heartbeat_time = 0;
-	advertise_token = "";
-	advertise_key = GenerateAdvertiseKey();
-
-#ifndef DISABLE_HTTP
 	if (gConfigNetwork.advertise) {
-		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
+		_advertiser = CreateServerAdvertiser(listening_port);
 	}
-#endif
 
 	return true;
 }
@@ -399,17 +386,8 @@ void Network::UpdateServer()
 		Server_Send_PINGLIST();
 	}
 
-	switch (advertise_status) {
-	case ADVERTISE_STATUS_UNREGISTERED:
-		if (last_advertise_time == 0 || SDL_TICKS_PASSED(SDL_GetTicks(), last_advertise_time + MASTER_SERVER_REGISTER_TIME)) {
-			AdvertiseRegister();
-		}
-		break;
-	case ADVERTISE_STATUS_REGISTERED:
-		if (SDL_TICKS_PASSED(SDL_GetTicks(), last_heartbeat_time + MASTER_SERVER_HEARTBEAT_TIME)) {
-			AdvertiseHeartbeat();
-		}
-		break;
+	if (_advertiser != nullptr) {
+		_advertiser->Update();
 	}
 
 	ITcpSocket * tcpSocket = listening_socket->Accept();
@@ -574,7 +552,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 void Network::SendPacketToClients(NetworkPacket& packet, bool front)
 {
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->QueuePacket(std::move(NetworkPacket::Duplicate(packet)), front);
+		(*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
 	}
 }
 
@@ -610,7 +588,6 @@ void Network::KickPlayer(int playerId)
 			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			(*it)->Socket->Disconnect();
-			(*it)->SendQueuedPackets();
 			break;
 		}
 	}
@@ -649,102 +626,6 @@ const char *Network::GetMasterServerUrl()
 	} else {
 		return gConfigNetwork.master_server_url;
 	}
-}
-
-void Network::AdvertiseRegister()
-{
-#ifndef DISABLE_HTTP
-	last_advertise_time = SDL_GetTicks();
-
-	// Send the registration request
-	http_json_request request;
-	request.url = GetMasterServerUrl();
-	request.method = HTTP_METHOD_POST;
-
-	json_t *body = json_object();
-	json_object_set_new(body, "key", json_string(advertise_key.c_str()));
-	json_object_set_new(body, "port", json_integer(listening_port));
-	request.body = body;
-
-	http_request_json_async(&request, [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				json_t *jsonToken = json_object_get(response->root, "token");
-				if (json_is_string(jsonToken)) {
-					gNetwork.advertise_token = json_string_value(jsonToken);
-					gNetwork.advertise_status = ADVERTISE_STATUS_REGISTERED;
-				}
-			} else {
-				const char *message = "Invalid response from server";
-				json_t *jsonMessage = json_object_get(response->root, "message");
-				if (json_is_string(jsonMessage)) {
-					message = json_string_value(jsonMessage);
-				}
-				log_warning("Unable to advertise: %s", message);
-			}
-		}
-		http_request_json_dispose(response);
-	});
-
-	json_decref(body);
-#endif
-}
-
-void Network::AdvertiseHeartbeat()
-{
-#ifndef DISABLE_HTTP
-	// Send the heartbeat request
-	http_json_request request;
-	request.url = GetMasterServerUrl();
-	request.method = HTTP_METHOD_PUT;
-
-	json_t *body = json_object();
-	json_object_set_new(body, "token", json_string(advertise_token.c_str()));
-	json_object_set_new(body, "players", json_integer(network_get_num_players()));
-
-	json_t *gameInfo = json_object();
-	json_object_set_new(gameInfo, "mapSize", json_integer(gMapSize - 2));
-	json_object_set_new(gameInfo, "day", json_integer(gDateMonthTicks));
-	json_object_set_new(gameInfo, "month", json_integer(gDateMonthsElapsed));
-	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
-	json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
-	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		money32 cash = DECRYPT_MONEY(gCashEncrypted);
-		json_object_set_new(gameInfo, "cash", json_integer(cash));
-	}
-
-	json_object_set_new(body, "gameInfo", gameInfo);
-	request.body = body;
-
-	gNetwork.last_heartbeat_time = SDL_GetTicks();
-	http_request_json_async(&request, [](http_json_response *response) -> void {
-		if (response == NULL) {
-			log_warning("Unable to connect to master server");
-			return;
-		}
-
-		json_t *jsonStatus = json_object_get(response->root, "status");
-		if (json_is_integer(jsonStatus)) {
-			int status = (int)json_integer_value(jsonStatus);
-			if (status == MASTER_SERVER_STATUS_OK) {
-				// Master server has successfully updated our server status
-			} else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN) {
-				gNetwork.advertise_status = ADVERTISE_STATUS_UNREGISTERED;
-				log_warning("Master server heartbeat failed: Invalid Token");
-			}
-		}
-		http_request_json_dispose(response);
-	});
-
-	json_decref(body);
-#endif
 }
 
 NetworkGroup* Network::AddGroup()
@@ -789,7 +670,13 @@ uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 
 	uint8 groupId = GetDefaultGroup();
 	if (networkUser != nullptr && networkUser->GroupId.HasValue()) {
-		groupId = networkUser->GroupId.GetValue();
+		const uint8 assignedGroup = networkUser->GroupId.GetValue();
+		if (GetGroupByID(assignedGroup) != nullptr) {
+			groupId = assignedGroup;
+		} else {
+			log_warning("User %s is assigned to non-existent group %u. Assigning to default group (%u)",
+						keyhash.c_str(), assignedGroup, groupId);
+		}
 	}
 	return groupId;
 }
@@ -821,16 +708,13 @@ void Network::SaveGroups()
 		}
 		json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
 		json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
-		bool result;
 		try
 		{
 			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-			result = true;
 		}
 		catch (Exception ex)
 		{
 			log_error("Unable to save %s: %s", path, ex.GetMessage());
-			result = false;
 		}
 
 		json_decref(jsonGroupsCfg);
@@ -871,29 +755,32 @@ void Network::LoadGroups()
 	strcat(path, "groups.json");
 
 	json_t * json = nullptr;
-	try {
-		json = Json::ReadFromFile(path);
-	} catch (const Exception& e) {
-		log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMsg());
-		// Hardcoded permission groups
+	if (platform_file_exists(path)) {
+		try {
+			json = Json::ReadFromFile(path);
+		} catch (const Exception &e) {
+			log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
+		}
+	}
+
+	if (json == nullptr) {
 		SetupDefaultGroups();
-		return;
-	}
+	} else {
+		json_t * json_groups = json_object_get(json, "groups");
+		size_t groupCount = (size_t)json_array_size(json_groups);
+		for (size_t i = 0; i < groupCount; i++) {
+			json_t * jsonGroup = json_array_get(json_groups, i);
 
-	json_t * json_groups = json_object_get(json, "groups");
-	size_t groupCount = (size_t)json_array_size(json_groups);
-	for (size_t i = 0; i < groupCount; i++) {
-		json_t * jsonGroup = json_array_get(json_groups, i);
-
-		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
-		group_list.push_back(std::move(newgroup));
+			std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
+			group_list.push_back(std::move(newgroup));
+		}
+		json_t * jsonDefaultGroup = json_object_get(json, "default_group");
+		default_group = (uint8)json_integer_value(jsonDefaultGroup);
+		if (GetGroupByID(default_group) == nullptr) {
+			default_group = 0;
+		}
+		json_decref(json);
 	}
-	json_t * jsonDefaultGroup = json_object_get(json, "default_group");
-	default_group = (uint8)json_integer_value(jsonDefaultGroup);
-	if (GetGroupByID(default_group) == nullptr) {
-		default_group = 0;
-	}
-	json_decref(json);
 }
 
 void Network::BeginChatLog()
@@ -950,7 +837,7 @@ void Network::CloseChatLog()
 void Network::Client_Send_TOKEN()
 {
 	log_verbose("requesting token");
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN;
 	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
 	server_connection.QueuePacket(std::move(packet));
@@ -958,7 +845,7 @@ void Network::Client_Send_TOKEN()
 
 void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char *sig, size_t sigsize)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
 	packet->WriteString(NETWORK_STREAM_ID);
 	packet->WriteString(name);
@@ -973,7 +860,7 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.Challenge.size();
 	packet->Write(connection.Challenge.data(), connection.Challenge.size());
 	connection.QueuePacket(std::move(packet));
@@ -985,7 +872,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 	if (connection.Player) {
 		new_playerid = connection.Player->id;
 	}
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << (uint8)new_playerid;
 	if (connection.AuthStatus == NETWORK_AUTH_BADVERSION) {
 		packet->WriteString(NETWORK_STREAM_ID);
@@ -1050,8 +937,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		memcpy(header, &buffer[0], size);
 	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
-		int datasize = (std::min)(chunksize, out_size - i);
-		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+		size_t datasize = Math::Min(chunksize, out_size - i);
+		std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
 		packet->Write(&header[i], datasize);
 		if (connection) {
@@ -1066,7 +953,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 
 void Network::Client_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
 	server_connection.QueuePacket(std::move(packet));
@@ -1074,7 +961,7 @@ void Network::Client_Send_CHAT(const char* text)
 
 void Network::Server_Send_CHAT(const char* text)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_CHAT;
 	packet->WriteString(text);
 	SendPacketToClients(*packet);
@@ -1082,7 +969,7 @@ void Network::Server_Send_CHAT(const char* text)
 
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << callback;
 	server_connection.QueuePacket(std::move(packet));
@@ -1090,7 +977,7 @@ void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
 			<< ecx << edx << esi << edi << ebp << playerid << callback;
 	SendPacketToClients(*packet);
@@ -1099,7 +986,7 @@ void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx
 void Network::Server_Send_TICK()
 {
 	last_tick_sent_time = SDL_GetTicks();
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	uint32 flags = 0;
 	// Simple counter which limits how often a sprite checksum gets sent.
@@ -1122,7 +1009,7 @@ void Network::Server_Send_TICK()
 
 void Network::Server_Send_PLAYERLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PLAYERLIST << (uint8)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		player_list[i]->Write(*packet);
@@ -1132,7 +1019,7 @@ void Network::Server_Send_PLAYERLIST()
 
 void Network::Client_Send_PING()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	server_connection.QueuePacket(std::move(packet));
 }
@@ -1140,7 +1027,7 @@ void Network::Client_Send_PING()
 void Network::Server_Send_PING()
 {
 	last_ping_sent_time = SDL_GetTicks();
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		(*it)->PingTime = SDL_GetTicks();
@@ -1150,7 +1037,7 @@ void Network::Server_Send_PING()
 
 void Network::Server_Send_PINGLIST()
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PINGLIST << (uint8)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
 		*packet << player_list[i]->id << player_list[i]->ping;
@@ -1160,15 +1047,16 @@ void Network::Server_Send_PINGLIST()
 
 void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_SETDISCONNECTMSG;
 	packet->WriteString(msg);
 	connection.QueuePacket(std::move(packet));
+	connection.SendQueuedPackets();
 }
 
 void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
 #ifndef DISABLE_HTTP
 	json_t* obj = json_object();
@@ -1196,14 +1084,14 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 
 void Network::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_SHOWERROR << title << message;
 	connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GROUPLIST << (uint8)group_list.size() << default_group;
 	for (unsigned int i = 0; i < group_list.size(); i++) {
 		group_list[i]->Write(*packet);
@@ -1213,7 +1101,7 @@ void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 
 void Network::Server_Send_EVENT_PLAYER_JOINED(const char *playerName)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_EVENT;
 	*packet << (uint16)SERVER_EVENT_PLAYER_JOINED;
 	packet->WriteString(playerName);
@@ -1222,7 +1110,7 @@ void Network::Server_Send_EVENT_PLAYER_JOINED(const char *playerName)
 
 void Network::Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason)
 {
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_EVENT;
 	*packet << (uint16)SERVER_EVENT_PLAYER_DISCONNECTED;
 	packet->WriteString(playerName);
@@ -1555,7 +1443,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
-			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
+			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, (int)strlen(pubkey));
 			if (signature == nullptr || pubkey_rw == nullptr) {
 				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed, invalid data!");
@@ -1617,7 +1505,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 {
 	uint32 size, offset;
 	packet >> size >> offset;
-	int chunksize = packet.size - packet.read;
+	int chunksize = (int)(packet.size - packet.read);
 	if (chunksize <= 0) {
 		return;
 	}
@@ -1652,7 +1540,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		} else {
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
-		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
+		SDL_RWops* rw = SDL_RWFromMem(data, (int)data_size);
 		if (game_load_network(rw)) {
 			game_load_init();
 			game_command_queue.clear();
@@ -1660,6 +1548,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			server_srand0_tick = 0;
 			// window_network_status_open("Loaded new map from network");
 			_desynchronised = false;
+			gFirstTimeSave = 1;
 
 			// Notify user he is now online and which shortcut key enables chat
 			network_chat_show_connected_message();
@@ -1924,7 +1813,7 @@ void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& 
 void Network::Client_Send_GAMEINFO()
 {
 	log_verbose("requesting gameinfo");
-	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
 	server_connection.QueuePacket(std::move(packet));
 }
@@ -2027,7 +1916,7 @@ uint8 network_get_current_player_id()
 
 int network_get_num_players()
 {
-	return gNetwork.player_list.size();
+	return (int)gNetwork.player_list.size();
 }
 
 const char* network_get_player_name(unsigned int index)
@@ -2097,7 +1986,7 @@ int network_get_player_index(uint8 id)
 	if(it == gNetwork.player_list.end()){
 		return -1;
 	}
-	return gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin();
+	return (int)(gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin());
 }
 
 uint8 network_get_player_group(unsigned int index)
@@ -2116,7 +2005,7 @@ int network_get_group_index(uint8 id)
 	if(it == gNetwork.group_list.end()){
 		return -1;
 	}
-	return gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin();
+	return (int)(gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin());
 }
 
 uint8 network_get_group_id(unsigned int index)
@@ -2126,7 +2015,7 @@ uint8 network_get_group_id(unsigned int index)
 
 int network_get_num_groups()
 {
-	return gNetwork.group_list.size();
+	return (int)gNetwork.group_list.size();
 }
 
 const char* network_get_group_name(unsigned int index)
@@ -2171,20 +2060,26 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
 	NetworkGroup* fromgroup = gNetwork.GetGroupByID(game_command_playerid);
 	if (!player) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (!gNetwork.GetGroupByID(groupid)) {
+		gGameCommandErrorTitle = STR_CANT_DO_THIS;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	if (groupid == 0 && fromgroup && fromgroup->Id != 0) {
 		gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2220,6 +2115,8 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 			NetworkGroup* newgroup = gNetwork.AddGroup();
 			if (!newgroup) {
+				gGameCommandErrorTitle = STR_CANT_DO_THIS;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2228,12 +2125,14 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	case 1:{ // remove group
 		if (groupid == 0) {
 			gGameCommandErrorTitle = STR_THIS_GROUP_CANNOT_BE_MODIFIED;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 		for (auto it = gNetwork.player_list.begin(); it != gNetwork.player_list.end(); it++) {
 			if((*it)->group == groupid) {
 				gGameCommandErrorTitle = STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2248,6 +2147,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		bool allvalue = (*edx >> 1) & 1;
 		if (groupid == 0) { // cant change admin group permissions
 			gGameCommandErrorTitle = STR_THIS_GROUP_CANNOT_BE_MODIFIED;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2257,6 +2157,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			mygroup = gNetwork.GetGroupByID(player->group);
 			if (!mygroup || (mygroup && !mygroup->CanPerformAction(index))) {
 				gGameCommandErrorTitle = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
+				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
@@ -2284,9 +2185,9 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			nameChunkOffset = 2;
 		nameChunkOffset *= 12;
 		nameChunkOffset = (std::min)(nameChunkOffset, Util::CountOf(newName) - 12);
-		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
-		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
-		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+		memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), edx, sizeof(uint32));
+		memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), ebp, sizeof(uint32));
+		memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), edi, sizeof(uint32));
 
 		if (nameChunkIndex != 0) {
 			*ebx = 0;
@@ -2315,6 +2216,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	case 4:{ // set default group
 		if (groupid == 0) {
 			gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
+			gGameCommandErrorText = STR_NONE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -2335,6 +2237,7 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
 	if (player && player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_KICK_THE_HOST;
+		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2358,7 +2261,7 @@ uint8 network_get_default_group()
 
 int network_get_num_actions()
 {
-	return NetworkActions::Actions.size();
+	return (int)NetworkActions::Actions.size();
 }
 
 rct_string_id network_get_action_name_string_id(unsigned int index)

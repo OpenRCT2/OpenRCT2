@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/window.h"
@@ -37,8 +36,8 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
 
 static const int AdvertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
 
-uint8 *gMarketingCampaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
-uint8 *gMarketingCampaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
+uint8 gMarketingCampaignDaysLeft[20];
+uint8 gMarketingCampaignRideIndex[22];
 
 int marketing_get_campaign_guest_generation_probability(int campaign)
 {
@@ -95,10 +94,10 @@ void marketing_update()
 		// This sets the string parameters for the marketing types that have an argument.
 		if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
 			rct_ride* ride = get_ride(campaignItem);
-			set_format_arg(0, uint16, ride->name);
+			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(2, uint32, ride->name_arguments);
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-			set_format_arg(0, uint16, ShopItemStringIds[campaignItem].plural);
+			set_format_arg(0, rct_string_id, ShopItemStringIds[campaignItem].plural);
 		}
 
 		if (gConfigNotifications.park_marketing_campaign_finished) {

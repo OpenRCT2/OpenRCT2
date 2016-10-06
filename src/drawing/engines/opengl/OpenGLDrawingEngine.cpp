@@ -503,7 +503,6 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 {
     _engine = engine;
-    _textureCache = new TextureCache();
 }
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
@@ -522,6 +521,7 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 
 void OpenGLDrawingContext::Initialise()
 {
+    _textureCache = new TextureCache();
     _drawImageShader = new DrawImageShader();
     _drawLineShader = new DrawLineShader();
     _fillRectShader = new FillRectShader();
@@ -662,7 +662,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
             zoomedDPI.pitch = _dpi->pitch;
             zoomedDPI.zoom_level = _dpi->zoom_level - 1;
             SetDPI(&zoomedDPI);
-            DrawSprite((image << 28) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
+            DrawSprite((image & 0xE0000000) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
             return;
         }
         if (g1Element->flags & (1 << 5))
@@ -680,8 +680,25 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     sint32 left = x + drawOffsetX;
     sint32 top = y + drawOffsetY;
+
+    int zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
+        top -= ~zoom_mask;
+    }
+
+    if (!(g1Element->flags & G1_FLAG_RLE_COMPRESSION)) {
+        top &= zoom_mask;
+        left += ~zoom_mask;
+    }
+
+    left &= zoom_mask;
+
     sint32 right = left + drawWidth;
     sint32 bottom = top + drawHeight;
+
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION) {
+        bottom += top & ~zoom_mask;
+    }
 
     if (left > right)
     {
@@ -719,6 +736,28 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     auto texture = _textureCache->GetOrLoadImageTexture(image);
     command.texColour = texture;
+
+    bool special = false;
+    if (!(image & IMAGE_TYPE_REMAP_2_PLUS) && (image & IMAGE_TYPE_REMAP)) {
+        if (((image >> 19) & 0x7F) == 32) {
+            special = true;
+        }
+    }
+
+    if (!((image & IMAGE_TYPE_REMAP_2_PLUS) && !(image & IMAGE_TYPE_REMAP))) {
+        tertiaryColour = 0;
+    }
+
+    texture = _textureCache->GetOrLoadPaletteTexture(image, tertiaryColour, special);
+    command.texPalette = texture;
+
+    if (image & IMAGE_TYPE_TRANSPARENT) {
+        command.flags |= (1 << 3);
+    }
+    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP)){
+        command.flags |= (1 << 1);
+    }
+    command.flags |= special << 2;
 
     command.bounds[0] = left;
     command.bounds[1] = top;
@@ -955,6 +994,15 @@ void OpenGLDrawingContext::FlushImages()
         instance.colour = command.colour;
         instance.bounds = {command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]};
         instance.mask = command.mask;
+        instance.texPaletteAtlas = command.texPalette.index;
+        if (instance.flags != 0) {
+            instance.texPaletteBounds = {
+                command.texPalette.normalizedBounds.x,
+                command.texPalette.normalizedBounds.y,
+                (command.texPalette.normalizedBounds.z - command.texPalette.normalizedBounds.x) / (float)(command.texPalette.bounds.z - command.texPalette.bounds.x),
+                (command.texPalette.normalizedBounds.w - command.texPalette.normalizedBounds.y) / (float)(command.texPalette.bounds.w - command.texPalette.bounds.y)
+            };
+        }
 
         instances.push_back(instance);
     }
@@ -973,8 +1021,8 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
 
     assert(bitsOffset < bitsSize);
 
-    _clipLeft = bitsOffset % (screenDPI->width + screenDPI->pitch);
-    _clipTop = bitsOffset / (screenDPI->width + screenDPI->pitch);
+    _clipLeft = (sint32)(bitsOffset % (screenDPI->width + screenDPI->pitch));
+    _clipTop = (sint32)(bitsOffset / (screenDPI->width + screenDPI->pitch));
 
     _clipRight = _clipLeft + dpi->width;
     _clipBottom = _clipTop + dpi->height;

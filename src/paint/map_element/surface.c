@@ -538,7 +538,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
-	uint32 tunnelArray;
+	tunnel_entry * tunnelArray;
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
@@ -552,7 +552,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			tunnelBounds.x = 32;
 			tunnelTopBoundBoxOffset.y = 31;
 
-			tunnelArray = 0x9E3138;
+			tunnelArray = gLeftTunnels;
 			break;
 
 		case EDGE_BOTTOMRIGHT:
@@ -567,7 +567,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			tunnelBounds.y = 32;
 			tunnelTopBoundBoxOffset.x = 31;
 
-			tunnelArray = 0x009E30B6;
+			tunnelArray = gRightTunnels;
 			break;
 
 		default:
@@ -628,15 +628,14 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			return;
 		}
 
-		if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+		if (curHeight != tunnelArray[0].height) {
 			// Normal walls
-			while (curHeight > RCT2_GLOBAL(tunnelArray, uint8)) {
-				for (int offset = 0; offset <= 0x7E; offset += 4) {
-					RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-				}
+			while (curHeight > tunnelArray[0].height) {
+				// TODO: Should probably be done by just keeping track of the current index
+				memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
-			if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+			if (curHeight != tunnelArray[0].height) {
 				sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
 				curHeight++;
@@ -645,7 +644,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		}
 		
 		// Tunnels
-		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
+		uint8 tunnelType = tunnelArray[0].type;
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
 		sint16 zOffset = curHeight;
 
@@ -680,9 +679,8 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 
 		curHeight += stru_97B570[tunnelType][0];
 
-		for (int offset = 0; offset <= 0x7E; offset += 4) {
-			RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-		}
+		// TODO: Should probably be done by just keeping track of the current index
+		memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
@@ -800,7 +798,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
-	uint32 tunnelArray;
+	tunnel_entry * tunnelArray;
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
@@ -814,7 +812,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			tunnelBounds.x = 32;
 			tunnelTopBoundBoxOffset.y = 31;
 
-			tunnelArray = 0x9E3138;
+			tunnelArray = gLeftTunnels;
 			break;
 
 		case EDGE_BOTTOMRIGHT:
@@ -829,7 +827,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			tunnelBounds.y = 32;
 			tunnelTopBoundBoxOffset.x = 31;
 
-			tunnelArray = 0x009E30B6;
+			tunnelArray = gRightTunnels;
 			break;
 
 		default:
@@ -900,12 +898,11 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			return;
 		}
 
-		if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+		if (curHeight != tunnelArray[0].height) {
 			// Normal walls
-			while (curHeight > RCT2_GLOBAL(tunnelArray, uint8)) {
-				for (int offset = 0; offset <= 0x7E; offset += 4) {
-					RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-				}
+			while (curHeight > tunnelArray[0].height) {
+				// TODO: Should probably be done by just keeping track of the current index
+				memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 			}
 
 			sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
@@ -915,7 +912,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 		}
 
 		// Tunnels
-		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
+		uint8 tunnelType = tunnelArray[0].type;
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
 		sint16 zOffset = curHeight;
 
@@ -950,9 +947,8 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 
 		curHeight += stru_97B570[tunnelType][0];
 
-		for (int offset = 0; offset <= 0x7E; offset += 4) {
-			RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
-		}
+		// TODO: Should probably be done by just keeping track of the current index
+		memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * 64);
 	}
 }
 
@@ -967,8 +963,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-	RCT2_GLOBAL(0x9DE57C, uint16) |= 1; // Probably a boolean indicating 'above surface'
-	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
+	gDidPassSurface = true;
+	gSurfaceElement = mapElement;
 
 	uint16 zoomLevel = dpi->zoom_level;
 
@@ -977,8 +973,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
 	rct_xy16 base = {
-		.x = RCT2_GLOBAL(0x9DE568, sint16),
-		.y = RCT2_GLOBAL(0x9DE56C, sint16)
+		.x = gUnk9DE568,
+		.y = gUnk9DE56C
 	};
 
 	corner_height ch = corner_heights[surfaceShape];
@@ -1026,21 +1022,21 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
 	if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
-		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
 		int dx = map_element_height(x + 16, y + 16) & 0xFFFF;
 		dx += 3;
 
 		int image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
 		image_id += get_height_marker_offset();
-		image_id -= RCT2_GLOBAL(0x01359208, uint16);
+		image_id -= gMapBaseZ;
 
 		sub_98196C(image_id, 16, 16, 1, 1, 0, height, rotation);
 	}
 
 
 	bool has_surface = false;
-	if (RCT2_GLOBAL(0x9E323C, uint8) * 16 == height) {
+	if (gVerticalTunnelHeight * 16 == height) {
 		// Vertical tunnels
 		sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
 		sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
@@ -1099,8 +1095,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			case 6:
 				// loc_660C6A
 			{
-				sint16 x = RCT2_GLOBAL(0x009DE56A, sint16) & 0x20;
-				sint16 y = RCT2_GLOBAL(0x009DE56E, sint16) & 0x20;
+				sint16 x = gPaintMapPosition.x & 0x20;
+				sint16 y = gPaintMapPosition.y & 0x20;
 				int index = (y | (x << 1)) >> 5;
 
 				if (branch == 6) {
@@ -1123,7 +1119,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		sint32 staffIndex = gStaffDrawPatrolAreas;
 		bool is_staff_list = staffIndex & 0x8000;
 		uint8 staffType = staffIndex & 0x7FFF;
-		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
 
 		uint32 image_id = 0x20000000;
 		uint8 patrolColour = 7;
@@ -1136,12 +1132,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			staffType = staff->staff_type;
 		}
 
-		x = (x & 0x1F80) >> 7;
-		y = (y & 0x1F80) >> 1;
-		int offset = (x | y) >> 5;
-		int bitIndex = (x | y) & 0x1F;
-		int ebx = (staffType + 200) * 512;
-		if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[offset] & (1 << bitIndex)) {
+		if (staff_is_patrol_area_set(200 + staffType, x, y)) {
 			assert(surfaceShape < countof(byte_97B444));
 
 			image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
@@ -1154,7 +1145,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
 		gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
 	) {
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 		for (int i = 0; i < 2; ++i) {
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
@@ -1176,7 +1167,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
 			paint_attach_to_previous_ps(2625 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			paint_struct * backup = g_ps_F1AD28;
 			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
 			sub_98196C(22955, 16, 16, 1, 1, 0, height, rotation);
@@ -1192,7 +1183,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			paint_attach_to_previous_ps(2644 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = g_ps_F1AD28;
-			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			int height = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
 			sub_98196C(22956, 16, 16, 1, 1, 0, height + 3, rotation);
 			g_ps_F1AD28 = backup;
@@ -1205,7 +1196,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
 		// loc_660FB8:
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 		if (pos.x >= gMapSelectPositionA.x &&
 			pos.x <= gMapSelectPositionB.x &&
 			pos.y >= gMapSelectPositionA.y &&
@@ -1267,7 +1258,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 		rct_xy16 * tile;
 		for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
@@ -1321,19 +1312,38 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			log_verbose("eax: %d", eax);
 		}
 
-		for (int i = 0; i <= 0x7C; i += 4) {
-			RCT2_GLOBAL(0x009E2F30 + i, uint32) = RCT2_GLOBAL(0x009E3138 + i, uint32);
-			RCT2_GLOBAL(0x009E2EAE + i, uint32) = RCT2_GLOBAL(0x009E30B6 + i, uint32);
+		tunnel_entry backupLeftTunnels[65];
+		tunnel_entry backupRightTunnels[65];
+
+#ifdef __MINGW32__
+		// The other code crashes mingw 4.8.2, as available on Travis
+		for (int i = 0; i < 65; i++) {
+			backupLeftTunnels[i] = gLeftTunnels[i];
+			backupRightTunnels[i] = gRightTunnels[i];
 		}
+#else
+		memcpy(backupLeftTunnels, gLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(backupRightTunnels, gRightTunnels, sizeof(tunnel_entry) * 65);
+#endif
 
 		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
+
+#ifdef __MINGW32__
+		// The other code crashes mingw 4.8.2, as available on Travis
+		for (int i = 0; i < 65; i++) {
+			gLeftTunnels[i] = backupLeftTunnels[i];
+			gRightTunnels[i] = backupRightTunnels[i];
+		}
+#else
+		memcpy(gLeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * 65);
+		memcpy(gRightTunnels, backupRightTunnels, sizeof(tunnel_entry) * 65);
+#endif
 	}
 
-	RCT2_GLOBAL(0x009E3298, uint16) = 0;
 	if (mapElement->properties.surface.terrain & 0x1F) {
 		// loc_6615A9: (water height)
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
@@ -1341,9 +1351,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		uint16 localHeight = height + 16;
 		uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
 
-		RCT2_GLOBAL(0x009E3298, uint16) = waterHeight;
-		if ((RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) == 0) {
-			RCT2_GLOBAL(0x0141E9DC, uint16) = waterHeight;
+		if (!gTrackDesignSaveMode) {
+			gUnk141E9DC = waterHeight;
 
 			int image_offset = 0;
 			if (waterHeight <= localHeight) {
@@ -1354,11 +1363,6 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
 			paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);
-
-			for (int i = 0; i <= 0x7C; i += 4) {
-				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
-				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
-			}
 
 			// This wasn't in the original, but the code depended on globals that were only set in a different conditional
 			uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
@@ -1375,8 +1379,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		}
 	}
 
-	if (mapElement->properties.surface.ownership & 0x0F
-	    && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1)) {
+	if ((mapElement->properties.surface.ownership & 0x0F) &&
+		!gTrackDesignSaveMode
+	) {
 		// Owned land boundary fences
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
@@ -1498,7 +1503,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
+	g141E9DB |= G141E9DB_FLAG_1;
 
 	switch (surfaceShape) {
 		default:

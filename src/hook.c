@@ -16,6 +16,8 @@
 
 #include "common.h"
 
+#ifndef NO_RCT2
+
 #ifdef __WINDOWS__
 	#include <windows.h>
 #else
@@ -255,3 +257,5 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
 }
+
+#endif

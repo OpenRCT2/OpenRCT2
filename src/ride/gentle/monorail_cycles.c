@@ -186,7 +186,7 @@ static paint_struct * paint_monorail_cycles_util_7c(
 /** rct2: 0x0088AD48 */
 static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | gTrackColours[SCHEME_TRACK];
 	paint_monorail_cycles_util_7c((bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
 
 	if (direction & 1) {
@@ -195,7 +195,7 @@ static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequenc
 		paint_util_push_tunnel_left(height, TUNNEL_0);
 	}
 
-	metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
@@ -207,24 +207,24 @@ static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, 
 	uint32 imageId;
 
 	if (direction == 0 || direction == 2) {
-		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
 		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
-		imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
 		sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
-		metal_a_supports_paint_setup(3, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
-		metal_a_supports_paint_setup(3, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		paint_util_push_tunnel_left(height, TUNNEL_6);
 	} else if (direction == 1 || direction == 3) {
-		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
 		sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
 
-		imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
 		sub_98199C(imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 
-		metal_a_supports_paint_setup(3, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
-		metal_a_supports_paint_setup(3, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(3, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		paint_util_push_tunnel_right(height, TUNNEL_6);
 	}
 
@@ -237,19 +237,19 @@ static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, 
 /** rct2: 0x0088AD88 */
 static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_left_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
-	track_paint_util_left_quarter_turn_3_tiles_tunnel(height, direction, trackSequence);
+	track_paint_util_left_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+	track_paint_util_left_quarter_turn_3_tiles_tunnel(height, TUNNEL_0, direction, trackSequence);
 
 	switch (trackSequence) {
 		case 0:
-			metal_a_supports_paint_setup(4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup(4, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
 			break;
 		case 2:
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
 			break;
 		case 3:
-			metal_a_supports_paint_setup(4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup(4, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
 			break;
 	}
@@ -283,28 +283,28 @@ static const sint8 monorail_cycles_track_right_quarter_turn_5_tiles_support_spec
 /** rct2: 0x0088ADB8 */
 static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_right_quarter_turn_5_tiles_paint(1, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, NULL, defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesOffsets, get_current_rotation());
+	track_paint_util_right_quarter_turn_5_tiles_paint(1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, NULL, defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
 
 	int supportHeight = height + monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
 	int supportSpecial = monorail_cycles_track_right_quarter_turn_5_tiles_support_special[direction][trackSequence];
 	switch (trackSequence) {
 		case 0:
-			metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, 0, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
-			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 8, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 7, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 5, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 6, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
+			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 5:
-			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 7, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 5, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 6, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
-			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 8, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
+			if (direction == 0) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 7, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 5, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 6, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 8, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 6:
-			metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 4, supportSpecial, supportHeight, RCT2_GLOBAL(0x00F4419C, uint32));
+			metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 4, supportSpecial, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 
@@ -349,12 +349,12 @@ static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 track
 		trackSequence = 3 - trackSequence;
 	}
 
-	uint32 imageId = monorail_cycles_track_pieces_s_bend_left[direction&1][trackSequence] | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = monorail_cycles_track_pieces_s_bend_left[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
 	switch (trackSequence) {
-		case 0: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
-		case 1: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
-		case 2: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
-		case 3: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 0: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 1: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
+		case 2: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 3: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
 	}
 
 	if (direction == 0 || direction == 2) {
@@ -363,9 +363,9 @@ static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 track
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(4, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 1: metal_a_supports_paint_setup(4, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 3: metal_a_supports_paint_setup(4, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
+			case 0: metal_a_supports_paint_setup(4, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(4, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(4, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	} else {
 		if (trackSequence == 3) {
@@ -373,9 +373,9 @@ static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 track
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(5, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 1: metal_a_supports_paint_setup(5, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 3: metal_a_supports_paint_setup(5, 4, 0, height - 2, RCT2_GLOBAL(0x00F4419C, uint32)); break;
+			case 0: metal_a_supports_paint_setup(5, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(5, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(5, 4, 0, height - 2, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	}
 
@@ -395,12 +395,12 @@ static void paint_monorail_cycles_track_s_bend_right(uint8 rideIndex, uint8 trac
 		trackSequence = 3 - trackSequence;
 	}
 
-	uint32 imageId = monorail_cycles_track_pieces_s_bend_right[direction&1][trackSequence] | RCT2_GLOBAL(0x00F44198, uint32);
+	uint32 imageId = monorail_cycles_track_pieces_s_bend_right[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
 	switch (trackSequence) {
-		case 0: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
-		case 1: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
-		case 2: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
-		case 3: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 0: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 1: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
+		case 2: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
+		case 3: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
 	}
 
 	if (direction == 0 || direction == 2) {
@@ -409,9 +409,9 @@ static void paint_monorail_cycles_track_s_bend_right(uint8 rideIndex, uint8 trac
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(4, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 1: metal_a_supports_paint_setup(4, 8, 0, height - 2, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 3: metal_a_supports_paint_setup(4, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
+			case 0: metal_a_supports_paint_setup(4, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(4, 8, 0, height - 2, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(4, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	} else {
 		if (trackSequence == 3) {
@@ -419,9 +419,9 @@ static void paint_monorail_cycles_track_s_bend_right(uint8 rideIndex, uint8 trac
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(5, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 1: metal_a_supports_paint_setup(5, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 3: metal_a_supports_paint_setup(5, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
+			case 0: metal_a_supports_paint_setup(5, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(5, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(5, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	}
 

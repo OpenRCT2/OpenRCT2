@@ -200,6 +200,8 @@ typedef struct general_configuration {
 	utf8string last_save_track_directory;
 	uint8 window_limit;
 	uint8 zoom_to_cursor;
+	uint8 render_weather_effects;
+	uint8 render_weather_gloom;
 } general_configuration;
 
 typedef struct interface_configuration {

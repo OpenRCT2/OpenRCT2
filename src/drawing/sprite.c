@@ -28,7 +28,7 @@ rct_gx g2;
 #ifdef NO_RCT2
 	rct_g1_element *g1Elements = NULL;
 #else
-	rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+	rct_g1_element *g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
 #endif
 
 static const uint32 fadeSprites[] = {
@@ -65,7 +65,7 @@ static void read_and_convert_gxdat(SDL_RWops *file, size_t count, rct_g1_element
  *
  *  rct2: 0x00678998
  */
-int gfx_load_g1()
+bool gfx_load_g1()
 {
 	log_verbose("loading g1 graphics");
 
@@ -119,15 +119,16 @@ int gfx_load_g1()
 			for (i = 0; i < header.num_entries; i++)
 				g1Elements[i].offset += (uintptr_t)_g1Buffer;
 
-			// Successful
-			return 1;
+			return true;
 		}
 		SDL_RWclose(file);
 	}
 
-	// Unsuccessful
 	log_fatal("Unable to load g1 graphics");
-	return 0;
+	if (!gOpenRCT2Headless) {
+		platform_show_messagebox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+	}
+	return false;
 }
 
 void gfx_unload_g1()
@@ -143,7 +144,7 @@ void gfx_unload_g2()
 	SafeFree(g2.elements);
 }
 
-int gfx_load_g2()
+bool gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");
 
@@ -173,15 +174,16 @@ int gfx_load_g2()
 			for (i = 0; i < g2.header.num_entries; i++)
 				g2.elements[i].offset += (uintptr_t)g2.data;
 
-			// Successful
-			return 1;
+			return true;
 		}
 		SDL_RWclose(file);
 	}
 
-	// Unsuccessful
 	log_fatal("Unable to load g2 graphics");
-	return 0;
+	if (!gOpenRCT2Headless) {
+		platform_show_messagebox("Unable to load g2.dat");
+	}
+	return false;
 }
 
 /**
@@ -210,35 +212,12 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 	uint8 zoom_amount = 1 << zoom_level;
 	uint32 dest_line_width = (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
 	uint32 source_line_width = source_image->width * zoom_amount;
-	//Requires use of palette?
-	if (image_type & IMAGE_TYPE_USE_PALETTE){
+
+	// Image uses the palette pointer to remap the colours of the image
+	if (image_type & IMAGE_TYPE_REMAP){
 		assert(palette_pointer != NULL);
 
-		//Mix with another image?? and colour adjusted
-		if (unknown_pointer!= NULL){ //Not tested. I can't actually work out when this code runs.
-			unknown_pointer += source_pointer - source_image->offset;// RCT2_GLOBAL(0x9E3CE0, uint32);
-
-			for (; height > 0; height -= zoom_amount){
-				uint8* next_source_pointer = source_pointer + source_line_width;
-				uint8* next_unknown_pointer = unknown_pointer + source_line_width;
-				uint8* next_dest_pointer = dest_pointer + dest_line_width;
-
-				for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, unknown_pointer += zoom_amount, dest_pointer++){
-					uint8 pixel = *source_pointer;
-					pixel = palette_pointer[pixel];
-					pixel &= *unknown_pointer;
-					if (pixel){
-						*dest_pointer = pixel;
-					}
-				}
-				source_pointer = next_source_pointer;
-				dest_pointer = next_dest_pointer;
-				unknown_pointer = next_unknown_pointer;
-			}
-			return;
-		}
-
-		//image colour adjusted?
+		//image with remaps
 		for (; height > 0; height -= zoom_amount){
 			uint8* next_source_pointer = source_pointer + source_line_width;
 			uint8* next_dest_pointer = dest_pointer + dest_line_width;
@@ -256,9 +235,10 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		return;
 	}
 
-	//Mix with background. It only uses source pointer for
-	//telling if it needs to be drawn not for colour.
-	if (image_type & IMAGE_TYPE_MIX_BACKGROUND){//Not tested
+	//Image is Transparent. It only uses source pointer for
+	//telling if it needs to be drawn not for colour. Colour provided
+	//by the palette pointer.
+	if (image_type & IMAGE_TYPE_TRANSPARENT){//Not tested
 		assert(palette_pointer != NULL);
 		for (; height > 0; height -= zoom_amount){
 			uint8* next_source_pointer = source_pointer + source_line_width;
@@ -295,27 +275,6 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		return;
 	}
 
-	if (unk_9E3CDC != NULL) { //Not tested. I can't actually work out when this code runs.
-		unknown_pointer += source_pointer - source_image->offset;
-
-		for (; height > 0; height -= zoom_amount){
-			uint8* next_source_pointer = source_pointer + source_line_width;
-			uint8* next_unknown_pointer = unknown_pointer + source_line_width;
-			uint8* next_dest_pointer = dest_pointer + dest_line_width;
-
-			for (int no_pixels = width; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++, source_pointer += zoom_amount, unknown_pointer += zoom_amount){
-				uint8 pixel = *source_pointer;
-				pixel &= *unknown_pointer;
-				if (pixel){
-					*dest_pointer = pixel;
-				}
-			}
-			dest_pointer = next_dest_pointer;
-			source_pointer = next_source_pointer;
-			unknown_pointer = next_unknown_pointer;
-		}
-	}
-
 	//Basic bitmap with no draw pixels
 	for (; height > 0; height -= zoom_amount){
 		uint8* next_source_pointer = source_pointer + source_line_width;
@@ -331,6 +290,45 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		source_pointer = next_source_pointer;
 	}
 	return;
+}
+
+uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour) {
+	int image_type = (image_id & 0xE0000000);
+	if (image_type == 0)
+		return NULL;
+	
+	if (!(image_type & IMAGE_TYPE_REMAP_2_PLUS)) {
+		uint8 palette_ref = (image_id >> 19) & 0xFF;
+		if (!(image_type & IMAGE_TYPE_TRANSPARENT)) {
+			palette_ref &= 0x7F;
+		}
+
+		uint16 palette_offset = palette_to_g1_offset[palette_ref];
+		return g1Elements[palette_offset].offset;
+	}
+	else {
+		uint8* palette_pointer = gPeepPalette;
+
+		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
+		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
+
+		if (!(image_type & IMAGE_TYPE_REMAP)) {
+			palette_pointer = gOtherPalette;
+#ifdef DEBUG_LEVEL_2
+			assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
+#endif // DEBUG_LEVEL_2
+			uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
+			rct_g1_element* tertiary_palette = &g1Elements[tertiary_offset];
+			memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+		}
+		rct_g1_element* primary_palette = &g1Elements[primary_offset];
+		rct_g1_element* secondary_palette = &g1Elements[secondary_offset];
+
+		memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
+		memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+		
+		return palette_pointer;
+	}
 }
 
 /**
@@ -351,77 +349,13 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
  */
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
 {
-	int image_type = (image_id & 0xE0000000) >> 28;
-	int image_sub_type = (image_id & 0x1C000000) >> 26;
-
-	uint8* palette_pointer = NULL;
-
-	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
-
-	uint8* unknown_pointer = (uint8*)unk_9E3CE4[image_sub_type];
-	unk_9E3CDC = unknown_pointer;
-
-	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
-		uint8 palette_ref = (image_id >> 19) & 0xFF;
-		if (image_type & IMAGE_TYPE_MIX_BACKGROUND){
-			unknown_pointer = NULL;
-			unk_9E3CDC = NULL;
-		}
-		else{
-			palette_ref &= 0x7F;
-		}
-
-		uint16 palette_offset = palette_to_g1_offset[palette_ref];
-		palette_pointer = g1Elements[palette_offset].offset;
-	}
-	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
-		unk_9E3CDC = NULL;
-		unknown_pointer = NULL;
-		palette_pointer = gOtherPalette;
-
-		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
-		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
-
-#ifdef DEBUG_LEVEL_2
-		assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
-#endif // DEBUG_LEVEL_2
-		uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
-
-		rct_g1_element* primary_colour = &g1Elements[primary_offset];
-		rct_g1_element* secondary_colour = &g1Elements[secondary_offset];
-		rct_g1_element* tertiary_colour = &g1Elements[tertiary_offset];
-
-		memcpy(palette_pointer + 0xF3, &primary_colour->offset[0xF3], 12);
-		memcpy(palette_pointer + 0xCA, &secondary_colour->offset[0xF3], 12);
-		memcpy(palette_pointer + 0x2E, &tertiary_colour->offset[0xF3], 12);
-
-		//image_id
-		RCT2_GLOBAL(0xEDF81C, uint32) |= 0x20000000;
-		image_id |= IMAGE_TYPE_USE_PALETTE << 28;
-	}
-	else if (image_type){
-		unk_9E3CDC = NULL;
-		unknown_pointer = NULL;
-
-		palette_pointer = gPeepPalette;
-
-		//Top
-		int top_type = (image_id >> 19) & 0x1f;
-		uint32 top_offset = palette_to_g1_offset[top_type];
-		rct_g1_element top_palette = g1Elements[top_offset];
-		memcpy(palette_pointer + 0xF3, top_palette.offset + 0xF3, 12);
-
-		//Trousers
-		int trouser_type = (image_id >> 24) & 0x1f;
-		uint32 trouser_offset = palette_to_g1_offset[trouser_type];
-		rct_g1_element trouser_palette = g1Elements[trouser_offset];
-		memcpy(palette_pointer + 0xCA, trouser_palette.offset + 0xF3, 12);
+	uint8* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
+	if (image_id & IMAGE_TYPE_REMAP_2_PLUS) {
+		image_id |= IMAGE_TYPE_REMAP;
 	}
 
-	//For backwards compatibility
-	unk_9ABDA4 = palette_pointer;
 
-	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, unknown_pointer);
+	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, NULL);
 }
 
 /*
@@ -436,7 +370,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
 {
 	int image_element = image_id & 0x7FFFF;
-	int image_type = (image_id & 0xE0000000) >> 28;
+	int image_type = image_id & 0xE0000000;
 
 	rct_g1_element *g1_source = gfx_get_g1_element(image_element);
 
@@ -450,7 +384,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 			.pitch = dpi->pitch,
 			.zoom_level = dpi->zoom_level - 1
 		};
-		gfx_draw_sprite_palette_set_software(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+		gfx_draw_sprite_palette_set_software(&zoomed_dpi, image_type | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
 		return;
 	}
 
@@ -571,44 +505,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 
 	if (!(g1_source->flags & G1_FLAG_1)) {
 		gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
-		return;
 	}
-	//0x67A60A Not tested
-	int total_no_pixels = g1_source->width*g1_source->height;
-	source_pointer = g1_source->offset;
-	uint8* new_source_pointer_start = malloc(total_no_pixels);
-	uint8* new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-	intptr_t ebx, ecx;
-	while (total_no_pixels>0){
-		sint8 no_pixels = *source_pointer;
-		if (no_pixels >= 0){
-			source_pointer++;
-			total_no_pixels -= no_pixels;
-			memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
-			new_source_pointer += no_pixels;
-			source_pointer += no_pixels;
-			continue;
-		}
-		ecx = no_pixels;
-		no_pixels &= 0x7;
-		ecx >>= 3;//SAR
-		int eax = ((int)no_pixels)<<8;
-		ecx = -ecx;//Odd
-		eax = (eax & 0xFF00) + *(source_pointer+1);
-		total_no_pixels -= ecx;
-		source_pointer += 2;
-		ebx = (uintptr_t)new_source_pointer - eax;
-		eax = (uintptr_t)source_pointer;
-		source_pointer = (uint8*)ebx;
-		ebx = eax;
-		eax = 0;
-		memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
-		new_source_pointer += ecx;
-		source_pointer = (uint8*)ebx;
-	}
-	source_pointer = new_source_pointer_start + g1_source->width*source_start_y + source_start_x;
-	gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
-	free(new_source_pointer_start);
 	return;
 }
 

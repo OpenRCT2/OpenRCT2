@@ -41,6 +41,12 @@ extern "C" {
 
 #define WSZ(x) L"" x
 
+#ifdef OPENRCT2_COMMIT_SHA1_SHORT
+    const wchar_t *_wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
+#else
+    const wchar_t *_wszCommitSha1Short = WSZ("");
+#endif
+
 static bool OnCrash(const wchar_t * dumpPath,
                     const wchar_t * miniDumpId,
                     void * context,
@@ -67,7 +73,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    wsprintfW(dumpFilePathNew, L"%s%s(%s).dmp", dumpPath, miniDumpId, WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
+    wsprintfW(dumpFilePathNew, L"%s%s(%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
@@ -78,7 +84,7 @@ static bool OnCrash(const wchar_t * dumpPath,
     wprintf(L"Dump File Path: %s\n", dumpFilePath);
     wprintf(L"Dump Id: %s\n", miniDumpId);
     wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
-    wprintf(L"Commit: %s\n", WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
+    wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     utf8 * saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
     SDL_RWops * rw = SDL_RWFromFile(saveFilePathUTF8, "wb+");
@@ -101,15 +107,15 @@ static bool OnCrash(const wchar_t * dumpPath,
                MessageFormat,
                dumpFilePath,
                WSZ(OPENRCT2_VERSION),
-               WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
+               _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
     MessageBoxW(NULL, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
     HRESULT coInitializeResult = CoInitialize(NULL);
     if (SUCCEEDED(coInitializeResult))
     {
-        ITEMIDLIST * pidl = ILCreateFromPathW(dumpPath);
-        ITEMIDLIST * files[2];
+        LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
+        LPITEMIDLIST files[2];
         uint32 numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);

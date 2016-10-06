@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
@@ -29,6 +28,8 @@
 #include "screenshot.h"
 #include "viewport.h"
 
+uint8 gScreenshotCountdown = 0;
+
 /**
  *
  *  rct2: 0x006E3AEC
@@ -37,21 +38,18 @@ void screenshot_check()
 {
 	int screenshotIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
+	if (gScreenshotCountdown != 0) {
+		gScreenshotCountdown--;
+		if (gScreenshotCountdown == 0) {
 			// update_rain_animation();
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
 				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
 
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 			// redraw_rain();
 		}
 	}
@@ -226,7 +224,7 @@ void screenshot_giant()
 	int index;
 	if ((index = screenshot_get_next_path(path)) == -1) {
 		log_error("Giant screenshot failed, unable to find a suitable destination path.");
-		window_error_open(STR_SCREENSHOT_FAILED, -1);
+		window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 		return;
 	}
 

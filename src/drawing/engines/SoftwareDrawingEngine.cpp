@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../core/Guard.hpp"
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
 #include "../IDrawingContext.h"
@@ -25,6 +26,7 @@ extern "C"
     #include "../../config.h"
     #include "../../game.h"
     #include "../../interface/screenshot.h"
+    #include "../../interface/viewport.h"
     #include "../../interface/window.h"
     #include "../../intro.h"
     #include "../drawing.h"
@@ -43,7 +45,7 @@ struct DirtyGrid
     uint8 * Blocks;
 };
 
-class RainDrawer : public IRainDrawer
+class RainDrawer final : public IRainDrawer
 {
 private:
     struct RainPixel
@@ -154,7 +156,7 @@ public:
     }
 };
 
-class SoftwareDrawingContext : public IDrawingContext
+class SoftwareDrawingContext final : public IDrawingContext
 {
 private:
     SoftwareDrawingEngine * _engine;
@@ -177,7 +179,7 @@ public:
     void SetDPI(rct_drawpixelinfo * dpi);
 };
 
-class SoftwareDrawingEngine : public IDrawingEngine
+class SoftwareDrawingEngine final : public IDrawingEngine
 {
 private:
     bool _hardwareDisplay;
@@ -689,7 +691,7 @@ private:
                 uint32 * dst = (uint32 *)pixels;
                 for (int i = _width * _height; i > 0; i--)
                 {
-                    *dst++ = *(uint32 *)(&_paletteHWMapped[*src++]);
+                    *dst++ = _paletteHWMapped[*src++];
                 }
             }
             else
@@ -875,8 +877,6 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     if (bottom < dpi->y) return;
     if (top >= dpi->y + dpi->height) return;
 
-    colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
-
     uint16 crossPattern = 0;
 
     int startX = left - dpi->x;
@@ -990,65 +990,6 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
             dst = nextdst;
         }
     }
-    else if (colour & 0x8000000)
-    {
-        uintptr_t esi = left - RCT2_GLOBAL(0x1420070, sint16);
-        RCT2_GLOBAL(0xEDF824, uint32) = esi;
-        esi = top - RCT2_GLOBAL(0x1420072, sint16);
-        RCT2_GLOBAL(0xEDF828, uint32) = esi;
-        left -= dpi->x;
-        if (left < 0)
-        {
-            RCT2_GLOBAL(0xEDF824, sint32) -= left;
-            left = 0;
-        }
-        right -= dpi->x;
-        right++;
-        if (right > dpi->width)
-        {
-            right = dpi->width;
-        }
-        right -= left;
-        top -= dpi->y;
-        if (top < 0)
-        {
-            RCT2_GLOBAL(0xEDF828, sint32) -= top;
-            top = 0;
-        }
-        bottom -= dpi->y;
-        bottom++;
-        if (bottom > dpi->height)
-        {
-            bottom = dpi->height;
-        }
-        bottom -= top;
-        RCT2_GLOBAL(0xEDF824, sint32) &= 0x3F;
-        RCT2_GLOBAL(0xEDF828, sint32) &= 0x3F;
-        esi = dpi->width;
-        esi += dpi->pitch;
-        esi *= top;
-        esi += left;
-        esi += (uintptr_t)dpi->bits;
-        RCT2_GLOBAL(0xEDF82C, sint32) = right;
-        RCT2_GLOBAL(0xEDF830, sint32) = bottom;
-        left = dpi->width;
-        left += dpi->pitch;
-        left -= right;
-        RCT2_GLOBAL(0xEDF834, sint32) = left;
-        colour &= 0xFF;
-        colour--;
-        right = colour;
-        colour <<= 8;
-        right |= colour;
-        RCT2_GLOBAL(0xEDF838, sint32) = right;
-        //right <<= 4;
-        esi = RCT2_GLOBAL(0xEDF828, sint32);
-        esi *= 0x40;
-        left = 0;
-        esi += (uintptr_t)g1Elements[right].offset;//???
-        //Not finished
-        //Start of loop
-    }
     else
     {
         uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
@@ -1081,7 +1022,6 @@ void SoftwareDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, u
     memset(palette, colour, 256);
     palette[0] = 0;
 
-    RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
     image &= 0x7FFFF;
     gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
 }

@@ -42,13 +42,39 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+uint8 _editorSelectedRides[128];
+uint8 _editorSelectedSmallScenery[252];
+uint8 _editorSelectedLargeScenery[128];
+uint8 _editorSelectedWalls[128];
+uint8 _editorSelectedBanners[32];
+uint8 _editorSelectedFootpaths[16];
+uint8 _editorSelectedFootpathAdditions[15];
+uint8 _editorSelectedSceneryGroups[19];
+uint8 _editorSelectedParkEntrances[1];
+uint8 _editorSelectedWaters[1];
+uint8 _editorSelectedStexs[1];
+
+uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT] = {
+	_editorSelectedRides,
+	_editorSelectedSmallScenery,
+	_editorSelectedLargeScenery,
+	_editorSelectedWalls,
+	_editorSelectedBanners,
+	_editorSelectedFootpaths,
+	_editorSelectedFootpathAdditions,
+	_editorSelectedSceneryGroups,
+	_editorSelectedParkEntrances,
+	_editorSelectedWaters,
+	_editorSelectedStexs,
+};
+
 void editor_convert_save_to_scenario_callback(int result);
 static void set_all_land_owned();
 static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
 static int editor_read_s6(const char *path);
-static void editor_clear_map_for_editing();
+static void editor_clear_map_for_editing(bool fromSave);
 
 /**
  *
@@ -58,8 +84,7 @@ void editor_load()
 {
 	rct_window *mainWindow;
 
-	audio_pause_sounds();
-	audio_unpause_sounds();
+	audio_stop_all_music_and_sounds();
 	object_manager_unload_all_objects();
 	object_list_load();
 	map_init(150);
@@ -76,10 +101,10 @@ void editor_load()
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
+	gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	window_new_ride_init_vars();
-	RCT2_GLOBAL(0x0141F571, uint8) = 4;
+	gS6Info.category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
@@ -110,25 +135,23 @@ void editor_convert_save_to_scenario_callback(int result)
 		return;
 	}
 
-	rct_s6_info *s6Info = gS6Info;
-
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 	else
 		gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 	gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-	safe_strcpy(s6Info->name, gScenarioName, 64);
-	safe_strcpy(s6Info->details, gScenarioDetails, 256);
-	s6Info->objective_type = gScenarioObjectiveType;
-	s6Info->objective_arg_1 = gScenarioObjectiveYear;
-	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
-	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
+	safe_strcpy(gS6Info.name, gScenarioName, 64);
+	safe_strcpy(gS6Info.details, gScenarioDetails, 256);
+	gS6Info.objective_type = gScenarioObjectiveType;
+	gS6Info.objective_arg_1 = gScenarioObjectiveYear;
+	gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
+	gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
 	climate_reset(gClimate);
 
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-	s6Info->category = SCENARIO_CATEGORY_OTHER;
+	gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+	gS6Info.category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
@@ -144,6 +167,7 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
+	audio_stop_all_music_and_sounds();
 	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
 	gScreenAge = 0;
 
@@ -163,7 +187,7 @@ void trackdesigner_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
+	gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	window_new_ride_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
@@ -183,6 +207,7 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
+	audio_stop_all_music_and_sounds();
 	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
 	gScreenAge = 0;
 
@@ -202,7 +227,7 @@ void trackmanager_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
+	gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	window_new_ride_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
@@ -253,9 +278,9 @@ bool editor_load_landscape(const utf8 *path)
 static int editor_load_landscape_from_sv4(const char *path)
 {
 	rct1_load_saved_game(path);
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(true);
 
-	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
@@ -267,9 +292,9 @@ static int editor_load_landscape_from_sv4(const char *path)
 static int editor_load_landscape_from_sc4(const char *path)
 {
 	rct1_load_scenario(path);
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(false);
 
-	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
@@ -284,13 +309,20 @@ static int editor_load_landscape_from_sc4(const char *path)
  */
 static int editor_read_s6(const char *path)
 {
-	if (!scenario_load(path)) {
+	bool loadResult = false;
+	const char *extension = path_get_extension(path);
+	if (_stricmp(extension, ".sc6") == 0) {
+		loadResult = scenario_load(path);
+	} else if (_stricmp(extension, ".sv6") == 0) {
+		loadResult = game_load_sv6_path(path);
+	}
+	if (!loadResult) {
 		return 0;
 	}
 
-	editor_clear_map_for_editing();
+	editor_clear_map_for_editing(true);
 
-	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
@@ -299,10 +331,8 @@ static int editor_read_s6(const char *path)
 	return 1;
 }
 
-static void editor_clear_map_for_editing()
+static void editor_clear_map_for_editing(bool fromSave)
 {
-	rct_s6_header *s6Header = RCT2_ADDRESS(0x009E34E4, rct_s6_header);
-
 	map_remove_all_rides();
 
 	//
@@ -335,7 +365,7 @@ static void editor_clear_map_for_editing()
 	gNumGuestsHeadingForPark = 0;
 	gNumGuestsInParkLastWeek = 0;
 	gGuestChangeModifier = 0;
-	if (s6Header->type != S6_TYPE_SCENARIO) {
+	if (fromSave) {
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
 
@@ -356,7 +386,6 @@ static void editor_clear_map_for_editing()
 
 		gInitialCash = min(gInitialCash, 100000);
 		finance_reset_cash_to_initial();
-		finance_update_loan_hash();
 
 		gBankLoan = clamp(
 			MONEY(0,00),
@@ -387,7 +416,7 @@ void editor_open_windows_for_current_step()
 	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
 		return;
 
-	switch (gS6Info->editor_step) {
+	switch (gS6Info.editor_step) {
 	case EDITOR_STEP_OBJECT_SELECTION:
 		if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
 			return;

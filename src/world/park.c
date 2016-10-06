@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
@@ -50,6 +49,7 @@ money32 gTotalIncomeFromAdmissions;
 money32 gParkValue;
 money32 gCompanyValue;
 
+sint16 gParkRatingCasualtyPenalty;
 uint8 gParkRatingHistory[32];
 uint8 gGuestsInParkHistory[32];
 
@@ -69,10 +69,10 @@ int _suggestedGuestMaximum;
  */
 int _guestGenerationProbability;
 
-sint16 *gParkEntranceX = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16);
-sint16 *gParkEntranceY = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16);
-sint16 *gParkEntranceZ = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16);
-uint8 *gParkEntranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8);
+sint16 gParkEntranceX[4];
+sint16 gParkEntranceY[4];
+sint16 gParkEntranceZ[4];
+uint8 gParkEntranceDirection[4];
 
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
@@ -92,7 +92,7 @@ void park_init()
 {
 	int i;
 
-	RCT2_GLOBAL(0x013CA740, uint8) = 0;
+	gUnk13CA740 = 0;
 	gParkName = STR_UNNAMED_PARK;
 	gStaffHandymanColour = COLOUR_BRIGHT_RED;
 	gStaffMechanicColour = COLOUR_LIGHT_BLUE;
@@ -141,14 +141,13 @@ void park_init()
 	gScenarioObjectiveNumGuests = 1000;
 	gLandPrice = MONEY(90, 00);
 	gConstructionRightsPrice = MONEY(40,00);
-	RCT2_GLOBAL(0x01358774, uint16) = 0;
 	gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
 
-	gS6Info->name[0] = '\0';
-	format_string(gS6Info->details, STR_NO_DETAILS_YET, NULL);
+	gS6Info.name[0] = '\0';
+	format_string(gS6Info.details, STR_NO_DETAILS_YET, NULL);
 }
 
 /**
@@ -303,7 +302,7 @@ int calculate_park_rating()
 		result -= 600 - (4 * (150 - min(150, num_litter)));
 	}
 
-	result -= RCT2_GLOBAL(0x0135882E, sint16);
+	result -= gParkRatingCasualtyPenalty;
 	result = clamp(0, result, 999);
 	return result;
 }
@@ -363,13 +362,12 @@ money32 calculate_company_value()
 void reset_park_entrances()
 {
 	gParkName = 0;
-
-	for (short i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		gParkEntranceX[i] = 0x8000;
 	}
-
-	gPeepSpawns[0].x = UINT16_MAX;
-	RCT2_GLOBAL(0x013573F8, uint16) = 0xFFFF;
+	for (int i = 0; i < 2; i++) {
+		gPeepSpawns[i].x = UINT16_MAX;
+	}
 }
 
 /**
@@ -814,19 +812,13 @@ static void park_remove_entrance_segment(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
-	mapElement = map_get_first_element_at(x / 32, y / 32);
-	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
-			continue;
-		if (mapElement->base_height != z)
-			continue;
-		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
-			continue;
+	mapElement = map_get_park_entrance_element_at(x, y, z, true);
+	if (mapElement == NULL)
+		return;
 
-		map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-		map_element_remove(mapElement);
-		update_park_fences(x, y);
-	} while (!map_element_is_last_for_tile(mapElement++));
+	map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+	map_element_remove(mapElement);
+	update_park_fences(x, y);
 }
 
 /**
@@ -1075,7 +1067,7 @@ static money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags
 		update_park_fences(x + 32, y);
 		update_park_fences(x, y + 32);
 		update_park_fences(x, y - 32);
-		RCT2_GLOBAL(0x9E2E28, uint8) |= 1;
+		gUnk9E2E28 |= 1;
 		return 0;
 	}
 }

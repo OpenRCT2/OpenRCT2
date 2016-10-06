@@ -2512,10 +2512,10 @@ STR_2498    :Zoom view in
 STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
-STR_2502    :开关'隐藏地表'选项
-STR_2503    :开关'隐藏垂直地面'选项
-STR_2504    :See-through rides toggle
-STR_2505    :See-through scenery toggle
+STR_2502    :开启/关闭'隐藏地表'选项
+STR_2503    :开启/关闭'隐藏垂直地面'选项
+STR_2504    :开启/关闭'半透明游乐设施'选项
+STR_2505    :开启/关闭'半透明景观'选项
 STR_2506    :Invisible supports toggle
 STR_2507    :Invisible people toggle
 STR_2508    :Height marks on land toggle
@@ -4227,6 +4227,15 @@ STR_5907    :{SMALLFONT}{BLACK}启用时将会以鼠标所在位置为中心进�
 STR_5908    :允许任意切换游乐设施类型
 STR_5909    :{SMALLFONT}{BLACK}允许自由切换游乐设施类型. 可能导致游戏崩溃.
 STR_5910    :应用
+STR_5911    :半透明道路
+STR_5912    :开启/关闭'半透明道路'选项
+STR_5913    :聊天
+STR_5914    :未知的游乐设施
+STR_5915    :玩家
+STR_5916    :{COMMA16}位玩家
+STR_5917    :{COMMA16}位玩家
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

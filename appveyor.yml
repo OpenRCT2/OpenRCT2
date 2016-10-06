@@ -7,22 +7,28 @@ cache:
 environment:
   ENCKEY:
     secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
-  CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD:
+  SIGN_PASSWORD:
     secure: bzYmf0ElxisSGyZnIjUOYQ==
-  OPENRCT2.ORG_TOKEN:
+  OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
+  BUILD_SERVER: AppVeyor
+  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
 install:
 - ps: >-
     .\scripts\ps\appveyor_install.ps1
-build_script:
-- ps: >-
-    .\setenv.ps1
-
-    appveyor_build
+platform:
+  - Win32
+  - x64
+configuration: Release
+build:
+  project: openrct2.proj
 artifacts:
-- path: .\artifacts\openrct2.zip
+- path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable
-- path: .\artifacts\*.exe
+- path: .\artifacts\openrct2-installer*.exe
   name: OpenRCT2-installer
-- path: .\artifacts\openrct2-symbols-*.zip
+- path: .\artifacts\openrct2-symbols*.zip
   name: OpenRCT2 debug symbols
+deploy_script:
+- ps: >-
+    .\scripts\ps\appveyor_deploy.ps1

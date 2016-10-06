@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
@@ -122,11 +121,22 @@ void audio_stop_channel(void **channel);
 void audio_init()
 {
 	int result = SDL_Init(SDL_INIT_AUDIO);
-	if (result >= 0)
+	if (result < 0) {
+		log_error("SDL_Init %s", SDL_GetError());
 		return;
+	}
 
-	log_fatal("SDL_Init %s", SDL_GetError());
-	exit(-1);
+	if (str_is_null_or_empty(gConfigSound.device)) {
+		Mixer_Init(NULL);
+		gAudioCurrentDevice = 0;
+	} else {
+		Mixer_Init(gConfigSound.device);
+		for (int i = 0; i < gAudioDeviceCount; i++) {
+			if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
+				gAudioCurrentDevice = i;
+			}
+		}
+	}
 }
 
 void audio_quit()
@@ -295,6 +305,15 @@ void audio_stop_ride_music()
 
 		rideMusic->ride_id = -1;
 	}
+}
+
+void audio_stop_all_music_and_sounds()
+{
+	audio_stop_title_music();
+	audio_stop_vehicle_sounds();
+	audio_stop_ride_music();
+	audio_stop_crowd_sound();
+	audio_stop_rain_sound();
 }
 
 void audio_stop_crowd_sound()

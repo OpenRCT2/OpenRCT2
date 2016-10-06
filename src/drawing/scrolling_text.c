@@ -18,8 +18,8 @@
 #include "../config.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
-#include "drawing.h"
 #include "../sprites.h"
+#include "drawing.h"
 
 #pragma pack(push, 1)
 /* size: 0xA12 */
@@ -35,8 +35,11 @@ typedef struct rct_draw_scroll_text {
 assert_struct_size(rct_draw_scroll_text, 0xA12);
 #pragma pack(pop)
 
-rct_draw_scroll_text *gDrawScrollTextList = RCT2_ADDRESS(RCT2_ADDRESS_DRAW_SCROLL_LIST, rct_draw_scroll_text);
-uint8 *gCharacterBitmaps = RCT2_ADDRESS(RCT2_ADDRESS_CHARACTER_BITMAP, uint8);
+#define MAX_SCROLLING_TEXT_ENTRIES 32
+
+static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
+static uint8 _characterBitmaps[224 * 8];
+static uint32 _drawSCrollNextIndex = 0;
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
 void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
@@ -67,15 +70,27 @@ void scrolling_text_initialise_bitmaps()
 					val |= 0x80;
 				}
 			}
-			gCharacterBitmaps[i * 8 + x] = val;
+			_characterBitmaps[i * 8 + x] = val;
 		}
+	}
 
+	for (int i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
+		rct_g1_element *g1 = &g1Elements[SPR_SCROLLING_TEXT_START + i];
+		g1->offset = _drawScrollTextList[i].bitmap;
+		g1->width = 64;
+		g1->height = 40;
+		g1->offset[0] = 0xFF;
+		g1->offset[1] = 0xFF;
+		g1->offset[14] = 0;
+		g1->offset[15] = 0;
+		g1->offset[16] = 0;
+		g1->offset[17] = 0;
 	}
 }
 
 static uint8 *font_sprite_get_codepoint_bitmap(int codepoint)
 {
-	return &gCharacterBitmaps[font_sprite_get_codepoint_offset(codepoint) * 8];
+	return &_characterBitmaps[font_sprite_get_codepoint_offset(codepoint) * 8];
 }
 
 
@@ -83,13 +98,11 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 {
 	uint32 oldestId = 0xFFFFFFFF;
 	int scrollIndex = -1;
-	rct_draw_scroll_text* oldestScroll = NULL;
-	for (int i = 0; i < 32; i++) {
-		rct_draw_scroll_text *scrollText = &gDrawScrollTextList[i];
+	for (int i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
+		rct_draw_scroll_text *scrollText = &_drawScrollTextList[i];
 		if (oldestId >= scrollText->id) {
 			oldestId = scrollText->id;
 			scrollIndex = i;
-			oldestScroll = scrollText;
 		}
 
 		// If exact match return the matching index
@@ -103,7 +116,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 			scrollText->position == scroll &&
 			scrollText->mode == scrollingMode
 		) {
-			scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
+			scrollText->id = _drawSCrollNextIndex;
 			return i + SPR_SCROLLING_TEXT_START;
 		}
 	}
@@ -1352,7 +1365,7 @@ static const sint16 _scrollpos37[] = {
 	-1,
 };
 
-static const sint16* _scrollPositions[38] = {
+static const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 	_scrollpos0,
 	_scrollpos1,
 	_scrollpos2,
@@ -1403,15 +1416,13 @@ static const sint16* _scrollPositions[38] = {
  */
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
-	if (TempForScrollText) {
-		memcpy(gCommonFormatArgs, RCT2_ADDRESS(0x013CE952, const void), 16);
-	}
+	assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
 	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	if (dpi->zoom_level != 0) return SPR_SCROLLING_TEXT_DEFAULT;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32)++;
+	_drawSCrollNextIndex++;
 
 	int scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
 	if (scrollIndex >= SPR_SCROLLING_TEXT_START) return scrollIndex;
@@ -1421,13 +1432,13 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32));
 	memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32));
 
-	rct_draw_scroll_text* scrollText = &gDrawScrollTextList[scrollIndex];
+	rct_draw_scroll_text* scrollText = &_drawScrollTextList[scrollIndex];
 	scrollText->string_id = stringId;
 	scrollText->string_args_0 = stringArgs0;
 	scrollText->string_args_1 = stringArgs1;
 	scrollText->position = scroll;
 	scrollText->mode = scrollingMode;
-	scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
+	scrollText->id = _drawSCrollNextIndex;
 
 	// Create the string to draw
 	utf8 scrollString[256];

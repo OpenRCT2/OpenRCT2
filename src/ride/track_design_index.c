@@ -266,7 +266,7 @@ static void track_design_index_scan()
 	utf8 directory[MAX_PATH];
 
 	// Get track directory from RCT2
-	safe_strcpy(directory, gConfigGeneral.game_path, sizeof(directory));
+	safe_strcpy(directory, gRCT2AddressAppPath, sizeof(directory));
 	safe_strcat_path(directory, "Tracks", sizeof(directory));
 	track_design_index_include(directory);
 

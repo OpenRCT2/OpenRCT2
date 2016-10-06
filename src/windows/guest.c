@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -777,8 +776,9 @@ void window_guest_viewport_init(rct_window* w){
 	}
 	else{
 		viewport_flags = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & 0x1)
+		if (gConfigGeneral.always_show_gridlines) {
 			viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+		}
 	}
 
 	window_event_invalidate_call(w);
@@ -1041,13 +1041,8 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		return;
 	}
 
-	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
-
-	set_format_arg(0, uint32, argument1);
-	set_format_arg(4, uint32, argument2);
-	set_format_arg(8, uint16, 0);
-
 	x = widget->right - widget->left - w->list_information_type;
+	peep_thought_set_format_args(&peep->thoughts[i]);
 	gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, 0);
 }
 
@@ -1068,7 +1063,7 @@ void window_guest_overview_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	w->pressed_widgets &= ~(1<<WIDX_TRACK);
@@ -1366,7 +1361,7 @@ void window_guest_stats_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_guest_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -1565,7 +1560,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	};
 	y += 10;
 	int nausea_tolerance = peep->nausea_tolerance & 0x3;
-	set_format_arg(0, uint16, nauseaTolerances[nausea_tolerance]);
+	set_format_arg(0, rct_string_id, nauseaTolerances[nausea_tolerance]);
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, gCommonFormatArgs, 0, x, y);
 }
 
@@ -1621,7 +1616,7 @@ void window_guest_rides_update(rct_window *w)
  */
 void window_guest_rides_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, STR_LIST);
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -1749,7 +1744,7 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		ride_string_arguments = ride->name_arguments;
 		ride_string_id = ride->name;
 	}
-	set_format_arg(0, uint16, ride_string_id);
+	set_format_arg(0, rct_string_id, ride_string_id);
 	set_format_arg(2, uint32, ride_string_arguments);
 
 	gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, 0, x, y, w->width - 14);
@@ -1824,7 +1819,7 @@ void window_guest_finance_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_guest_finance_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -1967,7 +1962,7 @@ void window_guest_thoughts_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_guest_thoughts_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -2012,15 +2007,11 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (thought->type == PEEP_THOUGHT_TYPE_NONE) return;
 		if (thought->var_2 == 0) continue;
 
-		uint32 argument1, argument2;
-		get_arguments_from_thought(*thought, &argument1, &argument2);
-		set_format_arg(0, uint32, argument1);
-		set_format_arg(4, uint32, argument2);
-
 		int width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
 			- window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
 			- 8;
 
+		peep_thought_set_format_args(thought);
 		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
 
 		// If this is the last visible line end drawing.
@@ -2073,7 +2064,7 @@ void window_guest_inventory_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(0, rct_string_id, peep->name_string_idx);
 	set_format_arg(2, uint32, peep->id);
 
 	window_guest_inventory_widgets[WIDX_BACKGROUND].right = w->width - 1;
@@ -2096,8 +2087,8 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 
 	// Default arguments
 	set_format_arg(0, uint32, ShopItemImage[item]);
-	set_format_arg(4, uint16, ShopItemStringIds[item].display);
-	set_format_arg(6, uint16, gParkName);
+	set_format_arg(4, rct_string_id, ShopItemStringIds[item].display);
+	set_format_arg(6, rct_string_id, gParkName);
 	set_format_arg(8, uint32, gParkNameArgs);
 
 	// Special overrides
@@ -2107,7 +2098,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		break;
 	case SHOP_ITEM_PHOTO:
 		ride = get_ride(peep->photo1_ride_ref);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_UMBRELLA:
@@ -2116,24 +2107,24 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 	case SHOP_ITEM_VOUCHER:
 		switch (peep->voucher_type) {
 		case VOUCHER_TYPE_PARK_ENTRY_FREE:
-			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-			set_format_arg(8, uint16, gParkName);
+			set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
+			set_format_arg(8, rct_string_id, gParkName);
 			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_RIDE_FREE:
 			ride = get_ride(peep->voucher_arguments);
-			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-			set_format_arg(8, uint16, ride->name);
+			set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+			set_format_arg(8, rct_string_id, ride->name);
 			set_format_arg(10, uint32, ride->name_arguments);
 			break;
 		case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-			set_format_arg(8, uint16, gParkName);
+			set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
+			set_format_arg(8, rct_string_id, gParkName);
 			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-			set_format_arg(6, uint16, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-			set_format_arg(8, uint16, ShopItemStringIds[peep->voucher_arguments].singular);
+			set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
+			set_format_arg(8, rct_string_id, ShopItemStringIds[peep->voucher_arguments].singular);
 			break;
 		}
 		break;
@@ -2145,17 +2136,17 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		break;
 	case SHOP_ITEM_PHOTO2:
 		ride = get_ride(peep->photo2_ride_ref);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_PHOTO3:
 		ride = get_ride(peep->photo3_ride_ref);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_PHOTO4:
 		ride = get_ride(peep->photo4_ride_ref);
-		set_format_arg(6, uint16, ride->name);
+		set_format_arg(6, rct_string_id, ride->name);
 		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	}

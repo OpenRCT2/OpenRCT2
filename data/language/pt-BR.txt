@@ -1475,13 +1475,13 @@ STR_1469    :Atração deve começar e finalizar com estações
 STR_1470    :Estação não é longa o suficiente
 STR_1471    :{WINDOW_COLOUR_2}Velocidade:
 STR_1472    :{SMALLFONT}{BLACK}Velocidade desta atração
-STR_1473    :{WINDOW_COLOUR_2}Classificação de emoção: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Classificação de emoção: {BLACK}Indisponível
-STR_1475    :{WINDOW_COLOUR_2}Classificação de intensidade: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Classificação de intensidade: {BLACK}Indisponível
-STR_1477    :{WINDOW_COLOUR_2}Classificação de intensidade: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Classificação de náuseas: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Classificação de náuseas: {BLACK}Indisponível
+STR_1473    :{WINDOW_COLOUR_2}Emoção: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Emoção: {BLACK}Indisponível
+STR_1475    :{WINDOW_COLOUR_2}Intensidade: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensidade: {BLACK}Indisponível
+STR_1477    :{WINDOW_COLOUR_2}Intensidade: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Náusea: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Náusea: {BLACK}Indisponível
 STR_1480    :{SMALLFONT}{OPENQUOTES}Eu não posso pagar {STRINGID}{ENDQUOTES}
 STR_1481    :{SMALLFONT}{OPENQUOTES}Eu gastei todo o meu dinheiro{ENDQUOTES}
 STR_1482    :{SMALLFONT}{OPENQUOTES}Eu me sinto mal{ENDQUOTES}
@@ -2315,9 +2315,9 @@ STR_2307    :Selecionar projeto de {STRINGID}
 STR_2308    :{STRINGID} Projetos de Pista
 STR_2309    :Instalar Novo Projeto de Pista
 STR_2310    :Construir projeto personalizado
-STR_2311    :{WINDOW_COLOUR_2}Classificação de emoção: {BLACK}{COMMA2DP32} (approx.)
-STR_2312    :{WINDOW_COLOUR_2}Classificação de intensidade rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2313    :{WINDOW_COLOUR_2}Classificação de náuseas: {BLACK}{COMMA2DP32} (approx.)
+STR_2311    :{WINDOW_COLOUR_2}Emoção: {BLACK}{COMMA2DP32} (aprox.)
+STR_2312    :{WINDOW_COLOUR_2}Intensidade: {BLACK}{COMMA2DP32} (aprox.)
+STR_2313    :{WINDOW_COLOUR_2}Náusea: {BLACK}{COMMA2DP32} (aprox.)
 STR_2314    :{WINDOW_COLOUR_2}Comprimento da atração: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Custo: {BLACK}em torno de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espaço necessário: {BLACK}{COMMA16} x {COMMA16} blocos
@@ -4116,8 +4116,8 @@ STR_5806    :Alternar modo janela
 STR_5807    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de lojas e barracas: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de quiosques de informações e outras instalações: {BLACK}{COMMA16}
-STR_5810    :Desabilitar limite de comprimento do trem
-STR_5811    :{SMALLFONT}{BLACK}Se selecionado, você pode ter até {NEWLINE}255 carros por trem
+STR_5810    :Desabilitar limites do veículo
+STR_5811    :{SMALLFONT}{BLACK}Se selecionado, você pode ter até {NEWLINE}255 carros por trem e 31 {NEWLINE}trens por atração
 STR_5812    :Mostrar janela multiplayer
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4222,6 +4222,16 @@ STR_5910    :Aplicar
 STR_5911    :Ver através dos caminhos
 STR_5912    :Alternar ver através dos caminhos
 STR_5913    :Bate-papo
+STR_5914    :Atração desconhecida
+STR_5915    :Jogador
+STR_5916    :{COMMA16} jogador
+STR_5917    :{COMMA16} jogadores
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Renderizar efeitos climáticos
+STR_5921    :{SMALLFONT}{BLACK}Se habilitado, chuva e cores escuras serão renderizadas durante tempestades.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {COMMA16} {STRINGID} por trem
 
 #############
 # Scenarios #

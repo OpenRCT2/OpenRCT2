@@ -34,12 +34,15 @@ enum {
 	TITLE_SCRIPT_LOADRCT1,
 };
 
+extern bool gTitleHideVersionInfo;
+
 extern sint32 gTitleScriptCommand;
 extern uint8 gTitleScriptSave;
 extern sint32 gTitleScriptSkipTo;
 extern sint32 gTitleScriptSkipLoad;
 
 void title_load();
+void title_create_windows();
 void title_update();
 void title_skip_from_beginning();
 void title_script_get_line(SDL_RWops *file, char *parts);

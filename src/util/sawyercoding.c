@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../platform/platform.h"
 #include "sawyercoding.h"
 #include "../scenario.h"
@@ -140,11 +139,11 @@ size_t sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 		memcpy(buffer, src_buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_RLE:
-		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
-		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
 		memcpy(buffer, src_buffer, chunkHeader.length);
@@ -190,11 +189,11 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 		memcpy(buffer, src_buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_RLE:
-		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
+		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
-		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
+		chunkHeader.length = (uint32)decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
 		memcpy(buffer, src_buffer, chunkHeader.length);
@@ -228,7 +227,7 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercod
 		break;
 	case CHUNK_ENCODING_RLE:
 		encode_buffer = malloc(0x600000);
-		chunkHeader.length = encode_chunk_rle(buffer, encode_buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)encode_chunk_rle(buffer, encode_buffer, chunkHeader.length);
 		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
 		dst_file += sizeof(sawyercoding_chunk_header);
 		memcpy(dst_file, encode_buffer, chunkHeader.length);
@@ -238,8 +237,8 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercod
 	case CHUNK_ENCODING_RLECOMPRESSED:
 		encode_buffer = malloc(chunkHeader.length * 2);
 		encode_buffer2 = malloc(0x600000);
-		chunkHeader.length = encode_chunk_repeat(buffer, encode_buffer, chunkHeader.length);
-		chunkHeader.length = encode_chunk_rle(encode_buffer, encode_buffer2, chunkHeader.length);
+		chunkHeader.length = (uint32)encode_chunk_repeat(buffer, encode_buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)encode_chunk_rle(encode_buffer, encode_buffer2, chunkHeader.length);
 		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
 		dst_file += sizeof(sawyercoding_chunk_header);
 		memcpy(dst_file, encode_buffer2, chunkHeader.length);
@@ -262,20 +261,20 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercod
 	return chunkHeader.length + sizeof(sawyercoding_chunk_header);
 }
 
-size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length)
+size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength)
 {
 	// (0 to length - 4): RLE chunk
 	// (length - 4 to length): checksum
-	return decode_chunk_rle(src, dst, length - 4);
+	return decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 }
 
-size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length)
+size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength)
 {
 	size_t decodedLength, i;
 	uint32 *code;
 
 	// Uncompress
-	decodedLength = decode_chunk_rle(src, dst, length - 4);
+	decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
 	// Decode
 	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)

@@ -551,7 +551,7 @@ typedef struct rct_peep {
 	uint8 voucher_type;				// 0xF0
 	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
 	uint8 var_F2;
-	uint8 var_F3;
+	uint8 angriness;
 	uint8 var_F4;
 	uint8 days_in_queue;			// 0xF5
 	uint8 balloon_colour;			// 0xF6
@@ -638,7 +638,7 @@ void peep_update_days_in_queue();
 void peep_applause();
 rct_peep *peep_generate(int x, int y, int z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
-void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, uint32* argument_2);
+void peep_thought_set_format_args(rct_peep_thought *thought);
 int get_peep_face_sprite_small(rct_peep *peep);
 int get_peep_face_sprite_large(rct_peep *peep);
 int peep_check_easteregg_name(int index, rct_peep *peep);

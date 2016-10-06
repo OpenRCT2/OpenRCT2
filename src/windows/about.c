@@ -14,12 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/themes.h"
 
 enum WINDOW_ABOUT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -134,41 +133,39 @@ static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 17;
 
 	// Version
-	RCT2_GLOBAL(0x009C383C, uint8) = 49;
-	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, NULL);
 
 	// Credits
-	RCT2_GLOBAL(0x009C383C, uint8) = 48;
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, NULL);
 	y += 79;
-	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, 0, NULL);
 	y += 13;
-	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, 0, NULL);
 	y += 25;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, 0, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, RCT2_ADDRESS(0x009E2D28, void));
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, NULL);
 
 	// Images
 	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, w->y + 40, 0);

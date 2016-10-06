@@ -37,6 +37,7 @@ struct ImageList
 
 static bool                 _initialised = false;
 static std::list<ImageList> _freeLists;
+static uint32               _allocatedImageCount;
 
 #ifdef DEBUG
 static std::list<ImageList> _allocatedLists;
@@ -52,22 +53,76 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
         });
     return contains;
 }
-#endif
 
-static uint32 AllocateImageList(uint32 count)
+static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
 {
-    Guard::Assert(count != 0, GUARD_LINE);
-
-    if (!_initialised)
+    auto foundItem = std::find_if(
+        _allocatedLists.begin(),
+        _allocatedLists.end(),
+        [baseImageId, count](const ImageList &imageList) -> bool
+        {
+            return imageList.BaseId == baseImageId && imageList.Count == count;
+        });
+    if (foundItem != _allocatedLists.end())
     {
-        _initialised = true;
-        _freeLists.clear();
-        _freeLists.push_back({ BASE_IMAGE_ID, MAX_IMAGES });
-#ifdef DEBUG
-        _allocatedLists.clear();
-#endif
+        _allocatedLists.erase(foundItem);
+        return true;
     }
+    return false;
+}
+#endif
 
+static uint32 GetNumFreeImagesRemaining()
+{
+    return MAX_IMAGES - _allocatedImageCount;
+}
+
+static void InitialiseImageList()
+{
+    Guard::Assert(!_initialised, GUARD_LINE);
+
+    _freeLists.clear();
+    _freeLists.push_back({ BASE_IMAGE_ID, MAX_IMAGES });
+#ifdef DEBUG
+    _allocatedLists.clear();
+#endif
+    _allocatedImageCount = 0;
+    _initialised = true;
+}
+
+/**
+ * Merges all the free lists into one, a process of defragmentation.
+ */
+static void MergeFreeLists()
+{
+    _freeLists.sort(
+        [](const ImageList &a, const ImageList &b) -> bool
+        {
+            return a.BaseId < b.BaseId;
+        });
+    for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
+    {
+        bool mergeHappened;
+        do
+        {
+            mergeHappened = false;
+            auto nextIt = std::next(it);
+            if (nextIt != _freeLists.end())
+            {
+                if (it->BaseId + it->Count == nextIt->BaseId)
+                {
+                    // Merge next list into this list
+                    it->Count += nextIt->Count;
+                    _freeLists.erase(nextIt);
+                    mergeHappened = true;
+                }
+            }
+        } while (mergeHappened);
+    }
+}
+
+static uint32 TryAllocateImageList(uint32 count)
+{
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         ImageList imageList = *it;
@@ -84,10 +139,35 @@ static uint32 AllocateImageList(uint32 count)
 #ifdef DEBUG
             _allocatedLists.push_back({ imageList.BaseId, count });
 #endif
+            _allocatedImageCount += count;
             return imageList.BaseId;
         }
     }
     return INVALID_IMAGE_ID;
+}
+
+static uint32 AllocateImageList(uint32 count)
+{
+    Guard::Assert(count != 0, GUARD_LINE);
+
+    if (!_initialised)
+    {
+        InitialiseImageList();
+    }
+
+    uint32 baseImageId = INVALID_IMAGE_ID;
+    uint32 freeImagesRemaining = GetNumFreeImagesRemaining();
+    if (freeImagesRemaining >= count)
+    {
+        baseImageId = TryAllocateImageList(count);
+        if (baseImageId == INVALID_IMAGE_ID)
+        {
+            // Defragment and try again
+            MergeFreeLists();
+            baseImageId = TryAllocateImageList(count);
+        }
+    }
+    return baseImageId;
 }
 
 static void FreeImageList(uint32 baseImageId, uint32 count)
@@ -96,10 +176,11 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
 
 #ifdef DEBUG
-    bool contains = AllocatedListContains(baseImageId, count);
+    bool contains = AllocatedListRemove(baseImageId, count);
     Guard::Assert(contains, GUARD_LINE);
 #endif
-    
+    _allocatedImageCount -= count;
+
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         if (it->BaseId + it->Count == baseImageId) 
@@ -114,8 +195,7 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
             return;
         }
     }
-    
-    // TODO validate that this was an allocated list
+
     _freeLists.push_back({ baseImageId, count });
 }
 
@@ -123,6 +203,11 @@ extern "C"
 {
     uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
     {
+        if (count == 0)
+        {
+            return INVALID_IMAGE_ID;
+        }
+
         uint32 baseImageId = AllocateImageList(count);
         if (baseImageId == INVALID_IMAGE_ID)
         {
@@ -143,7 +228,7 @@ extern "C"
 
     void gfx_object_free_images(uint32 baseImageId, uint32 count)
     {
-        if (baseImageId != 0)
+        if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
         {
             // Zero the G1 elements so we don't have invalid pointers
             // and data lying about
@@ -155,6 +240,18 @@ extern "C"
             }
 
             FreeImageList(baseImageId, count);
+        }
+    }
+
+    void gfx_object_check_all_images_freed()
+    {
+        if (_allocatedImageCount != 0)
+        {
+#if DEBUG
+            Guard::Assert(_allocatedImageCount == 0, "%u images were not freed", _allocatedImageCount);
+#else
+            Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
+#endif
         }
     }
 }

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../game.h"
@@ -320,9 +319,9 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 	// Try increasing Z until a feasible placement is found
 	mapZ = window_track_place_get_base_z(mapX, mapY);
 	for (i = 0; i < 7; i++) {
-		RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
+		gDisableErrorWindowSound = true;
 		window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 1, &cost, &rideIndex);
-		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
+		gDisableErrorWindowSound = false;
 
 		if (cost != MONEY32_UNDEFINED) {
 			window_close_by_class(WC_ERROR);

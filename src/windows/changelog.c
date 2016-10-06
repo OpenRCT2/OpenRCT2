@@ -14,12 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
-#include "../localisation/localisation.h"
 #include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
+#include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
@@ -92,7 +91,7 @@ static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
 
 static char *_changelogText = NULL;
-static long _changelogTextSize = 0;
+static size_t _changelogTextSize = 0;
 static char **_changelogLines = NULL;
 static int _changelogNumLines = 0;
 static int _changelogLongestLineWidth = 0;
@@ -193,12 +192,11 @@ static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 {
 	gCurrentFontFlags = 0;
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gfx_draw_string(dpi, RCT2_ADDRESS(0x009C383D, char), 1, dpi->x, dpi->y);
 
 	int x = 3;
 	int y = 3;
 	for (int i = 0; i < _changelogNumLines; i++) {
-		gfx_draw_string(dpi, _changelogLines[i], 254, x, y);
+		gfx_draw_string(dpi, _changelogLines[i], w->colours[0], x, y);
 		y += 11;
 	}
 }
@@ -208,7 +206,7 @@ static bool window_changelog_read_file()
 	window_changelog_dispose_file();
 	utf8 path[MAX_PATH];
 	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
-	if (!readentirefile(path, (void**)&_changelogText, (int*)&_changelogTextSize)) {
+	if (!readentirefile(path, (void**)&_changelogText, &_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");
 		return false;
 	}

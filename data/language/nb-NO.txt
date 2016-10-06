@@ -4219,6 +4219,15 @@ STR_5907    :{SMALLFONT}{BLACK}Hvis aktivert vil kameraet zoome mot musen istede
 STR_5908    :Tillat vilkårlig endring av attraksjonstype
 STR_5909    :{SMALLFONT}{BLACK}Tillater fri endring av attraksjonstype. Kan forårsake krasj.
 STR_5910    :Bruk
+STR_5911    :Gjennomsiktige stier
+STR_5912    :Ikke-/Gjennomsiktige stier
+STR_5913    :Chat
+STR_5914    :Ukjent attraksjon
+STR_5915    :Spiller
+STR_5916    :{COMMA16} spiller
+STR_5917    :{COMMA16} spillere
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
 
 #############
 # Scenarios #

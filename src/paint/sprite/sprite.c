@@ -34,7 +34,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 	uint16 sprite_idx = sprite_get_first_in_quadrant(eax, ecx);
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
-	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) return;
+	if (gTrackDesignSaveMode) return;
 
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
@@ -59,9 +59,9 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
 		g_currently_drawn_item = spr;
 
-		RCT2_GLOBAL(0x9DE568, sint16) = spr->unknown.x;
+		gUnk9DE568 = spr->unknown.x;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-		RCT2_GLOBAL(0x9DE56C, sint16) = spr->unknown.y;
+		gUnk9DE56C = spr->unknown.y;
 
 		switch (spr->unknown.sprite_identifier) {
 		case SPRITE_IDENTIFIER_VEHICLE:

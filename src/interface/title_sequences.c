@@ -57,24 +57,25 @@ bool title_sequence_save_exists(int preset, const char *name)
 void title_sequence_change_preset(int preset)
 {
 	if (preset >= 0 && preset < gConfigTitleSequences.num_presets) {
+		SafeFree(gConfigInterface.current_title_sequence_preset);
 		switch (preset) {
 		case 0:
-			gConfigInterface.current_title_sequence_preset = "*RCT1";
+			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1");
 			break;
 		case 1:
-			gConfigInterface.current_title_sequence_preset = "*RCT1AA";
+			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1AA");
 			break;
 		case 2:
-			gConfigInterface.current_title_sequence_preset = "*RCT1AALL";
+			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1AALL");
 			break;
 		case 3:
-			gConfigInterface.current_title_sequence_preset = "*RCT2";
+			gConfigInterface.current_title_sequence_preset = _strdup("*RCT2");
 			break;
 		case 4:
-			gConfigInterface.current_title_sequence_preset = "*OPENRCT2";
+			gConfigInterface.current_title_sequence_preset = _strdup("*OPENRCT2");
 			break;
 		default:
-			gConfigInterface.current_title_sequence_preset = gConfigTitleSequences.presets[preset].name;
+			gConfigInterface.current_title_sequence_preset = _strdup(gConfigTitleSequences.presets[preset].name);
 			break;
 		}
 		gCurrentPreviewTitleSequence = preset;

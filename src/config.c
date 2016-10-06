@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "addresses.h"
 #include "config.h"
 #include "interface/keyboard_shortcut.h"
 #include "interface/themes.h"
@@ -228,6 +227,8 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, last_save_track_directory),       "last_track_directory",         CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
 	{ offsetof(general_configuration, window_limit),					"window_limit",					CONFIG_VALUE_TYPE_UINT8,		WINDOW_LIMIT_MAX,				NULL					},
 	{ offsetof(general_configuration, zoom_to_cursor),					"zoom_to_cursor",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_effects),			"render_weather_effects",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_gloom),			"render_weather_gloom",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
@@ -346,8 +347,6 @@ static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, c
 static void utf8_skip_whitespace(utf8 **outch);
 static void utf8_skip_non_whitespace(utf8 **outch);
 
-void config_apply_to_old_addresses();
-
 static int rwopsreadc(SDL_RWops *file)
 {
 	int c = 0;
@@ -434,7 +433,7 @@ void config_set_defaults()
 				if (username) {
 					destValue->value_string = _strdup(username);
 				} else {
-					destValue->value_string = _strdup(language_get_string(STR_RIDE_COMPONENT_PLAYER_CAPITALISED));
+					destValue->value_string = _strdup(language_get_string(STR_MULTIPLAYER_DEFAULT_NAME));
 				}				
 			}
 			else {
@@ -481,7 +480,6 @@ bool config_open_default()
 
 	config_get_default_path(path);
 	if (config_open(path)) {
-		config_apply_to_old_addresses();
 		currency_load_custom_currency_config();
 		return true;
 	}
@@ -495,7 +493,6 @@ bool config_save_default()
 
 	config_get_default_path(path);
 	if (config_save(path)) {
-		config_apply_to_old_addresses();
 		return true;
 	}
 
@@ -648,7 +645,7 @@ static bool config_get_section(const utf8string line, const utf8 **sectionName, 
 		if (c == ']') break;
 	}
 
-	*sectionNameSize = ch - *sectionName - 1;
+	*sectionNameSize = (int)(ch - *sectionName - 1);
 	return true;
 }
 
@@ -668,7 +665,7 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
 			if (c == '=') equals = true;
-			*propertyNameSize = ch - *propertyName - 1;
+			*propertyNameSize = (int)(ch - *propertyName - 1);
 			break;
 		} else if (c == '#') {
 			return false;
@@ -699,8 +696,8 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 			if (c != ' ') clast = ch;
 		}
 	}
-	if (!quotes) *valueSize = clast - *value;
-	else *valueSize = ch - *value - 1;
+	if (!quotes) *valueSize = (int)(clast - *value);
+	else *valueSize = (int)(ch - *value - 1);
 	if (quotes) (*valueSize)--;
 	return true;
 }
@@ -711,7 +708,7 @@ static config_section_definition *config_get_section_def(const utf8 *name, int s
 
 	for (i = 0; i < countof(_sectionDefinitions); i++) {
 		const_utf8string sectionName = _sectionDefinitions[i].section_name;
-		const int sectionNameSize = strnlen(sectionName, size);
+		int sectionNameSize = (int)strnlen(sectionName, size);
 		if (sectionNameSize == size && sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
 			return &_sectionDefinitions[i];
 	}
@@ -725,7 +722,7 @@ static config_property_definition *config_get_property_def(config_section_defini
 
 	for (i = 0; i < section->property_definitions_count; i++) {
 		const_utf8string propertyName = section->property_definitions[i].property_name;
-		const int propertyNameSize = strnlen(propertyName, size);
+		int propertyNameSize = (int)strnlen(propertyName, size);
 		if (propertyNameSize == size && propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
 		{
 			return &section->property_definitions[i];
@@ -764,7 +761,7 @@ static void config_set_property(const config_section_definition *section, const 
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
 	if (property->enum_definitions != NULL)
-		if (config_read_enum(destValue, _configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+		if (config_read_enum(destValue, (int)_configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
 			return;
 
 	switch (property->type) {
@@ -942,7 +939,7 @@ bool config_find_or_browse_install_directory()
 		safe_strcpy(gConfigGeneral.game_path, path, MAX_PATH);
 	} else {
 		while (1) {
-			platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+			platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
 			installPath = platform_open_directory_browser("Please select your RCT2 directory");
 			if (installPath == NULL)
 				return false;
@@ -962,38 +959,6 @@ bool config_find_or_browse_install_directory()
 
 	return true;
 }
-
-#pragma region Obsolete
-
-/**
- * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
- * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
- */
-void config_apply_to_old_addresses()
-{
-#if !defined(NO_RCT2)
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = get_height_marker_offset();
-
-	int configFlags = 0;
-	if (gConfigGeneral.always_show_gridlines)
-		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-	if (!gConfigGeneral.landscape_smoothing)
-		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-	if (gConfigGeneral.show_height_as_units)
-		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-	if (gConfigGeneral.save_plugin_data)
-		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
-#endif // !defined(NO_RCT2)
-}
-
-#pragma endregion
 
 #pragma region Shortcuts
 

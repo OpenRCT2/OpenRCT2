@@ -14,8 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
-#include "../addresses.h"
+#include "../common.h"
+#include <SDL.h>
+
 #include "../object.h"
 #include "../util/util.h"
 #include "map.h"
@@ -123,7 +124,7 @@ void mapgen_generate(mapgen_settings *settings)
 	int x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
-	util_srand((unsigned int)time(NULL));
+	util_srand((int)SDL_GetTicks());
 
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
@@ -257,7 +258,7 @@ static void mapgen_place_trees()
 		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
-		if (sceneryEntry == (rct_scenery_entry*)0xFFFFFFFF || sceneryEntry == NULL)
+		if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
 			continue;
 
 		for (j = 0; j < countof(GrassTrees); j++)

@@ -4118,8 +4118,8 @@ STR_5806    :Přepnout zobrazení v okně
 STR_5807    :{WINDOW_COLOUR_2}Počet atrakcí: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Počet obchodů a stánků: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Počet informačních kiosků a ostatních zařízení: {BLACK}{COMMA16}
-STR_5810    :Zrušit limit délky vlaků
-STR_5811    :{SMALLFONT}{BLACK}Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů
+STR_5810    :Zrušit limit počtu vozů
+STR_5811    :{SMALLFONT}{BLACK}Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů a atrakce až 31 vlaků
 STR_5812    :Zobrazit okno Hry více hráčů
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4222,6 +4222,16 @@ STR_5910    :Použít
 STR_5911    :Průhledné cesty
 STR_5912    :Přěpnout průhledné cesty
 STR_5913    :Chat
+STR_5914    :Neznámá atrakce
+STR_5915    :Hráč
+STR_5916    :{COMMA16} hráč
+STR_5917    :{COMMA16} hráči
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Vykreslovat efekty počasí
+STR_5921    :{SMALLFONT}{BLACK}Pokud zaškrtnete, budou během bouřek barvy ponurejší.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} / vlak
 
 
 ###############################################################################

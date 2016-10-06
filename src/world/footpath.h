@@ -52,6 +52,8 @@ enum {
 
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
+extern uint8 gFootpathProvisionalType;
+extern uint8 gFootpathProvisionalSlope;
 extern uint8 gFootpathConstructionMode;
 extern uint16 gFootpathSelectedId;
 extern uint8 gFootpathSelectedType;
@@ -97,6 +99,7 @@ uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
 bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
+int entrance_get_directions(rct_map_element *mapElement);
 
 rct_footpath_entry *get_footpath_entry(int entryIndex);
 

@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "map_element.h"
-#include "../../addresses.h"
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
@@ -52,7 +51,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	boxoffset.y = 0;
 	boxoffset.z = height;
 	int baseImageid = 0;
-	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+	if (gTrackDesignSaveMode) {
 		if (!track_design_save_contains_map_element(mapElement)) {
 			baseImageid = 0x21700000;
 		}
@@ -205,8 +204,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG15) {
 				// 6E02F6:
 				int image_id = gCurrentTicks;
-				image_id += RCT2_GLOBAL(0x009DE568, sint16) / 4;
-				image_id += RCT2_GLOBAL(0x009DE56C, sint16) / 4;
+				image_id += gUnk9DE568 / 4;
+				image_id += gUnk9DE56C / 4;
 				image_id = (image_id / 4) & 15;
 				image_id += entry->image;
 				if (dword_F64EB0 != 0) {
@@ -220,7 +219,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				int esi = gCurrentTicks;
 				if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG22)) {
 					// 6E01F8:
-					esi += ((RCT2_GLOBAL(0x9DE568, sint16) / 4) + (RCT2_GLOBAL(0x9DE56C, sint16) / 4));
+					esi += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
 					esi += (mapElement->type & 0xC0) / 16;
 				}
 				// 6E0222:

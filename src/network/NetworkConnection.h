@@ -29,7 +29,7 @@
 
 class NetworkPlayer;
 
-class NetworkConnection
+class NetworkConnection final
 {
 public:
     ITcpSocket *        Socket          = nullptr;

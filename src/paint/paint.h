@@ -17,18 +17,15 @@
 #ifndef _PAINT_H
 #define _PAINT_H
 
+#include "../addresses.h"
 #include "../common.h"
 #include "../world/map.h"
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
-
-#ifdef NO_RCT2
-extern void *g_currently_drawn_item;
-#else
-	#define g_currently_drawn_item RCT2_GLOBAL(0x9DE578, void*)
-#endif
+typedef struct paint_struct paint_struct;
+typedef union paint_entry paint_entry;
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -49,8 +46,6 @@ struct attached_paint_struct {
 // TODO: drop packing from this when all rendering is done.
 assert_struct_size(attached_paint_struct, 0x12);
 #endif
-
-typedef struct paint_struct paint_struct;
 
 /* size 0x34 */
 struct paint_struct {
@@ -105,6 +100,12 @@ assert_struct_size(paint_string_struct, 0x1e);
 #endif
 #pragma pack(pop)
 
+union paint_entry{
+	paint_struct basic;
+	attached_paint_struct attached;
+	paint_string_struct string;
+};
+
 typedef struct sprite_bb {
 	uint32 sprite_id;
 	rct_xyz16 offset;
@@ -122,9 +123,29 @@ typedef struct support_height {
 	uint8 pad;
 } support_height;
 
+#ifdef NO_RCT2
+extern void *g_currently_drawn_item;
+extern paint_entry * gEndOfPaintStructArray;
+extern sint16 gUnk9DE568;
+extern sint16 gUnk9DE56C;
+extern paint_entry gPaintStructs[4000];
+#else
+#define gPaintStructs RCT2_ADDRESS(0x00EE788C, paint_entry)
+#define g_currently_drawn_item	RCT2_GLOBAL(0x009DE578, void*)
+#define gEndOfPaintStructArray	RCT2_GLOBAL(0x00EE7880, paint_entry *)
+#define gUnk9DE568				RCT2_GLOBAL(0x009DE568, sint16)
+#define gUnk9DE56C				RCT2_GLOBAL(0x009DE56C, sint16)
+#endif
+
+#ifndef NO_RCT2
 #define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
 #define gSupportSegments			RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
 #define gSupport					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
+#else
+extern uint8 gPaintInteractionType;
+extern support_height gSupportSegments[9];
+extern support_height gSupport;
+#endif
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
@@ -137,11 +158,31 @@ paint_struct * sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint1
 paint_struct * sub_98198C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 paint_struct * sub_98199C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 
+paint_struct * sub_98196C_rotated(uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset);
+paint_struct * sub_98197C_rotated(uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
+paint_struct * sub_98199C_rotated(uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
+
+void paint_util_push_tunnel_rotated(uint8 direction, uint16 height, uint8 type);
+
 bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
-void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
+void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
 void viewport_draw_money_effects();
 void viewport_paint_setup();
+
+// TESTING
+#ifdef __TESTPAINT__
+	void testpaint_clear_ignore();
+	void testpaint_ignore(uint8 direction, uint8 trackSequence);
+	void testpaint_ignore_all();
+	bool testpaint_is_ignored(uint8 direction, uint8 trackSequence);
+
+	#define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
+	#define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
+#else
+	#define TESTPAINT_IGNORE(direction, trackSequence)
+	#define TESTPAINT_IGNORE_ALL()
+#endif
 
 #endif

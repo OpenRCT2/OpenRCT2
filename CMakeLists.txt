@@ -26,7 +26,6 @@ project(${PROJECT})
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
 	message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
-
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
@@ -78,20 +77,31 @@ option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(STATIC "Create a static build.")
 option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
 option(DISABLE_OPENGL "Disable OpenGL support.")
-option(DISABLE_RCT2 "WIP: Try building without using code and data segments from vanilla.")
+option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
+option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
+
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Warray-bounds -Waddress -Wchar-subscripts -Wenum-compare")
+
+# On mingw all code is already PIC, this will avoid compiler error on redefining this option
+if(NOT MINGW)
+	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
+endif()
+
+if (LAUNCHPAD_BUILD)
+	# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
+	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=date-time")
+else()
+	if (FORCE64)
+		set(TARGET_M "-m64")
+	else ()
+		set(TARGET_M "-m32")
+	endif()
+endif()
 
 if (FORCE64)
-	set(TARGET_M "-m64")
-	set(OBJ_FORMAT "elf64-x86-64")
-	set(LINKER_SCRIPT "ld_script_x86_64.xc")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error=pointer-to-int-cast -Wno-error=int-to-pointer-cast")
-	if ((APPLE OR WIN32) AND NOT USE_MMAP)
-		message(WARNING "Building such configuration won't work. Enabling USE_MMAP.")
-		set(USE_MMAP ON)
-	endif()
+	set (DISABLE_RCT2 ON)
 else ()
-	set(TARGET_M "-m32")
 	set(OBJ_FORMAT "elf32-i386")
 	set(LINKER_SCRIPT "ld_script_i386.xc")
 endif ()
@@ -113,7 +123,7 @@ else (DISABLE_NETWORK)
 	if (WIN32)
 		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
 	endif (WIN32)
-	# If you are on OS X, CMake might try using system-provided OpenSSL.
+	# If you are on macOS, CMake might try using system-provided OpenSSL.
 	# This is too old and will not work.
 	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 endif (DISABLE_NETWORK)
@@ -138,26 +148,26 @@ endif (NOT PNG_FOUND)
 PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
 
-# Handle creating the rct2 text and data files on OS X and Linux
+# Handle creating the rct2 text and data files on macOS and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
 # were derived.
-if (UNIX)
+if ((NOT DISABLE_RCT2) AND UNIX)
   add_custom_command(
     OUTPUT openrct2_text
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_text bs=4096 skip=1 count=1187
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_text" bs=4096 skip=1 count=1187
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe
   )
   add_custom_command(
     OUTPUT openrct2_data
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 skip=1188 count=318
-    COMMAND dd if=/dev/zero of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 seek=318 count=2630 conv=notrunc
-    COMMAND dd if=${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe of=${CMAKE_BINARY_DIR}/openrct2_data bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1188 count=318
+    COMMAND dd if=/dev/zero of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 seek=318 count=2630 conv=notrunc
+    COMMAND dd if="${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/openrct2.exe
   )
   add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
 	if (NOT USE_MMAP)
 		if (APPLE)
-				set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -fno-pie -read_only_relocs suppress")
+				set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -read_only_relocs suppress")
 		else (APPLE)
 			# For Linux we have to use objcopy to wrap regular binaries into a linkable
 			# format. We use specific section names which are then referenced in a
@@ -189,7 +199,7 @@ if (UNIX)
 elseif (USE_MMAP)
 	# No dd here, can't extract data segment
 	message(WARNING "Sorry, your platform is not supported, you have to extract data segment manually")
-endif (UNIX)
+endif ((NOT DISABLE_RCT2) AND UNIX)
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
@@ -203,11 +213,18 @@ if (APPLE)
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
 endif (APPLE)
 
+
+if (APPLE AND NOT USE_MMAP)
+	set(PIE_FLAG "-fno-pie")
+else ()
+	set(PIE_FLAG "-fpie")
+endif ()
+
 # set necessary flags to compile code as is
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-pie -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-pie -fstrict-aliasing -Werror -Wundef -Wmissing-declarations")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS} ${PIE_FLAG}")
 
 if (MINGW)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
@@ -286,17 +303,19 @@ endif (NOT DISABLE_RCT2)
 
 if (WIN32)
 	# build as library for now, replace with add_executable
-	if (USE_MMAP)
+	if (USE_MMAP OR DISABLE_RCT2)
 		add_executable(${PROJECT} ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 	else ()
 		add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
 	endif ()
 else (WIN32)
 	add_executable(${PROJECT} ${ORCT2_SOURCES} ${ORCT2_MM_SOURCES} ${RCT2_SECTIONS})
-	add_dependencies(${PROJECT} segfiles)
-	if (NOT APPLE AND NOT USE_MMAP)
-		add_dependencies(${PROJECT} linkable_sections)
-	endif ()
+	if (NOT DISABLE_RCT2)
+		add_dependencies(${PROJECT} segfiles)
+		if (NOT APPLE AND NOT USE_MMAP)
+			add_dependencies(${PROJECT} linkable_sections)
+		endif ()
+	endif (NOT DISABLE_RCT2)
 	add_custom_command(
 		OUTPUT g2.dat
 		COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${CMAKE_CURRENT_SOURCE_DIR}/resources/g2/
@@ -318,6 +337,7 @@ endif (UNIX AND NOT APPLE)
 
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
+set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 # Link shared libs first
 TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
@@ -340,6 +360,16 @@ install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
 install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
+
+if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (NOT FORCE64))
+	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
+	file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_data_old.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c" "src/paint/paint_helpers.c")
+	file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
+
+	add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_TESTPAINT_SOURCES} ${RCT2_SECTIONS})
+	set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__")
+	add_dependencies(testpaint segfiles)
+endif ()
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)

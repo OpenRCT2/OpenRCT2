@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cursors.h"
 #include "../drawing/drawing.h"
@@ -38,6 +37,7 @@
 rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot;
+rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
@@ -561,21 +561,24 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	uint16 screenWidth = gScreenWidth;
 	uint16 screenHeight = gScreenHeight;
 
-	if (cls & 0x80) {
-		cls &= ~0x80;
-		rct_window *w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
-		if (w != NULL) {
-			if (w->x > -60 && w->x < gScreenWidth - 20) {
-				if (w->y < gScreenHeight - 20) {
-					int x = w->x;
-					if (w->x + width > gScreenWidth)
-						x = gScreenWidth - 20 - width;
-					int y = w->y;
-					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
-				}
-			}
-		}
-	}
+	// TODO dead code, looks like it is cascading the new window offset from an existing window
+	// we will have to re-implement this in our own way.
+	//
+	// if (cls & 0x80) {
+	// 	cls &= ~0x80;
+	// 	rct_window *w = window_find_by_number(0, 0);
+	// 	if (w != NULL) {
+	// 		if (w->x > -60 && w->x < gScreenWidth - 20) {
+	// 			if (w->y < gScreenHeight - 20) {
+	// 				int x = w->x;
+	// 				if (w->x + width > gScreenWidth)
+	// 					x = gScreenWidth - 20 - width;
+	// 				int y = w->y;
+	// 				return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// Place window in an empty corner of the screen
 	int x = 0;
@@ -719,7 +722,7 @@ void window_close(rct_window* window)
 
 	// Remove window from list and reshift all windows
 	RCT2_NEW_WINDOW--;
-	num_windows = (RCT2_NEW_WINDOW - window);
+	num_windows = (int)(RCT2_NEW_WINDOW - window);
 	if (num_windows > 0)
 		memmove(window, window + 1, num_windows * sizeof(rct_window));
 
@@ -802,7 +805,7 @@ void window_close_top()
 	window_close_by_class(WC_DROPDOWN);
 
 	if (gScreenFlags & 2)
-		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
 			return;
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {
@@ -824,7 +827,7 @@ void window_close_all()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
@@ -838,7 +841,7 @@ void window_close_all_except_class(rct_windowclass cls)
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++){
 		if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
@@ -853,7 +856,6 @@ void window_close_all_except_class(rct_windowclass cls)
 rct_window *window_find_from_point(int x, int y)
 {
 	rct_window *w;
-	rct_widget *widget;
 	int widget_index;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
@@ -864,8 +866,6 @@ rct_window *window_find_from_point(int x, int y)
 			widget_index = window_find_widget_from_point(w, x, y);
 			if (widget_index == -1)
 				continue;
-
-			widget = &w->widgets[widget_index];
 		}
 
 		return w;
@@ -1675,8 +1675,6 @@ static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, 
 			return;
 	}
 
-	RCT2_GLOBAL(0x01420070, sint32) = w->x;
-
 	// Invalidate modifies the window colours so first get the correct
 	// colour before setting the global variables for the string painting
 	window_event_invalidate_call(w);
@@ -1796,20 +1794,14 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 	w->max_height = maxHeight;
 
 	// Clamp width and height to minimum and maximum
-	if (w->width < minWidth) {
-		w->width = minWidth;
+	int width = clamp(minWidth, w->width, maxWidth);
+	int height = clamp(minHeight, w->height, maxHeight);
+
+	// Resize window if size has changed
+	if (w->width != width || w->height != height) {
 		window_invalidate(w);
-	}
-	if (w->height < minHeight) {
-		w->height = minHeight;
-		window_invalidate(w);
-	}
-	if (w->width > maxWidth) {
-		w->width = maxWidth;
-		window_invalidate(w);
-	}
-	if (w->height > maxHeight) {
-		w->height = maxHeight;
+		w->width = width;
+		w->height = height;
 		window_invalidate(w);
 	}
 }
@@ -2152,6 +2144,8 @@ void window_resize_gui(int width, int height)
 	if (optionsWind != NULL) {
 		optionsWind->x = width - 80;
 	}
+
+	gfx_invalidate_screen();
 }
 
 /**
@@ -2264,7 +2258,7 @@ void window_update_viewport_ride_music()
 			continue;
 
 		g_music_tracking_viewport = viewport;
-		RCT2_GLOBAL(0x00F438A8, rct_window*) = w;
+		gWindowAudioExclusive = w;
 
 		switch (viewport->zoom) {
 		case 0:

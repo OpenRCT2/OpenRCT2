@@ -23,13 +23,13 @@ extern "C"
     #include "../world/scenery.h"
 }
 
-class BannerObject : public SceneryObject
+class BannerObject final : public SceneryObject
 {
 private:
     rct_scenery_entry   _legacyType = { 0 };
 
 public:
-    explicit BannerObject(const rct_object_entry &entry) : SceneryObject(entry) { };
+    explicit BannerObject(const rct_object_entry &entry) : SceneryObject(entry) { }
 
     void * GetLegacyData()  override { return &_legacyType; }
 

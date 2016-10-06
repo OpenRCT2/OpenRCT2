@@ -533,76 +533,76 @@ STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular 
 STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
-STR_0532    :
-STR_0533    :
+STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
+STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
 STR_0534    :Self-drive petrol-engined go karts
 STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0541    :
-STR_0542    :
-STR_0543    :
-STR_0544    :
-STR_0545    :
-STR_0546    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0537    :Self-drive electric dodgem cars
+STR_0538    :Large swinging pirate ship
+STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
+STR_0540    :A stall where guests can purchase food
+STR_0541    :<removed string - do not use>
+STR_0542    :A stall where guests can purchase drinks
+STR_0543    :<removed string - do not use>
+STR_0544    :A stall that sells souvenirs
+STR_0545    :Traditional rotating carousel with carved wooden horses
+STR_0546    :<removed string - do not use>
+STR_0547    :A stall where guests can obtain park maps and purchase umbrellas
+STR_0548    :A toilet building
+STR_0549    :Rotating big wheel with open chairs
+STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
+STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
+STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heals
+STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
 STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
+STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_0559    :Large themed building containing scary corridors and spooky rooms
+STR_0560    :A place for sick guests to go for faster recovery
+STR_0561    :Circus animal show inside a big-top tent
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
 STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
-STR_0568    :
+STR_0568    :<removed string - do not use>
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
-STR_0570    :
+STR_0570    :<removed string - do not use>
 STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
 STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
 STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
 STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
-STR_0576    :
+STR_0576    :<removed string - do not use>
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
-STR_0579    :
+STR_0579    :A gentle game of miniature golf
 STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
 STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
-STR_0582    :
-STR_0583    :
+STR_0582    :Self-drive hovercraft vehicles
+STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
 STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
-STR_0589    :
+STR_0589    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
 STR_0590    :Riders ride in a submerged submarine through an underwater course
 STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0592    :
-STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
+STR_0592    :<removed string - do not use>
+STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
+STR_0594    :<removed string - do not use>
+STR_0595    :<removed string - do not use>
+STR_0596    :<removed string - do not use>
+STR_0597    :<removed string - do not use>
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
-STR_0601    :
+STR_0601    :<removed string - do not use>
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
 STR_0603    :Guest {INT32}
 STR_0604    :Guest {INT32}
@@ -888,7 +888,7 @@ STR_0882    :Load Game
 STR_0883    :Save Game
 STR_0884    :Load Landscape
 STR_0885    :Save Landscape
-STR_0886    :Quit Game
+STR_0886    :<removed string - do not use>
 STR_0887    :Quit Scenario Editor
 STR_0888    :Quit Roller Coaster Designer
 STR_0889    :Quit Track Designs Manager
@@ -2907,7 +2907,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
+STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -4116,8 +4116,8 @@ STR_5806    :Toggle windowed mode
 STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
-STR_5810    :Disable train length limit
-STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train
+STR_5810    :Disable vehicle limits
+STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
 STR_5812    :Show multiplayer window
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4222,6 +4222,16 @@ STR_5910    :Apply
 STR_5911    :See-Through Paths
 STR_5912    :See-through paths toggle
 STR_5913    :Chat
+STR_5914    :Unknown ride
+STR_5915    :Player
+STR_5916    :{COMMA16} player
+STR_5917    :{COMMA16} players
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :Render weather effects
+STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
 
 #############
 # Scenarios #

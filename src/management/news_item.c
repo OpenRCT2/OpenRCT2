@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -25,7 +24,7 @@
 #include "../util/util.h"
 #include "news_item.h"
 
-rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+rct_news_item gNewsItems[MAX_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
 const uint8 news_type_properties[] =	{
@@ -46,7 +45,7 @@ static int news_item_get_new_history_slot();
 
 bool news_item_is_valid_idx(int index)
 {
-	if (index > MAX_NEWS_ITEMS) {
+	if (index >= MAX_NEWS_ITEMS) {
 		log_error("Tried to get news item past MAX_NEWS.");
 		return false;
 	}
@@ -144,7 +143,7 @@ void news_item_update_current()
 void news_item_close_current()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItems = gNewsItems;
 
 	// Check if there is a current message
 	if (news_item_is_queue_empty())
@@ -157,7 +156,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < MAX_NEWS_ITEMS)
+	if (i < MAX_NEWS_ITEMS - 1)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -280,7 +279,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	utf8 *buffer = RCT2_ADDRESS(0x0141EF68, char);
+	utf8 buffer[256];
 	void *args = gCommonFormatArgs;
 
 	format_string(buffer, string_id, args); // overflows possible?
@@ -289,7 +288,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
-	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItem = gNewsItems;
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
@@ -370,8 +369,7 @@ void news_item_open_subject(int type, int subject)
 			window_event_mouse_down_call(window, 4 + subject);
 		break;
 	case NEWS_ITEM_PEEPS:
-		// Open guest list to right tab
-		window_guest_list_open_with_filter(3, subject);;
+		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;
 		break;
 	case NEWS_ITEM_AWARD:
 		window_park_awards_open();
@@ -403,7 +401,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 		}
 	}
 
-	for (int i = 11; i <= MAX_NEWS_ITEMS; i++) {
+	for (int i = 11; i < MAX_NEWS_ITEMS; i++) {
 		if (!news_item_is_empty(i)) {
 			rct_news_item * const newsItem = news_item_get(i);
 			if (type == newsItem->type && assoc == newsItem->assoc) {
@@ -418,7 +416,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 
 void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 {
-	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItem = gNewsItems;
 
 	// Find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {

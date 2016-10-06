@@ -40,6 +40,7 @@ struct DrawImageCommand {
     sint32 clip[4];
     CachedTextureInfo texMask;
     CachedTextureInfo texColour;
+    CachedTextureInfo texPalette;
     sint32 bounds[4];
     bool mask;
 };

@@ -23,14 +23,14 @@ extern "C"
     #include "../world/scenery.h"
 }
 
-class SmallSceneryObject : public SceneryObject
+class SmallSceneryObject final : public SceneryObject
 {
 private:
     rct_scenery_entry   _legacyType = { 0 };
     uint8 *             _var10data = nullptr;
 
 public:
-    explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { };
+    explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
     ~SmallSceneryObject();
 
     void * GetLegacyData()  override { return &_legacyType; }

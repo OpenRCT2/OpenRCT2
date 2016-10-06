@@ -54,10 +54,10 @@ enum {
 static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
 	uint32 image_id;
 
-	if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 1) image_id = SPIRAL_SLIDE_RIGHT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 2) image_id = SPIRAL_SLIDE_RIGHT_R2 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 3) image_id = SPIRAL_SLIDE_RIGHT_R3 | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | gTrackColours[SCHEME_TRACK];
+	if (direction == 1) image_id = SPIRAL_SLIDE_RIGHT_R1 | gTrackColours[SCHEME_TRACK];
+	if (direction == 2) image_id = SPIRAL_SLIDE_RIGHT_R2 | gTrackColours[SCHEME_TRACK];
+	if (direction == 3) image_id = SPIRAL_SLIDE_RIGHT_R3 | gTrackColours[SCHEME_TRACK];
 
 	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3, get_current_rotation());
 
@@ -66,10 +66,10 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
 	uint32 image_id;
 
-	if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 1) image_id = SPIRAL_SLIDE_LEFT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 2) image_id = SPIRAL_SLIDE_LEFT_R2 | RCT2_GLOBAL(0x00F44198, uint32);
-	if (direction == 3) image_id = SPIRAL_SLIDE_LEFT_R3 | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | gTrackColours[SCHEME_TRACK];
+	if (direction == 1) image_id = SPIRAL_SLIDE_LEFT_R1 | gTrackColours[SCHEME_TRACK];
+	if (direction == 2) image_id = SPIRAL_SLIDE_LEFT_R2 | gTrackColours[SCHEME_TRACK];
+	if (direction == 3) image_id = SPIRAL_SLIDE_LEFT_R3 | gTrackColours[SCHEME_TRACK];
 
 	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3, get_current_rotation());
 }
@@ -82,24 +82,24 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 	rct_ride *ride = get_ride(rideIndex);
 
 	if (direction == 1) {
-		image_id = SPIRAL_SLIDE_INSIDE_R1 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_INSIDE_R1 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3, get_current_rotation());
 	} else if (direction == 2) {
-		image_id = SPIRAL_SLIDE_INSIDE_R2 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_INSIDE_R2 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3, get_current_rotation());
 	}
 
 	if (direction == 0) {
-		image_id = SPIRAL_SLIDE_CENTER_R0 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_CENTER_R0 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3, get_current_rotation());
 	} else if (direction == 1) {
-		image_id = SPIRAL_SLIDE_CENTER_R1 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_CENTER_R1 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3, get_current_rotation());
 	} else if (direction == 2) {
-		image_id = SPIRAL_SLIDE_CENTER_R2 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_CENTER_R2 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3, get_current_rotation());
 	} else if (direction == 3) {
-		image_id = SPIRAL_SLIDE_CENTER_R3 | RCT2_GLOBAL(0x00F44198, uint32);
+		image_id = SPIRAL_SLIDE_CENTER_R3 | gTrackColours[SCHEME_TRACK];
 		sub_98197C(image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3, get_current_rotation());
 	}
 
@@ -168,15 +168,15 @@ static void paint_spiral_slide(uint8 rideIndex, uint8 trackSequence, uint8 direc
 
 	int edges = edges_2x2[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
 	// Base
-	uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+	uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | gTrackColours[SCHEME_SUPPORTS];
 	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, spiral_slide_fence_sprites, get_current_rotation());
+	track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites, get_current_rotation());
 
 	switch (trackSequence) {
 		case 1: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;

@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../common.h"
 #include "../localisation/localisation.h"
@@ -61,6 +60,8 @@ sint16 gSceneryCtrlPressed;
 sint16 gSceneryCtrlPressZ;
 
 uint8 gSceneryGroundFlags;
+
+money32 gClearSceneryCost;
 
 // rct2: 0x009A3E74
 const rct_xy8 ScenerySubTileOffsets[] = {

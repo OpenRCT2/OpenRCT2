@@ -16,7 +16,6 @@
 
 #include "../paint.h"
 #include "../../interface/viewport.h"
-#include "../../addresses.h"
 #include "map_element.h"
 #include "../../drawing/drawing.h"
 #include "../../ride/ride_data.h"
@@ -32,6 +31,19 @@
 #include "../../localisation/localisation.h"
 #include "../../game.h"
 #include "../supports.h"
+
+#ifdef NO_RCT2
+uint8 g141E9DB;
+uint16 gUnk141E9DC;
+rct_xy16 gPaintMapPosition;
+bool gDidPassSurface;
+rct_map_element * gSurfaceElement;
+tunnel_entry gLeftTunnels[65];
+uint8 gLeftTunnelCount;
+tunnel_entry gRightTunnels[65];
+uint8 gRightTunnelCount;
+uint8 gVerticalTunnelHeight;
+#endif
 
 static void blank_tiles_paint(int x, int y);
 static void sub_68B3FB(int x, int y);
@@ -52,8 +64,8 @@ void map_element_paint_setup(int x, int y)
 	) {
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_force_set_general_support_height(-1, 0);
-		RCT2_GLOBAL(0x0141E9DB, uint8) = 0;
-		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
+		g141E9DB = 0;
+		gUnk141E9DC = 0xFFFF;
 
 		sub_68B3FB(x, y);
 	} else {
@@ -75,8 +87,8 @@ void sub_68B2B7(int x, int y)
 	) {
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_force_set_general_support_height(-1, 0);
-		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
-		RCT2_GLOBAL(0x0141E9DB, uint8) = 2;
+		gUnk141E9DC = 0xFFFF;
+		g141E9DB = G141E9DB_FLAG_2;
 
 		sub_68B3FB(x, y);
 	} else {
@@ -118,8 +130,8 @@ static void blank_tiles_paint(int x, int y)
 	dx -= 20;
 	dx -= dpi->height;
 	if (dx >= dpi->y) return;
-	RCT2_GLOBAL(0x9DE568, sint16) = x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = y;
+	gUnk9DE568 = x;
+	gUnk9DE56C = y;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
@@ -134,14 +146,19 @@ static void sub_68B3FB(int x, int y)
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
-	RCT2_GLOBAL(0x141F56A, uint16_t) = 0;
-	RCT2_GLOBAL(0x9E3138, uint8_t) = 0xFF;
-	RCT2_GLOBAL(0x9E30B6, uint8_t) = 0xFF;
-	RCT2_GLOBAL(0x9E323C, uint8_t) = 0xFF;
-	RCT2_GLOBAL(0x9DE56A, uint16_t) = x;
-	RCT2_GLOBAL(0x9DE56E, uint16_t) = y;
-	RCT2_GLOBAL(0x9DE574, uint16_t) = x;
-	RCT2_GLOBAL(0x9DE576, uint16_t) = y;
+	gLeftTunnelCount = 0;
+	gRightTunnelCount = 0;
+	gLeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+	gRightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+
+	gVerticalTunnelHeight = 0xFF;
+
+#ifndef NO_RCT2
+	RCT2_GLOBAL(0x009DE56A, uint16) = x;
+	RCT2_GLOBAL(0x009DE56E, uint16) = y;
+#endif
+	gPaintMapPosition.x = x;
+	gPaintMapPosition.y = y;
 
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
 	uint8 rotation = get_current_rotation();
@@ -168,8 +185,8 @@ static void sub_68B3FB(int x, int y)
 	dx >>= 1;
 	// Display little yellow arrow when building footpaths?
 	if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
-		RCT2_GLOBAL(0x9DE56A, uint16) == gMapSelectArrowPosition.x &&
-		RCT2_GLOBAL(0x9DE56E, uint16) == gMapSelectArrowPosition.y
+		gPaintMapPosition.x == gMapSelectArrowPosition.x &&
+		gPaintMapPosition.y == gMapSelectArrowPosition.y
 	) {
 		uint8 arrowRotation =
 			(rotation
@@ -181,8 +198,8 @@ static void sub_68B3FB(int x, int y)
 			0x20900C27;
 		int arrowZ = gMapSelectArrowPosition.z;
 
-		RCT2_GLOBAL(0x9DE568, sint16) = x;
-		RCT2_GLOBAL(0x9DE56C, sint16) = y;
+		gUnk9DE568 = x;
+		gUnk9DE56C = y;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
@@ -215,14 +232,14 @@ static void sub_68B3FB(int x, int y)
 	if (dx >= dpi->y)
 		return;
 
-	RCT2_GLOBAL(0x9DE568, sint16) = x;
-	RCT2_GLOBAL(0x9DE56C, sint16) = y;
-	RCT2_GLOBAL(0x9DE57C, uint16) = 0;
+	gUnk9DE568 = x;
+	gUnk9DE56C = y;
+	gDidPassSurface = false;
 	do {
 		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
 		int height = map_element->base_height * 8;
 
-		uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
+		rct_xy16 dword_9DE574 = gPaintMapPosition;
 		g_currently_drawn_item = map_element;
 		//setup the painting of for example: the underground, signs, rides, scenery, etc.
 		switch (map_element_get_type(map_element))
@@ -261,7 +278,7 @@ static void sub_68B3FB(int x, int y)
 			// An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
 			return;
 		}
-		RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
+		gPaintMapPosition = dword_9DE574;
 	} while (!map_element_is_last_for_tile(map_element++));
 
 	if (!gShowSupportSegmentHeights) {
@@ -302,16 +319,21 @@ static void sub_68B3FB(int x, int y)
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
 {
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56A, uint8)++;
+	gLeftTunnels[gLeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+	gLeftTunnels[gLeftTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
+	gLeftTunnelCount++;
 }
 
 void paint_util_push_tunnel_right(uint16 height, uint8 type)
 {
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56B, uint8)++;
+	gRightTunnels[gRightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+	gRightTunnels[gRightTunnelCount + 1] = (tunnel_entry){0xFF, 0xFF};
+	gRightTunnelCount++;
+}
+
+void paint_util_set_vertical_tunnel(uint16 height)
+{
+	gVerticalTunnelHeight = height / 16;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)

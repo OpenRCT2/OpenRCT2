@@ -22,10 +22,18 @@
 #define OPENRCT2_NAME				"OpenRCT2"
 #define OPENRCT2_VERSION			"0.0.5"
 
-#if defined(__LP64__) || defined(_WIN64)
-	#define OPENRCT2_ARCHITECTURE		"x64"
-#else
+#if defined(__amd64__) || defined(_M_AMD64)
+	#define OPENRCT2_ARCHITECTURE		"x86-64"
+#elif defined(__i386__) || defined(_M_IX86)
 	#define OPENRCT2_ARCHITECTURE		"x86"
+#elif defined(__aarch64__)
+	#define OPENRCT2_ARCHITECTURE		"AArch64"
+#elif defined(__arm__) || defined(_M_ARM)
+	#define OPENRCT2_ARCHITECTURE		"ARMv7"
+#endif
+
+#ifndef OPENRCT2_ARCHITECTURE
+	#error "OPENRCT2_ARCHITECTURE is undefined. Please add identification."
 #endif
 
 // Platform
