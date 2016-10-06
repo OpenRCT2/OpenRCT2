@@ -30,6 +30,7 @@
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
+- Fix: [#2042] Guests entering queues are immediately annoyed when many entertainers are around (original bug).
 - Fix: [#2081] Game hangs when track has infinite loop.
 - Fix: [#2754] Dragging scrollview fails when scaled.
 - Fix: [#3210] Scenery window scrolls too far.
