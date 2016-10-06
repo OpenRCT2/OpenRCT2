@@ -624,8 +624,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	}
 	}
 
-	sprintf(*error + strlen(*error), "");
-
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
 		return false;
