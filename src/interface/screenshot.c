@@ -179,7 +179,7 @@ void screenshot_giant()
 	int centreX = (mapSize / 2) * 32 + 16;
 	int centreY = (mapSize / 2) * 32 + 16;
 
-	int x, y;
+	int x = 0, y = 0;
 	int z = map_element_height(centreX, centreY) & 0xFFFF;
 	switch (rotation) {
 	case 0:
@@ -254,7 +254,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	bool customLocation = false;
 	bool centreMapX = false;
 	bool centreMapY = false;
-	int resolutionWidth, resolutionHeight, customX, customY, customZoom, customRotation;
+	int resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation;
 
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];
@@ -320,7 +320,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 			if (centreMapY)
 				customY = (mapSize / 2) * 32 + 16;
 
-			int x, y;
+			int x = 0, y = 0;
 			int z = map_element_height(customX, customY) & 0xFFFF;
 			switch (customRotation) {
 			case 0:
