@@ -168,6 +168,44 @@ enum {
 
 	SPR_WOODEN_RC_STATION_RAILS_SW_NE = 24839,
 	SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
+
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE = 23555,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE = 23557,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW = 23559,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_SE_NW = 23560,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE = 24421,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE = 24423,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW = 24425,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SE_NW = 24426,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE = 23556,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NE_SW = 23558,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE = 24422,
+	SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW = 24424,
+
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE = 23541,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE = 23542,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW = 23543,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_SE_NW = 23544,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE = 24407,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE = 24408,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW = 24409,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SE_NW = 24410,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE = 23567,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW = 23568,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE = 24433,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW = 24434,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SW_NE = 23575,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE = 23576,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW = 23577,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SE_NW = 23578,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SW_NE = 24441,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE = 24442,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW = 24443,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SE_NW = 24444,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE = 23601,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW = 23602,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE = 24467,
+	SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW = 24468,
 };
 
 static const uint32 _wooden_rc_block_brakes_image_ids[4][2] = {
@@ -373,6 +411,97 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackS
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+static void wooden_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][4] = {
+		{ SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE, 0, 0 },
+		{ SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE },
+		{ SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW },
+		{ SPR_WOODEN_RC_60_DEG_TO_25_DEG_SE_NW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SE_NW, 0, 0 },
+	};
+
+	if (direction == 0 || direction == 3) {
+		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+	} else {
+		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
+		wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
+	}
+	wooden_a_supports_paint_setup(direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_8);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 72, 0x20);
+}
+
+static void wooden_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[2][4][4] = {
+		{
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE, 0, 0 },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SE_NW, 0, 0 },
+		},
+		{
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SW_NE, 0, 0 },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW },
+			{ SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SE_NW, 0, 0 },
+		}
+	};
+
+	uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
+	wooden_rc_track_paint(imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+	if (direction == 1 || direction == 2) {
+		wooden_rc_track_paint(imageIds[isChained][direction][2], imageIds[isChained][direction][3], direction, 0, 0, 32, 1, 9, height, 0, 26, height + 5);
+	}
+	wooden_a_supports_paint_setup(direction & 1, 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+
+	if (direction == 0 || direction == 3) {
+		paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_14);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
+static void wooden_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
 static void wooden_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -417,6 +546,23 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int trackType, int direc
 		return wooden_rc_track_flat_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
 		return wooden_rc_track_25_deg_up_to_60_deg_up;
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+		return wooden_rc_track_60_deg_up_to_25_deg_up;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+		return wooden_rc_track_25_deg_up_to_flat;
+	case TRACK_ELEM_25_DEG_DOWN:
+		return wooden_rc_track_25_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN:
+		return wooden_rc_track_60_deg_down;
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+		return wooden_rc_track_flat_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+		return wooden_rc_track_25_deg_down_to_60_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+		return wooden_rc_track_60_deg_down_to_25_deg_down;
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+		return wooden_rc_track_25_deg_down_to_flat;
+
 	case TRACK_ELEM_BRAKES:
 		return wooden_rc_track_brakes;
 	case TRACK_ELEM_BLOCK_BRAKES:
