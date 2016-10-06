@@ -150,10 +150,10 @@ static std::wstring GetDumpDirectory()
     return result;
 }
 
-#endif // USE_BREAKPAD
-
 // Using non-null pipe name here lets breakpad try setting OOP crash handling
 constexpr const wchar_t * PipeName = L"openrct2-bpad";
+
+#endif // USE_BREAKPAD
 
 extern "C" CExceptionHandler crash_init()
 {

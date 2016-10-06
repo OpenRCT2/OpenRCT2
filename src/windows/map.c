@@ -1230,7 +1230,7 @@ static void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, i
  */
 static void window_map_place_park_entrance_tool_update(int x, int y)
 {
-	sint16 mapX, mapY, mapZ;
+	sint16 mapX, mapY, mapZ = 0;
 	int direction, sideDirection;
 
 	map_invalidate_selection_rect();

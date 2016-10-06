@@ -529,7 +529,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 					proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
 				}
 				if (inputMapElement->clearance_height + 2 == mapElement->base_height) {
-					if (inputMapElement->clearance_height + 10 >= mapElement->base_height) {
+					if ((uint8)(inputMapElement->clearance_height + 10) >= mapElement->base_height) {
 						proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
 					}
 				}
