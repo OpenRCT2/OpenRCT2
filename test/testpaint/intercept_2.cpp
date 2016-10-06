@@ -327,7 +327,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
@@ -526,7 +525,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
@@ -723,7 +721,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};

@@ -50,8 +50,10 @@
 
 int gExitCode;
 
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
+	static int fdData = -1;
+#endif
 #if defined(__unix__) && !defined(NO_RCT2)
-	static int fdData;
 	static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
 #endif
 

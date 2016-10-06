@@ -25,6 +25,7 @@
 #include "../../paint/supports.h"
 #include "../../world/map.h"
 
+#ifndef NO_VEHICLES
 // 0x0099279E:
 static const vehicle_boundbox _riverRapidsBoundbox[] = {
 	{ -13, -13,  1, 26, 26, 13 },
@@ -37,6 +38,7 @@ static const vehicle_boundbox _riverRapidsBoundbox[] = {
 	{ -13, -13,  1, 26, 26, 13 },
 	{ -13, -13,  1, 26, 26, 13 }
 };
+#endif
 
 enum
 {

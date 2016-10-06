@@ -244,7 +244,7 @@ static bool browse(bool isSave, char *path)
 	desc.type = isSave ? FD_SAVE : FD_OPEN;
 	desc.default_filename = isSave ? path : NULL;
 
-	rct_string_id title;
+	rct_string_id title = STR_NONE;
 	switch (_type & 0x0E) {
 	case LOADSAVETYPE_GAME:
 		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;

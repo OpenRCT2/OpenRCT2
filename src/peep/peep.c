@@ -9204,7 +9204,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
  *  param dist is not used.
  */
 static void get_ride_queue_end(sint16 *x, sint16 *y, sint16 *z){
-	rct_xy16 result;
+	rct_xy16 result = { 0, 0 };
 	rct_map_element *mapElement = map_get_first_element_at(*x / 32, *y / 32);
 
 	bool found = false;
@@ -9461,7 +9461,7 @@ static int guest_path_finding(rct_peep* peep)
 	 * At the same time, count how many entrance stations there are and
 	 * which stations are entrance stations. */
 	uint16 closestDist = 0xFFFF;
-	uint8 closestStationNum;
+	uint8 closestStationNum = 0;
 
 	int numEntranceStations = 0;
 	uint8 entranceStations = 0;

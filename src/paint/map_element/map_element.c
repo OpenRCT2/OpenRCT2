@@ -104,7 +104,7 @@ static void blank_tiles_paint(int x, int y)
 {
 	rct_drawpixelinfo *dpi = unk_140E9A8;
 
-	int dx;
+	int dx = 0;
 	switch (get_current_rotation()) {
 	case 0:
 		dx = x + y;

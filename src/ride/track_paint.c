@@ -209,7 +209,7 @@ bool gUseOriginalRidePaint = false;
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
 {
-	rct_xy16 offset;
+	rct_xy16 offset = { 0, 0 };
 	switch (edge) {
 		case EDGE_NE:
 			offset = loc_7667AC[rotation];
@@ -427,8 +427,8 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 
 	uint32 imageId;
 	uint32 baseImageId = entranceStyle->base_image_id;
-	int imageOffset;
-	rct_xyz16 offset, bounds, boundsOffset;
+	int imageOffset = 0;
+	rct_xyz16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
 	offset = (rct_xyz16) {0, 0, height};
 	switch (edge) {

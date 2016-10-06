@@ -367,7 +367,6 @@ static void printImageId(uint32 input, utf8string *out) {
 	uint32 image = input & 0x7FFFF;
 	uint32 palette = input & ~0x7FFFF;
 
-	bool allocated = false;
 	utf8string paletteName;
 	if (palette == DEFAULT_SCHEME_TRACK)paletteName = "SCHEME_TRACK";
 	else if (palette == DEFAULT_SCHEME_SUPPORTS)paletteName = "SCHEME_SUPPORTS";
@@ -528,7 +527,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;
 
-	rct_vehicle vehicle = { 0 };
 	rct_ride ride = { 0 };
 
 	rct_ride_entry rideEntry = { 0 };
@@ -625,8 +623,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 		}
 	}
 	}
-
-	sprintf(*error + strlen(*error), "");
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
