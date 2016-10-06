@@ -443,6 +443,13 @@ static void printFunctionCall(utf8string *out, function_call call) {
 	}
 
 	sprintf(*out + strlen, "%d)", call.paint.rotation);
+
+	if (call.function != PAINT_98196C) {
+		sprintf(*out + strlen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
+			call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
+			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
+			call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
+	}
 }
 
 static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
