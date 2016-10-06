@@ -661,25 +661,19 @@ static void window_tile_inspector_rotate_element(int index) {
 
 // Swap element with its parent
 static void window_tile_inspector_swap_elements(sint16 first, sint16 second) {
-	rct_map_element *mapElement;
-	rct_map_element *firstElement = NULL;
-	rct_map_element *secondElement = NULL;
-	mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+	rct_map_element *const firstElement = mapElement + first;
+	rct_map_element *const secondElement = mapElement + second;
 
 	// swap_elements shouldn't be called when there is only one element on the tile
 	assert(!map_element_is_last_for_tile(mapElement));
 
-	// Search for the elements
-	sint16 i = 0;
+	// Make sure both elements are actually on the current tile
+	sint16 elementCount = 0;
 	do {
-		if (i == first) firstElement = mapElement;
-		if (i == second) secondElement = mapElement;
-		i++;
-
-		// Check if both elements have been found
-		if (firstElement != NULL && secondElement != NULL)
-			break;
+		elementCount++;
 	} while (!map_element_is_last_for_tile(mapElement++));
+	assert(elementCount > max(first, second));
 
 	// Swap their memory
 	rct_map_element temp = *firstElement;
@@ -722,17 +716,7 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 	sint16 originY = windowTileInspectorTileY << 5;
 	sint16 originZ = mapElement->base_height * 8;
 	uint8 rotation = map_element_get_direction(mapElement);
-	sint16 trackpieceZ = originZ;
-
-	switch (type) {
-	case TRACK_ELEM_BEGIN_STATION:
-	case TRACK_ELEM_MIDDLE_STATION:
-		type = TRACK_ELEM_END_STATION;
-		break;
-	}
-
 	uint8 rideIndex = mapElement->properties.track.ride_index;
-	type = mapElement->properties.track.type;
 
 	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
@@ -786,8 +770,6 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 		z += trackBlock->z;
 
 		map_invalidate_tile_full(x, y);
-
-		trackpieceZ = z;
 
 		bool found = false;
 		mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -831,23 +813,11 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 // Basically a copy of the above function, with just two different lines... should probably be combined somehow
 static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain) {
 	uint8 type = mapElement->properties.track.type;
-	uint8 sequence = mapElement->properties.track.sequence;
 	sint16 originX = windowTileInspectorTileX << 5;
 	sint16 originY = windowTileInspectorTileY << 5;
 	sint16 originZ = mapElement->base_height * 8;
 	uint8 rotation = map_element_get_direction(mapElement);
-	sint16 trackpieceZ = originZ;
-
-	switch (type) {
-	case TRACK_ELEM_BEGIN_STATION:
-	case TRACK_ELEM_MIDDLE_STATION:
-		type = TRACK_ELEM_END_STATION;
-		break;
-	}
-
 	uint8 rideIndex = mapElement->properties.track.ride_index;
-	type = mapElement->properties.track.type;
-
 	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
 	trackBlock += mapElement->properties.track.sequence & 0x0F;
@@ -900,8 +870,6 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 		z += trackBlock->z;
 
 		map_invalidate_tile_full(x, y);
-
-		trackpieceZ = z;
 
 		bool found = false;
 		mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1934,7 +1902,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 
 			// Banner info
 			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
-			if (fenceEntry.flags & WALL_SCENERY_BANNER) {
+			if (fenceEntry.flags & WALL_SCENERY_IS_BANNER) {
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, 12, x, y + 11);
 			}
 			else {

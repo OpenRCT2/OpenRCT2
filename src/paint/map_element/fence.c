@@ -62,7 +62,7 @@ static void fence_paint_door(uint32 imageId,
         imageId = (imageId & 0x7FFFF) | dword_141F710;
     }
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_BANNER) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
         paint_struct * ps;
 
         ps = sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsR1.x, boundsR1.y, (sint8) boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
@@ -279,11 +279,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
             }
 
             if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2) {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_BANNER) {
+                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
                     imageOffset += 12;
                 }
             } else {
-                if (sceneryEntry->wall.flags & WALL_SCENERY_BANNER) {
+                if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
                     imageOffset += 6;
                 }
             }
@@ -302,7 +302,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 imageOffset = 1;
             }
 
-            if (sceneryEntry->wall.flags & WALL_SCENERY_BANNER) {
+            if (sceneryEntry->wall.flags & WALL_SCENERY_IS_BANNER) {
                 imageOffset += 6;
             }
 
