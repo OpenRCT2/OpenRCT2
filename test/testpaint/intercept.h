@@ -33,6 +33,41 @@ extern "C"
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
+enum
+{
+    PAINT_98196C,
+    PAINT_98197C,
+    PAINT_98198C,
+    PAINT_98199C,
+
+    SUPPORTS_METAL_A,
+    SUPPORTS_METAL_B,
+    SUPPORTS_WOOD_A,
+    SUPPORTS_WOOD_B,
+};
+
+typedef struct
+{
+    uint8 function;
+    struct paint
+    {
+        uint32 image_id;
+        rct_xy16 offset;
+        rct_xyz16 bound_box_length;
+        sint16 z_offset;
+        rct_xyz16 bound_box_offset;
+        uint32 rotation;
+    } paint;
+    struct supports
+    {
+        int type;
+        uint8 segment;
+        int special;
+        int height;
+        uint32 colour_flags;
+    } supports;
+} function_call;
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -46,6 +81,8 @@ extern "C"
     bool testSupportSegments(uint8 rideType, uint8 trackType);
     bool testTunnels(uint8 rideType, uint8 trackType);
     bool testVerticalTunnels(uint8 rideType, uint8 trackType);
+    void intercept_clear_calls();
+    int intercept_get_calls(function_call * buffer);
 
     int generatePaintCode(uint8 rideType);
 #ifdef __cplusplus

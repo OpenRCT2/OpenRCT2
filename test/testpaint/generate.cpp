@@ -84,6 +84,7 @@ private:
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
 
+        std::vector<function_call> calls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
         std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
@@ -96,7 +97,11 @@ private:
             mapElement.base_height = 3;
             g_currently_drawn_item = &mapElement;
 
+            function_call callBuffer[256] = { 0 };
+            intercept_clear_calls();
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
+            int numCalls = intercept_get_calls(callBuffer);
+            calls[direction].insert(calls[direction].begin(), callBuffer, callBuffer + numCalls);
 
             segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
@@ -105,11 +110,45 @@ private:
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
         }
 
+        GenerateCalls(1, calls, height);
         GenerateTunnelCall(tileTunnelCalls);
         GenerateSegmentSupportCall(segmentSupportCalls);
         GenerateGeneralSupportCall(generalSupports);
 
         WriteLine(0, "}");
+    }
+
+    void GenerateCalls(int tabs, std::vector<function_call> calls[4], int height)
+    {
+        WriteLine(tabs, "switch (direction) {");
+        for (int direction = 0; direction < 4; direction++)
+        {
+            WriteLine(tabs, "case %d:", direction);
+            for (auto call : calls[direction])
+            {
+                if (call.function == PAINT_98197C ||
+                    call.function == PAINT_98199C)
+                {
+                    auto funcName = (call.function == PAINT_98197C) ? "sub_98197C" : "sub_98199C";
+                    WriteLine(tabs + 1,
+                        "%s(%s, %d, %d, %d, %d, %d, height%s, %d, %d, height%s, get_current_rotation());",
+                        funcName,
+                        GetImageIdString(call.paint.image_id).c_str(),
+                        call.paint.offset.x,
+                        call.paint.offset.y,
+                        call.paint.bound_box_length.x,
+                        call.paint.bound_box_length.y,
+                        call.paint.bound_box_length.z,
+                        GetOffsetExpressionString(call.paint.z_offset - height).c_str(),
+                        call.paint.bound_box_offset.x,
+                        call.paint.bound_box_offset.y,
+                        GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str()
+                    );
+                }
+            }
+            WriteLine(tabs + 1, "break;");
+        }
+        WriteLine(tabs, "}");
     }
 
     bool GetTunnelCalls(int trackType, int direction, int trackSequence, int height, rct_map_element * mapElement, Intercept2::TunnelCall tileTunnelCalls[4][4])
@@ -243,6 +282,39 @@ private:
         {
             WriteLine(1, "#error Unsupported: different directional general supports");
         }
+    }
+
+    std::string GetImageIdString(uint32 imageId)
+    {
+        std::string result;
+
+        uint32 image = imageId & 0x7FFFF;
+        uint32 palette = imageId & ~0x7FFFF;
+
+        std::string paletteName;
+        if (palette == Intercept2::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
+        else if (palette == Intercept2::DEFAULT_SCHEME_SUPPORTS) paletteName = "gTrackColours[SCHEME_SUPPORTS]";
+        else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
+        else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
+        else {
+            paletteName = StringFormat("0x%08X", palette);
+        }
+
+        if (image == 0) {
+            result = paletteName;
+        } else if (image & 0x70000) {
+            result = StringFormat("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
+        } else {
+            result = StringFormat("%s | %d", paletteName.c_str(), image);
+        }
+        return result;
+    }
+
+    std::string GetOffsetExpressionString(int offset)
+    {
+        if (offset < 0) return std::string(" - ") + std::to_string(-offset);
+        if (offset > 0) return std::string(" + ") + std::to_string(offset);
+        return std::string();
     }
 
     std::string GetORedSegments(int segments)
