@@ -9251,10 +9251,8 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint8 best_sub = 0xFF;
 
 		uint8 bestJunctions = 0;
-		rct_xyz8 bestJunctionList[16];
-		memset(bestJunctionList, 0x0, sizeof(bestJunctionList));
-		uint8 bestDirectionList[16];
-		memset(bestDirectionList, 0x0, sizeof(bestDirectionList));
+		rct_xyz8 bestJunctionList[16] = { 0 };
+		uint8 bestDirectionList[16] = { 0 };
 		rct_xyz8 bestXYZ;
 		bestXYZ.x = 0;
 		bestXYZ.y = 0;
