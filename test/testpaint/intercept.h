@@ -25,6 +25,7 @@ extern "C"
 #endif
     #include "../../src/interface/colour.h"
     #include "../../src/paint/paint.h"
+    #include "../../src/paint/map_element/map_element.h"
 #ifdef __cplusplus
 }
 #endif
@@ -87,6 +88,7 @@ namespace Intercept2
         uint8 type;
     };
 
+    sint16 getTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
     std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation);
 }
 

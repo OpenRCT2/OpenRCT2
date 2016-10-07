@@ -84,6 +84,7 @@ private:
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
 
+        Intercept2::TunnelCall tileTunnelCalls[4][4];
         std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
@@ -100,12 +101,105 @@ private:
             segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
             generalSupports[direction].height -= height;
+
+            GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
         }
 
+        GenerateTunnelCall(tileTunnelCalls);
         GenerateSegmentSupportCall(segmentSupportCalls);
         GenerateGeneralSupportCall(generalSupports);
 
         WriteLine(0, "}");
+    }
+
+    bool GetTunnelCalls(int trackType, int direction, int trackSequence, int height, rct_map_element * mapElement, Intercept2::TunnelCall tileTunnelCalls[4][4])
+    {
+        gLeftTunnelCount = 0;
+        gRightTunnelCount = 0;
+        for (int offset = -8; offset <= 8; offset += 8)
+        {
+            CallOriginal(trackType, direction, trackSequence, height + offset, mapElement);
+        }
+
+        uint8 rightIndex = (4 - direction) % 4;
+        uint8 leftIndex = (rightIndex + 1) % 4;
+
+        for (int i = 0; i < 4; ++i) {
+            tileTunnelCalls[direction][i].call = Intercept2::TUNNELCALL_SKIPPED;
+        }
+        if (gRightTunnelCount == 0) {
+            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_NONE;
+        } else if (gRightTunnelCount == 3) {
+            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_CALL;
+            tileTunnelCalls[direction][rightIndex].offset = Intercept2::getTunnelOffset(height, gRightTunnels);
+            tileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
+        } else {
+            printf("Multiple tunnels on one side aren't supported.\n");
+            return false;
+        }
+
+        if (gLeftTunnelCount == 0) {
+            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_NONE;
+        } else if (gLeftTunnelCount == 3) {
+            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_CALL;
+            tileTunnelCalls[direction][leftIndex].offset = Intercept2::getTunnelOffset(height, gLeftTunnels);
+            tileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
+        } else {
+            printf("Multiple tunnels on one side aren't supported.\n");
+            return false;
+        }
+
+        return true;
+    }
+
+    void GenerateTunnelCall(Intercept2::TunnelCall tileTunnelCalls[4][4])
+    {
+        sint16 tunnelOffset[4] = { 0 };
+        uint8 tunnelType[4] = { 0xFF };
+        for (int direction = 0; direction < 4; direction++)
+        {
+            for (int side = 0; side < 4; side++)
+            {
+                auto tunnel = tileTunnelCalls[direction][side];
+                if (tunnel.call == Intercept2::TUNNELCALL_CALL)
+                {
+                    tunnelOffset[direction] = tunnel.offset;
+                    tunnelType[direction] = tunnel.type;
+                    break;
+                }
+            }
+        }
+
+        if (tunnelOffset[0] == tunnelOffset[1] &&
+            tunnelOffset[0] == tunnelOffset[2] &&
+            tunnelOffset[0] == tunnelOffset[3])
+        {
+            GenerateTunnelCall(1, tunnelOffset[0], tunnelType[0]);
+        }
+        else
+        {
+            WriteLine(1, "if (direction == 0 || direction == 3) {");
+            GenerateTunnelCall(2, tunnelOffset[0], tunnelType[0]);
+            WriteLine(1, "} else {");
+            GenerateTunnelCall(2, tunnelOffset[1], tunnelType[1]);
+            WriteLine(1, "}");
+        }
+    }
+
+    void GenerateTunnelCall(int tabs, int offset, int type)
+    {
+        if (offset == 0)
+        {
+            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height, TUNNEL_%d);", offset);
+        }
+        else if (offset < 0)
+        {
+            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height - %d, TUNNEL_%d);", -offset, type);
+        }
+        else
+        {
+            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height + %d, TUNNEL_%d);", offset, type);
+        }
     }
 
     void GenerateSegmentSupportCall(std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
