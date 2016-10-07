@@ -180,6 +180,9 @@ void Network::Close()
 		_advertiser = nullptr;
 	}
 
+	CloseChatLog();
+	CloseServerLog();
+
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
@@ -199,8 +202,6 @@ void Network::Close()
 	}
 #endif
 
-	CloseChatLog();
-	CloseServerLog();
 	gfx_invalidate_screen();
 }
 
@@ -223,6 +224,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	_lastConnectStatus = SOCKET_STATUS_CLOSED;
 
 	BeginChatLog(_chatLogDirectory, _chatLogFilenameFormat);
+	BeginServerLog(_serverLogDirectory, gConfigNetwork.server_name, _serverLogFilenameFormat);
 
 	utf8 keyPath[MAX_PATH];
 	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -858,7 +860,11 @@ void Network::BeginServerLog(const char* directory, std::string server_name, con
 
 	// Log server start event
 	char log_msg[256];
-	format_string(log_msg, 256, STR_LOG_SERVER_STARTED, NULL);
+	if (GetMode() == NETWORK_MODE_CLIENT) {
+		format_string(log_msg, 256, STR_LOG_CLIENT_STARTED, NULL);
+	} else if (GetMode() == NETWORK_MODE_SERVER) {
+		format_string(log_msg, 256, STR_LOG_SERVER_STARTED, NULL);
+	}
 	AppendServerLog(log_msg);
 }
 
@@ -875,7 +881,11 @@ void Network::CloseServerLog()
 {
 	// Log server stopped event
 	char log_msg[256];
-	format_string(log_msg, 256, STR_LOG_SERVER_STOPPED, NULL);
+	if (GetMode() == NETWORK_MODE_CLIENT) {
+		format_string(log_msg, 256, STR_LOG_CLIENT_STOPPED, NULL);
+	} else if (GetMode() == NETWORK_MODE_SERVER) {
+		format_string(log_msg, 256, STR_LOG_SERVER_STOPPED, NULL);
+	}
 	AppendServerLog(log_msg);
 }
 

@@ -4329,6 +4329,8 @@ STR_6017    :{STRING} changed the park entrance fee to {STRING}
 STR_6018    :{STRING} placed new scenery.
 STR_6019    :{STRING} removed scenery.
 STR_6020    :{STRING} edited scenery.
+STR_6021    :You connected to the server.
+STR_6022    :You disconnected from the server.
 
 #############
 # Scenarios #

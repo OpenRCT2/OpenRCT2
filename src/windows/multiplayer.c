@@ -955,7 +955,6 @@ static void window_multiplayer_options_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 
 	if (network_get_mode() == NETWORK_MODE_CLIENT) {
-		w->widgets[WIDX_LOG_SERVER_ACTIONS_CHECKBOX].type = WWT_EMPTY;
 		w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WWT_EMPTY;
 	}
 
