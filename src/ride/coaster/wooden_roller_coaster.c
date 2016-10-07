@@ -35,6 +35,20 @@ typedef struct sprite_bb_2 {
 } sprite_bb_2;
 
 enum {
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE = 23497,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE = 23498,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NE_SW = 23499,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW = 23500,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE = 23501,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE = 23502,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW = 23503,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SE_NW = 23504,
+
+	SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE = 23525,
+	SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW = 23526,
+	SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW = 23527,
+
+	SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_SW_NE = 23536,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE = 23537,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE = 23538,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_NE_SW = 23539,
@@ -141,6 +155,20 @@ enum {
 	SPR_WOODEN_RC_STATION_SW_NE = 23973,
 	SPR_WOODEN_RC_STATION_NW_SE = 23974,
 
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE = 24363,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE = 24364,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NE_SW = 24365,
+	SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SE_NW = 24366,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE = 24367,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NW_SE = 24368,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NE_SW = 24369,
+	SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SE_NW = 24370,
+
+	SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_NW_SE = 24391,
+	SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_SE_NW = 24392,
+	SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_NE_SW = 24393,
+
+	SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_SW_NE = 24402,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SW_NE = 24403,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE = 24404,
 	SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NE_SW = 24405,
@@ -666,6 +694,54 @@ static void wooden_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequ
 	wooden_rc_track_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+static void wooden_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][4] = {
+		{ SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE, 0, 0 },
+		{ SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
+		{ SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NE_SW, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NE_SW, 0, 0 },
+		{ SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SE_NW, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_SE_NW },
+	};
+
+	wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+	if (direction == 1 || direction == 3) {
+		wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 1, 9, height, 0, 26, height + 5);
+	}
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wooden_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][4] = {
+		{ SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_SW_NE, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_SW_NE },
+		{ SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NW_SE, 0, 0 },
+		{ SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NE_SW, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_NE_SW },
+		{ SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SE_NW, 0, 0 },
+	};
+
+	wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
+	if (direction == 0 || direction == 2) {
+		wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 1, 9, height, 0, 26, height + 5);
+	}
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wooden_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_flat_to_right_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
+static void wooden_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	wooden_rc_track_flat_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+}
+
 static void wooden_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -730,6 +806,14 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int trackType, int direc
 		return wooden_rc_track_left_quarter_turn_5;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
 		return wooden_rc_track_right_quarter_turn_5;
+	case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+		return wooden_rc_track_flat_to_left_bank;
+	case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+		return wooden_rc_track_flat_to_right_bank;
+	case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+		return wooden_rc_track_left_bank_to_flat;
+	case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+		return wooden_rc_track_right_bank_to_flat;
 
 	case TRACK_ELEM_BRAKES:
 		return wooden_rc_track_brakes;
