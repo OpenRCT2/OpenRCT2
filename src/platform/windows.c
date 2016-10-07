@@ -730,7 +730,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 
 	utf8 *outPath = NULL;
 
-	if (pidl = SHBrowseForFolderW(&bi)) {
+	if ((pidl = SHBrowseForFolderW(&bi))) {
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
@@ -766,10 +766,10 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 
 
 	size = 260;
-	RegQueryValueExA(hKey, "Title", 0, &type, installInfo->title, &size);
+	RegQueryValueExA(hKey, "Title", 0, &type, (LPBYTE)installInfo->title, &size);
 
 	size = 260;
-	RegQueryValueExA(hKey, "Path", 0, &type, installInfo->path, &size);
+	RegQueryValueExA(hKey, "Path", 0, &type, (LPBYTE)installInfo->path, &size);
 
 	installInfo->var_20C = 235960;
 
@@ -778,7 +778,7 @@ int windows_get_registry_install_info(rct2_install_info *installInfo, char *sour
 	for (int i = 0; i <= 15; i++) {
 		snprintf(keyName, 100, "AddonPack%d", i);
 		size = sizeof(installInfo->expansionPackNames[i]);
-		if (RegQueryValueExA(hKey, keyName, 0, &type, installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
+		if (RegQueryValueExA(hKey, keyName, 0, &type, (LPBYTE)installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
 			installInfo->activeExpansionPacks |= (1 << i);
 	}
 
