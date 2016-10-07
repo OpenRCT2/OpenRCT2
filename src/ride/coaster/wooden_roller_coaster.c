@@ -140,6 +140,36 @@ enum {
 	SPR_WOODEN_RC_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3 = 23632,
 	SPR_WOODEN_RC_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5 = 23633,
 	SPR_WOODEN_RC_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6 = 23634,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0 = 23635,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2 = 23636,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3 = 23637,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5 = 23638,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6 = 23639,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0 = 23640,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2 = 23641,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3 = 23642,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5 = 23643,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6 = 23644,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0 = 23645,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2 = 23646,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3 = 23647,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5 = 23648,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6 = 23649,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0 = 23650,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2 = 23651,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3 = 23652,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5 = 23653,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6 = 23654,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0 = 23655,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_2 = 23656,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3 = 23657,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_5 = 23658,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6 = 23659,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0 = 23660,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2 = 23661,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3 = 23662,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5 = 23663,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6 = 23664,
 
 	SPR_WOODEN_RC_FLAT_CHAIN_SW_NE = 23749,
 	SPR_WOODEN_RC_FLAT_CHAIN_NW_SE = 23750,
@@ -260,6 +290,36 @@ enum {
 	SPR_WOODEN_RC_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_3 = 24498,
 	SPR_WOODEN_RC_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_5 = 24499,
 	SPR_WOODEN_RC_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_6 = 24500,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_0 = 24501,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_2 = 24502,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_3 = 24503,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_5 = 24504,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_6 = 24505,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_0 = 24506,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_2 = 24507,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_3 = 24508,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_5 = 24509,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_6 = 24510,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_0 = 24511,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_2 = 24512,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_3 = 24513,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_5 = 24514,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_6 = 24515,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_0 = 24516,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_2 = 24517,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_3 = 24518,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_5 = 24519,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_6 = 24520,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_0 = 24521,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_2 = 24522,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_3 = 24523,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_5 = 24524,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_6 = 24525,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_0 = 24526,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_2 = 24527,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_3 = 24528,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_5 = 24529,
+	SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_6 = 24530,
 
 	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE = 24615,
 	SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE = 24616,
@@ -307,6 +367,17 @@ static void wooden_rc_track_paint(
 
 	sub_98197C_rotated(direction, imageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
 	sub_98199C_rotated(direction, railsImageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+}
+
+static void wooden_rc_track_paint_bb(const sprite_bb_2 *bb, sint16 height)
+{
+	if (bb->sprite_id_a == 0) return;
+
+	uint32 imageId = bb->sprite_id_a | wooden_rc_get_track_colour();
+	uint32 railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour();
+
+	sub_98197C(imageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z, height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z, get_current_rotation());
+	sub_98199C(railsImageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z, height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z, get_current_rotation());
 }
 
 static void wooden_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -570,17 +641,6 @@ static void wooden_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequ
 	wooden_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void wooden_rc_track_paint_bb(const sprite_bb_2 *bb, sint16 height)
-{
-	if (bb->sprite_id_a == 0) return;
-
-	uint32 imageId = bb->sprite_id_a | wooden_rc_get_track_colour();
-	uint32 railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour();
-
-	sub_98197C(imageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z, height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z, get_current_rotation());
-	sub_98199C(railsImageId, (sint8)bb->offset.x, (sint8)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (sint8)bb->bb_size.z, height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z, get_current_rotation());
-}
-
 static void wooden_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const sprite_bb_2 imageIds[2][4][7] = {
@@ -742,6 +802,119 @@ static void wooden_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSeque
 	wooden_rc_track_flat_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+static void wooden_rc_track_banked_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const sprite_bb_2 imageIds[2][4][7] = {
+		{
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_3, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_5, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SW_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 } },
+			},
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_2, { 0, 0, 0 }, {  16, 0, 0 }, { 16, 32, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_3, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NW_SW_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 } },
+			},
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 }},
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_NE_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 } },
+			},
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_3, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_5, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_SE_NE_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 } },
+			}
+		},
+		{
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_3, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_5, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_SW_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 } },
+			},
+			{
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+			},
+			{
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_5, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 } },
+				{ SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6, SPR_WOODEN_RC_BANKED_QUARTER_TURN_5_RAILS_FRONT_NE_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 } },
+			},
+			{
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+				{ 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } },
+			}
+		},
+	};
+	static sint8 supportType[4][7] = {
+		{ 0, -1, 4, 2, -1, 4, 1 },
+		{ 1, -1, 5, 3, -1, 5, 0 },
+		{ 0, -1, 2, 4, -1, 2, 1 },
+		{ 1, -1, 3, 5, -1, 3, 0 },
+	};
+
+	wooden_rc_track_paint_bb(&imageIds[0][direction][trackSequence], height);
+	wooden_rc_track_paint_bb(&imageIds[1][direction][trackSequence], height);
+	track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
+
+	if (supportType[direction][trackSequence] != -1) {
+		wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+	case 0: blockedSegments = SEGMENTS_ALL; break;
+	case 2: blockedSegments = SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
+	case 3: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
+	case 5: blockedSegments = SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4; break;
+	case 6: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
+	}
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+static void wooden_rc_track_banked_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+	wooden_rc_track_banked_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+}
+
 static void wooden_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -814,6 +987,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int trackType, int direc
 		return wooden_rc_track_left_bank_to_flat;
 	case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
 		return wooden_rc_track_right_bank_to_flat;
+	case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+		return wooden_rc_track_banked_left_quarter_turn_5;
+	case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+		return wooden_rc_track_banked_right_quarter_turn_5;
 
 	case TRACK_ELEM_BRAKES:
 		return wooden_rc_track_brakes;
