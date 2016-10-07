@@ -261,6 +261,9 @@ if (NOT DISABLE_OPENGL)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(GLLIBS opengl32)
+		# mingw complains about "%zu" not being a valid format specifier for printf, unless we
+		# tell it that it is
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
 	elseif (APPLE)
 		# GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
 		find_package(OpenGL REQUIRED)
