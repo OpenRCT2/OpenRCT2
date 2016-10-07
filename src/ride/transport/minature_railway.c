@@ -1146,8 +1146,12 @@ static void paint_minature_railway_track_left_eighth_to_diag(uint8 rideIndex, ui
 		{ 1, 1, 2, 4, 0 }
 	};
 
-	bool isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-
+	bool isSupported = false;
+	// Right eigth to orthogonal calls this function but we do not want to have a support call for it
+	// for track sequence 4
+	if (trackSequence != 4 || mapElement->properties.track.type != TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL) {
+		isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
 	uint32 imageId;
 	if (isSupported == false) {
 		sint8 index = paint_minature_railway_eighth_to_diag_index[trackSequence];
