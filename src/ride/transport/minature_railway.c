@@ -1043,7 +1043,100 @@ static void paint_minature_railway_track_left_quarter_turn_3_tiles(uint8 rideInd
 
 static const sint8 paint_minature_railway_eighth_to_diag_index[] = {0, 1, 2, -1, 3};
 
-/** rct2: 0x008AE31C */
+static const uint32 minature_railway_floor_track_pieces_left_eight_to_diag[4][5] = {
+	{
+		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS_E_SEGMENT,
+		SPR_FLOOR_PLANKS_W_SEGMENT,
+		SPR_FLOOR_PLANKS_90_DEG
+	},
+	{
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_S_SEGMENT,
+		SPR_FLOOR_PLANKS_N_SEGMENT,
+		SPR_FLOOR_PLANKS
+	},
+	{
+		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS_W_SEGMENT,
+		SPR_FLOOR_PLANKS_E_SEGMENT,
+		SPR_FLOOR_PLANKS_90_DEG
+	},
+	{
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_N_SEGMENT,
+		SPR_FLOOR_PLANKS_S_SEGMENT,
+		SPR_FLOOR_PLANKS
+	},
+};
+
+static const rct_xyz16 minature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
+	{
+		{32, 32, 2},
+		{32, 16, 2},
+		{16, 16, 2},
+		{16, 16, 0},
+		{30, 30, 0},
+	},
+	{
+		{32, 32, 2},
+		{16, 34, 2},
+		{14, 14, 2},
+		{16, 16, 0},
+		{34, 32, 0},
+	},
+	{
+		{32, 32, 2},
+		{32, 16, 2},
+		{16, 16, 2},
+		{16, 16, 0},
+		{16, 16, 2},
+	},
+	{
+		{32, 32, 2},
+		{16, 32, 2},
+		{16, 16, 2},
+		{16, 16, 0},
+		{32, 32, 0},
+	},
+};
+
+static const rct_xy16 minature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
+	{
+		{0, 0},
+		{0,  0},
+		{0,  16},
+		{16, 0},
+		{0, 0},
+	},
+	{
+		{0, 0},
+		{0,  0},
+		{16, 16},
+		{0,  0},
+		{0, 0},
+	},
+	{
+		{0, 0},
+		{0,  16},
+		{16, 0},
+		{0,  16},
+		{0,  0},
+	},
+	{
+		{0, 0},
+		{16, 0},
+		{0,  0},
+		{16, 16},
+		{0,  0},
+	},
+};
+
+/** rct2: 0x008AD1C0 */
 static void paint_minature_railway_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	const uint8 supportType[4][5] = {
@@ -1056,12 +1149,28 @@ static void paint_minature_railway_track_left_eighth_to_diag(uint8 rideIndex, ui
 	bool isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	uint32 imageId;
-	sint8 index = paint_minature_railway_eighth_to_diag_index[trackSequence];
-	if (index >= 0) {
-		imageId = minature_railway_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
-		const rct_xy16 offset = minature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
-		const rct_xyz16 bounds = minature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
+	if (isSupported == false) {
+		sint8 index = paint_minature_railway_eighth_to_diag_index[trackSequence];
+		if (index >= 0) {
+			imageId = minature_railway_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
+			const rct_xy16 offset = minature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
+			const rct_xyz16 bounds = minature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
+			sub_98197C(imageId, 0, 0, bounds.x, bounds.y, (sint8)bounds.z, height, offset.x, offset.y, height, get_current_rotation());
+		}
+	}
+	else {
+		imageId = minature_railway_floor_track_pieces_left_eight_to_diag[direction][trackSequence] | gTrackColours[SCHEME_SUPPORTS];
+		rct_xy16 offset = minature_railway_track_floor_pieces_left_eight_to_diag_offset[direction][trackSequence];
+		rct_xyz16 bounds = minature_railway_track_floor_pieces_left_eight_to_diag_bounds[direction][trackSequence];
 		sub_98197C(imageId, 0, 0, bounds.x, bounds.y, (sint8)bounds.z, height, offset.x, offset.y, height, get_current_rotation());
+
+		sint8 index = paint_minature_railway_eighth_to_diag_index[trackSequence];
+		if (index >= 0) {
+			imageId = minature_railway_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
+			offset = minature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
+			bounds = minature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
+			sub_98199C(imageId, 0, 0, bounds.x, bounds.y, (sint8)bounds.z, height, offset.x, offset.y, height, get_current_rotation());
+		}
 	}
 
 	if (direction == 0 && trackSequence == 0) {
@@ -1346,8 +1455,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_minature_railway(int trackType, in
 		//	return paint_minature_railway_track_right_eighth_to_diag;
 		//case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
 		//	return paint_minature_railway_track_left_eighth_to_orthogonal;
-		//case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
-		//	return paint_minature_railway_track_right_eighth_to_orthogonal;
+		case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+			return paint_minature_railway_track_right_eighth_to_orthogonal;
 
 		//case TRACK_ELEM_DIAG_FLAT:
 		//	return paint_minature_railway_track_diag_flat;
