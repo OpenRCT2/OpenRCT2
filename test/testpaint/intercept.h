@@ -32,4 +32,6 @@ bool testSupportSegments(uint8 rideType, uint8 trackType);
 bool testTunnels(uint8 rideType, uint8 trackType);
 bool testVerticalTunnels(uint8 rideType, uint8 trackType);
 
+int generatePaintCode(uint8 rideType);
+
 #endif // #endif _TEST_PAINT_INTERCEPT_H_

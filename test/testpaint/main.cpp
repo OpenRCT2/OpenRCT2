@@ -352,6 +352,7 @@ static void PrintRideTypes()
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
+	bool generate = false;
 	uint8 specificRideType = 0xFF;
 	for (int i = 0; i < argc; ++i) {
 		char *arg = argv[i];
@@ -367,6 +368,17 @@ int main(int argc, char *argv[]) {
 				return 2;
 			}
 		}
+		else if (strcmp(arg, "--generate") == 0) {
+			generate = true;
+		}
+	}
+
+	if (generate) {
+		if (specificRideType > 90) {
+			fprintf(stderr, "No ride or invalid ride specified.\n");
+			return 1;
+		} 
+		return generatePaintCode(specificRideType);
 	}
 
 	for (uint8 rideType = 0; rideType < 91; rideType++) {

@@ -92,6 +92,7 @@
     <ClCompile Include="..\..\src\paint\paint_helpers.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="data.c" />
+    <ClCompile Include="generate.cpp" />
     <ClCompile Include="intercept.c" />
     <ClCompile Include="intercept_2.cpp" />
     <ClCompile Include="main.cpp" />
