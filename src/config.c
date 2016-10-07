@@ -814,7 +814,7 @@ static void config_read_properties(config_section_definition **currentSection, c
 	} else {
 		if (*currentSection != NULL) {
 			utf8 *propertyName, *value;
-			int propertyNameSize, valueSize;
+			int propertyNameSize = 0, valueSize;
 			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
 				config_property_definition *property;
 				property = config_get_property_def(*currentSection, propertyName, propertyNameSize);

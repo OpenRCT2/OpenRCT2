@@ -278,7 +278,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	size_t char_count = 0;
 	uint8 cur_drawn = 0;
 
-	int cursorX, cursorY;
+	int cursorX = 0, cursorY = 0;
 	for (int line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 

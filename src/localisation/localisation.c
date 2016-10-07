@@ -672,7 +672,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 	char tmp;
 	const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
 	const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
-	const char *ch;
+	const char *ch = NULL;
 	int zeroNeeded = 1;
 	
 	if ((*size) == 0) return;
