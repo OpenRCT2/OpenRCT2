@@ -62,6 +62,10 @@ enum {
 			#define DEBUG_LEVEL_3 0
 			#define DEBUG_LEVEL_2 0
 		#endif // DEBUG > 1
+	#else
+		#define DEBUG_LEVEL_1 0
+		#define DEBUG_LEVEL_2 0
+		#define DEBUG_LEVEL_3 0
 	#endif // DEBUG > 0
 #else
 	#define DEBUG_LEVEL_3 0
