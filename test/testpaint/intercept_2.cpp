@@ -17,8 +17,9 @@
 #include <vector>
 #include <algorithm>
 
+#include "intercept.h"
+
 extern "C" {
-    #include "intercept.h"
     #include "../../src/paint/paint.h"
     #include "../../src/paint/supports.h"
     #include "../../src/ride/track_data.h"
@@ -28,37 +29,6 @@ extern "C" {
 
 namespace Intercept2
 {
-
-    static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
-
-    struct SegmentSupportCall
-    {
-        uint16 segments;
-        sint32 height;
-        sint16 slope;
-    };
-
-    struct SupportCall
-    {
-        sint32 height;
-        sint16 slope;
-    };
-
-    enum {
-        TUNNELCALL_SKIPPED,
-        TUNNELCALL_NONE,
-        TUNNELCALL_CALL,
-    };
-
-    struct TunnelCall {
-        uint8 call;
-        sint16 offset;
-        uint8 type;
-    };
-
     static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
     {
         if (lhs.height != rhs.height) {
@@ -72,7 +42,7 @@ namespace Intercept2
         return lhs.segments < rhs.segments;
     }
 
-    static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation)
+    std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation)
     {
         uint16 positionsRemaining = SEGMENTS_ALL;
 

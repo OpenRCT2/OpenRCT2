@@ -18,10 +18,11 @@
 #include <string>
 #include <vector>
 
+#include "intercept.h"
+
 extern "C"
 {
     #include "data.h"
-    #include "intercept.h"
     #include "../../src/interface/viewport.h"
     #include "../../src/rct2.h"
     #include "../../src/ride/ride.h"
@@ -77,15 +78,14 @@ private:
 
     void GenerateTrackFunction(int trackType)
     {
-        std::string trackName = TrackNames[trackType];
         int numSequences = getTrackSequenceCount(_rideType, trackType);
         int height = 48;
 
-        WriteLine(0, "static void " + _rideName + "_track_" + trackName + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
+        WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
 
+        std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
-
         for (int direction = 0; direction < 4; direction++) {
             int trackSequence = 0;
 
@@ -97,19 +97,74 @@ private:
 
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
 
+            segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
+            generalSupports[direction].height -= height;
         }
 
+        GenerateSegmentSupportCall(segmentSupportCalls);
+        GenerateGeneralSupportCall(generalSupports);
+
+        WriteLine(0, "}");
+    }
+
+    void GenerateSegmentSupportCall(std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
+    {
+        for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
+        {
+            auto ssh = segmentSupportCalls[0][i];
+            std::string szCall = "paint_util_set_segment_support_height(";
+            if (ssh.segments == SEGMENTS_ALL)
+            {
+                szCall += "SEGMENTS_ALL";
+            }
+            else
+            {
+                szCall += "paint_util_rotate_segments(";
+                szCall += GetORedSegments(ssh.segments);
+                szCall += ", direction)";
+            }
+            szCall += ", ";
+            if (ssh.height == 0xFFFF)
+            {
+                szCall += "0xFFFF";
+                szCall += StringFormat(", 0);", ssh.slope);
+            }
+            else
+            {
+                szCall += std::to_string(ssh.height);
+                szCall += StringFormat(", 0x%02X);", ssh.slope);
+            }
+            WriteLine(1, szCall);
+        }
+    }
+
+    void GenerateGeneralSupportCall(support_height generalSupports[4])
+    {
         if (AllMatch(generalSupports, 4))
         {
-            WriteLine(1, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height - height, generalSupports[0].slope);
+            WriteLine(1, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
         }
         else
         {
             WriteLine(1, "#error Unsupported: different directional general supports");
         }
+    }
 
-        WriteLine(0, "}");
+    std::string GetORedSegments(int segments)
+    {
+        std::string s;
+        int segmentsPrinted = 0;
+        for (int i = 0; i < 9; i++) {
+            if (segments & segment_offsets[i]) {
+                if (segmentsPrinted > 0) {
+                    s += " | ";
+                }
+                s += StringFormat("SEGMENT_%02X", 0xB4 + 4 * i);
+                segmentsPrinted++;
+            }
+        }
+        return s;
     }
 
     template<typename T>
@@ -127,16 +182,11 @@ private:
 
     void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
     {
-        constexpr uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-        constexpr uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-        constexpr uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-        constexpr uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
-
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
+        gTrackColours[SCHEME_TRACK] = Intercept2::DEFAULT_SCHEME_TRACK;
+        gTrackColours[SCHEME_SUPPORTS] = Intercept2::DEFAULT_SCHEME_SUPPORTS;
+        gTrackColours[SCHEME_MISC] = Intercept2::DEFAULT_SCHEME_MISC;
+        gTrackColours[SCHEME_3] = Intercept2::DEFAULT_SCHEME_3;
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
@@ -186,12 +236,18 @@ private:
             if (IsTrackTypeSupported(trackType))
             {
                 WriteLine(1, "case " + std::string(TrackElemNames[trackType]) + ":");
-                WriteLine(2, "return NULL;");
+                WriteLine(2, "return %s;", GetTrackFunctionName(trackType).c_str());
             }
         }
         WriteLine(1, "}");
         WriteLine(1, "return NULL;");
         WriteLine(0, "}");
+    }
+
+    std::string GetTrackFunctionName(int trackType)
+    {
+        std::string trackName = TrackNames[trackType];
+        return _rideName + "_track_" + trackName;
     }
 
     bool IsTrackTypeSupported(int trackType)
@@ -234,6 +290,18 @@ private:
         }
         fprintf(_file, s.c_str());
         fprintf(_file, "\n");
+    }
+
+    static std::string StringFormat(const char * format, ...)
+    {
+        va_list args;
+        char buffer[512];
+
+        va_start(args, format);
+        vsprintf(buffer, format, args);
+        va_end(args);
+
+        return std::string(buffer);
     }
 };
 

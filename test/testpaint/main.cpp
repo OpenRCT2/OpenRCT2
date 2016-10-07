@@ -23,9 +23,10 @@
 #include <sys/mman.h>
 #endif // defined(__unix__)
 
+#include "intercept.h"
+
 extern "C" {
 #include "data.h"
-#include "intercept.h"
 #include "../../src/rct2.h"
 #include "../../src/ride/ride.h"
 #include "../../src/ride/ride_data.h"
@@ -377,7 +378,11 @@ int main(int argc, char *argv[]) {
 		if (specificRideType > 90) {
 			fprintf(stderr, "No ride or invalid ride specified.\n");
 			return 1;
-		} 
+		}
+
+		openrct2_setup_rct2_segment();
+		initHooks();
+
 		return generatePaintCode(specificRideType);
 	}
 
