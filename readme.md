@@ -100,9 +100,15 @@ Make sure that you have [Homebrew](http://brew.sh/) installed and than run the f
 ```
 
 ### Linux:
-We support native builds for Linux (limited to i386 only for now).
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
-
+We support native builds for Linux. x86 builds, by default, make use of pieces of original code, other builds are completely standalone.
+You can follow the standard CMake build procedure: install [required libraries](https://github.com/OpenRCT2/OpenRCT2#mac--linux), then:
+```
+mkdir build
+cd build
+cmake ../
+make
+```
+Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 # 4 Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
