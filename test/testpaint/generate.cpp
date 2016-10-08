@@ -180,6 +180,11 @@ private:
             { 7, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL, TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG },
             { 8, TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL, TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG },
             { 8, TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG },
+
+            { 9, TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL, TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL },
+            { 10, TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL, TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL },
+            { 11, TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE, TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE },
+            { 12, TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE, TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE },
         };
 
         for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
@@ -220,6 +225,38 @@ private:
                 case 8:
                     WriteLine(tabs, "trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];");
                     WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 9:
+                    WriteLine(tabs, "if (trackSequence >= 4) {");
+                    WriteLine(tabs + 1, "trackSequence -= 4;");
+                    WriteLine(tabs + 1, "direction = (direction + 1) & 3;");
+                    WriteLine(tabs, "}");
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 10:
+                    WriteLine(tabs, "if (trackSequence >= 4) {");
+                    WriteLine(tabs + 1, "trackSequence -= 4;");
+                    WriteLine(tabs + 1, "direction = (direction - 1) & 3;");
+                    WriteLine(tabs, "}");
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 11:
+                    WriteLine(tabs, "if (trackSequence >= 7) {");
+                    WriteLine(tabs + 1, "trackSequence -= 7;");
+                    WriteLine(tabs + 1, "direction = (direction + 1) & 3;");
+                    WriteLine(tabs, "}");
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 12:
+                    WriteLine(tabs, "if (trackSequence >= 7) {");
+                    WriteLine(tabs + 1, "trackSequence -= 7;");
+                    WriteLine(tabs + 1, "direction = (direction - 1) & 3;");
+                    WriteLine(tabs, "}");
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
                     break;
                 }
                 return true;
