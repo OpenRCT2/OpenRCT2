@@ -285,7 +285,7 @@ private:
     {
         int height = 48;
 
-        std::vector<function_call> calls[4];
+        std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
         std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
@@ -306,10 +306,55 @@ private:
             generalSupports[direction] = gSupport;
             generalSupports[direction].height -= height;
 
+            // Get chain lift calls
+            mapElement.type |= 0x80;
+            intercept_clear_calls();
+            CallOriginal(trackType, direction, trackSequence, height, &mapElement);
+            numCalls = intercept_get_calls(callBuffer);
+            chainLiftCalls[direction].insert(chainLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
+
+            // Get cable lift calls (giga coaster only)
+            if (_rideType == RIDE_TYPE_GIGA_COASTER)
+            {
+                mapElement.type = 0;
+                mapElement.properties.track.colour = 8;
+                intercept_clear_calls();
+                CallOriginal(trackType, direction, trackSequence, height, &mapElement);
+                numCalls = intercept_get_calls(callBuffer);
+                cableLiftCalls[direction].insert(cableLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
+            }
+
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
         }
 
-        GenerateCalls(tabs, calls, height);
+        if (!CompareFunctionCalls(calls, cableLiftCalls))
+        {
+            WriteLine(tabs, "if (track_element_is_cable_lift(mapElement)) {");
+            GenerateCalls(tabs + 1, cableLiftCalls, height);
+
+            if (!CompareFunctionCalls(calls, chainLiftCalls))
+            {
+                WriteLine(tabs, "} else if (track_element_is_lift_hill(mapElement)) {");
+                GenerateCalls(tabs + 1, chainLiftCalls, height);
+            }
+
+            WriteLine(tabs, "} else {");
+            GenerateCalls(tabs + 1, calls, height);
+            WriteLine(tabs, "}");
+        }
+        else if (!CompareFunctionCalls(calls, chainLiftCalls))
+        {
+            WriteLine(tabs, "if (track_element_is_lift_hill(mapElement)) {");
+            GenerateCalls(tabs + 1, chainLiftCalls, height);
+            WriteLine(tabs, "} else {");
+            GenerateCalls(tabs + 1, calls, height);
+            WriteLine(tabs, "}");
+        }
+        else
+        {
+            GenerateCalls(tabs, calls, height);
+        }
+
         GenerateTunnelCall(tabs, tileTunnelCalls);
         GenerateSegmentSupportCall(tabs, segmentSupportCalls);
         GenerateGeneralSupportCall(tabs, generalSupports);
@@ -455,6 +500,18 @@ private:
 
     finished:
         return commonCalls;
+    }
+
+    bool CompareFunctionCalls(const std::vector<function_call> a[4], const std::vector<function_call> b[4])
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            if (!CompareFunctionCalls(a[i], b[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     bool CompareFunctionCalls(const std::vector<function_call> &a, const std::vector<function_call> &b)
@@ -722,7 +779,7 @@ private:
             (int) trackDirectionList,
             direction,
             height,
-            (int) &mapElement,
+            (int)mapElement,
             0 * sizeof(rct_ride),
             trackSequence
         );
