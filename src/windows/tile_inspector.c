@@ -1546,10 +1546,10 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SE, mapElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_SW, mapElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3)));
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_NW, mapElement->properties.path.edges & (1 << ((3 - get_current_rotation()) & 3)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_E, mapElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_S, mapElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_W, mapElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3 + 4)));
-		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & (1 << ((3 - get_current_rotation()) & 3 + 4)));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_E, mapElement->properties.path.edges & (1 << (4 + ((0 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_S, mapElement->properties.path.edges & (1 << (4 + ((1 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_W, mapElement->properties.path.edges & (1 << (4 + ((2 - get_current_rotation()) & 3))));
+		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & (1 << (4 + ((3 - get_current_rotation()) & 3))));
 		break;
 	case PAGE_TRACK:
 		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
