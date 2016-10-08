@@ -46,7 +46,7 @@ public:
 
         _file = file;
         _rideType = rideType;
-        _rideName = std::string(RideNames[rideType]);
+        _rideName = std::string(RideCodeNames[rideType]);
         Generate();
 
         fclose(file);
@@ -470,7 +470,7 @@ private:
 
     std::string GetTrackFunctionName(int trackType)
     {
-        std::string trackName = TrackNames[trackType];
+        std::string trackName = TrackCodeNames[trackType];
         return _rideName + "_track_" + trackName;
     }
 
