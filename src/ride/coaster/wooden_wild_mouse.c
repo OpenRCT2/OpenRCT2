@@ -307,7 +307,7 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
-static void wooden_wild_mouse_track_60_DEG_TO_25_DEG_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4][2] = {
 		{
@@ -398,7 +398,7 @@ static void wooden_wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 t
 
 static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	wooden_wild_mouse_track_60_DEG_TO_25_DEG_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+	wooden_wild_mouse_track_60_deg_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -609,7 +609,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, i
 	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
 		return wooden_wild_mouse_track_25_deg_up_to_60_deg_up;
 	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
-		return wooden_wild_mouse_track_60_DEG_TO_25_DEG_up;
+		return wooden_wild_mouse_track_60_deg_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 		return wooden_wild_mouse_track_25_deg_up_to_flat;
 	case TRACK_ELEM_25_DEG_DOWN:

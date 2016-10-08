@@ -209,7 +209,7 @@ bool gUseOriginalRidePaint = false;
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
 {
-	rct_xy16 offset;
+	rct_xy16 offset = { 0, 0 };
 	switch (edge) {
 		case EDGE_NE:
 			offset = loc_7667AC[rotation];
@@ -427,8 +427,8 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 
 	uint32 imageId;
 	uint32 baseImageId = entranceStyle->base_image_id;
-	int imageOffset;
-	rct_xyz16 offset, bounds, boundsOffset;
+	int imageOffset = 0;
+	rct_xyz16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
 	offset = (rct_xyz16) {0, 0, height};
 	switch (edge) {
@@ -551,6 +551,17 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
 			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, rotation);
 		}
 		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+	}
+}
+
+void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour)
+{
+	if (direction & 1) {
+		metal_a_supports_paint_setup(3, 6, 0, height, colour);
+		metal_a_supports_paint_setup(3, 7, 0, height, colour);
+	} else {
+		metal_a_supports_paint_setup(3, 5, 0, height, colour);
+		metal_a_supports_paint_setup(3, 8, 0, height, colour);
 	}
 }
 
@@ -1259,6 +1270,37 @@ void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 dir
 	}
 }
 
+void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height - 8, tunnelType0);
+	}
+	if (direction == 0 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height + 8, tunnelType3);
+	}
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height + 8, tunnelType3);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height - 8, tunnelType0);
+	}
+}
+
+void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height + 8, tunnelType0);
+	}
+	if (direction == 0 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height - 8, tunnelType3);
+	}
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height - 8, tunnelType3);
+	}
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height + 8, tunnelType0);
+	}
+}
 
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)

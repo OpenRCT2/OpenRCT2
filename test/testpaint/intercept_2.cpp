@@ -327,7 +327,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
@@ -344,6 +343,12 @@ namespace Intercept2
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
         int sequenceCount = getTrackSequenceCount(rideType, trackType);
 
+        for (int chainLift = 0; chainLift < 2; chainLift++) {
+            if (chainLift == 0) {
+                mapElement.type &= ~0x80;
+            } else {
+                mapElement.type |= 0x80;
+            }
 
         for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
             std::vector<SegmentSupportCall> tileSegmentSupportCalls[4];
@@ -387,7 +392,7 @@ namespace Intercept2
 
             if (!segmentCallsMatch(tileSegmentSupportCalls)) {
                 // TODO: if 3 directions do share the same mask, use that call list as a reference.
-                printf("Original segment calls didn't match. [trackSequence:%d]\n", trackSequence);
+                printf("Original segment calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
                 continue;
             }
 
@@ -415,8 +420,8 @@ namespace Intercept2
                     printSegmentSupports(&diff, newCalls);
                     sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 
-                    printf("Segment support heights didn't match. [direction:%d trackSequence:%d]\n", direction,
-                           trackSequence);
+                    printf("Segment support heights didn't match. [direction:%d trackSequence:%d chainLift:%d]\n", direction,
+                           trackSequence, chainLift);
                     printf("%s", diff);
                     delete[] diff;
                     return false;
@@ -425,7 +430,7 @@ namespace Intercept2
 
             if (!supportCallsMatch(tileGeneralSupportCalls)) {
                 // TODO: if 3 directions do share the output, use that.
-                printf("Original support calls didn't match. [trackSequence:%d]\n", trackSequence);
+                printf("Original support calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
                 continue;
             }
 
@@ -445,22 +450,26 @@ namespace Intercept2
 
                 if (referenceGeneralSupportCall.height != -1) {
                     if (gSupport.height != referenceGeneralSupportCall.height) {
-                        printf("General support heights didn't match. (expected %d, actual: %d) [direction:%d trackSequence:%d]\n", referenceGeneralSupportCall.height,gSupport.height, direction,
-                               trackSequence);
+                        printf("General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d trackSequence:%d chainLift:%d]\n",
+                               referenceGeneralSupportCall.height - height,
+                               gSupport.height - height,
+                               direction,
+                               trackSequence,
+                               chainLift);
                         return false;
                     }
                 }
                 if (referenceGeneralSupportCall.slope != -1) {
                     if (gSupport.slope != referenceGeneralSupportCall.slope) {
-                        printf("General support slopes didn't match. [direction:%d trackSequence:%d]\n", direction,
-                               trackSequence);
+                        printf("General support slopes didn't match. [direction:%d trackSequence:%d chainLift:%d]\n", direction,
+                               trackSequence, chainLift);
                         return false;
                     }
                 }
             }
 
         }
-
+        }
         return true;
     }
 
@@ -516,7 +525,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};
@@ -713,7 +721,6 @@ namespace Intercept2
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;
 
-        rct_vehicle vehicle = {0};
         rct_ride ride = {0};
 
         rct_ride_entry rideEntry = {0};

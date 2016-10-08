@@ -2314,10 +2314,11 @@
 			name = "Get Git Variables";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/gitversion.h",
+				"$(DERIVED_FILE_DIR)/Info.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"";
+			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3012,7 +3013,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/macos/Info.plist";
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3061,7 +3062,7 @@
 					"$(SRCROOT)/libxc/include/libpng16",
 					"$(SRCROOT)/libxc/include/openssl",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/distribution/macos/Info.plist";
+				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

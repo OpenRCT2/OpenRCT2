@@ -203,6 +203,11 @@ extern "C"
 {
     uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
     {
+        if (count == 0)
+        {
+            return INVALID_IMAGE_ID;
+        }
+
         uint32 baseImageId = AllocateImageList(count);
         if (baseImageId == INVALID_IMAGE_ID)
         {
@@ -223,7 +228,7 @@ extern "C"
 
     void gfx_object_free_images(uint32 baseImageId, uint32 count)
     {
-        if (baseImageId != INVALID_IMAGE_ID)
+        if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
         {
             // Zero the G1 elements so we don't have invalid pointers
             // and data lying about

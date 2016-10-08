@@ -3267,7 +3267,7 @@ static void junior_rc_left_eighth_to_diag_paint_setup(uint8 rideIndex, uint8 tra
 		paint_util_push_tunnel_right(height, TUNNEL_0);
 	}
 
-	int blockedSegments;
+	int blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC; break;
 		case 1: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4; break;
@@ -3304,7 +3304,7 @@ static void junior_rc_right_eighth_to_diag_paint_setup(uint8 rideIndex, uint8 tr
 		paint_util_push_tunnel_right(height, TUNNEL_0);
 	}
 
-	int blockedSegments;
+	int blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC; break;
 		case 1: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
@@ -3438,7 +3438,7 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(uint8 rideIndex, uint
 		paint_util_push_tunnel_right(height, TUNNEL_0);
 	}
 
-	int blockedSegments;
+	int blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC; break;
 		case 1: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4; break;
@@ -3556,7 +3556,7 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(uint8 rideIndex, uin
 		paint_util_push_tunnel_right(height, TUNNEL_0);
 	}
 
-	int blockedSegments;
+	int blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC; break;
 		case 1: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;

@@ -800,7 +800,7 @@ extern "C"
                 return 0;
             }
 
-            size_t chunkSize = sawyercoding_read_chunk(rw, chunk);
+            size_t chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
             chunk = Memory::Reallocate(chunk, chunkSize);
             if (chunk == nullptr)
             {

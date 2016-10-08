@@ -367,7 +367,6 @@ static void printImageId(uint32 input, utf8string *out) {
 	uint32 image = input & 0x7FFFF;
 	uint32 palette = input & ~0x7FFFF;
 
-	bool allocated = false;
 	utf8string paletteName;
 	if (palette == DEFAULT_SCHEME_TRACK)paletteName = "SCHEME_TRACK";
 	else if (palette == DEFAULT_SCHEME_SUPPORTS)paletteName = "SCHEME_SUPPORTS";
@@ -444,6 +443,13 @@ static void printFunctionCall(utf8string *out, function_call call) {
 	}
 
 	sprintf(*out + strlen, "%d)", call.paint.rotation);
+
+	if (call.function != PAINT_98196C) {
+		sprintf(*out + strlen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
+			call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
+			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
+			call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
+	}
 }
 
 static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
@@ -528,7 +534,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;
 
-	rct_vehicle vehicle = { 0 };
 	rct_ride ride = { 0 };
 
 	rct_ride_entry rideEntry = { 0 };
@@ -545,6 +550,13 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
+
+	for (int chainLift = 0; chainLift < 2; chainLift++) {
+		if (chainLift == 0) {
+			mapElement.type &= ~0x80;
+		} else {
+			mapElement.type |= 0x80;
+		}
 	for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
 		gCurrentRotation = currentRotation;
 		for (int direction = 0; direction < 4; direction++) {
@@ -584,7 +596,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 				testpaint_clear_ignore();
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
-					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d]\n", direction, trackSequence);
+					sprintf(*error, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
 					continue;
 				}
 
@@ -602,9 +614,9 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 					sprintf(diff + strlen(diff), ">>> ACTUAL\n");
 					
 					if (oldCallCount != newCallCount) {
-						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d]", newCallCount, oldCallCount, direction, trackSequence);
+						sprintf(*error + strlen(*error), "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d]", newCallCount, oldCallCount, direction, trackSequence, chainLift);
 					} else {
-						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d]", direction, trackSequence);
+						sprintf(*error + strlen(*error), "Calls don't match [direction:%d trackSequence:%d chainLift:%d]", direction, trackSequence, chainLift);
 					}
 					
 					sprintf(*error + strlen(*error), "\n%s", diff);
@@ -617,8 +629,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 			}
 		}
 	}
-
-	sprintf(*error + strlen(*error), "");
+	}
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {

@@ -28,8 +28,8 @@ namespace Debug
 {
     void Break()
     {
-#if DEBUG
-#if __WINDOWS__
+#if defined(DEBUG)
+#if defined(__WINDOWS__)
         if (IsDebuggerPresent())
         {
             DebugBreak();

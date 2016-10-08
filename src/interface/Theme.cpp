@@ -35,9 +35,6 @@ extern "C"
 
 struct WindowThemeDesc;
 
-// Don't try to load theme files that exceed 64 MiB
-constexpr uint64 MAX_THEME_SIZE = 64 * 1024 * 1024;
-
 /**
  * Represents a window theming style such as the colour scheme.
  */
