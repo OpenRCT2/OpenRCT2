@@ -191,6 +191,7 @@ private:
         switch (call.function) {
         case PAINT_98196C:
         case PAINT_98197C:
+        case PAINT_98198C:
         case PAINT_98199C:
         {
             std::string s = StringFormat("%s(%s, %d, %d, %d, %d, %d, height%s, ",
@@ -215,6 +216,36 @@ private:
             WriteLine(tabs, s);
             break;
         }
+        case SUPPORTS_METAL_A:
+            WriteLine(tabs, "metal_a_supports_paint_setup(%d, %d, %d, height%s, %s);",
+                call.supports.type,
+                call.supports.segment,
+                call.supports.special,
+                GetOffsetExpressionString(call.supports.height - height).c_str(),
+                GetImageIdString(call.supports.colour_flags).c_str());
+            break;
+        case SUPPORTS_METAL_B:
+            WriteLine(tabs, "metal_b_supports_paint_setup(%d, %d, %d, height%s, %s);",
+                call.supports.type,
+                call.supports.segment,
+                call.supports.special,
+                GetOffsetExpressionString(call.supports.height - height).c_str(),
+                GetImageIdString(call.supports.colour_flags).c_str());
+            break;
+        case SUPPORTS_WOOD_A:
+            WriteLine(tabs, "wooden_a_supports_paint_setup(%d, %d, height%s, %s, NULL);",
+                call.supports.type,
+                call.supports.special,
+                GetOffsetExpressionString(call.supports.height - height).c_str(),
+                GetImageIdString(call.supports.colour_flags).c_str());
+            break;
+        case SUPPORTS_WOOD_B:
+            WriteLine(tabs, "wooden_a_supports_paint_setup(%d, %d, height%s, %s, NULL);",
+                call.supports.type,
+                call.supports.special,
+                GetOffsetExpressionString(call.supports.height - height).c_str(),
+                GetImageIdString(call.supports.colour_flags).c_str());
+            break;
         }
     }
 
