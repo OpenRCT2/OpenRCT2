@@ -106,22 +106,60 @@ private:
 
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
-        if (numSequences > 1)
+        if (!GenerateMirrorCall(1, trackType))
         {
-            WriteLine(1, "switch (trackSequence) {");
-            for (int trackSequence = 0; trackSequence < numSequences; trackSequence++)
+            if (numSequences > 1)
             {
-                WriteLine(1, "case %d:", trackSequence);
-                GenerateTrackSequence(2, trackType, trackSequence);
-                WriteLine(2, "break;");
+                WriteLine(1, "switch (trackSequence) {");
+                for (int trackSequence = 0; trackSequence < numSequences; trackSequence++)
+                {
+                    WriteLine(1, "case %d:", trackSequence);
+                    GenerateTrackSequence(2, trackType, trackSequence);
+                    WriteLine(2, "break;");
+                }
+                WriteLine(1, "}");
             }
-            WriteLine(1, "}");
-        }
-        else
-        {
-            GenerateTrackSequence(1, trackType, 0);
+            else
+            {
+                GenerateTrackSequence(1, trackType, 0);
+            }
         }
         WriteLine(0, "}");
+    }
+
+    bool GenerateMirrorCall(int tabs, int trackType)
+    {
+        uint8 mirrorTable[][3] = {
+            { 0, TRACK_ELEM_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP },
+            { 0, TRACK_ELEM_60_DEG_DOWN, TRACK_ELEM_60_DEG_UP },
+            { 0, TRACK_ELEM_FLAT_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_FLAT },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN, TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_FLAT, TRACK_ELEM_FLAT_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK },
+            { 0, TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK, TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK, TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_RIGHT_BANK, TRACK_ELEM_LEFT_BANK },
+            { 0, TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED, TRACK_ELEM_25_DEG_UP_LEFT_BANKED },
+            { 0, TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED, TRACK_ELEM_25_DEG_UP_RIGHT_BANKED },
+
+        };
+
+        for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
+        {
+            if (mirrorTable[i][1] == trackType)
+            {
+                std::string destFuncName = GetTrackFunctionName(mirrorTable[i][2]);
+                switch (mirrorTable[i][0]) {
+                case 0:
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     void GenerateTrackSequence(int tabs, int trackType, int trackSequence)
