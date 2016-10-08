@@ -743,7 +743,6 @@ static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElem
 // Not sure if this should be in this file, track.c, or maybe another one
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset) {
 	uint8 type = mapElement->properties.track.type;
-	uint8 sequence = mapElement->properties.track.sequence;
 	sint16 originX = windowTileInspectorTileX << 5;
 	sint16 originY = windowTileInspectorTileY << 5;
 	sint16 originZ = mapElement->base_height * 8;
@@ -1518,8 +1517,7 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 	}
 
 	// Using a switch, because I don't think giving each page their own callbacks is
-	// needed here, as only the mouseup and invalidate functions would be different.
-	const int detailsAnchor = w->widgets[WIDX_GROUPBOX_DETAILS].top;
+	// needed here, as only the mouseup and invalidate functions are different.
 	const int propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
 	rct_map_element *const mapElement = window_tile_inspector_get_selected_element(w);
 
