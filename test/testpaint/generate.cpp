@@ -589,8 +589,20 @@ private:
 
     void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4])
     {
+        constexpr uint8 TunnelLeft = 0;
+        constexpr uint8 TunnelRight = 1;
+        constexpr uint8 TunnelNA = 255;
+        static const uint8 dsToWay[4][4] =
+        {
+            { TunnelRight, TunnelLeft, TunnelNA, TunnelNA },
+            { TunnelLeft, TunnelNA, TunnelNA, TunnelRight },
+            { TunnelNA, TunnelNA, TunnelRight, TunnelLeft },
+            { TunnelNA, TunnelRight, TunnelLeft, TunnelNA },
+        };
+
+
         sint16 tunnelOffset[4] = { 0 };
-        uint8 tunnelType[4] = { 0xFF };
+        uint8 tunnelType[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
         for (int direction = 0; direction < 4; direction++)
         {
             for (int side = 0; side < 4; side++)
@@ -605,39 +617,72 @@ private:
             }
         }
 
-        if (tunnelType[0] == 0xFF)
-        {
-            return;
-        }
-
         if (AllMatch(tunnelOffset, 4) && AllMatch(tunnelType, 4))
         {
-            GenerateTunnelCall(tabs, tunnelOffset[0], tunnelType[0]);
+            if (tunnelType[0] != 0xFF)
+            {
+                GenerateTunnelCall(tabs, tunnelOffset[0], tunnelType[0]);
+            }
+        }
+        else if (tunnelOffset[0] == tunnelOffset[3] && tunnelType[0] == tunnelType[3] &&
+                 tunnelOffset[1] == tunnelOffset[2] && tunnelType[1] == tunnelType[2] &&
+                 tunnelType[0] != 0xFF)
+        {
+            if (tunnelType[0] != 0xFF)
+            {
+                WriteLine(tabs, "if (direction == 0 || direction == 3) {");
+                GenerateTunnelCall(tabs + 1, tunnelOffset[0], tunnelType[0]);
+                if (tunnelType[1] != 0xFF)
+                {
+                    WriteLine(tabs, "} else {");
+                    GenerateTunnelCall(tabs + 1, tunnelOffset[1], tunnelType[1]);
+                }
+                WriteLine(tabs, "}");
+            }
+            else
+            {
+                WriteLine(tabs, "if (direction == 1 || direction == 2) {");
+                GenerateTunnelCall(tabs + 1, tunnelOffset[1], tunnelType[1]);
+                WriteLine(tabs, "}");
+            }
         }
         else
         {
-            WriteLine(tabs, "if (direction == 0 || direction == 3) {");
-            GenerateTunnelCall(tabs + 1, tunnelOffset[0], tunnelType[0]);
-            WriteLine(tabs, "} else {");
-            GenerateTunnelCall(tabs + 1, tunnelOffset[1], tunnelType[1]);
+            WriteLine(tabs, "switch (direction) {");
+            for (int i = 0; i < 4; i++)
+            {
+                if (tunnelType[i] != 0xFF)
+                {
+                    WriteLine(tabs, "case %d:", i);
+                    for (int side = 0; side < 4; side++)
+                    {
+                        if (tileTunnelCalls[i][side].call == Intercept2::TUNNELCALL_CALL)
+                        {
+                            GenerateTunnelCall(tabs + 1, tileTunnelCalls[i][side].offset, tileTunnelCalls[i][side].type, dsToWay[i][side]);
+                        }
+                    }
+                    WriteLine(tabs + 1, "break;");
+                }
+            }
             WriteLine(tabs, "}");
+        }
+    }
+
+    void GenerateTunnelCall(int tabs, int offset, int type, int way)
+    {
+        switch (way) {
+        case 0:
+            WriteLine(tabs, "paint_util_push_tunnel_left(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            break;
+        case 1:
+            WriteLine(tabs, "paint_util_push_tunnel_right(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            break;
         }
     }
 
     void GenerateTunnelCall(int tabs, int offset, int type)
     {
-        if (offset == 0)
-        {
-            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height, TUNNEL_%d);", type);
-        }
-        else if (offset < 0)
-        {
-            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height - %d, TUNNEL_%d);", -offset, type);
-        }
-        else
-        {
-            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height + %d, TUNNEL_%d);", offset, type);
-        }
+        WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
     }
 
     void GenerateSegmentSupportCall(int tabs, std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
