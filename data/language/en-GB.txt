@@ -4232,6 +4232,9 @@ STR_5920    :Render weather effects
 STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
+STR_5924    :CUSTOM1.WAV not found
+STR_5925    :CUSTOM2.WAV not found
+STR_5926    :Read the 'CUSTOM' instructions in the RCT2 directory
 
 #############
 # Scenarios #
