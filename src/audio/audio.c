@@ -283,6 +283,12 @@ void audio_start_title_music()
 		else
 			pathId = PATH_ID_CSS17;
 		break;
+	case 4:
+		pathId = PATH_ID_CUSTOM1;
+		break;
+	case 5:
+		pathId = PATH_ID_CUSTOM2;
+		break;
 	default:
 		return;
 	}
