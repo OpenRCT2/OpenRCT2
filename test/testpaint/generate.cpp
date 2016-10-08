@@ -154,29 +154,59 @@ private:
             WriteLine(tabs, "case %d:", direction);
             for (auto call : calls[direction])
             {
-                if (call.function == PAINT_98197C ||
-                    call.function == PAINT_98199C)
-                {
-                    auto funcName = (call.function == PAINT_98197C) ? "sub_98197C" : "sub_98199C";
-                    WriteLine(tabs + 1,
-                        "%s(%s, %d, %d, %d, %d, %d, height%s, %d, %d, height%s, get_current_rotation());",
-                        funcName,
-                        GetImageIdString(call.paint.image_id).c_str(),
-                        call.paint.offset.x,
-                        call.paint.offset.y,
-                        call.paint.bound_box_length.x,
-                        call.paint.bound_box_length.y,
-                        call.paint.bound_box_length.z,
-                        GetOffsetExpressionString(call.paint.z_offset - height).c_str(),
-                        call.paint.bound_box_offset.x,
-                        call.paint.bound_box_offset.y,
-                        GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str()
-                    );
-                }
+                GenerateCalls(tabs + 1, call, height);
             }
             WriteLine(tabs + 1, "break;");
         }
         WriteLine(tabs, "}");
+    }
+
+    void GenerateCalls(int tabs, const function_call &call, int height)
+    {
+        const char * funcName = GetFunctionCallName(call.function);
+        switch (call.function) {
+        case PAINT_98196C:
+        case PAINT_98197C:
+        case PAINT_98199C:
+        {
+            std::string s = StringFormat("%s(%s, %d, %d, %d, %d, %d, height%s, ",
+                funcName,
+                GetImageIdString(call.paint.image_id).c_str(),
+                call.paint.offset.x,
+                call.paint.offset.y,
+                call.paint.bound_box_length.x,
+                call.paint.bound_box_length.y,
+                call.paint.bound_box_length.z,
+                GetOffsetExpressionString(call.paint.z_offset - height).c_str());
+
+            if (call.function != PAINT_98196C)
+            {
+                s += StringFormat("%d, %d, height%s, ",
+                    call.paint.bound_box_offset.x,
+                    call.paint.bound_box_offset.y,
+                    GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
+            }
+
+            s += "get_current_rotation());";
+            WriteLine(tabs, s);
+            break;
+        }
+        }
+    }
+
+    const char * GetFunctionCallName(int function)
+    {
+        const char * functionNames[] = {
+            "sub_98196C",
+            "sub_98197C",
+            "sub_98198C",
+            "sub_98199C",
+            "wooden_a_supports_paint_setup",
+            "wooden_a_supports_paint_setup",
+            "metal_a_supports_paint_setup",
+            "metal_b_supports_paint_setup",
+        };
+        return functionNames[function];
     }
 
     bool GetTunnelCalls(int trackType, int direction, int trackSequence, int height, rct_map_element * mapElement, Intercept2::TunnelCall tileTunnelCalls[4][4])
