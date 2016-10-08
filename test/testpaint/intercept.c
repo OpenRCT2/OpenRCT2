@@ -32,7 +32,6 @@ extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
 static uint8 callCount;
-static bool assertFunctionCallEquals(function_call expected, function_call actual);
 static function_call calls[256];
 
 void intercept_clear_calls()
@@ -267,7 +266,7 @@ static void canonicalizeFunctionCall(function_call *call) {
 	call->function = PAINT_98196C;
 }
 
-static bool assertFunctionCallEquals(function_call expected, function_call actual) {
+bool assertFunctionCallEquals(function_call expected, function_call actual) {
 	canonicalizeFunctionCall(&actual);
 	canonicalizeFunctionCall(&expected);
 

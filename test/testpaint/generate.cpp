@@ -333,6 +333,16 @@ private:
             if (calls[direction].size() == 0) continue;
 
             WriteLine(tabs, "case %d:", direction);
+            for (int d2 = direction + 1; d2 < 4; d2++)
+            {
+                if (CompareFunctionCalls(calls[direction], calls[d2]))
+                {
+                    // Clear identical other direction calls and add case for it
+                    calls[d2].clear();
+                    WriteLine(tabs, "case %d:", d2);
+                }
+            }
+
             for (auto call : calls[direction])
             {
                 GenerateCalls(tabs + 1, call, height);
@@ -404,6 +414,24 @@ private:
                 GetImageIdString(call.supports.colour_flags).c_str());
             break;
         }
+    }
+
+    bool CompareFunctionCalls(const std::vector<function_call> &a, const std::vector<function_call> &b)
+    {
+        if (a.size() != b.size()) return false;
+        for (size_t i = 0; i < a.size(); i++)
+        {
+            if (!CompareFunctionCall(a[i], b[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool CompareFunctionCall(const function_call a, const function_call &b)
+    {
+        return assertFunctionCallEquals(a, b);
     }
 
     const char * GetFunctionCallName(int function)
