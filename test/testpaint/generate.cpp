@@ -58,6 +58,8 @@ private:
     uint8       _rideType;
     FILE *      _file;
 
+    bool        _conditionalSupports;
+
     void Generate()
     {
         GenerateIncludes();
@@ -284,6 +286,7 @@ private:
     void GenerateTrackSequence(int tabs, int trackType, int trackSequence)
     {
         int height = 48;
+        _conditionalSupports = false;
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
@@ -295,6 +298,10 @@ private:
             mapElement.properties.track.type = trackType;
             mapElement.base_height = 3;
             g_currently_drawn_item = &mapElement;
+
+            // Set position
+            RCT2_GLOBAL(0x009DE56A, sint16) = 64;
+            RCT2_GLOBAL(0x009DE56E, sint16) = 64;
 
             function_call callBuffer[256] = { 0 };
             intercept_clear_calls();
@@ -322,6 +329,23 @@ private:
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
                 numCalls = intercept_get_calls(callBuffer);
                 cableLiftCalls[direction].insert(cableLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
+            }
+
+            // Check a different position for direction 0 to see if supports are different
+            if (direction == 0)
+            {
+                RCT2_GLOBAL(0x009DE56A, sint16) = 64 + 32;
+                RCT2_GLOBAL(0x009DE56E, sint16) = 64;
+                mapElement.type = 0;
+                mapElement.properties.track.colour = 0;
+                intercept_clear_calls();
+                CallOriginal(trackType, direction, trackSequence, height, &mapElement);
+                numCalls = intercept_get_calls(callBuffer);
+                std::vector<function_call> checkCalls = std::vector<function_call>(callBuffer, callBuffer + numCalls);
+                if (!CompareFunctionCalls(checkCalls, calls[direction]))
+                {
+                    _conditionalSupports = true;
+                }
             }
 
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
@@ -412,30 +436,33 @@ private:
             GeneratePaintCall(tabs, call, height, direction);
             break;
         case SUPPORTS_METAL_A:
-            WriteLine(tabs, "metal_a_supports_paint_setup(%d, %d, %d, height%s, %s);",
-                call.supports.type,
-                call.supports.segment,
-                call.supports.special,
-                GetOffsetExpressionString(call.supports.height - height).c_str(),
-                GetImageIdString(call.supports.colour_flags).c_str());
-            break;
         case SUPPORTS_METAL_B:
-            WriteLine(tabs, "metal_b_supports_paint_setup(%d, %d, %d, height%s, %s);",
+        {
+            int callTabs = tabs;
+            if (_conditionalSupports)
+            {
+                WriteLine(tabs, "if (track_paint_util_should_paint_supports(gPaintMapPosition)) {");
+                callTabs++;
+            }
+
+            WriteLine(callTabs, "%s(%d, %d, %d, height%s, %s);",
+                GetFunctionCallName(call.function),
                 call.supports.type,
                 call.supports.segment,
                 call.supports.special,
                 GetOffsetExpressionString(call.supports.height - height).c_str(),
                 GetImageIdString(call.supports.colour_flags).c_str());
+
+            if (_conditionalSupports)
+            {
+                WriteLine(tabs, "}");
+            }
             break;
+        }
         case SUPPORTS_WOOD_A:
-            WriteLine(tabs, "wooden_a_supports_paint_setup(%d, %d, height%s, %s, NULL);",
-                call.supports.type,
-                call.supports.special,
-                GetOffsetExpressionString(call.supports.height - height).c_str(),
-                GetImageIdString(call.supports.colour_flags).c_str());
-            break;
         case SUPPORTS_WOOD_B:
-            WriteLine(tabs, "wooden_a_supports_paint_setup(%d, %d, height%s, %s, NULL);",
+            WriteLine(tabs, "%s(%d, %d, height%s, %s, NULL);",
+                GetFunctionCallName(call.function),
                 call.supports.type,
                 call.supports.special,
                 GetOffsetExpressionString(call.supports.height - height).c_str(),
@@ -539,10 +566,10 @@ private:
             "sub_98197C",
             "sub_98198C",
             "sub_98199C",
-            "wooden_a_supports_paint_setup",
-            "wooden_a_supports_paint_setup",
             "metal_a_supports_paint_setup",
             "metal_b_supports_paint_setup",
+            "wooden_a_supports_paint_setup",
+            "wooden_a_supports_paint_setup",
         };
         return functionNames[function];
     }
