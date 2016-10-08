@@ -861,6 +861,8 @@ const sint8 defaultEighthToDiagThickness[4][4] = {
 	},
 };
 
+const uint8 mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
+
 static const sint8 eighth_to_diag_sprite_map[] = {0, 1, 2, -1, 3};
 void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation)
 {

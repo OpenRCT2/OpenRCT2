@@ -175,6 +175,11 @@ private:
             { 5, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP },
             { 6, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP },
             { 6, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP },
+
+            { 7, TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL, TRACK_ELEM_LEFT_EIGHTH_TO_DIAG },
+            { 7, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL, TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG },
+            { 8, TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL, TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG },
+            { 8, TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG },
         };
 
         for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
@@ -207,6 +212,14 @@ private:
                     break;
                 case 6:
                     WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 7:
+                    WriteLine(tabs, "trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 8:
+                    WriteLine(tabs, "trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
                     break;
                 }
                 return true;

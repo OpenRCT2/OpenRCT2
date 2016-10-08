@@ -218,6 +218,8 @@ extern const sint8 defaultEighthToDiagThickness[4][4];
 extern const rct_xy16 defaultDiagBoundLengths[4];
 extern const rct_xy16 defaultDiagTileOffsets[4];
 
+extern const uint8 mapLeftEighthTurnToOrthogonal[5];
+
 extern bool gUseOriginalRidePaint;
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
