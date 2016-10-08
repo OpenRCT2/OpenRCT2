@@ -143,7 +143,26 @@ private:
             { 0, TRACK_ELEM_RIGHT_BANK, TRACK_ELEM_LEFT_BANK },
             { 0, TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED, TRACK_ELEM_25_DEG_UP_LEFT_BANKED },
             { 0, TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED, TRACK_ELEM_25_DEG_UP_RIGHT_BANKED },
+            { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP },
+            { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT, TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT, TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT },
+            { 0, TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT },
+            { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT, TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT, TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP },
+            { 0, TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT },
+            { 0, TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT },
 
+            { 1, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES },
+            { 1, TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES, TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES },
+            { 1, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP },
+            { 1, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP },
+
+            { 2, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP },
+            { 2, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP },
         };
 
         for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
@@ -154,6 +173,14 @@ private:
                 switch (mirrorTable[i][0]) {
                 case 0:
                     WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 1:
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 2:
+                    WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
                     break;
                 }
                 return true;
