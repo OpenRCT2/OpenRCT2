@@ -169,6 +169,12 @@ private:
             { 3, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP },
             { 4, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP },
             { 4, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP },
+
+            { 5, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE },
+            { 5, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP },
+            { 5, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP },
+            { 6, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP },
+            { 6, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP },
         };
 
         for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
@@ -194,6 +200,12 @@ private:
                     break;
                 case 4:
                     WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 5:
+                    WriteLine(tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 6:
                     WriteLine(tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
                     break;
                 }
