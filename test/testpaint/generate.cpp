@@ -605,9 +605,12 @@ private:
             }
         }
 
-        if (tunnelOffset[0] == tunnelOffset[1] &&
-            tunnelOffset[0] == tunnelOffset[2] &&
-            tunnelOffset[0] == tunnelOffset[3])
+        if (tunnelType[0] == 0xFF)
+        {
+            return;
+        }
+
+        if (AllMatch(tunnelOffset, 4) && AllMatch(tunnelType, 4))
         {
             GenerateTunnelCall(tabs, tunnelOffset[0], tunnelType[0]);
         }
@@ -625,7 +628,7 @@ private:
     {
         if (offset == 0)
         {
-            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height, TUNNEL_%d);", offset);
+            WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height, TUNNEL_%d);", type);
         }
         else if (offset < 0)
         {
