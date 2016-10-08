@@ -193,8 +193,8 @@ static bool sprite_file_save(const char *path)
 
 static void sprite_file_close()
 {
-	free(spriteFileEntries);
-	free(spriteFileData);
+	SafeFree(spriteFileEntries);
+	SafeFree(spriteFileData);
 }
 
 static bool sprite_file_export(int spriteIndex, const char *outPath)
@@ -689,6 +689,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 				}
 				if (!silent)
 					fprintf(stdout, "Added: %s\n", imagePath);
+				sprite_file_close();
 			}
 			i++;
 		} while (file != NULL);
