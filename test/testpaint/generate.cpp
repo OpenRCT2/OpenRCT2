@@ -60,8 +60,32 @@ private:
 
     void Generate()
     {
+        GenerateIncludes();
         GenerateTrackFunctions();
         GenerateMainFunction();
+    }
+
+    void GenerateIncludes()
+    {
+        const char * includes[] =
+        {
+            "../../drawing/drawing.h",
+            "../../paint/supports.h",
+            "../../interface/viewport.h",
+            "../../paint/map_element/map_element.h",
+            "../../paint/paint.h",
+            "../../sprites.h",
+            "../../world/map.h",
+            "../../world/sprite.h",
+            "../ride_data.h",
+            "../track_data.h",
+            "../track_paint.h",
+        };
+        for (auto include : includes)
+        {
+            WriteLine(0, "#include \"%s\"", include);
+        }
+        WriteLine();
     }
 
     void GenerateTrackFunctions()
@@ -89,7 +113,7 @@ private:
             {
                 WriteLine(1, "case %d:", trackSequence);
                 GenerateTrackSequence(2, trackType, trackSequence);
-                WriteLine(2, "break");
+                WriteLine(2, "break;");
             }
             WriteLine(1, "}");
         }
@@ -332,13 +356,10 @@ private:
 
     void GenerateGeneralSupportCall(int tabs, support_height generalSupports[4])
     {
-        if (AllMatch(generalSupports, 4))
+        WriteLine(tabs, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
+        if (!AllMatch(generalSupports, 4))
         {
-            WriteLine(tabs, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
-        }
-        else
-        {
-            WriteLine(tabs, "#error Unsupported: different directional general supports");
+            // WriteLine(tabs, "#error Unsupported: different directional general supports");
         }
     }
 
