@@ -79,18 +79,36 @@ private:
     void GenerateTrackFunction(int trackType)
     {
         int numSequences = getTrackSequenceCount(_rideType, trackType);
-        int height = 48;
 
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
+        if (numSequences > 1)
+        {
+            WriteLine(1, "switch (trackSequence) {");
+            for (int trackSequence = 0; trackSequence < numSequences; trackSequence++)
+            {
+                WriteLine(1, "case %d:", trackSequence);
+                GenerateTrackSequence(2, trackType, trackSequence);
+                WriteLine(2, "break");
+            }
+            WriteLine(1, "}");
+        }
+        else
+        {
+            GenerateTrackSequence(1, trackType, 0);
+        }
+        WriteLine(0, "}");
+    }
+
+    void GenerateTrackSequence(int tabs, int trackType, int trackSequence)
+    {
+        int height = 48;
 
         std::vector<function_call> calls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
         std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
-            int trackSequence = 0;
-
             rct_map_element mapElement = { 0 };
             mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
             mapElement.properties.track.type = trackType;
@@ -110,19 +128,29 @@ private:
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
         }
 
-        GenerateCalls(1, calls, height);
-        GenerateTunnelCall(tileTunnelCalls);
-        GenerateSegmentSupportCall(segmentSupportCalls);
-        GenerateGeneralSupportCall(generalSupports);
-
-        WriteLine(0, "}");
+        GenerateCalls(tabs, calls, height);
+        GenerateTunnelCall(tabs, tileTunnelCalls);
+        GenerateSegmentSupportCall(tabs, segmentSupportCalls);
+        GenerateGeneralSupportCall(tabs, generalSupports);
     }
 
     void GenerateCalls(int tabs, std::vector<function_call> calls[4], int height)
     {
+        int totalCalls = 0;
+        for (int direction = 0; direction < 4; direction++)
+        {
+            totalCalls += calls[direction].size();
+        }
+        if (totalCalls == 0)
+        {
+            return;
+        }
+
         WriteLine(tabs, "switch (direction) {");
         for (int direction = 0; direction < 4; direction++)
         {
+            if (calls[direction].size() == 0) continue;
+
             WriteLine(tabs, "case %d:", direction);
             for (auto call : calls[direction])
             {
@@ -191,7 +219,7 @@ private:
         return true;
     }
 
-    void GenerateTunnelCall(Intercept2::TunnelCall tileTunnelCalls[4][4])
+    void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4])
     {
         sint16 tunnelOffset[4] = { 0 };
         uint8 tunnelType[4] = { 0xFF };
@@ -213,15 +241,15 @@ private:
             tunnelOffset[0] == tunnelOffset[2] &&
             tunnelOffset[0] == tunnelOffset[3])
         {
-            GenerateTunnelCall(1, tunnelOffset[0], tunnelType[0]);
+            GenerateTunnelCall(tabs, tunnelOffset[0], tunnelType[0]);
         }
         else
         {
-            WriteLine(1, "if (direction == 0 || direction == 3) {");
-            GenerateTunnelCall(2, tunnelOffset[0], tunnelType[0]);
-            WriteLine(1, "} else {");
-            GenerateTunnelCall(2, tunnelOffset[1], tunnelType[1]);
-            WriteLine(1, "}");
+            WriteLine(tabs, "if (direction == 0 || direction == 3) {");
+            GenerateTunnelCall(tabs + 1, tunnelOffset[0], tunnelType[0]);
+            WriteLine(tabs, "} else {");
+            GenerateTunnelCall(tabs + 1, tunnelOffset[1], tunnelType[1]);
+            WriteLine(tabs, "}");
         }
     }
 
@@ -241,7 +269,7 @@ private:
         }
     }
 
-    void GenerateSegmentSupportCall(std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
+    void GenerateSegmentSupportCall(int tabs, std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
     {
         for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
         {
@@ -268,19 +296,19 @@ private:
                 szCall += std::to_string(ssh.height);
                 szCall += StringFormat(", 0x%02X);", ssh.slope);
             }
-            WriteLine(1, szCall);
+            WriteLine(tabs, szCall);
         }
     }
 
-    void GenerateGeneralSupportCall(support_height generalSupports[4])
+    void GenerateGeneralSupportCall(int tabs, support_height generalSupports[4])
     {
         if (AllMatch(generalSupports, 4))
         {
-            WriteLine(1, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
+            WriteLine(tabs, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
         }
         else
         {
-            WriteLine(1, "#error Unsupported: different directional general supports");
+            WriteLine(tabs, "#error Unsupported: different directional general supports");
         }
     }
 
