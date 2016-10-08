@@ -97,11 +97,20 @@ bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *i
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		// Read first chunk
-		sawyercoding_read_chunk(rw, (uint8*)header);
+		size_t loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)header, sizeof(rct_s6_header));
+		if (loaded_size != sizeof(rct_s6_header)) {
+			log_error("Failed to read header from scenario %s", path);
+			SDL_RWclose(rw);
+			return false;
+		}
 		if (header->type == S6_TYPE_SCENARIO) {
 			// Read second chunk
-			sawyercoding_read_chunk(rw, (uint8*)info);
+			loaded_size = sawyercoding_read_chunk_with_size(rw, (uint8*)info, sizeof(rct_s6_info));
 			SDL_RWclose(rw);
+			if (loaded_size != sizeof(rct_s6_info)) {
+				log_error("Failed to read info from scenario %s", path);
+				return false;
+			}
 			return true;
 		} else {
 			log_error("invalid scenario, %s", path);
