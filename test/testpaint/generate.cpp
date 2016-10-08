@@ -345,44 +345,22 @@ private:
 
             for (auto call : calls[direction])
             {
-                GenerateCalls(tabs + 1, call, height);
+                GenerateCalls(tabs + 1, call, height, direction);
             }
             WriteLine(tabs + 1, "break;");
         }
         WriteLine(tabs, "}");
     }
 
-    void GenerateCalls(int tabs, const function_call &call, int height)
+    void GenerateCalls(int tabs, const function_call &call, int height, int direction)
     {
-        const char * funcName = GetFunctionCallName(call.function);
         switch (call.function) {
         case PAINT_98196C:
         case PAINT_98197C:
         case PAINT_98198C:
         case PAINT_98199C:
-        {
-            std::string s = StringFormat("%s(%s, %d, %d, %d, %d, %d, height%s, ",
-                funcName,
-                GetImageIdString(call.paint.image_id).c_str(),
-                call.paint.offset.x,
-                call.paint.offset.y,
-                call.paint.bound_box_length.x,
-                call.paint.bound_box_length.y,
-                call.paint.bound_box_length.z,
-                GetOffsetExpressionString(call.paint.z_offset - height).c_str());
-
-            if (call.function != PAINT_98196C)
-            {
-                s += StringFormat("%d, %d, height%s, ",
-                    call.paint.bound_box_offset.x,
-                    call.paint.bound_box_offset.y,
-                    GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
-            }
-
-            s += "get_current_rotation());";
-            WriteLine(tabs, s);
+            GeneratePaintCall(tabs, call, height, direction);
             break;
-        }
         case SUPPORTS_METAL_A:
             WriteLine(tabs, "metal_a_supports_paint_setup(%d, %d, %d, height%s, %s);",
                 call.supports.type,
@@ -413,6 +391,39 @@ private:
                 GetOffsetExpressionString(call.supports.height - height).c_str(),
                 GetImageIdString(call.supports.colour_flags).c_str());
             break;
+        }
+    }
+
+    void GeneratePaintCall(int tabs, const function_call &call, int height, int direction)
+    {
+        const char * funcName = GetFunctionCallName(call.function);
+        std::string imageId = GetImageIdString(call.paint.image_id);
+        std::string s = StringFormat("%s_rotated(direction, %s, ", funcName, imageId.c_str());
+        s += FormatXYSwap(call.paint.offset.x, call.paint.offset.y, direction);
+        s += ", ";
+        s += FormatXYSwap(call.paint.bound_box_length.x, call.paint.bound_box_length.y, direction);
+        s += StringFormat(", %d, height%s", call.paint.bound_box_length.z, GetOffsetExpressionString(call.paint.z_offset - height).c_str());
+
+        if (call.function != PAINT_98196C)
+        {
+            s += ", ";
+            s += FormatXYSwap(call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, direction);
+            s += StringFormat(", height%s", GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
+        }
+
+        s += ");";
+        WriteLine(tabs, s);
+    }
+
+    std::string FormatXYSwap(sint16 x, sint16 y, int direction)
+    {
+        if (direction & 1)
+        {
+            return StringFormat("%d, %d", y, x);
+        }
+        else
+        {
+            return StringFormat("%d, %d", x, y);
         }
     }
 
