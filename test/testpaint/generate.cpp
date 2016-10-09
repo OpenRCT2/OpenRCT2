@@ -237,7 +237,7 @@ private:
             { 19, TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN, TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP },
         };
 
-        for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
+        for (size_t i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
         {
             if (mirrorTable[i][1] == trackType)
             {

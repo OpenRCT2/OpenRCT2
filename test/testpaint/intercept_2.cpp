@@ -481,10 +481,6 @@ namespace Intercept2
 
         g_currently_drawn_item = &mapElement;
 
-        rct_map_element surfaceElement = {0};
-        surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
-        surfaceElement.base_height = 2;
-
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
         gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
@@ -676,10 +672,6 @@ namespace Intercept2
         mapElement.base_height = 3;
 
         g_currently_drawn_item = &mapElement;
-
-        rct_map_element surfaceElement = {0};
-        surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
-        surfaceElement.base_height = 2;
 
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;

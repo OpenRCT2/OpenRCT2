@@ -430,7 +430,7 @@ static void printFunctionCall(utf8string *out, function_call call) {
 
 static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
 	for (int i = 0; i < count; i++) {
-		utf8string callOut = malloc(128);
+		utf8string callOut = malloc(1024);
 		printFunctionCall(&callOut, calls[i]);
 		sprintf(*out + strlen(*out), "%s\n", callOut);
 	}
