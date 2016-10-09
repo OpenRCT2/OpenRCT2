@@ -6294,7 +6294,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_ghost_train,	// RIDE_TYPE_GHOST_TRAIN
 	get_track_paint_function_twister_rc,	// RIDE_TYPE_TWISTER_ROLLER_COASTER
 	0,						// RIDE_TYPE_WOODEN_ROLLER_COASTER
-	0,						// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+	get_track_paint_function_side_friction_rc,						// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
 	get_track_paint_function_wild_mouse,		// RIDE_TYPE_WILD_MOUSE
 	0,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
 	0,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
