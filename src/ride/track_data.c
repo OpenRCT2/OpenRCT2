@@ -6329,7 +6329,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_55
 	get_track_paint_function_inverted_impulse_rc,						// RIDE_TYPE_INVERTED_IMPULSE_COASTER
 	get_track_paint_function_mini_rc,						// RIDE_TYPE_MINI_ROLLER_COASTER
-	0,						// RIDE_TYPE_MINE_RIDE
+	get_track_paint_function_mine_ride,						// RIDE_TYPE_MINE_RIDE
 	0,						// RIDE_TYPE_59
 	0,						// RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
