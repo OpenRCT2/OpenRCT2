@@ -6241,7 +6241,7 @@ const track_curve_chain gFlatRideTrackCurveChain[256] = {
 };
 
 const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
-	0,						// RIDE_TYPE_SPIRAL_ROLLER_COASTER
+    get_track_paint_function_spiral_rc,						// RIDE_TYPE_SPIRAL_ROLLER_COASTER
 	0,						// RIDE_TYPE_STAND_UP_ROLLER_COASTER
 	0,						// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
 	0,						// RIDE_TYPE_INVERTED_ROLLER_COASTER
