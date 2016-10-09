@@ -118,7 +118,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	CURL *curl;
 	CURLcode curlResult;
 	http_json_response *response;
-	read_buffer readBuffer;
+	read_buffer readBuffer = { 0 };
 	write_buffer writeBuffer;
 
 	curl = curl_easy_init();

@@ -619,11 +619,10 @@ static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, ui
 					uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
 
 					rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
-					if (!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-						(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)){
-						bh = bh;
-					}
-					else if (small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
+					if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
+						(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)) &&
+						(small_scenery->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)))
+					{
 						bh &= 0x3F;
 					}
 

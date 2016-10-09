@@ -8774,7 +8774,6 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 	 * map elements that are not of interest, which includes wide paths
 	 * and foreign ride queues (depending on gPeepPathFindIgnoreForeignQueues) */
 	bool found = false;
-	uint8 rideIndex = 0xFF;
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
@@ -8803,9 +8802,6 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 			case ENTRANCE_TYPE_RIDE_ENTRANCE:
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == test_edge) {
-					/* The rideIndex will be useful for
-					 * adding transport rides later. */
-					uint8 rideIndex = mapElement->properties.entrance.ride_index;
 					searchResult = PATH_SEARCH_RIDE_ENTRANCE;
 				}
 				break;
@@ -8849,9 +8845,6 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				if (footpath_element_is_queue(mapElement) && mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
 					if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF)) {
 						// Path is a queue we aren't interested in
-						/* The rideIndex will be useful for
-						* adding transport rides later. */
-						rideIndex = mapElement->properties.path.ride_index;
 						searchResult = PATH_SEARCH_RIDE_QUEUE;
 					}
 				}
@@ -9250,15 +9243,12 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint16 best_score = 0xFFFF;
 		uint8 best_sub = 0xFF;
 
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		uint8 bestJunctions = 0;
 		rct_xyz8 bestJunctionList[16] = { 0 };
 		uint8 bestDirectionList[16] = { 0 };
-		rct_xyz8 bestXYZ;
-		bestXYZ.x = 0;
-		bestXYZ.y = 0;
-		bestXYZ.z = 0;
+		rct_xyz8 bestXYZ = { 0, 0, 0 };
 
-		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
 			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
 		}
@@ -9269,7 +9259,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		 * or for different edges with equal value, the edge with the
 		 * least steps (best_sub). */
 		int numEdges = bitcount(edges);
-		bool goalReachable = false;
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
@@ -9316,10 +9305,8 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			 * In the future these could be used to visualise the
 			 * pathfinding on the map. */
 			uint8 endJunctions = 0;
-			rct_xyz8 endJunctionList[16];
-			memset(endJunctionList, 0x0, sizeof(endJunctionList));
-			uint8 endDirectionList[16];
-			memset(endDirectionList, 0x0, sizeof(endDirectionList));
+			rct_xyz8 endJunctionList[16] = { 0 };
+			uint8 endDirectionList[16] = { 0 };
 
 			peep_pathfind_heuristic_search(x, y, height, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -9335,6 +9322,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				chosen_edge = test_edge;
 				best_score = score;
 				best_sub = endSteps;
+				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				bestJunctions = endJunctions;
 				for (uint8 index = 0; index < endJunctions; index++) {
 					bestJunctionList[index].x = endJunctionList[index].x;
@@ -9345,6 +9333,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				bestXYZ.x = endXYZ.x;
 				bestXYZ.y = endXYZ.y;
 				bestXYZ.z = endXYZ.z;
+				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			}
 		}
 
