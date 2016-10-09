@@ -315,6 +315,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_suspended_monorail(int trackType, 
 TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);

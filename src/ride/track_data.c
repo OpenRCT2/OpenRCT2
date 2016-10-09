@@ -6309,7 +6309,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_reverser_rc,						// RIDE_TYPE_REVERSER_ROLLER_COASTER
 	get_track_paint_function_heartline_twister_rc,						// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
 	get_track_paint_function_mini_golf,		// RIDE_TYPE_MINI_GOLF
-	0,						// RIDE_TYPE_GIGA_COASTER
+	get_track_paint_function_giga_rc,						// RIDE_TYPE_GIGA_COASTER
 	get_track_paint_function_roto_drop,		// RIDE_TYPE_ROTO_DROP
 	get_track_paint_function_flying_saucers,// RIDE_TYPE_FLYING_SAUCERS
 	get_track_paint_function_crooked_house,	// RIDE_TYPE_CROOKED_HOUSE
