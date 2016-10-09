@@ -6298,7 +6298,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_wild_mouse,		// RIDE_TYPE_WILD_MOUSE
 	get_track_paint_function_multi_dimension_rc,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
 	0,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-	0,						// RIDE_TYPE_FLYING_ROLLER_COASTER
+	get_track_paint_function_flying_rc,						// RIDE_TYPE_FLYING_ROLLER_COASTER
 	0,						// RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
 	get_track_paint_function_virginia_reel,		// RIDE_TYPE_VIRGINIA_REEL
 	get_track_paint_function_splash_boats,		// RIDE_TYPE_SPLASH_BOATS
