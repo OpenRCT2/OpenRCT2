@@ -79,6 +79,24 @@ static void reverser_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 d
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void reverser_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][3] = {
+		{ 21506, SPR_STATION_BASE_A_SW_NE },
+		{ 21507, SPR_STATION_BASE_A_NW_SE },
+		{ 21506, SPR_STATION_BASE_A_SW_NE },
+		{ 21507, SPR_STATION_BASE_A_NW_SE },
+	};
+
+	sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 27, 2, height, 0, 2, height);
+	sub_98199C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 27, 2, height, 0, 2, height);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void reverser_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -1005,6 +1023,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int trackType, int dir
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:
 		return reverser_rc_track_flat;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return reverser_rc_track_station;
 	case TRACK_ELEM_25_DEG_UP:
 		return reverser_rc_track_25_deg_up;
 	case TRACK_ELEM_FLAT_TO_25_DEG_UP:
