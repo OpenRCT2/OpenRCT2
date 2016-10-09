@@ -266,6 +266,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int trackTyp
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
