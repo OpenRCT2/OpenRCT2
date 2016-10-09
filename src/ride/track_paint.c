@@ -556,12 +556,17 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
 
 void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour)
 {
+	track_paint_util_draw_station_metal_supports_2(direction, height, colour, 3);
+}
+
+void track_paint_util_draw_station_metal_supports_2(uint8 direction, uint16 height, uint32 colour, uint8 type)
+{
 	if (direction & 1) {
-		metal_a_supports_paint_setup(3, 6, 0, height, colour);
-		metal_a_supports_paint_setup(3, 7, 0, height, colour);
+		metal_a_supports_paint_setup(type, 6, 0, height, colour);
+		metal_a_supports_paint_setup(type, 7, 0, height, colour);
 	} else {
-		metal_a_supports_paint_setup(3, 5, 0, height, colour);
-		metal_a_supports_paint_setup(3, 8, 0, height, colour);
+		metal_a_supports_paint_setup(type, 5, 0, height, colour);
+		metal_a_supports_paint_setup(type, 8, 0, height, colour);
 	}
 }
 
