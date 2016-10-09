@@ -278,6 +278,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int trackType, int dire
 TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mine_train_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int trackType, int direction);

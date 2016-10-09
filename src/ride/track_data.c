@@ -6260,7 +6260,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_dinghy_slide,		// RIDE_TYPE_DINGHY_SLIDE
 	get_track_paint_function_mine_train_rc,						// RIDE_TYPE_MINE_TRAIN_COASTER
 	get_track_paint_function_chairlift,		// RIDE_TYPE_CHAIRLIFT
-	0,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+	get_track_paint_function_corkscrew_rc,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
 	get_track_paint_function_maze,			// RIDE_TYPE_MAZE
 	get_track_paint_function_spiral_slide,	// RIDE_TYPE_SPIRAL_SLIDE
 	get_track_paint_function_go_karts,		// RIDE_TYPE_GO_KARTS
