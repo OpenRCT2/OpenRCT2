@@ -447,8 +447,9 @@ static struct {
 };
 
 static sint16 windowTileInspectorHighlightedIndex = -1;
-static int windowTileInspectorTileX = -1;
-static int windowTileInspectorTileY = -1;
+static unsigned int windowTileInspectorTileX;
+static unsigned int windowTileInspectorTileY;
+static bool windowTileInspectorTileSelected = false;
 static int windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 
@@ -563,8 +564,7 @@ void window_tile_inspector_open() {
 	window->max_height = MAX_WH;
 	window->selected_list_item = -1;
 
-	windowTileInspectorTileX = -1;
-	windowTileInspectorTileY = -1;
+	windowTileInspectorTileSelected = false;
 
 	tool_set(window, WIDX_BACKGROUND, 12);
 	window_tile_inspector_auto_set_buttons(window);
@@ -1403,6 +1403,7 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 		return;
 	}
 
+	windowTileInspectorTileSelected = true;
 	windowTileInspectorTileX = mapX >> 5;
 	windowTileInspectorTileY = mapY >> 5;
 
@@ -1424,14 +1425,13 @@ static void window_tile_inspector_set_page(rct_window *w, const int page) {
 
 static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 	// X and Y spinners
-	bool tileIsSelected = (windowTileInspectorTileX != -1) && (windowTileInspectorTileY != -1);
-	widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (tileIsSelected && (windowTileInspectorTileX < 255)));
-	widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (tileIsSelected && (windowTileInspectorTileX > 0)));
-	widget_set_enabled(w, WIDX_SPINNER_Y_INCREASE, (tileIsSelected && (windowTileInspectorTileY < 255)));
-	widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (tileIsSelected && (windowTileInspectorTileY > 0)));
+	widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX < 255)));
+	widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX > 0)));
+	widget_set_enabled(w, WIDX_SPINNER_Y_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY < 255)));
+	widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY > 0)));
 
 	// Sort buttons
-	widget_set_enabled(w, WIDX_BUTTON_SORT, (tileIsSelected && windowTileInspectorElementCount > 1));
+	widget_set_enabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
 
 	// Move Up button
 	widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (w->selected_list_item > 0));
@@ -1726,9 +1726,12 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 	// Draw coordinates
 	gfx_draw_string(dpi, "X:", 12, w->x + 6, w->y + 24);
 	gfx_draw_string(dpi, "Y:", 12, w->x + 64, w->y + 24);
-	if (windowTileInspectorTileX != -1 && windowTileInspectorTileY != -1) {
+	if (windowTileInspectorTileSelected) {
 		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, 12, w->x + 48, w->y + 24);
 		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, 12, w->x + 105, w->y + 24);
+	}
+	else {
+		// TODO: Draw -- or something similar
 	}
 
 	if (w->selected_list_item != -1) {
@@ -1922,6 +1925,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 				sint16 rideId = mapElement->properties.entrance.ride_index;
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, 12, x, y + 22);
 			}
+			break;
 		}
 
 		case PAGE_FENCE: {
@@ -2045,7 +2049,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	int i = 0;
 	char buffer[256];
 
-	if (windowTileInspectorTileX == -1)
+	if (!windowTileInspectorTileSelected)
 		return;
 
 	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
