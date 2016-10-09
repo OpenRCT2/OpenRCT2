@@ -282,7 +282,7 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 	utf8 buffer[256];
 	void *args = gCommonFormatArgs;
 
-	format_string(buffer, string_id, args); // overflows possible?
+	format_string(buffer, 256, string_id, args); // overflows possible?
 	news_item_add_to_queue_raw(type, buffer, assoc);
 }
 

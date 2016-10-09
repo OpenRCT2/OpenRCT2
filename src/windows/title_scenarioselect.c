@@ -484,14 +484,16 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			bool isDisabled = listItem->scenario.is_locked;
 
 			// Draw scenario name
-			rct_string_id placeholderStringId = STR_PLACEHOLDER;
-			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
+			char buffer[64];
+			safe_strcpy(buffer, scenario->name, sizeof(buffer));
 			rct_string_id format = isDisabled ? STR_STRINGID : (isHighlighted ? highlighted_format : unhighlighted_format);
+			set_format_arg(0, rct_string_id, STR_STRING);
+			set_format_arg(2, char *, buffer);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
 			if (isDisabled) {
 				gCurrentFontSpriteBase = -1;
 			}
-			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, gCommonFormatArgs);
 
 			// Check if scenario is completed
 			if (isCompleted) {
@@ -503,9 +505,10 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				if (!str_is_null_or_empty(scenario->highscore->name)) {
 					completedByName = scenario->highscore->name;
 				}
-				safe_strcpy((char*)language_get_string(placeholderStringId), completedByName, 64);
+				safe_strcpy(buffer, completedByName, 64);
 				set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
-				set_format_arg(2, rct_string_id, placeholderStringId);
+				set_format_arg(2, rct_string_id, STR_STRING);
+				set_format_arg(4, char *, buffer);
 				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, gCommonFormatArgs);
 			}
 
@@ -527,7 +530,7 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int lef
 	
 	// Get string dimensions
 	utf8 *buffer = gCommonStringFormatBuffer;
-	format_string(buffer, stringId, NULL);
+	format_string(buffer, 256, stringId, NULL);
 	int categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
 	int strLeft = centreX - categoryStringHalfWidth;
 	int strRight = centreX + categoryStringHalfWidth;

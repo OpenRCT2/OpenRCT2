@@ -1004,7 +1004,7 @@ private:
         char buffer[512];
 
         va_start(args, format);
-        vsprintf(buffer, format, args);
+        vsnprintf(buffer, sizeof(buffer), format, args);
         va_end(args);
 
         WriteLine(tabs, std::string(buffer));
@@ -1016,8 +1016,7 @@ private:
         {
             fprintf(_file, "\t");
         }
-        fprintf(_file, s.c_str());
-        fprintf(_file, "\n");
+        fprintf(_file, "%s\n", s.c_str());
     }
 
     static std::string StringFormat(const char * format, ...)
@@ -1026,7 +1025,7 @@ private:
         char buffer[512];
 
         va_start(args, format);
-        vsprintf(buffer, format, args);
+        vsnprintf(buffer, sizeof(buffer), format, args);
         va_end(args);
 
         return std::string(buffer);

@@ -133,12 +133,12 @@ static uint8 scrolling_text_get_colour(uint32 character)
 	}
 }
 
-static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
+static void scrolling_text_format(utf8 *dst, size_t size, rct_draw_scroll_text *scrollText)
 {
 	if (gConfigGeneral.upper_case_banners) {
-		format_string_to_upper(dst, scrollText->string_id, &scrollText->string_args_0);
+		format_string_to_upper(dst, size, scrollText->string_id, &scrollText->string_args_0);
 	} else {
-		format_string(dst, scrollText->string_id, &scrollText->string_args_0);
+		format_string(dst, size, scrollText->string_id, &scrollText->string_args_0);
 	}
 }
 
@@ -1442,7 +1442,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 	// Create the string to draw
 	utf8 scrollString[256];
-	scrolling_text_format(scrollString, scrollText);
+	scrolling_text_format(scrollString, 256, scrollText);
 
 	const sint16* scrollingModePositions = _scrollPositions[scrollingMode];
 

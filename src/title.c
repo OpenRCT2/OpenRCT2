@@ -366,7 +366,6 @@ static void title_do_next_script_opcode()
 	case TITLE_SCRIPT_LOAD:
 		{
 			char *ch, filename[32], path[MAX_PATH];
-			char separator = platform_get_path_separator();
 
 			// Get filename
 			ch = filename;
@@ -379,12 +378,11 @@ static void title_do_next_script_opcode()
 				safe_strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
 			}
 			else {
-				platform_get_user_directory(path, "title sequences");
-				strcat(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name);
-				strncat(path, &separator, 1);
+				platform_get_user_directory(path, "title sequences", sizeof(path));
+				safe_strcat_path(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name, sizeof(path));
 			}
 
-			strcat(path, filename);
+			safe_strcat_path(path, filename, sizeof(path));
 			if (title_load_park(path)) {
 				_scriptNoLoadsSinceRestart = 0;
 				gTitleScriptSave = gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].commands[gTitleScriptCommand].saveIndex;
@@ -504,7 +502,7 @@ void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5 - 13);
 
 	// Write platform information
-	sprintf(ch, "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+	snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
 	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
 }
 
@@ -624,11 +622,10 @@ static uint8 *title_script_load()
 	char parts[3 * 128], *token, *part1, *part2, *src;
 
 	utf8 path[MAX_PATH];
-	utf8 dataPath[MAX_PATH];
-	utf8 filePath[] = "title/script.txt";
 
-	platform_get_openrct_data_path(dataPath);
-	sprintf(path, "%s%c%s", dataPath, platform_get_path_separator(), filePath);
+	platform_get_openrct_data_path(path, sizeof(path));
+	safe_strcat_path(path, "title", MAX_PATH);
+	safe_strcat_path(path, "script.txt", MAX_PATH);
 	log_verbose("loading title script, %s", path);
 	file = SDL_RWFromFile(path, "r");
 	if (file == NULL) {

@@ -396,9 +396,9 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 				string_id = STR_RIDE_ENTRANCE_NAME;
 			}
 			if (gConfigGeneral.upper_case_banners) {
-				format_string_to_upper(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
+				format_string_to_upper(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
 			} else {
-				format_string(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
+				format_string(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
 			}
 
 			gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

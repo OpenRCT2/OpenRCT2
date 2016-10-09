@@ -337,7 +337,7 @@ std::string NetworkKey::PublicKeyHash()
     for (unsigned int i = 0; i < digest_size; i++)
     {
         char buf[3];
-        sprintf(buf, "%02x", digest[i]);
+        snprintf(buf, 3, "%02x", digest[i]);
         digest_out.append(buf);
     }
     return digest_out;

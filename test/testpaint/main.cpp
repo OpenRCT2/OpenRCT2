@@ -445,7 +445,7 @@ int main(int argc, char *argv[]) {
 			bool success = testTrackPainting(tc.rideType, trackType);
 			if (!success) {
 				utf8string testCaseName = new utf8[64];
-				sprintf(testCaseName, "%s.%s", rideTypeName, trackTypeName);
+				snprintf(testCaseName, 64, "%s.%s", rideTypeName, trackTypeName);
 
 				ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
 				printf("%s (0 ms)\n", testCaseName);

@@ -378,15 +378,15 @@ static void window_install_track_design(rct_window *w)
 {
 	utf8 destPath[MAX_PATH];
 
-	platform_get_user_directory(destPath, "track");
+	platform_get_user_directory(destPath, "track", sizeof(destPath));
 	if (!platform_ensure_directory_exists(destPath)) {
 		log_error("Unable to create directory '%s'", destPath);
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
 		return;
 	}
 
-	strcat(destPath, _trackName);
-	strcat(destPath, ".td6");
+	safe_strcat_path(destPath, _trackName, sizeof(destPath));
+	path_append_extension(destPath, ".td6", sizeof(destPath));
 
 	if (platform_file_exists(destPath)) {
 		log_info("%s already exists, prompting user for a different track design name", destPath);

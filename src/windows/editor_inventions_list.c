@@ -895,7 +895,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 			ptr = utf8_write_codepoint(ptr, colour & 0xFF);
 		}
 
-		format_string(ptr, stringId, NULL);
+		format_string(ptr, 256, stringId, NULL);
 
 		if (disableItemMovement) {
 			gCurrentFontSpriteBase = -1;
@@ -931,7 +931,7 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
 	_editorInventionsListDraggedItem = researchItem;
 
 	stringId = research_item_get_name(researchItem->entryIndex & 0xFFFFFF);
-	format_string(buffer, stringId, NULL);
+	format_string(buffer, 256, stringId, NULL);
 	stringWidth = gfx_get_string_width(buffer);
 	window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 

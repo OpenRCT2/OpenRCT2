@@ -122,9 +122,9 @@ bool object_entry_is_empty(const rct_object_entry *entry)
  *
  *  rct2: 0x006AB344
  */
-void object_create_identifier_name(char* string_buffer, const rct_object_entry* object)
+void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object)
 {
-	sprintf(string_buffer, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
+	snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
 }
 
 /**

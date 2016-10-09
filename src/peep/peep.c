@@ -7364,7 +7364,7 @@ int peep_check_easteregg_name(int index, rct_peep *peep)
 {
 	char buffer[256];
 
-	format_string(buffer, peep->name_string_idx, &peep->id);
+	format_string(buffer, 256, peep->name_string_idx, &peep->id);
 	return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
 
@@ -7373,7 +7373,7 @@ int peep_get_easteregg_name_id(rct_peep *peep)
 	char buffer[256];
 	int i;
 
-	format_string(buffer, peep->name_string_idx, &peep->id);
+	format_string(buffer, 256, peep->name_string_idx, &peep->id);
 
 	for (i = 0; i < countof(gPeepEasterEggNames); i++)
 		if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -9889,7 +9889,7 @@ static int guest_path_finding(rct_peep* peep)
 	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
 	 * determine for which guest(s) the pathfinding debugging will
 	 * be output for. */
-	format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
 	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -11888,9 +11888,9 @@ static int peep_compare(const void *sprite_index_a, const void *sprite_index_b)
 	utf8 name_a[256];
 	utf8 name_b[256];
 	uint32 peepIndex = peep_a->id;
-	format_string(name_a, peep_a->name_string_idx, &peepIndex);
+	format_string(name_a, 256, peep_a->name_string_idx, &peepIndex);
 	peepIndex = peep_b->id;
-	format_string(name_b, peep_b->name_string_idx, &peepIndex);
+	format_string(name_b, 256, peep_b->name_string_idx, &peepIndex);
 	return strlogicalcmp(name_a, name_b);
 }
 
@@ -12059,7 +12059,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 	set_format_arg(0, uint32, peep->id);
 	utf8* curName = gCommonStringFormatBuffer;
 	rct_string_id curId = peep->name_string_idx;
-	format_string(curName, curId, gCommonFormatArgs);
+	format_string(curName, 256, curId, gCommonFormatArgs);
 
 	if (strcmp(curName, newName) == 0)
 		return 0;

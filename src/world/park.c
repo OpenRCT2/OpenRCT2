@@ -147,7 +147,7 @@ void park_init()
 	award_reset();
 
 	gS6Info.name[0] = '\0';
-	format_string(gS6Info.details, STR_NO_DETAILS_YET, NULL);
+	format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, NULL);
 }
 
 /**
@@ -915,7 +915,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		return;
 	}
 
-	format_string(oldName, gParkName, &gParkNameArgs);
+	format_string(oldName, 128, gParkName, &gParkNameArgs);
 	if (strcmp(oldName, newName) == 0) {
 		*ebx = 0;
 		return;

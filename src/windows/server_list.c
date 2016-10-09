@@ -480,7 +480,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		char players[32];
 		players[0] = 0;
 		if (serverDetails->maxplayers > 0) {
-			sprintf(players, "%d/%d", serverDetails->players, serverDetails->maxplayers);
+			snprintf(players, 32, "%d/%d", serverDetails->players, serverDetails->maxplayers);
 		}
 		int numPlayersStringWidth = gfx_get_string_width(players);
 		gfx_draw_string(dpi, players, w->colours[1], right - numPlayersStringWidth, y + 3);
@@ -525,8 +525,8 @@ static void server_list_load_server_entries()
 	utf8 path[MAX_PATH];
 	SDL_RWops *file;
 
-	platform_get_user_directory(path, NULL);
-	strcat(path, "servers.cfg");
+	platform_get_user_directory(path, NULL, sizeof(path));
+	safe_strcat_path(path, "servers.cfg", sizeof(path));
 
 	file = SDL_RWFromFile(path, "rb");
 	if (file == NULL) {
@@ -564,8 +564,8 @@ static void server_list_save_server_entries()
 	utf8 path[MAX_PATH];
 	SDL_RWops *file;
 
-	platform_get_user_directory(path, NULL);
-	strcat(path, "servers.cfg");
+	platform_get_user_directory(path, NULL, sizeof(path));
+	safe_strcat_path(path, "servers.cfg", sizeof(path));
 
 	file = SDL_RWFromFile(path, "wb");
 	if (file == NULL) {

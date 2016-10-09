@@ -42,10 +42,10 @@ bool title_sequence_name_exists(const char *name)
 bool title_sequence_save_exists(int preset, const char *name)
 {
 	utf8 newName[MAX_PATH];
-	char *extension = (char*)path_get_extension(name);
+	const char *extension = path_get_extension(name);
 	safe_strcpy(newName, name, MAX_PATH);
 	if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-		strcat(newName, ".sv6");
+		path_append_extension(newName, ".sv6", MAX_PATH);
 	for (int i = 0; i < gConfigTitleSequences.presets[preset].num_saves; i++) {
 		if (_stricmp(gConfigTitleSequences.presets[preset].saves[i], newName) == 0)
 			return true;
@@ -102,8 +102,8 @@ void title_sequence_create_preset(const char *name)
 
 		// Create the folder
 		utf8 path[MAX_PATH];
-		platform_get_user_directory(path, "title sequences");
-		strcat(path, gConfigTitleSequences.presets[preset].name);
+		platform_get_user_directory(path, "title sequences", sizeof(path));
+		safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
 		platform_file_delete(path);
 		platform_ensure_directory_exists(path);
 
@@ -141,28 +141,25 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 
 		// Create the folder
 		utf8 path[MAX_PATH], srcPath[MAX_PATH];
-		platform_get_user_directory(path, "title sequences");
-		strcat(path, gConfigTitleSequences.presets[preset].name);
+		platform_get_user_directory(path, "title sequences", sizeof(path));
+		safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
 		platform_file_delete(path);
 		platform_ensure_directory_exists(path);
 
 		// Copy the saves
-		char separator = platform_get_path_separator();
 		for (int i = 0; i < gConfigTitleSequences.presets[preset].num_saves; i++) {
 			if (gConfigTitleSequences.presets[duplicate].path[0]) {
 				safe_strcpy(srcPath, gConfigTitleSequences.presets[duplicate].path, MAX_PATH);
-				strcat(srcPath, gConfigTitleSequences.presets[duplicate].saves[i]);
+				safe_strcat_path(srcPath, gConfigTitleSequences.presets[duplicate].saves[i], MAX_PATH);
 			}
 			else {
-				platform_get_user_directory(srcPath, "title sequences");
-				strcat(srcPath, gConfigTitleSequences.presets[duplicate].name);
-				strncat(srcPath, &separator, 1);
-				strcat(srcPath, gConfigTitleSequences.presets[duplicate].saves[i]);
+				platform_get_user_directory(srcPath, "title sequences", sizeof(srcPath));
+				safe_strcat_path(srcPath, gConfigTitleSequences.presets[duplicate].name, MAX_PATH);
+				safe_strcat_path(srcPath, gConfigTitleSequences.presets[duplicate].saves[i], MAX_PATH);
 			}
-			platform_get_user_directory(path, "title sequences");
-			strcat(path, gConfigTitleSequences.presets[preset].name);
-			strncat(path, &separator, 1);
-			strcat(path, gConfigTitleSequences.presets[preset].saves[i]);
+			platform_get_user_directory(path, "title sequences", sizeof(path));
+			safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
+			safe_strcat_path(path, gConfigTitleSequences.presets[preset].saves[i], MAX_PATH);
 
 			platform_file_copy(srcPath, path, false);
 		}
@@ -181,8 +178,8 @@ void title_sequence_delete_preset(int preset)
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
 		// Delete the folder
 		utf8 path[MAX_PATH];
-		platform_get_user_directory(path, "title sequences");
-		strcat(path, gConfigTitleSequences.presets[preset].name);
+		platform_get_user_directory(path, "title sequences", sizeof(path));
+		safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
 		if (!platform_directory_delete(path)) {
 			log_error("Failed to delete directory: \"%s\"", path);
 		}
@@ -209,10 +206,10 @@ void title_sequence_rename_preset(int preset, const char *newName)
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newName) && !title_sequence_name_exists(newName)) {
 		// Rename the folder
 		utf8 src[MAX_PATH], dest[MAX_PATH];
-		platform_get_user_directory(src, "title sequences");
-		platform_get_user_directory(dest, "title sequences");
-		strcat(src, gConfigTitleSequences.presets[preset].name);
-		strcat(dest, newName);
+		platform_get_user_directory(src, "title sequences", sizeof(src));
+		platform_get_user_directory(dest, "title sequences", sizeof(dest));
+		safe_strcat_path(src, gConfigTitleSequences.presets[preset].name, sizeof(src));
+		safe_strcat_path(dest, newName, sizeof(dest));
 		platform_file_move(src, dest);
 
 		safe_strcpy(gConfigTitleSequences.presets[preset].name, newName, TITLE_SEQUENCE_NAME_SIZE);
@@ -228,20 +225,18 @@ void title_sequence_rename_preset(int preset, const char *newName)
 void title_sequence_add_save(int preset, const char *path, const char *newName)
 {
 	utf8 newPath[MAX_PATH];
-	char *extension = (char*)path_get_extension(newName);
+	const char *extension = path_get_extension(newName);
 	safe_strcpy(newPath, newName, MAX_PATH);
 	if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-		strcat(newPath, ".sv6");
+		path_append_extension(newPath, ".sv6", MAX_PATH);
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newPath) && !title_sequence_save_exists(preset, newPath) && platform_file_exists(path)) {
 		// Copy the save file
-		char separator = platform_get_path_separator();
-		platform_get_user_directory(newPath, "title sequences");
-		strcat(newPath, gConfigTitleSequences.presets[preset].name);
-		strncat(newPath, &separator, 1);
-		strcat(newPath, newName);
+		platform_get_user_directory(newPath, "title sequences", sizeof(newPath));
+		safe_strcat_path(newPath, gConfigTitleSequences.presets[preset].name, sizeof(newPath));
+		safe_strcat_path(newPath, newName, sizeof(newPath));
 		// Add the appropriate extension if needed
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-			strcat(newPath, ".sv6");
+			path_append_extension(newPath, ".sv6", sizeof(newPath));
 		platform_file_copy(path, newPath, false);
 
 		gConfigTitleSequences.presets[preset].num_saves++;
@@ -250,7 +245,7 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 		safe_strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], newName, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		// Add the appropriate extension if needed
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-			strcat(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], ".sv6");
+			path_append_extension(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], ".sv6", TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 	}
 }
 
@@ -258,12 +253,10 @@ void title_sequence_remove_save(int preset, int index)
 {
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves) {
 		// Delete the save file
-		char separator = platform_get_path_separator();
 		utf8 path[MAX_PATH];
-		platform_get_user_directory(path, "title sequences");
-		strcat(path, gConfigTitleSequences.presets[preset].name);
-		strncat(path, &separator, 1);
-		strcat(path, gConfigTitleSequences.presets[preset].saves[index]);
+		platform_get_user_directory(path, "title sequences", sizeof(path));
+		safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, sizeof(path));
+		safe_strcat_path(path, gConfigTitleSequences.presets[preset].saves[index], sizeof(path));
 		platform_file_delete(path);
 
 		// Remove all references to this save in the commands and decrement save indices
@@ -291,26 +284,23 @@ void title_sequence_rename_save(int preset, int index, const char *newName)
 		filename_valid_characters(newName) && !title_sequence_save_exists(preset, newName)) {
 
 		// Rename the save file
-		char separator = platform_get_path_separator();
 		utf8 src[MAX_PATH], dest[MAX_PATH];
-		platform_get_user_directory(src, "title sequences");
-		platform_get_user_directory(dest, "title sequences");
-		strcat(src, gConfigTitleSequences.presets[preset].name);
-		strcat(dest, gConfigTitleSequences.presets[preset].name);
-		strncat(src, &separator, 1);
-		strncat(dest, &separator, 1);
-		strcat(src, gConfigTitleSequences.presets[preset].saves[index]);
-		strcat(dest, newName);
+		platform_get_user_directory(src, "title sequences", sizeof(src));
+		platform_get_user_directory(dest, "title sequences", sizeof(dest));
+		safe_strcat_path(src, gConfigTitleSequences.presets[preset].name, sizeof(src));
+		safe_strcat_path(dest, gConfigTitleSequences.presets[preset].name, sizeof(dest));
+		safe_strcat_path(src, gConfigTitleSequences.presets[preset].saves[index], sizeof(src));
+		safe_strcat_path(dest, newName, sizeof(dest));
 		// Add the appropriate extension if needed
-		char *extension = (char*)path_get_extension(newName);
+		const char *extension = path_get_extension(newName);
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-			strcat(dest, ".sv6");
+			path_append_extension(dest, ".sv6", sizeof(dest));
 		platform_file_move(src, dest);
 
 		safe_strcpy(gConfigTitleSequences.presets[preset].saves[index], newName, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		// Add the appropriate extension if needed
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
-			strcat(gConfigTitleSequences.presets[preset].saves[index], ".sv6");
+			path_append_extension(gConfigTitleSequences.presets[preset].saves[index], ".sv6", TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		title_sequence_save_preset_script(preset);
 	}
 }

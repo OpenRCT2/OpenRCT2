@@ -90,23 +90,25 @@ void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
 	utf8 *ch = buffer;
 
 	// Name and version
-	strcpy(ch, OPENRCT2_NAME);
-	strcat(buffer, ", v");
-	strcat(buffer, OPENRCT2_VERSION);
+	safe_strcpy(ch, OPENRCT2_NAME ", v" OPENRCT2_VERSION, bufferSize - (ch - buffer));
+	ch = strchr(ch, '\0');
 
 	// Build information
 	if (!str_is_null_or_empty(gGitBranch)) {
-		sprintf(strchr(buffer, 0), "-%s", gGitBranch);
+		snprintf(ch, bufferSize - (ch - buffer),  "-%s", gGitBranch);
+		ch = strchr(ch, '\0');
 	}
 	if (!str_is_null_or_empty(gCommitSha1Short)) {
-		sprintf(strchr(buffer, 0), " build %s", gCommitSha1Short);
+		snprintf(ch, bufferSize - (ch - buffer), " build %s", gCommitSha1Short);
+		ch = strchr(ch, '\0');
 	}
 	if (!str_is_null_or_empty(gBuildServer)) {
-		sprintf(strchr(buffer, 0), " provided by %s", gBuildServer);
+		snprintf(ch, bufferSize - (ch - buffer), " provided by %s", gBuildServer);
+		ch = strchr(ch, '\0');
 	}
 
 #if DEBUG
-	sprintf(strchr(buffer, 0), " (DEBUG)");
+	snprintf(ch, bufferSize - (ch - buffer), " (DEBUG)");
 #endif
 }
 
@@ -122,23 +124,23 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	}
 
 	// Create filter path
-	safe_strcpy(filter, originalDirectory, MAX_PATH);
+	safe_strcpy(filter, originalDirectory, sizeof(filter));
 	ch = strchr(filter, '*');
 	if (ch != NULL)
 		*ch = 0;
-	strcat(filter, "*");
-	strcat(filter, extension);
+	safe_strcat_path(filter, "*", sizeof(filter));
+	path_append_extension(filter, extension, sizeof(filter));
 
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		safe_strcpy(newPath, newDirectory, MAX_PATH);
-		strcat(newPath, fileInfo.path);
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, fileInfo.path, sizeof(newPath));
 
-		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
+		safe_strcpy(oldPath, originalDirectory, sizeof(oldPath));
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
-		strcat(oldPath, fileInfo.path);
+		safe_strcat_path(oldPath, fileInfo.path, sizeof(oldPath));
 
 		if (!platform_file_exists(newPath))
 			platform_file_copy(oldPath, newPath, false);
@@ -147,14 +149,14 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
 	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
-		safe_strcpy(newPath, newDirectory, MAX_PATH);
-		strcat(newPath, filter);
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, filter, sizeof(newPath));
 
 		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
-		strcat(oldPath, filter);
+		safe_strcat_path(oldPath, filter, sizeof(oldPath));
 
 		if (!platform_ensure_directory_exists(newPath)) {
 			log_error("Could not create directory %s.", newPath);
@@ -167,7 +169,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 static void openrct2_set_exe_path()
 {
-	platform_get_exe_path(gExePath);
+	platform_get_exe_path(gExePath, sizeof(gExePath));
 	log_verbose("Setting exe path to %s", gExePath);
 }
 
@@ -178,10 +180,10 @@ static void openrct2_copy_original_user_files_over()
 {
 	utf8 path[MAX_PATH];
 
-	platform_get_user_directory(path, "save");
+	platform_get_user_directory(path, "save", sizeof(path));
 	openrct2_copy_files_over((utf8*)gRCT2AddressSavedGamesPath, path, ".sv6");
 
-	platform_get_user_directory(path, "landscape");
+	platform_get_user_directory(path, "landscape", sizeof(path));
 	openrct2_copy_files_over((utf8*)gRCT2AddressLandscapesPath, path, ".sc6");
 }
 
@@ -196,7 +198,7 @@ bool openrct2_initialise()
 
 	platform_resolve_openrct_data_path();
 	platform_resolve_user_data_path();
-	platform_get_user_directory(userPath, NULL);
+	platform_get_user_directory(userPath, NULL, sizeof(userPath));
 	if (!platform_ensure_directory_exists(userPath)) {
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
 		return false;
@@ -217,7 +219,7 @@ bool openrct2_initialise()
 			gConfigGeneral.last_run_version = strndup(OPENRCT2_VERSION, strlen(OPENRCT2_VERSION));
 			config_save_default();
 			utf8 path[MAX_PATH];
-			config_get_default_path(path);
+			config_get_default_path(path, sizeof(path));
 			log_fatal("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
 			return false;
 		}
@@ -493,7 +495,7 @@ void openrct2_reset_object_tween_locations()
 
 static void openrct2_get_segment_data_path(char * buffer, size_t bufferSize)
 {
-	platform_get_exe_path(buffer);
+	platform_get_exe_path(buffer, bufferSize);
 	safe_strcat_path(buffer, "openrct2_data", bufferSize);
 }
 

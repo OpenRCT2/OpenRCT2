@@ -405,7 +405,7 @@ void Network::UpdateClient()
 			{
 				_lastConnectStatus = SOCKET_STATUS_RESOLVING;
 				char str_resolving[256];
-				format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, NULL);
+				format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, NULL);
 				window_network_status_open(str_resolving, []() -> void {
 					gNetwork.Close();
 				});
@@ -418,7 +418,7 @@ void Network::UpdateClient()
 			{
 				_lastConnectStatus = SOCKET_STATUS_CONNECTING;
 				char str_connecting[256];
-				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
+				format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, NULL);
 				window_network_status_open(str_connecting, []() -> void {
 					gNetwork.Close();
 				});
@@ -432,7 +432,7 @@ void Network::UpdateClient()
 			server_connection.ResetLastPacketTime();
 			Client_Send_TOKEN();
 			char str_authenticating[256];
-			format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, NULL);
+			format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, NULL);
 			window_network_status_open(str_authenticating, []() -> void {
 				gNetwork.Close();
 			});
@@ -464,9 +464,9 @@ void Network::UpdateClient()
 
 				if (server_connection.GetLastDisconnectReason()) {
 					const char * disconnect_reason = server_connection.GetLastDisconnectReason();
-					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
+					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
 				} else {
-					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
+					format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
 				}
 
 				window_network_status_open(str_disconnected, NULL);
@@ -479,7 +479,7 @@ void Network::UpdateClient()
 		if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
 			_desynchronised = true;
 			char str_desync[256];
-			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
+			format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
 			window_network_status_open(str_desync, NULL);
 			if (!gConfigNetwork.stay_connected) {
 				Close();
@@ -534,8 +534,8 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		safe_strcpy(lineCh, (const char*)fromplayer->name.c_str(), fromplayer->name.size() + 1);
-		strcat(lineCh, ": ");
+		safe_strcpy(lineCh, (const char *) fromplayer->name.c_str(), sizeof(formatted) - (lineCh - formatted));
+		safe_strcat(lineCh, ": ", sizeof(formatted) - (lineCh - formatted));
 		lineCh = strchr(lineCh, '\0');
 	}
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
@@ -582,7 +582,7 @@ void Network::KickPlayer(int playerId)
 			// Disconnect the client gracefully
 			(*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
-			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+			format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			(*it)->Socket->Disconnect();
 			break;
@@ -695,8 +695,8 @@ void Network::SaveGroups()
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		utf8 path[MAX_PATH];
 
-		platform_get_user_directory(path, NULL);
-		strcat(path, "groups.json");
+		platform_get_user_directory(path, NULL, sizeof(path));
+		safe_strcat_path(path, "groups.json", sizeof(path));
 
 		json_t * jsonGroupsCfg = json_object();
 		json_t * jsonGroups = json_array();
@@ -748,8 +748,8 @@ void Network::LoadGroups()
 
 	utf8 path[MAX_PATH];
 
-	platform_get_user_directory(path, NULL);
-	strcat(path, "groups.json");
+	platform_get_user_directory(path, NULL, sizeof(path));
+	safe_strcat_path(path, "groups.json", sizeof(path));
 
 	json_t * json = nullptr;
 	if (platform_file_exists(path)) {
@@ -790,7 +790,7 @@ void Network::BeginChatLog()
 	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
 
 	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "chatlogs");
+	platform_get_user_directory(path, "chatlogs", sizeof(path));
 	Path::Append(path, sizeof(path), filename);
 
 	_chatLogPath = std::string(path);
@@ -819,7 +819,7 @@ void Network::AppendChatLog(const utf8 *text)
 
 			String::Append(buffer, sizeof(buffer), text);
 			utf8_remove_formatting(buffer, false);
-			String::Append(buffer, sizeof(buffer), platform_get_new_line());
+			String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
 			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
 			SDL_RWclose(_chatLogStream);
@@ -1216,9 +1216,9 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 				connection->GetLastDisconnectReason()
 		};
 		if (has_disconnected_args[1]) {
-			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
+			format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
 		} else {
-			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
+			format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
 		}
 
 		chat_history_add(text);
@@ -1408,7 +1408,7 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 	if (player) {
 		char text[256];
 		const char * player_name = (const char *) player->name.c_str();
-		format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
+		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
 		Server_Send_MAP(&connection);
 		gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
@@ -1511,7 +1511,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	}
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1024, size / 1024};
-	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
+	format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 	window_network_status_open(str_downloading_map, []() -> void {
 		gNetwork.Close();
 	});
@@ -1779,27 +1779,26 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
 
 void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet)
 {
+	char text[256];
 	uint16 eventType;
 	packet >> eventType;
 	switch (eventType) {
 	case SERVER_EVENT_PLAYER_JOINED:
 	{
-		char text[256];
 		const char *playerName = packet.ReadString();
-		format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
+		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
 		chat_history_add(text);
 		break;
 	}
 	case SERVER_EVENT_PLAYER_DISCONNECTED:
 	{
-		char text[256];
 		const char *playerName = packet.ReadString();
 		const char *reason = packet.ReadString();
 		const char *args[] = { playerName, reason };
 		if (str_is_null_or_empty(reason)) {
-			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
+			format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
 		} else {
-			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
+			format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
 		}
 		chat_history_add(text);
 		break;
@@ -2022,13 +2021,13 @@ const char* network_get_group_name(unsigned int index)
 
 void network_chat_show_connected_message()
 {
-	// TODO: How does this work? 2525 is '???'
-	char *templateString = (char*)language_get_string(STR_SHORTCUT_KEY_UNKNOWN);
-	keyboard_shortcut_format_string(templateString, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
+	char templateBuffer[128];
+	char *templateString = templateBuffer;
+	keyboard_shortcut_format_string(templateBuffer, 128, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
 	utf8 buffer[256];
 	NetworkPlayer server;
 	server.name = "Server";
-	format_string(buffer, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
+	format_string(buffer, 256, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
 	const char *formatted = Network::FormatChat(&server, buffer);
 	chat_history_add(formatted);
 }
@@ -2349,7 +2348,7 @@ void network_append_chat_log(const utf8 *text)
 
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize)
 {
-	platform_get_user_directory(buffer, "keys");
+	platform_get_user_directory(buffer, "keys", bufferSize);
 }
 
 static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName)
@@ -2370,7 +2369,7 @@ static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const u
 
 static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
 {
-	platform_get_user_directory(buffer, NULL);
+	platform_get_user_directory(buffer, NULL, bufferSize);
 	Path::Append(buffer, bufferSize, "keymappings.json");
 }
 

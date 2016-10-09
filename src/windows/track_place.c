@@ -45,7 +45,7 @@ enum {
 
 static rct_widget window_track_place_widgets[] = {
 	{ WWT_FRAME,			0,	0,		199,	0,		123,	0xFFFFFFFF,						STR_NONE									},
-	{ WWT_CAPTION,			0,	1,		198,	1,		14,		3155,							STR_WINDOW_TITLE_TIP						},
+	{ WWT_CAPTION,			0,	1,		198,	1,		14,		STR_STRING,						STR_WINDOW_TITLE_TIP						},
 	{ WWT_CLOSEBOX,			0,	187,	197,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP						},
 	{ WWT_FLATBTN,			0,	173,	196,	83,		106,	SPR_ROTATE_ARROW,				STR_ROTATE_90_TIP							},
 	{ WWT_FLATBTN,			0,	173,	196,	59,		82,		SPR_MIRROR_ARROW,				STR_MIRROR_IMAGE_TIP						},
@@ -167,10 +167,6 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 	_window_track_place_last_x = 0xFFFF;
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 	window_track_place_draw_mini_preview(td6);
-
-	// TODO: 3155 appears to be empty. What is this supposed to do?
-	char *title = (char*)language_get_string(3155);
-	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &td6->name);
 	
 	_trackDesign = td6;
 }
@@ -445,6 +441,7 @@ static void window_track_place_attempt_placement(rct_track_td6 *td6, int x, int 
  */
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	set_format_arg(0, char *, _trackDesign->name);
 	window_draw_widgets(w, dpi);
 
 	// Draw mini tile preview

@@ -46,8 +46,10 @@
 
 #ifdef __WINDOWS__
 #define PATH_SEPARATOR "\\"
+#define PLATFORM_NEWLINE "\r\n"
 #else
 #define PATH_SEPARATOR "/"
+#define PLATFORM_NEWLINE "\n"
 #endif
 
 typedef struct resolution {
@@ -145,9 +147,7 @@ void platform_get_date_local(rct2_date *out_date);
 void platform_get_time_local(rct2_time *out_time);
 
 // Platform specific definitions
-void platform_get_exe_path(utf8 *outPath);
-const char *platform_get_new_line();
-char platform_get_path_separator();
+void platform_get_exe_path(utf8 *outPath, size_t outSize);
 bool platform_file_exists(const utf8 *path);
 bool platform_directory_exists(const utf8 *path);
 bool platform_original_game_data_exists(const utf8 *path);
@@ -177,18 +177,18 @@ void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 void platform_resolve_user_data_path();
 void platform_resolve_openrct_data_path();
-void platform_get_openrct_data_path(utf8 *outPath);
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
+void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
 utf8* platform_get_username();
 void platform_show_messagebox(utf8 *message);
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc);
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
 uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer);
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size);
 
 bool platform_check_steam_overlay_attached();
 
@@ -212,8 +212,8 @@ datetime64 platform_get_datetime_now_utc();
 #endif // __WINDOWS__
 
 #if defined(__LINUX__) || defined(__MACOSX__)
-	void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
-	void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+	void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
+	void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
 
 #endif

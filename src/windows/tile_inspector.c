@@ -573,8 +573,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_CHOOSE_MSG, NULL, 12, x, y);
 	} else {
 		char buffer[256];
-		sprintf(
-			buffer,
+		snprintf(
+			buffer, 256,
 			"X: %d, Y: %d",
 			window_tile_inspector_tile_x,
 			window_tile_inspector_tile_y
@@ -614,8 +614,8 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		switch (type) {
 			case MAP_ELEMENT_TYPE_SURFACE:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Surface (%s, %s)",
 					language_get_string(TerrainTypes[map_element_get_terrain(element)]),
 					language_get_string(TerrainEdgeTypes[map_element_get_terrain_edge(element)])
@@ -628,16 +628,16 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				const uint8 pathHasScenery = footpath_element_has_path_scenery(element);
 				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(element);
 				if (footpath_element_is_queue(element)) {
-					sprintf(
-						buffer, "Queue (%s)%s%s for (%d)",
+					snprintf(
+						buffer, 256, "Queue (%s)%s%s for (%d)",
 						language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
 						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
 						pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "", // Path addition name
 						element->properties.path.ride_index // Ride index for queue
 					);
 				} else {
-					sprintf(
-						buffer, "Path (%s)%s%s",
+					snprintf(
+						buffer, 256, "Path (%s)%s%s",
 						language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
 						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
 						pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "" // Path addition name
@@ -647,32 +647,32 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			type_name = buffer;
 			break;
 			case MAP_ELEMENT_TYPE_TRACK:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Track (%s)",
 					language_get_string(RideNaming[get_ride(element->properties.track.ride_index)->type].name)
 				);
 				type_name = buffer;
 				break;
 			case MAP_ELEMENT_TYPE_SCENERY:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Scenery (%s)",
 					language_get_string(get_small_scenery_entry(element->properties.scenery.type)->name)
 				);
 				type_name = buffer;
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Entrance (%s)",
 					language_get_string(EntranceTypes[element->properties.entrance.type])
 					);
 				type_name = buffer;
 				break;
 			case MAP_ELEMENT_TYPE_FENCE:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Fence (%s)",
 					language_get_string(get_wall_entry(element->properties.scenery.type)->name)
 					);
@@ -682,8 +682,8 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				type_name = "Scenery multiple";
 				break;
 			case MAP_ELEMENT_TYPE_BANNER:
-				sprintf(
-					buffer,
+				snprintf(
+					buffer, 256,
 					"Banner (%d)",
 					element->properties.banner.index
 				);
@@ -692,7 +692,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			case MAP_ELEMENT_TYPE_CORRUPT:
 				// fall-through
 			default:
-				sprintf(buffer, "Unknown (type %d)", type);
+				snprintf(buffer, 256, "Unknown (type %d)", type);
 				type_name = buffer;
 		}
 

@@ -133,7 +133,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	// Calculate the longest string width
 	max_string_width = 0;
 	for (i = 0; i < num_items; i++) {
-		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
+		format_string(buffer, 256, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		string_width = gfx_get_string_width(buffer);
 		max_string_width = max(string_width, max_string_width);

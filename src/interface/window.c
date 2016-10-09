@@ -2470,7 +2470,7 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
-		format_string(gTextBoxInput, existing_text, &existing_args);
+		format_string(gTextBoxInput, 512, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.

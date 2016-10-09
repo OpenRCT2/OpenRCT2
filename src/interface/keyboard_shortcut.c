@@ -26,6 +26,7 @@
 #include "../platform/platform.h"
 #include "../ride/track_paint.h"
 #include "../title.h"
+#include "../util/util.h"
 #include "keyboard_shortcut.h"
 #include "viewport.h"
 #include "widget.h"
@@ -92,33 +93,34 @@ void keyboard_shortcut_handle_command(int shortcutIndex)
 	}
 }
 
-void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
+void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey)
 {
 	char formatBuffer[256];
 
+	if (size == 0) return;
 	*buffer = 0;
 	if (shortcutKey == SHORTCUT_UNDEFINED) return;
 	if (shortcutKey & 0x100) {
-		format_string(formatBuffer, STR_SHIFT_PLUS, NULL);
-		strcat(buffer, formatBuffer);
+		format_string(formatBuffer, 256, STR_SHIFT_PLUS, NULL);
+		safe_strcat(buffer, formatBuffer, size);
 	}
 	if (shortcutKey & 0x200) {
-		format_string(formatBuffer, STR_CTRL_PLUS, NULL);
-		strcat(buffer, formatBuffer);
+		format_string(formatBuffer, 256, STR_CTRL_PLUS, NULL);
+		safe_strcat(buffer, formatBuffer, size);
 	}
 	if (shortcutKey & 0x400) {
 #ifdef __MACOSX__
-		format_string(formatBuffer, STR_OPTION_PLUS, NULL);
+		format_string(formatBuffer, 256, STR_OPTION_PLUS, NULL);
 #else
-		format_string(formatBuffer, STR_ALT_PLUS, NULL);
+		format_string(formatBuffer, 256, STR_ALT_PLUS, NULL);
 #endif
-		strcat(buffer, formatBuffer);
+		safe_strcat(buffer, formatBuffer, size);
 	}
 	if (shortcutKey & 0x800) {
-		format_string(formatBuffer, STR_CMD_PLUS, NULL);
-		strcat(buffer, formatBuffer);
+		format_string(formatBuffer, 256, STR_CMD_PLUS, NULL);
+		safe_strcat(buffer, formatBuffer, size);
 	}
-	strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF));
+	safe_strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF), size);
 }
 
 #pragma region Shortcut Commands

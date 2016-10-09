@@ -46,7 +46,7 @@ struct dummy {
 
 typedef enum { DT_NONE, DT_KDIALOG, DT_ZENITY } dialog_type;
 
-void platform_get_exe_path(utf8 *outPath)
+void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
 	char exePath[MAX_PATH];
 	ssize_t bytesRead;
@@ -55,17 +55,16 @@ void platform_get_exe_path(utf8 *outPath)
 		log_fatal("failed to read /proc/self/exe");
 	}
 	exePath[bytesRead - 1] = '\0';
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
 	if (exeDelimiter == NULL)
 	{
 		log_error("should never happen here");
 		outPath[0] = '\0';
 		return;
 	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+	*exeDelimiter = '\0';
 
-	exePath[exeDelimiterIndex] = '\0';
-	safe_strcpy(outPath, exePath, exeDelimiterIndex + 1);
+	safe_strcpy(outPath, exePath, outSize);
 }
 
 bool platform_check_steam_overlay_attached() {
@@ -94,7 +93,7 @@ bool platform_check_steam_overlay_attached() {
  *   - $XDG_CONFIG_HOME/OpenRCT2
  *   - /home/[uid]/.config/OpenRCT2
  */
-void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator) {
+void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
 	const char *configdir = getenv("XDG_CONFIG_HOME");
 	log_verbose("configdir = '%s'", configdir);
 	if (configdir == NULL)
@@ -107,17 +106,15 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 			return;
 		}
 
-		strncat(buffer, homedir, MAX_PATH - 1);
-		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		safe_strcpy(buffer, homedir, size);
+		safe_strcat_path(buffer, ".config", size);
 	}
 	else
 	{
-		strncat(buffer, configdir, MAX_PATH - 1);
+		safe_strcpy(buffer, configdir, size);
 	}
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	safe_strcat_path(buffer, "OpenRCT2", size);
+	path_end_with_separator(buffer, size);
 }
 
 /**
@@ -128,7 +125,7 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
  *   - /var/lib/openrct2
  *   - /usr/share/openrct2
  */
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
 	static const utf8 *searchLocations[] = {
 		"../share/openrct2",
 #ifdef ORCT2_RESOURCE_DIR
@@ -144,8 +141,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 		log_verbose("Looking for OpenRCT2 data in %s", searchLocations[i]);
 		if (platform_directory_exists(searchLocations[i]))
 		{
-			out[0] = '\0';
-			safe_strcpy(out, searchLocations[i], MAX_PATH);
+			safe_strcpy(out, searchLocations[i], size);
 			return;
 		}
 	}
@@ -169,7 +165,7 @@ uint16 platform_get_locale_language(){
 				}
 			}
 		} //end strip
-		strncpy(pattern,langString, length); //copy all until first '.' or '@'
+		memcpy(pattern, langString, length); //copy all until first '.' or '@'
 		pattern[length] = '\0';
 		//find _ if present
 		const char *strip = strchr(pattern, '_');
@@ -304,7 +300,7 @@ static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	return dtype;
 }
 
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
 	int exit_value;
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
@@ -428,7 +424,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
 		platform_show_messagebox(msg);
 
-		return platform_open_common_file_dialog(outFilename, desc);
+		return platform_open_common_file_dialog(outFilename, desc, outSize);
 	} else
 	if (desc->type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
 		snprintf(cmd, MAX_PATH, "%s --yesno \"Overwrite %s?\"", executable, result);
@@ -441,7 +437,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		}
 	}
 
-	strncpy(outFilename, result, MAX_PATH);
+	safe_strcpy(outFilename, result, outSize);
 
 	return 1;
 }
@@ -477,8 +473,7 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 
 	result[size-1] = '\0';
 
-	return_value = (char*) malloc(strlen(result)+1);
-	strcpy(return_value, result);
+	return_value = _strdup(result);
 
 	return return_value;
 }
@@ -510,7 +505,7 @@ void platform_show_messagebox(char *message) {
 	execute_cmd(cmd, 0, 0, 0);
 }
 
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
 	assert(buffer != NULL);
 	assert(font != NULL);
@@ -538,7 +533,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
 		{
 			found = true;
-			safe_strcpy(buffer, (utf8*) filename, MAX_PATH);
+			safe_strcpy(buffer, (utf8*) filename, size);
 			log_verbose("FontConfig provided font %s", filename);
 		}
 		FcPatternDestroy(match);
