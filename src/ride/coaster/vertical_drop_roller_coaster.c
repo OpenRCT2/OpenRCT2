@@ -66,6 +66,31 @@ static void vertical_drop_rc_track_flat(uint8 rideIndex, uint8 trackSequence, ui
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void vertical_drop_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][3] = {
+		{ 17154, 17150, SPR_STATION_BASE_A_SW_NE },
+		{ 17155, 17151, SPR_STATION_BASE_A_NW_SE },
+		{ 17154, 17150, SPR_STATION_BASE_A_SW_NE },
+		{ 17155, 17151, SPR_STATION_BASE_A_NW_SE },
+	};
+
+	if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	} else {
+		sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	}
+	sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 3);
+	
+	rct_ride * ride = get_ride(rideIndex);
+	track_paint_util_draw_station_platform(ride, direction, height, 9, mapElement);
+
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void vertical_drop_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -3081,32 +3106,27 @@ static void vertical_drop_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSeq
 		metal_a_supports_paint_setup(3, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17146, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25623, 26, 0, 1, 1, 19, height + 3);
 		break;
 	case 1:
 		sub_98196C_rotated(direction, 0x20000000 | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(3, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(3, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17147, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25624, 6, 0, 1, 1, 19, height + 3);
 		break;
 	case 2:
 		sub_98196C_rotated(direction, 0x20000000 | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(3, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17146, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25625, 6, 0, 1, 1, 19, height + 3);
 		break;
 	case 3:
 		sub_98196C_rotated(direction, 0x20000000 | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(3, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(3, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17147, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25626, 26, 0, 1, 1, 19, height + 3);
 		break;
 	}
-	sub_98196C_rotated(direction, 0x00000000, 0, 0, 0, 0, 0, height - 48);
-	sub_98196C_rotated(direction, 0x00000000, 0, 0, 0, 0, 0, height - 48);
+	track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
@@ -7126,6 +7146,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int trackType, in
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:
 		return vertical_drop_rc_track_flat;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return vertical_drop_rc_track_station;
 	case TRACK_ELEM_25_DEG_UP:
 		return vertical_drop_rc_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
