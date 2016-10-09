@@ -331,5 +331,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int dire
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int trackType, int direction);
 
 #endif
