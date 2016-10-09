@@ -351,7 +351,7 @@ private:
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
         }
 
-        if (!CompareFunctionCalls(calls, cableLiftCalls))
+        if (_rideType == RIDE_TYPE_GIGA_COASTER && !CompareFunctionCalls(calls, cableLiftCalls))
         {
             WriteLine(tabs, "if (track_element_is_cable_lift(mapElement)) {");
             GenerateCalls(tabs + 1, cableLiftCalls, height);
