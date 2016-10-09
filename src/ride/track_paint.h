@@ -328,5 +328,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int di
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int trackType, int direction);
 
 #endif
