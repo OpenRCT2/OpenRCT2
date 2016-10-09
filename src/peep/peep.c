@@ -102,6 +102,11 @@ enum {
 	PATH_SEARCH_FAILED
 };
 
+// Some text descriptions corresponding to the above enum for understandable debug messages
+const char *gPathFindSearchText[] = {"DeadEnd", "Wide", "Thin", "Junction", "RideQueue", "RideEntrance", "RideExit", "ParkEntryExit", "ShopEntrance", "LimitReached", "PathLoop", "Other", "Failed"};
+
+
+
 enum {
 	F1EE18_DESTINATION_REACHED	= 1 << 0,
 	F1EE18_OUTSIDE_PARK			= 1 << 1,
@@ -8697,10 +8702,15 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  * no matter how close to the goal they get, but will follow possible "through
  * paths".
  *
- * The implementation is essentially an A* path finding algorithm over the
- * path layout in xyz; however a best score is tracked via the score parameter
- * rather than storing scores for each xyz, which means explicit loop detection
- * is necessary to limit the search space.
+ * The implementation is a depth first search of the path layout in xyz
+ * according to the search limits.
+ * Unlike an A* search, which tracks for each tile a heuristic score (a
+ * function of the xyz distances to the goal) and cost of reaching that tile
+ * (steps to the tile), a single best result "so far" (best heuristic score
+ * with least cost) is tracked via the score parameter.
+ * With this approach, explicit loop detection is necessary to limit the
+ * search space, and each alternate route through the same tile can be
+ * returned as the best result, rather than only the shortest route with A*.
  *
  * The parameters that hold the best search result so far are:
  *   - score - the least heuristic distance from the goal
@@ -8771,58 +8781,75 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 		return;
 	}
 
-	/* Get the next map element in the direction of test_edge, ignoring
-	 * map elements that are not of interest, which includes wide paths
-	 * and foreign ride queues (depending on gPeepPathFindIgnoreForeignQueues) */
+	/* Get the next map element of interest in the direction of test_edge. */
 	bool found = false;
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
+		/* Look for all map elements that the peep could walk onto while
+		 * navigating to the goal, including the goal tile. */
+
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
 
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_TRACK:
 			if (z != mapElement->base_height) continue;
-			/* More details about the mapElement are not needed.
-			 * If in the future it would be useful to know
-			 * whether the map element is a shop, the following
-			 * commented out code will do it. */
-			//rideIndex = mapElement->properties.track.ride_index;
-			//rct_ride *ride = get_ride(rideIndex);
-			//if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
-			//	searchResult = PATH_SEARCH_SHOP_ENTRANCE;
-			//} else {
-				searchResult = PATH_SEARCH_OTHER;
-			//}
-			found = true;
-			break;
+			/* For peeps heading for a shop, the goal is the shop
+			 * tile. */
+			rideIndex = mapElement->properties.track.ride_index;
+			rct_ride *ride = get_ride(rideIndex);
+			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+				found = true;
+				searchResult = PATH_SEARCH_SHOP_ENTRANCE;
+				break;
+			} else {
+				continue;
+			}
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (z != mapElement->base_height) continue;
 			int direction;
 			searchResult = PATH_SEARCH_OTHER;
 			switch (mapElement->properties.entrance.type) {
 			case ENTRANCE_TYPE_RIDE_ENTRANCE:
+				/* For peeps heading for a ride without a queue, the
+				 * goal is the ride entrance tile. */
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == test_edge) {
 					searchResult = PATH_SEARCH_RIDE_ENTRANCE;
+					found = true;
+					break;
 				}
+				continue; // Ride entrance is not facing the right direction.
+			case ENTRANCE_TYPE_PARK_ENTRANCE:
+				/* For peeps leaving the park, the goal is the park
+				 * entrance/exit tile. */
+				searchResult = PATH_SEARCH_PARK_EXIT;
+				found = true;
 				break;
 			/* More details for other entrance types are not needed.
 			 * If in the future it would be useful to know
-			 * whether the map element is a ride exit or a park
-			 * entrance/exit, the following commented out code
-			 * will do it. */
+			 * whether the map element is a ride exit, the following
+			 * commented out code will do it. */
 			//case ENTRANCE_TYPE_RIDE_EXIT:
+			//	/* For mechanics heading for the ride exit, the goal is the path
+			//	 * that connects to the ride exit, not the ride exit itself.
+			//	 * So the path finding doesn't need to know about ride exits. */
 			//	direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 			//	if (direction == test_edge) {
 			//		searchResult = PATH_SEARCH_RIDE_EXIT;
+			//		found = true;
+			//		break;
 			//	}
-			//	break;
-			//case ENTRANCE_TYPE_PARK_ENTRANCE:
-			//	searchResult = PATH_SEARCH_PARK_EXIT;
+			//	continue; // Ride exit is not facing the right direction.
+			default: continue;
 			}
-			found = true;
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
+			/* For peeps heading for a ride with a queue, the goal is the last
+			 * queue path.
+			 * For mechanics heading for the ride exit, the goal is the path
+			 * connecting to the ride exit.
+			 * Otherwise, peeps walk on path tiles to get to the goal. */
+
 			if (!is_valid_path_z_and_direction(mapElement, z, test_edge)) continue;
 
 			// Path may be sloped, so set z to path base height.
@@ -8852,300 +8879,320 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 			}
 			found = true;
 			break;
+		default:
+			continue;
 		}
 
-		if (found) {
-			break;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
-
-	/* No map element could be found.
-	 * Return without updating the parameters (best result so far). */
-	if (!found) {
+		#
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; No map element found", counter, x >> 5, y >> 5, z);
+			log_info("[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z, gPathFindSearchText[searchResult]);
 		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
 
-	/* At this point the map element is found. */
-
-	uint8 height = z;
-	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-		// Adjust height for goal comparison according to the path slope.
-		if (footpath_element_is_sloped(mapElement)) {
-			if (footpath_element_get_slope_direction(mapElement) == test_edge) {
-				height += 2;
-			}
-		}
-	}
-
-	// Calculate the heuristic score of this map element.
-	uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
-	uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
-	if (x_delta < y_delta) x_delta >>= 4;
-	else y_delta >>= 4;
-	uint16 new_score = x_delta + y_delta;
-	uint16 z_delta = abs(gPeepPathFindGoalPosition.z - height);
-	z_delta <<= 1;
-	new_score += z_delta;
-
-	/* If this map element is the search goal the current search path ends here. */
-	if (new_score == 0) {
-		/* If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			if (gPathFindDebug) {
-				log_info("[%03d] Return from %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
-			}
-			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		}
-		return;
-	}
-
-	/* At this point the map element tile is not the goal. */
-
-	/* If this map element is not a path, the search cannot be continued.
-	 * Return without updating the parameters (best result so far). */
-	if (searchResult != PATH_SEARCH_DEAD_END &&
-		searchResult != PATH_SEARCH_THIN &&
-		searchResult != PATH_SEARCH_JUNCTION &&
-		searchResult != PATH_SEARCH_WIDE) {
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* At this point the map element is a path. */
-
-	/* If this is a wide path the search ends here. */
-	if (searchResult == PATH_SEARCH_WIDE) {
-		/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
-		 * i.e. search across wide paths from a wide path to get onto a thin path,
-		 * thereafter stay on thin paths. */
-		/* So, if the current path is also wide the goal could still
-		 * be reachable from here.
-		 * If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (footpath_element_is_wide(currentMapElement) &&
-			(new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* At this point the map element is a non-wide path.*/
-
-	/* Get all the permitted_edges of the map element. */
-	uint8 edges = path_get_permitted_edges(mapElement);
-
-	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-	if (gPathFindDebug) {
-		log_info("[%03d] Path %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
-	}
-	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-
-	/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
-	edges &= ~(1 << (test_edge ^ 2));
-	test_edge = bitscanforward(edges);
-
-	/* If there are no other edges the current search ends here.
-	 * Return without updating the parameters (best result so far). */
-	if (test_edge == -1) {
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* Check if either of the search limits has been reached:
-	 * - max number of steps or max tiles checked. */
-	if (counter >= 200 || _peepPathFindTilesChecked <= 0) {
-		/* The current search ends here.
-		 * The path continues, so the goal could still be reachable from here.
-		 * If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Search limit reached", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	bool thin_junction = false;
-	if (searchResult == PATH_SEARCH_JUNCTION) {
-		/* Check if this is a thin junction. And perform additional
-		 * necessary checks. */
-		thin_junction = path_is_thin_junction(mapElement, x, y, z);
-
-		if (thin_junction) {
-			/* The current search path is passing through a thin
-			 * junction on this map element. Only 'thin' junctions
-			 * are counted towards the junction search limit. */
-
-			/* Check the pathfind_history to see if this junction has been
-			 * previously passed through in the current search path.
-			 * i.e. this is a loop in the current search path.
-			 * If so, the current search path ends here.
-			 * Return without updating the parameters (best result so far). */
-			for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
-				if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
-					(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
-					(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
-					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					if (gPathFindDebug) {
-						log_info("[%03d] Return from %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
-					}
-					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					return;
+		/* At this point mapElement is of interest to the pathfinding. */
+		uint8 height = z;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+			// Adjust height for goal comparison according to the path slope.
+			if (footpath_element_is_sloped(mapElement)) {
+				if (footpath_element_get_slope_direction(mapElement) == test_edge) {
+					height += 2;
 				}
 			}
+		}
 
-			/* If the junction search limit is reached, the
-			 * current search path ends here. The goal may still
-			 * be reachable from here.
-			 * If the search result is better than the best so far (in the paramaters),
-			 * then update the parameters with this search. */
-			if (_peepPathFindNumJunctions <= 0) {
-				if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-					// Update the search results
-					*endScore = new_score;
-					*endSteps = counter;
-					// Update the end x,y,z
-					endXYZ->x = x >> 5;
-					endXYZ->y = y >> 5;
-					endXYZ->z = z;
-					// Update the telemetry
-					*endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
-					for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-						uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-						junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-						junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-						junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-						directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-					}
+		/* Should we check that this mapElement is connected in the
+		 * reverse direction? For some mapElement types this was
+		 * already done above (e.g. ride entrances), but for others not.
+		 * Ignore for now. */
+
+		// Calculate the heuristic score of this map element.
+		uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
+		uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
+		if (x_delta < y_delta) x_delta >>= 4;
+		else y_delta >>= 4;
+		uint16 new_score = x_delta + y_delta;
+		uint16 z_delta = abs(gPeepPathFindGoalPosition.z - height);
+		z_delta <<= 1;
+		new_score += z_delta;
+
+		/* If this map element is the search goal the current search path ends here. */
+		if (new_score == 0) {
+			/* If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 				}
 				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 				if (gPathFindDebug) {
-					log_info("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+					log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
 				}
 				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				return;
+			}
+			continue;
+		}
+
+		/* At this point the map element tile is not the goal. */
+
+		/* If this map element is not a path, the search cannot be continued.
+		 * Continue to the next map element without updating the parameters (best result so far). */
+		if (searchResult != PATH_SEARCH_DEAD_END &&
+			searchResult != PATH_SEARCH_THIN &&
+			searchResult != PATH_SEARCH_JUNCTION &&
+			searchResult != PATH_SEARCH_WIDE) {
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* At this point the map element is a path. */
+
+		/* If this is a wide path the search ends here. */
+		if (searchResult == PATH_SEARCH_WIDE) {
+			/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
+			 * i.e. search across wide paths from a wide path to get onto a thin path,
+			 * thereafter stay on thin paths. */
+			/* So, if the current path is also wide the goal could still
+			 * be reachable from here.
+			 * If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (footpath_element_is_wide(currentMapElement) &&
+				(new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+				}
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* At this point the map element is a non-wide path.*/
+
+		/* Get all the permitted_edges of the map element. */
+		uint8 edges = path_get_permitted_edges(mapElement);
+
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+		/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
+		edges &= ~(1 << (test_edge ^ 2));
+		test_edge = bitscanforward(edges);
+
+		/* If there are no other edges the current search ends here.
+		 * Continue to the next map element without updating the parameters (best result so far). */
+		if (test_edge == -1) {
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* Check if either of the search limits has been reached:
+		 * - max number of steps or max tiles checked. */
+		if (counter >= 200 || _peepPathFindTilesChecked <= 0) {
+			/* The current search ends here.
+			 * The path continues, so the goal could still be reachable from here.
+			 * If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+				}
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Search limit reached", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		bool thin_junction = false;
+		if (searchResult == PATH_SEARCH_JUNCTION) {
+			/* Check if this is a thin junction. And perform additional
+			 * necessary checks. */
+			thin_junction = path_is_thin_junction(mapElement, x, y, z);
+
+			if (thin_junction) {
+				/* The current search path is passing through a thin
+				 * junction on this map element. Only 'thin' junctions
+				 * are counted towards the junction search limit. */
+
+				/* Check the pathfind_history to see if this junction has been
+				 * previously passed through in the current search path.
+				 * i.e. this is a loop in the current search path.
+				 * If so, the current search path ends here.
+				 * Continue to the next map element without updating the parameters (best result so far). */
+				bool pathLoop = false;
+				for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
+					if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
+						(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
+						(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
+							pathLoop = true;
+							break;
+					}
+				}
+				if (pathLoop) {
+					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					if (gPathFindDebug) {
+						log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+					}
+					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					continue;
+				}
+
+				/* If the junction search limit is reached, the
+				 * current search path ends here. The goal may still
+				 * be reachable from here.
+				 * If the search result is better than the best so far (in the paramaters),
+				 * then update the parameters with this search before continuing to the next map element. */
+				if (_peepPathFindNumJunctions <= 0) {
+					if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+						// Update the search results
+						*endScore = new_score;
+						*endSteps = counter;
+						// Update the end x,y,z
+						endXYZ->x = x >> 5;
+						endXYZ->y = y >> 5;
+						endXYZ->z = z;
+						// Update the telemetry
+						*endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
+						for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+							uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+							junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+							junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+							junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+							directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+						}
+					}
+					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					if (gPathFindDebug) {
+						log_info("[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+					}
+					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					continue;
+				}
+
+
+				/* This junction was NOT previously visited in the current
+				 * search path, so add the junction to the history. */
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
+				// .direction take is added below.
+
+				_peepPathFindNumJunctions--;
+			}
+		}
+
+		/* Continue searching down each remaining edge of the path
+		 * (recursive call). */
+		do {
+			edges &= ~(1 << test_edge);
+			uint8 savedNumJunctions = _peepPathFindNumJunctions;
+
+			uint8 height = z;
+			if (footpath_element_is_sloped(mapElement) &&
+				footpath_element_get_slope_direction(mapElement) == test_edge) {
+				height += 2;
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				if (searchResult == PATH_SEARCH_JUNCTION) {
+					if (thin_junction)
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
+					else
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
+				} else {
+					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+				}
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+			if (thin_junction) {
+				/* Add the current test_edge to the history. */
+				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
 			}
 
+			peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+			_peepPathFindNumJunctions = savedNumJunctions;
 
-			/* This junction was NOT previously visited in the current
-			 * search path, so add the junction to the history. */
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
-			// .direction take is added below.
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		} while ((test_edge = bitscanforward(edges)) != -1);
 
-			_peepPathFindNumJunctions--;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (!found) {
+		/* No map element could be found.
+		* Return without updating the parameters (best result so far). */
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, x >> 5, y >> 5, z);
 		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+	} else {
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, x >> 5, y >> 5, z);
+		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 	}
-
-	/* Continue searching down each remaining edge of the path
-	 * (recursive call). */
-	do {
-		edges &= ~(1 << test_edge);
-		uint8 savedNumJunctions = _peepPathFindNumJunctions;
-
-		uint8 height = z;
-		if (footpath_element_is_sloped(mapElement) &&
-			footpath_element_get_slope_direction(mapElement) == test_edge) {
-			height += 2;
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			if (searchResult == PATH_SEARCH_JUNCTION) {
-				if (thin_junction)
-					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
-				else
-					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
-			} else {
-				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
-			}
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-
-		if (thin_junction) {
-			/* Add the current test_edge to the history. */
-			_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
-		}
-
-		peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
-		_peepPathFindNumJunctions = savedNumJunctions;
-
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-	} while ((test_edge = bitscanforward(edges)) != -1);
 
 	return;
 }
@@ -9536,7 +9583,20 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	gPeepPathFindIgnoreForeignQueues = true;
 	gPeepPathFindQueueRideIndex = 255;
 
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	/* Determine if the pathfinding debugging is wanted for this peep. */
+	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+	 * determine for which guest(s) the pathfinding debugging will
+	 * be output for. */
+	format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	gPathFindDebug = false;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
