@@ -290,6 +290,7 @@ private:
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
+        sint16 verticalTunnelHeights[4];
         std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
@@ -348,7 +349,7 @@ private:
                 }
             }
 
-            GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls);
+            GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls, verticalTunnelHeights);
         }
 
         if (_rideType == RIDE_TYPE_GIGA_COASTER && !CompareFunctionCalls(calls, cableLiftCalls))
@@ -379,7 +380,7 @@ private:
             GenerateCalls(tabs, calls, height);
         }
 
-        GenerateTunnelCall(tabs, tileTunnelCalls);
+        GenerateTunnelCall(tabs, tileTunnelCalls, verticalTunnelHeights);
         GenerateSegmentSupportCall(tabs, segmentSupportCalls);
         GenerateGeneralSupportCall(tabs, generalSupports);
     }
@@ -574,7 +575,13 @@ private:
         return functionNames[function];
     }
 
-    bool GetTunnelCalls(int trackType, int direction, int trackSequence, int height, rct_map_element * mapElement, Intercept2::TunnelCall tileTunnelCalls[4][4])
+    bool GetTunnelCalls(int trackType,
+                        int direction,
+                        int trackSequence,
+                        int height,
+                        rct_map_element * mapElement,
+                        Intercept2::TunnelCall tileTunnelCalls[4][4],
+                        sint16 verticalTunnelHeights[4])
     {
         gLeftTunnelCount = 0;
         gRightTunnelCount = 0;
@@ -611,10 +618,20 @@ private:
             return false;
         }
 
+        // Vertical tunnel
+        gVerticalTunnelHeight = 0;
+        CallOriginal(trackType, direction, trackSequence, height, mapElement);
+
+        int verticalTunnelHeight = gVerticalTunnelHeight;
+        if (verticalTunnelHeight != 0)
+        {
+            verticalTunnelHeight = (verticalTunnelHeight * 16) - height;
+        }
+        verticalTunnelHeights[direction] = verticalTunnelHeight;
         return true;
     }
 
-    void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4])
+    void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
     {
         constexpr uint8 TunnelLeft = 0;
         constexpr uint8 TunnelRight = 1;
@@ -692,6 +709,15 @@ private:
                 }
             }
             WriteLine(tabs, "}");
+        }
+
+        if (AllMatch(verticalTunnelHeights, 4))
+        {
+            int tunnelHeight = verticalTunnelHeights[0];
+            if (tunnelHeight != 0)
+            {
+                WriteLine(tabs, "paint_util_set_vertical_tunnel(height%s);", GetOffsetExpressionString(tunnelHeight).c_str());
+            }
         }
     }
 
