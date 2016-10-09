@@ -6251,7 +6251,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_mini_suspended_rc,						// RIDE_TYPE_MINI_SUSPENDED_COASTER
 	get_track_paint_function_boat_ride,		// RIDE_TYPE_BOAT_RIDE
 	get_track_paint_function_wooden_wild_mouse,	// RIDE_TYPE_WOODEN_WILD_MOUSE
-	0,						// RIDE_TYPE_STEEPLECHASE
+	get_track_paint_function_steeplechase,						// RIDE_TYPE_STEEPLECHASE
 	get_track_paint_function_car_ride,			// RIDE_TYPE_CAR_RIDE
 	get_track_paint_function_launched_freefall,	// RIDE_TYPE_LAUNCHED_FREEFALL
 	0,						// RIDE_TYPE_BOBSLEIGH_COASTER

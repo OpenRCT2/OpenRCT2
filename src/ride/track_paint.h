@@ -269,6 +269,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direct
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
