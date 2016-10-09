@@ -397,6 +397,7 @@
 		D44272A51CC81B3200D84D28 /* particle.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271EF1CC81B3200D84D28 /* particle.c */; };
 		D44272A61CC81B3200D84D28 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F01CC81B3200D84D28 /* scenery.c */; };
 		D44272A71CC81B3200D84D28 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F21CC81B3200D84D28 /* sprite.c */; };
+		D452919B1DAA204200C11788 /* generate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45291991DAA202C00C11788 /* generate.cpp */; };
 		D45A38BB1CF3006400659A24 /* engines in Resources */ = {isa = PBXBuildFile; fileRef = D45A38B21CF3006400659A24 /* engines */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
@@ -914,6 +915,7 @@
 		D44271F21CC81B3200D84D28 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
 		D44271F31CC81B3200D84D28 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		D44271F41CC81B3200D84D28 /* water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
+		D45291991DAA202C00C11788 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate.cpp; sourceTree = "<group>"; };
 		D45A38B21CF3006400659A24 /* engines */ = {isa = PBXFileReference; lastKnownFileType = folder; path = engines; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
 		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
@@ -1171,6 +1173,7 @@
 				C64FDAC41D6DA55E00F259B9 /* compat.c */,
 				C64FDAC91D6DA92D00F259B9 /* data.c */,
 				85AFA2141D7DDFA100221B42 /* data.h */,
+				D45291991DAA202C00C11788 /* generate.cpp */,
 				85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */,
 				C64FDAC71D6DA72400F259B9 /* intercept.c */,
 				85AFA2101D7DB83E00221B42 /* intercept.h */,
@@ -2420,6 +2423,7 @@
 				85060FD31D8C17CC00DFA2B3 /* track_data_old.c in Sources */,
 				C64FDA871D6D9A2100F259B9 /* dodgems.c in Sources */,
 				C64FDA881D6D9A2100F259B9 /* ferris_wheel.c in Sources */,
+				D452919B1DAA204200C11788 /* generate.cpp in Sources */,
 				C64FDA891D6D9A2100F259B9 /* flying_saucers.c in Sources */,
 				C64FDA8A1D6D9A2100F259B9 /* ghost_train.c in Sources */,
 				C64FDA8B1D6D9A2100F259B9 /* haunted_house.c in Sources */,

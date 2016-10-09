@@ -31,44 +31,20 @@ extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
-enum
-{
-	PAINT_98196C,
-	PAINT_98197C,
-	PAINT_98198C,
-	PAINT_98199C,
-
-	SUPPORTS_METAL_A,
-	SUPPORTS_METAL_B,
-	SUPPORTS_WOOD_A,
-	SUPPORTS_WOOD_B,
-};
-
-typedef struct
-{
-	uint8 function;
-	struct paint
-	{
-		uint32 image_id;
-		rct_xy16 offset;
-		rct_xyz16 bound_box_length;
-		sint16 z_offset;
-		rct_xyz16 bound_box_offset;
-		uint32 rotation;
-	} paint;
-	struct supports
-	{
-		int type;
-		uint8 segment;
-		int special;
-		int height;
-		uint32 colour_flags;
-	} supports;
-} function_call;
-
 static uint8 callCount;
-static bool assertFunctionCallEquals(function_call expected, function_call actual);
 static function_call calls[256];
+
+void intercept_clear_calls()
+{
+	callCount = 0;
+	memset(calls, 0, sizeof(calls));
+}
+
+int intercept_get_calls(function_call * buffer)
+{
+	memcpy(buffer, calls, 256);
+	return callCount;
+}
 
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
 	return false;
@@ -290,7 +266,7 @@ static void canonicalizeFunctionCall(function_call *call) {
 	call->function = PAINT_98196C;
 }
 
-static bool assertFunctionCallEquals(function_call expected, function_call actual) {
+bool assertFunctionCallEquals(function_call expected, function_call actual) {
 	canonicalizeFunctionCall(&actual);
 	canonicalizeFunctionCall(&expected);
 
@@ -454,7 +430,7 @@ static void printFunctionCall(utf8string *out, function_call call) {
 
 static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
 	for (int i = 0; i < count; i++) {
-		utf8string callOut = malloc(128);
+		utf8string callOut = malloc(1024);
 		printFunctionCall(&callOut, calls[i]);
 		sprintf(*out + strlen(*out), "%s\n", callOut);
 	}
