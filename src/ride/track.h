@@ -66,6 +66,11 @@ enum {
 enum {
 	// Not anything to do with colour but uses
 	// that field in the map element
+
+	// Used for multi-dimension coaster
+	TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
+
+	// Used for giga coaster
 	TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
 };
 
@@ -459,6 +464,7 @@ enum {
 	TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN,
 	TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP,
 	TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP,
+	TRACK_ELEM_255,
 };
 
 enum {
@@ -518,6 +524,7 @@ bool track_element_is_lift_hill(rct_map_element *trackElement);
 bool track_element_is_cable_lift(rct_map_element *trackElement);
 void track_element_set_cable_lift(rct_map_element *trackElement);
 void track_element_clear_cable_lift(rct_map_element *trackElement);
+bool track_element_is_inverted(rct_map_element *trackElement);
 
 int track_get_actual_bank(rct_map_element *mapElement, int bank);
 int track_get_actual_bank_2(int rideType, int trackColour, int bank);

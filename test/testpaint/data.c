@@ -366,6 +366,7 @@ const utf8string TrackNames[256] = {
 	"RightQuarterTurn1Tile90DegDown",
 	"Multidim90DegUpToInvertedFlatQuarterLoop",
 	"MultidimFlatTo90DegDownQuarterLoop",
+	"Elem255",
 };
 
 const utf8string FlatTrackNames[256] = {
@@ -883,6 +884,7 @@ const utf8string TrackElemNames[] = {
 	"TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN",
 	"TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP",
 	"TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP",
+	"TRACK_ELEM_255",
 };
 
 const utf8string RideCodeNames[91] = {
@@ -1235,4 +1237,5 @@ const utf8string TrackCodeNames[256] = {
 	"right_quarter_turn_1_90_deg_down",
 	"multidim_90_deg_up_to_inverted_flat_quarter_loop",
 	"multidim_flat_to_90_deg_down_quarter_loop",
+	"elem_255"
 };

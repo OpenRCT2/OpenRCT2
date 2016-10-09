@@ -2159,6 +2159,11 @@ void track_element_clear_cable_lift(rct_map_element *trackElement) {
 	trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
+bool track_element_is_inverted(rct_map_element *trackElement)
+{
+	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
 int track_get_actual_bank(rct_map_element *mapElement, int bank)
 {
 	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);

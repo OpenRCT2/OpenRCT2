@@ -59,6 +59,7 @@ private:
     FILE *      _file;
 
     bool        _conditionalSupports;
+    bool        _invertedTrack;
 
     void Generate()
     {
@@ -104,29 +105,47 @@ private:
 
     void GenerateTrackFunction(int trackType)
     {
-        int numSequences = getTrackSequenceCount(_rideType, trackType);
-
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {
-            if (numSequences > 1)
+            if (_rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
             {
-                WriteLine(1, "switch (trackSequence) {");
-                for (int trackSequence = 0; trackSequence < numSequences; trackSequence++)
-                {
-                    WriteLine(1, "case %d:", trackSequence);
-                    GenerateTrackSequence(2, trackType, trackSequence);
-                    WriteLine(2, "break;");
-                }
+                WriteLine(1, "if (!track_element_is_inverted(mapElement)) {");
+                _invertedTrack = false;
+                GenerateTrackFunctionBody(2, trackType);
+                WriteLine(1, "} else {");
+                _invertedTrack = true;
+                GenerateTrackFunctionBody(2, trackType);
                 WriteLine(1, "}");
             }
             else
             {
-                GenerateTrackSequence(1, trackType, 0);
+                _invertedTrack = false;
+                GenerateTrackFunctionBody(1, trackType);
             }
         }
         WriteLine(0, "}");
+    }
+
+    void GenerateTrackFunctionBody(int tabs, int trackType)
+    {
+        int numSequences = getTrackSequenceCount(_rideType, trackType);
+        if (numSequences > 1)
+        {
+            WriteLine(tabs, "switch (trackSequence) {");
+            for (int trackSequence = 0; trackSequence < numSequences; trackSequence++)
+            {
+                WriteLine(tabs, "case %d:", trackSequence);
+                GenerateTrackSequence(tabs + 1, trackType, trackSequence);
+                WriteLine(tabs + 1, "break;");
+            }
+            WriteLine(tabs, "}");
+        }
+        else
+        {
+            GenerateTrackSequence(tabs, trackType, 0);
+        }
     }
 
     bool GenerateMirrorCall(int tabs, int trackType)
@@ -332,6 +351,10 @@ private:
             mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
             mapElement.properties.track.type = trackType;
             mapElement.base_height = 3;
+            if (_invertedTrack)
+            {
+                mapElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+            }
             g_currently_drawn_item = &mapElement;
 
             // Set position
@@ -362,7 +385,7 @@ private:
             if (_rideType == RIDE_TYPE_GIGA_COASTER)
             {
                 mapElement.type = 0;
-                mapElement.properties.track.colour = 8;
+                mapElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
                 intercept_clear_calls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
                 numCalls = intercept_get_calls(callBuffer);
@@ -375,7 +398,7 @@ private:
                 RCT2_GLOBAL(0x009DE56A, sint16) = 64 + 32;
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64;
                 mapElement.type = 0;
-                mapElement.properties.track.colour = 0;
+                mapElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
                 intercept_clear_calls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
                 numCalls = intercept_get_calls(callBuffer);
