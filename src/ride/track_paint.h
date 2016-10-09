@@ -272,6 +272,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, i
 TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);

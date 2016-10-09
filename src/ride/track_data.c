@@ -6254,7 +6254,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_steeplechase,						// RIDE_TYPE_STEEPLECHASE
 	get_track_paint_function_car_ride,			// RIDE_TYPE_CAR_RIDE
 	get_track_paint_function_launched_freefall,	// RIDE_TYPE_LAUNCHED_FREEFALL
-	0,						// RIDE_TYPE_BOBSLEIGH_COASTER
+	get_track_paint_function_bobsleigh_rc,						// RIDE_TYPE_BOBSLEIGH_COASTER
 	get_track_paint_function_observation_tower,	// RIDE_TYPE_OBSERVATION_TOWER
 	0,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
 	get_track_paint_function_dinghy_slide,		// RIDE_TYPE_DINGHY_SLIDE
