@@ -263,6 +263,7 @@ typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int d
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_stand_up_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
