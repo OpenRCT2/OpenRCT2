@@ -66,6 +66,24 @@ static void looping_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 di
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void looping_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][2] = {
+		{ 15016, SPR_STATION_BASE_B_SW_NE },
+		{ 15017, SPR_STATION_BASE_B_NW_SE },
+		{ 15016, SPR_STATION_BASE_B_SW_NE },
+		{ 15017, SPR_STATION_BASE_B_NW_SE },
+	};
+
+	sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	sub_98196C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void looping_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -2974,32 +2992,27 @@ static void looping_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence,
 		metal_a_supports_paint_setup(0, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(0, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15004, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25623, 26, 0, 1, 1, 19, height + 3);
 		break;
 	case 1:
 		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(0, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(0, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15005, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25624, 6, 0, 1, 1, 19, height + 3);
 		break;
 	case 2:
 		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(0, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(0, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15004, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25625, 6, 0, 1, 1, 19, height + 3);
 		break;
 	case 3:
 		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 22432, 0, 0, 32, 32, 1, height);
 		metal_a_supports_paint_setup(0, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		metal_a_supports_paint_setup(0, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15005, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25626, 26, 0, 1, 1, 19, height + 3);
 		break;
 	}
-	sub_98196C_rotated(direction, 0x00000000, 0, 0, 0, 0, 0, height - 48);
-	sub_98196C_rotated(direction, 0x00000000, 0, 0, 0, 0, 0, height - 48);
+	track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
@@ -6171,6 +6184,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int trackType, int dire
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:
 		return looping_rc_track_flat;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return looping_rc_track_station;
 	case TRACK_ELEM_25_DEG_UP:
 		return looping_rc_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
