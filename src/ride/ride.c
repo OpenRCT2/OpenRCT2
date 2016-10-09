@@ -7467,7 +7467,6 @@ uint16 trackPieceRequiredSprites[55] = {0x0001u,0x0001u,0x0001u,0x0000u,0x0006u,
 		for(int j = 0; j < 55; j++)
 		{
 			if((rideEntry->vehicles[rideEntry->default_vehicle].sprite_flags & trackPieceRequiredSprites[j]) != trackPieceRequiredSprites[j])supportedPieces &= ~(1ULL << j);
-			}
 		}
 return supportedPieces;
 }
