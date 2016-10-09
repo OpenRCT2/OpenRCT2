@@ -203,6 +203,19 @@ private:
 
             { 13, TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE, TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE },
             { 13, TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122, TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE },
+
+            { 14, TRACK_ELEM_RIGHT_CORKSCREW_DOWN, TRACK_ELEM_LEFT_CORKSCREW_UP },
+            { 15, TRACK_ELEM_LEFT_CORKSCREW_DOWN, TRACK_ELEM_RIGHT_CORKSCREW_UP },
+
+            { 16, TRACK_ELEM_HALF_LOOP_DOWN, TRACK_ELEM_HALF_LOOP_UP },
+
+            { 17, TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN, TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP },
+
+            { 18, TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP, TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN },
+            { 18, TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP, TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN },
+
+            { 19, TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN, TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP },
+            { 19, TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN, TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP },
         };
 
         for (int i = 0; i < (sizeof(mirrorTable) / sizeof(mirrorTable[0])); i++)
@@ -278,6 +291,24 @@ private:
                     break;
                 case 13:
                     WriteLine(tabs, "%s(rideIndex, 3 - trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 14:
+                    WriteLine(tabs, "%s(rideIndex, 2 - trackSequence, (direction - 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 15:
+                    WriteLine(tabs, "%s(rideIndex, 2 - trackSequence, (direction + 1) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 16:
+                    WriteLine(tabs, "%s(rideIndex, 3 - trackSequence, direction, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 17:
+                    WriteLine(tabs, "%s(rideIndex, 2 - trackSequence, direction, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 18:
+                    WriteLine(tabs, "%s(rideIndex, 2 - trackSequence, (direction + 2) & 3, height, mapElement);", destFuncName.c_str());
+                    break;
+                case 19:
+                    WriteLine(tabs, "%s(rideIndex, 6 - trackSequence, direction, height, mapElement);", destFuncName.c_str());
                     break;
                 }
                 return true;
