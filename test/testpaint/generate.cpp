@@ -151,8 +151,11 @@ private:
             { 0, TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED, TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED },
             { 0, TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED, TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED },
             { 0, TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED, TRACK_ELEM_FLAT_TO_25_DEG_UP_COVERED },
-            { 0, TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED, TRACK_ELEM_25_DEG_UP_LEFT_BANKED },
             { 0, TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED, TRACK_ELEM_25_DEG_UP_RIGHT_BANKED },
+            { 0, TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED, TRACK_ELEM_25_DEG_UP_LEFT_BANKED },
+            { 0, TRACK_ELEM_90_DEG_DOWN, TRACK_ELEM_90_DEG_UP },
+            { 0, TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN, TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP },
+            // { 0, TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN, TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP },
             { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP },
             { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP },
             { 0, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP },
@@ -312,7 +315,10 @@ private:
 
             segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
-            generalSupports[direction].height -= height;
+            if (gSupport.slope != 0xFF && gSupport.height != 0)
+            {
+                generalSupports[direction].height -= height;
+            }
 
             // Get chain lift calls
             mapElement.type |= 0x80;
@@ -771,7 +777,15 @@ private:
 
     void GenerateGeneralSupportCall(int tabs, support_height generalSupports[4])
     {
-        WriteLine(tabs, "paint_util_set_general_support_height(height + %d, 0x%02X);", generalSupports[0].height, generalSupports[0].slope);
+        if (generalSupports[0].height == 0 &&
+            generalSupports[0].slope == 0xFF)
+        {
+            return;
+        }
+
+        WriteLine(tabs, "paint_util_set_general_support_height(height%s, 0x%02X);",
+            GetOffsetExpressionString((sint16)generalSupports[0].height).c_str(),
+            generalSupports[0].slope);
         if (!AllMatch(generalSupports, 4))
         {
             // WriteLine(tabs, "#error Unsupported: different directional general supports");
