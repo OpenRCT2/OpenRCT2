@@ -311,6 +311,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int trackType, int d
 TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_lay_down_rc(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_suspended_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
