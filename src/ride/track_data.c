@@ -6285,7 +6285,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_space_rings,	// RIDE_TYPE_SPACE_RINGS
 	get_track_paint_function_reverse_freefall_rc,			// RIDE_TYPE_REVERSE_FREEFALL_COASTER
 	get_track_paint_function_lift,			// RIDE_TYPE_LIFT
-	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+	get_track_paint_function_vertical_drop_rc,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	get_track_paint_function_shop,			// RIDE_TYPE_CASH_MACHINE
 	get_track_paint_function_twist,						// RIDE_TYPE_TWIST
 	get_track_paint_function_haunted_house,	// RIDE_TYPE_HAUNTED_HOUSE

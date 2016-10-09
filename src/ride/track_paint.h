@@ -294,6 +294,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int directi
 TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction);
