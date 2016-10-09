@@ -66,6 +66,28 @@ static void lim_launched_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+static void lim_launched_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][3] = {
+		{ 15018, 15020, SPR_STATION_BASE_B_SW_NE },
+		{ 15019, 15021, SPR_STATION_BASE_B_NW_SE },
+		{ 15018, 15020, SPR_STATION_BASE_B_SW_NE },
+		{ 15019, 15021, SPR_STATION_BASE_B_NW_SE },
+	};
+
+	if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	} else {
+		sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
+	}
+	sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void lim_launched_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -6895,100 +6917,147 @@ static void lim_launched_rc_track_right_quarter_turn_1_90_deg_down(uint8 rideInd
 TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int trackType, int direction)
 {
 	switch (trackType) {
+
+	// Use Looping Roller Coaster
 	case TRACK_ELEM_FLAT:
-		return lim_launched_rc_track_flat;
 	case TRACK_ELEM_25_DEG_UP:
-		return lim_launched_rc_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
-		return lim_launched_rc_track_60_deg_up;
 	case TRACK_ELEM_FLAT_TO_25_DEG_UP:
-		return lim_launched_rc_track_flat_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
-		return lim_launched_rc_track_25_deg_up_to_60_deg_up;
 	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
-		return lim_launched_rc_track_60_deg_up_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-		return lim_launched_rc_track_25_deg_up_to_flat;
 	case TRACK_ELEM_25_DEG_DOWN:
-		return lim_launched_rc_track_25_deg_down;
 	case TRACK_ELEM_60_DEG_DOWN:
-		return lim_launched_rc_track_60_deg_down;
 	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_flat_to_25_deg_down;
 	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
-		return lim_launched_rc_track_25_deg_down_to_60_deg_down;
 	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_60_deg_down_to_25_deg_down;
 	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
-		return lim_launched_rc_track_25_deg_down_to_flat;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
-		return lim_launched_rc_track_left_quarter_turn_5;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
-		return lim_launched_rc_track_right_quarter_turn_5;
 	case TRACK_ELEM_FLAT_TO_LEFT_BANK:
-		return lim_launched_rc_track_flat_to_left_bank;
 	case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
-		return lim_launched_rc_track_flat_to_right_bank;
 	case TRACK_ELEM_LEFT_BANK_TO_FLAT:
-		return lim_launched_rc_track_left_bank_to_flat;
 	case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
-		return lim_launched_rc_track_right_bank_to_flat;
 	case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
-		return lim_launched_rc_track_banked_left_quarter_turn_5;
 	case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
-		return lim_launched_rc_track_banked_right_quarter_turn_5;
 	case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
-		return lim_launched_rc_track_left_bank_to_25_deg_up;
 	case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
-		return lim_launched_rc_track_right_bank_to_25_deg_up;
 	case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
-		return lim_launched_rc_track_25_deg_up_to_left_bank;
 	case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
-		return lim_launched_rc_track_25_deg_up_to_right_bank;
 	case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_left_bank_to_25_deg_down;
 	case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_right_bank_to_25_deg_down;
 	case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
-		return lim_launched_rc_track_25_deg_down_to_left_bank;
 	case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
-		return lim_launched_rc_track_25_deg_down_to_right_bank;
 	case TRACK_ELEM_LEFT_BANK:
-		return lim_launched_rc_track_left_bank;
 	case TRACK_ELEM_RIGHT_BANK:
-		return lim_launched_rc_track_right_bank;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
-		return lim_launched_rc_track_left_quarter_turn_5_25_deg_up;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
-		return lim_launched_rc_track_right_quarter_turn_5_25_deg_up;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-		return lim_launched_rc_track_left_quarter_turn_5_25_deg_down;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-		return lim_launched_rc_track_right_quarter_turn_5_25_deg_down;
 	case TRACK_ELEM_S_BEND_LEFT:
-		return lim_launched_rc_track_s_bend_left;
 	case TRACK_ELEM_S_BEND_RIGHT:
-		return lim_launched_rc_track_s_bend_right;
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+	case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
+	case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
+	case TRACK_ELEM_ON_RIDE_PHOTO:
+	case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
+	case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
+	case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+	case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+	case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+	case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+	case TRACK_ELEM_DIAG_FLAT:
+	case TRACK_ELEM_DIAG_25_DEG_UP:
+	case TRACK_ELEM_DIAG_60_DEG_UP:
+	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN:
+	case TRACK_ELEM_DIAG_60_DEG_DOWN:
+	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+	case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
+	case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
+	case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
+	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
+	case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
+	case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
+	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
+	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+	case TRACK_ELEM_DIAG_LEFT_BANK:
+	case TRACK_ELEM_DIAG_RIGHT_BANK:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+	case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+	case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT:
+	case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT:
+	case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
+	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
+		return get_track_paint_function_looping_rc(trackType, direction);
+
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return lim_launched_rc_track_station;
 	case TRACK_ELEM_LEFT_VERTICAL_LOOP:
 		return lim_launched_rc_track_left_vertical_loop;
 	case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
 		return lim_launched_rc_track_right_vertical_loop;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
-		return lim_launched_rc_track_left_quarter_turn_3;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
-		return lim_launched_rc_track_right_quarter_turn_3;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
-		return lim_launched_rc_track_left_quarter_turn_3_bank;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
-		return lim_launched_rc_track_right_quarter_turn_3_bank;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
-		return lim_launched_rc_track_left_quarter_turn_3_25_deg_up;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
-		return lim_launched_rc_track_right_quarter_turn_3_25_deg_up;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-		return lim_launched_rc_track_left_quarter_turn_3_25_deg_down;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-		return lim_launched_rc_track_right_quarter_turn_3_25_deg_down;
 	case TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP:
 		return lim_launched_rc_track_left_twist_down_to_up;
 	case TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP:
@@ -7005,42 +7074,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int trackType, int
 		return lim_launched_rc_track_left_corkscrew_down;
 	case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
 		return lim_launched_rc_track_right_corkscrew_down;
-	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
-		return lim_launched_rc_track_left_half_banked_helix_up_small;
-	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
-		return lim_launched_rc_track_right_half_banked_helix_up_small;
-	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
-		return lim_launched_rc_track_left_half_banked_helix_down_small;
-	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
-		return lim_launched_rc_track_right_half_banked_helix_down_small;
-	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
-		return lim_launched_rc_track_left_half_banked_helix_up_large;
-	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
-		return lim_launched_rc_track_right_half_banked_helix_up_large;
-	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
-		return lim_launched_rc_track_left_half_banked_helix_down_large;
-	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
-		return lim_launched_rc_track_right_half_banked_helix_down_large;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
-		return lim_launched_rc_track_left_quarter_turn_1_60_deg_up;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
-		return lim_launched_rc_track_right_quarter_turn_1_60_deg_up;
-	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
-		return lim_launched_rc_track_left_quarter_turn_1_60_deg_down;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
-		return lim_launched_rc_track_right_quarter_turn_1_60_deg_down;
 	case TRACK_ELEM_BRAKES:
 		return lim_launched_rc_track_brakes;
-	case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
-		return lim_launched_rc_track_25_deg_up_left_banked;
-	case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
-		return lim_launched_rc_track_25_deg_up_right_banked;
-	case TRACK_ELEM_ON_RIDE_PHOTO:
-		return lim_launched_rc_track_on_ride_photo;
-	case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
-		return lim_launched_rc_track_25_deg_down_left_banked;
-	case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
-		return lim_launched_rc_track_25_deg_down_right_banked;
 	case TRACK_ELEM_90_DEG_UP:
 		return lim_launched_rc_track_90_deg_up;
 	case TRACK_ELEM_90_DEG_DOWN:
@@ -7053,146 +7088,12 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int trackType, int
 		return lim_launched_rc_track_90_deg_up_to_60_deg_up;
 	case TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN:
 		return lim_launched_rc_track_60_deg_down_to_90_deg_down;
-	case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
-		return lim_launched_rc_track_left_eighth_to_diag;
-	case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
-		return lim_launched_rc_track_right_eighth_to_diag;
-	case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
-		return lim_launched_rc_track_left_eighth_to_orthogonal;
-	case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
-		return lim_launched_rc_track_right_eighth_to_orthogonal;
-	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
-		return lim_launched_rc_track_left_eighth_bank_to_diag;
-	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
-		return lim_launched_rc_track_right_eighth_bank_to_diag;
-	case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
-		return lim_launched_rc_track_left_eighth_bank_to_orthogonal;
-	case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
-		return lim_launched_rc_track_right_eighth_bank_to_orthogonal;
-	case TRACK_ELEM_DIAG_FLAT:
-		return lim_launched_rc_track_diag_flat;
-	case TRACK_ELEM_DIAG_25_DEG_UP:
-		return lim_launched_rc_track_diag_25_deg_up;
-	case TRACK_ELEM_DIAG_60_DEG_UP:
-		return lim_launched_rc_track_diag_60_deg_up;
-	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
-		return lim_launched_rc_track_diag_flat_to_25_deg_up;
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
-		return lim_launched_rc_track_diag_25_deg_up_to_60_deg_up;
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-		return lim_launched_rc_track_diag_60_deg_up_to_25_deg_up;
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-		return lim_launched_rc_track_diag_25_deg_up_to_flat;
-	case TRACK_ELEM_DIAG_25_DEG_DOWN:
-		return lim_launched_rc_track_diag_25_deg_down;
-	case TRACK_ELEM_DIAG_60_DEG_DOWN:
-		return lim_launched_rc_track_diag_60_deg_down;
-	case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_diag_flat_to_25_deg_down;
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
-		return lim_launched_rc_track_diag_25_deg_down_to_60_deg_down;
-	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_diag_60_deg_down_to_25_deg_down;
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
-		return lim_launched_rc_track_diag_25_deg_down_to_flat;
-	case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
-		return lim_launched_rc_track_diag_flat_to_left_bank;
-	case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
-		return lim_launched_rc_track_diag_flat_to_right_bank;
-	case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
-		return lim_launched_rc_track_diag_left_bank_to_flat;
-	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
-		return lim_launched_rc_track_diag_right_bank_to_flat;
-	case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
-		return lim_launched_rc_track_diag_left_bank_to_25_deg_up;
-	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
-		return lim_launched_rc_track_diag_right_bank_to_25_deg_up;
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
-		return lim_launched_rc_track_diag_25_deg_up_to_left_bank;
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
-		return lim_launched_rc_track_diag_25_deg_up_to_right_bank;
-	case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_diag_left_bank_to_25_deg_down;
-	case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_diag_right_bank_to_25_deg_down;
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
-		return lim_launched_rc_track_diag_25_deg_down_to_left_bank;
-	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
-		return lim_launched_rc_track_diag_25_deg_down_to_right_bank;
-	case TRACK_ELEM_DIAG_LEFT_BANK:
-		return lim_launched_rc_track_diag_left_bank;
-	case TRACK_ELEM_DIAG_RIGHT_BANK:
-		return lim_launched_rc_track_diag_right_bank;
 	case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
 		return lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up;
 	case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
 		return lim_launched_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
 	case TRACK_ELEM_BLOCK_BRAKES:
 		return lim_launched_rc_track_block_brakes;
-	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-		return lim_launched_rc_track_left_banked_quarter_turn_3_25_deg_up;
-	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-		return lim_launched_rc_track_right_banked_quarter_turn_3_25_deg_up;
-	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
-		return lim_launched_rc_track_left_banked_quarter_turn_3_25_deg_down;
-	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
-		return lim_launched_rc_track_right_banked_quarter_turn_3_25_deg_down;
-	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-		return lim_launched_rc_track_left_banked_quarter_turn_5_25_deg_up;
-	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-		return lim_launched_rc_track_right_banked_quarter_turn_5_25_deg_up;
-	case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
-		return lim_launched_rc_track_left_banked_quarter_turn_5_25_deg_down;
-	case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
-		return lim_launched_rc_track_right_banked_quarter_turn_5_25_deg_down;
-	case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_25_deg_up_to_left_banked_25_deg_up;
-	case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_25_deg_up_to_right_banked_25_deg_up;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP:
-		return lim_launched_rc_track_left_banked_25_deg_up_to_25_deg_up;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP:
-		return lim_launched_rc_track_right_banked_25_deg_up_to_25_deg_up;
-	case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_25_deg_down_to_left_banked_25_deg_down;
-	case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_25_deg_down_to_right_banked_25_deg_down;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_left_banked_25_deg_down_to_25_deg_down;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
-		return lim_launched_rc_track_right_banked_25_deg_down_to_25_deg_down;
-	case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_left_banked_flat_to_left_banked_25_deg_up;
-	case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_right_banked_flat_to_right_banked_25_deg_up;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT:
-		return lim_launched_rc_track_left_banked_25_deg_up_to_left_banked_flat;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT:
-		return lim_launched_rc_track_right_banked_25_deg_up_to_right_banked_flat;
-	case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_left_banked_flat_to_left_banked_25_deg_down;
-	case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_right_banked_flat_to_right_banked_25_deg_down;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT:
-		return lim_launched_rc_track_left_banked_25_deg_down_to_left_banked_flat;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT:
-		return lim_launched_rc_track_right_banked_25_deg_down_to_right_banked_flat;
-	case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_flat_to_left_banked_25_deg_up;
-	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
-		return lim_launched_rc_track_flat_to_right_banked_25_deg_up;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT:
-		return lim_launched_rc_track_left_banked_25_deg_up_to_flat;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
-		return lim_launched_rc_track_right_banked_25_deg_up_to_flat;
-	case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_flat_to_left_banked_25_deg_down;
-	case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
-		return lim_launched_rc_track_flat_to_right_banked_25_deg_down;
-	case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
-		return lim_launched_rc_track_left_banked_25_deg_down_to_flat;
-	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
-		return lim_launched_rc_track_right_banked_25_deg_down_to_flat;
 	case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
 		return lim_launched_rc_track_left_quarter_turn_1_90_deg_up;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
