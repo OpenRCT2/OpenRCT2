@@ -6314,7 +6314,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_flying_saucers,// RIDE_TYPE_FLYING_SAUCERS
 	get_track_paint_function_crooked_house,	// RIDE_TYPE_CROOKED_HOUSE
 	get_track_paint_function_monorail_cycles,	// RIDE_TYPE_MONORAIL_CYCLES
-	0,						// RIDE_TYPE_COMPACT_INVERTED_COASTER
+	get_track_paint_function_compact_inverted_rc,						// RIDE_TYPE_COMPACT_INVERTED_COASTER
 	get_track_paint_function_water_rc,			// RIDE_TYPE_WATER_COASTER
 	get_track_paint_function_air_powered_vertical_rc,				// RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
 	0,						// RIDE_TYPE_INVERTED_HAIRPIN_COASTER

@@ -320,6 +320,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direc
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_compact_inverted_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int direction);
