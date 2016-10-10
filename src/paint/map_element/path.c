@@ -662,15 +662,6 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
  */
 void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 {
-#ifndef NO_RCT2
-	if (gUseOriginalRidePaint) {
-		TempForScrollText = true;
-		RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int) map_element, 0, 0);
-		TempForScrollText = false;
-		return;
-	}
-#endif
-
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
 	bool word_F3F038 = false;
