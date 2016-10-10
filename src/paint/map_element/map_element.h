@@ -65,7 +65,8 @@ enum
 	TUNNEL_11 = 0x0B,
 	TUNNEL_12 = 0x0C,
 	TUNNEL_13 = 0x0D,
-	TUNNEL_14 = 0x0E
+	TUNNEL_14 = 0x0E,
+	TUNNEL_15 = 0x0F,
 };
 
 typedef struct tunnel_entry {

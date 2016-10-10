@@ -6241,26 +6241,26 @@ const track_curve_chain gFlatRideTrackCurveChain[256] = {
 };
 
 const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
-	0,						// RIDE_TYPE_SPIRAL_ROLLER_COASTER
-	0,						// RIDE_TYPE_STAND_UP_ROLLER_COASTER
-	0,						// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-	0,						// RIDE_TYPE_INVERTED_ROLLER_COASTER
+	get_track_paint_function_spiral_rc,						// RIDE_TYPE_SPIRAL_ROLLER_COASTER
+	get_track_paint_function_stand_up_rc,						// RIDE_TYPE_STAND_UP_ROLLER_COASTER
+	get_track_paint_function_suspended_swinging_rc,						// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
+	get_track_paint_function_inverted_rc,						// RIDE_TYPE_INVERTED_ROLLER_COASTER
 	get_track_paint_function_junior_rc,						// RIDE_TYPE_JUNIOR_ROLLER_COASTER
 	0,						// RIDE_TYPE_MINIATURE_RAILWAY
 	get_track_paint_function_monorail,		// RIDE_TYPE_MONORAIL
-	0,						// RIDE_TYPE_MINI_SUSPENDED_COASTER
+	get_track_paint_function_mini_suspended_rc,						// RIDE_TYPE_MINI_SUSPENDED_COASTER
 	get_track_paint_function_boat_ride,		// RIDE_TYPE_BOAT_RIDE
 	get_track_paint_function_wooden_wild_mouse,	// RIDE_TYPE_WOODEN_WILD_MOUSE
-	0,						// RIDE_TYPE_STEEPLECHASE
+	get_track_paint_function_steeplechase,						// RIDE_TYPE_STEEPLECHASE
 	get_track_paint_function_car_ride,			// RIDE_TYPE_CAR_RIDE
 	get_track_paint_function_launched_freefall,	// RIDE_TYPE_LAUNCHED_FREEFALL
-	0,						// RIDE_TYPE_BOBSLEIGH_COASTER
+	get_track_paint_function_bobsleigh_rc,						// RIDE_TYPE_BOBSLEIGH_COASTER
 	get_track_paint_function_observation_tower,	// RIDE_TYPE_OBSERVATION_TOWER
-	0,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
+	get_track_paint_function_looping_rc,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
 	get_track_paint_function_dinghy_slide,		// RIDE_TYPE_DINGHY_SLIDE
-	0,						// RIDE_TYPE_MINE_TRAIN_COASTER
+	get_track_paint_function_mine_train_rc,						// RIDE_TYPE_MINE_TRAIN_COASTER
 	get_track_paint_function_chairlift,		// RIDE_TYPE_CHAIRLIFT
-	0,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+	get_track_paint_function_corkscrew_rc,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
 	get_track_paint_function_maze,			// RIDE_TYPE_MAZE
 	get_track_paint_function_spiral_slide,	// RIDE_TYPE_SPIRAL_SLIDE
 	get_track_paint_function_go_karts,		// RIDE_TYPE_GO_KARTS
@@ -6285,39 +6285,39 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_space_rings,	// RIDE_TYPE_SPACE_RINGS
 	get_track_paint_function_reverse_freefall_rc,			// RIDE_TYPE_REVERSE_FREEFALL_COASTER
 	get_track_paint_function_lift,			// RIDE_TYPE_LIFT
-	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
+	get_track_paint_function_vertical_drop_rc,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	get_track_paint_function_shop,			// RIDE_TYPE_CASH_MACHINE
 	get_track_paint_function_twist,						// RIDE_TYPE_TWIST
 	get_track_paint_function_haunted_house,	// RIDE_TYPE_HAUNTED_HOUSE
 	get_track_paint_function_facility,		// RIDE_TYPE_FIRST_AID
 	get_track_paint_function_circus_show,	// RIDE_TYPE_CIRCUS_SHOW
 	get_track_paint_function_ghost_train,	// RIDE_TYPE_GHOST_TRAIN
-	0,						// RIDE_TYPE_TWISTER_ROLLER_COASTER
+	get_track_paint_function_twister_rc,	// RIDE_TYPE_TWISTER_ROLLER_COASTER
 	0,						// RIDE_TYPE_WOODEN_ROLLER_COASTER
-	0,						// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
+	get_track_paint_function_side_friction_rc,						// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
 	get_track_paint_function_wild_mouse,		// RIDE_TYPE_WILD_MOUSE
-	0,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
+	get_track_paint_function_multi_dimension_rc,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
 	0,						// RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-	0,						// RIDE_TYPE_FLYING_ROLLER_COASTER
+	get_track_paint_function_flying_rc,						// RIDE_TYPE_FLYING_ROLLER_COASTER
 	0,						// RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
 	get_track_paint_function_virginia_reel,		// RIDE_TYPE_VIRGINIA_REEL
 	get_track_paint_function_splash_boats,		// RIDE_TYPE_SPLASH_BOATS
 	get_track_paint_function_mini_helicopters,	// RIDE_TYPE_MINI_HELICOPTERS
-	0,						// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
-	0,						// RIDE_TYPE_SUSPENDED_MONORAIL
+	get_track_paint_function_lay_down_rc,						// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
+	get_track_paint_function_suspended_monorail,						// RIDE_TYPE_SUSPENDED_MONORAIL
 	0,						// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
-	0,						// RIDE_TYPE_REVERSER_ROLLER_COASTER
-	0,						// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
+	get_track_paint_function_reverser_rc,						// RIDE_TYPE_REVERSER_ROLLER_COASTER
+	get_track_paint_function_heartline_twister_rc,						// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
 	get_track_paint_function_mini_golf,		// RIDE_TYPE_MINI_GOLF
-	0,						// RIDE_TYPE_GIGA_COASTER
+	get_track_paint_function_giga_rc,						// RIDE_TYPE_GIGA_COASTER
 	get_track_paint_function_roto_drop,		// RIDE_TYPE_ROTO_DROP
 	get_track_paint_function_flying_saucers,// RIDE_TYPE_FLYING_SAUCERS
 	get_track_paint_function_crooked_house,	// RIDE_TYPE_CROOKED_HOUSE
 	get_track_paint_function_monorail_cycles,	// RIDE_TYPE_MONORAIL_CYCLES
-	0,						// RIDE_TYPE_COMPACT_INVERTED_COASTER
+	get_track_paint_function_compact_inverted_rc,						// RIDE_TYPE_COMPACT_INVERTED_COASTER
 	get_track_paint_function_water_rc,			// RIDE_TYPE_WATER_COASTER
 	get_track_paint_function_air_powered_vertical_rc,				// RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-	0,						// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
+	get_track_paint_function_inverted_hairpin_rc,						// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
 	get_track_paint_function_magic_carpet,							// RIDE_TYPE_MAGIC_CARPET
 	get_track_paint_function_submarine_ride,						// RIDE_TYPE_SUBMARINE_RIDE
 	get_track_paint_function_river_rafts,							// RIDE_TYPE_RIVER_RAFTS
@@ -6327,11 +6327,11 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_shop,						// RIDE_TYPE_53
 	get_track_paint_function_shop,						// RIDE_TYPE_54
 	0,						// RIDE_TYPE_55
-	0,						// RIDE_TYPE_INVERTED_IMPULSE_COASTER
-	0,						// RIDE_TYPE_MINI_ROLLER_COASTER
-	0,						// RIDE_TYPE_MINE_RIDE
+	get_track_paint_function_inverted_impulse_rc,						// RIDE_TYPE_INVERTED_IMPULSE_COASTER
+	get_track_paint_function_mini_rc,						// RIDE_TYPE_MINI_ROLLER_COASTER
+	get_track_paint_function_mine_ride,						// RIDE_TYPE_MINE_RIDE
 	0,						// RIDE_TYPE_59
-	0,						// RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
+	get_track_paint_function_lim_launched_rc,						// RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
 const track_descriptor gTrackDescriptors[142] = {
