@@ -475,7 +475,7 @@ static void wooden_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 
 			stationImageIds[direction][1], direction, 0, 2, 32, 27, 2, height, 0, 2, height);
 	}
 	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-	track_paint_util_draw_station(rideIndex, trackSequence, direction, height + 4, mapElement);
+	track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
