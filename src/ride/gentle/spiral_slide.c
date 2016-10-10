@@ -52,7 +52,7 @@ enum {
 };
 
 static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id;
+	uint32 image_id = 0;
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | gTrackColours[SCHEME_TRACK];
 	if (direction == 1) image_id = SPIRAL_SLIDE_RIGHT_R1 | gTrackColours[SCHEME_TRACK];
@@ -64,7 +64,7 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 }
 
 static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id;
+	uint32 image_id = 0;
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | gTrackColours[SCHEME_TRACK];
 	if (direction == 1) image_id = SPIRAL_SLIDE_LEFT_R1 | gTrackColours[SCHEME_TRACK];
@@ -75,9 +75,7 @@ static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, u
 }
 
 static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id;
-	
-
+	uint32 image_id = 0;
 
 	rct_ride *ride = get_ride(rideIndex);
 

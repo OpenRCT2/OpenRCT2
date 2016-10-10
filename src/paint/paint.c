@@ -295,7 +295,7 @@ paint_struct * sub_98196C(
 
 	g_ps_F1AD28 = ps;
 
-	sint32 edi;
+	sint32 edi = 0;
 	switch (rotation) {
 		case 0:
 			edi = coord_3d.y + coord_3d.x;

@@ -135,7 +135,7 @@ bool object_read_and_load_entries(SDL_RWops* rw)
 {
 	// Read all the object entries
 	rct_object_entry *entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(rw, (uint8*)entries);
+	sawyercoding_read_chunk_with_size(rw, (uint8*)entries, OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	bool result = object_load_entries(entries);
 	free(entries);
 	return result;

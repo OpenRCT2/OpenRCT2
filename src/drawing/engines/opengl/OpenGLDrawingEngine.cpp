@@ -1016,7 +1016,9 @@ void OpenGLDrawingContext::FlushImages()
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
 {
     rct_drawpixelinfo * screenDPI = _engine->GetDPI();
+#ifndef NDEBUG
     size_t bitsSize = (size_t)screenDPI->height * (size_t)(screenDPI->width + screenDPI->pitch);
+#endif
     size_t bitsOffset = (size_t)(dpi->bits - screenDPI->bits);
 
     assert(bitsOffset < bitsSize);

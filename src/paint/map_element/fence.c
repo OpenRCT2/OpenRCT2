@@ -251,8 +251,8 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     }
 
 
-    uint32 imageOffset;
-    rct_xyz16 offset, bounds, boundsOffset;
+    uint32 imageOffset = 0;
+    rct_xyz16 offset = { 0, 0, 0 }, bounds = { 0, 0, 0 }, boundsOffset;
 
     switch (direction) {
         case 0:

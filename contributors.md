@@ -70,6 +70,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (marcovmun)
 * Sven Slootweg (joepie91)
 * Daniel Trujillo Viedma (gDanix)
+* Jonathan Haas (HaasJona)
 
 ## Toolchain
 * (Balletie) - macOS

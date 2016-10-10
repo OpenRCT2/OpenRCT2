@@ -1757,13 +1757,23 @@ void footpath_update_path_wide_flags(int x, int y)
 		return;
 
 	footpath_clear_wide(x, y);
-	x += 0x20;
-	footpath_clear_wide(x, y);
-	y += 0x20;
-	footpath_clear_wide(x, y);
-	x -= 0x20;
-	footpath_clear_wide(x, y);
-	y -= 0x20;
+	/* Rather than clearing the wide flag of the following tiles and
+	 * checking the state of them later, leave them intact and assume
+	 * they were cleared. Consequently only the wide flag for this single
+	 * tile is modified by this update.
+	 * This is important for avoiding glitches in pathfinding that occurs
+	 * between between the batches of updates to the path wide flags.
+	 * Corresponding pathList[] indexes for the following tiles
+	 * are: 2, 3, 4, 5.
+	 * Note: indexes 3, 4, 5 are reset in the current call;
+	 *       index 2 is reset in the previous call. */
+	//x += 0x20;
+	//footpath_clear_wide(x, y);
+	//y += 0x20;
+	//footpath_clear_wide(x, y);
+	//x -= 0x20;
+	//footpath_clear_wide(x, y);
+	//y -= 0x20;
 
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
@@ -1825,20 +1835,30 @@ void footpath_update_path_wide_flags(int x, int y)
 
 		if (mapElement->properties.path.edges & 2) {
 			F3EFA5 |= 0x8;
-			if (pathList[3] != NULL) {
-				if (footpath_element_is_wide(pathList[3])) {
-					F3EFA5 &= ~0x8;
-				}
-			}
+			/* In the following:
+			 * footpath_element_is_wide(pathList[3])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Commented out since it will never occur. */
+			//if (pathList[3] != NULL) {
+			//	if (footpath_element_is_wide(pathList[3])) {
+			//		F3EFA5 &= ~0x8;
+			//	}
+			//}
 		}
 
 		if (mapElement->properties.path.edges & 4) {
 			F3EFA5 |= 0x20;
-			if (pathList[5] != NULL) {
-				if (footpath_element_is_wide(pathList[5])) {
-					F3EFA5 &= ~0x20;
-				}
-			}
+			/* In the following:
+			 * footpath_element_is_wide(pathList[5])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Commented out since it will never occur. */
+			//if (pathList[5] != NULL) {
+			//	if (footpath_element_is_wide(pathList[5])) {
+			//		F3EFA5 &= ~0x20;
+			//	}
+			//}
 		}
 
 		if ((F3EFA5 & 0x80) && (pathList[7] != NULL) && !(footpath_element_is_wide(pathList[7]))) {
@@ -1849,27 +1869,44 @@ void footpath_update_path_wide_flags(int x, int y)
 				F3EFA5 |= 0x1;
 			}
 
+			/* In the following:
+			 * footpath_element_is_wide(pathList[5])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Short circuit the logic appropriately. */
 			if ((F3EFA5 & 0x20) &&
 				(pathList[6] != NULL) && (!footpath_element_is_wide(pathList[6])) &&
 				((pathList[6]->properties.path.edges & 3) == 3) && // N W
-				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				(pathList[5] != NULL) && (true || !footpath_element_is_wide(pathList[5]))) {
 				F3EFA5 |= 0x40;
 			}
 		}
 
 
-		if ((F3EFA5 & 0x8) && (pathList[3] != NULL) && !(pathList[3]->type & 2)) {
+		/* In the following:
+		  * footpath_element_is_wide(pathList[2])
+		  * footpath_element_is_wide(pathList[3])
+		 * are always false due to the tile update order
+		 * in combination with reset tiles.
+		 * Short circuit the logic appropriately. */
+		if ((F3EFA5 & 0x8) && (pathList[3] != NULL) && (true || !footpath_element_is_wide(pathList[3]))) {
 			if ((F3EFA5 & 2) &&
-				(pathList[2] != NULL) && (!footpath_element_is_wide(pathList[2])) &&
+				(pathList[2] != NULL) && (true || !footpath_element_is_wide(pathList[2])) &&
 				((pathList[2]->properties.path.edges & 0xC) == 0xC) &&
 				(pathList[1] != NULL) && (!footpath_element_is_wide(pathList[1]))) {
 				F3EFA5 |= 0x4;
 			}
 
+			/* In the following:
+			 * footpath_element_is_wide(pathList[4])
+			 * footpath_element_is_wide(pathList[5])
+			 * are always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Short circuit the logic appropriately. */
 			if ((F3EFA5 & 0x20) &&
-				(pathList[4] != NULL) && (!footpath_element_is_wide(pathList[4])) &&
+				(pathList[4] != NULL) && (true || !footpath_element_is_wide(pathList[4])) &&
 				((pathList[4]->properties.path.edges & 9) == 9) &&
-				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				(pathList[5] != NULL) && (true || !footpath_element_is_wide(pathList[5]))) {
 				F3EFA5 |= 0x10;
 			}
 		}

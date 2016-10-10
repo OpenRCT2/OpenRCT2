@@ -367,7 +367,6 @@ static void printImageId(uint32 input, utf8string *out) {
 	uint32 image = input & 0x7FFFF;
 	uint32 palette = input & ~0x7FFFF;
 
-	bool allocated = false;
 	utf8string paletteName;
 	if (palette == DEFAULT_SCHEME_TRACK)paletteName = "SCHEME_TRACK";
 	else if (palette == DEFAULT_SCHEME_SUPPORTS)paletteName = "SCHEME_SUPPORTS";
@@ -444,6 +443,13 @@ static void printFunctionCall(utf8string *out, function_call call) {
 	}
 
 	sprintf(*out + strlen, "%d)", call.paint.rotation);
+
+	if (call.function != PAINT_98196C) {
+		sprintf(*out + strlen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
+			call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
+			call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
+			call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
+	}
 }
 
 static void printFunctionCallArray(utf8string *out, function_call calls[], uint8 count) {
@@ -528,7 +534,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 	rct_drawpixelinfo dpi = {.zoom_level = 1};
 	unk_140E9A8 = &dpi;
 
-	rct_vehicle vehicle = { 0 };
 	rct_ride ride = { 0 };
 
 	rct_ride_entry rideEntry = { 0 };
@@ -625,8 +630,6 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string *error)
 		}
 	}
 	}
-
-	sprintf(*error + strlen(*error), "");
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {

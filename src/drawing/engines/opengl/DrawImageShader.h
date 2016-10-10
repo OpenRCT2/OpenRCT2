@@ -59,8 +59,6 @@ private:
     GLuint _vbo;
     GLuint _vboInstances;
     GLuint _vao;
-    
-    SDL_Color _palette[256];
 
 public:
     DrawImageShader();

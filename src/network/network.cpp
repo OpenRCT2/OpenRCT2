@@ -84,9 +84,6 @@ enum {
 	SERVER_EVENT_PLAYER_DISCONNECTED,
 };
 
-constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
-constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
-
 void network_chat_show_connected_message();
 void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
