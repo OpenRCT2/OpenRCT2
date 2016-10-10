@@ -1089,11 +1089,17 @@ static void sub_68F41A(rct_peep *peep, int index)
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
 					}
 
-					// Not sure why the happiness check is like that seems wrong to me
 					if (!(gParkFlags & PARK_FLAGS_NO_MONEY) &&
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
-						peep->happiness >= 70){
+						peep->energy >= 70){
+						/* The energy check was originally a second check on happiness.
+						 * This was superfluous so should probably check something else.
+						 * Guessed that this should really be checking energy, since
+						 * the addresses for happiness and energy are quite close,
+						 * 70 is also the threshold for tired thoughts (see above) and
+						 * it makes sense that a tired peep might not think about getting
+						 * more money. */
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_RUNNING_OUT;
 					}
 				}
