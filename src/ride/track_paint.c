@@ -1600,6 +1600,43 @@ void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint
 	}
 }
 
+void track_paint_util_onride_photo_small_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
+{
+	static const uint32 imageIds[4][3] =
+	{
+		{ SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S },
+		{ SPR_ON_RIDE_PHOTO_SIGN_SMALL_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_W },
+		{ SPR_ON_RIDE_PHOTO_SIGN_SMALL_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_N },
+		{ SPR_ON_RIDE_PHOTO_SIGN_SMALL_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_E },
+	};
+
+	bool takingPhoto = (mapElement->properties.track.sequence & 0xF0) != 0;
+	uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_MISC];
+	uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | gTrackColours[SCHEME_MISC];
+	switch (direction) {
+	case 0:
+		sub_98196C(imageId, 26, 0, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(imageId, 26, 31, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(flashImageId, 6, 0, 1, 1, 19, height, get_current_rotation());
+		break;
+	case 1:
+		sub_98196C(imageId, 0, 6, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(imageId, 31, 6, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(flashImageId, 0, 26, 1, 1, 19, height, get_current_rotation());
+		break;
+	case 2:
+		sub_98196C(imageId, 6, 0, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(imageId, 6, 31, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(flashImageId, 26, 31, 1, 1, 19, height, get_current_rotation());
+		break;
+	case 3:
+		sub_98196C(imageId, 0, 26, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(imageId, 31, 26, 1, 1, 19, height, get_current_rotation());
+		sub_98196C(flashImageId, 31, 6, 1, 1, 19, height, get_current_rotation());
+		break;
+	}
+}
+
 void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map_element *mapElement)
 {
 	static const uint32 imageIds[4][3] =
