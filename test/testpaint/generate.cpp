@@ -138,7 +138,9 @@ private:
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {
-            if (_rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
+            if (_rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER ||
+                _rideType == RIDE_TYPE_FLYING_ROLLER_COASTER ||
+                _rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
             {
                 WriteLine(1, "if (!track_element_is_inverted(mapElement)) {");
                 _invertedTrack = false;
