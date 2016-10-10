@@ -59,7 +59,7 @@ namespace Intercept2
             call.height = -1;
             call.slope = -1;
 
-            support_height referenceSupport;
+            support_height referenceSupport = { 0 };
 
             for (int i = 0; i < 9; i++) {
                 if (positionsRemaining & segment_offsets[i]) {
