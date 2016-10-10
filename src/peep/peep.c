@@ -6987,23 +6987,39 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
-
+	/* Scenario editor limits initial guest happiness to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->happiness = gGuestInitialHappiness;
+	/* Assume a default initial happiness of 0 is wrong and set
+	 * to 128 (50%) instead. */
 	if (gGuestInitialHappiness == 0)
-		happiness += 0x80;
-
-	peep->happiness = happiness;
-	peep->happiness_growth_rate = happiness;
+		peep->happiness = 0x80;
+	/* Initial value will vary by -15..16 */
+	sint8 happiness_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->happiness = clamp(0, peep->happiness + happiness_delta, 255);
+	peep->happiness_growth_rate = peep->happiness;
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
+	/* Scenario editor limits initial guest hunger to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->hunger = gGuestInitialHunger;
+	/* Initial value will vary by -15..16 */
+	sint8 hunger_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->hunger = clamp(0, peep->hunger + hunger_delta, 255);
 
-	peep->hunger = hunger;
-
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
-
-	peep->thirst = thirst;
+	/* Scenario editor limits initial guest thirst to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->thirst = gGuestInitialThirst;
+	/* Initial value will vary by -15..16 */
+	sint8 thirst_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->thirst = clamp(0, peep->thirst + thirst_delta, 0xFF);
 
 	peep->bathroom = 0;
 	peep->var_42 = 0;
