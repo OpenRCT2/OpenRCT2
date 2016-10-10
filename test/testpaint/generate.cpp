@@ -134,6 +134,7 @@ private:
 
     void GenerateTrackFunction(int trackType)
     {
+        WriteLine(0, "/** rct2: 0x%08X */", RideTypeTrackPaintFunctionsOld[_rideType][trackType]);
         WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
