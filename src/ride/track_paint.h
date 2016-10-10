@@ -160,6 +160,19 @@ enum {
 	SPR_STATION_BASE_C_NW_SE = 22431,
 	SPR_STATION_BASE_D = 22432,
 
+	SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N = 23485,
+	SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E = 23486,
+	SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S = 23487,
+	SPR_ON_RIDE_PHOTO_CAMERA_SMALL_W = 23488,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_N = 23489,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_E = 23490,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S = 23491,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_W = 23492,
+	SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE = 23493,
+	SPR_ON_RIDE_PHOTO_SIGN_SMALL_NW_SE = 23494,
+	SPR_ON_RIDE_PHOTO_SIGN_SMALL_NE_SW = 23495,
+	SPR_ON_RIDE_PHOTO_SIGN_SMALL_SE_NW = 23496,
+
 	SPR_ON_RIDE_PHOTO_CAMERA_N = 25615,
 	SPR_ON_RIDE_PHOTO_CAMERA_E = 25616,
 	SPR_ON_RIDE_PHOTO_CAMERA_S = 25617,
@@ -274,6 +287,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 tunn
 void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
 void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint8 direction, uint8 rotation);
+void track_paint_util_onride_photo_small_paint(uint8 direction, sint32 height, rct_map_element *mapElement);
 void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map_element *mapElement);
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3][2], const rct_xy16 offsets[4][3][2], const rct_xy16 boundsLengths[4][3][2], const rct_xyz16 boundsOffsets[4][3][2], uint8 rotation);
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thickness[2], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const rct_xy16 offsets[4][5][2], const rct_xy16 boundsLengths[4][5][2], const rct_xyz16 boundsOffsets[4][5][2], uint8 rotation);
@@ -327,6 +341,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int dir
 TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int trackType, int direction);
