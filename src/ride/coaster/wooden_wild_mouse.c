@@ -127,6 +127,7 @@ enum {
 	SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2 = 28632,
 };
 
+/** rct2: 0x008A5464 */
 static void wooden_wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -163,6 +164,7 @@ static void wooden_wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A5474 */
 static void wooden_wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4] = {
@@ -196,6 +198,7 @@ static void wooden_wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x008A5484 */
 static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4] = {
@@ -233,6 +236,7 @@ static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
+/** rct2: 0x008A5494 */
 static void wooden_wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4] = {
@@ -266,6 +270,7 @@ static void wooden_wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008A54A4 */
 static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4][2] = {
@@ -348,6 +353,7 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x008A54C4 */
 static void wooden_wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4] = {
@@ -381,31 +387,37 @@ static void wooden_wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x008A54D4 */
 static void wooden_wild_mouse_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A54E4 */
 static void wooden_wild_mouse_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A54F4 */
 static void wooden_wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5504 */
 static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_60_deg_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5514 */
 static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5524 */
 static void wooden_wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
@@ -494,11 +506,13 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A55D4 */
 static void wooden_wild_mouse_track_right_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_left_quarter_turn_1(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A55E4 */
 static void wooden_wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4][2] = {
@@ -540,6 +554,7 @@ static void wooden_wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 64, 0x20);
 }
 
+/** rct2: 0x008A55F4 */
 static void wooden_wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[2][4][2] = {
@@ -581,11 +596,13 @@ static void wooden_wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x008A5604 */
 static void wooden_wild_mouse_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_60_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5614 */
 static void wooden_wild_mouse_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wooden_wild_mouse_track_flat_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);

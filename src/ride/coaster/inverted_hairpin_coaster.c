@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x00890CB4 */
 static void inverted_hairpin_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -85,6 +86,7 @@ static void inverted_hairpin_rc_track_station(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x00890CC4 */
 static void inverted_hairpin_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -151,6 +153,7 @@ static void inverted_hairpin_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequ
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x00890CD4 */
 static void inverted_hairpin_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -193,6 +196,7 @@ static void inverted_hairpin_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequ
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
+/** rct2: 0x00890CE4 */
 static void inverted_hairpin_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -259,6 +263,7 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x00890CF4 */
 static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -305,6 +310,7 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, ui
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x00890D04 */
 static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -375,6 +381,7 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, ui
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x00890D14 */
 static void inverted_hairpin_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -441,36 +448,43 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x00890D24 */
 static void inverted_hairpin_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890D34 */
 static void inverted_hairpin_rc_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890D44 */
 static void inverted_hairpin_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890D54 */
 static void inverted_hairpin_rc_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890D64 */
 static void inverted_hairpin_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890D74 */
 static void inverted_hairpin_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890DB4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -547,12 +561,14 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8
 	}
 }
 
+/** rct2: 0x00890DC4 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	inverted_hairpin_rc_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890DD4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -614,6 +630,7 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIn
 	}
 }
 
+/** rct2: 0x00890DE4 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -675,18 +692,21 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(uint8 rideI
 	}
 }
 
+/** rct2: 0x00890DF4 */
 static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890E04 */
 static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890E64 */
 static void inverted_hairpin_rc_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -720,11 +740,13 @@ static void inverted_hairpin_rc_track_left_quarter_turn_1(uint8 rideIndex, uint8
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x00890E74 */
 static void inverted_hairpin_rc_track_right_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_left_quarter_turn_1(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890E24 */
 static void inverted_hairpin_rc_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -771,6 +793,7 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 64, 0x20);
 }
 
+/** rct2: 0x00890E34 */
 static void inverted_hairpin_rc_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -825,16 +848,19 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(uint8 rideIndex, uint8 t
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x00890E44 */
 static void inverted_hairpin_rc_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_60_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890E54 */
 static void inverted_hairpin_rc_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	inverted_hairpin_rc_track_flat_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00890E14 */
 static void inverted_hairpin_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -855,6 +881,7 @@ static void inverted_hairpin_rc_track_brakes(uint8 rideIndex, uint8 trackSequenc
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x00890E84 */
 static void inverted_hairpin_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {

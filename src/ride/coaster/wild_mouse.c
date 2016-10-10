@@ -168,6 +168,7 @@ static const uint32 _wild_mouse_block_brakes_image_ids[4] = {
 	SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE,
 };
 
+/** rct2: 0x0078B1E4 */
 static void wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -212,6 +213,7 @@ static void wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence, uint8
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0078B1F4 */
 static void wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -236,6 +238,7 @@ static void wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x0078B204 */
 static void wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -268,6 +271,7 @@ static void wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
+/** rct2: 0x0078B214 */
 static void wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -292,6 +296,7 @@ static void wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x0078B224 */
 static void wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -328,6 +333,7 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x0078B234 */
 static void wild_mouse_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -364,6 +370,7 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x0078B244 */
 static void wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -388,31 +395,37 @@ static void wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x0078B254 */
 static void wild_mouse_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B264 */
 static void wild_mouse_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B274 */
 static void wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B284 */
 static void wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B294 */
 static void wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B2A4 */
 static void wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
@@ -517,6 +530,7 @@ static void wild_mouse_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, uint
 	wild_mouse_track_right_quarter_turn_3_25_deg_down(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
+/** rct2: 0x0078B314 */
 static void wild_mouse_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const sprite_bb imageIds[4][2] = {
@@ -571,6 +585,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uin
 	paint_util_set_general_support_height(height + generalSupportHeights[trackSequence], 0x20);
 }
 
+/** rct2: 0x0078B324 */
 static void wild_mouse_track_left_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -583,6 +598,7 @@ static void wild_mouse_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSeq
 	wild_mouse_track_right_quarter_turn_3(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
+/** rct2: 0x0078B394 */
 static void wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -613,11 +629,13 @@ static void wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0078B3A4 */
 static void wild_mouse_track_right_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_left_quarter_turn_1(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B354 */
 static void wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -654,6 +672,7 @@ static void wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 64, 0x20);
 }
 
+/** rct2: 0x0078B364 */
 static void wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -694,16 +713,19 @@ static void wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x0078B374 */
 static void wild_mouse_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_60_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B384 */
 static void wild_mouse_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	wild_mouse_track_flat_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0078B344 */
 static void wild_mouse_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = _wild_mouse_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK];
@@ -716,6 +738,7 @@ static void wild_mouse_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0078B3C4 */
 static void wild_mouse_track_rotation_control_toggle(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -735,6 +758,7 @@ static void wild_mouse_track_rotation_control_toggle(uint8 rideIndex, uint8 trac
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0078B3B4 */
 static void wild_mouse_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	uint32 imageId = _wild_mouse_block_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK];

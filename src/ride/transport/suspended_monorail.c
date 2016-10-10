@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x008636F4 */
 static void suspended_monorail_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -65,6 +66,7 @@ static void suspended_monorail_track_station(uint8 rideIndex, uint8 trackSequenc
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x00863704 */
 static void suspended_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -102,6 +104,7 @@ static void suspended_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x00863714 */
 static void suspended_monorail_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -139,6 +142,7 @@ static void suspended_monorail_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 	paint_util_set_general_support_height(height + 64, 0x20);
 }
 
+/** rct2: 0x00863724 */
 static void suspended_monorail_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -176,21 +180,25 @@ static void suspended_monorail_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tr
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x00863734 */
 static void suspended_monorail_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	suspended_monorail_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863744 */
 static void suspended_monorail_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	suspended_monorail_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863754 */
 static void suspended_monorail_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	suspended_monorail_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863764 */
 static void suspended_monorail_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -306,12 +314,14 @@ static void suspended_monorail_track_left_quarter_turn_5(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x00863774 */
 static void suspended_monorail_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
 	suspended_monorail_track_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863784 */
 static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -407,6 +417,7 @@ static void suspended_monorail_track_s_bend_left(uint8 rideIndex, uint8 trackSeq
 	}
 }
 
+/** rct2: 0x00863794 */
 static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -502,6 +513,7 @@ static void suspended_monorail_track_s_bend_right(uint8 rideIndex, uint8 trackSe
 	}
 }
 
+/** rct2: 0x008637D4 */
 static void suspended_monorail_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -578,12 +590,14 @@ static void suspended_monorail_track_left_quarter_turn_3(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008637E4 */
 static void suspended_monorail_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	suspended_monorail_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863864 */
 static void suspended_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -674,6 +688,7 @@ static void suspended_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x00863874 */
 static void suspended_monorail_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -764,18 +779,21 @@ static void suspended_monorail_track_right_eighth_to_diag(uint8 rideIndex, uint8
 	}
 }
 
+/** rct2: 0x00863884 */
 static void suspended_monorail_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	suspended_monorail_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00863894 */
 static void suspended_monorail_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	suspended_monorail_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
+/** rct2: 0x008637F4 */
 static void suspended_monorail_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -828,6 +846,7 @@ static void suspended_monorail_track_diag_flat(uint8 rideIndex, uint8 trackSeque
 	}
 }
 
+/** rct2: 0x00863824 */
 static void suspended_monorail_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -880,6 +899,7 @@ static void suspended_monorail_track_diag_25_deg_up(uint8 rideIndex, uint8 track
 	}
 }
 
+/** rct2: 0x00863804 */
 static void suspended_monorail_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -932,6 +952,7 @@ static void suspended_monorail_track_diag_flat_to_25_deg_up(uint8 rideIndex, uin
 	}
 }
 
+/** rct2: 0x00863814 */
 static void suspended_monorail_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -984,6 +1005,7 @@ static void suspended_monorail_track_diag_25_deg_up_to_flat(uint8 rideIndex, uin
 	}
 }
 
+/** rct2: 0x00863854 */
 static void suspended_monorail_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1036,6 +1058,7 @@ static void suspended_monorail_track_diag_25_deg_down(uint8 rideIndex, uint8 tra
 	}
 }
 
+/** rct2: 0x00863834 */
 static void suspended_monorail_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1088,6 +1111,7 @@ static void suspended_monorail_track_diag_flat_to_25_deg_down(uint8 rideIndex, u
 	}
 }
 
+/** rct2: 0x00863844 */
 static void suspended_monorail_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
