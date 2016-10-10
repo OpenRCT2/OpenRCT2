@@ -118,7 +118,18 @@ enum {
 	SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE = 22389,
 	SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE = 22390,
 	SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE = 22391,
-
+	SPR_STATION_INVERTED_FENCE_SW_NE = 22392,
+	SPR_STATION_INVERTED_FENCE_NW_SE = 22393,
+	SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_SW_NE = 22394,
+	SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_NW_SE = 22395,
+	SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NE_SW = 22396,
+	SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NW_SE = 22397,
+	SPR_STATION_INVERTED_BAR_C_SW_NE = 22398,
+	SPR_STATION_INVERTED_BAR_C_NW_SE = 22399,
+	SPR_STATION_INVERTED_BAR_D_SW_NE = 22400,
+	SPR_STATION_INVERTED_BAR_D_NW_SE = 22401,
+	SPR_STATION_INVERTED_BAR_E_SW_NE = 22402,
+	SPR_STATION_INVERTED_BAR_E_NW_SE = 22403,
     SPR_STATION_PIER_EDGE_SE = 22404,
     SPR_STATION_PIER_EDGE_SW = 22405,
     SPR_STATION_PIER_EDGE_NW = 22406,
@@ -133,12 +144,20 @@ enum {
 	SPR_STATION_NARROW_EDGE_FENCED_NE = 22415,
 	SPR_STATION_NARROW_EDGE_NW = 22416,
 	SPR_STATION_NARROW_EDGE_NE = 22417,
-
+	SPR_STATION_INVERTED_BAR_F_SW_NE = 22418,
+	SPR_STATION_INVERTED_BAR_F_NW_SE = 22419,
+	SPR_STATION_INVERTED_BAR_0_SW_NE = 22420,
+	SPR_STATION_INVERTED_BAR_0_NW_SE = 22421,
+	SPR_STATION_INVERTED_BAR_A_SW_NE = 22422,
+	SPR_STATION_INVERTED_BAR_A_NW_SE = 22423,
+	SPR_STATION_INVERTED_BAR_B_SW_NE = 22424,
+	SPR_STATION_INVERTED_BAR_B_NW_SE = 22425,
 	SPR_STATION_BASE_A_SW_NE = 22426,
 	SPR_STATION_BASE_A_NW_SE = 22427,
 	SPR_STATION_BASE_B_SW_NE = 22428,
 	SPR_STATION_BASE_B_NW_SE = 22429,
-
+	SPR_STATION_BASE_C_SW_NE = 22430,
+	SPR_STATION_BASE_C_NW_SE = 22431,
 	SPR_STATION_BASE_D = 22432,
 
 	SPR_ON_RIDE_PHOTO_CAMERA_N = 25615,
@@ -226,11 +245,15 @@ bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_eleme
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
 void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
 bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height);
+bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, bool tall);
 void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int height, int zOffset, rct_map_element * mapElement);
 void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement);
+void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB);
+void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement);
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation);
 void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour);
+void track_paint_util_draw_station_metal_supports_2(uint8 direction, uint16 height, uint32 colour, uint8 type);
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation);
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);

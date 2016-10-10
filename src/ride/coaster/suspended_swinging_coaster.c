@@ -62,6 +62,25 @@ static void suspended_swinging_rc_track_flat(uint8 rideIndex, uint8 trackSequenc
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+static void suspended_swinging_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 imageIds[4][3] = {
+		{ SPR_STATION_BASE_C_SW_NE, 25963, SPR_STATION_INVERTED_BAR_D_SW_NE },
+		{ SPR_STATION_BASE_C_NW_SE, 25964, SPR_STATION_INVERTED_BAR_D_NW_SE },
+		{ SPR_STATION_BASE_C_SW_NE, 25963, SPR_STATION_INVERTED_BAR_D_SW_NE },
+		{ SPR_STATION_BASE_C_NW_SE, 25964, SPR_STATION_INVERTED_BAR_D_NW_SE },
+	};
+
+	sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height, 0, 2, height);
+	sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 3, height + 29, 0, 6, height + 29);
+	sub_98199C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 3, height + 29, 0, 6, height + 29);
+	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
+	track_paint_util_draw_station_inverted(rideIndex, trackSequence, direction, height, mapElement);
+	paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
 static void suspended_swinging_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -2838,6 +2857,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int trackTyp
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:
 		return suspended_swinging_rc_track_flat;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return suspended_swinging_rc_track_station;
 	case TRACK_ELEM_25_DEG_UP:
 		return suspended_swinging_rc_track_25_deg_up;
 	case TRACK_ELEM_60_DEG_UP:
