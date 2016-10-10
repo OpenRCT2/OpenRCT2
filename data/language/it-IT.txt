@@ -4120,8 +4120,8 @@ STR_5806    :Disattiva Modalità finestra
 STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
-STR_5810    :Disabilita limite di lunghezza del treno
-STR_5811    :{SMALLFONT}{BLACK}Se selezionato, si possono avere{NEWLINE}255 macchine per treno
+STR_5810    :Disabilita limiti veicoli
+STR_5811    :{SMALLFONT}{BLACK}Se selezionato, si possono avere fino a{NEWLINE}255 carrelli per treno e 31{NEWLINE}treni per attrazione
 STR_5812    :Mostra la finestra multigiocatore
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4231,6 +4231,10 @@ STR_5916    :{COMMA16} giocatore
 STR_5917    :{COMMA16} giocatori
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Mostra effetti climatici
+STR_5921    :{SMALLFONT}{BLACK}Se attivo, saranno mostrati pioggia e colori spenti durante i temporali.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo {COMMA16} {STRINGID} per treno
 
 
 #############
