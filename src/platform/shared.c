@@ -58,7 +58,6 @@ uint32 gPaletteHWMapped[256];
 
 bool gSteamOverlayActive = false;
 
-static SDL_Cursor* _cursors[CURSOR_COUNT];
 static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 static unsigned int _lastGestureTimestamp;
 static float _gestureRadius;
