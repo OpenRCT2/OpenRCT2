@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../cursors.h"
 #include "../drawing/drawing.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/Cursors.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../platform/platform.h"
