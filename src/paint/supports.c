@@ -870,15 +870,164 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 /**
  *
  *  rct2: 0x006A326B
+ *
+ * @param segment (ebx)
+ * @param special (ax)
+ * @param height (dx)
+ * @param imageColourFlags (ebp)
+ * @param pathEntry (0x00F3EF6C)
+ *
+ * @return Whether supports were drawn
  */
-bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry)
+bool path_b_supports_paint_setup(int segment, int special, int height, uint32 imageColourFlags,
+								 rct_footpath_entry * pathEntry)
 {
-#ifdef NO_RCT2
-	return 0;
-#else
-	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
-	int eax = special, ebx = supportType, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
-	RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-	return eax & 0xFF;
+#ifndef NO_RCT2
+	if (gUseOriginalRidePaint) {
+		RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
+		int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
+		RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+		return eax & 0xFF;
+	}
 #endif
+
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+		return false; // AND
+	}
+
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
+		return false; // AND
+	}
+
+	if (height < gSupportSegments[segment].height) {
+		return true; // STC
+	}
+
+	uint16 baseHeight;
+
+	if ((gSupportSegments[segment].slope & 0x20)
+		|| (height - gSupportSegments[segment].height < 6)
+		|| !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_1)) {
+		baseHeight = gSupportSegments[segment].height;
+	} else {
+		uint8 imageOffset = metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
+		baseHeight = gSupportSegments[segment].height;
+
+		sub_98196C(
+			(pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, 5,
+			baseHeight,
+			get_current_rotation()
+		);
+		baseHeight += 6;
+	}
+
+	// si = height
+	// dx = baseHeight
+
+	sint16 heightDiff = floor2(baseHeight + 16, 16);
+	if (heightDiff > height) {
+		heightDiff = height;
+	}
+
+	heightDiff -= baseHeight;
+
+	if (heightDiff > 0) {
+		sub_98196C(
+			(pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, heightDiff - 1,
+			baseHeight,
+			get_current_rotation()
+		);
+	}
+
+	baseHeight += heightDiff;
+
+	bool keepGoing = true;
+	while (keepGoing) {
+		sint16 z;
+
+		for (int i = 0; i < 4; ++i) {
+			z = baseHeight + 16;
+			if (z > height) {
+				z = height;
+			}
+			z -= baseHeight;
+
+			if (z <= 0) {
+				keepGoing = false;
+				break;
+			}
+
+			if (i == 3) {
+				// Only do the z check in the fourth run.
+				break;
+			}
+
+			sub_98196C(
+				(pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags,
+				loc_97AF20[segment].x, loc_97AF20[segment].y,
+				0, 0, (z - 1),
+				baseHeight,
+				get_current_rotation()
+			);
+
+			baseHeight += z;
+		}
+
+		if (keepGoing == false) {
+			break;
+		}
+
+		uint32 imageId = pathEntry->bridge_image + 20 + (z - 1);
+		if (z == 16) {
+			imageId += 1;
+		}
+
+		sub_98196C(
+			imageId | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, (z - 1),
+			baseHeight,
+			get_current_rotation()
+		);
+
+		baseHeight += z;
+	}
+
+	// loc_6A34D8
+	gSupportSegments[segment].height = 0xFFFF;
+	gSupportSegments[segment].slope = 0x20;
+
+	if (special != 0) {
+		sint16 si = special + baseHeight;
+
+		while (true) {
+			sint16 z = baseHeight + 16;
+			if (z > si) {
+				z = si;
+			}
+
+			z -= baseHeight;
+			if (z <= 0) {
+				break;
+			}
+
+			uint32 imageId = pathEntry->bridge_image + 20 + (z - 1);
+			sub_98197C(
+				imageId | imageColourFlags,
+				loc_97AF20[segment].x, loc_97AF20[segment].y,
+				0, 0, 0,
+				baseHeight,
+				loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight,
+				get_current_rotation()
+			);
+
+			baseHeight += z;
+		}
+	}
+
+	return false; // AND
 }
