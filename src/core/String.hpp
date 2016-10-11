@@ -66,4 +66,6 @@ namespace String
     utf8 *      WriteCodepoint(utf8 * dst, codepoint_t codepoint);
 
     utf8 * Trim(utf8 * str);
+    utf8 * TrimStart(utf8 * str);
+    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
 }

@@ -217,8 +217,7 @@ void scenario_begin()
 
 	{
 		utf8 normalisedName[64];
-		safe_strcpy(normalisedName, gS6Info.name, sizeof(normalisedName));
-		scenario_normalise_name(normalisedName);
+		scenario_normalise_name(normalisedName, sizeof(normalisedName), gS6Info.name);
 
 		rct_string_id localisedStringIds[3];
 		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {

@@ -477,7 +477,7 @@ void scenario_autosave_check();
 
 bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
 bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
-void scenario_normalise_name(utf8 *name);
+void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
 
 void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
 

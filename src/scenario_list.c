@@ -160,7 +160,7 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	safe_strcpy(newEntry->details, s6Info.details, sizeof(newEntry->details));
 
 	// Normalise the name to make the scenario as recognisable as possible.
-	scenario_normalise_name(newEntry->name);
+	scenario_normalise_name(newEntry->name, sizeof(newEntry->name), newEntry->name);
 
 	// Look up and store information regarding the origins of this scenario.
 	source_desc desc;
