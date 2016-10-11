@@ -684,16 +684,192 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 /**
  * Metal pole supports
  *  rct2: 0x00663584
+ *
+ * @param supportType (edi)
+ * @param segment (ebx)
+ * @param special (ax)
+ * @param height (edx)
+ * @param imageColourFlags (ebp)
+ *
+ * @return (Carry Flag)
  */
 bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
-#ifdef NO_RCT2
-	return 0;
-#else
-	int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-	RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-	return eax & 0xFF;
+#ifndef NO_RCT2
+	if (gUseOriginalRidePaint) {
+		int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+		RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+		return eax & 0xFF;
+	}
 #endif
+	uint8 originalSegment = segment;
+
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+		return false; // AND
+	}
+
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
+		return false; // AND
+	}
+
+	uint16 _9E3294 = 0xFFFF;
+	sint32 baseHeight = height;
+
+	if (height < gSupportSegments[segment].height) {
+		_9E3294 = height;
+
+		baseHeight -= word_97B142[supportType];
+		if (baseHeight < 0) {
+			return false; // AND
+		}
+
+		uint16 baseIndex = get_current_rotation() * 2;
+
+		uint8 ebp = _97AF32[baseIndex + segment * 8];
+		if (baseHeight <= gSupportSegments[ebp].height) {
+			baseIndex += 9 * 4 * 2; // 9 segments, 4 directions, 2 values
+			uint8 ebp = _97AF32[baseIndex + segment * 8];
+			if (baseHeight <= gSupportSegments[ebp].height) {
+				baseIndex += 9 * 4 * 2;
+				uint8 ebp = _97AF32[baseIndex + segment * 8];
+				if (baseHeight <= gSupportSegments[ebp].height) {
+					baseIndex += 9 * 4 * 2;
+					uint8 ebp = _97AF32[baseIndex + segment * 8];
+					if (baseHeight <= gSupportSegments[ebp].height) {
+						return true; // STC
+					}
+				}
+
+			}
+		}
+
+		segment = ebp;
+
+		// save ebp
+		// save supportType
+
+		ebp = _97AF32[baseIndex + segment * 8 + 1];
+		if (ebp >= 4) {
+			return true; // STC
+		}
+
+		sub_98196C(
+			_97B072[supportType][ebp] | imageColourFlags,
+			loc_97AF20[originalSegment].x + loc_97B052[ebp].x, loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
+			_97B062[ebp].x, _97B062[ebp].y, 1,
+			baseHeight,
+			get_current_rotation()
+		);
+	}
+
+	int si = baseHeight;
+
+	if ((gSupportSegments[segment].slope & 0x20)
+		|| (baseHeight - gSupportSegments[segment].height < 6)
+		|| (_97B15C[supportType].base_id == 0)) {
+		baseHeight = gSupportSegments[segment].height;
+	} else {
+		uint32 imageOffset = metal_supports_slope_image_map[gSupportSegments[segment].slope & 0x1F];
+		uint32 imageId = _97B15C[supportType].base_id + imageOffset;
+
+		sub_98196C(
+			imageId | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, 5,
+			gSupportSegments[segment].height,
+			get_current_rotation()
+		);
+
+		baseHeight = gSupportSegments[segment].height + 6;
+	}
+
+	sint16 heightDiff = floor2(baseHeight + 16, 16);
+	if (heightDiff > si) {
+		heightDiff = si;
+	}
+
+	heightDiff -= baseHeight;
+	if (heightDiff > 0) {
+		sub_98196C(
+			(_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, heightDiff - 1,
+			baseHeight,
+			get_current_rotation()
+		);
+	}
+
+	baseHeight += heightDiff;
+
+
+	sint16 endHeight;
+
+
+	int i = 1;
+	while (true) {
+		endHeight = baseHeight + 16;
+		if (endHeight > si) {
+			endHeight = si;
+		}
+
+		sint16 beamLength = endHeight - baseHeight;
+
+		if (beamLength <= 0) {
+			break;
+		}
+
+		uint32 imageId = _97B15C[supportType].beam_id + (beamLength - 1);
+
+		if (i % 4 == 0) {
+			// Each fourth run, draw a special image
+			if (beamLength == 16) {
+				imageId += 1;
+			}
+		}
+
+		sub_98196C(
+			imageId | imageColourFlags,
+			loc_97AF20[segment].x, loc_97AF20[segment].y,
+			0, 0, beamLength - 1,
+			baseHeight,
+			get_current_rotation()
+		);
+
+		baseHeight += beamLength;
+		i++;
+	}
+
+	gSupportSegments[segment].height = _9E3294;
+	gSupportSegments[segment].slope = 0x20;
+
+	if (special != 0) {
+		baseHeight = height;
+		si = height + special;
+		while (true) {
+			endHeight = baseHeight + 16;
+			if (endHeight > si) {
+				endHeight = si;
+			}
+
+			sint16 beamLength = endHeight - baseHeight;
+			if (beamLength <= 0) {
+				break;
+			}
+
+			uint32 imageId = _97B15C[supportType].beam_id + (beamLength - 1);
+			sub_98197C(
+				imageId | imageColourFlags,
+				loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y,
+				0, 0, 0,
+				baseHeight,
+				loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, height,
+				get_current_rotation()
+			);
+			baseHeight += beamLength;
+		}
+	}
+
+	return false; // AND
 }
 
 /**
