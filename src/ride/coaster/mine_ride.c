@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x008B08D0 */
 static void mine_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -67,6 +68,7 @@ static void mine_ride_track_station(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B08E0 */
 static void mine_ride_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -104,6 +106,7 @@ static void mine_ride_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x008B08F0 */
 static void mine_ride_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -141,6 +144,7 @@ static void mine_ride_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008B0900 */
 static void mine_ride_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -178,21 +182,25 @@ static void mine_ride_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x008B0910 */
 static void mine_ride_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0920 */
 static void mine_ride_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0930 */
 static void mine_ride_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0940 */
 static void mine_ride_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -314,12 +322,14 @@ static void mine_ride_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequ
 	}
 }
 
+/** rct2: 0x008B0950 */
 static void mine_ride_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
 	mine_ride_track_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0960 */
 static void mine_ride_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -355,6 +365,7 @@ static void mine_ride_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B0970 */
 static void mine_ride_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -390,6 +401,7 @@ static void mine_ride_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B0980 */
 static void mine_ride_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -425,6 +437,7 @@ static void mine_ride_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequen
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B0990 */
 static void mine_ride_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -460,6 +473,7 @@ static void mine_ride_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B09A0 */
 static void mine_ride_track_banked_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -583,12 +597,14 @@ static void mine_ride_track_banked_left_quarter_turn_5(uint8 rideIndex, uint8 tr
 	}
 }
 
+/** rct2: 0x008B09B0 */
 static void mine_ride_track_banked_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
 	mine_ride_track_banked_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B09C0 */
 static void mine_ride_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -628,6 +644,7 @@ static void mine_ride_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackS
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008B09D0 */
 static void mine_ride_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -667,6 +684,7 @@ static void mine_ride_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008B09E0 */
 static void mine_ride_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -706,6 +724,7 @@ static void mine_ride_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackS
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x008B09F0 */
 static void mine_ride_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -745,26 +764,31 @@ static void mine_ride_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 track
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x008B0A00 */
 static void mine_ride_track_left_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_25_deg_up_to_right_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0A10 */
 static void mine_ride_track_right_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_25_deg_up_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0A20 */
 static void mine_ride_track_25_deg_down_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_right_bank_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0A30 */
 static void mine_ride_track_25_deg_down_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_left_bank_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0A40 */
 static void mine_ride_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -798,11 +822,13 @@ static void mine_ride_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008B0A50 */
 static void mine_ride_track_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	mine_ride_track_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0A60 */
 static void mine_ride_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -904,6 +930,7 @@ static void mine_ride_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, ui
 	}
 }
 
+/** rct2: 0x008B0A70 */
 static void mine_ride_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1005,6 +1032,7 @@ static void mine_ride_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, u
 	}
 }
 
+/** rct2: 0x008B0AB0 */
 static void mine_ride_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1087,12 +1115,14 @@ static void mine_ride_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequ
 	}
 }
 
+/** rct2: 0x008B0AC0 */
 static void mine_ride_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	mine_ride_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0AD0 */
 static void mine_ride_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1177,12 +1207,14 @@ static void mine_ride_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008B0AE0 */
 static void mine_ride_track_right_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	mine_ride_track_left_quarter_turn_3_bank(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0AF0 */
 static void mine_ride_track_left_half_banked_helix_up_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1345,6 +1377,7 @@ static void mine_ride_track_left_half_banked_helix_up_small(uint8 rideIndex, uin
 	}
 }
 
+/** rct2: 0x008B0B00 */
 static void mine_ride_track_right_half_banked_helix_up_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1507,6 +1540,7 @@ static void mine_ride_track_right_half_banked_helix_up_small(uint8 rideIndex, ui
 	}
 }
 
+/** rct2: 0x008B0B10 */
 static void mine_ride_track_left_half_banked_helix_down_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (trackSequence >= 4) {
@@ -1517,6 +1551,7 @@ static void mine_ride_track_left_half_banked_helix_down_small(uint8 rideIndex, u
 	mine_ride_track_right_half_banked_helix_up_small(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0B20 */
 static void mine_ride_track_right_half_banked_helix_down_small(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (trackSequence >= 4) {
@@ -1527,6 +1562,7 @@ static void mine_ride_track_right_half_banked_helix_down_small(uint8 rideIndex, 
 	mine_ride_track_left_half_banked_helix_up_small(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0B30 */
 static void mine_ride_track_left_half_banked_helix_up_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1767,6 +1803,7 @@ static void mine_ride_track_left_half_banked_helix_up_large(uint8 rideIndex, uin
 	}
 }
 
+/** rct2: 0x008B0B40 */
 static void mine_ride_track_right_half_banked_helix_up_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2007,6 +2044,7 @@ static void mine_ride_track_right_half_banked_helix_up_large(uint8 rideIndex, ui
 	}
 }
 
+/** rct2: 0x008B0B50 */
 static void mine_ride_track_left_half_banked_helix_down_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (trackSequence >= 7) {
@@ -2017,6 +2055,7 @@ static void mine_ride_track_left_half_banked_helix_down_large(uint8 rideIndex, u
 	mine_ride_track_right_half_banked_helix_up_large(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0B60 */
 static void mine_ride_track_right_half_banked_helix_down_large(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (trackSequence >= 7) {
@@ -2027,6 +2066,7 @@ static void mine_ride_track_right_half_banked_helix_down_large(uint8 rideIndex, 
 	mine_ride_track_left_half_banked_helix_up_large(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0B70 */
 static void mine_ride_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -2061,6 +2101,7 @@ static void mine_ride_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, 
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008B0B90 */
 static void mine_ride_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2154,6 +2195,7 @@ static void mine_ride_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequ
 	}
 }
 
+/** rct2: 0x008B0BA0 */
 static void mine_ride_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2247,18 +2289,21 @@ static void mine_ride_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSeq
 	}
 }
 
+/** rct2: 0x008B0BB0 */
 static void mine_ride_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	mine_ride_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0BC0 */
 static void mine_ride_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	mine_ride_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0BD0 */
 static void mine_ride_track_left_eighth_bank_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2352,6 +2397,7 @@ static void mine_ride_track_left_eighth_bank_to_diag(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008B0BE0 */
 static void mine_ride_track_right_eighth_bank_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2445,18 +2491,21 @@ static void mine_ride_track_right_eighth_bank_to_diag(uint8 rideIndex, uint8 tra
 	}
 }
 
+/** rct2: 0x008B0BF0 */
 static void mine_ride_track_left_eighth_bank_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	mine_ride_track_right_eighth_bank_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0C00 */
 static void mine_ride_track_right_eighth_bank_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	mine_ride_track_left_eighth_bank_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
+/** rct2: 0x008B0B80 */
 static void mine_ride_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2509,6 +2558,7 @@ static void mine_ride_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint
 	}
 }
 
+/** rct2: 0x008B0C30 */
 static void mine_ride_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2561,6 +2611,7 @@ static void mine_ride_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence,
 	}
 }
 
+/** rct2: 0x008B0C10 */
 static void mine_ride_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2613,6 +2664,7 @@ static void mine_ride_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008B0C20 */
 static void mine_ride_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2665,6 +2717,7 @@ static void mine_ride_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008B0C60 */
 static void mine_ride_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2717,6 +2770,7 @@ static void mine_ride_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequenc
 	}
 }
 
+/** rct2: 0x008B0C40 */
 static void mine_ride_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2769,6 +2823,7 @@ static void mine_ride_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008B0C50 */
 static void mine_ride_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2821,6 +2876,7 @@ static void mine_ride_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008B0C90 */
 static void mine_ride_track_diag_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2874,6 +2930,7 @@ static void mine_ride_track_diag_flat_to_left_bank(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008B0CA0 */
 static void mine_ride_track_diag_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2927,6 +2984,7 @@ static void mine_ride_track_diag_flat_to_right_bank(uint8 rideIndex, uint8 track
 	}
 }
 
+/** rct2: 0x008B0CB0 */
 static void mine_ride_track_diag_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -2980,6 +3038,7 @@ static void mine_ride_track_diag_left_bank_to_flat(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008B0CC0 */
 static void mine_ride_track_diag_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3033,6 +3092,7 @@ static void mine_ride_track_diag_right_bank_to_flat(uint8 rideIndex, uint8 track
 	}
 }
 
+/** rct2: 0x008B0CF0 */
 static void mine_ride_track_diag_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3086,6 +3146,7 @@ static void mine_ride_track_diag_left_bank_to_25_deg_up(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008B0D00 */
 static void mine_ride_track_diag_right_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3139,6 +3200,7 @@ static void mine_ride_track_diag_right_bank_to_25_deg_up(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008B0CD0 */
 static void mine_ride_track_diag_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3192,6 +3254,7 @@ static void mine_ride_track_diag_25_deg_up_to_left_bank(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008B0CE0 */
 static void mine_ride_track_diag_25_deg_up_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3245,6 +3308,7 @@ static void mine_ride_track_diag_25_deg_up_to_right_bank(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008B0D10 */
 static void mine_ride_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3298,6 +3362,7 @@ static void mine_ride_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, uint8
 	}
 }
 
+/** rct2: 0x008B0D20 */
 static void mine_ride_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3351,6 +3416,7 @@ static void mine_ride_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, uint
 	}
 }
 
+/** rct2: 0x008B0D30 */
 static void mine_ride_track_diag_25_deg_down_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3404,6 +3470,7 @@ static void mine_ride_track_diag_25_deg_down_to_left_bank(uint8 rideIndex, uint8
 	}
 }
 
+/** rct2: 0x008B0D40 */
 static void mine_ride_track_diag_25_deg_down_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3457,6 +3524,7 @@ static void mine_ride_track_diag_25_deg_down_to_right_bank(uint8 rideIndex, uint
 	}
 }
 
+/** rct2: 0x008B0C70 */
 static void mine_ride_track_diag_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -3509,6 +3577,7 @@ static void mine_ride_track_diag_left_bank(uint8 rideIndex, uint8 trackSequence,
 	}
 }
 
+/** rct2: 0x008B0C80 */
 static void mine_ride_track_diag_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {

@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x008A59A8 */
 static void steeplechase_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -78,6 +79,7 @@ static void steeplechase_track_station(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A59B8 */
 static void steeplechase_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -128,6 +130,7 @@ static void steeplechase_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, u
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x008A59C8 */
 static void steeplechase_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -178,6 +181,7 @@ static void steeplechase_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008A59D8 */
 static void steeplechase_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -228,21 +232,25 @@ static void steeplechase_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x008A59E8 */
 static void steeplechase_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	steeplechase_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A59F8 */
 static void steeplechase_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	steeplechase_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5A08 */
 static void steeplechase_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	steeplechase_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5A18 */
 static void steeplechase_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -364,12 +372,14 @@ static void steeplechase_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008A5A28 */
 static void steeplechase_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
 	steeplechase_track_left_quarter_turn_5(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5A38 */
 static void steeplechase_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -471,6 +481,7 @@ static void steeplechase_track_s_bend_left(uint8 rideIndex, uint8 trackSequence,
 	}
 }
 
+/** rct2: 0x008A5A48 */
 static void steeplechase_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -572,6 +583,7 @@ static void steeplechase_track_s_bend_right(uint8 rideIndex, uint8 trackSequence
 	}
 }
 
+/** rct2: 0x008A5A88 */
 static void steeplechase_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -654,12 +666,14 @@ static void steeplechase_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008A5A98 */
 static void steeplechase_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	steeplechase_track_left_quarter_turn_3(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5AA8 */
 static void steeplechase_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -679,6 +693,7 @@ static void steeplechase_track_brakes(uint8 rideIndex, uint8 trackSequence, uint
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A5AD8 */
 static void steeplechase_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -772,6 +787,7 @@ static void steeplechase_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008A5AE8 */
 static void steeplechase_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -865,18 +881,21 @@ static void steeplechase_track_right_eighth_to_diag(uint8 rideIndex, uint8 track
 	}
 }
 
+/** rct2: 0x008A5AF8 */
 static void steeplechase_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	steeplechase_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5B08 */
 static void steeplechase_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	steeplechase_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A5AC8 */
 static void steeplechase_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -971,6 +990,7 @@ static void steeplechase_track_diag_flat(uint8 rideIndex, uint8 trackSequence, u
 	}
 }
 
+/** rct2: 0x008A5B38 */
 static void steeplechase_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1065,6 +1085,7 @@ static void steeplechase_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequen
 	}
 }
 
+/** rct2: 0x008A5B18 */
 static void steeplechase_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1159,6 +1180,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 tra
 	}
 }
 
+/** rct2: 0x008A5B28 */
 static void steeplechase_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1253,6 +1275,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 	}
 }
 
+/** rct2: 0x008A5B68 */
 static void steeplechase_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1347,6 +1370,7 @@ static void steeplechase_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequ
 	}
 }
 
+/** rct2: 0x008A5B48 */
 static void steeplechase_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1441,6 +1465,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008A5B58 */
 static void steeplechase_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1535,6 +1560,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008A5AB8 */
 static void steeplechase_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
