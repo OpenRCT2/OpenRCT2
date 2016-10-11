@@ -172,7 +172,7 @@ bool track_design_save(uint8 rideIndex)
 	}
 
 	utf8 track_name[MAX_PATH];
-	format_string(track_name, ride->name, &ride->name_arguments);
+	format_string(track_name, MAX_PATH, ride->name, &ride->name_arguments);
 	
 	window_loadsave_open(LOADSAVETYPE_TRACK | LOADSAVETYPE_SAVE, track_name);
 	gLoadSaveCallback = track_design_save_callback;

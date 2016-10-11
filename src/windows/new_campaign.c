@@ -114,8 +114,8 @@ static int ride_name_compare(const void *a, const void *b)
 	rideA = get_ride(*((uint8*)a));
 	rideB = get_ride(*((uint8*)b));
 
-	format_string(rideAName, rideA->name, &rideA->name_arguments);
-	format_string(rideBName, rideB->name, &rideB->name_arguments);
+	format_string(rideAName, 256, rideA->name, &rideA->name_arguments);
+	format_string(rideBName, 256, rideB->name, &rideB->name_arguments);
 
 	return _strcmpi(rideAName, rideBName);
 }

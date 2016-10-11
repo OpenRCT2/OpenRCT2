@@ -247,7 +247,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, void* args, int colour, int x, int y, int width)
 {
 	char* buffer = gCommonStringFormatBuffer;
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
@@ -272,7 +272,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, 
 void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y, int width)
 {
 	char* buffer = gCommonStringFormatBuffer;
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
@@ -301,7 +301,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id forma
 void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, int colour, int x, int y)
 {
 	char* buffer = gCommonStringFormatBuffer;
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 	// Measure text width
 	short text_width = gfx_get_string_width(buffer);
@@ -347,7 +347,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 
 	char *buffer = gCommonStringFormatBuffer;
 	gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
@@ -394,7 +394,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 
 	char *buffer = gCommonStringFormatBuffer;
 	gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
@@ -423,7 +423,7 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, int colour, int x, int y)
 {
 	char* buffer = gCommonStringFormatBuffer;
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
@@ -435,7 +435,7 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
 {
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	char *buffer = gCommonStringFormatBuffer;
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 	int height = string_get_height_raw(buffer);
 	gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
 }
@@ -500,7 +500,7 @@ void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, vo
 	char buffer[128];
 	int width;
 
-	format_string(buffer, format, args);
+	format_string(buffer, 128, format, args);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	gfx_draw_string(dpi, buffer, colour, x, y);
@@ -514,7 +514,7 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, v
 	char buffer[128];
 	int width;
 
-	format_string(buffer, format, args);
+	format_string(buffer, 128, format, args);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	x -= width;
@@ -529,7 +529,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format,
 	char buffer[128];
 	int width;
 
-	format_string(buffer, format, args);
+	format_string(buffer, 128, format, args);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	x -= width / 2;
@@ -655,7 +655,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
-	format_string(buffer, format, args);
+	format_string(buffer, 256, format, args);
 
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -844,7 +844,7 @@ bool ttf_initialise()
 			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
 
 			utf8 fontPath[MAX_PATH];
-			if (!platform_get_font_path(fontDesc, fontPath)) {
+			if (!platform_get_font_path(fontDesc, fontPath, sizeof(fontPath))) {
 				log_error("Unable to load font '%s'", fontDesc->font_name);
 				return false;
 			}
@@ -1345,7 +1345,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 	// Count path separators
 	int path_separators = 0;
 	for (size_t x = 0; x < length; x++) {
-		if (path[x] == platform_get_path_separator()) {
+		if (path[x] == *PATH_SEPARATOR) {
 			path_separators++;
 		}
 	}
@@ -1358,7 +1358,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 	for (int x = 0; x < path_separators; x++){
 		do {
 			begin++;
-		} while (path[begin] != platform_get_path_separator());
+		} while (path[begin] != *PATH_SEPARATOR);
 
 		safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
 		if (gfx_get_string_width(buffer) <= availableWidth) {

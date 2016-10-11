@@ -23,9 +23,10 @@
 #include <sys/mman.h>
 #endif // defined(__unix__)
 
+#include "intercept.h"
+
 extern "C" {
 #include "data.h"
-#include "intercept.h"
 #include "../../src/rct2.h"
 #include "../../src/ride/ride.h"
 #include "../../src/ride/ride_data.h"
@@ -352,6 +353,7 @@ static void PrintRideTypes()
 int main(int argc, char *argv[]) {
 	std::vector<TestCase> testCases;
 
+	bool generate = false;
 	uint8 specificRideType = 0xFF;
 	for (int i = 0; i < argc; ++i) {
 		char *arg = argv[i];
@@ -367,6 +369,21 @@ int main(int argc, char *argv[]) {
 				return 2;
 			}
 		}
+		else if (strcmp(arg, "--generate") == 0) {
+			generate = true;
+		}
+	}
+
+	if (generate) {
+		if (specificRideType > 90) {
+			fprintf(stderr, "No ride or invalid ride specified.\n");
+			return 1;
+		}
+
+		openrct2_setup_rct2_segment();
+		initHooks();
+
+		return generatePaintCode(specificRideType);
 	}
 
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
@@ -428,7 +445,7 @@ int main(int argc, char *argv[]) {
 			bool success = testTrackPainting(tc.rideType, trackType);
 			if (!success) {
 				utf8string testCaseName = new utf8[64];
-				sprintf(testCaseName, "%s.%s", rideTypeName, trackTypeName);
+				snprintf(testCaseName, 64, "%s.%s", rideTypeName, trackTypeName);
 
 				ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
 				printf("%s (0 ms)\n", testCaseName);

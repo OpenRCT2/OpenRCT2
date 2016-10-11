@@ -107,11 +107,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
-		format_string(text_input, existing_text, &existing_args);
-
-	// In order to prevent strings that exceed the maxLength
-	// from crashing the game.
-	text_input[maxLength - 1] = '\0';
+		format_string(text_input, maxLength, existing_text, &existing_args);
 
 	utf8_remove_format_codes(text_input, false);
 
@@ -282,7 +278,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	size_t char_count = 0;
 	uint8 cur_drawn = 0;
 
-	int cursorX, cursorY;
+	int cursorX = 0, cursorY = 0;
 	for (int line = 0; line <= no_lines; line++) {
 		gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 

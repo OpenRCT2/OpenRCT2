@@ -155,3 +155,13 @@ bool track_element_is_lift_hill(rct_map_element *trackElement)
 {
 	return trackElement->type & 0x80;
 }
+
+bool track_element_is_cable_lift(rct_map_element *trackElement)
+{
+	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+bool track_element_is_inverted(rct_map_element *trackElement)
+{
+	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}

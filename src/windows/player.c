@@ -360,11 +360,11 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int groupindex = network_get_group_index(network_get_player_group(player));
 	if (groupindex != -1) {
 		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
-		char buffer[300] = {0};
+		char buffer[300];
 		char* lineCh;
 		lineCh = buffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-		strcpy(lineCh, network_get_group_name(groupindex));
+		safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
 		set_format_arg(0, const char *, buffer);
 
 		gfx_draw_string_centred_clipped(
@@ -385,7 +385,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, rct_string_id, STR_PING);
 	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
 	char ping[64];
-	sprintf(ping, "%d ms", network_get_player_ping(player));
+	snprintf(ping, 64, "%d ms", network_get_player_ping(player));
 	gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
 	
 	// Draw last action

@@ -336,9 +336,9 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 		return;
 	}
 
-	uint32 maskImageBase;
-	uint8 neighbourCorners[2];
-	uint8 ownCorners[2];
+	uint32 maskImageBase = 0;
+	uint8 neighbourCorners[2] = { 0 };
+	uint8 ownCorners[2] = { 0 };
 
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
@@ -376,7 +376,7 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 		return;
 	}
 
-	uint8 dh, cl;
+	uint8 dh = 0, cl = 0;
 	switch(edge) {
 		case EDGE_BOTTOMLEFT:
 			dh = byte_97B524[byte_97B444[self.slope]];

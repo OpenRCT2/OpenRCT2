@@ -263,7 +263,7 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 	if (type == NULL)
 	{
 		char oldname[128];
-		format_string(oldname, ride->name, &ride->name_arguments);
+		format_string(oldname, 128, ride->name, &ride->name_arguments);
 		log_error("Invalid ride subtype for ride %s", oldname);
 	}
 	return type;
@@ -5607,7 +5607,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	format_string(oldName, ride->name, &ride->name_arguments);
+	format_string(oldName, 128, ride->name, &ride->name_arguments);
 	if (strcmp(oldName, newName) == 0) {
 		*ebx = 0;
 		return;
@@ -5811,7 +5811,7 @@ static bool ride_name_exists(char *name)
 	int i;
 
 	FOR_ALL_RIDES(i, ride) {
-		format_string(buffer, ride->name, &ride->name_arguments);
+		format_string(buffer, 256, ride->name, &ride->name_arguments);
 		if (strcmp(buffer, name) == 0) {
 			return true;
 		}
@@ -6015,7 +6015,7 @@ foundRideEntry:
 		name_args.number = 0;
 		do {
 			name_args.number++;
-			format_string(rideNameBuffer, 1, &name_args);
+			format_string(rideNameBuffer, 256, 1, &name_args);
 		} while (ride_name_exists(rideNameBuffer));
 		ride->name = 1;
 		ride->name_arguments_type_name = name_args.type_name;
@@ -6031,7 +6031,7 @@ foundRideEntry:
 		rct_string_id rideNameStringId = 0;
 		for (int i = 0; i < 100; i++) {
 			ride->name_arguments_number++;
-			format_string(rideNameBuffer, ride->name, &ride->name_arguments);
+			format_string(rideNameBuffer, 256, ride->name, &ride->name_arguments);
 
 			rideNameStringId = user_string_allocate(4, rideNameBuffer);
 			if (rideNameStringId != 0) {
@@ -8589,7 +8589,7 @@ void ride_reset_all_names()
 		name_args.number = 0;
 		do {
 			name_args.number++;
-			format_string(rideNameBuffer, 1, &name_args);
+			format_string(rideNameBuffer, 256, 1, &name_args);
 		} while (ride_name_exists(rideNameBuffer));
 
 		ride->name = 1;

@@ -111,24 +111,28 @@ void platform_get_time_local(rct2_time *out_time)
 	out_time->hour = timeinfo->tm_hour;
 }
 
-char platform_get_path_separator()
+static size_t platform_utf8_to_multibyte(const utf8 *path, char *buffer, size_t buffer_size)
 {
-	return '/';
-}
-
-const char *platform_get_new_line()
-{
-	return "\n";
+	wchar_t *wpath = utf8_to_widechar(path);
+	setlocale(LC_CTYPE, "");
+	size_t len = wcstombs(NULL, wpath, 0);
+	bool truncated = false;
+	if (len > buffer_size - 1) {
+		truncated = true;
+		len = buffer_size - 1;
+	}
+	wcstombs(buffer, wpath, len);
+	buffer[len] = '\0';
+	if (truncated)
+		log_warning("truncated string %s", buffer);
+	free(wpath);
+	return len;
 }
 
 bool platform_file_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	bool exists = access(buffer, F_OK) != -1;
 	log_verbose("file '%s' exists = %i", buffer, exists);
 	return exists;
@@ -136,12 +140,8 @@ bool platform_file_exists(const utf8 *path)
 
 bool platform_directory_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	struct stat dirinfo;
 	int result = stat(buffer, &dirinfo);
 	log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
@@ -154,15 +154,12 @@ bool platform_directory_exists(const utf8 *path)
 
 bool platform_original_game_data_exists(const utf8 *path)
 {
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
-	char separator = platform_get_path_separator();
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
 	char checkPath[MAX_PATH];
-	sprintf(checkPath, "%s%c%s%c%s", buffer, separator, "Data", separator, "g1.dat");
+	safe_strcpy(checkPath, buffer, MAX_PATH);
+	safe_strcat_path(checkPath, "Data", MAX_PATH);
+	safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
 	return platform_file_exists(checkPath);
 }
 
@@ -175,14 +172,9 @@ static mode_t getumask()
 
 bool platform_ensure_directory_exists(const utf8 *path)
 {
-	mode_t mask = getumask();
-
-	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
-	wcstombs(buffer, wPath, len);
-	buffer[len] = '\0';
-	free(wPath);
+	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
+	mode_t mask = getumask();
 	log_verbose("%s", buffer);
 	const int result = mkdir(buffer, mask);
 	if (result == 0 || (result == -1 && errno == EEXIST))
@@ -198,8 +190,7 @@ bool platform_directory_delete(const utf8 *path)
 	FTSENT *p, *chp;
 
 	// fts_open only accepts non const paths, so we have to take a copy
-	char* ourPath = (char*)malloc(strlen(path) + 1);
-	strcpy(ourPath, path);
+	char* ourPath = _strdup(path);
 
 	utf8* const patharray[2] = {ourPath, NULL};
 	if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
@@ -309,19 +300,12 @@ static int winfilter(const struct dirent *d)
 
 int platform_enumerate_files_begin(const utf8 *pattern)
 {
+	char npattern[MAX_PATH];
+	platform_utf8_to_multibyte(pattern, npattern, MAX_PATH);
 	enumerate_file_info *enumFileInfo;
-	wchar_t *wpattern = utf8_to_widechar(pattern);
-	int length = min(utf8_length(pattern), MAX_PATH);
-	char *npattern = malloc(length+1);
-	int converted;
-	converted = wcstombs(npattern, wpattern, length);
-	npattern[length] = '\0';
-	if (converted == MAX_PATH) {
-		log_warning("truncated string %s", npattern);
-	}
 	log_verbose("begin file search, pattern: %s", npattern);
 
-	char *file_name = strrchr(npattern, platform_get_path_separator());
+	char *file_name = strrchr(npattern, *PATH_SEPARATOR);
 	char *dir_name;
 	if (file_name != NULL)
 	{
@@ -356,7 +340,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
 			const int dir_name_len = strnlen(dir_name, MAX_PATH);
-			char separator[] = {platform_get_path_separator(), 0};
 			for (int idx = 0; idx < cnt; idx++)
 			{
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
@@ -364,11 +347,9 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 				// 1 for separator, 1 for trailing null
 				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
 				paths[idx] = malloc(path_len);
-				paths[idx][0] = '\0';
 				log_verbose("dir_name: %s", dir_name);
-				strncat(paths[idx], dir_name, path_len - 2);
-				strncat(paths[idx], separator, path_len - strnlen(paths[idx], path_len) - 1);
-				strncat(paths[idx], d->d_name, path_len - strnlen(paths[idx], path_len) - 1);
+				safe_strcpy(paths[idx], dir_name, path_len);
+				safe_strcat_path(paths[idx], d->d_name, path_len);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
 			}
 			enumFileInfo->handle = 0;
@@ -376,8 +357,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			free(dir_name);
 			free(g_file_pattern);
 			g_file_pattern = NULL;
-			free(wpattern);
-			free(npattern);
 			return i;
 		}
 	}
@@ -385,8 +364,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	free(dir_name);
 	free(g_file_pattern);
 	g_file_pattern = NULL;
-	free(wpattern);
-	free(npattern);
 	return -1;
 }
 
@@ -465,16 +442,9 @@ static int dirfilter(const struct dirent *d)
 
 int platform_enumerate_directories_begin(const utf8 *directory)
 {
+	char npattern[MAX_PATH];
+	int length = platform_utf8_to_multibyte(directory, npattern, MAX_PATH) + 1;
 	enumerate_file_info *enumFileInfo;
-	wchar_t *wpattern = utf8_to_widechar(directory);
-	int length = min(utf8_length(directory), MAX_PATH);
-	char *npattern = malloc(length+1);
-	int converted;
-	converted = wcstombs(npattern, wpattern, length);
-	npattern[length - 1] = '\0';
-	if (converted == MAX_PATH) {
-		log_warning("truncated string %s", npattern);
-	}
 	log_verbose("begin directory listing, path: %s", npattern);
 
 	// TODO: add some checking for stringness and directoryness
@@ -495,7 +465,6 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
 			const int dir_name_len = strnlen(npattern, MAX_PATH);
-			char separator[] = {platform_get_path_separator(), 0};
 			for (int idx = 0; idx < cnt; idx++)
 			{
 				struct dirent *d = enumFileInfo->fileListTemp[idx];
@@ -503,23 +472,17 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 				// 1 for separator, 1 for trailing null
 				size_t path_len = sizeof(char) * min(MAX_PATH, entry_len + dir_name_len + 2);
 				paths[idx] = malloc(path_len);
-				paths[idx][0] = '\0';
 				log_verbose("dir_name: %s", npattern);
-				strncat(paths[idx], npattern, path_len - 2);
-				strncat(paths[idx], separator, path_len - strnlen(paths[idx], path_len) - 1);
-				strncat(paths[idx], d->d_name, path_len - strnlen(paths[idx], path_len) - 1);
+				safe_strcpy(paths[idx], npattern, path_len);
+				safe_strcat_path(paths[idx], d->d_name, path_len);
 				log_verbose("paths[%d] = %s", idx, paths[idx]);
 			}
 			enumFileInfo->handle = 0;
 			enumFileInfo->active = 1;
-			free(wpattern);
-			free(npattern);
 			return i;
 		}
 	}
 
-	free(wpattern);
-	free(npattern);
 	return -1;
 }
 
@@ -552,7 +515,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 		}
 		// so very, very wrong
 		safe_strcpy(path, basename(fileName), MAX_PATH);
-		strncat(path, "/", MAX_PATH - strlen(path) - 1);
+		path_end_with_separator(path, MAX_PATH);
 		return true;
 	} else {
 		return false;
@@ -679,7 +642,6 @@ static wchar_t *regular_to_wchar(const char* src)
  */
 void platform_resolve_user_data_path()
 {
-	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
 		if (!platform_ensure_directory_exists(gCustomUserDataPath)) {
@@ -696,10 +658,7 @@ void platform_resolve_user_data_path()
 		free(path);
 
 		// Ensure path ends with separator
-		int len = strlen(_userDataDirectoryPath);
-		if (_userDataDirectoryPath[len - 1] != separator[0]) {
-			strncat(_userDataDirectoryPath, separator, MAX_PATH - 1);
-		}
+		path_end_with_separator(_userDataDirectoryPath, MAX_PATH);
 		log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
 		if (!platform_directory_exists(_userDataDirectoryPath)) {
 			log_error("Custom user data directory %s does not exist", _userDataDirectoryPath);
@@ -708,11 +667,10 @@ void platform_resolve_user_data_path()
 	}
 
 	char buffer[MAX_PATH];
-	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
 
 	const char *homedir = getpwuid(getuid())->pw_dir;
-	platform_posix_sub_user_data_path(buffer, homedir, separator);
+	platform_posix_sub_user_data_path(buffer, MAX_PATH, homedir);
 
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
@@ -725,9 +683,9 @@ void platform_resolve_user_data_path()
 	log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
 }
 
-void platform_get_openrct_data_path(utf8 *outPath)
+void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
 {
-	safe_strcpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+	safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
 }
 
 /**
@@ -738,27 +696,20 @@ void platform_get_openrct_data_path(utf8 *outPath)
  */
 void platform_resolve_openrct_data_path()
 {
-	const char separator[2] = { platform_get_path_separator(), 0 };
-
 	if (gCustomOpenrctDataPath[0] != 0) {
 		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath)) {
 			log_error("Could not resolve path \"%s\"", gCustomOpenrctDataPath);
 			return;
 		}
 
-		// Ensure path ends with separator
-		int len = strlen(_openrctDataDirectoryPath);
-		if (_openrctDataDirectoryPath[len - 1] != separator[0]) {
-			strncat(_openrctDataDirectoryPath, separator, MAX_PATH - 1);
-		}
+		path_end_with_separator(_openrctDataDirectoryPath, MAX_PATH);
 		return;
 	}
 
-	char buffer[MAX_PATH] = { 0 };
-	platform_get_exe_path(buffer);
+	char buffer[MAX_PATH];
+	platform_get_exe_path(buffer, sizeof(buffer));
 
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	safe_strcat_path(buffer, "data", MAX_PATH);
 	log_verbose("Looking for OpenRCT2 data in %s", buffer);
 	if (platform_directory_exists(buffer))
 	{
@@ -768,26 +719,25 @@ void platform_resolve_openrct_data_path()
 		return;
 	}
 
-	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
+	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 	log_verbose("Trying to use OpenRCT2 data in %s", _openrctDataDirectoryPath);
 }
 
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
+void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize)
 {
-	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
 	safe_strcpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
-		strncat(buffer, subDirectory, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		safe_strcat_path(buffer, subDirectory, sizeof(buffer));
+		path_end_with_separator(buffer, sizeof(buffer));
 	}
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	safe_strcpy(outPath, path, MAX_PATH);
+	safe_strcpy(outPath, path, outSize);
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }

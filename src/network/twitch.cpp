@@ -415,7 +415,7 @@ namespace Twitch
             if (is_user_string_id(peep->name_string_idx))
             {
                 utf8 buffer[256];
-                format_string(buffer, peep->name_string_idx, NULL);
+                format_string(buffer, 256, peep->name_string_idx, NULL);
 
                 AudienceMember * member = nullptr;
                 for (AudienceMember &m : members)
@@ -505,27 +505,6 @@ namespace Twitch
         }
     }
 
-    /**
-     * Like strchr but allows searching for one of many characters.
-     */
-    static char * strchrm(const char * str, const char * find)
-    {
-        do
-        {
-            const char * fch = find;
-            while (*fch != '\0')
-            {
-                if (*str == *fch)
-                {
-                    return (char *)str;
-                }
-                fch++;
-            }
-        }
-        while (*str++ != '\0');
-        return nullptr;
-    }
-
     static char * strskipwhitespace(const char * str)
     {
         while (*str == ' ' || *str == '\t')
@@ -546,17 +525,16 @@ namespace Twitch
         // Skip '!'
         message++;
 
-        // Set buffer to the next word / token and skip
-        char buffer[32];
-        const char * ch = strchrm(message, " \t");
-        safe_strcpy(buffer, message, Math::Min(sizeof(buffer), (size_t)(ch - message + 1)));
-        ch = strskipwhitespace(ch);
-
-        // Check what the word / token is
-        if (String::Equals(buffer, "news", true))
-        {
-            DoChatMessageNews(ch);
+        // Check that command is "news"
+        const char *ch, *cmd;
+        for (ch = message, cmd = "news"; *cmd != '\0'; ++ch, ++cmd) {
+            if (*ch != *cmd) return;
         }
+        
+        if (!isspace(*ch)) return;
+        
+        ch = strskipwhitespace(ch);
+        DoChatMessageNews(ch);
     }
 
     static void DoChatMessageNews(const char * message)

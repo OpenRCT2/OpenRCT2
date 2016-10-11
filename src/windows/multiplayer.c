@@ -610,7 +610,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			int colour = 0;
 			if (i == w->selected_list_item) {
 				gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-				safe_strcpy(&buffer[0], network_get_player_name(i), sizeof(buffer));
+				safe_strcpy(buffer, network_get_player_name(i), sizeof(buffer));
 				colour = w->colours[2];
 			} else {
 				if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER) {
@@ -652,7 +652,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			} else {
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
 			}
-			sprintf(lineCh, "%d ms", ping);
+			snprintf(lineCh, sizeof(buffer) - (lineCh - buffer), "%d ms", ping);
 			gfx_draw_string(dpi, buffer, colour, 356, y - 1);
 		}
 		y += 10;
@@ -819,11 +819,11 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
 	int group = network_get_group_index(network_get_default_group());
 	if (group != -1) {
-		char buffer[300] = {0};
+		char buffer[300];
 		char* lineCh;
 		lineCh = buffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-		strcpy(lineCh, network_get_group_name(group));
+		safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
 		set_format_arg(0, const char *, buffer);
 		gfx_draw_string_centred_clipped(
 			dpi,
@@ -848,11 +848,11 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
 	group = network_get_group_index(_selectedGroup);
 	if (group != -1) {
-		char buffer[300] = {0};
+		char buffer[300];
 		char* lineCh;
 		lineCh = buffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-		strcpy(lineCh, network_get_group_name(group));
+		safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
 		set_format_arg(0, const char *, buffer);
 		gfx_draw_string_centred_clipped(
 			dpi,

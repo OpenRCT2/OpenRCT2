@@ -62,7 +62,7 @@ void http_init()
 
 #ifdef __WINDOWS__
 	// Find SSL certificate bundle
-	platform_get_exe_path(_caBundlePath);
+	platform_get_exe_path(_caBundlePath, sizeof(_caBundlePath));
 	Path::Append(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
 	if (!platform_file_exists(_caBundlePath)) {
 		String::Set(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
@@ -118,7 +118,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	CURL *curl;
 	CURLcode curlResult;
 	http_json_response *response;
-	read_buffer readBuffer;
+	read_buffer readBuffer = { 0 };
 	write_buffer writeBuffer;
 
 	curl = curl_easy_init();

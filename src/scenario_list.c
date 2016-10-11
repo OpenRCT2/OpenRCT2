@@ -38,7 +38,7 @@ static int scenario_list_sort_by_category(const void *a, const void *b);
 static int scenario_list_sort_by_index(const void *a, const void *b);
 
 static bool scenario_scores_load();
-static void scenario_scores_legacy_get_path(utf8 *outPath);
+static void scenario_scores_legacy_get_path(utf8 *outPath, size_t size);
 static bool scenario_scores_legacy_load(const utf8 *path);
 static void scenario_highscore_remove(scenario_highscore_entry *higscore);
 static void scenario_highscore_list_dispose();
@@ -61,14 +61,14 @@ void scenario_load_list()
 	scenario_list_include(directory);
 
 	// Get scenario directory from user directory
-	platform_get_user_directory(directory, "scenario");
+	platform_get_user_directory(directory, "scenario", sizeof(directory));
 	scenario_list_include(directory);
 
 	scenario_list_sort();
 	scenario_scores_load();
 
 	utf8 scoresPath[MAX_PATH];
-	scenario_scores_legacy_get_path(scoresPath);
+	scenario_scores_legacy_get_path(scoresPath, sizeof(scoresPath));
 	scenario_scores_legacy_load(scoresPath);
 	scenario_scores_legacy_load(get_file_path(PATH_ID_SCORES));
 }
@@ -289,19 +289,19 @@ scenario_index_entry *scenario_list_find_by_path(const utf8 *path)
 /**
  * Gets the path for the scenario scores path.
  */
-static void scenario_scores_get_path(utf8 *outPath)
+static void scenario_scores_get_path(utf8 *outPath, size_t size)
 {
-	platform_get_user_directory(outPath, NULL);
-	strcat(outPath, "highscores.dat");
+	platform_get_user_directory(outPath, NULL, size);
+	safe_strcat_path(outPath, "highscores.dat", size);
 }
 
 /**
  * Gets the path for the scenario scores path.
  */
-static void scenario_scores_legacy_get_path(utf8 *outPath)
+static void scenario_scores_legacy_get_path(utf8 *outPath, size_t size)
 {
-	platform_get_user_directory(outPath, NULL);
-	strcat(outPath, "scores.dat");
+	platform_get_user_directory(outPath, NULL, size);
+	safe_strcat_path(outPath, "scores.dat", size);
 }
 
 /**
@@ -380,7 +380,7 @@ static bool scenario_scores_legacy_load(const utf8 *path)
 static bool scenario_scores_load()
 {
 	utf8 scoresPath[MAX_PATH];
-	scenario_scores_get_path(scoresPath);
+	scenario_scores_get_path(scoresPath, sizeof(scoresPath));
 
 	// Load scores file
 	SDL_RWops *file = SDL_RWFromFile(scoresPath, "rb");
@@ -431,7 +431,7 @@ static bool scenario_scores_load()
 bool scenario_scores_save()
 {
 	utf8 scoresPath[MAX_PATH];
-	scenario_scores_get_path(scoresPath);
+	scenario_scores_get_path(scoresPath, sizeof(scoresPath));
 
 	SDL_RWops *file = SDL_RWFromFile(scoresPath, "wb");
 	if (file == NULL) {

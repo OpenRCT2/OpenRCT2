@@ -55,7 +55,7 @@ static void money_effect_create_at(money32 value, int x, int y, int z)
 		value *= -1;
 		stringId = 1399;
 	}
-	format_string(buffer, stringId, &value);
+	format_string(buffer, 128, stringId, &value);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
 	moneyEffect->wiggle = 0;

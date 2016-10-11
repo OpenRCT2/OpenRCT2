@@ -102,7 +102,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 				continue;
 			}
 
-			safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+			safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
 			int lineHeight = chat_string_wrapped_get_height((void*)&lineCh, _chatWidth - 10);
 			_chatTop -= (lineHeight + 5);
@@ -134,7 +134,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 			break;
 		}
 
-		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+		safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
 		stringHeight = chat_history_draw_string(dpi, (void*) &lineCh, x, y, _chatWidth - 10) + 5;
 		gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
@@ -220,7 +220,7 @@ int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, i
 
 	gfx_draw_string(dpi, "", 255, dpi->x, dpi->y);
 	char *buffer = gCommonStringFormatBuffer;
-	format_string(buffer, STR_STRING, args);
+	format_string(buffer, 256, STR_STRING, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
@@ -251,7 +251,7 @@ int chat_string_wrapped_get_height(void *args, int width)
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	char *buffer = gCommonStringFormatBuffer;
-	format_string(buffer, STR_STRING, args);
+	format_string(buffer, 256, STR_STRING, args);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);

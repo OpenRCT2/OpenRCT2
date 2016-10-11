@@ -285,6 +285,14 @@ const unk_supports_desc byte_97B23C[] = {
 	{{{2,  2,  1}, {28, 28, 2}},  0, 1},
 };
 
+/* 0x0098D8D4 */
+static const unk_supports_desc byte_98D8D4[] = {
+	{{{0, 0, 0}, {1, 1, 4}}, 0, 1},
+	{{{0, 0, 0}, {1, 1, 4}}, 0, 1},
+	{{{0, 0, 0}, {1, 1, 4}}, 0, 1},
+	{{{0, 0, 0}, {1, 1, 4}}, 0, 1},
+};
+
 /* 0x0097B3C4 */
 const uint16 word_97B3C4[] = {
 	0,
@@ -320,6 +328,8 @@ const uint16 word_97B3C4[] = {
 	15,
 	0,
 };
+
+extern bool gUseOriginalRidePaint;
 
 #ifdef NO_RCT2
 paint_struct * gWoodenSupportsPrependTo;
@@ -689,16 +699,172 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 /**
  *  rct2: 0x006A2ECC
  */
-bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground)
+bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags,
+								 rct_footpath_entry * pathEntry, bool * underground)
 {
-#ifdef NO_RCT2
-	return 0;
-#else
-	RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
-	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-	RCT2_CALLFUNC_X(0x006A2ECC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-	return eax & 0xFF;
+#ifndef NO_RCT2
+	if (gUseOriginalRidePaint) {
+		RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
+		int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+		RCT2_CALLFUNC_X(0x006A2ECC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+		return eax & 0xFF;
+	}
 #endif
+
+	if (underground != NULL) {
+		*underground = false; // AND
+	}
+
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+		return false;
+	}
+
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
+		return false;
+	}
+
+	uint16 baseHeight = ceil2(gSupport.height, 16);
+	sint32 dx = height - baseHeight;
+	if (dx < 0) {
+		if (underground != NULL) *underground = true; // STC
+		return false;
+	}
+
+	bool hasSupports = false;
+
+	sint16 heightSteps = dx / 16;
+
+	if (gSupport.slope & 0x20) {
+		//save dx2
+		sub_98196C(
+			(pathEntry->bridge_image + 48) | imageColourFlags,
+			0, 0,
+			32, 32, 0,
+			baseHeight - 2,
+			get_current_rotation()
+		);
+		hasSupports = true;
+	} else if (gSupport.slope & 0x10) {
+		heightSteps -= 2;
+		if (heightSteps < 0) {
+			if (underground != NULL) *underground = true; // STC
+			return false;
+		}
+
+		uint32 imageId = (supportType * 24) + word_97B3C4[gSupport.slope & 0x1F] + pathEntry->bridge_image;
+
+		sub_98197C(
+			imageId | imageColourFlags,
+			0, 0,
+			32, 32, 11,
+			baseHeight,
+			0, 0, baseHeight + 2,
+			get_current_rotation()
+		);
+
+		baseHeight += 16;
+		sub_98197C(
+			(imageId + 4) | imageColourFlags,
+			0, 0,
+			32, 32, 11,
+			baseHeight,
+			0, 0, baseHeight + 2,
+			get_current_rotation()
+		);
+
+		hasSupports = true;
+		baseHeight += 32;
+
+	} else if (gSupport.slope & 0x0F) {
+		heightSteps -= 1;
+		if (heightSteps < 0) {
+			if (underground != NULL) *underground = true; // STC
+			return false;
+		}
+
+		uint32 ebx = (supportType * 24) + word_97B3C4[gSupport.slope & 0x1F] + pathEntry->bridge_image;
+
+		sub_98197C(
+			ebx | imageColourFlags,
+			0, 0,
+			32, 32, 11,
+			baseHeight,
+			0, 0, baseHeight + 2,
+			get_current_rotation()
+		);
+
+		hasSupports = true;
+		baseHeight += 16;
+	}
+
+	while (heightSteps > 0) {
+		if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gUnk141E9DC) {
+
+			uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 23;
+
+			sub_98196C(
+				imageId | imageColourFlags,
+				0, 0,
+				32, 32, ((heightSteps == 1) ? 7 : 12),
+				baseHeight,
+				get_current_rotation()
+			);
+			heightSteps -= 1;
+			baseHeight += 16;
+			hasSupports = true;
+		} else {
+			uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 22;
+
+			sub_98196C(
+				imageId | imageColourFlags,
+				0, 0,
+				32, 32, ((heightSteps == 2) ? 23 : 28),
+				baseHeight,
+				get_current_rotation()
+			);
+			heightSteps -= 2;
+			baseHeight += 32;
+			hasSupports = true;
+		}
+	}
+
+	if (special != 0) {
+		uint16 specialIndex = (special - 1) & 0xFFFF;
+
+		uint32 imageId = pathEntry->bridge_image + 55 + specialIndex;
+
+		unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
+		unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
+
+		if (supportsDesc.var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
+			sub_98197C(
+				imageId | imageColourFlags,
+				0, 0,
+				boundBox.length.y, boundBox.length.x, boundBox.length.z,
+				baseHeight,
+				boundBox.offset.x, boundBox.offset.y, boundBox.offset.z,
+				get_current_rotation()
+			);
+			hasSupports = true;
+		} else {
+			paint_struct * paintStruct = sub_98198C(
+				imageId | imageColourFlags,
+				0, 0,
+				boundBox.length.y, boundBox.length.x, boundBox.length.z,
+				baseHeight,
+				boundBox.offset.x, boundBox.offset.y, boundBox.offset.z,
+				get_current_rotation()
+			);
+			hasSupports = true;
+			if (paintStruct != NULL) {
+				gWoodenSupportsPrependTo->var_20 = paintStruct;
+			}
+		}
+	}
+
+	if (underground != NULL) *underground = true; // AND
+
+	return hasSupports;
 }
 
 /**

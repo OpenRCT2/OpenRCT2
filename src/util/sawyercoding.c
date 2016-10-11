@@ -465,7 +465,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 {
 	size_t i, j, outLength;
 	size_t searchIndex, searchEnd, maxRepeatCount;
-	size_t bestRepeatIndex, bestRepeatCount, repeatIndex, repeatCount;
+	size_t bestRepeatIndex = 0, bestRepeatCount = 0, repeatIndex, repeatCount;
 
 	if (length == 0)
 		return 0;

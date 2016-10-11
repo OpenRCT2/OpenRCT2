@@ -81,7 +81,7 @@ option(DISABLE_RCT2 "Build a standalone version, without using code and data seg
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
 
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Warray-bounds -Waddress -Wchar-subscripts -Wenum-compare")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment")
 
 # On mingw all code is already PIC, this will avoid compiler error on redefining this option
 if(NOT MINGW)
@@ -261,6 +261,9 @@ if (NOT DISABLE_OPENGL)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(GLLIBS opengl32)
+		# mingw complains about "%zu" not being a valid format specifier for printf, unless we
+		# tell it that it is
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
 	elseif (APPLE)
 		# GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
 		find_package(OpenGL REQUIRED)

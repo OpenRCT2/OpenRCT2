@@ -237,15 +237,15 @@ void scenario_begin()
 				char *buffer = gCommonStringFormatBuffer;
 
 				// Set localised park name
-				format_string(buffer, stex->park_name, 0);
+				format_string(buffer, 256, stex->park_name, 0);
 				park_set_name(buffer);
 
 				// Set localised scenario name
-				format_string(buffer, stex->scenario_name, 0);
+				format_string(buffer, 256, stex->scenario_name, 0);
 				safe_strcpy(gScenarioName, buffer, 64);
 
 				// Set localised scenario details
-				format_string(buffer, stex->details, 0);
+				format_string(buffer, 256, stex->details, 0);
 				safe_strcpy(gScenarioDetails, buffer, 256);
 			}
 		}
@@ -253,15 +253,15 @@ void scenario_begin()
 
 	// Set the last saved game path
 	char parkName[128];
-	format_string(parkName, gParkName, &gParkNameArgs);
+	format_string(parkName, 128, gParkName, &gParkNameArgs);
 
-	platform_get_user_directory(gScenarioSavePath, "save");
-	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
-	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
+	platform_get_user_directory(gScenarioSavePath, "save", sizeof(gScenarioSavePath));
+	safe_strcat_path(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
+	path_append_extension(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
 
-	strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath);
-	strcpy(gRCT2AddressSavedGamesPath2 + strlen(gRCT2AddressSavedGamesPath2), gScenarioSavePath);
-	strcat(gRCT2AddressSavedGamesPath2, ".SV6");
+	safe_strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath, MAX_PATH);
+	safe_strcat_path(gRCT2AddressSavedGamesPath2, gScenarioSavePath, MAX_PATH);
+	path_append_extension(gRCT2AddressSavedGamesPath2, ".SV6", MAX_PATH);
 
 	gCurrentExpenditure = 0;
 	gCurrentProfit = 0;
@@ -270,7 +270,7 @@ void scenario_begin()
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;
-	strcpy(gScenarioCompletedBy, "?");
+	safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
@@ -312,7 +312,7 @@ static void scenario_end()
 
 void scenario_set_filename(const char *value)
 {
-	substitute_path(_scenarioPath, gRCT2AddressScenariosPath, value);
+	substitute_path(_scenarioPath, sizeof(_scenarioPath), gRCT2AddressScenariosPath, value);
 	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 
@@ -679,14 +679,14 @@ int scenario_prepare_for_save()
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((intptr_t)stex != -1) {
 		char buffer[256];
-		format_string(buffer, stex->scenario_name, NULL);
+		format_string(buffer, 256, stex->scenario_name, NULL);
 		safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
 
 		memcpy(&gS6Info.entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
 	}
 
 	if (gS6Info.name[0] == 0)
-		format_string(gS6Info.name, gParkName, &gParkNameArgs);
+		format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
 
 	gS6Info.objective_type = gScenarioObjectiveType;
 	gS6Info.objective_arg_1 = gScenarioObjectiveYear;

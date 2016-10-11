@@ -39,7 +39,7 @@ enum {
 
 static rct_widget window_track_manage_widgets[] = {
 	{ WWT_FRAME,			0,	0,		249,	0,		43,		STR_NONE,					STR_NONE				},
-	{ WWT_CAPTION,			0,	1,		248,	1,		14,		3155,						STR_WINDOW_TITLE_TIP	},
+	{ WWT_CAPTION,			0,	1,		248,	1,		14,		STR_STRING,						STR_WINDOW_TITLE_TIP	},
 	{ WWT_CLOSEBOX,			0,	237,	247,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP	},
 	{ WWT_DROPDOWN_BUTTON,	0,	10,		119,	24,		35,		STR_TRACK_MANAGE_RENAME,	STR_NONE				},
 	{ WWT_DROPDOWN_BUTTON,	0,	130,	239,	24,		35,		STR_TRACK_MANAGE_DELETE,	STR_NONE				},
@@ -166,10 +166,6 @@ void window_track_manage_open(track_design_file_ref *tdFileRef)
 		trackDesignListWindow->track_list.var_484 |= 1;
 	}
 
-	// TODO: 3155 appears to be empty. What is this supposed to do?
-	utf8 *title = (utf8*)language_get_string(3155);
-	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &tdFileRef->name);
-
 	_trackDesignFileReference = tdFileRef;
 }
 
@@ -240,6 +236,7 @@ static void window_track_manage_invalidate(rct_window *w)
  */
 static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	set_format_arg(0, char *, _trackDesignFileReference->name);
 	window_draw_widgets(w, dpi);
 }
 

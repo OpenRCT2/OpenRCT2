@@ -75,7 +75,8 @@ namespace Guard
         if (message != nullptr)
         {
             strcat(buffer, "\r\n");
-            vsprintf((char *)strchr(buffer, 0), message, args);
+            char *bufend = (char *)strchr(buffer, 0);
+            vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
         }
         int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)

@@ -292,7 +292,7 @@ int rct2_init_directories();
 int rct2_startup_checks();
 void rct2_dispose();
 void rct2_update();
-void substitute_path(char *dest, const char *path, const char *filename);
+void substitute_path(char *dest, size_t size, const char *path, const char *filename);
 int check_mutex();
 int check_file_paths();
 int check_file_path(int pathId);

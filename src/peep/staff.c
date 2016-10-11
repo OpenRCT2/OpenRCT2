@@ -1100,7 +1100,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		/* For staff, there is no tracking button (any other similar
 		 * suitable existing mechanism?), so fall back to a crude
 		 * string comparison with a compile time hardcoded name. */
-		format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+		format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
 
 		gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

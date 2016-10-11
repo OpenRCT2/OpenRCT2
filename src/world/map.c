@@ -30,6 +30,7 @@
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../scenario.h"
+#include "../util/util.h"
 #include "banner.h"
 #include "climate.h"
 #include "footpath.h"
@@ -5249,7 +5250,7 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 	utf8 *buffer = gCommonStringFormatBuffer;
 	utf8 *dst = buffer;
 	dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
-	strncpy(dst, newName, 32);
+	safe_strcpy(dst, newName, 32);
 
 	rct_string_id stringId = user_string_allocate(128, buffer);
 	if (stringId) {
@@ -5388,7 +5389,7 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 	int colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
 	utf8 buffer[256];
-	format_string(buffer, banner->string_idx, 0);
+	format_string(buffer, 256, banner->string_idx, 0);
 	int firstCodepoint = utf8_get_next(buffer, NULL);
 	if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END) {
 		utf8_write_codepoint(buffer, colourCodepoint);

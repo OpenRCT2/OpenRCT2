@@ -65,7 +65,7 @@ bool filename_valid_characters(const utf8 *filename)
 utf8 *path_get_directory(const utf8 *path)
 {
 	// Find the last slash or backslash in the path
-	char *filename = strrchr(path, platform_get_path_separator());
+	char *filename = strrchr(path, *PATH_SEPARATOR);
 	
 	// If the path is invalid (e.g. just a file name), return NULL
 	if (filename == NULL)
@@ -80,7 +80,7 @@ utf8 *path_get_directory(const utf8 *path)
 const char *path_get_filename(const utf8 *path)
 {
 	// Find last slash or backslash in the path
-	char *filename = strrchr(path, platform_get_path_separator());
+	char *filename = strrchr(path, *PATH_SEPARATOR);
 
 	// Checks if the path is valid (e.g. not just a file name)
 	if (filename == NULL)
@@ -112,24 +112,23 @@ const char *path_get_extension(const utf8 *path)
 	return extension;
 }
 
-void path_set_extension(utf8 *path, const utf8 *newExtension)
+void path_set_extension(utf8 *path, const utf8 *newExtension, size_t size)
 {
 	// Remove existing extension (check first if there is one)
 	if (path_get_extension(path) < strrchr(path, '\0'))
 		path_remove_extension(path);
 	// Append new extension
-	path_append_extension(path, newExtension);
+	path_append_extension(path, newExtension, size);
 }
 
-void path_append_extension(utf8 *path, const utf8 *newExtension)
+void path_append_extension(utf8 *path, const utf8 *newExtension, size_t size)
 {
 	// Append a dot to the filename if the new extension doesn't start with it
-	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
-		*endOfString++ = '.';
+		safe_strcat(path, ".", size);
 
 	// Append the extension to the path
-	safe_strcpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
+	safe_strcat(path, newExtension, size);
 }
 
 void path_remove_extension(utf8 *path)
@@ -140,6 +139,14 @@ void path_remove_extension(utf8 *path)
 		*lastDot = '\0';
 	else
 		log_warning("No extension found. (path = %s)", path);
+}
+
+void path_end_with_separator(utf8 *path, size_t size) {
+	size_t length = strnlen(path, size);
+	if (length >= size - 1) return;
+	
+	if (path[length - 1] != *PATH_SEPARATOR)
+		safe_strcat(path, PATH_SEPARATOR, size);
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
@@ -338,18 +345,7 @@ char *safe_strcat(char *destination, const char *source, size_t size)
 
 char *safe_strcat_path(char *destination, const char *source, size_t size)
 {
-	const char pathSeparator = platform_get_path_separator();
-
-	size_t length = strnlen(destination, size);
-	if (length >= size - 1) {
-		return destination;
-	}
-
-	if (destination[length - 1] != pathSeparator) {
-		destination[length] = pathSeparator;
-		destination[length + 1] = '\0';
-	}
-
+	path_end_with_separator(destination, size);
 	return safe_strcat(destination, source, size);
 }
 

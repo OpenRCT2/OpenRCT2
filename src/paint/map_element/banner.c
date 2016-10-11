@@ -99,9 +99,9 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 		string_id = STR_BANNER_TEXT_FORMAT;
 	}
 	if (gConfigGeneral.upper_case_banners) {
-		format_string_to_upper(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
+		format_string_to_upper(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
 	} else {
-		format_string(gCommonStringFormatBuffer, string_id, gCommonFormatArgs);
+		format_string(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
 	}
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

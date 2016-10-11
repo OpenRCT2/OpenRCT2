@@ -87,14 +87,14 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	// Format the title
 	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
 	if (title != STR_NONE) {
-		format_string(dst, title, gCommonFormatArgs);
+		format_string(dst, 512 - (dst - _window_error_text), title, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 
 	// Format the message
 	if (message != STR_NONE) {
 		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
-		format_string(dst, message, gCommonFormatArgs);
+		format_string(dst, 512 - (dst - _window_error_text), message, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 

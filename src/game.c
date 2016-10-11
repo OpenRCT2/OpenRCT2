@@ -675,8 +675,7 @@ static void rct2_to_utf8_self(char *buffer, size_t length)
 	char tempBuffer[512];
 	if (length > 0) {
 		rct2_to_utf8(tempBuffer, buffer);
-		strncpy(buffer, tempBuffer, length - 1);
-		buffer[length - 1] = '\0';
+		safe_strcpy(buffer, tempBuffer, length);
 	}
 }
 
@@ -954,8 +953,8 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 	
 	size_t i=0;
 	
-	platform_get_user_directory(filter, "save");
-	strncat(filter, "autosave_*.sv6", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
+	platform_get_user_directory(filter, "save", sizeof(filter));
+	safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
 	
 	// At first, count how many autosaves there are
 	fileEnumHandle = platform_enumerate_files_begin(filter);
@@ -977,8 +976,8 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 		memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
 		
 		if(platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-			platform_get_user_directory(autosaveFiles[i], "save");
-			strcat(autosaveFiles[i], fileInfo.path);
+			platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+			safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
 		}
 	}
 	platform_enumerate_files_end(fileEnumHandle);
@@ -1008,7 +1007,7 @@ void game_autosave()
 {
 	utf8 path[MAX_PATH];
 	utf8 backupPath[MAX_PATH];
-	utf8 timeString[21]="";
+	utf8 timeName[34];
 
 	// retrieve current time
 	rct2_date currentDate;
@@ -1016,18 +1015,15 @@ void game_autosave()
 	rct2_time currentTime;
 	platform_get_time_local(&currentTime);
 
-	sprintf(timeString, "%d-%02d-%02d_%02d-%02d-%02d", currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second);
+	snprintf(timeName, 34, "autosave_%d-%02d-%02d_%02d-%02d-%02d.sv6", currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second);
 
 	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
 
-	platform_get_user_directory(path, "save");
-	safe_strcpy(backupPath, path, MAX_PATH);
+	platform_get_user_directory(path, "save", sizeof(path));
+	safe_strcpy(backupPath, path, sizeof(backupPath));
 
-	strcat(path, "autosave_");
-	strcat(path, timeString);
-	strcat(path, ".sv6");
-	
-	strcat(backupPath, "autosave.sv6.bak");
+	safe_strcat_path(path, timeName, sizeof(path));
+	safe_strcat_path(backupPath, "autosave.sv6.bak", sizeof(backupPath));
 
 	if (platform_file_exists(path)) {
 		platform_file_copy(path, backupPath, true);
@@ -1048,10 +1044,10 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body){
 	// Before this would set a quit message
 
 	char exit_title[255];
-	format_string(exit_title, title, 0);
+	format_string(exit_title, 256, title, 0);
 
 	char exit_body[255];
-	format_string(exit_body, body, 0);
+	format_string(exit_body, 256, body, 0);
 
 	log_error(exit_title);
 	log_error(exit_body);

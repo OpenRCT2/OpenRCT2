@@ -22,5 +22,8 @@
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
+extern const utf8string TrackElemNames[256];
+extern const utf8string RideCodeNames[91];
+extern const utf8string TrackCodeNames[256];
 
 #endif // #endif _TEST_PAINT_DATA_H_
