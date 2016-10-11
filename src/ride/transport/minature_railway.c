@@ -435,6 +435,60 @@ static const rct_xy16 minature_railway_track_pieces_left_eight_to_diag_offset[4]
 	},
 };
 
+static const rct_xyz16 minature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
+	{
+		{32, 32, 2},
+		{32, 16, 2},
+		{16, 16, 2},
+		{14, 14, 2},
+	},
+	{
+		{32, 32, 2},
+		{16, 34, 2},
+		{14, 14, 2},
+		{18, 16, 2},
+	},
+	{
+		{32, 32, 2},
+		{32, 16, 2},
+		{16, 16, 2},
+		{16, 16, 2},
+	},
+	{
+		{32, 32, 2},
+		{16, 32, 2},
+		{16, 16, 2},
+		{16, 16, 2},
+	},
+};
+
+static const rct_xy16 minature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
+	{
+		{0, 0},
+		{0,  0},
+		{0,  16},
+		{16, 16},
+	},
+	{
+		{0, 0},
+		{0,  0},
+		{16, 16},
+		{16, 0},
+	},
+	{
+		{0, 0},
+		{0,  16},
+		{16, 0},
+		{0,  0},
+	},
+	{
+		{0, 0},
+		{16, 0},
+		{0,  0},
+		{0,  16},
+	},
+};
+
 static const uint32 minature_railway_track_pieces_diag_flat[4] = {
 	SPR_MINATURE_RAILWAY_DIAG_FLAT_W_E,
 	SPR_MINATURE_RAILWAY_DIAG_FLAT_N_S,
@@ -1147,9 +1201,10 @@ static void paint_minature_railway_track_left_eighth_to_diag(uint8 rideIndex, ui
 	};
 
 	bool isSupported = false;
+	bool isRightEighthToOrthog = mapElement->properties.track.type == TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL;
 	// Right eigth to orthogonal calls this function but we do not want to have a support call for it
 	// for track sequence 4
-	if (trackSequence != 4 || mapElement->properties.track.type != TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL) {
+	if (trackSequence != 4 || !isRightEighthToOrthog) {
 		isSupported = wooden_a_supports_paint_setup(supportType[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	}
 	uint32 imageId;
@@ -1157,8 +1212,12 @@ static void paint_minature_railway_track_left_eighth_to_diag(uint8 rideIndex, ui
 		sint8 index = paint_minature_railway_eighth_to_diag_index[trackSequence];
 		if (index >= 0) {
 			imageId = minature_railway_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
-			const rct_xy16 offset = minature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
-			const rct_xyz16 bounds = minature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
+			rct_xy16 offset = minature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
+			rct_xyz16 bounds = minature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
+			if (isRightEighthToOrthog) {
+				bounds = minature_railway_track_pieces_right_eight_to_orthog_bounds[direction][index];
+				offset =  minature_railway_track_pieces_right_eight_to_orthog_offset[direction][index];
+			}
 			sub_98197C(imageId, 0, 0, bounds.x, bounds.y, (sint8)bounds.z, height, offset.x, offset.y, height, get_current_rotation());
 		}
 	}
@@ -1249,7 +1308,7 @@ static void paint_minature_railway_track_left_eighth_to_orthogonal(uint8 rideInd
 	paint_minature_railway_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x008AE34C */
+/** rct2: 0x008AD1F0 */
 static void paint_minature_railway_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	const uint8 map[] = {4, 2, 3, 1, 0};
