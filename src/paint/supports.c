@@ -483,16 +483,199 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 /**
  * Wooden supports
  *  rct2: 0x00662D5C
+ *
+ * @param supportType (edi)
+ * @param special (ax)
+ * @param height (dx)
+ * @param imageColourFlags (ebp)
+ * @param[out] underground (Carry Flag)
+ *
+ * @return (al) whether supports have been drawn
  */
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool * underground)
 {
-#ifdef NO_RCT2
-	return 0;
-#else
-	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-	RCT2_CALLFUNC_X(0x00662D5C, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-	return eax & 0xFF;
+#ifndef NO_RCT2
+	if (gUseOriginalRidePaint) {
+		int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+		RCT2_CALLFUNC_X(0x00662D5C, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+		return eax & 0xFF;
+	}
 #endif
+
+	bool _9E32B1 = false;
+
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+		if (underground != NULL) *underground = false; // AND
+		return false;
+	}
+
+	if (!(g141E9DB & G141E9DB_FLAG_1)) {
+		if (underground != NULL) *underground = false; // AND
+		return false;
+	}
+
+	uint16 baseHeight = ceil2(gSupport.height, 16);
+	sint16 supportLength = height - baseHeight;
+
+	if (supportLength < 0) {
+		if (underground != NULL) *underground = true; // STC
+		return false;
+	}
+
+	sint16 heightSteps = supportLength / 16;
+
+	bool goTo662E8B = false;
+
+	if (gSupport.slope & 0x20) {
+		goTo662E8B = true;
+	} else if (gSupport.slope & 0x10) {
+		heightSteps -= 2;
+		if (heightSteps < 0) {
+			if (underground != NULL) *underground = true; // STC
+			return false;
+		}
+
+		uint32 imageId = WoodenSupportImageIds[supportType].slope;
+		if (imageId == 0) {
+			baseHeight += 32;
+			goTo662E8B = true;
+		} else {
+			imageId += word_97B3C4[gSupport.slope & 0x1F];
+
+			sub_98197C(
+				imageId | imageColourFlags,
+				0, 0,
+				32, 32, 11,
+				baseHeight,
+				0, 0, baseHeight + 2,
+				get_current_rotation()
+			);
+			baseHeight += 16;
+
+			sub_98197C(
+				(imageId + 4) | imageColourFlags,
+				0, 0,
+				32, 32, 3,
+				baseHeight,
+				0, 0, baseHeight + 2,
+				get_current_rotation()
+			);
+			baseHeight += 16;
+
+			_9E32B1 = true;
+		}
+	} else if ((gSupport.slope & 0x0F) != 0) {
+		heightSteps -= 1;
+		if (heightSteps < 0) {
+			if (underground != NULL) *underground = true; // STC
+			return false;
+		}
+
+		uint32 imageId = WoodenSupportImageIds[supportType].slope;
+		if (imageId == 0) {
+			baseHeight += 16;
+			goTo662E8B = true;
+		} else {
+			imageId += word_97B3C4[gSupport.slope & 0x1F];
+
+			sub_98197C(
+				imageId | imageColourFlags,
+				0, 0,
+				32, 32, 3,
+				baseHeight,
+				0, 0, baseHeight + 2,
+				get_current_rotation()
+			);
+			baseHeight += 16;
+
+			_9E32B1 = true;
+		}
+	}
+
+	bool skipTo663004 = false;
+	if (goTo662E8B) {
+		if (heightSteps == 0) {
+			skipTo663004 = true;
+		} else {
+			sub_98196C(
+				WoodenSupportImageIds[supportType].flat | imageColourFlags,
+				0, 0,
+				32, 32, 0,
+				baseHeight - 2,
+				get_current_rotation()
+			);
+			_9E32B1 = true;
+		}
+	}
+
+	if (!skipTo663004) {
+		while (heightSteps > 0) {
+			if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gUnk141E9DC) {
+				sub_98196C(
+					WoodenSupportImageIds[supportType].half | imageColourFlags,
+					0, 0,
+					32, 32, ((heightSteps == 1) ? 7 : 12),
+					baseHeight,
+					get_current_rotation()
+				);
+				heightSteps -= 1;
+				baseHeight += 16;
+				_9E32B1 = true;
+			} else {
+				sub_98196C(
+					WoodenSupportImageIds[supportType].full | imageColourFlags,
+					0, 0,
+					32, 32, ((heightSteps == 2) ? 23 : 28),
+					baseHeight,
+					get_current_rotation()
+				);
+				heightSteps -= 2;
+				baseHeight += 32;
+				_9E32B1 = true;
+			}
+		}
+	}
+
+	if (special != 0) {
+		uint16 specialIndex = (special - 1) & 0xFFFF;
+
+		uint32 imageId = WoodenCurveSupportImageIds[supportType];
+		unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
+
+		if (imageId != 0 && supportsDesc.var_7 != 0) { // byte_97B23C[special].var_7 is never 0
+			imageId = (imageId + specialIndex) | imageColourFlags;
+
+			unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
+
+			if (supportsDesc.var_6 == 0 || gWoodenSupportsPrependTo == NULL) {
+				sub_98197C(
+					imageId | imageColourFlags,
+					0, 0,
+					boundBox.length.y, boundBox.length.x, boundBox.length.z,
+					baseHeight,
+					boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight,
+					get_current_rotation()
+				);
+				_9E32B1 = true;
+			} else {
+				paint_struct * paintStruct = sub_98198C(
+					imageId | imageColourFlags,
+					0, 0,
+					boundBox.length.x, boundBox.length.y, boundBox.length.z,
+					baseHeight,
+					boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight,
+					get_current_rotation()
+				);
+				_9E32B1 = true;
+				if (paintStruct != NULL) {
+					gWoodenSupportsPrependTo->var_20 = paintStruct;
+				}
+			}
+		}
+	}
+
+	if (underground != NULL) *underground = false; // AND
+	return _9E32B1;
 }
 
 /**

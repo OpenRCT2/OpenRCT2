@@ -269,9 +269,9 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				supportImageColourFlags = dword_F64EB0;
 			}
 			if (direction & 1) {
-				wooden_b_supports_paint_setup(1, ax, supportHeight, supportImageColourFlags);
+				wooden_b_supports_paint_setup(1, ax, supportHeight, supportImageColourFlags, NULL);
 			} else {
-				wooden_b_supports_paint_setup(0, ax, supportHeight, supportImageColourFlags);
+				wooden_b_supports_paint_setup(0, ax, supportHeight, supportImageColourFlags, NULL);
 			}
 		}
 	}
