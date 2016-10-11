@@ -1298,7 +1298,7 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 {
 	utf8 *end = dest;
 	size_t left = size;
-	format_string_part(&end, &left, format, args);
+	format_string_part(&end, &left, format, (char**)&args);
 	if (left == 0)
 		log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
 
