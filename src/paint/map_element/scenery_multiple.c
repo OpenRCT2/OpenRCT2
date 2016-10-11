@@ -46,7 +46,7 @@ static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_
 		supportImageColourFlags = dword_F4387C;
 	}
 
-	wooden_b_supports_paint_setup((direction & 1), ax, supportHeight, supportImageColourFlags);
+	wooden_b_supports_paint_setup((direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
 
 	int clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
 
