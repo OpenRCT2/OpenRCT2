@@ -5,7 +5,7 @@
 - Feature: Add cheat to reset date.
 - Feature: Add OpenGL drawing engine.
 - Feature: Implementation of the user-defined currency
-- Feature: Add ability to rotate map elements with the tile inspector.
+- Feature: Extended tile inspector.
 - Feature: Add ride console command for diagnostics and changing vehicle type.
 - Feature: Allow selecting corners when using the mountain tool.
 - Feature: Allow setting ownership of map edges.
