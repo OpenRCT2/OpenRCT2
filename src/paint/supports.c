@@ -698,6 +698,15 @@ bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, i
 
 /**
  *  rct2: 0x006A2ECC
+ *
+ * @param supportType (edi)
+ * @param special (ax)
+ * @param height (dx)
+ * @param imageColourFlags (ebp)
+ * @param pathEntry (0x00F3EF6C)
+ * @param[out] underground (Carry Flag)
+ *
+ * @return Whether supports were drawn
  */
 bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags,
 								 rct_footpath_entry * pathEntry, bool * underground)
@@ -724,15 +733,15 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 	}
 
 	uint16 baseHeight = ceil2(gSupport.height, 16);
-	sint32 dx = height - baseHeight;
-	if (dx < 0) {
+	sint32 supportLength = height - baseHeight;
+	if (supportLength < 0) {
 		if (underground != NULL) *underground = true; // STC
 		return false;
 	}
 
 	bool hasSupports = false;
 
-	sint16 heightSteps = dx / 16;
+	sint16 heightSteps = supportLength / 16;
 
 	if (gSupport.slope & 0x20) {
 		//save dx2
@@ -761,8 +770,8 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 			0, 0, baseHeight + 2,
 			get_current_rotation()
 		);
-
 		baseHeight += 16;
+
 		sub_98197C(
 			(imageId + 4) | imageColourFlags,
 			0, 0,
@@ -771,9 +780,9 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 			0, 0, baseHeight + 2,
 			get_current_rotation()
 		);
+		baseHeight += 16;
 
 		hasSupports = true;
-		baseHeight += 32;
 
 	} else if (gSupport.slope & 0x0F) {
 		heightSteps -= 1;
@@ -842,7 +851,7 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 				0, 0,
 				boundBox.length.y, boundBox.length.x, boundBox.length.z,
 				baseHeight,
-				boundBox.offset.x, boundBox.offset.y, boundBox.offset.z,
+				boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z,
 				get_current_rotation()
 			);
 			hasSupports = true;
@@ -852,7 +861,7 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 				0, 0,
 				boundBox.length.y, boundBox.length.x, boundBox.length.z,
 				baseHeight,
-				boundBox.offset.x, boundBox.offset.y, boundBox.offset.z,
+				boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z,
 				get_current_rotation()
 			);
 			hasSupports = true;
@@ -862,7 +871,7 @@ bool path_a_supports_paint_setup(int supportType, int special, int height, uint3
 		}
 	}
 
-	if (underground != NULL) *underground = true; // AND
+	if (underground != NULL) *underground = false; // AND
 
 	return hasSupports;
 }
