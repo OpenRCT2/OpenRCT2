@@ -178,6 +178,7 @@ static uint32 air_powered_vertical_rc_get_support_colour()
 	return colourFlags;
 }
 
+/** rct2: 0x008AFAD4 */
 static void air_powered_vertical_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {
@@ -277,6 +278,7 @@ static void air_powered_vertical_rc_track_left_quarter_turn_5(uint8 rideIndex, u
 	air_powered_vertical_rc_track_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
+/** rct2: 0x008AFB74 */
 static void air_powered_vertical_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -302,6 +304,7 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(uint8 rideIndex, uin
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008AFB84 */
 static void air_powered_vertical_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][2] = {
@@ -332,6 +335,7 @@ static void air_powered_vertical_rc_track_left_bank_to_flat(uint8 rideIndex, uin
 	air_powered_vertical_rc_track_flat_to_right_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008AFBA4 */
 static void air_powered_vertical_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	air_powered_vertical_rc_track_flat_to_left_bank(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
@@ -402,6 +406,7 @@ static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(uint8 rideI
 	air_powered_vertical_rc_track_banked_right_quarter_turn_5(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
+/** rct2: 0x008AFBD4 */
 static void air_powered_vertical_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4] = {

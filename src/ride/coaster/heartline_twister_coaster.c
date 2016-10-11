@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x0087694C */
 static void heartline_twister_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -90,6 +91,7 @@ static void heartline_twister_rc_track_station(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0087695C */
 static void heartline_twister_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -148,6 +150,7 @@ static void heartline_twister_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+/** rct2: 0x008769FC */
 static void heartline_twister_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -206,6 +209,7 @@ static void heartline_twister_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSeq
 	paint_util_set_general_support_height(height + 104, 0x20);
 }
 
+/** rct2: 0x0087696C */
 static void heartline_twister_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -264,6 +268,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
+/** rct2: 0x008769BC */
 static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -322,6 +327,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, u
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x008769CC */
 static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -380,6 +386,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, u
 	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
+/** rct2: 0x0087697C */
 static void heartline_twister_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	if (track_element_is_lift_hill(mapElement)) {
@@ -438,36 +445,43 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
+/** rct2: 0x0087698C */
 static void heartline_twister_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00876A0C */
 static void heartline_twister_rc_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x0087699C */
 static void heartline_twister_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008769DC */
 static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008769EC */
 static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008769AC */
 static void heartline_twister_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	heartline_twister_rc_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x00876A6C */
 static void heartline_twister_rc_track_heartline_transfer_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -592,6 +606,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(uint8 rideIndex, ui
 	}
 }
 
+/** rct2: 0x00876A7C */
 static void heartline_twister_rc_track_heartline_transfer_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -716,6 +731,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(uint8 rideIndex, 
 	}
 }
 
+/** rct2: 0x00876A4C */
 static void heartline_twister_rc_track_left_heartline_roll(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -880,6 +896,7 @@ static void heartline_twister_rc_track_left_heartline_roll(uint8 rideIndex, uint
 	}
 }
 
+/** rct2: 0x00876A5C */
 static void heartline_twister_rc_track_right_heartline_roll(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
