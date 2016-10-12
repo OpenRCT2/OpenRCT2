@@ -9298,12 +9298,12 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint16 best_score = 0xFFFF;
 		uint8 best_sub = 0xFF;
 
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		uint8 bestJunctions = 0;
 		rct_xyz8 bestJunctionList[16] = { 0 };
 		uint8 bestDirectionList[16] = { 0 };
 		rct_xyz8 bestXYZ = { 0, 0, 0 };
 
-		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
 			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
 		}
@@ -9352,9 +9352,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 
 			uint8 endSteps = 255;
 
-			/* Variable bestJunctions is the number of junctions
-			 * pass through in the search path.
-			 * Variables bestJunctionList and bestDirectionList
+			/* Variable endJunctions is the number of junctions
+			 * passed through in the search path.
+			 * Variables endJunctionList and endDirectionList
 			 * contain the junctions and corresponding directions
 			 * of the search path.
 			 * In the future these could be used to visualise the
@@ -9377,6 +9377,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				chosen_edge = test_edge;
 				best_score = score;
 				best_sub = endSteps;
+				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				bestJunctions = endJunctions;
 				for (uint8 index = 0; index < endJunctions; index++) {
 					bestJunctionList[index].x = endJunctionList[index].x;
@@ -9387,6 +9388,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				bestXYZ.x = endXYZ.x;
 				bestXYZ.y = endXYZ.y;
 				bestXYZ.z = endXYZ.z;
+				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			}
 		}
 
