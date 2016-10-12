@@ -10120,7 +10120,7 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	// Calculate how satisfying the ride is for the peep. Can range from -140 to +140.
+	// Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
 	sint16 satisfaction = peep_calculate_ride_satisfaction(peep, ride);
 
 	// Update the satisfaction stat of the ride.
