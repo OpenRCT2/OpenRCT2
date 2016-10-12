@@ -652,6 +652,11 @@ void platform_start_text_input(utf8* buffer, int max_length)
 	textinputbuffer_init(&gTextInput, buffer, max_length);
 }
 
+bool platform_is_input_active()
+{
+	return SDL_IsTextInputActive() && gTextInput.buffer != NULL;
+}
+
 void platform_stop_text_input()
 {
 	SDL_StopTextInput();
