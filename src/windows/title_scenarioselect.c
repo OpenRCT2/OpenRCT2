@@ -18,7 +18,8 @@
 #include "../audio/audio.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../scenario.h"
+#include "../ScenarioRepository.h"
+#include "../ScenarioSources.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -41,7 +42,7 @@ typedef struct sc_list_item {
 			rct_string_id string_id;
 		} heading;
 		struct {
-			scenario_index_entry *scenario;
+			const scenario_index_entry *scenario;
 			bool is_locked;
 		} scenario;
 	};
@@ -138,7 +139,7 @@ static rct_window_event_list window_scenarioselect_events = {
 
 static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int left, int right, int y, rct_string_id stringId);
 static void initialise_list_items(rct_window *w);
-static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario);
+static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scenario);
 static bool is_locking_enabled(rct_window *w);
 
 static scenarioselect_callback _callback;
@@ -160,7 +161,7 @@ void window_scenarioselect_open(scenarioselect_callback callback)
 		return;
 
 	// Load scenario list
-	scenario_load_list();
+	scenario_repository_scan();
 
 	// Shrink the window if we're showing scenarios by difficulty level.
 	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY) {
@@ -196,8 +197,9 @@ void window_scenarioselect_open(scenarioselect_callback callback)
 static void window_scenarioselect_init_tabs(rct_window *w)
 {
 	int showPages = 0;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
+	size_t numScenarios = scenario_repository_get_count();
+	for (size_t i = 0; i < numScenarios; i++) {
+		const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			showPages |= 1 << scenario->source_game;
 		} else {
@@ -304,7 +306,7 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 {
 	bool originalShowLockedInformation = _showLockedInformation;
 	_showLockedInformation = false;
-	scenario_index_entry *selected = NULL;
+	const scenario_index_entry *selected = NULL;
 	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
 		switch (listItem->type) {
 		case LIST_ITEM_TYPE_HEADING:
@@ -364,7 +366,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
 	rct_widget *widget;
-	scenario_index_entry *scenario;
+	const scenario_index_entry *scenario;
 
 	window_draw_widgets(w, dpi);
 
@@ -474,7 +476,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			break;
 		case LIST_ITEM_TYPE_SCENARIO:;
 			// Draw hover highlight
-			scenario_index_entry *scenario = listItem->scenario.scenario;
+			const scenario_index_entry *scenario = listItem->scenario.scenario;
 			bool isHighlighted = w->highlighted_scenario == scenario;
 			if (isHighlighted) {
 				gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
@@ -550,19 +552,20 @@ static void initialise_list_items(rct_window *w)
 {
 	SafeFree(_listItems);
 
-	int capacity = gScenarioListCount + 16;
-	int length = 0;
+	size_t numScenarios = scenario_repository_get_count();
+	size_t capacity = numScenarios + 16;
+	size_t length = 0;
 	_listItems = malloc(capacity * sizeof(sc_list_item));
 
 	// Mega park unlock
 	const uint32 rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
 	uint32 rct1CompletedScenarios = 0;
-	int megaParkListItemIndex = -1;
+	size_t megaParkListItemIndex = SIZE_MAX;
 
 	int numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
 	uint8 currentHeading = UINT8_MAX;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
+	for (size_t i = 0; i < numScenarios; i++) {
+		const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
 		if (!is_scenario_visible(w, scenario)) {
 			continue;
 		}
@@ -640,12 +643,12 @@ static void initialise_list_items(rct_window *w)
 	_listItems[length - 1].type = LIST_ITEM_TYPE_END;
 
 	// Mega park handling
-	if (megaParkListItemIndex != -1) {
+	if (megaParkListItemIndex != SIZE_MAX) {
 		bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
 		_listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
 		if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park) {
 			// Remove mega park
-			int remainingItems = length - megaParkListItemIndex - 1;
+			size_t remainingItems = length - megaParkListItemIndex - 1;
 			memmove(&_listItems[megaParkListItemIndex], &_listItems[megaParkListItemIndex + 1], remainingItems);
 
 			// Remove empty headings
@@ -663,7 +666,7 @@ static void initialise_list_items(rct_window *w)
 	}
 }
 
-static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
+static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scenario)
 {
 	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 		if (scenario->source_game != w->selected_tab) {

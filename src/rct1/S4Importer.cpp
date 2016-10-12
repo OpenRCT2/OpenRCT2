@@ -23,6 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../ScenarioSources.h"
 #include "../object/ObjectManager.h"
 #include "S4Importer.h"
 #include "Tables.h"

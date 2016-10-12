@@ -35,6 +35,8 @@
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "scenario.h"
+#include "ScenarioRepository.h"
+#include "ScenarioSources.h"
 #include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
@@ -336,25 +338,11 @@ void scenario_success()
 	gScenarioCompletedCompanyValue = companyValue;
 	peep_applause();
 
-	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
-	if (scenario != NULL) {
-		// Check if record company value has been broken
-		if (scenario->highscore == NULL || scenario->highscore->company_value < companyValue) {
-			if (scenario->highscore == NULL) {
-				scenario->highscore = scenario_highscore_insert();
-			} else {
-				scenario_highscore_free(scenario->highscore);
-			}
-			scenario->highscore->fileName = _strdup(path_get_filename(scenario->path));
-			scenario->highscore->name = NULL;
-			scenario->highscore->company_value = companyValue;
-			scenario->highscore->timestamp = platform_get_datetime_now_utc();
-
-			// Allow name entry
-			gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-			gScenarioCompanyValueRecord = companyValue;
-			scenario_scores_save();
-		}
+	if (scenario_repository_try_record_highscore(_scenarioFileName, companyValue, NULL))
+	{
+		// Allow name entry
+		gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+		gScenarioCompanyValueRecord = companyValue;
 	}
 	scenario_end();
 }
@@ -365,16 +353,10 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
-	if (scenario != NULL) {
-		money32 scenarioWinCompanyValue = gScenarioCompanyValueRecord;
-		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
-			scenario->highscore->name = _strdup(name);
-			safe_strcpy(gScenarioCompletedBy, name, 32);
-			scenario_scores_save();
-		}
+	if (scenario_repository_try_record_highscore(_scenarioFileName, gScenarioCompanyValueRecord, NULL))
+	{
+		safe_strcpy(gScenarioCompletedBy, name, 32);
 	}
-
 	gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 

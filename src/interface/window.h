@@ -28,6 +28,8 @@
 #include "../world/park.h"
 #include "colour.h"
 
+typedef struct scenario_index_entry scenario_index_entry;
+
 struct rct_window;
 union rct_window_event;
 extern uint16 TextInputDescriptionArgs[4];
@@ -282,7 +284,7 @@ typedef struct rct_window {
 		uint16 ride_colour;
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
-		scenario_index_entry* highlighted_scenario;
+		const scenario_index_entry* highlighted_scenario;
 		struct {
 			uint16 var_494;
 			uint16 var_496;

@@ -102,7 +102,7 @@ typedef struct rct_scenario_basic {
 	char name[64];				// 0x0128
 	char details[256];			// 0x0168
 	sint32 flags;				// 0x0268
-	uint32 company_value;		// 0x026C
+	money32 company_value;		// 0x026C
 	char completed_by[64];		// 0x0270
 	// uint8 source_game;			// new in OpenRCT2
 	// sint16 source_index;		// new in OpenRCT2
@@ -376,42 +376,6 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
-typedef struct scenario_highscore_entry {
-	utf8 *fileName;
-	utf8 *name;
-	money32 company_value;
-	datetime64 timestamp;
-} scenario_highscore_entry;
-
-typedef struct scenario_index_entry {
-	utf8 path[MAX_PATH];
-	uint64 timestamp;
-
-	// Category / sequence
-	uint8 category;
-	uint8 source_game;
-	sint16 source_index;
-	uint16 sc_id;
-
-	// Objective
-	uint8 objective_type;
-	uint8 objective_arg_1;
-	sint32 objective_arg_2;
-	sint16 objective_arg_3;
-	scenario_highscore_entry *highscore;
-
-	utf8 name[64];
-	utf8 details[256];
-} scenario_index_entry;
-
-typedef struct source_desc {
-	const utf8 *title;
-	uint8 id;
-	uint8 source;
-	sint32 index;
-	uint8 category;
-} source_desc;
-
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #if defined(NO_RCT2)
@@ -431,11 +395,6 @@ extern uint16 gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;
 
-// Scenario list
-extern int gScenarioListCount;
-extern int gScenarioListCapacity;
-extern scenario_index_entry *gScenarioList;
-
 extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
 extern char gScenarioDetails[256];
@@ -448,13 +407,6 @@ extern uint32 gLastAutoSaveTick;
 
 extern const char *_scenarioFileName;
 
-bool scenario_scores_save();
-void scenario_load_list();
-void scenario_list_dispose();
-scenario_index_entry *scenario_list_find_by_filename(const utf8 *filename);
-scenario_index_entry *scenario_list_find_by_path(const utf8 *path);
-scenario_highscore_entry *scenario_highscore_insert();
-void scenario_highscore_free(scenario_highscore_entry *highscore);
 bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
 int scenario_load(const char *path);
 int scenario_load_and_play_from_path(const char *path);
@@ -474,117 +426,5 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
 void scenario_autosave_check();
-
-bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
-bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
-void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
-
-void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
-
-// RCT1 scenario index map
-enum {
-	SC_UNIDENTIFIED = 255,
-
-	// RCT
-	SC_FOREST_FRONTIERS = 0,
-	SC_DYNAMITE_DUNES,
-	SC_LEAFY_LAKES,
-	SC_DIAMOND_HEIGHTS,
-	SC_EVERGREEN_GARDENS,
-	SC_BUMBLY_BEACH,
-	SC_TRINITY_ISLANDS,
-	SC_KATIES_DREAMLAND,
-	SC_POKEY_PARK,
-	SC_WHITE_WATER_PARK,
-	SC_MILLENNIUM_MINES,
-	SC_KARTS_COASTERS,
-	SC_MELS_WORLD,
-	SC_MYSTIC_MOUNTAIN,
-	SC_PACIFIC_PYRAMIDS,
-	SC_CRUMBLY_WOODS,
-	SC_PARADISE_PIER,
-	SC_LIGHTNING_PEAKS,
-	SC_IVORY_TOWERS,
-	SC_RAINBOW_VALLEY,
-	SC_THUNDER_ROCK,
-	SC_MEGA_PARK,
-
-	// Loopy Landscapes
-	SC_ICEBERG_ISLANDS,
-	SC_VOLCANIA,
-	SC_ARID_HEIGHTS,
-	SC_RAZOR_ROCKS,
-	SC_CRATER_LAKE,
-	SC_VERTIGO_VIEWS,
-	SC_PARADISE_PIER_2,
-	SC_DRAGONS_COVE,
-	SC_GOOD_KNIGHT_PARK,
-	SC_WACKY_WARREN,
-
-	// Special
-	ALTON_TOWERS,
-	FORT_ANACHRONISM,
-
-	// Added Attractions
-	SC_WHISPERING_CLIFFS = 40,
-	SC_THREE_MONKEYS_PARK,
-	SC_CANARY_MINES,
-	SC_BARONY_BRIDGE,
-	SC_FUNTOPIA,
-	SC_HAUNTED_HARBOUR,
-	SC_FUN_FORTRESS,
-	SC_FUTURE_WORLD,
-	SC_GENTLE_GLEN,
-	SC_JOLLY_JUNGLE,
-	SC_HYDRO_HILLS,
-	SC_SPRIGHTLY_PARK,
-	SC_MAGIC_QUARTERS,
-	SC_FRUIT_FARM,
-	SC_BUTTERFLY_DAM,
-	SC_COASTER_CANYON,
-	SC_THUNDERSTORM_PARK,
-	SC_HARMONIC_HILLS,
-	SC_ROMAN_VILLAGE,
-	SC_SWAMP_COVE,
-	SC_ADRENALINE_HEIGHTS,
-	SC_UTOPIA,
-	SC_ROTTING_HEIGHTS,
-	SC_FIASCO_FOREST,
-	SC_PICKLE_PARK,
-	SC_GIGGLE_DOWNS,
-	SC_MINERAL_PARK,
-	SC_COASTER_CRAZY,
-	SC_URBAN_PARK,
-	SC_GEOFFREY_GARDENS,
-
-	// Special
-	SC_HEIDE_PARK,
-	SC_PCPLAYER,
-	SC_PCGW,
-	SC_GAMEPLAY,
-	SC_BLACKPOOL_PLEASURE_BEACH,
-
-	// Loopy Landscapes
-	SC_GRAND_GLACIER = 80,
-	SC_CRAZY_CRATERS,
-	SC_DUSTY_DESERT,
-	SC_WOODWORM_PARK,
-	SC_ICARUS_PARK,
-	SC_SUNNY_SWAMPS,
-	SC_FRIGHTMARE_HILLS,
-	SC_THUNDER_ROCKS,
-	SC_OCTAGON_PARK,
-	SC_PLEASURE_ISLAND,
-	SC_ICICLE_WORLDS,
-	SC_SOUTHERN_SANDS,
-	SC_TINY_TOWERS,
-	SC_NEVERMORE_PARK,
-	SC_PACIFICA,
-	SC_URBAN_JUNGLE,
-	SC_TERROR_TOWN,
-	SC_MEGAWORLD_PARK,
-	SC_VENUS_PONDS,
-	SC_MICRO_PARK,
-};
 
 #endif

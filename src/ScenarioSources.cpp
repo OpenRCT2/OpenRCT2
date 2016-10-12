@@ -17,6 +17,7 @@
 #include "core/Guard.hpp"
 #include "core/String.hpp"
 #include "core/Util.hpp"
+#include "ScenarioSources.h"
 
 extern "C"
 {
