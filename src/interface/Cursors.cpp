@@ -23,8 +23,6 @@ namespace Cursors
     constexpr sint32 CURSOR_WIDTH = 32;
     constexpr sint32 CURSOR_HEIGHT = 32;
 
-    static const CursorData * RawCursorData[CURSOR_COUNT];
-
     static SDL_Cursor * _loadedCursors[CURSOR_COUNT];
     static bool         _initialised = false;
     static CURSOR_ID    _currentCursor = CURSOR_UNDEFINED;

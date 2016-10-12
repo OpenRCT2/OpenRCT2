@@ -74,11 +74,18 @@ namespace Cursors
     void        SetCurrentCursor(CURSOR_ID cursorId);
 }
 
-#else
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
     void    cursors_initialise();
     void    cursors_dispose();
     int     cursors_getcurrentcursor();
     void    cursors_setcurrentcursor(int cursorId);
 
+#ifdef __cplusplus
+}
 #endif
