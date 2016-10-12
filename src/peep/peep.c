@@ -2150,13 +2150,14 @@ void remove_peep_from_queue(rct_peep* peep)
 		return;
 	}
 
-	for (rct_peep* other_peep = GET_PEEP(ride->last_peep_in_queue[cur_station]);
-		ride->last_peep_in_queue[cur_station] != 0xFFFF;
-		other_peep = GET_PEEP(other_peep->next_in_queue)){
+	uint16 spriteId = ride->last_peep_in_queue[cur_station];
+	while (spriteId != 0xFFFF) {
+		rct_peep* other_peep = GET_PEEP(spriteId);
 		if (peep->sprite_index == other_peep->next_in_queue){
 			other_peep->next_in_queue = peep->next_in_queue;
 			return;
 		}
+		spriteId = other_peep->next_in_queue;
 	}
 }
 

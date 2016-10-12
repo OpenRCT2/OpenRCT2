@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../cursors.h"
 #include "../editor.h"
 #include "../input.h"
+#include "../interface/Cursors.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
