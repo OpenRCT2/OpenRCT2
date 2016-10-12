@@ -58,6 +58,9 @@ public:
 
     virtual void Disconnect() abstract;
     virtual void Close() abstract;
+
+    virtual const char * GetHostStr() abstract;
+    virtual void SetHostStr(const char * hostStr) abstract;
 };
 
 ITcpSocket * CreateTcpSocket();
