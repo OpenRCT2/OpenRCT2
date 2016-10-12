@@ -305,8 +305,6 @@
 		D442724A1CC81B3200D84D28 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717B1CC81B3200D84D28 /* track_data.c */; };
 		D442724B1CC81B3200D84D28 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717D1CC81B3200D84D28 /* track_paint.c */; };
 		D442724C1CC81B3200D84D28 /* vehicle.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717F1CC81B3200D84D28 /* vehicle.c */; };
-		D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271811CC81B3200D84D28 /* scenario_list.c */; };
-		D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271821CC81B3200D84D28 /* scenario_sources.c */; };
 		D442724F1CC81B3200D84D28 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271831CC81B3200D84D28 /* scenario.c */; };
 		D44272501CC81B3200D84D28 /* title.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271861CC81B3200D84D28 /* title.c */; };
 		D44272511CC81B3200D84D28 /* sawyercoding.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271891CC81B3200D84D28 /* sawyercoding.c */; };
@@ -435,6 +433,8 @@
 		D464FEF51D31A6AA00CBABAC /* WaterObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEE31D31A6AA00CBABAC /* WaterObject.cpp */; };
 		D46F2A9E1D39A25A00A36AB7 /* peep_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D46F2A9D1D39A25A00A36AB7 /* peep_data.c */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
+		D4867B861DAEF6200003B684 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */; };
+		D4867B871DAEF6200003B684 /* ScenarioSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4867B851DAEF6200003B684 /* ScenarioSources.cpp */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
 		D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766841D03BAA5002222CD /* NewDrawing.cpp */; };
@@ -801,8 +801,6 @@
 		D442717E1CC81B3200D84D28 /* track_paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
 		D442717F1CC81B3200D84D28 /* vehicle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle.c; sourceTree = "<group>"; };
 		D44271801CC81B3200D84D28 /* vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle.h; sourceTree = "<group>"; };
-		D44271811CC81B3200D84D28 /* scenario_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario_list.c; sourceTree = "<group>"; };
-		D44271821CC81B3200D84D28 /* scenario_sources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario_sources.c; sourceTree = "<group>"; };
 		D44271831CC81B3200D84D28 /* scenario.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario.c; sourceTree = "<group>"; };
 		D44271841CC81B3200D84D28 /* scenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scenario.h; sourceTree = "<group>"; };
 		D44271851CC81B3200D84D28 /* sprites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprites.h; sourceTree = "<group>"; };
@@ -1113,6 +1111,10 @@
 		D464FEE41D31A6AA00CBABAC /* WaterObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterObject.h; sourceTree = "<group>"; };
 		D46F2A9D1D39A25A00A36AB7 /* peep_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioRepository.cpp; sourceTree = "<group>"; };
+		D4867B851DAEF6200003B684 /* ScenarioSources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSources.cpp; sourceTree = "<group>"; };
+		D4867B881DAEF62B0003B684 /* ScenarioRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenarioRepository.h; sourceTree = "<group>"; };
+		D4867B891DAEF62B0003B684 /* ScenarioSources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenarioSources.h; sourceTree = "<group>"; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = TcpSocket.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -1404,9 +1406,9 @@
 				D44271591CC81B3200D84D28 /* openrct2.c */,
 				D44271691CC81B3200D84D28 /* rct1.c */,
 				D442716B1CC81B3200D84D28 /* rct2.c */,
-				D44271811CC81B3200D84D28 /* scenario_list.c */,
-				D44271821CC81B3200D84D28 /* scenario_sources.c */,
 				D44271831CC81B3200D84D28 /* scenario.c */,
+				D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */,
+				D4867B851DAEF6200003B684 /* ScenarioSources.cpp */,
 				D44271861CC81B3200D84D28 /* title.c */,
 				D4CA88651D4E64C800060C11 /* version.c */,
 				D44270CE1CC81B3200D84D28 /* addresses.h */,
@@ -1425,6 +1427,8 @@
 				D442716A1CC81B3200D84D28 /* rct1.h */,
 				D442716C1CC81B3200D84D28 /* rct2.h */,
 				D44271841CC81B3200D84D28 /* scenario.h */,
+				D4867B881DAEF62B0003B684 /* ScenarioRepository.h */,
+				D4867B891DAEF62B0003B684 /* ScenarioSources.h */,
 				D44271851CC81B3200D84D28 /* sprites.h */,
 				D44271871CC81B3200D84D28 /* title.h */,
 				D442718D1CC81B3200D84D28 /* version.h */,
@@ -2494,7 +2498,6 @@
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
-				D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
 				C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */,
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
@@ -2636,6 +2639,7 @@
 				D44272231CC81B3200D84D28 /* window.c in Sources */,
 				D44272451CC81B3200D84D28 /* ride.c in Sources */,
 				C686F8B91CDBC37E009F9BFC /* supports.c in Sources */,
+				D4867B871DAEF6200003B684 /* ScenarioSources.cpp in Sources */,
 				D442726E1CC81B3200D84D28 /* maze_construction.c in Sources */,
 				D44272751CC81B3200D84D28 /* news_options.c in Sources */,
 				D44272551CC81B3200D84D28 /* changelog.c in Sources */,
@@ -2655,7 +2659,6 @@
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
 				D44272621CC81B3200D84D28 /* footpath.c in Sources */,
 				D44272521CC81B3200D84D28 /* util.c in Sources */,
-				D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */,
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
 				D442722F1CC81B3200D84D28 /* finance.c in Sources */,
@@ -2750,6 +2753,7 @@
 				D44272771CC81B3200D84D28 /* park.c in Sources */,
 				C686F9141CDBC3B7009F9BFC /* inverted_roller_coaster.c in Sources */,
 				C686F9551CDBC3B7009F9BFC /* water_coaster.c in Sources */,
+				D4867B861DAEF6200003B684 /* ScenarioRepository.cpp in Sources */,
 				D44272461CC81B3200D84D28 /* ride_data.c in Sources */,
 				D44272181CC81B3200D84D28 /* chat.c in Sources */,
 				C686F93B1CDBC3B7009F9BFC /* facility.c in Sources */,
