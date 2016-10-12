@@ -128,7 +128,7 @@ public:
         ClearHighscores();
     }
 
-    void Scan()
+    void Scan() override
     {
         utf8 directory[MAX_PATH];
 
@@ -379,7 +379,7 @@ private:
             ClearHighscores();
 
             uint32 numHighscores = fs.ReadValue<uint32>();
-            for (uint32 i; i < numHighscores; i++)
+            for (uint32 i = 0; i < numHighscores; i++)
             {
                 scenario_highscore_entry * highscore = InsertHighscore();
                 highscore->fileName = fs.ReadString();
