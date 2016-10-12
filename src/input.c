@@ -1431,7 +1431,7 @@ void title_handle_keyboard_input()
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
-			if (gConfigGeneral.debugging_tools || gConsoleOpen) {
+			if ((gConfigGeneral.debugging_tools && !platform_is_input_active()) || gConsoleOpen) {
 				window_cancel_textbox();
 				console_toggle();
 			}
@@ -1502,7 +1502,7 @@ void game_handle_keyboard_input()
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
-			if (gConfigGeneral.debugging_tools || gConsoleOpen) {
+			if ((gConfigGeneral.debugging_tools && !platform_is_input_active()) || gConsoleOpen) {
 				window_cancel_textbox();
 				console_toggle();
 			}
