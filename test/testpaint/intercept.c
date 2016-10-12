@@ -168,7 +168,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 	return false;
 }
 
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags) {
+bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
 
 	function_call call = {
 		.function = SUPPORTS_WOOD_B,
@@ -720,7 +720,7 @@ static uint32 intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, ui
 
 static uint32 intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
+	wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
 
 	return 0;
 }
