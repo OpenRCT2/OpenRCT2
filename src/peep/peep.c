@@ -963,7 +963,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 
 	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
-		/* Affect of masking with 0x1FF here vs mask 0x7F,
+		/* Effect of masking with 0x1FF here vs mask 0x7F,
 		 * which is the condition for calling this function, is
 		 * to reduce how often the content in this conditional
 		 * is executed to once every four calls. */
@@ -1070,7 +1070,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
-			/* Affect of masking with 0x3FF here vs mask 0x1FF,
+			/* Effect of masking with 0x3FF here vs mask 0x1FF,
 			 * which is used in the encompassing conditional, is
 			 * to reduce how often the content in this conditional
 			 * is executed to once every second time the encompassing
