@@ -87,7 +87,7 @@ private:
     uint16          _listeningPort  = 0;
     SOCKET          _socket         = INVALID_SOCKET;
 
-    std::string     _hostStr;
+    std::string     _hostName;
 
     SDL_mutex *     _connectMutex   = nullptr;
     std::string     _error;
@@ -205,12 +205,20 @@ public:
             }
             else
             {
-                char hoststr[NI_MAXHOST];
-                int rc = getnameinfo((struct sockaddr *)&client_addr, client_len, hoststr, sizeof(hoststr), nullptr, 0, NI_NUMERICHOST | NI_NUMERICSERV);
+                char hostName[NI_MAXHOST];
+                int rc = getnameinfo(
+                    (struct sockaddr *)&client_addr,
+                    client_len,
+                    hostName,
+                    sizeof(hostName),
+                    nullptr,
+                    0,
+                    NI_NUMERICHOST | NI_NUMERICSERV); 
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);
-                if (rc == 0)
-                    tcpSocket->SetHostStr(hoststr);
+                if (rc == 0) {
+                    _hostName = std::string(hostName);
+                }
             }
         }
         return tcpSocket;
@@ -411,14 +419,9 @@ public:
         SDL_UnlockMutex(_connectMutex);
     }
 
-    const char * GetHostStr() override 
+    const char * GetHostName() const override 
     {
-        return _hostStr.empty() ? nullptr : _hostStr.c_str();
-    }
-
-    void SetHostStr(const char * hostStr) override
-    {
-        _hostStr = std::string(hostStr);
+        return _hostName.empty() ? nullptr : _hostName.c_str();
     }
 
 private:

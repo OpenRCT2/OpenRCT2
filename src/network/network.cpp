@@ -1408,10 +1408,6 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 	if (player) {
 		char text[256];
 		const char * player_name = (const char *) player->name.c_str();
-		//Relay connection information to console
-		auto hostStr = connection.Socket->GetHostStr();
-		log_info("%s has joined from host: %s", player_name, hostStr);
-		//Show join message in chat
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
 		Server_Send_MAP(&connection);
