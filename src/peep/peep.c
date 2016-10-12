@@ -8790,6 +8790,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
 
+		uint8 rideIndex = 0xFF;
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_TRACK:
 			if (z != mapElement->base_height) continue;
@@ -8814,6 +8815,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				 * goal is the ride entrance tile. */
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == test_edge) {
+					/* The rideIndex will be useful for
+					 * adding transport rides later. */
+					rideIndex = mapElement->properties.entrance.ride_index;
 					searchResult = PATH_SEARCH_RIDE_ENTRANCE;
 					found = true;
 					break;
@@ -8873,6 +8877,9 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				if (footpath_element_is_queue(mapElement) && mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
 					if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF)) {
 						// Path is a queue we aren't interested in
+						/* The rideIndex will be useful for
+						* adding transport rides later. */
+						rideIndex = mapElement->properties.path.ride_index;
 						searchResult = PATH_SEARCH_RIDE_QUEUE;
 					}
 				}
@@ -9291,12 +9298,12 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		uint16 best_score = 0xFFFF;
 		uint8 best_sub = 0xFF;
 
-		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		uint8 bestJunctions = 0;
 		rct_xyz8 bestJunctionList[16] = { 0 };
 		uint8 bestDirectionList[16] = { 0 };
 		rct_xyz8 bestXYZ = { 0, 0, 0 };
 
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
 			log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, x >> 5, y >> 5, z);
 		}
@@ -9370,7 +9377,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				chosen_edge = test_edge;
 				best_score = score;
 				best_sub = endSteps;
-				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				bestJunctions = endJunctions;
 				for (uint8 index = 0; index < endJunctions; index++) {
 					bestJunctionList[index].x = endJunctionList[index].x;
@@ -9381,7 +9387,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				bestXYZ.x = endXYZ.x;
 				bestXYZ.y = endXYZ.y;
 				bestXYZ.z = endXYZ.z;
-				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			}
 		}
 
