@@ -216,7 +216,8 @@ public:
                     NI_NUMERICHOST | NI_NUMERICSERV); 
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);
-                if (rc == 0) {
+                if (rc == 0)
+                {
                     _hostName = std::string(hostName);
                 }
             }
