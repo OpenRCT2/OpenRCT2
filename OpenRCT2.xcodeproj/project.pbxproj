@@ -240,7 +240,6 @@
 		D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270F21CC81B3200D84D28 /* Stopwatch.cpp */; };
 		D44272051CC81B3200D84D28 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270F51CC81B3200D84D28 /* String.cpp */; };
 		D44272061CC81B3200D84D28 /* textinputbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270F91CC81B3200D84D28 /* textinputbuffer.c */; };
-		D44272071CC81B3200D84D28 /* cursors.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270FC1CC81B3200D84D28 /* cursors.c */; };
 		D44272081CC81B3200D84D28 /* diagnostic.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270FE1CC81B3200D84D28 /* diagnostic.c */; };
 		D44272091CC81B3200D84D28 /* drawing.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271011CC81B3200D84D28 /* drawing.c */; };
 		D442720A1CC81B3200D84D28 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271031CC81B3200D84D28 /* drawing_fast.cpp */; };
@@ -444,6 +443,8 @@
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
+		D4F5B5EF1DAD8A4300AB6075 /* CursorData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */; };
+		D4F5B5F01DAD8A4300AB6075 /* Cursors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -682,8 +683,6 @@
 		D44270F91CC81B3200D84D28 /* textinputbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textinputbuffer.c; sourceTree = "<group>"; };
 		D44270FA1CC81B3200D84D28 /* textinputbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = textinputbuffer.h; sourceTree = "<group>"; };
 		D44270FB1CC81B3200D84D28 /* Util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; usesTabs = 1; };
-		D44270FC1CC81B3200D84D28 /* cursors.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cursors.c; sourceTree = "<group>"; };
-		D44270FD1CC81B3200D84D28 /* cursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cursors.h; sourceTree = "<group>"; };
 		D44270FE1CC81B3200D84D28 /* diagnostic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = diagnostic.c; sourceTree = "<group>"; };
 		D44270FF1CC81B3200D84D28 /* diagnostic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diagnostic.h; sourceTree = "<group>"; };
 		D44271011CC81B3200D84D28 /* drawing.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = drawing.c; sourceTree = "<group>"; };
@@ -1129,6 +1128,9 @@
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
+		D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursorData.cpp; sourceTree = "<group>"; };
+		D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cursors.cpp; sourceTree = "<group>"; };
+		D4F5B5EE1DAD8A4300AB6075 /* Cursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cursors.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1391,7 +1393,6 @@
 				D44270D41CC81B3200D84D28 /* cheats.c */,
 				D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */,
 				D44270DE1CC81B3200D84D28 /* config.c */,
-				D44270FC1CC81B3200D84D28 /* cursors.c */,
 				D44270FE1CC81B3200D84D28 /* diagnostic.c */,
 				D442710E1CC81B3200D84D28 /* editor.c */,
 				D44271101CC81B3200D84D28 /* game.c */,
@@ -1412,7 +1413,6 @@
 				D44270D51CC81B3200D84D28 /* cheats.h */,
 				D44270DD1CC81B3200D84D28 /* common.h */,
 				D44270DF1CC81B3200D84D28 /* config.h */,
-				D44270FD1CC81B3200D84D28 /* cursors.h */,
 				D44270FF1CC81B3200D84D28 /* diagnostic.h */,
 				D442710F1CC81B3200D84D28 /* editor.h */,
 				D44271111CC81B3200D84D28 /* game.h */,
@@ -1566,6 +1566,9 @@
 				D442711C1CC81B3200D84D28 /* colour.h */,
 				D442711D1CC81B3200D84D28 /* console.c */,
 				D442711E1CC81B3200D84D28 /* console.h */,
+				D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */,
+				D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */,
+				D4F5B5EE1DAD8A4300AB6075 /* Cursors.h */,
 				D442711F1CC81B3200D84D28 /* graph.c */,
 				D44271201CC81B3200D84D28 /* graph.h */,
 				D44271211CC81B3200D84D28 /* keyboard_shortcut.c */,
@@ -2583,6 +2586,7 @@
 				85B468FC1D96822F000F1DB5 /* paint_helpers.c in Sources */,
 				D464FEE71D31A6AA00CBABAC /* FootpathItemObject.cpp in Sources */,
 				D442721E1CC81B3200D84D28 /* Theme.cpp in Sources */,
+				D4F5B5EF1DAD8A4300AB6075 /* CursorData.cpp in Sources */,
 				C686F9271CDBC3B7009F9BFC /* virginia_reel.c in Sources */,
 				D44272271CC81B3200D84D28 /* date.c in Sources */,
 				D44272971CC81B3200D84D28 /* viewport.c in Sources */,
@@ -2651,7 +2655,6 @@
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
 				D44272621CC81B3200D84D28 /* footpath.c in Sources */,
 				D44272521CC81B3200D84D28 /* util.c in Sources */,
-				D44272071CC81B3200D84D28 /* cursors.c in Sources */,
 				D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */,
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
@@ -2689,6 +2692,7 @@
 				D44272171CC81B3200D84D28 /* input.c in Sources */,
 				D44272741CC81B3200D84D28 /* news.c in Sources */,
 				D442723C1CC81B3200D84D28 /* linux.c in Sources */,
+				D4F5B5F01DAD8A4300AB6075 /* Cursors.cpp in Sources */,
 				D44272421CC81B3200D84D28 /* rct2.c in Sources */,
 				C686F8B71CDBC37E009F9BFC /* peep.c in Sources */,
 				C686F8B11CDBC37E009F9BFC /* scenery.c in Sources */,

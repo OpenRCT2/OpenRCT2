@@ -24,7 +24,6 @@
 #include "../world/park.h"
 #include "../util/sawyercoding.h"
 #include "../config.h"
-#include "../cursors.h"
 #include "../game.h"
 #include "../input.h"
 #include "../network/twitch.h"
