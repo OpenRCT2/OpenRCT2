@@ -15,7 +15,9 @@
 #pragma endregion
 
 #include <stack>
-#include "../core/Guard.hpp"
+#include "../core/Console.hpp"
+#include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
@@ -160,10 +162,20 @@ const char * language_get_string(rct_string_id id)
     return result;
 }
 
+utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageId)
+{
+    const char * locale = LanguagesDescriptors[languageId].locale;
+
+    platform_get_openrct_data_path(buffer, sizeof(bufferSize));
+    Path::Append(buffer, sizeof(bufferSize), "language");
+    Path::Append(buffer, sizeof(bufferSize), locale);
+    String::Append(buffer, sizeof(bufferSize), ".txt");
+    return buffer;
+}
+
 bool language_open(int id)
 {
     char filename[MAX_PATH];
-    char dataPath[MAX_PATH];
 
     language_close_all();
     if (id == LANGUAGE_UNDEFINED)
@@ -171,20 +183,13 @@ bool language_open(int id)
         return false;
     }
 
-    platform_get_openrct_data_path(dataPath, sizeof(dataPath));
     if (id != LANGUAGE_ENGLISH_UK)
     {
-        safe_strcpy(filename, dataPath, MAX_PATH);
-        safe_strcat_path(filename, "language", MAX_PATH);
-        safe_strcat_path(filename, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale, MAX_PATH);
-        path_append_extension(filename, ".txt", MAX_PATH);
+        GetLanguagePath(filename, sizeof(filename), LANGUAGE_ENGLISH_UK);
         _languageFallback = LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename);
     }
 
-    safe_strcpy(filename, dataPath, MAX_PATH);
-    safe_strcat_path(filename, "language", MAX_PATH);
-    safe_strcat_path(filename, LanguagesDescriptors[id].locale, MAX_PATH);
-    path_append_extension(filename, ".txt", MAX_PATH);
+    GetLanguagePath(filename, sizeof(filename), id);
     _languageCurrent = LanguagePackFactory::FromFile(id, filename);
     if (_languageCurrent != nullptr)
     {
@@ -211,8 +216,8 @@ bool language_open(int id)
                 gUseTrueTypeFont = true;
                 gCurrentTTFFontSet = &TTFFontCustom;
                 
-                bool font_initialised = ttf_initialise();
-                if (!font_initialised)
+                bool fontInitialised = ttf_initialise();
+                if (!fontInitialised)
                 {
                     log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
                 }
@@ -226,23 +231,25 @@ bool language_open(int id)
             ttf_dispose();
             gUseTrueTypeFont = true;
             gCurrentTTFFontSet = LanguagesDescriptors[id].font;
-            bool font_initialised = ttf_initialise();
 
-            // Have we tried Arial yet?
-            if (!font_initialised && gCurrentTTFFontSet != &TTFFontArial)
+            bool fontInitialised = ttf_initialise();
+            if (!fontInitialised)
             {
-                log_warning("Unable to initialise prefered TrueType font -- falling back to Arial.");
-                gCurrentTTFFontSet = &TTFFontArial;
-                font_initialised = ttf_initialise();
-            }
-
-            // Fall back to sprite font.
-            if (!font_initialised)
-            {
-                log_warning("Falling back to sprite font.");
-                gUseTrueTypeFont = false;
-                gCurrentTTFFontSet = nullptr;
-                return false;
+                // Have we tried Arial yet?
+                if (gCurrentTTFFontSet != &TTFFontArial)
+                {
+                    Console::WriteLine("Unable to initialise prefered TrueType font -- falling back to Arial.");
+                    gCurrentTTFFontSet = &TTFFontArial;
+                    fontInitialised = ttf_initialise();
+                    if (!fontInitialised)
+                    {
+                        // Fall back to sprite font.
+                        Console::WriteLine("Falling back to sprite font.");
+                        gUseTrueTypeFont = false;
+                        gCurrentTTFFontSet = nullptr;
+                        return false;
+                    }
+                }
             }
         }
 
@@ -261,46 +268,14 @@ void language_close_all()
     gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
 
-#define STEX_BASE_STRING_ID         3447
-#define NONSTEX_BASE_STRING_ID      3463
-#define MAX_OBJECT_CACHED_STRINGS   2048
+constexpr rct_string_id STEX_BASE_STRING_ID = 3447;
+constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
+constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
 /* rct2: 0x0098DA16 */
 static uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
 static utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
-
-static void utf8_trim_string(utf8 *text)
-{
-    utf8 *src = text;
-    utf8 *dst = text;
-    utf8 *last = text;
-    int codepoint;
-
-    // Trim left
-    while ((codepoint = utf8_get_next(src, (const utf8 * *)&src)) != 0)
-    {
-        if (codepoint != ' ')
-        {
-            dst = utf8_write_codepoint(dst, codepoint);
-            last = dst;
-            break;
-        }
-    }
-    if (codepoint != 0)
-    {
-        // Trim right
-        while ((codepoint = utf8_get_next(src, (const utf8 * *)&src)) != 0)
-        {
-            dst = utf8_write_codepoint(dst, codepoint);
-            if (codepoint != ' ')
-            {
-                last = dst;
-            }
-        }
-    }
-    *last = 0;
-}
 
 static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
 {
@@ -316,31 +291,33 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
     }
 }
 
-static utf8 *convert_multibyte_charset(const char *src, int languageId)
+static utf8 * convert_multibyte_charset(const char * src, int languageId)
 {
-    size_t reservedLength = (strlen(src) * 4) + 1;
-    utf8 * buffer = (utf8*)malloc(reservedLength);
+    constexpr char CODEPOINT_DOUBLEBYTE = (char)0xFF;
+
+    size_t reservedLength = (String::LengthOf(src) * 4) + 1;
+    utf8 * buffer = Memory::Allocate<utf8>(reservedLength);
     utf8 * dst = buffer;
-    for (const uint8 * ch = (const uint8*)src; *ch != 0;)
+    for (const char * ch = src; *ch != 0;)
     {
-        if (*ch == 0xFF)
+        if (*ch == CODEPOINT_DOUBLEBYTE)
         {
             ch++;
-            uint8 a = *ch++;
-            uint8 b = *ch++;
-            uint16 codepoint = (a << 8) | b;
+            char a = *ch++;
+            char b = *ch++;
+            uint16 codepoint = (uint16)((a << 8) | b);
 
             codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
-            dst = utf8_write_codepoint(dst, codepoint);
+            dst = String::WriteCodepoint(dst, codepoint);
         }
         else
         {
-            dst = utf8_write_codepoint(dst, *ch++);
+            dst = String::WriteCodepoint(dst, *ch++);
         }
     }
     *dst++ = 0;
     size_t actualLength = (size_t)(dst - buffer);
-    buffer = (utf8 *)realloc(buffer, actualLength);
+    buffer = Memory::Reallocate(buffer, actualLength);
 
     return buffer;
 }
