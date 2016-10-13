@@ -26,6 +26,7 @@
 #include "../track_data.h"
 #include "../track_paint.h"
 
+/** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void lim_launched_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	static const uint32 imageIds[4][3] = {
@@ -48,6 +49,7 @@ static void lim_launched_rc_track_station(uint8 rideIndex, uint8 trackSequence, 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A65E0 */
 static void lim_launched_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -223,6 +225,7 @@ static void lim_launched_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008A65F0 */
 static void lim_launched_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -392,6 +395,7 @@ static void lim_launched_rc_track_right_vertical_loop(uint8 rideIndex, uint8 tra
 	}
 }
 
+/** rct2: 0x008A6D10 */
 static void lim_launched_rc_track_left_twist_down_to_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -476,6 +480,7 @@ static void lim_launched_rc_track_left_twist_down_to_up(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008A6D20 */
 static void lim_launched_rc_track_right_twist_down_to_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -560,6 +565,7 @@ static void lim_launched_rc_track_right_twist_down_to_up(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008A6D30 */
 static void lim_launched_rc_track_left_twist_up_to_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -644,6 +650,7 @@ static void lim_launched_rc_track_left_twist_up_to_down(uint8 rideIndex, uint8 t
 	}
 }
 
+/** rct2: 0x008A6D40 */
 static void lim_launched_rc_track_right_twist_up_to_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -728,6 +735,7 @@ static void lim_launched_rc_track_right_twist_up_to_down(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008A6CD0 */
 static void lim_launched_rc_track_left_corkscrew_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -746,11 +754,13 @@ static void lim_launched_rc_track_left_corkscrew_up(uint8 rideIndex, uint8 track
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15743, 0, 0, 32, 20, 3, height, 0, 6, height + 4);
 			break;
 		}
+
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 1:
@@ -786,7 +796,10 @@ static void lim_launched_rc_track_left_corkscrew_up(uint8 rideIndex, uint8 track
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15745, 0, 0, 20, 32, 3, height, 6, 0, height + 24);
 			break;
 		}
+
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		metal_a_supports_paint_setup(0, 4, 0, height + 35, gTrackColours[SCHEME_SUPPORTS]);
+
 		switch (direction) {
 		case 2:
 			paint_util_push_tunnel_right(height + 8, TUNNEL_0);
@@ -795,12 +808,12 @@ static void lim_launched_rc_track_left_corkscrew_up(uint8 rideIndex, uint8 track
 			paint_util_push_tunnel_left(height + 8, TUNNEL_0);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	}
 }
 
+/** rct2: 0x008A6CE0 */
 static void lim_launched_rc_track_right_corkscrew_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -859,7 +872,10 @@ static void lim_launched_rc_track_right_corkscrew_up(uint8 rideIndex, uint8 trac
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15757, 0, 0, 20, 32, 3, height, 6, 0, height + 24);
 			break;
 		}
+
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		metal_a_supports_paint_setup(0, 4, 0, height + 35, gTrackColours[SCHEME_SUPPORTS]);
+
 		switch (direction) {
 		case 0:
 			paint_util_push_tunnel_right(height + 8, TUNNEL_0);
@@ -868,22 +884,24 @@ static void lim_launched_rc_track_right_corkscrew_up(uint8 rideIndex, uint8 trac
 			paint_util_push_tunnel_left(height + 8, TUNNEL_0);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	}
 }
 
+/** rct2: 0x008A6CF0 */
 static void lim_launched_rc_track_left_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_right_corkscrew_up(rideIndex, 2 - trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A6D00 */
 static void lim_launched_rc_track_right_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_left_corkscrew_up(rideIndex, 2 - trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A6D80 */
 static void lim_launched_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -904,6 +922,7 @@ static void lim_launched_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, u
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x008A6C10 */
 static void lim_launched_rc_track_90_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -931,11 +950,13 @@ static void lim_launched_rc_track_90_deg_up(uint8 rideIndex, uint8 trackSequence
 	}
 }
 
+/** rct2: 0x008A6C20 */
 static void lim_launched_rc_track_90_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_90_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A6C30 */
 static void lim_launched_rc_track_60_deg_up_to_90_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -966,11 +987,13 @@ static void lim_launched_rc_track_60_deg_up_to_90_deg_up(uint8 rideIndex, uint8 
 	}
 }
 
+/** rct2: 0x008A6C40 */
 static void lim_launched_rc_track_90_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_60_deg_up_to_90_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A6C50 */
 static void lim_launched_rc_track_90_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -999,6 +1022,7 @@ static void lim_launched_rc_track_90_deg_up_to_60_deg_up(uint8 rideIndex, uint8 
 	paint_util_set_general_support_height(height + 80, 0x20);
 }
 
+/** rct2: 0x008A6C60 */
 static void lim_launched_rc_track_60_deg_down_to_90_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1028,6 +1052,7 @@ static void lim_launched_rc_track_60_deg_down_to_90_deg_down(uint8 rideIndex, ui
 	}
 }
 
+/** rct2: 0x008A6C70 */
 static void lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1091,11 +1116,13 @@ static void lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(uint8 
 	}
 }
 
+/** rct2: 0x008A6C80 */
 static void lim_launched_rc_track_inverted_flat_to_90_deg_quarter_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_90_deg_to_inverted_flat_quarter_loop_up(rideIndex, 2 - trackSequence, direction, height, mapElement);
 }
 
+/** rct2: 0x008A6D90 */
 static void lim_launched_rc_track_block_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (direction) {
@@ -1145,6 +1172,7 @@ static void lim_launched_rc_track_left_quarter_turn_1_90_deg_up(uint8 rideIndex,
 	}
 }
 
+/** rct2: 0x008A6CA0 */
 static void lim_launched_rc_track_right_quarter_turn_1_90_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1174,11 +1202,13 @@ static void lim_launched_rc_track_right_quarter_turn_1_90_deg_up(uint8 rideIndex
 	}
 }
 
+/** rct2: 0x008A6CB0 */
 static void lim_launched_rc_track_left_quarter_turn_1_90_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_right_quarter_turn_1_90_deg_up(rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
 }
 
+/** rct2: 0x008A6CC0 */
 static void lim_launched_rc_track_right_quarter_turn_1_90_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	lim_launched_rc_track_left_quarter_turn_1_90_deg_up(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);

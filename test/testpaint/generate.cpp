@@ -724,7 +724,7 @@ private:
             "metal_a_supports_paint_setup",
             "metal_b_supports_paint_setup",
             "wooden_a_supports_paint_setup",
-            "wooden_a_supports_paint_setup",
+            "wooden_b_supports_paint_setup",
         };
         return functionNames[function];
     }
