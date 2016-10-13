@@ -87,6 +87,8 @@ private:
     uint16          _listeningPort  = 0;
     SOCKET          _socket         = INVALID_SOCKET;
 
+    std::string     _hostName;
+
     SDL_mutex *     _connectMutex   = nullptr;
     std::string     _error;
 
@@ -182,9 +184,11 @@ public:
         {
             throw Exception("Socket not listening.");
         }
+        struct sockaddr_storage client_addr;
+        socklen_t client_len = sizeof(struct sockaddr_storage);
 
         ITcpSocket * tcpSocket = nullptr;
-        SOCKET socket = accept(_socket, nullptr, nullptr);
+        SOCKET socket = accept(_socket, (struct sockaddr *)&client_addr, &client_len);
         if (socket == INVALID_SOCKET)
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
@@ -201,8 +205,21 @@ public:
             }
             else
             {
+                char hostName[NI_MAXHOST];
+                int rc = getnameinfo(
+                    (struct sockaddr *)&client_addr,
+                    client_len,
+                    hostName,
+                    sizeof(hostName),
+                    nullptr,
+                    0,
+                    NI_NUMERICHOST | NI_NUMERICSERV); 
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);
+                if (rc == 0)
+                {
+                    _hostName = std::string(hostName);
+                }
             }
         }
         return tcpSocket;
@@ -401,6 +418,11 @@ public:
             CloseSocket();
         }
         SDL_UnlockMutex(_connectMutex);
+    }
+
+    const char * GetHostName() const override 
+    {
+        return _hostName.empty() ? nullptr : _hostName.c_str();
     }
 
 private:
