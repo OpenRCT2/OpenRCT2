@@ -29,7 +29,8 @@ extern "C" {
 #include "../util/util.h"
 #include "localisation.h"
 
-enum {
+enum
+{
     RCT2_LANGUAGE_ID_ENGLISH_UK,
     RCT2_LANGUAGE_ID_ENGLISH_US,
     RCT2_LANGUAGE_ID_FRENCH,
@@ -47,42 +48,48 @@ enum {
     RCT2_LANGUAGE_ID_END = 255
 };
 
-static TTFFontSetDescriptor TTFFontMSGothic = {{
+static TTFFontSetDescriptor TTFFontMSGothic =
+{{
     { "msgothic.ttc",   "MS PGothic",   9,      1,      0,      15,     nullptr },
     { "msgothic.ttc",   "MS PGothic",   12,     1,      0,      17,     nullptr },
     { "msgothic.ttc",   "MS PGothic",   12,     1,      0,      17,     nullptr },
     { "msgothic.ttc",   "MS PGothic",   13,     1,      0,      20,     nullptr },
 }};
 
-static TTFFontSetDescriptor TTFFontMingLiu = {{
+static TTFFontSetDescriptor TTFFontMingLiu =
+{{
     { "msjh.ttc",       "JhengHei", 9,      -1,     -3,     6,      nullptr },
     { "mingliu.ttc",    "MingLiU",  11,     1,      1,      12,     nullptr },
     { "mingliu.ttc",    "MingLiU",  12,     1,      0,      12,     nullptr },
     { "mingliu.ttc",    "MingLiU",  13,     1,      0,      20,     nullptr },
 }};
 
-static TTFFontSetDescriptor TTFFontSimSun = {{
+static TTFFontSetDescriptor TTFFontSimSun =
+{{
     { "msyh.ttc",       "YaHei",    9,      -1,     -3,     6,      nullptr },
     { "simsun.ttc",     "SimSun",   11,     1,      -1,     14,     nullptr },
     { "simsun.ttc",     "SimSun",   12,     1,      -2,     14,     nullptr },
     { "simsun.ttc",     "SimSun",   13,     1,      0,      20,     nullptr },
 }};
 
-static TTFFontSetDescriptor TTFFontGulim = {{
+static TTFFontSetDescriptor TTFFontGulim =
+{{
     { "gulim.ttc",      "Gulim",    11,     1,      0,      15,     nullptr },
     { "gulim.ttc",      "Gulim",    12,     1,      0,      17,     nullptr },
     { "gulim.ttc",      "Gulim",    12,     1,      0,      17,     nullptr },
     { "gulim.ttc",      "Gulim",    13,     1,      0,      20,     nullptr },
 }};
 
-static TTFFontSetDescriptor TTFFontArial = {{
+static TTFFontSetDescriptor TTFFontArial =
+{{
     { "arial.ttf",      "Arial",    8,      0,      -1,     6,      nullptr },
     { "arial.ttf",      "Arial",    10,     0,      -1,     12,     nullptr },
     { "arial.ttf",      "Arial",    11,     0,      -1,     12,     nullptr },
     { "arial.ttf",      "Arial",    12,     0,      -1,     20,     nullptr },
 }};
 
-const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
+const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
+{
     { "",            "",                         "",                        FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_UNDEFINED
     { "en-GB",      "English (UK)",             "English (UK)",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_ENGLISH_UK
     { "en-US",      "English (US)",             "English (US)",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_US             },  // LANGUAGE_ENGLISH_US
@@ -108,43 +115,49 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
-ILanguagePack *_languageFallback = nullptr;
-ILanguagePack *_languageCurrent = nullptr;
+static ILanguagePack * _languageFallback = nullptr;
+static ILanguagePack * _languageCurrent = nullptr;
 
-const utf8 BlackUpArrowString[] =       { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
+static const utf8 BlackUpArrowString[] =       { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
+static const utf8 BlackDownArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
+static const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
+static const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
+static const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
 void utf8_remove_format_codes(utf8 *text, bool allowcolours)
 {
     utf8 *dstCh = text;
     utf8 *ch = text;
     int codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
-        if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint))) {
+    while ((codepoint = utf8_get_next(ch, (const utf8 * *)&ch)) != 0)
+    {
+        if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
+        {
             dstCh = utf8_write_codepoint(dstCh, codepoint);
         }
     }
     *dstCh = 0;
 }
 
-const char *language_get_string(rct_string_id id)
+const char * language_get_string(rct_string_id id)
 {
-    const char *openrctString = nullptr;
-
-    if (id == STR_NONE)
-        return nullptr;
-
-    if (_languageCurrent != nullptr)
-        openrctString = _languageCurrent->GetString(id);
-    if (openrctString == nullptr && _languageFallback != nullptr)
-        openrctString = _languageFallback->GetString(id);
-    if (openrctString == nullptr)
-        openrctString = "(undefined string)";
-
-    return openrctString;
+    const char * result = nullptr;
+    if (id != STR_NONE)
+    {
+        if (_languageCurrent != nullptr)
+        {
+            result = _languageCurrent->GetString(id);
+        }
+        if (result == nullptr && _languageFallback != nullptr)
+        {
+            result = _languageFallback->GetString(id);
+        }
+        if (result == nullptr)
+        {
+            result = "(undefined string)";
+        }
+    }
+    return result;
 }
 
 bool language_open(int id)
@@ -154,10 +167,13 @@ bool language_open(int id)
 
     language_close_all();
     if (id == LANGUAGE_UNDEFINED)
+    {
         return false;
+    }
 
     platform_get_openrct_data_path(dataPath, sizeof(dataPath));
-    if (id != LANGUAGE_ENGLISH_UK) {
+    if (id != LANGUAGE_ENGLISH_UK)
+    {
         safe_strcpy(filename, dataPath, MAX_PATH);
         safe_strcat_path(filename, "language", MAX_PATH);
         safe_strcat_path(filename, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale, MAX_PATH);
@@ -170,16 +186,22 @@ bool language_open(int id)
     safe_strcat_path(filename, LanguagesDescriptors[id].locale, MAX_PATH);
     path_append_extension(filename, ".txt", MAX_PATH);
     _languageCurrent = LanguagePackFactory::FromFile(id, filename);
-    if (_languageCurrent != nullptr) {
+    if (_languageCurrent != nullptr)
+    {
         gCurrentLanguage = id;
 
-        if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE) {
+        if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE)
+        {
             ttf_dispose();
             gUseTrueTypeFont = false;
             gCurrentTTFFontSet = nullptr;
-        } else {
-            if (!String::IsNullOrEmpty(gConfigFonts.file_name)) {
-                static TTFFontSetDescriptor TTFFontCustom = {{
+        }
+        else
+        {
+            if (!String::IsNullOrEmpty(gConfigFonts.file_name))
+            {
+                static TTFFontSetDescriptor TTFFontCustom =
+                {{
                     { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_tiny,     gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_tiny,   nullptr },
                     { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_small,    gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_small,  nullptr },
                     { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_medium,   gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_medium, nullptr },
@@ -190,9 +212,12 @@ bool language_open(int id)
                 gCurrentTTFFontSet = &TTFFontCustom;
                 
                 bool font_initialised = ttf_initialise();
-                if (!font_initialised) {
+                if (!font_initialised)
+                {
                     log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
-                } else {
+                }
+                else
+                {
                     // Objects and their localized strings need to be refreshed
                     GetObjectManager()->ResetObjects();
                     return true;
@@ -204,14 +229,16 @@ bool language_open(int id)
             bool font_initialised = ttf_initialise();
 
             // Have we tried Arial yet?
-            if (!font_initialised && gCurrentTTFFontSet != &TTFFontArial) {
+            if (!font_initialised && gCurrentTTFFontSet != &TTFFontArial)
+            {
                 log_warning("Unable to initialise prefered TrueType font -- falling back to Arial.");
                 gCurrentTTFFontSet = &TTFFontArial;
                 font_initialised = ttf_initialise();
             }
 
             // Fall back to sprite font.
-            if (!font_initialised) {
+            if (!font_initialised)
+            {
                 log_warning("Falling back to sprite font.");
                 gUseTrueTypeFont = false;
                 gCurrentTTFFontSet = nullptr;
@@ -239,9 +266,9 @@ void language_close_all()
 #define MAX_OBJECT_CACHED_STRINGS   2048
 
 /* rct2: 0x0098DA16 */
-uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
+static uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
 
-utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
+static utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
 
 static void utf8_trim_string(utf8 *text)
 {
@@ -251,18 +278,23 @@ static void utf8_trim_string(utf8 *text)
     int codepoint;
 
     // Trim left
-    while ((codepoint = utf8_get_next(src, (const utf8**)&src)) != 0) {
-        if (codepoint != ' ') {
+    while ((codepoint = utf8_get_next(src, (const utf8 * *)&src)) != 0)
+    {
+        if (codepoint != ' ')
+        {
             dst = utf8_write_codepoint(dst, codepoint);
             last = dst;
             break;
         }
     }
-    if (codepoint != 0) {
+    if (codepoint != 0)
+    {
         // Trim right
-        while ((codepoint = utf8_get_next(src, (const utf8**)&src)) != 0) {
+        while ((codepoint = utf8_get_next(src, (const utf8 * *)&src)) != 0)
+        {
             dst = utf8_write_codepoint(dst, codepoint);
-            if (codepoint != ' ') {
+            if (codepoint != ' ')
+            {
                 last = dst;
             }
         }
@@ -287,10 +319,12 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
 static utf8 *convert_multibyte_charset(const char *src, int languageId)
 {
     size_t reservedLength = (strlen(src) * 4) + 1;
-    utf8 *buffer = (utf8*)malloc(reservedLength);
-    utf8 *dst = buffer;
-    for (const uint8 *ch = (const uint8*)src; *ch != 0;) {
-        if (*ch == 0xFF) {
+    utf8 * buffer = (utf8*)malloc(reservedLength);
+    utf8 * dst = buffer;
+    for (const uint8 * ch = (const uint8*)src; *ch != 0;)
+    {
+        if (*ch == 0xFF)
+        {
             ch++;
             uint8 a = *ch++;
             uint8 b = *ch++;
@@ -298,13 +332,15 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 
             codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
             dst = utf8_write_codepoint(dst, codepoint);
-        } else {
+        }
+        else
+        {
             dst = utf8_write_codepoint(dst, *ch++);
         }
     }
     *dst++ = 0;
     size_t actualLength = (size_t)(dst - buffer);
-    buffer = (utf8*)realloc(buffer, actualLength);
+    buffer = (utf8 *)realloc(buffer, actualLength);
 
     return buffer;
 }
@@ -324,9 +360,12 @@ static bool rct2_language_is_multibyte_charset(int languageId)
 
 utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
 {
-    if (rct2_language_is_multibyte_charset(languageId)) {
+    if (rct2_language_is_multibyte_charset(languageId))
+    {
         return convert_multibyte_charset(src, languageId);
-    } else {
+    }
+    else
+    {
         return win1252_to_utf8_alloc(src);
     }
 }
