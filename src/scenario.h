@@ -417,7 +417,7 @@ unsigned int scenario_rand_max(unsigned int max);
 int scenario_prepare_for_save();
 int scenario_save(SDL_RWops* rw, int flags);
 int scenario_save_network(SDL_RWops* rw);
-int scenario_get_num_packed_objects_to_write();
+int scenario_get_num_packed_objects_to_write(rct_object_entry *object_list);
 int scenario_write_packed_objects(SDL_RWops* rw);
 void scenario_remove_trackless_rides(rct_s6_data *s6);
 void scenario_fix_ghosts(rct_s6_data *s6);

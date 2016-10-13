@@ -689,7 +689,7 @@ int scenario_prepare_for_save()
  *
  *  rct2: 0x006AA244
  */
-int scenario_get_num_packed_objects_to_write()
+int scenario_get_num_packed_objects_to_write(rct_object_entry * object_list)
 {
 	int count = 0;
 	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
