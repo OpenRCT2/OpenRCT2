@@ -26,6 +26,13 @@ static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_I
 static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
 static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
+#define BLANK_SUPPORT {.height = 0, .slope = 0xFF}
+static const support_height DefaultSegmentHeight[9] = {
+	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT,
+	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT,
+	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT
+};
+
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
@@ -185,7 +192,25 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
 	return false;
 }
 
+static void check_support_height()
+{
+	// First get last known support height state
+	if (memcmp(gSupportSegments, &DefaultSegmentHeight, sizeof(support_height) * 9) == 0) {
+		// Nothing changed
+		return;
+	}
+
+	function_call call = {
+		.function = SET_SEGMENT_HEIGHT
+	};
+
+	calls[callCount] = call;
+	callCount++;
+}
+
 bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags) {
+
+	check_support_height();
 
 	function_call call = {
 		.function = SUPPORTS_METAL_A,
@@ -204,6 +229,8 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 }
 
 bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
+
+	check_support_height();
 
 	function_call call = {
 		.function = SUPPORTS_METAL_B,
@@ -294,6 +321,10 @@ bool assertFunctionCallEquals(function_call expected, function_call actual) {
 		return true;
 	}
 
+	if (function == SET_SEGMENT_HEIGHT) {
+		return true;
+	}
+
 	if (expected.paint.image_id != actual.paint.image_id) {
 		int expectedSpriteGroup = getSpriteGroup(expected.paint.image_id & 0x7FFFF);
 		int actualSpriteGroup = getSpriteGroup(actual.paint.image_id & 0x7FFFF);
@@ -377,6 +408,10 @@ static void printFunctionCall(utf8string out, size_t len, function_call call) {
 		return;
 	case SUPPORTS_METAL_B:
 		snprintf(out, len, "metal_b_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
+		return;
+
+	case SET_SEGMENT_HEIGHT:
+		snprintf(out, len, "paint_util_set_segment_support_height");
 		return;
 	}
 
@@ -555,6 +590,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				callCount = 0;
 				memset(&calls, 0, sizeof(calls));
 
+				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
+
 				uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
 				// Have to call from this point as it pushes esi and expects callee to pop it
@@ -578,6 +615,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				callCount = 0;
 
 				testpaint_clear_ignore();
+				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
 					snprintf(error, len, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
