@@ -570,6 +570,12 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
 
+	for (int inverted = 0; inverted < 2; inverted++) {
+		if (inverted == 0) {
+			mapElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+		} else {
+			mapElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+		}
 	for (int chainLift = 0; chainLift < 2; chainLift++) {
 		if (chainLift == 0) {
 			mapElement.type &= ~0x80;
@@ -618,7 +624,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
-					snprintf(error, len, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d]\n", direction, trackSequence, chainLift);
+					snprintf(error, len, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d inverted:%d]\n",
+						direction, trackSequence, chainLift, inverted);
 					continue;
 				}
 
@@ -644,11 +651,13 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 					if (oldCallCount != newCallCount) {
 						slen = strlen(error);
 						if (slen < len)
-							snprintf(error + slen, len - slen, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d]", newCallCount, oldCallCount, direction, trackSequence, chainLift);
+							snprintf(error + slen, len - slen, "Call counts don't match (was %d, expected %d) [direction:%d trackSequence:%d chainLift:%d inverted:%d]",
+								newCallCount, oldCallCount, direction, trackSequence, chainLift, inverted);
 					} else {
 						slen = strlen(error);
 						if (slen < len)
-							snprintf(error + slen, len - slen, "Calls don't match [direction:%d trackSequence:%d chainLift:%d]", direction, trackSequence, chainLift);
+							snprintf(error + slen, len - slen, "Calls don't match [direction:%d trackSequence:%d chainLift:%d inverted:%d]",
+								direction, trackSequence, chainLift, inverted);
 					}
 					
 					slen = strlen(error);
@@ -662,6 +671,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 
 			}
 		}
+	}
 	}
 	}
 
