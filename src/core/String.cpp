@@ -177,8 +177,13 @@ namespace String
 
     utf8 * Duplicate(const utf8 * src)
     {
-        size_t srcSize = SizeOf(src);
-        return Memory::DuplicateArray(src, srcSize + 1);
+        utf8 * result = nullptr;
+        if (src != nullptr)
+        {
+            size_t srcSize = SizeOf(src);
+            result = Memory::DuplicateArray(src, srcSize + 1);
+        }
+        return result;
     }
 
     utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)

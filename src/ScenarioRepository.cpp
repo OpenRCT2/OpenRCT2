@@ -194,7 +194,7 @@ public:
 
     bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
     {
-        const scenario_index_entry * scenario = GetByFilename(scenarioFileName);
+        scenario_index_entry * scenario = GetByFilename(scenarioFileName);
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
@@ -205,20 +205,21 @@ public:
                 if (highscore == nullptr)
                 {
                     highscore = InsertHighscore();
-                    scenario->highscore->timestamp = platform_get_datetime_now_utc();
+                    highscore->timestamp = platform_get_datetime_now_utc();
+                    scenario->highscore = highscore;
                 }
                 else
                 {
                     if (highscore->name != nullptr)
                     {
-                        scenario->highscore->timestamp = platform_get_datetime_now_utc();
+                        highscore->timestamp = platform_get_datetime_now_utc();
                     }
                     SafeFree(highscore->fileName);
                     SafeFree(highscore->name);
                 }
-                scenario->highscore->fileName = String::Duplicate(Path::GetFileName(scenario->path));
-                scenario->highscore->name = String::Duplicate(name);
-                scenario->highscore->company_value = companyValue;
+                highscore->fileName = String::Duplicate(Path::GetFileName(scenario->path));
+                highscore->name = String::Duplicate(name);
+                highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
             }
@@ -499,7 +500,7 @@ private:
         for (size_t i = 0; i < _highscores.size(); i++)
         {
             scenario_highscore_entry * highscore = _highscores[i];
-            scenario_index_entry * scenerio = GetByPath(highscore->fileName);
+            scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
             if (scenerio != nullptr)
             {
                 scenerio->highscore = highscore;

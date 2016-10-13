@@ -353,7 +353,7 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	if (scenario_repository_try_record_highscore(_scenarioFileName, gScenarioCompanyValueRecord, NULL))
+	if (scenario_repository_try_record_highscore(_scenarioFileName, gScenarioCompanyValueRecord, name))
 	{
 		safe_strcpy(gScenarioCompletedBy, name, 32);
 	}
