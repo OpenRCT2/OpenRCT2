@@ -456,7 +456,7 @@ extern "C"
     enum {
         S6_SAVE_FLAG_EXPORT    = 1 << 0,
         S6_SAVE_FLAG_SCENARIO  = 1 << 1,
-        S6_SAVE_FLAG_AUTOMATIC = 1 << 31,
+        S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
     };
 
     /**

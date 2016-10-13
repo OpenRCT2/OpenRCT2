@@ -159,7 +159,7 @@ typedef struct track_design_file_ref {
 
 enum {
 	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
-	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1 << 31)		// Not used anymore.
+	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31)		// Not used anymore.
 };
 
 enum {
