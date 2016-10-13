@@ -44,6 +44,8 @@ enum
     SUPPORTS_METAL_B,
     SUPPORTS_WOOD_A,
     SUPPORTS_WOOD_B,
+
+    SET_SEGMENT_HEIGHT,
 };
 
 typedef struct
