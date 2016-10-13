@@ -891,7 +891,7 @@ enum {
 	TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
 	TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
 	TEXT_DRAW_FLAG_TTF = 1 << 30,
-	TEXT_DRAW_FLAG_NO_DRAW = 1 << 31
+	TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
 typedef struct text_draw_info {
