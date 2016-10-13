@@ -400,7 +400,7 @@ static void printFunctionCall(utf8string out, size_t len, function_call call) {
 		snprintf(out, len, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
 		return;
 	case SUPPORTS_WOOD_B:
-		snprintf(out, len, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
+		snprintf(out, len, "wooden_b_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
 		return;
 
 	case SUPPORTS_METAL_A:
