@@ -429,7 +429,7 @@ void Network::UpdateClient()
 			}
 			break;
 		}
-		case NETWORK_STATUS_CONNECTED:
+		case SOCKET_STATUS_CONNECTED:
 		{
 			status = NETWORK_STATUS_CONNECTED;
 			server_connection.ResetLastPacketTime();
@@ -886,56 +886,22 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
-	bool RLEState = gUseRLE;
-	gUseRLE = false;
 	FILE* temp = tmpfile();
 	if (!temp) {
 		log_warning("Failed to create temporary file to save map.");
 		return;
 	}
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	scenario_save_network(rw);
-	gUseRLE = RLEState;
-	int size = (int)SDL_RWtell(rw);
-	std::vector<uint8> buffer(size);
-	SDL_RWseek(rw, 0, RW_SEEK_SET);
-	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
-		log_warning("Failed to read temporary map file into memory.");
-		SDL_RWclose(rw);
+	size_t out_size;
+	unsigned char *header;
+	header = save_for_network(rw, out_size);
+	SDL_RWclose(rw);
+	if (header == nullptr) {
+		connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+		connection->Socket->Disconnect();
 		return;
 	}
 	size_t chunksize = 65000;
-	size_t out_size = size;
-	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
-	unsigned char *header;
-	if (compressed != NULL)
-	{
-		header = (unsigned char *)_strdup("open2_sv6_zlib");
-		size_t header_len = strlen((char *)header) + 1; // account for null terminator
-		header = (unsigned char *)realloc(header, header_len + out_size);
-		if (header == nullptr) {
-			log_error("Failed to allocate %u bytes.", header_len + out_size);
-			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-			connection->Socket->Disconnect();
-			free(compressed);
-			return;
-		}
-		memcpy(&header[header_len], compressed, out_size);
-		out_size += header_len;
-		free(compressed);
-		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-	} else {
-		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-		header = (unsigned char *)malloc(size);
-		if (header == nullptr) {
-			log_error("Failed to allocate %u bytes.", size);
-			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-			connection->Socket->Disconnect();
-			return;
-		}
-		out_size = size;
-		memcpy(header, &buffer[0], size);
-	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
 		size_t datasize = Math::Min(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -948,7 +914,48 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		}
 	}
 	free(header);
-	SDL_RWclose(rw);
+}
+
+unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size) const
+{
+	unsigned char * header = nullptr;
+	out_size = 0;
+	bool RLEState = gUseRLE;
+	gUseRLE = false;
+	scenario_save_network(rw_buffer);
+	gUseRLE = RLEState;
+	int size = (int)SDL_RWtell(rw_buffer);
+	std::vector<uint8> buffer(size);
+	SDL_RWseek(rw_buffer, 0, RW_SEEK_SET);
+	if (SDL_RWread(rw_buffer, &buffer[0], size, 1) == 0) {
+		log_warning("Failed to read temporary map file into memory.");
+		return nullptr;
+	}
+	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	if (compressed != NULL)
+	{
+		header = (unsigned char *)_strdup("open2_sv6_zlib");
+		size_t header_len = strlen((char *)header) + 1; // account for null terminator
+		header = (unsigned char *)realloc(header, header_len + out_size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", header_len + out_size);
+		} else {
+			memcpy(&header[header_len], compressed, out_size);
+			out_size += header_len;
+			log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+		}
+		free(compressed);
+	} else {
+		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
+		header = (unsigned char *)malloc(size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", size);
+		} else {
+			out_size = size;
+			memcpy(header, &buffer[0], size);
+		}
+	}
+	return header;
 }
 
 void Network::Client_Send_CHAT(const char* text)
