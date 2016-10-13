@@ -126,16 +126,16 @@ static const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0
 static const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
 static const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
-void utf8_remove_format_codes(utf8 *text, bool allowcolours)
+void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
-    utf8 *dstCh = text;
-    utf8 *ch = text;
+    const utf8 * ch = text;
+    utf8 * dstCh = text;
     int codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8 * *)&ch)) != 0)
+    while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
         {
-            dstCh = utf8_write_codepoint(dstCh, codepoint);
+            dstCh = String::WriteCodepoint(dstCh, codepoint);
         }
     }
     *dstCh = 0;
@@ -162,7 +162,7 @@ const char * language_get_string(rct_string_id id)
     return result;
 }
 
-utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageId)
+static utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageId)
 {
     const char * locale = LanguagesDescriptors[languageId].locale;
 
@@ -171,6 +171,69 @@ utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageId)
     Path::Append(buffer, sizeof(bufferSize), locale);
     String::Append(buffer, sizeof(bufferSize), ".txt");
     return buffer;
+}
+
+static void LoadSpriteFont()
+{
+    ttf_dispose();
+    gUseTrueTypeFont = false;
+    gCurrentTTFFontSet = nullptr;
+}
+
+static bool LoadFont(TTFFontSetDescriptor * font)
+{
+    gUseTrueTypeFont = true;
+    gCurrentTTFFontSet = font;
+
+    bool fontInitialised = ttf_initialise();
+    return fontInitialised;
+}
+
+static bool LoadCustomConfigFont()
+{
+    static TTFFontSetDescriptor TTFFontCustom =
+    {{
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny,   gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_tiny,   nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small,  gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_small,  nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_medium, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_big,    gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_big,    nullptr },
+    }};
+
+    ttf_dispose();
+    gUseTrueTypeFont = true;
+    gCurrentTTFFontSet = &TTFFontCustom;
+
+    bool fontInitialised = ttf_initialise();
+    return fontInitialised;
+}
+
+static void TryLoadFonts()
+{
+    TTFFontSetDescriptor * font = LanguagesDescriptors[gCurrentLanguage].font;
+    if (font != FONT_OPENRCT2_SPRITE)
+    {
+        if (!String::IsNullOrEmpty(gConfigFonts.file_name))
+        {
+            if (LoadCustomConfigFont())
+            {
+                return;
+            }
+            Console::Error::WriteLine("Unable to initialise configured TrueType font -- falling back to Language default.");
+        }
+
+        if (LoadFont(font))
+        {
+            return;
+        }
+        Console::Error::WriteLine("Unable to initialise prefered TrueType font -- falling back to Arial.");
+
+        if (LoadFont(&TTFFontArial))
+        {
+            return;
+        }
+        Console::Error::WriteLine("Unable to initialise prefered TrueType font -- Falling back to sprite font.");
+    }
+    LoadSpriteFont();
 }
 
 bool language_open(int id)
@@ -194,64 +257,7 @@ bool language_open(int id)
     if (_languageCurrent != nullptr)
     {
         gCurrentLanguage = id;
-
-        if (LanguagesDescriptors[id].font == FONT_OPENRCT2_SPRITE)
-        {
-            ttf_dispose();
-            gUseTrueTypeFont = false;
-            gCurrentTTFFontSet = nullptr;
-        }
-        else
-        {
-            if (!String::IsNullOrEmpty(gConfigFonts.file_name))
-            {
-                static TTFFontSetDescriptor TTFFontCustom =
-                {{
-                    { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_tiny,     gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_tiny,   nullptr },
-                    { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_small,    gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_small,  nullptr },
-                    { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_medium,   gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_medium, nullptr },
-                    { gConfigFonts.file_name,   gConfigFonts.font_name, gConfigFonts.size_big,      gConfigFonts.x_offset,  gConfigFonts.y_offset,  gConfigFonts.height_big,    nullptr },
-                }};
-                ttf_dispose();
-                gUseTrueTypeFont = true;
-                gCurrentTTFFontSet = &TTFFontCustom;
-                
-                bool fontInitialised = ttf_initialise();
-                if (!fontInitialised)
-                {
-                    log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
-                }
-                else
-                {
-                    // Objects and their localized strings need to be refreshed
-                    GetObjectManager()->ResetObjects();
-                    return true;
-                }
-            }
-            ttf_dispose();
-            gUseTrueTypeFont = true;
-            gCurrentTTFFontSet = LanguagesDescriptors[id].font;
-
-            bool fontInitialised = ttf_initialise();
-            if (!fontInitialised)
-            {
-                // Have we tried Arial yet?
-                if (gCurrentTTFFontSet != &TTFFontArial)
-                {
-                    Console::WriteLine("Unable to initialise prefered TrueType font -- falling back to Arial.");
-                    gCurrentTTFFontSet = &TTFFontArial;
-                    fontInitialised = ttf_initialise();
-                    if (!fontInitialised)
-                    {
-                        // Fall back to sprite font.
-                        Console::WriteLine("Falling back to sprite font.");
-                        gUseTrueTypeFont = false;
-                        gCurrentTTFFontSet = nullptr;
-                        return false;
-                    }
-                }
-            }
-        }
+        TryLoadFonts();
 
         // Objects and their localized strings need to be refreshed
         GetObjectManager()->ResetObjects();
