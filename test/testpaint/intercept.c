@@ -553,7 +553,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 	unk_140E9A8 = &dpi;
 
 	rct_ride ride = { 0 };
-	// ride.entrance_style = RIDE_ENTRANCE_STYLE_CANVAS_TENT;
+	ride.entrance_style = RIDE_ENTRANCE_STYLE_CANVAS_TENT;
 
 	rct_ride_entry rideEntry = { 0 };
 	rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
