@@ -25,10 +25,9 @@
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
 #include "../scenario.h"
+#include "../ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
-
-typedef struct scenario_index_entry scenario_index_entry;
 
 struct rct_window;
 union rct_window_event;

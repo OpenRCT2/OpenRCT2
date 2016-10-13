@@ -22,7 +22,7 @@
     #define MAX_PATH 260
 #endif
 
-typedef struct rct_object_entry rct_object_entry;
+struct rct_object_entry;
 
 typedef struct scenario_highscore_entry
 {
@@ -86,7 +86,7 @@ extern "C"
     size_t  scenario_repository_get_count();
     const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
     bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
-    void    scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry);
+    void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
 
 #ifdef __cplusplus
 }
