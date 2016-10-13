@@ -129,6 +129,16 @@ private:
                 GenerateTrackFunction(trackType);
                 WriteLine();
             }
+
+            if (trackType == TRACK_ELEM_END_STATION)
+            {
+                const uint32 * paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
+                WriteLine(0, "/** rct2: 0x%08X, 0x%08X, 0x%08X */", paintFunctionList[TRACK_ELEM_END_STATION], paintFunctionList[TRACK_ELEM_BEGIN_STATION], paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
+                WriteLine(0, "static void " + _rideName + "_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
+                WriteLine(0, "{");
+                WriteLine(0, "}");
+                WriteLine();
+            }
         }
     }
 
@@ -1045,6 +1055,14 @@ private:
         WriteLine(1, "switch (trackType) {");
         for (int trackType = 0; trackType < 256; trackType++)
         {
+            if (trackType == TRACK_ELEM_END_STATION) {
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_END_STATION]) + ":");
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_BEGIN_STATION]) + ":");
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_MIDDLE_STATION]) + ":");
+                WriteLine(2, "return %s_track_station;", _rideName.c_str());
+                continue;
+            }
+
             if (IsTrackTypeSupported(trackType))
             {
                 WriteLine(1, "case " + std::string(TrackElemNames[trackType]) + ":");
