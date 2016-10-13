@@ -211,22 +211,12 @@ void window_staff_list_close(rct_window *w)
 */
 static void window_staff_list_mouseup(rct_window *w, int widgetIndex)
 {
-	uint16 newStaffId;
-
 	switch (widgetIndex) {
 	case WIDX_STAFF_LIST_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_STAFF_LIST_HIRE_BUTTON:
-		newStaffId = hire_new_staff_member(_windowStaffListSelectedTab);
-
-		if (newStaffId == 0xFFFF) {
-			rct_window* window = window_find_by_class(WC_STAFF_LIST);
-			window_invalidate(window);
-		} else {
-			window_staff_open(&get_sprite(newStaffId)->peep);
-		}
-
+		hire_new_staff_member(_windowStaffListSelectedTab);
 		break;
 	case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
 		if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, 12)) {

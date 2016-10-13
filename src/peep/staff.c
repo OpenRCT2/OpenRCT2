@@ -327,6 +327,21 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 									   edi);
 }
 
+void game_command_callback_hire_new_staff_member(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int sprite_index = edi;
+	if (sprite_index == SPRITE_INDEX_NULL)
+	{
+		rct_window *window = window_find_by_class(WC_STAFF_LIST);
+		window_invalidate(window);
+	}
+	else
+	{
+		rct_peep *peep = &get_sprite(sprite_index)->peep;
+		window_staff_open(peep);
+	}
+}
+
 /** rct2: 0x00982134 */
 static const bool peep_slow_walking_types[] = {
 	false,	// PEEP_SPRITE_TYPE_NORMAL
@@ -484,6 +499,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 	eax = 0x8000;
 	ebx = staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
+	game_command_callback = game_command_callback_hire_new_staff_member;
 	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (result == MONEY32_UNDEFINED)

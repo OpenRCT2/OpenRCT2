@@ -82,6 +82,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_remove_track_piece,
 	game_command_callback_place_banner,
 	game_command_callback_place_ride_entrance_or_exit,
+	game_command_callback_hire_new_staff_member,
 };
 int game_command_playerid = -1;
 
