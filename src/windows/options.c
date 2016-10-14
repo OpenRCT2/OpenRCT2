@@ -119,6 +119,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SOUND_CHECKBOX,
 	WIDX_MUSIC_CHECKBOX,
 	WIDX_AUDIO_FOCUS_CHECKBOX,
+	WIDX_TITLE_MUSIC_CHECKBOX,
 	WIDX_TITLE_MUSIC,
 	WIDX_TITLE_MUSIC_DROPDOWN,
 	WIDX_SOUND_VOLUME,
@@ -262,6 +263,7 @@ static rct_widget window_options_audio_widgets[] = {
 	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND_EFFECTS,		STR_SOUND_EFFECTS_TIP },		// Enable / disable sound effects
 	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_RIDE_MUSIC,			STR_RIDE_MUSIC_TIP },			// Enable / disable ride music
 	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_AUDIO_FOCUS_TIP },			// Enable / disable audio disabled on focus lost
+	{ WWT_CHECKBOX,			1,	10,		229,	112,	124,	STR_OPTIONS_MUSIC_LABEL,STR_NONE },					// Enable / disable audio disabled on focus lost
 	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },						// Title music
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	STR_DROPDOWN_GLYPH,		STR_TITLE_MUSIC_TIP },
 	{ WWT_SCROLL,			1,	155,	299,	68,		80,		SCROLL_HORIZONTAL,		STR_NONE }, 					// Sound effect volume
@@ -357,6 +359,8 @@ static const rct_string_id window_options_title_music_names[] = {
 	STR_ROLLERCOASTER_TYCOON_1_DROPDOWN ,
 	STR_ROLLERCOASTER_TYCOON_2_DROPDOWN ,
 	STR_OPTIONS_MUSIC_VALUE_RANDOM,
+	STR_MUSIC_STYLE_CUSTOM_MUSIC_1,
+	STR_MUSIC_STYLE_CUSTOM_MUSIC_2,
 };
 
 static const rct_string_id window_options_scale_quality_names[] = {
@@ -488,6 +492,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SOUND_CHECKBOX) |
 	(1 << WIDX_MUSIC_CHECKBOX) |
 	(1 << WIDX_AUDIO_FOCUS_CHECKBOX) |
+	(1 << WIDX_TITLE_MUSIC_CHECKBOX) |
 	(1 << WIDX_TITLE_MUSIC) |
 	(1 << WIDX_TITLE_MUSIC_DROPDOWN),
 
@@ -686,6 +691,12 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			gConfigSound.audio_focus = !gConfigSound.audio_focus;
 			config_save_default();
 			window_invalidate(w);
+			break;
+		case WIDX_TITLE_MUSIC_CHECKBOX:
+			gConfigSound.title_music = !gConfigSound.title_music;
+			 audio_stop_title_music();
+			 config_save_default();
+			 window_invalidate(w);
 			break;
 		}
 		break;
@@ -1048,8 +1059,15 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			dropdown_set_checked(gAudioCurrentDevice, true);
 			break;
+
+			// disable title music dropdown if the checkbox is unchecked
+			if (gConfigSound.title_music != false) {
+				w->disabled_widgets = (1 << WIDX_TITLE_MUSIC_DROPDOWN);	
+				w->disabled_widgets = (1 << WIDX_TITLE_MUSIC);
+			}
+
 		case WIDX_TITLE_MUSIC_DROPDOWN:
-			num_items = 4;
+			num_items = 6;
 
 			for (i = 0; i < num_items ; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -1342,6 +1360,22 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 				config_save_default();
 				window_invalidate(w);
 			}
+			if ((dropdownIndex == 4) && !platform_file_exists(get_file_path(PATH_ID_CUSTOM1))) {
+				window_error_open(STR_OPTIONS_MUSIC_ERR_CUSTOM1_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CUSTOM_NOT_FOUND_HINT);
+			}
+			else {
+				gConfigSound.title_music = (sint8)dropdownIndex;
+				config_save_default();
+				window_invalidate(w);
+			}
+			if ((dropdownIndex == 5) && !platform_file_exists(get_file_path(PATH_ID_CUSTOM2))) {
+				window_error_open(STR_OPTIONS_MUSIC_ERR_CUSTOM2_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CUSTOM_NOT_FOUND_HINT);
+			}
+			else {
+				gConfigSound.title_music = (sint8)dropdownIndex;
+				config_save_default();
+				window_invalidate(w);
+			}
 
 			audio_stop_title_music();
 			if (dropdownIndex != 0)
@@ -1424,7 +1458,7 @@ static void window_options_invalidate(rct_window *w)
 		set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
 		set_format_arg(12, rct_string_id, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
-		// disable resolution dropdown on "Fullscreen (desktop)"
+		// disable resolution dropdown on "Fullscreen (desktop)" *******
 		if (gConfigGeneral.fullscreen_mode == 2){
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION);
@@ -1542,6 +1576,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
 		widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+		widget_set_checkbox_value(w, WIDX_TITLE_MUSIC_CHECKBOX, gConfigSound.title_music);
 
 		if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
 			widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
@@ -1558,6 +1593,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_audio_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_AUDIO_FOCUS_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_audio_widgets[WIDX_TITLE_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_audio_widgets[WIDX_SOUND_VOLUME].type = WWT_SCROLL;
@@ -1788,7 +1824,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			window_options_audio_widgets[WIDX_SOUND_DROPDOWN].left - window_options_audio_widgets[WIDX_SOUND].left - 4
 		);
 
-		gfx_draw_string_left(dpi, STR_OPTIONS_MUSIC_LABEL, w, w->colours[1], w->x + 10, w->y + window_options_audio_widgets[WIDX_TITLE_MUSIC].top + 1);
 		gfx_draw_string_left(
 			dpi,
 			window_options_title_music_names[gConfigSound.title_music],
