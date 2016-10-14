@@ -64,13 +64,9 @@ static map_backup *track_design_preview_backup_map();
 static void track_design_preview_restore_map(map_backup *backup);
 static void track_design_preview_clear_map();
 
-static bool td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements);
-
-static void copy(void *dst, uint8 **src, int length)
-{
-	memcpy(dst, *src, length);
-	*src += length;
-}
+static void td6_reset_trailing_elements(rct_track_td6 * td6);
+static void td6_set_element_helper_pointers(rct_track_td6 * td6);
+static bool td4_track_has_boosters(rct_track_td4 * td4);
 
 rct_track_td6 *track_design_open(const utf8 *path)
 {
@@ -119,147 +115,224 @@ rct_track_td6 *track_design_open(const utf8 *path)
 	return NULL;
 }
 
-static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength)
+static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 {
-	rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
-	uint8 *readPtr = src;
+	rct_track_td4 * td4 = calloc(1, sizeof(rct_track_td4));
+	if (td4 == NULL) {
+		log_error("Unable to allocate memory for TD4 data.");
+		SafeFree(td4);
+		return NULL;
+	}
 
-	// Read start of track_design
-	copy(td6, &readPtr, 32);
-
-	uint8 version = td6->version_and_colour_scheme >> 2;
-	if (version > 2) {
+	uint8 version = (src[7] >> 2) & 2;
+	if (version == 0) {
+		memcpy(td4, src, 0x38);
+		td4->elementsSize = srcLength - 0x38;
+		td4->elements = malloc(td4->elementsSize);
+		if (td4->elements == NULL) {
+			log_error("Unable to allocate memory for TD4 element data.");
+			SafeFree(td4);
+			return NULL;
+		}
+		memcpy(td4->elements, src + 0x38, td4->elementsSize);
+	} else if (version == 1) {
+		memcpy(td4, src, 0xC4);
+		td4->elementsSize = srcLength - 0xC4;
+		td4->elements = malloc(td4->elementsSize);
+		if (td4->elements == NULL) {
+			log_error("Unable to allocate memory for TD4 element data.");
+			SafeFree(td4);
+			return NULL;
+		}
+		memcpy(td4->elements, src + 0xC4, td4->elementsSize);
+	} else {
 		log_error("Unsupported track design.");
-		free(td6);
+		SafeFree(td4);
 		return NULL;
 	}
 
-	// In TD6 there are 32 sets of two byte vehicle colour specifiers
-	// In TD4 there are 12 sets so the remaining 20 need to be read
-	if (version == 2) {
-		copy(&td6->vehicle_colours[12], &readPtr, 40);
-	}
-
-	copy(&td6->pad_48, &readPtr, 24);
-
-	// In TD4 (version AA/CF) and TD6 both start actual track data at 0xA3
-	if (version > 0) {
-		copy(&td6->track_spine_colour, &readPtr, version == 1 ? 140 : 67);
-	}
-
-	// Read the actual track data to memory directly after the passed in TD6 struct
-	size_t elementDataLength = srcLength - (readPtr - src);
-	uint8 *elementData = malloc(elementDataLength);
-	if (elementData == NULL) {
-		log_error("Unable to allocate memory for TD6 element data.");
-		free(td6);
+	rct_track_td6 * td6 = calloc(1, sizeof(rct_track_td6));
+	if (td6 == NULL) {
+		log_error("Unable to allocate memory for TD6 data.");
+		SafeFree(td4);
 		return NULL;
 	}
-	copy(elementData, &readPtr, (int)elementDataLength);
-	td6->elements = elementData;
-	td6->elementsSize = elementDataLength;
-
-	uint8 *final_track_element_location = elementData + elementDataLength;
-
-	// TD4 files require some extra work to be recognised as TD6.
-	if (version < 2) {
-		// Set any element passed the tracks to 0xFF
-		if (td6->type == RIDE_TYPE_MAZE) {
-			rct_td6_maze_element* maze_element = (rct_td6_maze_element*)elementData;
-			while (maze_element->all != 0) {
-				maze_element++;
-			}
-			maze_element++;
-			memset(maze_element, 255, final_track_element_location - (uint8*)maze_element);
-		} else {
-			rct_td6_track_element* track_element = (rct_td6_track_element*)elementData;
-			while (track_element->type != 255) {
-				track_element++;
-			}
-			memset(((uint8*)track_element) + 1, 255, final_track_element_location - (uint8*)track_element);
+	
+	// Convert RCT1 ride type to RCT2 ride type
+	uint8 rct1RideType = td4->type;
+	if (td4->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER) {
+		td6->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
+		td6->ride_mode = td4->mode;
+	} else if (td4->type == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER) {
+		if (td4->vehicle_type == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN &&
+			td4->mode == RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE
+		) {
+			td6->ride_mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
 		}
+	} else {
+		td6->type = td4->type;
+		td6->ride_mode = td4->mode;
+	}
 
-		// Convert the colours from RCT1 to RCT2
-		for (int i = 0; i < 32; i++) {
-			rct_vehicle_colour *vehicleColour = &td6->vehicle_colours[i];
-			vehicleColour->body_colour = rct1_get_colour(vehicleColour->body_colour);
-			vehicleColour->trim_colour = rct1_get_colour(vehicleColour->trim_colour);
+	// All TD4s that use powered launch use the type that doesn't pass the station.
+	if (td4->mode == RCT1_RIDE_MODE_POWERED_LAUNCH) {
+		td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
+	}
+
+	// Convert RCT1 vehicle type to RCT2 vehicle type
+	rct_object_entry vehicleObject = { 0x80, { "        " }, 0 };
+	if (td4->type == RIDE_TYPE_MAZE) {
+		const char * name = rct1_get_ride_type_object(td6->type);
+		assert(name != NULL);
+		memcpy(vehicleObject.name, name, min(strlen(name), 8));
+	} else {
+		const char * name = rct1_get_vehicle_object(td6->vehicle_type);
+		assert(name != NULL);
+		memcpy(vehicleObject.name, name, min(strlen(name), 8));
+	}
+	memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+	td6->vehicle_type = td4->vehicle_type;
+
+	td6->flags = td4->flags;
+	td6->version_and_colour_scheme = td4->version_and_colour_scheme;
+
+	// Vehicle colours
+	for (int i = 0; i < 12; i++) {
+		td6->vehicle_colours[i].body_colour = rct1_get_colour(td4->vehicle_colours[i].body_colour);
+		td6->vehicle_colours[i].trim_colour = rct1_get_colour(td4->vehicle_colours[i].trim_colour);
+
+		// RCT1 river rapids always had black seats
+		if (td4->type == RCT1_RIDE_TYPE_RIVER_RAPIDS) {
+			td6->vehicle_colours[i].trim_colour = COLOUR_BLACK;
 		}
+	}
+	// Set remaining vehicles to same colour as first vehicle
+	for (int i = 12; i < 32; i++) {
+		td6->vehicle_colours[i] = td6->vehicle_colours[0];
+	}
+	// Set additional colour to trim colour for all vehicles
+	for (int i = 0; i < 32; i++) {
+		td6->vehicle_additional_colour[i] = td6->vehicle_colours[i].trim_colour;
+	}
 
-		td6->track_spine_colour_rct1 = rct1_get_colour(td6->track_spine_colour_rct1);
-		td6->track_rail_colour_rct1 = rct1_get_colour(td6->track_rail_colour_rct1);
-		td6->track_support_colour_rct1 = rct1_get_colour(td6->track_support_colour_rct1);
-		
+	// Track colours
+	if (version == 0) {
+		for (int i = 0; i < 4; i++) {
+			td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour_v0);
+			td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour_v0);
+			td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour_v0);
+		}
+	} else {
 		for (int i = 0; i < 4; i++) {
 			td6->track_spine_colour[i] = rct1_get_colour(td6->track_spine_colour[i]);
 			td6->track_rail_colour[i] = rct1_get_colour(td6->track_rail_colour[i]);
 			td6->track_support_colour[i] = rct1_get_colour(td6->track_support_colour[i]);
 		}
-
-		// Highest drop height is 1bit = 3/4 a meter in TD6
-		// Highest drop height is 1bit = 1/3 a meter in TD4
-		// Not sure if this is correct??
-		td6->highest_drop_height >>= 1;
-
-		// If it has boosters then sadly track has to be discarded.
-		if (td4_track_has_boosters(td6, elementData)) {
-			log_error("Track design contains RCT1 boosters which are not yet supported.");
-			free(td6->elements);
-			free(td6);
-			return NULL;
-		}
-
-		// Convert RCT1 ride type to RCT2 ride type
-		uint8 rct1RideType = td6->type;
-		if (rct1RideType == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER) {
-			td6->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
-		} else if (rct1RideType == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER) {
-			if (td6->vehicle_type == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN) {
-				if (td6->ride_mode == RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
-					td6->ride_mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
-				}
-			}
-		}
-
-		// All TD4s that use powered launch use the type that doesn't pass the station.
-		if (td6->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH) {
-			td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
-		}
-
-		// Convert RCT1 vehicle type to RCT2 vehicle type
-		rct_object_entry vehicleObject = { 0x80, { "        " }, 0 };
-		if (td6->type == RIDE_TYPE_MAZE) {
-			const char * name = rct1_get_ride_type_object(td6->type);
-			assert(name != NULL);
-			memcpy(vehicleObject.name, name, min(strlen(name), 8));
-		} else {
-			const char * name = rct1_get_vehicle_object(td6->vehicle_type);
-			assert(name != NULL);
-			memcpy(vehicleObject.name, name, min(strlen(name), 8));
-		}
-		memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
-
-		// Further vehicle colour fixes
-		for (int i = 0; i < 32; i++) {
-			td6->vehicle_additional_colour[i] = td6->vehicle_colours[i].trim_colour;
-
-			// RCT1 river rapids always had black seats.
-			if (rct1RideType == RCT1_RIDE_TYPE_RIVER_RAPIDS) {
-				td6->vehicle_colours[i].trim_colour = COLOUR_BLACK;
-			}
-		}
-
-		td6->space_required_x = 255;
-		td6->space_required_y = 255;
-		td6->lift_hill_speed_num_circuits = 5;
 	}
 
-	td6->var_50 = min(
-		td6->var_50,
-		RideProperties[td6->type].max_value
-	);
+	td6->depart_flags = td4->depart_flags;
+	td6->number_of_trains = td4->number_of_trains;
+	td6->number_of_cars_per_train = td4->number_of_cars_per_train;
+	td6->min_waiting_time = td4->min_waiting_time;
+	td6->max_waiting_time = td4->max_waiting_time;
+	td6->operation_setting = min(td4->operation_setting, RideProperties[td6->type].max_value);
+	td6->max_speed = td4->max_speed;
+	td6->average_speed = td4->average_speed;
+	td6->ride_length = td4->ride_length;
+	td6->max_positive_vertical_g = td4->max_positive_vertical_g;
+	td6->max_negative_vertical_g = td4->max_negative_vertical_g;
+	td6->max_lateral_g = td4->max_lateral_g;
+	td6->inversions = td4->num_inversions;
+	td6->drops = td4->num_drops;
+	td6->highest_drop_height = td4->highest_drop_height / 2;
+	td6->excitement = td4->excitement;
+	td6->intensity = td4->intensity;
+	td6->nausea = td4->nausea;
+	td6->upkeep_cost = td4->upkeep_cost;
+	if (version == 1) {
+		td6->flags2 = td4->flags2;
+	}
 
-	// Set the element helper pointers
+	td6->space_required_x = 255;
+	td6->space_required_y = 255;
+	td6->lift_hill_speed_num_circuits = 5;
+
+	// If it has boosters then sadly track has to be discarded.
+	if (td4_track_has_boosters(td4)) {
+		log_error("Track design contains RCT1 boosters which are not yet supported.");
+		SafeFree(td4->elements);
+		SafeFree(td4);
+		SafeFree(td6);
+		return NULL;
+	}
+
+	// Move elements across
+	td6->elements = td4->elements;
+	td6->elementsSize = td4->elementsSize;
+
+	td6_reset_trailing_elements(td6);
+	td6_set_element_helper_pointers(td6);
+
+	SafeFree(td4);
+	return td6;
+}
+
+static rct_track_td6 *track_design_open_from_buffer(uint8 * src, size_t srcLength)
+{
+	uint8 version = (src[7] >> 2) & 2;
+	if (version == 0 || version == 1) {
+		return track_design_open_from_td4(src, srcLength);
+	} else if (version != 2) {
+		log_error("Unsupported track design.");
+		return NULL;
+	}
+
+	rct_track_td6 * td6 = calloc(1, sizeof(rct_track_td6));
+	if (td6 == NULL) {
+		log_error("Unable to allocate memory for TD6 data.");
+		return NULL;
+	}
+	memcpy(td6, src, 0xA3);
+	td6->elementsSize = srcLength - 0xA3;
+	td6->elements = malloc(td6->elementsSize);
+	if (td6->elements == NULL) {
+		free(td6);
+		log_error("Unable to allocate memory for TD6 element data.");
+		return NULL;
+	}
+	memcpy(td6->elements, src + 0xA3, td6->elementsSize);
+
+	// Cap operation setting
+	td6->operation_setting = min(td6->operation_setting, RideProperties[td6->type].max_value);
+
+	td6_set_element_helper_pointers(td6);
+	return td6;
+}
+
+static void td6_reset_trailing_elements(rct_track_td6 * td6)
+{
+	void * lastElement;
+	if (td6->type == RIDE_TYPE_MAZE) {
+		rct_td6_maze_element * mazeElement = (rct_td6_maze_element *)td6->elements;
+		while (mazeElement->all != 0) {
+			mazeElement++;
+		}
+		mazeElement++;
+		lastElement = mazeElement;
+	} else {
+		rct_td6_track_element * trackElement = (rct_td6_track_element *)td6->elements;
+		while (trackElement->type != 0xFF) {
+			trackElement++;
+		}
+		trackElement++;
+		lastElement = trackElement;
+	}
+	size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t)lastElement - (uintptr_t)td6->elements);
+	memset(lastElement, 0xFF, trailingSize);
+}
+
+static void td6_set_element_helper_pointers(rct_track_td6 * td6)
+{
 	uintptr_t entranceElementsStart;
 	uintptr_t sceneryElementsStart;
 	if (td6->type == RIDE_TYPE_MAZE) {
@@ -267,26 +340,24 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 		td6->maze_elements = (rct_td6_maze_element*)td6->elements;
 
 		rct_td6_maze_element *maze = td6->maze_elements;
-		for (; maze->all != 0; maze++) { }
+		for (; maze->all != 0; maze++) {}
 		sceneryElementsStart = (uintptr_t)(++maze);
 	} else {
 		td6->maze_elements = NULL;
 		td6->track_elements = (rct_td6_track_element*)td6->elements;
 
 		rct_td6_track_element *track = td6->track_elements;
-		for (; track->type != 0xFF; track++) { }
+		for (; track->type != 0xFF; track++) {}
 		entranceElementsStart = (uintptr_t)track + 1;
 
 		rct_td6_entrance_element *entranceElement = (rct_td6_entrance_element*)entranceElementsStart;
 		td6->entrance_elements = entranceElement;
-		for (; entranceElement->z != -1; entranceElement++) { }
+		for (; entranceElement->z != -1; entranceElement++) {}
 		sceneryElementsStart = (uintptr_t)entranceElement + 1;
 	}
 
 	rct_td6_scenery_element *sceneryElement = (rct_td6_scenery_element*)sceneryElementsStart;
 	td6->scenery_elements = sceneryElement;
-
-	return td6;
 }
 
 /**
@@ -294,12 +365,14 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
  *  rct2: 0x00677530
  * Returns true if it has booster track elements
  */
-static bool td4_track_has_boosters(rct_track_td6* track_design, uint8* track_elements)
+static bool td4_track_has_boosters(rct_track_td4 * td4)
 {
-	if (track_design->type != RCT1_RIDE_TYPE_HEDGE_MAZE) {
-		rct_td6_track_element *track = (rct_td6_track_element*)track_elements;
-		for (; track->type != 0xFF; track++) {
-			if (track->type == RCT1_TRACK_ELEM_BOOSTER) {
+	if (td4->type != RCT1_RIDE_TYPE_HEDGE_MAZE) {
+		rct_td6_track_element * track = (rct_td6_track_element *)td4->elements;
+		size_t numElements = td4->elementsSize / sizeof(rct_td6_track_element);
+		for (size_t i = 0; i < numElements; i++) {
+			if (track[i].type == 0xFF) break;
+			if (track[i].type == RCT1_TRACK_ELEM_BOOSTER) {
 				return true;
 			}
 		}
@@ -1455,7 +1528,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->var_50 << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->operation_setting << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	
 	uint8 num_circuits = td6->lift_hill_speed_num_circuits >> 5;

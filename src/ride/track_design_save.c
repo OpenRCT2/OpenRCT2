@@ -744,7 +744,7 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 	td6->number_of_cars_per_train = ride->num_cars_per_train;
 	td6->min_waiting_time = ride->min_waiting_time;
 	td6->max_waiting_time = ride->max_waiting_time;
-	td6->var_50 = ride->operation_option;
+	td6->operation_setting = ride->operation_option;
 	td6->lift_hill_speed_num_circuits =
 		ride->lift_hill_speed |
 		(ride->num_circuits << 5);
