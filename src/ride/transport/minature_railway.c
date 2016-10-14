@@ -574,7 +574,6 @@ static const uint32 minature_railway_track_pieces_diag_25_deg_up[4] = {
 /** rct2: 0x008AD0C0 */
 static void paint_minature_railway_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	bool isSupported = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	uint32 imageId;
@@ -618,10 +617,9 @@ static void paint_minature_railway_station(uint8 rideIndex, uint8 trackSequence,
 	paint_util_set_general_support_height(height + 30, 0x20);
 }
 
-/** rct2: 0x008AE1BC */
+/** rct2: 0x008AD0D0 */
 static void paint_minature_railway_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	uint32 imageId = minature_railway_track_pieces_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -640,10 +638,9 @@ static void paint_minature_railway_track_25_deg_up(uint8 rideIndex, uint8 trackS
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x008AE1CC */
+/** rct2: 0x008AD0E0 */
 static void paint_minature_railway_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	uint32 imageId = minature_railway_track_pieces_flat_to_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -662,10 +659,9 @@ static void paint_minature_railway_track_flat_to_25_deg_up(uint8 rideIndex, uint
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-/** rct2: 0x008AE1DC */
+/** rct2: 0x008AD0F0 */
 static void paint_minature_railway_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	uint32 imageId = minature_railway_track_pieces_25_deg_up_to_flat[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -684,19 +680,19 @@ static void paint_minature_railway_track_25_deg_up_to_flat(uint8 rideIndex, uint
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-/** rct2: 0x008AE1EC */
+/** rct2: 0x008AD100 */
 static void paint_minature_railway_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	paint_minature_railway_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x008AE1FC */
+/** rct2: 0x008AD110 */
 static void paint_minature_railway_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	paint_minature_railway_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x008AE20C */
+/** rct2: 0x008AD120 */
 static void paint_minature_railway_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	paint_minature_railway_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
@@ -889,7 +885,7 @@ static void paint_minature_railway_track_right_quarter_turn_5_tiles(uint8 rideIn
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AE21C */
+/** rct2: 0x008AD130 */
 static void paint_minature_railway_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1143,7 +1139,7 @@ static void paint_minature_railway_track_right_quarter_turn_3_tiles(uint8 rideIn
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AE28C */
+/** rct2: 0x008AD1A0 */
 static void paint_minature_railway_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	paint_minature_railway_track_right_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
@@ -1452,19 +1448,17 @@ static void paint_minature_railway_track_right_eighth_to_diag(uint8 rideIndex, u
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x008AE33C */
+/** rct2: 0x008AD1E0 */
 static void paint_minature_railway_track_left_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	const uint8 map[] = {4, 2, 3, 1, 0};
-	trackSequence = map[trackSequence];
+	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	paint_minature_railway_track_right_eighth_to_diag(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x008AD1F0 */
 static void paint_minature_railway_track_right_eighth_to_orthogonal(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	const uint8 map[] = {4, 2, 3, 1, 0};
-	trackSequence = map[trackSequence];
+	trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
 	paint_minature_railway_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
@@ -1551,17 +1545,17 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 	case 1:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23449, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1570,17 +1564,17 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 	case 2:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23451, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1590,14 +1584,14 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 		switch (direction) {
 		case 0:
 		case 2:
-			wooden_a_supports_paint_setup(0, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(0, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23450, -16, -16, 32, 32, 2, height, -16, -16, height);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1606,6 +1600,7 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 	}
 }
 
+/** rct2: 0x008AD210 */
 static void miniature_railway_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1675,6 +1670,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint
 	}
 }
 
+/** rct2: 0x008AD220 */
 static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1689,17 +1685,17 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint
 	case 1:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23445, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1708,17 +1704,17 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint
 	case 2:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23447, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1744,6 +1740,7 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint
 	}
 }
 
+/** rct2: 0x008AD260 */
 static void miniature_railway_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1758,17 +1755,17 @@ static void miniature_railway_track_diag_25_deg_down(uint8 rideIndex, uint8 trac
 	case 1:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23451, -16, -16, 32, 32, 2, height, -16, -16, height);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1777,17 +1774,17 @@ static void miniature_railway_track_diag_25_deg_down(uint8 rideIndex, uint8 trac
 	case 2:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23449, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1813,6 +1810,7 @@ static void miniature_railway_track_diag_25_deg_down(uint8 rideIndex, uint8 trac
 	}
 }
 
+/** rct2: 0x008AD240 */
 static void miniature_railway_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	switch (trackSequence) {
@@ -1827,17 +1825,17 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(uint8 rideIndex, ui
 	case 1:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23447, -16, -16, 32, 32, 2, height, -16, -16, height);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1846,17 +1844,17 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(uint8 rideIndex, ui
 	case 2:
 		switch (direction) {
 		case 0:
-			wooden_a_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(4, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 1:
-			wooden_a_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		case 2:
-			wooden_a_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23445, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
 			break;
 		case 3:
-			wooden_a_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
+			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
