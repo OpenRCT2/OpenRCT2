@@ -39,6 +39,7 @@ public:
     uint32              PingTime        = 0;
     NetworkKey          Key;
     std::vector<uint8>  Challenge;
+    std::vector<std::string> RequestedObjects;
 
     NetworkConnection();
     ~NetworkConnection();

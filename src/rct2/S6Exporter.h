@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "../common.h"
 
 extern "C"
@@ -23,6 +26,9 @@ extern "C"
     #include "../scenario.h"
     #include "../object_list.h"
 }
+
+int scenario_save_network(SDL_RWops* rw, const std::vector<std::string> &objects);
+int scenario_write_packed_objects(SDL_RWops* rw, std::vector<std::string> &s, bool export_all);
 
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -32,6 +38,7 @@ class S6Exporter final
 public:
     bool ExportObjects;
     bool RemoveTracklessRides;
+    std::vector<std::string> ExportObjectsList;
 
     S6Exporter();
 
@@ -40,6 +47,7 @@ public:
     void SaveScenario(const utf8 * path);
     void SaveScenario(SDL_RWops *rw);
     void Export();
+    void Export(const std::vector<std::string> &objects, bool export_all = false);
 
 private:
     rct_s6_data _s6;

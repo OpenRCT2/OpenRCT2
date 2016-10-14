@@ -50,6 +50,8 @@ int _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/ObjectRepository.h"
+#include "../rct2/S6Exporter.h"
 
 extern "C" {
 #include "../config.h"
@@ -116,6 +118,7 @@ Network::Network()
 	client_command_handlers[NETWORK_COMMAND_EVENT] = &Network::Client_Handle_EVENT;
 	client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
 	client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
+	client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
 	server_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
@@ -123,6 +126,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 	server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
+	server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
 	OpenSSL_add_all_algorithms();
 }
 
@@ -858,11 +862,38 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 	server_connection.QueuePacket(std::move(packet));
 }
 
+void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
+{
+	log_verbose("client requests %u objects", uint32(objects.size()));
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
+	for (uint32 i = 0; i < objects.size(); i++)
+	{
+		log_verbose("client requests object %s", objects[i].c_str());
+		packet->Write((const uint8 *)objects[i].c_str(), 8);
+	}
+	server_connection.QueuePacket(std::move(packet));
+}
+
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.Challenge.size();
 	packet->Write(connection.Challenge.data(), connection.Challenge.size());
+	connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Send_OBJECTS(NetworkConnection& connection, rct_object_entry * object_list, uint32 size)
+{
+	log_verbose("Server sends objects list with %u items", size);
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_OBJECTS << size;
+	for (uint32 i = 0; i < size; i++)
+	{
+		log_verbose("Object %.8s (checksum %x)", object_list[i].name, object_list[i].checksum);
+		packet->Write((const uint8 *)object_list[i].name, 8);
+		*packet << object_list[i].checksum;
+	}
 	connection.QueuePacket(std::move(packet));
 }
 
@@ -894,7 +925,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
 	size_t out_size;
 	unsigned char *header;
-	header = save_for_network(rw, out_size);
+	header = save_for_network(rw, out_size, connection->RequestedObjects);
 	SDL_RWclose(rw);
 	if (header == nullptr) {
 		connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
@@ -916,13 +947,13 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	free(header);
 }
 
-unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size) const
+unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<std::string> &objects) const
 {
 	unsigned char * header = nullptr;
 	out_size = 0;
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
-	scenario_save_network(rw_buffer);
+	scenario_save_network(rw_buffer, objects);
 	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw_buffer);
 	std::vector<uint8> buffer(size);
@@ -1439,7 +1470,47 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	for (int i = 0; i < token_size; i++) {
 		connection.Challenge[i] = (uint8)(rand() & 0xff);
 	}
+	rct_object_entry object_entries[OBJECT_ENTRY_COUNT];
+	int count = scenario_get_num_packed_objects_to_write(object_entries);
+	Server_Send_OBJECTS(connection, object_entries, count);
 	Server_Send_TOKEN(connection);
+}
+
+void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+	IObjectRepository * repo = GetObjectRepository();
+	uint32 size;
+	packet >> size;
+	log_verbose("client received object list, it has %u entries", size);
+	std::vector<std::string> requested_objects;
+	for (uint32 i = 0; i < size; i++)
+	{
+		const char * name = (const char *)packet.Read(8);
+		uint32 checksum;
+		packet >> checksum;
+		std::string s(name, name + 8);
+		const ObjectRepositoryItem * ori = repo->FindObject(s.c_str());
+		if (ori == nullptr || ori->ObjectEntry.checksum != checksum) {
+			log_verbose("Requesting object %s with checksum %x from server",
+						s.c_str(), checksum);
+			requested_objects.push_back(s);
+		}
+	}
+	Client_Send_OBJECTS(requested_objects);
+}
+
+void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+	uint32 size;
+	packet >> size;
+	log_verbose("Client requested %u objects", size);
+	for (uint32 i = 0; i < size; i++)
+	{
+		const char * name = (const char *)packet.Read(8);
+		std::string s(name, name + 8);
+		log_verbose("Client requested object %s", s.c_str());
+		connection.RequestedObjects.push_back(s);
+	}
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
