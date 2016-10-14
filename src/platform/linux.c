@@ -246,7 +246,7 @@ static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_s
 	if (buf && buf_size) {
 		n_chars = fread(buf, 1, *buf_size, f);
 
-		// some commands may return a new-line terminated result, trim that…
+		// some commands may return a new-line terminated result, trim that
 		if (n_chars > 0 && buf[n_chars - 1] == '\n') {
 			buf[n_chars - 1] = '\0';
 		}
