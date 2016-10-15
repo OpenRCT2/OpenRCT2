@@ -370,7 +370,7 @@ if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (NOT FORCE64))
 	file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
 
 	add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_TESTPAINT_SOURCES} ${RCT2_SECTIONS})
-	set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__")
+	set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__ -Wno-unused")
 	add_dependencies(testpaint segfiles)
 endif ()
 
