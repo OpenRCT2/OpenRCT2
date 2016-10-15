@@ -208,6 +208,11 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 			td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour_v0);
 			td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour_v0);
 			td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour_v0);
+
+			// Mazes were only hedges
+			if (td4->type == RCT1_RIDE_TYPE_HEDGE_MAZE) {
+				td6->track_support_colour[i] = MAZE_WALL_TYPE_HEDGE;
+			}
 		}
 	} else {
 		for (int i = 0; i < 4; i++) {
