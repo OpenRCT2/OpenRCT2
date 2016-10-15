@@ -1530,23 +1530,12 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
 	ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
 
-	uint8 version = td6->version_and_colour_scheme >> 2;
-	if (version >= 2) {
-		ride->entrance_style = td6->entrance_style;
-	}
+	ride->entrance_style = td6->entrance_style;
 
-	if (version >= 1) {
-		for (int i = 0; i < 4; i++) {
-			ride->track_colour_main[i] = td6->track_spine_colour[i];
-			ride->track_colour_additional[i] = td6->track_rail_colour[i];
-			ride->track_colour_supports[i] = td6->track_support_colour[i];
-		}
-	} else {
-		for (int i = 0; i < 4; i++) {
-			ride->track_colour_main[i] = td6->track_spine_colour_rct1;
-			ride->track_colour_additional[i] = td6->track_rail_colour_rct1;
-			ride->track_colour_supports[i] = td6->track_support_colour_rct1;
-		}
+	for (int i = 0; i < 4; i++) {
+		ride->track_colour_main[i] = td6->track_spine_colour[i];
+		ride->track_colour_additional[i] = td6->track_rail_colour[i];
+		ride->track_colour_supports[i] = td6->track_support_colour[i];
 	}
 
 	for (int i = 0; i < 32; i++) {
