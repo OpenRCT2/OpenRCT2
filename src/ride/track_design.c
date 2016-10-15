@@ -159,16 +159,9 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	}
 	
 	// Convert RCT1 ride type to RCT2 ride type
-	uint8 rct1RideType = td4->type;
 	if (td4->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER) {
 		td6->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 		td6->ride_mode = td4->mode;
-	} else if (td4->type == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER) {
-		if (td4->vehicle_type == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN &&
-			td4->mode == RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE
-		) {
-			td6->ride_mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
-		}
 	} else {
 		td6->type = td4->type;
 		td6->ride_mode = td4->mode;
@@ -224,9 +217,9 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		}
 	} else {
 		for (int i = 0; i < 4; i++) {
-			td6->track_spine_colour[i] = rct1_get_colour(td6->track_spine_colour[i]);
-			td6->track_rail_colour[i] = rct1_get_colour(td6->track_rail_colour[i]);
-			td6->track_support_colour[i] = rct1_get_colour(td6->track_support_colour[i]);
+			td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour[i]);
+			td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour[i]);
+			td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour[i]);
 		}
 	}
 
