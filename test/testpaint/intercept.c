@@ -37,6 +37,7 @@ extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
+static bool _woodenSupports;
 static uint8 callCount;
 static function_call calls[256];
 
@@ -172,7 +173,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 
 	calls[callCount] = call;
 	callCount++;
-	return false;
+	return _woodenSupports;
 }
 
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
@@ -189,7 +190,7 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
 
 	calls[callCount] = call;
 	callCount++;
-	return false;
+	return _woodenSupports;
 }
 
 static void check_support_height()
@@ -570,6 +571,12 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	int sequenceCount = getTrackSequenceCount(rideType, trackType);
 
+	for (int supports = 0; supports < 2; supports++) {
+		if (supports == 0) {
+			_woodenSupports = false;
+		} else {
+			_woodenSupports = true;
+		}
 	for (int inverted = 0; inverted < 2; inverted++) {
 		if (inverted == 0) {
 			mapElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
@@ -674,6 +681,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 	}
 	}
 	}
+	}
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
@@ -761,16 +769,16 @@ static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uin
 
 static uint32 intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	wooden_a_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
+	bool output = wooden_a_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
 
-	return 0;
+	return output ? 1 : 0;
 }
 
 static uint32 intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
 	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
+	bool output = wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
 
-	return 0;
+	return output ? 1 : 0;
 }
 
 static uint32 intercept_metal_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {

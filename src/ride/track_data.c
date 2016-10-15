@@ -6246,7 +6246,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_suspended_swinging_rc,						// RIDE_TYPE_SUSPENDED_SWINGING_COASTER
 	get_track_paint_function_inverted_rc,						// RIDE_TYPE_INVERTED_ROLLER_COASTER
 	get_track_paint_function_junior_rc,						// RIDE_TYPE_JUNIOR_ROLLER_COASTER
-	0,						// RIDE_TYPE_MINIATURE_RAILWAY
+	get_track_paint_function_miniature_railway,				// RIDE_TYPE_MINIATURE_RAILWAY
 	get_track_paint_function_monorail,		// RIDE_TYPE_MONORAIL
 	get_track_paint_function_mini_suspended_rc,						// RIDE_TYPE_MINI_SUSPENDED_COASTER
 	get_track_paint_function_boat_ride,		// RIDE_TYPE_BOAT_RIDE

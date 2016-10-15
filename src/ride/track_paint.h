@@ -38,7 +38,14 @@ extern const uint8 track_map_1x4[][4];
 enum {
 	SPR_FLOOR_PLANKS = 3395,
 	SPR_FLOOR_PLANKS_90_DEG = 3396,
-
+	SPR_FLOOR_PLANKS_SLOPE_NE_SW = 3397,
+	SPR_FLOOR_PLANKS_SLOPE_SE_NW = 3398,
+	SPR_FLOOR_PLANKS_SLOPE_SW_NE = 3399,
+	SPR_FLOOR_PLANKS_SLOPE_NW_SE = 3400,
+	SPR_FLOOR_PLANKS_N_SEGMENT = 3401,
+	SPR_FLOOR_PLANKS_E_SEGMENT = 3402,
+	SPR_FLOOR_PLANKS_S_SEGMENT = 3403,
+	SPR_FLOOR_PLANKS_W_SEGMENT = 3404,
 	SPR_FLOOR_METAL = 14567,
 	SPR_FENCE_METAL_NE = 14568,
 	SPR_FENCE_METAL_SE = 14569,
@@ -304,6 +311,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int trackType, int dir
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int trackType, int direction);
