@@ -633,10 +633,10 @@ namespace Intercept2
                 continue;
             }
 
-            TunnelCall referencePattern[4];
+            TunnelCall referencePattern[4] = { 0 };
             getTunnelCallReferencePattern(tileTunnelCalls, &referencePattern);
 
-            TunnelCall actualPattern[4];
+            TunnelCall actualPattern[4] = { 0 };
             getTunnelCallReferencePattern(newTileTunnelCalls, &actualPattern);
 
             if (!tunnelPatternsMatch(referencePattern, actualPattern)) {
