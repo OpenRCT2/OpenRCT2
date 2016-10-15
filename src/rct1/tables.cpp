@@ -1113,6 +1113,11 @@ namespace RCT1
 
 extern "C"
 {
+    uint8 rct1_get_ride_type(uint8 rideType)
+    {
+        return RCT1::GetRideType(rideType);
+    }
+
     const char * rct1_get_ride_type_object(uint8 rideType)
     {
         return RCT1::GetRideTypeObject(rideType);

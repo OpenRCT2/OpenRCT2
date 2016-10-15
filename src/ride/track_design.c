@@ -158,16 +158,10 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		return NULL;
 	}
 	
-	// Convert RCT1 ride type to RCT2 ride type
-	if (td4->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER) {
-		td6->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
-		td6->ride_mode = td4->mode;
-	} else {
-		td6->type = td4->type;
-		td6->ride_mode = td4->mode;
-	}
+	td6->type = rct1_get_ride_type(td4->type);
 
 	// All TD4s that use powered launch use the type that doesn't pass the station.
+	td6->ride_mode = td4->mode;
 	if (td4->mode == RCT1_RIDE_MODE_POWERED_LAUNCH) {
 		td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
 	}
