@@ -99,6 +99,7 @@
     <ClCompile Include="intercept.c" />
     <ClCompile Include="intercept_2.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PaintIntercept.cpp" />
     <ClCompile Include="..\..\src\addresses.c" />
     <ClCompile Include="..\..\src\diagnostic.c" />
     <ClCompile Include="..\..\src\hook.c" />
