@@ -27,7 +27,7 @@ static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGH
 static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
 #define BLANK_SUPPORT {.height = 0, .slope = 0xFF}
-static const support_height DefaultSegmentHeight[9] = {
+const support_height DefaultSegmentHeight[9] = {
 	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT,
 	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT,
 	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT
@@ -37,218 +37,6 @@ extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];
 
-static bool _woodenSupports;
-static uint8 callCount;
-static function_call calls[256];
-
-void intercept_clear_calls()
-{
-	callCount = 0;
-	memset(calls, 0, sizeof(calls));
-}
-
-int intercept_get_calls(function_call * buffer)
-{
-	memcpy(buffer, calls, 256);
-	return callCount;
-}
-
-bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
-	return false;
-}
-
-paint_struct *sub_98196C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	uint32 rotation
-) {
-	function_call call = {
-		.function = PAINT_98196C,
-		.paint = {
-			.image_id = image_id,
-			.offset = {x_offset, y_offset},
-			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-			.z_offset = z_offset,
-			.rotation = rotation
-		},
-	};
-
-	calls[callCount] = call;
-	callCount++;
-
-	return NULL;
-}
-
-paint_struct *sub_98197C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	function_call call = {
-		.function = PAINT_98197C,
-		.paint = {
-			.image_id = image_id,
-			.offset = {x_offset, y_offset},
-			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-			.z_offset = z_offset,
-			.rotation = rotation,
-		},
-	};
-
-	calls[callCount] = call;
-	callCount++;
-
-	return NULL;
-}
-
-paint_struct *sub_98198C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	function_call call = {
-		.function = PAINT_98198C,
-		.paint = {
-			.image_id = image_id,
-			.offset = {x_offset, y_offset},
-			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-			.z_offset = z_offset,
-			.rotation = rotation,
-		},
-	};
-
-	calls[callCount] = call;
-	callCount++;
-
-	return NULL;
-}
-
-paint_struct *sub_98199C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	sint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	function_call call = {
-		.function = PAINT_98199C,
-		.paint = {
-			.image_id = image_id,
-			.offset = {x_offset, y_offset},
-			.bound_box_length = {bound_box_length_x, bound_box_length_y, bound_box_length_z},
-			.bound_box_offset = {bound_box_offset_x, bound_box_offset_y, bound_box_offset_z},
-			.z_offset = z_offset,
-			.rotation = rotation,
-		},
-	};
-
-	calls[callCount] = call;
-	callCount++;
-
-	return NULL;
-}
-
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-
-	function_call call = {
-		.function = SUPPORTS_WOOD_A,
-		.supports = {
-			.type = supportType,
-			.special = special,
-			.height = height,
-			.colour_flags = imageColourFlags,
-		}
-	};
-
-	calls[callCount] = call;
-	callCount++;
-	return _woodenSupports;
-}
-
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-
-	function_call call = {
-		.function = SUPPORTS_WOOD_B,
-		.supports = {
-			.type = supportType,
-			.special = special,
-			.height = height,
-			.colour_flags = imageColourFlags,
-		}
-	};
-
-	calls[callCount] = call;
-	callCount++;
-	return _woodenSupports;
-}
-
-static void check_support_height()
-{
-	// First get last known support height state
-	if (memcmp(gSupportSegments, &DefaultSegmentHeight, sizeof(support_height) * 9) == 0) {
-		// Nothing changed
-		return;
-	}
-
-	function_call call = {
-		.function = SET_SEGMENT_HEIGHT
-	};
-
-	calls[callCount] = call;
-	callCount++;
-}
-
-bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags) {
-
-	check_support_height();
-
-	function_call call = {
-		.function = SUPPORTS_METAL_A,
-		.supports = {
-			.type = supportType,
-			.segment = segment,
-			.special = special,
-			.height = height,
-			.colour_flags = imageColourFlags,
-		}
-	};
-
-	calls[callCount] = call;
-	callCount++;
-	return false;
-}
-
-bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-
-	check_support_height();
-
-	function_call call = {
-		.function = SUPPORTS_METAL_B,
-		.supports = {
-			.type = supportType,
-			.segment = segment,
-			.special = special,
-			.height = height,
-			.colour_flags = imageColourFlags,
-		}
-	};
-
-	calls[callCount] = call;
-	callCount++;
-	return false;
-}
-
 enum {
 	SPRITEGROUP_NONE,
 
@@ -257,7 +45,6 @@ enum {
 	SPRITEGROUP_FENCE_SPIRAL_SLIDE, // 20564
 	SPRITEGROUP_FLOOR_CORK, // 22134
 	SPRITEGROUP_FENCE_ROPE, // 22138
-
 };
 
 static int getSpriteGroup(uint16 spriteIndex) {
@@ -524,6 +311,7 @@ extern bool testSupportSegments(uint8 rideType, uint8 trackType);
 extern bool testTunnels(uint8 rideType, uint8 trackType);
 extern bool testVerticalTunnels(uint8 rideType, uint8 trackType);
 
+
 static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, size_t len) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
@@ -573,9 +361,9 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 
 	for (int supports = 0; supports < 2; supports++) {
 		if (supports == 0) {
-			_woodenSupports = false;
+			intercept_simulate_wooden_supports(false);
 		} else {
-			_woodenSupports = true;
+			intercept_simulate_wooden_supports(true);
 		}
 	for (int inverted = 0; inverted < 2; inverted++) {
 		if (inverted == 0) {
@@ -600,8 +388,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				gSurfaceElement = &surfaceElement;
 				g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 
-				callCount = 0;
-				memset(&calls, 0, sizeof(calls));
+				intercept_clear_calls();
 
 				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
 
@@ -621,11 +408,10 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				// segment heights
 				// tunnels
 
-				uint8 oldCallCount = callCount;
 				function_call oldCalls[256];
-				memcpy(&oldCalls, &calls, sizeof(calls));
+				int oldCallCount = intercept_get_calls(oldCalls);
 
-				callCount = 0;
+				intercept_clear_calls();
 
 				testpaint_clear_ignore();
 				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
@@ -636,9 +422,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 					continue;
 				}
 
-				uint8 newCallCount = callCount;
 				function_call newCalls[256];
-				memcpy(&newCalls, &calls, sizeof(calls));
+				int newCallCount = intercept_get_calls(newCalls);
 
 				if (!assertFunctionCallArrayEquals(oldCalls, oldCallCount, newCalls, newCallCount)) {
 					utf8string diff = malloc(2048);
@@ -723,98 +508,4 @@ bool testTrackPainting(int rideType, int trackType) {
 	free(error);
 
 	return success;
-}
-
-static int intercept_draw_6c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .ecx = ecx, .edx = edx, .esi = esi, .edi = edi, .ebp = ebp};
-	if ((ebp & 0x03) != get_current_rotation()) {
-		// Log error
-		log_error("Ebp is different from current rotation");
-	}
-
-	return (int) sub_98196C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, regs.ebp & 0x03);
-}
-
-static int intercept_draw_7c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .ecx = ecx, .edx = edx, .esi = esi, .edi = edi, .ebp = ebp};
-	if ((ebp & 0x03) != get_current_rotation()) {
-		// Log error
-		log_error("Ebp is different from current rotation");
-	}
-
-	rct_xyz16 boundOffset = {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
-	};
-
-	return (int) sub_98197C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
-}
-
-static int intercept_draw_9c(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .ecx = ecx, .edx = edx, .esi = esi, .edi = edi, .ebp = ebp};
-	if ((ebp & 0x03) != get_current_rotation()) {
-		// Log error
-		log_error("Ebp is different from current rotation");
-	}
-
-	rct_xyz16 boundOffset = {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
-	};
-
-	return (int) sub_98199C(ebx, regs.al, regs.cl, regs.di, regs.si, regs.ah, regs.dx, boundOffset.x, boundOffset.y, boundOffset.z, regs.ebp & 0x03);
-}
-
-static uint32 intercept_wooden_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	bool output = wooden_a_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
-
-	return output ? 1 : 0;
-}
-
-static uint32 intercept_wooden_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	bool output = wooden_b_supports_paint_setup(regs.edi, (sint16) regs.ax, regs.dx, (uint32) regs.ebp, NULL);
-
-	return output ? 1 : 0;
-}
-
-static uint32 intercept_metal_a_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	metal_a_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
-
-	return 0;
-}
-
-static uint32 intercept_metal_b_supports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-	registers regs = {.eax =eax, .ebx = ebx, .edx = edx, .edi = edi, .ebp = ebp};
-	metal_b_supports_paint_setup(regs.edi, regs.ebx, (sint16) regs.ax, regs.dx, (uint32) regs.ebp);
-
-	return 0;
-}
-
-
-void initHooks() {
-	addhook(0x00686806, (int) intercept_draw_7c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x006869B2, (int) intercept_draw_7c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x00686B6F, (int) intercept_draw_7c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x00686D31, (int) intercept_draw_7c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-
-	addhook(0x006861AC, (int) intercept_draw_6c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x00686337, (int) intercept_draw_6c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x006864D0, (int) intercept_draw_6c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x0068666B, (int) intercept_draw_6c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-
-	addhook(0x006874B0, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x00687618, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x0068778C, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-	addhook(0x00687902, (int) intercept_draw_9c, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-
-	addhook(0x006629BC, (int) intercept_wooden_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
-	addhook(0x00662D5C, (int) intercept_wooden_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
-
-	addhook(0x00663105, (int) intercept_metal_a_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
-	addhook(0x00663584, (int) intercept_metal_b_supports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
 }

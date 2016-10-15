@@ -85,9 +85,13 @@ extern "C"
     bool testVerticalTunnels(uint8 rideType, uint8 trackType);
     void intercept_clear_calls();
     int intercept_get_calls(function_call * buffer);
+    void intercept_simulate_wooden_supports(bool enabled);
     bool assertFunctionCallEquals(function_call expected, function_call actual);
 
     int generatePaintCode(uint8 rideType);
+
+    extern const support_height DefaultSegmentHeight[9];
+
 #ifdef __cplusplus
 }
 #endif
