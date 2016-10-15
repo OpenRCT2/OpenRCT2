@@ -1627,23 +1627,12 @@ static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackS
 /** rct2: 0x008AD210 */
 static void miniature_railway_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	sint8 supportFunction = WOOD_B;
-	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
-	if (supportType == SUPPORT_PLAIN || supportType == SUPPORT_PLAIN_90_DEG) {
-		supportFunction = WOOD_A;
-	}
-
-	sint8 heightDiffs[] = {+8, -8, +8, -8};
-	sint8 heightDiff = heightDiffs[direction];
-	if (trackSequence == 3) {
-		heightDiff = 8;
-	}
-
 	bool hasSupports = false;
 
 	uint32 floorImage;
 	rct_xy16 floorBoundSize, floorBoundOffset;
 
+	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
 	if (supportType != -1) {
 		floorImage = floors[supportType].image_id;
 		floorBoundSize = floors[supportType].bound_size;
