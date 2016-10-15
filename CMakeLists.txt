@@ -88,6 +88,11 @@ if(NOT MINGW)
 	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
 endif()
 
+if (NOT DISABLE_RCT2)
+	set (FORCE32 ON)
+	message("DISABLE_RCT2 implies FORCE32")
+endif()
+
 if (LAUNCHPAD_BUILD)
 	# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=date-time")
