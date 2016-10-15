@@ -1299,8 +1299,8 @@ static void paint_miniature_railway_track_left_eighth_to_diag(uint8 rideIndex, u
 
 static const uint32 miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
 	{
-		SPR_FLOOR_PLANKS,
-		SPR_FLOOR_PLANKS,
+		SPR_FLOOR_PLANKS_90_DEG,
+		SPR_FLOOR_PLANKS_90_DEG,
 		SPR_FLOOR_PLANKS_N_SEGMENT,
 		SPR_FLOOR_PLANKS_S_SEGMENT,
 		SPR_FLOOR_PLANKS_90_DEG
