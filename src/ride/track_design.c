@@ -1389,19 +1389,12 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 		user_string_free(old_name);
 	}
 
-	uint8 version = td6->version_and_colour_scheme >> 2;
-	if (version == 2) {
-		ride->entrance_style = td6->entrance_style;
-	}
+	ride->entrance_style = td6->entrance_style;
 
-	if (version != 0) {
-		memcpy(&ride->track_colour_main, &td6->track_spine_colour, 4);
-		memcpy(&ride->track_colour_additional, &td6->track_rail_colour, 4);
-		memcpy(&ride->track_colour_supports, &td6->track_support_colour, 4);
-	} else {
-		memset(&ride->track_colour_main, td6->track_spine_colour_rct1, 4);
-		memset(&ride->track_colour_additional, td6->track_rail_colour_rct1, 4);
-		memset(&ride->track_colour_supports, td6->track_support_colour_rct1, 4);
+	for (int i = 0; i < 4; i++) {
+		ride->track_colour_main[i] = td6->track_spine_colour[i];
+		ride->track_colour_additional[i] = td6->track_rail_colour[i];
+		ride->track_colour_supports[i] = td6->track_support_colour[i];
 	}
 
 	byte_9D8150 |= 1;
