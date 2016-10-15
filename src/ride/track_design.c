@@ -315,15 +315,13 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
 		while (mazeElement->all != 0) {
 			mazeElement++;
 		}
-		mazeElement++;
-		lastElement = mazeElement;
+		lastElement = (void *)((uintptr_t)mazeElement + 1);
 	} else {
 		rct_td6_track_element * trackElement = (rct_td6_track_element *)td6->elements;
 		while (trackElement->type != 0xFF) {
 			trackElement++;
 		}
-		trackElement++;
-		lastElement = trackElement;
+		lastElement = (void *)((uintptr_t)trackElement + 1);
 	}
 	size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t)lastElement - (uintptr_t)td6->elements);
 	memset(lastElement, 0xFF, trailingSize);
