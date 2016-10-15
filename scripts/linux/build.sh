@@ -69,6 +69,13 @@ pushd build
 		chmod g+s $(pwd)
 		# CMAKE and MAKE opts from environment
 		docker run -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+	elif [[ $TARGET == "linux" ]]
+	then
+		cmake $OPENRCT2_CMAKE_OPTS ..
+		# NOT the same variable as above
+		# this target also includes building & running of testpaint
+		make $OPENRCT2_MAKE_OPTS testpaint
+		./testpaint
 	else
 		cmake $OPENRCT2_CMAKE_OPTS ..
 		# NOT the same variable as above
