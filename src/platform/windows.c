@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	int argc;
 	char ** argv = (char**)windows_get_command_line_args(&argc);
-	int runGame = cmdline_run(argv, argc);
+	int runGame = cmdline_run((const char **)argv, argc);
 
 	// Free argv
 	for (int i = 0; i < argc; i++) {
