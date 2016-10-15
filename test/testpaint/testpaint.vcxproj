@@ -171,7 +171,7 @@
     <ClCompile Include="..\..\src\ride\track_paint.c" />
     <ClCompile Include="..\..\src\ride\transport\chairlift.c" />
     <ClCompile Include="..\..\src\ride\transport\lift.c" />
-    <ClCompile Include="..\..\src\ride\transport\minature_railway.c" />
+    <ClCompile Include="..\..\src\ride\transport\miniature_railway.c" />
     <ClCompile Include="..\..\src\ride\transport\monorail.c" />
     <ClCompile Include="..\..\src\ride\transport\suspended_monorail.c" />
     <ClCompile Include="..\..\src\ride\water\boat_ride.c" />

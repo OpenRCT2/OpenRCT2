@@ -91,7 +91,7 @@
 		C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FB1CDBC3B7009F9BFC /* twist.c */; };
 		C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FD1CDBC3B7009F9BFC /* chairlift.c */; };
 		C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
-		C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */; };
+		C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */; };
 		C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
 		C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
 		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
@@ -194,7 +194,7 @@
 		C686F9481CDBC3B7009F9BFC /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FB1CDBC3B7009F9BFC /* twist.c */; };
 		C686F9491CDBC3B7009F9BFC /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FD1CDBC3B7009F9BFC /* chairlift.c */; };
 		C686F94A1CDBC3B7009F9BFC /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
-		C686F94B1CDBC3B7009F9BFC /* minature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */; };
+		C686F94B1CDBC3B7009F9BFC /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */; };
 		C686F94C1CDBC3B7009F9BFC /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
 		C686F94D1CDBC3B7009F9BFC /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
 		C686F94E1CDBC3B7009F9BFC /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
@@ -600,7 +600,7 @@
 		C686F8FB1CDBC3B7009F9BFC /* twist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twist.c; sourceTree = "<group>"; };
 		C686F8FD1CDBC3B7009F9BFC /* chairlift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chairlift.c; sourceTree = "<group>"; };
 		C686F8FE1CDBC3B7009F9BFC /* lift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lift.c; sourceTree = "<group>"; };
-		C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minature_railway.c; sourceTree = "<group>"; };
+		C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = miniature_railway.c; sourceTree = "<group>"; };
 		C686F9001CDBC3B7009F9BFC /* monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = monorail.c; sourceTree = "<group>"; };
 		C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = suspended_monorail.c; sourceTree = "<group>"; };
 		C686F9031CDBC3B7009F9BFC /* boat_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
@@ -1334,7 +1334,7 @@
 			children = (
 				C686F8FD1CDBC3B7009F9BFC /* chairlift.c */,
 				C686F8FE1CDBC3B7009F9BFC /* lift.c */,
-				C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */,
+				C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */,
 				C686F9001CDBC3B7009F9BFC /* monorail.c */,
 				C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */,
 			);
@@ -2456,7 +2456,7 @@
 				C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */,
 				C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */,
 				C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */,
-				C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */,
+				C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */,
 				C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */,
 				C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */,
 				85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */,
@@ -2731,7 +2731,7 @@
 				D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */,
 				D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */,
 				D442729E1CC81B3200D84D28 /* fountain.c in Sources */,
-				C686F94B1CDBC3B7009F9BFC /* minature_railway.c in Sources */,
+				C686F94B1CDBC3B7009F9BFC /* miniature_railway.c in Sources */,
 				C686F94D1CDBC3B7009F9BFC /* suspended_monorail.c in Sources */,
 				D44272131CC81B3200D84D28 /* editor.c in Sources */,
 				D442729F1CC81B3200D84D28 /* map.c in Sources */,
