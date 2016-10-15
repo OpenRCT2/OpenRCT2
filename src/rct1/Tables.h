@@ -50,6 +50,7 @@ namespace RCT1
 extern "C" {
 #endif
 
+    uint8 rct1_get_ride_type(uint8 rideType);
     const char * rct1_get_ride_type_object(uint8 rideType);
     const char * rct1_get_vehicle_object(uint8 vehicleType);
 

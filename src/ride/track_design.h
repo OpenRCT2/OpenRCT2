@@ -110,7 +110,7 @@ typedef struct rct_track_td6 {
 	uint8 number_of_cars_per_train;					// 0x4D
 	uint8 min_waiting_time;							// 0x4E
 	uint8 max_waiting_time;							// 0x4F
-	uint8 var_50;
+	uint8 operation_setting;
 	sint8 max_speed;								// 0x51
 	sint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53

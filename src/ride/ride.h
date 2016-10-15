@@ -882,6 +882,13 @@ enum {
 	RIDE_SETTING_RIDE_TYPE,
 };
 
+enum {
+	MAZE_WALL_TYPE_BRICK,
+	MAZE_WALL_TYPE_HEDGE,
+	MAZE_WALL_TYPE_ICE,
+	MAZE_WALL_TYPE_WOOD,
+};
+
 typedef struct rct_ride_properties {
 	uint32 flags;
 	uint8 min_value;
