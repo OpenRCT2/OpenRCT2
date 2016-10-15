@@ -122,22 +122,22 @@ enum
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SE_W_PART_1 = 23434,
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SE_W_PART_2 = 23435,
 	SPR_MINATURE_RAILWAY_EIGHT_TO_DIAG_SE_W_PART_3 = 23436,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_W_E = 23445,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_N_S = 23446,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_E_W = 23447,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_S_N = 23448,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E = 23449,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S = 23450,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W = 23451,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N = 23452,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E = 23453,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S = 23454,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W = 23455,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N = 23456,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_W_E = 23457,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_N_S = 23458,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_E_W = 23459,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_S_N = 23460,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_W_E = 23437,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_N_S = 23438,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_E_W = 23439,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_S_N = 23440,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E = 23441,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S = 23442,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W = 23443,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N = 23444,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E = 23445,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S = 23446,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W = 23447,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N = 23448,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_W_E = 23449,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_N_S = 23450,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_E_W = 23451,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_S_N = 23452,
 };
 
 static const uint32 minature_railway_track_floor[4] = {
@@ -543,32 +543,32 @@ static const rct_xy16 minature_railway_track_pieces_left_eight_to_orthog_offset[
 	},
 };
 
-static const uint32 minature_railway_track_pieces_diag_flat[4] = {
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_W_E,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_N_S,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_E_W,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_S_N,
+static const uint32 miniature_railway_track_pieces_diag_flat[4] = {
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_W_E,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_N_S,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_E_W,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_S_N,
 };
 
-static const uint32 minature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W,
-	SPR_MINATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N,
+static const uint32 miniature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W,
+	SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N,
 };
 
-static const uint32 minature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N,
+static const uint32 miniature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N,
 };
 
-static const uint32 minature_railway_track_pieces_diag_25_deg_up[4] = {
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_W_E,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_N_S,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_E_W,
-	SPR_MINATURE_RAILWAY_DIAG_25_DEG_UP_S_N,
+static const uint32 miniature_railway_track_pieces_diag_25_deg_up[4] = {
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_W_E,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_N_S,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_E_W,
+	SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_S_N,
 };
 
 /** rct2: 0x008AD0C0 */
@@ -1462,282 +1462,278 @@ static void paint_minature_railway_track_right_eighth_to_orthogonal(uint8 rideIn
 	paint_minature_railway_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-static void miniature_railway_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
-{
-	switch (trackSequence) {
-	case 0:
-		switch (direction) {
-		case 3:
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23440, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		break;
-	case 1:
-		switch (direction) {
-		case 0:
-			wooden_a_supports_paint_setup(2, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23437, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(3, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_a_supports_paint_setup(4, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(5, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 32, 0x20);
-		break;
-	case 2:
-		switch (direction) {
-		case 0:
-			wooden_a_supports_paint_setup(4, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(5, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_a_supports_paint_setup(2, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23439, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(3, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 32, 0x20);
-		break;
-	case 3:
-		switch (direction) {
-		case 0:
-		case 2:
-			wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23438, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 32, 0x20);
-		break;
+static const bool monorail_diag_image_segment[][4] = {
+	{false, true,  false, false},
+	{false, false, false, true},
+	{false, false, true,  false},
+	{true,  false, false, false},
+};
+
+enum {
+	SUPPORT_PLAIN = 0,
+	SUPPORT_PLAIN_90_DEG = 1,
+	SUPPORT_PLAIN_N = 2,
+	SUPPORT_PLAIN_E = 3,
+	SUPPORT_PLAIN_S = 4,
+	SUPPORT_PLAIN_W = 5,
+};
+
+static const sint16 monorail_diag_support_types[][4] = {
+	{-1, SUPPORT_PLAIN_N, SUPPORT_PLAIN_S, SUPPORT_PLAIN},
+	{-1, SUPPORT_PLAIN_E, SUPPORT_PLAIN_W, SUPPORT_PLAIN_90_DEG},
+	{-1, SUPPORT_PLAIN_S, SUPPORT_PLAIN_N, SUPPORT_PLAIN},
+	{-1, SUPPORT_PLAIN_W, SUPPORT_PLAIN_E, SUPPORT_PLAIN_90_DEG},
+};
+
+typedef struct floor_desc {
+	uint32 image_id;
+	rct_xy16 bound_size;
+	rct_xy16 bound_offset;
+} floor_desc;
+
+static const floor_desc floors[] = {
+	{SPR_FLOOR_PLANKS,           {32, 32}, {0,   0}},
+	{SPR_FLOOR_PLANKS_90_DEG,    {32, 32}, {0,   0}}, // -16,-16(1:3)
+	{SPR_FLOOR_PLANKS_N_SEGMENT, {32, 32}, {-16, -16}},
+	{SPR_FLOOR_PLANKS_E_SEGMENT, {16, 16}, {0,   16}},
+	{SPR_FLOOR_PLANKS_S_SEGMENT, {16, 16}, {16,  16}},
+	{SPR_FLOOR_PLANKS_W_SEGMENT, {16, 16}, {16,  0}},
+};
+
+/** rct2: 0x008AD200 */
+static void miniature_railway_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
+
+	bool isSupported = false;
+	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
+
+	uint32 floorImage;
+	rct_xy16 floorBoundSize, floorBoundOffset;
+
+	if (supportType != -1) {
+		floorImage = floors[supportType].image_id;
+		floorBoundSize = floors[supportType].bound_size;
+		floorBoundOffset = floors[supportType].bound_offset;
+		isSupported = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	}
+
+	if (direction == 1 && trackSequence == 3) {
+		floorBoundOffset = (rct_xy16) {-16, -16};
+	}
+
+	uint32 imageId = miniature_railway_track_pieces_diag_flat[direction];
+	bool drawRail = monorail_diag_image_segment[direction][trackSequence];
+
+	if (isSupported) {
+		sub_98197C(
+			floorImage | gTrackColours[SCHEME_SUPPORTS],
+			0, 0,
+			floorBoundSize.x, floorBoundSize.y, (drawRail ? 2 : 0),
+			height,
+			floorBoundOffset.x, floorBoundOffset.y, height,
+			get_current_rotation()
+		);
+		if (drawRail) {
+			sub_98199C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+		}
+	} else if (drawRail) {
+		sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+enum {
+	WOOD_A = 0,
+	WOOD_B = 1,
+};
+
+static bool wooden_supports_paint_setup(int woodType, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+	switch (woodType) {
+		case WOOD_A:
+			return wooden_a_supports_paint_setup(supportType, special, height, imageColourFlags, underground);
+
+		case WOOD_B:
+			return wooden_b_supports_paint_setup(supportType, special, height, imageColourFlags, underground);
+	}
+
+	return false;
+}
+
+/** rct2: 0x008AD230 */
 static void miniature_railway_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	switch (trackSequence) {
-	case 0:
-		switch (direction) {
-		case 3:
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23452, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		break;
-	case 1:
-		switch (direction) {
-		case 0:
-            wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23449, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		case 1:
-            wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-            wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 3:
-            wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
-	case 2:
-		switch (direction) {
-		case 0:
-            wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-            wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-            wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23451, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		case 3:
-            wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
-	case 3:
-		switch (direction) {
-		case 0:
-		case 2:
-            wooden_a_supports_paint_setup(0, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-            wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23450, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-            wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
+	// TODO: The supports are inconsistent for different rotations
+
+	sint8 supportFunction = WOOD_B;
+	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
+	if (supportType == SUPPORT_PLAIN || supportType == SUPPORT_PLAIN_90_DEG) {
+		supportFunction = WOOD_A;
 	}
+
+	sint8 heightDiffs[] = {+8, -8, +8, -8};
+	sint8 heightDiff = heightDiffs[direction];
+	if (trackSequence == 3) {
+		heightDiff = 8;
+	}
+
+	bool hasSupports = false;
+
+	uint32 floorImage;
+	rct_xy16 floorBoundSize, floorBoundOffset;
+
+	if (supportType != -1) {
+		floorImage = floors[supportType].image_id;
+		floorBoundSize = floors[supportType].bound_size;
+		floorBoundOffset = floors[supportType].bound_offset;
+		hasSupports = wooden_supports_paint_setup(supportFunction, supportType, 0, height + heightDiff, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+
+	if (direction == 1 && trackSequence == 3) {
+		floorBoundOffset = (rct_xy16) {-16, -16};
+	}
+
+	const sint8 offsetsB[4][4][2] = {
+		{{0, 0}, {+8, +16}, {+8, +8},  {+8, +8}},
+		{{0, 0}, {-8, -8},  {-8, -8},  {+8, +8}},
+		{{0, 0}, {+8, +8},  {+8, +16}, {+8, +8}},
+		{{0, 0}, {-8, -8},  {-8, -8},  {+8, +8}},
+	};
+
+	uint32 imageId = miniature_railway_track_pieces_diag_25_deg_up[direction];
+	bool drawRail = monorail_diag_image_segment[direction][trackSequence];
+	static const sint8 offsetB[] = {+8, 0, +8, +8};
+	if (hasSupports) {
+		sub_98197C(
+			floorImage | gTrackColours[SCHEME_SUPPORTS],
+			0, 0,
+			floorBoundSize.x, floorBoundSize.y, (drawRail ? 2 : 0),
+			height + offsetsB[direction][trackSequence][0],
+			floorBoundOffset.x, floorBoundOffset.y, height + offsetsB[direction][trackSequence][1],
+			get_current_rotation()
+		);
+		if (drawRail) {
+			sub_98199C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + offsetB[direction], get_current_rotation());
+		}
+	} else if (drawRail) {
+		sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + offsetB[direction], get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
+	return;
 }
 
 /** rct2: 0x008AD210 */
 static void miniature_railway_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	switch (trackSequence) {
-	case 0:
-		switch (direction) {
-		case 3:
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23444, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		break;
-	case 1:
-		switch (direction) {
-		case 0:
-			wooden_a_supports_paint_setup(2, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23441, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(3, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_a_supports_paint_setup(4, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(5, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
-		break;
-	case 2:
-		switch (direction) {
-		case 0:
-			wooden_a_supports_paint_setup(4, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(5, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_a_supports_paint_setup(2, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23443, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(3, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
-		break;
-	case 3:
-		switch (direction) {
-		case 0:
-		case 2:
-			wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23442, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
-		break;
+	// TODO: The supports are inconsistent for different rotations
+
+	sint8 supportFunction = WOOD_B;
+	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
+	if (supportType == SUPPORT_PLAIN || supportType == SUPPORT_PLAIN_90_DEG) {
+		supportFunction = WOOD_A;
 	}
+
+	sint8 heightDiffs[] = {+8, -8, +8, -8};
+	sint8 heightDiff = heightDiffs[direction];
+	if (trackSequence == 3) {
+		heightDiff = 8;
+	}
+
+	bool hasSupports = false;
+
+	uint32 floorImage;
+	rct_xy16 floorBoundSize, floorBoundOffset;
+
+	if (supportType != -1) {
+		floorImage = floors[supportType].image_id;
+		floorBoundSize = floors[supportType].bound_size;
+		floorBoundOffset = floors[supportType].bound_offset;
+		hasSupports = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+
+	if (direction == 1 && trackSequence == 3) {
+		floorBoundOffset = (rct_xy16) {-16, -16};
+	}
+
+	uint32 imageId = miniature_railway_track_pieces_diag_flat_to_25_deg_up[direction];
+	bool drawRail = monorail_diag_image_segment[direction][trackSequence];
+
+	if (hasSupports) {
+		sub_98197C(
+			floorImage | gTrackColours[SCHEME_SUPPORTS],
+			0, 0,
+			floorBoundSize.x, floorBoundSize.y, (drawRail ? 2 : 0),
+			height,
+			floorBoundOffset.x, floorBoundOffset.y, height,
+			get_current_rotation()
+		);
+		if (drawRail) {
+			sub_98199C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+		}
+	} else if (drawRail) {
+		sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /** rct2: 0x008AD220 */
-static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
-{
-	switch (trackSequence) {
-	case 0:
-		switch (direction) {
-		case 3:
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23448, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		break;
-	case 1:
-		switch (direction) {
-		case 0:
-			wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23445, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		case 1:
-			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 3:
-			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
-	case 2:
-		switch (direction) {
-		case 0:
-			wooden_b_supports_paint_setup(4, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_b_supports_paint_setup(5, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 2:
-			wooden_b_supports_paint_setup(2, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23447, -16, -16, 32, 32, 2, height, -16, -16, height + 8);
-			break;
-		case 3:
-			wooden_b_supports_paint_setup(3, 0, height - 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
-	case 3:
-		switch (direction) {
-		case 0:
-		case 2:
-			wooden_a_supports_paint_setup(0, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		case 1:
-			wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 23446, -16, -16, 32, 32, 2, height, -16, -16, height);
-			break;
-		case 3:
-			wooden_a_supports_paint_setup(1, 0, height + 8, gTrackColours[SCHEME_SUPPORTS], NULL);
-			break;
-		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
-		break;
+static void miniature_railway_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
+	const sint8 supportOffsets[][4] = {
+		{0, +8, +8, +8},
+		{0, -8, -8, 0},
+		{0, +8, +8, +8},
+		{0, -8, -8, +8},
+	};
+
+	sint8 supportFunction = WOOD_B;
+	if (trackSequence == 3) {
+		supportFunction = WOOD_A;
 	}
+
+	bool hasSupports = false;
+	sint16 supportType = monorail_diag_support_types[direction][trackSequence];
+
+	uint32 floorImage;
+	rct_xy16 floorBoundSize, floorBoundOffset;
+
+	if (supportType != -1) {
+		floorImage = floors[supportType].image_id;
+		floorBoundSize = floors[supportType].bound_size;
+		floorBoundOffset = floors[supportType].bound_offset;
+		hasSupports = wooden_supports_paint_setup(supportFunction, supportType, 0, height + supportOffsets[direction][trackSequence], gTrackColours[SCHEME_SUPPORTS], NULL);
+	}
+
+	if (direction == 1 && trackSequence == 3) {
+		floorBoundOffset = (rct_xy16) {-16, -16};
+	}
+
+	uint32 imageId = miniature_railway_track_pieces_diag_25_deg_up_to_flat[direction];
+	bool drawRail = monorail_diag_image_segment[direction][trackSequence];
+
+	const sint8 railOffsets[] = {+8, 0, +8, +8};
+
+	if (hasSupports) {
+		sub_98197C(
+			floorImage | gTrackColours[SCHEME_SUPPORTS],
+			0, 0,
+			floorBoundSize.x, floorBoundSize.y, (drawRail ? 2 : 0),
+			height,
+			floorBoundOffset.x, floorBoundOffset.y, height,
+			get_current_rotation()
+		);
+		if (drawRail) {
+			sub_98199C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+		}
+	} else if (drawRail) {
+		sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + railOffsets[direction], get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x008AD260 */
