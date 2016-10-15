@@ -124,7 +124,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		return NULL;
 	}
 
-	uint8 version = (src[7] >> 2) & 2;
+	uint8 version = (src[7] >> 2) & 3;
 	if (version == 0) {
 		memcpy(td4, src, 0x38);
 		td4->elementsSize = srcLength - 0x38;
@@ -272,7 +272,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 * src, size_t srcLength)
 {
-	uint8 version = (src[7] >> 2) & 2;
+	uint8 version = (src[7] >> 2) & 3;
 	if (version == 0 || version == 1) {
 		return track_design_open_from_td4(src, srcLength);
 	} else if (version != 2) {
