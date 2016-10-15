@@ -189,6 +189,9 @@ elif [[ $(uname) == "Linux" ]]; then
 			"docker32")
 				docker pull openrct2/openrct2:32bit-only
 				;;
+			"docker64")
+				docker pull openrct2/openrct2:64bit-only
+				;;
 			*)
 				echo "unkown target $TARGET"
 				exit 1

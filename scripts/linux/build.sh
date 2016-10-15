@@ -61,7 +61,14 @@ pushd build
 		chmod a+rwx $(pwd)
 		chmod g+s $(pwd)
 		# CMAKE and MAKE opts from environment
-		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ -DFORCE32=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+	elif [[ $TARGET == "docker64" ]]
+	then
+		PARENT=$(readlink -f ../)
+		chmod a+rwx $(pwd)
+		chmod g+s $(pwd)
+		# CMAKE and MAKE opts from environment
+		docker run -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
 	else
 		cmake $OPENRCT2_CMAKE_OPTS ..
 		# NOT the same variable as above
