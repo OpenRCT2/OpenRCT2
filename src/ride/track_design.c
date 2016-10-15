@@ -175,11 +175,11 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	// Convert RCT1 vehicle type to RCT2 vehicle type
 	rct_object_entry vehicleObject = { 0x80, { "        " }, 0 };
 	if (td4->type == RIDE_TYPE_MAZE) {
-		const char * name = rct1_get_ride_type_object(td6->type);
+		const char * name = rct1_get_ride_type_object(td4->type);
 		assert(name != NULL);
 		memcpy(vehicleObject.name, name, min(strlen(name), 8));
 	} else {
-		const char * name = rct1_get_vehicle_object(td6->vehicle_type);
+		const char * name = rct1_get_vehicle_object(td4->vehicle_type);
 		assert(name != NULL);
 		memcpy(vehicleObject.name, name, min(strlen(name), 8));
 	}
