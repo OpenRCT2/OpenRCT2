@@ -15,16 +15,12 @@
 #pragma endregion
 
 #include "intercept.h"
+#include "data.h"
 #include "../../src/paint/paint.h"
 #include "../../src/paint/supports.h"
 #include "../../src/ride/track_data.h"
 #include "../../src/interface/viewport.h"
 #include "../../src/hook.h"
-
-static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
 #define BLANK_SUPPORT {.height = 0, .slope = 0xFF}
 const support_height DefaultSegmentHeight[9] = {
@@ -32,12 +28,6 @@ const support_height DefaultSegmentHeight[9] = {
 	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT,
 	BLANK_SUPPORT, BLANK_SUPPORT, BLANK_SUPPORT
 };
-
-extern const utf8string RideNames[91];
-extern const utf8string TrackNames[256];
-extern const utf8string FlatTrackNames[256];
-
-
 
 static bool assertFunctionCallArrayEquals(function_call expected[], uint8 expectedCount, function_call actual[], uint8 actualCount) {
 	if (expectedCount != actualCount) {
@@ -70,7 +60,6 @@ static void printFunctionCallArray(utf8string out, size_t len, function_call cal
 extern bool testSupportSegments(uint8 rideType, uint8 trackType);
 extern bool testTunnels(uint8 rideType, uint8 trackType);
 extern bool testVerticalTunnels(uint8 rideType, uint8 trackType);
-
 
 static uint8 testTrackElement(uint8 rideType, uint8 trackType, utf8string error, size_t len) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
