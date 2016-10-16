@@ -59,12 +59,16 @@ namespace Intercept2
         gRightTunnelCount = 0;
 
         for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            gLeftTunnels[i] = (tunnel_entry) {0, 0};
-            gRightTunnels[i] = (tunnel_entry) {0, 0};
+            gLeftTunnels[i].height = 0;
+            gLeftTunnels[i].type = 0;
+            gRightTunnels[i].height = 0;
+            gRightTunnels[i].type = 0;
         }
 
-        gLeftTunnels[0] = (tunnel_entry) {0xFF, 0xFF};
-        gRightTunnels[0] = (tunnel_entry) {0xFF, 0xFF};
+        gLeftTunnels[0].height = 0xFF;
+        gLeftTunnels[0].type = 0xFF;
+        gRightTunnels[0].height = 0xFF;
+        gRightTunnels[0].type = 0xFF;
     }
 
     static void ResetSegmentHeights() {
