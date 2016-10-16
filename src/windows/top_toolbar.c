@@ -2294,10 +2294,18 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 	switch (scenery_type){
 	case 0:
 		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-		gMapSelectPositionA.x = mapTile.x;
-		gMapSelectPositionA.y = mapTile.y;
-		gMapSelectPositionB.x = mapTile.x;
-		gMapSelectPositionB.y = mapTile.y;
+		if (gWindowSceneryClusterEnabled) {
+			gMapSelectPositionA.x = mapTile.x - (8 << 5);
+			gMapSelectPositionA.y = mapTile.y - (8 << 5);
+			gMapSelectPositionB.x = mapTile.x + (7 << 5);
+			gMapSelectPositionB.y = mapTile.y + (7 << 5);
+		}
+		else {
+			gMapSelectPositionA.x = mapTile.x;
+			gMapSelectPositionA.y = mapTile.y;
+			gMapSelectPositionB.x = mapTile.x;
+			gMapSelectPositionB.y = mapTile.y;
+		}
 
 		scenery = get_small_scenery_entry(selected_scenery);
 
