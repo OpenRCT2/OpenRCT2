@@ -26,43 +26,42 @@ extern "C" {
 class PaintInterceptor {
 public:
     static void InitHooks() {
-        addhook(0x006629BC, (int) InterceptWoodenASupports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
-        addhook(0x00662D5C, (int) InterceptWoodenBSupports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
+        int supportsRegisterArgs[] = {EAX, EBX, EDX, EDI, EBP, END};
+        addhook(0x006629BC, (int) InterceptWoodenASupports, 0, supportsRegisterArgs, 0, EAX);
+        addhook(0x00662D5C, (int) InterceptWoodenBSupports, 0, supportsRegisterArgs, 0, EAX);
 
-        addhook(0x00663105, (int) InterceptMetalASupports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
-        addhook(0x00663584, (int) InterceptMetalBSupports, 0, (int[]) {EAX, EBX, EDX, EDI, EBP, END}, 0, EAX);
+        addhook(0x00663105, (int) InterceptMetalASupports, 0, supportsRegisterArgs, 0, EAX);
+        addhook(0x00663584, (int) InterceptMetalBSupports, 0, supportsRegisterArgs, 0, EAX);
 
-        addhook(0x006861AC, (int) InterceptPaint6C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00686337, (int) InterceptPaint6C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x006864D0, (int) InterceptPaint6C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x0068666B, (int) InterceptPaint6C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
+        int paintRegisterArgs[] = {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END};
+        addhook(0x006861AC, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00686337, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x006864D0, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x0068666B, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
 
-        addhook(0x00686806, (int) InterceptPaint7C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x006869B2, (int) InterceptPaint7C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00686B6F, (int) InterceptPaint7C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00686D31, (int) InterceptPaint7C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
+        addhook(0x00686806, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x006869B2, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00686B6F, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00686D31, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
 
-        addhook(0x00686EF0, (int) InterceptPaint8C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00687056, (int) InterceptPaint8C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x006871C8, (int) InterceptPaint8C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x0068733C, (int) InterceptPaint8C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
+        addhook(0x00686EF0, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00687056, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x006871C8, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x0068733C, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
 
-        addhook(0x006874B0, (int) InterceptPaint9C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00687618, (int) InterceptPaint9C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x0068778C, (int) InterceptPaint9C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
-        addhook(0x00687902, (int) InterceptPaint9C, 0, (int[]) {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END}, 0, EBP);
+        addhook(0x006874B0, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00687618, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x0068778C, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00687902, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
     }
 
     static bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-        function_call call = {
-            .function = function,
-            .supports = {
-                .type = supportType,
-                .special = special,
-                .height = height,
-                .colour_flags = imageColourFlags,
-            }
-        };
+        function_call call = {0};
+        call.function = function;
+        call.supports.type = supportType;
+        call.supports.special = special;
+        call.supports.height = height;
+        call.supports.colour_flags = imageColourFlags;
 
         _calls[_callCount] = call;
         _callCount++;
@@ -73,19 +72,17 @@ public:
     static bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
         CheckSegmentSupportHeight();
 
-        function_call call = {
-            .function = function,
-            .supports = {
-                .type = supportType,
-                .segment = segment,
-                .special = special,
-                .height = height,
-                .colour_flags = imageColourFlags,
-            }
-        };
+        function_call call = {0};
+        call.function = function;
+        call.supports.type = supportType;
+        call.supports.segment = segment;
+        call.supports.special = special;
+        call.supports.height = height;
+        call.supports.colour_flags = imageColourFlags;
 
         _calls[_callCount] = call;
         _callCount++;
+
         return false;
     }
 
@@ -96,16 +93,13 @@ public:
         sint16 zOffset,
         uint32 rotation
     ) {
-        function_call call = {
-            .function = PAINT_98196C,
-            .paint = {
-                .image_id = imageID,
-                .offset = {xOffset, yOffset},
-                .bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ},
-                .z_offset = zOffset,
-                .rotation = rotation
-            },
-        };
+        function_call call = {0};
+        call.function = PAINT_98196C;
+        call.paint.image_id = imageID;
+        call.paint.offset = {xOffset, yOffset};
+        call.paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
+        call.paint.z_offset = zOffset;
+        call.paint.rotation = rotation;
 
         _calls[_callCount] = call;
         _callCount++;
@@ -122,17 +116,14 @@ public:
         sint16 boundBoxOffsetX, sint16 boundBoxOffsetY, sint16 boundBoxOffsetZ,
         uint32 rotation
     ) {
-        function_call call = {
-            .function = function,
-            .paint = {
-                .image_id = imageID,
-                .offset = {xOffset, yOffset},
-                .bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ},
-                .bound_box_offset = {boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ},
-                .z_offset = zOffset,
-                .rotation = rotation
-            },
-        };
+        function_call call = {0};
+        call.function = function;
+        call.paint.image_id = imageID;
+        call.paint.offset = {xOffset, yOffset};
+        call.paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
+        call.paint.bound_box_offset = {boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ};
+        call.paint.z_offset = zOffset;
+        call.paint.rotation = rotation;
 
         _calls[_callCount] = call;
         _callCount++;
@@ -179,9 +170,8 @@ private:
         }
 
 
-        function_call call = {
-            .function = SET_SEGMENT_HEIGHT
-        };
+        function_call call = {0};
+        call.function = SET_SEGMENT_HEIGHT;
 
         _calls[_callCount] = call;
         _callCount++;
