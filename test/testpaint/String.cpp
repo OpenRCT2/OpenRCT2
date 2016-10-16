@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cstdarg>
+
 #include "String.hpp"
 
 namespace String {
@@ -21,11 +23,11 @@ namespace String {
     {
         va_list args;
         char buffer[512];
-    
+
         va_start(args, format);
         vsnprintf(buffer, sizeof(buffer), format, args);
         va_end(args);
-    
+
         return std::string(buffer);
     }
 };

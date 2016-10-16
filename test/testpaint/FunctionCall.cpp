@@ -34,7 +34,7 @@ bool FunctionCall::AssertsEquals(std::vector<function_call> expected, std::vecto
         return false;
     }
 
-    for (int i = 0; i < expected.size(); i++) {
+    for (size_t i = 0; i < expected.size(); i++) {
         function_call expectedCall = expected[i];
         function_call actualCall = actual[i];
 
