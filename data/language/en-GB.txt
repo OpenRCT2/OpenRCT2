@@ -4270,7 +4270,7 @@ STR_5958    :Northeast
 STR_5959    :Southeast
 STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
 STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collission detection:
+STR_5962    :{WINDOW_COLOUR_2}Collision detection:
 STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
 STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
