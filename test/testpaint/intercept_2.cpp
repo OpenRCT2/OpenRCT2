@@ -270,13 +270,19 @@ namespace Intercept2
                 }
             }
 
+            std::vector<SegmentSupportCall> referenceCalls = tileSegmentSupportCalls[0];
+
             if (!SegmentSupportHeightCall::CallsMatch(tileSegmentSupportCalls)) {
-                // TODO: if 3 directions do share the same mask, use that call list as a reference.
-                printf("Original segment calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
-                for (int i = 0; i < 4; i++) {
-                    printf("# %d\n%s", i, Printer::PrintSegmentSupportHeightCalls(tileSegmentSupportCalls[i]).c_str());
+                std::vector<SegmentSupportCall> *found = SegmentSupportHeightCall::FindMostCommonSupportCall(tileSegmentSupportCalls);
+                if (found != nullptr) {
+                    referenceCalls = *found;
+                } else {
+                    printf("Original segment calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
+                    for (int i = 0; i < 4; i++) {
+                        printf("# %d\n%s", i, Printer::PrintSegmentSupportHeightCalls(tileSegmentSupportCalls[i]).c_str());
+                    }
+                    continue;
                 }
-                continue;
             }
 
             for (int direction = 0; direction < 4; direction++) {
@@ -320,7 +326,6 @@ namespace Intercept2
             if (!GeneralSupportHeightCall::CallsMatch(tileGeneralSupportCalls)) {
                 SupportCall *found = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls);
                 if (found == nullptr) {
-                    // TODO: if 3 directions do share the output, use that.
                     printf("Original support calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
                     for (int i = 0; i < 4; ++i) {
                         printf("[%d, 0x%02X] ", tileGeneralSupportCalls[i].height, tileGeneralSupportCalls[i].slope);

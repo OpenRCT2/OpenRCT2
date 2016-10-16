@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <map>
+
 #include "SegmentSupportHeightCall.hpp"
 
 extern "C" {
@@ -109,4 +111,42 @@ bool SegmentSupportHeightCall::CallsEqual(std::vector<SegmentSupportCall> lhs, s
     }
 
     return true;
+}
+
+std::vector<SegmentSupportCall>* SegmentSupportHeightCall::FindMostCommonSupportCall(std::vector<SegmentSupportCall> *calls) {
+    std::map<std::vector<SegmentSupportCall>, int> map;
+
+    for (int i = 0; i < 4; ++i) {
+        if (map.count(calls[i]) == 0) {
+            map[calls[i]] = 1;
+        } else {
+            map[calls[i]] += 1;
+        }
+    }
+
+    if (map.size() == 1) {
+        return &calls[0];
+    }
+
+    if (map.size() == 2) {
+        for (auto &&item : map) {
+            if (item.second == 3) {
+                return (std::vector<SegmentSupportCall> *)&item.first;
+            }
+        }
+
+        return nullptr;
+    }
+
+    if (map.size() == 3) {
+        for (auto &&item : map) {
+            if (item.second == 2) {
+                return (std::vector<SegmentSupportCall> *)&item.first;
+            }
+        }
+
+        return nullptr;
+    }
+
+    return nullptr;
 }
