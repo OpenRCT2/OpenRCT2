@@ -133,9 +133,6 @@ Section "!OpenRCT2" Section1
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
 
-    ; Copy curl ca file
-    File ..\..\curl-ca-bundle.crt
-
     ; Copy text files
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
@@ -215,7 +212,6 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk"
 
     ; Clean up OpenRCT2 dir
-    Delete "$INSTDIR\curl-ca-bundle.crt"
     Delete "$INSTDIR\changelog.txt"
     Delete "$INSTDIR\known_issues.txt"
     Delete "$INSTDIR\licence.txt"
