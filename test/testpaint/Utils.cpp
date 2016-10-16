@@ -67,9 +67,3 @@ namespace Utils {
         return (newPaintGetter != 0);
     }
 }
-
-extern "C" {
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
-        return Utils::getTrackSequenceCount(rideType, trackType);
-    }
-}

@@ -18,6 +18,7 @@
 #include <algorithm>
 
 #include "intercept.h"
+#include "Utils.hpp"
 
 extern "C" {
     #include "../../src/paint/paint.h"
@@ -356,7 +357,7 @@ namespace Intercept2
         int height = 48;
 
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-        int sequenceCount = getTrackSequenceCount(rideType, trackType);
+        int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
 
         for (int chainLift = 0; chainLift < 2; chainLift++) {
             if (chainLift == 0) {
@@ -526,7 +527,7 @@ namespace Intercept2
         int height = 48;
 
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-        int sequenceCount = getTrackSequenceCount(rideType, trackType);
+        int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
 
 
         for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
@@ -698,7 +699,7 @@ namespace Intercept2
         int height = 48;
 
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-        int sequenceCount = getTrackSequenceCount(rideType, trackType);
+        int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
 
 
         for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {

@@ -110,7 +110,7 @@ uint8 TestTrack::TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std
 
     intercept_reset_environment();
 
-    int sequenceCount = getTrackSequenceCount(rideType, trackType);
+    int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
 
     *error += String::Format("rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
 

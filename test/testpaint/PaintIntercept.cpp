@@ -21,6 +21,7 @@ extern "C" {
 #include "../../src/common.h"
 #include "../../src/hook.h"
 #include "../../src/interface/viewport.h"
+#include "../../src/paint/supports.h"
 }
 
 class PaintInterceptor {
@@ -335,10 +336,6 @@ void intercept_clear_calls() {
 
 int intercept_get_calls(function_call *buffer) {
     return PaintInterceptor::GetCalls(buffer);
-}
-
-void intercept_simulate_wooden_supports(bool enabled) {
-    return PaintInterceptor::SetSimulateWoodenSupports(enabled);
 }
 
 void initHooks() {

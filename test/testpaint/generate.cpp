@@ -20,6 +20,7 @@
 
 #include "intercept.h"
 #include "String.hpp"
+#include "Utils.hpp"
 
 extern "C"
 {
@@ -173,7 +174,7 @@ private:
 
     void GenerateTrackFunctionBody(int tabs, int trackType)
     {
-        int numSequences = getTrackSequenceCount(_rideType, trackType);
+        int numSequences = Utils::getTrackSequenceCount(_rideType, trackType);
         if (numSequences > 1)
         {
             WriteLine(tabs, "switch (trackSequence) {");

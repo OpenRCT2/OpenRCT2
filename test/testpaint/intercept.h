@@ -81,7 +81,6 @@ extern "C"
 {
 #endif
     void initHooks();
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType);
     bool testSupportSegments(uint8 rideType, uint8 trackType);
     bool testTunnels(uint8 rideType, uint8 trackType);
     bool testVerticalTunnels(uint8 rideType, uint8 trackType);
