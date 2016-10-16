@@ -1374,20 +1374,23 @@ static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int d
 
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y) {
 	map_invalidate_selection_rect();
+
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
 	short mapX = x;
 	short mapY = y;
 	int direction;
 	screen_pos_to_map_pos(&mapX, &mapY, &direction);
-	if (mapX == (short)0x8000) {
+	if (mapX != (short)0x8000) {
+		gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
+		gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
+	}
+	else if (windowTileInspectorTileSelected){
 		gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorTileX << 5;
 		gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorTileY << 5;
 	}
 	else {
-		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-		gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
-		gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	}
 
 	gMapSelectType = MAP_SELECT_TYPE_FULL;
@@ -1925,6 +1928,16 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 				sint16 rideId = mapElement->properties.entrance.ride_index;
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, 12, x, y + 22);
 			}
+
+			// Properties
+			// Raise / Lower
+			y = w->y + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+
+			// Current base height
+			x = w->x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
+			int baseHeight = mapElement->base_height;
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
 			break;
 		}
 
