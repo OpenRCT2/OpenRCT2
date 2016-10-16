@@ -1188,12 +1188,12 @@ static void format_string_code(unsigned int format_code, char **dest, size_t *si
 		value = *((uint32*)*args);
 		*args += 4;
 
-		format_handle_overflow(1 + sizeof(intptr_t));
+		format_handle_overflow(1 + sizeof(uint32));
 
 		format_push_char_safe('\x17');
-		*((intptr_t*)(*dest)) = value;
-		(*dest) += sizeof(intptr_t);
-		(*size) -= sizeof(intptr_t);
+		*((uint32*)(*dest)) = (uint32)value;
+		(*dest) += sizeof(uint32);
+		(*size) -= sizeof(uint32);
 		break;
 	}
 }
