@@ -51,6 +51,23 @@ namespace Intercept2
         gRideList[0] = ride;
         gRideEntries[0] = &rideEntry;
 
+        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+    }
+
+    static void ResetTunnels() {
+        gLeftTunnelCount = 0;
+        gRightTunnelCount = 0;
+
+        for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
+            gLeftTunnels[i] = (tunnel_entry) {0, 0};
+            gRightTunnels[i] = (tunnel_entry) {0, 0};
+        }
+
+        gLeftTunnels[0] = (tunnel_entry) {0xFF, 0xFF};
+        gRightTunnels[0] = (tunnel_entry) {0xFF, 0xFF};
+    }
+
+    static void ResetSegmentHeights() {
         for (int s = 0; s < 9; ++s)
         {
             gSupportSegments[s].height = 0;
@@ -59,7 +76,6 @@ namespace Intercept2
 
         gSupport.height = 0;
         gSupport.slope = 0xFF;
-        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
     }
 
     static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
@@ -331,6 +347,7 @@ namespace Intercept2
         surfaceElement.base_height = 2;
 
         ResetEnvironment();
+        ResetTunnels();
 
         int height = 48;
 
@@ -349,14 +366,7 @@ namespace Intercept2
             SupportCall tileGeneralSupportCalls[4];
 
             for (int direction = 0; direction < 4; direction++) {
-                for (int s = 0; s < 9; ++s) {
-                    gSupportSegments[s].height = 0;
-                    gSupportSegments[s].slope = 0xFF;
-                }
-
-                gSupport.height = 0;
-                gSupport.slope = 0xFF;
-                g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+                ResetSegmentHeights();
 
                 uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
@@ -391,10 +401,7 @@ namespace Intercept2
             }
 
             for (int direction = 0; direction < 4; direction++) {
-                for (int s = 0; s < 9; ++s) {
-                    gSupportSegments[s].height = 0;
-                    gSupportSegments[s].slope = 0xFF;
-                }
+                ResetSegmentHeights();
 
                 testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
@@ -438,8 +445,7 @@ namespace Intercept2
 
 
             for (int direction = 0; direction < 4; direction++) {
-                gSupport.height = 0;
-                gSupport.slope = 0xFF;
+                ResetSegmentHeights();
 
                 testpaint_clear_ignore();
                 TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
@@ -523,8 +529,7 @@ namespace Intercept2
             TunnelCall tileTunnelCalls[4][4];
 
             for (int direction = 0; direction < 4; direction++) {
-                gLeftTunnelCount = 0;
-                gRightTunnelCount = 0;
+                ResetTunnels();
 
                 uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
@@ -849,4 +854,14 @@ extern "C"
     void intercept_reset_environment() {
         Intercept2::ResetEnvironment();
     }
+
+    void intercept_reset_segment_heights() {
+        Intercept2::ResetSegmentHeights();
+    }
+
+    void intercept_reset_tunnels() {
+        Intercept2::ResetTunnels();
+    }
+
+
 }

@@ -737,8 +737,8 @@ private:
                         Intercept2::TunnelCall tileTunnelCalls[4][4],
                         sint16 verticalTunnelHeights[4])
     {
-        gLeftTunnelCount = 0;
-        gRightTunnelCount = 0;
+        intercept_reset_tunnels();
+
         for (int offset = -8; offset <= 8; offset += 8)
         {
             CallOriginal(trackType, direction, trackSequence, height + offset, mapElement);
@@ -1005,6 +1005,7 @@ private:
     void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
     {
         intercept_reset_environment();
+        intercept_reset_segment_heights();
 
         uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it

@@ -86,6 +86,8 @@ extern "C"
     void intercept_clear_calls();
     int intercept_get_calls(function_call * buffer);
     void intercept_reset_environment();
+    void intercept_reset_segment_heights();
+    void intercept_reset_tunnels();
     void intercept_simulate_wooden_supports(bool enabled);
     bool assertFunctionCallEquals(function_call expected, function_call actual);
 

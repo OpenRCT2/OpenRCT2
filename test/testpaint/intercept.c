@@ -368,11 +368,9 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
 				gDidPassSurface = true; // Above surface
 				gSurfaceElement = &surfaceElement;
-				g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 
 				intercept_clear_calls();
-
-				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
+				intercept_reset_segment_heights();
 
 				uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
 
@@ -396,7 +394,8 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 				intercept_clear_calls();
 
 				testpaint_clear_ignore();
-				memcpy(gSupportSegments, DefaultSegmentHeight, sizeof(support_height) * 9);
+				intercept_reset_segment_heights();
+
 				newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
 				if (testpaint_is_ignored(direction, trackSequence)) {
 					snprintf(error, len, "[  IGNORED ]   [direction:%d trackSequence:%d chainLift:%d inverted:%d]\n",
