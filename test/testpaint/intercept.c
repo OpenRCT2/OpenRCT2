@@ -157,109 +157,10 @@ static bool assertFunctionCallArrayEquals(function_call expected[], uint8 expect
 	return true;
 }
 
-static void printImageId(uint32 input, utf8string out, size_t len) {
-	uint32 image = input & 0x7FFFF;
-	uint32 palette = input & ~0x7FFFF;
-
-	utf8string paletteName;
-	if (palette == DEFAULT_SCHEME_TRACK)paletteName = "SCHEME_TRACK";
-	else if (palette == DEFAULT_SCHEME_SUPPORTS)paletteName = "SCHEME_SUPPORTS";
-	else if (palette == DEFAULT_SCHEME_MISC)paletteName = "SCHEME_MISC";
-	else if (palette == DEFAULT_SCHEME_3)paletteName = "SCHEME_3";
-	else {
-		paletteName = malloc(16);
-		snprintf(paletteName, 16, "0x%08X", palette);
-	}
-
-	if (image == 0) {
-		snprintf(out, len, "%s", paletteName);
-	} else if (image & 0x70000) {
-		snprintf(out, len, "%s | vehicle.base_image_id + %d", paletteName, image & ~0x70000);
-	} else {
-		snprintf(out, len, "%s | %d", paletteName, image);
-	}
-}
-
-static void printFunctionCall(utf8string out, size_t len, function_call call) {
-	utf8string imageId = malloc(64);
-	printImageId(call.supports.colour_flags, imageId, 64);
-	switch (call.function) {
-	case SUPPORTS_WOOD_A:
-		snprintf(out, len, "wooden_a_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
-		return;
-	case SUPPORTS_WOOD_B:
-		snprintf(out, len, "wooden_b_supports_paint_setup(%d, %d, %d, %s)", call.supports.type, call.supports.special, call.supports.height, imageId);
-		return;
-
-	case SUPPORTS_METAL_A:
-		snprintf(out, len, "metal_a_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
-		return;
-	case SUPPORTS_METAL_B:
-		snprintf(out, len, "metal_b_supports_paint_setup(%d, %d, %d, %d, %s)", call.supports.type, call.supports.segment, call.supports.special, call.supports.height, imageId);
-		return;
-
-	case SET_SEGMENT_HEIGHT:
-		snprintf(out, len, "paint_util_set_segment_support_height");
-		return;
-	}
-
-	utf8string name = "_default";
-	switch (call.function) {
-	case PAINT_98196C:
-		name = "sub_98196C";
-		break;
-	case PAINT_98197C:
-		name = "sub_98197C";
-		break;
-	case PAINT_98198C:
-		name = "sub_98198C";
-		break;
-	case PAINT_98199C:
-		name = "sub_98199C";
-		break;
-	}
-
-	size_t slen;
-
-	printImageId(call.paint.image_id, imageId, 64);
-	slen = snprintf(
-		out,
-		len,
-		"%s(%s, %d, %d, %d, %d, %d, %d, ",
-		name,
-		imageId,
-		call.paint.offset.x, call.paint.offset.y,
-		call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z,
-		call.paint.z_offset
-	);
-	if (slen >= len) return;
-
-	if (call.function != PAINT_98196C) {
-		if (slen < len)
-			slen += snprintf(
-				out + slen,
-				len - slen,
-				"%d, %d, %d, ",
-				call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z
-			);
-	}
-
-	if (slen < len)
-		slen += snprintf(out + slen, len - slen, "%d)", call.paint.rotation);
-
-	if (call.function != PAINT_98196C) {
-		if (slen < len)
-			snprintf(out + slen, len - slen, "    = { %d, %d, %d }, { %d, %d, %d }, { %d, %d, %d }",
-				call.paint.offset.x, call.paint.offset.y, call.paint.z_offset - 48,
-				call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, call.paint.bound_box_offset.z - 48,
-				call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
-	}
-}
-
-static void printFunctionCallArray(utf8string out, size_t len, function_call calls[], uint8 count) {
+static void printFunctionCallArray(utf8string out, size_t len, function_call calls[], uint8 count, uint16 baseHeight) {
 	for (int i = 0; i < count; i++) {
 		utf8string callOut = malloc(1024);
-		printFunctionCall(callOut, 1024, calls[i]);
+		printFunctionCall(callOut, 1024, calls[i], baseHeight);
 		size_t slen = strlen(out);
 		if (slen < len)
 			snprintf(out + slen, len - slen, "%s\n", callOut);
@@ -410,12 +311,12 @@ static uint8 testTrackElement(uint8 rideType, uint8 trackType, utf8string error,
 					utf8string diff = malloc(2048);
 
 					snprintf(diff, 2048, "<<< EXPECTED\n");
-					printFunctionCallArray(diff, 2048, oldCalls, oldCallCount);
+					printFunctionCallArray(diff, 2048, oldCalls, oldCallCount, height);
 					
 					size_t slen = strlen(diff);
 					if (slen < 2048)
 						snprintf(diff + slen, 2048 - slen, "====\n");
-					printFunctionCallArray(diff, 2048, newCalls, newCallCount);
+					printFunctionCallArray(diff, 2048, newCalls, newCallCount, height);
 					
 					slen = strlen(diff);
 					if (slen < 2048)

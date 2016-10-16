@@ -207,6 +207,7 @@
 		C686F9581CDBC4C7009F9BFC /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */; };
 		C6B5A7D41CDFE4CB00C9C006 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */; };
 		C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */; };
+		C6BDA02B1DB3DFD600271C0A /* Printer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BDA0291DB3DFC900271C0A /* Printer.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
@@ -615,6 +616,7 @@
 		C6B5A7D11CDFE4CB00C9C006 /* S6Exporter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Exporter.h; sourceTree = "<group>"; };
 		C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
 		C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Importer.h; sourceTree = "<group>"; };
+		C6BDA0291DB3DFC900271C0A /* Printer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Printer.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -1178,6 +1180,7 @@
 				85AFA2101D7DB83E00221B42 /* intercept.h */,
 				85AFA20F1D7DB83E00221B42 /* main.cpp */,
 				C65A9EAE1DB2C01B003C3557 /* PaintIntercept.cpp */,
+				C6BDA0291DB3DFC900271C0A /* Printer.cpp */,
 			);
 			name = Paint;
 			path = test/testpaint;
@@ -2393,6 +2396,7 @@
 				C64FDA7B1D6D9A2100F259B9 /* stand_up_roller_coaster.c in Sources */,
 				C64FDA7C1D6D9A2100F259B9 /* steeplechase.c in Sources */,
 				C64FDA7D1D6D9A2100F259B9 /* suspended_swinging_coaster.c in Sources */,
+				C6BDA02B1DB3DFD600271C0A /* Printer.cpp in Sources */,
 				C64FDA7E1D6D9A2100F259B9 /* twister_roller_coaster.c in Sources */,
 				C64FDA7F1D6D9A2100F259B9 /* vertical_drop_roller_coaster.c in Sources */,
 				C64FDA801D6D9A2100F259B9 /* virginia_reel.c in Sources */,

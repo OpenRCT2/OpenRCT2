@@ -95,6 +95,7 @@ extern "C"
     void intercept_reset_segment_heights();
     void intercept_reset_tunnels();
     void intercept_simulate_wooden_supports(bool enabled);
+    void printFunctionCall(utf8string out, size_t len, function_call call, uint16 baseHeight);
     bool assertFunctionCallEquals(function_call expected, function_call actual);
 
     int generatePaintCode(uint8 rideType);
