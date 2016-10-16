@@ -95,12 +95,14 @@
     <ClCompile Include="..\..\src\paint\paint_helpers.c" />
     <ClCompile Include="compat.c" />
     <ClCompile Include="data.c" />
+    <ClCompile Include="FunctionCall.cpp" />
     <ClCompile Include="generate.cpp" />
     <ClCompile Include="intercept.c" />
     <ClCompile Include="intercept_2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PaintIntercept.cpp" />
     <ClCompile Include="Printer.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="..\..\src\addresses.c" />
     <ClCompile Include="..\..\src\diagnostic.c" />
     <ClCompile Include="..\..\src\hook.c" />
