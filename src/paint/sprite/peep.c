@@ -53,8 +53,7 @@ void peep_paint(rct_peep * peep, int imageDirection)
 				return;
 		};
 
-		uint32 uniqueID = RCT2_GLOBAL(0x9DE578, uint32);
-		lightfx_add_3d_light(uniqueID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+		lightfx_add_3d_light(peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
 	}
 
 #endif

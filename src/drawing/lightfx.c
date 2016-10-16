@@ -19,6 +19,7 @@
 #include "../rct2.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
+#include "../paint/map_element/map_element.h"
 
 static uint8 _bakedLightTexture_lantern_0[32*32];
 static uint8 _bakedLightTexture_lantern_1[64*64];
@@ -246,24 +247,25 @@ void lightfx_prepare_light_list()
 
 				rct_map_element *mapElement = 0;
 
-				int interactionType;
+				int interactionType = 0;
 
 				rct_window *w = window_get_main();
 				if (w != NULL) {
 				//	get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 
-					RCT2_GLOBAL(0x9AC154, uint16_t) = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
-					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = _current_view_zoom_front;
-					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-					rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-					dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
-					dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
-					dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
+#if 0
+					_unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
+					_viewportDpi1.zoom = _current_view_zoom_front;
+					_viewportDpi1.x = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
+					_viewportDpi1.y = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
+					rct_drawpixelinfo* dpi = &_viewportDpi2;
+					dpi->x = _viewportDpi1.x;
+					dpi->y = _viewportDpi1.y;
+					dpi->zoom_level = _viewportDpi1.zoom;
 					dpi->height = 1;
 					dpi->width = 1;
-					RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
-					RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
+					gEndOfPaintStructArray = 0xF1A4CC;
+					unk_140E9A8 = dpi;
 					painter_setup();
 					viewport_paint_setup();
 					sub_688217();
@@ -271,10 +273,11 @@ void lightfx_prepare_light_list()
 
 				//	log_warning("[%i, %i]", dpi->x, dpi->y);
 
-					mapCoord.x = RCT2_GLOBAL(0x9AC14C, int16_t) + tileOffsetX;
-					mapCoord.y = RCT2_GLOBAL(0x9AC14E, int16_t) + tileOffsetY;
-					interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
+					mapCoord.x = _unk9AC14C + tileOffsetX;
+					mapCoord.y = _unk9AC14E + tileOffsetY;
+					interactionType = _unk9AC148;
 					mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
+#endif
 
 					//RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
 					//RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -623,8 +626,8 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 
 void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
 {
-	sint16	x = RCT2_GLOBAL(0x9DE56A, sint16) + offsetX;
-	sint16	y = RCT2_GLOBAL(0x9DE56C, sint16) + offsetY;
+	sint16 x = gPaintMapPosition.x + offsetX;
+	sint16 y = gPaintMapPosition.y + offsetY;
 
 	switch (get_current_rotation()) {
 	case 0:
@@ -657,11 +660,13 @@ uint32 lightfx_get_light_polution()
 
 void lightfx_add_lights_magic_vehicles()
 {
-	for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
-		uint32	vehicleID = i;
+	uint16 spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE];
+	while (spriteIndex != SPRITE_INDEX_NULL) {
+		rct_vehicle * vehicle = &(get_sprite(spriteIndex)->vehicle);
+		uint16 vehicleID = spriteIndex;
+		spriteIndex = vehicle->next;
 
-		rct_vehicle *mother_vehicle = GET_VEHICLE(i);
-		rct_vehicle *vehicle = mother_vehicle;
+		rct_vehicle *mother_vehicle = vehicle;
 
 		rct_ride_entry *rideEntry = 0;
 		const rct_ride_entry_vehicle *vehicleEntry;
@@ -674,7 +679,7 @@ void lightfx_add_lights_magic_vehicles()
 			vehicleEntry = &rideEntry->vehicles[mother_vehicle->vehicle_type];
 		}
 
-		for (uint16 q = i; q != SPRITE_INDEX_NULL; ) {
+		for (uint16 q = vehicleID; q != SPRITE_INDEX_NULL; ) {
 			rct_vehicle *vehicle = GET_VEHICLE(q);
 
 			vehicleID = q;
