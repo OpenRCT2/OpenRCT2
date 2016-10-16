@@ -148,7 +148,7 @@ namespace Memory
 		//  - the alignment
 		//  - a pointer to the original return value (needed for free)
 		//  - the object
-		//  - extra zero-padded space to bring object size to a multiple of 32
+		//  - extra zero-padded space to bring object size to a multiple of alignment
 		//  - extra space for alignment
 		uint8 *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(uint8 *) + size + alignment - 1 + zero_pad);
 		if (ptr == NULL) {
