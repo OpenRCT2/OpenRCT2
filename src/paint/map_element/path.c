@@ -28,6 +28,8 @@
 #include "../supports.h"
 #include "map_element.h"
 #include "surface.h"
+#include "../../world/map.h"
+#include "../../drawing/lightfx.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no

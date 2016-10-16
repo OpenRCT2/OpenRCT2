@@ -144,4 +144,8 @@ assert_struct_size(registers, 7 * 4);
 
 #define UNUSED(x) ((void)(x))
 
+#define STOUT_EXPANDED_RENDERING
+#define STOUT_EXPANDED_RENDERING_MTT
+#define STOUT_EXPANDED_RENDERING_LIGHT
+
 #endif

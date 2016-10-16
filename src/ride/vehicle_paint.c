@@ -21,6 +21,7 @@
 #include "../ride/track.h"
 #include "../interface/viewport.h"
 #include "../game.h"
+#include "../drawing/lightfx.h"
 #include "vehicle_paint.h"
 
 // 0x0098E52C:
@@ -891,6 +892,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 // 6D5214
 static void vehicle_sprite_paint(rct_vehicle *vehicle, int ebx, int ecx, int z, const rct_ride_entry_vehicle *vehicleEntry)
 {
+
 	int baseImage_id = ebx;
 	vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
 	if (vehicleEntry->flags_a & 0x4000) {
@@ -2333,7 +2335,7 @@ void vehicle_visual_default(int x, int imageDirection, int y, int z, rct_vehicle
  */
 void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 {
-	rct_ride_entry *rideEntry;
+	rct_ride_entry *rideEntry = 0;
 	const rct_ride_entry_vehicle *vehicleEntry;
 
 	int x = vehicle->x;
