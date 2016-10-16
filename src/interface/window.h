@@ -25,6 +25,7 @@
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
 #include "../scenario.h"
+#include "../ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
 
@@ -282,7 +283,7 @@ typedef struct rct_window {
 		uint16 ride_colour;
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
-		scenario_index_entry* highlighted_scenario;
+		const scenario_index_entry* highlighted_scenario;
 		struct {
 			uint16 var_494;
 			uint16 var_496;
