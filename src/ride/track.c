@@ -2120,7 +2120,7 @@ void track_get_front(rct_xy_element *input, rct_xy_element *output)
 
 bool track_element_is_lift_hill(rct_map_element *trackElement)
 {
-	return trackElement->type & 0x80;
+	return trackElement->type & TRACK_ELEMENT_FLAG_CHAIN_LIFT;
 }
 
 /**

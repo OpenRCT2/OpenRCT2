@@ -1029,6 +1029,18 @@ void widget_scroll_get_part(rct_window *w, rct_widget *widget, int x, int y, int
 	}
 }
 
+void widget_set_enabled(rct_window *w, uint64 widgetIndex, bool enabled)
+{
+	if (enabled) {
+		w->enabled_widgets |= (1ULL << widgetIndex);
+		w->disabled_widgets &= ~(1ULL << widgetIndex);
+	}
+	else {
+		w->enabled_widgets &= ~(1ULL << widgetIndex);
+		w->disabled_widgets |= (1ULL << widgetIndex);
+	}
+}
+
 void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value)
 {
 	if (value)

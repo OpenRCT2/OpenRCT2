@@ -125,7 +125,7 @@ typedef enum {
 	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
 	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
 	WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),		// 0x4
-	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8  // Probably indicates translucency
+	WALL_SCENERY_IS_BANNER = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_IS_DOOR = (1 << 4),		// 0x10
 	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
 	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
@@ -133,7 +133,8 @@ typedef enum {
 } WALL_SCENERY_FLAGS;
 
 typedef enum {
-	WALL_SCENERY_2_FLAG_5 = (1 << 4),		// 0x10
+	WALL_SCENERY_2_FLAG4 = (1 << 3),		// 0x8
+	WALL_SCENERY_2_FLAG5 = (1 << 4),		// 0x10
 } WALL_SCENERY_2_FLAGS;
 
 typedef struct rct_path_bit_scenery_entry {
