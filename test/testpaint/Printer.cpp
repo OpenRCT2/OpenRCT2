@@ -16,6 +16,7 @@
 
 #include "Printer.hpp"
 #include "String.hpp"
+#include "../../src/core/Util.hpp"
 
 namespace Printer {
 
@@ -28,6 +29,7 @@ namespace Printer {
         "metal_b_supports_paint_setup",
         "wooden_a_supports_paint_setup",
         "wooden_b_supports_paint_setup",
+        "paint_util_set_segment_support_height",
     };
 
     static std::string GetImageIdString(uint32 imageId);
@@ -51,6 +53,7 @@ namespace Printer {
 
     std::string PrintFunctionCall(function_call call, uint16 baseHeight) {
         std::string imageId = GetImageIdString(call.supports.colour_flags);
+        assert(call.function < Util::CountOf(functionNames));
         const char *functionName = functionNames[call.function];
 
         switch (call.function) {
