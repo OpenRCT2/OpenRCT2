@@ -137,4 +137,82 @@ namespace Memory
         }
         Free(ptr);
     }
+
+	template<typename T>
+	T * AllocateAligned(size_t alignment, size_t size)
+	{
+		size_t remainder = size % alignment;
+		size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+
+		// Allocate enough space for ...:
+		//  - the alignment
+		//  - a pointer to the original return value (needed for free)
+		//  - the object
+		//  - extra zero-padded space to bring object size to a multiple of 32
+		//  - extra space for alignment
+		uint8 *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(uint8 *) + size + alignment - 1 + zero_pad);
+		if (ptr == NULL) {
+			log_error("Failed to allocate memory for object.");
+			assert(false);
+		}
+
+		// Align chunk pointer on boundary.
+		uint8 *ptr_aligned = (uint8 *)((uint8 *)ptr + sizeof(size_t) + sizeof(uint8 *) + alignment - 1 - remainder);
+
+		// Save alignment for realloc
+		((size_t *)((uint8 *)ptr_aligned - sizeof(uint8 *)))[-1] = alignment;
+		// Save original pointer for free
+		((uint8 **)ptr_aligned)[-1] = ptr;
+
+		// Zero-pad object up to a multiple of alignment
+		memset((uint8 *)ptr_aligned + size, 0x00, zero_pad);
+
+		return (T*)ptr_aligned;
+	}
+
+	template<typename T>
+	T * AllocateAligned(size_t alignment)
+	{
+		return AllocateAligned<T>(alignment, sizeof(T));
+	}
+
+	template<typename T>
+	void FreeAligned(T * ptr)
+	{
+		free((void *)(((uint8 **)ptr)[-1]));
+	}
+
+	template<typename T>
+	T * ReallocateAligned(T * ptr_aligned, size_t size)
+	{
+		uint8 *ptr_new, *ptr_new_aligned;
+		uint8 *ptr_old = ((uint8 **)ptr_aligned)[-1];
+
+		size_t alignment = ((size_t *)ptr_aligned)[-2];
+		size_t remainder = size % alignment;
+		size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+		size_t offset = (size_t)((uint8 *)ptr_aligned - (uint8 *)ptr_old);
+
+		ptr_new = (uint8 *)realloc(ptr_old, offset + size + zero_pad);
+		if (ptr_new == NULL) {
+			log_error("Failed to reallocate memory for object.");
+			assert(false);
+		}
+
+		ptr_new_aligned = (uint8 *)((uint8 *)ptr_new + offset);
+		((uint8 **)ptr_new_aligned)[-1] = ptr_new;
+		memset((uint8 *)ptr_new_aligned + size, 0x00, zero_pad);
+
+		// realloc moved the data (fine) to a non-aligned location (not fine)
+		if ((uint32)ptr_new_aligned % alignment > 0) {
+			uint8 *tmp = AllocateAligned<T>(alignment, size);
+
+			memcpy(tmp, ptr_new_aligned, size);
+			FreeAligned<T>(ptr_new_aligned);
+
+			ptr_new_aligned = tmp;
+		}
+
+		return (T*)ptr_new_aligned;
+	}
 }

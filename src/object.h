@@ -49,6 +49,7 @@ typedef enum{
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
+#define CHUNK_ALIGNMENT 32
 
 #pragma pack(push, 1)
 /**
@@ -114,7 +115,7 @@ bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 
 bool object_entry_is_empty(const rct_object_entry *entry);
 bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const void *RESTRICT data, size_t dataLength);
 int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 

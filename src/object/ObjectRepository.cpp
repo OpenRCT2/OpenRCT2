@@ -512,7 +512,7 @@ private:
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                void * newData = Memory::Allocate<void>(newDataSize);
+                void * newData = Memory::AllocateAligned<void>(CHUNK_ALIGNMENT, newDataSize);
                 void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
                 Memory::Copy(newData, data, dataSize);
                 Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
@@ -532,12 +532,12 @@ private:
                         // Save new data form
                         SaveObject(path, entry, newData, newDataSize, false);
                     }
-                    Memory::Free(newData);
+                    Memory::FreeAligned(newData);
                     Memory::Free(extraBytes);
                 }
                 catch (Exception ex)
                 {
-                    Memory::Free(newData);
+                    Memory::FreeAligned(newData);
                     Memory::Free(extraBytes);
                     throw;
                 }
@@ -794,7 +794,7 @@ extern "C"
         else
         {
             // Read object and save to new file
-            uint8 * chunk = Memory::Allocate<uint8>(0x600000);
+            uint8 * chunk = Memory::AllocateAligned<uint8>(CHUNK_ALIGNMENT, 0x600000);
             if (chunk == nullptr)
             {
                 log_error("Failed to allocate buffer for packed object.");
@@ -802,7 +802,7 @@ extern "C"
             }
 
             size_t chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-            chunk = Memory::Reallocate(chunk, chunkSize);
+            chunk = Memory::ReallocateAligned(chunk, chunkSize);
             if (chunk == nullptr)
             {
                 log_error("Failed to reallocate buffer for packed object.");
@@ -811,7 +811,7 @@ extern "C"
 
             objRepo->AddObject(&entry, chunk, chunkSize);
 
-            Memory::Free(chunk);
+            Memory::FreeAligned(chunk);
         }
         return 1;
     }
@@ -962,28 +962,52 @@ extern "C"
         return 1;
     }
 
-    int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
-    {
-        const uint8 *entryBytePtr = (uint8*)entry;
+	uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const void *RESTRICT data, size_t dataLength)
+	{
+		uint8 *entry_bytes = (uint8 *)entry;
+		uint8 *data_bytes = (uint8 *)data;
+		uint32 checksum = 0xF369A75B;
 
-        uint32 checksum = 0xF369A75B;
-        checksum ^= entryBytePtr[0];
-        checksum = rol32(checksum, 11);
-        for (int i = 4; i < 12; i++)
-        {
-            checksum ^= entryBytePtr[i];
-            checksum = rol32(checksum, 11);
-        }
+		// Round size for checksumming up to nearest multiple of 32. Chunk data
+		// is 0-padded up to a size multiple of 32. These 0-values can be
+		// safely checksummed without altering the final result; no SIMD-loop
+		// epilogue needed.
+		size_t dataLength_padded = (dataLength + 31) & 0x1F;
 
-        uint8 * dataBytes = (uint8 *)data;
-        for (size_t i = 0; i < dataLength; i++)
-        {
-            checksum ^= dataBytes[i];
-            checksum = rol32(checksum, 11);
-        }
+		uint8 tmp[32] = { 0 };
 
-        return (int)checksum;
-    }
+		// Insert entry data "backwards" and "rewind" checksum rotations so that
+		// tmp[0] can still start rotating with (11*0).
+		checksum = rol32(checksum, (9 * 11) % 32);
+		tmp[23] = entry_bytes[0];
+		for (size_t j = 4; j < 12; ++j)
+			tmp[20 + j] = entry_bytes[j];
+
+		// Tight xor-loop == PRIME autovectorization target
+		for (size_t i = 0; i <= (dataLength_padded - 32); i += 32) {
+			for (size_t j = 0; j < 32; ++j) {
+				tmp[j] ^= data_bytes[i + j];
+			}
+		}
+
+		// Shuffle bytes such that they can be rotated in unison as uint32s.
+		const uint8 tmp2[32] = { tmp[0],  tmp[8], tmp[16], tmp[24],
+								 tmp[1],  tmp[9], tmp[17], tmp[25],
+								 tmp[2], tmp[10], tmp[18], tmp[26],
+								 tmp[3], tmp[11], tmp[19], tmp[27],
+								 tmp[4], tmp[12], tmp[20], tmp[28],
+								 tmp[5], tmp[13], tmp[21], tmp[29],
+								 tmp[6], tmp[14], tmp[22], tmp[30],
+								 tmp[7], tmp[15], tmp[23], tmp[31] };
+		for (size_t i = 0; i < 8; ++i) {
+			checksum ^= ror32(((uint32 *)tmp2)[i], (11 * i) % 32);
+		}
+
+		// Rotate checksum to account for misaligned data.
+		checksum = rol32(checksum, (11 * (dataLength % 32)) % 32);
+
+		return checksum;
+	}
 }
 
 static void ReportMissingObject(const rct_object_entry * entry)
