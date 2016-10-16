@@ -29,6 +29,39 @@ extern "C" {
 
 namespace Intercept2
 {
+    static void ResetEnvironment() {
+        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
+
+        rct_drawpixelinfo dpi = { 0 };
+        dpi.zoom_level = 1;
+        unk_140E9A8 = &dpi;
+
+        rct_ride ride = {0};
+        ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+
+        rct_ride_entry rideEntry = {0};
+        rct_ride_entry_vehicle vehicleEntry { 0 };
+        vehicleEntry.base_image_id = 0x70000;
+        rideEntry.vehicles[0] = vehicleEntry;
+
+        gRideList[0] = ride;
+        gRideEntries[0] = &rideEntry;
+
+        for (int s = 0; s < 9; ++s)
+        {
+            gSupportSegments[s].height = 0;
+            gSupportSegments[s].slope = 0xFF;
+        }
+
+        gSupport.height = 0;
+        gSupport.slope = 0xFF;
+        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+    }
+
     static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
     {
         if (lhs.height != rhs.height) {
@@ -297,26 +330,7 @@ namespace Intercept2
         surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
         surfaceElement.base_height = 2;
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
-
-        rct_drawpixelinfo dpi = { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
-
-        rct_ride ride = {0};
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+        ResetEnvironment();
 
         int height = 48;
 
@@ -497,26 +511,7 @@ namespace Intercept2
 
         g_currently_drawn_item = &mapElement;
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
-
-        rct_drawpixelinfo dpi { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
-
-        rct_ride ride = {0};
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+        ResetEnvironment();
 
         int height = 48;
 
@@ -689,26 +684,7 @@ namespace Intercept2
 
         g_currently_drawn_item = &mapElement;
 
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
-
-        rct_drawpixelinfo dpi = { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
-
-        rct_ride ride = {0};
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry = { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+        ResetEnvironment();
 
         int height = 48;
 
@@ -868,5 +844,9 @@ extern "C"
     bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
     {
         return Intercept2::testIsIgnored(direction, trackSequence);
+    }
+
+    void intercept_reset_environment() {
+        Intercept2::ResetEnvironment();
     }
 }

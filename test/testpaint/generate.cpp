@@ -1004,35 +1004,7 @@ private:
 
     void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
     {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = Intercept2::DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = Intercept2::DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = Intercept2::DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = Intercept2::DEFAULT_SCHEME_3;
-
-        rct_drawpixelinfo dpi = { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
-
-        rct_ride ride = {0};
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
-
-        for (int s = 0; s < 9; ++s)
-        {
-            gSupportSegments[s].height = 0;
-            gSupportSegments[s].slope = 0xFF;
-        }
-
-        gSupport.height = 0;
-        gSupport.slope = 0xFF;
-        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+        intercept_reset_environment();
 
         uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it

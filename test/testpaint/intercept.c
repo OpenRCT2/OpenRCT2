@@ -332,25 +332,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 	surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
 	surfaceElement.base_height = 2;
 
-	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-	gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-	gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-	gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-    gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
-
-	rct_drawpixelinfo dpi = {.zoom_level = 1};
-	unk_140E9A8 = &dpi;
-
-	rct_ride ride = { 0 };
-	ride.entrance_style = RIDE_ENTRANCE_STYLE_CANVAS_TENT;
-
-	rct_ride_entry rideEntry = { 0 };
-	rct_ride_entry_vehicle vehicleEntry = {.base_image_id = 0x70000};
-	rideEntry.vehicles[0] = vehicleEntry;
-
-
-	gRideList[0] = ride;
-	gRideEntries[0] = &rideEntry;
+    intercept_reset_environment();
 
 	int height = 48;
 
