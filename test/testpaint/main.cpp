@@ -24,6 +24,7 @@
 #endif // defined(__unix__)
 
 #include "intercept.h"
+#include "Utils.hpp"
 
 extern "C" {
 #include "data.h"
@@ -344,7 +345,7 @@ static void PrintRideTypes()
 {
 	for (uint8 rideType = 0; rideType < 91; rideType++) {
 		CLIColour colour = CLIColour::DEFAULT;
-		bool implemented = rideIsImplemented(rideType);
+		bool implemented = Utils::rideIsImplemented(rideType);
 		const char * rideName = RideNames[rideType];
 		const char * status = "";
 		if (implemented) {
@@ -397,7 +398,7 @@ int main(int argc, char *argv[]) {
 			continue;
 		}
 
-		if (!rideIsImplemented(rideType)) {
+		if (!Utils::rideIsImplemented(rideType)) {
 			continue;
 		}
 
@@ -408,7 +409,7 @@ int main(int argc, char *argv[]) {
 			testCase.trackTypes.push_back(RideConstructionDefaultTrackType[rideType]);
 		} else {
 			for (int trackType = 0; trackType < 256; trackType++) {
-				if (rideSupportsTrackType(rideType, trackType)) {
+				if (Utils::rideSupportsTrackType(rideType, trackType)) {
 					testCase.trackTypes.push_back(trackType);
 				}
 			}

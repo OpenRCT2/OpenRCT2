@@ -80,11 +80,8 @@ typedef struct
 extern "C"
 {
 #endif
-    bool testRide(int rideType);
     void initHooks();
     int getTrackSequenceCount(uint8 rideType, uint8 trackType);
-    bool rideIsImplemented(int rideType);
-    bool rideSupportsTrackType(int rideType, int trackType);
     uint8 testTrackPainting(int rideType, int trackType);
     bool testSupportSegments(uint8 rideType, uint8 trackType);
     bool testTunnels(uint8 rideType, uint8 trackType);

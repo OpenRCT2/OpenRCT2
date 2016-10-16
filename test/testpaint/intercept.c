@@ -167,46 +167,6 @@ static void printFunctionCallArray(utf8string out, size_t len, function_call cal
 	}
 }
 
-int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
-	int sequenceCount = 0;
-	const rct_preview_track **trackBlocks;
-
-	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		trackBlocks = FlatRideTrackBlocks;
-	} else {
-		trackBlocks = TrackBlocks;
-	}
-
-	for (int i = 0; i < 256; i++) {
-		if (trackBlocks[trackType][i].index == 0xFF) {
-			break;
-		}
-
-		sequenceCount++;
-	}
-
-	return sequenceCount;
-}
-
-bool rideSupportsTrackType(int rideType, int trackType)
-{
-	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-
-	if (newPaintGetter == NULL) {
-		return false;
-	}
-
-	if (newPaintGetter(trackType, 0) == NULL) {
-		return false;
-	}
-
-	if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0) {
-		return false;
-	}
-
-	return true;
-}
-
 
 extern bool testSupportSegments(uint8 rideType, uint8 trackType);
 extern bool testTunnels(uint8 rideType, uint8 trackType);
@@ -366,11 +326,6 @@ static uint8 testTrackElement(uint8 rideType, uint8 trackType, utf8string error,
 	}
 
 	return TEST_SUCCESS;
-}
-
-bool rideIsImplemented(int rideType) {
-	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-	return (newPaintGetter != 0);
 }
 
 uint8 testTrackPainting(int rideType, int trackType) {
