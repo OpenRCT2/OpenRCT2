@@ -32,6 +32,8 @@
 		C606CCC71DB4054000FE4015 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB81DB4054000FE4015 /* String.cpp */; };
 		C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBA1DB4054000FE4015 /* TestTrack.cpp */; };
 		C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBC1DB4054000FE4015 /* Utils.cpp */; };
+		C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */; };
+		C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
 		C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */; };
@@ -520,6 +522,10 @@
 		C606CCBB1DB4054000FE4015 /* TestTrack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestTrack.hpp; sourceTree = "<group>"; };
 		C606CCBC1DB4054000FE4015 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
 		C606CCBD1DB4054000FE4015 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
+		C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneralSupportHeightCall.cpp; sourceTree = "<group>"; };
+		C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneralSupportHeightCall.hpp; sourceTree = "<group>"; };
+		C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentSupportHeightCall.cpp; sourceTree = "<group>"; };
+		C606CCCD1DB427A000FE4015 /* SegmentSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SegmentSupportHeightCall.hpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1191,6 +1197,8 @@
 				C606CCAD1DB4054000FE4015 /* data.h */,
 				C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */,
 				C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */,
+				C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */,
+				C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */,
 				C606CCB01DB4054000FE4015 /* generate.cpp */,
 				C606CCB11DB4054000FE4015 /* intercept_2.cpp */,
 				C606CCB31DB4054000FE4015 /* intercept.h */,
@@ -1198,6 +1206,8 @@
 				C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */,
 				C606CCB61DB4054000FE4015 /* Printer.cpp */,
 				C606CCB71DB4054000FE4015 /* Printer.hpp */,
+				C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */,
+				C606CCCD1DB427A000FE4015 /* SegmentSupportHeightCall.hpp */,
 				C606CCB81DB4054000FE4015 /* String.cpp */,
 				C606CCB91DB4054000FE4015 /* String.hpp */,
 				C606CCBA1DB4054000FE4015 /* TestTrack.cpp */,
@@ -2401,6 +2411,7 @@
 				C64FDA6C1D6D9A2100F259B9 /* inverted_impulse_coaster.c in Sources */,
 				C64FDA6D1D6D9A2100F259B9 /* inverted_roller_coaster.c in Sources */,
 				C64FDA6E1D6D9A2100F259B9 /* junior_roller_coaster.c in Sources */,
+				C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */,
 				C64FDA6F1D6D9A2100F259B9 /* lay_down_roller_coaster.c in Sources */,
 				C64FDA701D6D9A2100F259B9 /* lim_launched_roller_coaster.c in Sources */,
 				C64FDA711D6D9A2100F259B9 /* looping_roller_coaster.c in Sources */,
@@ -2444,6 +2455,7 @@
 				C64FDA8F1D6D9A2100F259B9 /* mini_helicopters.c in Sources */,
 				C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */,
 				C64FDA901D6D9A2100F259B9 /* monorail_cycles.c in Sources */,
+				C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */,
 				C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */,
 				C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */,
 				C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */,

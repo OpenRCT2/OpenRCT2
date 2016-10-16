@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "intercept.h"
+#include "SegmentSupportHeightCall.hpp"
 #include "String.hpp"
 #include "Utils.hpp"
 
@@ -401,7 +402,7 @@ private:
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
         sint16 verticalTunnelHeights[4];
-        std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
+        std::vector<SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
             rct_map_element mapElement = { 0 };
@@ -431,7 +432,7 @@ private:
                 }
             }
 
-            segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
+            segmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
             if (gSupport.slope != 0xFF && gSupport.height != 0)
             {
@@ -894,7 +895,7 @@ private:
         WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
     }
 
-    void GenerateSegmentSupportCall(int tabs, std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
+    void GenerateSegmentSupportCall(int tabs, std::vector<SegmentSupportCall> segmentSupportCalls[4])
     {
         for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
         {

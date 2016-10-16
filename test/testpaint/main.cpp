@@ -358,7 +358,40 @@ static void PrintRideTypes()
 	}
 }
 
+#import "GeneralSupportHeightCall.hpp"
+
+static void TestGeneralSupportHeightCall() {
+	SupportCall callA = {16, 0x20};
+	SupportCall callB = {32, 0x20};
+	SupportCall callC = {48, 0x20};
+	SupportCall callD = {48, 0x1F};
+
+	SupportCall *result;
+
+	SupportCall groupA[4] = {callA, callA, callA, callA};
+	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupA);
+	assert(GeneralSupportHeightCall::AssertEquals(result, &callA));
+
+	SupportCall groupB[4] = {callB, callA, callA, callA};
+	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupB);
+	assert(GeneralSupportHeightCall::AssertEquals(result, &callA));
+
+	SupportCall groupC[4] = {callB, callA, callB, callA};
+	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupC);
+	assert(GeneralSupportHeightCall::AssertEquals(result, nullptr));
+
+	SupportCall groupD[4] = {callB, callC, callB, callA};
+	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupD);
+	assert(GeneralSupportHeightCall::AssertEquals(result, &callB));
+
+	SupportCall groupE[4] = {callD, callC, callB, callA};
+	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupE);
+	assert(GeneralSupportHeightCall::AssertEquals(result, nullptr));
+}
+
 int main(int argc, char *argv[]) {
+	TestGeneralSupportHeightCall();
+
 	std::vector<TestCase> testCases;
 
 	bool generate = false;

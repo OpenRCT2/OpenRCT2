@@ -16,15 +16,21 @@
 
 #pragma once
 
-#include <string>
 #include <vector>
 
-#include "intercept.h"
-#include "SegmentSupportHeightCall.hpp"
+#include "../../src/common.h"
+#include "../../src/paint/paint.h"
 
-namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
+struct SegmentSupportCall
+{
+    uint16 segments;
+    sint32 height;
+    sint16 slope;
+};
 
-    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
-}
+class SegmentSupportHeightCall {
+public:
+    static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation);
+    static bool CallsMatch(std::vector<SegmentSupportCall> tileSegmentSupportCalls[4]);
+    static bool CallsEqual(std::vector<SegmentSupportCall> lhs, std::vector<SegmentSupportCall> rhs);
+};

@@ -18,6 +18,9 @@
 #include <algorithm>
 
 #include "intercept.h"
+#include "GeneralSupportHeightCall.hpp"
+#include "Printer.hpp"
+#include "SegmentSupportHeightCall.hpp"
 #include "Utils.hpp"
 
 extern "C" {
@@ -83,141 +86,9 @@ namespace Intercept2
         gSupport.slope = 0xFF;
     }
 
-    static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
-    {
-        if (lhs.height != rhs.height) {
-            return lhs.height < rhs.height;
-        }
-
-        if (lhs.slope != rhs.slope) {
-            return lhs.slope < rhs.slope;
-        }
-
-        return lhs.segments < rhs.segments;
-    }
-
-    std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation)
-    {
-        uint16 positionsRemaining = SEGMENTS_ALL;
-
-        for (int i = 0; i < 9; i++) {
-            if (supports[i].height == 0 && supports[i].slope == 0xFF) {
-                positionsRemaining &= ~segment_offsets[i];
-            }
-        }
-
-        std::vector<SegmentSupportCall> calls;
-
-        while (positionsRemaining != 0) {
-            SegmentSupportCall call = {0};
-            call.height = -1;
-            call.slope = -1;
-
-            support_height referenceSupport = { 0 };
-
-            for (int i = 0; i < 9; i++) {
-                if (positionsRemaining & segment_offsets[i]) {
-                    referenceSupport = supports[i];
-                    if (supports[i].height != 0) {
-                        call.height = supports[i].height;
-                    }
-                    if (supports[i].slope != 0xFF) {
-                        call.slope = supports[i].slope;
-                    }
-                    break;
-                }
-            }
-
-            uint16 positionsMatched = 0;
-            for (int i = 0; i < 9; i++) {
-                if (supports[i].height == referenceSupport.height && supports[i].slope == referenceSupport.slope) {
-                    positionsMatched |= segment_offsets[i];
-                }
-            }
-            positionsRemaining &= ~positionsMatched;
-
-            call.segments = paint_util_rotate_segments(positionsMatched, (4 - rotation) % 4);
-
-            calls.push_back(call);
-        }
-
-        if (calls.size() > 1) {
-            std::sort(calls.begin(), calls.end(), SortSegmentSupportCalls);
-        }
-
-        return calls;
-    }
-
-    static bool SegmentCallEquals(std::vector<SegmentSupportCall> lhs, std::vector<SegmentSupportCall> rhs)
-    {
-        if (lhs.size() != rhs.size()) return false;
-        for (size_t i = 0; i < lhs.size(); ++i) {
-            if (lhs[i].segments != rhs[i].segments)
-                return false;
-            if (lhs[i].height != rhs[i].height)
-                return false;
-            if (lhs[i].slope != rhs[i].slope)
-                return false;
-        }
-
-        return true;
-    }
-
-    static bool segmentCallsMatch(std::vector<SegmentSupportCall> tileSegmentSupportCalls[4])
-    {
-        std::vector<SegmentSupportCall> baseCallList = tileSegmentSupportCalls[0];
-        for (int i = 1; i < 4; i++) {
-            if (!SegmentCallEquals(baseCallList, tileSegmentSupportCalls[i])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    static bool supportCallsMatch(SupportCall tileSupportCalls[4])
-    {
-        SupportCall baseCall = tileSupportCalls[0];
-        for (int i = 1; i < 4; i++) {
-            if (tileSupportCalls[i].height != baseCall.height) return false;
-            if (tileSupportCalls[i].slope != baseCall.slope) return false;
-        }
-
-        return true;
-    }
-
     static void printSegmentSupports(utf8string out, size_t len, std::vector<SegmentSupportCall> segmentCalls)
     {
-        for (auto &&call : segmentCalls) {
-            int segmentsPrinted = 0;
-            for (int i = 0; i < 9; i++) {
-                if (call.segments & segment_offsets[i]) {
-                    if (segmentsPrinted > 0) {
-                        size_t slen = strlen(out);
-                        if (slen < len)
-                            snprintf(out + slen, len - slen, " | ");
-                    }
-                    size_t slen = strlen(out);
-                    if (slen < len)
-                        snprintf(out + slen, slen - len, "SEGMENT_%02X", 0xB4 + 4 * i);
-                    segmentsPrinted++;
-                }
-            }
-
-            if (call.height == 0xFFFF) {
-                size_t slen = strlen(out);
-                if (slen < len)
-                    snprintf(out + slen, len - slen, ", 0xFFFF");
-            } else {
-                size_t slen = strlen(out);
-                if (slen < len)
-                    snprintf(out + slen, len - slen, ", %d", call.height);
-            }
-
-            size_t slen = strlen(out);
-            if (slen < len)
-                snprintf(out + slen, len - slen, ", 0x%02X\n", call.slope);
-        }
+        snprintf(out, len, "%s", Printer::PrintSegmentSupportHeightCalls(segmentCalls).c_str());
     }
 
     static bool tunnelCallsLineUp(TunnelCall tunnelCalls[4][4])
@@ -387,7 +258,7 @@ namespace Intercept2
                     trackSequence
                 );
 
-                tileSegmentSupportCalls[direction] = getSegmentCalls(gSupportSegments, direction);
+                tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
 
                 tileGeneralSupportCalls[direction].height = -1;
                 tileGeneralSupportCalls[direction].slope = -1;
@@ -395,13 +266,16 @@ namespace Intercept2
                     tileGeneralSupportCalls[direction].height = gSupport.height;
                 }
                 if (gSupport.slope != 0xFF) {
-                    tileGeneralSupportCalls[direction].height = gSupport.height;
+                    tileGeneralSupportCalls[direction].slope = gSupport.slope;
                 }
             }
 
-            if (!segmentCallsMatch(tileSegmentSupportCalls)) {
+            if (!SegmentSupportHeightCall::CallsMatch(tileSegmentSupportCalls)) {
                 // TODO: if 3 directions do share the same mask, use that call list as a reference.
                 printf("Original segment calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
+                for (int i = 0; i < 4; i++) {
+                    printf("# %d\n%s", i, Printer::PrintSegmentSupportHeightCalls(tileSegmentSupportCalls[i]).c_str());
+                }
                 continue;
             }
 
@@ -415,9 +289,10 @@ namespace Intercept2
                     continue;
                 }
 
-                std::vector<SegmentSupportCall> newCalls = getSegmentCalls(gSupportSegments, direction);
+                std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments,
+                                                                                                     direction);
 
-                if (!SegmentCallEquals(tileSegmentSupportCalls[0], newCalls)) {
+                if (!SegmentSupportHeightCall::CallsEqual(tileSegmentSupportCalls[0], newCalls)) {
                     // TODO put this into *error
                     utf8string diff = new utf8[2048];
                     snprintf(diff, 2048, "<<< EXPECTED\n");
@@ -440,13 +315,21 @@ namespace Intercept2
                 }
             }
 
-            if (!supportCallsMatch(tileGeneralSupportCalls)) {
-                // TODO: if 3 directions do share the output, use that.
-                printf("Original support calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
-                continue;
-            }
-
             SupportCall referenceGeneralSupportCall = tileGeneralSupportCalls[0];
+
+            if (!GeneralSupportHeightCall::CallsMatch(tileGeneralSupportCalls)) {
+                SupportCall *found = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls);
+                if (found == nullptr) {
+                    // TODO: if 3 directions do share the output, use that.
+                    printf("Original support calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
+                    for (int i = 0; i < 4; ++i) {
+                        printf("[%d, 0x%02X] ", tileGeneralSupportCalls[i].height, tileGeneralSupportCalls[i].slope);
+                    }
+                    printf("\n");
+                    continue;
+                }
+                referenceGeneralSupportCall = *found;
+            }
 
 
             for (int direction = 0; direction < 4; direction++) {

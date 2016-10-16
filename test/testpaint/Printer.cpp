@@ -16,7 +16,6 @@
 
 #include "Printer.hpp"
 #include "String.hpp"
-#include "intercept.h"
 
 namespace Printer {
 
@@ -36,6 +35,8 @@ namespace Printer {
     static std::string GetHeightOffset(uint16 height, uint16 baseHeight);
 
     static std::string GetOffsetExpressionString(int offset);
+
+    static std::string PrintSegmentSupportHeightCall(SegmentSupportCall call);
 
     std::string PrintFunctionCalls(std::vector<function_call> calls, uint16 baseHeight) {
         std::string out;
@@ -102,6 +103,41 @@ namespace Printer {
         }
 
         return s;
+    }
+
+    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls) {
+        std::string out = "";
+
+        for (auto &&call : calls) {
+            out += PrintSegmentSupportHeightCall(call);
+        }
+
+        return out;
+    }
+
+    static std::string PrintSegmentSupportHeightCall(SegmentSupportCall call) {
+        std::string out = "";
+
+        int segmentsPrinted = 0;
+        for (int i = 0; i < 9; i++) {
+            if (call.segments & segment_offsets[i]) {
+                if (segmentsPrinted > 0) {
+                    out += " | ";
+                }
+                out += String::Format("SEGMENT_%02X", 0xB4 + 4 * i);
+                segmentsPrinted++;
+            }
+        }
+
+        if (call.height == 0xFFFF) {
+            out += ", 0xFFFF";
+        } else {
+            out += String::Format(", %d", call.height);
+        }
+
+        out += String::Format(", 0x%02X\n", call.slope);
+
+        return out;
     }
 
     static std::string GetImageIdString(uint32 imageId)
