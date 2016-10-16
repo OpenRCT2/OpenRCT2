@@ -16,11 +16,12 @@
 
 #pragma once
 
-#include "../../src/common.h"
+#include <string>
+#include <vector>
+
 #include "intercept.h"
 
-class FunctionCall {
-public:
-    static bool AssertsEquals(function_call expected, function_call actual);
-    static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);
-};
+namespace Printer {
+    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
+    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
+}

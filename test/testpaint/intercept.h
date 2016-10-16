@@ -82,7 +82,6 @@ extern "C"
 #endif
     void initHooks();
     int getTrackSequenceCount(uint8 rideType, uint8 trackType);
-    uint8 testTrackPainting(int rideType, int trackType);
     bool testSupportSegments(uint8 rideType, uint8 trackType);
     bool testTunnels(uint8 rideType, uint8 trackType);
     bool testVerticalTunnels(uint8 rideType, uint8 trackType);
@@ -91,13 +90,9 @@ extern "C"
     void intercept_reset_environment();
     void intercept_reset_segment_heights();
     void intercept_reset_tunnels();
-    void intercept_simulate_wooden_supports(bool enabled);
-    void printFunctionCall(utf8string out, size_t len, function_call call, uint16 baseHeight);
     bool assertFunctionCallEquals(function_call expected, function_call actual);
 
     int generatePaintCode(uint8 rideType);
-
-    extern const support_height DefaultSegmentHeight[9];
 
 #ifdef __cplusplus
 }

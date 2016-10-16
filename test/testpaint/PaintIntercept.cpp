@@ -163,12 +163,15 @@ private:
     }
 
     static void CheckSegmentSupportHeight() {
-        // First get last known support height state
-        if (memcmp(gSupportSegments, &DefaultSegmentHeight, sizeof(support_height) * 9) == 0) {
-            // Nothing changed
-            return;
+        bool hasChanged = false;
+        for (int i = 0; i < 9; i++) {
+            if (gSupportSegments[i].height != 0) hasChanged = true;
+            if (gSupportSegments[i].slope != 0xFF) hasChanged = true;
         }
 
+        if (!hasChanged) {
+            return;
+        }
 
         function_call call = {0};
         call.function = SET_SEGMENT_HEIGHT;

@@ -16,11 +16,8 @@
 
 #pragma once
 
-#include "../../src/common.h"
-#include "intercept.h"
+#include <string>
 
-class FunctionCall {
-public:
-    static bool AssertsEquals(function_call expected, function_call actual);
-    static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);
-};
+namespace String {
+    std::string Format(const char *format, ...);
+}

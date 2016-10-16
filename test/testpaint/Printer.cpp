@@ -14,72 +14,86 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <string>
-
+#include "Printer.hpp"
+#include "String.hpp"
 #include "intercept.h"
 
-class Printer {
-public:
-    static std::string PrintFunction(function_call call, uint16 baseHeight) {
-        std::string imageId = GetImageIdString(call.paint.image_id);
+namespace Printer {
+
+    static const char *functionNames[] = {
+        "sub_98196C",
+        "sub_98197C",
+        "sub_98198C",
+        "sub_98199C",
+        "metal_a_supports_paint_setup",
+        "metal_b_supports_paint_setup",
+        "wooden_a_supports_paint_setup",
+        "wooden_b_supports_paint_setup",
+    };
+
+    static std::string GetImageIdString(uint32 imageId);
+
+    static std::string GetHeightOffset(uint16 height, uint16 baseHeight);
+
+    static std::string GetOffsetExpressionString(int offset);
+
+    std::string PrintFunctionCalls(std::vector<function_call> calls, uint16 baseHeight) {
+        std::string out;
+
+        for (auto &&call : calls) {
+            out += PrintFunctionCall(call, baseHeight).c_str();
+            out += "\n";
+        }
+
+        return out;
+    }
+
+    std::string PrintFunctionCall(function_call call, uint16 baseHeight) {
+        std::string imageId = GetImageIdString(call.supports.colour_flags);
+        const char *functionName = functionNames[call.function];
 
         switch (call.function) {
             case SUPPORTS_WOOD_A:
-                return StringFormat("wooden_a_supports_paint_setup(%d, %d, %s, %s)", call.supports.type, call.supports.special,
-                                    GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str());
             case SUPPORTS_WOOD_B:
-                return StringFormat("wooden_b_supports_paint_setup(%d, %d, %s, %s)", call.supports.type, call.supports.special,
-                                    call.supports.height, imageId.c_str());
+                return String::Format(
+                    "%s(%d, %d, %s, %s)", functionName, call.supports.type, call.supports.special,
+                    GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
+                );
 
             case SUPPORTS_METAL_A:
-                return StringFormat("metal_a_supports_paint_setup(%d, %d, %d, %s, %s)", call.supports.type,
-                                    call.supports.segment, call.supports.special, GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str());
             case SUPPORTS_METAL_B:
-                return StringFormat("metal_b_supports_paint_setup(%d, %d, %d, %s, %s)", call.supports.type,
-                                    call.supports.segment, call.supports.special, GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str());
+                return String::Format(
+                    "%s(%d, %d, %d, %s, %s)", functionName, call.supports.type, call.supports.segment, call.supports.special,
+                    GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
+                );
 
             case SET_SEGMENT_HEIGHT:
                 return "paint_util_set_segment_support_height";
         }
 
-        std::string functionCallName = "?";
-        switch (call.function) {
-            case PAINT_98196C:
-                functionCallName = "sub_98196C";
-                break;
-            case PAINT_98197C:
-                functionCallName = "sub_98197C";
-                break;
-            case PAINT_98198C:
-                functionCallName = "sub_98198C";
-                break;
-            case PAINT_98199C:
-                functionCallName = "sub_98199C";
-                break;
-        }
+        std::string s = String::Format("%s(", functionName);
 
-        std::string s = StringFormat("%s(", functionCallName.c_str());
-
-        s += StringFormat("%s, ", imageId.c_str());
-        s += StringFormat("%d, %d, ", call.paint.offset.x, call.paint.offset.y);
-        s += StringFormat(
+        imageId = GetImageIdString(call.paint.image_id);
+        s += String::Format("%s, ", imageId.c_str());
+        s += String::Format("%d, %d, ", call.paint.offset.x, call.paint.offset.y);
+        s += String::Format(
             "%d, %d, %d, ",
             call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z
         );
-        s += StringFormat("%s, ", GetHeightOffset(call.paint.z_offset, baseHeight).c_str());
+        s += String::Format("%s, ", GetHeightOffset(call.paint.z_offset, baseHeight).c_str());
 
         if (call.function != PAINT_98196C) {
-            s += StringFormat(
+            s += String::Format(
                 "%d, %d, %s, ",
                 call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, GetHeightOffset(call.paint.bound_box_offset.z, baseHeight).c_str()
             );
         }
 
-        s += StringFormat("%d)", call.paint.rotation);
+        s += String::Format("%d)", call.paint.rotation);
 
 
         if (call.function != PAINT_98196C) {
-            s += StringFormat(
+            s += String::Format(
                 "    = { %d, %d, %s }, { %d, %d, %s }, { %d, %d, %d }",
                 call.paint.offset.x, call.paint.offset.y, GetHeightOffset(call.paint.z_offset, baseHeight).c_str(),
                 call.paint.bound_box_offset.x, call.paint.bound_box_offset.y,
@@ -90,7 +104,6 @@ public:
         return s;
     }
 
-private:
     static std::string GetImageIdString(uint32 imageId)
     {
         std::string result;
@@ -104,15 +117,15 @@ private:
         else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "SCHEME_MISC";
         else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "SCHEME_3";
         else {
-            paletteName = StringFormat("0x%08X", palette);
+            paletteName = String::Format("0x%08X", palette);
         }
 
         if (image == 0) {
             result = paletteName;
         } else if (image & 0x70000) {
-            result = StringFormat("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
+            result = String::Format("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
         } else {
-            result = StringFormat("%s | %d", paletteName.c_str(), image);
+            result = String::Format("%s | %d", paletteName.c_str(), image);
         }
 
         return result;
@@ -121,7 +134,7 @@ private:
     static std::string GetHeightOffset(uint16 height, uint16 baseHeight) {
         int offset = height - baseHeight;
 
-        return StringFormat("height%s", GetOffsetExpressionString(offset).c_str());
+        return String::Format("height%s", GetOffsetExpressionString(offset).c_str());
     }
 
     static std::string GetOffsetExpressionString(int offset)
@@ -130,21 +143,4 @@ private:
         if (offset > 0) return std::string(" + ") + std::to_string(offset);
         return std::string();
     }
-
-    static std::string StringFormat(const char *format, ...) {
-        va_list args;
-        char buffer[512];
-
-        va_start(args, format);
-        vsnprintf(buffer, sizeof(buffer), format, args);
-        va_end(args);
-
-        return std::string(buffer);
-    }
 };
-
-extern "C" {
-void printFunctionCall(utf8string out, size_t len, function_call call, uint16 baseHeight) {
-    snprintf(out, len, "%s", Printer::PrintFunction(call, baseHeight).c_str());
-}
-}

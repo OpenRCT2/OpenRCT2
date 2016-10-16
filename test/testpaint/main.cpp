@@ -24,6 +24,7 @@
 #endif // defined(__unix__)
 
 #include "intercept.h"
+#include "TestTrack.hpp"
 #include "Utils.hpp"
 
 extern "C" {
@@ -449,7 +450,7 @@ int main(int argc, char *argv[]) {
 
 			ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
 			printf("%s.%s\n", rideTypeName, trackTypeName);
-			int retVal = testTrackPainting(tc.rideType, trackType);
+			int retVal = TestTrack::TestPaintTrackElement(tc.rideType, trackType);
 			switch (retVal) {
 				case TEST_SUCCESS:
 					ColouredPrintF(CLIColour::GREEN, "[       OK ] ");

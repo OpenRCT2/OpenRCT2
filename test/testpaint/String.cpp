@@ -14,13 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "String.hpp"
 
-#include "../../src/common.h"
-#include "intercept.h"
-
-class FunctionCall {
-public:
-    static bool AssertsEquals(function_call expected, function_call actual);
-    static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);
+namespace String {
+    std::string Format(const char * format, ...)
+    {
+        va_list args;
+        char buffer[512];
+    
+        va_start(args, format);
+        vsnprintf(buffer, sizeof(buffer), format, args);
+        va_end(args);
+    
+        return std::string(buffer);
+    }
 };
+

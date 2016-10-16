@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "intercept.h"
+#include "String.hpp"
 
 extern "C"
 {
@@ -630,17 +631,17 @@ private:
     {
         const char * funcName = GetFunctionCallName(call.function);
         std::string imageId = GetImageIdString(call.paint.image_id);
-        std::string s = StringFormat("%s_rotated(direction, %s, ", funcName, imageId.c_str());
+        std::string s = String::Format("%s_rotated(direction, %s, ", funcName, imageId.c_str());
         s += FormatXYSwap(call.paint.offset.x, call.paint.offset.y, direction);
         s += ", ";
         s += FormatXYSwap(call.paint.bound_box_length.x, call.paint.bound_box_length.y, direction);
-        s += StringFormat(", %d, height%s", call.paint.bound_box_length.z, GetOffsetExpressionString(call.paint.z_offset - height).c_str());
+        s += String::Format(", %d, height%s", call.paint.bound_box_length.z, GetOffsetExpressionString(call.paint.z_offset - height).c_str());
 
         if (call.function != PAINT_98196C)
         {
             s += ", ";
             s += FormatXYSwap(call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, direction);
-            s += StringFormat(", height%s", GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
+            s += String::Format(", height%s", GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
         }
 
         s += ");";
@@ -651,11 +652,11 @@ private:
     {
         if (direction & 1)
         {
-            return StringFormat("%d, %d", y, x);
+            return String::Format("%d, %d", y, x);
         }
         else
         {
-            return StringFormat("%d, %d", x, y);
+            return String::Format("%d, %d", x, y);
         }
     }
 
@@ -912,12 +913,12 @@ private:
             if (ssh.height == 0xFFFF)
             {
                 szCall += "0xFFFF";
-                szCall += StringFormat(", 0);", ssh.slope);
+                szCall += String::Format(", 0);", ssh.slope);
             }
             else
             {
                 szCall += std::to_string(ssh.height);
-                szCall += StringFormat(", 0x%02X);", ssh.slope);
+                szCall += String::Format(", 0x%02X);", ssh.slope);
             }
             WriteLine(tabs, szCall);
         }
@@ -953,15 +954,15 @@ private:
         else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
         else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
         else {
-            paletteName = StringFormat("0x%08X", palette);
+            paletteName = String::Format("0x%08X", palette);
         }
 
         if (image == 0) {
             result = paletteName;
         } else if (image & 0x70000) {
-            result = StringFormat("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
+            result = String::Format("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
         } else {
-            result = StringFormat("%s | %d", paletteName.c_str(), image);
+            result = String::Format("%s | %d", paletteName.c_str(), image);
         }
         return result;
     }
@@ -982,7 +983,7 @@ private:
                 if (segmentsPrinted > 0) {
                     s += " | ";
                 }
-                s += StringFormat("SEGMENT_%02X", 0xB4 + 4 * i);
+                s += String::Format("SEGMENT_%02X", 0xB4 + 4 * i);
                 segmentsPrinted++;
             }
         }
@@ -1092,18 +1093,6 @@ private:
             fprintf(_file, "\t");
         }
         fprintf(_file, "%s\n", s.c_str());
-    }
-
-    static std::string StringFormat(const char * format, ...)
-    {
-        va_list args;
-        char buffer[512];
-
-        va_start(args, format);
-        vsnprintf(buffer, sizeof(buffer), format, args);
-        va_end(args);
-
-        return std::string(buffer);
     }
 };
 

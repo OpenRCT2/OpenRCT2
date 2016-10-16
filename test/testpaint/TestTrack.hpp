@@ -16,11 +16,14 @@
 
 #pragma once
 
-#include "../../src/common.h"
-#include "intercept.h"
+#include <string>
 
-class FunctionCall {
+#include "../../src/common.h"
+
+class TestTrack {
 public:
-    static bool AssertsEquals(function_call expected, function_call actual);
-    static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);
+    static uint8 TestPaintTrackElement(uint8 rideType, uint8 trackType);
+
+private:
+    static uint8 TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std::string * error);
 };

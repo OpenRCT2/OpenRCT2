@@ -29,6 +29,23 @@ enum SpriteGroup {
 static void canonicalizeFunctionCall(function_call *call);
 static SpriteGroup getSpriteGroup(uint16 spriteIndex);
 
+bool FunctionCall::AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual) {
+    if (expected.size() != actual.size()) {
+        return false;
+    }
+
+    for (int i = 0; i < expected.size(); i++) {
+        function_call expectedCall = expected[i];
+        function_call actualCall = actual[i];
+
+        if (!AssertsEquals(expectedCall, actualCall)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool FunctionCall::AssertsEquals(function_call expected, function_call actual) {
     canonicalizeFunctionCall(&actual);
     canonicalizeFunctionCall(&expected);
