@@ -312,14 +312,14 @@ extern bool testTunnels(uint8 rideType, uint8 trackType);
 extern bool testVerticalTunnels(uint8 rideType, uint8 trackType);
 
 
-static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, size_t len) {
+static uint8 testTrackElement(uint8 rideType, uint8 trackType, utf8string error, size_t len) {
 	if (rideType == RIDE_TYPE_CHAIRLIFT) {
 		if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION || trackType == TRACK_ELEM_END_STATION) {
-			// These rides chechk neighbouring tiles for tracks
-			snprintf(error, len, "Skipped");
-			return false;
+			// These rides check neighbouring tiles for tracks
+			return TEST_SKIPPED;
 		}
 	}
+
 	uint8 rideIndex = 0;
 	rct_map_element mapElement = { 0 };
 	mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
@@ -439,7 +439,7 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 					
 					free(diff);
 
-					return false;
+					return TEST_FAILED;
 				}
 
 			}
@@ -451,19 +451,20 @@ static bool testTrackElement(uint8 rideType, uint8 trackType, utf8string error, 
 
 	bool segmentSuccess = testSupportSegments(rideType, trackType);
 	if (!segmentSuccess) {
-		return false;
+		return TEST_FAILED;
 	}
 
 	bool tunnelSuccess = testTunnels(rideType, trackType);
 	if (!tunnelSuccess) {
-		return false;
+		return TEST_FAILED;
 	}
 
 	bool verticalTunnelSuccess = testVerticalTunnels(rideType, trackType);
 	if (!verticalTunnelSuccess) {
-		return false;
+		return TEST_FAILED;
 	}
-	return true;
+
+	return TEST_SUCCESS;
 }
 
 bool rideIsImplemented(int rideType) {
@@ -471,7 +472,7 @@ bool rideIsImplemented(int rideType) {
 	return (newPaintGetter != 0);
 }
 
-bool testTrackPainting(int rideType, int trackType) {
+uint8 testTrackPainting(int rideType, int trackType) {
 	TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 	if (newPaintGetter == NULL) {
 		return false;
@@ -482,11 +483,11 @@ bool testTrackPainting(int rideType, int trackType) {
 	}
 
 	utf8string error = malloc(2048);
-	bool success = testTrackElement(rideType, trackType, error, 2048);
-	if (!success) {
+	int retVal = testTrackElement(rideType, trackType, error, 2048);
+	if (retVal != TEST_SUCCESS) {
 		printf("%s\n", error);
 	}
 	free(error);
 
-	return success;
+	return retVal;
 }

@@ -42,6 +42,7 @@ typedef struct {
 enum CLIColour {
 	DEFAULT,
 	RED,
+	YELLOW,
 	GREEN,
 };
 
@@ -96,6 +97,8 @@ static const char* GetAnsiColorCode(CLIColour color) {
 	switch (color) {
 		case RED:     return "1";
 		case GREEN:   return "2";
+		case YELLOW:
+			return "3";
 		default:            return NULL;
 	};
 }
@@ -114,6 +117,7 @@ static WORD GetWindowsConsoleAttribute(CLIColour color, WORD defaultAttr)
 	switch (color) {
 	case RED:     return FOREGROUND_RED;
 	case GREEN:   return FOREGROUND_GREEN;
+	case YELLOW:  return FOREGROUND_RED | FOREGROUND_GREEN;
 	default:      return defaultAttr;
 	};
 }
@@ -444,18 +448,30 @@ int main(int argc, char *argv[]) {
 
 			ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
 			printf("%s.%s\n", rideTypeName, trackTypeName);
-			bool success = testTrackPainting(tc.rideType, trackType);
-			if (!success) {
-				utf8string testCaseName = new utf8[64];
-				snprintf(testCaseName, 64, "%s.%s", rideTypeName, trackTypeName);
+			int retVal = testTrackPainting(tc.rideType, trackType);
+			switch (retVal) {
+				case TEST_SUCCESS:
+					ColouredPrintF(CLIColour::GREEN, "[       OK ] ");
+					printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
+					successCount++;
+					break;
 
-				ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
-				printf("%s (0 ms)\n", testCaseName);
-				failures.push_back(testCaseName);
-			} else {
-				ColouredPrintF(CLIColour::GREEN, "[       OK ] ");
-				printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
-				successCount++;
+				case TEST_SKIPPED:
+					printf("Skipped\n");
+					// Outputting this as OK because CLion only allows FAILED or OK
+					ColouredPrintF(CLIColour::YELLOW, "[       OK ] ");
+					printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
+					successCount++;
+					break;
+
+				case TEST_FAILED:
+					utf8string testCaseName = new utf8[64];
+					snprintf(testCaseName, 64, "%s.%s", rideTypeName, trackTypeName);
+
+					ColouredPrintF(CLIColour::RED, "[  FAILED  ] ");
+					printf("%s (0 ms)\n", testCaseName);
+					failures.push_back(testCaseName);
+					break;
 			}
 		}
 
