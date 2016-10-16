@@ -204,7 +204,7 @@ namespace Memory
 		memset((uint8 *)ptr_new_aligned + size, 0x00, zero_pad);
 
 		// realloc moved the data (fine) to a non-aligned location (not fine)
-		if ((uint32)ptr_new_aligned % alignment > 0) {
+		if ((ptrdiff_t)ptr_new_aligned % alignment > 0) {
 			uint8 *tmp = AllocateAligned<T>(alignment, size);
 
 			memcpy(tmp, ptr_new_aligned, size);
