@@ -23,6 +23,7 @@ extern "C"
 {
     #include "../peep/peep.h"
     #include "../world/map.h"
+    #include "../world/sprite.h"
 }
 
 class NetworkPacket;

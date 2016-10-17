@@ -311,7 +311,6 @@ void game_update()
 	// Always perform autosave check, even when paused
 	scenario_autosave_check();
 
-	network_update();
 	window_dispatch_update_all();
 
 	gGameCommandNestLevel = 0;
@@ -1100,7 +1099,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[69] = {
+GAME_COMMAND_POINTER* new_game_command_table[70] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1170,4 +1169,5 @@ GAME_COMMAND_POINTER* new_game_command_table[69] = {
 	game_command_cheat,
 	game_command_pickup_guest,
 	game_command_pickup_staff,
+	game_command_balloon_press,
 };

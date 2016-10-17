@@ -159,7 +159,8 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         STR_ACTION_GUEST, "PERMISSION_GUEST",
         {
             GAME_COMMAND_SET_GUEST_NAME,
-            GAME_COMMAND_PICKUP_GUEST
+            GAME_COMMAND_PICKUP_GUEST,
+            GAME_COMMAND_BALLOON_PRESS
         }
     }, {
         STR_ACTION_STAFF, "PERMISSION_STAFF",
