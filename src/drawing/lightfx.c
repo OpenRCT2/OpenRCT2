@@ -14,12 +14,14 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "lightfx.h"
-#include "drawing.h"
+#include "../game.h"
 #include "../rct2.h"
-#include "../interface/window.h"
 #include "../interface/viewport.h"
+#include "../interface/window.h"
 #include "../paint/map_element/map_element.h"
+#include "../world/climate.h"
+#include "drawing.h"
+#include "lightfx.h"
 
 static uint8 _bakedLightTexture_lantern_0[32*32];
 static uint8 _bakedLightTexture_lantern_1[64*64];
@@ -65,6 +67,12 @@ static sint16			_current_view_y_back			= 0;
 static uint8			_current_view_rotation_back		= 0;
 static uint8			_current_view_zoom_back			= 0;
 static uint8			_current_view_zoom_back_delay	= 0;
+
+static SDL_Color gPalette_light[256];
+
+static uint8 soft_light(uint8 a, uint8 b);
+static uint8 lerp(uint8 a, uint8 b, float t);
+static float flerp(float a, float b, float t);
 
 uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
 	double distance = (double)(x * x + y * y);
@@ -776,4 +784,183 @@ void lightfx_add_lights_magic_vehicles()
 			};
 		}
 	}
+}
+
+void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
+{
+	float night = (float)(pow(gDayNightCycle, 1.5));
+
+	float natLightR = 1.0f;
+	float natLightG = 1.0f;
+	float natLightB = 1.0f;
+
+	float elecMultR = 1.0f;
+	float elecMultG = 0.95f;
+	float elecMultB = 0.45f;
+
+	static float wetness = 0.0f;
+	static float fogginess = 0.0f;
+	static float lightPolution = 0.0f;
+
+	float sunLight = max(0.0f, min(1.0f, 2.0f - night * 3.0f));
+
+	// Night version
+	natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(pow(night, 0.035f + sunLight * 10.50f)));
+	natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
+	natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
+
+	float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
+	float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
+	float overExpose = 0.0f;
+
+	//	overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
+
+	if (gClimateCurrentTemperature > 20) {
+		float offset = ((float)(gClimateCurrentTemperature - 20)) * 0.04f;
+		offset *= 1.0f - night;
+		lightAvg /= 1.0f + offset;
+		//		overExpose += offset * 0.1f;
+	}
+
+	//	lightAvg += (lightMax - lightAvg) * 0.6f;
+
+	if (lightAvg > 1.0f) {
+		natLightR /= lightAvg;
+		natLightG /= lightAvg;
+		natLightB /= lightAvg;
+	}
+
+	natLightR *= 1.0f + overExpose;
+	natLightG *= 1.0f + overExpose;
+	natLightB *= 1.0f + overExpose;
+	overExpose *= 255.0f;
+
+	float targetFogginess = (float)(gClimateCurrentRainLevel) / 8.0f;
+	targetFogginess += (night * night) * 0.15f;
+
+	if (gClimateCurrentTemperature < 10) {
+		targetFogginess += ((float)(10 - gClimateCurrentTemperature)) * 0.01f;
+	}
+
+	fogginess -= (fogginess - targetFogginess) * 0.00001f;
+
+	wetness *= 0.999995f;
+	wetness += fogginess * 0.001f;
+	wetness = min(wetness, 1.0f);
+
+	float boost = 1.0f;
+	float envFog = fogginess;
+	float lightFog = envFog;
+
+	float addLightNatR = 0.0f;
+	float addLightNatG = 0.0f;
+	float addLightNatB = 0.0f;
+
+	float reduceColourNat = 1.0f;
+	float reduceColourLit = 1.0f;
+
+	reduceColourLit *= night / (float)pow(max(1.01f, 0.4f + lightAvg), 2.0);
+
+	float	targetLightPollution = reduceColourLit * max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
+	lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
+
+	//	lightPollution /= 1.0f + fogginess * 1.0f;
+
+	natLightR /= 1.0f + lightPolution * 20.0f;
+	natLightG /= 1.0f + lightPolution * 20.0f;
+	natLightB /= 1.0f + lightPolution * 20.0f;
+	natLightR += elecMultR * 0.6f * lightPolution;
+	natLightG += elecMultG * 0.6f * lightPolution;
+	natLightB += elecMultB * 0.6f * lightPolution;
+	natLightR /= 1.0f + lightPolution;
+	natLightG /= 1.0f + lightPolution;
+	natLightB /= 1.0f + lightPolution;
+
+	reduceColourLit += (float)(gClimateCurrentRainLevel) / 2.0f;
+
+	reduceColourNat /= 1.0f + fogginess;
+	reduceColourLit /= 1.0f + fogginess;
+
+	lightFog *= reduceColourLit;
+
+	reduceColourNat *= 1.0f - envFog;
+	reduceColourLit *= 1.0f - lightFog;
+
+	float fogR = 35.5f * natLightR * 1.3f;
+	float fogG = 45.0f * natLightG * 1.3f;
+	float fogB = 50.0f * natLightB * 1.3f;
+	lightFog *= 10.0f;
+
+	float wetnessBoost = 1.0f;//1.0f + wetness * wetness * 0.1f;
+
+	if (night >= 0 && gClimateLightningFlash != 1) {
+		*r = lerp(*r, soft_light(*r, 8), night);
+		*g = lerp(*g, soft_light(*g, 8), night);
+		*b = lerp(*b, soft_light(*b, 128), night);
+
+		//	if (i == 32)
+		//		boost = 300000.0f;
+		if ((i % 32) == 0)
+			boost = 1.01f * wetnessBoost;
+		else if ((i % 16) < 7)
+			boost = 1.001f * wetnessBoost;
+		if (i > 230 && i < 232)
+			boost = ((float)(*b)) / 64.0f;
+
+		if (false) {
+			// This experiment shifts the colour of pixels as-if they are wet, but it is not a pretty solution at all
+			if ((i % 16)) {
+				float iVal = ((float)((i + 12) % 16)) / 16.0f;
+				float eff = (wetness * ((float)pow(iVal, 1.5) * 0.85f));
+				reduceColourNat *= 1.0f - eff;
+				addLightNatR += fogR * eff * 3.95f;
+				addLightNatG += fogR * eff * 3.95f;
+				addLightNatB += fogR * eff * 3.95f;
+			}
+		}
+
+		addLightNatR *= 1.0f - envFog;
+		addLightNatG *= 1.0f - envFog;
+		addLightNatB *= 1.0f - envFog;
+
+		*r = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+		*g = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+		*b = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+		gPalette_light[i].r = (uint8)(min(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+		gPalette_light[i].g = (uint8)(min(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+		gPalette_light[i].b = (uint8)(min(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+	}
+}
+
+static uint8 soft_light(uint8 a, uint8 b)
+{
+	float fa = a / 255.0f;
+	float fb = b / 255.0f;
+	float fr;
+	if (fb < 0.5f) {
+		fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
+	} else {
+		fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
+	}
+	return (uint8)(clamp(0.0f, fr, 1.0f) * 255.0f);
+}
+
+static uint8 lerp(uint8 a, uint8 b, float t)
+{
+	if (t <= 0) return a;
+	if (t >= 1) return b;
+
+	int range = b - a;
+	int amount = (int)(range * t);
+	return (uint8)(a + amount);
+}
+
+static float flerp(float a, float b, float t)
+{
+	if (t <= 0) return a;
+	if (t >= 1) return b;
+
+	float range = b - a;
+	float amount = range * t;
+	return a + amount;
 }

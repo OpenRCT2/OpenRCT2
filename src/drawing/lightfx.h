@@ -63,5 +63,7 @@ extern void lightfx_add_lights_magic_vehicles();
 
 extern uint32 lightfx_get_light_polution();
 
+void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
+
 #endif
 #endif
