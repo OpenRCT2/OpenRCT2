@@ -244,11 +244,11 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
     for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
         for (auto &&function : functions) {
             retVal = function(rideType, trackType, trackSequence, &error);
-        }
 
-        if (retVal != TEST_SUCCESS) {
-            printf("%s\n", error.c_str());
-            return retVal;
+            if (retVal != TEST_SUCCESS) {
+                printf("%s\n", error.c_str());
+                return retVal;
+            }
         }
     }
 
