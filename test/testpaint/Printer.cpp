@@ -157,7 +157,7 @@ namespace Printer {
         s += "\n";
 
         for (int direction = 0; direction < 4; ++direction) {
-            printf("  +           +  ");
+            s += "  +           +  ";
         }
         s += "\n";
 
