@@ -42,11 +42,10 @@ struct SupportCall {
     }
 };
 
-class GeneralSupportHeightCall {
-public:
-    static bool CallsMatch(SupportCall tileSupportCalls[4]);
+namespace GeneralSupportHeightCall {
+    bool CallsMatch(SupportCall tileSupportCalls[4]);
 
-    static SupportCall *FindMostCommonSupportCall(SupportCall calls[4]);
+    SupportCall *FindMostCommonSupportCall(SupportCall calls[4]);
 
-    static bool AssertEquals(const SupportCall *lhs, const SupportCall *rhs);
+    bool AssertEquals(const SupportCall *lhs, const SupportCall *rhs);
 };

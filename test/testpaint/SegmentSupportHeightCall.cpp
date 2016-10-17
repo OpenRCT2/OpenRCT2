@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <map>
+#include <algorithm>
 
 #include "SegmentSupportHeightCall.hpp"
 

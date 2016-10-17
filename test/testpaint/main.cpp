@@ -358,7 +358,7 @@ static void PrintRideTypes()
 	}
 }
 
-#import "GeneralSupportHeightCall.hpp"
+#include "GeneralSupportHeightCall.hpp"
 
 static void TestGeneralSupportHeightCall() {
 	SupportCall callA = {16, 0x20};
