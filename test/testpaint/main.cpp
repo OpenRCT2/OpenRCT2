@@ -394,6 +394,7 @@ int main(int argc, char *argv[]) {
 
 	std::vector<TestCase> testCases;
 
+    bool silent = false;
 	bool generate = false;
 	uint8 specificRideType = 0xFF;
 	for (int i = 0; i < argc; ++i) {
@@ -401,6 +402,9 @@ int main(int argc, char *argv[]) {
 		if (strcmp(arg, "--gtest_color=no") == 0) {
 			gTestColor = false;
 		}
+        else if (strcmp(arg, "--silent") == 0) {
+            silent = true;
+        }
 		else if (strcmp(arg, "--ride-type") == 0) {
 			if (i + 1 < argc) {
 				i++;
@@ -481,13 +485,18 @@ int main(int argc, char *argv[]) {
 				trackTypeName = TrackNames[trackType];
 			}
 
-			ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
-			printf("%s.%s\n", rideTypeName, trackTypeName);
+
+            if (!silent) {
+                ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
+                printf("%s.%s\n", rideTypeName, trackTypeName);
+            }
 			int retVal = TestTrack::TestPaintTrackElement(tc.rideType, trackType);
 			switch (retVal) {
 				case TEST_SUCCESS:
-					ColouredPrintF(CLIColour::GREEN, "[       OK ] ");
-					printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
+                    if (!silent) {
+                        ColouredPrintF(CLIColour::GREEN, "[       OK ] ");
+                        printf("%s.%s (0 ms)\n", rideTypeName, trackTypeName);
+                    }
 					successCount++;
 					break;
 
@@ -500,6 +509,10 @@ int main(int argc, char *argv[]) {
 					break;
 
 				case TEST_FAILED:
+                    if (silent) {
+                        ColouredPrintF(CLIColour::GREEN, "[ RUN      ] ");
+                        printf("%s.%s\n", rideTypeName, trackTypeName);
+                    }
 					utf8string testCaseName = new utf8[64];
 					snprintf(testCaseName, 64, "%s.%s", rideTypeName, trackTypeName);
 
