@@ -33,7 +33,7 @@ extern "C" {
 
 namespace Intercept2
 {
-    static void ResetEnvironment() {
+    void ResetEnvironment() {
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
         gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
@@ -58,7 +58,7 @@ namespace Intercept2
         g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
     }
 
-    static void ResetTunnels() {
+    void ResetTunnels() {
         gLeftTunnelCount = 0;
         gRightTunnelCount = 0;
 
@@ -75,7 +75,7 @@ namespace Intercept2
         gRightTunnels[0].type = 0xFF;
     }
 
-    static void ResetSegmentHeights() {
+    void ResetSupportHeights() {
         for (int s = 0; s < 9; ++s)
         {
             gSupportSegments[s].height = 0;
@@ -84,11 +84,6 @@ namespace Intercept2
 
         gSupport.height = 0;
         gSupport.slope = 0xFF;
-    }
-
-    static void printSegmentSupports(utf8string out, size_t len, std::vector<SegmentSupportCall> segmentCalls)
-    {
-        snprintf(out, len, "%s", Printer::PrintSegmentSupportHeightCalls(segmentCalls).c_str());
     }
 
     static bool tunnelCallsLineUp(TunnelCall tunnelCalls[4][4])
@@ -205,171 +200,6 @@ namespace Intercept2
             printf("   direction %d   ", direction);
         }
         printf("\n");
-    }
-
-    static bool testSupportSegments(uint8 rideType, uint8 trackType)
-    {
-        uint8 rideIndex = 0;
-        rct_map_element mapElement = {0};
-        mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-        mapElement.properties.track.type = trackType;
-        mapElement.base_height = 3;
-
-        g_currently_drawn_item = &mapElement;
-
-        rct_map_element surfaceElement = {0};
-        surfaceElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
-        surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
-        surfaceElement.base_height = 2;
-
-        ResetEnvironment();
-        ResetTunnels();
-
-        int height = 48;
-
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-        int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
-
-        for (int chainLift = 0; chainLift < 2; chainLift++) {
-            if (chainLift == 0) {
-                mapElement.type &= ~0x80;
-            } else {
-                mapElement.type |= 0x80;
-            }
-
-        for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
-            std::vector<SegmentSupportCall> tileSegmentSupportCalls[4];
-            SupportCall tileGeneralSupportCalls[4];
-
-            for (int direction = 0; direction < 4; direction++) {
-                ResetSegmentHeights();
-
-                uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
-
-                // Have to call from this point as it pushes esi and expects callee to pop it
-                RCT2_CALLPROC_X(
-                    0x006C4934,
-                    rideType,
-                    (int) trackDirectionList,
-                    direction,
-                    height,
-                    (int) &mapElement,
-                    rideIndex * sizeof(rct_ride),
-                    trackSequence
-                );
-
-                tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
-
-                tileGeneralSupportCalls[direction].height = -1;
-                tileGeneralSupportCalls[direction].slope = -1;
-                if (gSupport.height != 0) {
-                    tileGeneralSupportCalls[direction].height = gSupport.height;
-                }
-                if (gSupport.slope != 0xFF) {
-                    tileGeneralSupportCalls[direction].slope = gSupport.slope;
-                }
-            }
-
-            std::vector<SegmentSupportCall> referenceCalls = tileSegmentSupportCalls[0];
-
-            if (!SegmentSupportHeightCall::CallsMatch(tileSegmentSupportCalls)) {
-                std::vector<SegmentSupportCall> *found = SegmentSupportHeightCall::FindMostCommonSupportCall(tileSegmentSupportCalls);
-                if (found != nullptr) {
-                    referenceCalls = *found;
-                } else {
-                    printf("Original segment calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
-                    for (int i = 0; i < 4; i++) {
-                        printf("# %d\n%s", i, Printer::PrintSegmentSupportHeightCalls(tileSegmentSupportCalls[i]).c_str());
-                    }
-                    continue;
-                }
-            }
-
-            for (int direction = 0; direction < 4; direction++) {
-                ResetSegmentHeights();
-
-                testpaint_clear_ignore();
-                TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
-                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
-                if (testpaint_is_ignored(direction, trackSequence)) {
-                    continue;
-                }
-
-                std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments,
-                                                                                                     direction);
-
-                if (!SegmentSupportHeightCall::CallsEqual(tileSegmentSupportCalls[0], newCalls)) {
-                    // TODO put this into *error
-                    utf8string diff = new utf8[2048];
-                    snprintf(diff, 2048, "<<< EXPECTED\n");
-                    printSegmentSupports(diff, 2048, tileSegmentSupportCalls[0]);
-                    
-                    size_t slen = strlen(diff);
-                    if (slen < 2048)
-                        snprintf(diff + slen, 2048 - slen, "====\n");
-                    printSegmentSupports(diff, 2048, newCalls);
-                    
-                    slen = strlen(diff);
-                    if (slen < 2048)
-                        snprintf(diff + strlen(diff), 2048 - slen, ">>> ACTUAL\n");
-
-                    printf("Segment support heights didn't match. [direction:%d trackSequence:%d chainLift:%d]\n", direction,
-                           trackSequence, chainLift);
-                    printf("%s", diff);
-                    delete[] diff;
-                    return false;
-                }
-            }
-
-            SupportCall referenceGeneralSupportCall = tileGeneralSupportCalls[0];
-
-            if (!GeneralSupportHeightCall::CallsMatch(tileGeneralSupportCalls)) {
-                SupportCall *found = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls);
-                if (found == nullptr) {
-                    printf("Original support calls didn't match. [trackSequence:%d chainLift:%d]\n", trackSequence, chainLift);
-                    for (int i = 0; i < 4; ++i) {
-                        printf("[%d, 0x%02X] ", tileGeneralSupportCalls[i].height, tileGeneralSupportCalls[i].slope);
-                    }
-                    printf("\n");
-                    continue;
-                }
-                referenceGeneralSupportCall = *found;
-            }
-
-
-            for (int direction = 0; direction < 4; direction++) {
-                ResetSegmentHeights();
-
-                testpaint_clear_ignore();
-                TRACK_PAINT_FUNCTION newPaintFunction = newPaintGetter(trackType, direction);
-                newPaintFunction(rideIndex, trackSequence, direction, height, &mapElement);
-                if (testpaint_is_ignored(direction, trackSequence)) {
-                    continue;
-                }
-
-                if (referenceGeneralSupportCall.height != -1) {
-                    if (gSupport.height != referenceGeneralSupportCall.height) {
-                        printf("General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d trackSequence:%d chainLift:%d]\n",
-                               referenceGeneralSupportCall.height - height,
-                               gSupport.height - height,
-                               direction,
-                               trackSequence,
-                               chainLift);
-                        return false;
-                    }
-                }
-                if (referenceGeneralSupportCall.slope != -1) {
-                    if (gSupport.slope != referenceGeneralSupportCall.slope) {
-                        printf("General support slopes didn't match. [direction:%d trackSequence:%d chainLift:%d]\n", direction,
-                               trackSequence, chainLift);
-                        return false;
-                    }
-                }
-            }
-
-        }
-        }
-        return true;
     }
 
     static bool tunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4])
@@ -709,11 +539,6 @@ namespace Intercept2
 
 extern "C"
 {
-    bool testSupportSegments(uint8 rideType, uint8 trackType)
-    {
-        return Intercept2::testSupportSegments(rideType, trackType);
-    }
-
     bool testTunnels(uint8 rideType, uint8 trackType)
     {
         return Intercept2::testTunnels(rideType, trackType);
@@ -749,7 +574,7 @@ extern "C"
     }
 
     void intercept_reset_segment_heights() {
-        Intercept2::ResetSegmentHeights();
+        Intercept2::ResetSupportHeights();
     }
 
     void intercept_reset_tunnels() {

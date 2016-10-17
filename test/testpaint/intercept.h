@@ -81,7 +81,6 @@ extern "C"
 {
 #endif
     void initHooks();
-    bool testSupportSegments(uint8 rideType, uint8 trackType);
     bool testTunnels(uint8 rideType, uint8 trackType);
     bool testVerticalTunnels(uint8 rideType, uint8 trackType);
     void intercept_clear_calls();
@@ -121,6 +120,10 @@ namespace Intercept2
     };
 
     sint16 getTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
+
+    void ResetEnvironment();
+    void ResetTunnels();
+    void ResetSupportHeights();
 }
 
 #endif

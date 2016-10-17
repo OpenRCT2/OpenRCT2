@@ -23,7 +23,4 @@
 class TestTrack {
 public:
     static uint8 TestPaintTrackElement(uint8 rideType, uint8 trackType);
-
-private:
-    static uint8 TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std::string * error);
 };

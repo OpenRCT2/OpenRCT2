@@ -18,11 +18,13 @@
 #include <vector>
 
 #include "intercept.h"
+#include "FunctionCall.hpp"
+#include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
+#include "SegmentSupportHeightCall.hpp"
 #include "String.hpp"
 #include "TestTrack.hpp"
 #include "Utils.hpp"
-#include "FunctionCall.hpp"
 
 extern "C" {
 #include "../../src/ride/ride.h"
@@ -68,23 +70,19 @@ static void CallNew(
     newPaintFunction(0, trackSequence, direction, height, mapElement);
 }
 
+typedef uint8 (*TestFunction)(uint8, uint8, uint8, std::string *);
+
+static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
+
+static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
+
+static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
+
 uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
     if (!Utils::rideSupportsTrackType(rideType, trackType)) {
         return TEST_FAILED;
     }
 
-
-    std::string error = "";
-    uint8 retVal = TestPaintTrackElementCalls(rideType, trackType, &error);
-
-    if (retVal != TEST_SUCCESS) {
-        printf("%s\n", error.c_str());
-    }
-
-    return retVal;
-}
-
-uint8 TestTrack::TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std::string *error) {
     if (rideType == RIDE_TYPE_CHAIRLIFT) {
         if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION ||
             trackType == TRACK_ELEM_END_STATION) {
@@ -93,6 +91,32 @@ uint8 TestTrack::TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std
         }
     }
 
+    int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
+    std::string error = String::Format("rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
+
+    uint8 retVal = TEST_SUCCESS;
+
+    static TestFunction functions[] = {
+        TestTrackElementPaintCalls,
+        TestTrackElementSegmentSupportHeight,
+        TestTrackElementGeneralSupportHeight
+    };
+
+    for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
+        for (auto &&function : functions) {
+            retVal = function(rideType, trackType, trackSequence, &error);
+        }
+
+        if (retVal != TEST_SUCCESS) {
+            printf("%s\n", error.c_str());
+            return retVal;
+        }
+    }
+
+    return retVal;
+}
+
+static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
@@ -108,11 +132,8 @@ uint8 TestTrack::TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    intercept_reset_environment();
-
-    int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
-
-    *error += String::Format("rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
+    Intercept2::ResetEnvironment();
+    Intercept2::ResetTunnels();
 
     function_call callBuffer[256] = {0};
     int callCount = 0;
@@ -128,76 +149,233 @@ uint8 TestTrack::TestPaintTrackElementCalls(uint8 rideType, uint8 trackType, std
     for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
         gCurrentRotation = currentRotation;
         for (int direction = 0; direction < 4; direction++) {
-            for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
-                RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
-                RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
+            RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
+            RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
 
-                std::string caseName = String::Format(
-                    "[direction:%d trackSequence:%d chainLift:%d inverted:%d]",
-                    direction, trackSequence, chainLift, inverted
+            std::string caseName = String::Format(
+                "[direction:%d trackSequence:%d chainLift:%d inverted:%d]",
+                direction, trackSequence, chainLift, inverted
+            );
+
+            intercept_clear_calls();
+            Intercept2::ResetSupportHeights();
+
+            CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+            callCount = intercept_get_calls(callBuffer);
+            std::vector<function_call> oldCalls;
+            oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
+
+            intercept_clear_calls();
+            testpaint_clear_ignore();
+            Intercept2::ResetSupportHeights();
+
+            CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+            if (testpaint_is_ignored(direction, trackSequence)) {
+                *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
+                continue;
+            }
+
+            callCount = intercept_get_calls(callBuffer);
+            std::vector<function_call> newCalls;
+            newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
+
+            bool sucess = true;
+            if (oldCalls.size() != newCalls.size()) {
+                *error += String::Format(
+                    "Call counts don't match (was %d, expected %d). %s\n",
+                    newCalls.size(), oldCalls.size(), caseName.c_str()
                 );
+                sucess = false;
+            } else if (!FunctionCall::AssertsEquals(oldCalls, newCalls)) {
+                *error += String::Format("Calls don't match. %s\n", caseName.c_str());
+                sucess = false;
+            }
 
-                intercept_clear_calls();
-                intercept_reset_segment_heights();
+            if (!sucess) {
+                *error += " Expected:\n";
+                *error += Printer::PrintFunctionCalls(oldCalls, height);
+                *error += "   Actual:\n";
+                *error += Printer::PrintFunctionCalls(newCalls, height);
 
-                CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
-
-                callCount = intercept_get_calls(callBuffer);
-                std::vector<function_call> oldCalls;
-                oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
-
-                intercept_clear_calls();
-                testpaint_clear_ignore();
-                intercept_reset_segment_heights();
-
-                CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
-
-                if (testpaint_is_ignored(direction, trackSequence)) {
-                    *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
-                    continue;
-                }
-
-                callCount = intercept_get_calls(callBuffer);
-                std::vector<function_call> newCalls;
-                newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
-
-                bool sucess = true;
-                if (oldCalls.size() != newCalls.size()) {
-                    *error += String::Format(
-                        "Call counts don't match (was %d, expected %d). %s\n",
-                        newCalls.size(), oldCalls.size(), caseName.c_str()
-                    );
-                    sucess = false;
-                } else if (!FunctionCall::AssertsEquals(oldCalls, newCalls)) {
-                    *error += String::Format("Calls don't match. %s\n", caseName.c_str());
-                    sucess = false;
-                }
-
-                if (!sucess) {
-                    *error += " Expected:\n";
-                    *error += Printer::PrintFunctionCalls(oldCalls, height);
-                    *error += "   Actual:\n";
-                    *error += Printer::PrintFunctionCalls(newCalls, height);
-
-                    return TEST_FAILED;
-                }
+                return TEST_FAILED;
             }
         }
     }
 
-    bool segmentSuccess = testSupportSegments(rideType, trackType);
-    if (!segmentSuccess) {
-        return TEST_FAILED;
+    return TEST_SUCCESS;
+}
+
+static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
+    uint8 rideIndex = 0;
+    uint16 height = 3 * 16;
+
+    rct_map_element mapElement = {0};
+    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    mapElement.properties.track.type = trackType;
+    mapElement.base_height = height / 16;
+    g_currently_drawn_item = &mapElement;
+
+    rct_map_element surfaceElement = {0};
+    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    surfaceElement.base_height = 2;
+    gSurfaceElement = &surfaceElement;
+    gDidPassSurface = true;
+
+    Intercept2::ResetEnvironment();
+    Intercept2::ResetTunnels();
+
+    // TODO: Test Chainlift
+    // TODO: Test Maze
+    // TODO: Allow skip
+
+    std::string state = String::Format("[trackSequence:%d chainLift:%d]", trackSequence, 0);
+
+    std::vector<SegmentSupportCall> tileSegmentSupportCalls[4];
+
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetSupportHeights();
+
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+        tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
     }
 
-    bool tunnelSuccess = testTunnels(rideType, trackType);
-    if (!tunnelSuccess) {
-        return TEST_FAILED;
+    std::vector<SegmentSupportCall> referenceCalls = tileSegmentSupportCalls[0];
+
+    if (!SegmentSupportHeightCall::CallsMatch(tileSegmentSupportCalls)) {
+        std::vector<SegmentSupportCall> *found = SegmentSupportHeightCall::FindMostCommonSupportCall(
+            tileSegmentSupportCalls);
+        if (found != nullptr) {
+            referenceCalls = *found;
+        } else {
+            *error += String::Format("Original segment calls didn't match. %s\n", state.c_str());
+            for (int direction = 0; direction < 4; direction++) {
+                *error += String::Format("# %d\n", direction);
+                *error += Printer::PrintSegmentSupportHeightCalls(tileSegmentSupportCalls[direction]);
+            }
+            return TEST_FAILED;
+        }
     }
 
-    bool verticalTunnelSuccess = testVerticalTunnels(rideType, trackType);
-    if (!verticalTunnelSuccess) {
-        return TEST_FAILED;
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetSupportHeights();
+
+        testpaint_clear_ignore();
+        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+        if (testpaint_is_ignored(direction, trackSequence)) {
+            continue;
+        }
+
+        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments,
+                                                                                             direction);
+        if (!SegmentSupportHeightCall::CallsEqual(referenceCalls, newCalls)) {
+            *error += String::Format(
+                "Segment support heights didn't match. [direction:%d] %s\n",
+                direction, state.c_str()
+            );
+            *error += " Expected:\n";
+            *error += Printer::PrintSegmentSupportHeightCalls(referenceCalls);
+            *error += "   Actual:\n";
+            *error += Printer::PrintSegmentSupportHeightCalls(newCalls);
+
+            return TEST_FAILED;
+        }
+    }
+
+    return TEST_SUCCESS;
+}
+
+static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
+    uint8 rideIndex = 0;
+    uint16 height = 3 * 16;
+
+    rct_map_element mapElement = {0};
+    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    mapElement.properties.track.type = trackType;
+    mapElement.base_height = height / 16;
+    g_currently_drawn_item = &mapElement;
+
+    rct_map_element surfaceElement = {0};
+    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    surfaceElement.base_height = 2;
+    gSurfaceElement = &surfaceElement;
+    gDidPassSurface = true;
+
+    Intercept2::ResetEnvironment();
+    Intercept2::ResetTunnels();
+
+    // TODO: Test Chainlift
+    // TODO: Test Maze
+    // TODO: Allow skip
+
+    std::string state = String::Format("[trackSequence:%d chainLift:%d]", trackSequence, 0);
+
+    SupportCall tileGeneralSupportCalls[4];
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetSupportHeights();
+
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+        tileGeneralSupportCalls[direction].height = -1;
+        tileGeneralSupportCalls[direction].slope = -1;
+        if (gSupport.height != 0) {
+            tileGeneralSupportCalls[direction].height = gSupport.height;
+        }
+        if (gSupport.slope != 0xFF) {
+            tileGeneralSupportCalls[direction].slope = gSupport.slope;
+        }
+    }
+
+    SupportCall referenceGeneralSupportCall = tileGeneralSupportCalls[0];
+    if (!GeneralSupportHeightCall::CallsMatch(tileGeneralSupportCalls)) {
+        SupportCall *found = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls);
+        if (found == nullptr) {
+            *error += String::Format("Original support calls didn't match. %s\n", state.c_str());
+            for (int i = 0; i < 4; ++i) {
+                *error += String::Format("[%d, 0x%02X] ", tileGeneralSupportCalls[i].height, tileGeneralSupportCalls[i].slope);
+            }
+            *error += "\n";
+            return TEST_FAILED;
+        }
+        referenceGeneralSupportCall = *found;
+    }
+
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetSupportHeights();
+
+        testpaint_clear_ignore();
+        CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+        if (testpaint_is_ignored(direction, trackSequence)) {
+            continue;
+        }
+
+
+        if (referenceGeneralSupportCall.height != -1) {
+            if (gSupport.height != referenceGeneralSupportCall.height) {
+                *error += String::Format(
+                    "General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d] %s\n",
+                    referenceGeneralSupportCall.height - height,
+                    gSupport.height - height,
+                    direction,
+                    state.c_str()
+                );
+                return TEST_FAILED;
+            }
+        }
+        if (referenceGeneralSupportCall.slope != -1) {
+            if (gSupport.slope != referenceGeneralSupportCall.slope) {
+                *error += String::Format(
+                    "General support slopes didn't match. (expected 0x%02X, actual: 0x%02X) [direction:%d] %s\n",
+                    referenceGeneralSupportCall.slope,
+                    gSupport.slope,
+                    direction,
+                    state.c_str()
+                );
+                return TEST_FAILED;
+            }
+        }
     }
 
     return TEST_SUCCESS;
