@@ -98,13 +98,13 @@
     <ClCompile Include="FunctionCall.cpp" />
     <ClCompile Include="GeneralSupportHeightCall.cpp" />
     <ClCompile Include="generate.cpp" />
-    <ClCompile Include="intercept_2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PaintIntercept.cpp" />
     <ClCompile Include="Printer.cpp" />
     <ClCompile Include="SegmentSupportHeightCall.cpp" />
     <ClCompile Include="SideTunnelCall.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="TestPaint.cpp" />
     <ClCompile Include="TestTrack.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VerticalTunnelCall.cpp" />

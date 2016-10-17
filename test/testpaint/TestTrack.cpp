@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-#include "intercept.h"
+#include "TestPaint.hpp"
 #include "FunctionCall.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "PaintIntercept.hpp"
@@ -141,8 +141,8 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    Intercept2::ResetEnvironment();
-    Intercept2::ResetTunnels();
+    TestPaint::ResetEnvironment();
+    TestPaint::ResetTunnels();
 
     function_call callBuffer[256] = {0};
     int callCount = 0;
@@ -167,7 +167,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
             );
 
             PaintIntercept::ClearCalls();
-            Intercept2::ResetSupportHeights();
+            TestPaint::ResetSupportHeights();
 
             CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -177,7 +177,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 
             PaintIntercept::ClearCalls();
             testpaint_clear_ignore();
-            Intercept2::ResetSupportHeights();
+            TestPaint::ResetSupportHeights();
 
             CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -232,8 +232,8 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    Intercept2::ResetEnvironment();
-    Intercept2::ResetTunnels();
+    TestPaint::ResetEnvironment();
+    TestPaint::ResetTunnels();
 
     // TODO: Test Chainlift
     // TODO: Test Maze
@@ -244,7 +244,7 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     std::vector<SegmentSupportCall> tileSegmentSupportCalls[4];
 
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetSupportHeights();
+        TestPaint::ResetSupportHeights();
 
         CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -269,7 +269,7 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     }
 
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetSupportHeights();
+        TestPaint::ResetSupportHeights();
 
         testpaint_clear_ignore();
         CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
@@ -312,8 +312,8 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    Intercept2::ResetEnvironment();
-    Intercept2::ResetTunnels();
+    TestPaint::ResetEnvironment();
+    TestPaint::ResetTunnels();
 
     // TODO: Test Chainlift
     // TODO: Test Maze
@@ -323,7 +323,7 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 
     SupportCall tileGeneralSupportCalls[4];
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetSupportHeights();
+        TestPaint::ResetSupportHeights();
 
         CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -352,7 +352,7 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
     }
 
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetSupportHeights();
+        TestPaint::ResetSupportHeights();
 
         testpaint_clear_ignore();
         CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
@@ -406,13 +406,13 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    Intercept2::ResetEnvironment();
-    Intercept2::ResetTunnels();
+    TestPaint::ResetEnvironment();
+    TestPaint::ResetTunnels();
 
     TunnelCall tileTunnelCalls[4][4];
 
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetTunnels();
+        TestPaint::ResetTunnels();
 
         for (sint8 offset = -8; offset <= 8; offset += 8) {
             CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
@@ -440,7 +440,7 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 
     TunnelCall newTileTunnelCalls[4][4];
     for (int direction = 0; direction < 4; direction++) {
-        Intercept2::ResetTunnels();
+        TestPaint::ResetTunnels();
 
         testpaint_clear_ignore();
 
@@ -520,8 +520,8 @@ static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, ui
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    Intercept2::ResetEnvironment();
-    Intercept2::ResetTunnels();
+    TestPaint::ResetEnvironment();
+    TestPaint::ResetTunnels();
 
     uint8 verticalTunnelHeight[4];
 

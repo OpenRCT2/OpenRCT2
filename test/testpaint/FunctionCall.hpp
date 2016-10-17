@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../../src/common.h"
-#include "intercept.h"
+#include "TestPaint.hpp"
 
 enum
 {

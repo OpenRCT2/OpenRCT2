@@ -742,7 +742,7 @@ private:
                         TunnelCall tileTunnelCalls[4][4],
                         sint16 verticalTunnelHeights[4])
     {
-        intercept_reset_tunnels();
+        TestPaint::ResetTunnels();
 
         for (int offset = -8; offset <= 8; offset += 8)
         {
@@ -953,10 +953,10 @@ private:
         uint32 palette = imageId & ~0x7FFFF;
 
         std::string paletteName;
-        if (palette == Intercept2::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_SUPPORTS) paletteName = "gTrackColours[SCHEME_SUPPORTS]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
+        if (palette == TestPaint::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_SUPPORTS) paletteName = "gTrackColours[SCHEME_SUPPORTS]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
         else {
             paletteName = String::Format("0x%08X", palette);
         }
@@ -1009,8 +1009,8 @@ private:
 
     void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
     {
-        intercept_reset_environment();
-        intercept_reset_segment_heights();
+        TestPaint::ResetEnvironment();
+        TestPaint::ResetSupportHeights();
 
         uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it

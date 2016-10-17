@@ -17,7 +17,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "intercept.h"
+#include "TestPaint.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
@@ -31,7 +31,7 @@ extern "C" {
     #include "../../src/hook.h"
 }
 
-namespace Intercept2
+namespace TestPaint
 {
     void ResetEnvironment() {
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
@@ -130,35 +130,22 @@ extern "C"
 {
     void testpaint_clear_ignore()
     {
-        Intercept2::testClearIgnore();
+        TestPaint::testClearIgnore();
     }
 
     void testpaint_ignore(uint8 direction, uint8 trackSequence)
     {
-        Intercept2::testIgnore(direction, trackSequence);
+        TestPaint::testIgnore(direction, trackSequence);
     }
 
     void testpaint_ignore_all()
     {
-        Intercept2::testIgnoreAll();
+        TestPaint::testIgnoreAll();
     }
 
     bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
     {
-        return Intercept2::testIsIgnored(direction, trackSequence);
+        return TestPaint::testIsIgnored(direction, trackSequence);
     }
-
-    void intercept_reset_environment() {
-        Intercept2::ResetEnvironment();
-    }
-
-    void intercept_reset_segment_heights() {
-        Intercept2::ResetSupportHeights();
-    }
-
-    void intercept_reset_tunnels() {
-        Intercept2::ResetTunnels();
-    }
-
 
 }

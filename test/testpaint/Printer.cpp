@@ -216,10 +216,10 @@ namespace Printer {
         uint32 palette = imageId & ~0x7FFFF;
 
         std::string paletteName;
-        if (palette == Intercept2::DEFAULT_SCHEME_TRACK) paletteName = "SCHEME_TRACK";
-        else if (palette == Intercept2::DEFAULT_SCHEME_SUPPORTS) paletteName = "SCHEME_SUPPORTS";
-        else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "SCHEME_MISC";
-        else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "SCHEME_3";
+        if (palette == TestPaint::DEFAULT_SCHEME_TRACK) paletteName = "SCHEME_TRACK";
+        else if (palette == TestPaint::DEFAULT_SCHEME_SUPPORTS) paletteName = "SCHEME_SUPPORTS";
+        else if (palette == TestPaint::DEFAULT_SCHEME_MISC) paletteName = "SCHEME_MISC";
+        else if (palette == TestPaint::DEFAULT_SCHEME_3) paletteName = "SCHEME_3";
         else {
             paletteName = String::Format("0x%08X", palette);
         }
