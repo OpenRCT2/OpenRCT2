@@ -22,6 +22,7 @@
 #include "../localisation/string_ids.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
 #include "../world/footpath.h"
@@ -1358,6 +1359,20 @@ void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)ebp,
 		(uint8*)edi
 	);
+}
+
+void game_command_pickup_staff(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int peepnum = *eax;
+	int x = *edi;
+	int y = *ebp;
+	if (peep_pickup_command(peepnum, x, y, *ecx, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+	}
+	else
+	{
+		*ebx = MONEY32_UNDEFINED;
+	}
 }
 
 colour_t staff_get_colour(uint8 staffType)

@@ -25,6 +25,7 @@
 #include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../openrct2.h"
+#include "../network/network.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -1839,6 +1840,157 @@ void peep_window_state_update(rct_peep* peep)
 	} else {
 		window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 		window_invalidate_by_class(WC_STAFF_LIST);
+	}
+}
+
+void peep_pickup(rct_peep* peep)
+{
+	remove_peep_from_ride(peep);
+	invalidate_sprite_2((rct_sprite*)peep);
+
+	sprite_move(SPRITE_LOCATION_NULL, peep->y, peep->z, (rct_sprite*)peep);
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_PICKED;
+	peep->sub_state = 0;
+	peep_window_state_update(peep);
+}
+
+void peep_pickup_abort(rct_peep* peep, int old_x)
+{
+	if (!peep)
+		return;
+
+	if (peep->state != PEEP_STATE_PICKED)
+		return;
+
+	sprite_move(old_x, peep->y, peep->z + 8, (rct_sprite*)peep);
+	invalidate_sprite_2((rct_sprite*)peep);
+
+	if (peep->x != (sint16)SPRITE_LOCATION_NULL){
+		peep_decrement_num_riders(peep);
+		peep->state = 0;
+		peep_window_state_update(peep);
+		peep->action = 0xFF;
+		peep->special_sprite = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
+		peep->var_C4 = 0;
+	}
+
+	gPickupPeepImage = UINT32_MAX;
+}
+
+bool peep_pickup_place(rct_peep* peep, int x, int y, bool apply)
+{
+	if (!peep)
+		return false;
+
+	int dest_x, dest_y;
+	rct_map_element *mapElement;
+	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+
+	if (dest_x == (sint16)SPRITE_LOCATION_NULL) {
+		gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
+		return false;
+	}
+
+	// Set the coordinate of destination to be exactly
+	// in the middle of a tile.
+	dest_x += 16;
+	dest_y += 16;
+	// Set the tile coordinate to top left of tile
+	int tile_y = dest_y & 0xFFE0;
+	int tile_x = dest_x & 0xFFE0;
+
+	int dest_z = mapElement->base_height * 8 + 16;
+
+	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
+		gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
+		return false;
+	}
+	
+	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
+		if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST) {
+			if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY) {
+				gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
+				return false;
+			}
+		}
+	}
+
+	if (apply) {
+		sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
+		invalidate_sprite_2((rct_sprite*)peep);
+		peep_decrement_num_riders(peep);
+		peep->state = 0;
+		peep_window_state_update(peep);
+		peep->action = 0xFF;
+		peep->special_sprite = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
+		peep->var_C4 = 0;
+		openrct2_reset_object_tween_locations();
+
+		if (peep->type == PEEP_TYPE_GUEST) {
+			peep->action_sprite_type = 0xFF;
+			peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
+			sub_693B58(peep);
+		}
+
+		network_set_pickup_peep(game_command_playerid, 0);
+	}
+
+	return true;
+}
+
+bool peep_pickup_command(int peepnum, int x, int y, int action, bool apply)
+{
+	rct_peep* peep;
+	switch (action) {
+		case 0: // pickup
+			peep = GET_PEEP(peepnum);
+			if (!peep) {
+				return false;
+			}
+			if (!peep_can_be_picked_up(peep)) {
+				return false;
+			}
+			if (network_get_pickup_peep(game_command_playerid)) {
+				// already picking up a peep
+				return false;
+			}
+			if (apply) {
+				peep_pickup(peep);
+				network_set_pickup_peep(game_command_playerid, peep);
+				network_set_pickup_peep_old_x(game_command_playerid, peep->x);
+			}
+			break;
+		case 1: // cancel
+			if (apply) {
+				peep_pickup_abort(network_get_pickup_peep(game_command_playerid), network_get_pickup_peep_old_x(game_command_playerid));
+				network_set_pickup_peep(game_command_playerid, 0);
+			}
+			break;
+		case 2: // place
+			if (!peep_pickup_place(network_get_pickup_peep(game_command_playerid), x, y, apply)) {
+				return false;
+			}
+			break;
+	}
+	return true;
+}
+
+void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int peepnum = *eax;
+	int x = *edi;
+	int y = *ebp;
+	if (peep_pickup_command(peepnum, x, y, *ecx, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+	}
+	else
+	{
+		*ebx = MONEY32_UNDEFINED;
 	}
 }
 
