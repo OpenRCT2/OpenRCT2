@@ -14,6 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef __MINGW32__
+// 0x0600 == vista
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #include "../common.h"
 
 #ifdef __WINDOWS__
@@ -1037,7 +1043,6 @@ utf8* platform_get_username() {
 	return username;
 }
 
-#ifndef __MINGW32__
 ///////////////////////////////////////////////////////////////////////////////
 // File association setup
 ///////////////////////////////////////////////////////////////////////////////
@@ -1183,5 +1188,4 @@ void platform_remove_file_associations()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-#endif
 #endif
