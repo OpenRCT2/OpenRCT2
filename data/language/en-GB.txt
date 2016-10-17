@@ -4240,7 +4240,7 @@ STR_5928    :Entrance details
 STR_5929    :Fence details
 STR_5930    :Large scenery details
 STR_5931    :Banner details
-STR_5932    :Currupt element details
+STR_5932    :Corrupt element details
 STR_5933    :Properties
 STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
 STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
