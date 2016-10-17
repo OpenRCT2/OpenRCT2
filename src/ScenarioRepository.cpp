@@ -450,7 +450,7 @@ private:
                             {
                                 SafeFree(highscore->name);
                                 highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
-                                highscore->company_value = highscore->company_value;
+                                highscore->company_value = scBasic.company_value;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
                             }
@@ -461,7 +461,7 @@ private:
                         scenario_highscore_entry * highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.path);
                         highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
-                        highscore->company_value = highscore->company_value;
+                        highscore->company_value = scBasic.company_value;
                         highscore->timestamp = DATETIME64_MIN;
                     }
                 }
