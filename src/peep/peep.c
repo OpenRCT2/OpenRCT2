@@ -8812,7 +8812,10 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 			switch (mapElement->properties.entrance.type) {
 			case ENTRANCE_TYPE_RIDE_ENTRANCE:
 				/* For peeps heading for a ride without a queue, the
-				 * goal is the ride entrance tile. */
+				 * goal is the ride entrance tile.
+				 * For mechanics heading for the ride entrance
+				 * (in the case when the station has no exit),
+				 * the goal is the ride entrance tile. */
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == test_edge) {
 					/* The rideIndex will be useful for
@@ -8829,29 +8832,22 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				searchResult = PATH_SEARCH_PARK_EXIT;
 				found = true;
 				break;
-			/* More details for other entrance types are not needed.
-			 * If in the future it would be useful to know
-			 * whether the map element is a ride exit, the following
-			 * commented out code will do it. */
-			//case ENTRANCE_TYPE_RIDE_EXIT:
-			//	/* For mechanics heading for the ride exit, the goal is the path
-			//	 * that connects to the ride exit, not the ride exit itself.
-			//	 * So the path finding doesn't need to know about ride exits. */
-			//	direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-			//	if (direction == test_edge) {
-			//		searchResult = PATH_SEARCH_RIDE_EXIT;
-			//		found = true;
-			//		break;
-			//	}
-			//	continue; // Ride exit is not facing the right direction.
+			case ENTRANCE_TYPE_RIDE_EXIT:
+				/* For mechanics heading for the ride exit, the
+				 * goal is the ride exit tile. */
+				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+				if (direction == test_edge) {
+					searchResult = PATH_SEARCH_RIDE_EXIT;
+					found = true;
+					break;
+				}
+				continue; // Ride exit is not facing the right direction.
 			default: continue;
 			}
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			/* For peeps heading for a ride with a queue, the goal is the last
 			 * queue path.
-			 * For mechanics heading for the ride exit, the goal is the path
-			 * connecting to the ride exit.
 			 * Otherwise, peeps walk on path tiles to get to the goal. */
 
 			if (!is_valid_path_z_and_direction(mapElement, z, test_edge)) continue;
@@ -8898,15 +8894,6 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
 		/* At this point mapElement is of interest to the pathfinding. */
-		uint8 height = z;
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-			// Adjust height for goal comparison according to the path slope.
-			if (footpath_element_is_sloped(mapElement)) {
-				if (footpath_element_get_slope_direction(mapElement) == test_edge) {
-					height += 2;
-				}
-			}
-		}
 
 		/* Should we check that this mapElement is connected in the
 		 * reverse direction? For some mapElement types this was
@@ -8919,7 +8906,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 		if (x_delta < y_delta) x_delta >>= 4;
 		else y_delta >>= 4;
 		uint16 new_score = x_delta + y_delta;
-		uint16 z_delta = abs(gPeepPathFindGoalPosition.z - height);
+		uint16 z_delta = abs(gPeepPathFindGoalPosition.z - z);
 		z_delta <<= 1;
 		new_score += z_delta;
 
@@ -9595,7 +9582,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
 	 * determine for which guest(s) the pathfinding debugging will
 	 * be output for. */
-	format_string(gPathFindDebugPeepName, peep->name_string_idx, &(peep->id));
+	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
 	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
