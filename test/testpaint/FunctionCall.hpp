@@ -19,6 +19,43 @@
 #include "../../src/common.h"
 #include "intercept.h"
 
+enum
+{
+    PAINT_98196C,
+    PAINT_98197C,
+    PAINT_98198C,
+    PAINT_98199C,
+
+    SUPPORTS_METAL_A,
+    SUPPORTS_METAL_B,
+    SUPPORTS_WOOD_A,
+    SUPPORTS_WOOD_B,
+
+    SET_SEGMENT_HEIGHT,
+};
+
+typedef struct
+{
+    uint8 function;
+    struct paint
+    {
+        uint32 image_id;
+        rct_xy16 offset;
+        rct_xyz16 bound_box_length;
+        sint16 z_offset;
+        rct_xyz16 bound_box_offset;
+        uint32 rotation;
+    } paint;
+    struct supports
+    {
+        int type;
+        uint8 segment;
+        int special;
+        int height;
+        uint32 colour_flags;
+    } supports;
+} function_call;
+
 class FunctionCall {
 public:
     static bool AssertsEquals(function_call expected, function_call actual);

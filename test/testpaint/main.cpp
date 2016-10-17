@@ -23,7 +23,7 @@
 #include <sys/mman.h>
 #endif // defined(__unix__)
 
-#include "intercept.h"
+#include "PaintIntercept.hpp"
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
@@ -422,7 +422,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		openrct2_setup_rct2_segment();
-		initHooks();
+		PaintIntercept::InitHooks();
 
 		return generatePaintCode(specificRideType);
 	}
@@ -464,7 +464,7 @@ int main(int argc, char *argv[]) {
 	ColouredPrintF(CLIColour::GREEN, "[----------] ");
 	printf("Global test environment set-up.\n");
 	openrct2_setup_rct2_segment();
-	initHooks();
+	PaintIntercept::InitHooks();
 
 	int successCount = 0;
 	std::vector<utf8string> failures;

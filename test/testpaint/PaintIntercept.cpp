@@ -15,7 +15,7 @@
 #pragma endregion
 
 
-#include "intercept.h"
+#include "PaintIntercept.hpp"
 
 extern "C" {
 #include "../../src/common.h"
@@ -24,9 +24,23 @@ extern "C" {
 #include "../../src/paint/supports.h"
 }
 
-class PaintInterceptor {
-public:
-    static void InitHooks() {
+static bool _woodenSupports = false;
+static uint8 _callCount = 0;
+static function_call _calls[256] = {0};
+
+namespace PaintIntercept {
+    static uint32 InterceptWoodenASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
+    static uint32 InterceptWoodenBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
+    static uint32 InterceptMetalASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
+    static uint32 InterceptMetalBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
+    static uint32 InterceptPaint6C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static uint32 InterceptPaint7C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static uint32 InterceptPaint8C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static uint32 InterceptPaint9C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static uint32 InterceptPaintFull(uint8 function, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static void CheckSegmentSupportHeight();
+
+    void InitHooks() {
         int supportsRegisterArgs[] = {EAX, EBX, EDX, EDI, EBP, END};
         addhook(0x006629BC, (int) InterceptWoodenASupports, 0, supportsRegisterArgs, 0, EAX);
         addhook(0x00662D5C, (int) InterceptWoodenBSupports, 0, supportsRegisterArgs, 0, EAX);
@@ -56,7 +70,7 @@ public:
         addhook(0x00687902, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
     }
 
-    static bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
         function_call call = {0};
         call.function = function;
         call.supports.type = supportType;
@@ -70,7 +84,7 @@ public:
         return _woodenSupports;
     }
 
-    static bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
+    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
         CheckSegmentSupportHeight();
 
         function_call call = {0};
@@ -132,24 +146,19 @@ public:
         return nullptr;
     }
 
-    static void ClearCalls() {
+    void ClearCalls() {
         _callCount = 0;
         memset(_calls, 0, sizeof(_calls));
     }
 
-    static int GetCalls(function_call *buffer) {
+    int GetCalls(function_call *buffer) {
         memcpy(buffer, _calls, _callCount * sizeof(function_call));
         return _callCount;
     }
 
-    static void SetSimulateWoodenSupports(bool enabled) {
+    void SetSimulateWoodenSupports(bool enabled) {
         _woodenSupports = enabled;
     }
-
-private:
-    static bool _woodenSupports;
-    static uint8 _callCount;
-    static function_call _calls[256];
 
     static uint32 InterceptMetalASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
         bool output = PaintMetalSupports(SUPPORTS_METAL_A, edi, ebx, (sint16) (eax & 0xFFFF), (edx & 0xFFFF), ebp);
@@ -244,29 +253,26 @@ private:
     }
 };
 
-bool PaintInterceptor::_woodenSupports = false;
-uint8 PaintInterceptor::_callCount = 0;
-function_call PaintInterceptor::_calls[256] = {0};
 
 extern "C" {
 bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-    return PaintInterceptor::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground);
+    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground);
 }
 
 bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-    return PaintInterceptor::PaintWoodenSupports(SUPPORTS_WOOD_B, supportType, special, height, imageColourFlags, underground);
+    return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_B, supportType, special, height, imageColourFlags, underground);
 }
 
 bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-    return PaintInterceptor::PaintMetalSupports(SUPPORTS_METAL_A, supportType, segment, special, height, imageColourFlags);
+    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_A, supportType, segment, special, height, imageColourFlags);
 }
 
 bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
-    return PaintInterceptor::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags);
+    return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags);
 }
 
 paint_struct *sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation) {
-    return PaintInterceptor::Paint6C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, rotation);
+    return PaintIntercept::Paint6C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, rotation);
 }
 
 paint_struct *sub_98197C(
@@ -277,7 +283,7 @@ paint_struct *sub_98197C(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
     uint32 rotation
 ) {
-    return PaintInterceptor::PaintFull(
+    return PaintIntercept::PaintFull(
         PAINT_98197C,
         image_id,
         x_offset, y_offset,
@@ -296,7 +302,7 @@ paint_struct *sub_98198C(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
     uint32 rotation
 ) {
-    return PaintInterceptor::PaintFull(
+    return PaintIntercept::PaintFull(
         PAINT_98198C,
         image_id,
         x_offset, y_offset,
@@ -315,7 +321,7 @@ paint_struct *sub_98199C(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
     uint32 rotation
 ) {
-    return PaintInterceptor::PaintFull(
+    return PaintIntercept::PaintFull(
         PAINT_98199C,
         image_id,
         x_offset, y_offset,
@@ -328,18 +334,6 @@ paint_struct *sub_98199C(
 
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y) {
     return false;
-}
-
-void intercept_clear_calls() {
-    PaintInterceptor::ClearCalls();
-}
-
-int intercept_get_calls(function_call *buffer) {
-    return PaintInterceptor::GetCalls(buffer);
-}
-
-void initHooks() {
-    PaintInterceptor::InitHooks();
 }
 
 }

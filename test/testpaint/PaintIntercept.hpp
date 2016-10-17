@@ -16,20 +16,14 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
-
+#include "../../src/common.h"
 #include "FunctionCall.hpp"
-#include "SideTunnelCall.hpp"
-#include "SegmentSupportHeightCall.hpp"
 
-namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
+namespace PaintIntercept {
+    void InitHooks();
 
-    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
+    void ClearCalls();
+    int GetCalls(function_call *buffer);
 
-    std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
-
-    std::string PrintHeightOffset(uint16 height, uint16 baseHeight);
-}
+    void SetSimulateWoodenSupports(bool enabled);
+};

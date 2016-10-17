@@ -20,6 +20,7 @@
 #include "intercept.h"
 #include "FunctionCall.hpp"
 #include "GeneralSupportHeightCall.hpp"
+#include "PaintIntercept.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
 #include "SideTunnelCall.hpp"
@@ -165,16 +166,16 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 direction, trackSequence, chainLift, inverted
             );
 
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             Intercept2::ResetSupportHeights();
 
             CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
 
-            callCount = intercept_get_calls(callBuffer);
+            callCount = PaintIntercept::GetCalls(callBuffer);
             std::vector<function_call> oldCalls;
             oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
 
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             testpaint_clear_ignore();
             Intercept2::ResetSupportHeights();
 
@@ -185,7 +186,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 continue;
             }
 
-            callCount = intercept_get_calls(callBuffer);
+            callCount = PaintIntercept::GetCalls(callBuffer);
             std::vector<function_call> newCalls;
             newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
 

@@ -18,7 +18,8 @@
 #include <string>
 #include <vector>
 
-#include "intercept.h"
+#include "FunctionCall.hpp"
+#include "PaintIntercept.hpp"
 #include "SegmentSupportHeightCall.hpp"
 #include "SideTunnelCall.hpp"
 #include "String.hpp"
@@ -421,9 +422,9 @@ private:
             RCT2_GLOBAL(0x009DE56E, sint16) = 64;
 
             function_call callBuffer[256] = { 0 };
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-            int numCalls = intercept_get_calls(callBuffer);
+            int numCalls = PaintIntercept::GetCalls(callBuffer);
             calls[direction].insert(calls[direction].begin(), callBuffer, callBuffer + numCalls);
 
             for (auto &&call : calls[direction]) {
@@ -442,9 +443,9 @@ private:
 
             // Get chain lift calls
             mapElement.type |= 0x80;
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-            numCalls = intercept_get_calls(callBuffer);
+            numCalls = PaintIntercept::GetCalls(callBuffer);
             chainLiftCalls[direction].insert(chainLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
 
             // Get cable lift calls (giga coaster only)
@@ -452,9 +453,9 @@ private:
             {
                 mapElement.type = 0;
                 mapElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-                intercept_clear_calls();
+                PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-                numCalls = intercept_get_calls(callBuffer);
+                numCalls = PaintIntercept::GetCalls(callBuffer);
                 cableLiftCalls[direction].insert(cableLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
             }
 
@@ -465,9 +466,9 @@ private:
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64;
                 mapElement.type = 0;
                 mapElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-                intercept_clear_calls();
+                PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-                numCalls = intercept_get_calls(callBuffer);
+                numCalls = PaintIntercept::GetCalls(callBuffer);
                 std::vector<function_call> checkCalls = std::vector<function_call>(callBuffer, callBuffer + numCalls);
                 if (!CompareFunctionCalls(checkCalls, calls[direction]))
                 {
@@ -715,7 +716,7 @@ private:
 
     bool CompareFunctionCall(const function_call a, const function_call &b)
     {
-        return assertFunctionCallEquals(a, b);
+        return FunctionCall::AssertsEquals(a, b);
     }
 
     const char * GetFunctionCallName(int function)

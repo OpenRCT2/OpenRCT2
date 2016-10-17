@@ -532,6 +532,7 @@
 		C606CCD11DB4D7C800FE4015 /* SideTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SideTunnelCall.hpp; sourceTree = "<group>"; };
 		C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerticalTunnelCall.cpp; sourceTree = "<group>"; };
 		C606CCD41DB4DD6C00FE4015 /* VerticalTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VerticalTunnelCall.hpp; sourceTree = "<group>"; };
+		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PaintIntercept.hpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1210,6 +1211,7 @@
 				C606CCB31DB4054000FE4015 /* intercept.h */,
 				C606CCB41DB4054000FE4015 /* main.cpp */,
 				C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */,
+				C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */,
 				C606CCB61DB4054000FE4015 /* Printer.cpp */,
 				C606CCB71DB4054000FE4015 /* Printer.hpp */,
 				C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */,
