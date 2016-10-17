@@ -138,9 +138,3 @@ static SpriteGroup getSpriteGroup(uint16 spriteIndex) {
 
     return SPRITEGROUP_NONE;
 }
-
-extern "C" {
-    bool assertFunctionCallEquals(function_call expected, function_call actual) {
-        return FunctionCall::AssertsEquals(expected, actual);
-    }
-}
