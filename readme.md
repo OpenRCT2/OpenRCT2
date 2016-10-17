@@ -90,10 +90,10 @@ We support native builds for macOS (limited to i386 only for now).
 Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build OpenRCT2.
 ```
 # Install libraries
-./install.sh
+scripts/linux/install.sh
 
 # Build OpenRCT2
-./build.sh
+scripts/linux/build.sh
 
 # Run the game
 ./openrct2
