@@ -685,10 +685,12 @@ private:
         }
     }
 
-    uint8 LerpByte(uint8 a, uint8 b, uint8 t)
+    uint8 MixLight(uint32 a, uint32 b, uint32 intensity)
     {
-        uint8 delta = b - a;
-        uint8 result = a + ((delta * t) >> 8);
+        intensity = intensity * 6;
+        uint32 bMul = (b * intensity) >> 8;
+        uint32 ab = a + bMul;
+        uint8 result = Math::Min<uint32>(255, ab);
         return result;
     }
 
@@ -723,10 +725,10 @@ private:
                     }
                     else
                     {
-                        colour |= LerpByte((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
-                        colour |= LerpByte((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
-                        colour |= LerpByte((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
-                        colour |= LerpByte((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
+                        colour |= MixLight((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
+                        colour |= MixLight((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
+                        colour |= MixLight((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
+                        colour |= MixLight((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
                     }
                     *dst++ = colour;
                 }
