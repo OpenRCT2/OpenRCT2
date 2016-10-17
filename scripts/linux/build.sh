@@ -71,7 +71,7 @@ pushd build
 		docker run -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
 	elif [[ $TARGET == "linux" ]]
 	then
-		cmake $OPENRCT2_CMAKE_OPTS ..
+		cmake $OPENRCT2_CMAKE_OPTS .. -DCMAKE_BUILD_TYPE=debug
 		# NOT the same variable as above
 		# this target also includes building & running of testpaint
 		make $OPENRCT2_MAKE_OPTS testpaint
