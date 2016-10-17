@@ -183,7 +183,7 @@ static void CallOriginal(
         (int) trackDirectionList,
         direction,
         height,
-        (int) &mapElement,
+        (int) mapElement,
         rideIndex * sizeof(rct_ride),
         trackSequence
     );
