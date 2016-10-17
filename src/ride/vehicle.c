@@ -6639,6 +6639,9 @@ static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
 	if (mapElement != NULL && z > mapElement->base_height * 8) {
 		rct_steam_particle *steam = (rct_steam_particle*)create_sprite(2);
+		if (steam == NULL)
+			return;
+
 		steam->sprite_width = 20;
 		steam->sprite_height_negative = 18;
 		steam->sprite_height_positive = 16;
