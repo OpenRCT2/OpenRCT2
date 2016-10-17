@@ -97,6 +97,7 @@ struct ObjectEntryEqual
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 static void ReportMissingObject(const rct_object_entry * entry);
+static void *allocate_chunk(size_t size);
 
 class ObjectRepository : public IObjectRepository
 {
@@ -512,7 +513,7 @@ private:
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                void * newData = Memory::AllocateAligned<void>(CHUNK_ALIGNMENT, newDataSize);
+                void * newData = allocate_chunk(newDataSize);
                 void * newDataSaltOffset = (void *)((uintptr_t)newData + dataSize);
                 Memory::Copy(newData, data, dataSize);
                 Memory::Copy(newDataSaltOffset, extraBytes, extraBytesCount);
@@ -794,7 +795,7 @@ extern "C"
         else
         {
             // Read object and save to new file
-            uint8 * chunk = Memory::AllocateAligned<uint8>(CHUNK_ALIGNMENT, 0x600000);
+            uint8 * chunk = (uint8 *)allocate_chunk(0x600000);
             if (chunk == nullptr)
             {
                 log_error("Failed to allocate buffer for packed object.");
@@ -802,7 +803,7 @@ extern "C"
             }
 
             size_t chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-            chunk = Memory::ReallocateAligned(chunk, chunkSize);
+            chunk = (uint8 *)allocate_chunk(chunkSize);
             if (chunk == nullptr)
             {
                 log_error("Failed to reallocate buffer for packed object.");
@@ -1015,4 +1016,16 @@ static void ReportMissingObject(const rct_object_entry * entry)
     utf8 objName[9] = { 0 };
     Memory::Copy(objName, entry->name, 8);
     Console::Error::WriteLine("[%s] Object not found.", objName);
+}
+
+// Allocate chunks on a CHUNK_ALIGNMENT-byte boundary and zero pad up to a size
+// that is a multiple of the alignment (32 at time of writing). This is to
+// enable various shortcuts in checksumming.
+static void *allocate_chunk(size_t size)
+{
+	size_t zero_pad = CHUNK_ALIGNMENT - (size % CHUNK_ALIGNMENT);
+	void *chunk = Memory::AllocateAligned<void *>(CHUNK_ALIGNMENT, size + zero_pad);
+	if (chunk)
+		memset((void *)((ptrdiff_t)chunk + size), 0, zero_pad);
+	return chunk;
 }
