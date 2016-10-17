@@ -30,6 +30,7 @@ extern "C"
     #include "../../interface/window.h"
     #include "../../intro.h"
     #include "../drawing.h"
+    #include "../lightfx.h"
 }
 
 class SoftwareDrawingEngine;
@@ -194,6 +195,7 @@ private:
     SDL_Texture *       _screenTexture          = nullptr;
     SDL_PixelFormat *   _screenTextureFormat    = nullptr;
     uint32              _paletteHWMapped[256] = { 0 };
+    uint32              _lightPaletteHWMapped[256] = { 0 };
 
     // Steam overlay checking
     uint32  _pixelBeforeOverlay     = 0;
@@ -268,7 +270,7 @@ public:
             }
 
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
-            
+
             uint32 format;
             SDL_QueryTexture(_screenTexture, &format, 0, 0, 0);
             _screenTextureFormat = SDL_AllocFormat(format);
@@ -306,9 +308,11 @@ public:
         {
             if (_screenTextureFormat != nullptr)
             {
+                const SDL_Color * lightPalette = lightfx_get_palette();
                 for (int i = 0; i < 256; i++)
                 {
                     _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
                 }
             }
         }
@@ -522,6 +526,8 @@ private:
         dpi->pitch = _pitch - width;
 
         ConfigureDirtyGrid();
+
+        lightfx_update_buffers(dpi);
     }
 
     void ConfigureDirtyGrid()
@@ -679,54 +685,55 @@ private:
         }
     }
 
+    uint8 LerpByte(uint8 a, uint8 b, uint8 t)
+    {
+        uint8 delta = b - a;
+        uint8 result = a + ((delta * t) >> 8);
+        return result;
+    }
+
     void DisplayViaTexture()
     {
+        lightfx_update_viewport_settings();
+        lightfx_swap_buffers();
+        lightfx_prepare_light_list();
+        lightfx_render_lights_to_frontbuffer();
+
+        uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
+
         void *  pixels;
         int     pitch;
         if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
         {
-            uint8 * src = _bits;
-            int padding = pitch - (_width * 4);
-            if ((uint32)pitch == _width * 4) {
-                uint32 * dst = (uint32 *)pixels;
-                for (int i = _width * _height; i > 0; i--)
-                {
-                    *dst++ = _paletteHWMapped[*src++];
-                }
-            }
-            else
+            for (uint32 y = 0; y < _height; y++)
             {
-                if ((uint32)pitch == (_width * 2) + padding)
+                uintptr_t dstOffset = (uintptr_t)(y * pitch);
+                uint32 * dst = (uint32 *)((uintptr_t)pixels + dstOffset);
+                for (uint32 x = 0; x < _width; x++)
                 {
-                    uint16 * dst = (uint16 *)pixels;
-                    for (sint32 y = (sint32)_height; y > 0; y--) {
-                        for (sint32 x = (sint32)_width; x > 0; x--) {
-                            const uint8 lower = *(uint8 *)(&_paletteHWMapped[*src++]);
-                            const uint8 upper = *(uint8 *)(&_paletteHWMapped[*src++]);
-                            *dst++ = (lower << 8) | upper;
-                        }
-                        dst = (uint16*)(((uint8 *)dst) + padding);
-                    }
-                }
-                else
-                {
-                    if ((uint32)pitch == _width + padding)
+                    uint8 * src = &_bits[y * _width + x];
+                    uint32 darkColour = _paletteHWMapped[*src];
+                    uint32 lightColour = _lightPaletteHWMapped[*src];
+                    uint8 lightIntensity = lightBits[y * _width + x];
+
+                    uint32 colour = 0;
+                    if (lightIntensity == 0)
                     {
-                        uint8 * dst = (uint8 *)pixels;
-                        for (sint32 y = (sint32)_height; y > 0; y--) {
-                            for (sint32 x = (sint32)_width; x > 0; x--)
-                            {
-                                *dst++ = *(uint8 *)(&_paletteHWMapped[*src++]);
-                            }
-                            dst += padding;
-                        }
+                        colour = darkColour;
                     }
+                    else
+                    {
+                        colour |= LerpByte((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
+                        colour |= LerpByte((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
+                        colour |= LerpByte((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
+                        colour |= LerpByte((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
+                    }
+                    *dst++ = colour;
                 }
             }
             SDL_UnlockTexture(_screenTexture);
         }
-
-        SDL_RenderCopy(_sdlRenderer, _screenTexture, NULL, NULL);
+        SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
 
         if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
         {
@@ -738,6 +745,54 @@ private:
         if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
         {
             OverlayPostRenderCheck();
+        }
+    }
+
+    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
+    {
+        void *  pixels;
+        int     pitch;
+        if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
+        {
+            sint32 padding = pitch - (width * 4);
+            if (pitch == width * 4)
+            {
+                uint32 * dst = (uint32 *)pixels;
+                for (sint32 i = width * height; i > 0; i--)
+                {
+                    *dst++ = palette[*src++];
+                }
+            }
+            else
+            {
+                if (pitch == (width * 2) + padding)
+                {
+                    uint16 * dst = (uint16 *)pixels;
+                    for (sint32 y = height; y > 0; y--)
+                    {
+                        for (sint32 x = width; x > 0; x--)
+                        {
+                            const uint8 lower = *(uint8 *)(&palette[*src++]);
+                            const uint8 upper = *(uint8 *)(&palette[*src++]);
+                            *dst++ = (lower << 8) | upper;
+                        }
+                        dst = (uint16*)(((uint8 *)dst) + padding);
+                    }
+                }
+                else if (pitch == width + padding)
+                {
+                    uint8 * dst = (uint8 *)pixels;
+                    for (sint32 y = height; y > 0; y--)
+                    {
+                        for (sint32 x = width; x > 0; x--)
+                        {
+                            *dst++ = *(uint8 *)(&palette[*src++]);
+                        }
+                        dst += padding;
+                    }
+                }
+            }
+            SDL_UnlockTexture(texture);
         }
     }
 
