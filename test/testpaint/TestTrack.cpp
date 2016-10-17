@@ -302,7 +302,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 
     std::vector<std::vector<uint8>> argumentPermutations;
     argumentPermutations.push_back(filler);
-    for (int filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
+    for (size_t filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
         ITestTrackFilter *filter = activeFilters[filterIndex];
         uint8 variantCount = filter->Variations(rideType, trackType);
 
@@ -324,7 +324,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     for (auto &&arguments : argumentPermutations) {
         std::string baseCaseName = "[";
 
-        for (int filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
+        for (size_t filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
             uint8 &variant = arguments[1 + filterIndex];
             baseCaseName += activeFilters[filterIndex]->VariantName(rideType, trackType, variant);
             baseCaseName += " ";
