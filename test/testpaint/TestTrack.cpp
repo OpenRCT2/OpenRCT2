@@ -433,11 +433,8 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
     std::vector<SegmentSupportCall> referenceCalls = tileSegmentSupportCalls[0];
 
     if (!SegmentSupportHeightCall::CallsMatch(tileSegmentSupportCalls)) {
-        std::vector<SegmentSupportCall> *found = SegmentSupportHeightCall::FindMostCommonSupportCall(
-            tileSegmentSupportCalls);
-        if (found != nullptr) {
-            referenceCalls = *found;
-        } else {
+        bool success = SegmentSupportHeightCall::FindMostCommonSupportCall(tileSegmentSupportCalls, &referenceCalls);
+        if (!success) {
             *error += String::Format("Original segment calls didn't match. %s\n", state.c_str());
             for (int direction = 0; direction < 4; direction++) {
                 *error += String::Format("# %d\n", direction);
@@ -516,10 +513,10 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
         }
     }
 
-    SupportCall referenceGeneralSupportCall = tileGeneralSupportCalls[0];
+    SupportCall referenceCall = tileGeneralSupportCalls[0];
     if (!GeneralSupportHeightCall::CallsMatch(tileGeneralSupportCalls)) {
-        SupportCall *found = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls);
-        if (found == nullptr) {
+        bool success = GeneralSupportHeightCall::FindMostCommonSupportCall(tileGeneralSupportCalls, &referenceCall);
+        if (!success) {
             *error += String::Format("Original support calls didn't match. %s\n", state.c_str());
             for (int i = 0; i < 4; ++i) {
                 *error += String::Format("[%d, 0x%02X] ", tileGeneralSupportCalls[i].height, tileGeneralSupportCalls[i].slope);
@@ -527,7 +524,6 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
             *error += "\n";
             return TEST_FAILED;
         }
-        referenceGeneralSupportCall = *found;
     }
 
     for (int direction = 0; direction < 4; direction++) {
@@ -540,11 +536,11 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
         }
 
 
-        if (referenceGeneralSupportCall.height != -1) {
-            if (gSupport.height != referenceGeneralSupportCall.height) {
+        if (referenceCall.height != -1) {
+            if (gSupport.height != referenceCall.height) {
                 *error += String::Format(
                     "General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d] %s\n",
-                    referenceGeneralSupportCall.height - height,
+                    referenceCall.height - height,
                     gSupport.height - height,
                     direction,
                     state.c_str()
@@ -552,11 +548,11 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
                 return TEST_FAILED;
             }
         }
-        if (referenceGeneralSupportCall.slope != -1) {
-            if (gSupport.slope != referenceGeneralSupportCall.slope) {
+        if (referenceCall.slope != -1) {
+            if (gSupport.slope != referenceCall.slope) {
                 *error += String::Format(
                     "General support slopes didn't match. (expected 0x%02X, actual: 0x%02X) [direction:%d] %s\n",
-                    referenceGeneralSupportCall.slope,
+                    referenceCall.slope,
                     gSupport.slope,
                     direction,
                     state.c_str()

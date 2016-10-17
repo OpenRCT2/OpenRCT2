@@ -27,7 +27,7 @@ bool GeneralSupportHeightCall::CallsMatch(SupportCall tileSupportCalls[4]) {
     return true;
 }
 
-SupportCall *GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4]) {
+bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], SupportCall *out) {
     std::map<SupportCall, int> map;
 
     for (int i = 0; i < 4; ++i) {
@@ -39,30 +39,33 @@ SupportCall *GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall cal
     }
 
     if (map.size() == 1) {
-        return &calls[0];
+        (*out) = calls[0];
+        return true;
     }
 
     if (map.size() == 2) {
         for (auto &&item : map) {
             if (item.second == 3) {
-                return (SupportCall *)&item.first;
+				(*out) = item.first;
+				return true;
             }
         }
 
-        return nullptr;
+        return false;
     }
 
     if (map.size() == 3) {
         for (auto &&item : map) {
-            if (item.second == 2) {
-                return (SupportCall *)&item.first;
+			if (item.second == 2) {
+				(*out) = item.first;
+				return true;
             }
         }
 
-        return nullptr;
+        return false;
     }
 
-    return nullptr;
+    return false;
 }
 
 bool GeneralSupportHeightCall::AssertEquals(const SupportCall *lhs, const SupportCall *rhs) {

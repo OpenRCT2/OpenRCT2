@@ -48,5 +48,5 @@ public:
     static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation);
     static bool CallsMatch(std::vector<SegmentSupportCall> tileSegmentSupportCalls[4]);
     static bool CallsEqual(std::vector<SegmentSupportCall> lhs, std::vector<SegmentSupportCall> rhs);
-    static std::vector<SegmentSupportCall> * FindMostCommonSupportCall(std::vector<SegmentSupportCall> calls[4]);
+    static bool FindMostCommonSupportCall(std::vector<SegmentSupportCall> calls[4], std::vector<SegmentSupportCall> * out);
 };

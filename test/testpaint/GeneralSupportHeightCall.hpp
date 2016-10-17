@@ -45,7 +45,7 @@ struct SupportCall {
 namespace GeneralSupportHeightCall {
     bool CallsMatch(SupportCall tileSupportCalls[4]);
 
-    SupportCall *FindMostCommonSupportCall(SupportCall calls[4]);
+    bool FindMostCommonSupportCall(SupportCall calls[4], SupportCall *out);
 
     bool AssertEquals(const SupportCall *lhs, const SupportCall *rhs);
 };

@@ -366,27 +366,31 @@ static void TestGeneralSupportHeightCall() {
 	SupportCall callC = {48, 0x20};
 	SupportCall callD = {48, 0x1F};
 
-	SupportCall *result;
+	SupportCall out = {0,0};
+	bool success;
 
 	SupportCall groupA[4] = {callA, callA, callA, callA};
-	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupA);
-	assert(GeneralSupportHeightCall::AssertEquals(result, &callA));
+	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupA, &out);
+	assert(success);
+	assert(out == callA);
 
 	SupportCall groupB[4] = {callB, callA, callA, callA};
-	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupB);
-	assert(GeneralSupportHeightCall::AssertEquals(result, &callA));
+	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupB, &out);
+	assert(success);
+	assert(out == callA);
 
 	SupportCall groupC[4] = {callB, callA, callB, callA};
-	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupC);
-	assert(GeneralSupportHeightCall::AssertEquals(result, nullptr));
+	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupC, &out);
+	assert(!success);
 
 	SupportCall groupD[4] = {callB, callC, callB, callA};
-	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupD);
-	assert(GeneralSupportHeightCall::AssertEquals(result, &callB));
+	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupD, &out);
+	assert(success);
+	assert(out == callB);
 
 	SupportCall groupE[4] = {callD, callC, callB, callA};
-	result = GeneralSupportHeightCall::FindMostCommonSupportCall(groupE);
-	assert(GeneralSupportHeightCall::AssertEquals(result, nullptr));
+	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupE, &out);
+	assert(!success);
 }
 
 int main(int argc, char *argv[]) {
