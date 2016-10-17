@@ -19,7 +19,10 @@
 #include <vector>
 
 #include "../../src/common.h"
-#include "../../src/paint/paint.h"
+
+extern "C" {
+    #include "../../src/paint/paint.h"
+}
 
 struct SegmentSupportCall
 {
