@@ -591,6 +591,11 @@ void* lightfx_get_front_buffer()
 	return _light_rendered_buffer_front;
 }
 
+const SDL_Color * lightfx_get_palette()
+{
+	return gPalette_light;
+}
+
 void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType)
 {
 	if (LightListCurrentCountBack == 15999) {
