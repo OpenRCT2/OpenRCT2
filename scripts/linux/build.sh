@@ -75,7 +75,7 @@ pushd build
 		# NOT the same variable as above
 		# this target also includes building & running of testpaint
 		make $OPENRCT2_MAKE_OPTS testpaint
-		./testpaint
+		./testpaint --silent
 		if [[ $? == 1 ]] ; then echo Allowing failed tests to pass ; fi
 	else
 		cmake $OPENRCT2_CMAKE_OPTS ..
