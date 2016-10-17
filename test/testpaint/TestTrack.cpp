@@ -35,6 +35,136 @@ extern "C" {
 #include "../../src/ride/track_data.h"
 }
 
+interface ITestTrackFilter {
+public:
+    virtual ~ITestTrackFilter() {}
+
+    virtual bool AppliesTo(uint8 rideType, uint8 trackType) abstract;
+
+    virtual int Variations(uint8 rideType, uint8 trackType) abstract;
+
+    virtual std::string VariantName(uint8 rideType, uint8 trackType, int variant) abstract;
+
+    virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
+                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_ride *ride, rct_ride_entry *rideEntry
+    ) abstract;
+};
+
+class CableLiftFilter : public ITestTrackFilter {
+public:
+    bool AppliesTo(uint8 rideType, uint8 trackType) {
+        return rideType == RIDE_TYPE_GIGA_COASTER;
+    }
+
+    int Variations(uint8 rideType, uint8 trackType) {
+        return 2;
+    }
+
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+        return String::Format("cableLift:%d", variant);
+    }
+
+    virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
+                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_ride *ride, rct_ride_entry *rideEntry
+    ) {
+        if (variant == 0) {
+            mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        } else {
+            mapElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        }
+    }
+};
+
+class ChainLiftFilter : public ITestTrackFilter {
+public:
+    bool AppliesTo(uint8 rideType, uint8 trackType) {
+        return !ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE);
+    }
+
+    int Variations(uint8 rideType, uint8 trackType) {
+        return 2;
+    }
+
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+        return String::Format("chainLift:%d", variant);
+    }
+
+    virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
+                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_ride *ride, rct_ride_entry *rideEntry
+    ) {
+        if (variant == 0) {
+            mapElement->type &= ~0x80;
+        } else {
+            mapElement->type |= 0x80;
+        }
+    }
+};
+
+class InvertedFilter : public ITestTrackFilter {
+public:
+    bool AppliesTo(uint8 rideType, uint8 trackType) {
+        if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER ||
+            rideType == RIDE_TYPE_FLYING_ROLLER_COASTER ||
+            rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER) {
+            return true;
+        }
+
+        return false;
+    }
+
+    int Variations(uint8 rideType, uint8 trackType) {
+        return 2;
+    }
+
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+        return String::Format("inverted:%d", variant);
+    }
+
+    virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
+                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_ride *ride, rct_ride_entry *rideEntry
+    ) {
+        if (variant == 0) {
+            mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        } else {
+            mapElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        }
+    }
+};
+
+class EntranceStyleFilter : public ITestTrackFilter {
+public:
+    bool AppliesTo(uint8 rideType, uint8 trackType) {
+        if (trackType == TRACK_ELEM_BEGIN_STATION ||
+            trackType == TRACK_ELEM_MIDDLE_STATION ||
+            trackType == TRACK_ELEM_END_STATION) {
+            return true;
+        }
+
+        return false;
+    }
+
+    int Variations(uint8 rideType, uint8 trackType) {
+        return RIDE_ENTRANCE_STYLE_COUNT - 1;
+    }
+
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+        return String::Format("entranceStyle:%d", variant);
+    }
+
+    virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
+                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_ride *ride, rct_ride_entry *rideEntry
+    ) {
+        ride->entrance_style = variant;
+    }
+};
+
+
+
 static void CallOriginal(
     uint8 rideType,
     uint8 trackType,
@@ -147,13 +277,61 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     function_call callBuffer[256] = {0};
     int callCount = 0;
 
-    int chainLift = 0;
-    int inverted = 0;
-
     // TODO: test chainlift
     // TODO: test inverted
     // TODO: test supports
     // TODO: test entrance styles
+
+    std::vector<ITestTrackFilter *> filters;
+    filters.push_back(new CableLiftFilter());
+    filters.push_back(new ChainLiftFilter());
+    filters.push_back(new InvertedFilter());
+    filters.push_back(new EntranceStyleFilter());
+
+    std::vector<ITestTrackFilter *> activeFilters;
+
+    for (auto &&filter : filters) {
+        if (filter->AppliesTo(rideType, trackType)) {
+            activeFilters.push_back(filter);
+        }
+    }
+
+    // Add an element so there's always something to add to
+    std::vector<uint8> filler;
+    filler.push_back(0);
+
+    std::vector<std::vector<uint8>> argumentPermutations;
+    argumentPermutations.push_back(filler);
+    for (int filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
+        ITestTrackFilter *filter = activeFilters[filterIndex];
+        uint8 variantCount = filter->Variations(rideType, trackType);
+
+        std::vector<std::vector<uint8>> newArgumentPermutations;
+        for (int variant = 0; variant < variantCount; variant++) {
+            for (auto &&oldPermutation : argumentPermutations) {
+                std::vector<uint8> permutation;
+                permutation.insert(permutation.begin(), oldPermutation.begin(), oldPermutation.end());
+                permutation.push_back(variant);
+                newArgumentPermutations.push_back(permutation);
+            }
+        }
+
+        argumentPermutations.clear();
+        argumentPermutations.insert(argumentPermutations.begin(), newArgumentPermutations.begin(),
+                                    newArgumentPermutations.end());
+    }
+
+    for (auto &&arguments : argumentPermutations) {
+        std::string baseCaseName = "[";
+
+        for (int filterIndex = 0; filterIndex < activeFilters.size(); ++filterIndex) {
+            uint8 &variant = arguments[1 + filterIndex];
+            baseCaseName += activeFilters[filterIndex]->VariantName(rideType, trackType, variant);
+            baseCaseName += " ";
+
+            activeFilters[filterIndex]->ApplyTo(rideType, trackType, variant, &mapElement, &surfaceElement, &(gRideList[0]), gRideEntries[0]);
+        }
+
 
     for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
         gCurrentRotation = currentRotation;
@@ -162,8 +340,8 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
             RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
 
             std::string caseName = String::Format(
-                "[direction:%d trackSequence:%d chainLift:%d inverted:%d]",
-                direction, trackSequence, chainLift, inverted
+                "%srotation:%d direction:%d trackSequence:%d]",
+                baseCaseName.c_str(), currentRotation, direction, trackSequence
             );
 
             PaintIntercept::ClearCalls();
@@ -211,6 +389,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 return TEST_FAILED;
             }
         }
+    }
     }
 
     return TEST_SUCCESS;
