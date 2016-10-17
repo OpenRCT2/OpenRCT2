@@ -638,14 +638,15 @@ static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 
 			imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | gTrackColours[SCHEME_MISC];
 			sub_98197C(imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2, get_current_rotation());
 		}
-		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
 
-		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		bool hasSWFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
 		if (hasFence) {
 			imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | gTrackColours[SCHEME_MISC];
 			sub_98197C(imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2, get_current_rotation());
 		}
-		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_SW, hasSWFence, entranceStyle, direction, height);
 
 		// Was leftwards tunnel in game, seems odd
 		paint_util_push_tunnel_right(height, TUNNEL_6);
@@ -655,14 +656,15 @@ static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 
 			imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | gTrackColours[SCHEME_MISC];
 			sub_98197C(imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2, get_current_rotation());
 		}
-		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
 
-		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		bool hasSEFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
 		if (hasFence) {
 			imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | gTrackColours[SCHEME_MISC];
 			sub_98197C(imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2, get_current_rotation());
 		}
-		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_SE, hasSEFence, entranceStyle, direction, height);
 
 		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}

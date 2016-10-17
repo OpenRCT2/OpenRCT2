@@ -612,6 +612,7 @@ static void paint_miniature_railway_station(uint8 rideIndex, uint8 trackSequence
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
 	track_paint_util_draw_station(rideIndex, trackSequence, direction, height + 2, mapElement);
+	// covers shouldn't be offset by +2
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 30, 0x20);
