@@ -96,9 +96,9 @@ public:
                          rct_ride *ride, rct_ride_entry *rideEntry
     ) {
         if (variant == 0) {
-            mapElement->type &= ~0x80;
+            mapElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         } else {
-            mapElement->type |= 0x80;
+            mapElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         }
     }
 };
@@ -333,63 +333,63 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
         }
 
 
-    for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
-        gCurrentRotation = currentRotation;
-        for (int direction = 0; direction < 4; direction++) {
-            RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
-            RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
+        for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
+            gCurrentRotation = currentRotation;
+            for (int direction = 0; direction < 4; direction++) {
+                RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
+                RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y
 
-            std::string caseName = String::Format(
-                "%srotation:%d direction:%d trackSequence:%d]",
-                baseCaseName.c_str(), currentRotation, direction, trackSequence
-            );
-
-            PaintIntercept::ClearCalls();
-            TestPaint::ResetSupportHeights();
-
-            CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
-
-            callCount = PaintIntercept::GetCalls(callBuffer);
-            std::vector<function_call> oldCalls;
-            oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
-
-            PaintIntercept::ClearCalls();
-            testpaint_clear_ignore();
-            TestPaint::ResetSupportHeights();
-
-            CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
-
-            if (testpaint_is_ignored(direction, trackSequence)) {
-                *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
-                continue;
-            }
-
-            callCount = PaintIntercept::GetCalls(callBuffer);
-            std::vector<function_call> newCalls;
-            newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
-
-            bool sucess = true;
-            if (oldCalls.size() != newCalls.size()) {
-                *error += String::Format(
-                    "Call counts don't match (was %d, expected %d). %s\n",
-                    newCalls.size(), oldCalls.size(), caseName.c_str()
+                std::string caseName = String::Format(
+                    "%srotation:%d direction:%d trackSequence:%d]",
+                    baseCaseName.c_str(), currentRotation, direction, trackSequence
                 );
-                sucess = false;
-            } else if (!FunctionCall::AssertsEquals(oldCalls, newCalls)) {
-                *error += String::Format("Calls don't match. %s\n", caseName.c_str());
-                sucess = false;
-            }
 
-            if (!sucess) {
-                *error += " Expected:\n";
-                *error += Printer::PrintFunctionCalls(oldCalls, height);
-                *error += "   Actual:\n";
-                *error += Printer::PrintFunctionCalls(newCalls, height);
+                PaintIntercept::ClearCalls();
+                TestPaint::ResetSupportHeights();
 
-                return TEST_FAILED;
+                CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+                callCount = PaintIntercept::GetCalls(callBuffer);
+                std::vector<function_call> oldCalls;
+                oldCalls.insert(oldCalls.begin(), callBuffer, callBuffer + callCount);
+
+                PaintIntercept::ClearCalls();
+                testpaint_clear_ignore();
+                TestPaint::ResetSupportHeights();
+
+                CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
+
+                if (testpaint_is_ignored(direction, trackSequence)) {
+                    *error += String::Format("[  IGNORED ]   %s\n", caseName.c_str());
+                    continue;
+                }
+
+                callCount = PaintIntercept::GetCalls(callBuffer);
+                std::vector<function_call> newCalls;
+                newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
+
+                bool sucess = true;
+                if (oldCalls.size() != newCalls.size()) {
+                    *error += String::Format(
+                        "Call counts don't match (was %d, expected %d). %s\n",
+                        newCalls.size(), oldCalls.size(), caseName.c_str()
+                    );
+                    sucess = false;
+                } else if (!FunctionCall::AssertsEquals(oldCalls, newCalls)) {
+                    *error += String::Format("Calls don't match. %s\n", caseName.c_str());
+                    sucess = false;
+                }
+
+                if (!sucess) {
+                    *error += " Expected:\n";
+                    *error += Printer::PrintFunctionCalls(oldCalls, height);
+                    *error += "   Actual:\n";
+                    *error += Printer::PrintFunctionCalls(newCalls, height);
+
+                    return TEST_FAILED;
+                }
             }
         }
-    }
     }
 
     return TEST_SUCCESS;
