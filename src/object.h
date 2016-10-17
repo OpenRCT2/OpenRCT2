@@ -49,6 +49,9 @@ typedef enum{
 
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
+
+// Alignment for efficient SIMD access and zero-padding of chunks.
+// DOUBLE CHECK CORRECT RESULTS IF THIS IS ALTERED
 #define CHUNK_ALIGNMENT 32
 
 #pragma pack(push, 1)
