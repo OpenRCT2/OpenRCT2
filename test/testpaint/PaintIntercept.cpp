@@ -38,6 +38,8 @@ namespace PaintIntercept {
     static uint32 InterceptPaint8C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
     static uint32 InterceptPaint9C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
     static uint32 InterceptPaintFull(uint8 function, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
+    bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground);
     static void CheckSegmentSupportHeight();
 
     void InitHooks() {
