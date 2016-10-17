@@ -26,6 +26,7 @@
 #include "String.hpp"
 #include "TestTrack.hpp"
 #include "Utils.hpp"
+#include "VerticalTunnelCall.hpp"
 
 extern "C" {
 #include "../../src/ride/ride.h"
@@ -81,6 +82,8 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
 
+static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
+
 uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
     if (!Utils::rideSupportsTrackType(rideType, trackType)) {
         return TEST_FAILED;
@@ -104,6 +107,7 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
         TestTrackElementSegmentSupportHeight,
         TestTrackElementGeneralSupportHeight,
         TestTrackElementSideTunnels,
+        TestTrackElementVerticalTunnels,
     };
 
     for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
@@ -494,6 +498,76 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
         *error += "   Actual:\n";
         *error += Printer::PrintSideTunnelCalls(newTileTunnelCalls);
         return TEST_FAILED;
+    }
+
+    return TEST_SUCCESS;
+}
+
+static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
+    uint8 rideIndex = 0;
+    uint16 height = 3 * 16;
+
+    rct_map_element mapElement = {0};
+    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    mapElement.properties.track.type = trackType;
+    mapElement.base_height = height / 16;
+    g_currently_drawn_item = &mapElement;
+
+    rct_map_element surfaceElement = {0};
+    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    surfaceElement.base_height = 2;
+    gSurfaceElement = &surfaceElement;
+    gDidPassSurface = true;
+
+    Intercept2::ResetEnvironment();
+    Intercept2::ResetTunnels();
+
+    uint8 verticalTunnelHeight[4];
+
+    for (int direction = 0; direction < 4; direction++) {
+        gVerticalTunnelHeight = 0;
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+        verticalTunnelHeight[direction] = gVerticalTunnelHeight;
+    }
+
+    if (!VerticalTunnelCall::HeightIsConsistent(verticalTunnelHeight)) {
+        *error += String::Format(
+            "Original vertical tunnel height is inconsistent, skipping test. [trackSequence:%d]\n",
+            trackSequence
+        );
+        return TEST_SUCCESS;
+    }
+
+    uint8 referenceHeight = verticalTunnelHeight[0];
+
+    for (int direction = 0; direction < 4; direction++) {
+        gVerticalTunnelHeight = 0;
+
+        testpaint_clear_ignore();
+        CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
+        if (testpaint_is_ignored(direction, trackSequence)) {
+            continue;
+        }
+
+        if (gVerticalTunnelHeight != referenceHeight) {
+            if (gVerticalTunnelHeight == 0) {
+                *error += String::Format(
+                    "Expected no tunnel. Actual: %d [trackSequence:%d]\n",
+                    gVerticalTunnelHeight, trackSequence
+                );
+                return TEST_FAILED;
+            }
+
+            *error += String::Format(
+                "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
+                Printer::PrintHeightOffset((referenceHeight * 16), height).c_str(),
+                Printer::PrintHeightOffset((gVerticalTunnelHeight * 16), height).c_str(),
+                trackSequence,
+                direction
+            );
+
+            return TEST_FAILED;
+        }
     }
 
     return TEST_SUCCESS;

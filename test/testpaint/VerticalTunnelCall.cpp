@@ -14,22 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#include "VerticalTunnelCall.hpp"
 
-#include <string>
-#include <vector>
+bool VerticalTunnelCall::HeightIsConsistent(uint8 heights[4]) {
+    for (int i = 1; i < 4; ++i) {
+        if (heights[i] != heights[0]) return false;
+    }
 
-#include "intercept.h"
-#include "SideTunnelCall.hpp"
-#include "SegmentSupportHeightCall.hpp"
-
-namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
-
-    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
-
-    std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
-
-    std::string PrintHeightOffset(uint16 height, uint16 baseHeight);
+    return true;
 }

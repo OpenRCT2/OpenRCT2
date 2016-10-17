@@ -107,6 +107,7 @@
     <ClCompile Include="String.cpp" />
     <ClCompile Include="TestTrack.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="VerticalTunnelCall.cpp" />
     <ClCompile Include="..\..\src\addresses.c" />
     <ClCompile Include="..\..\src\diagnostic.c" />
     <ClCompile Include="..\..\src\hook.c" />

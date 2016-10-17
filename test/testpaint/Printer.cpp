@@ -32,8 +32,6 @@ namespace Printer {
 
     static std::string GetImageIdString(uint32 imageId);
 
-    static std::string GetHeightOffset(uint16 height, uint16 baseHeight);
-
     static std::string GetOffsetExpressionString(int offset);
 
     static std::string PrintSegmentSupportHeightCall(SegmentSupportCall call);
@@ -60,14 +58,14 @@ namespace Printer {
             case SUPPORTS_WOOD_B:
                 return String::Format(
                     "%s(%d, %d, %s, %s)", functionName, call.supports.type, call.supports.special,
-                    GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
+                    PrintHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
                 );
 
             case SUPPORTS_METAL_A:
             case SUPPORTS_METAL_B:
                 return String::Format(
                     "%s(%d, %d, %d, %s, %s)", functionName, call.supports.type, call.supports.segment, call.supports.special,
-                    GetHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
+                    PrintHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
                 );
 
             case SET_SEGMENT_HEIGHT:
@@ -83,12 +81,13 @@ namespace Printer {
             "%d, %d, %d, ",
             call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z
         );
-        s += String::Format("%s, ", GetHeightOffset(call.paint.z_offset, baseHeight).c_str());
+        s += String::Format("%s, ", PrintHeightOffset(call.paint.z_offset, baseHeight).c_str());
 
         if (call.function != PAINT_98196C) {
             s += String::Format(
                 "%d, %d, %s, ",
-                call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, GetHeightOffset(call.paint.bound_box_offset.z, baseHeight).c_str()
+                call.paint.bound_box_offset.x, call.paint.bound_box_offset.y,
+                PrintHeightOffset(call.paint.bound_box_offset.z, baseHeight).c_str()
             );
         }
 
@@ -98,9 +97,9 @@ namespace Printer {
         if (call.function != PAINT_98196C) {
             s += String::Format(
                 "    = { %d, %d, %s }, { %d, %d, %s }, { %d, %d, %d }",
-                call.paint.offset.x, call.paint.offset.y, GetHeightOffset(call.paint.z_offset, baseHeight).c_str(),
+                call.paint.offset.x, call.paint.offset.y, PrintHeightOffset(call.paint.z_offset, baseHeight).c_str(),
                 call.paint.bound_box_offset.x, call.paint.bound_box_offset.y,
-                GetHeightOffset(call.paint.bound_box_offset.z, baseHeight).c_str(),
+                PrintHeightOffset(call.paint.bound_box_offset.z, baseHeight).c_str(),
                 call.paint.bound_box_length.x, call.paint.bound_box_length.y, call.paint.bound_box_length.z);
         }
 
@@ -236,7 +235,7 @@ namespace Printer {
         return result;
     }
 
-    static std::string GetHeightOffset(uint16 height, uint16 baseHeight) {
+    std::string PrintHeightOffset(uint16 height, uint16 baseHeight) {
         int offset = height - baseHeight;
 
         return String::Format("height%s", GetOffsetExpressionString(offset).c_str());
