@@ -107,19 +107,7 @@ namespace Intercept2
     static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
     static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
-    enum {
-        TUNNELCALL_SKIPPED,
-        TUNNELCALL_NONE,
-        TUNNELCALL_CALL,
-    };
 
-    struct TunnelCall {
-        uint8 call;
-        sint16 offset;
-        uint8 type;
-    };
-
-    sint16 getTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
 
     void ResetEnvironment();
     void ResetTunnels();

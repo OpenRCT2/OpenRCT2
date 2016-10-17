@@ -20,6 +20,7 @@
 
 #include "intercept.h"
 #include "SegmentSupportHeightCall.hpp"
+#include "SideTunnelCall.hpp"
 #include "String.hpp"
 #include "Utils.hpp"
 
@@ -400,7 +401,7 @@ private:
         bool blockSegmentsBeforeSupports = false;
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
-        Intercept2::TunnelCall tileTunnelCalls[4][4];
+        TunnelCall tileTunnelCalls[4][4];
         sint16 verticalTunnelHeights[4];
         std::vector<SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
@@ -737,7 +738,7 @@ private:
                         int trackSequence,
                         int height,
                         rct_map_element * mapElement,
-                        Intercept2::TunnelCall tileTunnelCalls[4][4],
+                        TunnelCall tileTunnelCalls[4][4],
                         sint16 verticalTunnelHeights[4])
     {
         intercept_reset_tunnels();
@@ -751,13 +752,13 @@ private:
         uint8 leftIndex = (rightIndex + 1) % 4;
 
         for (int i = 0; i < 4; ++i) {
-            tileTunnelCalls[direction][i].call = Intercept2::TUNNELCALL_SKIPPED;
+            tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
         }
         if (gRightTunnelCount == 0) {
-            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_NONE;
+            tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
         } else if (gRightTunnelCount == 3) {
-            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_CALL;
-            tileTunnelCalls[direction][rightIndex].offset = Intercept2::getTunnelOffset(height, gRightTunnels);
+            tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
+            tileTunnelCalls[direction][rightIndex].offset = SideTunnelCall::GetTunnelOffset(height, gRightTunnels);
             tileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
         } else {
             printf("Multiple tunnels on one side aren't supported.\n");
@@ -765,10 +766,10 @@ private:
         }
 
         if (gLeftTunnelCount == 0) {
-            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_NONE;
+            tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
         } else if (gLeftTunnelCount == 3) {
-            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_CALL;
-            tileTunnelCalls[direction][leftIndex].offset = Intercept2::getTunnelOffset(height, gLeftTunnels);
+            tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
+            tileTunnelCalls[direction][leftIndex].offset = SideTunnelCall::GetTunnelOffset(height, gLeftTunnels);
             tileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
         } else {
             printf("Multiple tunnels on one side aren't supported.\n");
@@ -788,7 +789,7 @@ private:
         return true;
     }
 
-    void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
+    void GenerateTunnelCall(int tabs, TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
     {
         constexpr uint8 TunnelLeft = 0;
         constexpr uint8 TunnelRight = 1;
@@ -809,7 +810,7 @@ private:
             for (int side = 0; side < 4; side++)
             {
                 auto tunnel = tileTunnelCalls[direction][side];
-                if (tunnel.call == Intercept2::TUNNELCALL_CALL)
+                if (tunnel.call == TUNNELCALL_CALL)
                 {
                     tunnelOffset[direction] = tunnel.offset;
                     tunnelType[direction] = tunnel.type;
@@ -857,7 +858,7 @@ private:
                     WriteLine(tabs, "case %d:", i);
                     for (int side = 0; side < 4; side++)
                     {
-                        if (tileTunnelCalls[i][side].call == Intercept2::TUNNELCALL_CALL)
+                        if (tileTunnelCalls[i][side].call == TUNNELCALL_CALL)
                         {
                             GenerateTunnelCall(tabs + 1, tileTunnelCalls[i][side].offset, tileTunnelCalls[i][side].type, dsToWay[i][side]);
                         }

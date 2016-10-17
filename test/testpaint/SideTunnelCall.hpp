@@ -16,18 +16,29 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
+#include "../../src/common.h"
 
-#include "intercept.h"
-#include "SideTunnelCall.hpp"
-#include "SegmentSupportHeightCall.hpp"
-
-namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
-
-    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
-
-    std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
+extern "C" {
+#include "../../src/paint/map_element/map_element.h"
 }
+
+enum {
+    TUNNELCALL_SKIPPED,
+    TUNNELCALL_NONE,
+    TUNNELCALL_CALL,
+};
+
+struct TunnelCall {
+    uint8 call;
+    sint16 offset;
+    uint8 type;
+};
+
+namespace SideTunnelCall {
+    sint16 GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
+    TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8 count, uint16 baseHeight, bool * error);
+
+    bool TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4]);
+    void GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4]);
+    bool TunnelCallsLineUp(TunnelCall tunnelCalls[4][4]);
+};

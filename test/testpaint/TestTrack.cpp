@@ -22,6 +22,7 @@
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
+#include "SideTunnelCall.hpp"
 #include "String.hpp"
 #include "TestTrack.hpp"
 #include "Utils.hpp"
@@ -78,6 +79,8 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
 
+static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
+
 uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
     if (!Utils::rideSupportsTrackType(rideType, trackType)) {
         return TEST_FAILED;
@@ -99,7 +102,8 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
     static TestFunction functions[] = {
         TestTrackElementPaintCalls,
         TestTrackElementSegmentSupportHeight,
-        TestTrackElementGeneralSupportHeight
+        TestTrackElementGeneralSupportHeight,
+        TestTrackElementSideTunnels,
     };
 
     for (int trackSequence = 0; trackSequence < sequenceCount; trackSequence++) {
@@ -376,6 +380,120 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
                 return TEST_FAILED;
             }
         }
+    }
+
+    return TEST_SUCCESS;
+}
+
+static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
+    uint8 rideIndex = 0;
+    uint16 height = 3 * 16;
+
+    rct_map_element mapElement = {0};
+    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    mapElement.properties.track.type = trackType;
+    mapElement.base_height = height / 16;
+    g_currently_drawn_item = &mapElement;
+
+    rct_map_element surfaceElement = {0};
+    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    surfaceElement.base_height = 2;
+    gSurfaceElement = &surfaceElement;
+    gDidPassSurface = true;
+
+    Intercept2::ResetEnvironment();
+    Intercept2::ResetTunnels();
+
+    TunnelCall tileTunnelCalls[4][4];
+
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetTunnels();
+
+        for (sint8 offset = -8; offset <= 8; offset += 8) {
+            CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
+        }
+
+        uint8 rightIndex = (4 - direction) % 4;
+        uint8 leftIndex = (rightIndex + 1) % 4;
+
+        for (int i = 0; i < 4; ++i) {
+            tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
+        }
+
+        bool err = false;
+        tileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gRightTunnels, gRightTunnelCount, height,
+                                                                                    &err);
+
+        tileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gLeftTunnels, gLeftTunnelCount, height,
+                                                                                   &err);
+
+        if (err) {
+            *error += "Multiple tunnels on one side aren't supported.\n";
+            return TEST_FAILED;
+        }
+    }
+
+    TunnelCall newTileTunnelCalls[4][4];
+    for (int direction = 0; direction < 4; direction++) {
+        Intercept2::ResetTunnels();
+
+        testpaint_clear_ignore();
+
+        for (sint8 offset = -8; offset <= 8; offset += 8) {
+            // TODO: move tunnel pushing to interface so we don't have to check the output 3 times
+            CallNew(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
+        }
+
+        uint8 rightIndex = (4 - direction) % 4;
+        uint8 leftIndex = (rightIndex + 1) % 4;
+
+        for (int i = 0; i < 4; ++i) {
+            newTileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
+        }
+
+        bool err = false;
+        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(gRightTunnels, gRightTunnelCount, height,
+                                                                                       &err);
+
+        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(gLeftTunnels, gLeftTunnelCount, height,
+                                                                                      &err);
+
+        if (err) {
+            *error += "Multiple tunnels on one side aren't supported.\n";
+            return TEST_FAILED;
+        }
+    }
+
+
+    if (!SideTunnelCall::TunnelCallsLineUp(tileTunnelCalls)) {
+        *error += String::Format(
+            "Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n",
+            trackSequence
+        );
+        *error += Printer::PrintSideTunnelCalls(tileTunnelCalls);
+
+        if (!SideTunnelCall::TunnelCallsLineUp(newTileTunnelCalls)) {
+            *error += String::Format("Decompiled tunnel calls don\'t line up. [trackSequence:%d].\n", trackSequence);
+            *error += Printer::PrintSideTunnelCalls(newTileTunnelCalls);
+            return TEST_FAILED;
+        }
+
+        return TEST_SUCCESS;
+    }
+
+    TunnelCall referencePattern[4];
+    SideTunnelCall::GetTunnelCallReferencePattern(tileTunnelCalls, &referencePattern);
+
+    TunnelCall actualPattern[4];
+    SideTunnelCall::GetTunnelCallReferencePattern(newTileTunnelCalls, &actualPattern);
+
+    if (!SideTunnelCall::TunnelPatternsMatch(referencePattern, actualPattern)) {
+        *error += String::Format("Tunnel calls don't match expected pattern. [trackSequence:%d]\n", trackSequence);
+        *error += " Expected:\n";
+        *error += Printer::PrintSideTunnelCalls(tileTunnelCalls);
+        *error += "   Actual:\n";
+        *error += Printer::PrintSideTunnelCalls(newTileTunnelCalls);
+        return TEST_FAILED;
     }
 
     return TEST_SUCCESS;

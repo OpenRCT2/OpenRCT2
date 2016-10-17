@@ -38,6 +38,8 @@ namespace Printer {
 
     static std::string PrintSegmentSupportHeightCall(SegmentSupportCall call);
 
+    static std::string PrintSideTunnelEdge(TunnelCall edge);
+
     std::string PrintFunctionCalls(std::vector<function_call> calls, uint16 baseHeight) {
         std::string out;
 
@@ -138,6 +140,73 @@ namespace Printer {
         out += String::Format(", 0x%02X\n", call.slope);
 
         return out;
+    }
+
+    std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]) {
+        std::string s;
+
+        for (int direction = 0; direction < 4; ++direction) {
+            s += "        +        ";
+        }
+        s += "\n";
+
+        for (int direction = 0; direction < 4; ++direction) {
+            std::string leftEdge = PrintSideTunnelEdge(tunnelCalls[direction][2]);
+            std::string rightEdge = PrintSideTunnelEdge(tunnelCalls[direction][3]);
+            s += String::Format("   %s %s   ", leftEdge.c_str(), rightEdge.c_str());
+        }
+        s += "\n";
+
+        for (int direction = 0; direction < 4; ++direction) {
+            printf("  +           +  ");
+        }
+        s += "\n";
+
+        for (int direction = 0; direction < 4; ++direction) {
+            std::string leftEdge = PrintSideTunnelEdge(tunnelCalls[direction][0]);
+            std::string rightEdge = PrintSideTunnelEdge(tunnelCalls[direction][1]);
+            s += String::Format("   %s %s   ", leftEdge.c_str(), rightEdge.c_str());
+        }
+        s += "\n";
+
+        for (int direction = 0; direction < 4; ++direction) {
+            s += "        +        ";
+        }
+        s += "\n";
+
+        for (int direction = 0; direction < 4; ++direction) {
+            s += String::Format("   direction %d   ", direction);
+        }
+        s += "\n";
+
+        return s;
+    }
+
+    static std::string PrintSideTunnelEdge(TunnelCall edge) {
+        std::string s;
+
+        switch (edge.call) {
+            case TUNNELCALL_SKIPPED:
+                s = "     ";
+                break;
+
+            case TUNNELCALL_NONE:
+                s = "  -  ";
+                break;
+
+            case TUNNELCALL_CALL:
+                std::string offset;
+
+                if (edge.offset <= 0) {
+                    offset = String::Format("%d", edge.offset);
+                } else {
+                    offset = String::Format("+%d", edge.offset);
+                }
+                s = String::Format("%3s/%X ", offset.c_str(), edge.type);
+                break;
+        }
+
+        return s;
     }
 
     static std::string GetImageIdString(uint32 imageId)
