@@ -69,6 +69,7 @@ static sint16 _unk9AC14E;
 static uint16 _unk9AC154;
 static sint16 _unk9ABDAE;
 
+static void viewport_paint_column(rct_drawpixelinfo * dpi);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -660,13 +661,6 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	top += viewport->view_y;
 	bottom += viewport->view_y;
 
-	int height = bottom - top;
-	if (height > 384){
-		//Paint
-		viewport_paint(viewport, dpi, left, top, right, top + 384);
-		top += 384;
-	}
-	//Paint
 	viewport_paint(viewport, dpi, left, top, right, bottom);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
@@ -695,9 +689,9 @@ const sint32 WeatherColours[] = {
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
+{
 	gCurrentViewportFlags = viewport->flags;
-	_viewportDpi1.zoom_level = viewport->zoom;
 
 	uint16 width = right - left;
 	uint16 height = bottom - top;
@@ -707,15 +701,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	height &= bitmask;
 	left &= bitmask;
 	top &= bitmask;
-
-	_viewportDpi1.x = left;
-	_viewportDpi1.y = top;
-	_viewportDpi1.width = width;
-	_viewportDpi1.height = height;
-
-	width >>= viewport->zoom;
-
-	_viewportDpi1.pitch = (dpi->width + dpi->pitch) - width;
+	right = left + width;
+	bottom = top + height;
 
 	sint16 x = (sint16)(left - (sint16)(viewport->view_x & bitmask));
 	x >>= viewport->zoom;
@@ -725,79 +712,73 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 	y >>= viewport->zoom;
 	y += viewport->y;
 
-	uint8* original_bits_pointer = x - dpi->x + (y - dpi->y)*(dpi->width + dpi->pitch) + dpi->bits;
+	rct_drawpixelinfo dpi1;
+	dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
+	dpi1.x = left;
+	dpi1.y = top;
+	dpi1.width = width;
+	dpi1.height = height;
+	dpi1.pitch = (dpi->width + dpi->pitch) - (width >> viewport->zoom);
+	dpi1.zoom_level = viewport->zoom;
 
-	rct_drawpixelinfo* dpi2 = &_viewportDpi2;
-	dpi2->y = _viewportDpi1.y;
-	dpi2->height = _viewportDpi1.height;
-	dpi2->zoom_level = (uint8)_viewportDpi1.zoom_level;
-
-	//Splits the screen into 32 pixel columns and renders them.
-	for (x = _viewportDpi1.x & 0xFFFFFFE0;
-		x < _viewportDpi1.x + _viewportDpi1.width;
-		x += 32){
-
-		int start_x = _viewportDpi1.x;
-		int width_col = _viewportDpi1.width;
-		uint8 * bits_pointer = original_bits_pointer;
-		int pitch = _viewportDpi1.pitch;
-		int zoom = _viewportDpi1.zoom_level;
-		if (x >= start_x){
-			int left_pitch = x - start_x;
-			width_col -= left_pitch;
-			bits_pointer += left_pitch >> zoom;
-			pitch += left_pitch >> zoom;
-			start_x = x;
+	// Splits the area into 32 pixel columns and renders them
+	for (x = floor2(dpi1.x, 32); x < dpi1.x + dpi1.width; x += 32) {
+		rct_drawpixelinfo dpi2 = dpi1;
+		if (x >= dpi2.x) {
+			sint16 leftPitch = x - dpi2.x;
+			dpi2.width -= leftPitch;
+			dpi2.bits += leftPitch >> dpi2.zoom_level;
+			dpi2.pitch += leftPitch >> dpi2.zoom_level;
+			dpi2.x = x;
 		}
 
-		int paint_right = start_x + width_col;
-		if (paint_right >= x + 32){
-			int right_pitch = paint_right - x - 32;
-			paint_right -= right_pitch;
-			pitch += right_pitch >> zoom;
+		sint16 paintRight = dpi2.x + dpi2.width;
+		if (paintRight >= x + 32) {
+			sint16 rightPitch = paintRight - x - 32;
+			paintRight -= rightPitch;
+			dpi2.pitch += rightPitch >> dpi2.zoom_level;
 		}
-		width_col = paint_right - start_x;
-		dpi2->x = start_x;
-		dpi2->width = width_col;
-		dpi2->bits = bits_pointer;
-		dpi2->pitch = pitch;
+		dpi2.width = paintRight - dpi2.x;
 
-		if (gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
-			uint8 colour = 0x0A;
-			if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES){
-				colour = 0;
-			}
-			gfx_clear(dpi2, colour);
-		}
-		gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-		unk_140E9A8 = dpi2;
-		painter_setup();
-		viewport_paint_setup();
-		sub_688217();
-		paint_quadrant_ps();
-
-		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-		if (
-			(weather_colour != -1) 
-			&& (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) 
-			&& (!gTrackDesignSaveMode) 
-			&& (gConfigGeneral.render_weather_gloom)
-		) {
-			gfx_fill_rect(
-				dpi2, 
-				dpi2->x, 
-				dpi2->y, 
-				dpi2->width + dpi2->x - 1, 
-				dpi2->height + dpi2->y - 1, 
-				weather_colour
-			);
-		}
-		
-		viewport_draw_money_effects();
+		viewport_paint_column(&dpi2);
 	}
 }
 
+static void viewport_paint_column(rct_drawpixelinfo * dpi)
+{
+	if (gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
+		uint8 colour = 0x0A;
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES){
+			colour = 0;
+		}
+		gfx_clear(dpi, colour);
+	}
+	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
+	unk_140E9A8 = dpi;
+	painter_setup();
+	viewport_paint_setup();
+	sub_688217();
+	paint_quadrant_ps();
 
+	int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
+	if (
+		(weather_colour != -1)
+		&& (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+		&& (!gTrackDesignSaveMode)
+		&& (gConfigGeneral.render_weather_gloom)
+	) {
+		gfx_fill_rect(
+			dpi,
+			dpi->x,
+			dpi->y,
+			dpi->width + dpi->x - 1,
+			dpi->height + dpi->y - 1,
+			weather_colour
+		);
+	}
+
+	viewport_draw_money_effects();
+}
 
 /**
  *
