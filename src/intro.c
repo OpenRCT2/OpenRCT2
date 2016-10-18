@@ -155,6 +155,7 @@ void intro_update()
 		gIntroState = INTRO_STATE_NONE;
 		load_palette();
 		gfx_invalidate_screen();
+		audio_start_title_music();
 		break;
 	}
 }
