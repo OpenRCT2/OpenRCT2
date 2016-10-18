@@ -215,7 +215,7 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error);
 
-uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
+uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::string *out) {
     if (!Utils::rideSupportsTrackType(rideType, trackType)) {
         return TEST_FAILED;
     }
@@ -246,7 +246,7 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType) {
             retVal = function(rideType, trackType, trackSequence, &error);
 
             if (retVal != TEST_SUCCESS) {
-                printf("%s\n", error.c_str());
+                *out += error + "\n";
                 return retVal;
             }
         }

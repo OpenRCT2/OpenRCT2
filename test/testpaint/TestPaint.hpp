@@ -48,6 +48,11 @@ namespace TestPaint
     void ResetSupportHeights();
 }
 
+enum Verbosity {
+    QUIET,
+    NORMAL,
+};
+
 extern "C"
 {
 int generatePaintCode(uint8 rideType);

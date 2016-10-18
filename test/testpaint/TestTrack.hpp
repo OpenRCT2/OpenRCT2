@@ -22,5 +22,5 @@
 
 class TestTrack {
 public:
-    static uint8 TestPaintTrackElement(uint8 rideType, uint8 trackType);
+    static uint8 TestPaintTrackElement(uint8 rideType, uint8 trackType, std::string *out);
 };
