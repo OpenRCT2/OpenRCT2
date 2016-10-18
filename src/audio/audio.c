@@ -27,6 +27,7 @@
 #include "../openrct2.h"
 #include "../util/util.h"
 #include "../localisation/string_ids.h"
+#include "../intro.h"
 
 typedef struct rct_audio_params {
 	bool in_range;
@@ -261,7 +262,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 
 void audio_start_title_music()
 {
-	if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != INTRO_STATE_NONE) {
 		audio_stop_title_music();
 		return;
 	}
