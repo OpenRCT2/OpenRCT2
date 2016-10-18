@@ -307,6 +307,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thick
 void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation);
 void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const rct_xy16 offsets[4], const rct_xy16 boundsLengths[4], const rct_xyz16 boundsOffsets[4], uint8 rotation);
 
+void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height);
+
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 

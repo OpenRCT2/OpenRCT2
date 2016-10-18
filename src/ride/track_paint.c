@@ -1680,6 +1680,17 @@ void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map
 	}
 }
 
+void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height) {
+	// TODO: Figure out which of these looks best, and use one to keep a consistent world
+	if (direction == 2) {
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	}
+	metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	if (direction != 2) {
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	}
+}
+
 static int pick_ride_type_for_drawing(int rideType, int trackType)
 {
 	if (rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER) {
