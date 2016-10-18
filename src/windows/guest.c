@@ -1213,8 +1213,15 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 	if (widgetIndex != WIDX_PICKUP)
 		return;
 
+	int dest_x, dest_y;
+	rct_map_element* mapElement;
+	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+
+	if (x == (sint16)0x8000)
+		return;
+
 	game_command_callback = game_command_callback_pickup_guest;
-	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_GUEST, x, y);
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, mapElement->base_height, GAME_COMMAND_PICKUP_GUEST, dest_x, dest_y);
 }
 
 /**

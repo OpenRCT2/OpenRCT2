@@ -1371,7 +1371,9 @@ void game_command_pickup_staff(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	int peepnum = *eax;
 	int x = *edi;
 	int y = *ebp;
-	if (peep_pickup_command(peepnum, x, y, *ecx, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+	int z = *edx;
+	int action = *ecx;
+	if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
 	}
 	else

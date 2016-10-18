@@ -1158,8 +1158,15 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int y)
 {
 	if (widgetIndex == WIDX_PICKUP) {
+		int dest_x, dest_y;
+		rct_map_element* mapElement;
+		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+
+		if (x == (sint16)0x8000)
+			return;
+
 		game_command_callback = game_command_callback_pickup_staff;
-		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_STAFF, x, y);
+		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, mapElement->base_height, GAME_COMMAND_PICKUP_STAFF, dest_x, dest_y);
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		int dest_x, dest_y;

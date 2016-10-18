@@ -1880,19 +1880,22 @@ void peep_pickup_abort(rct_peep* peep, int old_x)
 	gPickupPeepImage = UINT32_MAX;
 }
 
-bool peep_pickup_place(rct_peep* peep, int x, int y, bool apply)
+bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
 {
 	if (!peep)
 		return false;
 
-	int dest_x, dest_y;
-	rct_map_element *mapElement;
-	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
+	rct_map_element *mapElement = map_get_path_element_at(x / 32, y / 32, z);
 
-	if (dest_x == (sint16)SPRITE_LOCATION_NULL) {
-		gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
-		return false;
+	if (!mapElement) {
+		mapElement = map_get_surface_element_at(x / 32, y / 32);
 	}
+
+	if (!mapElement)
+		return false;
+
+	int dest_x = x & 0xFFE0;
+	int dest_y = y & 0xFFE0;
 
 	// Set the coordinate of destination to be exactly
 	// in the middle of a tile.
@@ -1943,7 +1946,7 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, bool apply)
 	return true;
 }
 
-bool peep_pickup_command(int peepnum, int x, int y, int action, bool apply)
+bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply)
 {
 	rct_peep* peep = GET_PEEP(peepnum);
 	switch (action) {
@@ -1974,7 +1977,7 @@ bool peep_pickup_command(int peepnum, int x, int y, int action, bool apply)
 			if (network_get_pickup_peep(game_command_playerid) != peep) {
 				return false;
 			}
-			if (!peep_pickup_place(peep, x, y, apply)) {
+			if (!peep_pickup_place(peep, x, y, z, apply)) {
 				return false;
 			}
 			break;
@@ -1987,7 +1990,9 @@ void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	int peepnum = *eax;
 	int x = *edi;
 	int y = *ebp;
-	if (peep_pickup_command(peepnum, x, y, *ecx, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+	int z = *edx;
+	int action = *ecx;
+	if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
 	}
 	else

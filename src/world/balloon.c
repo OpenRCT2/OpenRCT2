@@ -81,7 +81,7 @@ void balloon_update(rct_balloon *balloon)
  *
  *  rct2: 0x006E88ED
  */
-void balloon_press(rct_balloon *balloon)
+static void balloon_press(rct_balloon *balloon)
 {
 	if (balloon->popped == 1)
 		return;
