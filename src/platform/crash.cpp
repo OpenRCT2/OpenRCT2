@@ -44,6 +44,9 @@ extern "C" {
     const wchar_t *_wszCommitSha1Short = WSZ("");
 #endif
 
+// OPENRCT2_ARCHITECTURE is required to be defined in version.h
+const wchar_t *_wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
+
 static bool OnCrash(const wchar_t * dumpPath,
                     const wchar_t * miniDumpId,
                     void * context,
@@ -70,7 +73,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short);
+    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short, _wszArchitecture);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
