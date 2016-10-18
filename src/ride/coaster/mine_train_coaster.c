@@ -2860,29 +2860,21 @@ static void mine_train_rc_track_on_ride_photo(uint8 rideIndex, uint8 trackSequen
 	case 0:
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20052, 0, 0, 32, 20, 1, height, 0, 6, height);
 		wooden_a_supports_paint_setup(6, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25623, 26, 0, 1, 1, 19, height + 2);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25623, 26, 31, 1, 1, 19, height + 2);
 		break;
 	case 1:
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20053, 0, 0, 32, 20, 1, height, 0, 6, height);
 		wooden_a_supports_paint_setup(7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25624, 6, 0, 1, 1, 19, height + 2);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25624, 6, 31, 1, 1, 19, height + 2);
 		break;
 	case 2:
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20052, 0, 0, 32, 20, 1, height, 0, 6, height);
 		wooden_a_supports_paint_setup(6, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25625, 6, 0, 1, 1, 19, height + 2);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25625, 6, 31, 1, 1, 19, height + 2);
 		break;
 	case 3:
 		sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20053, 0, 0, 32, 20, 1, height, 0, 6, height);
 		wooden_a_supports_paint_setup(7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25626, 26, 0, 1, 1, 19, height + 2);
-		sub_98196C_rotated(direction, gTrackColours[SCHEME_MISC] | 25626, 26, 31, 1, 1, 19, height + 2);
 		break;
 	}
-	track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+	track_paint_util_onride_photo_paint(direction, height + 2, mapElement);
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
