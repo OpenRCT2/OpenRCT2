@@ -1868,7 +1868,7 @@ void peep_pickup_abort(rct_peep* peep, int old_x)
 
 	if (peep->x != (sint16)SPRITE_LOCATION_NULL){
 		peep_decrement_num_riders(peep);
-		peep->state = 0;
+		peep->state = PEEP_STATE_FALLING;
 		peep_window_state_update(peep);
 		peep->action = 0xFF;
 		peep->special_sprite = 0;
@@ -1945,10 +1945,9 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, bool apply)
 
 bool peep_pickup_command(int peepnum, int x, int y, int action, bool apply)
 {
-	rct_peep* peep;
+	rct_peep* peep = GET_PEEP(peepnum);
 	switch (action) {
 		case 0: // pickup
-			peep = GET_PEEP(peepnum);
 			if (!peep) {
 				return false;
 			}
@@ -1960,19 +1959,22 @@ bool peep_pickup_command(int peepnum, int x, int y, int action, bool apply)
 				return false;
 			}
 			if (apply) {
-				peep_pickup(peep);
 				network_set_pickup_peep(game_command_playerid, peep);
 				network_set_pickup_peep_old_x(game_command_playerid, peep->x);
+				peep_pickup(peep);
 			}
 			break;
 		case 1: // cancel
 			if (apply) {
-				peep_pickup_abort(network_get_pickup_peep(game_command_playerid), network_get_pickup_peep_old_x(game_command_playerid));
+				peep_pickup_abort(network_get_pickup_peep(game_command_playerid), x);
 				network_set_pickup_peep(game_command_playerid, 0);
 			}
 			break;
 		case 2: // place
-			if (!peep_pickup_place(network_get_pickup_peep(game_command_playerid), x, y, apply)) {
+			if (network_get_pickup_peep(game_command_playerid) != peep) {
+				return false;
+			}
+			if (!peep_pickup_place(peep, x, y, apply)) {
 				return false;
 			}
 			break;

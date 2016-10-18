@@ -442,11 +442,6 @@ void game_command_callback_pickup_staff(int eax, int ebx, int ecx, int edx, int 
 		if (w) {
 			tool_set(w, WIDX_PICKUP, 7);
 		}
-		else
-		{
-			tool_cancel();
-			gPickupPeepImage = UINT32_MAX;
-		}
 		}break;
 	case 2:
 		if (ebx == 0) {
@@ -478,8 +473,15 @@ void window_staff_overview_mouseup(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_PICKUP:
+		{
+		// this is called in callback when hiring staff, setting nestlevel to 0 so that command is sent separately
+		int oldNestLevel = gGameCommandNestLevel;
+		gGameCommandNestLevel = 0;
 		game_command_callback = game_command_callback_pickup_staff;
+		w->picked_peep_old_x = peep->x;
 		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_STAFF, 0, 0);
+		gGameCommandNestLevel = oldNestLevel;
+		}
 		break;
 	case WIDX_FIRE:
 		window_staff_fire_prompt_open(peep);
@@ -1157,7 +1159,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 {
 	if (widgetIndex == WIDX_PICKUP) {
 		game_command_callback = game_command_callback_pickup_staff;
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_STAFF, x, y);
+		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_STAFF, x, y);
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		int dest_x, dest_y;
@@ -1176,7 +1178,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 void window_staff_overview_tool_abort(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PICKUP) {
-		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, w->picked_peep_old_x, GAME_COMMAND_PICKUP_STAFF, 0, 0);
+		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_STAFF, w->picked_peep_old_x, 0);
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		hide_gridlines();

@@ -601,11 +601,6 @@ void game_command_callback_pickup_guest(int eax, int ebx, int ecx, int edx, int 
 		if (w) {
 			tool_set(w, WIDX_PICKUP, 7);
 		}
-		else
-		{
-			tool_cancel();
-			gPickupPeepImage = UINT32_MAX;
-		}
 		}break;
 	case 2:
 		if (ebx == 0) {
@@ -640,6 +635,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
+		w->picked_peep_old_x = peep->x;
 		game_command_callback = game_command_callback_pickup_guest;
 		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_GUEST, 0, 0);
 		break;
@@ -1218,7 +1214,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		return;
 
 	game_command_callback = game_command_callback_pickup_guest;
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_GUEST, x, y);
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, 0, GAME_COMMAND_PICKUP_GUEST, x, y);
 }
 
 /**
@@ -1230,7 +1226,7 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 	if (widgetIndex != WIDX_PICKUP)
 		return;
 
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_GUEST, 0, 0);
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_GUEST, w->picked_peep_old_x, 0);
 }
 
 /**

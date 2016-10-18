@@ -269,7 +269,8 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-		if (gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+		// gConfigGeneral.auto_staff_placement is client specific so we need to force this
+		if (network_get_mode() == NETWORK_MODE_NONE && gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
 			staff_autoposition_new_staff_member(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
