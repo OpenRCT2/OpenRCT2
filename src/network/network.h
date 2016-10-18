@@ -143,7 +143,7 @@ public:
 	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
 	void Client_Send_GAMEINFO();
 	void Client_Send_OBJECTS(const std::vector<std::string> &objects);
-	void Server_Send_OBJECTS(NetworkConnection& connection, rct_object_entry * object_list, uint32 size);
+	void Server_Send_OBJECTS(NetworkConnection& connection, const rct_object_entry *object_list, uint32 size) const;
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;

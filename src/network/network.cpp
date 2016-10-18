@@ -883,7 +883,7 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
 	connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_OBJECTS(NetworkConnection& connection, rct_object_entry * object_list, uint32 size)
+void Network::Server_Send_OBJECTS(NetworkConnection& connection, const rct_object_entry * object_list, uint32 size) const
 {
 	log_verbose("Server sends objects list with %u items", size);
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -892,7 +892,7 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, rct_object_entr
 	{
 		log_verbose("Object %.8s (checksum %x)", object_list[i].name, object_list[i].checksum);
 		packet->Write((const uint8 *)object_list[i].name, 8);
-		*packet << object_list[i].checksum;
+		*packet << object_list[i].checksum << object_list[i].flags;
 	}
 	connection.QueuePacket(std::move(packet));
 }
@@ -1456,10 +1456,9 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		const char * player_name = (const char *) player->name.c_str();
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
-		Server_Send_MAP(&connection);
-		gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
-		Server_Send_GROUPLIST(connection);
-		Server_Send_PLAYERLIST();
+		rct_object_entry object_entries[OBJECT_ENTRY_COUNT];
+		int count = scenario_get_num_packed_objects_to_write(object_entries);
+		Server_Send_OBJECTS(connection, object_entries, count);
 	}
 }
 
@@ -1470,9 +1469,6 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	for (int i = 0; i < token_size; i++) {
 		connection.Challenge[i] = (uint8)(rand() & 0xff);
 	}
-	rct_object_entry object_entries[OBJECT_ENTRY_COUNT];
-	int count = scenario_get_num_packed_objects_to_write(object_entries);
-	Server_Send_OBJECTS(connection, object_entries, count);
 	Server_Send_TOKEN(connection);
 }
 
@@ -1486,14 +1482,20 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 	for (uint32 i = 0; i < size; i++)
 	{
 		const char * name = (const char *)packet.Read(8);
-		uint32 checksum;
-		packet >> checksum;
+		// Required, as packet has no null terminators.
 		std::string s(name, name + 8);
+		uint32 checksum, flags;
+		packet >> checksum >> flags;
 		const ObjectRepositoryItem * ori = repo->FindObject(s.c_str());
-		if (ori == nullptr || ori->ObjectEntry.checksum != checksum) {
+		// This could potentially request the object if checksums don't match, but since client
+		// won't replace its version with server-provided one, we don't do that.
+		if (ori == nullptr) {
 			log_verbose("Requesting object %s with checksum %x from server",
 						s.c_str(), checksum);
 			requested_objects.push_back(s);
+		} else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags) {
+			log_warning("Object %s has different checksum/flags (%x/%x) than server (%x/%x).",
+						s.c_str(), ori->ObjectEntry.checksum, ori->ObjectEntry.flags, checksum, flags);
 		}
 	}
 	Client_Send_OBJECTS(requested_objects);
@@ -1511,6 +1513,12 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 		log_verbose("Client requested object %s", s.c_str());
 		connection.RequestedObjects.push_back(s);
 	}
+
+	const char * player_name = (const char *) connection.Player->name.c_str();
+	Server_Send_MAP(&connection);
+	gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
+	Server_Send_GROUPLIST(connection);
+	Server_Send_PLAYERLIST();
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
