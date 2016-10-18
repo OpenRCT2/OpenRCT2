@@ -277,10 +277,11 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
     function_call callBuffer[256] = {0};
     int callCount = 0;
 
-    // TODO: test chainlift
-    // TODO: test inverted
     // TODO: test supports
-    // TODO: test entrance styles
+    // TODO: test flat rides
+    // TODO: test mazes
+    // TODO: test underground (Wooden RC)
+    // TODO: test station fences
 
     std::vector<ITestTrackFilter *> filters;
     filters.push_back(new CableLiftFilter());
