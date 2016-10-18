@@ -170,6 +170,7 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 
 void viewport_draw_money_effects();
 void viewport_paint_setup();
+void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 
 // TESTING
 #ifdef __TESTPAINT__

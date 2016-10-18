@@ -758,7 +758,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi)
 	painter_setup();
 	viewport_paint_setup();
 	sub_688217();
-	paint_quadrant_ps();
+	paint_quadrant_ps(dpi, &unk_EE7884->basic, gCurrentViewportFlags);
 
 	int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
 	if (
