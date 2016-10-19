@@ -69,7 +69,8 @@ static sint16 _unk9AC14E;
 static uint16 _unk9AC154;
 static sint16 _unk9ABDAE;
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi);
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags);
+static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -671,14 +672,6 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 #endif
 }
 
-/** rct2: 0x0098195C */
-const sint32 WeatherColours[] = {
-	-1,
-	0x2000000 | 49,
-	0x2000000 | 50,
-	0x2000000 | 47,
-};
-
 /**
  *
  *  rct2: 0x00685CBF
@@ -691,8 +684,7 @@ const sint32 WeatherColours[] = {
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
-	gCurrentViewportFlags = viewport->flags;
-
+	uint32 viewFlags = viewport->flags;
 	uint16 width = right - left;
 	uint16 height = bottom - top;
 	uint16 bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
@@ -740,45 +732,53 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
 		}
 		dpi2.width = paintRight - dpi2.x;
 
-		viewport_paint_column(&dpi2);
+		viewport_paint_column(&dpi2, viewFlags);
 	}
 }
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi)
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 {
-	if (gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
-		uint8 colour = 0x0A;
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES){
+	gCurrentViewportFlags = viewFlags;
+	unk_140E9A8 = dpi;
+
+	if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+		uint8 colour = 10;
+		if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
 			colour = 0;
 		}
 		gfx_clear(dpi, colour);
 	}
 	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-	unk_140E9A8 = dpi;
 	painter_setup();
 	viewport_paint_setup();
 	sub_688217();
-	paint_quadrant_ps(dpi, &unk_EE7884->basic, gCurrentViewportFlags);
+	paint_quadrant_ps(dpi, &unk_EE7884->basic, viewFlags);
 
-	int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-	if (
-		(weather_colour != -1)
-		&& (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
-		&& (!gTrackDesignSaveMode)
-		&& (gConfigGeneral.render_weather_gloom)
+	if (gConfigGeneral.render_weather_gloom &&
+		!gTrackDesignSaveMode &&
+		!(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
 	) {
+		viewport_paint_weather_gloom(dpi);
+	}
+
+	if (gPaintPSStringHead != NULL) {
+		paint_ps_money_effects(dpi, gPaintPSStringHead);
+	}
+}
+
+static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
+{
+	uint8 gloom = gClimateCurrentWeatherGloom;
+	if (gloom != 0) {
+		uint32 colour = ClimateWeatherGloomColours[gloom];
 		gfx_fill_rect(
 			dpi,
 			dpi->x,
 			dpi->y,
 			dpi->width + dpi->x - 1,
 			dpi->height + dpi->y - 1,
-			weather_colour
+			colour
 		);
-	}
-
-	if (gPaintPSStringHead != NULL) {
-		paint_ps_money_effects(dpi, gPaintPSStringHead);
 	}
 }
 

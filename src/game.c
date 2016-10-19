@@ -187,12 +187,14 @@ void update_palette_effects()
 
 		// animate the water/lava/chain movement palette
 		int q = 0;
-		extern const sint32 WeatherColours[4];
-		int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-		if (weather_colour != -1 && gConfigGeneral.render_weather_gloom) {
-			q = 1;
-			if (weather_colour != 0x2000031) {
-				q = 2;
+		if (gConfigGeneral.render_weather_gloom) {
+			uint8 gloom = gClimateCurrentWeatherGloom;
+			if (gloom != 0) {
+				uint32 weatherColour = ClimateWeatherGloomColours[gloom];
+				q = 1;
+				if (weatherColour != 0x2000031) {
+					q = 2;
+				}
 			}
 		}
 		uint32 j = gPaletteEffectFrame;
