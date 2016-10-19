@@ -88,6 +88,8 @@ extern "C"
 {
 #endif
 
+extern bool                     object_repository_force_scan_flag;
+
 size_t                          object_repository_get_items_count();
 const ObjectRepositoryItem *    object_repository_get_items();
 const ObjectRepositoryItem *    object_repository_find_object_by_entry(const rct_object_entry * entry);

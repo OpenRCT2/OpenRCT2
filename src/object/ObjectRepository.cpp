@@ -300,6 +300,16 @@ private:
     bool Load()
     {
         const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
+        
+        // Override if force-flag is set.
+        if (object_repository_force_scan_flag)
+        {
+            Console::WriteLine("Forcing object repository scan.");
+            // This should only be called once, so set back to false.
+            object_repository_force_scan_flag = false;
+            return false;
+        }
+
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -649,6 +659,8 @@ static int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
 
 extern "C"
 {
+    bool object_repository_force_scan_flag = false;
+
     rct_object_entry * object_list_find(rct_object_entry * entry)
     {
         IObjectRepository * objRepo = GetObjectRepository();
