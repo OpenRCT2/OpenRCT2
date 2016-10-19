@@ -153,8 +153,6 @@ extern paint_string_struct * gPaintPSStringHead;
 extern const uint32 construction_markers[];
 extern bool gPaintBoundingBoxes;
 
-void paint_init(rct_drawpixelinfo * dpi);
-
 paint_struct * sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation);
 paint_struct * sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 paint_struct * sub_98198C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
@@ -170,9 +168,11 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
 void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
-void viewport_paint_setup();
-void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
-void paint_ps_money_effects(rct_drawpixelinfo * dpi, paint_string_struct * ps);
+void paint_init(rct_drawpixelinfo * dpi);
+void paint_generate_structs();
+void paint_arrange_structs();
+void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
+void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 
 // TESTING
 #ifdef __TESTPAINT__

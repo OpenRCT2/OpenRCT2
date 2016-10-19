@@ -748,9 +748,9 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 		gfx_clear(dpi, colour);
 	}
 	paint_init(dpi);
-	viewport_paint_setup();
-	sub_688217();
-	paint_quadrant_ps(dpi, &unk_EE7884->basic, viewFlags);
+	paint_generate_structs();
+	paint_arrange_structs();
+	paint_draw_structs(dpi, &unk_EE7884->basic, viewFlags);
 
 	if (gConfigGeneral.render_weather_gloom &&
 		!gTrackDesignSaveMode &&
@@ -760,7 +760,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 	}
 
 	if (gPaintPSStringHead != NULL) {
-		paint_ps_money_effects(dpi, gPaintPSStringHead);
+		paint_draw_money_structs(dpi, gPaintPSStringHead);
 	}
 }
 
@@ -1395,8 +1395,8 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
 			paint_init(dpi);
-			viewport_paint_setup();
-			sub_688217();
+			paint_generate_structs();
+			paint_arrange_structs();
 			sub_68862C();
 		}
 		if (viewport != NULL) *viewport = myviewport;

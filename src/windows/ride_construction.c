@@ -2412,8 +2412,8 @@ static void sub_6CBCE2(
 	gMapSize = preserveMapSize;
 	gMapSizeMaxXY = preserveMapSizeMaxXY;
 
-	sub_688217();
-	paint_quadrant_ps(unk_140E9A8, &unk_EE7884->basic, gCurrentViewportFlags);
+	paint_arrange_structs();
+	paint_draw_structs(unk_140E9A8, &unk_EE7884->basic, gCurrentViewportFlags);
 
 	gCurrentViewportFlags = preserve_current_viewport_flags;
 }

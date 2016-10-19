@@ -650,7 +650,7 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
  *
  *  rct2: 0x0068B6C2
  */
-void viewport_paint_setup()
+void paint_generate_structs()
 {
 	rct_drawpixelinfo* dpi = unk_140E9A8;
 
@@ -757,7 +757,7 @@ void viewport_paint_setup()
 	}
 }
 
-static void sub_688217_helper(uint16 ax, uint8 flag)
+static void paint_arrange_structs_helper(uint16 ax, uint8 flag)
 {
 	paint_struct *ps, *ps_temp;
 	paint_struct *ps_next = &unk_EE7884->basic;
@@ -867,7 +867,7 @@ static void sub_688217_helper(uint16 ax, uint8 flag)
  *
  *  rct2: 0x00688217
  */
-void sub_688217()
+void paint_arrange_structs()
 {
 	unk_EE7884 = gNextFreePaintStruct++;
 	paint_struct * ps = &unk_EE7884->basic;
@@ -885,10 +885,10 @@ void sub_688217()
 			}
 		} while (++edi <= _F1AD10);
 
-		sub_688217_helper(_F1AD0C & 0xFFFF, 1 << 1);
+		paint_arrange_structs_helper(_F1AD0C & 0xFFFF, 1 << 1);
 		uint32 eax = _F1AD0C;
 		while (++eax < _F1AD10) {
-			sub_688217_helper(eax & 0xFFFF, 0);
+			paint_arrange_structs_helper(eax & 0xFFFF, 0);
 		}
 	}
 }
@@ -897,7 +897,7 @@ void sub_688217()
  *
  *  rct2: 0x00688485
  */
-void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
+void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
 {
 	paint_struct* previous_ps = ps->next_quadrant_ps;
 	for (ps = ps->next_quadrant_ps; ps;) {
@@ -1069,7 +1069,7 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006860C3
  */
-void paint_ps_money_effects(rct_drawpixelinfo * dpi, paint_string_struct * ps)
+void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 {
 	rct_drawpixelinfo dpi2 = *dpi;
 	draw_pixel_info_crop_by_zoom(&dpi2);
