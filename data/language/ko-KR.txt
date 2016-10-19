@@ -3678,8 +3678,8 @@ STR_5337    :공원 입구
 STR_5338    :요소 종류
 STR_5339    :기본 고도
 STR_5340    :최상단 높이
-STR_5341    :플래그
-STR_5342    :지도 칸 선택
+STR_5341    :<사용 안 함>
+STR_5342    :<사용 안 함>
 STR_5343    :직원 자동 배치
 STR_5344    :변경기록
 STR_5345    :재정 치트
@@ -4230,6 +4230,67 @@ STR_5920    :날씨 효과 표현
 STR_5921    :{SMALLFONT}{BLACK}이 설정을 켜면, 폭풍우가 치는 동안 비와 흐린 색상을 표현합니다.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}최대 {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}열차당 최대 {COMMA16} {STRINGID}
+STR_5924    :지면 상세정보
+STR_5925    :보도 상세정보
+STR_5926    :트랙 상세정보
+STR_5927    :풍경 상세정보
+STR_5928    :입구 상세정보
+STR_5929    :울타리 상세정보
+STR_5930    :대형 풍경 상세정보
+STR_5931    :팻말 상세정보
+STR_5932    :손상된 요소 상세정보
+STR_5933    :속성
+STR_5934    :{WINDOW_COLOUR_2}지형 표면: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}지형 절벽: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}땅 소유 정보: {BLACK}{STRINGID}
+STR_5937    :소유주 없음, 판매 중이지 않음
+STR_5938    :{WINDOW_COLOUR_2}수면 고도: {BLACK}{COMMA16}
+STR_5939    :공원 울타리 제거
+STR_5940    :공원 울타리 복구
+STR_5941    :{WINDOW_COLOUR_2}기본 높이:
+STR_5942    :{WINDOW_COLOUR_2}공원 이름: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}추가: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}추가: {BLACK}없음
+STR_5945    :{WINDOW_COLOUR_2}연결된 모서리:
+STR_5946    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}놀이기구 이름: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}체인 리프트
+STR_5950    :{WINDOW_COLOUR_2}전체 트랙 조각에 변경사항 적용
+STR_5951    :{WINDOW_COLOUR_2}트랙 조각 ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}시퀀스 번호: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}현재 칸 위의 맵 요소를 기본 높이 순으로 정렬합니다.
+STR_5954    :{WINDOW_COLOUR_2}풍경 나이: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}1/4칸 위치: {BLACK}{STRINGID}
+STR_5956    :남서
+STR_5957    :북서
+STR_5958    :북동
+STR_5959    :남동
+STR_5960    :{WINDOW_COLOUR_2}1/4칸 위치:
+STR_5961    :{WINDOW_COLOUR_2}엔트리 인덱스: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}겹침 탐지:
+STR_5963    :{WINDOW_COLOUR_2}올라간 코너:
+STR_5964    :{WINDOW_COLOUR_2}대각선
+STR_5965    :{WINDOW_COLOUR_2}입구 종류: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}공원 입구 조각: {BLACK}{STRINGID}
+STR_5967    :중간
+STR_5968    :왼쪽
+STR_5969    :오른쪽
+STR_5970    :{WINDOW_COLOUR_2}입구 ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}출구 ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
+STR_5973    :다음 요소로
+STR_5974    :{SMALLFONT}{BLACK}기본 높이와 객체 높이를 변경하여 현재 칸 위에 있는 다음 요소와 같은 높이로 만듭니다. 이 작업은 이 칸에서의 건설 행위를 더욱 쉽게 만들어줍니다.
+STR_5975    :경사:
+STR_5976    :평평함
+STR_5977    :우측이 올라감
+STR_5978    :좌측이 올라감
+STR_5979    :{WINDOW_COLOUR_2}울타리 종류: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}팻말 문구: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}팻말이 아님
+STR_5982    :{WINDOW_COLOUR_2}대형 풍경 종류: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}대형 풍경 조각 ID: {BLACK}{COMMA16}
+STR_5984    :막힌 보도:
 
 #############
 # Scenarios #
