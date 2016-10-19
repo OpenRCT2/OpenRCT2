@@ -866,34 +866,28 @@ static void sub_688217_helper(uint16 ax, uint8 flag)
  */
 void sub_688217()
 {
-
-	paint_struct *ps_next;
 	unk_EE7884 = gNextFreePaintStruct++;
-	paint_struct *ps = &unk_EE7884->basic;
+	paint_struct * ps = &unk_EE7884->basic;
 	ps->next_quadrant_ps = NULL;
 	uint32 edi = _F1AD0C;
-	if (edi == -1)
-		return;
+	if (edi != UINT32_MAX) {
+		do {
+			paint_struct * ps_next = _paint_struct_quadrants[edi];
+			if (ps_next != NULL) {
+				ps->next_quadrant_ps = ps_next;
+				do {
+					ps = ps_next;
+					ps_next = ps_next->next_quadrant_ps;
+				} while (ps_next != NULL);
+			}
+		} while (++edi <= _F1AD10);
 
-	do {
-		ps_next = _paint_struct_quadrants[edi];
-		if (ps_next != NULL) {
-			ps->next_quadrant_ps = ps_next;
-			do {
-				ps = ps_next;
-				ps_next = ps_next->next_quadrant_ps;
-			} while (ps_next != NULL);
+		sub_688217_helper(_F1AD0C & 0xFFFF, 1 << 1);
+		uint32 eax = _F1AD0C;
+		while (++eax < _F1AD10) {
+			sub_688217_helper(eax & 0xFFFF, 0);
 		}
-	} while (++edi <= _F1AD10);
-
-	uint32 eax = _F1AD0C;
-
-	sub_688217_helper(eax & 0xFFFF, 1 << 1);
-
-	eax = _F1AD0C;
-
-	while (++eax < _F1AD10)
-		sub_688217_helper(eax & 0xFFFF, 0);
+	}
 }
 
 /**
