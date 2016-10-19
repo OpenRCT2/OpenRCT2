@@ -83,6 +83,8 @@ enum {
 	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
 };
 
+class ObjectRepositoryItem;
+
 class Network
 {
 public:
@@ -143,7 +145,7 @@ public:
 	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
 	void Client_Send_GAMEINFO();
 	void Client_Send_OBJECTS(const std::vector<std::string> &objects);
-	void Server_Send_OBJECTS(NetworkConnection& connection, const rct_object_entry *object_list, uint32 size) const;
+	void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem *> &objects) const;
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
@@ -241,7 +243,7 @@ private:
 	void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
-	unsigned char * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<std::string> &objects) const;
+	unsigned char * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
 
 namespace Convert

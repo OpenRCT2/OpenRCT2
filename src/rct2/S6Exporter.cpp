@@ -48,7 +48,6 @@ extern "C"
 
 S6Exporter::S6Exporter()
 {
-    ExportObjects = false;
     RemoveTracklessRides = false;
     memset(&_s6, 0, sizeof(_s6));
 }
@@ -92,7 +91,7 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-    _s6.header.num_packed_objects = ExportObjects ? scenario_get_num_packed_objects_to_write(nullptr) : uint16(ExportObjectsList.size());
+    _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
 
@@ -123,10 +122,11 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         SDL_RWwrite(rw, buffer, encodedLength, 1);
     }
 
+    log_warning("exporting %u objects", _s6.header.num_packed_objects);
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        if (!scenario_write_packed_objects(rw, ExportObjectsList, ExportObjects))
+        if (!scenario_write_packed_objects(rw, ExportObjectsList))
         {
             free(buffer);
             throw Exception("Unable to pack objects.");
@@ -228,11 +228,6 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 }
 
 void S6Exporter::Export()
-{
-    Export(std::vector<std::string>(), true);
-}
-
-void S6Exporter::Export(const std::vector<std::string> &objects, bool export_all)
 {
     _s6.info = gS6Info;
 
@@ -337,7 +332,7 @@ void S6Exporter::Export(const std::vector<std::string> &objects, bool export_all
     _s6.current_expenditure = gCurrentExpenditure;
     _s6.current_profit = gCurrentProfit;
     _s6.weekly_profit_average_dividend = gWeeklyProfitAverageDividend;
-	_s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
+    _s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
     // pad_0135833A
 
     memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
@@ -460,7 +455,7 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
 
 
 // Save game state without modifying any of the state for multiplayer
-int scenario_save_network(SDL_RWops * rw, const std::vector<std::string> &objects)
+int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
 {
     viewport_set_saved_view();
 
@@ -468,7 +463,6 @@ int scenario_save_network(SDL_RWops * rw, const std::vector<std::string> &object
     auto s6exporter = new S6Exporter();
     try
     {
-        s6exporter->ExportObjects = false;
         s6exporter->ExportObjectsList = objects;
         s6exporter->Export();
         s6exporter->SaveGame(rw);
@@ -513,35 +507,56 @@ int scenario_save_network(SDL_RWops * rw, const std::vector<std::string> &object
     return 1;
 }
 
-int scenario_write_packed_objects(SDL_RWops* rw, std::vector<std::string> &objects, bool export_all)
+static bool object_is_custom(const ObjectRepositoryItem * object)
+{
+    Guard::ArgumentNotNull(object);
+
+    // Validate the object is not one from base game or expansion pack
+    return (object->LoadedObject != nullptr &&
+            object->LoadedObject->GetLegacyData() != nullptr
+            && !(object->ObjectEntry.flags & 0xF0));
+}
+
+int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects)
 {
     log_verbose("exporting packed objects");
-    if (export_all)
+    for (const auto &object : objects)
     {
-        log_verbose("exporting all");
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-            const rct_object_entry *entry = get_loaded_object_entry(i);
-            void *entryData = get_loaded_object_chunk(i);
-            if (entryData != (void*)-1 && !(entry->flags & 0xF0)) {
-                if (!object_saved_packed(rw, entry)) {
-                    return 0;
-                }
+        Guard::ArgumentNotNull(object);
+        log_verbose("exporting object %.8s", object->ObjectEntry.name);
+        if (object_is_custom(object))
+        {
+            if (!object_saved_packed(rw, &object->ObjectEntry))
+            {
+                return 0;
             }
         }
-    } else {
-        IObjectRepository * repo = GetObjectRepository();
-        for (const auto &name : objects)
+        else
         {
-            log_verbose("exporting object %s", name.c_str());
-            const ObjectRepositoryItem *item = repo->FindObject(name.c_str());
-            if (intptr_t(item->LoadedObject->GetLegacyData()) != -1 && !(item->ObjectEntry.flags & 0xF0)) {
-                if (!object_saved_packed(rw, &item->ObjectEntry)) {
-                    return 0;
-                }
-            }
+            log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
         }
     }
     return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006AA244
+ */
+std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects()
+{
+    std::vector<const ObjectRepositoryItem *> objects;
+    IObjectRepository * repo = GetObjectRepository();
+    for (size_t i = 0; i < repo->GetNumObjects(); i++)
+    {
+        const ObjectRepositoryItem *item = &repo->GetObjects()[i];
+        // Validate the object is not one from base game or expansion pack
+        if (object_is_custom(item))
+        {
+            objects.push_back(item);
+        }
+    }
+    return objects;
 }
 
 extern "C"
@@ -582,7 +597,9 @@ extern "C"
         auto s6exporter = new S6Exporter();
         try
         {
-            s6exporter->ExportObjects = (flags & S6_SAVE_FLAG_EXPORT);
+            if (flags & S6_SAVE_FLAG_EXPORT) {
+                s6exporter->ExportObjectsList = scenario_get_packable_objects();
+            }
             s6exporter->RemoveTracklessRides = true;
             s6exporter->Export();
             if (flags & S6_SAVE_FLAG_SCENARIO)

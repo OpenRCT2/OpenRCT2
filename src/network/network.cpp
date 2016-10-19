@@ -883,16 +883,16 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
 	connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_OBJECTS(NetworkConnection& connection, const rct_object_entry * object_list, uint32 size) const
+void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem *> &objects) const
 {
-	log_verbose("Server sends objects list with %u items", size);
+	log_verbose("Server sends objects list with %u items", objects.size());
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_OBJECTS << size;
-	for (uint32 i = 0; i < size; i++)
+	*packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
+	for (size_t i = 0; i < objects.size(); i++)
 	{
-		log_verbose("Object %.8s (checksum %x)", object_list[i].name, object_list[i].checksum);
-		packet->Write((const uint8 *)object_list[i].name, 8);
-		*packet << object_list[i].checksum << object_list[i].flags;
+		log_verbose("Object %.8s (checksum %x)", objects[i]->ObjectEntry.name, objects[i]->ObjectEntry.checksum);
+		packet->Write((const uint8 *)objects[i]->ObjectEntry.name, 8);
+		*packet << objects[i]->ObjectEntry.checksum << objects[i]->ObjectEntry.flags;
 	}
 	connection.QueuePacket(std::move(packet));
 }
@@ -947,7 +947,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	free(header);
 }
 
-unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<std::string> &objects) const
+unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
 {
 	unsigned char * header = nullptr;
 	out_size = 0;
@@ -1456,9 +1456,8 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		const char * player_name = (const char *) player->name.c_str();
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
-		rct_object_entry object_entries[OBJECT_ENTRY_COUNT];
-		int count = scenario_get_num_packed_objects_to_write(object_entries);
-		Server_Send_OBJECTS(connection, object_entries, count);
+		std::vector<const ObjectRepositoryItem *> objects = scenario_get_packable_objects();
+		Server_Send_OBJECTS(connection, objects);
 	}
 }
 
@@ -1506,12 +1505,19 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 	uint32 size;
 	packet >> size;
 	log_verbose("Client requested %u objects", size);
+	IObjectRepository * repo = GetObjectRepository();
 	for (uint32 i = 0; i < size; i++)
 	{
 		const char * name = (const char *)packet.Read(8);
+		// This is required, as packet does not have null terminator
 		std::string s(name, name + 8);
 		log_verbose("Client requested object %s", s.c_str());
-		connection.RequestedObjects.push_back(s);
+		const ObjectRepositoryItem * item = repo->FindObject(s.c_str());
+		if (item == nullptr) {
+			log_warning("Client tried getting non-existent object %s from us.", s.c_str());
+		} else {
+			connection.RequestedObjects.push_back(item);
+		}
 	}
 
 	const char * player_name = (const char *) connection.Player->name.c_str();
