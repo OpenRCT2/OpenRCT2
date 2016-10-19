@@ -153,7 +153,7 @@ extern paint_string_struct * gPaintPSStringHead;
 extern const uint32 construction_markers[];
 extern bool gPaintBoundingBoxes;
 
-void painter_setup();
+void paint_init(rct_drawpixelinfo * dpi);
 
 paint_struct * sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation);
 paint_struct * sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);

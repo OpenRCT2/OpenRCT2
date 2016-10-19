@@ -2310,8 +2310,7 @@ static void sub_6CBCE2(
 	gCurrentViewportFlags = 0;
 	trackDirection &= 3;
 
-	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-	painter_setup();
+	paint_init(unk_140E9A8);
 
 	ride = get_ride(rideIndex);
 

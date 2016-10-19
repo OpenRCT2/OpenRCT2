@@ -739,7 +739,6 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
 static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 {
 	gCurrentViewportFlags = viewFlags;
-	unk_140E9A8 = dpi;
 
 	if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint8 colour = 10;
@@ -748,8 +747,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 		}
 		gfx_clear(dpi, colour);
 	}
-	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-	painter_setup();
+	paint_init(dpi);
 	viewport_paint_setup();
 	sub_688217();
 	paint_quadrant_ps(dpi, &unk_EE7884->basic, viewFlags);
@@ -1396,9 +1394,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->zoom_level = _viewportDpi1.zoom_level;
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
-			gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-			unk_140E9A8 = dpi;
-			painter_setup();
+			paint_init(dpi);
 			viewport_paint_setup();
 			sub_688217();
 			sub_68862C();

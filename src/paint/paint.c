@@ -80,7 +80,10 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
  *
  *  rct2: 0x0068615B
  */
-void painter_setup() {
+void paint_init(rct_drawpixelinfo * dpi)
+{
+	unk_140E9A8 = dpi;
+	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
 	gNextFreePaintStruct = gPaintStructs;
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
