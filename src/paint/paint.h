@@ -147,6 +147,8 @@ extern support_height gSupportSegments[9];
 extern support_height gSupport;
 #endif
 
+extern paint_string_struct * gPaintPSStringHead;
+
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
 extern bool gPaintBoundingBoxes;
@@ -168,9 +170,9 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
 void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
-void viewport_draw_money_effects();
 void viewport_paint_setup();
 void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
+void paint_ps_money_effects(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 
 // TESTING
 #ifdef __TESTPAINT__

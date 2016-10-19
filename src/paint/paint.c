@@ -29,8 +29,9 @@ const uint32 construction_markers[] = {
 
 paint_struct * g_ps_F1AD28;
 attached_paint_struct * g_aps_F1AD2C;
-paint_string_struct *pss1;
-paint_string_struct *pss2;
+
+paint_string_struct * gPaintPSStringHead;
+static paint_string_struct * _paintLastPSString;
 
 #ifdef NO_RCT2
 paint_entry gPaintStructs[4000];
@@ -88,8 +89,8 @@ void painter_setup() {
 	}
 	_F1AD0C = -1;
 	_F1AD10 = 0;
-	pss1 = NULL;
-	pss2 = NULL;
+	gPaintPSStringHead = NULL;
+	_paintLastPSString = NULL;
 }
 
 /**
@@ -634,15 +635,12 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
 
 	gNextFreePaintStruct++;
 
-	paint_string_struct * oldPs = pss2;
-
-	pss2 = ps;
-
-	if (oldPs == 0) { // 0 or NULL?
-		pss1 = ps;
+	if (_paintLastPSString == NULL) {
+		gPaintPSStringHead = ps;
 	} else {
-		oldPs->next = ps;
+		_paintLastPSString->next = ps;
 	}
+	_paintLastPSString = ps;
 }
 
 /**
@@ -1074,21 +1072,17 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006860C3
  */
-void viewport_draw_money_effects(rct_drawpixelinfo * dpi)
+void paint_ps_money_effects(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 {
-	utf8 buffer[256];
-
-	paint_string_struct *ps = pss1;
-	if (ps == NULL)
-		return;
-
 	rct_drawpixelinfo dpi2 = *dpi;
 	draw_pixel_info_crop_by_zoom(&dpi2);
 
 	do {
+		utf8 buffer[256];
 		format_string(buffer, 256, ps->string_id, &ps->args);
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
+		// Use sprite font unless the currency contains characters unsupported by the sprite font
 		bool forceSpriteFont = false;
 		const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 		if (gUseTrueTypeFont && font_supports_string_sprite(currencyDesc->symbol_unicode)) {

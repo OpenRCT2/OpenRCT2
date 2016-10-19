@@ -777,7 +777,9 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi)
 		);
 	}
 
-	viewport_draw_money_effects();
+	if (gPaintPSStringHead != NULL) {
+		paint_ps_money_effects(dpi, gPaintPSStringHead);
+	}
 }
 
 /**
