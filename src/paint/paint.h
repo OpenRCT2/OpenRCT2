@@ -169,8 +169,8 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
 void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
 void paint_init(rct_drawpixelinfo * dpi);
-void paint_generate_structs();
-void paint_arrange_structs();
+void paint_generate_structs(rct_drawpixelinfo * dpi);
+paint_struct paint_arrange_structs();
 void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 

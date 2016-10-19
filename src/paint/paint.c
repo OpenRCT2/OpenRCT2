@@ -650,10 +650,8 @@ void sub_685EBC(money32 amount, rct_string_id string_id, sint16 y, sint16 z, sin
  *
  *  rct2: 0x0068B6C2
  */
-void paint_generate_structs()
+void paint_generate_structs(rct_drawpixelinfo * dpi)
 {
-	rct_drawpixelinfo* dpi = unk_140E9A8;
-
 	rct_xy16 mapTile = {
 		.x = dpi->x & 0xFFE0,
 		.y = (dpi->y - 16) & 0xFFE0
@@ -757,11 +755,10 @@ void paint_generate_structs()
 	}
 }
 
-static void paint_arrange_structs_helper(uint16 ax, uint8 flag)
+static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint8 flag)
 {
-	paint_struct *ps, *ps_temp;
-	paint_struct *ps_next = &unk_EE7884->basic;
-
+	paint_struct * ps;
+	paint_struct * ps_temp;
 	do {
 		ps = ps_next;
 		ps_next = ps_next->next_quadrant_ps;
@@ -769,7 +766,6 @@ static void paint_arrange_structs_helper(uint16 ax, uint8 flag)
 	} while (ax > ps_next->var_18);
 
 	ps_temp = ps;
-
 	do {
 		ps = ps->next_quadrant_ps;
 		if (ps == NULL) break;
@@ -784,7 +780,6 @@ static void paint_arrange_structs_helper(uint16 ax, uint8 flag)
 			ps->var_1B = flag | (1 << 0);
 		}
 	} while (ps->var_18 <= ax + 1);
-
 	ps = ps_temp;
 
 	uint8 rotation = get_current_rotation();
@@ -867,10 +862,10 @@ static void paint_arrange_structs_helper(uint16 ax, uint8 flag)
  *
  *  rct2: 0x00688217
  */
-void paint_arrange_structs()
+paint_struct paint_arrange_structs()
 {
-	unk_EE7884 = gNextFreePaintStruct++;
-	paint_struct * ps = &unk_EE7884->basic;
+	paint_struct psHead = { 0 };
+	paint_struct * ps = &psHead;
 	ps->next_quadrant_ps = NULL;
 	uint32 edi = _F1AD0C;
 	if (edi != UINT32_MAX) {
@@ -885,12 +880,13 @@ void paint_arrange_structs()
 			}
 		} while (++edi <= _F1AD10);
 
-		paint_arrange_structs_helper(_F1AD0C & 0xFFFF, 1 << 1);
+		paint_arrange_structs_helper(&psHead, _F1AD0C & 0xFFFF, 1 << 1);
 		uint32 eax = _F1AD0C;
 		while (++eax < _F1AD10) {
-			paint_arrange_structs_helper(eax & 0xFFFF, 0);
+			paint_arrange_structs_helper(&psHead, eax & 0xFFFF, 0);
 		}
 	}
+	return psHead;
 }
 
 /**

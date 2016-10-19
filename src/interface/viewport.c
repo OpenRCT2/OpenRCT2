@@ -52,7 +52,6 @@ uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-paint_entry *unk_EE7884;
 paint_entry *gNextFreePaintStruct;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
@@ -748,9 +747,9 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 		gfx_clear(dpi, colour);
 	}
 	paint_init(dpi);
-	paint_generate_structs();
-	paint_arrange_structs();
-	paint_draw_structs(dpi, &unk_EE7884->basic, viewFlags);
+	paint_generate_structs(dpi);
+	paint_struct ps = paint_arrange_structs();
+	paint_draw_structs(dpi, &ps, viewFlags);
 
 	if (gConfigGeneral.render_weather_gloom &&
 		!gTrackDesignSaveMode &&
@@ -1323,15 +1322,11 @@ static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
  *
  *  rct2: 0x0068862C
  */
-static void sub_68862C()
+static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
 {
-	rct_drawpixelinfo *dpi = unk_140E9A8;
-	paint_struct *ps = &unk_EE7884->basic, *old_ps, *next_ps;
-
 	while ((ps = ps->next_quadrant_ps) != NULL) {
-		old_ps = ps;
-
-		next_ps = ps;
+		paint_struct * old_ps = ps;
+		paint_struct * next_ps = ps;
 		while (next_ps != NULL) {
 			ps = next_ps;
 			if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
@@ -1395,9 +1390,9 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
 			paint_init(dpi);
-			paint_generate_structs();
-			paint_arrange_structs();
-			sub_68862C();
+			paint_generate_structs(dpi);
+			paint_struct ps = paint_arrange_structs();
+			sub_68862C(dpi, &ps);
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}
