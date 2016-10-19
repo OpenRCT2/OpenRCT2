@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Console.hpp"
 #include "Guard.hpp"
 
 /**
@@ -145,19 +146,22 @@ namespace Memory
 		// Posix requires alignment to be at least as big as sizeof(void *).
 		// Return error on both for simplicity.
 		if (alignment % 2 || alignment < sizeof(void *)) {
-			return NULL;
+			return nullptr;
 		}
 
 		void *ptr;
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__MINGW32__)
+		ptr = __mingw_aligned_malloc(size, alignment);
+		if (!ptr) {
+#elif defined(__GNUC__) || defined(__clang__)
 		int ret = posix_memalign(&ptr, alignment, size);
 		if (!ret) {
 #else
 		ptr = _aligned_malloc(size, alignment);
 		if (!ptr) {
 #endif
-			log_error("Failed to allocate aligned memory.");
-			assert(false);
+			Console::Error::WriteLine("Failed to allocate aligned memory.");
+			Guard::Assert(false);
 		}
 
 		return (T *)ptr;
@@ -172,7 +176,9 @@ namespace Memory
 	template<typename T>
 	void FreeAligned(T * ptr)
 	{
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__MINGW32__)
+		__mingw_aligned_free((void *)ptr);
+#elif defined(__GNUC__) || defined(__clang__)
 		free((void *)ptr);
 #else
 		_aligned_free((void *)ptr);
@@ -186,8 +192,8 @@ namespace Memory
 #if defined(__GNUC__) || defined(__clang__)
 		new_ptr = realloc(ptr, size);
 		if (!new_ptr) {
-			log_error("Failed to allocate aligned memory.");
-			assert(false);
+			Console::Error::WriteLine("Failed to allocate aligned memory.");
+			Guard::Assert(false);
 		}
 
 		if (alignment % 2 || alignment < sizeof(void *))
@@ -199,6 +205,8 @@ namespace Memory
 			memcpy(new_ptr, ptr, size);
 			FreeAligned<T>(ptr);
 		}
+#elif defined(__MINGW32__)
+		new_ptr = __mingw_aligned_realloc(ptr, size, alignment);
 #else
 		new_ptr = _aligned_realloc(ptr, size, alignment);
 #endif
