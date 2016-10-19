@@ -99,6 +99,7 @@ class ObjectRepository : public IObjectRepository
     QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId = 0;
+    int                                 _numConflicts;
 
 public:
     ObjectRepository(IPlatformEnvironment * env)
@@ -247,6 +248,7 @@ private:
         Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
 
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
+        _numConflicts = 0;
 
         auto stopwatch = Stopwatch();
         stopwatch.Start();
@@ -258,6 +260,10 @@ private:
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        if (_numConflicts > 0)
+        {
+            Console::WriteLine("%d object conflicts found.", _numConflicts);
+        }
     }
 
     void ScanDirectory(const std::string &directory)
@@ -390,6 +396,7 @@ private:
         }
         else
         {
+            _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
             Console::Error::WriteLine("               : '%s'", item->Path);
             return false;
