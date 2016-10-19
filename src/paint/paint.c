@@ -70,6 +70,7 @@ static const uint8 BoundBoxDebugColours[] = {
 
 bool gPaintBoundingBoxes;
 
+static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static void paint_ps_image(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 imageId, sint16 x, sint16 y);
 static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 viewFlags);
@@ -899,53 +900,9 @@ void sub_688217()
 
 /**
  *
- *  rct2: 0x00688596
- *  Part of 0x688485
+ *  rct2: 0x00688485
  */
-static void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct_drawpixelinfo* dpi) {
-	for (; attached_ps; attached_ps = attached_ps->next) {
-		sint16 x = attached_ps->x + ps->x;
-		sint16 y = attached_ps->y + ps->y;
-
-		int image_id = attached_ps->image_id;
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
-			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_RIDE) {
-				if (image_id & 0x40000000) {
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
-			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SCENERY) {
-				if (image_id & 0x40000000) {
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-		
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS) {
-			if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
-				if (!(image_id & 0x40000000)) {
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-
-		if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->colour_image_id);
-		}
-		else {
-			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
-		}
-	}
-}
-
-/* rct2: 0x00688485 */
-void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 flags)
+void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
 {
 	paint_struct* previous_ps = ps->next_quadrant_ps;
 	for (ps = ps->next_quadrant_ps; ps;) {
@@ -953,16 +910,16 @@ void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 flags)
 		sint16 y = ps->y;
 		if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE) {
 			if (dpi->zoom_level >= 1) {
-				x &= 0xFFFE;
-				y &= 0xFFFE;
+				x = floor2(x, 2);
+				y = floor2(y, 2);
 				if (dpi->zoom_level >= 2) {
-					x &= 0xFFFC;
-					y &= 0xFFFC;
+					x = floor2(x, 4);
+					y = floor2(y, 4);
 				}
 			}
 		}
 
-		uint32 imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, flags);
+		uint32 imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
 		if (gPaintBoundingBoxes && dpi->zoom_level == 0) {
 			paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
 		} else {
@@ -971,12 +928,32 @@ void paint_quadrant_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 flags)
 
 		if (ps->var_20 != 0) {
 			ps = ps->var_20;
-			continue;
+		} else {
+			paint_attached_ps(dpi, ps, viewFlags);
+			ps = previous_ps->next_quadrant_ps;
+			previous_ps = ps;
 		}
+	}
+}
 
-		paint_attached_ps(ps, ps->attached_ps, dpi);
-		ps = previous_ps->next_quadrant_ps;
-		previous_ps = ps;
+/**
+ *
+ *  rct2: 0x00688596
+ *  Part of 0x688485
+ */
+static void paint_attached_ps(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags)
+{
+	attached_paint_struct * attached_ps = ps->attached_ps;
+	for (; attached_ps; attached_ps = attached_ps->next) {
+		sint16 x = attached_ps->x + ps->x;
+		sint16 y = attached_ps->y + ps->y;
+
+		uint32 imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
+		if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
+			gfx_draw_sprite_raw_masked(dpi, x, y, imageId, attached_ps->colour_image_id);
+		} else {
+			gfx_draw_sprite(dpi, imageId, x, y, ps->tertiary_colour);
+		}
 	}
 }
 
