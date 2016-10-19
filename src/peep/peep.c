@@ -10150,17 +10150,17 @@ static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, 
 
     maxIntensity = (peep->intensity >> 4) * 100;
     minIntensity = (peep->intensity & 0xF) * 100;
-    if (maxIntensity <= ride->intensity && minIntensity >= ride->intensity) {
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
     }
-    maxIntensity -= peep->happiness * 2;
-    minIntensity += peep->happiness;
-    if (maxIntensity <= ride->intensity && minIntensity >= ride->intensity) {
+    minIntensity -= peep->happiness * 2;
+    maxIntensity += peep->happiness;
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
     }
-    maxIntensity -= peep->happiness * 2;
-    minIntensity += peep->happiness;
-    if (maxIntensity <= ride->intensity && minIntensity >= ride->intensity) {
+    minIntensity -= peep->happiness * 2;
+    maxIntensity += peep->happiness;
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
     }
 
@@ -10168,17 +10168,17 @@ static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, 
 	// has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
     minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
     maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
-    if (maxNausea <= ride->nausea && minNausea >= ride->nausea) {
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
     }
-    maxNausea -= peep->happiness * 2;
-    minNausea += peep->happiness;
-    if (maxNausea <= ride->nausea && minNausea >= ride->nausea) {
+    minNausea -= peep->happiness * 2;
+    maxNausea += peep->happiness;
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
     }
-    maxNausea -= peep->happiness * 2;
-    minNausea += peep->happiness;
-    if (maxNausea <= ride->nausea && minNausea >= ride->nausea) {
+    minNausea -= peep->happiness * 2;
+    maxNausea += peep->happiness;
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
     }
 
