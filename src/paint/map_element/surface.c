@@ -609,6 +609,8 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		}
 	}
 
+	regs.ah = regs.cl;
+
 	while (true) {
 		if (curHeight >= regs.al || curHeight >= regs.cl) {
 			// If top of edge isn't straight, add a filler
@@ -878,6 +880,8 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			curHeight++;
 		}
 	}
+
+	regs.ah = regs.cl;
 
 	while (true) {
 		if (curHeight >= regs.al || curHeight >= regs.cl) {
