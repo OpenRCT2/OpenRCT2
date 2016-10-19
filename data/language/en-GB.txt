@@ -4293,6 +4293,9 @@ STR_5981    :{WINDOW_COLOUR_2}Not a banner
 STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
 STR_5984    :Blocked paths:
+STR_5985    :New folder
+STR_5986    :Type the name of the new folder.
+STR_5987    :Unable to create folder
 
 #############
 # Scenarios #
