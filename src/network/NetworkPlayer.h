@@ -21,7 +21,9 @@
 
 extern "C"
 {
+    #include "../peep/peep.h"
     #include "../world/map.h"
+    #include "../world/sprite.h"
 }
 
 class NetworkPacket;
@@ -39,6 +41,8 @@ public:
     int         last_action         = -999;
     uint32      last_action_time    = 0;
     rct_xyz16   last_action_coord   = { 0 };
+    rct_peep*   pickup_peep         = 0;
+    int         pickup_peep_old_x   = SPRITE_LOCATION_NULL;
     std::string keyhash;
 
     NetworkPlayer() = default;

@@ -83,6 +83,8 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_place_banner,
 	game_command_callback_place_ride_entrance_or_exit,
 	game_command_callback_hire_new_staff_member,
+	game_command_callback_pickup_guest,
+	game_command_callback_pickup_staff,
 };
 int game_command_playerid = -1;
 
@@ -309,7 +311,6 @@ void game_update()
 	// Always perform autosave check, even when paused
 	scenario_autosave_check();
 
-	network_update();
 	window_dispatch_update_all();
 
 	gGameCommandNestLevel = 0;
@@ -1098,7 +1099,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[68] = {
+GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1166,4 +1167,7 @@ GAME_COMMAND_POINTER* new_game_command_table[68] = {
 	game_command_modify_groups,
 	game_command_kick_player,
 	game_command_cheat,
+	game_command_pickup_guest,
+	game_command_pickup_staff,
+	game_command_balloon_press,
 };

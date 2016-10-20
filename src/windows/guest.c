@@ -592,6 +592,25 @@ void window_guest_overview_resize(rct_window *w){
 	window_guest_viewport_init(w);
 }
 
+void game_command_callback_pickup_guest(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	switch(ecx){
+	case 0:{
+		int peepnum = eax;
+		rct_window* w = window_find_by_number(WC_PEEP, peepnum);
+		if (w) {
+			tool_set(w, WIDX_PICKUP, 7);
+		}
+		}break;
+	case 2:
+		if (ebx == 0) {
+			tool_cancel();
+			gPickupPeepImage = UINT32_MAX;
+		}
+		break;
+	}
+}
+
 /**
  *
  *  rct2: 0x00696A06
@@ -613,32 +632,12 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_guest_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PICKUP:
-		{ // remove this block when peep pick up is finally converted to a game command
-			int player = network_get_player_index(network_get_current_player_id());
-			if (player != -1) {
-				if (!network_can_perform_action(network_get_group_index(network_get_player_group(player)), 11/*Guest action*/)) {
-					window_error_open(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
-					return;
-				}
-			}
-		} //
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
-		if (tool_set(w, widgetIndex, 7)) {
-			return;
-		}
-
 		w->picked_peep_old_x = peep->x;
-
-		remove_peep_from_ride(peep);
-		invalidate_sprite_2((rct_sprite*)peep);
-
-		sprite_move(0x8000, peep->y, peep->z, (rct_sprite*)peep);
-		peep_decrement_num_riders(peep);
-		peep->state = PEEP_STATE_PICKED;
-		peep->sub_state = 0;
-		peep_window_state_update(peep);
+		game_command_callback = game_command_callback_pickup_guest;
+		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_GUEST, 0, 0);
 		break;
 	case WIDX_RENAME:
 		window_text_input_open(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peep->name_string_idx, peep->id, 32);
@@ -1215,52 +1214,14 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		return;
 
 	int dest_x, dest_y;
-	rct_map_element *mapElement;
+	rct_map_element* mapElement;
 	footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
-	if (dest_x == (sint16)0x8000)return;
-
-	// Set the coordinate of destination to be exactly
-	// in the middle of a tile.
-	dest_x += 16;
-	dest_y += 16;
-	// Set the tile coordinate to top left of tile
-	int tile_y = dest_y & 0xFFE0;
-	int tile_x = dest_x & 0xFFE0;
-
-	int dest_z = mapElement->base_height * 8 + 16;
-
-	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
-		window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
+	if (x == (sint16)0x8000)
 		return;
-	}
-	
-	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
-		if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST) {
-			if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY) {
-				window_error_open(STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
-				return;
-			}
-		}
-	}
 
-	rct_peep* peep = GET_PEEP(w->number);
-	sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
-	invalidate_sprite_2((rct_sprite*)peep);
-	peep_decrement_num_riders(peep);
-	peep->state = 0;
-	peep_window_state_update(peep);
-	peep->action = 0xFF;
-	peep->special_sprite = 0;
-	peep->action_sprite_image_offset = 0;
-	peep->action_sprite_type = 0xFF;
-	peep->var_C4 = 0;
-
-	peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
-
-	sub_693B58(peep);
-	tool_cancel();
-	gPickupPeepImage = UINT32_MAX;
+	game_command_callback = game_command_callback_pickup_guest;
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, mapElement->base_height, GAME_COMMAND_PICKUP_GUEST, dest_x, dest_y);
 }
 
 /**
@@ -1272,25 +1233,7 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 	if (widgetIndex != WIDX_PICKUP)
 		return;
 
-	rct_peep* peep = GET_PEEP(w->number);
-	if (peep->state != PEEP_STATE_PICKED)
-		return;
-
-	sprite_move(w->picked_peep_old_x, peep->y, peep->z + 8, (rct_sprite*)peep);
-	invalidate_sprite_2((rct_sprite*)peep);
-
-	if (peep->x != (sint16)0x8000){
-		peep_decrement_num_riders(peep);
-		peep->state = 0;
-		peep_window_state_update(peep);
-		peep->action = 0xFF;
-		peep->special_sprite = 0;
-		peep->action_sprite_image_offset = 0;
-		peep->action_sprite_type = 0;
-		peep->var_C4 = 0;
-	}
-
-	gPickupPeepImage = UINT32_MAX;
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_GUEST, w->picked_peep_old_x, 0);
 }
 
 /**

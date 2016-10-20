@@ -81,15 +81,12 @@ void balloon_update(rct_balloon *balloon)
  *
  *  rct2: 0x006E88ED
  */
-void balloon_press(rct_balloon *balloon)
+static void balloon_press(rct_balloon *balloon)
 {
-	if (network_get_mode() != NETWORK_MODE_NONE) {
-		return;
-	}
 	if (balloon->popped == 1)
 		return;
 
-	uint32 random = util_rand();
+	uint32 random = scenario_rand();
 	if ((balloon->sprite_index & 7) || (random & 0xFFFF) < 0x2000) {
 		balloon_pop(balloon);
 		return;
@@ -101,4 +98,21 @@ void balloon_press(rct_balloon *balloon)
 		balloon->z,
 		(rct_sprite*)balloon
 	);
+}
+
+void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int balloon_num = *eax;
+	int flags = *ebx;
+	*ebx = 0;
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		return;
+	}
+	rct_sprite* sprite = get_sprite(balloon_num);
+	if (!sprite) {
+		return;
+	}
+	if (sprite->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && sprite->balloon.misc_identifier == SPRITE_MISC_BALLOON) {
+		balloon_press(&sprite->balloon);
+	}
 }

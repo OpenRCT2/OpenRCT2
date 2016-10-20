@@ -90,6 +90,10 @@ enum GAME_COMMAND {
 	GAME_COMMAND_MODIFY_GROUPS,
 	GAME_COMMAND_KICK_PLAYER,
 	GAME_COMMAND_CHEAT,
+	GAME_COMMAND_PICKUP_GUEST,
+	GAME_COMMAND_PICKUP_STAFF,
+	GAME_COMMAND_BALLOON_PRESS,
+	GAME_COMMAND_COUNT
 };
 
 enum {
@@ -129,7 +133,7 @@ extern rct_string_id gGameCommandErrorText;
 extern uint8 gErrorType;
 extern rct_string_id gErrorStringId;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[68];
+extern GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT];
 
 #ifndef NO_RCT2
 #define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)

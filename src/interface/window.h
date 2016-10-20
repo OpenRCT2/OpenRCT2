@@ -734,6 +734,9 @@ void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
 
+void game_command_callback_pickup_guest(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+void game_command_callback_pickup_staff(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, int widgetIndex);
 void window_event_resize_call(rct_window* w);

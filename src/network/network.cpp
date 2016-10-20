@@ -33,6 +33,9 @@ extern "C" {
 extern "C" {
 }
 
+rct_peep* _pickup_peep = 0;
+int _pickup_peep_old_x = SPRITE_LOCATION_NULL;
+
 #ifndef DISABLE_NETWORK
 
 #include <cmath>
@@ -1222,6 +1225,11 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		}
 
 		chat_history_add(text);
+		rct_peep* pickup_peep = network_get_pickup_peep(connection_player->id);
+		if(pickup_peep) {
+			game_command_playerid = connection_player->id;
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->id), 0);
+		}
 		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->GetLastDisconnectReason());
 	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
@@ -2280,6 +2288,26 @@ int network_can_perform_command(unsigned int groupindex, unsigned int index)
 	return gNetwork.group_list[groupindex]->CanPerformCommand(index);
 }
 
+void network_set_pickup_peep(uint8 playerid, rct_peep* peep)
+{
+	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep = peep : gNetwork.GetPlayerByID(playerid)->pickup_peep = peep;
+}
+
+rct_peep* network_get_pickup_peep(uint8 playerid)
+{
+	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep : gNetwork.GetPlayerByID(playerid)->pickup_peep;
+}
+
+void network_set_pickup_peep_old_x(uint8 playerid, int x)
+{
+	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x = x : gNetwork.GetPlayerByID(playerid)->pickup_peep_old_x = x;
+}
+
+int network_get_pickup_peep_old_x(uint8 playerid)
+{
+	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x : gNetwork.GetPlayerByID(playerid)->pickup_peep_old_x;
+}
+
 int network_get_current_player_group_index()
 {
 	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
@@ -2417,6 +2445,10 @@ int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
 int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
 int network_can_perform_command(unsigned int groupindex, unsigned int index) { return 0; }
+void network_set_pickup_peep(uint8 playerid, rct_peep* peep) { _pickup_peep = peep; }
+rct_peep* network_get_pickup_peep(uint8 playerid) { return _pickup_peep; }
+void network_set_pickup_peep_old_x(uint8 playerid, int x) { _pickup_peep_old_x = x; }
+int network_get_pickup_peep_old_x(uint8 playerid) { return _pickup_peep_old_x; }
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}

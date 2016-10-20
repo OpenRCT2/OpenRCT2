@@ -135,7 +135,7 @@ int viewport_interaction_left_click(int x, int y)
 			if (game_is_not_paused()) {
 				switch (info.sprite->unknown.misc_identifier) {
 				case SPRITE_MISC_BALLOON:
-					balloon_press(&info.sprite->balloon);
+					game_do_command(info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_BALLOON_PRESS, 0, 0);
 					break;
 				case SPRITE_MISC_DUCK:
 					duck_press(&info.sprite->duck);

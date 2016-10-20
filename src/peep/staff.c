@@ -22,6 +22,7 @@
 #include "../localisation/string_ids.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
 #include "../world/footpath.h"
@@ -268,7 +269,8 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-		if (gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+		// gConfigGeneral.auto_staff_placement is client specific so we need to force this
+		if (network_get_mode() == NETWORK_MODE_NONE && gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
 			staff_autoposition_new_staff_member(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
@@ -469,6 +471,10 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 		if (peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
 		{
 			log_warning("Invalid game command, peep->sprite_identifier = %u, peep->type = %u", peep->sprite_identifier, peep->type);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (peep->state == PEEP_STATE_PICKED) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -1343,6 +1349,22 @@ void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)ebp,
 		(uint8*)edi
 	);
+}
+
+void game_command_pickup_staff(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int peepnum = *eax;
+	int x = *edi;
+	int y = *ebp;
+	int z = *edx;
+	int action = *ecx;
+	if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+	}
+	else
+	{
+		*ebx = MONEY32_UNDEFINED;
+	}
 }
 
 colour_t staff_get_colour(uint8 staffType)

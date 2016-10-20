@@ -158,7 +158,9 @@ const std::vector<NetworkAction> NetworkActions::Actions =
     }, {
         STR_ACTION_GUEST, "PERMISSION_GUEST",
         {
-            GAME_COMMAND_SET_GUEST_NAME
+            GAME_COMMAND_SET_GUEST_NAME,
+            GAME_COMMAND_PICKUP_GUEST,
+            GAME_COMMAND_BALLOON_PRESS
         }
     }, {
         STR_ACTION_STAFF, "PERMISSION_STAFF",
@@ -168,7 +170,8 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_FIRE_STAFF_MEMBER,
             GAME_COMMAND_SET_STAFF_ORDER,
             GAME_COMMAND_SET_STAFF_COLOUR,
-            GAME_COMMAND_SET_STAFF_NAME
+            GAME_COMMAND_SET_STAFF_NAME,
+            GAME_COMMAND_PICKUP_STAFF
         }
     }, {
         STR_ACTION_PARK_PROPERTIES, "PERMISSION_PARK_PROPERTIES",
