@@ -8693,3 +8693,86 @@ money16 ride_get_price(rct_ride * ride)
 	}
 	return ride->price;
 }
+
+/**
+ * Return the map_element of an adjacent station at x,y,z(+-2).
+ * Returns NULL if no suitable map_element is found.
+ */
+rct_map_element *get_station_platform(int x, int y, int z, int z_tolerance) {
+	bool foundMapElement = false;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement != NULL) {
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+			/* Check if mapElement is a station platform. */
+			if (!track_element_is_station(mapElement)) continue;
+
+			if (z - z_tolerance > mapElement->base_height ||
+				z + z_tolerance < mapElement->base_height
+			) {
+				/* The base height if mapElement is not within
+				 * the z tolerance. */
+				continue;
+			}
+
+			foundMapElement = true;
+			break;
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+	if (!foundMapElement) {
+		return NULL;
+	}
+
+	return mapElement;
+}
+
+/**
+ * Check for an adjacent station to x,y,z in direction.
+ */
+static bool check_for_adjacent_station(int x, int y, int z, uint8 direction) {
+	bool found = false;
+	int adjX = x + TileDirectionDelta[direction].x;
+	int adjY = y + TileDirectionDelta[direction].y;
+	rct_map_element *stationElement = get_station_platform(adjX, adjY, z, 2);
+	if (stationElement != NULL) {
+		int rideIndex = stationElement->properties.track.ride_index;
+		rct_ride *ride = get_ride(rideIndex);
+		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
+			found = true;
+		}
+	}
+	return found;
+}
+
+/**
+ * Return whether ride has at least one adjacent station to it.
+ */
+bool ride_has_adjacent_station(rct_ride *ride)
+{
+	bool found = false;
+
+	/* Loop through all of the ride stations, checking for an
+	 * adjacent station on either side. */
+	for (int stationNum = 0; stationNum <= 3; stationNum++) {
+		if (ride->station_starts[stationNum] != 0xFFFF) {
+			/* Get the map element for the station start. */
+			uint16 stationX = (ride->station_starts[stationNum] & 0xFF) * 32;
+			uint16 stationY = (ride->station_starts[stationNum] >> 8) * 32;
+			uint8 stationZ = ride->station_heights[stationNum];
+
+			rct_map_element *stationElement = get_station_platform(stationX, stationY, stationZ, 0);
+			if (stationElement == NULL) {
+				continue;
+			}
+			/* Check the first side of the station */
+			int direction = (stationElement->type + 1) & 3;
+			found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
+			if (found) break;
+			/* Check the other side of the station */
+			direction ^= 2;
+			found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
+			if (found) break;
+		}
+	}
+	return found;
+}

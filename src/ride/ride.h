@@ -1149,4 +1149,7 @@ void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx
 void ride_delete(uint8 rideIndex);
 money16 ride_get_price(rct_ride * ride);
 
+rct_map_element *get_station_platform(int x, int y, int z, int z_tolerance);
+bool ride_has_adjacent_station(rct_ride *ride);
+
 #endif
