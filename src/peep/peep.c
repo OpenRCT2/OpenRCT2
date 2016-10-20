@@ -746,6 +746,8 @@ static void peep_leave_park(rct_peep* peep){
 }
 
 /**
+ * Main purpose is to decide when peeps leave the park due to
+ * low happiness, low energy and (if appropriate) low money.
  *
  *  rct2: 0x0068F8CD
  */
@@ -763,6 +765,9 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
+	/* Peeps that are happy enough, have enough energy and
+	 * (if appropriate) have enough money will always stay
+	 * in the park. */
 	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			if (peep->energy >= 70 && peep->happiness >= 60) {
@@ -779,10 +784,12 @@ static void sub_68F8CD(rct_peep *peep)
 		}
 	}
 
+	// Approx 95% chance of staying in the park
 	if ((scenario_rand() & 0xFFFF) > 3276) {
 		return;
 	}
 
+	// In the remaining 5% chance the peep leaves the park.
 	peep_leave_park(peep);
 }
 
@@ -956,6 +963,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 
 	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
+		/* Effect of masking with 0x1FF here vs mask 0x7F,
+		 * which is the condition for calling this function, is
+		 * to reduce how often the content in this conditional
+		 * is executed to once every four calls. */
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
 			uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
@@ -1059,6 +1070,11 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
+			/* Effect of masking with 0x3FF here vs mask 0x1FF,
+			 * which is used in the encompassing conditional, is
+			 * to reduce how often the content in this conditional
+			 * is executed to once every second time the encompassing
+			 * conditional executes. */
 
 			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
@@ -1089,11 +1105,17 @@ static void sub_68F41A(rct_peep *peep, int index)
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
 					}
 
-					// Not sure why the happiness check is like that seems wrong to me
 					if (!(gParkFlags & PARK_FLAGS_NO_MONEY) &&
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
-						peep->happiness >= 70){
+						peep->energy >= 70){
+						/* The energy check was originally a second check on happiness.
+						 * This was superfluous so should probably check something else.
+						 * Guessed that this should really be checking energy, since
+						 * the addresses for happiness and energy are quite close,
+						 * 70 is also the threshold for tired thoughts (see above) and
+						 * it makes sense that a tired peep might not think about getting
+						 * more money. */
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_RUNNING_OUT;
 					}
 				}
@@ -1121,6 +1143,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 		else{
+			/* This branch of the conditional is executed on the
+			 * remaining times the encompassing conditional is
+			 * executed (which is also every second time, but
+			 * the alternate time to the true branch). */
 			if (peep->nausea >= 140){
 				uint8 thought_type = PEEP_THOUGHT_TYPE_SICK;
 				if (peep->nausea >= 200){
@@ -1160,6 +1186,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		case PEEP_STATE_QUEUING:
 			if (peep->time_in_queue >= 2000){
+				/* Peep happiness is affected once the peep has been waiting
+				 * too long in a queue. */
 				rct_map_element* mapElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 				uint8 found = 0;
 				do {
@@ -1180,6 +1208,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 				} while (!map_element_is_last_for_tile(mapElement++));
 
 				if (found){
+					/* Queue line TV monitors make the peeps waiting in the queue
+					 * slowly happier, up to a certain level. */
+					/* Why don't queue line TV monitors start affecting the peeps
+					 * as soon as they join the queue?? */
 					if (peep->happiness_growth_rate < 90)
 						peep->happiness_growth_rate = 90;
 
@@ -1187,6 +1219,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 						peep->happiness_growth_rate += 2;
 				}
 				else{
+					/* Without a queue line TV monitor peeps waiting too long
+					 * in a queue get less happy. */
 					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 4, 0);
 				}
 			}
@@ -1202,6 +1236,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 	loc_68F9F3:
+		// Idle peep happiness tends towards 127 (50%).
 		if (peep->happiness_growth_rate >= 128)
 			peep->happiness_growth_rate--;
 		else
@@ -1239,6 +1274,9 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 	}
+
+	// Remaining content is executed every call.
+
 	// 68FA89
 	if (peep->var_42 == 0 &&
 		peep_has_food(peep)){
@@ -1307,6 +1345,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 	if (energy < 32)
 		energy = 32;
 
+	/* This suggests 100% energy is 128. */
 	if (energy > 128)
 		energy = 128;
 
@@ -5625,7 +5664,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		}
 
 		// Original bug: This would clear any rubbish placed by the previous function
-		//rubbish_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
+		//space_left_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
 		empty_containers = peep_empty_container_extra_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
@@ -6981,23 +7020,39 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
-
+	/* Scenario editor limits initial guest happiness to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->happiness = gGuestInitialHappiness;
+	/* Assume a default initial happiness of 0 is wrong and set
+	 * to 128 (50%) instead. */
 	if (gGuestInitialHappiness == 0)
-		happiness += 0x80;
-
-	peep->happiness = happiness;
-	peep->happiness_growth_rate = happiness;
+		peep->happiness = 128;
+	/* Initial value will vary by -15..16 */
+	sint8 happiness_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->happiness = clamp(0, peep->happiness + happiness_delta, 255);
+	peep->happiness_growth_rate = peep->happiness;
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
+	/* Scenario editor limits initial guest hunger to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->hunger = gGuestInitialHunger;
+	/* Initial value will vary by -15..16 */
+	sint8 hunger_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->hunger = clamp(0, peep->hunger + hunger_delta, 255);
 
-	peep->hunger = hunger;
-
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
-
-	peep->thirst = thirst;
+	/* Scenario editor limits initial guest thirst to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->thirst = gGuestInitialThirst;
+	/* Initial value will vary by -15..16 */
+	sint8 thirst_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->thirst = clamp(0, peep->thirst + thirst_delta, 0xFF);
 
 	peep->bathroom = 0;
 	peep->var_42 = 0;
@@ -7054,6 +7109,8 @@ rct_peep *peep_generate(int x, int y, int z)
 	uint8 trousers_colour = scenario_rand() % countof(trouser_colours);
 	peep->trousers_colour = trouser_colours[trousers_colour];
 
+	/* It looks like 65 is about 50% energy level, so this initialises
+	 * a peep with approx 50%-100% energy. */
 	uint8 energy = (scenario_rand() & 0x3F) + 65;
 	peep->energy = energy;
 	peep->energy_growth_rate = energy;
@@ -10063,7 +10120,7 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	// Calculate how satisfying the ride is for the peep. Can range from -140 to +140.
+	// Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
 	sint16 satisfaction = peep_calculate_ride_satisfaction(peep, ride);
 
 	// Update the satisfaction stat of the ride.
