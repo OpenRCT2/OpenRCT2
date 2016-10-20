@@ -39,8 +39,7 @@
 
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
-    <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
-    <OutputExe Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_x64.exe</OutputExe>
+    <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
