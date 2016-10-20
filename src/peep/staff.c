@@ -1093,21 +1093,6 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 			return staff_mechanic_direction_path_rand(peep, pathDirections);
 		}
 
-		/* Adjust the peep goal according to the direction of the
-		 * exit/entrance. */
-		uint8 entranceDirection = map_element_get_direction(mapElement);
-		chosenTile.x -= TileDirectionDelta[entranceDirection].x;
-		chosenTile.y -= TileDirectionDelta[entranceDirection].y;
-		gPeepPathFindGoalPosition.x = chosenTile.x;
-		gPeepPathFindGoalPosition.y = chosenTile.y;
-
-		// Peep is about to walk into the target exit/entrance.
-		if (chosenTile.x == peep->next_x &&
-			chosenTile.y == peep->next_y &&
-			z == peep->next_z) {
-			return entranceDirection;
-		}
-
 		gPeepPathFindIgnoreForeignQueues = false;
 		gPeepPathFindQueueRideIndex = 255;
 
