@@ -7027,7 +7027,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	/* Assume a default initial happiness of 0 is wrong and set
 	 * to 128 (50%) instead. */
 	if (gGuestInitialHappiness == 0)
-		peep->happiness = 0x80;
+		peep->happiness = 128;
 	/* Initial value will vary by -15..16 */
 	sint8 happiness_delta = (scenario_rand() & 0x1F) - 15;
 	/* Adjust by the delta, clamping at min=0 and max=255. */
