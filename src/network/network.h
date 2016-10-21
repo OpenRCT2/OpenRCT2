@@ -83,7 +83,7 @@ enum {
 	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
 };
 
-class ObjectRepositoryItem;
+struct ObjectRepositoryItem;
 
 class Network
 {

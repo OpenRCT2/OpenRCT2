@@ -27,7 +27,7 @@ extern "C"
     #include "../object_list.h"
 }
 
-class ObjectRepositoryItem;
+struct ObjectRepositoryItem;
 
 int scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
 int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects);
