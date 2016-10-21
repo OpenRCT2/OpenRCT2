@@ -594,8 +594,8 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
             CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
         }
 
-        uint8 rightIndex = (4 - direction) % 4;
-        uint8 leftIndex = (rightIndex + 1) % 4;
+        uint8 rightIndex = (direction + 1) % 4;
+        uint8 leftIndex = direction;
 
         for (int i = 0; i < 4; ++i) {
             tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
@@ -625,8 +625,8 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
             CallNew(rideType, trackType, direction, trackSequence, height + offset, &mapElement);
         }
 
-        uint8 rightIndex = (4 - direction) % 4;
-        uint8 leftIndex = (rightIndex + 1) % 4;
+        uint8 rightIndex = (direction + 1) % 4;
+        uint8 leftIndex = direction;
 
         for (int i = 0; i < 4; ++i) {
             newTileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
