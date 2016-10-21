@@ -1933,10 +1933,10 @@ static void mine_train_rc_track_left_half_banked_helix_up_small(uint8 rideIndex,
 		}
 		switch (direction) {
 		case 2:
-			paint_util_push_tunnel_right(height, TUNNEL_6);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_6);
 			break;
 		case 3:
-			paint_util_push_tunnel_left(height, TUNNEL_6);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_6);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
@@ -2031,7 +2031,7 @@ static void mine_train_rc_track_left_half_banked_helix_up_small(uint8 rideIndex,
 			break;
 		}
 		if (direction == 0 || direction == 3) {
-			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+			paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_6);
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2128,10 +2128,10 @@ static void mine_train_rc_track_right_half_banked_helix_up_small(uint8 rideIndex
 		}
 		switch (direction) {
 		case 0:
-			paint_util_push_tunnel_right(height, TUNNEL_6);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_6);
 			break;
 		case 1:
-			paint_util_push_tunnel_left(height, TUNNEL_6);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_6);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
@@ -2226,7 +2226,7 @@ static void mine_train_rc_track_right_half_banked_helix_up_small(uint8 rideIndex
 			break;
 		}
 		if (direction == 0 || direction == 3) {
-			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+			paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_6);
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2387,10 +2387,10 @@ static void mine_train_rc_track_left_half_banked_helix_up_large(uint8 rideIndex,
 		}
 		switch (direction) {
 		case 2:
-			paint_util_push_tunnel_right(height, TUNNEL_6);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_6);
 			break;
 		case 3:
-			paint_util_push_tunnel_left(height, TUNNEL_6);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_6);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
@@ -2527,7 +2527,7 @@ static void mine_train_rc_track_left_half_banked_helix_up_large(uint8 rideIndex,
 			break;
 		}
 		if (direction == 0 || direction == 3) {
-			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+			paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_6);
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2664,10 +2664,10 @@ static void mine_train_rc_track_right_half_banked_helix_up_large(uint8 rideIndex
 		}
 		switch (direction) {
 		case 0:
-			paint_util_push_tunnel_right(height, TUNNEL_6);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_6);
 			break;
 		case 1:
-			paint_util_push_tunnel_left(height, TUNNEL_6);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_6);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
@@ -2802,7 +2802,7 @@ static void mine_train_rc_track_right_half_banked_helix_up_large(uint8 rideIndex
 			break;
 		}
 		if (direction == 0 || direction == 3) {
-			paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+			paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_6);
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
