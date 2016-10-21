@@ -2,6 +2,13 @@
 
 set -e
 
+if [[ $TRAVIS != "true" ]]
+then
+	echo This script is only meant to be run on Travis-CI.
+	echo Please use CMake to build the project.
+	exit 1
+fi
+
 cachedir=.cache
 mkdir -p $cachedir
 
