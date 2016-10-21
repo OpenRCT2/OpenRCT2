@@ -647,6 +647,7 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 
 
     if (!SideTunnelCall::TunnelCallsLineUp(tileTunnelCalls)) {
+        // TODO: Check that new pattern uses the same tunnel group (round, big round, etc.)
         *error += String::Format(
             "Original tunnel calls don\'t line up. Skipping tunnel validation [trackSequence:%d].\n",
             trackSequence
