@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <map>
 #include <string>
 #include "../common.h"
 
@@ -45,7 +44,7 @@ public:
     rct_peep*   pickup_peep         = 0;
     int         pickup_peep_old_x   = SPRITE_LOCATION_NULL;
     std::string keyhash;
-    std::map<int, uintptr_t> user_prefs;
+    bool        uses_disable_clearance;
 
     NetworkPlayer() = default;
 

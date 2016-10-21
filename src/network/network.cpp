@@ -2274,10 +2274,10 @@ void game_command_adjust_client_prefs(int *eax, int *ebx, int *ecx, int *edx, in
 			switch (pref) {
 			case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
 				if (gServerCheatsDisableClearanceChecks) {
-					player->user_prefs[pref] = pref_value != 0;
+					player->uses_disable_clearance = pref_value != 0;
 					// only set saved state, it will be restored to proper value when we're done.
 					if (playerid == network_get_current_player_id()) {
-						network_save_cheatsDisableClearanceChecks = player->user_prefs[pref] != 0;
+						network_save_cheatsDisableClearanceChecks = player->uses_disable_clearance != 0;
 					}
 				} else {
 					*ebx = MONEY32_UNDEFINED;
@@ -2468,15 +2468,11 @@ void network_apply_client_prefs(int game_command_playerid) {
 		log_warning("invalid player %d", game_command_playerid);
 		return;
 	}
-	for (const auto &it : player->user_prefs) {
-		switch (it.first) {
-			case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
-				// Even if a server does not allow using disable clearance and so this cannot be *set*,
-				// a client can still have this setting on, so we need to check anyway.
-				if (gServerCheatsDisableClearanceChecks) {
-					gCheatsDisableClearanceChecks = it.second != 0;
-				}
-				break;
+	if (player->uses_disable_clearance) {
+		// Even if a server does not allow using disable clearance and so this cannot be *set*,
+		// a client can still have this setting on, so we need to check anyway.
+		if (gServerCheatsDisableClearanceChecks) {
+			gCheatsDisableClearanceChecks = !player->uses_disable_clearance;
 		}
 	}
 }
@@ -2496,10 +2492,12 @@ uintptr_t network_get_user_pref(int user, int pref) {
 	if (player == nullptr) {
 		return 0;
 	}
-	const auto it = player->user_prefs.find(pref);
-	if (it != player->user_prefs.cend()) {
-		return it->second;
+	switch (pref) {
+	case CLIENT_PREFS::CLIENT_PREF_DISABLE_CLEARENCE:
+		return player->uses_disable_clearance;
+		break;
 	}
+	log_warning("Unkown player preference %d", pref);
 	return 0;
 }
 
