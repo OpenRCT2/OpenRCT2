@@ -687,7 +687,7 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
  * @param imageColourFlags (ebp)
  *  rct2: 0x00663105
  */
-bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
+bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
 		return false;
@@ -876,7 +876,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
  *
  * @return (Carry Flag)
  */
-bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
+bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
 #ifndef NO_RCT2
 	if (gUseOriginalRidePaint) {

@@ -18,7 +18,12 @@
 #include <string>
 #include <vector>
 
-#include "intercept.h"
+#include "FunctionCall.hpp"
+#include "PaintIntercept.hpp"
+#include "SegmentSupportHeightCall.hpp"
+#include "SideTunnelCall.hpp"
+#include "String.hpp"
+#include "Utils.hpp"
 
 extern "C"
 {
@@ -172,7 +177,7 @@ private:
 
     void GenerateTrackFunctionBody(int tabs, int trackType)
     {
-        int numSequences = getTrackSequenceCount(_rideType, trackType);
+        int numSequences = Utils::getTrackSequenceCount(_rideType, trackType);
         if (numSequences > 1)
         {
             WriteLine(tabs, "switch (trackSequence) {");
@@ -397,9 +402,9 @@ private:
         bool blockSegmentsBeforeSupports = false;
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
-        Intercept2::TunnelCall tileTunnelCalls[4][4];
+        TunnelCall tileTunnelCalls[4][4];
         sint16 verticalTunnelHeights[4];
-        std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4];
+        std::vector<SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
             rct_map_element mapElement = { 0 };
@@ -417,9 +422,9 @@ private:
             RCT2_GLOBAL(0x009DE56E, sint16) = 64;
 
             function_call callBuffer[256] = { 0 };
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-            int numCalls = intercept_get_calls(callBuffer);
+            int numCalls = PaintIntercept::GetCalls(callBuffer);
             calls[direction].insert(calls[direction].begin(), callBuffer, callBuffer + numCalls);
 
             for (auto &&call : calls[direction]) {
@@ -429,7 +434,7 @@ private:
                 }
             }
 
-            segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
+            segmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
             if (gSupport.slope != 0xFF && gSupport.height != 0)
             {
@@ -438,9 +443,9 @@ private:
 
             // Get chain lift calls
             mapElement.type |= 0x80;
-            intercept_clear_calls();
+            PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-            numCalls = intercept_get_calls(callBuffer);
+            numCalls = PaintIntercept::GetCalls(callBuffer);
             chainLiftCalls[direction].insert(chainLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
 
             // Get cable lift calls (giga coaster only)
@@ -448,9 +453,9 @@ private:
             {
                 mapElement.type = 0;
                 mapElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-                intercept_clear_calls();
+                PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-                numCalls = intercept_get_calls(callBuffer);
+                numCalls = PaintIntercept::GetCalls(callBuffer);
                 cableLiftCalls[direction].insert(cableLiftCalls[direction].begin(), callBuffer, callBuffer + numCalls);
             }
 
@@ -461,9 +466,9 @@ private:
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64;
                 mapElement.type = 0;
                 mapElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-                intercept_clear_calls();
+                PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &mapElement);
-                numCalls = intercept_get_calls(callBuffer);
+                numCalls = PaintIntercept::GetCalls(callBuffer);
                 std::vector<function_call> checkCalls = std::vector<function_call>(callBuffer, callBuffer + numCalls);
                 if (!CompareFunctionCalls(checkCalls, calls[direction]))
                 {
@@ -630,17 +635,17 @@ private:
     {
         const char * funcName = GetFunctionCallName(call.function);
         std::string imageId = GetImageIdString(call.paint.image_id);
-        std::string s = StringFormat("%s_rotated(direction, %s, ", funcName, imageId.c_str());
+        std::string s = String::Format("%s_rotated(direction, %s, ", funcName, imageId.c_str());
         s += FormatXYSwap(call.paint.offset.x, call.paint.offset.y, direction);
         s += ", ";
         s += FormatXYSwap(call.paint.bound_box_length.x, call.paint.bound_box_length.y, direction);
-        s += StringFormat(", %d, height%s", call.paint.bound_box_length.z, GetOffsetExpressionString(call.paint.z_offset - height).c_str());
+        s += String::Format(", %d, height%s", call.paint.bound_box_length.z, GetOffsetExpressionString(call.paint.z_offset - height).c_str());
 
         if (call.function != PAINT_98196C)
         {
             s += ", ";
             s += FormatXYSwap(call.paint.bound_box_offset.x, call.paint.bound_box_offset.y, direction);
-            s += StringFormat(", height%s", GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
+            s += String::Format(", height%s", GetOffsetExpressionString(call.paint.bound_box_offset.z - height).c_str());
         }
 
         s += ");";
@@ -651,11 +656,11 @@ private:
     {
         if (direction & 1)
         {
-            return StringFormat("%d, %d", y, x);
+            return String::Format("%d, %d", y, x);
         }
         else
         {
-            return StringFormat("%d, %d", x, y);
+            return String::Format("%d, %d", x, y);
         }
     }
 
@@ -711,7 +716,7 @@ private:
 
     bool CompareFunctionCall(const function_call a, const function_call &b)
     {
-        return assertFunctionCallEquals(a, b);
+        return FunctionCall::AssertsEquals(a, b);
     }
 
     const char * GetFunctionCallName(int function)
@@ -734,11 +739,11 @@ private:
                         int trackSequence,
                         int height,
                         rct_map_element * mapElement,
-                        Intercept2::TunnelCall tileTunnelCalls[4][4],
+                        TunnelCall tileTunnelCalls[4][4],
                         sint16 verticalTunnelHeights[4])
     {
-        gLeftTunnelCount = 0;
-        gRightTunnelCount = 0;
+        TestPaint::ResetTunnels();
+
         for (int offset = -8; offset <= 8; offset += 8)
         {
             CallOriginal(trackType, direction, trackSequence, height + offset, mapElement);
@@ -748,13 +753,13 @@ private:
         uint8 leftIndex = (rightIndex + 1) % 4;
 
         for (int i = 0; i < 4; ++i) {
-            tileTunnelCalls[direction][i].call = Intercept2::TUNNELCALL_SKIPPED;
+            tileTunnelCalls[direction][i].call = TUNNELCALL_SKIPPED;
         }
         if (gRightTunnelCount == 0) {
-            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_NONE;
+            tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_NONE;
         } else if (gRightTunnelCount == 3) {
-            tileTunnelCalls[direction][rightIndex].call = Intercept2::TUNNELCALL_CALL;
-            tileTunnelCalls[direction][rightIndex].offset = Intercept2::getTunnelOffset(height, gRightTunnels);
+            tileTunnelCalls[direction][rightIndex].call = TUNNELCALL_CALL;
+            tileTunnelCalls[direction][rightIndex].offset = SideTunnelCall::GetTunnelOffset(height, gRightTunnels);
             tileTunnelCalls[direction][rightIndex].type = gRightTunnels[0].type;
         } else {
             printf("Multiple tunnels on one side aren't supported.\n");
@@ -762,10 +767,10 @@ private:
         }
 
         if (gLeftTunnelCount == 0) {
-            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_NONE;
+            tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_NONE;
         } else if (gLeftTunnelCount == 3) {
-            tileTunnelCalls[direction][leftIndex].call = Intercept2::TUNNELCALL_CALL;
-            tileTunnelCalls[direction][leftIndex].offset = Intercept2::getTunnelOffset(height, gLeftTunnels);
+            tileTunnelCalls[direction][leftIndex].call = TUNNELCALL_CALL;
+            tileTunnelCalls[direction][leftIndex].offset = SideTunnelCall::GetTunnelOffset(height, gLeftTunnels);
             tileTunnelCalls[direction][leftIndex].type = gLeftTunnels[0].type;
         } else {
             printf("Multiple tunnels on one side aren't supported.\n");
@@ -785,7 +790,7 @@ private:
         return true;
     }
 
-    void GenerateTunnelCall(int tabs, Intercept2::TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
+    void GenerateTunnelCall(int tabs, TunnelCall tileTunnelCalls[4][4], sint16 verticalTunnelHeights[4])
     {
         constexpr uint8 TunnelLeft = 0;
         constexpr uint8 TunnelRight = 1;
@@ -806,7 +811,7 @@ private:
             for (int side = 0; side < 4; side++)
             {
                 auto tunnel = tileTunnelCalls[direction][side];
-                if (tunnel.call == Intercept2::TUNNELCALL_CALL)
+                if (tunnel.call == TUNNELCALL_CALL)
                 {
                     tunnelOffset[direction] = tunnel.offset;
                     tunnelType[direction] = tunnel.type;
@@ -854,7 +859,7 @@ private:
                     WriteLine(tabs, "case %d:", i);
                     for (int side = 0; side < 4; side++)
                     {
-                        if (tileTunnelCalls[i][side].call == Intercept2::TUNNELCALL_CALL)
+                        if (tileTunnelCalls[i][side].call == TUNNELCALL_CALL)
                         {
                             GenerateTunnelCall(tabs + 1, tileTunnelCalls[i][side].offset, tileTunnelCalls[i][side].type, dsToWay[i][side]);
                         }
@@ -892,7 +897,7 @@ private:
         WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
     }
 
-    void GenerateSegmentSupportCall(int tabs, std::vector<Intercept2::SegmentSupportCall> segmentSupportCalls[4])
+    void GenerateSegmentSupportCall(int tabs, std::vector<SegmentSupportCall> segmentSupportCalls[4])
     {
         for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
         {
@@ -912,12 +917,12 @@ private:
             if (ssh.height == 0xFFFF)
             {
                 szCall += "0xFFFF";
-                szCall += StringFormat(", 0);", ssh.slope);
+                szCall += String::Format(", 0);", ssh.slope);
             }
             else
             {
                 szCall += std::to_string(ssh.height);
-                szCall += StringFormat(", 0x%02X);", ssh.slope);
+                szCall += String::Format(", 0x%02X);", ssh.slope);
             }
             WriteLine(tabs, szCall);
         }
@@ -948,20 +953,20 @@ private:
         uint32 palette = imageId & ~0x7FFFF;
 
         std::string paletteName;
-        if (palette == Intercept2::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_SUPPORTS) paletteName = "gTrackColours[SCHEME_SUPPORTS]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
-        else if (palette == Intercept2::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
+        if (palette == TestPaint::DEFAULT_SCHEME_TRACK) paletteName = "gTrackColours[SCHEME_TRACK]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_SUPPORTS) paletteName = "gTrackColours[SCHEME_SUPPORTS]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_MISC) paletteName = "gTrackColours[SCHEME_MISC]";
+        else if (palette == TestPaint::DEFAULT_SCHEME_3) paletteName = "gTrackColours[SCHEME_3]";
         else {
-            paletteName = StringFormat("0x%08X", palette);
+            paletteName = String::Format("0x%08X", palette);
         }
 
         if (image == 0) {
             result = paletteName;
         } else if (image & 0x70000) {
-            result = StringFormat("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
+            result = String::Format("%s | vehicle.base_image_id + %d", paletteName.c_str(), image & ~0x70000);
         } else {
-            result = StringFormat("%s | %d", paletteName.c_str(), image);
+            result = String::Format("%s | %d", paletteName.c_str(), image);
         }
         return result;
     }
@@ -982,7 +987,7 @@ private:
                 if (segmentsPrinted > 0) {
                     s += " | ";
                 }
-                s += StringFormat("SEGMENT_%02X", 0xB4 + 4 * i);
+                s += String::Format("SEGMENT_%02X", 0xB4 + 4 * i);
                 segmentsPrinted++;
             }
         }
@@ -1004,35 +1009,8 @@ private:
 
     void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
     {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = Intercept2::DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = Intercept2::DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = Intercept2::DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = Intercept2::DEFAULT_SCHEME_3;
-
-        rct_drawpixelinfo dpi = { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
-
-        rct_ride ride = {0};
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
-
-        for (int s = 0; s < 9; ++s)
-        {
-            gSupportSegments[s].height = 0;
-            gSupportSegments[s].slope = 0xFF;
-        }
-
-        gSupport.height = 0;
-        gSupport.slope = 0xFF;
-        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+        TestPaint::ResetEnvironment();
+        TestPaint::ResetSupportHeights();
 
         uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it
@@ -1119,18 +1097,6 @@ private:
             fprintf(_file, "\t");
         }
         fprintf(_file, "%s\n", s.c_str());
-    }
-
-    static std::string StringFormat(const char * format, ...)
-    {
-        va_list args;
-        char buffer[512];
-
-        va_start(args, format);
-        vsnprintf(buffer, sizeof(buffer), format, args);
-        va_end(args);
-
-        return std::string(buffer);
     }
 };
 
