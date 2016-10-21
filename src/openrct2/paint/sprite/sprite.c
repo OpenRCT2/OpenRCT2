@@ -21,6 +21,7 @@
 #include "../../ride/ride_data.h"
 #include "../../interface/viewport.h"
 #include "../../ride/vehicle_paint.h"
+#include "../../localisation/localisation.h" // zax
 
 /**
  * Paint Quadrant
@@ -45,6 +46,11 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
 	for (rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant) {
 		spr = get_sprite(sprite_idx);
+
+		// zax: Only paint sprites that are below the clip height.
+		// Here converting from land/path/etc height scale to pixel height scale.
+		if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (spr->unknown.z >= ((gClipHeight+2) * 8))) continue;
+
 		dpi = unk_140E9A8;
 
 		if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;

@@ -23,6 +23,9 @@
 #include "sprite/sprite.h"
 #include "supports.h"
 
+// zax: globals for paint clipping height
+uint8 gClipHeight = 255;
+
 const uint32 construction_markers[] = {
 	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
 	PALETTE_DARKEN_2 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
@@ -199,6 +202,7 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	ps->map_x = gPaintMapPosition.x;
 	ps->map_y = gPaintMapPosition.y;
 	ps->mapElement = g_currently_drawn_item;
+
 	return ps;
 }
 
@@ -366,7 +370,6 @@ paint_struct * sub_98197C(
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-
 	g_ps_F1AD28 = 0;
 	g_aps_F1AD2C = NULL;
 
