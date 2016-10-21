@@ -118,8 +118,6 @@ static void lay_down_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint
 		track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 11);
 		track_paint_util_draw_station_inverted(rideIndex, trackSequence, direction, height, mapElement, STATION_VARIANT_1);
 		paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
 	} else {
 		static const uint32 imageIds[4][3] = {
 			{ 16236, 16232, SPR_STATION_BASE_A_SW_NE },
@@ -136,7 +134,10 @@ static void lay_down_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint
 		sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
 		track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 11);
 		track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
+		paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 	}
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /** rct2: 0x0082492C */

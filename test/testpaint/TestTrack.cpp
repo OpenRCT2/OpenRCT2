@@ -587,6 +587,8 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 
     TunnelCall tileTunnelCalls[4][4];
 
+    // TODO: test inverted tracks
+
     for (int direction = 0; direction < 4; direction++) {
         TestPaint::ResetTunnels();
 
