@@ -3681,8 +3681,8 @@ STR_5337    :Vstup do zábavního parku
 STR_5338    :Typ prvku
 STR_5339    :Výška povrchu
 STR_5340    :Výška objektu
-STR_5341    :Vlajky
-STR_5342    :Výběr dlaždice
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Automaticky umisťovat personál
 STR_5344    :Seznam změn
 STR_5345    :Cheaty financí
@@ -4232,7 +4232,67 @@ STR_5920    :Vykreslovat efekty počasí
 STR_5921    :{SMALLFONT}{BLACK}Pokud zaškrtnete, budou během bouřek barvy ponurejší.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} / vlak
-
+STR_5924    :Detail povrchu
+STR_5925    :Detail cesty
+STR_5926    :Detail trati
+STR_5927    :Detail kulis
+STR_5928    :Detaily vstupu
+STR_5929    :Detaily plotu
+STR_5930    :Detaily velkých kulis
+STR_5931    :Detaily baneru
+STR_5932    :Detaily poškozených elementů
+STR_5933    :Vlastnosti
+STR_5934    :{WINDOW_COLOUR_2}Textura terénu: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Hrana terénu: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Pozemková práva: {BLACK}{STRINGID}
+STR_5937    :Není vlastněno a není na prodej
+STR_5938    :{WINDOW_COLOUR_2}Úroveň vody: {BLACK}{COMMA16}
+STR_5939    :Odebrat plot parku
+STR_5940    :Obnovit plot parku
+STR_5941    :{WINDOW_COLOUR_2}Základní výška:
+STR_5942    :{WINDOW_COLOUR_2}Jméno cesty: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Dodatky: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Dodatky: {BLACK}None
+STR_5945    :{WINDOW_COLOUR_2}Připojené hrany:
+STR_5946    :{WINDOW_COLOUR_2}Typ atrakce: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}ID atrakce: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Název atrakce: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Řetězový výtah
+STR_5950    :{WINDOW_COLOUR_2}Aplikovat změny pro celou část traťi
+STR_5951    :{WINDOW_COLOUR_2}ID části traťi: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Číslo sekvence: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Seřadit elementy mapy vybrané dlaždice podle jejich základní výšky
+STR_5954    :{WINDOW_COLOUR_2}Stáří kulis: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Kvadrant umístění: {BLACK}{STRINGID}
+STR_5956    :Jihozápad
+STR_5957    :Severozápad
+STR_5958    :Severovýchod
+STR_5959    :Jihovýchod
+STR_5960    :{WINDOW_COLOUR_2}Kvadrant umístění:
+STR_5961    :{WINDOW_COLOUR_2}Index vstupu: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Detekce kolizí:
+STR_5963    :{WINDOW_COLOUR_2}Zdvihnuté rohy:
+STR_5964    :{WINDOW_COLOUR_2}Diagonální
+STR_5965    :{WINDOW_COLOUR_2}Typ vstupu: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Část vstupu do parku: {BLACK}{STRINGID}
+STR_5967    :Prostředek
+STR_5968    :Levý
+STR_5969    :Pravý
+STR_5970    :{WINDOW_COLOUR_2}ID vstupu: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}ID východu: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ID atrakce: {BLACK}{COMMA16}
+STR_5973    :Omezit dalším
+STR_5974    :{SMALLFONT}{BLACK}Nastaví základní a celkovou výšku stejnou, jako je výška dalšího elementu na stejné dlaždici. To usnadní stavění na této dlaždici.
+STR_5975    :Sklon:
+STR_5976    :Rovina
+STR_5977    :Pravá strana
+STR_5978    :Levá strana
+STR_5979    :{WINDOW_COLOUR_2}Typ plotu: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Text baneru: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}To není baner
+STR_5982    :{WINDOW_COLOUR_2}Typ velké kulisy: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}ID velké kulisy: {BLACK}{COMMA16}
+STR_5984    :Zablokované cesty:
 
 ###############################################################################
 ## RCT2 Objects
