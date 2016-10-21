@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [[ $TRAVIS != "true" ]]
+then
+	echo This script is only meant to be run on Travis-CI.
+	echo Please use CMake to build the project.
+	exit 1
+fi
+
 SDL2_PV=2.0.3
 SDL2_TTF_PV=2.0.12
 
