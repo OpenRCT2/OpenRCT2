@@ -205,7 +205,7 @@ static void paint_log_flume_track_station(uint8 rideIndex, uint8 trackSequence, 
 		metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 	}
 
-	track_paint_util_draw_station(rideIndex, trackSequence, direction, height + 2, mapElement);
+	track_paint_util_draw_station_3(rideIndex, trackSequence, direction, height + 2, height, mapElement);
 	// covers shouldn't be offset by +2
 
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);

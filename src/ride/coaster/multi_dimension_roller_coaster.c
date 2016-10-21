@@ -94,6 +94,8 @@ static void multi_dimension_rc_track_station(uint8 rideIndex, uint8 trackSequenc
 		{ 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
 	};
 
+	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
+
 	if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
 		sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0, 3, height + 3);
 	} else {
@@ -103,16 +105,21 @@ static void multi_dimension_rc_track_station(uint8 rideIndex, uint8 trackSequenc
 	
 	rct_ride * ride = get_ride(rideIndex);
 	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+	bool hasFence;
 	if (direction == 0 || direction == 2) {
-		track_paint_util_draw_station_covers(EDGE_NW, false, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
 	} else {
-		track_paint_util_draw_station_covers(EDGE_NE, false, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
 	}
 
 	if (direction == 0 || direction == 2) {
-		track_paint_util_draw_station_covers(EDGE_SE, false, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
 	} else {
-		track_paint_util_draw_station_covers(EDGE_SW, false, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
 	}
 
 	paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
