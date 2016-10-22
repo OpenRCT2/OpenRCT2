@@ -303,8 +303,13 @@ protected:
         {
             for (int i = 0; i < count; i++)
             {
-                DirectoryChild child = CreateChild(path, namelist[i]);
-                children.push_back(child);
+                const struct dirent * node = namelist[i];
+                if (!String::Equals(node->d_name, ".") &&
+                    !String::Equals(node->d_name, ".."))
+                {
+                    DirectoryChild child = CreateChild(path, node);
+                    children.push_back(child);
+                }
             }
         }
     }
