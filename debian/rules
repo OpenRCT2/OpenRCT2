@@ -2,10 +2,5 @@
 
 BUILDDIR=build_dir
 
-extra_flags := "-DLAUNCHPAD_BUILD=on"
-
-override_dh_auto_configure:
-	dh_auto_configure -a -- $(extra_flags)
-
 %:
 	dh $@
