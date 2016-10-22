@@ -148,7 +148,7 @@ public:
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem * item = &_items[index];
-            if (!item->Flags & TRIF_READ_ONLY)
+            if (!(item->Flags & TRIF_READ_ONLY))
             {
                 utf8 newPath[MAX_PATH];
                 Path::GetDirectory(newPath, sizeof(newPath), path);
