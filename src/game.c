@@ -73,6 +73,82 @@ uint8 gUnk141F568;
 uint32 gCurrentTicks;
 #endif
 
+static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+static GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
+	game_command_set_ride_appearance,
+	game_command_set_land_height,
+	game_pause_toggle,
+	game_command_place_track,
+	game_command_remove_track,
+	game_load_or_quit,
+	game_command_create_ride,
+	game_command_demolish_ride,
+	game_command_set_ride_status,
+	game_command_set_ride_vehicles,
+	game_command_set_ride_name,
+	game_command_set_ride_setting,
+	game_command_place_ride_entrance_or_exit,
+	game_command_remove_ride_entrance_or_exit,
+	game_command_remove_scenery,
+	game_command_place_scenery,
+	game_command_set_water_height,
+	game_command_place_footpath,
+	game_command_place_footpath_from_track,
+	game_command_remove_footpath,
+	game_command_change_surface_style,
+	game_command_set_ride_price,
+	game_command_set_guest_name,
+	game_command_set_staff_name,
+	game_command_raise_land,
+	game_command_lower_land,
+	game_command_smooth_land,
+	game_command_raise_water,
+	game_command_lower_water,
+	game_command_set_brakes_speed,
+	game_command_hire_new_staff_member,
+	game_command_set_staff_patrol,
+	game_command_fire_staff_member,
+	game_command_set_staff_order,
+	game_command_set_park_name,
+	game_command_set_park_open,
+	game_command_buy_land_rights,
+	game_command_place_park_entrance,
+	game_command_remove_park_entrance,
+	game_command_set_maze_track,
+	game_command_set_park_entrance_fee,
+	game_command_update_staff_colour,
+	game_command_place_fence,
+	game_command_remove_fence,
+	game_command_place_large_scenery,
+	game_command_remove_large_scenery,
+	game_command_set_current_loan,
+	game_command_set_research_funding,
+	game_command_place_track_design,
+	game_command_start_campaign,
+	game_command_place_maze_design,
+	game_command_place_banner,
+	game_command_remove_banner,
+	game_command_set_scenery_colour,
+	game_command_set_fence_colour,
+	game_command_set_large_scenery_colour,
+	game_command_set_banner_colour,
+	game_command_set_land_ownership,
+	game_command_clear_scenery,
+	game_command_set_banner_name,
+	game_command_set_sign_name,
+	game_command_set_banner_style,
+	game_command_set_sign_style,
+	game_command_set_player_group,
+	game_command_modify_groups,
+	game_command_kick_player,
+	game_command_cheat,
+	game_command_pickup_guest,
+	game_command_pickup_staff,
+	game_command_balloon_press,
+	game_command_adjust_client_prefs,
+};
+
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	0,
@@ -484,11 +560,16 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		game_command_playerid = network_get_current_player_id();
 	}
 
+	network_save_server_prefs();
+	network_apply_client_prefs(game_command_playerid);
+
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
 	// First call for validity and price check
 	new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 	cost = *ebx;
+
+	network_restore_server_prefs();
 
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
@@ -521,8 +602,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				}
 			}
 
+			// Server settings have already been saved this tick, no need to save them again
+			network_apply_client_prefs(game_command_playerid);
 			// Second call to actually perform the operation
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+			network_restore_server_prefs();
 
 			// Do the callback (required for multiplayer to work correctly), but only for top level commands
 			if (gGameCommandNestLevel == 1) {
@@ -1100,76 +1184,3 @@ void game_load_or_quit_no_save_prompt()
 		break;
 	}
 }
-
-GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
-	game_command_set_ride_appearance,
-	game_command_set_land_height,
-	game_pause_toggle,
-	game_command_place_track,
-	game_command_remove_track,
-	game_load_or_quit,
-	game_command_create_ride,
-	game_command_demolish_ride,
-	game_command_set_ride_status,
-	game_command_set_ride_vehicles,
-	game_command_set_ride_name,
-	game_command_set_ride_setting,
-	game_command_place_ride_entrance_or_exit,
-	game_command_remove_ride_entrance_or_exit,
-	game_command_remove_scenery,
-	game_command_place_scenery,
-	game_command_set_water_height,
-	game_command_place_footpath,
-	game_command_place_footpath_from_track,
-	game_command_remove_footpath,
-	game_command_change_surface_style,
-	game_command_set_ride_price,
-	game_command_set_guest_name,
-	game_command_set_staff_name,
-	game_command_raise_land,
-	game_command_lower_land,
-	game_command_smooth_land,
-	game_command_raise_water,
-	game_command_lower_water,
-	game_command_set_brakes_speed,
-	game_command_hire_new_staff_member,
-	game_command_set_staff_patrol,
-	game_command_fire_staff_member,
-	game_command_set_staff_order,
-	game_command_set_park_name,
-	game_command_set_park_open,
-	game_command_buy_land_rights,
-	game_command_place_park_entrance,
-	game_command_remove_park_entrance,
-	game_command_set_maze_track,
-	game_command_set_park_entrance_fee,
-	game_command_update_staff_colour,
-	game_command_place_fence,
-	game_command_remove_fence,
-	game_command_place_large_scenery,
-	game_command_remove_large_scenery,
-	game_command_set_current_loan,
-	game_command_set_research_funding,
-	game_command_place_track_design,
-	game_command_start_campaign,
-	game_command_place_maze_design,
-	game_command_place_banner,
-	game_command_remove_banner,
-	game_command_set_scenery_colour,
-	game_command_set_fence_colour,
-	game_command_set_large_scenery_colour,
-	game_command_set_banner_colour,
-	game_command_set_land_ownership,
-	game_command_clear_scenery,
-	game_command_set_banner_name,
-	game_command_set_sign_name,
-	game_command_set_banner_style,
-	game_command_set_sign_style,
-	game_command_set_player_group,
-	game_command_modify_groups,
-	game_command_kick_player,
-	game_command_cheat,
-	game_command_pickup_guest,
-	game_command_pickup_staff,
-	game_command_balloon_press,
-};

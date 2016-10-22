@@ -44,6 +44,7 @@ public:
     rct_peep*   pickup_peep         = 0;
     int         pickup_peep_old_x   = SPRITE_LOCATION_NULL;
     std::string keyhash;
+    bool        uses_disable_clearance;
 
     NetworkPlayer() = default;
 

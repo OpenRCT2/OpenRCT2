@@ -221,6 +221,11 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         {
             -3
         }
+    }, {
+        STR_ACTION_ALLOW_ADJUSTING_CLIENT_PREFS, "PERMISSION_ADJUST_CLIENT_PREFS",
+        {
+            GAME_COMMAND_ADJUST_CLIENT_PREFS
+        }
     },
 };
 
