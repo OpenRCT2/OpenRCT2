@@ -28,17 +28,19 @@
 #include "TcpSocket.h"
 
 class NetworkPlayer;
+struct ObjectRepositoryItem;
 
 class NetworkConnection final
 {
 public:
-    ITcpSocket *        Socket          = nullptr;
-    NetworkPacket       InboundPacket;
-    NETWORK_AUTH        AuthStatus      = NETWORK_AUTH_NONE;
-    NetworkPlayer *     Player          = nullptr;
-    uint32              PingTime        = 0;
-    NetworkKey          Key;
-    std::vector<uint8>  Challenge;
+    ITcpSocket *                                Socket          = nullptr;
+    NetworkPacket                               InboundPacket;
+    NETWORK_AUTH                                AuthStatus      = NETWORK_AUTH_NONE;
+    NetworkPlayer *                             Player          = nullptr;
+    uint32                                      PingTime        = 0;
+    NetworkKey                                  Key;
+    std::vector<uint8>                          Challenge;
+    std::vector<const ObjectRepositoryItem *>   RequestedObjects;
 
     NetworkConnection();
     ~NetworkConnection();
