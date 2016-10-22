@@ -243,16 +243,16 @@ private:
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
-            const file_info * enumFileInfo = scanner->GetFileInfo();
-            const utf8 * enumPath = scanner->GetPath();
+            const FileInfo * fileInfo = scanner->GetFileInfo();
+            const utf8 * path = scanner->GetPath();
 
             result->TotalFiles++;
-            result->TotalFileSize += enumFileInfo->size;
+            result->TotalFileSize += fileInfo->Size;
             result->FileDateModifiedChecksum ^=
-                (uint32)(enumFileInfo->last_modified >> 32) ^
-                (uint32)(enumFileInfo->last_modified & 0xFFFFFFFF);
+                (uint32)(fileInfo->LastModified >> 32) ^
+                (uint32)(fileInfo->LastModified & 0xFFFFFFFF);
             result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
-            result->PathChecksum += GetPathChecksum(enumPath);
+            result->PathChecksum += GetPathChecksum(path);
         }
         delete scanner;
     }

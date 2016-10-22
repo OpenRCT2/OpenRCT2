@@ -251,7 +251,7 @@ private:
         {
             auto path = scanner->GetPath();
             auto fileInfo = scanner->GetFileInfo();
-            AddScenario(path, fileInfo->last_modified);
+            AddScenario(path, fileInfo->LastModified);
         }
         delete scanner;
     }

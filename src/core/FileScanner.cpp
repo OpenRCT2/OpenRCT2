@@ -14,7 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../common.h"
+
+#ifdef __WINDOWS__
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 #include <stack>
+#include <vector>
 #include "FileScanner.h"
 #include "Memory.hpp"
 #include "Path.hpp"
@@ -22,175 +30,307 @@
 
 extern "C"
 {
+    #include "../localisation/localisation.h"
     #include "../platform/platform.h"
 }
 
-class FileScanner : public IFileScanner
+enum DIRECTORY_CHILD_TYPE
+{
+    DCT_DIRECTORY,
+    DCT_FILE,
+};
+
+struct DirectoryChild
+{
+    DIRECTORY_CHILD_TYPE Type;
+    std::string Name;
+
+    // Files only
+    uint64 Size;
+    uint64 LastModified;
+};
+
+static bool MatchWildcard(const utf8 * fileName, const utf8 * pattern);
+
+class FileScannerBase : public IFileScanner
 {
 private:
     struct DirectoryState
     {
-        utf8 *  Directory;
-        int     Handle;
+        std::string                 Path;
+        std::vector<DirectoryChild> Listing;
+        sint32                      Index;
     };
 
-    // Enumeration options
-    utf8 *  _rootPath;
-    utf8 *  _pattern;
-    bool    _recurse;
+    // Options
+    utf8 *      _rootPath;
+    utf8 * *    _patterns;
+    size_t      _numPatterns;
+    bool        _recurse;
 
-    // Enumeration state
-    int                         _fileHandle;
+    // State
+    bool                        _started;
     std::stack<DirectoryState>  _directoryStack;
 
-    // Current enumeration
-    file_info * _fileInfo;
-    utf8      * _path;
+    // Current
+    FileInfo    * _currentFileInfo;
+    utf8        * _currentPath;
 
 public:
-    FileScanner(const utf8 * pattern, bool recurse)
+    FileScannerBase(const utf8 * pattern, bool recurse)
     {
         _rootPath = Memory::Allocate<utf8>(MAX_PATH);
         Path::GetDirectory(_rootPath, MAX_PATH, pattern);
-        _pattern = String::Duplicate(Path::GetFileName(pattern));
         _recurse = recurse;
+        _numPatterns = GetPatterns(&_patterns, Path::GetFileName(pattern));
 
-        _fileInfo = Memory::Allocate<file_info>();
-        Memory::Set(_fileInfo, 0, sizeof(file_info));
-        _path = Memory::Allocate<utf8>(MAX_PATH);
-
-        _fileHandle = INVALID_HANDLE;
+        _currentPath = Memory::Allocate<utf8>(MAX_PATH);
+        _currentFileInfo = Memory::Allocate<FileInfo>();
 
         Reset();
     }
 
-    ~FileScanner() override
+    ~FileScannerBase() override
     {
-        CloseHandles();
-        Memory::Free(_path);
-        Memory::Free(_fileInfo);
-        Memory::Free(_pattern);
         Memory::Free(_rootPath);
+        Memory::FreeArray(_patterns, _numPatterns);
+        Memory::Free(_currentPath);
+        Memory::Free(_currentFileInfo);
     }
 
-    const file_info * GetFileInfo() const override
+    const FileInfo * GetFileInfo() const override
     {
-        return _fileInfo;
+        return _currentFileInfo;
     }
 
     const utf8 * GetPath() const override
     {
-        return _path;
+        return _currentPath;
     }
 
     void Reset() override
     {
-        CloseHandles();
-
-        DirectoryState directoryState;
-        directoryState.Directory = String::Duplicate(_rootPath);
-        directoryState.Handle = INVALID_HANDLE;
-        _directoryStack.push(directoryState);
+        _started = false;
+        _directoryStack = std::stack<DirectoryState>();
+        _currentPath[0] = 0;
     }
 
     bool Next() override
     {
-        while (true)
+        if (!_started)
         {
-            while (_fileHandle == INVALID_HANDLE)
+            _started = true;
+            PushState(_rootPath);
+        }
+
+        while (_directoryStack.size() != 0)
+        {
+            DirectoryState * state = &_directoryStack.top();
+            state->Index++;
+            if (state->Index >= state->Listing.size())
             {
-                if (_directoryStack.size() == 0)
-                {
-                    return false;
-                }
-
-                DirectoryState directoryState = _directoryStack.top();
-                if (directoryState.Handle == INVALID_HANDLE)
-                {
-                    // Start enumerating files for this directory
-                    utf8 pattern[MAX_PATH];
-                    String::Set(pattern, sizeof(pattern), directoryState.Directory);
-                    Path::Append(pattern, sizeof(pattern), _pattern);
-
-                    _fileHandle = platform_enumerate_files_begin(pattern);
-                    break;
-                } else
-                {
-                    // Next directory
-                    utf8 name[MAX_PATH];
-                    if (platform_enumerate_directories_next(directoryState.Handle, name))
-                    {
-                        DirectoryState newDirectoryState;
-                        newDirectoryState.Handle = INVALID_HANDLE;
-                        newDirectoryState.Directory = Memory::Allocate<utf8>(MAX_PATH);
-
-                        String::Set(newDirectoryState.Directory, MAX_PATH, directoryState.Directory);
-                        Path::Append(newDirectoryState.Directory, MAX_PATH, name);
-
-                        _directoryStack.push(newDirectoryState);
-                    } else
-                    {
-                        platform_enumerate_directories_end(directoryState.Handle);
-                        Memory::Free(directoryState.Directory);
-                        _directoryStack.pop();
-                    }
-                }
+                _directoryStack.pop();
             }
-
-            // Next file
-            if (_fileHandle != INVALID_HANDLE)
+            else
             {
-                if (platform_enumerate_files_next(_fileHandle, _fileInfo))
+                const DirectoryChild * child = &state->Listing[state->Index];
+                if (child->Type == DCT_DIRECTORY)
                 {
-                    String::Set(_path, MAX_PATH, _directoryStack.top().Directory);
-                    Path::Append(_path, MAX_PATH, _fileInfo->path);
+                    utf8 childPath[MAX_PATH];
+                    String::Set(childPath, sizeof(childPath), state->Path.c_str());
+                    Path::Append(childPath, sizeof(childPath), child->Name.c_str());
+                    PushState(childPath);
+                }
+                else if (PatternMatch(child->Name.c_str()))
+                {
+                    String::Set(_currentPath, MAX_PATH, state->Path.c_str());
+                    Path::Append(_currentPath, MAX_PATH, child->Name.c_str());
+
+                    _currentFileInfo->Name = child->Name.c_str();
+                    _currentFileInfo->Size = child->Size;
+                    _currentFileInfo->LastModified = child->LastModified;
                     return true;
                 }
-                platform_enumerate_files_end(_fileHandle);
-                _fileHandle = INVALID_HANDLE;
             }
+        }
+        return false;
+    }
 
-            if (_recurse)
+private:
+    void PushState(const utf8 * directory)
+    {
+        DirectoryState newState;
+        newState.Path = std::string(directory);
+        newState.Index = -1;
+        GetDirectoryChildren(newState.Listing, directory);
+        _directoryStack.push(newState);
+    }
+
+    bool PatternMatch(const utf8 * fileName)
+    {
+        for (size_t i = 0; i < _numPatterns; i++)
+        {
+            if (MatchWildcard(fileName, _patterns[i]))
             {
-                // Start enumerating sub-directories
-                DirectoryState * directoryState = &_directoryStack.top();
-                directoryState->Handle = platform_enumerate_directories_begin(directoryState->Directory);
-                if (directoryState->Handle == INVALID_HANDLE)
-                {
-                    Memory::Free(directoryState->Directory);
-                    _directoryStack.pop();
-                }
-            } else
-            {
-                Memory::Free(_directoryStack.top().Directory);
-                _directoryStack.pop();
-                return false;
+                return true;
             }
+        }
+        return false;
+    }
+
+    static size_t GetPatterns(utf8 * * * outPatterns, const utf8 * delimitedPatterns)
+    {
+        std::vector<utf8 *> patterns;
+
+        const utf8 * start = delimitedPatterns;
+        const utf8 * ch = start;
+        utf8 c;
+        do
+        {
+            c = *ch;
+            if (c == '\0' || c == ';')
+            {
+                size_t length = (size_t)(ch - start);
+                if (length > 0)
+                {
+                    utf8 * newPattern = Memory::Allocate<utf8>(length + 1);
+                    Memory::Copy(newPattern, start, length);
+                    newPattern[length] = '\0';
+                    patterns.push_back(newPattern);
+                }
+                start = ch + 1;
+            }
+            ch++;
+        }
+        while (c != '\0');
+
+        *outPatterns = Memory::DuplicateArray(patterns.data(), patterns.size());
+        return patterns.size();
+    }
+
+protected:
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) abstract;
+
+};
+
+#ifdef __WINDOWS__
+
+class FileScannerWindows final : public FileScannerBase
+{
+public:
+    FileScannerWindows(const utf8 * pattern, bool recurse)
+        : FileScannerBase(pattern, recurse)
+    {
+    }
+
+protected:
+    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) override
+    {
+        size_t pathLength = String::SizeOf(path);
+        utf8 * pattern = Memory::Duplicate(path, pathLength + 3);
+        pattern[pathLength + 0] = '\\';
+        pattern[pathLength + 1] = '*';
+        pattern[pathLength + 2] = '\0';
+
+        wchar_t * wPattern = utf8_to_widechar(pattern);
+
+        WIN32_FIND_DATAW findData;
+        HANDLE hFile = FindFirstFileW(wPattern, &findData);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                if (lstrcmpW(findData.cFileName, L".") != 0 &&
+                    lstrcmpW(findData.cFileName, L"..") != 0)
+                {
+                    DirectoryChild child = CreateChild(&findData);
+                    children.push_back(child);
+                }
+            }
+            while (FindNextFileW(hFile, &findData));
+            FindClose(hFile);
         }
     }
 
 private:
-    void CloseHandles()
+    static DirectoryChild CreateChild(const WIN32_FIND_DATAW * child)
     {
-        if (_fileHandle != INVALID_HANDLE)
+        DirectoryChild result;
+
+        utf8 * name = widechar_to_utf8(child->cFileName);
+        result.Name = std::string(name);
+        Memory::Free(name);
+
+        if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
-            platform_enumerate_files_end(_fileHandle);
-            _fileHandle = INVALID_HANDLE;
+            result.Type = DCT_DIRECTORY;
         }
-        while (_directoryStack.size() > 0)
+        else
         {
-            DirectoryState directoryState = _directoryStack.top();
-            if (directoryState.Handle != INVALID_HANDLE)
-            {
-                platform_enumerate_directories_end(directoryState.Handle);
-            }
-            Memory::Free(directoryState.Directory);
-            _directoryStack.pop();
+            result.Type = DCT_FILE;
+            result.Size = ((uint64)child->nFileSizeHigh << 32ULL) | (uint64)child->nFileSizeLow;
+            result.LastModified = ((uint64)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)child->ftLastWriteTime.dwLowDateTime;
         }
+        return result;
     }
 };
 
+#endif // __WINDOWS__
+
 IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 {
-    return new FileScanner(pattern, recurse);
+#ifdef __WINDOWS__
+    return new FileScannerWindows(pattern, recurse);
+#endif
+}
+
+/**
+ * Due to FindFirstFile / FindNextFile searching for DOS names as well, *.doc also matches *.docx which isn't what the pattern
+ * specified. This will verify if a filename does indeed match the pattern we asked for.
+ * @remarks Based on algorithm (http://xoomer.virgilio.it/acantato/dev/wildcard/wildmatch.html)
+ */
+static bool MatchWildcard(const utf8 * fileName, const utf8 * pattern)
+{
+    while (*fileName != '\0')
+    {
+        switch (*pattern) {
+        case '?':
+            if (*fileName == '.')
+            {
+                return false;
+            }
+            break;
+        case '*':
+            do
+            {
+                pattern++;
+            }
+            while (*pattern == '*');
+            if (*pattern == '\0')
+            {
+                return false;
+            }
+            while (*fileName != '\0')
+            {
+                if (MatchWildcard(fileName++, pattern))
+                {
+                    return true;
+                }
+            }
+            return false;
+        default:
+            if (toupper(*fileName) != toupper(*pattern))
+            {
+                return false;
+            }
+            break;
+        }
+        pattern++;
+        fileName++;
+    }
+    while (*pattern == '*')
+    {
+        ++fileName;
+    }
+    return *pattern == '\0';
 }

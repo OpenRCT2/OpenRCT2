@@ -200,7 +200,7 @@ private:
     {
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory);
-        Path::Append(pattern, sizeof(pattern), "*.td6");
+        Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())

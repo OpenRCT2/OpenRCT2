@@ -18,13 +18,23 @@
 
 #include "../common.h"
 
-struct file_info;
+struct DirectoryInfo
+{
+    const utf8 *    Name;
+};
+
+struct FileInfo
+{
+    const utf8 *    Name;
+    uint64          Size;
+    uint64          LastModified;
+};
 
 interface IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const file_info *   GetFileInfo() const abstract;
+    virtual const FileInfo *    GetFileInfo() const abstract;
     virtual const utf8 *        GetPath() const abstract;
 
     virtual void Reset() abstract;
