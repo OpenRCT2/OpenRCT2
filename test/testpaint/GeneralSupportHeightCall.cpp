@@ -54,17 +54,6 @@ bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], S
         return false;
     }
 
-    if (map.size() == 3) {
-        for (auto &&item : map) {
-			if (item.second == 2) {
-				(*out) = item.first;
-				return true;
-            }
-        }
-
-        return false;
-    }
-
     return false;
 }
 

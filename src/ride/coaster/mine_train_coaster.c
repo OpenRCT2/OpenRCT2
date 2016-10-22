@@ -4202,7 +4202,6 @@ static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 
 			}
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 1:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -4239,7 +4238,6 @@ static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 
 			}
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 2:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -4276,7 +4274,6 @@ static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 
 			}
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 3:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -4293,9 +4290,10 @@ static void mine_train_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 
 			}
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	}
+
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x0071C484 */
@@ -5061,8 +5059,6 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, u
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20422, -16, -16, 32, 32, 1, height, -16, -16, height);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 1:
 		switch (direction) {
@@ -5081,8 +5077,6 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, u
 			wooden_b_supports_paint_setup(11, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 2:
 		switch (direction) {
@@ -5100,8 +5094,6 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, u
 			wooden_b_supports_paint_setup(9, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 3:
 		switch (direction) {
@@ -5109,10 +5101,11 @@ static void mine_train_rc_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, u
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20424, -16, -16, 32, 32, 1, height, -16, -16, height);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x0071C544 */
@@ -5125,8 +5118,6 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, 
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20417, -16, -16, 32, 32, 1, height, -16, -16, height);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 1:
 		switch (direction) {
@@ -5144,8 +5135,6 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, 
 			wooden_b_supports_paint_setup(11, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 2:
 		switch (direction) {
@@ -5164,8 +5153,6 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, 
 			wooden_b_supports_paint_setup(9, 0, height + 16, gTrackColours[SCHEME_SUPPORTS], NULL);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 3:
 		switch (direction) {
@@ -5173,10 +5160,11 @@ static void mine_train_rc_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, 
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 20419, -16, -16, 32, 32, 1, height, -16, -16, height);
 			break;
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x0071C554 */

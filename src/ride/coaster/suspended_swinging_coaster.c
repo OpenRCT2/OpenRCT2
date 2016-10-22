@@ -2688,7 +2688,6 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex
 			}
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 64, 0x20);
 		break;
 	case 1:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -2705,7 +2704,6 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex
 			}
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	case 2:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -2722,7 +2720,6 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex
 			}
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	case 3:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -2754,10 +2751,10 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex
 			metal_a_supports_paint_setup(0, 3, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
-
-		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	}
+
+	paint_util_set_general_support_height(height + 72, 0x20);
 }
 
 /** rct2: 0x008A8C68 */
