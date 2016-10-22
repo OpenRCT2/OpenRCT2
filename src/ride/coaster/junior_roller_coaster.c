@@ -3868,10 +3868,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(uint8 rideIndex,
 
 	int blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-	if (direction == 0 && trackSequence == 0)
-		paint_util_set_general_support_height(height + 48, 0x20);
-	else
-		paint_util_set_general_support_height(height + 56, 0x20);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x008AB210 */
@@ -3890,10 +3887,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(uint8 rideIndex
 
 	int blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-	if (direction == 0 && trackSequence == 0)
-		paint_util_set_general_support_height(height + 48, 0x20);
-	else
-		paint_util_set_general_support_height(height + 56, 0x20);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x008AB220 */

@@ -1700,8 +1700,6 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uin
 				break;
 			}
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 1:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -1739,8 +1737,6 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uin
 				break;
 			}
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 2:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -1778,8 +1774,6 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uin
 				break;
 			}
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 3:
 		if (track_element_is_lift_hill(mapElement)) {
@@ -1795,10 +1789,11 @@ static void side_friction_rc_track_diag_flat_to_25_deg_down(uint8 rideIndex, uin
 				break;
 			}
 		}
-		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x0077858C */
