@@ -692,7 +692,7 @@ static void lim_launched_rc_track_right_twist_up_to_down(uint8 rideIndex, uint8 
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15798, 0, 0, 32, 20, 0, height, 0, 6, height + 28);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 2:

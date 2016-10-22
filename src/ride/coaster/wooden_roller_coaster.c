@@ -804,8 +804,10 @@ static void wooden_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSeq
 	int blockedSegments = 0;
 	switch (trackSequence) {
 	case 0: blockedSegments = SEGMENTS_ALL; break;
+	case 1: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
 	case 2: blockedSegments = SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
 	case 3: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
+	case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
 	case 5: blockedSegments = SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4; break;
 	case 6: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
 	}
@@ -969,8 +971,10 @@ static void wooden_rc_track_banked_right_quarter_turn_5(uint8 rideIndex, uint8 t
 	int blockedSegments = 0;
 	switch (trackSequence) {
 	case 0: blockedSegments = SEGMENTS_ALL; break;
+	case 1: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
 	case 2: blockedSegments = SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
 	case 3: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
+	case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
 	case 5: blockedSegments = SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4; break;
 	case 6: blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4; break;
 	}
@@ -2224,7 +2228,7 @@ static void wooden_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequ
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 32, 0x20);
 		break;
 	}
@@ -2338,7 +2342,7 @@ static void wooden_rc_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 trac
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 32, 0x20);
 		break;
 	}
@@ -2432,7 +2436,7 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8
 			paint_util_push_tunnel_left(height + 8, TUNNEL_8);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	}
@@ -7224,7 +7228,7 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(uint8 rid
 			paint_util_push_tunnel_left(height, TUNNEL_8);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 64, 0x20);
 		break;
 	}
@@ -7398,7 +7402,7 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(uint8 r
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 64, 0x20);
 		break;
 	}
@@ -7584,7 +7588,7 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(uint8 rideIndex
 			paint_util_push_tunnel_left(height + 8, TUNNEL_8);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	}

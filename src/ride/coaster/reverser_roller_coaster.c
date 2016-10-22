@@ -701,7 +701,7 @@ static void reverser_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSe
 			paint_util_push_tunnel_left(height, TUNNEL_6);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 32, 0x20);
 		break;
 	}
