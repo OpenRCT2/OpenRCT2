@@ -153,7 +153,7 @@ public:
                 utf8 newPath[MAX_PATH];
                 Path::GetDirectory(newPath, sizeof(newPath), path);
                 Path::Append(newPath, sizeof(newPath), newName);
-                Path::Append(newPath, sizeof(newPath), ".td6");
+                Path::Append(newPath, sizeof(newPath), Path::GetExtension(path));
 
                 if (platform_file_move(path, newPath))
                 {
