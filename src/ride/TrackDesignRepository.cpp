@@ -30,8 +30,6 @@ extern "C"
     #include "track_design.h"
 }
 
-#define MAX_PATH 260
-
 #pragma pack(push, 1)
 struct TrackRepositoryHeader
 {
@@ -41,24 +39,21 @@ struct TrackRepositoryHeader
 };
 #pragma pack(pop)
 
-#pragma pack(push, 1)
-typedef struct td_index_item {
-    uint8 ride_type;
-    char ride_entry[9];
-    utf8 path[MAX_PATH];
-} td_index_item;
-// NOTE: this is our own struct and should not get packed, but it is stored in a file
-// so removing packing from it would require refactoring file access
-assert_struct_size(td_index_item, 1 + 9 + 260);
-#pragma pack(pop)
+struct TrackRepositoryItem
+{
+    std::string Name;
+    std::string Path;
+    uint8 RideType = 0;
+    std::string ObjectEntry;
+};
 
 constexpr uint32 TRACK_REPOISTORY_MAGIC_NUMBER = 0x58444954;
-constexpr uint16 TRACK_REPOISTORY_VERSION = 0;
+constexpr uint16 TRACK_REPOISTORY_VERSION = 1;
 
 class TrackDesignRepository : public ITrackDesignRepository
 {
 private:
-    std::vector<td_index_item> _items;
+    std::vector<TrackRepositoryItem> _items;
 
 public:
     virtual ~TrackDesignRepository()
@@ -76,8 +71,8 @@ public:
         size_t count = 0;
         for (const auto item : _items)
         {
-            if (item.ride_type == rideType &&
-                (entry == nullptr || String::Equals(item.ride_entry, entry, true)))
+            if (item.RideType == rideType &&
+                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
             {
                 count++;
             }
@@ -90,12 +85,12 @@ public:
         std::vector<track_design_file_ref> refs;
         for (const auto item : _items)
         {
-            if (item.ride_type == rideType &&
-                (entry == nullptr || String::Equals(item.ride_entry, entry, true)))
+            if (item.RideType == rideType &&
+                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
             {
                 track_design_file_ref ref;
-                ref.name = GetNameFromTrackPath(item.path);
-                ref.path = String::Duplicate(item.path);
+                ref.name = GetNameFromTrackPath(item.Path.c_str());
+                ref.path = String::Duplicate(item.Path.c_str());
                 refs.push_back(ref);
             }
         }
@@ -138,11 +133,11 @@ public:
 
     const utf8 * Rename(const utf8 * path, const utf8 * newName) override
     {
-        utf8 * result = nullptr;
+        const utf8 * result = nullptr;
         size_t index = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
-            td_index_item * item = &_items[index];
+            TrackRepositoryItem * item = &_items[index];
 
             utf8 newPath[MAX_PATH];
             Path::GetDirectory(newPath, sizeof(newPath), path);
@@ -151,14 +146,14 @@ public:
 
             if (platform_file_move(path, newPath))
             {
-                String::Set(item->path, sizeof(item->path), newPath);
+                item->Path = std::string(newPath);
 
                 SortItems();
 
                 item = GetTrackItem(path);
                 if (item != nullptr)
                 {
-                    result = item->path;
+                    result = item->Path.c_str();
                 }
             }
         }
@@ -179,10 +174,10 @@ public:
             AddTrack(path);
             SortItems();
 
-            const td_index_item * item = GetTrackItem(path);
+            const TrackRepositoryItem * item = GetTrackItem(path);
             if (item != nullptr)
             {
-                result = item->path;
+                result = item->Path.c_str();
             }
         }
         return result;
@@ -208,27 +203,28 @@ private:
         rct_track_td6 * td6 = track_design_open(path);
         if (td6 != nullptr)
         {
-            td_index_item tdIndexItem = { 0 };
-            String::Set(tdIndexItem.path, sizeof(tdIndexItem.path), path);
-            memcpy(tdIndexItem.ride_entry, td6->vehicle_object.name, 8);
-            tdIndexItem.ride_type = td6->type;
-            _items.push_back(tdIndexItem);
+            TrackRepositoryItem item;
+            item.Name = std::string(GetNameFromTrackPath(path));
+            item.Path = std::string(path);
+            item.RideType = td6->type;
+            item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
+            _items.push_back(item);
             track_design_dispose(td6);
         }
     }
 
     void SortItems()
     {
-        std::sort(_items.begin(), _items.end(), [](const td_index_item &a,
-                                                   const td_index_item &b) -> bool
+        std::sort(_items.begin(), _items.end(), [](const TrackRepositoryItem &a,
+                                                   const TrackRepositoryItem &b) -> bool
             {
-                if (a.ride_type != b.ride_type)
+                if (a.RideType != b.RideType)
                 {
-                    return a.ride_type < b.ride_type;
+                    return a.RideType < b.RideType;
                 }
 
-                const utf8 * nameA = Path::GetFileName(a.path);
-                const utf8 * nameB = Path::GetFileName(b.path);
+                const utf8 * nameA = a.Name.c_str();
+                const utf8 * nameB = b.Name.c_str();
                 return _stricmp(nameA, nameB) < 0;
             });
     }
@@ -250,7 +246,13 @@ private:
             fs.WriteValue(header);
 
             // Write items
-            fs.WriteArray(_items.data(), _items.size());
+            for (const auto item : _items)
+            {
+                fs.WriteString(item.Name);
+                fs.WriteString(item.Path);
+                fs.WriteValue(item.RideType);
+                fs.WriteString(item.ObjectEntry);
+            }
         }
         catch (Exception ex)
         {
@@ -262,7 +264,7 @@ private:
     {
         for (size_t i = 0; i < _items.size(); i++)
         {
-            if (Path::Equals(_items[i].path, path))
+            if (Path::Equals(_items[i].Path.c_str(), path))
             {
                 return i;
             }
@@ -270,9 +272,9 @@ private:
         return SIZE_MAX;
     }
 
-    td_index_item * GetTrackItem(const utf8 * path)
+    TrackRepositoryItem * GetTrackItem(const utf8 * path)
     {
-        td_index_item * result = nullptr;
+        TrackRepositoryItem * result = nullptr;
         size_t index = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
