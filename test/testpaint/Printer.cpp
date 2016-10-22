@@ -153,8 +153,8 @@ namespace Printer {
         s += "\n";
 
         for (int direction = 0; direction < 4; ++direction) {
-            std::string leftEdge = PrintSideTunnelEdge(tunnelCalls[direction][2]);
-            std::string rightEdge = PrintSideTunnelEdge(tunnelCalls[direction][3]);
+            std::string leftEdge = PrintSideTunnelEdge(tunnelCalls[direction][3]);
+            std::string rightEdge = PrintSideTunnelEdge(tunnelCalls[direction][2]);
             s += String::Format("   %s %s   ", leftEdge.c_str(), rightEdge.c_str());
         }
         s += "\n";
@@ -204,7 +204,7 @@ namespace Printer {
                 } else {
                     offset = String::Format("+%d", edge.offset);
                 }
-                s = String::Format("%3s/%X ", offset.c_str(), edge.type);
+                s = String::Format("%3s/%X", offset.c_str(), edge.type);
                 break;
         }
 

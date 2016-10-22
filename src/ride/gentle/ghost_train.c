@@ -397,7 +397,7 @@ static void paint_ghost_train_track_left_quarter_turn_3_tiles(uint8 rideIndex, u
 static void paint_ghost_train_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	track_paint_util_left_quarter_turn_1_tile_paint(3, height, 0, direction, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile, get_current_rotation());
-	track_paint_util_left_quarter_turn_1_tile_tunnel(height, direction, trackSequence);
+	track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
 	metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
