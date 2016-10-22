@@ -310,6 +310,8 @@ void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direc
 void track_paint_util_left_quarter_turn_1_tile_tunnel(uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel);
 void track_paint_util_right_quarter_turn_1_tile_tunnel(uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel);
 
+void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackSequence);
+
 void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);

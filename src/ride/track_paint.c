@@ -1698,6 +1698,30 @@ void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map
 	}
 }
 
+uint16 RightVerticalLoopSegments[] ={
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	0,
+	0,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+	SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+};
+
+void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackSequence)
+{
+	if (trackSequence > 9)
+	{
+		// P
+		return;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
+}
+
 void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height) {
 	// TODO: Figure out which of these looks best, and use one to keep a consistent world
 	if (direction == 2) {
