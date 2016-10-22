@@ -135,6 +135,7 @@ public:
                 if (platform_file_delete(path))
                 {
                     _items.erase(_items.begin() + index);
+                    result = true;
                 }
             }
         }
@@ -153,19 +154,15 @@ public:
                 utf8 newPath[MAX_PATH];
                 Path::GetDirectory(newPath, sizeof(newPath), path);
                 Path::Append(newPath, sizeof(newPath), newName);
-                Path::Append(newPath, sizeof(newPath), Path::GetExtension(path));
+                String::Append(newPath, sizeof(newPath), Path::GetExtension(path));
 
                 if (platform_file_move(path, newPath))
                 {
+                    item->Name = std::string(newName);
                     item->Path = std::string(newPath);
-
                     SortItems();
 
-                    item = GetTrackItem(path);
-                    if (item != nullptr)
-                    {
-                        result = item->Path.c_str();
-                    }
+                    result = newPath;
                 }
             }
         }

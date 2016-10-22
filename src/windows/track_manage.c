@@ -139,6 +139,7 @@ static rct_window_event_list window_track_delete_prompt_events = {
 static track_design_file_ref *_trackDesignFileReference;
 
 static void window_track_delete_prompt_open();
+static void window_track_design_list_reload_tracks();
 
 /**
  *
@@ -231,6 +232,7 @@ static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *
 	if (track_repository_rename(_trackDesignFileReference->path, text)) {
 		window_close_by_class(WC_TRACK_DELETE_PROMPT);
 		window_close(w);
+		window_track_design_list_reload_tracks();
 	} else {
 		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
 	}
@@ -294,6 +296,7 @@ static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		if (track_repository_delete(_trackDesignFileReference->path)) {
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+			window_track_design_list_reload_tracks();
 		} else {
 			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
 		}
@@ -323,4 +326,12 @@ static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *d
 		STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
 		0
 	);
+}
+
+static void window_track_design_list_reload_tracks()
+{
+	rct_window * trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackListWindow != NULL) {
+		trackListWindow->track_list.reload_track_designs = true;
+	}
 }
