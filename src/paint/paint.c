@@ -35,9 +35,9 @@ static paint_string_struct * _paintLastPSString;
 
 #ifdef NO_RCT2
 paint_entry gPaintStructs[4000];
-uint32 _F1AD0C;
-uint32 _F1AD10;
-static paint_struct *_paint_struct_quadrants[512];
+static uint32 _paintQuadrantBackIndex;
+static uint32 _paintQuadrantFrontIndex;
+static paint_struct *_paintQuadrants[512];
 void *g_currently_drawn_item;
 paint_entry * gEndOfPaintStructArray;
 sint16 gUnk9DE568;
@@ -48,9 +48,9 @@ support_height gSupportSegments[9] = { 0 };
 support_height gSupport;
 
 #else
-#define _paint_struct_quadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
-#define _F1AD0C RCT2_GLOBAL(0xF1AD0C, uint32)
-#define _F1AD10 RCT2_GLOBAL(0xF1AD10, uint32)
+#define _paintQuadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
+#define _paintQuadrantBackIndex RCT2_GLOBAL(0xF1AD0C, uint32)
+#define _paintQuadrantFrontIndex RCT2_GLOBAL(0xF1AD10, uint32)
 #endif
 
 static const uint8 BoundBoxDebugColours[] = {
@@ -88,12 +88,24 @@ void paint_init(rct_drawpixelinfo * dpi)
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
 	for (int i = 0; i < 512; i++) {
-		_paint_struct_quadrants[i] = NULL;
+		_paintQuadrants[i] = NULL;
 	}
-	_F1AD0C = -1;
-	_F1AD10 = 0;
+	_paintQuadrantBackIndex = -1;
+	_paintQuadrantFrontIndex = 0;
 	gPaintPSStringHead = NULL;
 	_paintLastPSString = NULL;
+}
+
+static void paint_add_ps_to_quadrant(paint_struct * ps, sint32 positionHash)
+{
+	uint32 paintQuadrantIndex = clamp(0, positionHash / 32, countof(_paintQuadrants) - 1);
+
+	ps->var_18 = paintQuadrantIndex;
+	ps->next_quadrant_ps = _paintQuadrants[paintQuadrantIndex];
+	_paintQuadrants[paintQuadrantIndex] = ps;
+
+	_paintQuadrantBackIndex = min(_paintQuadrantBackIndex, paintQuadrantIndex);
+	_paintQuadrantFrontIndex = max(_paintQuadrantFrontIndex, paintQuadrantIndex);
 }
 
 /**
@@ -304,45 +316,22 @@ paint_struct * sub_98196C(
 
 	g_ps_F1AD28 = ps;
 
-	sint32 edi = 0;
+	sint32 positionHash = 0;
 	switch (rotation) {
-		case 0:
-			edi = coord_3d.y + coord_3d.x;
-			break;
-
-		case 1:
-			edi = coord_3d.y - coord_3d.x + 0x2000;
-			break;
-
-		case 2:
-			edi = -(coord_3d.y + coord_3d.x) + 0x4000;
-			break;
-
-		case 3:
-			edi = coord_3d.x - coord_3d.y + 0x2000;
-			break;
+	case 0:
+		positionHash = coord_3d.y + coord_3d.x;
+		break;
+	case 1:
+		positionHash = coord_3d.y - coord_3d.x + 0x2000;
+		break;
+	case 2:
+		positionHash = -(coord_3d.y + coord_3d.x) + 0x4000;
+		break;
+	case 3:
+		positionHash = coord_3d.x - coord_3d.y + 0x2000;
+		break;
 	}
-
-	if (edi < 0) {
-		edi = 0;
-	}
-
-	edi /= 32;
-	edi = min(edi, 0x1FF); // 511
-
-	ps->var_18 = edi;
-
-	paint_struct *old_ps = _paint_struct_quadrants[edi];
-	_paint_struct_quadrants[edi] = ps;
-	ps->next_quadrant_ps = old_ps;
-
-	if ((uint16)edi < _F1AD0C) {
-		_F1AD0C = edi;
-	}
-
-	if ((uint16)edi > _F1AD10) {
-		_F1AD10 = edi;
-	}
+	paint_add_ps_to_quadrant(ps, positionHash);
 
 	gNextFreePaintStruct++;
 
@@ -406,27 +395,8 @@ paint_struct * sub_98197C(
 		break;
 	}
 
-	sint16 di = attach.x + attach.y;
-
-	if (di < 0)
-		di = 0;
-
-	di /= 32;
-	if (di > 511)
-		di = 511;
-
-	ps->var_18 = di;
-	paint_struct* old_ps = _paint_struct_quadrants[di];
-	_paint_struct_quadrants[di] = ps;
-	ps->next_quadrant_ps = old_ps;
-
-	if ((uint16)di < _F1AD0C) {
-		_F1AD0C = di;
-	}
-
-	if ((uint16)di > _F1AD10) {
-		_F1AD10 = di;
-	}
+	sint32 positionHash = attach.x + attach.y;
+	paint_add_ps_to_quadrant(ps, positionHash);
 
 	gNextFreePaintStruct++;
 	return ps;
@@ -867,10 +837,10 @@ paint_struct paint_arrange_structs()
 	paint_struct psHead = { 0 };
 	paint_struct * ps = &psHead;
 	ps->next_quadrant_ps = NULL;
-	uint32 edi = _F1AD0C;
-	if (edi != UINT32_MAX) {
+	uint32 quadrantIndex = _paintQuadrantBackIndex;
+	if (quadrantIndex != UINT32_MAX) {
 		do {
-			paint_struct * ps_next = _paint_struct_quadrants[edi];
+			paint_struct * ps_next = _paintQuadrants[quadrantIndex];
 			if (ps_next != NULL) {
 				ps->next_quadrant_ps = ps_next;
 				do {
@@ -878,12 +848,13 @@ paint_struct paint_arrange_structs()
 					ps_next = ps_next->next_quadrant_ps;
 				} while (ps_next != NULL);
 			}
-		} while (++edi <= _F1AD10);
+		} while (++quadrantIndex <= _paintQuadrantFrontIndex);
 
-		paint_arrange_structs_helper(&psHead, _F1AD0C & 0xFFFF, 1 << 1);
-		uint32 eax = _F1AD0C;
-		while (++eax < _F1AD10) {
-			paint_arrange_structs_helper(&psHead, eax & 0xFFFF, 0);
+		paint_arrange_structs_helper(&psHead, _paintQuadrantBackIndex & 0xFFFF, 1 << 1);
+
+		quadrantIndex = _paintQuadrantBackIndex;
+		while (++quadrantIndex < _paintQuadrantFrontIndex) {
+			paint_arrange_structs_helper(&psHead, quadrantIndex & 0xFFFF, 0);
 		}
 	}
 	return psHead;
