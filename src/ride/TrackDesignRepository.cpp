@@ -202,12 +202,13 @@ private:
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.td6");
 
-        auto fileEnumerator = FileEnumerator(pattern, true);
-        while (fileEnumerator.Next())
+        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            const utf8 * path = fileEnumerator.GetPath();
+            const utf8 * path = scanner->GetPath();
             AddTrack(path, flags);
         }
+        delete scanner;
     }
 
     void AddTrack(const utf8 * path, uint32 flags = 0)

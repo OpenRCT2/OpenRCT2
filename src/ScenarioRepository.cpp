@@ -246,13 +246,14 @@ private:
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.sc6");
 
-        auto fileEnumerator = FileEnumerator(pattern, true);
-        while (fileEnumerator.Next())
+        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            auto path = fileEnumerator.GetPath();
-            auto fileInfo = fileEnumerator.GetFileInfo();
+            auto path = scanner->GetPath();
+            auto fileInfo = scanner->GetFileInfo();
             AddScenario(path, fileInfo->last_modified);
         }
+        delete scanner;
     }
 
     void AddScenario(const utf8 * path, uint64 timestamp)

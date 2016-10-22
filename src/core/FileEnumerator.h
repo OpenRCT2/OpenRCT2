@@ -16,42 +16,22 @@
 
 #pragma once
 
-#include <stack>
 #include "../common.h"
 
 struct file_info;
-class FileEnumerator final
+
+interface IFileScanner
 {
-private:
-    struct DirectoryState
-    {
-        utf8 *  Directory;
-        int     Handle;
-    };
+    virtual ~IFileScanner() = default;
 
-    // Enumeration options
-    utf8 *  _rootPath;
-    utf8 *  _pattern;
-    bool    _recurse;
+    virtual const file_info *   GetFileInfo() const abstract;
+    virtual const utf8 *        GetPath() const abstract;
 
-    // Enumeration state
-    int                         _fileHandle;
-    std::stack<DirectoryState>  _directoryStack;
-
-    // Current enumeration
-    file_info * _fileInfo;
-    utf8      * _path;
-
-public:
-    FileEnumerator(const utf8 * pattern, bool recurse);
-    ~FileEnumerator();
-
-    const file_info *   GetFileInfo() const { return _fileInfo; }
-    const utf8 *        GetPath() const { return _path; }
-
-    void Reset();
-    bool Next();
-
-private:
-    void CloseHandles();
+    virtual void Reset() abstract;
+    virtual bool Next() abstract;
 };
+
+namespace Path
+{
+    IFileScanner * ScanDirectory(const utf8 * pattern, bool recurse);
+}

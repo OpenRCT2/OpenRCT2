@@ -240,11 +240,11 @@ private:
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.dat");
 
-        auto fileEnumerator = FileEnumerator(pattern, true);
-        while (fileEnumerator.Next())
+        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            const file_info * enumFileInfo = fileEnumerator.GetFileInfo();
-            const utf8 * enumPath = fileEnumerator.GetPath();
+            const file_info * enumFileInfo = scanner->GetFileInfo();
+            const utf8 * enumPath = scanner->GetPath();
 
             result->TotalFiles++;
             result->TotalFileSize += enumFileInfo->size;
@@ -254,6 +254,7 @@ private:
             result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
             result->PathChecksum += GetPathChecksum(enumPath);
         }
+        delete scanner;
     }
 
     void Construct()
@@ -282,12 +283,13 @@ private:
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.dat");
 
-        auto fileEnumerator = FileEnumerator(pattern, true);
-        while (fileEnumerator.Next())
+        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            const utf8 * enumPath = fileEnumerator.GetPath();
+            const utf8 * enumPath = scanner->GetPath();
             ScanObject(enumPath);
         }
+        delete scanner;
     }
 
     void ScanObject(const utf8 * path)
