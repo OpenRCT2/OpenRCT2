@@ -129,13 +129,12 @@ if (NOT DISABLE_RCT2)
 	message("DISABLE_RCT2 implies FORCE32")
 endif()
 
-if (LAUNCHPAD_BUILD)
-	# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
-	set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-error=date-time")
-else()
-	if (FORCE32)
-		set(TARGET_M "-m32")
-	endif()
+# Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
+ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
+ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
+
+if (FORCE32)
+	set(TARGET_M "-m32")
 endif()
 
 if (FORCE32)
