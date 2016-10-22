@@ -115,7 +115,6 @@ option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags")
 option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla. On by default." ON)
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
-option(LAUNCHPAD_BUILD "Sets some build system options on launchpad.net")
 
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment")
 
