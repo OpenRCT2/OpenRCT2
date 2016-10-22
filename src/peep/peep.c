@@ -1993,11 +1993,11 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
 bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply)
 {
 	rct_peep* peep = GET_PEEP(peepnum);
+	if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP) {
+		return false;
+	}
 	switch (action) {
 		case 0: // pickup
-			if (!peep) {
-				return false;
-			}
 			if (!peep_can_be_picked_up(peep)) {
 				return false;
 			}

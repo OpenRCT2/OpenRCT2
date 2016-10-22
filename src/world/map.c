@@ -913,7 +913,9 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		return;
 	}
 
-	map_element_remove_banner_entry(map_element);
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		map_element_remove_banner_entry(map_element);
+	}
 
 	rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
 	rct_xyz16 firstTile = {
