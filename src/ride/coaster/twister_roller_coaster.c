@@ -1611,7 +1611,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	case 1:
@@ -1633,7 +1632,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			metal_a_supports_paint_setup(0, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	case 2:
@@ -1651,7 +1649,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17612, 16, 0, 2, 16, 119, height, 16, 0, height);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 168, 0x20);
 		break;
 	case 3:
@@ -1669,7 +1666,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3, height + 32);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 4:
@@ -1693,7 +1689,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17614, 0, 16, 32, 16, 3, height + 32);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 48, 0x20);
 		break;
 	case 7:
@@ -1711,7 +1706,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17615, 10, 16, 4, 16, 119, height, 10, 16, height);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 168, 0x20);
 		break;
 	case 8:
@@ -1733,7 +1727,6 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			metal_a_supports_paint_setup(0, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 72, 0x20);
 		break;
 	case 9:
@@ -1760,10 +1753,11 @@ static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSeq
 			paint_util_push_tunnel_left(height - 8, TUNNEL_7);
 			break;
 		}
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 		paint_util_set_general_support_height(height + 56, 0x20);
 		break;
 	}
+
+	track_paint_util_right_vertical_loop_segments(direction, trackSequence);
 }
 
 /** rct2: 0x008AB924 */

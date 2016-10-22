@@ -122,14 +122,24 @@ namespace Printer {
     static std::string PrintSegmentSupportHeightCall(SegmentSupportCall call) {
         std::string out = "";
 
-        int segmentsPrinted = 0;
-        for (int i = 0; i < 9; i++) {
-            if (call.segments & segment_offsets[i]) {
-                if (segmentsPrinted > 0) {
-                    out += " | ";
+        if (call.segments == SEGMENTS_ALL)
+        {
+            out += "SEGMENTS_ALL";
+        }
+        else
+        {
+            int segmentsPrinted = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                if (call.segments & segment_offsets[i])
+                {
+                    if (segmentsPrinted > 0)
+                    {
+                        out += " | ";
+                    }
+                    out += String::Format("SEGMENT_%02X", 0xB4 + 4 * i);
+                    segmentsPrinted++;
                 }
-                out += String::Format("SEGMENT_%02X", 0xB4 + 4 * i);
-                segmentsPrinted++;
             }
         }
 
