@@ -17,8 +17,15 @@
 #include "../common.h"
 
 #ifdef __WINDOWS__
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#endif
+
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+    #include <dirent.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
 #endif
 
 #include <stack>
@@ -127,7 +134,7 @@ public:
         {
             DirectoryState * state = &_directoryStack.top();
             state->Index++;
-            if (state->Index >= state->Listing.size())
+            if (state->Index >= (sint32)state->Listing.size())
             {
                 _directoryStack.pop();
             }
@@ -277,10 +284,77 @@ private:
 
 #endif // __WINDOWS__
 
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+
+class FileScannerUnix final : public FileScannerBase
+{
+public:
+    FileScannerUnix(const utf8 * pattern, bool recurse)
+        : FileScannerBase(pattern, recurse)
+    {
+    }
+
+protected:
+    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) override
+    {
+        struct dirent * * namelist;
+        int count = scandir(path, &namelist, FilterFunc, alphasort);
+        if (count > 0)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                DirectoryChild child = CreateChild(path, namelist[i]);
+                children.push_back(child);
+            }
+        }
+    }
+
+private:
+    static int FilterFunc(const struct dirent * d)
+    {
+        return 1;
+    }
+
+    static DirectoryChild CreateChild(const utf8 * directory, const struct dirent * node)
+    {
+        DirectoryChild result;
+        result.Name = std::string(node->d_name);
+        if (node->d_type & DT_DIR)
+        {
+            result.Type = DCT_DIRECTORY;
+        }
+        else
+        {
+            result.Type = DCT_FILE;
+
+            // Get the full path of the file
+            size_t pathSize = String::SizeOf(directory) + 1 + String::SizeOf(node->d_name) + 1;
+            utf8 * path = Memory::Allocate<utf8>(pathSize);
+            String::Set(path, pathSize, directory);
+            Path::Append(path, pathSize, node->d_name);
+
+            struct stat statInfo;
+            int statRes = stat(path, &statInfo);
+            if (statRes != -1)
+            {
+                result.Size = statInfo.st_size;
+                result.LastModified = statInfo.st_mtime;
+            }
+
+            Memory::Free(path);
+        }
+        return result;
+    }
+};
+
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+
 IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 {
 #ifdef __WINDOWS__
     return new FileScannerWindows(pattern, recurse);
+#elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+    return new FileScannerUnix(pattern, recurse);
 #endif
 }
 
