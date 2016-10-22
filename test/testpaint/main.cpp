@@ -416,8 +416,7 @@ static void TestGeneralSupportHeightCall() {
 
 	SupportCall groupD[4] = {callB, callC, callB, callA};
 	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupD, &out);
-	assert(success);
-	assert(out == callB);
+	assert(!success);
 
 	SupportCall groupE[4] = {callD, callC, callB, callA};
 	success = GeneralSupportHeightCall::FindMostCommonSupportCall(groupE, &out);
