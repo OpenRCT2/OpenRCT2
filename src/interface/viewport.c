@@ -52,7 +52,6 @@ uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-paint_entry *unk_EE7884;
 paint_entry *gNextFreePaintStruct;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
@@ -69,7 +68,8 @@ static sint16 _unk9AC14E;
 static uint16 _unk9AC154;
 static sint16 _unk9ABDAE;
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi);
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags);
+static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -671,14 +671,6 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 #endif
 }
 
-/** rct2: 0x0098195C */
-const sint32 WeatherColours[] = {
-	-1,
-	0x2000000 | 49,
-	0x2000000 | 50,
-	0x2000000 | 47,
-};
-
 /**
  *
  *  rct2: 0x00685CBF
@@ -691,8 +683,7 @@ const sint32 WeatherColours[] = {
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
 {
-	gCurrentViewportFlags = viewport->flags;
-
+	uint32 viewFlags = viewport->flags;
 	uint16 width = right - left;
 	uint16 height = bottom - top;
 	uint16 bitmask = 0xFFFF & (0xFFFF << viewport->zoom);
@@ -740,44 +731,52 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
 		}
 		dpi2.width = paintRight - dpi2.x;
 
-		viewport_paint_column(&dpi2);
+		viewport_paint_column(&dpi2, viewFlags);
 	}
 }
 
-static void viewport_paint_column(rct_drawpixelinfo * dpi)
+static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 {
-	if (gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
-		uint8 colour = 0x0A;
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES){
+	gCurrentViewportFlags = viewFlags;
+
+	if (viewFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+		uint8 colour = 10;
+		if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) {
 			colour = 0;
 		}
 		gfx_clear(dpi, colour);
 	}
-	gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-	unk_140E9A8 = dpi;
-	painter_setup();
-	viewport_paint_setup();
-	sub_688217();
-	paint_quadrant_ps();
+	paint_init(dpi);
+	paint_generate_structs(dpi);
+	paint_struct ps = paint_arrange_structs();
+	paint_draw_structs(dpi, &ps, viewFlags);
 
-	int weather_colour = WeatherColours[gClimateCurrentWeatherGloom];
-	if (
-		(weather_colour != -1)
-		&& (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
-		&& (!gTrackDesignSaveMode)
-		&& (gConfigGeneral.render_weather_gloom)
+	if (gConfigGeneral.render_weather_gloom &&
+		!gTrackDesignSaveMode &&
+		!(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
 	) {
+		viewport_paint_weather_gloom(dpi);
+	}
+
+	if (gPaintPSStringHead != NULL) {
+		paint_draw_money_structs(dpi, gPaintPSStringHead);
+	}
+}
+
+static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
+{
+	uint8 gloom = gClimateCurrentWeatherGloom;
+	if (gloom != 0) {
+		uint32 colour = ClimateWeatherGloomColours[gloom];
 		gfx_fill_rect(
 			dpi,
 			dpi->x,
 			dpi->y,
 			dpi->width + dpi->x - 1,
 			dpi->height + dpi->y - 1,
-			weather_colour
+			colour
 		);
 	}
-
-	viewport_draw_money_effects();
 }
 
 /**
@@ -1323,15 +1322,11 @@ static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
  *
  *  rct2: 0x0068862C
  */
-static void sub_68862C()
+static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
 {
-	rct_drawpixelinfo *dpi = unk_140E9A8;
-	paint_struct *ps = &unk_EE7884->basic, *old_ps, *next_ps;
-
 	while ((ps = ps->next_quadrant_ps) != NULL) {
-		old_ps = ps;
-
-		next_ps = ps;
+		paint_struct * old_ps = ps;
+		paint_struct * next_ps = ps;
 		while (next_ps != NULL) {
 			ps = next_ps;
 			if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
@@ -1394,12 +1389,10 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->zoom_level = _viewportDpi1.zoom_level;
 			dpi->x = _viewportDpi1.x;
 			dpi->width = 1;
-			gEndOfPaintStructArray = &gPaintStructs[4000 - 1];
-			unk_140E9A8 = dpi;
-			painter_setup();
-			viewport_paint_setup();
-			sub_688217();
-			sub_68862C();
+			paint_init(dpi);
+			paint_generate_structs(dpi);
+			paint_struct ps = paint_arrange_structs();
+			sub_68862C(dpi, &ps);
 		}
 		if (viewport != NULL) *viewport = myviewport;
 	}

@@ -105,12 +105,10 @@ extern uint8 gSavedViewZoom;
 extern uint8 gSavedViewRotation;
 
 #ifdef NO_RCT2
-extern paint_entry *unk_EE7884;
 extern paint_entry *gNextFreePaintStruct;
 extern uint8 gCurrentRotation;
 extern uint32 gCurrentViewportFlags;
 #else
-	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_entry*)
 	#define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_entry*)
 	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 	#define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint32)
@@ -152,9 +150,6 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 
 void sub_68B2B7(int x, int y);
-void painter_setup();
-void paint_quadrant_ps();
-void sub_688217();
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
