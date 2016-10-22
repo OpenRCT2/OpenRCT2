@@ -48,8 +48,8 @@ struct TrackRepositoryItem
     uint32 Flags;
 };
 
-constexpr uint32 TRACK_REPOISTORY_MAGIC_NUMBER = 0x58444954;
-constexpr uint16 TRACK_REPOISTORY_VERSION = 1;
+constexpr uint32 TRACK_REPOSITORY_MAGIC_NUMBER = 0x58444954;
+constexpr uint16 TRACK_REPOSITORY_VERSION = 1;
 
 enum TRACK_REPO_ITEM_FLAGS
 {
@@ -253,8 +253,8 @@ private:
 
             // Write header
             TrackRepositoryHeader header = { 0 };
-            header.MagicNumber = TRACK_REPOISTORY_MAGIC_NUMBER;
-            header.Version = TRACK_REPOISTORY_VERSION;
+            header.MagicNumber = TRACK_REPOSITORY_MAGIC_NUMBER;
+            header.Version = TRACK_REPOSITORY_VERSION;
             header.NumItems = (uint32)_items.size();
             fs.WriteValue(header);
 
