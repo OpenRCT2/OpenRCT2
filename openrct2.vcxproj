@@ -46,7 +46,7 @@
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Diagnostics.cpp" />
-    <ClCompile Include="src\core\FileEnumerator.cpp" />
+    <ClCompile Include="src\core\FileScanner.cpp" />
     <ClCompile Include="src\core\Guard.cpp" />
     <ClCompile Include="src\core\IStream.cpp" />
     <ClCompile Include="src\core\Json.cpp" />
@@ -370,7 +370,7 @@
     <ClInclude Include="src\core\Console.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
-    <ClInclude Include="src\core\FileEnumerator.h" />
+    <ClInclude Include="src\core\FileScanner.h" />
     <ClInclude Include="src\core\FileStream.hpp" />
     <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />

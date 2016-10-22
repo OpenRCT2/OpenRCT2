@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <stack>
-#include "FileEnumerator.h"
+#include "FileScanner.h"
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"

@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 #include "../core/Console.hpp"
-#include "../core/FileEnumerator.h"
+#include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"

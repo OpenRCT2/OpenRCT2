@@ -414,7 +414,7 @@
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45B202D1D1E92DB00B67CC7 /* custom_currency.c in Sources */ = {isa = PBXBuildFile; fileRef = D45B202C1D1E92DB00B67CC7 /* custom_currency.c */; };
-		D464FEB91D31A64100CBABAC /* FileEnumerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEB71D31A64100CBABAC /* FileEnumerator.cpp */; };
+		D464FEB91D31A64100CBABAC /* FileScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEB71D31A64100CBABAC /* FileScanner.cpp */; };
 		D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBA1D31A65300CBABAC /* IStream.cpp */; };
 		D464FEBE1D31A66E00CBABAC /* MemoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */; };
 		D464FEC01D31A68800CBABAC /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBF1D31A68800CBABAC /* Image.cpp */; };
@@ -1089,8 +1089,8 @@
 		D45A39571CF3007A00659A24 /* speexdsp_config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_config_types.h; sourceTree = "<group>"; };
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
 		D45B202C1D1E92DB00B67CC7 /* custom_currency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = custom_currency.c; sourceTree = "<group>"; };
-		D464FEB71D31A64100CBABAC /* FileEnumerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileEnumerator.cpp; sourceTree = "<group>"; };
-		D464FEB81D31A64100CBABAC /* FileEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileEnumerator.h; sourceTree = "<group>"; };
+		D464FEB71D31A64100CBABAC /* FileScanner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileScanner.cpp; sourceTree = "<group>"; };
+		D464FEB81D31A64100CBABAC /* FileScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileScanner.h; sourceTree = "<group>"; };
 		D464FEBA1D31A65300CBABAC /* IStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IStream.cpp; sourceTree = "<group>"; };
 		D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryStream.cpp; sourceTree = "<group>"; };
 		D464FEBD1D31A66E00CBABAC /* MemoryStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryStream.h; sourceTree = "<group>"; };
@@ -1547,8 +1547,8 @@
 				D44270E31CC81B3200D84D28 /* Diagnostics.cpp */,
 				D44270E41CC81B3200D84D28 /* Diagnostics.hpp */,
 				D44270E51CC81B3200D84D28 /* Exception.hpp */,
-				D464FEB71D31A64100CBABAC /* FileEnumerator.cpp */,
-				D464FEB81D31A64100CBABAC /* FileEnumerator.h */,
+				D464FEB71D31A64100CBABAC /* FileScanner.cpp */,
+				D464FEB81D31A64100CBABAC /* FileScanner.h */,
 				D44270E61CC81B3200D84D28 /* FileStream.hpp */,
 				D44270E71CC81B3200D84D28 /* Guard.cpp */,
 				D44270E81CC81B3200D84D28 /* Guard.hpp */,
@@ -2584,7 +2584,7 @@
 				D44272361CC81B3200D84D28 /* object_list.c in Sources */,
 				D44272581CC81B3200D84D28 /* demolish_ride_prompt.c in Sources */,
 				D442723E1CC81B3200D84D28 /* posix.c in Sources */,
-				D464FEB91D31A64100CBABAC /* FileEnumerator.cpp in Sources */,
+				D464FEB91D31A64100CBABAC /* FileScanner.cpp in Sources */,
 				D44271F91CC81B3200D84D28 /* CommandLine.cpp in Sources */,
 				00EFEE721CF1D80B0035213B /* NetworkKey.cpp in Sources */,
 				C686F90B1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c in Sources */,

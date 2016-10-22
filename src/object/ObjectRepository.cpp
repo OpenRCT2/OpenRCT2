@@ -21,7 +21,7 @@
 
 #include "../common.h"
 #include "../core/Console.hpp"
-#include "../core/FileEnumerator.h"
+#include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
