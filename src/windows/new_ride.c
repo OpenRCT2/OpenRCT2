@@ -27,13 +27,14 @@
 #include "../object.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
-#include "../ride/track.h"
-#include "../ride/track_design.h"
-#include "../world/scenery.h"
 #include "../ride/ride_data.h"
-#include "../sprites.h"
+#include "../ride/track.h"
 #include "../ride/track_data.h"
+#include "../ride/track_design.h"
+#include "../ride/TrackDesignRepository.h"
+#include "../sprites.h"
 #include "../util/util.h"
+#include "../world/scenery.h"
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
@@ -857,7 +858,7 @@ static int get_num_track_designs(ride_list_item item)
 		}
 	}
 
-	return (int)track_design_index_get_count_for_ride(item.type, entryPtr);
+	return (int)track_repository_get_count_for_ride(item.type, entryPtr);
 }
 
 /**

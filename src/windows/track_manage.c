@@ -21,6 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
+#include "../ride/TrackDesignRepository.h"
 #include "../util/util.h"
 #include "error.h"
 
@@ -217,11 +218,21 @@ static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *
 		return;
 	}
 
-	if (track_design_index_rename(_trackDesignFileReference->path, text)) {
+	if (str_is_null_or_empty(text)) {
+		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
+		return;
+	}
+
+	if (!filename_valid_characters(text)) {
+		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
+		return;
+	}
+
+	if (track_repository_rename(_trackDesignFileReference->path, text)) {
 		window_close_by_class(WC_TRACK_DELETE_PROMPT);
 		window_close(w);
 	} else {
-		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
+		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
 	}
 }
 
@@ -281,10 +292,10 @@ static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_PROMPT_DELETE:
 		window_close(w);
-		if (track_design_index_delete(_trackDesignFileReference->path)) {
+		if (track_repository_delete(_trackDesignFileReference->path)) {
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 		} else {
-			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, gGameCommandErrorText);
+			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
 		}
 		break;
 	}

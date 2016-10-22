@@ -240,11 +240,11 @@
     <ClCompile Include="src\ride\thrill\top_spin.c" />
     <ClCompile Include="src\ride\thrill\twist.c" />
     <ClCompile Include="src\ride\track.c" />
+    <ClCompile Include="src\ride\TrackDesignRepository.cpp" />
     <ClCompile Include="src\ride\track_data.c" />
     <ClCompile Include="src\ride\track_data_old.c" />
     <ClCompile Include="src\ride\track_design.c" />
     <ClCompile Include="src\ride\track_design_save.c" />
-    <ClCompile Include="src\ride\track_design_index.c" />
     <ClCompile Include="src\ride\track_paint.c" />
     <ClCompile Include="src\ride\transport\chairlift.c" />
     <ClCompile Include="src\ride\transport\lift.c" />
@@ -492,6 +492,7 @@
     <ClInclude Include="src\ride\ride_ratings.h" />
     <ClInclude Include="src\ride\station.h" />
     <ClInclude Include="src\ride\track.h" />
+    <ClInclude Include="src\ride\TrackDesignRepository.h" />
     <ClInclude Include="src\ride\track_data.h" />
     <ClInclude Include="src\ride\track_design.h" />
     <ClInclude Include="src\ride\track_paint.h" />
