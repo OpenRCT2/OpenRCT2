@@ -45,10 +45,16 @@ struct TrackRepositoryItem
     std::string Path;
     uint8 RideType = 0;
     std::string ObjectEntry;
+    uint32 Flags;
 };
 
 constexpr uint32 TRACK_REPOISTORY_MAGIC_NUMBER = 0x58444954;
 constexpr uint16 TRACK_REPOISTORY_VERSION = 1;
+
+enum TRACK_REPO_ITEM_FLAGS
+{
+    TRIF_READ_ONLY = (1 << 0),
+};
 
 class TrackDesignRepository : public ITrackDesignRepository
 {
@@ -108,7 +114,7 @@ public:
         utf8 directory[MAX_PATH];
 
         GetRCT2Directory(directory, sizeof(directory));
-        Scan(directory);
+        Scan(directory, TRIF_READ_ONLY);
 
         GetUserDirectory(directory, sizeof(directory));
         Scan(directory);
@@ -120,12 +126,16 @@ public:
     bool Delete(const utf8 * path) override
     {
         bool result = false;
-        if (platform_file_delete(path))
+        size_t index = GetTrackIndex(path);
+        if (index != SIZE_MAX)
         {
-            size_t index = GetTrackIndex(path);
-            if (index != SIZE_MAX)
+            const TrackRepositoryItem * item = &_items[index];
+            if (!(item->Flags & TRIF_READ_ONLY))
             {
-                _items.erase(_items.begin() + index);
+                if (platform_file_delete(path))
+                {
+                    _items.erase(_items.begin() + index);
+                }
             }
         }
         return result;
@@ -138,22 +148,24 @@ public:
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem * item = &_items[index];
-
-            utf8 newPath[MAX_PATH];
-            Path::GetDirectory(newPath, sizeof(newPath), path);
-            Path::Append(newPath, sizeof(newPath), newName);
-            Path::Append(newPath, sizeof(newPath), ".td6");
-
-            if (platform_file_move(path, newPath))
+            if (!item->Flags & TRIF_READ_ONLY)
             {
-                item->Path = std::string(newPath);
+                utf8 newPath[MAX_PATH];
+                Path::GetDirectory(newPath, sizeof(newPath), path);
+                Path::Append(newPath, sizeof(newPath), newName);
+                Path::Append(newPath, sizeof(newPath), ".td6");
 
-                SortItems();
-
-                item = GetTrackItem(path);
-                if (item != nullptr)
+                if (platform_file_move(path, newPath))
                 {
-                    result = item->Path.c_str();
+                    item->Path = std::string(newPath);
+
+                    SortItems();
+
+                    item = GetTrackItem(path);
+                    if (item != nullptr)
+                    {
+                        result = item->Path.c_str();
+                    }
                 }
             }
         }
@@ -184,7 +196,7 @@ public:
     }
 
 private:
-    void Scan(const utf8 * directory)
+    void Scan(const utf8 * directory, uint32 flags = 0)
     {
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory);
@@ -194,11 +206,11 @@ private:
         while (fileEnumerator.Next())
         {
             const utf8 * path = fileEnumerator.GetPath();
-            AddTrack(path);
+            AddTrack(path, flags);
         }
     }
 
-    void AddTrack(const utf8 * path)
+    void AddTrack(const utf8 * path, uint32 flags = 0)
     {
         rct_track_td6 * td6 = track_design_open(path);
         if (td6 != nullptr)
@@ -208,6 +220,7 @@ private:
             item.Path = std::string(path);
             item.RideType = td6->type;
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
+            item.Flags = flags;
             _items.push_back(item);
             track_design_dispose(td6);
         }
@@ -252,6 +265,7 @@ private:
                 fs.WriteString(item.Path);
                 fs.WriteValue(item.RideType);
                 fs.WriteString(item.ObjectEntry);
+                fs.WriteValue(item.Flags);
             }
         }
         catch (Exception ex)
