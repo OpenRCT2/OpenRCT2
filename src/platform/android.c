@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "../config.h"
 #include "../localisation/language.h"
+#include "../util/util.h"
 #include <wchar.h>
 #include <jni.h>
 
@@ -40,18 +41,18 @@ bool platform_check_steam_overlay_attached() {
     return false;
 }
 
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
     STUB();
     return false;
 }
 
-void platform_get_exe_path(utf8 *outPath)
+void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
-    strcpy(outPath, "/sdcard/openrct2");
+    safe_strcpy(outPath, "/sdcard/openrct2", outSize);
 }
 
-void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator) {
-    strcpy(buffer, "/sdcard/openrct2-user/");
+void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
+    safe_strcpy(buffer, "/sdcard/openrct2-user/", size);
 }
 
 void platform_show_messagebox(char *message)
@@ -66,14 +67,14 @@ utf8 *platform_open_directory_browser(utf8 *title)
     return "/sdcard/rct2";
 }
 
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
     STUB();
     return false;
 }
 
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
-    strcpy(out, "/sdcard/openrct2");
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
+    safe_strcpy(out, "/sdcard/openrct2", size);
 }
 
 

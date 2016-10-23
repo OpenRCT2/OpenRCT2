@@ -236,7 +236,7 @@ void core_init();
 	__declspec(dllexport) sint32 StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, sint32 nCmdShow);
 #endif // __WINDOWS__
 
-#if defined(__LINUX__) || defined(__MACOSX__) || defined(__FREEBSD__)
+#if defined(__LINUX__) || defined(__MACOSX__) || defined(__FREEBSD__) || defined(__ANDROID__)
 	void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
 	void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
