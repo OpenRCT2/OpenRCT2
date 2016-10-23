@@ -16,21 +16,8 @@
 
 #include "../../common.h"
 #include "../coaster/junior_roller_coaster.h"
-#include "../../common.h"
-#include "../../interface/viewport.h"
-#include "../../paint/supports.h"
-#include "../../paint/paint.h"
 #include "../track.h"
 #include "../track_paint.h"
-
-static const uint8 water_rc_diag_support_segment[] = {1, 0, 2, 3};
-
-static const int water_rc_diag_blocked_segments[] = {
-	SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
-	SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
-	SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
-	SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8
-};
 
 static void water_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {

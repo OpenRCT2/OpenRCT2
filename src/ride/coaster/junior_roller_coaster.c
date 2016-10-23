@@ -1804,13 +1804,9 @@ void junior_rc_paint_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-void junior_rc_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, uint8 rideType) {
-	rct_ride * ride = get_ride(rideIndex);
-	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-	uint32 imageId = entranceStyle->base_image_id;
-	if (!(gTrackColours[SCHEME_MISC] & (1 << 29))) {
-		imageId &= 0x7FFFF;
-	}
+void junior_rc_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, uint8 rideType)
+{
+	uint32 imageId;
 
 	bool isBraked = (bool)(mapElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
 
@@ -1917,8 +1913,6 @@ void junior_rc_paint_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequenc
 	else {
 		paint_util_push_tunnel_left(tunnelHeight, tunnelType);
 	}
-
-	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 
 	if (track_paint_util_should_paint_supports(gPaintMapPosition)) {
 		int supportType = direction & 1 ? 2 : 1;
