@@ -85,7 +85,7 @@ target_link_libraries(SDL2_ttf SDL2 freetype)
 include(ExternalProject)
 ExternalProject_Add(png_ext
     PREFIX "${CMAKE_BINARY_DIR}/png"
-    URL ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.25.tar.gz
+    URL http://download.sourceforge.net/libpng/libpng-1.6.26.tar.gz
 
     CMAKE_CACHE_ARGS
       -DCMAKE_MAKE_PROGRAM:STRING=${CMAKE_MAKE_PROGRAM}
