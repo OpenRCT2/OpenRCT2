@@ -311,7 +311,12 @@ void game_update()
 	}
 
 	// Always perform autosave check, even when paused
-	scenario_autosave_check();
+	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) &&
+		!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) &&
+		!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+	) {
+		scenario_autosave_check();
+	}
 
 	window_dispatch_update_all();
 
@@ -1009,9 +1014,14 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 
 void game_autosave()
 {
-	utf8 path[MAX_PATH];
-	utf8 backupPath[MAX_PATH];
-	utf8 timeName[34];
+	const char * subDirectory = "save";
+	const char * fileExtension = ".sv6";
+	uint32 saveFlags = 0x80000000;
+	if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
+		subDirectory = "landscape";
+		fileExtension = ".sc6";
+		saveFlags |= 2;
+	}
 
 	// retrieve current time
 	rct2_date currentDate;
@@ -1019,15 +1029,21 @@ void game_autosave()
 	rct2_time currentTime;
 	platform_get_time_local(&currentTime);
 
-	snprintf(timeName, 34, "autosave_%d-%02d-%02d_%02d-%02d-%02d.sv6", currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second);
+	utf8 timeName[34];
+	snprintf(timeName, 34, "autosave_%d-%02d-%02d_%02d-%02d-%02d%s",
+		currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute,currentTime.second,
+		fileExtension);
 
 	limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP);
 
-	platform_get_user_directory(path, "save", sizeof(path));
+	utf8 path[MAX_PATH];
+	utf8 backupPath[MAX_PATH];
+	platform_get_user_directory(path, subDirectory, sizeof(path));
 	safe_strcpy(backupPath, path, sizeof(backupPath));
-
 	safe_strcat_path(path, timeName, sizeof(path));
-	safe_strcat_path(backupPath, "autosave.sv6.bak", sizeof(backupPath));
+	safe_strcat_path(backupPath, "autosave", sizeof(backupPath));
+	safe_strcat(backupPath, fileExtension, sizeof(backupPath));
+	safe_strcat(backupPath, ".bak", sizeof(backupPath));
 
 	if (platform_file_exists(path)) {
 		platform_file_copy(path, backupPath, true);
@@ -1035,7 +1051,7 @@ void game_autosave()
 
 	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
 	if (rw != NULL) {
-		scenario_save(rw, 0x80000000);
+		scenario_save(rw, saveFlags);
 		SDL_RWclose(rw);
 	}
 }
