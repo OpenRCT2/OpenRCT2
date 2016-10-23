@@ -101,7 +101,11 @@ public:
     ~FileScannerBase() override
     {
         Memory::Free(_rootPath);
-        Memory::FreeArray(_patterns, _numPatterns);
+        for (size_t i = 0; i < _numPatterns; i++)
+        {
+            Memory::Free(_patterns[i]);
+        }
+        Memory::Free(_patterns);
         Memory::Free(_currentPath);
         Memory::Free(_currentFileInfo);
     }
