@@ -143,6 +143,17 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 
 #endif // NO_RCT2
 
+void platform_windows_open_console()
+{
+	if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
+		AllocConsole();
+	}
+
+	freopen("CONIN$", "r", stdin);
+	freopen("CONOUT$", "w", stdout);
+	freopen("CONOUT$", "w", stderr);
+}
+
 utf8 **windows_get_command_line_args(int *outNumArgs)
 {
 	int argc;
