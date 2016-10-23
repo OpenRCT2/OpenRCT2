@@ -311,7 +311,9 @@ protected:
                     DirectoryChild child = CreateChild(path, node);
                     children.push_back(child);
                 }
+                free(namelist[i]);
             }
+            free(namelist);
         }
     }
 
