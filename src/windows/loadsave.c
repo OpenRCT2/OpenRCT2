@@ -701,8 +701,26 @@ static void save_path(utf8 **config_str, const char *path)
 	config_save_default();
 }
 
+static bool is_valid_path(const char * path)
+{
+	char filename[MAX_PATH];
+	safe_strcpy(filename, path_get_filename(path), sizeof(filename));
+
+	// HACK This is needed because tracks get passed through with td?
+	//      I am sure this will change eventually to use the new FileScanner
+	//      which handles multiple patterns
+	path_remove_extension(filename);
+
+	return filename_valid_characters(filename);
+}
+
 static void window_loadsave_select(rct_window *w, const char *path)
 {
+	if (!is_valid_path(path)) {
+		window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+		return;
+	}
+
 	SDL_RWops* rw;
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
