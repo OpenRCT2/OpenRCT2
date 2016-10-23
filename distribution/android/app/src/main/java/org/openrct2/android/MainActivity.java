@@ -1,11 +1,13 @@
 package org.openrct2.android;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -16,43 +18,60 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MainActivity extends SDLActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "OpenRCT2";
+    private boolean assetsCopied = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (hasRequiredPermissions()) {
+            startGame();
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean canRead = false;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            canRead = true;
-        }
+        super.onCreate(savedInstanceState);
 
-        boolean canWrite = false;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            canWrite = true;
-        }
 
-        if (!canRead || !canWrite) {
+        if (!hasRequiredPermissions()) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            return;
+        } else {
+            startGame();
+        }
+    }
+
+    private boolean hasRequiredPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            return false;
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void startGame() {
+        copyAssets();
+        startActivity(new Intent(this, GameActivity.class));
+        finish();
+    }
+
+    private void copyAssets() {
         File dataDir = new File("/sdcard/openrct2/");
         try {
             copyAsset(getAssets(), "data", dataDir, "");
         } catch (IOException e) {
             Log.e(TAG, "Error extracting files", e);
-            finish();
             return;
         }
 
-
-        super.onCreate(savedInstanceState);
+        assetsCopied = true;
     }
 
     private void copyAsset(AssetManager assets, String srcPath, File dataDir, String destPath) throws IOException {
@@ -78,26 +97,6 @@ public class MainActivity extends SDLActivity {
         for (String fileName : list) {
             copyAsset(assets, srcPath + File.separator + fileName, dataDir, destPath + File.separator + fileName);
         }
-    }
-
-    public float getDefaultScale() {
-        return getResources().getDisplayMetrics().density;
-    }
-
-
-    @Override
-    protected String[] getLibraries() {
-        return new String[]{
-                "speexdsp",
-                "jansson",
-
-                "SDL2-2.0",
-
-                "freetyped",
-                "SDL2_ttf",
-
-                "openrct2"
-        };
     }
 
 }
