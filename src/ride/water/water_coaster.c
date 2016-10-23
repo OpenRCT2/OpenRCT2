@@ -148,7 +148,7 @@ static void water_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 tra
 	water_rc_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-#pragma mark - 5 tile turns
+// 5 tile turns
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
@@ -171,7 +171,7 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_down(uint8 rideInde
 	water_rc_track_left_quarter_turn_5_tiles_25_deg_up(rideIndex, left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction + 3) % 4, height, mapElement);
 }
 
-#pragma mark - 3 tile turns
+// 3 tile turns
 
 static void water_rc_track_right_quarter_turn_3_tiles_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
