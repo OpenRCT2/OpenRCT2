@@ -103,6 +103,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_BUTTON_MOVE_UP,
 	WIDX_BUTTON_ROTATE,
 	WIDX_BUTTON_SORT,
+	WIDX_BUTTON_COPY,
+	WIDX_BUTTON_PASTE,
 	WIDX_COLUMN_TYPE,
 	WIDX_COLUMN_BASEHEIGHT,
 	WIDX_COLUMN_CLEARANCEHEIGHT,
@@ -259,6 +261,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		STR_DOWN,		  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP },	/* Move up */				\
 	{ WWT_FLATBTN,		1,  BX - BS * 3,	BW - BS * 3,		BY,				BH,			SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP },	/* Rotate button */			\
 	{ WWT_FLATBTN,		1,  BX - BS * 4,	BW - BS * 4,		BY,				BH,			SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP },	    /* Sort button */			\
+	{ WWT_FLATBTN,		1,  BX - BS * 5,	BW - BS * 5,		BY,				BH,			SPR_G2_COPY,      STR_TILE_INSPECTOR_SORT_TIP },	    /* Copy button */			\
+	{ WWT_FLATBTN,		1,  BX - BS * 6,	BW - BS * 6,		BY,				BH,			SPR_G2_PASTE,     STR_TILE_INSPECTOR_SORT_TIP },	    /* Paste button */			\
 	/* Column headers */																																						\
 	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_NONE,	STR_NONE },													/* Type */					\
 	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_BASE_HEIGHT },							/* Base height */			\
@@ -453,6 +457,8 @@ static unsigned int windowTileInspectorTileY;
 static bool windowTileInspectorTileSelected = false;
 static int windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
+static bool windowTileInspectorElementCopied = false;
+static rct_map_element tileInspectorCopiedElement;
 
 static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w);
 static void window_tile_inspector_load_tile(rct_window* w);
@@ -461,6 +467,8 @@ static void window_tile_inspector_swap_elements(sint16 first, sint16 second);
 static void window_tile_inspector_remove_element(int index);
 static void window_tile_inspector_rotate_element(int index);
 static void window_tile_inspector_sort_elements(rct_window *w);
+static void window_tile_inspector_copy_element(rct_window *w);
+static void window_tile_inspector_paste_element(rct_window *w);
 static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, int cornerIndex);
 static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset);
 static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain);
@@ -515,19 +523,19 @@ static rct_window_event_list windowTileInspectorEvents = {
 
 static uint64 windowTileInspectorEnabledWidgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE_BUTTON),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_FENCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE) | (1ULL << WIDX_FENCE_DROPDOWN_SLOPE_BUTTON),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_CORRUPT_BUTTON_CLAMP),
 };
 
 static uint64 windowTileInspectorDisabledWidgets[] = {
-	(1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
 	0,
 	0,
 	0,
@@ -707,6 +715,26 @@ static void window_tile_inspector_sort_elements(rct_window *w) {
 			otherElement--;
 		}
 	}
+}
+
+static void window_tile_inspector_copy_element(rct_window *w) {
+	// Copy value, in case the element gets moved
+	tileInspectorCopiedElement = *window_tile_inspector_get_selected_element(w);
+	windowTileInspectorElementCopied = true;
+}
+
+static void window_tile_inspector_paste_element(rct_window *w) {
+	rct_map_element *const pastedElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, tileInspectorCopiedElement.base_height, 0);
+	bool lastForTile = map_element_is_last_for_tile(pastedElement);
+	*pastedElement = tileInspectorCopiedElement;
+	pastedElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
+	if (lastForTile) {
+		pastedElement->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+	}
+
+	// Make pasted element selected
+	const rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+	w->selected_list_item = (sint16)(pastedElement - mapElement);
 }
 
 static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, int cornerIndex) {
@@ -1008,6 +1036,17 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
 		window_invalidate(w);
+		break;
+	case WIDX_BUTTON_COPY:
+		window_tile_inspector_copy_element(w);
+		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+		widget_invalidate(w, WIDX_BUTTON_PASTE);
+		break;
+	case WIDX_BUTTON_PASTE:
+		window_tile_inspector_paste_element(w);
+		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
+		windowTileInspectorElementCount++;
+		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_BUTTON_MOVE_DOWN:
 		window_tile_inspector_swap_elements(w->selected_list_item, w->selected_list_item + 1);
@@ -1445,6 +1484,14 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 	widget_set_enabled(w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < windowTileInspectorElementCount - 1));
 	widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
 
+	// Copy button
+	widget_set_enabled(w, WIDX_BUTTON_COPY, w->selected_list_item >= 0);
+	widget_invalidate(w, WIDX_BUTTON_COPY);
+
+	// Paste button
+	widget_set_enabled(w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
+	widget_invalidate(w, WIDX_BUTTON_PASTE);
+
 	// Page widgets
 	switch (w->page) {
 	case PAGE_FENCE: {
@@ -1452,6 +1499,7 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 		const uint8 fenceType = mapElement->properties.fence.type;
 		const rct_wall_scenery_entry wallEntry = get_wall_entry(fenceType)->wall;
 		const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+		// Fence slope dropdown
 		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE, canBeSloped);
 		widget_invalidate(w, WIDX_FENCE_DROPDOWN_SLOPE);
 		widget_set_enabled(w, WIDX_FENCE_DROPDOWN_SLOPE_BUTTON, canBeSloped);
