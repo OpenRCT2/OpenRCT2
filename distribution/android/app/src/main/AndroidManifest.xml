@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name="org.openrct2.android.GameActivity"
-            android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation|screenSize">
 
         </activity>
     </application>
