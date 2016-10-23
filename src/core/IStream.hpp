@@ -107,6 +107,7 @@ interface IStream
     }
 
     utf8 * ReadString();
+    std::string ReadStdString();
     void WriteString(const utf8 * str);
     void WriteString(const std::string &string);
 };
