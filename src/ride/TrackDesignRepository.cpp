@@ -284,10 +284,10 @@ private:
                 for (uint32 i = 0; i < header.NumItems; i++)
                 {
                     TrackRepositoryItem item;
-                    item.Name = fs.ReadString();
-                    item.Path = fs.ReadString();
+                    item.Name = fs.ReadStdString();
+                    item.Path = fs.ReadStdString();
                     item.RideType = fs.ReadValue<uint8>();
-                    item.ObjectEntry = fs.ReadString();
+                    item.ObjectEntry = fs.ReadStdString();
                     item.Flags = fs.ReadValue<uint32>();
                     _items.push_back(item);
                 }

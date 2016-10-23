@@ -64,7 +64,7 @@ static rct_window_event_list window_tooltip_events = {
 	NULL
 };
 
-static utf8 _tooltipText[512];
+static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static sint16 _tooltipNumLines;
 
 void window_tooltip_reset(int x, int y)

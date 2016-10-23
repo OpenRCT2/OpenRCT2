@@ -35,6 +35,21 @@ utf8 * IStream::ReadString()
     return resultString;
 }
 
+std::string IStream::ReadStdString()
+{
+    std::vector<utf8> result;
+
+    uint8 ch;
+    while ((ch = ReadValue<uint8>()) != 0)
+    {
+        result.push_back(ch);
+    }
+    result.push_back(0);
+
+    std::string resultString(result.data(), result.data() + result.size());
+    return resultString;
+}
+
 void IStream::WriteString(const utf8 * str)
 {
     if (str == nullptr)
