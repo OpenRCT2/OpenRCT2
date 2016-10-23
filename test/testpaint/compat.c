@@ -165,3 +165,5 @@ bool track_element_is_inverted(rct_map_element *trackElement)
 {
 	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
+
+uint8 gClipHeight = 255;
