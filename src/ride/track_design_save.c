@@ -28,6 +28,7 @@
 #include "track.h"
 #include "track_data.h"
 #include "track_design.h"
+#include "TrackDesignRepository.h"
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 
@@ -128,7 +129,7 @@ static void track_design_save_callback(int result) {
 	free(_trackDesign);
 	
 	if (result == MODAL_RESULT_OK) {
-		track_design_index_create();
+		track_repository_scan();
 	}
 	gfx_invalidate_screen();
 }

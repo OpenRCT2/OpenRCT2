@@ -31,6 +31,8 @@
 
 struct rct_window;
 union rct_window_event;
+struct track_design_file_ref;
+
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[512];
 extern int gMaxTextBoxInputLength;
@@ -677,7 +679,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY);
 void custom_currency_window_open();
 
 void window_maze_construction_update_pressed_widgets();
-void window_track_place_open(const track_design_file_ref *tdFileRef);
+void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_install_track_open(const char* path);
@@ -701,7 +703,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, i
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
-void window_track_manage_open(track_design_file_ref *tdFileRef);
+void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
 void window_title_editor_open(int tab);

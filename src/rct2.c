@@ -42,6 +42,7 @@
 #include "ride/ride.h"
 #include "ride/track.h"
 #include "ride/track_design.h"
+#include "ride/TrackDesignRepository.h"
 #include "ScenarioRepository.h"
 #include "title.h"
 #include "util/util.h"
@@ -166,7 +167,7 @@ bool rct2_init()
 
 	object_list_load();
 	scenario_repository_scan();
-	track_design_index_create();
+	track_repository_scan();
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {

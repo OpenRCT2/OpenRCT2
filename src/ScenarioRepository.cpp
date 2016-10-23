@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 #include "core/Console.hpp"
-#include "core/FileEnumerator.h"
+#include "core/FileScanner.h"
 #include "core/FileStream.hpp"
 #include "core/Math.hpp"
 #include "core/Path.hpp"
@@ -246,13 +246,14 @@ private:
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.sc6");
 
-        auto fileEnumerator = FileEnumerator(pattern, true);
-        while (fileEnumerator.Next())
+        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            auto path = fileEnumerator.GetPath();
-            auto fileInfo = fileEnumerator.GetFileInfo();
-            AddScenario(path, fileInfo->last_modified);
+            auto path = scanner->GetPath();
+            auto fileInfo = scanner->GetFileInfo();
+            AddScenario(path, fileInfo->LastModified);
         }
+        delete scanner;
     }
 
     void AddScenario(const utf8 * path, uint64 timestamp)

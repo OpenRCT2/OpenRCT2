@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include "../common.h"
 #include "Exception.hpp"
 #include "Memory.hpp"
@@ -106,7 +107,8 @@ interface IStream
     }
 
     utf8 * ReadString();
-    void WriteString(utf8 * str);
+    void WriteString(const utf8 * str);
+    void WriteString(const std::string &string);
 };
 
 class IOException : public Exception

@@ -25,6 +25,7 @@
 #include "../ride/ride.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
+#include "../ride/TrackDesignRepository.h"
 #include "../sprites.h"
 #include "error.h"
 
@@ -139,7 +140,10 @@ void window_track_list_open(ride_list_item item)
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_484 = 0;
 	w->track_list.reload_track_designs = false;
-	w->selected_list_item = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
+	w->selected_list_item = 0;
+	if (_trackDesignsCount != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+		w->selected_list_item = 1;
+	}
 	gTrackDesignSceneryToggle = false;
 	window_push_others_right(w);
 	_currentTrackPieceDirection = 2;
@@ -613,7 +617,7 @@ static void track_list_load_designs(ride_list_item item)
 			entryPtr = entry;
 		}
 	}
-	_trackDesignsCount = track_design_index_get_for_ride(&_trackDesigns, item.type, entryPtr);
+	_trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
 }
 
 static bool track_list_load_design_for_preview(utf8 *path)

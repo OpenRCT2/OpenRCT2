@@ -26,6 +26,7 @@
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
+#include "../ride/TrackDesignRepository.h"
 #include "../sprites.h"
 #include "../util/util.h"
 

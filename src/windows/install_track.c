@@ -23,6 +23,7 @@
 #include "../ride/ride.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
+#include "../ride/TrackDesignRepository.h"
 #include "../object/ObjectManager.h"
 #include "../sprites.h"
 #include "../util/util.h"
@@ -135,7 +136,7 @@ void window_install_track_open(const utf8 *path)
 	window_push_others_right(w);
 
 	_trackPath = _strdup(path);
-	_trackName = track_design_get_name_from_path(path);
+	_trackName = track_repository_get_name_from_path(path);
 	_trackDesignPreviewPixels = calloc(4, TRACK_PREVIEW_IMAGE_SIZE);
 
 	window_install_track_update_preview();
@@ -400,7 +401,7 @@ static void window_install_track_design(rct_window *w)
 			255
 		);
 	} else {
-		if (track_design_index_install(_trackPath, destPath)) {
+		if (track_repository_install(_trackPath)) {
 			window_close(w);
 		} else {
 			window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
