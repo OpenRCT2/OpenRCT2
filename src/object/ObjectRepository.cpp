@@ -46,7 +46,7 @@ extern "C"
     #include "../object_list.h"
     #include "../platform/platform.h"
     #include "../util/sawyercoding.h"
-	#include "../util/util.h"
+    #include "../util/util.h"
 }
 
 constexpr uint16 OBJECT_REPOSITORY_VERSION = 10;
@@ -64,14 +64,6 @@ struct ObjectRepositoryHeader
 };
 assert_struct_size(ObjectRepositoryHeader, 28);
 #pragma pack(pop)
-
-struct QueryDirectoryResult
-{
-    uint32  TotalFiles;
-    uint64  TotalFileSize;
-    uint32  FileDateModifiedChecksum;
-    uint32  PathChecksum;
-};
 
 struct ObjectEntryHash
 {
@@ -239,22 +231,7 @@ private:
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory);
         Path::Append(pattern, sizeof(pattern), "*.dat");
-
-        IFileScanner * scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
-        {
-            const FileInfo * fileInfo = scanner->GetFileInfo();
-            const utf8 * path = scanner->GetPath();
-
-            result->TotalFiles++;
-            result->TotalFileSize += fileInfo->Size;
-            result->FileDateModifiedChecksum ^=
-                (uint32)(fileInfo->LastModified >> 32) ^
-                (uint32)(fileInfo->LastModified & 0xFFFFFFFF);
-            result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
-            result->PathChecksum += GetPathChecksum(path);
-        }
-        delete scanner;
+        Path::QueryDirectory(result, pattern);
     }
 
     void Construct()
@@ -649,21 +626,6 @@ private:
     static void GetUserObjectPath(utf8 * buffer, size_t bufferSize)
     {
         platform_get_user_directory(buffer, "object", bufferSize);
-    }
-
-    static uint32 GetPathChecksum(const utf8 * path)
-    {
-        uint32 hash = 0xD8430DED;
-        for (const utf8 * ch = path; *ch != '\0'; ch++)
-        {
-            hash += (*ch);
-            hash += (hash << 10);
-            hash ^= (hash >> 6);
-        }
-        hash += (hash << 3);
-        hash ^= (hash >> 11);
-        hash += (hash << 15);
-        return hash;
     }
 };
 

@@ -35,6 +35,10 @@ struct TrackRepositoryHeader
 {
     uint32  MagicNumber;
     uint16  Version;
+    uint32  TotalFiles;
+    uint64  TotalFileSize;
+    uint32  FileDateModifiedChecksum;
+    uint32  PathChecksum;
     uint32  NumItems;
 };
 #pragma pack(pop)
@@ -60,6 +64,7 @@ class TrackDesignRepository : public ITrackDesignRepository
 {
 private:
     std::vector<TrackRepositoryItem> _items;
+    QueryDirectoryResult _directoryQueryResult;
 
 public:
     virtual ~TrackDesignRepository()
@@ -111,16 +116,24 @@ public:
 
     void Scan() override
     {
-        utf8 directory[MAX_PATH];
+        utf8 rct2Directory[MAX_PATH];
+        utf8 userDirectory[MAX_PATH];
 
-        GetRCT2Directory(directory, sizeof(directory));
-        Scan(directory, TRIF_READ_ONLY);
+        GetRCT2Directory(rct2Directory, sizeof(rct2Directory));
+        GetUserDirectory(userDirectory, sizeof(userDirectory));
 
-        GetUserDirectory(directory, sizeof(directory));
-        Scan(directory);
+        _items.clear();
+        _directoryQueryResult = { 0 };
+        Query(rct2Directory);
+        Query(userDirectory);
 
-        SortItems();
-        Save();
+        if (!Load())
+        {
+            Scan(rct2Directory, TRIF_READ_ONLY);
+            Scan(userDirectory);
+            SortItems();
+            Save();
+        }
     }
 
     bool Delete(const utf8 * path) override
@@ -193,6 +206,14 @@ public:
     }
 
 private:
+    void Query(const utf8 * directory)
+    {
+        utf8 pattern[MAX_PATH];
+        String::Set(pattern, sizeof(pattern), directory);
+        Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
+        Path::QueryDirectory(&_directoryQueryResult, pattern);
+    }
+
     void Scan(const utf8 * directory, uint32 flags = 0)
     {
         utf8 pattern[MAX_PATH];
@@ -240,6 +261,46 @@ private:
             });
     }
 
+    bool Load()
+    {
+        utf8 path[MAX_PATH];
+        GetRepositoryPath(path, sizeof(path));
+
+        bool result = false;
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+
+            // Read header, check if we need to re-scan
+            auto header = fs.ReadValue<TrackRepositoryHeader>();
+            if (header.MagicNumber == TRACK_REPOSITORY_MAGIC_NUMBER &&
+                header.Version == TRACK_REPOSITORY_VERSION &&
+                header.TotalFiles == _directoryQueryResult.TotalFiles &&
+                header.TotalFileSize == _directoryQueryResult.TotalFileSize &&
+                header.FileDateModifiedChecksum == _directoryQueryResult.FileDateModifiedChecksum &&
+                header.PathChecksum == _directoryQueryResult.PathChecksum)
+            {
+                // Directory is the same, just read the saved items
+                for (uint32 i = 0; i < header.NumItems; i++)
+                {
+                    TrackRepositoryItem item;
+                    item.Name = fs.ReadString();
+                    item.Path = fs.ReadString();
+                    item.RideType = fs.ReadValue<uint8>();
+                    item.ObjectEntry = fs.ReadString();
+                    item.Flags = fs.ReadValue<uint32>();
+                    _items.push_back(item);
+                }
+                result = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console::Error::WriteLine("Unable to write object repository index.");
+        }
+        return result;
+    }
+
     void Save() const
     {
         utf8 path[MAX_PATH];
@@ -253,6 +314,10 @@ private:
             TrackRepositoryHeader header = { 0 };
             header.MagicNumber = TRACK_REPOSITORY_MAGIC_NUMBER;
             header.Version = TRACK_REPOSITORY_VERSION;
+            header.TotalFiles = _directoryQueryResult.TotalFiles;
+            header.TotalFileSize = _directoryQueryResult.TotalFileSize;
+            header.FileDateModifiedChecksum = _directoryQueryResult.FileDateModifiedChecksum;
+            header.PathChecksum = _directoryQueryResult.PathChecksum;
             header.NumItems = (uint32)_items.size();
             fs.WriteValue(header);
 

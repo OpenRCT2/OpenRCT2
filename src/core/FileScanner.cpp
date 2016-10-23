@@ -57,6 +57,7 @@ struct DirectoryChild
     uint64 LastModified;
 };
 
+static uint32 GetPathChecksum(const utf8 * path);
 static bool MatchWildcard(const utf8 * fileName, const utf8 * pattern);
 
 class FileScannerBase : public IFileScanner
@@ -361,6 +362,40 @@ IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
     return new FileScannerUnix(pattern, recurse);
 #endif
+}
+
+void Path::QueryDirectory(QueryDirectoryResult * result, const utf8 * pattern)
+{
+    IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+    while (scanner->Next())
+    {
+        const FileInfo * fileInfo = scanner->GetFileInfo();
+        const utf8 * path = scanner->GetPath();
+
+        result->TotalFiles++;
+        result->TotalFileSize += fileInfo->Size;
+        result->FileDateModifiedChecksum ^=
+            (uint32)(fileInfo->LastModified >> 32) ^
+            (uint32)(fileInfo->LastModified & 0xFFFFFFFF);
+        result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
+        result->PathChecksum += GetPathChecksum(path);
+    }
+    delete scanner;
+}
+
+static uint32 GetPathChecksum(const utf8 * path)
+{
+    uint32 hash = 0xD8430DED;
+    for (const utf8 * ch = path; *ch != '\0'; ch++)
+    {
+        hash += (*ch);
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+    return hash;
 }
 
 /**

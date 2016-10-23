@@ -41,7 +41,30 @@ interface IFileScanner
     virtual bool Next() abstract;
 };
 
+struct QueryDirectoryResult
+{
+    uint32 TotalFiles;
+    uint64 TotalFileSize;
+    uint32 FileDateModifiedChecksum;
+    uint32 PathChecksum;
+};
+
 namespace Path
 {
+    /**
+     * Scans a directory and optionally sub directories for files that matches the
+     * given pattern and returns an enumerator.
+     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+     * @param recurse Whether to scan sub directories or not.
+     * @returns A new FileScanner, this must be deleted when no longer needed.
+     */
     IFileScanner * ScanDirectory(const utf8 * pattern, bool recurse);
+
+    /**
+     * Scans a directory and all sub directories 
+     * @param result The query result to modify.
+     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+     * @returns An aggregated result of all scanned files.
+     */
+    void QueryDirectory(QueryDirectoryResult * result, const utf8 * pattern);
 }
