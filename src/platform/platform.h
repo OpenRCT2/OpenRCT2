@@ -204,6 +204,7 @@ datetime64 platform_get_datetime_now_utc();
 	#undef GetMessage
 
 	void platform_windows_open_console();
+	void platform_windows_close_console();
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();

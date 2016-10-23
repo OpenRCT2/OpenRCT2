@@ -639,6 +639,10 @@ void platform_free()
 
 	platform_close_window();
 	SDL_Quit();
+
+#ifdef __WINDOWS__
+	platform_windows_close_console();
+#endif
 }
 
 void platform_start_text_input(utf8* buffer, int max_length)

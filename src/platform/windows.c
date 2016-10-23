@@ -42,8 +42,9 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
-utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
+static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
+static bool _consoleIsAttached = false;
 
 utf8 **windows_get_command_line_args(int *outNumArgs);
 
@@ -146,12 +147,23 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 void platform_windows_open_console()
 {
 	if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
-		AllocConsole();
+		if (!AllocConsole()) {
+			return;
+		}
 	}
 
 	freopen("CONIN$", "r", stdin);
 	freopen("CONOUT$", "w", stdout);
 	freopen("CONOUT$", "w", stderr);
+	_consoleIsAttached = true;
+}
+
+void platform_windows_close_console()
+{
+	if (_consoleIsAttached) {
+		_consoleIsAttached = false;
+		FreeConsole();
+	}
 }
 
 utf8 **windows_get_command_line_args(int *outNumArgs)
