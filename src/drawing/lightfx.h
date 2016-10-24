@@ -17,7 +17,7 @@
 #ifndef _LIGHTFX_H
 #define _LIGHTFX_H
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
 #include "drawing.h"
@@ -75,6 +75,6 @@ void lightfx_render_to_texture(
 	uint32 * palette,
 	uint32 * lightPalette);
 
-#endif // STOUT_EXPANDED_RENDERING_LIGHT
+#endif // __ENABLE_LIGHTFX__
 
 #endif

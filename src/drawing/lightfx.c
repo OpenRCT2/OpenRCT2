@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
 #include <SDL.h>
@@ -1026,4 +1026,4 @@ void lightfx_render_to_texture(
 	}
 }
 
-#endif // STOUT_EXPANDED_RENDERING_LIGHT
+#endif // __ENABLE_LIGHTFX__

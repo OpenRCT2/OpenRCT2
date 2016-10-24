@@ -764,7 +764,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 		loc_6A3B57(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
 	}
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 	if (footpath_element_has_path_scenery(map_element) && !(map_element->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 		rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {

@@ -259,7 +259,7 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		uint8 g = colours[1];
 		uint8 b = colours[0];
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 		lightfx_apply_palette_filter(i, &r, &g, &b);
 #else
 		float night = gDayNightCycle;

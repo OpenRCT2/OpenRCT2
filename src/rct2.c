@@ -51,7 +51,7 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 #include "drawing/lightfx.h"
 
@@ -199,7 +199,7 @@ bool rct2_init()
 	window_staff_list_init_vars();
 
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 	lightfx_init();
 

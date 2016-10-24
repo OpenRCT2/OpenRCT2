@@ -195,7 +195,7 @@ private:
     SDL_Texture *       _screenTexture          = nullptr;
     SDL_PixelFormat *   _screenTextureFormat    = nullptr;
     uint32              _paletteHWMapped[256] = { 0 };
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
     uint32              _lightPaletteHWMapped[256] = { 0 };
 #endif
 
@@ -310,13 +310,13 @@ public:
         {
             if (_screenTextureFormat != nullptr)
             {
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
                 const SDL_Color * lightPalette = lightfx_get_palette();
 #endif
                 for (int i = 0; i < 256; i++)
                 {
                     _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
                     _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
 #endif
                 }
@@ -533,7 +533,7 @@ private:
 
         ConfigureDirtyGrid();
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
         lightfx_update_buffers(dpi);
 #endif
     }
@@ -695,7 +695,7 @@ private:
 
     void DisplayViaTexture()
     {
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
         lightfx_render_to_texture(_screenTexture, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
 #else
         CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);

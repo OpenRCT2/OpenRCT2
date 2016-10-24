@@ -27,7 +27,7 @@
  */
 void peep_paint(rct_peep * peep, int imageDirection)
 {
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 	if (peep->type == PEEP_TYPE_STAFF){
 		sint16 peep_x, peep_y, peep_z;

@@ -42,7 +42,7 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
 			return;
 	}
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 	if (!is_exit) {
 		lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
@@ -189,7 +189,7 @@ static void park_entrance_paint(uint8 direction, int height, rct_map_element* ma
 	if (gTrackDesignSaveMode)
 		return;
 
-#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+#ifdef __ENABLE_LIGHTFX__
 
 	lightfx_add_3d_light_magic_from_drawing_tile(0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 
