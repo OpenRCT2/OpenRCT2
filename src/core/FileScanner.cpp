@@ -262,6 +262,9 @@ protected:
             while (FindNextFileW(hFile, &findData));
             FindClose(hFile);
         }
+
+        Memory::Free(pattern);
+        Memory::Free(wPattern);
     }
 
 private:
