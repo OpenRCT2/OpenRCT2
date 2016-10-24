@@ -17,10 +17,12 @@
 #ifndef _LIGHTFX_H
 #define _LIGHTFX_H
 
-#include "drawing.h"
-#include "../common.h"
-
 #ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+#include "../common.h"
+#include "drawing.h"
+
+typedef struct SDL_Texture;
 
 enum LIGHTFX_LIGHT_TYPE {
 	LIGHTFX_LIGHT_TYPE_NONE				= 0,
@@ -65,6 +67,14 @@ extern void lightfx_add_lights_magic_vehicles();
 extern uint32 lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b);
+void lightfx_render_to_texture(
+	struct SDL_Texture * texture,
+	uint8 * bits,
+	uint32 width,
+	uint32 height,
+	uint32 * palette,
+	uint32 * lightPalette);
 
-#endif
+#endif // STOUT_EXPANDED_RENDERING_LIGHT
+
 #endif

@@ -195,7 +195,9 @@ private:
     SDL_Texture *       _screenTexture          = nullptr;
     SDL_PixelFormat *   _screenTextureFormat    = nullptr;
     uint32              _paletteHWMapped[256] = { 0 };
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
     uint32              _lightPaletteHWMapped[256] = { 0 };
+#endif
 
     // Steam overlay checking
     uint32  _pixelBeforeOverlay     = 0;
@@ -308,11 +310,15 @@ public:
         {
             if (_screenTextureFormat != nullptr)
             {
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
                 const SDL_Color * lightPalette = lightfx_get_palette();
+#endif
                 for (int i = 0; i < 256; i++)
                 {
                     _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
                     _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, lightPalette[i].r, lightPalette[i].g, lightPalette[i].b, lightPalette[i].a);
+#endif
                 }
             }
         }
@@ -527,7 +533,9 @@ private:
 
         ConfigureDirtyGrid();
 
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
         lightfx_update_buffers(dpi);
+#endif
     }
 
     void ConfigureDirtyGrid()
@@ -685,56 +693,13 @@ private:
         }
     }
 
-    uint8 MixLight(uint32 a, uint32 b, uint32 intensity)
-    {
-        intensity = intensity * 6;
-        uint32 bMul = (b * intensity) >> 8;
-        uint32 ab = a + bMul;
-        uint8 result = Math::Min<uint32>(255, ab);
-        return result;
-    }
-
     void DisplayViaTexture()
     {
-        lightfx_update_viewport_settings();
-        lightfx_swap_buffers();
-        lightfx_prepare_light_list();
-        lightfx_render_lights_to_frontbuffer();
-
-        uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
-
-        void *  pixels;
-        int     pitch;
-        if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
-        {
-            for (uint32 y = 0; y < _height; y++)
-            {
-                uintptr_t dstOffset = (uintptr_t)(y * pitch);
-                uint32 * dst = (uint32 *)((uintptr_t)pixels + dstOffset);
-                for (uint32 x = 0; x < _width; x++)
-                {
-                    uint8 * src = &_bits[y * _width + x];
-                    uint32 darkColour = _paletteHWMapped[*src];
-                    uint32 lightColour = _lightPaletteHWMapped[*src];
-                    uint8 lightIntensity = lightBits[y * _width + x];
-
-                    uint32 colour = 0;
-                    if (lightIntensity == 0)
-                    {
-                        colour = darkColour;
-                    }
-                    else
-                    {
-                        colour |= MixLight((darkColour >> 0) & 0xFF, (lightColour >> 0) & 0xFF, lightIntensity);
-                        colour |= MixLight((darkColour >> 8) & 0xFF, (lightColour >> 8) & 0xFF, lightIntensity) << 8;
-                        colour |= MixLight((darkColour >> 16) & 0xFF, (lightColour >> 16) & 0xFF, lightIntensity) << 16;
-                        colour |= MixLight((darkColour >> 24) & 0xFF, (lightColour >> 24) & 0xFF, lightIntensity) << 24;
-                    }
-                    *dst++ = colour;
-                }
-            }
-            SDL_UnlockTexture(_screenTexture);
-        }
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+        lightfx_render_to_texture(_screenTexture, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+#else
+        CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);
+#endif
         SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
 
         if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
