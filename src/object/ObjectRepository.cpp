@@ -965,9 +965,10 @@ extern "C"
 
 	uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const void *RESTRICT data, size_t dataLength)
 	{
-#if defined(__GNUC__) || defined(__clang__)
+#if (defined(__GNUC__) || defined(__clang__)) && !defined(__MINGW32__)
 		data = (uint8 *)__builtin_assume_aligned(data, 32);
-		__builtin_prefetch(data, 0, 0);
+#else
+		__assume(((ptrdiff_t)data % 32) == 0);
 #endif 
 		uint8 *entry_bytes = (uint8 *)entry;
 		uint8 *data_bytes = (uint8 *)data;
@@ -989,8 +990,10 @@ extern "C"
 			tmp[20 + j] = entry_bytes[j];
 
 		// Tight xor-loop == PRIME autovectorization target
-		for (size_t i = 0; i <= (dataLength_padded - 32); i += 32) {
-			for (size_t j = 0; j < 32; ++j) {
+		for (size_t i = 0; i <= (dataLength_padded - 32); i += 32)
+		{
+			for (size_t j = 0; j < 32; ++j)
+			{
 				tmp[j] ^= data_bytes[i + j];
 			}
 		}
@@ -1004,7 +1007,8 @@ extern "C"
 								 tmp[5], tmp[13], tmp[21], tmp[29],
 								 tmp[6], tmp[14], tmp[22], tmp[30],
 								 tmp[7], tmp[15], tmp[23], tmp[31] };
-		for (size_t i = 0; i < 8; ++i) {
+		for (size_t i = 0; i < 8; ++i)
+		{
 			checksum ^= ror32(((uint32 *)tmp2)[i], (11 * i) % 32);
 		}
 
