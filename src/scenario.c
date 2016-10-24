@@ -509,7 +509,6 @@ static void scenario_update_daynight_cycle()
 		} else {
 			gDayNightCycle = 0.0f;
 		}
-        gDayNightCycle = 1;
 	}
 
 	// Only update palette if day / night cycle has changed
