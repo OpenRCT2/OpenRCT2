@@ -27,6 +27,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../network/twitch.h"
+#include "../network/network.h"
 #include "../object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -665,6 +666,9 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "render_weather_gloom") == 0) {
 			console_printf("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
 		}
+		else if (strcmp(argv[0], "sandbox_mode") == 0) {
+			console_printf("sandbox_mode %d", gCheatsSandboxMode);
+		}
 		else if (strcmp(argv[0], "disable_clearance_checks") == 0) {
 			console_printf("disable_clearance_checks %d", gCheatsDisableClearanceChecks);
 		}
@@ -853,12 +857,34 @@ static int cc_set(const utf8 **argv, int argc)
 			config_save_default();
 			console_execute_silent("get render_weather_gloom");
 		}
+		else if (strcmp(argv[0], "sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (network_get_mode() == NETWORK_MODE_CLIENT && !network_can_perform_command(network_get_current_player_group_index(), GAME_COMMAND_CHEAT)) {
+				console_writeline_error("Network error: Permission denied!");
+			}
+			else if (gCheatsSandboxMode != (int_val[0] != 0)) {
+				game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
+				gCheatsSandboxMode = (int_val[0] != 0);
+			}
+			console_execute_silent("get sandbox_mode");
+		}
 		else if (strcmp(argv[0], "disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			gCheatsDisableClearanceChecks = (int_val[0] != 0);
+			if (network_get_mode() == NETWORK_MODE_CLIENT && !network_can_perform_command(network_get_current_player_group_index(), GAME_COMMAND_CHEAT)) {
+				console_writeline_error("Network error: Permission denied!");
+			}
+			else if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
+				game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, 0, GAME_COMMAND_CHEAT, 0, 0);
+				gCheatsDisableClearanceChecks = (int_val[0] != 0);
+			}
 			console_execute_silent("get disable_clearance_checks");
 		}
 		else if (strcmp(argv[0], "disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			gCheatsDisableSupportLimits = (int_val[0] != 0);
+			if (network_get_mode() == NETWORK_MODE_CLIENT && !network_can_perform_command(network_get_current_player_group_index(), GAME_COMMAND_CHEAT)) {
+				console_writeline_error("Network error: Permission denied!");
+			}
+			else if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
+				game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, 0, GAME_COMMAND_CHEAT, 0, 0);
+				gCheatsDisableSupportLimits = (int_val[0] != 0);
+			}
 			console_execute_silent("get disable_support_limits");
 		}
 		else if (invalidArgs) {
@@ -1047,6 +1073,7 @@ utf8* console_variable_table[] = {
 	"window_limit",
 	"render_weather_effects",
 	"render_weather_gloom",
+	"sandbox_mode",
 	"disable_clearance_checks",
 	"disable_support_limits",
 };
