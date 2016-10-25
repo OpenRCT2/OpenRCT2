@@ -52,6 +52,12 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+#ifdef __ENABLE_LIGHTFX__
+
+#include "drawing/lightfx.h"
+
+#endif
+
 // rct2: 0x0097F67C
 const char * const RCT2FilePaths[PATH_ID_END] = {
 	"Data" PATH_SEPARATOR "g1.dat",
@@ -192,6 +198,14 @@ bool rct2_init()
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
+
+
+#ifdef __ENABLE_LIGHTFX__
+
+	lightfx_init();
+
+#endif
+
 
 	log_verbose("initialising game finished");
 	return true;

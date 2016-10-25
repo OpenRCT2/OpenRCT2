@@ -18,6 +18,7 @@
 #include "../audio/mixer.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
+#include "../drawing/lightfx.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/console.h"
@@ -254,18 +255,25 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 	colours += start_index * 4;
 
 	for (int i = start_index; i < num_colours + start_index; i++) {
-		gPalette[i].r = colours[2];
-		gPalette[i].g = colours[1];
-		gPalette[i].b = colours[0];
-		gPalette[i].a = 0;
+		uint8 r = colours[2];
+		uint8 g = colours[1];
+		uint8 b = colours[0];
 
+#ifdef __ENABLE_LIGHTFX__
+		lightfx_apply_palette_filter(i, &r, &g, &b);
+#else
 		float night = gDayNightCycle;
 		if (night >= 0 && gClimateLightningFlash == 0) {
-			gPalette[i].r = lerp(gPalette[i].r, soft_light(gPalette[i].r, 8), night);
-			gPalette[i].g = lerp(gPalette[i].g, soft_light(gPalette[i].g, 8), night);
-			gPalette[i].b = lerp(gPalette[i].b, soft_light(gPalette[i].b, 128), night);
+			r = lerp(r, soft_light(r, 8), night);
+			g = lerp(g, soft_light(g, 8), night);
+			b = lerp(b, soft_light(b, 128), night);
 		}
+#endif
 
+		gPalette[i].r = r;
+		gPalette[i].g = g;
+		gPalette[i].b = b;
+		gPalette[i].a = 0;
 		colours += 4;
 		if (gBufferTextureFormat != NULL) {
 			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);

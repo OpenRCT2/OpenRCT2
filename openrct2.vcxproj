@@ -73,6 +73,7 @@
     <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
     <ClCompile Include="src\drawing\Image.cpp" />
+    <ClCompile Include="src\drawing\lightfx.c" />
     <ClCompile Include="src\drawing\line.c" />
     <ClCompile Include="src\drawing\NewDrawing.cpp" />
     <ClCompile Include="src\drawing\Rain.cpp" />
@@ -407,6 +408,7 @@
     <ClInclude Include="src\drawing\IDrawingEngine.h" />
     <ClInclude Include="src\drawing\NewDrawing.h" />
     <ClInclude Include="src\drawing\Rain.h" />
+    <ClInclude Include="src\drawing\lightfx.h" />
     <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\hook.h" />
