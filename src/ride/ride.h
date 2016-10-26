@@ -889,6 +889,13 @@ enum {
 	MAZE_WALL_TYPE_WOOD,
 };
 
+enum {
+	TRACK_SELECTION_FLAG_ARROW            = 1 << 0,
+	TRACK_SELECTION_FLAG_TRACK            = 1 << 1,
+	TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
+	TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
+};
+
 typedef struct rct_ride_properties {
 	uint32 flags;
 	uint8 min_value;

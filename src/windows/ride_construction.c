@@ -2722,7 +2722,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		_unkF440C5.y = y;
 		_unkF440C5.z = z;
 		_unkF440C5.direction = trackDirection;
-		_currentTrackSelectionFlags |= (1 << 1);
+		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
 			viewport_set_visibility(2);
@@ -2741,7 +2741,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 
 		_unkF440C5.z = z;
 		_unkF440C5.direction = trackDirection;
-		_currentTrackSelectionFlags |= (1 << 1);
+		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
 			viewport_set_visibility(2);
@@ -2760,15 +2760,15 @@ void sub_6C94D8()
 
 	// Recheck if area is fine for new track.
 	// Set by footpath placement
-	if (_currentTrackSelectionFlags & (1 << 3)) {
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_RECHECK) {
 		sub_6C9627();
-		_currentTrackSelectionFlags &= ~(1 << 3);
+		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_RECHECK;
 	}
 
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_FRONT:
 	case RIDE_CONSTRUCTION_STATE_BACK:
-		if (!(_currentTrackSelectionFlags & (1 << 1))) {
+		if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)) {
 			if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
 				sub_6C96C0();
 			} else {
@@ -2781,7 +2781,7 @@ void sub_6C94D8()
 			break;
 
 		_rideConstructionArrowPulseTime = 5;
-		_currentTrackSelectionFlags ^= (1 << 0);
+		_currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
 		z = _currentTrackBeginZ;
@@ -2796,7 +2796,7 @@ void sub_6C94D8()
 			direction ^= 2;
 		gMapSelectArrowDirection = direction;
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-		if (_currentTrackSelectionFlags & (1 << 0))
+		if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
 			gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(x, y);
 		break;
@@ -2806,13 +2806,13 @@ void sub_6C94D8()
 			break;
 
 		_rideConstructionArrowPulseTime = 5;
-		_currentTrackSelectionFlags ^= (1 << 0);
+		_currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
 		z = _currentTrackBeginZ;
 		direction = _currentTrackPieceDirection & 3;
 		type = _currentTrackPieceType;
-		if (sub_6C683D(&x, &y, &z, direction, type, 0, NULL, _currentTrackSelectionFlags & (1 << 0) ? 2 : 1)) {
+		if (sub_6C683D(&x, &y, &z, direction, type, 0, NULL, _currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW ? 2 : 1)) {
 			sub_6C96C0();
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 		}
@@ -2825,7 +2825,7 @@ void sub_6C94D8()
 			break;
 
 		_rideConstructionArrowPulseTime = 5;
-		_currentTrackSelectionFlags ^= (1 << 0);
+		_currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
 		x = _currentTrackBeginX & 0xFFE0;
 		y = _currentTrackBeginY & 0xFFE0;
 		z = _currentTrackBeginZ + 15;
@@ -2842,7 +2842,7 @@ void sub_6C94D8()
 			}
 		}
 		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-		if (_currentTrackSelectionFlags & (1 << 0))
+		if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
 			gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(x, y);
 		break;
@@ -3653,7 +3653,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	_currentTrackBeginY = y;
 	_currentTrackBeginZ = z;
 	if (
-		(_currentTrackSelectionFlags & (1 << 1)) &&
+		(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) &&
 		x == _previousTrackPieceX &&
 		y == _previousTrackPieceY &&
 		z == _previousTrackPieceZ
@@ -3746,7 +3746,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	direction = gRideEntranceExitPlaceDirection ^ 2;
 	unk = gRideEntranceExitPlaceStationIndex;
 	if (
-		!(_currentTrackSelectionFlags & (1 << 2)) ||
+		!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) ||
 		x != _unkF440BF.x ||
 		y != _unkF440BF.y ||
 		direction != _unkF440BF.direction ||
