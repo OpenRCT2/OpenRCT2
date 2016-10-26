@@ -3746,7 +3746,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	direction = gRideEntranceExitPlaceDirection ^ 2;
 	unk = gRideEntranceExitPlaceStationIndex;
 	if (
-		!(_currentTrackSelectionFlags & 4) ||
+		!(_currentTrackSelectionFlags & (1 << 2)) ||
 		x != _unkF440BF.x ||
 		y != _unkF440BF.y ||
 		direction != _unkF440BF.direction ||

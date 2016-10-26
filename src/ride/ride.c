@@ -1344,17 +1344,24 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 	return 0;
 }
 
-/**
- *
- *  rct2: 0x006C96C0
- */
-void sub_6C96C0()
+void ride_restore_provisional_entrance_or_exit()
 {
-	rct_ride *ride;
-	int rideIndex, x, y, z, direction;
+	if (_currentTrackSelectionFlags & (1 << 2)) {
+		money32 result = game_do_command(
+			_unkF440BF.x,
+			(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (_unkF440BF.direction << 8),
+			_unkF440BF.y,
+			_currentRideIndex | (gRideEntranceExitPlaceType << 8),
+			GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+			_unkF440C4,
+			0
+		);
+	}
+}
 
-	if (_currentTrackSelectionFlags & 4) {
-		_currentTrackSelectionFlags &= ~4;
+void ride_remove_provisional_entrance_or_exit()
+{
+	if (_currentTrackSelectionFlags & (1 << 2)) {
 		game_do_command(
 			_unkF440BF.x,
 			(GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
@@ -1364,6 +1371,21 @@ void sub_6C96C0()
 			_unkF440C4,
 			0
 		);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006C96C0
+ */
+void sub_6C96C0()
+{
+	rct_ride *ride;
+	int rideIndex, x, y, z, direction;
+
+	if (_currentTrackSelectionFlags & (1 << 2)) {
+		ride_remove_provisional_entrance_or_exit();
+		_currentTrackSelectionFlags &= ~(1 << 2);
 	}
 	if (_currentTrackSelectionFlags & 2) {
 		_currentTrackSelectionFlags &= ~2;
@@ -7047,7 +7069,7 @@ money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int directi
 	sub_6C96C0();
 	money32 result = game_do_command(
 		x,
-		105 | (direction << 8),
+		(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (direction << 8),
 		y,
 		rideIndex | (dh << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,

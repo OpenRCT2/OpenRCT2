@@ -1058,6 +1058,8 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(int rideIndex);
+void ride_restore_provisional_entrance_or_exit();
+void ride_remove_provisional_entrance_or_exit();
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images);
 void invalidate_test_results(int rideIndex);
 

@@ -373,9 +373,12 @@ void game_logic_update()
 	map_update_tiles();
 	// Temporarily remove provisional paths to prevent peep from interacting with them
 	map_remove_provisional_elements();
+	ride_remove_provisional_entrance_or_exit();
 	map_update_path_wide_flags();
 	peep_update_all();
+	ride_restore_provisional_entrance_or_exit();
 	map_restore_provisional_elements();
+	//
 	vehicle_update_all();
 	sprite_misc_update_all();
 	ride_update_all();
