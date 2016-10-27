@@ -1969,7 +1969,7 @@ static money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	gCommandPosition.x = x;
@@ -2042,7 +2042,7 @@ static money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	gCommandPosition.x = x;
@@ -2127,7 +2127,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	return cost;
 }
@@ -2203,7 +2203,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	return cost;
 }
@@ -3863,7 +3863,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	*ebx = (scenery_entry->large_scenery.price * 10) + supportsCost;
 	if(gParkFlags & PARK_FLAGS_NO_MONEY){
@@ -4452,6 +4452,8 @@ void map_remove_provisional_elements()
 		footpath_provisional_remove();
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 	}
+	ride_remove_provisional_track_piece();
+	ride_remove_provisional_entrance_or_exit();
 }
 
 void map_restore_provisional_elements()
@@ -4465,6 +4467,8 @@ void map_restore_provisional_elements()
 				gFootpathProvisionalPosition.z,
 				gFootpathProvisionalSlope);
 	}
+	ride_restore_provisional_track_piece();
+	ride_restore_provisional_entrance_or_exit();
 }
 
 int map_element_get_banner_index(rct_map_element *mapElement)

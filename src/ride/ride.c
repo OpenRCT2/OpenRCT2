@@ -218,6 +218,8 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 static void maze_entrance_hedge_replacement(int x, int y, rct_map_element *mapElement);
+bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties);
+money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16, int x, int y, int z);
 
 rct_ride *get_ride(int index)
 {
@@ -1344,17 +1346,24 @@ int sub_6C683D(int* x, int* y, int* z, int direction, int type, uint16 extra_par
 	return 0;
 }
 
-/**
- *
- *  rct2: 0x006C96C0
- */
-void sub_6C96C0()
+void ride_restore_provisional_entrance_or_exit()
 {
-	rct_ride *ride;
-	int rideIndex, x, y, z, direction;
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
+		game_do_command(
+			_unkF440BF.x,
+			(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (_unkF440BF.direction << 8),
+			_unkF440BF.y,
+			_currentRideIndex | (gRideEntranceExitPlaceType << 8),
+			GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+			_unkF440C4,
+			0
+		);
+	}
+}
 
-	if (_currentTrackSelectionFlags & 4) {
-		_currentTrackSelectionFlags &= ~4;
+void ride_remove_provisional_entrance_or_exit()
+{
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
 		game_do_command(
 			_unkF440BF.x,
 			(GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
@@ -1365,41 +1374,77 @@ void sub_6C96C0()
 			0
 		);
 	}
-	if (_currentTrackSelectionFlags & 2) {
-		_currentTrackSelectionFlags &= ~2;
+}
 
-		rideIndex = _currentRideIndex;
-
-		x = _unkF440C5.x;
-		y = _unkF440C5.y;
-		z = _unkF440C5.z;
-
-		ride = get_ride(rideIndex);
-		if (ride->type == RIDE_TYPE_MAZE) {
-			game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-			game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-			game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-			game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+void ride_restore_provisional_track_piece()
+{
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
+		int x, y, z, direction, type, rideIndex, edxRS16;
+		if (sub_6CA2DF(&type, &direction, &rideIndex, &edxRS16, &x, &y, &z, NULL)) {
+			sub_6C96C0();
 		} else {
-			direction = _unkF440C5.direction;
-			if (!(direction & 4)) {
-				x -= TileDirectionDelta[direction].x;
-				y -= TileDirectionDelta[direction].y;
-			}
-			rct_xy_element next_track;
-
-			if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
-				game_do_command(
-					next_track.x,
-					105 | ((direction & 3) << 8),
-					next_track.y,
-					next_track.element->properties.track.type | ((next_track.element->properties.track.sequence & 0x0F) << 8),
-					GAME_COMMAND_REMOVE_TRACK,
-					z,
-					0
-				);
-			}
+			_currentTrackPrice = sub_6CA162(rideIndex, type, direction, edxRS16, x, y, z);
+			sub_6C84CE();
 		}
+	}
+}
+
+void ride_remove_provisional_track_piece()
+{
+	if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)) {
+		return;
+	}
+	rct_ride *ride;
+	int rideIndex, x, y, z, direction;
+
+	rideIndex = _currentRideIndex;
+
+	x = _unkF440C5.x;
+	y = _unkF440C5.y;
+	z = _unkF440C5.z;
+
+	ride = get_ride(rideIndex);
+	if (ride->type == RIDE_TYPE_MAZE) {
+		game_do_command(x     , 41 | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+		game_do_command(x     , 41 | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+		game_do_command(x + 16, 41 | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+		game_do_command(x + 16, 41 | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+	} else {
+		direction = _unkF440C5.direction;
+		if (!(direction & 4)) {
+			x -= TileDirectionDelta[direction].x;
+			y -= TileDirectionDelta[direction].y;
+		}
+		rct_xy_element next_track;
+
+		if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
+			game_do_command(
+				next_track.x,
+				105 | ((direction & 3) << 8),
+				next_track.y,
+				next_track.element->properties.track.type | ((next_track.element->properties.track.sequence & 0x0F) << 8),
+				GAME_COMMAND_REMOVE_TRACK,
+				z,
+				0
+			);
+		}
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006C96C0
+ */
+void sub_6C96C0()
+{
+
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) {
+		ride_remove_provisional_entrance_or_exit();
+		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+	}
+	if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK) {
+		ride_remove_provisional_track_piece();
+		_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_TRACK;
 	}
 }
 
@@ -1426,7 +1471,7 @@ void sub_6C9627()
 	case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
 	case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
 	case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
-		if (_currentTrackSelectionFlags & 1) {
+		if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW) {
 			map_invalidate_tile_full(
 				_currentTrackBeginX & 0xFFE0,
 				_currentTrackBeginY & 0xFFE0
@@ -1435,8 +1480,8 @@ void sub_6C9627()
 		}
 		break;
 	default:
-		if (_currentTrackSelectionFlags & 1) {
-			_currentTrackSelectionFlags &= ~1;
+		if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW) {
+			_currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
 			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 			map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
 		}
@@ -7047,7 +7092,7 @@ money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int directi
 	sub_6C96C0();
 	money32 result = game_do_command(
 		x,
-		105 | (direction << 8),
+		(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST) | (direction << 8),
 		y,
 		rideIndex | (dh << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
@@ -7055,7 +7100,7 @@ money32 ride_get_entrance_or_exit_price(int rideIndex, int x, int y, int directi
 		0
 	);
 	if (result != MONEY32_UNDEFINED) {
-		_currentTrackSelectionFlags |= (1 << 2);
+		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
 		_unkF440BF.x = x;
 		_unkF440BF.y = y;
 		_unkF440BF.direction = direction;
