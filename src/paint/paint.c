@@ -21,6 +21,7 @@
 #include "../interface/viewport.h"
 #include "map_element/map_element.h"
 #include "sprite/sprite.h"
+#include "supports.h"
 
 const uint32 construction_markers[] = {
 	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
@@ -94,6 +95,7 @@ void paint_init(rct_drawpixelinfo * dpi)
 	_paintQuadrantFrontIndex = 0;
 	gPaintPSStringHead = NULL;
 	_paintLastPSString = NULL;
+	gWoodenSupportsPrependTo = NULL;
 }
 
 static void paint_add_ps_to_quadrant(paint_struct * ps, sint32 positionHash)
