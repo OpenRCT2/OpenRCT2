@@ -213,6 +213,11 @@ datetime64 platform_get_datetime_now_utc();
 	// This function cannot be marked as 'static', even though it may seem to be,
 	// as it requires external linkage, which 'static' prevents
 	__declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+
+	void wrl_initialise();
+	void wrl_dispose();
+	bool wrl_is_gamebar_visible();
+
 #endif // __WINDOWS__
 
 #if defined(__LINUX__) || defined(__MACOSX__)

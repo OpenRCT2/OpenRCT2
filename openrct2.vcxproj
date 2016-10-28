@@ -167,6 +167,7 @@
     <ClCompile Include="src\platform\posix.c" />
     <ClCompile Include="src\platform\shared.c" />
     <ClCompile Include="src\platform\windows.c" />
+    <ClCompile Include="src\platform\WindowsAPI.cpp" />
     <ClCompile Include="src\rct1.c" />
     <ClCompile Include="src\rct1\S4Importer.cpp" />
     <ClCompile Include="src\rct1\Tables.cpp" />
@@ -537,7 +538,7 @@
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2</RootNamespace>
     <ProjectName>openrct2</ProjectName>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -61,6 +61,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	_dllModule = hInstance;
 
+	wrl_initialise();
+
 	int argc;
 	char ** argv = (char**)windows_get_command_line_args(&argc);
 	int runGame = cmdline_run((const char **)argv, argc);
@@ -75,6 +77,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		openrct2_launch();
 	}
 
+	wrl_dispose();
+
 	return gExitCode;
 }
 
@@ -86,10 +90,14 @@ int main(int argc, char *argv[])
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	_dllModule = hInstance;
 
+	wrl_initialise();
+
 	int runGame = cmdline_run((const char **)argv, argc);
 	if (runGame == 1) {
 		openrct2_launch();
 	}
+
+	wrl_dispose();
 
 	return gExitCode;
 }

@@ -439,6 +439,10 @@ static void openrct2_loop()
 
 			platform_draw();
 
+			if (wrl_is_gamebar_visible()) {
+				printf("game bar is visible\n");
+			}
+
 			fps++;
 			if (SDL_GetTicks() - secondTick >= 1000) {
 				fps = 0;
