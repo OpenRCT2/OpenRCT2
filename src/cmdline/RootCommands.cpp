@@ -23,7 +23,6 @@ extern "C"
     #include "../config.h"
     #include "../OpenRCT2.h"
     #include "../platform/crash.h"
-    #include "../object/ObjectRepository.h"
 }
 
 #include "../core/Console.hpp"
@@ -31,6 +30,7 @@ extern "C"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
+#include "../object/ObjectRepository.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD
@@ -196,7 +196,14 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     gOpenRCT2Headless = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
-    object_repository_force_scan_flag = _forceScan;
+
+    if (_forceScan)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        objectRepository->LoadOrConstruct(true);
+
+        result = EXITCODE_OK;
+    }
 
     if (_userDataPath != nullptr)
     {
