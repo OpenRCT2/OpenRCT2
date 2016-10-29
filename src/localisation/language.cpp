@@ -147,17 +147,23 @@ static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int
     constexpr char CODEPOINT_DOUBLEBYTE = (char)0xFF;
 
     auto sb = StringBuilder(64);
-    for (const char * ch = src; (ch < src + srcMaxSize) && (*ch != 0);)
+    for (const char * ch = src; (ch < src + srcMaxSize) && (*ch != '\0');)
     {
         if (*ch == CODEPOINT_DOUBLEBYTE)
         {
             ch++;
-            uint8 a = *ch++;
-            uint8 b = *ch++;
-            wchar_t codepoint16 = (wchar_t)((a << 8) | b);
+            if (ch < src + srcMaxSize)
+            {
+                uint8 a = *ch++;
+                if (a != '\0')
+                {
+                    uint8 b = *ch++;
+                    wchar_t codepoint16 = (wchar_t)((a << 8) | b);
 
-            codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
-            sb.Append(codepoint16);
+                    codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
+                    sb.Append(codepoint16);
+                }
+            }
         }
         else
         {
