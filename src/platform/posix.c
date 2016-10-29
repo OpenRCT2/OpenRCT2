@@ -697,8 +697,8 @@ void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
 void platform_resolve_openrct_data_path()
 {
 	if (gCustomOpenrctDataPath[0] != 0) {
-		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath)) {
-			log_error("Could not resolve path \"%s\"", gCustomOpenrctDataPath);
+		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath) == NULL) {
+			log_error("Could not resolve path \"%s\", errno = %d", gCustomOpenrctDataPath, errno);
 			return;
 		}
 
