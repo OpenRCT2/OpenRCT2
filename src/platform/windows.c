@@ -716,7 +716,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 			const utf8 *pattern = desc->filters[filterIndex].pattern;
 			const utf8 *patternExtension = path_get_extension(pattern);
 			if (!str_is_null_or_empty(patternExtension)) {
-				safe_strcat_path(outFilename, patternExtension, outSize);
+				safe_strcat(outFilename, patternExtension, outSize);
 			}
 		}
 	}
