@@ -1246,7 +1246,7 @@ static void window_editor_objective_options_update_disabled_widgets(rct_window *
 		}
 	}
 
-	if (numRides == 0) {
+	if (numRides != 0) {
 		w->disabled_widgets &= ~(1 << WIDX_TAB_2);
 	} else {
 		w->disabled_widgets |= (1 << WIDX_TAB_2);
