@@ -195,7 +195,7 @@
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
-    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
           Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) %(SignItems.Identity)"
           StandardOutputImportance="low" />
 
@@ -241,7 +241,7 @@
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." />
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
              Importance="high" />
-    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
           Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) $(PublishInstallerExe)"
           StandardOutputImportance="low" />
   </Target>
@@ -259,7 +259,7 @@
     <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
     <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
     <Error Condition="'$(GIT_BRANCH)'==''" Text="GIT_BRANCH not set." />
-    <Exec Command="curl.exe -s -o - ^
+    <Exec EchoOff="true" Command="curl.exe -s -o - ^
          --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
          --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
          --form &quot;version=$(Version)&quot; ^
