@@ -105,11 +105,11 @@ namespace Twitch
     constexpr uint32 PulseTime = 10 * 1000;
     constexpr const char * TwitchExtendedBaseUrl = "http://openrct.ursalabs.co/api/1/";
 
-    static int                  _twitchState = TWITCH_STATE_LEFT;
-    static bool                 _twitchIdle = true;
-    static uint32               _twitchLastPulseTick = 0;
-    static int                  _twitchLastPulseOperation = 1;
-    static http_json_response * _twitchJsonResponse;
+    static int               _twitchState = TWITCH_STATE_LEFT;
+    static bool              _twitchIdle = true;
+    static uint32            _twitchLastPulseTick = 0;
+    static int               _twitchLastPulseOperation = 1;
+    static http_response_t * _twitchJsonResponse;
 
     static void Join();
     static void Leave();
@@ -198,11 +198,12 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINING;
         _twitchIdle = false;
 
-        http_json_request request;
+        http_request_t request;
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
-        http_request_json_async(&request, [](http_json_response *jsonResponse) -> void
+        request.type = HTTP_DATA_JSON;
+        http_request_async(&request, [](http_response_t *jsonResponse) -> void
         {
             if (jsonResponse == nullptr)
             {
@@ -221,7 +222,7 @@ namespace Twitch
                     _twitchState = TWITCH_STATE_LEFT;
                 }
 
-                http_request_json_dispose(jsonResponse);
+                http_request_dispose(jsonResponse);
 
                 _twitchLastPulseTick = 0;
                 console_writeline("Connected to twitch channel.");
@@ -237,7 +238,7 @@ namespace Twitch
     {
         if (_twitchJsonResponse != nullptr)
         {
-            http_request_json_dispose(_twitchJsonResponse);
+            http_request_dispose(_twitchJsonResponse);
             _twitchJsonResponse = nullptr;
         }
 
@@ -274,11 +275,12 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_json_request request;
+        http_request_t request;
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = NULL;
-        http_request_json_async(&request, [](http_json_response * jsonResponse) -> void
+        request.type = HTTP_DATA_JSON;
+        http_request_async(&request, [](http_response_t * jsonResponse) -> void
         {
             if (jsonResponse == nullptr)
             {
@@ -304,11 +306,12 @@ namespace Twitch
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        http_json_request request;
+        http_request_t request;
         request.url = url;
         request.method = HTTP_METHOD_GET;
         request.body = nullptr;
-        http_request_json_async(&request, [](http_json_response * jsonResponse) -> void
+        request.type = HTTP_DATA_JSON;
+        http_request_async(&request, [](http_response_t * jsonResponse) -> void
         {
             if (jsonResponse == nullptr)
             {
@@ -325,7 +328,7 @@ namespace Twitch
 
     static void ParseFollowers()
     {
-        http_json_response *jsonResponse = _twitchJsonResponse;
+        http_response_t *jsonResponse = _twitchJsonResponse;
         if (json_is_array(jsonResponse->root))
         {
             std::vector<AudienceMember> members;
@@ -348,7 +351,7 @@ namespace Twitch
             ManageGuestNames(members);
         }
 
-        http_request_json_dispose(_twitchJsonResponse);
+        http_request_dispose(_twitchJsonResponse);
         _twitchJsonResponse = NULL;
         _twitchState = TWITCH_STATE_JOINED;
 
@@ -357,7 +360,7 @@ namespace Twitch
 
     static void ParseMessages()
     {
-        http_json_response * jsonResponse = _twitchJsonResponse;
+        http_response_t * jsonResponse = _twitchJsonResponse;
         if (json_is_array(jsonResponse->root))
         {
             size_t messageCount = json_array_size(jsonResponse->root);
@@ -374,7 +377,7 @@ namespace Twitch
             }
         }
 
-        http_request_json_dispose(_twitchJsonResponse);
+        http_request_dispose(_twitchJsonResponse);
         _twitchJsonResponse = nullptr;
         _twitchState = TWITCH_STATE_JOINED;
     }

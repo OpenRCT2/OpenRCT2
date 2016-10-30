@@ -294,6 +294,23 @@ void openrct2_launch()
 			break;
 		case STARTUP_ACTION_OPEN:
 			assert(gOpenRCT2StartupActionPath != NULL);
+
+#ifndef DISABLE_HTTP
+			// A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
+			// This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
+			if (strstr(gOpenRCT2StartupActionPath, "://") != NULL) {
+				// Download park and open it using its temporary filename
+				char tmpPath[L_tmpnam];
+				
+				if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath)) {
+					title_load();
+					break;
+				}
+				
+				strcpy(gOpenRCT2StartupActionPath, tmpPath);
+			}
+#endif
+
 			if (!rct2_open_file(gOpenRCT2StartupActionPath)) {
 				fprintf(stderr, "Failed to load '%s'", gOpenRCT2StartupActionPath);
 				title_load();

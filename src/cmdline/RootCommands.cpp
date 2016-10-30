@@ -107,8 +107,13 @@ static void PrintLaunchInformation();
 const CommandLineCommand CommandLine::RootCommands[]
 {
     // Main commands
+#ifndef DISABLE_HTTP
     DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
     DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
+#else
+    DefineCommand("",         "<path>",                 StandardOptions, HandleNoCommand     ),
+    DefineCommand("edit",     "<path>",                 StandardOptions, HandleCommandEdit   ),
+#endif
     DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
 #ifndef DISABLE_NETWORK
     DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
@@ -133,7 +138,9 @@ const CommandLineExample CommandLine::RootExamples[]
     { "./my_park.sv6",                                "open a saved park"                      },
     { "./SnowyPark.sc6",                              "install and open a scenario"            },
     { "./ShuttleLoop.td6",                            "install a track"                        },
+#ifndef DISABLE_HTTP
     { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
+#endif
 #ifndef DISABLE_NETWORK
     { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
 #endif

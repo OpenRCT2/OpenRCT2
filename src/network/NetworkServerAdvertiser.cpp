@@ -100,7 +100,7 @@ private:
         _lastAdvertiseTime = SDL_GetTicks();
 
         // Send the registration request
-        http_json_request request;
+        http_request_t request;
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_POST;
@@ -108,9 +108,10 @@ private:
         json_t *body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
         json_object_set_new(body, "port", json_integer(_port));
-        request.body = body;
+        request.root = body;
+        request.type = HTTP_DATA_JSON;
 
-        http_request_json_async(&request, [](http_json_response * response) -> void
+        http_request_async(&request, [](http_response_t * response) -> void
         {
             if (response == nullptr)
             {
@@ -120,7 +121,7 @@ private:
             {
                 auto advertiser = (NetworkServerAdvertiser *)response->tag;
                 advertiser->OnRegistrationResponse(response->root);
-                http_request_json_dispose(response);
+                http_request_dispose(response);
             }
         });
 
@@ -129,16 +130,17 @@ private:
 
     void SendHeartbeat()
     {
-        http_json_request request;
+        http_request_t request;
         request.tag = this;
         request.url = GetMasterServerUrl();
         request.method = HTTP_METHOD_PUT;
 
         json_t * jsonBody = GetHeartbeatJson();
-        request.body = jsonBody;
+        request.root = jsonBody;
+        request.type = HTTP_DATA_JSON;
 
         _lastHeartbeatTime = SDL_GetTicks();
-        http_request_json_async(&request, [](http_json_response *response) -> void
+        http_request_async(&request, [](http_response_t *response) -> void
         {
             if (response == nullptr)
             {
@@ -148,7 +150,7 @@ private:
             {
                 auto advertiser = (NetworkServerAdvertiser *)response->tag;
                 advertiser->OnHeartbeatResponse(response->root);
-                http_request_json_dispose(response);
+                http_request_dispose(response);
             }
         });
 
