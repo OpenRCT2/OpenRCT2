@@ -1113,7 +1113,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		}
 
-		sub_98196C(image_id, 0, 0, 32, 32, 255, height, rotation);
+		sub_98196C(image_id, 0, 0, 32, 32, -1, height, rotation);
 		has_surface = true;
 	}
 

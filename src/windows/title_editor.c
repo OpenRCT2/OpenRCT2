@@ -907,7 +907,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			}
 			else {
 				format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
-				buffer[0] = FORMAT_BLACK;
+				buffer[0] = (utf8)FORMAT_BLACK;
 			}
 			set_format_arg(0, uintptr_t, &buffer);
 			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
@@ -982,7 +982,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			}
 			else {
 				format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
-				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
+				buffer[0] = (utf8)(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
 			}
 			set_format_arg(0, uintptr_t, &buffer);
 			gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], x + 5, y);
