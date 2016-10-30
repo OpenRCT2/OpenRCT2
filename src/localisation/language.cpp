@@ -274,7 +274,6 @@ void language_close_all()
     gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
 
-constexpr rct_string_id STEX_BASE_STRING_ID = 3447;
 constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
