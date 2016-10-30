@@ -38,7 +38,7 @@ void path_end_with_separator(utf8 *path, size_t size);
 bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 
 int bitscanforward(int source);
-void bitcount_init(void);
+void bitcount_init();
 int bitcount(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
