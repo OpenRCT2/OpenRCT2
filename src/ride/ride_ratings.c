@@ -1575,7 +1575,7 @@ static void ride_ratings_calculate_miniature_railway(rct_ride *ride)
 	ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
 	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
 	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
-	ride_ratings_apply_65E1C2(&ratings, ride, 4294960871, 6553, 23405);
+	ride_ratings_apply_65E1C2(&ratings, ride, -6425, 6553, 23405);
 	ride_ratings_apply_proximity(&ratings, ride, 8946);
 	ride_ratings_apply_scenery(&ratings, ride, 20915);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 2, 2);
@@ -2077,7 +2077,7 @@ static void ride_ratings_calculate_chairlift(rct_ride *ride)
 	ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
 	ride_ratings_apply_duration(&ratings, ride, 150, 26214);
 	ride_ratings_apply_65DDD1(&ratings, ride, 7430, 3476, 4574);
-	ride_ratings_apply_65E1C2(&ratings, ride, 4294948021, 21845, 23405);
+	ride_ratings_apply_65E1C2(&ratings, ride, -19275, 21845, 23405);
 	ride_ratings_apply_proximity(&ratings, ride, 11183);
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x960000, 2, 2, 2);
