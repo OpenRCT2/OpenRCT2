@@ -120,11 +120,11 @@ bool gUseTrueTypeFont = false;
 static ILanguagePack * _languageFallback = nullptr;
 static ILanguagePack * _languageCurrent = nullptr;
 
-static const utf8 BlackUpArrowString[] =       { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
-static const utf8 BlackDownArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
-static const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
-static const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
-static const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
+const utf8 BlackUpArrowString[] =       { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
+const utf8 BlackDownArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
+const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
+const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
+const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
 void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
@@ -277,11 +277,6 @@ void language_close_all()
 constexpr rct_string_id STEX_BASE_STRING_ID = 3447;
 constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
-
-/* rct2: 0x0098DA16 */
-static uint16 ObjectTypeStringTableCount[] = { 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3 };
-
-static utf8 *_cachedObjectStrings[MAX_OBJECT_CACHED_STRINGS] = { nullptr };
 
 static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
 {
