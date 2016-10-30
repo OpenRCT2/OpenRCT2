@@ -709,6 +709,7 @@ void window_themes_open();
 void window_title_editor_open(int tab);
 void window_title_command_editor_open(int command, bool insert);
 void window_tile_inspector_open();
+void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();

@@ -899,6 +899,8 @@ void game_load_init()
 	window_update_all();
 
 	gGameSpeed = 1;
+
+	window_tile_inspector_clear_clipboard();
 }
 
 /**

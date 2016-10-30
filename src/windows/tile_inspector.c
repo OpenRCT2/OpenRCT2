@@ -579,6 +579,10 @@ void window_tile_inspector_open() {
 	window_tile_inspector_auto_set_buttons(window);
 }
 
+void window_tile_inspector_clear_clipboard() {
+	windowTileInspectorElementCopied = false;
+}
+
 static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w) {
 	assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount);
 	return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
