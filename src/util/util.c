@@ -195,15 +195,72 @@ int bitscanforward(int source)
 	#endif
 }
 
+#if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+	#include <cpuid.h>
+	#define OpenRCT2_POPCNT_GNUC
+#elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
+	#include <intrin.h>
+	#define OpenRCT2_POPCNT_MSVC
+#endif
+
+static int bitcount_available(void)
+{
+	// POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
+	#if defined(OpenRCT2_POPCNT_GNUC)
+		// we could use __builtin_cpu_supports, but it requires runtime support from
+		// the compiler's library, which clang doesn't have yet.
+		unsigned int eax, ebx, ecx = 0, edx; // avoid "maybe uninitialized"
+		__get_cpuid(1, &eax, &ebx, &ecx, &edx);
+		return (ecx & (1 << 23));
+	#elif defined(OpenRCT2_POPCNT_MSVC)
+		int regs[4];
+		__cpuid(regs, 1);
+		return (regs[2] & (1 << 23));
+	#else
+		return 0;
+	#endif
+}
+
+static int bitcount_popcnt(int source)
+{
+	#if defined(OpenRCT2_POPCNT_GNUC)
+		// use asm directly in order to actually emit the instruction : using
+		// __builtin_popcount results in an extra call to a library function.
+		int rv;
+		asm volatile ("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
+		return rv;
+	#elif defined(OpenRCT2_POPCNT_MSVC)
+		return __popcnt(source);
+	#else
+		assert(false && "bitcount_popcnt() called, without support compiled in");
+		return INT_MAX;
+	#endif
+}
+
+static int bitcount_lut(int source)
+{
+	// https://graphics.stanford.edu/~seander/bithacks.html
+	static const unsigned char BitsSetTable256[256] = 
+	{
+	#define B2(n) n,     n+1,     n+1,     n+2
+	#define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
+	#define B6(n) B4(n), B4(n+1), B4(n+1), B4(n+2)
+	B6(0), B6(1), B6(1), B6(2)
+	};
+	return BitsSetTable256[source & 0xff] +
+		BitsSetTable256[(source >> 8) & 0xff] +
+		BitsSetTable256[(source >> 16) & 0xff] +
+		BitsSetTable256[source >> 24];
+}
+
 int bitcount(int source)
 {
-	int result = 0;
-	for (int i = 0; i < 32; i++) {
-		if (source & (1u << i)) {
-			result++;
-		}
+	static int(*bitcount_fn)(int);
+	if(bitcount_fn == 0)
+	{
+		bitcount_fn = bitcount_available() ? bitcount_popcnt : bitcount_lut;
 	}
-	return result;
+	return bitcount_fn(source);
 }
 
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
