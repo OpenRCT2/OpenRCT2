@@ -316,14 +316,14 @@ void console_writeline(const utf8 *src)
 void console_writeline_error(const utf8 *src)
 {
 	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-	_consoleErrorBuffer[0] = FORMAT_RED;
+	_consoleErrorBuffer[0] = (utf8)FORMAT_RED;
 	console_writeline(_consoleErrorBuffer);
 }
 
 void console_writeline_warning(const utf8 *src)
 {
 	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
-	_consoleErrorBuffer[0] = FORMAT_YELLOW;
+	_consoleErrorBuffer[0] = (utf8)FORMAT_YELLOW;
 	console_writeline(_consoleErrorBuffer);
 }
 
