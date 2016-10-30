@@ -253,13 +253,15 @@ static int bitcount_lut(int source)
 		BitsSetTable256[source >> 24];
 }
 
+static int(*bitcount_fn)(int);
+
+void bitcount_init(void)
+{
+	bitcount_fn = bitcount_available() ? bitcount_popcnt : bitcount_lut;
+}
+
 int bitcount(int source)
 {
-	static int(*bitcount_fn)(int);
-	if(bitcount_fn == 0)
-	{
-		bitcount_fn = bitcount_available() ? bitcount_popcnt : bitcount_lut;
-	}
 	return bitcount_fn(source);
 }
 

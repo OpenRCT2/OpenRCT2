@@ -782,3 +782,8 @@ uint8 platform_get_currency_value(const char *currCode) {
 	
 	return CURRENCY_POUNDS;
 }
+
+void core_init()
+{
+	bitcount_init();
+}
