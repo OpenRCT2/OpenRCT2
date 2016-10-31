@@ -2310,7 +2310,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		scenery = get_small_scenery_entry(selected_scenery);
 
 		gMapSelectType = MAP_SELECT_TYPE_FULL;
-		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
+		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryClusterEnabled){
 			gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + ((parameter2 & 0xFF) ^ 2);
 		}
 
