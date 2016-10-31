@@ -835,7 +835,7 @@ STR_0830    :{SMALLFONT}{BLACK}화면 확대하기
 STR_0831    :{SMALLFONT}{BLACK}화면 축소하기
 STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로 90{DEGREE} 회전하기
 STR_0833    :{SMALLFONT}{BLACK}게임 일시정지
-STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
+STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 설정
 STR_0835    :게임 초기화 실패
 STR_0836    :게임을 최소화 상태에서 실행할 수 없습니다
 STR_0837    :그래픽 시스템을 초기화할 수 없습니다
@@ -1170,7 +1170,7 @@ STR_1164    :{STRINGID}{NEWLINE}(제거하려면 오른쪽 클릭하세요)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :이곳의 물을 내릴 수 없습니다...
 STR_1167    :이곳의 물을 올릴 수 없습니다...
-STR_1168    :옵션
+STR_1168    :설정
 STR_1169    :(없음)
 STR_1170    :{STRING}
 STR_1171    :{RED}닫힘 - -
@@ -3549,7 +3549,7 @@ STR_5208    :직원 목록
 STR_5209    :전광판
 STR_5210    :오브젝트 선택
 STR_5211    :개발 목록
-STR_5212    :시나리오 옵션
+STR_5212    :시나리오 설정
 STR_5213    :목표 설정
 STR_5214    :지도 생성
 STR_5215    :트랙 디자인 매니저
