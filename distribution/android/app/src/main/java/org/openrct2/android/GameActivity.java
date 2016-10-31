@@ -13,7 +13,7 @@ public class GameActivity extends SDLActivity {
         return new String[]{
                 "speexdsp",
                 "jansson",
-
+                "png16",
                 "SDL2-2.0",
 
                 "freetype",

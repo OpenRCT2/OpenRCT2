@@ -33,75 +33,24 @@ set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
-# SDL
-set(VIDEO_DUMMY OFF)
-set(HAVE_SDL_THREADS ON)
-set(DISKAUDIO OFF)
-set(PTHREADS ON)
-set(PTHREADS_SEM ON)
-set(SDL_STATIC OFF)
-set(EXTRA_LIBS dl GLESv1_CM GLESv2 log android)
-list(APPEND EXTRA_CFLAGS -DGL_GLEXT_PROTOTYPES)
-add_subdirectory(${lib_src_DIR}/sdl ${lib_build_DIR}/sdl)
-include_directories(${lib_src_DIR}/sdl/include)
 
-## Remove unavailable library
-get_target_property(SDL_LINK_LIBRARIES SDL2 LINK_LIBRARIES)
-list(REMOVE_ITEM SDL_LINK_LIBRARIES -lpthread)
-set_target_properties(SDL2 PROPERTIES LINK_LIBRARIES "${SDL_LINK_LIBRARIES}")
-
-## Remove source files
-get_target_property(SDL_SOURCES SDL2 SOURCES)
-file(GLOB SDL_REMOVE_SOURCE_FILES
-    "${lib_src_DIR}/sdl/src/libm/*.c"
-    "${lib_src_DIR}/sdl/src/thread/generic/*.c"
-    "${lib_src_DIR}/sdl/src/filesystem/unix/*.c"
-    "${lib_src_DIR}/sdl/src/main/android/*.c"
-)
-foreach(file ${SDL_REMOVE_SOURCE_FILES})
-  get_filename_component(file ${file} REALPATH)
-  list(REMOVE_ITEM SDL_SOURCES "${file}")
-endforeach()
-
-get_filename_component(SDL_SYSSEM_PATH "${lib_src_DIR}/sdl/src/thread/pthread/SDL_syssem.c" REALPATH)
-list(APPEND SDL_SOURCES ${SDL_SYSSEM_PATH})
-
-list(SORT SDL_SOURCES)
-set_target_properties(SDL2 PROPERTIES SOURCES "${SDL_SOURCES}")
-
-
-# Freetype
-set(BUILD_SHARED_LIBS ON)
-add_subdirectory(${lib_src_DIR}/freetype ${lib_build_DIR}/freetype)
-include_directories(${lib_src_DIR}/freetype/include)
-
-# SDL-ttf
-include_directories(${lib_src_DIR}/sdl-ttf)
-SET(SDL2_ttf_LIB_SRCS "${lib_src_DIR}/sdl-ttf/SDL_ttf.c")
-add_library(SDL2_ttf SHARED ${SDL2_ttf_LIB_SRCS})
-target_link_libraries(SDL2_ttf SDL2 freetype)
-
-# png
 include(ExternalProject)
-ExternalProject_Add(png_ext
-    PREFIX "${CMAKE_BINARY_DIR}/png"
-    URL http://download.sourceforge.net/libpng/libpng-1.6.26.tar.gz
+ExternalProject_Add(libs
+    URL https://github.com/marijnvdwerf/openrct2-dependencies-android/releases/download/v0.2/openrct2-libs-android.zip
 
-    CMAKE_CACHE_ARGS
-      -DCMAKE_MAKE_PROGRAM:STRING=${CMAKE_MAKE_PROGRAM}
-      -DANDROID_ABI:STRING=${ANDROID_ABI}
-      -DANDROID_NDK:PATH=${ANDROID_NDK}
-      -DANDROID_NATIVE_API_LEVEL:STRING=${ANDROID_NATIVE_API_LEVEL}
-      -DANDROID_TOOLCHAIN:STRING=gcc
-      -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE}
-      -DCMAKE_BUILD_TYPE:STRING=Release
-      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/contrib
-      -DPNG_SHARED:BOOL=OFF
-      -DPNG_STATIC:BOOL=ON
-      -DPNG_TESTS:BOOL=OFF
+    SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
+
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
 
     BUILD_BYPRODUCTS
-        ${CMAKE_BINARY_DIR}/contrib/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -111,25 +60,58 @@ ExternalProject_Add(png_ext
     LOG_INSTALL 1
 )
 
-add_library(png STATIC IMPORTED)
-set_target_properties(png PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/contrib/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png${CMAKE_STATIC_LIBRARY_SUFFIX}
+add_custom_command(TARGET libs POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+#    COMMAND ${CMAKE_COMMAND} -E copy "/Users/marijn/deps/dist/armeabi-v7a/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
-add_dependencies(png png_ext)
-include_directories("${CMAKE_BINARY_DIR}/contrib/include")
 
-# speexdsp
-set(SPEEXDSP_ROOT "${lib_src_DIR}/speexdsp")
-add_subdirectory(${CMAKE_SOURCE_DIR}/../speexdsp ${lib_build_DIR}/speexdsp)
-include_directories(${lib_src_DIR}/speexdsp/include)
-include_directories("${CMAKE_SOURCE_DIR}/../speexdsp")
+add_library(freetype SHARED IMPORTED)
+set_target_properties(freetype PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(freetype libs)
+
+add_library(jansson SHARED IMPORTED)
+set_target_properties(jansson PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(jansson libs)
+
+add_library(png SHARED IMPORTED)
+set_target_properties(png PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(png libs)
+
+add_library(SDL2 SHARED IMPORTED)
+set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(SDL2 libs)
+
+add_library(SDL2main STATIC IMPORTED)
+set_target_properties(SDL2main PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
+)
+add_dependencies(SDL2main libs)
+
+add_library(speexdsp SHARED IMPORTED)
+set_target_properties(speexdsp PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(speexdsp libs)
 
 
-# jansson
-set(JANSSON_ROOT "${lib_src_DIR}/jansson")
-add_subdirectory(${CMAKE_SOURCE_DIR}/../jansson ${lib_build_DIR}/jansson)
-include_directories(${lib_src_DIR}/jansson/android)
-include_directories(${lib_src_DIR}/jansson/src)
+include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include")
+include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include/freetype2")
+include_directories("${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}/include/SDL2")
+
+# SDL-ttf
+include_directories(${lib_src_DIR}/sdl-ttf)
+SET(SDL2_ttf_LIB_SRCS "${lib_src_DIR}/sdl-ttf/SDL_ttf.c")
+add_library(SDL2_ttf SHARED ${SDL2_ttf_LIB_SRCS})
+target_link_libraries(SDL2_ttf SDL2 freetype)
 
 
 # now build app's shared lib
@@ -148,13 +130,3 @@ target_link_libraries(openrct2
                         android log dl GLESv1_CM GLESv2 z
                         SDL2 SDL2_ttf png jansson speexdsp
                       )
-
-# moduleName "main"
-# CFlags.addAll("-O3", "-DGL_GLEXT_PROTOTYPES", "")
-# cppFlags.addAll("-O3", "-std=gnu++11", "")
-# ldLibs.addAll(["dl", "GLESv1_CM", "GLESv2", "log", "android", "z"])
-# cppFlags.add("-DDEBUG=0")
-# CFlags.add("-DDEBUG=0")
-# stl 'c++_shared'
-# abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
-# platformVersion 16
