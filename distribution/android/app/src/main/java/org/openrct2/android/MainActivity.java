@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -23,6 +26,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,10 +57,48 @@ public class MainActivity extends AppCompatActivity {
 
     private PointF getResolutionDips() {
         PointF out = new PointF();
+        Point pixelSize = new Point();
 
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        out.x = ((float) displayMetrics.widthPixels) / displayMetrics.density;
-        out.y = ((float) displayMetrics.heightPixels) / displayMetrics.density;
+        Display display = getWindowManager().getDefaultDisplay();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        boolean success = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealSize(pixelSize);
+            display.getRealMetrics(metrics);
+
+            success = true;
+        } else {
+            try {
+                Method getRawHeight = Display.class.getMethod("getRawHeight");
+                Method getRawWidth = Display.class.getMethod("getRawWidth");
+                pixelSize.x = (Integer) getRawWidth.invoke(display);
+                pixelSize.y = (Integer) getRawHeight.invoke(display);
+
+                success = true;
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!success) {
+            // Fall back to viewport size
+            display.getSize(pixelSize);
+        }
+
+        int rotation = display.getRotation();
+        if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+            pixelSize = new Point(pixelSize.y, pixelSize.x);
+        }
+
+        out.x = ((float) pixelSize.x) / metrics.density;
+        out.y = ((float) pixelSize.y) / metrics.density;
 
         return out;
     }
