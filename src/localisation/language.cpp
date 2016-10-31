@@ -166,10 +166,10 @@ static utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageI
 {
     const char * locale = LanguagesDescriptors[languageId].locale;
 
-    platform_get_openrct_data_path(buffer, sizeof(bufferSize));
-    Path::Append(buffer, sizeof(bufferSize), "language");
-    Path::Append(buffer, sizeof(bufferSize), locale);
-    String::Append(buffer, sizeof(bufferSize), ".txt");
+    platform_get_openrct_data_path(buffer, bufferSize);
+    Path::Append(buffer, bufferSize, "language");
+    Path::Append(buffer, bufferSize, locale);
+    String::Append(buffer, bufferSize, ".txt");
     return buffer;
 }
 
