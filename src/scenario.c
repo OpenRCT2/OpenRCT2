@@ -279,6 +279,7 @@ void scenario_begin()
 	date_reset();
 	duck_remove_all();
 	park_calculate_size();
+	map_count_remaining_land_rights();
 	staff_reset_stats();
 	gLastEntranceStyle = RIDE_ENTRANCE_STYLE_PLAIN;
 	memset(gMarketingCampaignDaysLeft, 0, 20);

@@ -384,11 +384,15 @@ extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
 extern money32 gLandRightsCost;
 
+extern uint16 gLandRemainingOwnershipSales;
+extern uint16 gLandRemainingConstructionSales;
+
 extern rct_xyz16 gCommandPosition;
 
 extern uint8 gUnk9E2E28;
 
 void map_init(int size);
+void map_count_remaining_land_rights();
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
 void map_set_tile_elements(int x, int y, rct_map_element *elements);
