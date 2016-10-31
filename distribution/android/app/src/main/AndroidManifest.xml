@@ -11,8 +11,10 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="org.openrct2.android.MainActivity">
+        android:theme="@style/AppTheme.Splash">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.openrct2.android.GameActivity"
+            android:name=".GameActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
 
         </activity>
