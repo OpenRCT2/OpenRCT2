@@ -2130,7 +2130,7 @@ void window_resize_gui(int width, int height)
 
 	rct_window *titleWind = window_find_by_class(WC_TITLE_MENU);
 	if (titleWind != NULL) {
-		titleWind->x = width / 2 - 164;
+		titleWind->x = (width - titleWind->width) / 2;
 		titleWind->y = height - 142;
 	}
 
