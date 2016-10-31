@@ -1044,7 +1044,8 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 	case WIDX_BUTTON_COPY:
 		window_tile_inspector_copy_element(w);
 		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-		widget_invalidate(w, WIDX_BUTTON_PASTE);
+		window_tile_inspector_auto_set_buttons(w);
+		window_invalidate(w);
 		break;
 	case WIDX_BUTTON_PASTE:
 		window_tile_inspector_paste_element(w);

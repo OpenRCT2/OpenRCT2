@@ -220,6 +220,7 @@ static int title_load_park(const char *path)
 	news_item_init_queue();
 	load_palette();
 	gfx_invalidate_screen();
+	window_tile_inspector_clear_clipboard();
 	gScreenAge = 0;
 	gGameSpeed = 1;
 	return 1;

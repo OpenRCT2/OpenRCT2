@@ -896,11 +896,10 @@ void game_load_init()
 
 	load_palette();
 	gfx_invalidate_screen();
+	window_tile_inspector_clear_clipboard();
 	window_update_all();
 
 	gGameSpeed = 1;
-
-	window_tile_inspector_clear_clipboard();
 }
 
 /**
