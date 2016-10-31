@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="curl-ca-bundle.crt" />
     <None Include="data\shaders\copyframebuffer.frag" />
     <None Include="data\shaders\copyframebuffer.vert" />
     <None Include="data\shaders\drawimage.frag" />
