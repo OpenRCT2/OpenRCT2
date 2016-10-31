@@ -97,13 +97,13 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "en-US",      "English (US)",             "English (US)",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_US             },  // LANGUAGE_ENGLISH_US
     { "de-DE",      "German",                   "Deutsch",                  FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_GERMAN                 },  // LANGUAGE_GERMAN
     { "nl-NL",      "Dutch",                    "Nederlands",               FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_DUTCH                  },  // LANGUAGE_DUTCH
-    { "fr-FR",      "French",                   "Fran\xC3\xA7" "ais",       FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_FRENCH                 },  // LANGUAGE_FRENCH
+    { "fr-FR",      "French",                 u8"Français",                 FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_FRENCH                 },  // LANGUAGE_FRENCH
     { "hu-HU",      "Hungarian",                "Magyar",                   FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_HUNGARIAN
     { "pl-PL",      "Polish",                   "Polski",                   &TTFFontArial,          RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_POLISH
-    { "es-ES",      "Spanish",                  "Espa\xC3\xB1ol",           FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH                },  // LANGUAGE_SPANISH
+    { "es-ES",      "Spanish",                u8"Español",                  FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH                },  // LANGUAGE_SPANISH
     { "sv-SE",      "Swedish",                  "Svenska",                  FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SWEDISH                },  // LANGUAGE_SWEDISH
     { "it-IT",      "Italian",                  "Italiano",                 FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ITALIAN                },  // LANGUAGE_ITALIAN
-    { "pt-BR",      "Portuguese (BR)",          "Portugu\xC3\xAAs (BR)",    FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_PORTUGUESE             },  // LANGUAGE_PORTUGUESE_BR
+    { "pt-BR",      "Portuguese (BR)",        u8"Português (BR)",           FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_PORTUGUESE             },  // LANGUAGE_PORTUGUESE_BR
     { "zh-TW",      "Chinese (Traditional)",    "Chinese (Traditional)",    &TTFFontMingLiu,        RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL    },  // LANGUAGE_CHINESE_TRADITIONAL
     { "zh-CN",      "Chinese (Simplified)",     "Chinese (Simplified)",     &TTFFontSimSun,         RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED     },  // LANGUAGE_CHINESE_SIMPLIFIED
     { "fi-FI",      "Finnish",                  "Suomi",                    FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_FINNISH
