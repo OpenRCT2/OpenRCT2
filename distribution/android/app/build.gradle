@@ -77,6 +77,7 @@ task downloadLibraries {
 dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.google.android.gms:play-services-analytics:9.8.0'
 }
 
 task copyLanguageAssets(type: Copy) {
@@ -100,3 +101,5 @@ project.afterEvaluate {
     preBuild.dependsOn tasks['downloadLibraries']
     preDebugBuild.dependsOn tasks['downloadLibraries']
 }
+
+apply plugin: 'com.google.gms.google-services'

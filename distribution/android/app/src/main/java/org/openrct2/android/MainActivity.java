@@ -4,11 +4,18 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.apache.commons.io.IOUtils;
 
@@ -31,10 +38,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String[] getSupportedAbis() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return Build.SUPPORTED_ABIS;
+        }
+
+        if (!TextUtils.isEmpty(Build.CPU_ABI2)) {
+            return new String[]{Build.CPU_ABI, Build.CPU_ABI2};
+        }
+
+        return new String[]{Build.CPU_ABI};
+    }
+
+    private PointF getResolutionDips() {
+        PointF out = new PointF();
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        out.x = ((float) displayMetrics.widthPixels) / displayMetrics.density;
+        out.y = ((float) displayMetrics.heightPixels) / displayMetrics.density;
+
+        return out;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String[] supportedAbis = getSupportedAbis();
+        PointF resolution = getResolutionDips();
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        Tracker tracker = ((OpenRCT2App) getApplication()).getDefaultTracker();
+        tracker.setScreenName("Main");
+        tracker.setScreenResolution(Math.round(resolution.x), Math.round(resolution.y));
+        tracker.send(new HitBuilders.ScreenViewBuilder()
+                .setCustomDimension(1, Float.toString(displayMetrics.density))
+                .setCustomDimension(2, TextUtils.join(", ", supportedAbis))
+                .build()
+        );
     }
 
     @Override

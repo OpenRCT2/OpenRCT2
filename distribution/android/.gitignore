@@ -44,3 +44,6 @@ captures/
 /app/src/main/libs/
 /app/src/main/assets/
 !/app/src/main/java/org/openrct2
+
+# Google
+app/google-services.json
