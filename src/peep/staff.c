@@ -151,7 +151,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
 	invalidate_sprite_2((rct_sprite *)newPeep);
 }
 
-static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int *newPeep_sprite_index)
+static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int autoposition, int *newPeep_sprite_index)
 {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	gCommandPosition.x = command_x;
@@ -272,8 +272,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-		// gConfigGeneral.auto_staff_placement is client specific so we need to force this
-		if (network_get_mode() == NETWORK_MODE_NONE && gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+		if (autoposition) {
 			staff_autoposition_new_staff_member(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
@@ -329,6 +328,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 									   *eax & 0xFFFF,
 									   *ecx & 0xFFFF,
 									   *edx & 0xFFFF,
+									   (*ebx & 0xFF0000) >> 16,
 									   edi);
 }
 
@@ -508,18 +508,20 @@ uint16 hire_new_staff_member(uint8 staffType)
 {
 	gGameCommandErrorTitle = STR_CANT_HIRE_NEW_STAFF;
 
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	ecx = edx = esi = edi = ebp = 0;
-	eax = 0x8000;
-	ebx = staffType << 8 | GAME_COMMAND_FLAG_APPLY;
+	int command_x, ebx, command_y, command_z, esi, new_sprite_index, ebp;
+	command_y = command_z = esi = new_sprite_index = ebp = 0;
+	command_x = 0x8000;
+
+	int autoposition = gConfigGeneral.auto_staff_placement == ((SDL_GetModState() & KMOD_SHIFT) == 0);
+	ebx = autoposition << 16 | staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
 	game_command_callback = game_command_callback_hire_new_staff_member;
-	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &command_x, &ebx, &command_y, &command_z, &esi, &new_sprite_index, &ebp);
 
 	if (result == MONEY32_UNDEFINED)
 		return 0xFFFF;
 
-	return edi;
+	return new_sprite_index;
 }
 
 /**
