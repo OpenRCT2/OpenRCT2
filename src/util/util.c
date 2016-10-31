@@ -203,7 +203,7 @@ int bitscanforward(int source)
 	#define OpenRCT2_POPCNT_MSVC
 #endif
 
-static int bitcount_popcnt_available()
+static bool bitcount_popcnt_available()
 {
 	// POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
 	#if defined(OpenRCT2_POPCNT_GNUC)
@@ -217,7 +217,7 @@ static int bitcount_popcnt_available()
 		__cpuid(regs, 1);
 		return (regs[2] & (1 << 23));
 	#else
-		return 0;
+		return false;
 	#endif
 }
 
