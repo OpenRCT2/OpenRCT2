@@ -314,7 +314,7 @@ uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour
 
 		if (!(image_type & IMAGE_TYPE_REMAP)) {
 			palette_pointer = gOtherPalette;
-#ifdef DEBUG_LEVEL_2
+#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 			assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
 #endif // DEBUG_LEVEL_2
 			uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
