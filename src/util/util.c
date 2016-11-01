@@ -199,7 +199,7 @@ int bitscanforward(int source)
 	#include <cpuid.h>
 	#define OpenRCT2_POPCNT_GNUC
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-	#include <intrin.h>
+	#include <nmmintrin.h>
 	#define OpenRCT2_POPCNT_MSVC
 #endif
 
@@ -221,7 +221,7 @@ static bool bitcount_popcnt_available()
 	#endif
 }
 
-static int bitcount_popcnt(int source)
+static int bitcount_popcnt(uint32 source)
 {
 	#if defined(OpenRCT2_POPCNT_GNUC)
 		// use asm directly in order to actually emit the instruction : using
@@ -230,14 +230,14 @@ static int bitcount_popcnt(int source)
 		asm volatile ("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
 		return rv;
 	#elif defined(OpenRCT2_POPCNT_MSVC)
-		return __popcnt(source);
+		return _mm_popcnt_u32(source);
 	#else
-		assert(false && "bitcount_popcnt() called, without support compiled in");
+		openrct2_assert(false, "bitcount_popcnt() called, without support compiled in");
 		return INT_MAX;
 	#endif
 }
 
-static int bitcount_lut(int source)
+static int bitcount_lut(uint32 source)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html
 	static const unsigned char BitsSetTable256[256] = 
@@ -253,14 +253,14 @@ static int bitcount_lut(int source)
 		BitsSetTable256[source >> 24];
 }
 
-static int(*bitcount_fn)(int);
+static int(*bitcount_fn)(uint32);
 
 void bitcount_init()
 {
 	bitcount_fn = bitcount_popcnt_available() ? bitcount_popcnt : bitcount_lut;
 }
 
-int bitcount(int source)
+int bitcount(uint32 source)
 {
 	return bitcount_fn(source);
 }
