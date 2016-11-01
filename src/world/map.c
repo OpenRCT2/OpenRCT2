@@ -4452,8 +4452,11 @@ void map_remove_provisional_elements()
 		footpath_provisional_remove();
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 	}
-	ride_remove_provisional_track_piece();
-	ride_remove_provisional_entrance_or_exit();
+	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	{
+		ride_remove_provisional_track_piece();
+		ride_remove_provisional_entrance_or_exit();
+	}
 }
 
 void map_restore_provisional_elements()
@@ -4467,8 +4470,11 @@ void map_restore_provisional_elements()
 				gFootpathProvisionalPosition.z,
 				gFootpathProvisionalSlope);
 	}
-	ride_restore_provisional_track_piece();
-	ride_restore_provisional_entrance_or_exit();
+	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	{
+		ride_restore_provisional_track_piece();
+		ride_restore_provisional_entrance_or_exit();
+	}
 }
 
 int map_element_get_banner_index(rct_map_element *mapElement)
