@@ -152,7 +152,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 			
-			if (!(mapElement->properties.path.addition_status & (0x3 << get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -167,7 +169,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			if (!(mapElement->properties.path.addition_status & rol8(0xC, get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -182,8 +186,10 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
-
-			if (!(mapElement->properties.path.addition_status & rol8(0x30, get_current_rotation())))
+			
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -199,7 +205,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			if (!(mapElement->properties.path.addition_status & rol8(0xC0, get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
