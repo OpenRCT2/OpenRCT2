@@ -61,6 +61,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	_dllModule = hInstance;
 
+	core_init();
+
 	int argc;
 	char ** argv = (char**)windows_get_command_line_args(&argc);
 	int runGame = cmdline_run((const char **)argv, argc);
@@ -85,6 +87,8 @@ int main(int argc, char *argv[])
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	_dllModule = hInstance;
+
+	core_init();
 
 	int runGame = cmdline_run((const char **)argv, argc);
 	if (runGame == 1) {
@@ -123,6 +127,8 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	if (_dllModule == NULL) {
 		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
 	}
+
+	core_init();
 
 	// argv = CommandLineToArgvA(lpCmdLine, &argc);
 	argv = (char**)windows_get_command_line_args(&argc);
