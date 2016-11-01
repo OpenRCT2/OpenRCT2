@@ -547,7 +547,8 @@ static uint64 windowTileInspectorDisabledWidgets[] = {
 	(1ULL << WIDX_BUTTON_ROTATE),
 };
 
-void window_tile_inspector_open() {
+void window_tile_inspector_open()
+{
 	rct_window* window;
 
 	// Check if window is already open
@@ -579,16 +580,19 @@ void window_tile_inspector_open() {
 	window_tile_inspector_auto_set_buttons(window);
 }
 
-void window_tile_inspector_clear_clipboard() {
+void window_tile_inspector_clear_clipboard()
+{
 	windowTileInspectorElementCopied = false;
 }
 
-static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w) {
+static rct_map_element* window_tile_inspector_get_selected_element(rct_window *w)
+{
 	assert(w->selected_list_item >= 0 && w->selected_list_item < windowTileInspectorElementCount);
 	return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + w->selected_list_item;
 }
 
-static void window_tile_inspector_load_tile(rct_window* w) {
+static void window_tile_inspector_load_tile(rct_window* w)
+{
 	rct_map_element *element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 	int numItems = 0;
 	do {
@@ -608,7 +612,8 @@ static void window_tile_inspector_load_tile(rct_window* w) {
 	window_invalidate(w);
 }
 
-static void window_tile_inspector_insert_corrupt_element(rct_window *w) {
+static void window_tile_inspector_insert_corrupt_element(rct_window *w)
+{
 	// Create new corrupt element
 	rct_map_element *curruptElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, -1, 0); // Ugly hack: -1 guarantees this to be placed first
 	windowTileInspectorElementCount++;
@@ -628,7 +633,8 @@ static void window_tile_inspector_insert_corrupt_element(rct_window *w) {
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 }
 
-static void window_tile_inspector_remove_element(int index) {
+static void window_tile_inspector_remove_element(int index)
+{
 	assert(index < windowTileInspectorElementCount);
 	rct_map_element *const mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + index;
 	map_element_remove(mapElement);
@@ -636,7 +642,8 @@ static void window_tile_inspector_remove_element(int index) {
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 }
 
-static void window_tile_inspector_rotate_element(int index) {
+static void window_tile_inspector_rotate_element(int index)
+{
 	uint8 newRotation, pathEdges, pathCorners;
 
 	assert(index < windowTileInspectorElementCount);
@@ -674,7 +681,8 @@ static void window_tile_inspector_rotate_element(int index) {
 }
 
 // Swap element with its parent
-static void window_tile_inspector_swap_elements(sint16 first, sint16 second) {
+static void window_tile_inspector_swap_elements(sint16 first, sint16 second)
+{
 	rct_map_element *mapElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 	rct_map_element *const firstElement = mapElement + first;
 	rct_map_element *const secondElement = mapElement + second;
@@ -702,7 +710,8 @@ static void window_tile_inspector_swap_elements(sint16 first, sint16 second) {
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 }
 
-static void window_tile_inspector_sort_elements(rct_window *w) {
+static void window_tile_inspector_sort_elements(rct_window *w)
+{
 	const rct_map_element *const firstElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
 
 	// Bubble sort
@@ -721,13 +730,15 @@ static void window_tile_inspector_sort_elements(rct_window *w) {
 	}
 }
 
-static void window_tile_inspector_copy_element(rct_window *w) {
+static void window_tile_inspector_copy_element(rct_window *w)
+{
 	// Copy value, in case the element gets moved
 	tileInspectorCopiedElement = *window_tile_inspector_get_selected_element(w);
 	windowTileInspectorElementCopied = true;
 }
 
-static void window_tile_inspector_paste_element(rct_window *w) {
+static void window_tile_inspector_paste_element(rct_window *w)
+{
 	rct_map_element *const pastedElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, tileInspectorCopiedElement.base_height, 0);
 	bool lastForTile = map_element_is_last_for_tile(pastedElement);
 	*pastedElement = tileInspectorCopiedElement;
@@ -741,7 +752,8 @@ static void window_tile_inspector_paste_element(rct_window *w) {
 	w->selected_list_item = (sint16)(pastedElement - mapElement);
 }
 
-static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, int cornerIndex) {
+static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElement, int cornerIndex)
+{
 	const uint8 originalSlope = mapElement->properties.surface.slope;
 	const bool diagonal = (originalSlope & 0x10) >> 4;
 
@@ -774,7 +786,8 @@ static void window_tile_inspector_surface_toggle_corner(rct_map_element *mapElem
 
 // Copied from track.c (track_remove), and modified for raising/lowering
 // Not sure if this should be in this file, track.c, or maybe another one
-static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset) {
+static void window_tile_inspector_track_block_height_offset(rct_map_element *mapElement, uint8 offset)
+{
 	uint8 type = mapElement->properties.track.type;
 	sint16 originX = windowTileInspectorTileX << 5;
 	sint16 originY = windowTileInspectorTileY << 5;
@@ -875,7 +888,8 @@ static void window_tile_inspector_track_block_height_offset(rct_map_element *map
 
 // Sets chainlift for entire block
 // Basically a copy of the above function, with just two different lines... should probably be combined somehow
-static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain) {
+static void window_tile_inspector_track_block_set_lift(rct_map_element *mapElement, bool chain)
+{
 	uint8 type = mapElement->properties.track.type;
 	sint16 originX = windowTileInspectorTileX << 5;
 	sint16 originY = windowTileInspectorTileY << 5;
@@ -974,7 +988,8 @@ static void window_tile_inspector_track_block_set_lift(rct_map_element *mapEleme
 	}
 }
 
-static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const int index) {
+static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapElement, const int index)
+{
 	// index is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
 	assert(index >= 0 && index < 4);
 
@@ -991,7 +1006,8 @@ static void window_tile_inspector_quarter_tile_set(rct_map_element *const mapEle
 	map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
 }
 
-static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
+static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
+{
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		tool_cancel();
@@ -1331,7 +1347,8 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex) {
 	} // switch page
 }
 
-static void window_tile_inspector_resize(rct_window *w) {
+static void window_tile_inspector_resize(rct_window *w)
+{
 	w->min_width = WW;
 	w->min_height = MIN_WH;
 	if (w->width < w->min_width) {
@@ -1344,7 +1361,8 @@ static void window_tile_inspector_resize(rct_window *w) {
 	}
 }
 
-static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_widget* widget) {
+static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+{
 	switch (w->page) {
 	case PAGE_FENCE:
 		switch (widgetIndex) {
@@ -1378,7 +1396,8 @@ static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_
 	}
 }
 
-static void window_tile_inspector_update(rct_window *w) {
+static void window_tile_inspector_update(rct_window *w)
+{
 	// Check if the mouse is hovering over the list
 	if (!widget_is_highlighted(w, WIDX_LIST)) {
 		windowTileInspectorHighlightedIndex = -1;
@@ -1389,7 +1408,8 @@ static void window_tile_inspector_update(rct_window *w) {
 		window_close(w);
 }
 
-static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int dropdownIndex) {
+static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+{
 	if (dropdownIndex == -1) {
 		return;
 	}
@@ -1417,7 +1437,8 @@ static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int d
 	}
 }
 
-static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y) {
+static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y)
+{
 	map_invalidate_selection_rect();
 
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1442,7 +1463,8 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 	map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y) {
+static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y)
+{
 	short mapX = x;
 	short mapY = y;
 	int direction;
@@ -1459,19 +1481,22 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 	window_tile_inspector_auto_set_buttons(w);
 }
 
-static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height) {
+static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+{
 	*width = WW - 30;
 	*height = windowTileInspectorElementCount * LIST_ITEM_HEIGHT;
 }
 
-static void window_tile_inspector_set_page(rct_window *w, const int page) {
+static void window_tile_inspector_set_page(rct_window *w, const int page)
+{
 	w->page = page;
 	w->widgets = tileInspectorWidgets[page];
 	w->enabled_widgets = windowTileInspectorEnabledWidgets[page];
 	w->disabled_widgets = windowTileInspectorDisabledWidgets[page];
 }
 
-static void window_tile_inspector_auto_set_buttons(rct_window *w) {
+static void window_tile_inspector_auto_set_buttons(rct_window *w)
+{
 	// X and Y spinners
 	widget_set_enabled(w, WIDX_SPINNER_X_INCREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX < 255)));
 	widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX > 0)));
@@ -1514,7 +1539,8 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w) {
 	} // switch page
 }
 
-static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y) {
+static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+{
 	// Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
 	const sint16 index = windowTileInspectorElementCount - (y - 1) / LIST_ITEM_HEIGHT - 1;
 	int page;
@@ -1537,7 +1563,8 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex
 	window_invalidate(w);
 }
 
-static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y) {
+static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+{
 	sint16 index = windowTileInspectorElementCount - (y - 1) / LIST_ITEM_HEIGHT - 1;
 	if (index < 0 || index >= windowTileInspectorElementCount)
 		windowTileInspectorHighlightedIndex = -1;
@@ -1547,7 +1574,8 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex
 	widget_invalidate(w, WIDX_LIST);
 }
 
-static void window_tile_inspector_invalidate(rct_window *w) {
+static void window_tile_inspector_invalidate(rct_window *w)
+{
 	colour_scheme_update(w);
 
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1753,7 +1781,8 @@ static void window_tile_inspector_invalidate(rct_window *w) {
 	}
 }
 
-static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
+static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
 	window_draw_widgets(w, dpi);
 
 	// Set medium font size
@@ -2112,7 +2141,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 	}
 }
 
-static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex) {
+static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+{
 	int x = 3;
 	int y = LIST_ITEM_HEIGHT * (windowTileInspectorElementCount - 1);
 	int i = 0;
