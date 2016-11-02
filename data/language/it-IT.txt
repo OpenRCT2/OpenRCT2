@@ -3683,8 +3683,8 @@ STR_5337    :Entrata Parco
 STR_5338    :Tipo elemento
 STR_5339    :{SMALLFONT}{BLACK}Altezza base
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :Bandiere
-STR_5342    :Scegli una mappatura
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Posiziona personale automaticamente
 STR_5344    :Changelog
 STR_5345    :Trucchi Finanziari
@@ -4235,6 +4235,68 @@ STR_5920    :Mostra effetti climatici
 STR_5921    :{SMALLFONT}{BLACK}Se attivo, saranno mostrati pioggia e colori spenti durante i temporali.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Massimo {COMMA16} {STRINGID} per treno
+STR_5924    :Dettagli superficie
+STR_5925    :Dettagli sentiero
+STR_5926    :Dettagli tracciato
+STR_5927    :Dettagli scenario
+STR_5928    :Dettagli entrata
+STR_5929    :Dettagli recinzione
+STR_5930    :Dettagli scenario grande
+STR_5931    :Dettagli cartelli
+STR_5932    :Dettagli elemento corrotto
+STR_5933    :Proprietà
+STR_5934    :{WINDOW_COLOUR_2}Texture terreno: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Bordo terreno: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Proprietà terreno: {BLACK}{STRINGID}
+STR_5937    :Non posseduto e non in vendita
+STR_5938    :{WINDOW_COLOUR_2}Livello acqua: {BLACK}{COMMA16}
+STR_5939    :Rimuovi recinzione parco
+STR_5940    :Ripristina recinzione parco
+STR_5941    :{WINDOW_COLOUR_2}Altezza della base:
+STR_5942    :{WINDOW_COLOUR_2}Nome sentiero: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Aggiunte: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Aggiunte: {BLACK}Nessuna
+STR_5945    :{WINDOW_COLOUR_2}Spigoli connessi:
+STR_5946    :{WINDOW_COLOUR_2}Tipo percorso: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Nome attrazione: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Catena di traino
+STR_5950    :{WINDOW_COLOUR_2}Applica cambiamenti a tutto il pezzo di tracciato
+STR_5951    :{WINDOW_COLOUR_2}ID pezzo di tracciato: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Numero sequenza: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Ordina gli elementi della mappa nell'attuale cella in ordine di altezza della loro base.
+STR_5954    :{WINDOW_COLOUR_2}Età scenario: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Posizione quadrante: {BLACK}{STRINGID}
+STR_5956    :Sud-ovest
+STR_5957    :Nord-ovest
+STR_5958    :Nord-est
+STR_5959    :Sud-est
+STR_5960    :{WINDOW_COLOUR_2}Posizione quadrante:
+# TODO da rivedere la seguente stringa
+STR_5961    :{WINDOW_COLOUR_2}Indice elemento: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Rilevamento collisioni:
+STR_5963    :{WINDOW_COLOUR_2}Angoli rialzati:
+STR_5964    :{WINDOW_COLOUR_2}Diagonale
+STR_5965    :{WINDOW_COLOUR_2}Tipo entrata: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Parte ingresso del parco: {BLACK}{STRINGID}
+STR_5967    :Centro
+STR_5968    :Sinistra
+STR_5969    :Destra
+STR_5970    :{WINDOW_COLOUR_2}ID ingresso: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}ID uscita: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ID percorso: {BLACK}{COMMA16}
+STR_5973    :Attacca al successivo
+STR_5974    :{SMALLFONT}{BLACK}Cambia l'altezza della base e l'altezza in modo da posizionarle come l'elemento successivo sull'attuale cella. Ciò permette di costruire più facilmente su questa cella.
+STR_5975    :Inclinazione:
+STR_5976    :Piatto
+STR_5977    :Lato destro su
+STR_5978    :Lato sinistro su
+STR_5979    :{WINDOW_COLOUR_2}Tipo recinzione: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Testo cartello: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Non è un cartello
+STR_5982    :{WINDOW_COLOUR_2}Tipo scenario grande: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}ID pezzo di scenario grande: {BLACK}{COMMA16}
+STR_5984    :Sentieri bloccati:
 
 
 #############
