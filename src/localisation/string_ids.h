@@ -3639,6 +3639,8 @@ enum {
 	STR_NO_LAND_RIGHTS_FOR_SALE_TIP = 5988,
 	STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP = 5989,
 	STR_NO_LAND_OR_CONSTRUCTION_RIGHTS_FOR_SALE_TIP = 5990,
+	STR_CANT_PASTE = 5991,
+	STR_MAP_ELEMENT_LIMIT_REACHED = 5992,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

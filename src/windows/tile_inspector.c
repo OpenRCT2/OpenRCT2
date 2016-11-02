@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "dropdown.h"
+#include "error.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/viewport.h"
@@ -740,6 +741,13 @@ static void window_tile_inspector_copy_element(rct_window *w)
 static void window_tile_inspector_paste_element(rct_window *w)
 {
 	rct_map_element *const pastedElement = map_element_insert(windowTileInspectorTileX, windowTileInspectorTileY, tileInspectorCopiedElement.base_height, 0);
+	if (pastedElement == NULL) {
+		// map_element_insert displays an error message on failure
+		window_error_open(STR_CANT_PASTE, STR_MAP_ELEMENT_LIMIT_REACHED);
+		return;
+	}
+
+	windowTileInspectorElementCount++;
 	bool lastForTile = map_element_is_last_for_tile(pastedElement);
 	*pastedElement = tileInspectorCopiedElement;
 	pastedElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
@@ -1066,7 +1074,6 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_BUTTON_PASTE:
 		window_tile_inspector_paste_element(w);
 		map_invalidate_tile_full(windowTileInspectorTileX << 5, windowTileInspectorTileY << 5);
-		windowTileInspectorElementCount++;
 		widget_invalidate(w, WIDX_LIST);
 		break;
 	case WIDX_BUTTON_MOVE_DOWN:
