@@ -1474,6 +1474,7 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->selected_list_item = -1;
 	w->object_entry = (rct_object_entry *)-1;
 	w->scrolls[0].v_top = 0;
+	w->frame_no = 0;
 
 	if (page == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		_listSortType = RIDE_SORT_TYPE;
