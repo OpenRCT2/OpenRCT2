@@ -1604,7 +1604,7 @@ uint8 get_current_rotation()
 {
 	uint8 rotation = gCurrentRotation;
 	uint8 rotation_masked = rotation & 3;
-#ifdef DEBUG_LEVEL_1
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	if (rotation != rotation_masked) {
 		log_error("Found wrong rotation %d! Will return %d instead.", (uint32)rotation, (uint32)rotation_masked);
 	}
