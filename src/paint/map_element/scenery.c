@@ -98,7 +98,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		}
 	} else {
 		// 6DFFC2:
-		uint32 ecx = ((mapElement->type >> 6) + rotation) & 3;
+		uint8 ecx = (map_element_get_scenery_quadrant(mapElement) + rotation) & 3;
 		x_offset = ScenerySubTileOffsets[ecx].x;
 		y_offset = ScenerySubTileOffsets[ecx].y;
 		boxoffset.x = x_offset;
@@ -293,11 +293,12 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			}
 			return;
 		}
-		if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE)) {
+		if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
+			// 6E075C:
+			uint8 direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
 			return;
 		}
-		// 6E075C:
-		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, rotation), height, 0x20);
 		return;
 	}
 	if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE)) {
@@ -307,9 +308,9 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		}
 		return;
 	}
-	if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE)) {
+	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
+		uint8 direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
 		return;
 	}
-	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, rotation), 0xFFFF, 0);
-	return;
 }

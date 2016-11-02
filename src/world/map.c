@@ -242,6 +242,11 @@ int map_element_is_last_for_tile(const rct_map_element *element)
 	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 }
 
+uint8 map_element_get_scenery_quadrant(const rct_map_element *element)
+{
+	return (element->type & MAP_ELEMENT_QUADRANT_MASK) >> 6;
+}
+
 int map_element_get_type(const rct_map_element *element)
 {
 	return element->type & MAP_ELEMENT_TYPE_MASK;
