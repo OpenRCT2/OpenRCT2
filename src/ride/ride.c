@@ -7239,6 +7239,10 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 		entranceMinY = mapY;
 
 		mapElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
+		if (mapElement == NULL) {
+			*outX = 0x8000;
+			return;
+		}
 		direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 		stationDirection = direction;
 
