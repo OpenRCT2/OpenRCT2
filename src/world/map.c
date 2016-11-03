@@ -119,6 +119,9 @@ money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
 money32 gLandRightsCost;
 
+uint16 gLandRemainingOwnershipSales;
+uint16 gLandRemainingConstructionSales;
+
 rct_xyz16 gCommandPosition;
 
 uint8 gUnk9E2E28;
@@ -392,6 +395,31 @@ void map_init(int size)
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
 	climate_reset(CLIMATE_WARM);
+}
+
+/**
+ * Counts the number of surface tiles that offer land ownership rights for sale,
+ * but haven't been bought yet. It updates gLandRemainingOwnershipSales and
+ * gLandRemainingConstructionSales.
+*/
+void map_count_remaining_land_rights()
+{
+	gLandRemainingOwnershipSales = 0;
+	gLandRemainingConstructionSales = 0;
+
+	for (int x = 0; x <= 255; x++) {
+		for (int y = 0; y <= 255; y++) {
+			rct_map_element *element = map_get_surface_element_at(x, y);
+
+			uint8 flags = element->properties.surface.ownership;
+
+			if ((flags & OWNERSHIP_AVAILABLE) && (flags & OWNERSHIP_OWNED) == 0) {
+				gLandRemainingOwnershipSales++;
+			} else if ((flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0) {
+				gLandRemainingConstructionSales++;
+			}
+		}
+	}
 }
 
 /**
