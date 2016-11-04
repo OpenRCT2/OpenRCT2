@@ -1933,14 +1933,20 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
  */
 void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
+	int flags = *ebx & 0xFF;
+
 	*ebx = map_set_land_ownership(
-		*ebx & 0xFF,
+		flags,
 		*eax & 0xFFFF,
 		*ecx & 0xFFFF,
 		*edi & 0xFFFF,
 		*ebp & 0xFFFF,
 		*edx & 0xFF
 		);
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		map_count_remaining_land_rights();
+	}
 }
 
 
