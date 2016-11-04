@@ -94,7 +94,7 @@ struct ByteSwapT<4>
 };
 
 template <typename T>
-T ByteSwapBE(const T& value)
+static T ByteSwapBE(const T& value)
 {
     return ByteSwapT<sizeof(T)>::SwapBE(value);
 }

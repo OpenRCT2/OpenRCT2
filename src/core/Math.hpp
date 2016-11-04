@@ -24,25 +24,25 @@
 namespace Math
 {
     template<typename T>
-    T Min(T a, T b)
+    static T Min(T a, T b)
     {
         return (std::min)(a, b);
     }
 
     template<typename T>
-    T Max(T a, T b)
+    static T Max(T a, T b)
     {
         return (std::max)(a, b);
     }
 
     template<typename T>
-    T Clamp(T low, T x, T high)
+    static T Clamp(T low, T x, T high)
     {
         return (std::min)((std::max)(low, x), high);
     }
 
     template<typename T>
-    T Sign(T x)
+    static T Sign(T x)
     {
         if (x < 0) return -1;
         if (x > 0) return 1;
