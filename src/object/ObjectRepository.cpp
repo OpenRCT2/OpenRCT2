@@ -126,7 +126,7 @@ public:
         // SortItems();
     }
 
-    const size_t GetNumObjects() const override
+    size_t GetNumObjects() const override
     {
         return _items.size();
     }

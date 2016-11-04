@@ -1148,8 +1148,8 @@ const uint8* ride_seek_available_modes(rct_ride *ride);
 void window_ride_measurements_design_cancel();
 void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type);
 
-const uint32 ride_customers_per_hour(const rct_ride *ride);
-const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
+uint32 ride_customers_per_hour(const rct_ride *ride);
+uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
 
 rct_vehicle * ride_get_broken_vehicle(rct_ride *ride);
 
