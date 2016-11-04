@@ -94,17 +94,17 @@ int object_entry_group_encoding[] = {
 
 // 0x98D97C chunk address', 0x98D980 object_entries
 const rct_object_entry_group object_entry_groups[] = {
-	(void**)(gRideEntries				), _objectEntriesRides,	// rides
-	(void**)(gSmallSceneryEntries		), _objectEntriesSmallScenery,	// small scenery	0x009AD1A4, 0xF2FA3C
-	(void**)(gLargeSceneryEntries		), _objectEntriesLargeScenery,	// large scenery	0x009AD594, 0xF40DEC
-	(void**)(gWallSceneryEntries		), _objectEntriesWalls,	// walls			0x009AD794, 0xF417EC
-	(void**)(gBannerSceneryEntries		), _objectEntriesBanners,	// banners			0x009AD994, 0xF421EC
-	(void**)(gFootpathEntries			), _objectEntriesFootpaths,	// paths			0x009ADA14, 0xF4246C
-	(void**)(gFootpathAdditionEntries	), _objectEntriesFootpathAdditions,	// path bits		0x009ADA54, 0xF425AC
-	(void**)(gSceneryGroupEntries		), _objectEntriesSceneryGroups,	// scenery sets		0x009ADA90, 0xF426D8
-	(void**)(gParkEntranceEntries		), _objectEntriesParkEntrances,	// park entrance	0x009ADADC, 0xF42854
-	(void**)(gWaterEntries				), _objectEntriesWaters,	// water			0x009ADAE0, 0xF42868
-	(void**)(gStexEntries				), _objectEntriesStexs,	// scenario text	0x009ADAE4, 0xF4287C
+	{(void**)(gRideEntries				), _objectEntriesRides},	// rides
+	{(void**)(gSmallSceneryEntries		), _objectEntriesSmallScenery},	// small scenery	0x009AD1A4, 0xF2FA3C
+	{(void**)(gLargeSceneryEntries		), _objectEntriesLargeScenery},	// large scenery	0x009AD594, 0xF40DEC
+	{(void**)(gWallSceneryEntries		), _objectEntriesWalls},	// walls			0x009AD794, 0xF417EC
+	{(void**)(gBannerSceneryEntries		), _objectEntriesBanners},	// banners			0x009AD994, 0xF421EC
+	{(void**)(gFootpathEntries			), _objectEntriesFootpaths},	// paths			0x009ADA14, 0xF4246C
+	{(void**)(gFootpathAdditionEntries	), _objectEntriesFootpathAdditions},	// path bits		0x009ADA54, 0xF425AC
+	{(void**)(gSceneryGroupEntries		), _objectEntriesSceneryGroups},	// scenery sets		0x009ADA90, 0xF426D8
+	{(void**)(gParkEntranceEntries		), _objectEntriesParkEntrances},	// park entrance	0x009ADADC, 0xF42854
+	{(void**)(gWaterEntries				), _objectEntriesWaters},	// water			0x009ADAE0, 0xF42868
+	{(void**)(gStexEntries				), _objectEntriesStexs},	// scenario text	0x009ADAE4, 0xF4287C
 };
 
 bool object_entry_is_empty(const rct_object_entry *entry)
