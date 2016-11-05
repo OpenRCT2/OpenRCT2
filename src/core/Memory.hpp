@@ -27,45 +27,57 @@ namespace Memory
     template<typename T>
     T * Allocate()
     {
-        return (T*)malloc(sizeof(T));
+        T* result = (T*)malloc(sizeof(T));
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
     T * Allocate(size_t size)
     {
-        return (T*)malloc(size);
+        T* result = (T*)malloc(size);
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
     T * AllocateArray(size_t count)
     {
-        return (T*)malloc(count * sizeof(T));
+        T* result = (T*)malloc(count * sizeof(T));
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
     T * Reallocate(T * ptr, size_t size)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(size);
+            result = (T*)malloc(size);
         }
         else
         {
-            return (T*)realloc((void*)ptr, size);
+            result = (T*)realloc((void*)ptr, size);
         }
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
     T * ReallocateArray(T * ptr, size_t count)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(count * sizeof(T));
+            result = (T*)malloc(count * sizeof(T));
         }
         else
         {
-            return (T*)realloc((void*)ptr, count * sizeof(T));
+            result = (T*)realloc((void*)ptr, count * sizeof(T));
         }
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
@@ -92,7 +104,11 @@ namespace Memory
     T * Move(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
-        return (T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(dst);
+        Guard::ArgumentNotNull(src);
+        T* result =(T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(result);
+        return result;
     }
 
     template<typename T>
