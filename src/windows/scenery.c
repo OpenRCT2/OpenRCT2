@@ -1200,7 +1200,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 
 				gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 
-				if (sceneryEntry->small_scenery.flags & 0x200) {
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS) {
 					imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004) +
 						((gWindowSceneryPrimaryColour + 0x70) << 19);
 

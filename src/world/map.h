@@ -397,6 +397,7 @@ void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
 void map_set_tile_elements(int x, int y, rct_map_element *elements);
 int map_element_is_last_for_tile(const rct_map_element *element);
+uint8 map_element_get_scenery_quadrant(const rct_map_element *element);
 int map_element_get_type(const rct_map_element *element);
 int map_element_get_direction(const rct_map_element *element);
 int map_element_get_terrain(const rct_map_element *element);

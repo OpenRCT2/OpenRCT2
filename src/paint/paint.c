@@ -34,11 +34,13 @@ attached_paint_struct * g_aps_F1AD2C;
 paint_string_struct * gPaintPSStringHead;
 static paint_string_struct * _paintLastPSString;
 
+#define MAX_PAINT_QUADRANTS (512)
+
 #ifdef NO_RCT2
 paint_entry gPaintStructs[4000];
 static uint32 _paintQuadrantBackIndex;
 static uint32 _paintQuadrantFrontIndex;
-static paint_struct *_paintQuadrants[512];
+static paint_struct *_paintQuadrants[MAX_PAINT_QUADRANTS];
 void *g_currently_drawn_item;
 paint_entry * gEndOfPaintStructArray;
 sint16 gUnk9DE568;
@@ -100,7 +102,7 @@ void paint_init(rct_drawpixelinfo * dpi)
 
 static void paint_add_ps_to_quadrant(paint_struct * ps, sint32 positionHash)
 {
-	uint32 paintQuadrantIndex = clamp(0, positionHash / 32, countof(_paintQuadrants) - 1);
+	uint32 paintQuadrantIndex = clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
 
 	ps->var_18 = paintQuadrantIndex;
 	ps->next_quadrant_ps = _paintQuadrants[paintQuadrantIndex];
