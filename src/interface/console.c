@@ -859,7 +859,7 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsSandboxMode != (int_val[0] != 0)) {
-				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
 					//Change it locally so it shows the accurate value in the 
 					//"console_execute_silent("get sandbox_mode")" line when in network client mode
 					gCheatsSandboxMode = (int_val[0] != 0);
@@ -872,7 +872,7 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
-				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, 0, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
 					//Change it locally so it shows the accurate value in the 
 					//"console_execute_silent("get disable_clearance_checks")" line when in network client mode
 					gCheatsDisableClearanceChecks = (int_val[0] != 0);
@@ -885,7 +885,7 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
-				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, 0, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
 					//Change it locally so it shows the accurate value in the 
 					//"console_execute_silent("get disable_support_limits")" line when in network client mode
 					gCheatsDisableSupportLimits = (int_val[0] != 0);

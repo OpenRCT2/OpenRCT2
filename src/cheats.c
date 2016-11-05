@@ -392,9 +392,9 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 	int cheat = *ecx;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (cheat) {
-			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = !gCheatsSandboxMode; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
-			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks; break;
-			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits; break;
+			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = *edx != 0; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
+			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = *edx != 0; break;
+			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = *edx != 0; break;
 			case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes; break;
 			case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes; break;
 			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = !gCheatsFastLiftHill; break;
