@@ -36,7 +36,7 @@ uint64 Stopwatch::GetElapsedTicks() const
         }
     }
 
-    return _total;
+    return result;
 }
 
 uint64 Stopwatch::GetElapsedMilliseconds() const
