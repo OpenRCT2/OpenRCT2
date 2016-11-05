@@ -16,6 +16,8 @@
 
 #include <time.h>
 
+#include "../core/Guard.hpp"
+
 extern "C"
 {
     #include "../config.h"

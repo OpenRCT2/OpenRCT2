@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Guard.hpp"
 extern "C" {
 	#include "../config.h"
 	#include "../platform/platform.h"

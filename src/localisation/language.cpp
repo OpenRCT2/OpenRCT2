@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <stack>
+#include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"

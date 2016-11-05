@@ -18,7 +18,7 @@
 #include "../common.h"
 
 #include <SDL.h>
-#include "../core/guard.h"
+#include "../core/Guard.hpp"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "util.h"

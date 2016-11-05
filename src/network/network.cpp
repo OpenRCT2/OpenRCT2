@@ -23,6 +23,8 @@
 	#include <arpa/inet.h>
 #endif
 
+#include "../core/Guard.hpp"
+
 extern "C" {
 #include "../openrct2.h"
 #include "../platform/platform.h"

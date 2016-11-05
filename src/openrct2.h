@@ -18,7 +18,7 @@
 #define _OPENRCT2_H_
 
 #include "common.h"
-#include "core/guard.h"
+#include "core/Guard.hpp"
 #include "platform/platform.h"
 
 #ifndef DISABLE_NETWORK
