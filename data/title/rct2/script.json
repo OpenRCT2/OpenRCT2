@@ -1,0 +1,32 @@
+[
+  { "command": "loadmm"},
+
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 210, "y": 112},
+  { "command": "wait", "seconds": 14},
+
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 167, "y": 180},
+  { "command": "wait", "seconds": 12},
+
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 155, "y": 189},
+  { "command": "wait", "seconds": 12},
+
+  { "command": "location", "x": 106, "y": 39},
+  { "command": "wait", "seconds": 12},
+
+  { "command": "location", "x": 182, "y": 50},
+  { "command": "wait", "seconds": 12},
+
+  { "command": "rotate", "rotations": 3 },
+  { "command": "location", "x": 209, "y": 47},
+  { "command": "wait", "seconds": 12},
+
+  { "command": "rotate", "rotations": 1 },
+  { "command": "location", "x": 159, "y": 93},
+  { "command": "wait", "seconds": 12},
+
+  {"command": "restart"}
+  
+]

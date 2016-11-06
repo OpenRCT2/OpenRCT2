@@ -1,0 +1,82 @@
+[
+  { "command": "load", "file": "Ill Paradise.sv6"},
+  { "command": "location", "x": 113, "y": 105 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 120, "y": 102 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 73, "y": 136 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "load", "file": "Title Sequence Park 1.sv6"},
+  { "command": "location", "x": 120, "y": 43 },
+  { "command": "rotate", "rotations": 2 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 124, "y": 74 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 120, "y": 90 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 123, "y": 130 },
+  { "command": "wait", "seconds": 20},
+  
+  { "command": "location", "x": 70, "y": 85 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "load", "file": "Cypress Grove Title.sv6"},
+  { "command": "location", "x": 106, "y": 43 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 60, "y": 103 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 91, "y": 83 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 117, "y": 61 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 82, "y": 95 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 20},
+  
+  { "command": "location", "x": 110, "y": 94 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 79, "y": 94 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "location", "x": 63, "y": 97 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 10},
+  
+  { "command": "load", "file": "TaCW.sv6"},
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 110, "y": 95 },
+  { "command": "rotate", "rotations": 1 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 57, "y": 101 },
+  { "command": "rotate", "rotations": 3 },
+  { "command": "wait", "seconds": 15},
+  
+  { "command": "location", "x": 100, "y": 63 },
+  { "command": "rotate", "rotations": 2 },
+  { "command": "wait", "seconds": 15 },
+  
+  { "command": "restart" },
+  { "command": "end" }
+  
+]

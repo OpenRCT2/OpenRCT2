@@ -17,6 +17,7 @@
 #ifndef _TITLE_SEQUENCES_H_
 #define _TITLE_SEQUENCES_H_
 
+
 #include "../common.h"
 #include "window.h"
 #include "../config.h"
@@ -41,6 +42,10 @@ extern uint16 gCurrentPreviewTitleSequence;
 
 bool title_sequence_name_exists(const char *name);
 bool title_sequence_save_exists(int preset, const char *name);
+
+// Open / save title sequence
+void title_sequence_open(const char *path, const char *customName);
+void title_sequence_save_preset_script(int preset);
 
 // Presets
 void title_sequence_change_preset(int preset);
