@@ -95,8 +95,8 @@ void title_sequence_create_preset(const char *name)
 		safe_strcpy(gConfigTitleSequences.presets[preset].name, name, TITLE_SEQUENCE_NAME_SIZE);
 		gConfigTitleSequences.presets[preset].path[0] = 0;
 
-		gConfigTitleSequences.presets[preset].saves = malloc(0);
-		gConfigTitleSequences.presets[preset].commands = malloc(0);
+		gConfigTitleSequences.presets[preset].saves = NULL;
+		gConfigTitleSequences.presets[preset].commands = NULL;
 		gConfigTitleSequences.presets[preset].num_saves = 0;
 		gConfigTitleSequences.presets[preset].num_commands = 0;
 
