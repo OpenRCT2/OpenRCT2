@@ -85,7 +85,7 @@ bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry)
 
 	bool remove_flag = true;
 	for (int j = 0; j < 3; j++) {
-		if (ride_type_has_flag(rideEntry->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE)) {
+		if (rideEntry->ride_type[j] == RIDE_TYPE_NULL || ride_type_has_flag(rideEntry->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			remove_flag = false;
 		}
 		if (rideEntry->ride_type[j] == RIDE_TYPE_MAZE || rideEntry->ride_type[j] == RIDE_TYPE_MINI_GOLF) {
