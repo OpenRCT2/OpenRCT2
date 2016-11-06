@@ -16,6 +16,15 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+void openrct2_assert(bool expression, const char * message, ...);
+
+#ifdef __cplusplus
+}
+
 #include <stdarg.h>
 
 /**
@@ -48,3 +57,5 @@ namespace Guard
 };
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__
+
+#endif // __cplusplus

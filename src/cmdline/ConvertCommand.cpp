@@ -17,6 +17,7 @@
 #include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
+#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../rct1/S4Importer.h"
 #include "CommandLine.hpp"
