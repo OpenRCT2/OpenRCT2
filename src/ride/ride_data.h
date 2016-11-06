@@ -63,8 +63,8 @@ typedef struct rct_ride_entrance_definition {
 	uint32 sprite_index;
 	uint16 height;
 	uint16 scrolling_mode;
-	rct_string_id string_id;
 	uint32 base_image_id;
+	rct_string_id string_id;
 	uint16 colour_use_flags;
 } rct_ride_entrance_definition;
 

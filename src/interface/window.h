@@ -89,9 +89,9 @@ typedef struct rct_viewport {
 	sint16 view_y;					// 0x0A
 	sint16 view_width;				// 0x0C
 	sint16 view_height;				// 0x0E
+	uint32 flags;					// 0x12
 	uint8 zoom;						// 0x10
 	uint8 var_11;
-	uint32 flags;					// 0x12
 	uint8 visibility;				// VISIBILITY_CACHE
 } rct_viewport;
 
