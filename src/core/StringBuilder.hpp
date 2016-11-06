@@ -18,7 +18,6 @@
 
 #include "../common.h"
 
-#include "../localisation/localisation.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
@@ -119,6 +118,22 @@ public:
             Memory::Free(_buffer);
             _buffer = nullptr;
         }
+    }
+
+    /**
+     * Resets the StringBuilder and returns the working buffer (resized to the string size).
+     */
+    utf8 * StealString()
+    {
+        utf8 * result = _buffer;
+        result = Memory::ReallocateArray<utf8>(result, _length + 1);
+        result[_length] = 0;
+
+        _length = 0;
+        _capacity = 0;
+        _buffer = nullptr;
+
+        return result;
     }
 
     /**

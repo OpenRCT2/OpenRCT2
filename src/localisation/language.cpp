@@ -19,6 +19,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/StringBuilder.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
@@ -295,31 +296,26 @@ static utf8 * convert_multibyte_charset(const char * src, int languageId)
 {
     constexpr char CODEPOINT_DOUBLEBYTE = (char)0xFF;
 
-    size_t reservedLength = (String::LengthOf(src) * 4) + 1;
-    utf8 * buffer = Memory::Allocate<utf8>(reservedLength);
-    utf8 * dst = buffer;
+    auto sb = StringBuilder(64);
     for (const char * ch = src; *ch != 0;)
     {
         if (*ch == CODEPOINT_DOUBLEBYTE)
         {
             ch++;
-            char a = *ch++;
-            char b = *ch++;
-            uint16 codepoint = (uint16)((a << 8) | b);
+            uint8 a = *ch++;
+            uint8 b = *ch++;
+            wchar_t codepoint16 = (wchar_t)((a << 8) | b);
 
-            codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
-            dst = String::WriteCodepoint(dst, codepoint);
+            codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
+            sb.Append(codepoint16);
         }
         else
         {
-            dst = String::WriteCodepoint(dst, *ch++);
+            codepoint_t codepoint = (uint8)*ch++;
+            sb.Append(codepoint);
         }
     }
-    *dst++ = 0;
-    size_t actualLength = (size_t)(dst - buffer);
-    buffer = Memory::Reallocate(buffer, actualLength);
-
-    return buffer;
+    return sb.StealString();
 }
 
 static bool rct2_language_is_multibyte_charset(int languageId)
