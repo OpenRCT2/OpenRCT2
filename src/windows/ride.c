@@ -1863,7 +1863,7 @@ static void window_ride_init_viewport(rct_window *w)
 		focus.sprite.sprite_id = ride->vehicles[eax];
 
 		rct_ride_entry* ride_entry = get_ride_entry_by_ride(ride);
-		if (ride_entry->tab_vehicle != 0){
+		if (ride_entry && ride_entry->tab_vehicle != 0){
 			rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
 			focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
 		}
