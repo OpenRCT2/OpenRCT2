@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "Guard.hpp"
+#include <typeinfo>
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.
@@ -27,45 +28,57 @@ namespace Memory
     template<typename T>
     T * Allocate()
     {
-        return (T*)malloc(sizeof(T));
+        T* result = (T*)malloc(sizeof(T));
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", sizeof(T), typeid(T).name());
+        return result;
     }
 
     template<typename T>
     T * Allocate(size_t size)
     {
-        return (T*)malloc(size);
+        T* result = (T*)malloc(size);
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", size, typeid(T).name());
+        return result;
     }
 
     template<typename T>
     T * AllocateArray(size_t count)
     {
-        return (T*)malloc(count * sizeof(T));
+        T* result = (T*)malloc(count * sizeof(T));
+        Guard::ArgumentNotNull(result, "Failed to allocate array of %u * %s (%u bytes)", count, typeid(T).name(), sizeof(T));
+        return result;
     }
 
     template<typename T>
     T * Reallocate(T * ptr, size_t size)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(size);
+            result = (T*)malloc(size);
         }
         else
         {
-            return (T*)realloc((void*)ptr, size);
+            result = (T*)realloc((void*)ptr, size);
         }
+        Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %u bytes", ptr, typeid(T).name(), size);
+        return result;
     }
 
     template<typename T>
     T * ReallocateArray(T * ptr, size_t count)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(count * sizeof(T));
+            result = (T*)malloc(count * sizeof(T));
         }
         else
         {
-            return (T*)realloc((void*)ptr, count * sizeof(T));
+            result = (T*)realloc((void*)ptr, count * sizeof(T));
         }
+        Guard::ArgumentNotNull(result, "Failed to reallocate array at %x (%s) to have %u entries", ptr, typeid(T).name(), count);
+        return result;
     }
 
     template<typename T>
@@ -92,7 +105,11 @@ namespace Memory
     T * Move(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
-        return (T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(dst, "Trying to move memory to nullptr");
+        Guard::ArgumentNotNull(src, "Trying to move memory from nullptr");
+        T* result =(T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(result, "Failed to move %u bytes of memory from %x to %x for %s", size, src, dst, typeid(T).name());
+        return result;
     }
 
     template<typename T>
