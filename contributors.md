@@ -53,7 +53,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
-* (zaxcav) - New pathfinding algorithm
+* (zaxcav) - Improvements to original pathfinding algorithm.
 * Hielke Morsink (Broxzier) - Tile inspector, misc.
 
 ## Bug fixes
