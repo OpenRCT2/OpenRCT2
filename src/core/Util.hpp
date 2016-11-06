@@ -26,7 +26,7 @@ namespace Util {
 
 // Based on http://www.g-truc.net/post-0708.html
 template <typename T, size_t N>
-constexpr size_t CountOf(T const (&)[N]) noexcept
+static constexpr size_t CountOf(T const (&)[N]) noexcept
 {
 	return N;
 }
