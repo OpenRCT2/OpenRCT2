@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "Guard.hpp"
+#include <typeinfo>
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.
@@ -28,7 +29,7 @@ namespace Memory
     T * Allocate()
     {
         T* result = (T*)malloc(sizeof(T));
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", sizeof(T), typeid(T).name());
         return result;
     }
 
@@ -36,7 +37,7 @@ namespace Memory
     T * Allocate(size_t size)
     {
         T* result = (T*)malloc(size);
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", size, typeid(T).name());
         return result;
     }
 
@@ -44,7 +45,7 @@ namespace Memory
     T * AllocateArray(size_t count)
     {
         T* result = (T*)malloc(count * sizeof(T));
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to allocate array of %u * %s (%u bytes)", count, typeid(T).name(), sizeof(T));
         return result;
     }
 
@@ -60,7 +61,7 @@ namespace Memory
         {
             result = (T*)realloc((void*)ptr, size);
         }
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %u bytes", ptr, typeid(T).name(), size);
         return result;
     }
 
@@ -76,7 +77,7 @@ namespace Memory
         {
             result = (T*)realloc((void*)ptr, count * sizeof(T));
         }
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to reallocate array at %x (%s) to have %u entries", ptr, typeid(T).name(), count);
         return result;
     }
 
@@ -104,10 +105,10 @@ namespace Memory
     T * Move(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
-        Guard::ArgumentNotNull(dst);
-        Guard::ArgumentNotNull(src);
+        Guard::ArgumentNotNull(dst, "Trying to move memory to nullptr");
+        Guard::ArgumentNotNull(src, "Trying to move memory from nullptr");
         T* result =(T*)memmove((void*)dst, (const void*)src, size);
-        Guard::ArgumentNotNull(result);
+        Guard::ArgumentNotNull(result, "Failed to move %u bytes of memory from %x to %x for %s", size, src, dst, typeid(T).name());
         return result;
     }
 
