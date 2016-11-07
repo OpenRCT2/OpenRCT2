@@ -34,6 +34,10 @@
 #define TRACK_MINI_PREVIEW_HEIGHT	78
 #define TRACK_MINI_PREVIEW_SIZE		(TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT)
 
+#define PALETTE_INDEX_TRANSPARENT (0)
+#define PALETTE_INDEX_PRIMARY_MID_DARK (248)
+#define PALETTE_INDEX_PRIMARY_LIGHTEST (252)
+
 enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -120,7 +124,6 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pa
 static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
 static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel);
 static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel);
-static int _mini_preview_colour;
 
 /**
  *
@@ -128,7 +131,7 @@ static int _mini_preview_colour;
  */
 static void window_track_place_clear_mini_preview()
 {
-	memset(_window_track_place_mini_preview, _mini_preview_colour, TRACK_MINI_PREVIEW_SIZE);
+	memset(_window_track_place_mini_preview, PALETTE_INDEX_TRANSPARENT, TRACK_MINI_PREVIEW_SIZE);
 }
 
 #define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
@@ -158,7 +161,10 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 		0
 	);
 	w->widgets = window_track_place_widgets;
-	w->enabled_widgets = 4 | 8 | 0x10 | 0x20;
+	w->enabled_widgets = 1 << WIDX_CLOSE
+		| 1 << WIDX_ROTATE
+		| 1 << WIDX_MIRROR
+		| 1 << WIDX_SELECT_DIFFERENT_DESIGN;
 	window_init_scroll_widgets(w);
 	tool_set(w, 6, 12);
 	gInputFlags |= INPUT_FLAG_6;
@@ -167,7 +173,6 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
-	_mini_preview_colour = ColourMapA[w->colours[0]].light;
 
 	window_track_place_clear_mini_preview();
 	window_track_place_draw_mini_preview(td6);
@@ -371,7 +376,6 @@ static void window_track_place_unknown14(rct_window *w)
 static void window_track_place_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
-	_mini_preview_colour = ColourMapA[w->colours[0]].light;
 	window_track_place_draw_mini_preview(_trackDesign);
 }
 
@@ -461,7 +465,7 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		substituteElement->x_offset = 0;
 		substituteElement->y_offset = 0;
 		substituteElement->flags = 0;
-		gfx_draw_sprite(&clippedDpi, 0, 0, 0, 0);
+		gfx_draw_sprite(&clippedDpi, 0 | IMAGE_TYPE_REMAP | NOT_TRANSLUCENT(w->colours[0]) << 19, 0, 0, 0);
 		*substituteElement = tmpElement;
 	}
 
@@ -528,13 +532,13 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 					bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
 					// Station track is a lighter colour
-					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? _mini_preview_colour + 2 : _mini_preview_colour -2;
+					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
 					for (int i = 0; i < 4; i++) {
-						if (bits & 1) pixel[338 + i] = colour;
-						if (bits & 2) pixel[168 + i] = colour;
-						if (bits & 4) pixel[  2 + i] = colour;
-						if (bits & 8) pixel[172 + i] = colour;
+						if (bits & 1) pixel[338 + i] = colour; // x + 2, y + 2
+						if (bits & 2) pixel[168 + i] = colour; //        y + 1
+						if (bits & 4) pixel[  2 + i] = colour; // x + 2
+						if (bits & 8) pixel[172 + i] = colour; // x + 4, y + 1
 					}
 				}
 			}
@@ -583,13 +587,13 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pa
 				uint8 *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
 				// Entrance or exit is a lighter colour
-				uint8 colour = mazeElement->type == 8 || mazeElement->type == 128 ? 222 : 218;
+				uint8 colour = mazeElement->type == 8 || mazeElement->type == 128 ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
 				for (int i = 0; i < 4; i++) {
-					pixel[338 + i] = colour;
-					pixel[168 + i] = colour;
-					pixel[  2 + i] = colour;
-					pixel[172 + i] = colour;
+					pixel[338 + i] = colour; // x + 2, y + 2
+					pixel[168 + i] = colour; //        y + 1
+					pixel[  2 + i] = colour; // x + 2
+					pixel[172 + i] = colour; // x + 4, y + 1
 				}
 			}
 		}
