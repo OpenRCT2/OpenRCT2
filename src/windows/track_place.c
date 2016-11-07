@@ -120,6 +120,7 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pa
 static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
 static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel);
 static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel);
+static int _mini_preview_colour;
 
 /**
  *
@@ -127,7 +128,7 @@ static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel);
  */
 static void window_track_place_clear_mini_preview()
 {
-	memset(_window_track_place_mini_preview, 220, TRACK_MINI_PREVIEW_SIZE);
+	memset(_window_track_place_mini_preview, _mini_preview_colour, TRACK_MINI_PREVIEW_SIZE);
 }
 
 #define swap(x, y) x = x ^ y; y = x ^ y; x = x ^ y;
@@ -146,7 +147,6 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 	window_close_construction_windows();
 
 	_window_track_place_mini_preview = malloc(TRACK_MINI_PREVIEW_SIZE);
-	window_track_place_clear_mini_preview();
 
 	rct_window *w = window_create(
 		0,
@@ -167,6 +167,9 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
+	_mini_preview_colour = ColourMapA[w->colours[0]].light;
+
+	window_track_place_clear_mini_preview();
 	window_track_place_draw_mini_preview(td6);
 	
 	_trackDesign = td6;
@@ -368,6 +371,8 @@ static void window_track_place_unknown14(rct_window *w)
 static void window_track_place_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
+	_mini_preview_colour = ColourMapA[w->colours[0]].light;
+	window_track_place_draw_mini_preview(_trackDesign);
 }
 
 /**
@@ -523,7 +528,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 					bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
 					// Station track is a lighter colour
-					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? 222 : 218;
+					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? _mini_preview_colour + 2 : _mini_preview_colour -2;
 
 					for (int i = 0; i < 4; i++) {
 						if (bits & 1) pixel[338 + i] = colour;
