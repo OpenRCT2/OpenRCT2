@@ -4291,6 +4291,12 @@ STR_5981    :{WINDOW_COLOUR_2}팻말이 아님
 STR_5982    :{WINDOW_COLOUR_2}대형 풍경 종류: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}대형 풍경 조각 ID: {BLACK}{COMMA16}
 STR_5984    :막힌 보도:
+STR_5985    :새 폴더
+STR_5986    :새 폴더의 이름을 입력하세요.
+STR_5987    :폴더를 만들 수 없습니다.
+STR_5988    :{SMALLFONT}{BLACK}판매 중인 땅이 더 이상 없습니다.
+STR_5989    :{SMALLFONT}{BLACK}판매 중인 건설권이 더 이상 없습니다.
+STR_5990    :{SMALLFONT}{BLACK}판매 중인 땅이나 건설권이 더 이상 없습니다.
 
 #############
 # Scenarios #
