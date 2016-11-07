@@ -12305,7 +12305,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	static char newName[128];
 	//if (flags & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
-		uint8 position = (state - 1) % 3;
+		uint8 position = (state - 1) & 3;
 		memcpy(newName + position * 12, text_1, 4);
 		memcpy(newName + 4 + position * 12, text_2, 4);
 		memcpy(newName + 8 + position * 12, text_3, 4);
