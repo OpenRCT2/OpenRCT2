@@ -663,7 +663,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
 			safe_strcat(cheat_string, " ", 64);
 
 			char buffer[8];
-			int ret = snprintf(buffer, sizeof(buffer), "%d", park_rating_spinner_value);
+			snprintf(buffer, sizeof(buffer), "%d", park_rating_spinner_value);
 			char* park_rating = buffer;
 			safe_strcat(cheat_string, park_rating, 64);
 
