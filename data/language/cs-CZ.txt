@@ -4293,6 +4293,12 @@ STR_5981    :{WINDOW_COLOUR_2}To není baner
 STR_5982    :{WINDOW_COLOUR_2}Typ velké kulisy: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID velké kulisy: {BLACK}{COMMA16}
 STR_5984    :Zablokované cesty:
+STR_5985    :Nová složka
+STR_5986    :Napiště název nové složky
+STR_5987    :Nepodařilo se vytvořit složku
+STR_5988    :{SMALLFONT}{BLACK}Žádná další pozemková práva ke koupi
+STR_5989    :{SMALLFONT}{BLACK}Žádná další stavební práva ke koupi
+STR_5990    :{SMALLFONT}{BLACK}Žádná další pozemková ani stavební práva ke koupi
 
 ###############################################################################
 ## RCT2 Objects
