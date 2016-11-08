@@ -293,7 +293,7 @@ static utf8 *convert_multibyte_charset(const char *src, int languageId)
 		if (*ch == 0xFF) {
 			ch++;
 			uint8 a = *ch++;
-			uint8 b = *ch++;
+			uint8 b = (*ch != 0) ? *ch++ : 0;
 			uint16 codepoint = (a << 8) | b;
 
 			codepoint = convert_specific_language_character_to_unicode(languageId, codepoint);
