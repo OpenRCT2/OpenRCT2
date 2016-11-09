@@ -186,7 +186,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_GAME:
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "save", sizeof(path))) {
-			window_loadsave_populate_list(w, isSave, path, ".sv6");
+			window_loadsave_populate_list(w, isSave, path, ".sv6;.sc6;.sv4;.sc4");
 			success = true;
 		}
 		break;
@@ -251,7 +251,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 	case LOADSAVETYPE_GAME:
 		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
 		desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-		desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv4;*.sv6";
+		desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv6;*.sc6;*.sv4;*.sc4";
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
 		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
@@ -653,34 +653,45 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		}
 		platform_enumerate_files_end(fileEnumHandle);
 
-		// List all files with the wanted extension
+		// List all files with the wanted extensions
 		char filter[MAX_PATH];
-		safe_strcpy(filter, directory, sizeof(filter));
-		safe_strcat_path(filter, "*", sizeof(filter));
-		path_append_extension(filter, extension, sizeof(filter));
+		char extCopy[64];
+		safe_strcpy(extCopy, extension, sizeof(extCopy));
+		char * extToken;
+		bool showExtension = false;
+		extToken = strtok(extCopy, ";");
+		while (extToken != NULL) {
+			safe_strcpy(filter, directory, sizeof(filter));
+			safe_strcat_path(filter, "*", sizeof(filter));
+			path_append_extension(filter, extToken, sizeof(filter));
+			
+			file_info fileInfo;
+			fileEnumHandle = platform_enumerate_files_begin(filter);
+			while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+				if (listItemCapacity <= _listItemsCount) {
+					listItemCapacity *= 2;
+					_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				}
 
-		file_info fileInfo;
-		fileEnumHandle = platform_enumerate_files_begin(filter);
-		while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-			if (listItemCapacity <= _listItemsCount) {
-				listItemCapacity *= 2;
-				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				loadsave_list_item *listItem = &_listItems[_listItemsCount];
+
+				safe_strcpy(listItem->path, directory, sizeof(listItem->path));
+				safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
+				listItem->type = TYPE_FILE;
+				listItem->date_modified = platform_file_get_modified_time(listItem->path);
+
+				// Remove the extension (but only the first extension token)
+				safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
+				if (!showExtension)
+					path_remove_extension(listItem->name);
+
+				_listItemsCount++;
 			}
+			platform_enumerate_files_end(fileEnumHandle);
 
-			loadsave_list_item *listItem = &_listItems[_listItemsCount];
-
-			safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-			safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
-			listItem->type = TYPE_FILE;
-			listItem->date_modified = platform_file_get_modified_time(listItem->path);
-
-			// Remove the extension
-			safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
-			path_remove_extension(listItem->name);
-
-			_listItemsCount++;
+			extToken = strtok(NULL, ";");
+			showExtension = true; //Show any extension after the first iteration
 		}
-		platform_enumerate_files_end(fileEnumHandle);
 
 		window_loadsave_sort_list(0, _listItemsCount - 1);
 	}
@@ -725,11 +736,11 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
+		uint32 extension = get_file_extension_type(path);
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
-			const char *extension = path_get_extension(path);
 			safe_strcpy(newName, path_get_filename(path), MAX_PATH);
-			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
+			if (extension != FILE_EXTENSION_SV6 && extension != FILE_EXTENSION_SC6)
 				path_append_extension(newName, ".sv6", sizeof(newName));
 			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
 				set_format_arg(0, intptr_t, (intptr_t)&_listItems[w->selected_list_item].name);
@@ -740,7 +751,12 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				window_close(w);
 			}
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-		} else if (game_load_save(path)) {
+		} else if (
+			(extension == FILE_EXTENSION_SV6 && game_load_save(path)) ||
+			(extension == FILE_EXTENSION_SC6 && scenario_load_and_play_from_path(path)) ||
+			(extension == FILE_EXTENSION_SV4 && game_load_save(path)) ||
+			(extension == FILE_EXTENSION_SC4 && scenario_load_and_play_from_path(path))
+		) {
 			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 			gFirstTimeSave = 0;
 
