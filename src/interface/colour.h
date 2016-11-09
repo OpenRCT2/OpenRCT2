@@ -54,7 +54,9 @@ enum {
 	COLOUR_BRIGHT_RED,
 	COLOUR_DARK_PINK,
 	COLOUR_BRIGHT_PINK,
-	COLOUR_LIGHT_PINK
+	COLOUR_LIGHT_PINK,
+
+	COLOUR_COUNT
 };
 
 /**
@@ -89,7 +91,7 @@ typedef struct rct_colour_map {
 	uint8 colour_11;
 } rct_colour_map;
 
-extern rct_colour_map ColourMapA[32];
+extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
 

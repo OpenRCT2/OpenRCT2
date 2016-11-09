@@ -195,7 +195,7 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Background
 	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_45);
-	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_132);
+	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_GLASS_LIGHT_ORANGE);
 
 	// Sides
 	gfx_filter_rect(dpi, left  + 0, top    + 2, left  + 0, bottom - 2, PALETTE_47);

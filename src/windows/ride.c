@@ -4689,7 +4689,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 				terniaryColour = 0;
 				if (entranceStyle->base_image_id & 0x40000000) {
-					terniaryColour = 0x40000000 | ((trackColour.main + 112) << 19);
+					terniaryColour = 0x40000000 | (GlassPaletteIds[trackColour.main] << 19);
 				}
 
 				spriteIndex = (trackColour.additional << 24) | (trackColour.main << 19);

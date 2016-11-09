@@ -162,7 +162,7 @@ static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	b = w->y + w->height - 1;
 
 	gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
-	gfx_filter_rect(dpi, l, t, r, b, PALETTE_139);
+	gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
 
 	gfx_filter_rect(dpi, l, t + 2, l, b - 2, PALETTE_47);
 	gfx_filter_rect(dpi, r, t + 2, r, b - 2, PALETTE_47);
