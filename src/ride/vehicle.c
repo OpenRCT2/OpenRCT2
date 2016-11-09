@@ -8142,7 +8142,7 @@ loc_6DC743:
 			// When the ride is closed occasionally the peep is removed
 			// but the vehicle is still on the track. This will prevent
 			// it from crashing in that situation.
-			if (vehicle->peep[0]) {
+			if (vehicle->peep[0] != 0xFFFF) {
 				if (z == 2) {
 					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
 					if (peep->id & 7) {
