@@ -262,8 +262,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		STR_DOWN,		  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP },	/* Move up */				\
 	{ WWT_FLATBTN,		1,  BX - BS * 3,	BW - BS * 3,		BY,				BH,			SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP },	/* Rotate button */			\
 	{ WWT_FLATBTN,		1,  BX - BS * 4,	BW - BS * 4,		BY,				BH,			SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP },	    /* Sort button */			\
-	{ WWT_FLATBTN,		1,  BX - BS * 5,	BW - BS * 5,		BY,				BH,			SPR_G2_COPY,      STR_TILE_INSPECTOR_SORT_TIP },	    /* Copy button */			\
-	{ WWT_FLATBTN,		1,  BX - BS * 6,	BW - BS * 6,		BY,				BH,			SPR_G2_PASTE,     STR_TILE_INSPECTOR_SORT_TIP },	    /* Paste button */			\
+	{ WWT_FLATBTN,		1,  BX - BS * 5,	BW - BS * 5,		BY,				BH,			SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP },	    /* Copy button */			\
+	{ WWT_FLATBTN,		1,  BX - BS * 6,	BW - BS * 6,		BY,				BH,			SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP },	    /* Paste button */			\
 	/* Column headers */																																						\
 	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_NONE,	STR_NONE },													/* Type */					\
 	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_BASE_HEIGHT },							/* Base height */			\
