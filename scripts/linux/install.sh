@@ -174,19 +174,11 @@ elif [[ $(uname) == "Linux" ]]; then
 				sudo dpkg --add-architecture i386
 				sudo apt-get update
 				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev:i386 libsdl2-ttf-dev:i386 gcc-4.8 pkg-config:i386 g++-4.8-multilib gcc-4.8-multilib libjansson-dev:i386 libspeex-dev:i386 libspeexdsp-dev:i386 libcurl4-openssl-dev:i386 libcrypto++-dev:i386 clang libfontconfig1-dev:i386 libfreetype6-dev:i386 libpng-dev:i386
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_i386.deb libjansson4_2.7-1ubuntu1_i386.deb
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_i386.deb libjansson-dev_2.7-1ubuntu1_i386.deb
-				sudo dpkg -i libjansson4_2.7-1ubuntu1_i386.deb
-				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_i386.deb
 				sudo apt-get install -f
 				;;
 			"linux64")
 				sudo apt-get update
 				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev libsdl2-ttf-dev gcc-4.8 pkg-config g++ gcc libjansson-dev libspeex-dev libspeexdsp-dev libcurl4-openssl-dev libcrypto++-dev libfontconfig1-dev libfreetype6-dev libpng-dev
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_amd64.deb libjansson4_2.7-1ubuntu1_amd64.deb
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_amd64.deb libjansson-dev_2.7-1ubuntu1_amd64.deb
-				sudo dpkg -i libjansson4_2.7-1ubuntu1_amd64.deb
-				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_amd64.deb
 				sudo apt-get install -f
 				;;
 			"windows")

@@ -181,7 +181,7 @@ if (NOT PNG_FOUND)
 endif (NOT PNG_FOUND)
 
 PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
-PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.7)
+PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.3)
 
 # Handle creating the rct2 text and data files on macOS and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
