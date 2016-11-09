@@ -1330,6 +1330,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 					gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
 				}
 				config_save_default();
+				audio_start_title_music();
 			}
 			window_invalidate(w);
 			break;
