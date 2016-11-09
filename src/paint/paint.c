@@ -25,7 +25,7 @@
 
 const uint32 construction_markers[] = {
 	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White
-	PALETTE_50 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
+	PALETTE_DARKEN_2 << 19 | IMAGE_TYPE_TRANSPARENT, // Translucent
 };
 
 paint_struct * g_ps_F1AD28;

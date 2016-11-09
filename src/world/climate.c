@@ -348,9 +348,9 @@ static int climate_play_thunder(int instanceIndex, int soundId, int volume, int 
 /** rct2: 0x0098195C */
 const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
 	0,
-	PALETTE_49,
-	PALETTE_50,
-	PALETTE_47,
+	PALETTE_DARKEN_1,
+	PALETTE_DARKEN_2,
+	PALETTE_DARKEN_3,
 };
 
 // rct2: 0x00993C94

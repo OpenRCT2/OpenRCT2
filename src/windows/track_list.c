@@ -574,7 +574,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		rct_string_id stringId;
 		if (listIndex == w->selected_list_item) {
 			// Highlight
-			gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_49);
+			gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 		} else {
 			stringId = STR_BLACK_STRING;
@@ -591,7 +591,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			rct_string_id stringId;
 			if (listIndex == w->selected_list_item) {
 				// Highlight
-				gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_49);
+				gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
 				stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			} else {
 				stringId = STR_BLACK_STRING;

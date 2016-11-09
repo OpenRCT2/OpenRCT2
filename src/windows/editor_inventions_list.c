@@ -875,7 +875,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 				top = itemY - 1;
 				bottom = itemY;
 			}
-			gfx_filter_rect(dpi, 0, top, w->width, bottom, PALETTE_49);
+			gfx_filter_rect(dpi, 0, top, w->width, bottom, PALETTE_DARKEN_1);
 
 			if (_editorInventionsListDraggedItem == NULL)
 				colour = 14;

@@ -1715,7 +1715,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int 
 		int y = list_index * 10;
 		int string_format = STR_BLACK_STRING;
 		if (list_index == w->selected_list_item){
-			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_49);
+			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
 			string_format = STR_WINDOW_COLOUR_2_STRINGID;
 		}
 		rct_ride* ride = get_ride(w->list_item_positions[list_index]);
