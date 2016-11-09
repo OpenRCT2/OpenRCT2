@@ -510,6 +510,7 @@ static void format_append_string(char **dest, size_t *size, const utf8 *string) 
 	if (length < (*size)) {
 		memcpy((*dest), string, length);
 		(*dest) += length;
+		(*size) -= length;
 	} else {
 		memcpy((*dest), string, (*size) - 1);
 		(*dest) += (*size) - 1;
@@ -524,6 +525,7 @@ static void format_append_string_n(char **dest, size_t *size, const utf8 *string
 	if (length < (*size)) {
 		memcpy((*dest), string, length);
 		(*dest) += length;
+		(*size) -= length;
 	} else {
 		memcpy((*dest), string, (*size) - 1);
 		(*dest) += (*size) - 1;
@@ -1237,17 +1239,22 @@ static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *s
 		} else if (code < FORMAT_COLOUR_CODE_START || code == FORMAT_COMMA1DP16) {
 			format_string_code(code, dest, size, args);
 		} else {
-			format_handle_overflow((size_t) utf8_get_codepoint_length(code));
-			*dest = utf8_write_codepoint(*dest, code);
+			size_t codepointLength = (size_t)utf8_get_codepoint_length(code);
+			format_handle_overflow(codepointLength);
+			if (*size > codepointLength) {
+				*dest = utf8_write_codepoint(*dest, code);
+				*size -= codepointLength;
+			}
 		}
 	}
-	*(*dest) = '\0';
 }
 
 static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, char **args)
 {
 	if (format == STR_NONE) {
-		*(*dest) = '\0';
+		if (*size > 0) {
+			*(*dest) = '\0';
+		}
 	} else if (format < 0x8000) {
 		// Language string
 		const utf8 * rawString = language_get_string(format);
@@ -1296,11 +1303,26 @@ void format_string(utf8 *dest, size_t size, rct_string_id format, void *args)
 	}
 #endif
 
+	if (size == 0) {
+		return;
+	}
+
 	utf8 *end = dest;
 	size_t left = size;
 	format_string_part(&end, &left, format, (char**)&args);
-	if (left == 0)
+	if (left == 0) {
+		// Replace last character with null terminator
+		*(end - 1) = '\0';
 		log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+	} else {
+		// Null terminate
+		*end = '\0';
+	}
+
+#ifdef DEBUG
+	// Check if characters were written past the end of the buffer
+	assert(end <= dest + size);
+#endif
 }
 
 void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
@@ -1311,11 +1333,26 @@ void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
 	}
 #endif
 
+	if (size == 0) {
+		return;
+	}
+
 	utf8 *end = dest;
 	size_t left = size;
 	format_string_part_from_raw(&end, &left, src, (char**)&args);
-	if (left == 0)
+	if (left == 0) {
+		// Replace last character with null terminator
+		*(end - 1) = '\0';
 		log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+	} else {
+		// Null terminate
+		*end = '\0';
+	}
+
+#ifdef DEBUG
+	// Check if characters were written past the end of the buffer
+	assert(end <= dest + size);
+#endif
 }
 
 /**
@@ -1327,14 +1364,21 @@ void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
  */
 void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void *args)
 {
-	utf8 *end = dest;
-	size_t left = size;
-	format_string_part(&end, &left, format, (char**)&args);
-	if (left == 0)
-		log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
+#ifdef DEBUG
+	if (gDebugStringFormatting) {
+		printf("format_string_to_upper(%hu)\n", format);
+	}
+#endif
 
-	char *ch = dest;
-	while (ch < end) {
+	if (size == 0) {
+		return;
+	}
+
+	format_string(dest, size, format, args);
+
+	// Convert to upper case
+	utf8 *ch = dest;
+	while (*ch != '\0') {
 		*ch = toupper(*ch);
 		ch++;
 	}
