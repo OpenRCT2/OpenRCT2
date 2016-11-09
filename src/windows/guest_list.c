@@ -728,7 +728,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				// Highlight backcolour and text colour (format)
 				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
-					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
+					gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_49);
 					format = STR_WINDOW_COLOUR_2_STRINGID;
 				}
 
@@ -792,7 +792,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				// Highlight backcolour and text colour (format)
 				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
-					gfx_fill_rect(dpi, 0, y, 800, y + 20, 0x02000031);
+					gfx_filter_rect(dpi, 0, y, 800, y + 20, PALETTE_49);
 					format = STR_WINDOW_COLOUR_2_STRINGID;
 				}
 

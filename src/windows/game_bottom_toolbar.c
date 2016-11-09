@@ -333,21 +333,21 @@ void window_game_bottom_toolbar_invalidate_news_item()
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	// Draw panel grey backgrounds
-	gfx_fill_rect(
+	gfx_filter_rect(
 		dpi,
 		w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
 		w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom,
-		0x02000033
+		PALETTE_51
 	);
-	gfx_fill_rect(
+	gfx_filter_rect(
 		dpi,
 		w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
 		w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom,
-		0x02000033
+		PALETTE_51
 	);
 
 	window_draw_widgets(w, dpi);

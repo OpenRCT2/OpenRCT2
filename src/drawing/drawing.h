@@ -18,6 +18,7 @@
 #define _DRAWING_H_
 
 #include "../common.h"
+#include "../interface/colour.h"
 #include "font.h"
 
 // For g1 only enable packing when still relying on vanilla
@@ -96,6 +97,45 @@ enum {
 	INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7), // 0x80
 };
 
+typedef enum {
+	PALETTE_32 = 0x20,
+
+	PALETTE_34 = 0x22,
+
+	PALETTE_45 = 45,
+
+	PALETTE_47 = 47,
+
+	PALETTE_49 = 49,
+	PALETTE_50 = 50,
+	PALETTE_51 = 51,
+
+	PALETTE_TRANSLUCENT_BLACK = 0x34,
+	PALETTE_TRANSLUCENT_BLUE = 0x37,
+	PALETTE_TRANSLUCENT_BLUE_HIGHLIGHT = PALETTE_TRANSLUCENT_BLUE + 1, // used by console
+	PALETTE_TRANSLUCENT_RED = 0x3A,
+	PALETTE_TRANSLUCENT_GREEN = 0x3D,
+	PALETTE_TRANSLUCENT_PURPLE = 0x40,
+	PALETTE_TRANSLUCENT_GREEN_2 = 0x43,
+	PALETTE_TRANSLUCENT_BROWN = 0x46,
+	PALETTE_TRANSLUCENT_YELLOW = 0x49,
+	PALETTE_TRANSLUCENT_GREEN_3 = 0x4C,
+	PALETTE_TRANSLUCENT_GREEN_4 = 0x4F,
+	PALETTE_TRANSLUCENT_GREEN_5 = 0x52,
+	PALETTE_TRANSLUCENT_PINK = 0x55,
+	PALETTE_TRANSLUCENT_PURPLE_2 = 0x58,
+	PALETTE_TRANSLUCENT_RED_2 = 0x5B,
+	PALETTE_TRANSLUCENT_ORANGE = 0x5E,
+	PALETTE_TRANSLUCENT_TEAL = 0x61,
+	PALETTE_TRANSLUCENT_PINK_2 = 0x64,
+	PALETTE_TRANSLUCENT_BROWN_DARK = 0x67,
+	PALETTE_TRANSLUCENT_PINK_3 = 0x6A,
+	PALETTE_TRANSLUCENT_WHITE = 0x6D,
+
+	PALETTE_132 = 112 + COLOUR_LIGHT_ORANGE,
+	PALETTE_139 = 112 + COLOUR_SATURATED_RED,
+} FILTER_PALETTE_ID;
+
 typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
@@ -146,7 +186,7 @@ extern const uint16 palette_to_g1_offset[];
 extern uint8 gPeepPalette[256];
 extern uint8 gOtherPalette[256];
 extern uint8 text_palette[];
-extern const uint8 _9DEDF4[];
+extern const FILTER_PALETTE_ID _9DEDF4[];
 
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
@@ -183,6 +223,7 @@ void load_palette();
 // other
 void gfx_clear(rct_drawpixelinfo *dpi, uint32 colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
+void gfx_filter_pixel(rct_drawpixelinfo *dpi, int x, int y, FILTER_PALETTE_ID palette);
 void gfx_invalidate_pickedup_peep();
 void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi);
 
@@ -193,6 +234,7 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int 
 // rect
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, uint8 flags);
+void gfx_filter_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, FILTER_PALETTE_ID palette);
 
 // sprite
 bool gfx_load_g1();

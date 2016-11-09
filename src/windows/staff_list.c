@@ -653,7 +653,7 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 				int format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
 				if (i == _windowStaffListHighlightedIndex) {
-					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+					gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_49);
 					format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
 				}
 

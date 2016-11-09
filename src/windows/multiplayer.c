@@ -609,7 +609,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			char* lineCh = buffer;
 			int colour = 0;
 			if (i == w->selected_list_item) {
-				gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
+				gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_49);
 				safe_strcpy(buffer, network_get_player_name(i), sizeof(buffer));
 				colour = w->colours[2];
 			} else {
@@ -874,7 +874,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
 	for (int i = 0; i < network_get_num_actions(); i++) {
 		if (i == w->selected_list_item) {
-			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
+			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_49);
 		}
 		if (y > dpi->y + dpi->height) {
 			break;

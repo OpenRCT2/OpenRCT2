@@ -194,7 +194,7 @@ static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int 
 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, 0x2000000 | 51);
+	gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, PALETTE_51);
 	window_draw_widgets(w, dpi);
 }
 

@@ -436,19 +436,19 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		if (drawPreviousButton) {
-			gfx_fill_rect(dpi,
+			gfx_filter_rect(dpi,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + w->y,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right + w->x,
-				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->y, 0x2000033);
+				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->y, PALETTE_51);
 		}
 
 		if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
-			gfx_fill_rect(dpi,
+			gfx_filter_rect(dpi,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->y,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right + w->x,
-				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->y, 0x2000033);
+				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->y, PALETTE_51);
 		}
 	}
 

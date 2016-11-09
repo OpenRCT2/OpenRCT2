@@ -1415,7 +1415,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 			// Highlight background
 			colour = 142;
 			if (listItem->entry == w->object_entry && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
-				gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
+				gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_49);
 				colour = 14;
 			}
 

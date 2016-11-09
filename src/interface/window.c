@@ -1701,7 +1701,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	int widgetIndex;
 
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
-		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
+		gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, PALETTE_51);
 
 	//todo: some code missing here? Between 006EB18C and 006EB260
 

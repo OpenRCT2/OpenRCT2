@@ -297,8 +297,8 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			b = t;
 
 			if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
-				gfx_fill_rect(dpi, l, t, r, b, (_9DEDF4[w->colours[0]] | 0x02000000) + 1);
-				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (_9DEDF4[w->colours[0]] | 0x02000000) + 2);
+				gfx_filter_rect(dpi, l, t, r, b, _9DEDF4[w->colours[0]] + 1);
+				gfx_filter_rect(dpi, l, t + 1, r, b + 1, _9DEDF4[w->colours[0]] + 2);
 			} else {
 				gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
 				gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
@@ -310,7 +310,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				t = w->y + 2 + (cell_y * _dropdown_item_height);
 				r = l + _dropdown_item_width - 1;
 				b = t + _dropdown_item_height - 1;
-				gfx_fill_rect(dpi, l, t, r, b, 0x2000000 | 0x2F);
+				gfx_filter_rect(dpi, l, t, r, b, PALETTE_47);
 			}
 
 			item = gDropdownItemsFormat[i];

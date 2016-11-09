@@ -210,6 +210,15 @@ extern "C"
         }
     }
 
+    void gfx_filter_rect(rct_drawpixelinfo * dpi, int left, int top, int right, int bottom, FILTER_PALETTE_ID palette)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->FilterRect(palette, left, top, right, bottom);
+        }
+    }
+
     void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
     {
         if (_drawingEngine != nullptr)

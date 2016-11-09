@@ -599,7 +599,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	if (colour == 0)
 		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, ColourMapA[colour].dark);
 	else
-		gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x2000000 | 47);
+		gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_47);
 
 	// Draw text
 	if (widget->text == STR_NONE)
