@@ -54,7 +54,7 @@ namespace Guard
         Assert(argument >= min && argument <= max, message, args);
         va_end(args);
     }
-};
+}
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__
 
