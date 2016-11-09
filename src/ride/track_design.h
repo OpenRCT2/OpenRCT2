@@ -110,7 +110,7 @@ typedef struct rct_track_td6 {
 	uint8 number_of_cars_per_train;					// 0x4D
 	uint8 min_waiting_time;							// 0x4E
 	uint8 max_waiting_time;							// 0x4F
-	uint8 var_50;
+	uint8 operation_setting;
 	sint8 max_speed;								// 0x51
 	sint8 average_speed;							// 0x52
 	uint16 ride_length;								// 0x53
@@ -159,7 +159,7 @@ typedef struct track_design_file_ref {
 
 enum {
 	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
-	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1 << 31)		// Not used anymore.
+	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31)		// Not used anymore.
 };
 
 enum {

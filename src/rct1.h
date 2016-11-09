@@ -346,51 +346,59 @@ typedef struct rct1_s4 {
 } rct1_s4;
 assert_struct_size(rct1_s4, 0x1F850C);
 
+/**
+ * Track design structure.
+ * size: 0x2006
+ */
 typedef struct rct_track_td4 {
 	uint8 type;										// 0x00
-	uint8 vehicle_type;								// 0x01
-	uint32 special_track_flags;						// 0x02
-	uint8 operating_mode;							// 0x06
-	uint8 vehicle_colour_version;					// 0x07 Vehicle colour type in first two bits, Version in bits 3,4
-	colour_t body_trim_colour[24];					// 0x08
-	colour_t track_spine_colour_rct1;				// 0x20
-	colour_t track_rail_colour_rct1;				// 0x21
-	colour_t track_support_colour_rct1;				// 0x22
-	uint8 departure_control_flags;					// 0x23
+	uint8 vehicle_type;
+	uint32 flags;									// 0x02
+	uint8 mode;										// 0x06
+	uint8 version_and_colour_scheme;				// 0x07 0b0000_VVCC
+	rct_vehicle_colour vehicle_colours[12];			// 0x08
+	uint8 track_spine_colour_v0;					// 0x20
+	uint8 track_rail_colour_v0;						// 0x21
+	uint8 track_support_colour_v0;					// 0x22
+	uint8 depart_flags;								// 0x23
 	uint8 number_of_trains;							// 0x24
-	uint8 cars_per_train;							// 0x25
-	uint8 min_wait_time;							// 0x26
-	uint8 max_wait_time;							// 0x27
-	uint8 speed;									// 0x28
-	uint8 max_speed;								// 0x29
-	uint8 average_speed;							// 0x2A
+	uint8 number_of_cars_per_train;					// 0x25
+	uint8 min_waiting_time;							// 0x26
+	uint8 max_waiting_time;							// 0x27
+	union {
+		uint8 operation_setting;
+		uint8 launch_speed;
+		uint8 num_laps;
+		uint8 max_people;
+	};
+	sint8 max_speed;								// 0x29
+	sint8 average_speed;							// 0x2A
 	uint16 ride_length;								// 0x2B
 	uint8 max_positive_vertical_g;					// 0x2D
-	uint8 max_negitive_vertical_g;					// 0x2E
+	sint8 max_negative_vertical_g;					// 0x2C
 	uint8 max_lateral_g;							// 0x2F
 	union {
-		uint8 inversions;							// 0x30
-		uint8 holes;								// 0x30
+		uint8 num_inversions;						// 0x30
+		uint8 num_holes;							// 0x30
 	};
-	uint8 drops;									// 0x31
+	uint8 num_drops;								// 0x31
 	uint8 highest_drop_height;						// 0x32
 	uint8 excitement;								// 0x33
 	uint8 intensity;								// 0x34
 	uint8 nausea;									// 0x35
-	uint8 pad_36[2];
-	union{
-		uint16 start_track_data_original;			// 0x38
-		colour_t track_spine_colour[4];				// 0x38
-	};
-	colour_t track_rail_colour[4];					// 0x3C
-	union{
-		colour_t track_support_colour[4];			// 0x40
-		uint8 wall_type[4];							// 0x40
-	};
-	uint8 pad_41[0x83];
-	uint16 start_track_data_AA_CF;					// 0xC4
-} rct_track_td4; // Information based off RCTTechDepot
-assert_struct_size(rct_track_td4, 0xC9);
+	money16 upkeep_cost;							// 0x36
+
+	// Added Attractions / Loopy Landscapes only
+	uint8 track_spine_colour[4];					// 0x38
+	uint8 track_rail_colour[4];						// 0x3C
+	uint8 track_support_colour[4];					// 0x40
+	uint8 flags2;									// 0x44
+
+	uint8 var_45[0x7F];								// 0x45
+
+	void *elements;									// 0xC4 (data starts here in file, 38 for original RCT1)
+	size_t elementsSize;
+} rct_track_td4;
 #pragma pack(pop)
 
 enum {

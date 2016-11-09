@@ -38,13 +38,14 @@ enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_DEFAULT,
 	WIDX_UP,
-	WIDX_NEW,
+	WIDX_NEW_FOLDER,
+	WIDX_NEW_FILE,
 	WIDX_SORT_NAME,
 	WIDX_SORT_DATE,
 	WIDX_SCROLL,
 	WIDX_BROWSE,
-	WIDX_DEFAULT
 };
 
 // 0x9DE48C
@@ -52,13 +53,14 @@ static rct_widget window_loadsave_widgets[] = {
 	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,							STR_NONE },
 	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,							STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },		//Window close button
-	{ WWT_CLOSEBOX,		0,		105,				205,			36,			47,			STR_FILEBROWSER_ACTION_UP,			STR_NONE},					// Up
-	{ WWT_CLOSEBOX,		0,		206,				307,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FILE,	STR_NONE},					// New
+	{ WWT_CLOSEBOX,		0,		4,					84,				36,			47,			STR_LOADSAVE_DEFAULT,				STR_LOADSAVE_DEFAULT_TIP },	// Go to default directory
+	{ WWT_CLOSEBOX,		0,		85,					165,			36,			47,			STR_FILEBROWSER_ACTION_UP,			STR_NONE},					// Up
+	{ WWT_CLOSEBOX,		0,		166,				246,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FOLDER,	STR_NONE },					// New
+	{ WWT_CLOSEBOX,		0,		247,				328,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FILE,	STR_NONE },					// New
 	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			STR_NONE,							STR_NONE },					// Name
 	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			STR_NONE,							STR_NONE },					// Date
 	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	SCROLL_VERTICAL,					STR_NONE },					// File list
 	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	STR_FILEBROWSER_USE_SYSTEM_WINDOW,	STR_NONE },					// Use native browser
-	{ WWT_CLOSEBOX,		0,		4,					104,			36,			47,			STR_LOADSAVE_DEFAULT,				STR_LOADSAVE_DEFAULT_TIP },	// Go to default directory
 	{ WIDGETS_END }
 };
 
@@ -168,7 +170,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	if (w == NULL) {
 		w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
 		w->widgets = window_loadsave_widgets;
-		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
+		w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
 		w->colours[0] = COLOUR_LIGHT_BLUE;
 		w->colours[1] = COLOUR_LIGHT_BLUE;
 		w->colours[2] = COLOUR_LIGHT_BLUE;
@@ -287,8 +289,11 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
 		break;
-	case WIDX_NEW:
-		window_text_input_open(w, WIDX_NEW, STR_NONE, STR_FILEBROWSER_NAME_PROMPT, STR_STRING, (uintptr_t)&_defaultName, 64);
+	case WIDX_NEW_FILE:
+		window_text_input_open(w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING, (uintptr_t)&_defaultName, 64);
+		break;
+	case WIDX_NEW_FOLDER:
+		window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, NULL, 64);
 		break;
 	case WIDX_BROWSE:
 		if (browse(isSave, path, sizeof(path)))
@@ -395,37 +400,65 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 	if (text == NULL || text[0] == 0)
 		return;
 
-	if (gLoadSaveTitleSequenceSave) {
-		if (filename_valid_characters(text)) {
-			if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
-				title_sequence_add_save(gCurrentTitleSequence, path, text);
+	switch (widgetIndex) {
+		case WIDX_NEW_FOLDER:
+			if (!filename_valid_characters(text)) {
+				window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+				return;
 			}
-			else {
-				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+
+			safe_strcpy(path, _directory, sizeof(path));
+			safe_strcat_path(path, text, sizeof(path));
+			
+			if (!platform_ensure_directory_exists(path)) {
+				window_error_open(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
+				return;
 			}
-		}
-		else {
-			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
-		}
-		return;
-	}
+			w->no_list_items = 0;
+			w->selected_list_item = -1;
 
-	safe_strcpy(path, _directory, sizeof(path));
-	safe_strcat_path(path, text, sizeof(path));
-	path_append_extension(path, _extension, sizeof(path));
+			window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
+			window_init_scroll_widgets(w);
 
-	overwrite = 0;
-	for (i = 0; i < _listItemsCount; i++) {
-		if (_stricmp(_listItems[i].path, path) == 0) {
-			overwrite = 1;
+			w->no_list_items = _listItemsCount;
+			window_invalidate(w);
 			break;
-		}
-	}
+		case WIDX_NEW_FILE:
+			if (gLoadSaveTitleSequenceSave) {
+				if (filename_valid_characters(text)) {
+					if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
+						title_sequence_add_save(gCurrentTitleSequence, path, text);
+					}
+					else {
+						window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+					}
+				}
+				else {
+					window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+				}
+				return;
+			}
 
-	if (overwrite)
-		window_overwrite_prompt_open(text, path);
-	else
-		window_loadsave_select(w, path);
+			safe_strcpy(path, _directory, sizeof(path));
+			safe_strcat_path(path, text, sizeof(path));
+			path_append_extension(path, _extension, sizeof(path));
+
+			overwrite = 0;
+			for (i = 0; i < _listItemsCount; i++) {
+				if (_stricmp(_listItems[i].path, path) == 0) {
+					overwrite = 1;
+					break;
+				}
+			}
+
+			if (overwrite)
+				window_overwrite_prompt_open(text, path);
+			else
+				window_loadsave_select(w, path);
+			break;
+	}
+	
+	
 }
 
 static void window_loadsave_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
@@ -546,13 +579,14 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 	_listItems = malloc(listItemCapacity * sizeof(loadsave_list_item));
 	_listItemsCount = 0;
 
-	// Show "new" button when saving
-	window_loadsave_widgets[WIDX_NEW].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
+	// Show "new" buttons when saving
+	window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
+	window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WWT_CLOSEBOX : WWT_EMPTY;
 
 	int drives = platform_get_drives();
 	if (str_is_null_or_empty(directory) && drives) {
 		// List Windows drives
-		w->disabled_widgets |= (1 << WIDX_NEW) | (1 << WIDX_UP);
+		w->disabled_widgets |= (1 << WIDX_NEW_FILE) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_UP);
 		for (int x = 0; x < 26; x++){
 			if (listItemCapacity <= _listItemsCount) {
 				listItemCapacity *= 2;
@@ -596,8 +630,9 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		else
 			w->disabled_widgets &= ~(1 << WIDX_UP);
 
-		// Re-enable the "new" button if it was disabled
-		w->disabled_widgets &= ~(1 << WIDX_NEW);
+		// Re-enable the "new" buttons if these were disabled
+		w->disabled_widgets &= ~(1 << WIDX_NEW_FILE);
+		w->disabled_widgets &= ~(1 << WIDX_NEW_FOLDER);
 
 		// List all directories
 		char subDir[MAX_PATH];

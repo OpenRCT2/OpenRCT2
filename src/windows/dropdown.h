@@ -18,6 +18,7 @@
 #define _WINDOW_DROPDOWN_H_
 
 #include "../common.h"
+#include "../interface/window.h"
 
 #define DROPDOWN_SEPARATOR 0
 

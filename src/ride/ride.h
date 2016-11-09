@@ -445,7 +445,7 @@ enum {
 	RIDE_ENTRY_FLAG_28 = 1 << 28, // 0x10000000
 	RIDE_ENTRY_FLAG_29 = 1 << 29, // 0x20000000
 	RIDE_ENTRY_FLAG_30 = 1 << 30, // 0x40000000
-	RIDE_ENTRY_FLAG_31 = 1 << 31, // 0x80000000
+	RIDE_ENTRY_FLAG_31 = 1u << 31, // 0x80000000
 };
 
 enum{
@@ -785,7 +785,7 @@ enum {
 	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,								// used only by lift
 	RIDE_TYPE_FLAG_30 = 1 << 30,
-	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1 << 31,
+	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
 
 enum {
@@ -880,6 +880,13 @@ enum {
 	RIDE_SETTING_LIFT_HILL_SPEED,
 	RIDE_SETTING_NUM_CIRCUITS,
 	RIDE_SETTING_RIDE_TYPE,
+};
+
+enum {
+	MAZE_WALL_TYPE_BRICK,
+	MAZE_WALL_TYPE_HEDGE,
+	MAZE_WALL_TYPE_ICE,
+	MAZE_WALL_TYPE_WOOD,
 };
 
 typedef struct rct_ride_properties {
@@ -1141,5 +1148,8 @@ void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx
 
 void ride_delete(uint8 rideIndex);
 money16 ride_get_price(rct_ride * ride);
+
+rct_map_element *get_station_platform(int x, int y, int z, int z_tolerance);
+bool ride_has_adjacent_station(rct_ride *ride);
 
 #endif

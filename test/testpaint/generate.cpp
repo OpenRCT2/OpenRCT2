@@ -129,6 +129,16 @@ private:
                 GenerateTrackFunction(trackType);
                 WriteLine();
             }
+
+            if (trackType == TRACK_ELEM_END_STATION)
+            {
+                const uint32 * paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
+                WriteLine(0, "/** rct2: 0x%08X, 0x%08X, 0x%08X */", paintFunctionList[TRACK_ELEM_END_STATION], paintFunctionList[TRACK_ELEM_BEGIN_STATION], paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
+                WriteLine(0, "static void " + _rideName + "_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
+                WriteLine(0, "{");
+                WriteLine(0, "}");
+                WriteLine();
+            }
         }
     }
 
@@ -368,10 +378,23 @@ private:
         return false;
     }
 
+    void ExtractMetalSupportCalls(std::vector<function_call> calls[4], std::vector<function_call> output[4])
+    {
+        for (int direction = 0; direction < 4; direction++) {
+
+            auto cutPoint = std::find_if(calls[direction].begin(), calls[direction].end(), [](function_call call) {
+                return (call.function == SUPPORTS_METAL_A || call.function == SUPPORTS_METAL_B);
+            });
+            output[direction].insert(output[direction].begin(), cutPoint, calls[direction].end());
+            calls[direction].erase(cutPoint, calls[direction].end());
+        }
+    }
+
     void GenerateTrackSequence(int tabs, int trackType, int trackSequence)
     {
         int height = 48;
         _conditionalSupports = false;
+        bool blockSegmentsBeforeSupports = false;
 
         std::vector<function_call> calls[4], chainLiftCalls[4], cableLiftCalls[4];
         Intercept2::TunnelCall tileTunnelCalls[4][4];
@@ -398,6 +421,13 @@ private:
             CallOriginal(trackType, direction, trackSequence, height, &mapElement);
             int numCalls = intercept_get_calls(callBuffer);
             calls[direction].insert(calls[direction].begin(), callBuffer, callBuffer + numCalls);
+
+            for (auto &&call : calls[direction]) {
+                if (call.function == SET_SEGMENT_HEIGHT) {
+                    blockSegmentsBeforeSupports = true;
+                    break;
+                }
+            }
 
             segmentSupportCalls[direction] = Intercept2::getSegmentCalls(gSupportSegments, direction);
             generalSupports[direction] = gSupport;
@@ -444,6 +474,13 @@ private:
             GetTunnelCalls(trackType, direction, trackSequence, height, &mapElement, tileTunnelCalls, verticalTunnelHeights);
         }
 
+        std::vector<function_call> supportCalls[4], chainLiftSupportCalls[4], cableLiftSupportCalls[4];
+        if (blockSegmentsBeforeSupports) {
+            ExtractMetalSupportCalls(calls, supportCalls);
+            ExtractMetalSupportCalls(cableLiftCalls, cableLiftSupportCalls);
+            ExtractMetalSupportCalls(chainLiftCalls, chainLiftSupportCalls);
+        }
+
         if (_rideType == RIDE_TYPE_GIGA_COASTER && !CompareFunctionCalls(calls, cableLiftCalls))
         {
             WriteLine(tabs, "if (track_element_is_cable_lift(mapElement)) {");
@@ -472,8 +509,33 @@ private:
             GenerateCalls(tabs, calls, height);
         }
 
+        if (blockSegmentsBeforeSupports) {
+            if (_rideType == RIDE_TYPE_GIGA_COASTER && !CompareFunctionCalls(supportCalls, cableLiftSupportCalls)) {
+                printf("Error: Supports differ for cable lift.\n");
+            } else if (!CompareFunctionCalls(supportCalls, chainLiftSupportCalls)) {
+                printf("Error: Supports differ for chain lift\n");
+            }
+            WriteLine();
+            GenerateSegmentSupportCall(tabs, segmentSupportCalls);
+
+            bool conditionalSupports = _conditionalSupports;
+            _conditionalSupports = false;
+            if (conditionalSupports) {
+                WriteLine(tabs, "if (track_paint_util_should_paint_supports(gPaintMapPosition)) {");
+                tabs++;
+            }
+            GenerateCalls(tabs, supportCalls, height);
+            if (conditionalSupports) {
+                tabs--;
+                WriteLine(tabs, "}");
+            }
+            WriteLine();
+        }
+
         GenerateTunnelCall(tabs, tileTunnelCalls, verticalTunnelHeights);
-        GenerateSegmentSupportCall(tabs, segmentSupportCalls);
+        if (!blockSegmentsBeforeSupports) {
+            GenerateSegmentSupportCall(tabs, segmentSupportCalls);
+        }
         GenerateGeneralSupportCall(tabs, generalSupports);
     }
 
@@ -662,7 +724,7 @@ private:
             "metal_a_supports_paint_setup",
             "metal_b_supports_paint_setup",
             "wooden_a_supports_paint_setup",
-            "wooden_a_supports_paint_setup",
+            "wooden_b_supports_paint_setup",
         };
         return functionNames[function];
     }
@@ -993,6 +1055,14 @@ private:
         WriteLine(1, "switch (trackType) {");
         for (int trackType = 0; trackType < 256; trackType++)
         {
+            if (trackType == TRACK_ELEM_END_STATION) {
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_END_STATION]) + ":");
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_BEGIN_STATION]) + ":");
+                WriteLine(1, "case " + std::string(TrackElemNames[TRACK_ELEM_MIDDLE_STATION]) + ":");
+                WriteLine(2, "return %s_track_station;", _rideName.c_str());
+                continue;
+            }
+
             if (IsTrackTypeSupported(trackType))
             {
                 WriteLine(1, "case " + std::string(TrackElemNames[trackType]) + ":");

@@ -14,6 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef __MINGW32__
+// 0x0600 == vista
+#define WINVER 0x0600
+#define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #include "../common.h"
 
 #ifdef __WINDOWS__
@@ -56,7 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	int argc;
 	char ** argv = (char**)windows_get_command_line_args(&argc);
-	int runGame = cmdline_run(argv, argc);
+	int runGame = cmdline_run((const char **)argv, argc);
 
 	// Free argv
 	for (int i = 0; i < argc; i++) {
@@ -1037,7 +1043,6 @@ utf8* platform_get_username() {
 	return username;
 }
 
-#ifndef __MINGW32__
 ///////////////////////////////////////////////////////////////////////////////
 // File association setup
 ///////////////////////////////////////////////////////////////////////////////
@@ -1183,5 +1188,4 @@ void platform_remove_file_associations()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-#endif
 #endif

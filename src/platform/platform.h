@@ -141,6 +141,7 @@ void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
 void platform_start_text_input(utf8 *buffer, int max_length);
 void platform_stop_text_input();
+bool platform_is_input_active();
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);

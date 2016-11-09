@@ -3674,8 +3674,8 @@ STR_5337    :Parkingang
 STR_5338    :Elementtype
 STR_5339    :{SMALLFONT}{BLACK}Hoogte onderkant
 STR_5340    :{SMALLFONT}{BLACK}Hoogte bovenkant
-STR_5341    :Eigenschappen
-STR_5342    :Kies een vakje op de kaart
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
 STR_5345    :Cheats voor geld
@@ -4224,6 +4224,67 @@ STR_5920    :Toon weereffecten
 STR_5921    :{SMALLFONT}{BLACK}Als dit aanstaat worden regen en verduisterde kleuren niet getoond tijdens stormen
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {COMMA16} {STRINGID} per trein
+STR_5924    :Details landschap
+STR_5925    :Details pad
+STR_5926    :Details baan
+STR_5927    :Details decor
+STR_5928    :Details ingang
+STR_5929    :Details muur
+STR_5930    :Details groot decor
+STR_5931    :Details lichtkrant
+STR_5932    :Details ongeldig element
+STR_5933    :Eigenschappen
+STR_5934    :{WINDOW_COLOUR_2}Terreinoppervlak: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Zijkant terrein: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Landeigendom: {BLACK}{STRINGID}
+STR_5937    :Niet in bezit en niet te koop
+STR_5938    :{WINDOW_COLOUR_2}Waterniveau: {BLACK}{COMMA16}
+STR_5939    :Parkafscheiding verwijderen
+STR_5940    :Parkafscheiding herstellen
+STR_5941    :{WINDOW_COLOUR_2}Hoogte onderkant:
+STR_5942    :{WINDOW_COLOUR_2}Naam pad: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Extra's: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Extra's: {BLACK}Geen
+STR_5945    :{WINDOW_COLOUR_2}Verbonden randen:
+STR_5946    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Attractienaam: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Ketting
+STR_5950    :{WINDOW_COLOUR_2}Wijzigingen op hele baanonderdeel doorvoeren
+STR_5951    :{WINDOW_COLOUR_2}Baanonderdeel-ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Volgnummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Elementen op het huidige vakje sorteren op de hoogte van de onderkant.
+STR_5954    :{WINDOW_COLOUR_2}Decorleeftijd: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Gekozen hoek: {BLACK}{STRINGID}
+STR_5956    :Zuidwest
+STR_5957    :Noordwest
+STR_5958    :Noordoost
+STR_5959    :Zuidoost
+STR_5960    :{WINDOW_COLOUR_2}Gekozen hoek:
+STR_5961    :{WINDOW_COLOUR_2}Volgnummer: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Botsingsdetectie:
+STR_5963    :{WINDOW_COLOUR_2}Verhoogde hoeken:
+STR_5964    :{WINDOW_COLOUR_2}Diagonaal
+STR_5965    :{WINDOW_COLOUR_2}Ingangsype: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Gedeelte parkingang: {BLACK}{STRINGID}
+STR_5967    :Midden
+STR_5968    :Links
+STR_5969    :Rechts
+STR_5970    :{WINDOW_COLOUR_2}Ingang-ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Uitgang-ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
+STR_5973    :Tegen volgend element plaatsen
+STR_5974    :{SMALLFONT}{BLACK}Wijzigt de hoogte van de onderkant en bovenkant zodat die aansluit op het volgende element op dit vakje. Dit maakt het makkelijker om op dit vakje te bouwen.
+STR_5975    :Helling:
+STR_5976    :Vlak
+STR_5977    :Rechterkant omhoog
+STR_5978    :Linkerkant omhoog
+STR_5979    :{WINDOW_COLOUR_2}Muurtype: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Tekst op lichtkrant: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Geen lichtkrant
+STR_5982    :{WINDOW_COLOUR_2}Type groot decor: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}ID groot decorstuk: {BLACK}{COMMA16}
+STR_5984    :Geblokkeerde paden:
 
 #############
 # Scenarios #

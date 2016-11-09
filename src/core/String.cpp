@@ -177,8 +177,13 @@ namespace String
 
     utf8 * Duplicate(const utf8 * src)
     {
-        size_t srcSize = SizeOf(src);
-        return Memory::DuplicateArray(src, srcSize + 1);
+        utf8 * result = nullptr;
+        if (src != nullptr)
+        {
+            size_t srcSize = SizeOf(src);
+            result = Memory::DuplicateArray(src, srcSize + 1);
+        }
+        return result;
     }
 
     utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)
@@ -252,7 +257,7 @@ namespace String
             size_t newStringSize = ch - firstNonWhitespace;
 #if DEBUG
             size_t currentStringSize = String::SizeOf(str);
-            assert(newStringSize < currentStringSize);
+            Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
 
             Memory::Move(str, firstNonWhitespace, newStringSize);
@@ -264,5 +269,26 @@ namespace String
         }
 
         return str;
+    }
+
+    const utf8 * TrimStart(const utf8 * str)
+    {
+        codepoint_t codepoint;
+        const utf8 * ch = str;
+        const utf8 * nextCh;
+        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        {
+            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            {
+                return ch;
+            }
+            ch = nextCh;
+        }
+        return str;
+    }
+
+    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    {
+        return String::Set(buffer, bufferSize, TrimStart(src));
     }
 }

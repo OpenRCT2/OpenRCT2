@@ -13,7 +13,6 @@
 
 !if "${PLATFORM}" == "Win32"
     !define OPENRCT2_EXE "openrct2.exe"
-    !define OPENRCT2_DLL "openrct2.dll"
     !define APPBITS      32
     !define APPARCH      "win32"
 
@@ -134,9 +133,6 @@ Section "!OpenRCT2" Section1
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
 
-    ; Copy curl ca file
-    File ..\..\curl-ca-bundle.crt
-
     ; Copy text files
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
@@ -156,9 +152,6 @@ Section "!OpenRCT2" Section1
 
     ; Copy executable
     File /oname=${OPENRCT2_EXE} ${BINARY_DIR}\${OPENRCT2_EXE}
-!ifdef OPENRCT2_DLL
-    File /oname=${OPENRCT2_DLL} ${BINARY_DIR}\${OPENRCT2_DLL}
-!endif
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -219,16 +212,12 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\$SHORTCUTS\Contributors.lnk"
 
     ; Clean up OpenRCT2 dir
-    Delete "$INSTDIR\curl-ca-bundle.crt"
     Delete "$INSTDIR\changelog.txt"
     Delete "$INSTDIR\known_issues.txt"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
-!ifdef OPENRCT2_DLL
-    Delete "$INSTDIR\${OPENRCT2_DLL}"
-!endif
     Delete "$INSTDIR\INSTALL.LOG"
 
     ; Data files

@@ -281,7 +281,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_NICE_RIDE_DEPRECATED = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
 	PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27), // Used to make the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin ride.
 	PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
-	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
+	PEEP_FLAGS_TWITCH = (1u << 31)		// Added for twitch integration
 };
 
 enum PEEP_NAUSEA_TOLERANCE {
@@ -652,6 +652,11 @@ int peep_get_easteregg_name_id(rct_peep *peep);
 int peep_is_mechanic(rct_peep *peep);
 bool peep_has_item(rct_peep *peep, int peepItem);
 int peep_has_food(rct_peep* peep);
+void peep_pickup(rct_peep* peep);
+void peep_pickup_abort(rct_peep* peep, int old_x);
+bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply);
+bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply);
+void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void peep_sprite_remove(rct_peep* peep);
 void peep_remove(rct_peep* peep);
 void peep_update_sprite_type(rct_peep* peep);

@@ -55,7 +55,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "14"
+#define NETWORK_STREAM_VERSION "15"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __cplusplus
@@ -292,6 +292,10 @@ int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
 int network_can_perform_command(unsigned int groupindex, unsigned int index);
+void network_set_pickup_peep(uint8 playerid, rct_peep* peep);
+rct_peep* network_get_pickup_peep(uint8 playerid);
+void network_set_pickup_peep_old_x(uint8 playerid, int x);
+int network_get_pickup_peep_old_x(uint8 playerid);
 
 void network_send_map();
 void network_send_chat(const char* text);

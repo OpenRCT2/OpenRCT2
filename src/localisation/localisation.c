@@ -34,6 +34,12 @@ char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];
 uint8 gMapTooltipFormatArgs[40];
 
+#ifdef DEBUG
+	// Set to true before a string format call to see details of the formatting.
+	// Set to false after the call.
+	bool gDebugStringFormatting = false;
+#endif
+
 const rct_string_id SpeedNames[] = {
 	STR_SPEED_NORMAL,
 	STR_SPEED_QUICK,
@@ -1050,6 +1056,12 @@ static void format_string_code(unsigned int format_code, char **dest, size_t *si
 	
 	if ((*size) == 0) return;
 
+#ifdef DEBUG
+	if (gDebugStringFormatting) {
+		printf("format_string_code(\"%s\")\n", format_get_token(format_code));
+	}
+#endif
+
 	switch (format_code) {
 	case FORMAT_COMMA32:
 		// Pop argument
@@ -1176,18 +1188,24 @@ static void format_string_code(unsigned int format_code, char **dest, size_t *si
 		value = *((uint32*)*args);
 		*args += 4;
 
-		format_handle_overflow(1 + sizeof(intptr_t));
+		format_handle_overflow(1 + sizeof(uint32));
 
 		format_push_char_safe('\x17');
-		*((intptr_t*)(*dest)) = value;
-		(*dest) += sizeof(intptr_t);
-		(*size) -= sizeof(intptr_t);
+		*((uint32*)(*dest)) = (uint32)value;
+		(*dest) += sizeof(uint32);
+		(*size) -= sizeof(uint32);
 		break;
 	}
 }
 
 static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *src, char **args)
 {
+#ifdef DEBUG
+	if (gDebugStringFormatting) {
+		printf("format_string_part_from_raw(\"%s\")\n", src);
+	}
+#endif
+
 	unsigned int code;
 	while (*size > 1) {
 		code = utf8_get_next(src, &src);
@@ -1232,7 +1250,8 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
 		*(*dest) = '\0';
 	} else if (format < 0x8000) {
 		// Language string
-		format_string_part_from_raw(dest, size, language_get_string(format), args);
+		const utf8 * rawString = language_get_string(format);
+		format_string_part_from_raw(dest, size, rawString, args);
 	} else if (format < 0x9000) {
 		// Custom string
 		format -= 0x8000;
@@ -1271,6 +1290,12 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
  */
 void format_string(utf8 *dest, size_t size, rct_string_id format, void *args)
 {
+#ifdef DEBUG
+	if (gDebugStringFormatting) {
+		printf("format_string(%hu)\n", format);
+	}
+#endif
+
 	utf8 *end = dest;
 	size_t left = size;
 	format_string_part(&end, &left, format, (char**)&args);
@@ -1280,6 +1305,12 @@ void format_string(utf8 *dest, size_t size, rct_string_id format, void *args)
 
 void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
 {
+#ifdef DEBUG
+	if (gDebugStringFormatting) {
+		printf("format_string_raw(\"%s\")\n", src);
+	}
+#endif
+
 	utf8 *end = dest;
 	size_t left = size;
 	format_string_part_from_raw(&end, &left, src, (char**)&args);

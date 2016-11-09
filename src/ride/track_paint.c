@@ -198,7 +198,7 @@ enum
 	SPR_STATION_COVER_OFFSET_SE_NW_BACK_0,
 	SPR_STATION_COVER_OFFSET_SE_NW_BACK_1,
 	SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
-	SPR_STATION_COVER_OFFSET_HIGH
+	SPR_STATION_COVER_OFFSET_TALL
 };
 
 #ifdef NO_RCT2
@@ -424,7 +424,7 @@ void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8
 	}
 }
 
-void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, uint8 stationVariant)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -451,7 +451,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 		}
 		sub_98196C(imageId, 0, 0, 32, 8, 1, height + 6, get_current_rotation());
 		//height -= 5 (height)
-		track_paint_util_draw_station_covers_2(EDGE_NW, hasFence, entranceStyle, direction, height, true);
+		track_paint_util_draw_station_covers_2(EDGE_NW, hasFence, entranceStyle, direction, height, stationVariant);
 		//height += 5 (height + 5)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
@@ -484,7 +484,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 			sub_98196C(imageId, 31, 23, 1, 8, 7, height + 8, get_current_rotation());
 		}
 		//height -= 7 (height)
-		track_paint_util_draw_station_covers_2(EDGE_SE, hasFence, entranceStyle, direction, height, true);
+		track_paint_util_draw_station_covers_2(EDGE_SE, hasFence, entranceStyle, direction, height, stationVariant);
 		//height += 7 (height + 7)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
@@ -511,7 +511,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 		}
 		sub_98196C(imageId, 0, 0, 8, 32, 1, height + 6, get_current_rotation());
 		//height -= 5 (height)
-		track_paint_util_draw_station_covers_2(EDGE_NE, hasFence, entranceStyle, direction, height, true);
+		track_paint_util_draw_station_covers_2(EDGE_NE, hasFence, entranceStyle, direction, height, stationVariant);
 		//height += 5 (height + 5)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
@@ -545,7 +545,7 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 		}
 
 		//height -= 7 (height)
-		track_paint_util_draw_station_covers_2(EDGE_SW, hasFence, entranceStyle, direction, height, true);
+		track_paint_util_draw_station_covers_2(EDGE_SW, hasFence, entranceStyle, direction, height, stationVariant);
 		//height += 7 (height + 7)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
@@ -560,14 +560,20 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 
 bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
 {
-	return track_paint_util_draw_station_covers_2(edge, hasFence, entranceStyle, direction, height, false);
+	return track_paint_util_draw_station_covers_2(edge, hasFence, entranceStyle, direction, height, STATION_VARIANT_BASIC);
 }
 
-bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, bool tall)
+bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant)
 {
 	if (!(g141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
 		return false;
 	}
+
+	static const sint16 heights[][2] = {
+		{22,0},
+		{30,0},
+		{46,0},
+	};
 
 	uint32 imageId;
 	uint32 baseImageId = entranceStyle->base_image_id;
@@ -577,22 +583,22 @@ bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const
 	offset = (rct_xyz16) {0, 0, height};
 	switch (edge) {
 		case EDGE_NE:
-			bounds = (rct_xyz16) {1, 30, (tall ? 46 : 0)};
+			bounds = (rct_xyz16) {1, 30, heights[stationVariant][0]};
 			boundsOffset = (rct_xyz16) {0, 1, height + 1};
 			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
 			break;
 		case EDGE_SE:
 			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {(tall ? 0 : 1), 0, height + (tall ? 47 : 23)};
+			boundsOffset = (rct_xyz16) {0, 0, height + 1 + heights[stationVariant][0]};
 			imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
 			break;
 		case EDGE_SW:
 			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {0, 0, height + (tall ? 47 : 23)};
+			boundsOffset = (rct_xyz16) {0, 0, height + 1 + heights[stationVariant][0]};
 			imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
 			break;
 		case EDGE_NW:
-			bounds = (rct_xyz16) {30, 1, (tall ? 46 : 0)};
+			bounds = (rct_xyz16) {30, 1, heights[stationVariant][0]};
 			boundsOffset = (rct_xyz16) {1, 0, height + 1};
 			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
 			break;
@@ -606,8 +612,8 @@ bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const
 		return false;
 	}
 
-	if (tall) {
-		imageOffset += 6;
+	if (stationVariant == STATION_VARIANT_TALL) {
+		imageOffset += SPR_STATION_COVER_OFFSET_TALL;
 	}
 
 	if (baseImageId & 0x40000000) {
@@ -1671,6 +1677,17 @@ void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map
 		sub_98196C(imageId, 31, 26, 1, 1, 19, height, get_current_rotation());
 		sub_98196C(flashImageId, 31, 6, 1, 1, 19, height, get_current_rotation());
 		break;
+	}
+}
+
+void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height) {
+	// TODO: Figure out which of these looks best, and use one to keep a consistent world
+	if (direction == 2) {
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+	}
+	metal_a_supports_paint_setup(0, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	if (direction != 2) {
+		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
 	}
 }
 

@@ -65,6 +65,7 @@ extern utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
 extern char gCommonStringFormatBuffer[256];
 extern uint8 gCommonFormatArgs[80];
 extern uint8 gMapTooltipFormatArgs[40];
+extern bool gDebugStringFormatting;
 
 extern const rct_string_id SpeedNames[5];
 extern const rct_string_id ObjectiveNames[12];

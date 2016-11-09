@@ -38,7 +38,14 @@ extern const uint8 track_map_1x4[][4];
 enum {
 	SPR_FLOOR_PLANKS = 3395,
 	SPR_FLOOR_PLANKS_90_DEG = 3396,
-
+	SPR_FLOOR_PLANKS_SLOPE_NE_SW = 3397,
+	SPR_FLOOR_PLANKS_SLOPE_SE_NW = 3398,
+	SPR_FLOOR_PLANKS_SLOPE_SW_NE = 3399,
+	SPR_FLOOR_PLANKS_SLOPE_NW_SE = 3400,
+	SPR_FLOOR_PLANKS_N_SEGMENT = 3401,
+	SPR_FLOOR_PLANKS_E_SEGMENT = 3402,
+	SPR_FLOOR_PLANKS_S_SEGMENT = 3403,
+	SPR_FLOOR_PLANKS_W_SEGMENT = 3404,
 	SPR_FLOOR_METAL = 14567,
 	SPR_FENCE_METAL_NE = 14568,
 	SPR_FENCE_METAL_SE = 14569,
@@ -211,6 +218,12 @@ enum {
 	SCHEME_3 = 3,
 };
 
+enum {
+    STATION_VARIANT_BASIC,
+    STATION_VARIANT_1,
+    STATION_VARIANT_TALL,
+};
+
 #ifdef NO_RCT2
 extern uint32 gTrackColours[4];
 #else
@@ -258,11 +271,11 @@ bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_eleme
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
 void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
 bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height);
-bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, bool tall);
+bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant);
 void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int height, int zOffset, rct_map_element * mapElement);
 void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement);
 void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB);
-void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement);
+void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, uint8 stationVariant);
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation);
 void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour);
@@ -294,6 +307,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(const sint8 thick
 void track_paint_util_eighth_to_diag_tiles_paint(const sint8 thickness[4][4], sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][4], const rct_xy16 offsets[4][4], const rct_xy16 boundsLengths[4][4], const rct_xyz16 boundsOffsets[4][4], uint8 rotation);
 void track_paint_util_diag_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4], const rct_xy16 offsets[4], const rct_xy16 boundsLengths[4], const rct_xyz16 boundsOffsets[4], uint8 rotation);
 
+void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height);
+
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
@@ -304,6 +319,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int trackType, int dir
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(int trackType, int direction);

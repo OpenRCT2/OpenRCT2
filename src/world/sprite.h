@@ -438,7 +438,7 @@ uint16 sprite_get_first_in_quadrant(int x, int y);
 ///////////////////////////////////////////////////////////////
 void create_balloon(int x, int y, int z, int colour, uint8 bl);
 void balloon_update(rct_balloon *balloon);
-void balloon_press(rct_balloon *balloon);
+void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 ///////////////////////////////////////////////////////////////
 // Duck

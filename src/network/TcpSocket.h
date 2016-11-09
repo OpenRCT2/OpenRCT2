@@ -45,6 +45,7 @@ public:
 
     virtual SOCKET_STATUS   GetStatus() abstract;
     virtual const char *    GetError() abstract;
+    virtual const char *    GetHostName() const abstract;
 
     virtual void         Listen(uint16 port)                       abstract;
     virtual void         Listen(const char * address, uint16 port) abstract;

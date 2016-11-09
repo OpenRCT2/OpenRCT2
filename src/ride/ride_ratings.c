@@ -1219,7 +1219,8 @@ static void ride_ratings_apply_length(rating_tuple *ratings, rct_ride *ride, int
 
 static void ride_ratings_apply_synchronisation(rating_tuple *ratings, rct_ride *ride, int excitement, int intensity)
 {
-	if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
+	if ((ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) &&
+		ride_has_adjacent_station(ride)) {
 		ratings->excitement += excitement;
 		ratings->intensity += intensity;
 	}

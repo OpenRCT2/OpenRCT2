@@ -16,7 +16,7 @@
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
-    <Platform Condition="'$(PLATFORM)'==''">Win32</Platform>
+    <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
     <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
@@ -24,7 +24,7 @@
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
     <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
-    <TargetLibsVersion>9</TargetLibsVersion>
+    <TargetLibsVersion>10</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
@@ -40,7 +40,6 @@
 
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
-    <OutputDll Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.dll</OutputDll>
     <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
     <OutputExe Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_x64.exe</OutputExe>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
@@ -74,20 +73,16 @@
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
     <SignItems Include="$(OutputExe)" />
-    <SignItems Condition="'$(Platform)'=='Win32'" Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
-    <SymbolItems Condition="'$(Platform)'=='Win32'" Include="$(OutputDll)" />
     <SymbolItems Include="$(OutputExe)" />
     <SymbolItems Include="$([System.IO.Path]::ChangeExtension($(OutputExe), '.pdb'))" />
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
-    <PublishItems Include="$(OutputDll)" Condition="'$(Platform)'=='Win32'" />
     <PublishItems Include="$(TargetDir)data" />
-    <PublishItems Include="$(RootDir)curl-ca-bundle.crt" />
     <PublishItems Include="$(DistDir)changelog.txt" />
     <PublishItems Include="$(DistDir)known_issues.txt" />
     <PublishItems Include="$(DistDir)readme.txt" />
@@ -148,7 +143,6 @@
   <Target Name="Clean">
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
-      <CleanItems Include="$(TargetDir)curl-ca-bundle.crt" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
       <CleanItems Include="$(ArtifactsDir)openrct2-portable-$(Configuration)-$(Platform)*.zip" />
@@ -167,7 +161,6 @@
     </PropertyGroup>
     <ItemGroup>
       <CopyItems Condition="'$(Platform)'=='Win32'" Include="$(RootDir)openrct2.exe" />
-      <CopyItems Include="$(RootDir)curl-ca-bundle.crt" />
       <DataItems Include="$(RootDir)data\**\*" />
     </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
@@ -215,7 +208,7 @@
           StandardOutputImportance="low" />
   </Target>
 
-  <!-- Target to sign OpenRCT2 (exe and dll)
+  <!-- Target to sign OpenRCT2
        This requires the project parameter SIGN_PASSWORD to be set -->
   <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed">
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />

@@ -458,12 +458,11 @@ static void openrct2_loop()
 			currentTick = SDL_GetTicks();
 			ticksElapsed = currentTick - lastTick;
 			if (ticksElapsed < 25) {
-				if (ticksElapsed < 15)
-					SDL_Delay(15 - ticksElapsed);
-				continue;
+				SDL_Delay(25 - ticksElapsed);
+				lastTick += 25;
+			} else {
+				lastTick = currentTick;
 			}
-
-			lastTick = currentTick;
 
 			platform_process_messages();
 

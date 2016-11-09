@@ -25,6 +25,7 @@
 #include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../openrct2.h"
+#include "../network/network.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -102,6 +103,11 @@ enum {
 	PATH_SEARCH_FAILED
 };
 
+// Some text descriptions corresponding to the above enum for understandable debug messages
+const char *gPathFindSearchText[] = {"DeadEnd", "Wide", "Thin", "Junction", "RideQueue", "RideEntrance", "RideExit", "ParkEntryExit", "ShopEntrance", "LimitReached", "PathLoop", "Other", "Failed"};
+
+
+
 enum {
 	F1EE18_DESTINATION_REACHED	= 1 << 0,
 	F1EE18_OUTSIDE_PARK			= 1 << 1,
@@ -128,7 +134,7 @@ static void peep_set_has_ridden_ride_type(rct_peep *peep, int rideType);
 static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType);
 static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags);
 static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride);
-static sint8 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride);
+static sint16 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride);
 static void peep_update_ride_nausea_growth(rct_peep *peep, rct_ride *ride);
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price);
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex);
@@ -746,6 +752,8 @@ static void peep_leave_park(rct_peep* peep){
 }
 
 /**
+ * Main purpose is to decide when peeps leave the park due to
+ * low happiness, low energy and (if appropriate) low money.
  *
  *  rct2: 0x0068F8CD
  */
@@ -763,6 +771,9 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
+	/* Peeps that are happy enough, have enough energy and
+	 * (if appropriate) have enough money will always stay
+	 * in the park. */
 	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			if (peep->energy >= 70 && peep->happiness >= 60) {
@@ -779,10 +790,12 @@ static void sub_68F8CD(rct_peep *peep)
 		}
 	}
 
+	// Approx 95% chance of staying in the park
 	if ((scenario_rand() & 0xFFFF) > 3276) {
 		return;
 	}
 
+	// In the remaining 5% chance the peep leaves the park.
 	peep_leave_park(peep);
 }
 
@@ -956,6 +969,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 	}
 
 	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
+		/* Effect of masking with 0x1FF here vs mask 0x7F,
+		 * which is the condition for calling this function, is
+		 * to reduce how often the content in this conditional
+		 * is executed to once every four calls. */
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
 			uint8 thought_type = crowded_thoughts[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
@@ -1059,6 +1076,11 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
+			/* Effect of masking with 0x3FF here vs mask 0x1FF,
+			 * which is used in the encompassing conditional, is
+			 * to reduce how often the content in this conditional
+			 * is executed to once every second time the encompassing
+			 * conditional executes. */
 
 			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
@@ -1089,11 +1111,17 @@ static void sub_68F41A(rct_peep *peep, int index)
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
 					}
 
-					// Not sure why the happiness check is like that seems wrong to me
 					if (!(gParkFlags & PARK_FLAGS_NO_MONEY) &&
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
-						peep->happiness >= 70){
+						peep->energy >= 70){
+						/* The energy check was originally a second check on happiness.
+						 * This was superfluous so should probably check something else.
+						 * Guessed that this should really be checking energy, since
+						 * the addresses for happiness and energy are quite close,
+						 * 70 is also the threshold for tired thoughts (see above) and
+						 * it makes sense that a tired peep might not think about getting
+						 * more money. */
 						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_RUNNING_OUT;
 					}
 				}
@@ -1121,6 +1149,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 		else{
+			/* This branch of the conditional is executed on the
+			 * remaining times the encompassing conditional is
+			 * executed (which is also every second time, but
+			 * the alternate time to the true branch). */
 			if (peep->nausea >= 140){
 				uint8 thought_type = PEEP_THOUGHT_TYPE_SICK;
 				if (peep->nausea >= 200){
@@ -1160,6 +1192,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		case PEEP_STATE_QUEUING:
 			if (peep->time_in_queue >= 2000){
+				/* Peep happiness is affected once the peep has been waiting
+				 * too long in a queue. */
 				rct_map_element* mapElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 				uint8 found = 0;
 				do {
@@ -1180,6 +1214,10 @@ static void sub_68F41A(rct_peep *peep, int index)
 				} while (!map_element_is_last_for_tile(mapElement++));
 
 				if (found){
+					/* Queue line TV monitors make the peeps waiting in the queue
+					 * slowly happier, up to a certain level. */
+					/* Why don't queue line TV monitors start affecting the peeps
+					 * as soon as they join the queue?? */
 					if (peep->happiness_growth_rate < 90)
 						peep->happiness_growth_rate = 90;
 
@@ -1187,6 +1225,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 						peep->happiness_growth_rate += 2;
 				}
 				else{
+					/* Without a queue line TV monitor peeps waiting too long
+					 * in a queue get less happy. */
 					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 4, 0);
 				}
 			}
@@ -1202,6 +1242,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 
 	loc_68F9F3:
+		// Idle peep happiness tends towards 127 (50%).
 		if (peep->happiness_growth_rate >= 128)
 			peep->happiness_growth_rate--;
 		else
@@ -1239,6 +1280,9 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 	}
+
+	// Remaining content is executed every call.
+
 	// 68FA89
 	if (peep->var_42 == 0 &&
 		peep_has_food(peep)){
@@ -1307,6 +1351,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 	if (energy < 32)
 		energy = 32;
 
+	/* This suggests 100% energy is 128. */
 	if (energy > 128)
 		energy = 128;
 
@@ -1839,6 +1884,164 @@ void peep_window_state_update(rct_peep* peep)
 	} else {
 		window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 		window_invalidate_by_class(WC_STAFF_LIST);
+	}
+}
+
+void peep_pickup(rct_peep* peep)
+{
+	remove_peep_from_ride(peep);
+	invalidate_sprite_2((rct_sprite*)peep);
+
+	sprite_move(SPRITE_LOCATION_NULL, peep->y, peep->z, (rct_sprite*)peep);
+	peep_decrement_num_riders(peep);
+	peep->state = PEEP_STATE_PICKED;
+	peep->sub_state = 0;
+	peep_window_state_update(peep);
+}
+
+void peep_pickup_abort(rct_peep* peep, int old_x)
+{
+	if (!peep)
+		return;
+
+	if (peep->state != PEEP_STATE_PICKED)
+		return;
+
+	sprite_move(old_x, peep->y, peep->z + 8, (rct_sprite*)peep);
+	invalidate_sprite_2((rct_sprite*)peep);
+
+	if (peep->x != (sint16)SPRITE_LOCATION_NULL){
+		peep_decrement_num_riders(peep);
+		peep->state = PEEP_STATE_FALLING;
+		peep_window_state_update(peep);
+		peep->action = 0xFF;
+		peep->special_sprite = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
+		peep->var_C4 = 0;
+	}
+
+	gPickupPeepImage = UINT32_MAX;
+}
+
+bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
+{
+	if (!peep)
+		return false;
+
+	rct_map_element *mapElement = map_get_path_element_at(x / 32, y / 32, z);
+
+	if (!mapElement) {
+		mapElement = map_get_surface_element_at(x / 32, y / 32);
+	}
+
+	if (!mapElement)
+		return false;
+
+	int dest_x = x & 0xFFE0;
+	int dest_y = y & 0xFFE0;
+
+	// Set the coordinate of destination to be exactly
+	// in the middle of a tile.
+	dest_x += 16;
+	dest_y += 16;
+	// Set the tile coordinate to top left of tile
+	int tile_y = dest_y & 0xFFE0;
+	int tile_x = dest_x & 0xFFE0;
+
+	int dest_z = mapElement->base_height * 8 + 16;
+
+	if (!map_is_location_owned(tile_x, tile_y, dest_z)){
+		gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
+		return false;
+	}
+	
+	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
+		if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST) {
+			if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY) {
+				gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
+				return false;
+			}
+		}
+	}
+
+	if (apply) {
+		sprite_move(dest_x, dest_y, dest_z, (rct_sprite*)peep);
+		invalidate_sprite_2((rct_sprite*)peep);
+		peep_decrement_num_riders(peep);
+		peep->state = 0;
+		peep_window_state_update(peep);
+		peep->action = 0xFF;
+		peep->special_sprite = 0;
+		peep->action_sprite_image_offset = 0;
+		peep->action_sprite_type = 0;
+		peep->var_C4 = 0;
+		openrct2_reset_object_tween_locations();
+
+		if (peep->type == PEEP_TYPE_GUEST) {
+			peep->action_sprite_type = 0xFF;
+			peep->happiness_growth_rate = max(peep->happiness_growth_rate - 10, 0);
+			sub_693B58(peep);
+		}
+
+		network_set_pickup_peep(game_command_playerid, 0);
+	}
+
+	return true;
+}
+
+bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply)
+{
+	rct_peep* peep = GET_PEEP(peepnum);
+	switch (action) {
+		case 0: // pickup
+			if (!peep) {
+				return false;
+			}
+			if (!peep_can_be_picked_up(peep)) {
+				return false;
+			}
+			if (network_get_pickup_peep(game_command_playerid)) {
+				// already picking up a peep
+				return false;
+			}
+			if (apply) {
+				network_set_pickup_peep(game_command_playerid, peep);
+				network_set_pickup_peep_old_x(game_command_playerid, peep->x);
+				peep_pickup(peep);
+			}
+			break;
+		case 1: // cancel
+			if (apply) {
+				peep_pickup_abort(network_get_pickup_peep(game_command_playerid), x);
+				network_set_pickup_peep(game_command_playerid, 0);
+			}
+			break;
+		case 2: // place
+			if (network_get_pickup_peep(game_command_playerid) != peep) {
+				return false;
+			}
+			if (!peep_pickup_place(peep, x, y, z, apply)) {
+				return false;
+			}
+			break;
+	}
+	return true;
+}
+
+void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int peepnum = *eax;
+	int x = *edi;
+	int y = *ebp;
+	int z = *edx;
+	int action = *ecx;
+	if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+	}
+	else
+	{
+		*ebx = MONEY32_UNDEFINED;
 	}
 }
 
@@ -5625,7 +5828,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		}
 
 		// Original bug: This would clear any rubbish placed by the previous function
-		//rubbish_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
+		//space_left_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
 		empty_containers = peep_empty_container_extra_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
@@ -6981,23 +7184,39 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
-
+	/* Scenario editor limits initial guest happiness to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->happiness = gGuestInitialHappiness;
+	/* Assume a default initial happiness of 0 is wrong and set
+	 * to 128 (50%) instead. */
 	if (gGuestInitialHappiness == 0)
-		happiness += 0x80;
-
-	peep->happiness = happiness;
-	peep->happiness_growth_rate = happiness;
+		peep->happiness = 128;
+	/* Initial value will vary by -15..16 */
+	sint8 happiness_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->happiness = clamp(0, peep->happiness + happiness_delta, 255);
+	peep->happiness_growth_rate = peep->happiness;
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
+	/* Scenario editor limits initial guest hunger to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->hunger = gGuestInitialHunger;
+	/* Initial value will vary by -15..16 */
+	sint8 hunger_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->hunger = clamp(0, peep->hunger + hunger_delta, 255);
 
-	peep->hunger = hunger;
-
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
-
-	peep->thirst = thirst;
+	/* Scenario editor limits initial guest thirst to between 37..253.
+	 * To be on the safe side, assume the value could have been hacked
+	 * to any value 0..255. */
+	peep->thirst = gGuestInitialThirst;
+	/* Initial value will vary by -15..16 */
+	sint8 thirst_delta = (scenario_rand() & 0x1F) - 15;
+	/* Adjust by the delta, clamping at min=0 and max=255. */
+	peep->thirst = clamp(0, peep->thirst + thirst_delta, 0xFF);
 
 	peep->bathroom = 0;
 	peep->var_42 = 0;
@@ -7054,6 +7273,8 @@ rct_peep *peep_generate(int x, int y, int z)
 	uint8 trousers_colour = scenario_rand() % countof(trouser_colours);
 	peep->trousers_colour = trouser_colours[trousers_colour];
 
+	/* It looks like 65 is about 50% energy level, so this initialises
+	 * a peep with approx 50%-100% energy. */
 	uint8 energy = (scenario_rand() & 0x3F) + 65;
 	peep->energy = energy;
 	peep->energy_growth_rate = energy;
@@ -8697,10 +8918,15 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  * no matter how close to the goal they get, but will follow possible "through
  * paths".
  *
- * The implementation is essentially an A* path finding algorithm over the
- * path layout in xyz; however a best score is tracked via the score parameter
- * rather than storing scores for each xyz, which means explicit loop detection
- * is necessary to limit the search space.
+ * The implementation is a depth first search of the path layout in xyz
+ * according to the search limits.
+ * Unlike an A* search, which tracks for each tile a heuristic score (a
+ * function of the xyz distances to the goal) and cost of reaching that tile
+ * (steps to the tile), a single best result "so far" (best heuristic score
+ * with least cost) is tracked via the score parameter.
+ * With this approach, explicit loop detection is necessary to limit the
+ * search space, and each alternate route through the same tile can be
+ * returned as the best result, rather than only the shortest route with A*.
  *
  * The parameters that hold the best search result so far are:
  *   - score - the least heuristic distance from the goal
@@ -8771,58 +8997,75 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 		return;
 	}
 
-	/* Get the next map element in the direction of test_edge, ignoring
-	 * map elements that are not of interest, which includes wide paths
-	 * and foreign ride queues (depending on gPeepPathFindIgnoreForeignQueues) */
+	/* Get the next map element of interest in the direction of test_edge. */
 	bool found = false;
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
+		/* Look for all map elements that the peep could walk onto while
+		 * navigating to the goal, including the goal tile. */
+
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
 
+		uint8 rideIndex = 0xFF;
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_TRACK:
 			if (z != mapElement->base_height) continue;
-			/* More details about the mapElement are not needed.
-			 * If in the future it would be useful to know
-			 * whether the map element is a shop, the following
-			 * commented out code will do it. */
-			//rideIndex = mapElement->properties.track.ride_index;
-			//rct_ride *ride = get_ride(rideIndex);
-			//if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
-			//	searchResult = PATH_SEARCH_SHOP_ENTRANCE;
-			//} else {
-				searchResult = PATH_SEARCH_OTHER;
-			//}
-			found = true;
-			break;
+			/* For peeps heading for a shop, the goal is the shop
+			 * tile. */
+			rideIndex = mapElement->properties.track.ride_index;
+			rct_ride *ride = get_ride(rideIndex);
+			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+				found = true;
+				searchResult = PATH_SEARCH_SHOP_ENTRANCE;
+				break;
+			} else {
+				continue;
+			}
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (z != mapElement->base_height) continue;
 			int direction;
 			searchResult = PATH_SEARCH_OTHER;
 			switch (mapElement->properties.entrance.type) {
 			case ENTRANCE_TYPE_RIDE_ENTRANCE:
+				/* For peeps heading for a ride without a queue, the
+				 * goal is the ride entrance tile.
+				 * For mechanics heading for the ride entrance
+				 * (in the case when the station has no exit),
+				 * the goal is the ride entrance tile. */
 				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 				if (direction == test_edge) {
+					/* The rideIndex will be useful for
+					 * adding transport rides later. */
+					rideIndex = mapElement->properties.entrance.ride_index;
 					searchResult = PATH_SEARCH_RIDE_ENTRANCE;
+					found = true;
+					break;
 				}
+				continue; // Ride entrance is not facing the right direction.
+			case ENTRANCE_TYPE_PARK_ENTRANCE:
+				/* For peeps leaving the park, the goal is the park
+				 * entrance/exit tile. */
+				searchResult = PATH_SEARCH_PARK_EXIT;
+				found = true;
 				break;
-			/* More details for other entrance types are not needed.
-			 * If in the future it would be useful to know
-			 * whether the map element is a ride exit or a park
-			 * entrance/exit, the following commented out code
-			 * will do it. */
-			//case ENTRANCE_TYPE_RIDE_EXIT:
-			//	direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-			//	if (direction == test_edge) {
-			//		searchResult = PATH_SEARCH_RIDE_EXIT;
-			//	}
-			//	break;
-			//case ENTRANCE_TYPE_PARK_ENTRANCE:
-			//	searchResult = PATH_SEARCH_PARK_EXIT;
+			case ENTRANCE_TYPE_RIDE_EXIT:
+				/* For mechanics heading for the ride exit, the
+				 * goal is the ride exit tile. */
+				direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+				if (direction == test_edge) {
+					searchResult = PATH_SEARCH_RIDE_EXIT;
+					found = true;
+					break;
+				}
+				continue; // Ride exit is not facing the right direction.
+			default: continue;
 			}
-			found = true;
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
+			/* For peeps heading for a ride with a queue, the goal is the last
+			 * queue path.
+			 * Otherwise, peeps walk on path tiles to get to the goal. */
+
 			if (!is_valid_path_z_and_direction(mapElement, z, test_edge)) continue;
 
 			// Path may be sloped, so set z to path base height.
@@ -8846,306 +9089,320 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				if (footpath_element_is_queue(mapElement) && mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
 					if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF)) {
 						// Path is a queue we aren't interested in
+						/* The rideIndex will be useful for
+						* adding transport rides later. */
+						rideIndex = mapElement->properties.path.ride_index;
 						searchResult = PATH_SEARCH_RIDE_QUEUE;
 					}
 				}
 			}
 			found = true;
 			break;
+		default:
+			continue;
 		}
 
-		if (found) {
-			break;
-		}
-	} while (!map_element_is_last_for_tile(mapElement++));
-
-	/* No map element could be found.
-	 * Return without updating the parameters (best result so far). */
-	if (!found) {
+		#
 		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; No map element found", counter, x >> 5, y >> 5, z);
+			log_info("[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z, gPathFindSearchText[searchResult]);
 		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
 
-	/* At this point the map element is found. */
+		/* At this point mapElement is of interest to the pathfinding. */
 
-	uint8 height = z;
-	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-		// Adjust height for goal comparison according to the path slope.
-		if (footpath_element_is_sloped(mapElement)) {
-			if (footpath_element_get_slope_direction(mapElement) == test_edge) {
-				height += 2;
-			}
-		}
-	}
+		/* Should we check that this mapElement is connected in the
+		 * reverse direction? For some mapElement types this was
+		 * already done above (e.g. ride entrances), but for others not.
+		 * Ignore for now. */
 
-	// Calculate the heuristic score of this map element.
-	uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
-	uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
-	if (x_delta < y_delta) x_delta >>= 4;
-	else y_delta >>= 4;
-	uint16 new_score = x_delta + y_delta;
-	uint16 z_delta = abs(gPeepPathFindGoalPosition.z - height);
-	z_delta <<= 1;
-	new_score += z_delta;
+		// Calculate the heuristic score of this map element.
+		uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
+		uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
+		if (x_delta < y_delta) x_delta >>= 4;
+		else y_delta >>= 4;
+		uint16 new_score = x_delta + y_delta;
+		uint16 z_delta = abs(gPeepPathFindGoalPosition.z - z);
+		z_delta <<= 1;
+		new_score += z_delta;
 
-	/* If this map element is the search goal the current search path ends here. */
-	if (new_score == 0) {
-		/* If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-			if (gPathFindDebug) {
-				log_info("[%03d] Return from %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
-			}
-			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		}
-		return;
-	}
-
-	/* At this point the map element tile is not the goal. */
-
-	/* If this map element is not a path, the search cannot be continued.
-	 * Return without updating the parameters (best result so far). */
-	if (searchResult != PATH_SEARCH_DEAD_END &&
-		searchResult != PATH_SEARCH_THIN &&
-		searchResult != PATH_SEARCH_JUNCTION &&
-		searchResult != PATH_SEARCH_WIDE) {
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* At this point the map element is a path. */
-
-	/* If this is a wide path the search ends here. */
-	if (searchResult == PATH_SEARCH_WIDE) {
-		/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
-		 * i.e. search across wide paths from a wide path to get onto a thin path,
-		 * thereafter stay on thin paths. */
-		/* So, if the current path is also wide the goal could still
-		 * be reachable from here.
-		 * If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (footpath_element_is_wide(currentMapElement) &&
-			(new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* At this point the map element is a non-wide path.*/
-
-	/* Get all the permitted_edges of the map element. */
-	uint8 edges = path_get_permitted_edges(mapElement);
-
-	#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-	if (gPathFindDebug) {
-		log_info("[%03d] Path %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
-	}
-	#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-
-	/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
-	edges &= ~(1 << (test_edge ^ 2));
-	test_edge = bitscanforward(edges);
-
-	/* If there are no other edges the current search ends here.
-	 * Return without updating the parameters (best result so far). */
-	if (test_edge == -1) {
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	/* Check if either of the search limits has been reached:
-	 * - max number of steps or max tiles checked. */
-	if (counter >= 200 || _peepPathFindTilesChecked <= 0) {
-		/* The current search ends here.
-		 * The path continues, so the goal could still be reachable from here.
-		 * If the search result is better than the best so far (in the paramaters),
-		 * then update the parameters with this search. */
-		if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-			// Update the search results
-			*endScore = new_score;
-			*endSteps = counter;
-			// Update the end x,y,z
-			endXYZ->x = x >> 5;
-			endXYZ->y = y >> 5;
-			endXYZ->z = z;
-			// Update the telemetry
-			*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
-			for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-				uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-				junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-				junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-				junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-				directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-			}
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return from %d,%d,%d; Search limit reached", counter, x >> 5, y >> 5, z);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		return;
-	}
-
-	bool thin_junction = false;
-	if (searchResult == PATH_SEARCH_JUNCTION) {
-		/* Check if this is a thin junction. And perform additional
-		 * necessary checks. */
-		thin_junction = path_is_thin_junction(mapElement, x, y, z);
-
-		if (thin_junction) {
-			/* The current search path is passing through a thin
-			 * junction on this map element. Only 'thin' junctions
-			 * are counted towards the junction search limit. */
-
-			/* Check the pathfind_history to see if this junction has been
-			 * previously passed through in the current search path.
-			 * i.e. this is a loop in the current search path.
-			 * If so, the current search path ends here.
-			 * Return without updating the parameters (best result so far). */
-			for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
-				if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
-					(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
-					(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
-					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					if (gPathFindDebug) {
-						log_info("[%03d] Return from %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
-					}
-					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-					return;
-				}
-			}
-
-			/* If the junction search limit is reached, the
-			 * current search path ends here. The goal may still
-			 * be reachable from here.
-			 * If the search result is better than the best so far (in the paramaters),
-			 * then update the parameters with this search. */
-			if (_peepPathFindNumJunctions <= 0) {
-				if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
-					// Update the search results
-					*endScore = new_score;
-					*endSteps = counter;
-					// Update the end x,y,z
-					endXYZ->x = x >> 5;
-					endXYZ->y = y >> 5;
-					endXYZ->z = z;
-					// Update the telemetry
-					*endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
-					for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
-						uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
-						junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
-						junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
-						junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
-						directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
-					}
+		/* If this map element is the search goal the current search path ends here. */
+		if (new_score == 0) {
+			/* If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
 				}
 				#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 				if (gPathFindDebug) {
-					log_info("[%03d] Return from %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+					log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
 				}
 				#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-				return;
+			}
+			continue;
+		}
+
+		/* At this point the map element tile is not the goal. */
+
+		/* If this map element is not a path, the search cannot be continued.
+		 * Continue to the next map element without updating the parameters (best result so far). */
+		if (searchResult != PATH_SEARCH_DEAD_END &&
+			searchResult != PATH_SEARCH_THIN &&
+			searchResult != PATH_SEARCH_JUNCTION &&
+			searchResult != PATH_SEARCH_WIDE) {
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* At this point the map element is a path. */
+
+		/* If this is a wide path the search ends here. */
+		if (searchResult == PATH_SEARCH_WIDE) {
+			/* Ignore Wide paths as continuing paths UNLESS the current path is also Wide.
+			 * i.e. search across wide paths from a wide path to get onto a thin path,
+			 * thereafter stay on thin paths. */
+			/* So, if the current path is also wide the goal could still
+			 * be reachable from here.
+			 * If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (footpath_element_is_wide(currentMapElement) &&
+				(new_score < *endScore || (new_score == *endScore && counter < *endSteps ))) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+				}
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* At this point the map element is a non-wide path.*/
+
+		/* Get all the permitted_edges of the map element. */
+		uint8 edges = path_get_permitted_edges(mapElement);
+
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+		/* Remove the reverse edge (i.e. the edge back to the previous map element.) */
+		edges &= ~(1 << (test_edge ^ 2));
+		test_edge = bitscanforward(edges);
+
+		/* If there are no other edges the current search ends here.
+		 * Continue to the next map element without updating the parameters (best result so far). */
+		if (test_edge == -1) {
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		/* Check if either of the search limits has been reached:
+		 * - max number of steps or max tiles checked. */
+		if (counter >= 200 || _peepPathFindTilesChecked <= 0) {
+			/* The current search ends here.
+			 * The path continues, so the goal could still be reachable from here.
+			 * If the search result is better than the best so far (in the paramaters),
+			 * then update the parameters with this search before continuing to the next map element. */
+			if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+				// Update the search results
+				*endScore = new_score;
+				*endSteps = counter;
+				// Update the end x,y,z
+				endXYZ->x = x >> 5;
+				endXYZ->y = y >> 5;
+				endXYZ->z = z;
+				// Update the telemetry
+				*endJunctions = _peepPathFindMaxJunctions - _peepPathFindNumJunctions;
+				for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+					uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+					junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+					junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+					junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+					directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+				}
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Search path ends at %d,%d,%d; Search limit reached", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			continue;
+		}
+
+		bool thin_junction = false;
+		if (searchResult == PATH_SEARCH_JUNCTION) {
+			/* Check if this is a thin junction. And perform additional
+			 * necessary checks. */
+			thin_junction = path_is_thin_junction(mapElement, x, y, z);
+
+			if (thin_junction) {
+				/* The current search path is passing through a thin
+				 * junction on this map element. Only 'thin' junctions
+				 * are counted towards the junction search limit. */
+
+				/* Check the pathfind_history to see if this junction has been
+				 * previously passed through in the current search path.
+				 * i.e. this is a loop in the current search path.
+				 * If so, the current search path ends here.
+				 * Continue to the next map element without updating the parameters (best result so far). */
+				bool pathLoop = false;
+				for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
+					if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
+						(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
+						(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
+							pathLoop = true;
+							break;
+					}
+				}
+				if (pathLoop) {
+					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					if (gPathFindDebug) {
+						log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+					}
+					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					continue;
+				}
+
+				/* If the junction search limit is reached, the
+				 * current search path ends here. The goal may still
+				 * be reachable from here.
+				 * If the search result is better than the best so far (in the paramaters),
+				 * then update the parameters with this search before continuing to the next map element. */
+				if (_peepPathFindNumJunctions <= 0) {
+					if (new_score < *endScore || (new_score == *endScore && counter < *endSteps )) {
+						// Update the search results
+						*endScore = new_score;
+						*endSteps = counter;
+						// Update the end x,y,z
+						endXYZ->x = x >> 5;
+						endXYZ->y = y >> 5;
+						endXYZ->z = z;
+						// Update the telemetry
+						*endJunctions = _peepPathFindMaxJunctions; // - _peepPathFindNumJunctions;
+						for (uint8 junctInd = 0; junctInd < *endJunctions; junctInd++) {
+							uint8 histIdx = _peepPathFindMaxJunctions - junctInd;
+							junctionList[junctInd].x = _peepPathFindHistory[histIdx].location.x;
+							junctionList[junctInd].y = _peepPathFindHistory[histIdx].location.y;
+							junctionList[junctInd].z = _peepPathFindHistory[histIdx].location.z;
+							directionList[junctInd] = _peepPathFindHistory[histIdx].direction;
+						}
+					}
+					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					if (gPathFindDebug) {
+						log_info("[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z, *endScore);
+					}
+					#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+					continue;
+				}
+
+
+				/* This junction was NOT previously visited in the current
+				 * search path, so add the junction to the history. */
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
+				_peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
+				// .direction take is added below.
+
+				_peepPathFindNumJunctions--;
+			}
+		}
+
+		/* Continue searching down each remaining edge of the path
+		 * (recursive call). */
+		do {
+			edges &= ~(1 << test_edge);
+			uint8 savedNumJunctions = _peepPathFindNumJunctions;
+
+			uint8 height = z;
+			if (footpath_element_is_sloped(mapElement) &&
+				footpath_element_get_slope_direction(mapElement) == test_edge) {
+				height += 2;
+			}
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				if (searchResult == PATH_SEARCH_JUNCTION) {
+					if (thin_junction)
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
+					else
+						log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
+				} else {
+					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
+				}
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+			if (thin_junction) {
+				/* Add the current test_edge to the history. */
+				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
 			}
 
+			peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+			_peepPathFindNumJunctions = savedNumJunctions;
 
-			/* This junction was NOT previously visited in the current
-			 * search path, so add the junction to the history. */
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.x = (uint8)(x >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.y = (uint8)(y >> 5);
-			_peepPathFindHistory[_peepPathFindNumJunctions].location.z = (uint8)z;
-			// .direction take is added below.
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		} while ((test_edge = bitscanforward(edges)) != -1);
 
-			_peepPathFindNumJunctions--;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	if (!found) {
+		/* No map element could be found.
+		* Return without updating the parameters (best result so far). */
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, x >> 5, y >> 5, z);
 		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+	} else {
+		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+		if (gPathFindDebug) {
+			log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, x >> 5, y >> 5, z);
+		}
+		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 	}
-
-	/* Continue searching down each remaining edge of the path
-	 * (recursive call). */
-	do {
-		edges &= ~(1 << test_edge);
-		uint8 savedNumJunctions = _peepPathFindNumJunctions;
-
-		uint8 height = z;
-		if (footpath_element_is_sloped(mapElement) &&
-			footpath_element_get_slope_direction(mapElement) == test_edge) {
-			height += 2;
-		}
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			if (searchResult == PATH_SEARCH_JUNCTION) {
-				if (thin_junction)
-					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, test_edge);
-				else
-					log_info("[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, test_edge);
-			} else {
-				log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, test_edge);
-			}
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-
-		if (thin_junction) {
-			/* Add the current test_edge to the history. */
-			_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
-		}
-
-		peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
-		_peepPathFindNumJunctions = savedNumJunctions;
-
-		#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-		if (gPathFindDebug) {
-			log_info("[%03d] Return to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, test_edge, *endScore);
-		}
-		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-	} while ((test_edge = bitscanforward(edges)) != -1);
 
 	return;
 }
@@ -9298,9 +9555,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 
 			uint8 endSteps = 255;
 
-			/* Variable bestJunctions is the number of junctions
-			 * pass through in the search path.
-			 * Variables bestJunctionList and bestDirectionList
+			/* Variable endJunctions is the number of junctions
+			 * passed through in the search path.
+			 * Variables endJunctionList and endDirectionList
 			 * contain the junctions and corresponding directions
 			 * of the search path.
 			 * In the future these could be used to visualise the
@@ -9536,7 +9793,20 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	gPeepPathFindIgnoreForeignQueues = true;
 	gPeepPathFindQueueRideIndex = 255;
 
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	/* Determine if the pathfinding debugging is wanted for this peep. */
+	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+	 * determine for which guest(s) the pathfinding debugging will
+	 * be output for. */
+	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
+	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	gPathFindDebug = false;
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
@@ -10063,8 +10333,8 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	// Calculate how satisfying the ride is for the peep. Can range from -140 to +140.
-	sint8 satisfaction = peep_calculate_ride_satisfaction(peep, ride);
+	// Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
+	sint16 satisfaction = peep_calculate_ride_satisfaction(peep, ride);
 
 	// Update the satisfaction stat of the ride.
 	uint8 rideSatisfaction = 0;
@@ -10109,6 +10379,120 @@ static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride)
 	}
 }
 
+/* rct2: 0x00695555 */
+static sint16 peep_calculate_ride_value_satisfaction(rct_peep* peep, rct_ride* ride) {
+    if (gParkFlags & PARK_FLAGS_NO_MONEY){
+        return -30;
+    }
+
+    if (ride->value == 0xFFFF) {
+        return -30;
+    }
+
+    money16 ridePrice = ride_get_price(ride);
+    if (ride->value >= ridePrice) {
+        return -5;
+    }
+
+    if ((ride->value + ((ride->value * peep->happiness) / 256)) >= ridePrice) {
+        return -30;
+    }
+
+    return 0;
+}
+
+static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, rct_ride* ride) {
+	ride_rating minIntensity, maxIntensity;
+	ride_rating minNausea, maxNausea;
+
+	// Calculate satisfaction based on the intensity and nausea of the ride.
+	// The best possible score from this section is achieved by having the intensity and nausea
+	// of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
+	// if the peep's happiness is enough to offset it.
+
+	uint8 intensitySatisfaction = 0;
+	uint8 nauseaSatisfaction = 0;
+	if (ride->excitement == (ride_rating)0xFFFF) {
+		return 70;
+	}
+	intensitySatisfaction = 3;
+	nauseaSatisfaction = 3;
+
+    maxIntensity = (peep->intensity >> 4) * 100;
+    minIntensity = (peep->intensity & 0xF) * 100;
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+		intensitySatisfaction--;
+    }
+    minIntensity -= peep->happiness * 2;
+    maxIntensity += peep->happiness;
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+		intensitySatisfaction--;
+    }
+    minIntensity -= peep->happiness * 2;
+    maxIntensity += peep->happiness;
+    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+		intensitySatisfaction--;
+    }
+
+	// Although it's not shown in the interface, a peep with Average or High nausea tolerance
+	// has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
+    minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
+    maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+		nauseaSatisfaction--;
+    }
+    minNausea -= peep->happiness * 2;
+    maxNausea += peep->happiness;
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+		nauseaSatisfaction--;
+    }
+    minNausea -= peep->happiness * 2;
+    maxNausea += peep->happiness;
+    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+		nauseaSatisfaction--;
+    }
+
+	uint8 highestSatisfaction = max(intensitySatisfaction, nauseaSatisfaction);
+	uint8 lowestSatisfaction = min(intensitySatisfaction, nauseaSatisfaction);
+
+	switch (highestSatisfaction) {
+	case 0:
+		return 70;
+	case 1:
+		switch (lowestSatisfaction)
+		{
+		case 0:
+			return 50;
+		case 1:
+			return 35;
+		}
+	case 2:
+		switch (lowestSatisfaction)
+		{
+		case 0:
+			return 35;
+		case 1:
+			return 20;
+		case 2:
+			return 10;
+		}
+	case 3:
+		switch (lowestSatisfaction)
+		{
+		case 0:
+			return -35;
+		case 1:
+			return -50;
+		case 2:
+			return -60;
+		case 3:
+			return -60;
+		}
+	}
+	// Should never happen
+	return 70;
+}
+
 /**
  * The satisfaction values calculated here are used to determine how happy the peep is with the ride,
  * and also affects the satisfaction stat of the ride itself. The factors that affect satisfaction include:
@@ -10117,125 +10501,10 @@ static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride)
  * - How long the peep was waiting in the queue
  * - If the peep has been on the ride before, or on another ride of the same type
  */
-static sint8 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride)
+static sint16 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride)
 {
-	sint8 satisfaction = 0;
-
-	// Calculate satisfaction based on the price and value of the ride.
-	uint8 valueSatisfaction = 1;
-
-	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		if (ride->value != 0xFFFF) {
-			money16 ridePrice = ride_get_price(ride);
-			if (ridePrice <= (money16)ride->value) {
-				valueSatisfaction = 2;
-			}
-			// Even if the price is more than the value, the peep will still be partially satisfied if their
-			// happiness is high enough to offset the difference. (Scales from +0% at empty happiness to +99% at full)
-			else if (ridePrice <= (money16)(ride->value + ride->value * (peep->happiness / 256.0))) {
-				valueSatisfaction = 1;
-			}
-			else {
-				valueSatisfaction = 0;
-			}
-		}
-	}
-
-	switch (valueSatisfaction) {
-	case 2:
-		satisfaction += 40;
-		break;
-	case 1:
-		satisfaction += 15;
-		break;
-	case 0:
-		satisfaction -= 45;
-		break;
-	}
-
-	// Calculate satisfaction based on the intensity and nausea of the ride.
-	// The best possible score from this section is achieved by having the intensity and nausea
-	// of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
-	// if the peep's happiness is enough to offset it.
-	ride_rating minIntensity, maxIntensity;
-	ride_rating minNausea, maxNausea;
-	uint8 intensitySatisfaction = 3;
-	uint8 nauseaSatisfaction = 3;
-
-	if (ride->excitement != (ride_rating)0xFFFF) {
-		maxIntensity = (peep->intensity >> 4) * 100;
-		minIntensity = (peep->intensity & 0xF) * 100;
-		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
-			intensitySatisfaction--;
-		}
-
-		minIntensity -= peep->happiness * 2;
-		maxIntensity += peep->happiness;
-		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
-			intensitySatisfaction--;
-		}
-
-		minIntensity -= peep->happiness * 2;
-		maxIntensity += peep->happiness;
-		if (ride->intensity > maxIntensity || ride->intensity < minIntensity) {
-			intensitySatisfaction--;
-		}
-
-		// Although it's not shown in the interface, a peep with Average or High nausea tolerance
-		// has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
-		minNausea = NauseaMinimumThresholds[peep->nausea_tolerance & 3];
-		maxNausea = NauseaMaximumThresholds[peep->nausea_tolerance & 3];
-		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
-			nauseaSatisfaction--;
-		}
-
-		minNausea -= peep->happiness * 2;
-		maxNausea += peep->happiness;
-		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
-			nauseaSatisfaction--;
-		}
-
-		minNausea -= peep->happiness * 2;
-		maxNausea += peep->happiness;
-		if (ride->nausea > maxNausea || ride->nausea < minNausea) {
-			nauseaSatisfaction--;
-		}
-	}
-
-	// The combination of the intensity and nausea satisfaction is then used to determine the raw satisfaction value.
-	uint8 highestSatisfaction = max(intensitySatisfaction, nauseaSatisfaction);
-	uint8 lowestSatisfaction = min(intensitySatisfaction, nauseaSatisfaction);
-
-	if (highestSatisfaction == 3) {
-		switch (lowestSatisfaction) {
-		case 3:
-			satisfaction += 20;
-		case 2:
-			satisfaction += 15;
-		case 1:
-			satisfaction += 35;
-			break;
-		case 0:
-			satisfaction -= 35;
-		}
-	}
-	else if (highestSatisfaction == 2) {
-		switch (lowestSatisfaction) {
-		case 2:
-			satisfaction += 15;
-		case 1:
-			satisfaction += 20;
-			break;
-		case 0:
-			satisfaction -= 50;
-		}
-	}
-	else if (highestSatisfaction == 1 && lowestSatisfaction == 1) {
-		satisfaction += 10;
-	}
-	else {
-		satisfaction -= 60;
-	}
+	sint16 satisfaction = peep_calculate_ride_value_satisfaction(peep, ride);
+	satisfaction += peep_calculate_ride_intensity_nausea_satisfaction(peep, ride);
 
 	// Calculate satisfaction based on how long the peep has been in the queue for.
 	// (For comparison: peeps start thinking "I've been queueing for a long time" at 3500 and
@@ -10859,7 +11128,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if (map_element_get_direction(mapElement) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 4 <= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
@@ -10880,7 +11149,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		// TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
 		if (peep->next_z + 4 >= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
@@ -10927,7 +11196,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) {
 				continue;
 			}
 		}
@@ -10950,7 +11219,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 6 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
@@ -10996,7 +11265,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) {
 				continue;
 			}
 		}
@@ -11018,7 +11287,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_2_FLAG4) continue;
 		if (peep->next_z + 8 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 

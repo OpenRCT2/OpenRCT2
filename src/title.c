@@ -33,6 +33,8 @@
 #include "peep/staff.h"
 #include "ride/ride.h"
 #include "scenario.h"
+#include "ScenarioRepository.h"
+#include "ScenarioSources.h"
 #include "util/util.h"
 #include "world/climate.h"
 #include "world/map.h"
@@ -423,9 +425,11 @@ static void title_do_next_script_opcode()
 		}
 
 		const utf8 *path = NULL;
-		for (int i = 0; i < gScenarioListCount; i++) {
-			if (gScenarioList[i].source_index == sourceDesc.index) {
-				path = gScenarioList[i].path;
+		size_t numScenarios = scenario_repository_get_count();
+		for (size_t i = 0; i < numScenarios; i++) {
+			const scenario_index_entry * scenario = scenario_repository_get_by_index(i);
+			if (scenario->source_index == sourceDesc.index) {
+				path = scenario->path;
 				break;
 			}
 		}

@@ -24,8 +24,6 @@
 		85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 85B468FB1D96822F000F1DB5 /* paint_helpers.c */; };
 		85B5C0B01D81D912001B99A8 /* intercept_2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B5C0AF1D81D912001B99A8 /* intercept_2.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
-		C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; };
-		C61FB7211CF618BA004CE991 /* libssl.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38BA1CF3006400659A24 /* libssl.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
 		C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */; };
 		C64FDA651D6D9A2100F259B9 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BC1CDBC3B7009F9BFC /* bobsleigh_coaster.c */; };
@@ -91,7 +89,7 @@
 		C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FB1CDBC3B7009F9BFC /* twist.c */; };
 		C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FD1CDBC3B7009F9BFC /* chairlift.c */; };
 		C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
-		C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */; };
+		C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */; };
 		C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
 		C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
 		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
@@ -194,7 +192,7 @@
 		C686F9481CDBC3B7009F9BFC /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FB1CDBC3B7009F9BFC /* twist.c */; };
 		C686F9491CDBC3B7009F9BFC /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FD1CDBC3B7009F9BFC /* chairlift.c */; };
 		C686F94A1CDBC3B7009F9BFC /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
-		C686F94B1CDBC3B7009F9BFC /* minature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */; };
+		C686F94B1CDBC3B7009F9BFC /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */; };
 		C686F94C1CDBC3B7009F9BFC /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
 		C686F94D1CDBC3B7009F9BFC /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
 		C686F94E1CDBC3B7009F9BFC /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
@@ -305,8 +303,6 @@
 		D442724A1CC81B3200D84D28 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717B1CC81B3200D84D28 /* track_data.c */; };
 		D442724B1CC81B3200D84D28 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717D1CC81B3200D84D28 /* track_paint.c */; };
 		D442724C1CC81B3200D84D28 /* vehicle.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717F1CC81B3200D84D28 /* vehicle.c */; };
-		D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271811CC81B3200D84D28 /* scenario_list.c */; };
-		D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271821CC81B3200D84D28 /* scenario_sources.c */; };
 		D442724F1CC81B3200D84D28 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271831CC81B3200D84D28 /* scenario.c */; };
 		D44272501CC81B3200D84D28 /* title.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271861CC81B3200D84D28 /* title.c */; };
 		D44272511CC81B3200D84D28 /* sawyercoding.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271891CC81B3200D84D28 /* sawyercoding.c */; };
@@ -397,17 +393,14 @@
 		D44272A61CC81B3200D84D28 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F01CC81B3200D84D28 /* scenery.c */; };
 		D44272A71CC81B3200D84D28 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F21CC81B3200D84D28 /* sprite.c */; };
 		D452919B1DAA204200C11788 /* generate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45291991DAA202C00C11788 /* generate.cpp */; };
-		D45A38BB1CF3006400659A24 /* engines in Resources */ = {isa = PBXBuildFile; fileRef = D45A38B21CF3006400659A24 /* engines */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
-		D45A38BF1CF3006400659A24 /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B61CF3006400659A24 /* libpng.dylib */; };
 		D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
 		D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; };
 		D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; };
 		D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395A1CF300AF00659A24 /* libfreetype.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395B1CF300AF00659A24 /* libjansson.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D45A395C1CF300AF00659A24 /* libpng.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B61CF3006400659A24 /* libpng.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -435,10 +428,14 @@
 		D464FEF51D31A6AA00CBABAC /* WaterObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEE31D31A6AA00CBABAC /* WaterObject.cpp */; };
 		D46F2A9E1D39A25A00A36AB7 /* peep_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D46F2A9D1D39A25A00A36AB7 /* peep_data.c */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
+		D4867B861DAEF6200003B684 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */; };
+		D4867B871DAEF6200003B684 /* ScenarioSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4867B851DAEF6200003B684 /* ScenarioSources.cpp */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
 		D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766841D03BAA5002222CD /* NewDrawing.cpp */; };
 		D49766891D03BABB002222CD /* rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766871D03BABB002222CD /* rain.cpp */; };
+		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
+		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4CA88661D4E64C800060C11 /* version.c in Sources */ = {isa = PBXBuildFile; fileRef = D4CA88651D4E64C800060C11 /* version.c */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
@@ -463,11 +460,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C61FB7211CF618BA004CE991 /* libssl.dylib in Embed Frameworks */,
 				D45A39591CF300AF00659A24 /* libcrypto.dylib in Embed Frameworks */,
 				D45A395A1CF300AF00659A24 /* libfreetype.dylib in Embed Frameworks */,
 				D45A395B1CF300AF00659A24 /* libjansson.dylib in Embed Frameworks */,
-				D45A395C1CF300AF00659A24 /* libpng.dylib in Embed Frameworks */,
+				D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */,
 				D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */,
 				D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */,
 				D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */,
@@ -600,7 +596,7 @@
 		C686F8FB1CDBC3B7009F9BFC /* twist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twist.c; sourceTree = "<group>"; };
 		C686F8FD1CDBC3B7009F9BFC /* chairlift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chairlift.c; sourceTree = "<group>"; };
 		C686F8FE1CDBC3B7009F9BFC /* lift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lift.c; sourceTree = "<group>"; };
-		C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minature_railway.c; sourceTree = "<group>"; };
+		C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = miniature_railway.c; sourceTree = "<group>"; };
 		C686F9001CDBC3B7009F9BFC /* monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = monorail.c; sourceTree = "<group>"; };
 		C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = suspended_monorail.c; sourceTree = "<group>"; };
 		C686F9031CDBC3B7009F9BFC /* boat_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
@@ -801,8 +797,6 @@
 		D442717E1CC81B3200D84D28 /* track_paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
 		D442717F1CC81B3200D84D28 /* vehicle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle.c; sourceTree = "<group>"; };
 		D44271801CC81B3200D84D28 /* vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle.h; sourceTree = "<group>"; };
-		D44271811CC81B3200D84D28 /* scenario_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario_list.c; sourceTree = "<group>"; };
-		D44271821CC81B3200D84D28 /* scenario_sources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario_sources.c; sourceTree = "<group>"; };
 		D44271831CC81B3200D84D28 /* scenario.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scenario.c; sourceTree = "<group>"; };
 		D44271841CC81B3200D84D28 /* scenario.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scenario.h; sourceTree = "<group>"; };
 		D44271851CC81B3200D84D28 /* sprites.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprites.h; sourceTree = "<group>"; };
@@ -915,15 +909,12 @@
 		D44271F31CC81B3200D84D28 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		D44271F41CC81B3200D84D28 /* water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
 		D45291991DAA202C00C11788 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate.cpp; sourceTree = "<group>"; };
-		D45A38B21CF3006400659A24 /* engines */ = {isa = PBXFileReference; lastKnownFileType = folder; path = engines; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
 		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
 		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjansson.dylib; sourceTree = "<group>"; };
-		D45A38B61CF3006400659A24 /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng.dylib; sourceTree = "<group>"; };
 		D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSDL2_ttf.dylib; sourceTree = "<group>"; };
 		D45A38B81CF3006400659A24 /* libSDL2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSDL2.dylib; sourceTree = "<group>"; };
 		D45A38B91CF3006400659A24 /* libspeexdsp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libspeexdsp.dylib; sourceTree = "<group>"; };
-		D45A38BA1CF3006400659A24 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.dylib; sourceTree = "<group>"; };
 		D45A38C41CF3007A00659A24 /* jansson_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson_config.h; sourceTree = "<group>"; };
 		D45A38C51CF3007A00659A24 /* jansson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson.h; sourceTree = "<group>"; };
 		D45A38C71CF3007A00659A24 /* png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = png.h; sourceTree = "<group>"; };
@@ -1113,6 +1104,10 @@
 		D464FEE41D31A6AA00CBABAC /* WaterObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterObject.h; sourceTree = "<group>"; };
 		D46F2A9D1D39A25A00A36AB7 /* peep_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioRepository.cpp; sourceTree = "<group>"; };
+		D4867B851DAEF6200003B684 /* ScenarioSources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSources.cpp; sourceTree = "<group>"; };
+		D4867B881DAEF62B0003B684 /* ScenarioRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenarioRepository.h; sourceTree = "<group>"; };
+		D4867B891DAEF62B0003B684 /* ScenarioSources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenarioSources.h; sourceTree = "<group>"; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = TcpSocket.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -1124,6 +1119,7 @@
 		D497668A1D03BAC8002222CD /* IDrawingContext.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IDrawingContext.h; sourceTree = "<group>"; usesTabs = 0; };
 		D497668B1D03BAC8002222CD /* IDrawingEngine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = IDrawingEngine.h; sourceTree = "<group>"; usesTabs = 0; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4CA88651D4E64C800060C11 /* version.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = version.c; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
@@ -1149,12 +1145,11 @@
 				D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */,
 				D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */,
 				D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */,
-				C61FB7201CF6180C004CE991 /* libssl.dylib in Frameworks */,
+				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
+				D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */,
 				D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */,
-				D45A38BF1CF3006400659A24 /* libpng.dylib in Frameworks */,
 				D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */,
 				D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */,
-				D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1334,7 +1329,7 @@
 			children = (
 				C686F8FD1CDBC3B7009F9BFC /* chairlift.c */,
 				C686F8FE1CDBC3B7009F9BFC /* lift.c */,
-				C686F8FF1CDBC3B7009F9BFC /* minature_railway.c */,
+				C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */,
 				C686F9001CDBC3B7009F9BFC /* monorail.c */,
 				C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */,
 			);
@@ -1404,9 +1399,9 @@
 				D44271591CC81B3200D84D28 /* openrct2.c */,
 				D44271691CC81B3200D84D28 /* rct1.c */,
 				D442716B1CC81B3200D84D28 /* rct2.c */,
-				D44271811CC81B3200D84D28 /* scenario_list.c */,
-				D44271821CC81B3200D84D28 /* scenario_sources.c */,
 				D44271831CC81B3200D84D28 /* scenario.c */,
+				D4867B841DAEF6200003B684 /* ScenarioRepository.cpp */,
+				D4867B851DAEF6200003B684 /* ScenarioSources.cpp */,
 				D44271861CC81B3200D84D28 /* title.c */,
 				D4CA88651D4E64C800060C11 /* version.c */,
 				D44270CE1CC81B3200D84D28 /* addresses.h */,
@@ -1425,6 +1420,8 @@
 				D442716A1CC81B3200D84D28 /* rct1.h */,
 				D442716C1CC81B3200D84D28 /* rct2.h */,
 				D44271841CC81B3200D84D28 /* scenario.h */,
+				D4867B881DAEF62B0003B684 /* ScenarioRepository.h */,
+				D4867B891DAEF62B0003B684 /* ScenarioSources.h */,
 				D44271851CC81B3200D84D28 /* sprites.h */,
 				D44271871CC81B3200D84D28 /* title.h */,
 				D442718D1CC81B3200D84D28 /* version.h */,
@@ -2140,15 +2137,13 @@
 		D4EC48C31C2634870024B507 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				D45A38B21CF3006400659A24 /* engines */,
 				D45A38B31CF3006400659A24 /* libcrypto.dylib */,
 				D45A38B41CF3006400659A24 /* libfreetype.dylib */,
 				D45A38B51CF3006400659A24 /* libjansson.dylib */,
-				D45A38B61CF3006400659A24 /* libpng.dylib */,
+				D4A8B4B31DB41873007A2F29 /* libpng16.dylib */,
 				D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */,
 				D45A38B81CF3006400659A24 /* libSDL2.dylib */,
 				D45A38B91CF3006400659A24 /* libspeexdsp.dylib */,
-				D45A38BA1CF3006400659A24 /* libssl.dylib */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -2190,7 +2185,6 @@
 			buildPhases = (
 				D4EC48E91C264FC20024B507 /* Download Libraries */,
 				D4EC012A1C25532B00DAFE69 /* Setup AppIcon */,
-				D40F4E1D1C2528D5009582C9 /* Create Segment Files */,
 				D4CA88671D4E962100060C11 /* Get Git Variables */,
 				D497D0741C20FD52002BF46A /* Sources */,
 				D497D0751C20FD52002BF46A /* Frameworks */,
@@ -2252,7 +2246,6 @@
 				D4EC48E61C2637710024B507 /* g2.dat in Resources */,
 				D4EC48E71C2637710024B507 /* language in Resources */,
 				D43407E21D0E14CE00C2B3D4 /* shaders in Resources */,
-				D45A38BB1CF3006400659A24 /* engines in Resources */,
 				D4EC48E81C2637710024B507 /* title in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2261,23 +2254,6 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		C64FDAC61D6DA64A00F259B9 /* Create Segment Files */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/openrct2.exe",
-			);
-			name = "Create Segment Files";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/openrct2_text",
-				"$(DERIVED_FILE_DIR)/openrct2_data",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "dd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_text\" bs=4096 skip=1 count=1187\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1188 count=318\ndd if=/dev/zero of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 seek=318 count=2630 conv=notrunc\ndd if=\"${SRCROOT}/openrct2.exe\" of=\"${DERIVED_FILE_DIR}/openrct2_data\" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc";
-		};
-		D40F4E1D1C2528D5009582C9 /* Create Segment Files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2369,7 +2345,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cachedir=\".cache\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v8/orctlibs-osx.zip\"\n# keep in sync with version in build.sh\nsha256sum=\"d511fd726a9d98a53c104120cf2f163a616069868a79e6120975e9b5d40a3582\"\n\n[[ ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $sha256sum ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]] || [[ ! -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then\n    if [[ ! -d \"${SRCROOT}/$cachedir\" ]]; then mkdir \"${SRCROOT}/$cachedir\"; fi\n    if [[ -f \"${SRCROOT}/$cachedir/orctlibs.zip\" ]]; then rm \"${SRCROOT}/$cachedir/orctlibs.zip\"; fi\n    curl -L -o \"${SRCROOT}/$cachedir/orctlibs.zip\" \"$liburl\"\n    if [[ -d \"${SRCROOT}/$cachedir/orctlibs\" ]]; then rm -rf \"${SRCROOT}/$cachedir/orctlibs\"; fi\n    mkdir \"${SRCROOT}/$cachedir/orctlibs\"\n    unzip -uaq -d \"${SRCROOT}/$cachedir/orctlibs\" \"${SRCROOT}/$cachedir/orctlibs.zip\"\nfi\nif [[ $outdated -eq 0 ]] || [[ ! -d \"${SRCROOT}/libxc\" ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/lib\"; fi\n    cp -Rf \"${SRCROOT}/$cachedir/orctlibs/\" \"${SRCROOT}/libxc\"\nfi\n\nif [[ $outdated -eq 0 ]]; then\n    newsha=$(shasum -a 256 \"${SRCROOT}/$cachedir/orctlibs.zip\" | cut -f1 -d\" \")\n    echo $newsha > \"${SRCROOT}/libversion\"\n    [[ \"$newsha\" == \"$sha256sum\" ]]\nfi";
+			shellScript = "version=\"10\"\nzipname=\"openrct2-libs-macos.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\n    if [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\n    mkdir \"${SRCROOT}/libxc\"\n\n    curl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\n    unzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\n    rm \"${SRCROOT}/libxc/$zipname\"\n\n    echo $version > \"${SRCROOT}/libversion\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2456,7 +2432,7 @@
 				C64FDAA11D6D9A2100F259B9 /* twist.c in Sources */,
 				C64FDAA21D6D9A2100F259B9 /* chairlift.c in Sources */,
 				C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */,
-				C64FDAA41D6D9A2100F259B9 /* minature_railway.c in Sources */,
+				C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */,
 				C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */,
 				C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */,
 				85B468FD1D96822F000F1DB5 /* paint_helpers.c in Sources */,
@@ -2494,7 +2470,6 @@
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
-				D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
 				C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */,
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
@@ -2636,6 +2611,7 @@
 				D44272231CC81B3200D84D28 /* window.c in Sources */,
 				D44272451CC81B3200D84D28 /* ride.c in Sources */,
 				C686F8B91CDBC37E009F9BFC /* supports.c in Sources */,
+				D4867B871DAEF6200003B684 /* ScenarioSources.cpp in Sources */,
 				D442726E1CC81B3200D84D28 /* maze_construction.c in Sources */,
 				D44272751CC81B3200D84D28 /* news_options.c in Sources */,
 				D44272551CC81B3200D84D28 /* changelog.c in Sources */,
@@ -2655,7 +2631,6 @@
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
 				D44272621CC81B3200D84D28 /* footpath.c in Sources */,
 				D44272521CC81B3200D84D28 /* util.c in Sources */,
-				D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */,
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
 				D442722F1CC81B3200D84D28 /* finance.c in Sources */,
@@ -2731,7 +2706,7 @@
 				D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */,
 				D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */,
 				D442729E1CC81B3200D84D28 /* fountain.c in Sources */,
-				C686F94B1CDBC3B7009F9BFC /* minature_railway.c in Sources */,
+				C686F94B1CDBC3B7009F9BFC /* miniature_railway.c in Sources */,
 				C686F94D1CDBC3B7009F9BFC /* suspended_monorail.c in Sources */,
 				D44272131CC81B3200D84D28 /* editor.c in Sources */,
 				D442729F1CC81B3200D84D28 /* map.c in Sources */,
@@ -2750,6 +2725,7 @@
 				D44272771CC81B3200D84D28 /* park.c in Sources */,
 				C686F9141CDBC3B7009F9BFC /* inverted_roller_coaster.c in Sources */,
 				C686F9551CDBC3B7009F9BFC /* water_coaster.c in Sources */,
+				D4867B861DAEF6200003B684 /* ScenarioRepository.cpp in Sources */,
 				D44272461CC81B3200D84D28 /* ride_data.c in Sources */,
 				D44272181CC81B3200D84D28 /* chat.c in Sources */,
 				C686F93B1CDBC3B7009F9BFC /* facility.c in Sources */,
@@ -2808,26 +2784,19 @@
 		C64FDA611D6D99F400F259B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
 					"NO_VEHICLES=1",
 					__TESTPAINT__,
 				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					rct2_text,
@@ -2856,32 +2825,26 @@
 					0x2000000,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};
 		C64FDA621D6D99F400F259B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					OPENGL_NO_LINK,
-					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					"$(inherited)",
 					"NO_VEHICLES=1",
 					__TESTPAINT__,
 				);
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					rct2_text,
@@ -2910,6 +2873,7 @@
 					0x2000000,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = i386;
 			};
 			name = Release;
 		};
@@ -2917,7 +2881,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2931,7 +2894,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
@@ -2951,15 +2914,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_NO_PIE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};
@@ -2967,7 +2929,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2981,7 +2942,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = NO;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
@@ -2999,14 +2960,13 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = NO;
-				GCC_WARN_UNUSED_VARIABLE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				LD_NO_PIE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				VALID_ARCHS = i386;
 			};
 			name = Release;
 		};
@@ -3014,7 +2974,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = NO;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					NO_RCT2,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
@@ -3026,33 +2995,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
-				);
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					rct2_text,
-					__text,
-					"$(DERIVED_FILE_DIR)/openrct2_text",
-					"-segaddr",
-					rct2_text,
-					0x401000,
-					"-segprot",
-					rct2_text,
-					rwx,
-					rx,
-					"-sectcreate",
-					rct2_data,
-					__data,
-					"$(DERIVED_FILE_DIR)/openrct2_data",
-					"-segaddr",
-					rct2_data,
-					0x8a4000,
-					"-segprot",
-					rct2_data,
-					rw,
-					rw,
-					"-segaddr",
-					__TEXT,
-					0x2000000,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3063,7 +3005,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_UNREACHABLE_CODE = NO;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					NO_RCT2,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
@@ -3075,33 +3026,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
-				);
-				OTHER_LDFLAGS = (
-					"-sectcreate",
-					rct2_text,
-					__text,
-					"$(DERIVED_FILE_DIR)/openrct2_text",
-					"-segaddr",
-					rct2_text,
-					0x401000,
-					"-segprot",
-					rct2_text,
-					rwx,
-					rx,
-					"-sectcreate",
-					rct2_data,
-					__data,
-					"$(DERIVED_FILE_DIR)/openrct2_data",
-					"-segaddr",
-					rct2_data,
-					0x8a4000,
-					"-segprot",
-					rct2_data,
-					rw,
-					rw,
-					"-segaddr",
-					__TEXT,
-					0x2000000,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";

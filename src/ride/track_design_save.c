@@ -744,7 +744,7 @@ static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 	td6->number_of_cars_per_train = ride->num_cars_per_train;
 	td6->min_waiting_time = ride->min_waiting_time;
 	td6->max_waiting_time = ride->max_waiting_time;
-	td6->var_50 = ride->operation_option;
+	td6->operation_setting = ride->operation_option;
 	td6->lift_hill_speed_num_circuits =
 		ride->lift_hill_speed |
 		(ride->num_circuits << 5);
@@ -1045,7 +1045,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			track->type == TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN ||
 			track->type == TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
 		) {
-			td6->flags |= (1 << 31);
+			td6->flags |= (1u << 31);
 		}
 
 		if (track->type == TRACK_ELEM_LOG_FLUME_REVERSER) {

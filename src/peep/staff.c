@@ -22,6 +22,7 @@
 #include "../localisation/string_ids.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
 #include "../world/footpath.h"
@@ -268,7 +269,8 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-		if (gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+		// gConfigGeneral.auto_staff_placement is client specific so we need to force this
+		if (network_get_mode() == NETWORK_MODE_NONE && gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
 			staff_autoposition_new_staff_member(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
@@ -325,6 +327,21 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 									   *ecx & 0xFFFF,
 									   *edx & 0xFFFF,
 									   edi);
+}
+
+void game_command_callback_hire_new_staff_member(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	int sprite_index = edi;
+	if (sprite_index == SPRITE_INDEX_NULL)
+	{
+		rct_window *window = window_find_by_class(WC_STAFF_LIST);
+		window_invalidate(window);
+	}
+	else
+	{
+		rct_peep *peep = &get_sprite(sprite_index)->peep;
+		window_staff_open(peep);
+	}
 }
 
 /** rct2: 0x00982134 */
@@ -457,6 +474,10 @@ void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int 
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
+		if (peep->state == PEEP_STATE_PICKED) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 		remove_peep_from_ride(peep);
 		peep_sprite_remove(peep);
 	}
@@ -484,6 +505,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 	eax = 0x8000;
 	ebx = staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
+	game_command_callback = game_command_callback_hire_new_staff_member;
 	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 
 	if (result == MONEY32_UNDEFINED)
@@ -1077,21 +1099,6 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 			return staff_mechanic_direction_path_rand(peep, pathDirections);
 		}
 
-		/* Adjust the peep goal according to the direction of the
-		 * exit/entrance. */
-		uint8 entranceDirection = map_element_get_direction(mapElement);
-		chosenTile.x -= TileDirectionDelta[entranceDirection].x;
-		chosenTile.y -= TileDirectionDelta[entranceDirection].y;
-		gPeepPathFindGoalPosition.x = chosenTile.x;
-		gPeepPathFindGoalPosition.y = chosenTile.y;
-
-		// Peep is about to walk into the target exit/entrance.
-		if (chosenTile.x == peep->next_x &&
-			chosenTile.y == peep->next_y &&
-			z == peep->next_z) {
-			return entranceDirection;
-		}
-
 		gPeepPathFindIgnoreForeignQueues = false;
 		gPeepPathFindQueueRideIndex = 255;
 
@@ -1342,6 +1349,22 @@ void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)ebp,
 		(uint8*)edi
 	);
+}
+
+void game_command_pickup_staff(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	int peepnum = *eax;
+	int x = *edi;
+	int y = *ebp;
+	int z = *edx;
+	int action = *ecx;
+	if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+	}
+	else
+	{
+		*ebx = MONEY32_UNDEFINED;
+	}
 }
 
 colour_t staff_get_colour(uint8 staffType)

@@ -25,6 +25,7 @@
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
 #include "../scenario.h"
+#include "../ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
 
@@ -282,7 +283,7 @@ typedef struct rct_window {
 		uint16 ride_colour;
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
-		scenario_index_entry* highlighted_scenario;
+		const scenario_index_entry* highlighted_scenario;
 		struct {
 			uint16 var_494;
 			uint16 var_496;
@@ -732,6 +733,9 @@ void window_new_ride_focus(ride_list_item rideItem);
 void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
+
+void game_command_callback_pickup_guest(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+void game_command_callback_pickup_staff(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, int widgetIndex);
