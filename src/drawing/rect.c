@@ -41,6 +41,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 			// TODO: This can't be added up
 			// palette = NOT_TRANSLUCENT(colour);
 			assert(false);
+			return;
 		} else {
 			palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 		}
