@@ -428,7 +428,7 @@ void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
-int sub_68B044();
+bool map_check_free_elements_and_reorganise(int num_elements);
 rct_map_element *map_element_insert(int x, int y, int z, int flags);
 
 typedef int (CLEAR_FUNC)(rct_map_element** map_element, int x, int y, uint8 flags, money32* price);

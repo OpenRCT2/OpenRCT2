@@ -182,7 +182,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	rct_map_element *mapElement;
 	int bl, zHigh;
 
-	if (!sub_68B044())
+	if (!map_check_free_elements_and_reorganise(1))
 		return MONEY32_UNDEFINED;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))

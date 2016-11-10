@@ -946,9 +946,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
 		return MONEY32_UNDEFINED;
 	}
-	if (!sub_68B044()) {
-		return MONEY32_UNDEFINED;
-	}
+
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
 		if (game_is_paused() && !gCheatsBuildInPauseMode) {
 			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -983,7 +981,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 	money32 cost = 0;
 	const rct_preview_track *trackBlock = get_track_def_from_ride(ride, type);
-
+	uint32 num_elements = 0;
 	// First check if any of the track pieces are outside the park
 	for (; trackBlock->index != 0xFF; trackBlock++) {
 		int x, y, z, offsetX, offsetY;
@@ -1015,8 +1013,12 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
 			return MONEY32_UNDEFINED;
 		}
+		num_elements++;
 	}
 
+	if (!map_check_free_elements_and_reorganise(num_elements)) {
+		return MONEY32_UNDEFINED;
+	}
 	const uint16 *trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
 		FlatTrackFlags :
 		TrackFlags;
@@ -1757,7 +1759,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
 
 	money32 cost = 0;
 
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(1)) {
 		return MONEY32_UNDEFINED;
 	}
 

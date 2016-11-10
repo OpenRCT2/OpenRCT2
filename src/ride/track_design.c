@@ -1558,7 +1558,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	gCommandPosition.x = x + 8;
 	gCommandPosition.y = y + 8;
 	gCommandPosition.z = z;
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(1)) {
 		return MONEY32_UNDEFINED;
 	}
 
