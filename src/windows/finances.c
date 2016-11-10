@@ -742,7 +742,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 
 	// Horizontal rule below expenditure / income table
-	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], 0x20);
+	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	// Loan and interest rate
 	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, 0, w->x + 4, w->y + 229);
@@ -843,7 +843,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
@@ -949,7 +949,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
@@ -1055,7 +1055,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;

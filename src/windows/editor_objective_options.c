@@ -1205,7 +1205,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 			continue;
 
 		// Checkbox
-		gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 224);
+		gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
 		// Highlighted
 		if (i == w->selected_list_item) {

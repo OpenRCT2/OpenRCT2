@@ -287,7 +287,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		}
 
 		// Background
-		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], 0x24);
+		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
 		// Date text
 		set_format_arg(0, rct_string_id, DateDayNames[newsItem->day - 1]);
@@ -312,7 +312,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				const uint8 idx = 11 + w->news.var_480;
 				news_item_is_valid_idx(idx);
 				if (i == idx && w->news.var_482 == 1)
-					press = 0x20;
+					press = INSET_RECT_FLAG_BORDER_INSET;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 

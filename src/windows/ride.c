@@ -3650,7 +3650,7 @@ static void window_ride_operating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		w->x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5,
 		w->y + 104,
 		w->colours[1],
-		0x20
+		INSET_RECT_FLAG_BORDER_INSET
 	);
 
 	// Number of block sections
@@ -3695,7 +3695,7 @@ static void window_ride_locate_mechanic(rct_window *w)
  */
 static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, int x, int y, int value, int unk)
 {
-	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], INSET_RECT_F_30);
 	if (unk & (1u << 31)) {
 		unk &= ~(1u << 31);
 		if (game_is_not_paused() && (gCurrentTicks & 8))
@@ -5276,7 +5276,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 		x = w->x + 4;
 		y = w->y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
-		gfx_fill_rect_inset(dpi, x, y, w->x + 312, y + 1, w->colours[1], 0x20);
+		gfx_fill_rect_inset(dpi, x, y, w->x + 312, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 	} else {
 		ride = get_ride(w->number);
 
@@ -5312,7 +5312,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			y += 20;
 
 			// Horizontal rule
-			gfx_fill_rect_inset(dpi, x, y - 6, x + 303, y - 5, w->colours[1], 0x20);
+			gfx_fill_rect_inset(dpi, x, y - 6, x + 303, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 			if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS)) {
 				if (ride->type == RIDE_TYPE_MINI_GOLF) {

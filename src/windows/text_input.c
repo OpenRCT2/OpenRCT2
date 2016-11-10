@@ -270,7 +270,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// +13 for cursor when max length.
 	gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
-	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], 0x60);
+	gfx_fill_rect_inset(dpi, w->x + 10, y, w->x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
 
 	y += 1;
 

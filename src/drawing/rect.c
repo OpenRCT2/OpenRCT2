@@ -31,16 +31,9 @@
  * colour (ebp)
  * flags (si)
  */
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short flags)
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, uint8 flags)
 {
 	uint8 shadow, fill, hilight;
-
-	// Flags
-	int no_border, no_fill, pressed;
-
-	no_border = 8;
-	no_fill = 0x10;
-	pressed = 0x20;
 
 	if (colour & 0x180) {
 		if (colour & 0x100) {
@@ -51,16 +44,16 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 
 		colour = colour | 0x2000000; //Transparent
 
-		if (flags & no_border) {
+		if (flags & INSET_RECT_FLAG_BORDER_NONE) {
 			gfx_fill_rect(dpi, left, top, right, bottom, colour);
-		} else if (flags & pressed) {
+		} else if (flags & INSET_RECT_FLAG_BORDER_INSET) {
 			// Draw outline of box
 			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
 			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
 			gfx_fill_rect(dpi, right, top, right, bottom, colour + 2);
 			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 2);
 
-			if (!(flags & no_fill)) {
+			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
 			}
 		} else {
@@ -70,12 +63,12 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 			gfx_fill_rect(dpi, right, top, right, bottom, colour + 1);
 			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 1);
 
-			if (!(flags & no_fill)) {
+			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
 			}
 		}
 	} else {
-		if (flags & 0x80) {
+		if (flags & INSET_RECT_FLAG_FILL_MID_LIGHT) {
 			shadow	= ColourMapA[colour].dark;
 			fill	= ColourMapA[colour].mid_light;
 			hilight	= ColourMapA[colour].lighter;
@@ -85,18 +78,18 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 			hilight	= ColourMapA[colour].lighter;
 		}
 
-		if (flags & no_border) {
+		if (flags & INSET_RECT_FLAG_BORDER_NONE) {
 			gfx_fill_rect(dpi, left, top, right, bottom, fill);
-		} else if (flags & pressed) {
+		} else if (flags & INSET_RECT_FLAG_BORDER_INSET) {
 			// Draw outline of box
 			gfx_fill_rect(dpi, left, top, left, bottom, shadow);
 			gfx_fill_rect(dpi, left + 1, top, right, top, shadow);
 			gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, hilight);
 			gfx_fill_rect(dpi, left + 1, bottom, right, bottom, hilight);
 
-			if (!(flags & no_fill)) {
-				if (!(flags & 0x40)) {
-					if (flags & 0x04) {
+			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
+				if (!(flags & INSET_RECT_FLAG_FILL_DONT_LIGHTEN)) {
+					if (flags & INSET_RECT_FLAG_FILL_GREY) {
 						fill = ColourMapA[COLOUR_BLACK].light;
 					} else {
 						fill = ColourMapA[colour].lighter;
@@ -111,8 +104,8 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 			gfx_fill_rect(dpi, right, top, right, bottom - 1, shadow);
 			gfx_fill_rect(dpi, left, bottom, right, bottom, shadow);
 
-			if (!(flags & no_fill)) {
-				if (flags & 0x04) {
+			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
+				if (flags & INSET_RECT_FLAG_FILL_GREY) {
 					fill = ColourMapA[COLOUR_BLACK].light;
 				}
 				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, fill);
