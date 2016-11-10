@@ -207,7 +207,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_TRACK:
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path))) {
-			window_loadsave_populate_list(w, isSave, path, ".td?");
+			window_loadsave_populate_list(w, isSave, path, ".td6;.td4");
 			success = true;
 		}
 		break;
@@ -266,7 +266,7 @@ static bool browse(bool isSave, char *path, size_t pathSize)
 	case LOADSAVETYPE_TRACK:
 		title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-		desc.filters[0].pattern = isSave ? "*.td6" : "*.td4;*.td6";
+		desc.filters[0].pattern = isSave ? "*.td6" : "*.td6;*.td4";
 		break;
 	}
 
