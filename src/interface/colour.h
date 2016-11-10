@@ -73,6 +73,7 @@ enum {
 #define COLOUR_FLAG_8 			(1 << 8)
 #define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
 #define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define BASE_COLOUR(x) 			((x) & 0x1F)
 
 #define NUM_COLOURS 32
 

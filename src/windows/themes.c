@@ -810,10 +810,10 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 			if (i + 1 < get_colour_scheme_tab_count()) {
 				int colour = w->colours[1];
 				if (colour & COLOUR_FLAG_TRANSLUCENT) {
-					FILTER_PALETTE_ID palette = _9DEDF4[colour];
+					translucent_window_palette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-					gfx_filter_rect(dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2, palette + 1);
-					gfx_filter_rect(dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1, palette + 2);
+					gfx_filter_rect(dpi, 0, y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 2, windowPalette.highlight);
+					gfx_filter_rect(dpi, 0, y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right, y + _row_height - 1, windowPalette.shadow);
 				}
 				else {
 					colour = ColourMapA[w->colours[1]].mid_dark;

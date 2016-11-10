@@ -297,8 +297,9 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			b = t;
 
 			if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
-				gfx_filter_rect(dpi, l, t, r, b, _9DEDF4[w->colours[0]] + 1);
-				gfx_filter_rect(dpi, l, t + 1, r, b + 1, _9DEDF4[w->colours[0]] + 2);
+				translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(w->colours[0])];
+				gfx_filter_rect(dpi, l, t, r, b, palette.highlight);
+				gfx_filter_rect(dpi, l, t + 1, r, b + 1, palette.shadow);
 			} else {
 				gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
 				gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
