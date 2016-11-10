@@ -87,6 +87,15 @@ enum {
 	// REMAP_2_PLUS = REMAP 3
 };
 
+enum {
+	INSET_RECT_FLAG_FILL_GREY = (1 << 2), // 0x04
+	INSET_RECT_FLAG_BORDER_NONE = (1 << 3), // 0x08
+	INSET_RECT_FLAG_FILL_NONE = (1 << 4), // 0x10
+	INSET_RECT_FLAG_BORDER_INSET = (1 << 5), // 0x20
+	INSET_RECT_FLAG_FILL_DONT_LIGHTEN = (1 << 6), // 0x40
+	INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7), // 0x80
+};
+
 typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
@@ -121,6 +130,10 @@ typedef struct rct_palette {
 #define SPRITE_ID_PALETTE_COLOUR_3(primaryId, secondaryId) (IMAGE_TYPE_REMAP_2_PLUS | ((primaryId << 19) | (scondaryId << 24)))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
+
+#define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
+#define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
+#define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
@@ -179,7 +192,7 @@ void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int 
 
 // rect
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, short _si);
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, uint8 flags);
 
 // sprite
 bool gfx_load_g1();

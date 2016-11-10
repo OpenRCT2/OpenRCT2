@@ -194,7 +194,7 @@ static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	int b = w->y + widget->bottom;
 
 	//
-	int press = (w->flags & WF_10 ? 0x80 : 0);
+	uint8 press = (w->flags & WF_10 ? INSET_RECT_FLAG_FILL_MID_LIGHT : 0);
 
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
@@ -263,14 +263,14 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	int b = w->y + widget->bottom;
 
 	// Check if the button is pressed down
-	int press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? 0x20 : 0;
+	uint8 press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
 
 	if (widget->image == -2) {
 		// Draw border with no fill
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | 0x10);
+		gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | INSET_RECT_FLAG_FILL_NONE);
 		return;
 	}
 
@@ -346,12 +346,12 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, int w
 	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)) {
 		if (widget->image == -2) {
 			// Draw border with no fill
-			gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | 0x10);
+			gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
 			return;
 		}
 
 		// Draw the border with fill
-		gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20);
+		gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET);
 	}
 
 	// Draw image
@@ -377,7 +377,7 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	uint8 colour = w->colours[widget->colour];
 
 	// Border
-	int press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? 0x20 : 0;
+	uint8 press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
 	// Text
@@ -482,7 +482,7 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
 
-	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
 	widget_text(dpi, w, widgetIndex);
 }
 
@@ -506,7 +506,7 @@ static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIn
 
 	int press = 0;
 	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
-		press |= 0x20;
+		press |= INSET_RECT_FLAG_BORDER_INSET;
 
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
@@ -589,9 +589,9 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
 
-	int press = 0x60;
+	uint8 press = INSET_RECT_F_60;
 	if (w->flags & WF_10)
-		press |= 0x80;
+		press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
@@ -633,11 +633,11 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	int b = w->y + widget->bottom;
 
 	// Check if the button is pressed down
-	int press = 0;
+	uint8 press = 0;
 	if (w->flags & WF_10)
-		press |= 0x80;
+		press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 	if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
-		press |= 0x20;
+		press |= INSET_RECT_FLAG_BORDER_INSET;
 
 	// Get the colour
 	uint8 colour = w->colours[widget->colour];
@@ -677,7 +677,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 	if (widget->type != WWT_24) {
 		// checkbox
-		gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, 0x60);
+		gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
 
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
@@ -718,7 +718,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	uint8 colour = w->colours[widget->colour];
 
 	// Draw the border
-	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
 
 	// Inflate by -1
 	l++;
@@ -780,17 +780,17 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
 
 	// Left button
-	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? 0x20 : 0));
+	gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, (scroll->flags & HSCROLLBAR_LEFT_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 	gfx_draw_string(dpi, (char*)BlackLeftArrowString, 0, l + 1, t);
 
 	// Thumb
 	gfx_fill_rect_inset(dpi,
 		max(l + 10, l + scroll->h_thumb_left - 1), t,
 		min(r - 10, l + scroll->h_thumb_right - 1), b,
-		colour, (scroll->flags & HSCROLLBAR_THUMB_PRESSED ? 0x20 : 0));
+		colour, (scroll->flags & HSCROLLBAR_THUMB_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
 	// Right button
-	gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, (scroll->flags & HSCROLLBAR_RIGHT_PRESSED ? 0x20 : 0));
+	gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, (scroll->flags & HSCROLLBAR_RIGHT_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 	gfx_draw_string(dpi, (char*)BlackRightArrowString, 0, r - 6, t);
 }
 
@@ -806,17 +806,17 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, i
 	gfx_fill_rect(dpi, l + 8, t + 10, l + 8, b - 10, ColourMapA[colour].lighter);
 
 	// Up button
-	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? 0x20 : 0));
+	gfx_fill_rect_inset(dpi, l, t, r, t + 9, colour, (scroll->flags & VSCROLLBAR_UP_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 	gfx_draw_string(dpi, (char*)BlackUpArrowString, 0, l + 1, t - 1);
 
 	// Thumb
 	gfx_fill_rect_inset(dpi,
 		l, max(t + 10, t + scroll->v_thumb_top - 1),
 		r, min(b - 10, t + scroll->v_thumb_bottom - 1),
-		colour, (scroll->flags & VSCROLLBAR_THUMB_PRESSED ? 0x20 : 0));
+		colour, (scroll->flags & VSCROLLBAR_THUMB_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
 	// Down button
-	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? 0x20 : 0));
+	gfx_fill_rect_inset(dpi, l, b - 9, r, b, colour, (scroll->flags & VSCROLLBAR_DOWN_PRESSED ? INSET_RECT_FLAG_BORDER_INSET : 0));
 	gfx_draw_string(dpi, (char*)BlackDownArrowString, 0, l + 1, b - 9);
 }
 
@@ -1072,7 +1072,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		widgetIndex == gCurrentTextBox.widget_index;
 
 	//gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+	gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gCurrentFontFlags = 0;

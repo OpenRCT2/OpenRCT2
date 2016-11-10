@@ -665,7 +665,7 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
 	if (viewport != g_viewport_list){
-		gfx_fill_rect_inset(dpi, l, t, r-1, b-1, 0x2, 0x30);
+		gfx_fill_rect_inset(dpi, l, t, r-1, b-1, 0x2, INSET_RECT_F_30);
 		return;
 	}
 #endif

@@ -1331,7 +1331,7 @@ static void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w
 	value *= 0x76;
 	value >>= 8;
 
-	gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, x + 0x3A, y + 1, x + 0x3A + 0x79, y + 9, w->colours[1], INSET_RECT_F_30);
 
 	int blink_flag = colour & (1u << 0x1F); //0x80000000
 	colour &= ~(1u << 0x1F);
@@ -1475,7 +1475,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	y += 19;
-	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
+	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	// Preferred Ride
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, (void *) 0, 0, x, y);
@@ -1810,7 +1810,7 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, gCommonFormatArgs, 0, x, y);
 
 	y += 20;
-	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
+	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	// Paid to enter
 	set_format_arg(0, money32, peep->paid_to_enter);

@@ -790,9 +790,9 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		// Draw flat button rectangle
 		int flags = 0;
 		if (w->new_ride.selected_ride_id == *((sint16*)listItem))
-			flags |= 0x20;
+			flags |= INSET_RECT_FLAG_BORDER_INSET;
 		if (w->new_ride.highlighted_ride_id == *((sint16*)listItem) || flags != 0)
-			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
+			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
 
 		// Draw ride image with feathered border
 		rideEntry = get_ride_entry(listItem->entry_index);

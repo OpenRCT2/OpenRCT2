@@ -1410,7 +1410,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 		if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
 			// Draw checkbox
 			if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
-				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
+				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
 			// Highlight background
 			colour = 142;

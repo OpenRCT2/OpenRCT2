@@ -201,7 +201,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 
 	// Draw the separator
 	y += 5;
-	gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], 0x20);
+	gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 	y += 11;
 
 	for (int i = 0; i < countof(music_credits_rct2); i++) {

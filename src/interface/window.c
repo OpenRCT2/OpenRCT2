@@ -1718,7 +1718,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	//todo: something missing here too? Between 006EC32B and 006EC369
 
 	if (w->flags & WF_WHITE_BORDER_MASK) {
-		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 2, 0x10);
+		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 2, INSET_RECT_FLAG_FILL_NONE);
 	}
 }
 

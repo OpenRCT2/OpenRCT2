@@ -843,7 +843,7 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 
 	y += 20;
 
-	gfx_fill_rect_inset(dpi, x, y - 6, x + 310, y - 5, w->colours[1], 32);
+	gfx_fill_rect_inset(dpi, x, y - 6, x + 310, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
 	group = network_get_group_index(_selectedGroup);
