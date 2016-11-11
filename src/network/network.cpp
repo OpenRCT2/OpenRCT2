@@ -931,13 +931,17 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	if (connection) {
 		objects = connection->RequestedObjects;
 	} else {
+		// This will send all custom objects to connected clients
+		// TODO: fix it so custom objects negotiation is performed even in this case.
 		objects = scenario_get_packable_objects();
 	}
 	header = save_for_network(rw, out_size, objects);
 	SDL_RWclose(rw);
 	if (header == nullptr) {
-		connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-		connection->Socket->Disconnect();
+		if (connection) {
+			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			connection->Socket->Disconnect();
+		}
 		return;
 	}
 	size_t chunksize = 65000;
