@@ -4253,6 +4253,12 @@ STR_5981    :{WINDOW_COLOUR_2}No es una bandera
 STR_5982    :{WINDOW_COLOUR_2}Tipo de escenario grande: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID pieza de escenario grande: {BLACK}{COMMA16}
 STR_5984    :Caminos Bloqueados:
+STR_5985    :Nueva Carpeta
+STR_5986    :Escribe el nombre de la nueva carpeta
+STR_5987    :No se puede crear la carpeta
+STR_5988    :{SMALLFONT}{BLACK}No hay más terrenos en venta.
+STR_5989    :{SMALLFONT}{BLACK}No hay más derechos de construcción en venta.
+STR_5990    :{SMALLFONT}{BLACK}No hay más terrenos o derechos de construcción en venta.
 
 ##############
 # Escenarios #

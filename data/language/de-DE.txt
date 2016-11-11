@@ -3675,8 +3675,8 @@ STR_5337    :Parkeingang
 STR_5338    :Elementtyp
 STR_5339    :{SMALLFONT}{BLACK}Basishöhe
 STR_5340    :{SMALLFONT}{BLACK}Lichte Höhe
-STR_5341    :Kennzeichen
-STR_5342    :Eine Kachel auf der Karte auswählen
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Personal automatisch platzieren
 STR_5344    :Changelog
 STR_5345    :Cheats für Finanzen
@@ -4110,8 +4110,8 @@ STR_5806    :Fenstermodus ein-/ausschalten
 STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrichtungen: {BLACK}{COMMA16}
-STR_5810    :Zuglängenlimit deaktivieren
-STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht eine Zuglänge{NEWLINE}von bis zu 255 Wagen pro Zug
+STR_5810    :Fahrzeuglimits deaktivieren
+STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht bis zu 255 Wagen{NEWLINE}pro Zug und 31 Züge pro Bahn
 STR_5812    :Mehrspielerstatus anzeigen
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4219,6 +4219,77 @@ STR_5916    :{COMMA16} Spieler
 STR_5917    :{COMMA16} Spieler
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Wettereffekte darstellen
+STR_5921    :{SMALLFONT}{BLACK}Wenn aktiviert, werden Regen{NEWLINE}und düstere Farben, während{NEWLINE}eines Sturms, dargestellt
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max. {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max. {COMMA16} {STRINGID} pro Zug
+STR_5924    :Oberflächendetails
+STR_5925    :Wegdetails
+STR_5926    :Streckendetails
+STR_5927    :Szeneriedetails
+STR_5928    :Eingangsdetails
+STR_5929    :Zaundetails
+STR_5930    :Details große Szenerie
+STR_5931    :Bannerdetails
+STR_5932    :Details fehlerhaftes Element
+STR_5933    :Eigenschaften
+STR_5934    :{WINDOW_COLOUR_2}Geländetextur: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Geländekante: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Landbesitz: {BLACK}{STRINGID}
+STR_5937    :Nicht in Besitz und nicht zum Verkauf
+STR_5938    :{WINDOW_COLOUR_2}Wasserhöhe: {BLACK}{COMMA16}
+STR_5939    :Parkzäune entfernen
+STR_5940    :Parkzäune wiederherst.
+STR_5941    :{WINDOW_COLOUR_2}Basishöhe:
+STR_5942    :{WINDOW_COLOUR_2}Wegname: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Zusätze: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Zusätze: {BLACK}Keine
+STR_5945    :{WINDOW_COLOUR_2}Verbundene Kanten:
+STR_5946    :{WINDOW_COLOUR_2}Attraktionstyp: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Attraktionsname: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Kettenlift
+STR_5950    :{WINDOW_COLOUR_2}Änderungen auf gesamtes Streckenstück anwenden
+STR_5951    :{WINDOW_COLOUR_2}Streckenstück-ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Reihennummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Kartenelemente auf aktueller Kachel{NEWLINE}nach ihrer Basishöhe sortieren
+STR_5954    :{WINDOW_COLOUR_2}Szeneriealter: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrantplatzierung: {BLACK}{STRINGID}
+STR_5956    :Südwest
+STR_5957    :Nordwest
+STR_5958    :Nordost
+STR_5959    :Südost
+STR_5960    :{WINDOW_COLOUR_2}Quadrantplatzierung:
+STR_5961    :{WINDOW_COLOUR_2}Eintragsindex: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Kollisionserkennung:
+STR_5963    :{WINDOW_COLOUR_2}Angehobene Ecken:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Eingangstyp: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Parkeingangsteil: {BLACK}{STRINGID}
+STR_5967    :Mitte
+STR_5968    :Links
+STR_5969    :Rechts
+STR_5970    :{WINDOW_COLOUR_2}Eingangs-ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Ausgangs-ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
+STR_5973    :An nächsten heften
+STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht entspricht
+STR_5975    :Steigung:
+STR_5976    :Flach
+STR_5977    :Rechte Seite hoch
+STR_5978    :Linke Seite hoch
+STR_5979    :{WINDOW_COLOUR_2}Zauntyp: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Bannertext: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Kein Banner
+STR_5982    :{WINDOW_COLOUR_2}Großer Szenerietyp: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Großes Szeneriestück-ID: {BLACK}{COMMA16}
+STR_5984    :Blockierte Wege:
+STR_5985    :Neuer Ordner
+STR_5986    :Name des neuen Ordners eingeben:
+STR_5987    :Ordner konnte nicht erstellt werden
+STR_5988    :{SMALLFONT}{BLACK}Keine verbleibenden Landrechte zum Verkauf
+STR_5989    :{SMALLFONT}{BLACK}Keine verbleibenden Baurechte zum Verkauf
+STR_5990    :{SMALLFONT}{BLACK}Keine verbleibenden Land- oder{NEWLINE}Baurechte zum Verkauf
 
 #############
 # Scenarios #
