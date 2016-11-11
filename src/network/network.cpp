@@ -927,7 +927,13 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
 	size_t out_size;
 	unsigned char *header;
-	header = save_for_network(rw, out_size, connection->RequestedObjects);
+	std::vector<const ObjectRepositoryItem *> objects;
+	if (connection) {
+		objects = connection->RequestedObjects;
+	} else {
+		objects = scenario_get_packable_objects();
+	}
+	header = save_for_network(rw, out_size, objects);
 	SDL_RWclose(rw);
 	if (header == nullptr) {
 		connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
