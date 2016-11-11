@@ -196,7 +196,7 @@ void platform_get_date_local(rct2_date *out_date)
 	assert(out_date != NULL);
 	SYSTEMTIME systime;
 
-	GetSystemTime(&systime);
+	GetLocalTime(&systime);
 	out_date->day = systime.wDay;
 	out_date->month = systime.wMonth;
 	out_date->year = systime.wYear;
