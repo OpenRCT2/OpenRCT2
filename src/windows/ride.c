@@ -4682,7 +4682,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			widget->right - widget->left,
 			widget->bottom - widget->top
 		)) {
-			gfx_clear(&clippedDpi, 0x0C0C0C0C);
+			gfx_clear(&clippedDpi, 12);
 
 			if (ride->entrance_style != RIDE_ENTRANCE_STYLE_NONE) {
 				const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -5687,7 +5687,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	int x, y, width, time, listType, colour, top, bottom, tmp;
 	rct_string_id stringId;
 
-	gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker * 0x01010101);
+	gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
 	widget = &window_ride_graphs_widgets[WIDX_GRAPH];
 	listType = w->list_information_type & 0xFF;

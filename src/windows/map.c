@@ -873,7 +873,7 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 {
 	rct_g1_element *g1_element, pushed_g1_element;
 
-	gfx_clear(dpi, 0x0A0A0A0A);
+	gfx_clear(dpi, 10);
 
 	g1_element = &g1Elements[0];
 	pushed_g1_element = *g1_element;

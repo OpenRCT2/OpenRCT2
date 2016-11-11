@@ -208,7 +208,7 @@ public:
     void Resize(sint32 width, sint32 height);
     void ResetPalette();
 
-    void Clear(uint32 colour) override;
+    void Clear(uint8 paletteIndex) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
     void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
     void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
@@ -551,9 +551,9 @@ void OpenGLDrawingContext::ResetPalette()
     _drawImageShader->SetPalette(_engine->GLPalette);
 }
 
-void OpenGLDrawingContext::Clear(uint32 colour)
+void OpenGLDrawingContext::Clear(uint8 paletteIndex)
 {
-    FillRect(colour, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight, _clipBottom);
+    FillRect(paletteIndex, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight, _clipBottom);
 }
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)

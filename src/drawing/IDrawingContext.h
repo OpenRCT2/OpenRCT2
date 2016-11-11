@@ -30,7 +30,7 @@ interface IDrawingContext
 
     virtual IDrawingEngine * GetEngine() abstract;
 
-    virtual void Clear(uint32 colour)                                                                     abstract;
+    virtual void Clear(uint8 paletteIndex)                                                                abstract;
     virtual void FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)            abstract;
     virtual void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
     virtual void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)                      abstract;
