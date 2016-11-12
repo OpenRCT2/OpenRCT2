@@ -49,7 +49,10 @@ namespace TitleSequenceManager
 
     std::vector<TitleSequenceManagerItem> _items;
 
+    static void Scan(const utf8 * directory);
     static std::string GetNameFromSequencePath(const utf8 * path);
+    static void GetDataSequencesPath(utf8 * buffer, size_t bufferSize);
+    static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize);
 
     size_t GetCount()
     {
@@ -77,11 +80,40 @@ namespace TitleSequenceManager
     void Scan()
     {
         utf8 path[MAX_PATH];
-        platform_get_openrct_data_path(path, sizeof(path));
-        Path::Append(path, sizeof(path), "title");
-        Path::Append(path, sizeof(path), "*.parkseq");
 
-        IFileScanner * fileScanner = Path::ScanDirectory(path, true);
+        _items.clear();
+
+        // Scan data path
+        GetDataSequencesPath(path, sizeof(path));
+        Scan(path);
+
+        // Scan user path
+        GetUserSequencesPath(path, sizeof(path));
+        Scan(path);
+
+        // Sort sequences by predefined index and then name
+        std::sort(_items.begin(), _items.end(), [](const TitleSequenceManagerItem &a,
+                                                   const TitleSequenceManagerItem &b) -> bool
+        {
+            if (a.PredefinedIndex < b.PredefinedIndex)
+            {
+                return true;
+            }
+            else if (a.PredefinedIndex > b.PredefinedIndex)
+            {
+                return false;
+            }
+            return _strcmpi(a.Name.c_str(), b.Name.c_str()) < 0;
+        });
+    }
+
+    static void Scan(const utf8 * directory)
+    {
+        utf8 pattern[MAX_PATH];
+        String::Set(pattern, sizeof(pattern), directory);
+        Path::Append(pattern, sizeof(pattern), "*.parkseq");
+
+        IFileScanner * fileScanner = Path::ScanDirectory(pattern, true);
         while (fileScanner->Next())
         {
             const utf8 * path = fileScanner->GetPath();
@@ -101,16 +133,6 @@ namespace TitleSequenceManager
             _items.push_back(item);
         }
         delete fileScanner;
-
-        std::sort(_items.begin(), _items.end(), [](const TitleSequenceManagerItem &a,
-                                                   const TitleSequenceManagerItem &b) -> bool
-        {
-            if (a.PredefinedIndex < b.PredefinedIndex)
-            {
-                return true;
-            }
-            return _strcmpi(a.Name.c_str(), b.Name.c_str()) < 0;
-        });
     }
 
     static std::string GetNameFromSequencePath(const utf8 * path)
@@ -119,6 +141,17 @@ namespace TitleSequenceManager
         std::string result = std::string(name);
         Memory::Free(name);
         return result;
+    }
+
+    static void GetDataSequencesPath(utf8 * buffer, size_t bufferSize)
+    {
+        platform_get_openrct_data_path(buffer, bufferSize);
+        Path::Append(buffer, bufferSize, "title");
+    }
+
+    static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize)
+    {
+        platform_get_user_directory(buffer, "title sequences", bufferSize);
     }
 }
 
