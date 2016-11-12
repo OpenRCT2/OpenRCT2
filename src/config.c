@@ -1112,27 +1112,27 @@ void title_sequences_set_default()
 
 	// RCT1 title sequence
 	safe_strcpy(path, dataPath, MAX_PATH);
-	safe_strcat_path(path, "rct1", MAX_PATH);
+	safe_strcat_path(path, "rct1.parkseq", MAX_PATH);
 	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1));
 
 	// RCT1 (AA) title sequence
 	safe_strcpy(path, dataPath, MAX_PATH);
-	safe_strcat_path(path, "rct1aa", MAX_PATH);
+	safe_strcat_path(path, "rct1aa.parkseq", MAX_PATH);
 	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1_AA));
 
 	// RCT1 (AA + LL) title sequence
 	safe_strcpy(path, dataPath, MAX_PATH);
-	safe_strcat_path(path, "rct1aall", MAX_PATH);
+	safe_strcat_path(path, "rct1aall.parkseq", MAX_PATH);
 	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1_AA_LL));
 
 	// RCT2 title sequence
 	safe_strcpy(path, dataPath, MAX_PATH);
-	safe_strcat_path(path, "rct2", MAX_PATH);
+	safe_strcat_path(path, "rct2.parkseq", MAX_PATH);
 	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT2));
 
 	// OpenRCT2 title sequence
 	safe_strcpy(path, dataPath, MAX_PATH);
-	safe_strcat_path(path, "openrct2", MAX_PATH);
+	safe_strcat_path(path, "openrct2.parkseq", MAX_PATH);
 	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_OPENRCT2));
 }
 
@@ -1181,21 +1181,60 @@ void title_sequences_load_presets()
 	gCurrentPreviewTitleSequence = gCurrentTitleSequence;
 }
 
+#define ZIP_STATIC 1
+#include <zip.h>
+
+static void * get_zip_data(zip_t * zip, const char * name, size_t * outSize)
+{
+	void * data = NULL;
+	size_t dataSize = 0;
+
+	zip_stat_t zipFileStat;
+	if (zip_stat(zip, name, 0, &zipFileStat) == ZIP_ER_OK) {
+		zip_file_t * zipFile = zip_fopen(zip, name, 0);
+		if (zipFile != NULL) {
+			if (zipFileStat.size < SIZE_MAX) {
+				dataSize = zipFileStat.size;
+				data = malloc(dataSize);
+				size_t readBytes = zip_fread(zipFile, data, dataSize);
+				if (readBytes != dataSize) {
+					free(data);
+					data = NULL;
+					dataSize = 0;
+				}
+				zip_fclose(zipFile);
+			}
+		}
+	}
+
+	if (outSize != NULL) *outSize = dataSize;
+	return data;
+}
+
 static void title_sequence_open(const char *path, const char *customName)
 {
-	utf8 titlePath[MAX_PATH], scriptPath[MAX_PATH];
+	utf8 titlePath[MAX_PATH];
 	file_info fileInfo;
 	SDL_RWops *file;
 	int fileEnumHandle, i, preset;
 	char parts[3 * 128], *token, *part1, *part2;
 
-	// Check for the script file
-	safe_strcpy(scriptPath, path, sizeof(scriptPath));
-	safe_strcat_path(scriptPath, "script.txt", sizeof(scriptPath));
-	if (!platform_file_exists(scriptPath)) {
-		// No script file, title sequence is invalid
+	int error;
+	zip_t * zip = zip_open(path, ZIP_RDONLY, &error);
+	if (zip == NULL) {
+		// Unable to open zip
 		return;
 	}
+
+	size_t scriptLength;
+	char * script = (char *)get_zip_data(zip, "script.txt", &scriptLength);
+	if (script == NULL) {
+		// Unable to open script
+		zip_close(zip);
+		return;
+	}
+
+	zip_close(zip);
 
 	// Check if the preset is already loaded
 	// No need to read the first two presets as they're hardcoded in
@@ -1254,8 +1293,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	platform_enumerate_files_end(fileEnumHandle);
 
 	// Load the script file
-	file = SDL_RWFromFile(scriptPath, "r");
-	sint64 fileSize = SDL_RWsize(file);
+	file = SDL_RWFromMem(script, (int)scriptLength);
 	do {
 		title_script_get_line(file, parts);
 
@@ -1305,8 +1343,10 @@ static void title_sequence_open(const char *path, const char *customName)
 			gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 			gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands - 1] = command;
 		}
-	} while (SDL_RWtell(file) < fileSize);
+	} while (SDL_RWtell(file) < (int)scriptLength);
 	SDL_RWclose(file);
+
+	free(script);
 }
 
 void title_sequence_save_preset_script(int preset)
