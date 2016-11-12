@@ -19,6 +19,7 @@
 #include <zip.h>
 #include <vector>
 #include "../core/Collections.hpp"
+#include "../core/Console.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -39,14 +40,16 @@ extern "C"
         zip_t * zip = zip_open(path, ZIP_RDONLY, &error);
         if (zip == nullptr)
         {
-            // Unable to open zip
+            Console::Error::WriteLine("Unable to open '%s'", path);
             return nullptr;
         }
 
         size_t scriptLength;
         char * script = (char *)GetZipFileData(zip, "script.txt", &scriptLength);
-        if (script == NULL) {
-            // Unable to open script
+        if (script == nullptr)
+        {
+            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
+
             zip_close(zip);
             return nullptr;
         }
@@ -81,21 +84,22 @@ extern "C"
 
     TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
     {
+        TitleSequenceParkHandle * handle = nullptr;
+
         int error;
         zip_t * zip = zip_open(seq->Path, ZIP_RDONLY, &error);
-        if (zip == nullptr)
+        if (zip != nullptr)
         {
-            // Unable to open zip
-            return nullptr;
+            if (index <= seq->NumSaves)
+            {
+                utf8 * filename = seq->Saves[index];
+
+                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
+                handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
+                handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+            }
         }
-
-        Guard::Assert(index < seq->NumSaves, "Invalid park save index.");
-        utf8 * filename = seq->Saves[index];
-
-        auto handle = Memory::Allocate<TitleSequenceParkHandle>();
-        handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
-        handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
-        handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
         return handle;
     }
 

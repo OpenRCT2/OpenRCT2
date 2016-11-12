@@ -59,9 +59,10 @@ static rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 static int _scriptWaitCounter;
 static int _loadedTitleSequenceId = -1;
 static TitleSequence * _loadedTitleSequence = NULL;
+static int _sequenceAttemptId = 0;
 
 static void title_init_showcase();
-static bool title_update_showcase();
+static void title_update_showcase();
 static bool title_load_park(SDL_RWops * rw, bool isScenario);
 
 /**
@@ -144,6 +145,7 @@ static void title_init_showcase()
 	}
 	title_sequence_change_preset((int)seqId);
 	title_refresh_sequence();
+	title_update_showcase();
 }
 
 static bool title_load_park_from_file(const char * path)
@@ -296,15 +298,20 @@ static bool title_do_sequence_command(const TitleCommand * command)
 		break;
 	case TITLE_SCRIPT_LOAD:
 	{
+		bool loadSuccess = false;
 		uint8 saveIndex = command->SaveIndex;
 		TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_loadedTitleSequence, saveIndex);
-		bool loadSuccess = title_load_park(parkHandle->RWOps, parkHandle->IsScenario);
-		TitleSequenceCloseParkHandle(parkHandle);
+		if (parkHandle != NULL) {
+			loadSuccess = title_load_park(parkHandle->RWOps, parkHandle->IsScenario);
+			TitleSequenceCloseParkHandle(parkHandle);
+		}
 
 		if (loadSuccess) {
 			gTitleScriptSave = saveIndex;
 		} else {
-			log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
+			if (_loadedTitleSequence->NumSaves > saveIndex) {
+				log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
+			}
 			return false;
 		}
 		break;
@@ -346,15 +353,35 @@ static void title_move_to_next_command()
 	}
 }
 
+static void title_try_next_sequence()
+{
+	gCurrentPreviewTitleSequence = _sequenceAttemptId++;
+	if (_sequenceAttemptId >= (int)title_sequence_manager_get_count()) {
+		_sequenceAttemptId = 0;
+	}
+	title_refresh_sequence();
+}
+
 /**
  *
  *  rct2: 0x00678761
  */
-static bool title_update_showcase()
+static void title_update_showcase()
 {
+	if (_loadedTitleSequence == NULL) {
+		title_try_next_sequence();
+		return;
+	}
+
 	sint32 entryCommand = gTitleScriptCommand;
 	if (_scriptWaitCounter <= 0) {
 		do {
+			if (gTitleScriptCommand > _loadedTitleSequence->NumCommands) {
+				gTitleScriptCommand = 0;
+				title_try_next_sequence();
+				return;
+			}
+
 			const TitleCommand * command = &_loadedTitleSequence->Commands[gTitleScriptCommand];
 			bool successful = title_do_sequence_command(command);
 			title_move_to_next_command();
@@ -372,7 +399,8 @@ static bool title_update_showcase()
 						title_move_to_next_command();
 						if (gTitleScriptCommand == entryCommand) {
 							// We have got back to where we started so we can't load any of these parks
-							return false;
+							title_try_next_sequence();
+							return;
 						}
 						break;
 					}
@@ -381,26 +409,7 @@ static bool title_update_showcase()
 		} while (_scriptWaitCounter == 0);
 	}
 	_scriptWaitCounter--;
-	return true;
-}
-
-void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
-{
-	utf8 buffer[256];
-
-	// Write format codes
-	utf8 *ch = buffer;
-	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-	// Write name and version information
-	openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
-
-	// Write platform information
-	snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+	_sequenceAttemptId = 0;
 }
 
 void title_update()
@@ -409,9 +418,7 @@ void title_update()
 	title_handle_keyboard_input();
 
 	if (game_is_not_paused()) {
-		if (!title_update_showcase()) {
-
-		}
+		title_update_showcase();
 
 		int numUpdates = 1;
 		if (gGameSpeed > 1) {
@@ -434,27 +441,40 @@ void title_update()
 	game_handle_input();
 }
 
-bool title_refresh_sequence()
+void title_refresh_sequence()
 {
 	if (_loadedTitleSequenceId != gCurrentPreviewTitleSequence) {
 		FreeTitleSequence(_loadedTitleSequence);
 
-		const utf8 * path = title_sequence_manager_get_path(gCurrentPreviewTitleSequence);
-		_loadedTitleSequence = LoadTitleSequence(path);
-		_loadedTitleSequenceId = gCurrentPreviewTitleSequence;
+		size_t numSequences = title_sequence_manager_get_count();
+		if (gCurrentPreviewTitleSequence < numSequences) {
+			const utf8 * path = title_sequence_manager_get_path(gCurrentPreviewTitleSequence);
+			_loadedTitleSequence = LoadTitleSequence(path);
+			_loadedTitleSequenceId = gCurrentPreviewTitleSequence;
+		}
 	}
-
 
 	_scriptWaitCounter = 0;
 	gTitleScriptCommand = 0;
 	gTitleScriptSave = 0xFF;
-	window_invalidate_by_class(WC_OPTIONS);
-	window_invalidate_by_class(WC_TITLE_EDITOR);
+	gfx_invalidate_screen();
+}
 
-	if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
-		title_update_showcase();
-		gfx_invalidate_screen();
-	}
+void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
+{
+	utf8 buffer[256];
 
-	return false;
+	// Write format codes
+	utf8 *ch = buffer;
+	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+
+	// Write name and version information
+	openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+
+	// Write platform information
+	snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
 }

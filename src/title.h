@@ -32,7 +32,7 @@ void title_create_windows();
 void title_update();
 void title_skip_from_beginning();
 void title_script_get_line(SDL_RWops *file, char *parts);
-bool title_refresh_sequence();
+void title_refresh_sequence();
 void title_fix_location();
 void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
 

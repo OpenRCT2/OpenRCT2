@@ -194,6 +194,7 @@ bool rct2_init()
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
+	load_palette();
 
 
 #ifdef __ENABLE_LIGHTFX__
