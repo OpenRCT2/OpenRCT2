@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <cwctype>
+#include <vector>
 
 extern "C"
 {
@@ -114,6 +115,19 @@ namespace String
             }
             return true;
         }
+    }
+
+    size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
+    {
+        const utf8 * ch = str + startIndex;
+        for (; *ch != '\0'; ch++)
+        {
+            if (*ch == match)
+            {
+                return (size_t)(ch - str);
+            }
+        }
+        return SIZE_MAX;
     }
 
     size_t LastIndexOf(const utf8 * str, utf8 match)
@@ -298,6 +312,80 @@ namespace String
     utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
+    }
+
+    utf8 * Substring(const utf8 * buffer, size_t index)
+    {
+        size_t bufferSize = String::SizeOf(buffer);
+        bool goodSubstring = index <= bufferSize;
+        Guard::Assert(goodSubstring, "Substring past end of input string.");
+
+        // If assertion continues, return empty string to avoid crash
+        if (!goodSubstring)
+        {
+            return String::Duplicate("");
+        }
+
+        return String::Duplicate(buffer + index);
+    }
+
+    utf8 * Substring(const utf8 * buffer, size_t index, size_t size)
+    {
+        size_t bufferSize = String::SizeOf(buffer);
+        bool goodSubstring = index + size <= bufferSize;
+        Guard::Assert(goodSubstring, "Substring past end of input string.");
+
+        // If assertion continues, cap the substring to avoid crash
+        if (!goodSubstring)
+        {
+            if (index >= bufferSize)
+            {
+                size = 0;
+            }
+            else
+            {
+                size = bufferSize - index;
+            }
+        }
+
+        utf8 * result = Memory::Allocate<utf8>(size + 1);
+        Memory::Copy(result, buffer + index, size);
+        result[size] = '\0';
+        return result;
+    }
+
+    size_t Split(utf8 * * * values, const utf8 * buffer, utf8 delimiter)
+    {
+        std::vector<utf8 *> valuesList;
+        size_t index = 0;
+        size_t nextIndex;
+        do
+        {
+            nextIndex = String::IndexOf(buffer, '/', index);
+            utf8 * value;
+            if (nextIndex == SIZE_MAX)
+            {
+                value = String::Substring(buffer, index);
+            }
+            else
+            {
+                value = String::Substring(buffer, index, nextIndex - index);
+            }
+            valuesList.push_back(value);
+            index = nextIndex + 1;
+        } while (nextIndex != SIZE_MAX);
+
+        *values = nullptr;
+        if (valuesList.size() > 0)
+        {
+            utf8 * * valuesArray = Memory::AllocateArray<utf8 *>(valuesList.size());
+            for (size_t i = 0; i < valuesList.size(); i++)
+            {
+                valuesArray[i] = valuesList[i];
+            }
+            *values = valuesArray;
+        }
+        return valuesList.size();
     }
 
     utf8 * SkipBOM(utf8 * buffer)
