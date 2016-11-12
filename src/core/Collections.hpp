@@ -110,7 +110,7 @@ namespace Collections
             return nullptr;
         }
 
-        auto * items = Memory::AllocateArray<TCollection::value_type>(count);
+        auto * items = Memory::AllocateArray<typename TCollection::value_type>(count);
         size_t i = 0;
         for (const auto &item : collection)
         {

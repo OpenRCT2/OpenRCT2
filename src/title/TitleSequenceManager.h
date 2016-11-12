@@ -37,7 +37,8 @@ namespace TitleSequenceManager
 
 constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
 
-#else
+extern "C" {
+#endif
 
     size_t title_sequence_manager_get_count();
     const utf8 * title_sequence_manager_get_name(size_t index);
@@ -46,4 +47,6 @@ constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
     size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId);
     void title_sequence_manager_scan();
 
+#ifdef __cplusplus
+}
 #endif

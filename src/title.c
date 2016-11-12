@@ -47,7 +47,6 @@
 #include "world/sprite.h"
 #include "windows/error.h"
 
-static const int gRandomShowcase = 0;
 
 bool gTitleHideVersionInfo = false;
 
@@ -445,7 +444,6 @@ bool title_refresh_sequence()
 		_loadedTitleSequenceId = gCurrentPreviewTitleSequence;
 	}
 
-	TitleSequence *title = _loadedTitleSequence;
 
 	_scriptWaitCounter = 0;
 	gTitleScriptCommand = 0;

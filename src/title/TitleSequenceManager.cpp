@@ -64,7 +64,7 @@ namespace TitleSequenceManager
         return &_items[i];
     }
 
-    const uint16 GetPredefinedIndex(const utf8 * path)
+    static const uint16 GetPredefinedIndex(const utf8 * path)
     {
         const utf8 * filename = Path::GetFileName(path);
         for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)
@@ -77,7 +77,7 @@ namespace TitleSequenceManager
         return PREDEFINED_INDEX_CUSTOM;
     }
 
-    void Scan()
+    static void Scan()
     {
         utf8 path[MAX_PATH];
 
