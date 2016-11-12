@@ -1384,7 +1384,6 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
 			if (dropdownIndex != gCurrentPreviewTitleSequence) {
 				title_sequence_change_preset(dropdownIndex);
-				title_refresh_sequence();
 				config_save_default();
 				window_invalidate(w);
 			}

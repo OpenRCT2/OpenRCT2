@@ -55,22 +55,14 @@ sint32 gTitleScriptCommand = -1;
 uint8 gTitleScriptSave = 0xFF;
 sint32 gTitleScriptSkipTo = -1;
 sint32 gTitleScriptSkipLoad = -1;
-rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 
-#pragma region Showcase script
-
-static int _scriptNoLoadsSinceRestart;
+static rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 static int _scriptWaitCounter;
-static int _scriptCurrentPreset;
-
 static int _loadedTitleSequenceId = -1;
 static TitleSequence * _loadedTitleSequence = NULL;
 
 static void title_init_showcase();
 static bool title_update_showcase();
-
-#pragma endregion
-
 static bool title_load_park(SDL_RWops * rw, bool isScenario);
 
 /**
@@ -165,11 +157,6 @@ static bool title_load_park_from_file(const char * path)
 		SDL_RWclose(rw);
 	}
 	return success;
-}
-
-static bool title_load_park_from_zip(const char * path)
-{
-	return false;
 }
 
 static bool title_load_park(SDL_RWops * rw, bool isScenario)
@@ -305,7 +292,6 @@ static bool title_do_sequence_command(const TitleCommand * command)
 		gGameSpeed = max(1, min(4, command->Speed));
 		break;
 	case TITLE_SCRIPT_RESTART:
-		_scriptNoLoadsSinceRestart = 1;
 		gTitleScriptCommand = -1;
 		gTitleScriptSave = 0xFF;
 		break;
@@ -317,8 +303,7 @@ static bool title_do_sequence_command(const TitleCommand * command)
 		TitleSequenceCloseParkHandle(parkHandle);
 
 		if (loadSuccess) {
-			_scriptNoLoadsSinceRestart = 0;
-			gTitleScriptSave = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
+			gTitleScriptSave = saveIndex;
 		} else {
 			log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
 			return false;
@@ -419,8 +404,6 @@ void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
 }
 
-
-void game_handle_input();
 void title_update()
 {
 	screenshot_check();
@@ -449,29 +432,24 @@ void title_update()
 
 	gSavedAge++;
 
-	// Input
 	game_handle_input();
 }
 
 bool title_refresh_sequence()
 {
-	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
-	if (_loadedTitleSequenceId != _scriptCurrentPreset) {
+	if (_loadedTitleSequenceId != gCurrentPreviewTitleSequence) {
 		FreeTitleSequence(_loadedTitleSequence);
 
-		const utf8 * path = title_sequence_manager_get_path(_scriptCurrentPreset);
+		const utf8 * path = title_sequence_manager_get_path(gCurrentPreviewTitleSequence);
 		_loadedTitleSequence = LoadTitleSequence(path);
-		_loadedTitleSequenceId = _scriptCurrentPreset;
+		_loadedTitleSequenceId = gCurrentPreviewTitleSequence;
 	}
 
 	TitleSequence *title = _loadedTitleSequence;
 
-	_scriptNoLoadsSinceRestart = 1;
-	_scriptCurrentPreset = 0;
 	_scriptWaitCounter = 0;
 	gTitleScriptCommand = 0;
 	gTitleScriptSave = 0xFF;
-	gCurrentPreviewTitleSequence = 0;
 	window_invalidate_by_class(WC_OPTIONS);
 	window_invalidate_by_class(WC_TITLE_EDITOR);
 
