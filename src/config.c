@@ -1211,6 +1211,8 @@ static void * get_zip_data(zip_t * zip, const char * name, size_t * outSize)
 	return data;
 }
 
+#include "title/TitleSequence.h"
+
 static void title_sequence_open(const char *path, const char *customName)
 {
 	utf8 titlePath[MAX_PATH];
@@ -1218,6 +1220,9 @@ static void title_sequence_open(const char *path, const char *customName)
 	SDL_RWops *file;
 	int fileEnumHandle, i, preset;
 	char parts[3 * 128], *token, *part1, *part2;
+
+	TitleSequence * seq = LoadTitleSequence(path);
+	FreeTitleSequence(seq);
 
 	int error;
 	zip_t * zip = zip_open(path, ZIP_RDONLY, &error);

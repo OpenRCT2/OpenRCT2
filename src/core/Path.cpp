@@ -71,6 +71,16 @@ namespace Path
             lastPathSeperator + 1;
     }
 
+    utf8 * GetFileNameWithoutExtension(const utf8 * path)
+    {
+        size_t maxSize = String::SizeOf(path) + 1;
+        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        GetFileNameWithoutExtension(result, maxSize, path);
+        size_t reducedSize = String::SizeOf(path) + 1;
+        result = Memory::Reallocate(result, reducedSize);
+        return result;
+    }
+
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         path = GetFileName(path);

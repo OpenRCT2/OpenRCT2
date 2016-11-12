@@ -30,6 +30,7 @@
 #include "../interface/themes.h"
 #include "../sprites.h"
 #include "../title.h"
+#include "../title/TitleSequence.h"
 #include "../interface/title_sequences.h"
 #include "error.h"
 #include "../scenario.h"

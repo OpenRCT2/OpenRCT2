@@ -18,6 +18,7 @@
 
 #include <initializer_list>
 #include "../common.h"
+#include "Memory.hpp"
 #include "String.hpp"
 
 namespace Collections
@@ -98,6 +99,25 @@ namespace Collections
                     return String::Equals(a, b, false);
                 });
         }
+    }
+
+    template<typename TCollection>
+    static typename TCollection::value_type * ToArray(const TCollection &collection)
+    {
+        size_t count = collection.size();
+        if (count == 0)
+        {
+            return nullptr;
+        }
+
+        auto * items = Memory::AllocateArray<TCollection::value_type>(count);
+        size_t i = 0;
+        for (const auto &item : collection)
+        {
+            items[i] = item;
+            i++;
+        }
+        return items;
     }
 
     #pragma endregion

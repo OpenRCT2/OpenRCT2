@@ -17,6 +17,7 @@
 #include "../localisation/string_ids.h"
 #include "../rct2.h"
 #include "../title.h"
+#include "../title/TitleSequence.h"
 #include "../util/util.h"
 #include "title_sequences.h"
 #include "window.h"

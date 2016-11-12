@@ -35,6 +35,7 @@
 #include "scenario.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
+#include "title/TitleSequence.h"
 #include "util/util.h"
 #include "world/climate.h"
 #include "world/map.h"
