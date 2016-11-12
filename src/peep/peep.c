@@ -8080,11 +8080,10 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		}
 
 		uint8 entranceIndex = 0;
-		while (1){
+		for (entranceIndex = 0; entranceIndex < 4; entranceIndex++) {
 			if (gParkEntranceX[entranceIndex] == (x & 0xFFE0) &&
 				gParkEntranceY[entranceIndex] == (y & 0xFFE0))
 				break;
-			entranceIndex++;
 		}
 
 		sint16 z = gParkEntranceZ[entranceIndex] / 8;
