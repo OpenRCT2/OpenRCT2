@@ -1040,7 +1040,8 @@ utf8* platform_get_username() {
 // File association setup
 ///////////////////////////////////////////////////////////////////////////////
 
-#define SOFTWARE_CLASSES L"Software\\Classes"
+#define SOFTWARE_CLASSES	L"Software\\Classes"
+#define MUI_CACHE			L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
 static void get_progIdName(wchar_t *dst, const utf8 *extension)
 {
@@ -1183,4 +1184,50 @@ void platform_remove_file_associations()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// URI protocol association setup
+///////////////////////////////////////////////////////////////////////////////
+
+bool platform_setup_uri_protocol()
+{
+	log_verbose("Setting up URI protocol...");
+
+	// [HKEY_CURRENT_USER\Software\Classes]
+	HKEY hRootKey;
+	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS) {
+		// [hRootKey\openrct2]
+		HKEY hClassKey;
+		if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS) {
+			if (RegSetValueA(hClassKey, NULL, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS) {
+				if (RegSetKeyValueA(hClassKey, NULL, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS) {
+					// [hRootKey\openrct2\shell\open\command]
+					wchar_t exePath[MAX_PATH];
+					GetModuleFileNameW(NULL, exePath, MAX_PATH);
+
+					wchar_t buffer[512];
+					swprintf_s(buffer, sizeof(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
+					if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS) {
+						// Not compulsory, but gives the application a nicer name
+						// [HKEY_CURRENT_USER\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache]
+						HKEY hMuiCacheKey;
+						if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS) {
+							swprintf_s(buffer, sizeof(buffer), L"%s.FriendlyAppName", exePath);
+							RegSetKeyValueW(hMuiCacheKey, NULL, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
+						}
+
+						log_verbose("URI protocol setup successful");
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	log_verbose("URI protocol setup failed");
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 #endif

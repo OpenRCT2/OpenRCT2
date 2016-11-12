@@ -110,4 +110,5 @@ namespace CommandLine
     exitcode_t HandleCommandDefault();
 
     exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
+    exitcode_t HandleCommandUri(CommandLineArgEnumerator * enumerator);
 }
