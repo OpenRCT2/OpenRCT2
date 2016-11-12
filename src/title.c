@@ -59,31 +59,6 @@ rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 
 #pragma region Showcase script
 
-#define WAIT(t)				TITLE_SCRIPT_WAIT, t
-#define LOADMM()			TITLE_SCRIPT_LOADMM
-#define LOCATION(x, y)		TITLE_SCRIPT_LOCATION, x, y
-#define ROTATE(n)			TITLE_SCRIPT_ROTATE, n
-#define ZOOM(d)				TITLE_SCRIPT_ZOOM, d
-#define RESTART()			TITLE_SCRIPT_RESTART
-#define LOAD(i)				TITLE_SCRIPT_LOAD, i
-#define LOADRCT1(i)			TITLE_SCRIPT_LOADRCT1, i
-
-static const uint8 _magicMountainScript[] = {
-	LOADMM(),
-	LOCATION(210, 112), WAIT(13),
-	ROTATE(1), LOCATION(210, 112), WAIT(14),
-	ROTATE(3), LOCATION(167, 180), WAIT(12),
-	ROTATE(1), LOCATION(155, 189), WAIT(12),
-	LOCATION(106, 39), WAIT(12),
-	LOCATION(182, 50), WAIT(12),
-	ROTATE(3), LOCATION(209, 47), WAIT(12),
-	ROTATE(1), LOCATION(159, 93), WAIT(12),
-	RESTART(),
-};
-
-static uint8* _loadedScript;
-static const uint8* _currentScript;
-static uint8 _lastOpcode;
 static int _scriptNoLoadsSinceRestart;
 static int _scriptWaitCounter;
 static int _scriptCurrentPreset;
@@ -92,9 +67,7 @@ static int _loadedTitleSequenceId = -1;
 static TitleSequence * _loadedTitleSequence = NULL;
 
 static void title_init_showcase();
-static void title_update_showcase();
-
-static uint8 *generate_random_script();
+static bool title_update_showcase();
 
 #pragma endregion
 
@@ -287,70 +260,14 @@ void title_fix_location()
 	}
 }
 
-static void title_skip_opcode()
+static bool title_do_sequence_command(const TitleCommand * command)
 {
-	uint8 script_opcode;
-
-	script_opcode = *_currentScript++;
-	gTitleScriptCommand++;
-	_lastOpcode = script_opcode;
-
-	switch (script_opcode) {
-	case TITLE_SCRIPT_WAIT:
-		_currentScript++;
-		break;
-	case TITLE_SCRIPT_LOADMM:
-		_currentScript++;
-		break;
-	case TITLE_SCRIPT_LOCATION:
-		_currentScript++;
-		_currentScript++;
-		break;
-	case TITLE_SCRIPT_ROTATE:
-		_currentScript++;
-		break;
-	case TITLE_SCRIPT_RESTART:
-		break;
-	case TITLE_SCRIPT_LOAD:
-		do {
-			_currentScript++;
-		} while (*(_currentScript - 1) != 0);
-		break;
-	}
-}
-
-static void title_do_next_script_opcode()
-{
-	int i;
-	short x, y;
-	uint8 script_opcode, script_operand;
-	rct_window* w;
-	gTitleScriptCommand++;
-	script_opcode = *_currentScript++;
-	if (gTitleScriptSkipTo != -1) {
-		if (gTitleScriptSkipTo == gTitleScriptCommand) {
-			gTitleScriptSkipTo = -1;
-			gTitleScriptSkipLoad = -1;
-		}
-		else if (gTitleScriptSkipLoad == gTitleScriptCommand) {
-			gTitleScriptSkipLoad = -1;
-		}
-		else if (gTitleScriptSkipLoad != -1) {
-			gTitleScriptCommand--;
-			_currentScript--;
-			title_skip_opcode();
-			return;
-		}
-	}
-
-	_lastOpcode = script_opcode;
-
-	switch (script_opcode) {
+	switch (command->Type) {
 	case TITLE_SCRIPT_END:
 		_scriptWaitCounter = 1;
 		break;
 	case TITLE_SCRIPT_WAIT:
-		_scriptWaitCounter = (*_currentScript++) * 32;
+		_scriptWaitCounter = command->Seconds * 32;
 		break;
 	case TITLE_SCRIPT_LOADMM:
 		if (!title_load_park_from_file(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
@@ -360,82 +277,60 @@ static void title_do_next_script_opcode()
 		gTitleScriptSave = 0xFF;
 		break;
 	case TITLE_SCRIPT_LOCATION:
-		x = (*_currentScript++) * 32 + 16;
-		y = (*_currentScript++) * 32 + 16;
+	{
+		int x = command->X * 32 + 16;
+		int y = command->Y * 32 + 16;
 		title_set_location(x, y);
 		break;
+	}
 	case TITLE_SCRIPT_ROTATE:
-		script_operand = (*_currentScript++);
-		w = window_get_main();
-		if (w != NULL)
-			for (i = 0; i < script_operand; i++)
+	{
+		rct_window * w = window_get_main();
+		if (w != NULL) {
+			for (int i = 0; i < command->Rotations; i++) {
 				window_rotate_camera(w, 1);
+			}
+		}
 		break;
+	}
 	case TITLE_SCRIPT_ZOOM:
-		script_operand = (*_currentScript++);
-		w = window_get_main();
-		if (w != NULL && w->viewport != NULL)
-			window_zoom_set(w, script_operand);
+	{
+		rct_window * w = window_get_main();
+		if (w != NULL && w->viewport != NULL) {
+			window_zoom_set(w, command->Zoom);
+		}
 		break;
+	}
 	case TITLE_SCRIPT_SPEED:
-		script_operand = (*_currentScript++);
-		gGameSpeed = max(1, min(4, script_operand));
+		gGameSpeed = max(1, min(4, command->Speed));
 		break;
 	case TITLE_SCRIPT_RESTART:
 		_scriptNoLoadsSinceRestart = 1;
 		gTitleScriptCommand = -1;
 		gTitleScriptSave = 0xFF;
-		_currentScript = _loadedScript;
-		if (gRandomShowcase) {
-			if (_currentScript != NULL)
-				free((uint8*)_currentScript);
-			_currentScript = generate_random_script();
-		}
 		break;
 	case TITLE_SCRIPT_LOAD:
-		{
-			uint8 saveIndex = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
-			TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_loadedTitleSequence, saveIndex);
-			bool loadSuccess = title_load_park(parkHandle->RWOps, parkHandle->IsScenario);
-			TitleSequenceCloseParkHandle(parkHandle);
+	{
+		uint8 saveIndex = command->SaveIndex;
+		TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_loadedTitleSequence, saveIndex);
+		bool loadSuccess = title_load_park(parkHandle->RWOps, parkHandle->IsScenario);
+		TitleSequenceCloseParkHandle(parkHandle);
 
-			if (loadSuccess) {
-				_scriptNoLoadsSinceRestart = 0;
-				gTitleScriptSave = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
-			} else {
-				log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
-				script_opcode = *_currentScript;
-				while (script_opcode != TITLE_SCRIPT_LOADMM && script_opcode != TITLE_SCRIPT_LOAD && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
-					title_skip_opcode();
-					script_opcode = *_currentScript;
-				}
-
-				if ((script_opcode == TITLE_SCRIPT_RESTART || script_opcode == TITLE_SCRIPT_END) && _scriptNoLoadsSinceRestart) {
-					if (_currentScript != _magicMountainScript) {
-						_scriptNoLoadsSinceRestart = 1;
-						gTitleScriptCommand = -1;
-						gTitleScriptSave = 0xFF;
-						_currentScript = _magicMountainScript;
-						gCurrentPreviewTitleSequence = 0;
-						gTitleScriptSkipTo = -1;
-						gTitleScriptSkipLoad = -1;
-						_scriptCurrentPreset = 0;
-						//window_invalidate_by_class(WC_TITLE_EDITOR);
-					} else {
-						log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
-						exit(-1);
-					}
-				}
-			}
+		if (loadSuccess) {
+			_scriptNoLoadsSinceRestart = 0;
+			gTitleScriptSave = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
+		} else {
+			log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
+			return false;
 		}
 		break;
+	}
 	case TITLE_SCRIPT_LOADRCT1:
-		script_operand = (*_currentScript++);
-
+	{
 		source_desc sourceDesc;
-		if (!scenario_get_source_desc_by_id(script_operand, &sourceDesc) || sourceDesc.index == -1) {
-			log_fatal("Invalid scenario id.");
-			exit(-1);
+		if (!scenario_get_source_desc_by_id(command->SaveIndex, &sourceDesc) || sourceDesc.index == -1) {
+			log_error("Invalid scenario id.");
+			return false;
 		}
 
 		const utf8 *path = NULL;
@@ -449,60 +344,60 @@ static void title_do_next_script_opcode()
 		}
 
 		if (path == NULL || !title_load_park_from_file(path)) {
-			script_opcode = *_currentScript;
-			while (script_opcode != TITLE_SCRIPT_LOADRCT1 && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
-				title_skip_opcode();
-				script_opcode = *_currentScript;
-			}
-			if (script_opcode == TITLE_SCRIPT_RESTART) {
-				title_sequence_change_preset(4);
-				title_refresh_sequence();
-				config_save_default();
-				return;
-			}
+			return false;
 		}
 		gTitleScriptSave = 0xFF;
 		break;
 	}
+	}
 	window_invalidate_by_class(WC_TITLE_EDITOR);
+	return true;
+}
+
+static void title_move_to_next_command()
+{
+	gTitleScriptCommand++;
+	if (gTitleScriptCommand >= _loadedTitleSequence->NumCommands) {
+		gTitleScriptCommand = 0;
+	}
 }
 
 /**
  *
  *  rct2: 0x00678761
  */
-static void title_update_showcase()
+static bool title_update_showcase()
 {
-	int i, numUpdates;
-	// Loop used for scene skip functionality
-	// Only loop here when the appropriate save hasn't been loaded yet since no game updates are required
-	do {
+	sint32 entryCommand = gTitleScriptCommand;
+	if (_scriptWaitCounter <= 0) {
 		do {
-			if (_scriptWaitCounter <= 0) {
+			const TitleCommand * command = &_loadedTitleSequence->Commands[gTitleScriptCommand];
+			bool successful = title_do_sequence_command(command);
+			title_move_to_next_command();
+			if (!successful) {
+				bool isLoadCommand = false;
 				do {
-					title_do_next_script_opcode();
-				} while (_scriptWaitCounter == 0);
+					const TitleCommand * command = &_loadedTitleSequence->Commands[gTitleScriptCommand];
+					switch (command->Type) {
+					case TITLE_SCRIPT_LOADMM:
+					case TITLE_SCRIPT_LOAD:
+					case TITLE_SCRIPT_LOADRCT1:
+						isLoadCommand = true;
+						break;
+					default:
+						title_move_to_next_command();
+						if (gTitleScriptCommand == entryCommand) {
+							// We have got back to where we started so we can't load any of these parks
+							return false;
+						}
+						break;
+					}
+				} while (!isLoadCommand);
 			}
-
-			if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1)
-				_scriptWaitCounter = 0;
-			else if (_lastOpcode != TITLE_SCRIPT_END)
-				_scriptWaitCounter--;
-		} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad != -1);
-
-		if (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1) {
-			if (gGameSpeed > 1) {
-				numUpdates = 1 << (gGameSpeed - 1);
-			} else {
-				numUpdates = 1;
-			}
-			for (i = 0; i < numUpdates; i++) {
-				game_logic_update();
-			}
-			update_palette_effects();
-			// update_rain_animation();
-		}
-	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
+		} while (_scriptWaitCounter == 0);
+	}
+	_scriptWaitCounter--;
+	return true;
 }
 
 void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
@@ -528,22 +423,23 @@ void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 void game_handle_input();
 void title_update()
 {
-	int i, numUpdates;
 	screenshot_check();
 	title_handle_keyboard_input();
 
 	if (game_is_not_paused()) {
-		title_update_showcase();
+		if (!title_update_showcase()) {
 
+		}
+
+		int numUpdates = 1;
 		if (gGameSpeed > 1) {
 			numUpdates = 1 << (gGameSpeed - 1);
-		} else {
-			numUpdates = 1;
 		}
-
-		for (i = 0; i < numUpdates; i++) {
+		for (int i = 0; i < numUpdates; i++) {
 			game_logic_update();
 		}
+		update_palette_effects();
+		// update_rain_animation();
 	}
 
 	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
@@ -557,35 +453,6 @@ void title_update()
 	game_handle_input();
 }
 
-static uint8 *generate_random_script()
-{
-	int i, j;
-	const int views = 16;
-
-	util_srand((unsigned int)time(NULL));
-
-	uint8 *script = malloc(views * 8 + 2);
-	i = 0;
-	script[i++] = TITLE_SCRIPT_LOAD;
-	for (j = 0; j < views; j++) {
-		script[i++] = TITLE_SCRIPT_LOCATION;
-		script[i++] = 64 + (util_rand() % 128);
-		script[i++] = 64 + (util_rand() % 128);
-
-		int rotationCount = util_rand() % 4;
-		if (rotationCount > 0) {
-			script[i++] = TITLE_SCRIPT_ROTATE;
-			script[i++] = rotationCount;
-		}
-
-		script[i++] = TITLE_SCRIPT_WAIT;
-		script[i++] = 8 + (util_rand() % 6);
-	}
-	script[i] = TITLE_SCRIPT_RESTART;
-
-	return script;
-}
-
 bool title_refresh_sequence()
 {
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
@@ -596,100 +463,13 @@ bool title_refresh_sequence()
 		_loadedTitleSequence = LoadTitleSequence(path);
 		_loadedTitleSequenceId = _scriptCurrentPreset;
 	}
+
 	TitleSequence *title = _loadedTitleSequence;
 
-	bool hasLoad = false, hasInvalidSave = false, hasWait = false, hasRestart = false;
-	for (int i = 0; i < title->NumCommands && !hasInvalidSave; i++) {
-		if (title->Commands[i].Type == TITLE_SCRIPT_LOAD) {
-			if (title->Commands[i].SaveIndex == 0xFF)
-				hasInvalidSave = true;
-			hasLoad = true;
-		}
-		else if (title->Commands[i].Type == TITLE_SCRIPT_LOADRCT1) {
-			hasLoad = true;
-		}
-		else if (title->Commands[i].Type == TITLE_SCRIPT_LOADMM) {
-			hasLoad = true;
-		}
-		else if (title->Commands[i].Type == TITLE_SCRIPT_WAIT && title->Commands[i].Seconds >= 4) {
-			hasWait = true;
-		}
-		else if (title->Commands[i].Type == TITLE_SCRIPT_RESTART) {
-			hasRestart = true;
-			break;
-		}
-		else if (title->Commands[i].Type == TITLE_SCRIPT_END) {
-			break;
-		}
-	}
-	if (hasLoad && (hasWait || !hasRestart) && !hasInvalidSave) {
-		char *src;
-		uint8 *scriptPtr, *binaryScript;
-		binaryScript = malloc(1024 * 8);
-		scriptPtr = binaryScript;
-
-		for (int i = 0; i < title->NumCommands; i++) {
-			*scriptPtr++ = title->Commands[i].Type;
-			switch (title->Commands[i].Type) {
-			case TITLE_SCRIPT_LOADRCT1:
-				*scriptPtr++ = title->Commands[i].SaveIndex;
-				break;
-			case TITLE_SCRIPT_LOAD:
-				src = title->Saves[title->Commands[i].SaveIndex];
-				do {
-					*scriptPtr++ = *src++;
-				} while (*(src - 1) != 0);
-				break;
-			case TITLE_SCRIPT_LOCATION:
-				*scriptPtr++ = title->Commands[i].X;
-				*scriptPtr++ = title->Commands[i].Y;
-				break;
-			case TITLE_SCRIPT_ROTATE:
-				*scriptPtr++ = title->Commands[i].Rotations;
-				break;
-			case TITLE_SCRIPT_ZOOM:
-				*scriptPtr++ = title->Commands[i].Zoom;
-				break;
-			case TITLE_SCRIPT_SPEED:
-				*scriptPtr++ = title->Commands[i].Speed;
-				break;
-			case TITLE_SCRIPT_WAIT:
-				*scriptPtr++ = title->Commands[i].Seconds;
-				break;
-			}
-		}
-
-		*scriptPtr++ = TITLE_SCRIPT_END;
-
-		int scriptLength = (int)(scriptPtr - binaryScript);
-		binaryScript = realloc(binaryScript, scriptLength);
-
-		_scriptNoLoadsSinceRestart = 1;
-		if (_loadedScript != _magicMountainScript)
-			SafeFree(_loadedScript);
-		_loadedScript = binaryScript;
-		_currentScript = binaryScript;
-		_scriptWaitCounter = 0;
-		gTitleScriptCommand = -1;
-		gTitleScriptSave = 0xFF;
-
-		if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
-			title_update_showcase();
-			gfx_invalidate_screen();
-		}
-
-		return true;
-	}
-	log_error("Failed to load title sequence, hasLoad: %i, hasWait4seconds: %i, hasRestart: %i, hasInvalidSave: %i", hasLoad, hasWait, hasRestart, hasInvalidSave);
-	window_error_open(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, (!hasWait && hasRestart) ? STR_TITLE_EDITOR_ERR_RESTART_REQUIRES_WAIT : STR_NONE);
 	_scriptNoLoadsSinceRestart = 1;
-	if (_loadedScript != _magicMountainScript)
-		SafeFree(_loadedScript);
 	_scriptCurrentPreset = 0;
-	_loadedScript = (uint8*)_magicMountainScript;
-	_currentScript = _magicMountainScript;
 	_scriptWaitCounter = 0;
-	gTitleScriptCommand = -1;
+	gTitleScriptCommand = 0;
 	gTitleScriptSave = 0xFF;
 	gCurrentPreviewTitleSequence = 0;
 	window_invalidate_by_class(WC_OPTIONS);
@@ -701,12 +481,4 @@ bool title_refresh_sequence()
 	}
 
 	return false;
-}
-
-void title_skip_from_beginning()
-{
-	_scriptNoLoadsSinceRestart = 1;
-	gTitleScriptCommand = -1;
-	gTitleScriptSave = 0xFF;
-	_currentScript = _loadedScript;
 }
