@@ -98,6 +98,8 @@ static uint8 *generate_random_script();
 
 #pragma endregion
 
+static bool title_load_park(SDL_RWops * rw, bool isScenario);
+
 /**
  *
  *  rct2: 0x0068E8DA
@@ -180,23 +182,35 @@ static void title_init_showcase()
 	title_refresh_sequence();
 }
 
-static int title_load_park(const char *path)
+static bool title_load_park_from_file(const char * path)
+{
+	bool success = false;
+	bool isScenario = _strcmpi(path_get_extension(path), ".sv6");
+	SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+	if (rw != NULL) {
+		success = title_load_park(rw, isScenario);
+		SDL_RWclose(rw);
+	}
+	return success;
+}
+
+static bool title_load_park_from_zip(const char * path)
+{
+	return false;
+}
+
+static bool title_load_park(SDL_RWops * rw, bool isScenario)
 {
 	rct_window* w;
 	int successfulLoad = 0;
 
-	if (_strcmpi(path_get_extension(path), ".sv6") == 0) {
-		SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-		if (rw != NULL) {
-			successfulLoad = game_load_sv6(rw);
-			SDL_RWclose(rw);
-		}
+	if (isScenario) {
+		successfulLoad = scenario_load_rw(rw);
 	} else {
-		successfulLoad = scenario_load(path);
+		successfulLoad = game_load_sv6(rw);
 	}
-
 	if (!successfulLoad)
-		return 0;
+		return false;
 
 	w = window_get_main();
 	w->viewport_target_sprite = -1;
@@ -225,8 +239,9 @@ static int title_load_park(const char *path)
 	reset_sprite_spatial_index();
 	reset_all_sprite_quadrant_placements();
 	window_new_ride_init_vars();
-	if (_strcmpi(path_get_extension(path), ".sv6") != 0)
+	if (!isScenario) {
 		sub_684AC3();
+	}
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	load_palette();
@@ -234,7 +249,7 @@ static int title_load_park(const char *path)
 	window_tile_inspector_clear_clipboard();
 	gScreenAge = 0;
 	gGameSpeed = 1;
-	return 1;
+	return true;
 }
 
 /**
@@ -338,7 +353,7 @@ static void title_do_next_script_opcode()
 		_scriptWaitCounter = (*_currentScript++) * 32;
 		break;
 	case TITLE_SCRIPT_LOADMM:
-		if (!title_load_park(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
+		if (!title_load_park_from_file(get_file_path(PATH_ID_SIXFLAGS_MAGICMOUNTAIN))) {
 			log_fatal("OpenRCT2 can not currently cope when unable to load title screen scenario.");
 			exit(-1);
 		}
@@ -379,22 +394,16 @@ static void title_do_next_script_opcode()
 		break;
 	case TITLE_SCRIPT_LOAD:
 		{
-			char *ch, filename[32], path[MAX_PATH];
+			uint8 saveIndex = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
+			TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_loadedTitleSequence, saveIndex);
+			bool loadSuccess = title_load_park(parkHandle->RWOps, parkHandle->IsScenario);
+			TitleSequenceCloseParkHandle(parkHandle);
 
-			// Get filename
-			ch = filename;
-			do {
-				*ch++ = *_currentScript++;
-			} while (*(_currentScript - 1) != 0);
-
-			// Construct full relative path
-			safe_strcpy(path, _loadedTitleSequence->Path, sizeof(path));
-			safe_strcat_path(path, filename, sizeof(path));
-			if (title_load_park(path)) {
+			if (loadSuccess) {
 				_scriptNoLoadsSinceRestart = 0;
 				gTitleScriptSave = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
 			} else {
-				log_error("Failed to load: \"%s\" for the title sequence.", path);
+				log_error("Failed to load: \"%s\" for the title sequence.", _loadedTitleSequence->Saves[saveIndex]);
 				script_opcode = *_currentScript;
 				while (script_opcode != TITLE_SCRIPT_LOADMM && script_opcode != TITLE_SCRIPT_LOAD && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
 					title_skip_opcode();
@@ -439,7 +448,7 @@ static void title_do_next_script_opcode()
 			}
 		}
 
-		if (path == NULL || !title_load_park(path)) {
+		if (path == NULL || !title_load_park_from_file(path)) {
 			script_opcode = *_currentScript;
 			while (script_opcode != TITLE_SCRIPT_LOADRCT1 && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
 				title_skip_opcode();

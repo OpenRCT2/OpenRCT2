@@ -19,6 +19,7 @@
 #include <zip.h>
 #include <vector>
 #include "../core/Collections.hpp"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -76,6 +77,33 @@ extern "C"
             }
             Memory::Free(seq->Saves);
         }
+    }
+
+    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
+    {
+        int error;
+        zip_t * zip = zip_open(seq->Path, ZIP_RDONLY, &error);
+        if (zip == nullptr)
+        {
+            // Unable to open zip
+            return nullptr;
+        }
+
+        Guard::Assert(index < seq->NumSaves, "Invalid park save index.");
+        utf8 * filename = seq->Saves[index];
+
+        auto handle = Memory::Allocate<TitleSequenceParkHandle>();
+        handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
+        handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
+        handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+        return handle;
+    }
+
+    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle)
+    {
+        SDL_RWclose(handle->RWOps);
+        Memory::Free(handle->Data);
+        Memory::Free(handle);
     }
 }
 

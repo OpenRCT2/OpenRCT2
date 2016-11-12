@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+struct SDL_RWops;
+
 typedef struct TitleCommand
 {
     uint8 Type;
@@ -47,6 +49,14 @@ typedef struct TitleSequence
     utf8 * * Saves;
 } TitleSequence;
 
+typedef struct TitleSequenceParkHandle
+{
+    size_t DataSize;
+    void * Data;
+    struct SDL_RWops * RWOps;
+    bool IsScenario;
+} TitleSequenceParkHandle;
+
 enum TITLE_SCRIPT
 {
     TITLE_SCRIPT_UNDEFINED = 0xFF,
@@ -70,6 +80,9 @@ extern "C"
 #endif
     TitleSequence * LoadTitleSequence(const utf8 * path);
     void FreeTitleSequence(TitleSequence * seq);
+
+    TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
+    void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
 #ifdef __cplusplus
 }
 #endif
