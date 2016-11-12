@@ -325,6 +325,7 @@
     <ClCompile Include="src\scenario.c" />
     <ClCompile Include="src\ScenarioRepository.cpp" />
     <ClCompile Include="src\title\TitleSequence.cpp" />
+    <ClCompile Include="src\title\TitleSequenceManager.cpp" />
     <ClCompile Include="src\windows\changelog.c" />
     <ClCompile Include="src\windows\multiplayer.c" />
     <ClCompile Include="src\windows\network_status.c" />
@@ -570,6 +571,7 @@
     <ClInclude Include="src\ScenarioSources.h" />
     <ClInclude Include="src\sprites.h" />
     <ClInclude Include="src\title\TitleSequence.h" />
+    <ClInclude Include="src\title\TitleSequenceManager.h" />
     <ClInclude Include="src\version.h" />
     <ClInclude Include="src\title.h" />
     <ClInclude Include="src\util\sawyercoding.h" />

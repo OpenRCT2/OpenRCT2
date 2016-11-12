@@ -24,6 +24,7 @@
 #include "localisation/date.h"
 #include "localisation/localisation.h"
 #include "interface/screenshot.h"
+#include "interface/title_sequences.h"
 #include "interface/viewport.h"
 #include "intro.h"
 #include "management/news_item.h"
@@ -35,15 +36,15 @@
 #include "scenario.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
+#include "title.h"
 #include "title/TitleSequence.h"
+#include "title/TitleSequenceManager.h"
 #include "util/util.h"
 #include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
-#include "title.h"
-#include "interface/title_sequences.h"
 #include "windows/error.h"
 
 static const int gRandomShowcase = 0;
@@ -87,14 +88,15 @@ static int _scriptNoLoadsSinceRestart;
 static int _scriptWaitCounter;
 static int _scriptCurrentPreset;
 
+static int _loadedTitleSequenceId = -1;
+static TitleSequence * _loadedTitleSequence = NULL;
+
 static void title_init_showcase();
 static void title_update_showcase();
 
 static uint8 *generate_random_script();
 
 #pragma endregion
-
-static uint8 *title_script_load();
 
 /**
  *
@@ -167,6 +169,14 @@ void title_create_windows()
  */
 static void title_init_showcase()
 {
+	size_t seqId = title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+	if (seqId == SIZE_MAX) {
+		seqId = title_sequence_manager_get_index_for_config_id("*OPENRCT2");
+		if (seqId == SIZE_MAX) {
+			seqId = 0;
+		}
+	}
+	title_sequence_change_preset((int)seqId);
 	title_refresh_sequence();
 }
 
@@ -378,18 +388,11 @@ static void title_do_next_script_opcode()
 			} while (*(_currentScript - 1) != 0);
 
 			// Construct full relative path
-			if (gConfigTitleSequences.presets[_scriptCurrentPreset].path[0]) {
-				safe_strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
-			}
-			else {
-				platform_get_user_directory(path, "title sequences", sizeof(path));
-				safe_strcat_path(path, gConfigTitleSequences.presets[_scriptCurrentPreset].name, sizeof(path));
-			}
-
+			safe_strcpy(path, _loadedTitleSequence->Path, sizeof(path));
 			safe_strcat_path(path, filename, sizeof(path));
 			if (title_load_park(path)) {
 				_scriptNoLoadsSinceRestart = 0;
-				gTitleScriptSave = gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].commands[gTitleScriptCommand].saveIndex;
+				gTitleScriptSave = _loadedTitleSequence->Commands[gTitleScriptCommand].SaveIndex;
 			} else {
 				log_error("Failed to load: \"%s\" for the title sequence.", path);
 				script_opcode = *_currentScript;
@@ -574,159 +577,39 @@ static uint8 *generate_random_script()
 	return script;
 }
 
-#pragma region Load script.txt
-
-void title_script_get_line(SDL_RWops *file, char *parts)
-{
-	int i, c, part, cindex, whitespace, comment, load;
-
-	for (i = 0; i < 3; i++)
-		parts[i * 128] = 0;
-
-	part = 0;
-	cindex = 0;
-	whitespace = 1;
-	comment = 0;
-	load = 0;
-	for (; part < 3;) {
-		c = 0;
-		if (SDL_RWread(file, &c, 1, 1) != 1)
-			c = EOF;
-
-		if (c == '\n' || c == '\r' || c == EOF) {
-			parts[part * 128 + cindex] = 0;
-			return;
-		} else if (c == '#') {
-			parts[part * 128 + cindex] = 0;
-			comment = 1;
-		} else if (c == ' ' && !comment && !load) {
-			if (!whitespace) {
-				if (part == 0 && cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
-					load = true;
-				parts[part * 128 + cindex] = 0;
-				part++;
-				cindex = 0;
-			}
-		} else if (!comment) {
-			whitespace = 0;
-			if (cindex < 127) {
-				parts[part * 128 + cindex] = c;
-				cindex++;
-			}
-			else {
-				parts[part * 128 + cindex] = 0;
-				part++;
-				cindex = 0;
-			}
-		}
-	}
-}
-
-static uint8 *title_script_load()
-{
-	SDL_RWops *file;
-	char parts[3 * 128], *token, *part1, *part2, *src;
-
-	utf8 path[MAX_PATH];
-
-	platform_get_openrct_data_path(path, sizeof(path));
-	safe_strcat_path(path, "title", MAX_PATH);
-	safe_strcat_path(path, "script.txt", MAX_PATH);
-	log_verbose("loading title script, %s", path);
-	file = SDL_RWFromFile(path, "r");
-	if (file == NULL) {
-		log_error("unable to load title script");
-		return NULL;
-	}
-	sint64 fileSize = SDL_RWsize(file);
-
-	uint8 *binaryScript = (uint8*)malloc(1024 * 8);
-	if (binaryScript == NULL) {
-		SDL_RWclose(file);
-
-		log_error("unable to allocate memory for script");
-		return NULL;
-	}
-
-	uint8 *scriptPtr = binaryScript;
-
-	do {
-		title_script_get_line(file, parts);
-
-		token = &parts[0 * 128];
-		part1 = &parts[1 * 128];
-		part2 = &parts[2 * 128];
-
-		if (token[0] != 0) {
-			if (_stricmp(token, "LOAD") == 0) {
-				src = part1;
-				*scriptPtr++ = TITLE_SCRIPT_LOAD;
-				do {
-					*scriptPtr++ = *src++;
-				} while (*(src - 1) != 0);
-			} else if (_stricmp(token, "LOCATION") == 0) {
-				*scriptPtr++ = TITLE_SCRIPT_LOCATION;
-				*scriptPtr++ = atoi(part1) & 0xFF;
-				*scriptPtr++ = atoi(part2) & 0xFF;
-			} else if (_stricmp(token, "ROTATE") == 0) {
-				*scriptPtr++ = TITLE_SCRIPT_ROTATE;
-				*scriptPtr++ = atoi(part1) & 0xFF;
-			} else if (_stricmp(token, "ZOOM") == 0) {
-				*scriptPtr++ = TITLE_SCRIPT_ZOOM;
-				*scriptPtr++ = atoi(part1) & 0xFF;
-			} else if (_stricmp(token, "WAIT") == 0) {
-				*scriptPtr++ = TITLE_SCRIPT_WAIT;
-				*scriptPtr++ = atoi(part1) & 0xFF;
-			} else {
-				log_error("unknown token, %s", token);
-				SafeFree(binaryScript);
-				SDL_RWclose(file);
-				return NULL;
-			}
-		}
-	} while (SDL_RWtell(file) < fileSize);
-	SDL_RWclose(file);
-
-	*scriptPtr++ = TITLE_SCRIPT_RESTART;
-
-	int scriptLength = (int)(scriptPtr - binaryScript);
-	binaryScript = realloc(binaryScript, scriptLength);
-	if (binaryScript == NULL) {
-		log_error("unable to reallocate memory for script");
-		return NULL;
-	}
-
-	return binaryScript;
-}
-
-#pragma endregion
-
 bool title_refresh_sequence()
 {
 	_scriptCurrentPreset = gCurrentPreviewTitleSequence;
-	title_sequence *title = &gConfigTitleSequences.presets[_scriptCurrentPreset];
+	if (_loadedTitleSequenceId != _scriptCurrentPreset) {
+		FreeTitleSequence(_loadedTitleSequence);
+
+		const utf8 * path = title_sequence_manager_get_path(_scriptCurrentPreset);
+		_loadedTitleSequence = LoadTitleSequence(path);
+		_loadedTitleSequenceId = _scriptCurrentPreset;
+	}
+	TitleSequence *title = _loadedTitleSequence;
 
 	bool hasLoad = false, hasInvalidSave = false, hasWait = false, hasRestart = false;
-	for (int i = 0; i < title->num_commands && !hasInvalidSave; i++) {
-		if (title->commands[i].command == TITLE_SCRIPT_LOAD) {
-			if (title->commands[i].saveIndex == 0xFF)
+	for (int i = 0; i < title->NumCommands && !hasInvalidSave; i++) {
+		if (title->Commands[i].Type == TITLE_SCRIPT_LOAD) {
+			if (title->Commands[i].SaveIndex == 0xFF)
 				hasInvalidSave = true;
 			hasLoad = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_LOADRCT1) {
+		else if (title->Commands[i].Type == TITLE_SCRIPT_LOADRCT1) {
 			hasLoad = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
+		else if (title->Commands[i].Type == TITLE_SCRIPT_LOADMM) {
 			hasLoad = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_WAIT && title->commands[i].seconds >= 4) {
+		else if (title->Commands[i].Type == TITLE_SCRIPT_WAIT && title->Commands[i].Seconds >= 4) {
 			hasWait = true;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_RESTART) {
+		else if (title->Commands[i].Type == TITLE_SCRIPT_RESTART) {
 			hasRestart = true;
 			break;
 		}
-		else if (title->commands[i].command == TITLE_SCRIPT_END) {
+		else if (title->Commands[i].Type == TITLE_SCRIPT_END) {
 			break;
 		}
 	}
@@ -736,33 +619,33 @@ bool title_refresh_sequence()
 		binaryScript = malloc(1024 * 8);
 		scriptPtr = binaryScript;
 
-		for (int i = 0; i < title->num_commands; i++) {
-			*scriptPtr++ = title->commands[i].command;
-			switch (title->commands[i].command) {
+		for (int i = 0; i < title->NumCommands; i++) {
+			*scriptPtr++ = title->Commands[i].Type;
+			switch (title->Commands[i].Type) {
 			case TITLE_SCRIPT_LOADRCT1:
-				*scriptPtr++ = title->commands[i].saveIndex;
+				*scriptPtr++ = title->Commands[i].SaveIndex;
 				break;
 			case TITLE_SCRIPT_LOAD:
-				src = title->saves[title->commands[i].saveIndex];
+				src = title->Saves[title->Commands[i].SaveIndex];
 				do {
 					*scriptPtr++ = *src++;
 				} while (*(src - 1) != 0);
 				break;
 			case TITLE_SCRIPT_LOCATION:
-				*scriptPtr++ = title->commands[i].x;
-				*scriptPtr++ = title->commands[i].y;
+				*scriptPtr++ = title->Commands[i].X;
+				*scriptPtr++ = title->Commands[i].Y;
 				break;
 			case TITLE_SCRIPT_ROTATE:
-				*scriptPtr++ = title->commands[i].rotations;
+				*scriptPtr++ = title->Commands[i].Rotations;
 				break;
 			case TITLE_SCRIPT_ZOOM:
-				*scriptPtr++ = title->commands[i].zoom;
+				*scriptPtr++ = title->Commands[i].Zoom;
 				break;
 			case TITLE_SCRIPT_SPEED:
-				*scriptPtr++ = title->commands[i].speed;
+				*scriptPtr++ = title->Commands[i].Speed;
 				break;
 			case TITLE_SCRIPT_WAIT:
-				*scriptPtr++ = title->commands[i].seconds;
+				*scriptPtr++ = title->Commands[i].Seconds;
 				break;
 			}
 		}

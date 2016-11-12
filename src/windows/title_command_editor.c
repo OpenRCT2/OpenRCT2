@@ -30,6 +30,8 @@
 #include "../util/util.h"
 #include "dropdown.h"
 
+#if 0
+
 typedef struct TITLE_COMMAND_ORDER {
 	uint8 command;
 	rct_string_id nameStringId;
@@ -192,8 +194,11 @@ static uint8 get_zoom()
 	return zoom;
 }
 
+#endif
+
 void window_title_command_editor_open(int index, bool insert)
 {
+#if 0
 	rct_window* window;
 
 	// Check if window is already open
@@ -246,7 +251,10 @@ void window_title_command_editor_open(int index, bool insert)
 		snprintf(textbox1Buffer, BUF_SIZE, "%d", command.rotations);
 		break;
 	}
+#endif
 }
+
+#if 0
 
 static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 {
@@ -579,3 +587,5 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 		}
 	}
 }
+
+#endif

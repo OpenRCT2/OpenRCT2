@@ -21,10 +21,11 @@
 #include "window.h"
 #include "../config.h"
 #include "../title.h"
+#include "../title/TitleSequence.h"
 
 #define TITLE_SEQUENCE_DEFAULT_PRESETS 2
 
-title_command TitleScriptMakeCommand(int command, int parameter1, int parameter2);
+TitleCommand TitleScriptMakeCommand(int command, int parameter1, int parameter2);
 
 #define TITLE_WAIT(t)			TitleScriptMakeCommand(TITLE_SCRIPT_WAIT,		t, 0)
 #define TITLE_LOADMM()			TitleScriptMakeCommand(TITLE_SCRIPT_LOADMM,		0, 0)
@@ -55,8 +56,8 @@ void title_sequence_remove_save(int preset, int index);
 void title_sequence_rename_save(int preset, int index, const char *newName);
 
 // Commands
-void title_sequence_add_command(int preset, title_command command);
-void title_sequence_insert_command(int preset, int index, title_command command);
+void title_sequence_add_command(int preset, TitleCommand command);
+void title_sequence_insert_command(int preset, int index, TitleCommand command);
 void title_sequence_delete_command(int preset, int index);
 void title_sequence_move_down_command(int preset, int index);
 void title_sequence_move_up_command(int preset, int index);

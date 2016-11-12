@@ -38,6 +38,8 @@
 #include "../rct2.h"
 #include "../sprites.h"
 #include "../title.h"
+#include "../title/TitleSequence.h"
+#include "../title/TitleSequenceManager.h"
 #include "dropdown.h"
 #include "error.h"
 #include "../util/util.h"
@@ -1123,11 +1125,10 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			num_items = gConfigTitleSequences.num_presets;
-
+			num_items = (int)title_sequence_manager_get_count();
 			for (i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-				gDropdownItemsArgs[i] = (uintptr_t)&gConfigTitleSequences.presets[i].name;
+				gDropdownItemsArgs[i] = (uintptr_t)title_sequence_manager_get_name(i);
 			}
 
 			window_dropdown_show_text(
@@ -1842,7 +1843,8 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
 
-		set_format_arg(0, uintptr_t, (uintptr_t)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name);
+		const utf8 * name = title_sequence_manager_get_name(gCurrentPreviewTitleSequence);
+		set_format_arg(0, uintptr_t, (uintptr_t)name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,

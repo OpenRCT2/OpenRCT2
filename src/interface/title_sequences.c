@@ -18,6 +18,7 @@
 #include "../rct2.h"
 #include "../title.h"
 #include "../title/TitleSequence.h"
+#include "../title/TitleSequenceManager.h"
 #include "../util/util.h"
 #include "title_sequences.h"
 #include "window.h"
@@ -26,16 +27,18 @@
 uint16 gCurrentTitleSequence;
 uint16 gCurrentPreviewTitleSequence;
 
-title_command TitleScriptMakeCommand(int command, int parameter1, int parameter2)
+TitleCommand TitleScriptMakeCommand(int command, int parameter1, int parameter2)
 {
-	title_command titleCommand = { (uint8)command, (uint8)parameter1, (uint8)parameter2 };
+	// TitleCommand titleCommand = { (uint8)command, (uint8)parameter1, (uint8)parameter2 };
+	TitleCommand titleCommand = { 0 };
 	return titleCommand;
 }
 
 bool title_sequence_name_exists(const char *name)
 {
-	for (int i = 0; i < gConfigTitleSequences.num_presets; i++) {
-		if (_stricmp(gConfigTitleSequences.presets[i].name, name) == 0)
+	size_t count = title_sequence_manager_get_count();
+	for (size_t i = 0; i < count; i++) {
+		if (_stricmp(title_sequence_manager_get_name(i), name) == 0)
 			return true;
 	}
 	return false;
@@ -43,6 +46,8 @@ bool title_sequence_name_exists(const char *name)
 
 bool title_sequence_save_exists(int preset, const char *name)
 {
+	return false;
+#if 0
 	utf8 newName[MAX_PATH];
 	const char *extension = path_get_extension(name);
 	safe_strcpy(newName, name, MAX_PATH);
@@ -53,43 +58,29 @@ bool title_sequence_save_exists(int preset, const char *name)
 			return true;
 	}
 	return false;
+#endif
 }
 
 
 void title_sequence_change_preset(int preset)
 {
-	if (preset >= 0 && preset < gConfigTitleSequences.num_presets) {
-		SafeFree(gConfigInterface.current_title_sequence_preset);
-		switch (preset) {
-		case 0:
-			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1");
-			break;
-		case 1:
-			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1AA");
-			break;
-		case 2:
-			gConfigInterface.current_title_sequence_preset = _strdup("*RCT1AALL");
-			break;
-		case 3:
-			gConfigInterface.current_title_sequence_preset = _strdup("*RCT2");
-			break;
-		case 4:
-			gConfigInterface.current_title_sequence_preset = _strdup("*OPENRCT2");
-			break;
-		default:
-			gConfigInterface.current_title_sequence_preset = _strdup(gConfigTitleSequences.presets[preset].name);
-			break;
-		}
-		gCurrentPreviewTitleSequence = preset;
+	int count = (int)title_sequence_manager_get_count();
+	if (preset < 0 || preset >= count) {
+		return;
 	}
-	window_invalidate_all();
 
-	// Switch to (and restart) this title sequence if it's valid
+	const utf8 * configId = title_sequence_manager_get_config_id(preset);
+	SafeFree(gConfigInterface.current_title_sequence_preset);
+	gConfigInterface.current_title_sequence_preset = _strdup(configId);
+
+	gCurrentPreviewTitleSequence = preset;
 	title_refresh_sequence();
+	window_invalidate_all();
 }
 
 void title_sequence_create_preset(const char *name)
 {
+#if 0
 	if (filename_valid_characters(name) && !title_sequence_name_exists(name)) {
 		int preset = gConfigTitleSequences.num_presets;
 		gConfigTitleSequences.num_presets++;
@@ -112,10 +103,12 @@ void title_sequence_create_preset(const char *name)
 		title_sequence_save_preset_script(preset);
 		gCurrentTitleSequence = preset;
 	}
+#endif
 }
 
 void title_sequence_duplicate_preset(int duplicate, const char *name)
 {
+#if 0
 	if (duplicate >= 0 && duplicate < gConfigTitleSequences.num_presets && filename_valid_characters(name) && !title_sequence_name_exists(name)) {
 		int preset = gConfigTitleSequences.num_presets;
 		gConfigTitleSequences.num_presets++;
@@ -124,7 +117,7 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		gConfigTitleSequences.presets[preset].path[0] = 0;
 
 		size_t savesSize = sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * gConfigTitleSequences.presets[duplicate].num_saves;
-		size_t commandsSize = sizeof(title_command) * gConfigTitleSequences.presets[duplicate].num_commands;
+		size_t commandsSize = sizeof(TitleCommand) * gConfigTitleSequences.presets[duplicate].num_commands;
 		gConfigTitleSequences.presets[preset].saves = malloc(savesSize);
 		gConfigTitleSequences.presets[preset].commands = malloc(commandsSize);
 		memcpy(gConfigTitleSequences.presets[preset].saves, gConfigTitleSequences.presets[duplicate].saves, savesSize);
@@ -173,10 +166,12 @@ void title_sequence_duplicate_preset(int duplicate, const char *name)
 		title_sequence_save_preset_script(preset);
 		gCurrentTitleSequence = preset;
 	}
+#endif
 }
 
 void title_sequence_delete_preset(int preset)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
 		// Delete the folder
 		utf8 path[MAX_PATH];
@@ -201,10 +196,12 @@ void title_sequence_delete_preset(int preset)
 		else if (gCurrentPreviewTitleSequence == preset)
 			title_sequence_change_preset(0);
 	}
+#endif
 }
 
 void title_sequence_rename_preset(int preset, const char *newName)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && filename_valid_characters(newName) && !title_sequence_name_exists(newName)) {
 		// Rename the folder
 		utf8 src[MAX_PATH], dest[MAX_PATH];
@@ -221,11 +218,13 @@ void title_sequence_rename_preset(int preset, const char *newName)
 			gConfigInterface.current_title_sequence_preset = gConfigTitleSequences.presets[preset].name;
 		}
 	}
+#endif
 }
 
 
 void title_sequence_add_save(int preset, const char *path, const char *newName)
 {
+#if 0
 	utf8 newPath[MAX_PATH];
 	const char *extension = path_get_extension(newName);
 	safe_strcpy(newPath, newName, MAX_PATH);
@@ -249,10 +248,12 @@ void title_sequence_add_save(int preset, const char *path, const char *newName)
 		if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 			path_append_extension(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], ".sv6", TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 	}
+#endif
 }
 
 void title_sequence_remove_save(int preset, int index)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves) {
 		// Delete the save file
 		utf8 path[MAX_PATH];
@@ -278,10 +279,12 @@ void title_sequence_remove_save(int preset, int index)
 		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
 
 void title_sequence_rename_save(int preset, int index, const char *newName)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_saves &&
 		filename_valid_characters(newName) && !title_sequence_save_exists(preset, newName)) {
 
@@ -305,22 +308,26 @@ void title_sequence_rename_save(int preset, int index, const char *newName)
 			path_append_extension(gConfigTitleSequences.presets[preset].saves[index], ".sv6", TITLE_SEQUENCE_MAX_SAVE_LENGTH);
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
 
 
-void title_sequence_add_command(int preset, title_command command)
+void title_sequence_add_command(int preset, TitleCommand command)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(TitleCommand) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
 		gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands] = command;
 		gConfigTitleSequences.presets[preset].num_commands++;
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
-void title_sequence_insert_command(int preset, int index, title_command command)
+void title_sequence_insert_command(int preset, int index, TitleCommand command)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index <= gConfigTitleSequences.presets[preset].num_commands) {
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(TitleCommand) * (size_t)(gConfigTitleSequences.presets[preset].num_commands + 1));
 		for (int i = gConfigTitleSequences.presets[preset].num_commands; i > index; i--) {
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i - 1];
 		}
@@ -328,36 +335,43 @@ void title_sequence_insert_command(int preset, int index, title_command command)
 		gConfigTitleSequences.presets[preset].num_commands++;
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
 
 void title_sequence_delete_command(int preset, int index)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index < gConfigTitleSequences.presets[preset].num_commands) {
 		for (int i = index; i < gConfigTitleSequences.presets[preset].num_commands - 1; i++) {
 			gConfigTitleSequences.presets[preset].commands[i] = gConfigTitleSequences.presets[preset].commands[i + 1];
 		}
 		gConfigTitleSequences.presets[preset].num_commands--;
-		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
+		gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(TitleCommand) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
 
 void title_sequence_move_down_command(int preset, int index)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index >= 0 && index + 1 < gConfigTitleSequences.presets[preset].num_commands) {
-		title_command command = gConfigTitleSequences.presets[preset].commands[index];
+		TitleCommand command = gConfigTitleSequences.presets[preset].commands[index];
 		gConfigTitleSequences.presets[preset].commands[index] = gConfigTitleSequences.presets[preset].commands[index + 1];
 		gConfigTitleSequences.presets[preset].commands[index + 1] = command;
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }
 
 void title_sequence_move_up_command(int preset, int index)
 {
+#if 0
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets && index > 0 && index < gConfigTitleSequences.presets[preset].num_commands) {
-		title_command command = gConfigTitleSequences.presets[preset].commands[index];
+		TitleCommand command = gConfigTitleSequences.presets[preset].commands[index];
 		gConfigTitleSequences.presets[preset].commands[index] = gConfigTitleSequences.presets[preset].commands[index - 1];
 		gConfigTitleSequences.presets[preset].commands[index - 1] = command;
 		title_sequence_save_preset_script(preset);
 	}
+#endif
 }

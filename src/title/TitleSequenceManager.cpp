@@ -1,0 +1,154 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include <vector>
+#include "../core/FileScanner.h"
+#include "../core/Memory.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
+#include "TitleSequenceManager.h"
+
+extern "C"
+{
+    #include "../localisation/localisation.h"
+    #include "../openrct2.h"
+}
+
+namespace TitleSequenceManager
+{
+    struct PredefinedSequence
+    {
+        const utf8 * ConfigId;
+        const utf8 * Filename;
+        rct_string_id StringId;
+    };
+
+    const PredefinedSequence PredefinedSequences[] =
+    {
+        { "*RCT1",      "rct1.parkseq",         STR_TITLE_SEQUENCE_RCT1 },
+        { "*RCT1AA",    "rct1aa.parkseq",       STR_TITLE_SEQUENCE_RCT1_AA },
+        { "*RCT1AALL",  "rct1aall.parkseq",     STR_TITLE_SEQUENCE_RCT1_AA_LL },
+        { "*RCT2",      "rct2.parkseq",         STR_TITLE_SEQUENCE_RCT2 },
+        { "*OPENRCT2",  "openrct2.parkseq",     STR_TITLE_SEQUENCE_OPENRCT2 },
+    };
+
+    std::vector<TitleSequenceManagerItem> _items;
+
+    static std::string GetNameFromSequencePath(const utf8 * path);
+
+    size_t GetCount()
+    {
+        return _items.size();
+    }
+
+    const TitleSequenceManagerItem * GetItem(size_t i)
+    {
+        return &_items[i];
+    }
+
+    void Scan()
+    {
+        utf8 path[MAX_PATH];
+        platform_get_openrct_data_path(path, sizeof(path));
+        Path::Append(path, sizeof(path), "title");
+        Path::Append(path, sizeof(path), "*.parkseq");
+
+        IFileScanner * fileScanner = Path::ScanDirectory(path, true);
+        while (fileScanner->Next())
+        {
+            const utf8 * path = fileScanner->GetPath();
+
+            TitleSequenceManagerItem item;
+            item.Name = GetNameFromSequencePath(path);
+            item.Path = std::string(path);
+            _items.push_back(item);
+        }
+        delete fileScanner;
+    }
+
+    static std::string GetNameFromSequencePath(const utf8 * path)
+    {
+        const utf8 * filename = Path::GetFileName(path);
+        for (const auto &pseq : PredefinedSequences)
+        {
+            if (String::Equals(filename, pseq.Filename, true))
+            {
+                return language_get_string(pseq.StringId);
+            }
+        }
+
+        utf8 * name = Path::GetFileNameWithoutExtension(filename);
+        std::string result = std::string(name);
+        Memory::Free(name);
+        return result;
+    }
+}
+
+extern "C"
+{
+    size_t title_sequence_manager_get_count()
+    {
+        return TitleSequenceManager::GetCount();
+    }
+
+    const utf8 * title_sequence_manager_get_name(size_t index)
+    {
+        auto item = TitleSequenceManager::GetItem(index);
+        const utf8 * name = item->Name.c_str();
+        return name;
+    }
+
+    const utf8 * title_sequence_manager_get_path(size_t index)
+    {
+        auto item = TitleSequenceManager::GetItem(index);
+        const utf8 * name = item->Path.c_str();
+        return name;
+    }
+
+    const utf8 * title_sequence_manager_get_config_id(size_t index)
+    {
+        auto item = TitleSequenceManager::GetItem(index);
+        const utf8 * name = item->Name.c_str();
+        const utf8 * filename = Path::GetFileName(item->Path.c_str());
+        for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
+        {
+            if (String::Equals(filename, pseq.Filename, true))
+            {
+                return pseq.ConfigId;
+            }
+        }
+        return name;
+    }
+
+    size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId)
+    {
+        size_t count = TitleSequenceManager::GetCount();
+        for (size_t i = 0; i < count; i++)
+        {
+            const utf8 * cid = title_sequence_manager_get_config_id(i);
+            if (String::Equals(cid, configId))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
+    }
+
+    void title_sequence_manager_scan()
+    {
+        TitleSequenceManager::Scan();
+    }
+}

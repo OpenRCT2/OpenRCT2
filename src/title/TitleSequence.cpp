@@ -65,14 +65,17 @@ extern "C"
 
     void FreeTitleSequence(TitleSequence * seq)
     {
-        Memory::Free(seq->Name);
-        Memory::Free(seq->Path);
-        Memory::Free(seq->Commands);
-        for (size_t i = 0; i < seq->NumSaves; i++)
+        if (seq != nullptr)
         {
-            Memory::Free(seq->Saves[i]);
+            Memory::Free(seq->Name);
+            Memory::Free(seq->Path);
+            Memory::Free(seq->Commands);
+            for (size_t i = 0; i < seq->NumSaves; i++)
+            {
+                Memory::Free(seq->Saves[i]);
+            }
+            Memory::Free(seq->Saves);
         }
-        Memory::Free(seq->Saves);
     }
 }
 
@@ -265,3 +268,60 @@ static void * GetZipFileData(zip_t * zip, const char * name, size_t * outSize)
     if (outSize != NULL) *outSize = dataSize;
     return data;
 }
+
+/*
+void title_sequence_save_preset_script(int preset)
+{
+    utf8 path[MAX_PATH];
+    SDL_RWops *file;
+    int i;
+
+
+    platform_get_user_directory(path, "title sequences", sizeof(path));
+    safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
+    safe_strcat_path(path, "script.txt", MAX_PATH);
+
+    file = SDL_RWFromFile(path, "wb");
+    if (file == NULL) {
+        log_error("Unable to write to script file.");
+        return;
+    }
+
+    for (i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
+        title_command *command = &gConfigTitleSequences.presets[preset].commands[i];
+        switch (command->command) {
+        case TITLE_SCRIPT_LOAD:
+            if (command->saveIndex == 0xFF)
+                rwopsprintf(file, "LOAD <No save file>");
+            else
+                rwopsprintf(file, "LOAD %s", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+            break;
+        case TITLE_SCRIPT_LOCATION:
+            rwopsprintf(file, "LOCATION %i %i", command->x, command->y);
+            break;
+        case TITLE_SCRIPT_ROTATE:
+            rwopsprintf(file, "ROTATE %i", command->rotations);
+            break;
+        case TITLE_SCRIPT_ZOOM:
+            rwopsprintf(file, "ZOOM %i", command->zoom);
+            break;
+        case TITLE_SCRIPT_SPEED:
+            rwopsprintf(file, "SPEED %i", command->speed);
+            break;
+        case TITLE_SCRIPT_WAIT:
+            rwopsprintf(file, "WAIT %i", command->seconds);
+            rwopswritenewline(file);
+            break;
+        case TITLE_SCRIPT_RESTART:
+            rwopsprintf(file, "RESTART");
+            break;
+        case TITLE_SCRIPT_END:
+            rwopsprintf(file, "END");
+            break;
+        }
+        rwopswritenewline(file);
+    }
+
+    SDL_RWclose(file);
+}
+*/
