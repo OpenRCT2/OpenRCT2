@@ -14,11 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <vector>
 #include "../core/FileScanner.h"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "TitleSequenceManager.h"
 
 extern "C"
@@ -59,6 +61,19 @@ namespace TitleSequenceManager
         return &_items[i];
     }
 
+    const uint16 GetPredefinedIndex(const utf8 * path)
+    {
+        const utf8 * filename = Path::GetFileName(path);
+        for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)
+        {
+            if (String::Equals(filename, PredefinedSequences[i].Filename, true))
+            {
+                return i;
+            }
+        }
+        return PREDEFINED_INDEX_CUSTOM;
+    }
+
     void Scan()
     {
         utf8 path[MAX_PATH];
@@ -72,25 +87,35 @@ namespace TitleSequenceManager
             const utf8 * path = fileScanner->GetPath();
 
             TitleSequenceManagerItem item;
-            item.Name = GetNameFromSequencePath(path);
+            item.PredefinedIndex = GetPredefinedIndex(path);
             item.Path = std::string(path);
+            if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
+            {
+                rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
+                item.Name = String::Duplicate(language_get_string(stringId));
+            }
+            else
+            {
+                item.Name = GetNameFromSequencePath(path);
+            }
             _items.push_back(item);
         }
         delete fileScanner;
+
+        std::sort(_items.begin(), _items.end(), [](const TitleSequenceManagerItem &a,
+                                                   const TitleSequenceManagerItem &b) -> bool
+        {
+            if (a.PredefinedIndex < b.PredefinedIndex)
+            {
+                return true;
+            }
+            return _strcmpi(a.Name.c_str(), b.Name.c_str()) < 0;
+        });
     }
 
     static std::string GetNameFromSequencePath(const utf8 * path)
     {
-        const utf8 * filename = Path::GetFileName(path);
-        for (const auto &pseq : PredefinedSequences)
-        {
-            if (String::Equals(filename, pseq.Filename, true))
-            {
-                return language_get_string(pseq.StringId);
-            }
-        }
-
-        utf8 * name = Path::GetFileNameWithoutExtension(filename);
+        utf8 * name = Path::GetFileNameWithoutExtension(path);
         std::string result = std::string(name);
         Memory::Free(name);
         return result;

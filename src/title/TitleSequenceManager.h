@@ -26,6 +26,7 @@ struct TitleSequenceManagerItem
 {
     std::string Name;
     std::string Path;
+    uint16      PredefinedIndex;
 };
 
 namespace TitleSequenceManager
@@ -33,6 +34,8 @@ namespace TitleSequenceManager
     size_t GetCount();
     const TitleSequenceManagerItem * GetItem(size_t i);
 }
+
+constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
 
 #else
 
