@@ -67,6 +67,9 @@ enum {
 	COLOUR_LIGHT_WATER = 10
 };
 
+#define TEXT_COLOUR_254			(254)
+#define TEXT_COLOUR_255			(255)
+
 #define COLOUR_FLAG_OUTLINE		(1 << 5)
 #define COLOUR_FLAG_INSET 		(1 << 6) // 64, 0x40
 #define COLOUR_FLAG_TRANSLUCENT (1 << 7)

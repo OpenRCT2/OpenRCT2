@@ -898,9 +898,9 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 		format_string(ptr, 256, stringId, NULL);
 
 		if (disableItemMovement) {
-			gCurrentFontSpriteBase = -1;
+			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
 			if (colour == COLOUR_BRIGHT_GREEN && _editorInventionsListDraggedItem == NULL) {
-				gCurrentFontSpriteBase = -2;
+				gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
 			}
 			colour = COLOUR_FLAG_INSET | w->colours[1];
 		} else {
