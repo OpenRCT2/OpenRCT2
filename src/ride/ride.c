@@ -8183,7 +8183,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 	gCommandPosition.x = x;
 	gCommandPosition.y = y;
 
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(1)) {
 		return MONEY32_UNDEFINED;
 	}
 

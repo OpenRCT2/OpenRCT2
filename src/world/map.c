@@ -2838,7 +2838,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		return;
 	}
 
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(1)) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -3036,7 +3036,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	gCommandPosition.x += 16;
 	gCommandPosition.y += 16;
 	if(game_is_not_paused() || gCheatsBuildInPauseMode){
-		if (sub_68B044()) {
+		if (map_check_free_elements_and_reorganise(1)) {
 			if ((byte_9D8150 & 1) || (x <= gMapSizeMaxXY && y <= gMapSizeMaxXY)) {
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
 				if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
@@ -3612,7 +3612,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		}
 	}
 
-	if (!sub_68B044()){
+	if (!map_check_free_elements_and_reorganise(1)){
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -3719,11 +3719,6 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		return;
 	}
 
-	if (!sub_68B044()) {
-		*ebx = MONEY32_UNDEFINED;
-		return;
-	}
-
 	rct_scenery_entry *scenery_entry = get_large_scenery_entry(entry_index);
 	if (scenery_entry == (rct_scenery_entry *)-1)
 	{
@@ -3754,11 +3749,12 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		}
 	}
 
-
+	uint32 num_elements = 0;
 	sint16 maxHeight = 0xFFFF;
 	for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles;
 		tile->x_offset != -1;
 		tile++) {
+		num_elements++;
 
 		rct_xy16 curTile = {
 			.x = tile->x_offset,
@@ -3769,7 +3765,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 
 		curTile.x += x;
 		curTile.y += y;
-
+		
 		if(curTile.x >= 0x1FFF || curTile.y >= 0x1FFF || curTile.x < 0 || curTile.y < 0){
 			continue;
 		}
@@ -3793,6 +3789,11 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 
 	if(z != 0){
 		maxHeight = z;
+	}
+	
+	if (!map_check_free_elements_and_reorganise(num_elements)) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
 	}
 
 	gCommandPosition.z = maxHeight;
@@ -4091,25 +4092,27 @@ void map_reorganise_elements()
 /**
  *
  *  rct2: 0x0068B044
+ *  Returns true on space available for more elements
+ *  Reorganises the map elements to check for space
  */
-int sub_68B044()
+bool map_check_free_elements_and_reorganise(int num_elements)
 {
-	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
-		return 1;
+	if ((gNextFreeMapElement + num_elements) <= gMapElements + MAX_MAP_ELEMENTS)
+		return true;
 
 	for (int i = 1000; i != 0; --i)
 		sub_68B089();
 
-	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
-		return 1;
+	if ((gNextFreeMapElement + num_elements) <= gMapElements + MAX_MAP_ELEMENTS)
+		return true;
 
 	map_reorganise_elements();
 
-	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
-		return 1;
+	if ((gNextFreeMapElement + num_elements) <= gMapElements + MAX_MAP_ELEMENTS)
+		return true;
 	else{
 		gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
-		return 0;
+		return false;
 	}
 }
 
@@ -4121,7 +4124,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 {
 	rct_map_element *originalMapElement, *newMapElement, *insertedElement;
 
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(1)) {
 		log_error("Cannot insert new element");
 		return NULL;
 	}
@@ -5158,7 +5161,7 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 	// ??
 	gCommandPosition.z = (z & 0xFF) << 4;
 
-	if (!sub_68B044()) {
+	if (!map_check_free_elements_and_reorganise(3)) {
 		return MONEY32_UNDEFINED;
 	}
 
