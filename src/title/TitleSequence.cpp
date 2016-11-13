@@ -16,7 +16,6 @@
 
 #include "../common.h"
 #include <SDL.h>
-#include <zip.h>
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -27,14 +26,14 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "TitleSequence.h"
 
 static std::vector<utf8 *> GetSaves(const utf8 * path);
-static std::vector<utf8 *> GetSaves(zip_t * zip);
+static std::vector<utf8 *> GetSaves(IZipArchive * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
 static void LegacyScriptGetLine(SDL_RWops * file, char * parts);
 static void * ReadScriptFile(const utf8 * path, size_t * outSize);
-static void * GetZipFileData(zip_t * zip, const char * name, size_t * outSize);
 
 extern "C"
 {
@@ -48,25 +47,25 @@ extern "C"
         const utf8 * ext = Path::GetExtension(path);
         if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
         {
-            int error;
-            zip_t * zip = zip_open(path, ZIP_RDONLY, &error);
+            IZipArchive * zip = Zip::TryOpen(path);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", path);
                 return nullptr;
             }
 
-            script = (char *)GetZipFileData(zip, "script.txt", &scriptLength);
+            script = (char *)zip->GetFileData("script.txt", &scriptLength);
             if (script == nullptr)
             {
                 Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
-
-                zip_close(zip);
+                delete zip;
                 return nullptr;
             }
 
             saves = GetSaves(zip);
             isZip = true;
+
+            delete zip;
         }
         else
         {
@@ -120,14 +119,14 @@ extern "C"
             const utf8 * filename = seq->Saves[index];
             if (seq->IsZip)
             {
-                int error;
-                zip_t * zip = zip_open(seq->Path, ZIP_RDONLY, &error);
+                IZipArchive * zip = Zip::TryOpen(seq->Path);
                 if (zip != nullptr)
                 {
                     handle = Memory::Allocate<TitleSequenceParkHandle>();
-                    handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
+                    handle->Data = zip->GetFileData(filename, &handle->DataSize);
                     handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
                     handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+                    delete zip;
                 }
             }
             else
@@ -173,13 +172,13 @@ static std::vector<utf8 *> GetSaves(const utf8 * directory)
     return saves;
 }
 
-static std::vector<utf8 *> GetSaves(zip_t * zip)
+static std::vector<utf8 *> GetSaves(IZipArchive * zip)
 {
     std::vector<utf8 *> saves;
-    int numFiles = zip_get_num_files(zip);
-    for (int i = 0; i < numFiles; i++)
+    size_t numFiles = zip->GetNumFiles();
+    for (size_t i = 0; i < numFiles; i++)
     {
-        const utf8 * name = zip_get_name(zip, i, ZIP_FL_ENC_GUESS);
+        const utf8 * name = zip->GetFileName(i);
         const utf8 * ext = Path::GetExtension(name);
         if (String::Equals(ext, ".sv6", true) ||
             String::Equals(ext, ".sc6", true))
@@ -352,37 +351,6 @@ static void * ReadScriptFile(const utf8 * path, size_t * outSize)
 
     *outSize = size;
     return buffer;
-}
-
-static void * GetZipFileData(zip_t * zip, const char * name, size_t * outSize)
-{
-    void * data = nullptr;
-    size_t dataSize = 0;
-
-    zip_stat_t zipFileStat;
-    if (zip_stat(zip, name, 0, &zipFileStat) == ZIP_ER_OK)
-    {
-        zip_file_t * zipFile = zip_fopen(zip, name, 0);
-        if (zipFile != nullptr)
-        {
-            if (zipFileStat.size < SIZE_MAX)
-            {
-                dataSize = zipFileStat.size;
-                data = malloc(dataSize);
-                size_t readBytes = zip_fread(zipFile, data, dataSize);
-                if (readBytes != dataSize)
-                {
-                    free(data);
-                    data = NULL;
-                    dataSize = 0;
-                }
-                zip_fclose(zipFile);
-            }
-        }
-    }
-
-    if (outSize != NULL) *outSize = dataSize;
-    return data;
 }
 
 /*

@@ -110,6 +110,7 @@
     <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\core\String.cpp" />
     <ClCompile Include="src\core\textinputbuffer.c" />
+    <ClCompile Include="src\core\Zip.cpp" />
     <ClCompile Include="src\interface\CursorData.cpp" />
     <ClCompile Include="src\interface\Cursors.cpp" />
     <ClCompile Include="src\diagnostic.c" />
@@ -449,6 +450,7 @@
     <ClInclude Include="src\core\StringReader.hpp" />
     <ClInclude Include="src\core\textinputbuffer.h" />
     <ClInclude Include="src\core\Util.hpp" />
+    <ClInclude Include="src\core\Zip.h" />
     <ClInclude Include="src\interface\Cursors.h" />
     <ClInclude Include="src\diagnostic.h" />
     <ClInclude Include="src\drawing\drawing.h" />
