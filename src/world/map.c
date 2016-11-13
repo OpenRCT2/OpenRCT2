@@ -2285,7 +2285,7 @@ void game_command_lower_land(int* eax, int* ebx, int* ecx, int* edx, int* esi, i
 	);
 }
 
-static int map_get_corner_height(rct_map_element *mapElement, int direction)
+static int map_element_get_corner_height(rct_map_element *mapElement, int direction)
 {
 	int z = mapElement->base_height;
 	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
@@ -2347,7 +2347,7 @@ static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int ta
 		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", x, y);
 		return MONEY32_UNDEFINED;
 	}
-	int baseZ = map_get_corner_height(mapElement, direction);
+	int baseZ = map_element_get_corner_height(mapElement, direction);
 
 	// Check if tile is same height as target tile
 	if (baseZ == targetBaseZ) {
@@ -2461,7 +2461,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 		// Corner (North-West)
 		mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
-		z = map_get_corner_height(mapElement, 2);
+		z = map_element_get_corner_height(mapElement, 2);
 		result = smooth_land_tile(0, flags, x, y, z, minZ);
 		if (result != MONEY32_UNDEFINED) {
 			totalCost += result;
@@ -2473,7 +2473,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 			int y2 = clamp(mapTop, y, mapBottom);
 			mapElement = map_get_surface_element_at(mapLeft >> 5, y2 >> 5);
 			if (y >= mapTop) {
-				z = map_get_corner_height(mapElement, 3);
+				z = map_element_get_corner_height(mapElement, 3);
 				result = smooth_land_tile((y <= mapBottom) ? 0 : 1, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2487,7 +2487,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 				}
 			}
 			if (y <= mapBottom) {
-				z = map_get_corner_height(mapElement, 2);
+				z = map_element_get_corner_height(mapElement, 2);
 				result = smooth_land_tile((y >= mapTop) ? 1 : 0, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2499,7 +2499,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 		// Corner (South-West)
 		mapElement = map_get_surface_element_at(mapLeft >> 5, mapBottom >> 5);
-		z = map_get_corner_height(mapElement, 3);
+		z = map_element_get_corner_height(mapElement, 3);
 		result = smooth_land_tile(1, flags, x, y, z, minZ);
 		if (result != MONEY32_UNDEFINED) {
 			totalCost += result;
@@ -2511,7 +2511,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 			int x2 = clamp(mapLeft, x, mapRight);
 			mapElement = map_get_surface_element_at(x2 >> 5, mapBottom >> 5);
 			if (x >= mapLeft) {
-				z = map_get_corner_height(mapElement, 0);
+				z = map_element_get_corner_height(mapElement, 0);
 				result = smooth_land_tile((x <= mapRight) ? 1 : 2, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2525,7 +2525,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 				}
 			}
 			if (x <= mapRight) {
-				z = map_get_corner_height(mapElement, 3);
+				z = map_element_get_corner_height(mapElement, 3);
 				result = smooth_land_tile((x >= mapLeft) ? 2 : 1, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2536,7 +2536,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 		// Corner (South-East)
 		mapElement = map_get_surface_element_at(mapRight >> 5, mapBottom >> 5);
-		z = map_get_corner_height(mapElement, 0);
+		z = map_element_get_corner_height(mapElement, 0);
 		result = smooth_land_tile(2, flags, x, y, z, minZ);
 		if (result != MONEY32_UNDEFINED) {
 			totalCost += result;
@@ -2548,7 +2548,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 			int y2 = clamp(mapTop, y, mapBottom);
 			mapElement = map_get_surface_element_at(mapRight >> 5, y2 >> 5);
 			if (y <= mapBottom) {
-				z = map_get_corner_height(mapElement, 1);
+				z = map_element_get_corner_height(mapElement, 1);
 				result = smooth_land_tile((y >= mapTop) ? 2 : 3, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2562,7 +2562,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 				}
 			}
 			if (y >= mapTop) {
-				z = map_get_corner_height(mapElement, 0);
+				z = map_element_get_corner_height(mapElement, 0);
 				result = smooth_land_tile((y <= mapBottom) ? 3 : 2, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2574,7 +2574,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 		// Corner (North-East)
 		mapElement = map_get_surface_element_at(mapRight >> 5, mapTop >> 5);
-		z = map_get_corner_height(mapElement, 1);
+		z = map_element_get_corner_height(mapElement, 1);
 		result = smooth_land_tile(3, flags, x, y, z, minZ);
 		if (result != MONEY32_UNDEFINED) {
 			totalCost += result;
@@ -2586,7 +2586,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 			int x2 = clamp(mapLeft, x, mapRight);
 			mapElement = map_get_surface_element_at(x2 >> 5, mapTop >> 5);
 			if (x <= mapRight) {
-				z = map_get_corner_height(mapElement, 2);
+				z = map_element_get_corner_height(mapElement, 2);
 				result = smooth_land_tile((x >= mapLeft) ? 3 : 0, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
@@ -2600,7 +2600,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 				}
 			}
 			if (x >= mapLeft) {
-				z = map_get_corner_height(mapElement, 1);
+				z = map_element_get_corner_height(mapElement, 1);
 				result = smooth_land_tile((x <= mapRight) ? 0 : 3, flags, x, y, z, minZ);
 				if (result != MONEY32_UNDEFINED) {
 					totalCost += result;
