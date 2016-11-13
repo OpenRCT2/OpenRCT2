@@ -147,15 +147,15 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_up(uint8 rideIndex,
 	junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, JUNIOR_RC_CHAIN_NONE);
 }
 
-static const uint8 left_quarter_turn_5_tiles_to_right_turn_map[] = {6, 4, 5, 3, 1, 2, 0};
+static const uint8 water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {6, 4, 5, 3, 1, 2, 0};
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	water_rc_track_right_quarter_turn_5_tiles_25_deg_up(rideIndex, left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction + 1) % 4, height, mapElement);}
+	water_rc_track_right_quarter_turn_5_tiles_25_deg_up(rideIndex, water_rc_left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction + 1) % 4, height, mapElement);}
 
 static void water_rc_track_right_quarter_turn_5_tiles_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	water_rc_track_left_quarter_turn_5_tiles_25_deg_up(rideIndex, left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction + 3) % 4, height, mapElement);
+	water_rc_track_left_quarter_turn_5_tiles_25_deg_up(rideIndex, water_rc_left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction + 3) % 4, height, mapElement);
 }
 
 // 3 tile turns
@@ -170,17 +170,17 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_down(uint8 rideInde
 	junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, JUNIOR_RC_CHAIN_NONE);
 }
 
-static const uint8 left_quarter_turn_3_tiles_to_right_turn_map[] = {3, 1, 2, 0};
+static const uint8 water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {3, 1, 2, 0};
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	trackSequence = left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
+	trackSequence = water_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
 	water_rc_track_right_quarter_turn_3_tiles_25_deg_down(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	trackSequence = left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
+	trackSequence = water_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
 	water_rc_track_right_quarter_turn_3_tiles_25_deg_up(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
