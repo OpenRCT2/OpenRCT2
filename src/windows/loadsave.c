@@ -495,7 +495,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		id = STR_UP;
 	else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
 		id = STR_DOWN;
-	gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, 1, w->x + 4 + (w->width - 8) / 4, w->y + 50, (w->width - 8) / 2);
+	gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4, w->y + 50, (w->width - 8) / 2);
 	// Date button text
 	if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
 		id = STR_UP;
@@ -503,7 +503,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		id = STR_DOWN;
 	else
 		id = STR_NONE;
-	gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, 1, w->x + 4 + (w->width - 8) * 3 / 4, w->y + 50, (w->width - 8) / 2);
+	gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) * 3 / 4, w->y + 50, (w->width - 8) / 2);
 }
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)

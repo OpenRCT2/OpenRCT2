@@ -332,7 +332,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		gfx_fill_rect(dpi, x - 1, y - 1, x + w + 1, y + h + 1, 12);
 		gfx_fill_rect(dpi, x, y, x + w, y + h, 0);
-		gfx_draw_string(dpi, gTextInputComposition, 12, x, y);
+		gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
 	}
 }
 

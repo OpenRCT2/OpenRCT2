@@ -1728,11 +1728,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 	}
 
 	// Draw coordinates
-	gfx_draw_string(dpi, "X:", 12, w->x + 6, w->y + 24);
-	gfx_draw_string(dpi, "Y:", 12, w->x + 64, w->y + 24);
+	gfx_draw_string(dpi, "X:", COLOUR_DARK_GREEN, w->x + 6, w->y + 24);
+	gfx_draw_string(dpi, "Y:", COLOUR_DARK_GREEN, w->x + 64, w->y + 24);
 	if (windowTileInspectorTileSelected) {
-		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, 12, w->x + 48, w->y + 24);
-		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, 12, w->x + 105, w->y + 24);
+		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, COLOUR_DARK_GREEN, w->x + 48, w->y + 24);
+		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 105, w->y + 24);
 	}
 	else {
 		// TODO: Draw -- or something similar
@@ -1751,13 +1751,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Terrain texture name
 			rct_string_id terrainNameId = terrainTypeStringIds[map_element_get_terrain(mapElement)];
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_DARK_GREEN, x, y);
 
 			// Edge texture name
 			int idx = map_element_get_terrain_edge(mapElement);
 			openrct2_assert(idx < countof(terrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
 			rct_string_id terrainEdgeNameId = terrainEdgeTypeStringIds[map_element_get_terrain_edge(mapElement)];
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, 12, x, y + 11);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 
 			// Land ownership
 			rct_string_id landOwnership;
@@ -1766,27 +1766,27 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
 			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
 			else landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, 12, x, y + 22);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
 			// Water level
 			int waterLevel = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, 12, x, y + 33);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
 			// Properties
 			// Raise / lower label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Raised corners
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1794,32 +1794,32 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Path name
 			rct_string_id pathNameId = get_footpath_entry(footpath_element_get_type(mapElement))->string_idx;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, COLOUR_DARK_GREEN, x, y);
 
 			// Path addition
 			if (footpath_element_has_path_scenery(mapElement)) {
 				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(mapElement);
 				rct_string_id additionNameId = get_footpath_item_entry(pathAdditionType)->name;
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
 
 			// Properties
 			// Raise / lower label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_PATH_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_PATH_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Path connections
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_PATH_CHECK_EDGE_W].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1829,26 +1829,26 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			sint16 rideId = mapElement->properties.track.ride_index;
 			rct_ride *ride = get_ride(rideId);
 			rct_string_id rideType = STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + ride->type;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, 12, x, y);
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, 12, x, y + 11);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);
 			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(0 + sizeof(rct_string_id), uint32, ride->name_arguments);
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, 12, x, y + 22);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
 			// Track
 			sint16 trackType = mapElement->properties.track.type;
 			sint16 sequenceNumber = mapElement->properties.track.sequence & 0x0F;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, 12, x, y + 33);
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, 12, x, y + 44);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
 
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1856,7 +1856,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Age
 			sint16 age = mapElement->properties.scenery.age;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
 			// Quadrant value
 			if (!(get_small_scenery_entry(mapElement->properties.scenery.type)->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)) {
@@ -1867,31 +1867,31 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 					STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
 					STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE
 				};
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT, &quadrant_string_idx[quadrant], 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT, &quadrant_string_idx[quadrant], COLOUR_DARK_GREEN, x, y + 11);
 			}
 
 			// Scenery ID
 			sint16 idx = mapElement->properties.scenery.type;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, 12, x, y + 22);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_DARK_GREEN, x, y + 22);
 
 			// Properties
 			// Raise / Lower
 			y = w->y + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Quarter tile
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_SCENERY_CHECK_QUARTER_E].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_QUADRANT_LABEL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Collision
 			y = w->y + w->widgets[WIDX_SCENERY_CHECK_COLLISION_E].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLLISSION, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1899,7 +1899,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Entrance type
 			rct_string_id entranceType = entranceTypeStringIds[mapElement->properties.entrance.type];
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, COLOUR_DARK_GREEN, x, y);
 
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
 				// Park entrance ID
@@ -1907,40 +1907,40 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 				int middleY = windowTileInspectorTileY << 5;
 				// TODO: Make this work with Left/Right park entrance parts
 				sint16 parkEntranceIndex = park_get_entrance_index(middleX, middleY, mapElement->base_height * 8);
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {
 				sint16 rideEntranceIndex = (mapElement->properties.entrance.index & 0x30) >> 4;
 				if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
 					// Ride entrance ID
-					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, 12, x, y + 11);
+					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
 				}
 				else {
 					// Ride exit ID
-					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, 12, x, y + 11);
+					gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_EXIT_ID, &rideEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
 				}
 			}
 
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
 				// Entrance part
 				rct_string_id entrancePart = parkEntrancePartStringIds[mapElement->properties.entrance.index & 0x0F];
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, 12, x, y + 22);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, COLOUR_DARK_GREEN, x, y + 22);
 			}
 			else {
 				// Ride ID
 				sint16 rideId = mapElement->properties.entrance.ride_index;
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, 12, x, y + 22);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 22);
 			}
 
 			// Properties
 			// Raise / Lower
 			y = w->y + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1948,31 +1948,31 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Type
 			sint16 fenceType = mapElement->properties.fence.type;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_TYPE, &fenceType, COLOUR_DARK_GREEN, x, y);
 
 			// Banner info
 			rct_wall_scenery_entry fenceEntry = get_wall_entry(fenceType)->wall;
 			if (fenceEntry.flags & WALL_SCENERY_IS_BANNER) {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[mapElement->properties.fence.item[0]].string_idx, COLOUR_DARK_GREEN, x, y + 11);
 			}
 			else {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, 12, x, y + 11);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 11);
 			}
 
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_FENCE_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Slope label
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_FENCE_DROPDOWN_SLOPE].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_SLOPE, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_FENCE_SLOPE, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -1981,11 +1981,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Details
 			// Type
 			sint16 largeSceneryType = mapElement->properties.scenerymultiple.type & 0x03FF;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_DARK_GREEN, x, y);
 
 			// Part ID
 			sint16 pieceID = (mapElement->properties.scenerymultiple.type & 0xFC00) >> 10;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, 12, x, y + 11);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_DARK_GREEN, x, y + 11);
 
 			// Banner info
 			rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
@@ -1994,21 +1994,21 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 					((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 					((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 				//window_sign_open(bannerIndex);
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, 12, x, y + 22);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, COLOUR_DARK_GREEN, x, y + 22);
 			}
 			else {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, 12, x, y + 22);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_NONE, NULL, COLOUR_DARK_GREEN, x, y + 22);
 			}
 
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -2019,26 +2019,26 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			const uint8 bannerIndex = mapElement->properties.banner.index;
 			if (gBanners[bannerIndex].flags & BANNER_FLAG_NO_ENTRY) {
 				rct_string_id noEntryStringIdx = STR_NO_ENTRY;
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &noEntryStringIdx, 12, x, y);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &noEntryStringIdx, COLOUR_DARK_GREEN, x, y);
 			}
 			else {
-				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, 12, x, y);
+				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, COLOUR_DARK_GREEN, x, y);
 			}
 
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_BANNER_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 
 			// Blocked paths
 			y += 28;
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BANNER_BLOCKED_PATHS, NULL, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 
@@ -2047,12 +2047,12 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			// Properties
 			// Raise / lower label
 			y = w->y + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, NULL, COLOUR_DARK_GREEN, x, y);
 
 			// Current base height
 			x = w->x + w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].left + 3;
 			int baseHeight = mapElement->base_height;
-			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x, y);
+			gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x, y);
 			break;
 		}
 		} // switch page
@@ -2139,9 +2139,9 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		const bool broken = (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
 		const bool last = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
 		gfx_clip_string(buffer, w->widgets[WIDX_COLUMN_TYPE].right - w->widgets[WIDX_COLUMN_TYPE].left - COL_X_TYPE);
-		gfx_draw_string(dpi, typeName, 12, x + COL_X_TYPE + 3, y); // 3px padding
-		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, 12, x + COL_X_BH, y);
-		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, 12, x + COL_X_CH, y);
+		gfx_draw_string(dpi, typeName, COLOUR_DARK_GREEN, x + COL_X_TYPE + 3, y); // 3px padding
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_DARK_GREEN, x + COL_X_BH, y);
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearanceHeight, COLOUR_DARK_GREEN, x + COL_X_CH, y);
 		if (ghost) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_GF, y);
 		if (broken) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_BF, y);
 		if (last) gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1], x + COL_X_LF, y);

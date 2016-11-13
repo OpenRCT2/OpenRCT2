@@ -68,7 +68,7 @@ enum {
 };
 
 #define COLOUR_FLAG_OUTLINE		(1 << 5)
-#define COLOUR_FLAG_INSET 		(1 << 6)
+#define COLOUR_FLAG_INSET 		(1 << 6) // 64, 0x40
 #define COLOUR_FLAG_TRANSLUCENT (1 << 7)
 #define COLOUR_FLAG_8 			(1 << 8)
 #define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)

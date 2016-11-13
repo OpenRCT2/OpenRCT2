@@ -864,7 +864,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 		if (itemY + 10 < dpi->y || itemY >= dpi->y + dpi->height)
 			continue;
 
-		colour = 142;
+		uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
 		if (w->research_item == researchItem) {
 			if (_editorInventionsListDraggedItem == NULL) {
 				// Highlight
@@ -878,7 +878,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 			gfx_filter_rect(dpi, 0, top, w->width, bottom, PALETTE_DARKEN_1);
 
 			if (_editorInventionsListDraggedItem == NULL)
-				colour = 14;
+				colour = COLOUR_BRIGHT_GREEN;
 		}
 
 		if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR || researchItem->entryIndex == RESEARCHED_ITEMS_END)
@@ -892,17 +892,17 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 
 		ptr = buffer;
 		if (!disableItemMovement) {
-			ptr = utf8_write_codepoint(ptr, colour & 0xFF);
+			ptr = utf8_write_codepoint(ptr, colour);
 		}
 
 		format_string(ptr, 256, stringId, NULL);
 
 		if (disableItemMovement) {
 			gCurrentFontSpriteBase = -1;
-			if ((colour & 0xFF) == 14 && _editorInventionsListDraggedItem == NULL) {
+			if (colour == COLOUR_BRIGHT_GREEN && _editorInventionsListDraggedItem == NULL) {
 				gCurrentFontSpriteBase = -2;
 			}
-			colour = 64 | w->colours[1];
+			colour = COLOUR_FLAG_INSET | w->colours[1];
 		} else {
 			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 			colour = COLOUR_BLACK;

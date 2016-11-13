@@ -1369,13 +1369,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	case 2: stringId = STR_OBJECT_FILTER_TT; break;
 	default: stringId = STR_OBJECT_FILTER_CUSTOM; break;
 	}
-	gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
+	gfx_draw_string_right(dpi, stringId, NULL, COLOUR_WHITE, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
 	//
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
 		stringId = get_ride_type_string_id(listItem->repositoryItem);
-		gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
+		gfx_draw_string_right(dpi, stringId, NULL, COLOUR_WHITE, w->x + w->width - 5, y);
 		y -= 11;
 	}
 
@@ -1425,7 +1425,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				gCurrentFontSpriteBase = colour == 14 ? -2 : -1;
 				colour2 = w->colours[1] & 0x7F;
 				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
-					colour2 |= 0x40;
+					colour2 |= COLOUR_FLAG_INSET;
 
 				gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
 			}
