@@ -24,11 +24,6 @@ extern "C"
     #include "../world/footpath.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-};
-
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);

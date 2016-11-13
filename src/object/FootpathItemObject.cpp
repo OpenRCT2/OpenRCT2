@@ -23,11 +23,6 @@ extern "C"
     #include "../localisation/localisation.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-};
-
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);

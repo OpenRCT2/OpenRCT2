@@ -28,13 +28,6 @@ extern "C"
     #include "../rct1.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-    OBJ_STRING_ID_DESCRIPTION,
-    OBJ_STRING_ID_CAPACITY,
-};
-
 RideObject::~RideObject()
 {
     for (int i = 0; i < 4; i++)
@@ -90,7 +83,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     // Read preset colours, by default there are 32
     _presetColours.count = stream->ReadValue<uint8>();
-	
+
     int coloursCount = _presetColours.count;
     // To indicate a ride has different colours each train the count 
     // is set to 255. There are only actually 32 colours though.

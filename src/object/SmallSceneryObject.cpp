@@ -25,11 +25,6 @@ extern "C"
     #include "../localisation/localisation.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-};
-
 SmallSceneryObject::~SmallSceneryObject()
 {
     Memory::Free(_var10data);

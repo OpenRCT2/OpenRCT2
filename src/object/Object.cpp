@@ -23,11 +23,6 @@ extern "C"
     #include "../localisation/localisation.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-};
-
 Object::Object(const rct_object_entry &entry)
 {
     _objectEntry = entry;

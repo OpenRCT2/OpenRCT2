@@ -22,13 +22,6 @@ extern "C"
     #include "../localisation/localisation.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_SCENARIO_NAME,
-    OBJ_STRING_ID_PARK_NAME,
-    OBJ_STRING_ID_SCENARIO_DETAILS,
-};
-
 void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);

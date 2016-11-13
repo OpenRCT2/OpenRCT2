@@ -25,6 +25,16 @@ extern "C"
     #include "../object.h"
 }
 
+enum OBJ_STRING_ID
+{
+    OBJ_STRING_ID_NAME,
+    OBJ_STRING_ID_DESCRIPTION,
+    OBJ_STRING_ID_SCENARIO_NAME = 0,
+    OBJ_STRING_ID_PARK_NAME = 1,
+    OBJ_STRING_ID_SCENARIO_DETAILS = 2,
+    OBJ_STRING_ID_CAPACITY = 2,
+};
+
 interface IStream;
 struct    ObjectRepositoryItem;
 struct    rct_drawpixelinfo;
