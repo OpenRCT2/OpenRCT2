@@ -27,6 +27,7 @@ struct TitleSequenceManagerItem
     std::string Name;
     std::string Path;
     uint16      PredefinedIndex;
+    bool        IsZip;
 };
 
 namespace TitleSequenceManager

@@ -124,6 +124,12 @@ public:
         return _currentPath;
     }
 
+    const utf8 * GetPathRelative() const override
+    {
+        // +1 to remove the path separator
+        return _currentPath + String::SizeOf(_rootPath) + 1;
+    }
+
     void Reset() override
     {
         _started = false;
@@ -155,6 +161,7 @@ public:
                     utf8 childPath[MAX_PATH];
                     String::Set(childPath, sizeof(childPath), state->Path.c_str());
                     Path::Append(childPath, sizeof(childPath), child->Name.c_str());
+
                     PushState(childPath);
                 }
                 else if (PatternMatch(child->Name.c_str()))

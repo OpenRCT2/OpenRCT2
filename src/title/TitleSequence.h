@@ -47,6 +47,8 @@ typedef struct TitleSequence
 
     size_t   NumSaves;
     utf8 * * Saves;
+
+    bool IsZip;
 } TitleSequence;
 
 typedef struct TitleSequenceParkHandle
@@ -73,6 +75,10 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_ENDLOOP,
     TITLE_SCRIPT_LOADRCT1,
 };
+
+#ifdef __cplusplus
+constexpr const utf8 * TITLE_SEQUENCE_EXTENSION = ".parkseq";
+#endif
 
 #ifdef __cplusplus
 extern "C"

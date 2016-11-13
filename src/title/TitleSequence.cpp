@@ -20,6 +20,8 @@
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
+#include "../core/FileScanner.h"
+#include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -27,34 +29,61 @@
 #include "../core/String.hpp"
 #include "TitleSequence.h"
 
+static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(zip_t * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
 static void LegacyScriptGetLine(SDL_RWops * file, char * parts);
+static void * ReadScriptFile(const utf8 * path, size_t * outSize);
 static void * GetZipFileData(zip_t * zip, const char * name, size_t * outSize);
 
 extern "C"
 {
     TitleSequence * LoadTitleSequence(const utf8 * path)
     {
-        int error;
-        zip_t * zip = zip_open(path, ZIP_RDONLY, &error);
-        if (zip == nullptr)
-        {
-            Console::Error::WriteLine("Unable to open '%s'", path);
-            return nullptr;
-        }
-
         size_t scriptLength;
-        char * script = (char *)GetZipFileData(zip, "script.txt", &scriptLength);
-        if (script == nullptr)
-        {
-            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
+        char * script;
+        std::vector<utf8 *> saves;
+        bool isZip;
 
-            zip_close(zip);
-            return nullptr;
+        const utf8 * ext = Path::GetExtension(path);
+        if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
+        {
+            int error;
+            zip_t * zip = zip_open(path, ZIP_RDONLY, &error);
+            if (zip == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open '%s'", path);
+                return nullptr;
+            }
+
+            script = (char *)GetZipFileData(zip, "script.txt", &scriptLength);
+            if (script == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
+
+                zip_close(zip);
+                return nullptr;
+            }
+
+            saves = GetSaves(zip);
+            isZip = true;
+        }
+        else
+        {
+            utf8 scriptPath[260];
+            String::Set(scriptPath, sizeof(scriptPath), path);
+            Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
+            script = (char *)ReadScriptFile(scriptPath, &scriptLength);
+            if (script == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open '%s'", scriptPath);
+                return nullptr;
+            }
+
+            saves = GetSaves(path);
+            isZip = false;
         }
 
-        std::vector<utf8 *> saves = GetSaves(zip);
         std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
 
         TitleSequence * seq = Memory::Allocate<TitleSequence>();
@@ -64,6 +93,7 @@ extern "C"
         seq->Saves = Collections::ToArray(saves);
         seq->NumCommands = commands.size();
         seq->Commands = Collections::ToArray(commands);
+        seq->IsZip = isZip;
         return seq;
     }
 
@@ -85,18 +115,30 @@ extern "C"
     TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
     {
         TitleSequenceParkHandle * handle = nullptr;
-
-        int error;
-        zip_t * zip = zip_open(seq->Path, ZIP_RDONLY, &error);
-        if (zip != nullptr)
+        if (index <= seq->NumSaves)
         {
-            if (index <= seq->NumSaves)
+            const utf8 * filename = seq->Saves[index];
+            if (seq->IsZip)
             {
-                utf8 * filename = seq->Saves[index];
+                int error;
+                zip_t * zip = zip_open(seq->Path, ZIP_RDONLY, &error);
+                if (zip != nullptr)
+                {
+                    handle = Memory::Allocate<TitleSequenceParkHandle>();
+                    handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
+                    handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
+                    handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
+                }
+            }
+            else
+            {
+                utf8 absolutePath[260];
+                String::Set(absolutePath, sizeof(absolutePath), seq->Path);
+                Path::Append(absolutePath, sizeof(absolutePath), filename);
 
                 handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Data = GetZipFileData(zip, filename, &handle->DataSize);
-                handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
+                handle->Data = nullptr;
+                handle->RWOps = SDL_RWFromFile(absolutePath, "rb");
                 handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
             }
         }
@@ -105,10 +147,30 @@ extern "C"
 
     void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle)
     {
-        SDL_RWclose(handle->RWOps);
-        Memory::Free(handle->Data);
-        Memory::Free(handle);
+        if (handle != nullptr)
+        {
+            SDL_RWclose(handle->RWOps);
+            Memory::Free(handle->Data);
+            Memory::Free(handle);
+        }
     }
+}
+
+static std::vector<utf8 *> GetSaves(const utf8 * directory)
+{
+    std::vector<utf8 *> saves;
+
+    utf8 pattern[260];
+    String::Set(pattern, sizeof(pattern), directory);
+    Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
+
+    IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+    while (scanner->Next())
+    {
+        const utf8 * path = scanner->GetPathRelative();
+        saves.push_back(String::Duplicate(path));
+    }
+    return saves;
 }
 
 static std::vector<utf8 *> GetSaves(zip_t * zip)
@@ -268,6 +330,28 @@ static void LegacyScriptGetLine(SDL_RWops * file, char * parts)
             }
         }
     }
+}
+
+static void * ReadScriptFile(const utf8 * path, size_t * outSize)
+{
+    void * buffer = nullptr;
+    size_t size = 0;
+    try
+    {
+        auto fs = FileStream(path, FILE_MODE_OPEN);
+        size = (size_t)fs.GetLength();
+        buffer = Memory::Allocate<void>(size);
+        fs.Read(buffer, size);
+    }
+    catch (Exception)
+    {
+        Memory::Free(buffer);
+        buffer = nullptr;
+        size = 0;
+    }
+
+    *outSize = size;
+    return buffer;
 }
 
 static void * GetZipFileData(zip_t * zip, const char * name, size_t * outSize)

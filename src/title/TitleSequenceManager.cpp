@@ -50,7 +50,7 @@ namespace TitleSequenceManager
     std::vector<TitleSequenceManagerItem> _items;
 
     static void Scan(const utf8 * directory);
-    static std::string GetNameFromSequencePath(const utf8 * path);
+    static std::string GetNameFromSequencePath(const std::string &path);
     static void GetDataSequencesPath(utf8 * buffer, size_t bufferSize);
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize);
 
@@ -64,9 +64,9 @@ namespace TitleSequenceManager
         return &_items[i];
     }
 
-    static const uint16 GetPredefinedIndex(const utf8 * path)
+    static const uint16 GetPredefinedIndex(const std::string &path)
     {
-        const utf8 * filename = Path::GetFileName(path);
+        const utf8 * filename = Path::GetFileName(path.c_str());
         for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)
         {
             if (String::Equals(filename, PredefinedSequences[i].Filename, true))
@@ -111,16 +111,22 @@ namespace TitleSequenceManager
     {
         utf8 pattern[MAX_PATH];
         String::Set(pattern, sizeof(pattern), directory);
-        Path::Append(pattern, sizeof(pattern), "*.parkseq");
+        Path::Append(pattern, sizeof(pattern), "script.txt;*.parkseq");
 
         IFileScanner * fileScanner = Path::ScanDirectory(pattern, true);
         while (fileScanner->Next())
         {
-            const utf8 * path = fileScanner->GetPath();
+            std::string path = std::string(fileScanner->GetPath());
+            bool isZip = true;
+            if (String::Equals(Path::GetExtension(path.c_str()), ".txt", true))
+            {
+                path = std::string(Path::GetDirectory(path.c_str()));
+                isZip = false;
+            }
 
             TitleSequenceManagerItem item;
             item.PredefinedIndex = GetPredefinedIndex(path);
-            item.Path = std::string(path);
+            item.Path = path;
             if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
             {
                 rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
@@ -130,14 +136,15 @@ namespace TitleSequenceManager
             {
                 item.Name = GetNameFromSequencePath(path);
             }
+            item.IsZip = isZip;
             _items.push_back(item);
         }
         delete fileScanner;
     }
 
-    static std::string GetNameFromSequencePath(const utf8 * path)
+    static std::string GetNameFromSequencePath(const std::string &path)
     {
-        utf8 * name = Path::GetFileNameWithoutExtension(path);
+        utf8 * name = Path::GetFileNameWithoutExtension(path.c_str());
         std::string result = std::string(name);
         Memory::Free(name);
         return result;
