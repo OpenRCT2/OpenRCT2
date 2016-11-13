@@ -371,7 +371,7 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gLandToolSize > 7) {
 		x = w->x + (previewWidget->left + previewWidget->right) / 2;
 		y = w->y + (previewWidget->top + previewWidget->bottom) / 2;
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	} else if (gLandMountainMode) {
 		x = w->x + previewWidget->left;
 		y = w->y + previewWidget->top;
@@ -383,12 +383,12 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Draw raise cost amount
 	if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-		gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, 0, &gLandToolRaiseCost);
+		gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
 	y += 10;
 
 	// Draw lower cost amount
 	if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-		gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, 0, &gLandToolLowerCost);
+		gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
 	y += 50;
 
 	// Draw paint price
@@ -401,6 +401,6 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		set_format_arg(0, money32, price);
-		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, gCommonFormatArgs);
+		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
 	}
 }

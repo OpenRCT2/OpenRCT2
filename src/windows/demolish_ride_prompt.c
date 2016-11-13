@@ -137,5 +137,5 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + WW / 2;
 	int y = w->y + (WH / 2) - 3;
 
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, 0);
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
 }

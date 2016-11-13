@@ -674,7 +674,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	} else {
 		format = STR_ALL_GUESTS_SUMMARISED;
 	}
-	gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments, 0, x, y, 310);
+	gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments, COLOUR_BLACK, x, y, 310);
 
 	// Number of guests (list items)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
@@ -735,7 +735,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				// Guest name
 				set_format_arg(0, rct_string_id, peep->name_string_idx);
 				set_format_arg(2, uint32, peep->id);
-				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 113);
+				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 113);
 
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
@@ -752,7 +752,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 					set_format_arg(0, uint32, argument_1);
 					set_format_arg(4, uint32, argument_2);
-					gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 133, y - 1, 314);
+					gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
 					// For each thought
@@ -766,7 +766,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 							break;
 
 						peep_thought_set_format_args(&peep->thoughts[j]);
-						gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 118, y - 1, 329);
+						gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 118, y - 1, 329);
 						break;
 					}
 					break;
@@ -805,11 +805,11 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				set_format_arg(0, uint32, _window_guest_list_groups_argument_1[i]);
 				set_format_arg(4, uint32, _window_guest_list_groups_argument_2[i]);
 				set_format_arg(10, uint32, numGuests);
-				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 414);
+				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 414);
 
 				// Draw guest count
 				set_format_arg(8, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);
-				gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, 0, 326, y - 1);
+				gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, COLOUR_BLACK, 326, y - 1);
 			}
 			y += 21;
 		}

@@ -862,23 +862,23 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		set_format_arg(0, money32, CHEATS_MONEY_INCREMENT);
-		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	gCommonFormatArgs,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	gCommonFormatArgs,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
-		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
-		gfx_draw_string_left(dpi, STR_FORCE_WEATHER,				NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
+		gfx_draw_string_left(dpi, STR_FORCE_WEATHER,				NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
 		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,		NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(5) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE,	NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(6) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_BATHROOM,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY,NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,		NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(3) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(5) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE,	NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(6) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_BATHROOM,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY,NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
 	}
 }
 

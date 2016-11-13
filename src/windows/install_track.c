@@ -240,13 +240,13 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (td6->track_flags & 1) {
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
-			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
+			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
 			y -= 10;
 		}
 	}
 
 	// Track design name
-	gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &_trackName, 0, x, y, 368);
+	gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &_trackName, COLOUR_BLACK, x, y, 368);
 
 	// Information
 	x = w->x + widget->left + 1;
@@ -288,7 +288,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		// Ride length
 		set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
 		set_format_arg(2, uint16, td6->ride_length);
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
 		y += 10;
 	}
 

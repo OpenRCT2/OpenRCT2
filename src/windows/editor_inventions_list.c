@@ -819,7 +819,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	y = w->y + widget->bottom + 3;
 	width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 	stringId = research_item_get_name(eax);
-	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y, width);
 	y += 15;
 
 	// Item category
@@ -905,7 +905,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 			colour = 64 | w->colours[1];
 		} else {
 			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-			colour = 0;
+			colour = COLOUR_BLACK;
 		}
 
 		left = 1;

@@ -553,7 +553,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format,
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
 {
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gfx_draw_string(dpi, "", 0, dpi->x, dpi->y);
+	gfx_draw_string(dpi, "", COLOUR_BLACK, dpi->x, dpi->y);
 	gCurrentFontFlags = 0;
 
 	for (int i = 0; i <= numLines; i++) {

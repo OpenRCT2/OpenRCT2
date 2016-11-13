@@ -1012,7 +1012,7 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = (widget->left + widget->right) / 2 + w->x;
 	int y = w->y + widget->top - 1;
 	int width = widget->right - widget->left;
-	gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	// Draw the marquee thought
 	widget = &w->widgets[WIDX_MARQUEE];
@@ -1690,7 +1690,7 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, rct_string_id, ride_string_id);
 	set_format_arg(2, uint32, ride_string_arguments);
 
-	gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, 0, x, y, w->width - 14);
+	gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, x, y, w->width - 14);
 }
 
 /**
@@ -1955,7 +1955,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			- 8;
 
 		peep_thought_set_format_args(thought);
-		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
 		// If this is the last visible line end drawing.
 		if (y > w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
@@ -2129,7 +2129,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (!peep_has_item(peep, item)) continue;
 
 		rct_string_id stringId = window_guest_inventory_format_item(peep, item);
-		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, 0);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);
 		numItems++;
 	}
 

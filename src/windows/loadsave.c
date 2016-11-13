@@ -488,7 +488,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
 	// Draw shadow
-	gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 20);
+	gfx_draw_string(dpi, buffer, COLOUR_BLACK, w->x + 4, w->y + 20);
 	rct_string_id id = STR_NONE;
 	// Name button text
 	if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
@@ -971,7 +971,7 @@ static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	int x = w->x + w->width / 2;
 	int y = w->y + (w->height / 2) - 3;
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, 0);
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 
 

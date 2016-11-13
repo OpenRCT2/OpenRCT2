@@ -2195,14 +2195,14 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 23;
 	if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
-		gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, 0, w);
+		gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, w);
 
 	y += 11;
 	if (
 		_currentTrackPrice != MONEY32_UNDEFINED &&
 		!(gParkFlags & PARK_FLAGS_NO_MONEY)
 	) {
-		gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, (void*)&_currentTrackPrice);
+		gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, (void*)&_currentTrackPrice);
 	}
 }
 

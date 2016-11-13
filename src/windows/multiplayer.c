@@ -607,7 +607,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 
 			// Draw player name
 			char* lineCh = buffer;
-			int colour = 0;
+			int colour = COLOUR_BLACK;
 			if (i == w->selected_list_item) {
 				gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
 				safe_strcpy(buffer, network_get_player_name(i), sizeof(buffer));
@@ -639,7 +639,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			if (action != -999) {
 				set_format_arg(0, rct_string_id, network_get_action_name_string_id(action));
 			}
-			gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, 256, y - 1, 100);
+			gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, 256, y - 1, 100);
 
 			// Draw ping
 			lineCh = buffer;
@@ -829,7 +829,7 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 			dpi,
 			STR_STRING,
 			gCommonFormatArgs,
-			0,
+			COLOUR_BLACK,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
 			widget->right - widget->left - 8
@@ -858,7 +858,7 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 			dpi,
 			STR_STRING,
 			gCommonFormatArgs,
-			0,
+			COLOUR_BLACK,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
 			widget->right - widget->left - 8
@@ -889,7 +889,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 					lineCh = buffer;
 					lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
 					lineCh = utf8_write_codepoint(lineCh, FORMAT_TICK);
-					gfx_draw_string(dpi, buffer, 0, 0, y - 1);
+					gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y - 1);
 				}
 			}
 

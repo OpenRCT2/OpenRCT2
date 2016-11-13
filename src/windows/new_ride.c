@@ -879,7 +879,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
 	set_format_arg(0, rct_string_id, rideName);
 	set_format_arg(2, rct_string_id, rideDescription);
-	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, 0);
+	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
 	// Number of designs available
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
@@ -924,7 +924,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			stringId = STR_NEW_RIDE_COST_FROM;
 
-		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 39);
+		gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, x + width, y + 39);
 	}
 }
 

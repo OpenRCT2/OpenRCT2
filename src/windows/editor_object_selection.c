@@ -1343,7 +1343,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	width = w->width - w->widgets[WIDX_LIST].right - 6;
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, listItem->repositoryItem->Name);
-	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	// Draw description of object
 	const char *description = object_get_description(_loadedObject);
@@ -1355,9 +1355,9 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		y += 15;
 		int width = w->x + w->width - x - 4;
 		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
-			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT, 0);
+			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT, COLOUR_BLACK);
 		} else {
-			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, 0);
+			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
 		}
 	}
 
@@ -1386,7 +1386,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	const char *path = path_get_filename(listItem->repositoryItem->Path);
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, path);
-	gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
+	gfx_draw_string_right(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
 
 /**

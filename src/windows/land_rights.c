@@ -237,7 +237,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	// Draw number for tool sizes bigger than 7
 	if (gLandToolSize > 7) {
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	}
 	y = w->y + window_land_rights_widgets[WIDX_PREVIEW].bottom + 5;
 
@@ -247,7 +247,7 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gLandRightsCost != MONEY32_UNDEFINED &&
 		gLandRightsCost != 0
 	) {
-		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, &gLandRightsCost);
+		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandRightsCost);
 	}
 }
 

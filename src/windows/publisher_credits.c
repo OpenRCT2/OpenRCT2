@@ -169,12 +169,12 @@ static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinf
 
 	y += 86;
 
-	draw_string_centred_underline(dpi, STR_CREDITS_PUBLISHER_TILE, 0, 0, x, y);
+	draw_string_centred_underline(dpi, STR_CREDITS_PUBLISHER_TILE, NULL, COLOUR_BLACK, x, y);
 
 	y += 14;
 
 	for (int i = 0; i < sizeof(credits_order)/sizeof(int); i++) {
-		gfx_draw_string_centred(dpi, credits_order[i], x, y, 0, 0);
+		gfx_draw_string_centred(dpi, credits_order[i], x, y, COLOUR_BLACK, NULL);
 		y += 11;
 	}
 

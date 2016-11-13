@@ -430,21 +430,21 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Warnings
 	if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
-		gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, 0, x, y, 368);
+		gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
 		y -= 10;
 	}
 
 	if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
 		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
-			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
+			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, COLOUR_BLACK, x, y, 368);
 			y -= 10;
 		}
 	}
 
 	// Track design name
 	utf8 *trackName = _trackDesigns[trackIndex].name;
-	gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, 0, x, y, 368);
+	gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, x, y, 368);
 
 	// Information
 	x = w->x + widget->left + 1;
@@ -452,56 +452,56 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Stats
 	fixed32_2dp rating = td6->excitement * 10;
-	gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, x, y);
 	y += 10;
 
 	rating = td6->intensity * 10;
-	gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, x, y);
 	y += 10;
 
 	rating = td6->nausea * 10;
-	gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, x, y);
 	y += 14;
 
 	if (td6->type != RIDE_TYPE_MAZE) {
 		if (td6->type == RIDE_TYPE_MINI_GOLF) {
 			// Holes
 			uint16 holes = td6->holes & 0x1F;
-			gfx_draw_string_left(dpi, STR_HOLES, &holes, 0, x, y);
+			gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
 			y += 10;
 		} else {
 			// Maximum speed
 			uint16 speed = ((td6->max_speed << 16) * 9) >> 18;
-			gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, 0, x, y);
+			gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
 			y += 10;
 
 			// Average speed
 			speed = ((td6->average_speed << 16) * 9) >> 18;
-			gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, 0, x, y);
+			gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, x, y);
 			y += 10;
 		}
 
 		// Ride length
 		set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
 		set_format_arg(2, uint16, td6->ride_length);
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
 		y += 10;
 	}
 
 	if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
 		// Maximum positive vertical Gs
 		int gForces = td6->max_positive_vertical_g * 32;
-		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, 0, x, y);
+		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
 		// Maximum negative verical Gs
 		gForces = td6->max_negative_vertical_g * 32;
-		gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, 0, x, y);
+		gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
 		// Maximum lateral Gs
 		gForces = td6->max_lateral_g * 32;
-		gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, 0, x, y);
+		gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
 		// If .TD6
@@ -509,7 +509,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			if (td6->total_air_time != 0) {
 				// Total air time
 				int airTime = td6->total_air_time * 25;
-				gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, 0, x, y);
+				gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
 				y += 10;
 			}
 		}
@@ -518,11 +518,11 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_DROPS)) {
 		// Drops
 		uint16 drops = td6->drops & 0x3F;
-		gfx_draw_string_left(dpi, STR_DROPS, &drops, 0, x, y);
+		gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
 		y += 10;
 
 		// Drop height is multiplied by 0.75
-		gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &drops, 0, x, y);
+		gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &drops, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
@@ -530,7 +530,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		uint16 inversions = td6->inversions & 0x1F;
 		if (inversions != 0) {
 			// Inversions
-			gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, 0, x, y);
+			gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
 			y += 10;
 		}
 	}
@@ -540,12 +540,12 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		// Space required
 		set_format_arg(0, uint16, td6->space_required_x);
 		set_format_arg(2, uint16, td6->space_required_y);
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
 	if (td6->cost != 0) {
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, 0, x, y);
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, COLOUR_BLACK, x, y);
 		y += 14;
 	}
 }
@@ -566,7 +566,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (_trackDesignsCount == 0) {
 			// No track designs
-			gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, NULL, 0, x, y - 1);
+			gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, NULL, COLOUR_BLACK, x, y - 1);
 			return;
 		}
 	} else {
@@ -581,7 +581,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		}
 
 		rct_string_id stringId2 = STR_BUILD_CUSTOM_DESIGN;
-		gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
+		gfx_draw_string_left(dpi, stringId, &stringId2, COLOUR_BLACK, x, y - 1);
 		y += 10;
 		listIndex++;
 	}
@@ -600,7 +600,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			// Draw track name
 			set_format_arg(0, rct_string_id, STR_TRACK_LIST_NAME_FORMAT);
 			set_format_arg(2, utf8*, _trackDesigns[i].name);
-			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, x, y - 1);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y - 1);
 		}
 		y += 10;
 	}

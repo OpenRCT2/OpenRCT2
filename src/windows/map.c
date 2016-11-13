@@ -822,7 +822,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Draw land tool size
 	if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > 7) {
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	}
 	y = w->y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
