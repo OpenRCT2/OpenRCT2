@@ -27,9 +27,12 @@
 #include "hook.h"
 #include "platform/platform.h"
 
-void* g_hooktableaddress = 0;
-int g_hooktableoffset = 0;
-int g_maxhooks = 1000;
+void* _hookTableAddress = 0;
+int _hookTableOffset = 0;
+int _maxHooks = 1000;
+#define HOOK_BYTE_COUNT (140)
+
+registers gHookRegisters = {0};
 
 // This macro writes a little-endian 4-byte long value into *data
 // It is used to avoid type punning.
@@ -39,165 +42,115 @@ int g_maxhooks = 1000;
 	*(data + 2) = ((addr) & 0x00ff0000) >> 16; \
 	*(data + 3) = ((addr) & 0xff000000) >> 24;
 
-static void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
+static void hookfunc(uintptr_t address, uintptr_t hookAddress, int stacksize)
 {
 	int i = 0;
-	char data[100];
+	uint8 data[HOOK_BYTE_COUNT] = {0};
 
-	registersreturned |= eaxDestinationRegister;
+	uintptr_t registerAddress = (uintptr_t) &gHookRegisters;
 
-	int registerssaved = 7;
-	int n = registersreturned;
-	for (; n; registerssaved--) {
-		n &= n - 1;
-	}
-	int numrargs = 0;
-	for (int j = 0; ; j++) {
-		if (registerargs[j] != END) {
-			numrargs++;
-		} else {
-			break;
-		}
-	}
+	data[i++] = 0x89; // mov [gHookRegisters], eax
+	data[i++] = (0b000 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress);
+	i += 4;
 
-	int rargssize = numrargs * 4;
+	data[i++] = 0x89; // mov [gHookRegisters + 4], ebx
+	data[i++] = (0b011 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 4);
+	i += 4;
 
-	if (!(registersreturned & EAX)) {
-		data[i++] = 0x50; // push eax
-	}
-	if (!(registersreturned & EBX)) {
-		data[i++] = 0x53; // push ebx
-	}
-	if (!(registersreturned & ECX)) {
-		data[i++] = 0x51; // push ecx
-	}
-	if (!(registersreturned & EDX)) {
-		data[i++] = 0x52; // push edx
-	}
-	if (!(registersreturned & EBP)) {
-		data[i++] = 0x55; // push ebp
-	}
-	if (!(registersreturned & ESI)) {
-		data[i++] = 0x56; // push esi
-	}
-	if (!(registersreturned & EDI)) {
-		data[i++] = 0x57; // push edi
-	}
+	data[i++] = 0x89; // mov [gHookRegisters + 8], ecx
+	data[i++] = (0b001 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 8);
+	i += 4;
 
-	data[i++] = 0x50; //push eax
-	data[i++] = 0x89; //mov eax, esp
-	data[i++] = 0xE0;
-	data[i++] = 0x83; //sub eax, (0xC + numargs*4) & 0xF
-	data[i++] = 0xE8;
-	data[i++] = (0xC + numrargs * 4) & 0xF;
-	data[i++] = 0x83; //and eax, 0xC
-	data[i++] = 0xE0;
-	data[i++] = 0x0C;
-	data[i++] = 0xA3; //mov [0x9ABDA8], eax
-	data[i++] = 0xA8;
-	data[i++] = 0xBD;
-	data[i++] = 0x9A;
-	data[i++] = 0x00;
-	data[i++] = 0x58; //pop eax
-	data[i++] = 0x2B; //sub esp, [0x9ABDA8]
-	data[i++] = 0x25;
-	data[i++] = 0xA8;
-	data[i++] = 0xBD;
-	data[i++] = 0x9A;
-	data[i++] = 0x00;
+	data[i++] = 0x89; // mov [gHookRegisters + 12], edx
+	data[i++] = (0b010 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 12);
+	i += 4;
+
+	data[i++] = 0x89; // mov [gHookRegisters + 16], esi
+	data[i++] = (0b110 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 16);
+	i += 4;
+
+	data[i++] = 0x89; // mov [gHookRegisters + 20], edi
+	data[i++] = (0b111 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 20);
+	i += 4;
+
+	data[i++] = 0x89; // mov [gHookRegisters + 24], ebp
+	data[i++] = (0b101 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 24);
+	i += 4;
 
 	// work out distance to nearest 0xC
 	// (esp - numargs * 4) & 0xC
 	// move to align - 4
 	// save that amount
 
-	if (numrargs > 0) {
-		// push the registers to be on the stack to access as arguments
-		for (signed int j = numrargs - 1; j >= 0; j--) {
-			switch (registerargs[j]) {
-				case EAX: data[i++] = 0x50; break;
-				case EBX: data[i++] = 0x53; break;
-				case ECX: data[i++] = 0x51; break;
-				case EDX: data[i++] = 0x52; break;
-				case ESI: data[i++] = 0x56; break;
-				case EDI: data[i++] = 0x57; break;
-				case EBP: data[i++] = 0x55; break;
-			}
-		}
-	}
+	// push the registers to be on the stack to access as arguments
+	data[i++] = 0x68; // push gHookRegisters
+	write_address_strictalias(&data[i], registerAddress);
+	i += 4;
 
 	data[i++] = 0xE8; // call
 
-	write_address_strictalias(&data[i], newaddress - address - i - 4);
+	write_address_strictalias(&data[i], hookAddress - address - i - 4);
 	i += 4;
 
-	// returnlocation:
 
-	switch (eaxDestinationRegister) {
-	case EBX:
-		// mov ebx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xD8;
-		break;
-	case ECX:
-		// mov ecx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xC8;
-		break;
-	case EDX:
-		// mov ecx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xD0;
-		break;
-	case ESI:
-		// mov ecx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xF0;
-		break;
-	case EDI:
-		// mov ecx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xF8;
-		break;
-	case EBP:
-		// mov ecx, eax
-		data[i++] = 0x8B;
-		data[i++] = 0xE8;
-		break;
-	}
+	data[i++] = 0x83; // add esp, 4
+	data[i++] = 0xC4;
+	data[i++] = 0x04;
 
-	data[i++] = 0x83; // sub esp, x
-	data[i++] = 0xEC;
-	data[i++] = (signed char)(stacksize * -4) - rargssize;
-
-	data[i++] = 0x03; //add esp, [0x9ABDA8]
-	data[i++] = 0x25;
-	data[i++] = 0xA8;
-	data[i++] = 0xBD;
-	data[i++] = 0x9A;
+	data[i++] = 0x25; // and eax,0xff
+	data[i++] = 0xff;
 	data[i++] = 0x00;
+	data[i++] = 0x00;
+	data[i++] = 0x00;
+	data[i++] = 0xc1; // shl eax, 8
+	data[i++] = 0xe0;
+	data[i++] = 0x08;
+	data[i++] = 0x9e; // sahf
+	data[i++] = 0x9c; // pushf
 
-	if (!(registersreturned & EDI)) {
-		data[i++] = 0x5F; // pop edi
-	}
-	if (!(registersreturned & ESI)) {
-		data[i++] = 0x5E; // pop esi
-	}
-	if (!(registersreturned & EBP)) {
-		data[i++] = 0x5D; // pop ebp
-	}
-	if (!(registersreturned & EDX)) {
-		data[i++] = 0x5A; // pop edx
-	}
-	if (!(registersreturned & ECX)) {
-		data[i++] = 0x59; // pop ecx
-	}
-	if (!(registersreturned & EBX)) {
-		data[i++] = 0x5B; // pop ebx
-	}
-	if (!(registersreturned & EAX)) {
-		data[i++] = 0x58; // pop eax
-	}
+	data[i++] = 0x8B; // mov eax, [gHookRegisters]
+	data[i++] = (0b000 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress);
+	i += 4;
+
+	data[i++] = 0x8B; // mov ebx, [gHookRegisters + 4]
+	data[i++] = (0b011 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 4);
+	i += 4;
+
+	data[i++] = 0x8B; // mov ecx, [gHookRegisters + 8]
+	data[i++] = (0b001 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 8);
+	i += 4;
+
+	data[i++] = 0x8B; // mov edx, [gHookRegisters + 12]
+	data[i++] = (0b010 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 12);
+	i += 4;
+
+	data[i++] = 0x8B; // mov esi, [gHookRegisters + 16]
+	data[i++] = (0b110 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 16);
+	i += 4;
+
+	data[i++] = 0x8B; // mov edi, [gHookRegisters + 20]
+	data[i++] = (0b111 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 20);
+	i += 4;
+
+	data[i++] = 0x8B; // mov ebp, [gHookRegisters + 24]
+	data[i++] = (0b101 << 3) | 0b101;
+	write_address_strictalias(&data[i], registerAddress + 24);
+	i += 4;
+
+	data[i++] = 0x9d; // popf
 
 	data[i++] = 0xC3; // retn
 
@@ -209,26 +162,26 @@ static void hookfunc(int address, int newaddress, int stacksize, int registerarg
 #endif // __WINDOWS__
 }
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
+void addhook(uintptr_t address, hook_function *function)
 {
-	if (!g_hooktableaddress) {
-		size_t size = g_maxhooks * 100;
+	if (!_hookTableAddress) {
+		size_t size = _maxHooks * HOOK_BYTE_COUNT;
 #ifdef __WINDOWS__
-		g_hooktableaddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+		_hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 #else
-		g_hooktableaddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-		if (g_hooktableaddress == MAP_FAILED)
+		_hookTableAddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+		if (_hookTableAddress == MAP_FAILED)
 		{
 			perror("mmap");
 			exit(1);
 		}
 #endif // __WINDOWS__
 	}
-	if (g_hooktableoffset > g_maxhooks) {
+	if (_hookTableOffset > _maxHooks) {
 		return;
 	}
-	unsigned int hookaddress = (unsigned int)g_hooktableaddress + (g_hooktableoffset * 100);
-	char data[9];
+	unsigned int hookaddress = (unsigned int)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
+	uint8 data[9];
 	int i = 0;
 	data[i++] = 0xE9; // jmp
 
@@ -254,8 +207,8 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 		perror("mprotect");
 	}
 #endif // __WINDOWS__
-	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
-	g_hooktableoffset++;
+	hookfunc(hookaddress, (uintptr_t)function, 0);
+	_hookTableOffset++;
 }
 
 #endif
