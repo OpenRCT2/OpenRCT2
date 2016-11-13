@@ -2656,7 +2656,7 @@ static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		STR_WINDOW_COLOUR_2_STRINGID,
 		w->x + (widget->left + widget->right - 11) / 2,
 		w->y + widget->top,
-		0,
+		COLOUR_BLACK,
 		gCommonFormatArgs
 	);
 
@@ -2666,7 +2666,7 @@ static void window_ride_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		dpi,
 		window_ride_get_status(w, gCommonFormatArgs),
 		gCommonFormatArgs,
-		0,
+		COLOUR_BLACK,
 		w->x + (widget->left + widget->right) / 2,
 		w->y + widget->top,
 		widget->right - widget->left
@@ -2957,7 +2957,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 64;
 
 	// Description
-	y += gfx_draw_string_left_wrapped(dpi, &rideEntry->description, x, y, 300, STR_BLACK_STRING, 0);
+	y += gfx_draw_string_left_wrapped(dpi, &rideEntry->description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
 	y += 5;
 
 	// Capacity
@@ -2967,7 +2967,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		const utf8 * capacity = object_get_capacity(loadedObject);
 		set_format_arg(0, rct_string_id, STR_STRING);
 		set_format_arg(2, utf8 *, capacity);
-		gfx_draw_string_left(dpi, STR_CAPACITY, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CAPACITY, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 	y += 15;
 
@@ -2975,21 +2975,21 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		// Excitement Factor
 		factor = rideEntry->excitement_multipler;
 		if (factor > 0) {
-			gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, 0, x, y);
+			gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
 			y += 10;
 		}
 
 		// Intensity Factor
 		factor = rideEntry->intensity_multipler;
 		if (factor > 0) {
-			gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, 0, x, y);
+			gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
 			y += 10;
 		}
 
 		// Nausea Factor
 		factor = rideEntry->nausea_multipler;
 		if (factor > 0) {
-			gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, 0, x, y);
+			gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
 			y += 10;
 		}
 	}
@@ -3656,7 +3656,7 @@ static void window_ride_operating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Number of block sections
 	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		blockSections = ride->num_block_brakes + ride->num_stations;
-		gfx_draw_string_left(dpi, STR_BLOCK_SECTIONS, &blockSections, 0, w->x + 21,
+		gfx_draw_string_left(dpi, STR_BLOCK_SECTIONS, &blockSections, COLOUR_BLACK, w->x + 21,
 							 ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED ? w->y + 89 : w->y + 61);
 	}
 }
@@ -4016,7 +4016,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
 	x = w->x + 4;
 	y = w->y + widget->top + 1;
-	gfx_draw_string_left(dpi, STR_INSPECTION, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_INSPECTION, NULL, COLOUR_BLACK, x, y);
 
 	// Reliability
 	widget = &window_ride_maintenance_widgets[WIDX_PAGE_BACKGROUND];
@@ -4024,12 +4024,12 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + widget->top + 4;
 
 	reliability = ride->reliability >> 8;
-	gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, 0, x, y);
+	gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), 14);
 	y += 11;
 
 	downTime = ride->downtime;
-	gfx_draw_string_left(dpi, STR_DOWN_TIME_LABEL_1889, &downTime, 0, x, y);
+	gfx_draw_string_left(dpi, STR_DOWN_TIME_LABEL_1889, &downTime, COLOUR_BLACK, x, y);
 	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, downTime, 28);
 	y += 26;
 
@@ -4044,7 +4044,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else
 		stringId = STR_TIME_SINCE_LAST_INSPECTION_MORE_THAN_4_HOURS;
 
-	gfx_draw_string_left(dpi, stringId, &lastInspection, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &lastInspection, COLOUR_BLACK, x, y);
 	y += 12;
 
 	// Last / current breakdown
@@ -4055,7 +4055,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		STR_CURRENT_BREAKDOWN :
 		STR_LAST_BREAKDOWN;
 	breakdownMessage = RideBreakdownReasonNames[ride->breakdown_reason];
-	gfx_draw_string_left(dpi, stringId, &breakdownMessage, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &breakdownMessage, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Mechanic status
@@ -4078,13 +4078,13 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		if (stringId != 0) {
 			if (stringId == STR_CALLING_MECHANIC) {
-				gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, 0);
+				gfx_draw_string_left_wrapped(dpi, NULL, x + 4, y, 280, stringId, COLOUR_BLACK);
 			} else {
 				mechanicSprite = &(get_sprite(ride->mechanic)->peep);
 				if (peep_is_mechanic(mechanicSprite)) {
 					set_format_arg(0, rct_string_id, mechanicSprite->name_string_idx);
 					set_format_arg(2, uint32, mechanicSprite->id);
-					gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, 0);
+					gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, COLOUR_BLACK);
 				}
 			}
 		}
@@ -5272,7 +5272,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 		x = w->x + (widget->right - widget->left) / 2;
 		y = w->y + widget->top + 40;
-		gfx_draw_string_centred_wrapped(dpi, NULL, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, 0);
+		gfx_draw_string_centred_wrapped(dpi, NULL, x, y, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
 
 		x = w->x + 4;
 		y = w->y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
@@ -5288,7 +5288,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			set_format_arg(0, uint32, ride->excitement);
 			set_format_arg(4, rct_string_id, RatingNames[min(ride->excitement >> 8, 5)]);
 			stringId = ride->excitement == -1 ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
-			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, x, y);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 10;
 
 			// Intensity
@@ -5301,14 +5301,14 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			else if (ride->intensity >= RIDE_RATING(10,00))
 				stringId = STR_INTENSITY_RATING_RED;
 
-			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, x, y);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 10;
 
 			// Nausea
 			set_format_arg(0, uint32, ride->nausea);
 			set_format_arg(4, rct_string_id, RatingNames[min(ride->nausea >> 8, 5)]);
 			stringId = ride->excitement == -1 ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
-			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, x, y);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 20;
 
 			// Horizontal rule
@@ -5318,17 +5318,17 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 				if (ride->type == RIDE_TYPE_MINI_GOLF) {
 					// Holes
 					holes = ride->holes & 0x1F;
-					gfx_draw_string_left(dpi, STR_HOLES, &holes, 0, x, y);
+					gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
 					y += 10;
 				} else {
 					// Max speed
 					maxSpeed = (ride->max_speed * 9) >> 18;
-					gfx_draw_string_left(dpi, STR_MAX_SPEED, &maxSpeed, 0, x, y);
+					gfx_draw_string_left(dpi, STR_MAX_SPEED, &maxSpeed, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Average speed
 					averageSpeed = (ride->average_speed * 9) >> 18;
-					gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &averageSpeed, 0, x, y);
+					gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &averageSpeed, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Ride time
@@ -5354,7 +5354,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					set_format_arg(2 + (numTimes * 4), uint16, 0);
 					set_format_arg(4 + (numTimes * 4), uint16, 0);
 					set_format_arg(6 + (numTimes * 4), uint16, 0);
-					gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, 0, x, y, 308);
+					gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, x, y, 308);
 					y += 10;
 				}
 
@@ -5382,7 +5382,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 				set_format_arg(2 + (numLengths * 4), uint16, 0);
 				set_format_arg(4 + (numLengths * 4), uint16, 0);
 				set_format_arg(6 + (numLengths * 4), uint16, 0);
-				gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 308);
+				gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 308);
 				y += 10;
 
 				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
@@ -5390,38 +5390,38 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					maxPositiveVerticalGs = ride->max_positive_vertical_g;
 					stringId = maxPositiveVerticalGs >= FIXED_2DP(5,00) ?
 						STR_MAX_POSITIVE_VERTICAL_G_RED : STR_MAX_POSITIVE_VERTICAL_G;
-					gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, 0, x, y);
+					gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Max. negative vertical G's
 					maxNegativeVerticalGs = ride->max_negative_vertical_g;
 					stringId = maxNegativeVerticalGs <= -FIXED_2DP(2,00) ?
 						STR_MAX_NEGATIVE_VERTICAL_G_RED : STR_MAX_NEGATIVE_VERTICAL_G;
-					gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, 0, x, y);
+					gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Max lateral G's
 					maxLateralGs = ride->max_lateral_g;
 					stringId = maxLateralGs >= FIXED_2DP(2,80) ?
 						STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
-					gfx_draw_string_left(dpi, stringId, &maxLateralGs, 0, x, y);
+					gfx_draw_string_left(dpi, stringId, &maxLateralGs, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Total 'air' time
 					totalAirTime = ride->total_air_time * 3;
-					gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &totalAirTime, 0, x, y);
+					gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &totalAirTime, COLOUR_BLACK, x, y);
 					y += 10;
 				}
 
 				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DROPS)) {
 					// Drops
 					drops = ride->drops & 0x3F;
-					gfx_draw_string_left(dpi, STR_DROPS, &drops, 0, x, y);
+					gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
 					y += 10;
 
 					// Highest drop height
 					highestDropHeight = (ride->highest_drop_height * 3) / 4;
-					gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, 0, x, y);
+					gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
 					y += 10;
 				}
 
@@ -5429,13 +5429,13 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					// Inversions
 					inversions = ride->inversions & 0x1F;
 					if (inversions != 0) {
-						gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, 0, x, y);
+						gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
 						y += 10;
 					}
 				}
 			}
 		} else {
-			gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, 0, x, y);
+			gfx_draw_string_left(dpi, STR_NO_TEST_RESULTS_YET, NULL, COLOUR_BLACK, x, y);
 		}
 	}
 }
@@ -5697,7 +5697,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		x = (widget->right - widget->left) / 2;
 		y = (widget->bottom - widget->top) / 2 - 5;
 		width = widget->right - widget->left - 2;
-		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, width, stringId, 0);
+		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, width, stringId, COLOUR_BLACK);
 		return;
 	}
 
@@ -5739,7 +5739,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		if (listType == GRAPH_ALTITUDE)
 			scaled_yUnit /= 2;
 
-		gfx_draw_string_left(dpi, stringID, &scaled_yUnit, 0, w->scrolls[0].h_left + 1, y - 4);
+		gfx_draw_string_left(dpi, stringID, &scaled_yUnit, COLOUR_BLACK, w->scrolls[0].h_left + 1, y - 4);
 	}
 
 	// Time marks
@@ -5747,7 +5747,7 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	time = 0;
 	for (x = 0; x < dpi->x + dpi->width; x += 80) {
 		if (x + 80 >= dpi->x)
-			gfx_draw_string_left(dpi, STR_RIDE_STATS_TIME, &time, 0, x + 2, 1);
+			gfx_draw_string_left(dpi, STR_RIDE_STATS_TIME, &time, COLOUR_BLACK, x + 2, 1);
 		time += 5;
 	}
 
@@ -6170,7 +6170,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			stringId = STR_LOSS_PER_ITEM_SOLD;
 		}
 
-		gfx_draw_string_left(dpi, stringId, &profit, 0, x, y);
+		gfx_draw_string_left(dpi, stringId, &profit, COLOUR_BLACK, x, y);
 	}
 	y += 39;
 
@@ -6189,31 +6189,31 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			stringId = STR_LOSS_PER_ITEM_SOLD;
 		}
 
-		gfx_draw_string_left(dpi, stringId, &profit, 0, x, y);
+		gfx_draw_string_left(dpi, stringId, &profit, COLOUR_BLACK, x, y);
 	}
 	y += 15;
 
 	// Income per hour
 	if (ride->income_per_hour != MONEY32_UNDEFINED) {
-		gfx_draw_string_left(dpi, STR_INCOME_PER_HOUR, &ride->income_per_hour, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INCOME_PER_HOUR, &ride->income_per_hour, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
 	// Running cost per hour
 	costPerHour = ride->upkeep_cost * 16;
 	stringId = ride->upkeep_cost == (money16)0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
-	gfx_draw_string_left(dpi, stringId, &costPerHour, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &costPerHour, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Profit per hour
 	if (ride->profit != MONEY32_UNDEFINED) {
-		gfx_draw_string_left(dpi, STR_PROFIT_PER_HOUR, &ride->profit, 0, x, y);
+		gfx_draw_string_left(dpi, STR_PROFIT_PER_HOUR, &ride->profit, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 	y += 5;
 
 	// Total profit
-	gfx_draw_string_left(dpi, STR_TOTAL_PROFIT, &ride->total_profit, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TOTAL_PROFIT, &ride->total_profit, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion
@@ -6344,13 +6344,13 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Customers currently on ride
 	if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
 		sint16 customersOnRide = ride->num_riders;
-		gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
 	// Customers per hour
 	customersPerHour = ride_customers_per_hour(ride);
-	gfx_draw_string_left(dpi, STR_CUSTOMERS_PER_HOUR, &customersPerHour, 0, x, y);
+	gfx_draw_string_left(dpi, STR_CUSTOMERS_PER_HOUR, &customersPerHour, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Popularity
@@ -6361,7 +6361,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		stringId = STR_POPULARITY_PERCENT;
 		popularity *= 4;
 	}
-	gfx_draw_string_left(dpi, stringId, &popularity, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &popularity, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Satisfaction
@@ -6372,14 +6372,14 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		stringId = STR_SATISFACTION_PERCENT;
 		satisfaction *= 5;
 	}
-	gfx_draw_string_left(dpi, stringId, &satisfaction, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &satisfaction, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Queue time
 	if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
 		queueTime = ride_get_max_queue_time(ride);
 		stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-		y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, 0);
+		y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, COLOUR_BLACK);
 		y += 5;
 	}
 
@@ -6388,7 +6388,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (shopItem != SHOP_ITEM_NONE) {
 		set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
 		set_format_arg(2, uint32, ride->no_primary_items_sold);
-		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
@@ -6399,12 +6399,12 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (shopItem != SHOP_ITEM_NONE) {
 		set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
 		set_format_arg(2, uint32, ride->no_secondary_items_sold);
-		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 
 	// Total customers
-	gfx_draw_string_left(dpi, STR_TOTAL_CUSTOMERS, &ride->total_customers, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TOTAL_CUSTOMERS, &ride->total_customers, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Guests favourite
@@ -6412,7 +6412,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		stringId = ride->guests_favourite == 1 ?
 			STR_FAVOURITE_RIDE_OF_GUEST :
 			STR_FAVOURITE_RIDE_OF_GUESTS;
-		gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, 0, x, y);
+		gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, COLOUR_BLACK, x, y);
 		y += 10;
 	}
 	y += 2;
@@ -6425,7 +6425,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		age == 1 ?
 			STR_BUILT_LAST_YEAR :
 			STR_BUILT_YEARS_AGO;
-	gfx_draw_string_left(dpi, stringId, &age, 0, x, y);
+	gfx_draw_string_left(dpi, stringId, &age, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion

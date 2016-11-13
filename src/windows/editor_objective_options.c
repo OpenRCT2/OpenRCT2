@@ -1002,7 +1002,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(0, rct_string_id, gParkName);
 	}
 	set_format_arg(2, uint32, gParkNameArgs);
-	gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	// Scenario name
 	x = w->x + 8;
@@ -1017,7 +1017,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(2, const char *, gS6Info.name);
 	}
 
-	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	// Scenario details label
 	x = w->x + 8;
@@ -1036,7 +1036,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		set_format_arg(0, rct_string_id, STR_STRING);
 		set_format_arg(2, const char *, gS6Info.details);
 	}
-	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
+	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
 	// Scenario category label
 	x = w->x + 8;

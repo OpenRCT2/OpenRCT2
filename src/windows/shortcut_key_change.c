@@ -118,5 +118,5 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + 30;
 
 	set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, 0);
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

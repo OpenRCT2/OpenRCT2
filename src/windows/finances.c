@@ -670,7 +670,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 47;
 
 	// Expenditure / Income heading
-	draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, NULL, 0, x, y - 1);
+	draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, NULL, COLOUR_BLACK, x, y - 1);
 	y += 14;
 
 	// Expenditure / Income row labels
@@ -700,7 +700,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			dpi,
 			monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING,
 			gCommonFormatArgs,
-			0,
+			COLOUR_BLACK,
 			x + 80,
 			y - 1
 		);
@@ -717,7 +717,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 					dpi,
 					expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
 					&expenditure,
-					0,
+					COLOUR_BLACK,
 					x + 80,
 					y - 1
 				);
@@ -731,7 +731,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			dpi,
 			profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE,
 			&profit,
-			0,
+			COLOUR_BLACK,
 			x + 80,
 			y - 1
 		);
@@ -866,7 +866,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 	money32 axisBase;
 	for (axisBase = MONEY(12,00); axisBase >= MONEY(-12,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -972,7 +972,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	money32 axisBase;
 	for (axisBase = MONEY(24,00); axisBase >= MONEY(0,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -1078,7 +1078,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 	money32 axisBase;
 	for (axisBase = MONEY(12,00); axisBase >= MONEY(-12,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -1205,7 +1205,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		}
 
 		// Advertisement
-		gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, 0, x + 4, y, 296);
+		gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, x + 4, y, 296);
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);

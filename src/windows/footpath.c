@@ -619,7 +619,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		// Draw build this... label
 		x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
 		y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23;
-		gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, 0, 0);
+		gfx_draw_string_centred(dpi, STR_BUILD_THIS, x, y, COLOUR_BLACK, NULL);
 	}
 
 	// Draw cost
@@ -627,7 +627,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
 	if (_window_footpath_cost != MONEY32_UNDEFINED)
 		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
+			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, &_window_footpath_cost);
 }
 
 /**

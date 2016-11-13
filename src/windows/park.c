@@ -1070,7 +1070,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		dpi,
 		STR_BLACK_STRING,
 		gCommonFormatArgs,
-		0,
+		COLOUR_BLACK,
 		w->x + (labelWidget->left + labelWidget->right) / 2,
 		w->y + labelWidget->top,
 		labelWidget->right - labelWidget->left
@@ -1781,7 +1781,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, gScenarioDetails);
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, 0);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, COLOUR_BLACK);
 	y += 5;
 
 	// Your objective:
@@ -1793,18 +1793,18 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(2, short, date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
 	set_format_arg(4, money32, gScenarioObjectiveCurrency);
 
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], 0);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
 	y += 5;
 
 	// Objective outcome
 	if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
 		if (gScenarioCompletedCompanyValue == 0x80000001) {
 			// Objective failed
-			gfx_draw_string_left_wrapped(dpi, NULL, x, y, 222, STR_OBJECTIVE_FAILED, 0);
+			gfx_draw_string_left_wrapped(dpi, NULL, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
 		} else {
 			// Objective completed
 			set_format_arg(0, money32, gScenarioCompletedCompanyValue);
-			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, 0);
+			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
 		}
 	}
 }
@@ -1918,14 +1918,14 @@ static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			continue;
 
 		gfx_draw_sprite(dpi, ParkAwards[award->type].sprite, x, y, 0);
-		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, ParkAwards[award->type].text, 0);
+		gfx_draw_string_left_wrapped(dpi, NULL, x + 34, y + 6, 180, ParkAwards[award->type].text, COLOUR_BLACK);
 
 		y += 32;
 		count++;
 	}
 
 	if (count == 0)
-		gfx_draw_string_left(dpi, STR_NO_RECENT_AWARDS, 0, 0, x + 6, y + 6);
+		gfx_draw_string_left(dpi, STR_NO_RECENT_AWARDS, NULL, COLOUR_BLACK, x + 6, y + 6);
 }
 
 #pragma endregion

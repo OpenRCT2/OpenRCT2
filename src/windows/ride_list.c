@@ -514,7 +514,7 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_ride_list_draw_tab_images(dpi, w);
 
 	// Draw number of attractions on bottom
-	gfx_draw_string_left(dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
+	gfx_draw_string_left(dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 
 /**
@@ -543,7 +543,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		ride = get_ride(w->list_item_positions[i]);
 
 		// Ride name
-		gfx_draw_string_left_clipped(dpi, format, &ride->name, 0, 0, y - 1, 159);
+		gfx_draw_string_left_clipped(dpi, format, &ride->name, COLOUR_BLACK, 0, y - 1, 159);
 
 		// Ride information
 		formatSecondary = 0;
@@ -657,7 +657,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			format = STR_RED_OUTLINED_STRING;
 
 		set_format_arg(0, rct_string_id, formatSecondary);
-		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 160, y - 1, 157);
+		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);
 		y += 10;
 	}
 }

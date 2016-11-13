@@ -190,13 +190,13 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 	int y = 2;
 
 	for (int i = 0; i < countof(music_credits); i++) {
-		gfx_draw_string_centred(dpi, music_credits[i], x, y, 0, 0);
+		gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, NULL);
 		y += 10;
 	}
 
 	// Add 4 more space before "Original recordings ...".
 	y += 4;
-	gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, 0, 0);
+	gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, COLOUR_BLACK, NULL);
 	y += 10;
 
 	// Draw the separator
@@ -205,7 +205,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 	y += 11;
 
 	for (int i = 0; i < countof(music_credits_rct2); i++) {
-		gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, 0, 0);
+		gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, NULL);
 		y += 10;
 	}
 

@@ -503,11 +503,11 @@ void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 
 	// Write name and version information
 	openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5 - 13);
+	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
 
 	// Write platform information
 	snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-	gfx_draw_string(dpi, buffer, 0, x + 5, y + 5);
+	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
 }
 
 

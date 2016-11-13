@@ -133,44 +133,44 @@ static void window_about_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 17;
 
 	// Version
-	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_VERSION_X, x, y, COLOUR_BLACK, NULL);
 
 	// Credits
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, NULL);
 	y += 79;
-	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, COLOUR_BLACK, NULL);
 	y += 13;
-	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, COLOUR_BLACK, NULL);
 	y += 25;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_1, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_2, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_3, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_4, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_5, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_6, x, y, COLOUR_BLACK, NULL);
 	y += 10;
-	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, 0, NULL);
+	gfx_draw_string_centred(dpi, STR_CREDIT_SPARE_7, x, y, COLOUR_BLACK, NULL);
 
 	// Images
 	gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->x + 92, w->y + 40, 0);
 	gfx_draw_sprite(dpi, SPR_CREDITS_INFOGRAMES, w->x + 50, w->y + 247, 0);
 
 	// Licence
-	gfx_draw_string_left(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, 0, 0, w->x + 157, w->y + 257);
+	gfx_draw_string_left(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, NULL, COLOUR_BLACK, w->x + 157, w->y + 257);
 }

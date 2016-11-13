@@ -344,16 +344,16 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 
 	if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
 		stringId = STR_RESEARCH_UNKNOWN;
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
 		y += 25;
 
 		// Progress
 		stringId = STR_RESEARCH_COMPLETED_AL;
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
 		y += 15;
 
 		set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	} else {
 		// Research type
 		stringId = STR_RESEARCH_UNKNOWN;
@@ -371,12 +371,12 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 				}
 			}
 		}
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, 0);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
 		y += 25;
 
 		// Progress
 		stringId = ResearchStageNames[gResearchProgressStage];
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
 		y += 15;
 
 		// Expected
@@ -390,7 +390,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 				set_format_arg(4, rct_string_id, DateGameMonthNames[gResearchExpectedMonth]);
 			}
 		}
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 
 	// Last development
@@ -411,7 +411,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 			stringId = get_scenery_group_entry(typeId)->name;
 			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
-		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);
+		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
 	}
 }
 

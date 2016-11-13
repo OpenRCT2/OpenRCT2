@@ -263,6 +263,6 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
 		set_format_arg(4, rct_string_id, STR_STRING);
 		set_format_arg(6, char *, templateString);
-		gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, 0, y - 1);
+		gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
 	}
 }

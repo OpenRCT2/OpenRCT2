@@ -324,7 +324,7 @@ static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *d
 		w->y + 28,
 		246,
 		STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
-		0
+		COLOUR_BLACK
 	);
 }
 

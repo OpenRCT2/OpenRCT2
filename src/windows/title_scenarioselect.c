@@ -396,9 +396,9 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			// Show locked information
 			x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 			y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, 0, x + 85, y, 170);
+			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, COLOUR_BLACK, x + 85, y, 170);
 			y += 15;
-			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, 0) + 5;
+			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
 		}
 		return;
 	}
@@ -419,20 +419,20 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, scenario->name);
-	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x + 85, y, 170);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, scenario->details);
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, 0) + 5;
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
 
 	// Scenario objective
 	set_format_arg(0, rct_string_id, ObjectiveNames[scenario->objective_type]);
 	set_format_arg(2, short, scenario->objective_arg_3);
 	set_format_arg(4, short, date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
 	set_format_arg(6, int, scenario->objective_arg_2);
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, 0) + 5;
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
@@ -444,7 +444,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		set_format_arg(0, rct_string_id, STR_STRING);
 		set_format_arg(2, const char *, completedByName);
 		set_format_arg(2 + sizeof(const char *), money32, scenario->highscore->company_value);
-		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
 	}
 }
 
@@ -511,7 +511,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
 				set_format_arg(2, rct_string_id, STR_STRING);
 				set_format_arg(4, char *, buffer);
-				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, gCommonFormatArgs);
+				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, COLOUR_BLACK, gCommonFormatArgs);
 			}
 
 			y += 24;

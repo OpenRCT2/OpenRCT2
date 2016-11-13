@@ -371,7 +371,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			dpi,
 			STR_STRING,
 			gCommonFormatArgs,
-			0,
+			COLOUR_BLACK,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
 			widget->right - widget->left - 8
@@ -397,7 +397,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (lastaction != -999) {
 		set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
 	}
-	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	if (w->viewport != NULL && w->var_492 != -1) {
 		window_draw_viewport(dpi, w);
