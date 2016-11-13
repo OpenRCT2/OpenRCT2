@@ -114,6 +114,7 @@ static rct_window_event_list window_ride_list_events = {
 };
 
 enum {
+	INFORMATION_TYPE_NAME,
 	INFORMATION_TYPE_STATUS,
 	INFORMATION_TYPE_POPULARITY,
 	INFORMATION_TYPE_SATISFACTION,
@@ -133,6 +134,7 @@ enum {
 };
 
 rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+	STR_SORT_NAME,
 	STR_STATUS,
 	STR_POPULARITY,
 	STR_SATISFACTION,
@@ -221,7 +223,7 @@ void window_ride_list_open()
 		window->max_width = 400;
 		window->max_height = 700;
 	}
-	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
+	_window_ride_list_information_type = INFORMATION_TYPE_NAME;
 	window->list_information_type = 0;
 }
 
@@ -304,7 +306,7 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 
 		int numItems = 0;
 		int selectedIndex = -1;
-		for (int type = INFORMATION_TYPE_STATUS; type <= lastType; type++) {
+		for (int type = INFORMATION_TYPE_NAME; type <= lastType; type++) {
 			if ((gParkFlags & PARK_FLAGS_NO_MONEY)) {
 				if (ride_info_type_money_mapping[type]) {
 					continue;
@@ -350,7 +352,7 @@ static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdo
 		if (dropdownIndex == -1)
 			return;
 
-		int informationType = INFORMATION_TYPE_STATUS;
+		int informationType = INFORMATION_TYPE_NAME;
 		uint32 arg = (uint32)gDropdownItemsArgs[dropdownIndex];
 		for (int i = 0; i < countof(ride_info_type_string_mapping); i++) {
 			if (arg == ride_info_type_string_mapping[i]) {
@@ -548,6 +550,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		// Ride information
 		formatSecondary = 0;
 		switch (_window_ride_list_information_type) {
+		case INFORMATION_TYPE_NAME:
 		case INFORMATION_TYPE_STATUS:
 			ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
 			set_format_arg(2, sint32, argument);
@@ -689,7 +692,21 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 	gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 }
 
-
+int sort_status_get_number(rct_ride* ride, int max_riders_of_closed) 
+{
+	//This helper function further organizes the status sort by ordering from top to bottom:
+	//open rides (with most to least current riders),
+	//testing,
+	//closed rides (with most to least current riders),
+	//closed rides with no closed on track (such as incomplete tracks or ones in "construction mode")
+	if (ride->status == RIDE_STATUS_CLOSED) {
+		return ride->num_riders + (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK ? 1 : 0);
+	} else if (ride->status == RIDE_STATUS_TESTING) {
+		return 2 + max_riders_of_closed;
+	} else {
+		return ride->num_riders + 3 + max_riders_of_closed;
+	}
+}
 
 /**
  *
@@ -721,6 +738,19 @@ static void window_ride_list_refresh_list(rct_window *w)
 
 	w->no_list_items = countA;
 	int list_index = 0;
+	
+	//This variable is for determining the position in statuses of closed rides with riders.
+	int max_riders_of_closed = 0;
+	if (w->list_information_type == INFORMATION_TYPE_STATUS) {
+		FOR_ALL_RIDES(i, ride) {
+			if (ride->status == RIDE_STATUS_CLOSED) {
+				if (ride->num_riders > max_riders_of_closed) {
+					max_riders_of_closed = ride->num_riders;
+				}
+			}
+		}
+	}
+
 	FOR_ALL_RIDES(i, ride) {
 		if (w->page != gRideClassifications[ride->type])
 			continue;
@@ -728,13 +758,26 @@ static void window_ride_list_refresh_list(rct_window *w)
 		w->list_item_positions[list_index] = i;
 		int current_list_position = list_index;
 		switch (w->list_information_type) {
-		case INFORMATION_TYPE_STATUS:
+		case INFORMATION_TYPE_NAME:
 			format_string_to_upper(bufferA, 128, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
 				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				format_string_to_upper(bufferB, 128, otherRide->name, &otherRide->name_arguments);
 				if (strcmp(bufferA, bufferB) >= 0)
 					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_STATUS:;
+			int ride_num, other_ride_num;
+			ride_num = sort_status_get_number(ride, max_riders_of_closed);
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				other_ride_num = sort_status_get_number(otherRide, max_riders_of_closed);
+				if (ride_num <= other_ride_num) {
+					break;
+				}
 
 				window_bubble_list_item(w, current_list_position);
 			}
