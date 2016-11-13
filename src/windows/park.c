@@ -1272,7 +1272,7 @@ static void window_park_rating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
 	// Current value
-	gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, 0, x + widget->left + 3, y + widget->top + 2);
+	gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
 
 	// Graph border
 	gfx_fill_rect_inset(dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
@@ -1389,7 +1389,7 @@ static void window_park_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
 	// Current value
-	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, 0, x + widget->left + 3, y + widget->top + 2);
+	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x + widget->left + 3, y + widget->top + 2);
 
 	// Graph border
 	gfx_fill_rect_inset(dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
@@ -1522,7 +1522,7 @@ static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
 
-	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, 0, x, y);
+	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion
@@ -1621,27 +1621,27 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		parkSize = squaredmetres_to_squaredfeet(parkSize);
 	}
 	set_format_arg(0, uint32, parkSize);
-	gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, 0, x, y);
+	gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Draw number of rides / attractions
 	if (w->list_information_type != (uint16)-1) {
 		set_format_arg(0, uint32, w->list_information_type);
-		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 	y += 10;
 
 	// Draw number of staff
 	if (w->var_48C != -1) {
 		set_format_arg(0, uint32, w->var_48C);
-		gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 	y += 10;
 
 	// Draw number of guests in park
-	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x, y);
 	y += 10;
-	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion
@@ -1785,7 +1785,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 5;
 
 	// Your objective:
-	gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, NULL, COLOUR_BLACK, x, y);
 	y += 10;
 
 	// Objective

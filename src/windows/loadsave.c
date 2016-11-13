@@ -529,7 +529,7 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 
 		set_format_arg(0, rct_string_id, STR_STRING);
 		set_format_arg(2, char*, _listItems[i].name);
-		gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, 0, y - 1);
+		gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
 	}
 }
 

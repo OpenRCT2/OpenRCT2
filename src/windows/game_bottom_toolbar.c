@@ -485,7 +485,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		format = STR_FAHRENHEIT_VALUE;
 	}
 	set_format_arg(0, short, temperature);
-	gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, x, y + 6);
+	gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, x, y + 6);
 	x += 30;
 
 	// Current weather

@@ -1706,7 +1706,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		int colour = w->colours[1];
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2) {
-			colour |= 0x40;
+			colour |= COLOUR_FLAG_INSET;
 		}
 		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 		gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);

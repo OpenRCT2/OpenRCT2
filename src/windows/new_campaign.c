@@ -393,10 +393,10 @@ static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Price per week
 	money32 pricePerWeek = AdvertisingCampaignPricePerWeek[w->campaign.campaign_type];
-	gfx_draw_string_left(dpi, STR_MARKETING_COST_PER_WEEK, &pricePerWeek, 0, x, y);
+	gfx_draw_string_left(dpi, STR_MARKETING_COST_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x, y);
 	y += 13;
 
 	// Total price
 	money32 totalPrice = AdvertisingCampaignPricePerWeek[w->campaign.campaign_type] * w->campaign.no_weeks;
-	gfx_draw_string_left(dpi, STR_MARKETING_TOTAL_COST, &totalPrice, 0, x, y);
+	gfx_draw_string_left(dpi, STR_MARKETING_TOTAL_COST, &totalPrice, COLOUR_BLACK, x, y);
 }
