@@ -338,10 +338,10 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				// Calculate colour
 				colour = NOT_TRANSLUCENT(w->colours[0]);
 				if (i == highlightedIndex)
-					colour = 2;
+					colour = COLOUR_WHITE;
 				if (dropdown_is_disabled(i))
 					if (i < 64)
-						colour = NOT_TRANSLUCENT(w->colours[0]) | 0x40;
+						colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
 				// Draw item string
 				gfx_draw_string_left_clipped(

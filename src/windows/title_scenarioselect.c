@@ -386,7 +386,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		} else { // old-style
 			set_format_arg(0, rct_string_id, ScenarioCategoryStringIds[i]);
 		}
-		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, 10);
+		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, COLOUR_AQUAMARINE);
 	}
 
 	// Return if no scenario highlighted
@@ -491,7 +491,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			rct_string_id format = isDisabled ? STR_STRINGID : (isHighlighted ? highlighted_format : unhighlighted_format);
 			set_format_arg(0, rct_string_id, STR_STRING);
 			set_format_arg(2, char *, buffer);
-			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
+			colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
 			if (isDisabled) {
 				gCurrentFontSpriteBase = -1;
 			}

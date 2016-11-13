@@ -412,7 +412,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 
 	if (widget->type == WWT_13) {
 		if (widget_is_disabled(w, widgetIndex))
-			colour |= 0x40;
+			colour |= COLOUR_FLAG_INSET;
 		gfx_draw_string_left_clipped(
 			dpi,
 			stringId,
@@ -425,7 +425,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	} else {
 		colour &= ~(1 << 7);
 		if (widget_is_disabled(w, widgetIndex))
-			colour |= 0x40;
+			colour |= COLOUR_FLAG_INSET;
 		gfx_draw_string_centred_clipped(
 			dpi,
 			stringId,
@@ -460,7 +460,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 		return;
 
 	if (widget_is_disabled(w, widgetIndex))
-		colour |= 0x40;
+		colour |= COLOUR_FLAG_INSET;
 	gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
 }
 
@@ -614,7 +614,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			width -= 10;
 	}
 	l += width / 2;
-	gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, 34, l, t, width);
+	gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, l, t, width);
 }
 
 /**
@@ -652,7 +652,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	t = w->y + max(widget->top, (widget->top + widget->bottom) / 2 - 5);
 
 	if (widget_is_disabled(w, widgetIndex))
-		colour |= 0x40;
+		colour |= COLOUR_FLAG_INSET;
 
 	gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, l, t, widget->right - widget->left - 2);
 }
@@ -682,7 +682,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
 			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-			gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour & 0x7F, l, yMid - 5);
+			gfx_draw_string(dpi, (char*)CheckBoxMarkString, NOT_TRANSLUCENT(colour), l, yMid - 5);
 		}
 	}
 
@@ -691,7 +691,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 		return;
 
 	if (widget_is_disabled(w, widgetIndex)) {
-		colour |= 0x40;
+		colour |= COLOUR_FLAG_INSET;
 	}
 
 	gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
