@@ -4025,12 +4025,12 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	reliability = ride->reliability >> 8;
 	gfx_draw_string_left(dpi, STR_RELIABILITY_LABEL_1757, &reliability, COLOUR_BLACK, x, y);
-	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), 14);
+	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, max(10, reliability), COLOUR_BRIGHT_GREEN);
 	y += 11;
 
 	downTime = ride->downtime;
 	gfx_draw_string_left(dpi, STR_DOWN_TIME_LABEL_1889, &downTime, COLOUR_BLACK, x, y);
-	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, downTime, 28);
+	window_ride_maintenance_draw_bar(w, dpi, x + 103, y, downTime, COLOUR_BRIGHT_RED);
 	y += 26;
 
 	// Last inspection

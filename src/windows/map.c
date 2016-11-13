@@ -852,7 +852,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 			for (i = 0; i < 8; i++) {
 				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
-				gfx_draw_string_left(dpi, mapLabels[i], w, 0, x + 10, y);
+				gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + 10, y);
 				y += 10;
 				if (i == 3) {
 					x += 118;
@@ -861,7 +861,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			}
 		}
 	} else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
-		gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+		gfx_draw_string_left(dpi, STR_MAP_SIZE, NULL, COLOUR_BLACK, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
 	}
 }
 

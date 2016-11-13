@@ -904,7 +904,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 			stringId = STR_X_DESIGNS_AVAILABLE;
 			break;
 		}
-		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, 0, x, y + 39);
+		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 39);
 	}
 
 	// Price

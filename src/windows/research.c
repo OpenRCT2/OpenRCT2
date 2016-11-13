@@ -577,7 +577,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, i
 
 	int currentResearchLevel = gResearchFundingLevel;
 	money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
-	gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, 0, w->x + 10, w->y + 77);
+	gfx_draw_string_left(dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->x + 10, w->y + 77);
 }
 
 #pragma endregion

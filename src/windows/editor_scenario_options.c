@@ -639,43 +639,43 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 	if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-		gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		x = w->x + w->widgets[WIDX_INITIAL_CASH].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-		gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		x = w->x + w->widgets[WIDX_INITIAL_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-		gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		x = w->x + w->widgets[WIDX_MAXIMUM_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
-		gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
 		sint16 interestRate = clamp(INT16_MIN, (sint16)gBankLoanInterestRate, INT16_MAX);
-		gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, 0, x, y);
+		gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, x, y);
 	}
 }
 
@@ -865,47 +865,47 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 		// Cash per guest label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
-		gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		// Cash per guest value
 		x = w->x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
 		arg = gGuestInitialCash;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 	}
 
 	// Guest initial happiness label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-	gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, NULL, COLOUR_BLACK, x, y);
 
 	// Guest initial happiness value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
 	arg = (gGuestInitialHappiness * 100) / 255;
-	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 
 	// Guest initial hunger label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-	gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, NULL, COLOUR_BLACK, x, y);
 
 	// Guest initial hunger value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
 	arg = ((255 - gGuestInitialHunger) * 100) / 255;
-	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 
 	// Guest initial thirst label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
-	gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, NULL, COLOUR_BLACK, x, y);
 
 	// Guest initial thirst value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
 	arg = ((255 - gGuestInitialThirst) * 100) / 255;
-	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion
@@ -1175,50 +1175,50 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy land label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
-		gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		// Cost to buy land value
 		x = w->x + w->widgets[WIDX_LAND_COST].left + 1;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
 		arg = gLandPrice;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY) {
 		// Cost to buy construction rights label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-		gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		// Cost to buy construction rights value
 		x = w->x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
 		arg = gConstructionRightsPrice;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY) {
 		// Pay for park or rides label
 		x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1;
 		y = w->y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
-		gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, NULL, COLOUR_BLACK, x, y);
 
 		// Pay for park or rides value
 		stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? STR_FREE_PARK_ENTER : STR_PAY_PARK_ENTER;
-		gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, 0, x, y);
+		gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
 	}
 
 	if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY) {
 		// Entry price label
 		x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
-		gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, NULL, COLOUR_BLACK, x, y);
 
 		// Entry price value
 		x = w->x + w->widgets[WIDX_ENTRY_PRICE].left + 1;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
 		arg = gParkEntranceFee;
-		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
 	}
 }
 

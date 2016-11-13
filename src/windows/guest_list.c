@@ -681,7 +681,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		set_format_arg(0, sint16, w->var_492);
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 }
 

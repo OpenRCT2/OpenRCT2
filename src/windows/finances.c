@@ -679,7 +679,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (i % 2 == 0)
 			gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-		gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], NULL, 0, x, y - 1);
+		gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], NULL, COLOUR_BLACK, x, y - 1);
 		y += 10;
 	}
 
@@ -745,24 +745,24 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	// Loan and interest rate
-	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, 0, w->x + 4, w->y + 229);
+	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, COLOUR_BLACK, w->x + 4, w->y + 229);
 	set_format_arg(0, uint16, gBankLoanInterestRate);
-	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, 0, w->x + 156, w->y + 229);
+	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 156, w->y + 229);
 
 	// Current cash
 	money32 currentCash = DECRYPT_MONEY(gCashEncrypted);
 	rct_string_id stringId = currentCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-	gfx_draw_string_left(dpi, stringId, &currentCash, 0, w->x + 4, w->y + 244);
+	gfx_draw_string_left(dpi, stringId, &currentCash, COLOUR_BLACK, w->x + 4, w->y + 244);
 
 	// Objective related financial information
 	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
 		money32 lastMonthProfit = finance_get_last_month_shop_profit();
 		set_format_arg(0, money32, lastMonthProfit);
-		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, 0, w->x + 280, w->y + 229);
+		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + 280, w->y + 229);
 	} else {
 		// Park value and company value
-		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, 0, w->x + 280, w->y + 229);
-		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, 0, w->x + 280, w->y + 244);
+		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->x + 280, w->y + 229);
+		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->x + 280, w->y + 244);
 	}
 }
 
@@ -837,7 +837,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 		cashLessLoan >= 0 ?
 			STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
 		&cashLessLoan,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
@@ -943,7 +943,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 		dpi,
 		STR_FINANCES_PARK_VALUE,
 		&parkValue,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
@@ -1049,7 +1049,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 		dpi,
 		weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS,
 		&weeklyPofit,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
@@ -1209,13 +1209,13 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
-		gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, 0, x + 304, y);
+		gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK, x + 304, y);
 
 		y += 10;
 	}
 
 	if (noCampaignsActive) {
-		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, 0, x + 4, y);
+		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, COLOUR_BLACK, x + 4, y);
 		y += 10;
 	}
 	y += 31;
@@ -1230,8 +1230,8 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
 
 		// Draw button text
-		gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], NULL, 0, x + 4, y - 1);
-		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, 0, x + 310, y - 1);
+		gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], NULL, COLOUR_BLACK, x + 4, y - 1);
+		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y - 1);
 
 		y += 12;
 	}

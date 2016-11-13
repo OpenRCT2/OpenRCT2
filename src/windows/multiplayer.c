@@ -460,19 +460,19 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
 
 		const utf8 * providerName = network_get_server_provider_name();
 		if (!str_is_null_or_empty(providerName)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, 0, x, y);
+			gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, COLOUR_BLACK, x, y);
 			y += 11;
 		}
 
 		const utf8 * providerEmail = network_get_server_provider_email();
 		if (!str_is_null_or_empty(providerEmail)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, 0, x, y);
+			gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, COLOUR_BLACK, x, y);
 			y += 11;
 		}
 
 		const utf8 * providerWebsite = network_get_server_provider_website();
 		if (!str_is_null_or_empty(providerWebsite)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, (void*)&providerWebsite, 0, x, y);
+			gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, (void*)&providerWebsite, COLOUR_BLACK, x, y);
 		}
 	}
 }
@@ -895,7 +895,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
 			// Draw action name
 			set_format_arg(0, uint16, network_get_action_name_string_id(i));
-			gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, 10, y - 1);
+			gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, 10, y - 1);
 		}
 		y += 10;
 	}

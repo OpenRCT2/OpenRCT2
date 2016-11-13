@@ -1301,7 +1301,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 		set_format_arg(0, uint16, numSelected);
 		set_format_arg(2, uint16, totalSelectable);
-		gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, x, y);
 	}
 
 	// Draw sort button text
@@ -1413,17 +1413,17 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
 			// Highlight background
-			colour = 142;
+			colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
 			if (listItem->entry == w->object_entry && !(*listItem->flags & OBJECT_SELECTION_FLAG_6)) {
 				gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
-				colour = 14;
+				colour = COLOUR_BRIGHT_GREEN;
 			}
 
 			// Draw checkmark
 			if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
 				x = 2;
-				gCurrentFontSpriteBase = colour == 14 ? -2 : -1;
-				colour2 = w->colours[1] & 0x7F;
+				gCurrentFontSpriteBase = colour == COLOUR_BRIGHT_GREEN ? -2 : -1;
+				colour2 = NOT_TRANSLUCENT(w->colours[1]);
 				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 					colour2 |= COLOUR_FLAG_INSET;
 
@@ -1439,7 +1439,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				gCurrentFontSpriteBase = -1;
 			}
 			else {
-				colour = 0;
+				colour = COLOUR_BLACK;
 				gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 			}
 
