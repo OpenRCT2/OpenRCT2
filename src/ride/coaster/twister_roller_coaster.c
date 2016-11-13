@@ -84,7 +84,7 @@ static void twister_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8
 	}
 	sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
 	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
-	
+
 	rct_ride * ride = get_ride(rideIndex);
 	track_paint_util_draw_station_platform(ride, direction, height, 9, mapElement);
 

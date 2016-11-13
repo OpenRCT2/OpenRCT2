@@ -4814,7 +4814,7 @@ rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction)
 	return NULL;
 }
 
-rct_map_element *map_get_park_entrance_element_at(int x, int y, int z, bool ghost) 
+rct_map_element *map_get_park_entrance_element_at(int x, int y, int z, bool ghost)
 {
 	rct_map_element* mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
@@ -4829,7 +4829,7 @@ rct_map_element *map_get_park_entrance_element_at(int x, int y, int z, bool ghos
 
 		if ((ghost == false) && (mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
 			continue;
-		
+
 		return mapElement;
 	} while (!map_element_is_last_for_tile(mapElement++));
 	return NULL;
@@ -5213,7 +5213,7 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;
-		
+
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 			surfaceElement->properties.surface.ownership = 0;

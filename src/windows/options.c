@@ -465,7 +465,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
 	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
 	(1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
-	(1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) | 
+	(1 << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
 	(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -1604,7 +1604,7 @@ static void window_options_invalidate(rct_window *w)
 			w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
 
 		w->hold_down_widgets |= (1 << WIDX_WINDOW_LIMIT_UP) | (1 << WIDX_WINDOW_LIMIT_DOWN);
-		
+
 		// save plugin data checkbox: visible or not
 		window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 

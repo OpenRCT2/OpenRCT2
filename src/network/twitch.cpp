@@ -530,9 +530,9 @@ namespace Twitch
         for (ch = message, cmd = "news"; *cmd != '\0'; ++ch, ++cmd) {
             if (*ch != *cmd) return;
         }
-        
+
         if (!isspace(*ch)) return;
-        
+
         ch = strskipwhitespace(ch);
         DoChatMessageNews(ch);
     }

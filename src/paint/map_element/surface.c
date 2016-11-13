@@ -644,7 +644,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 				continue;
 			}
 		}
-		
+
 		// Tunnels
 		uint8 tunnelType = tunnelArray[0].type;
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];

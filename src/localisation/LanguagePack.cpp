@@ -89,7 +89,7 @@ public:
         try
         {
             FileStream fs = FileStream(path, FILE_MODE_OPEN);
-        
+
             size_t fileLength = (size_t)fs.GetLength();
             if (fileLength > MAX_LANGUAGE_SIZE)
             {

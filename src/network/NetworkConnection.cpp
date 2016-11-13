@@ -55,7 +55,7 @@ int NetworkConnection::ReadPacket()
         {
             return status;
         }
-        
+
         InboundPacket.transferred += readBytes;
         if (InboundPacket.transferred == sizeof(InboundPacket.size))
         {

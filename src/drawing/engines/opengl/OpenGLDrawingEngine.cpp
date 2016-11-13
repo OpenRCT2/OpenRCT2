@@ -258,6 +258,8 @@ public:
     ~OpenGLDrawingEngine() override
     {
         delete _copyFramebufferShader;
+        delete _screenFramebuffer;
+        delete _swapFramebuffer;
 
         delete _drawingContext;
         delete [] _bits;
@@ -341,12 +343,12 @@ public:
             window_update_all_viewports();
             window_draw_all(&_bitsDPI, 0, 0, _width, _height);
             window_update_all();
-        
+
             gfx_draw_pickedup_peep(&_bitsDPI);
 
             _drawingContext->FlushCommandBuffers();
             _swapFramebuffer->SwapCopy();
-        
+
             rct2_draw(&_bitsDPI);
         }
 
@@ -362,13 +364,13 @@ public:
         CheckGLError();
         Display();
     }
-    
+
     sint32 Screenshot() override
     {
         const OpenGLFramebuffer * framebuffer = _swapFramebuffer->GetTargetFramebuffer();
         framebuffer->Bind();
         void * pixels = framebuffer->GetPixels();
-        
+
         int result = screenshot_dump_png_32bpp(_width, _height, pixels);
         Memory::Free(pixels);
         return result;
@@ -666,7 +668,7 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
     y2 += _offsetY;
 
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
-    
+
     DrawLineCommand command = {};
 
     command.colour = paletteColour;
@@ -1020,7 +1022,7 @@ void OpenGLDrawingContext::FlushImages()
     if (_commandBuffers.images.size() == 0) return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
-    
+
     std::vector<DrawImageInstance> instances;
     instances.reserve(_commandBuffers.images.size());
 
@@ -1052,7 +1054,7 @@ void OpenGLDrawingContext::FlushImages()
 
     _drawImageShader->Use();
     _drawImageShader->DrawInstances(instances);
-    
+
     _commandBuffers.images.clear();
 }
 

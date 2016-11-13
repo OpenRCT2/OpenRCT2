@@ -623,7 +623,7 @@ static void window_ride_construction_close(rct_window *w)
 	uint8 rideIndex = _currentRideIndex;
 	if (ride_try_get_origin_element(rideIndex, NULL)) {
 		rct_ride *ride = get_ride(rideIndex);
-		// Auto open shops if required. 
+		// Auto open shops if required.
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
 			// HACK: Until we find a good a way to defer the game command for opening the shop, stop this
 			//       from getting stuck in an infinite loop as opening the ride will try to close this window
@@ -1242,10 +1242,10 @@ static void window_ride_construction_resize(rct_window *w)
 		disabledWidgets &= ~(1ULL << WIDX_BANK_STRAIGHT);
 		disabledWidgets &= ~(1ULL << WIDX_BANK_RIGHT);
 	}
-	
+
 	//If chain lift cheat is enabled then show the chain lift widget no matter what
 	if(gCheatsEnableChainLiftOnAllTrack) {
-		disabledWidgets &= ~(1ULL<<WIDX_CHAIN_LIFT);	
+		disabledWidgets &= ~(1ULL<<WIDX_CHAIN_LIFT);
 	}
 
 	// Set and invalidate the changed widgets

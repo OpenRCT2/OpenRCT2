@@ -296,7 +296,7 @@ uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour
 	int image_type = (image_id & 0xE0000000);
 	if (image_type == 0)
 		return NULL;
-	
+
 	if (!(image_type & IMAGE_TYPE_REMAP_2_PLUS)) {
 		uint8 palette_ref = (image_id >> 19) & 0xFF;
 		if (!(image_type & IMAGE_TYPE_TRANSPARENT)) {
@@ -326,7 +326,7 @@ uint8* FASTCALL gfx_draw_sprite_get_palette(int image_id, uint32 tertiary_colour
 
 		memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
 		memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
-		
+
 		return palette_pointer;
 	}
 }

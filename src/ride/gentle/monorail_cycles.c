@@ -257,12 +257,12 @@ static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(uint8 rideInde
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static const uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
+static const uint8 monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
 
 /** rct2: 0x0088AD98 */
 static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	trackSequence = right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
+	trackSequence = monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
 	paint_monorail_cycles_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 

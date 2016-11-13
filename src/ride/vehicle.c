@@ -5973,8 +5973,8 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			return;
 		}
-		if (trackBeginEnd.begin_x == vehicle->track_x && 
-			trackBeginEnd.begin_y == vehicle->track_y && 
+		if (trackBeginEnd.begin_x == vehicle->track_x &&
+			trackBeginEnd.begin_y == vehicle->track_y &&
 			mapElement == trackBeginEnd.begin_element) {
 			return;
 		}
@@ -6755,9 +6755,9 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 			} else {
 				vehicle->var_C8 += 0x3333;
 
-				if (vehicle->seat_rotation >= vehicle->target_seat_rotation) 
+				if (vehicle->seat_rotation >= vehicle->target_seat_rotation)
 					vehicle->seat_rotation--;
-				
+
 				else
 					vehicle->seat_rotation++;
 

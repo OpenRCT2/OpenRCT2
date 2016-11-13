@@ -358,7 +358,7 @@ static void cheat_explode_guests()
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
-		// To prevent blowing up peeps that will break 
+		// To prevent blowing up peeps that will break
 		// ride vehicle logic.
 		if (peep->state == PEEP_STATE_ENTERING_RIDE ||
 			peep->state == PEEP_STATE_QUEUING_FRONT ||

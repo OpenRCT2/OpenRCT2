@@ -569,7 +569,7 @@ void window_editor_inventions_list_open()
  *  rct2: 0x006853D2
  */
 static void window_editor_inventions_list_close(rct_window *w)
-{	
+{
 	research_remove_flags();
 
 	// When used in-game (as a cheat)

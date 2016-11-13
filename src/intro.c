@@ -163,7 +163,7 @@ void intro_update()
 void intro_draw(rct_drawpixelinfo *dpi)
 {
 	int screenWidth = gScreenWidth;
-	
+
 	switch (gIntroState) {
 	case INTRO_STATE_DISCLAIMER_1:
 	case INTRO_STATE_DISCLAIMER_2:

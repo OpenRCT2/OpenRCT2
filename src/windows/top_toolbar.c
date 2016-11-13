@@ -521,7 +521,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		// New game is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
 		if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR))
 			dropdownIndex += 1;
-		
+
 		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
 		if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
 			dropdownIndex += 1;

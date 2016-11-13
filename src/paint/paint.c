@@ -520,7 +520,7 @@ bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y)
 	if (g_aps_F1AD2C == NULL) {
 		return paint_attach_to_previous_ps(image_id, x, y);
 	}
-	
+
 	if (gNextFreePaintStruct >= gEndOfPaintStructArray) {
 		return false;
 	}

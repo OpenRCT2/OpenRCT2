@@ -387,7 +387,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	char ping[64];
 	snprintf(ping, 64, "%d ms", network_get_player_ping(player));
 	gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
-	
+
 	// Draw last action
 	x = w->x + (w->width / 2);
 	y = w->y + w->height - 13;
@@ -533,7 +533,7 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, 0,x, y);
 
 	y += 10;
-	
+
 	set_format_arg(0, uint32, network_get_player_money_spent(player));
 	gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, 0,x, y);
 }
@@ -634,7 +634,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 				}
 				widget_invalidate(w, WIDX_VIEWPORT);
 			}
-			
+
 			// Draw the viewport
 			w->var_492 = 0;
 		} else {

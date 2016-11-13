@@ -484,7 +484,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		gGameCommandErrorText = STR_NONE;
 		gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;
 	}
-	
+
 	// Increment nest count
 	gGameCommandNestLevel++;
 
@@ -586,7 +586,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	// Decrement nest count
 	gGameCommandNestLevel--;
-	
+
 	// Clear the game command callback to prevent the next command triggering it
 	game_command_callback = 0;
 
@@ -667,7 +667,7 @@ static void utf8_to_rct2_self(char *buffer, size_t length)
 {
 	char tempBuffer[512];
 	utf8_to_rct2(tempBuffer, buffer);
-	
+
 	size_t i = 0;
 	const char *src = tempBuffer;
 	char *dst = buffer;
@@ -968,35 +968,35 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 	size_t numAutosavesToDelete = 0;
 
 	file_info fileInfo;
-	
+
 	utf8 filter[MAX_PATH];
-	
+
 	utf8 **autosaveFiles = NULL;
-	
+
 	size_t i=0;
-	
+
 	platform_get_user_directory(filter, "save", sizeof(filter));
 	safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
-	
+
 	// At first, count how many autosaves there are
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 		autosavesCount++;
 	}
 	platform_enumerate_files_end(fileEnumHandle);
-	
+
 	// If there are fewer autosaves than the number of files to keep we don't need to delete anything
 	if(autosavesCount <= numberOfFilesToKeep) {
 		return;
 	}
-	
+
 	autosaveFiles = (utf8**) malloc(sizeof(utf8*) * autosavesCount);
-	
+
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	for(i = 0; i < autosavesCount; i++) {
 		autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
 		memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
-		
+
 		if(platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
 			platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
 			safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
@@ -1008,20 +1008,20 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep)
 
 	// calculate how many saves we need to delete.
 	numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
-	
+
 	i=0;
 	while (numAutosavesToDelete > 0) {
 		platform_file_delete(autosaveFiles[i]);
-		
+
 		i++;
 		numAutosavesToDelete--;
 	}
-	
-	
+
+
 	for(i = 0; i < autosavesCount; i++) {
 		free(autosaveFiles[i]);
 	}
-	
+
 	free(autosaveFiles);
 }
 

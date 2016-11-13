@@ -32,25 +32,6 @@ extern "C" {
 #include "../util/util.h"
 #include "localisation.h"
 
-enum
-{
-    RCT2_LANGUAGE_ID_ENGLISH_UK,
-    RCT2_LANGUAGE_ID_ENGLISH_US,
-    RCT2_LANGUAGE_ID_FRENCH,
-    RCT2_LANGUAGE_ID_GERMAN,
-    RCT2_LANGUAGE_ID_SPANISH,
-    RCT2_LANGUAGE_ID_ITALIAN,
-    RCT2_LANGUAGE_ID_DUTCH,
-    RCT2_LANGUAGE_ID_SWEDISH,
-    RCT2_LANGUAGE_ID_8,
-    RCT2_LANGUAGE_ID_KOREAN,
-    RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
-    RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
-    RCT2_LANGUAGE_ID_12,
-    RCT2_LANGUAGE_ID_PORTUGUESE,
-    RCT2_LANGUAGE_ID_END = 255
-};
-
 static TTFFontSetDescriptor TTFFontMSGothic =
 {{
     { "msgothic.ttc",   "MS PGothic",   9,      1,      0,      15,     nullptr },
@@ -367,7 +348,7 @@ rct_string_id language_allocate_object_string(const utf8 * target)
             _availableObjectStringIds.push(stringId);
         }
     }
-    
+
     rct_string_id stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
     _languageCurrent->SetString(stringId, target);

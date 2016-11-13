@@ -158,7 +158,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		SafeFree(td4);
 		return NULL;
 	}
-	
+
 	td6->type = rct1_get_ride_type(td4->type);
 
 	// All TD4s that use powered launch use the type that doesn't pass the station.
@@ -1408,7 +1408,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 	if (byte_F4414E & 4) {
 		*flags |= 2;
 	}
-	
+
 	z += 16 - word_F44129;
 
 	int operation = PTD_OPERATION_GET_COST;
@@ -1520,13 +1520,13 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->operation_setting << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-	
+
 	uint8 num_circuits = td6->lift_hill_speed_num_circuits >> 5;
 	if (num_circuits == 0) {
 		num_circuits = 1;
 	}
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-	
+
 	ride_set_to_default_inspection_interval(rideIndex);
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
 	ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
@@ -1624,7 +1624,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	}
 
 	rct_ride *ride = get_ride(rideIndex);
-	
+
 	// Calculate price
 	money32 price = 0;
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {

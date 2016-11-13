@@ -70,7 +70,7 @@ CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 ter
     if ((image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT)) == 0)
         return CachedTextureInfo{ 0 };
 
-    uint32 uniquePaletteId = image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT); 
+    uint32 uniquePaletteId = image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT);
     if (!(image & IMAGE_TYPE_REMAP_2_PLUS)) {
         uniquePaletteId = (image >> 19) & 0xFF;
         if (!(image & IMAGE_TYPE_TRANSPARENT)) {
@@ -78,7 +78,7 @@ CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 ter
         }
     }
     else {
-        uniquePaletteId |= ((image >> 19) & 0x1F); 
+        uniquePaletteId |= ((image >> 19) & 0x1F);
         uniquePaletteId |= ((image >> 24) & 0x1F) << 8;
 
         if (!(image & IMAGE_TYPE_REMAP)) {
@@ -157,14 +157,14 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
     // Restore old data
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
-    
+
     _atlasesTextureIndices = newIndices;
 }
 
 CachedTextureInfo TextureCache::LoadImageTexture(uint32 image)
 {
     rct_drawpixelinfo * dpi = GetImageAsDPI(image, 0);
-    
+
     auto cacheInfo = AllocateImage(dpi->width, dpi->height);
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
@@ -182,10 +182,10 @@ CachedTextureInfo TextureCache::LoadPaletteTexture(uint32 image, uint32 tertiary
     dpi.width = 256;
     dpi.height = special ? 5 : 1;
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
-    
+
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
-    
+
     return cacheInfo;
 }
 
@@ -260,7 +260,7 @@ rct_drawpixelinfo * TextureCache::GetImageAsDPI(uint32 image, uint32 tertiaryCol
     rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
     sint32 width = g1Element->width;
     sint32 height = g1Element->height;
-    
+
     rct_drawpixelinfo * dpi = CreateDPI(width, height);
     gfx_draw_sprite_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
     return dpi;
@@ -287,7 +287,7 @@ rct_drawpixelinfo * TextureCache::GetGlyphAsDPI(uint32 image, uint8 * palette)
     rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
     sint32 width = g1Element->width;
     sint32 height = g1Element->height;
-    
+
     rct_drawpixelinfo * dpi = CreateDPI(width, height);
     gfx_draw_sprite_palette_set_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, palette, nullptr);
     return dpi;

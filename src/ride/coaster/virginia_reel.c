@@ -453,12 +453,12 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex,
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static const uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
+static const uint8 virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
 
 /** rct2: 0x00811314 */
 static void paint_virginia_reel_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	trackSequence = right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
+	trackSequence = virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
 	paint_virginia_reel_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 

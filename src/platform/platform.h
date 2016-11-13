@@ -52,6 +52,16 @@
 #define PLATFORM_NEWLINE "\n"
 #endif
 
+#define SHIFT 0x100
+#define CTRL 0x200
+#define ALT 0x400
+#define CMD 0x800
+#ifdef __MACOSX__
+	#define PLATFORM_MODIFIER CMD
+#else
+	#define PLATFORM_MODIFIER CTRL
+#endif
+
 typedef struct resolution {
 	int width, height;
 } resolution;

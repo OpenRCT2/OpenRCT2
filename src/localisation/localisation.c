@@ -539,49 +539,49 @@ static void format_integer(char **dest, size_t *size, long long value)
 	int digit;
 	char *nbegin, *nend, *ncur;
 	char tmp;
-	
+
 	if ((*size) == 0) return;
-	
+
 	// Negative sign
 	if (value < 0) {
 		format_push_char('-');
 		value = -value;
 	}
-	
+
 	if (value == 0) {
 		format_push_char('0');
 		return;
 	}
-	
+
 	nbegin = (*dest);
-	
+
 	// Right to left
 	while (value > 0 && (*size) > 1) {
 		digit = value % 10;
 		value /= 10;
-		
+
 		format_push_char_safe('0' + digit);
 	}
-	
+
 	if (value > 0) {
 		ncur = nbegin;
-		
+
 		while (value > 0) {
 			digit = value % 10;
 			value /= 10;
-			
+
 			format_push_wrap('0' + digit);
 		}
-		
+
 		// Reverse first half of string
 		nend = ncur - 1;
 		reverse_string();
-		
+
 		// Reverse second half of string
 		nbegin = ncur;
 		nend = (*dest) - 1;
 		reverse_string();
-		
+
 		format_push_char_safe('\0'); // truncate overflowed string
 	} else {
 		// Reverse string
@@ -597,7 +597,7 @@ static void format_comma_separated_integer(char **dest, size_t *size, long long 
 	char tmp;
 	const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
 	const char *ch = NULL;
-	
+
 	if ((*size) == 0) return;
 
 	// Negative sign
@@ -605,7 +605,7 @@ static void format_comma_separated_integer(char **dest, size_t *size, long long 
 		format_push_char('-');
 		value = -value;
 	}
-	
+
 	if (value == 0) {
 		format_push_char('0');
 		return;
@@ -621,14 +621,14 @@ static void format_comma_separated_integer(char **dest, size_t *size, long long 
 			groupIndex = 0;
 			ch = commaMark;
 		}
-		
+
 		if (ch != NULL ) {
 			format_push_char_safe(*ch++);
 			if (*ch == '\0') ch = NULL;
 		} else {
 			digit = value % 10;
 			value /= 10;
-			
+
 			format_push_char_safe('0' + digit);
 			groupIndex++;
 		}
@@ -636,35 +636,35 @@ static void format_comma_separated_integer(char **dest, size_t *size, long long 
 
 	if (value > 0) {
 		ncur = nbegin;
-		
+
 		while (value > 0) {
 			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				ch = commaMark;
 			}
-			
+
 			if (ch != NULL ) {
 				format_push_wrap(*ch++);
 				if (*ch == '\0') ch = NULL;
 			} else {
 				digit = value % 10;
 				value /= 10;
-				
+
 				format_push_wrap('0' + digit);
 				groupIndex++;
 			}
 		}
-		
+
 		// Reverse first half of string
 		nend = ncur - 1;
 		reverse_string();
-		
+
 		// Reverse second half of string
 		nbegin = ncur;
 		nend = (*dest) - 1;
 		reverse_string();
-		
+
 		format_push_char_safe('\0'); // truncate overflowed string
 	} else {
 		// Reverse string
@@ -682,7 +682,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 	const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
 	const char *ch = NULL;
 	int zeroNeeded = 1;
-	
+
 	if ((*size) == 0) return;
 
 	// Negative sign
@@ -690,7 +690,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 		format_push_char('-');
 		value = -value;
 	}
-	
+
 	nbegin = (*dest);
 
 	// In the case of buffers this small,
@@ -700,7 +700,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 		// One decimal place
 		digit = value % 10;
 		format_push_char_safe('0' + digit);
-		
+
 		ch = decimalMark;
 	}
 	value /= 10;
@@ -712,7 +712,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 			groupIndex = 0;
 			ch = commaMark;
 		}
-		
+
 		if (ch != NULL ) {
 			format_push_char_safe(*ch++);
 			if (*ch == '\0') ch = NULL;
@@ -720,7 +720,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 			zeroNeeded = 0;
 			digit = value % 10;
 			value /= 10;
-			
+
 			format_push_char_safe('0' + digit);
 			groupIndex++;
 		}
@@ -728,14 +728,14 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 
 	if (zeroNeeded || value > 0) {
 		ncur = nbegin;
-		
+
 		while (zeroNeeded || value > 0) {
 			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				ch = commaMark;
 			}
-			
+
 			if (ch != NULL ) {
 				format_push_wrap(*ch++);
 				if (*ch == '\0') ch = NULL;
@@ -743,21 +743,21 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 				zeroNeeded = 0;
 				digit = value % 10;
 				value /= 10;
-				
+
 				format_push_wrap('0' + digit);
 				groupIndex++;
 			}
 		}
-		
+
 		// Reverse first half of string
 		nend = ncur - 1;
 		reverse_string();
-		
+
 		// Reverse second half of string
 		nbegin = ncur;
 		nend = (*dest) - 1;
 		reverse_string();
-		
+
 		format_push_char_safe('\0'); // truncate overflowed string
 	} else {
 		// Reverse string
@@ -775,7 +775,7 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 	const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
 	const char *ch = NULL;
 	int zeroNeeded = 1;
-	
+
 	if ((*size) == 0) return;
 
 	// Negative sign
@@ -796,11 +796,11 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 		digit = value % 10;
 		value /= 10;
 		format_push_char_safe('0' + digit);
-		
+
 		digit = value % 10;
 		value /= 10;
 		format_push_char_safe('0' + digit);
-		
+
 		ch = decimalMark;
 	}
 
@@ -811,7 +811,7 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 			groupIndex = 0;
 			ch = commaMark;
 		}
-		
+
 		if (ch != NULL ) {
 			format_push_char_safe(*ch++);
 			if (*ch == '\0') ch = NULL;
@@ -819,22 +819,22 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 			zeroNeeded = 0;
 			digit = value % 10;
 			value /= 10;
-			
+
 			format_push_char_safe('0' + digit);
 			groupIndex++;
 		}
 	}
-	
+
 	if (zeroNeeded || value > 0) {
 		ncur = nbegin;
-		
+
 		while (zeroNeeded || value > 0) {
 			// Append group separator
 			if (groupIndex == 3) {
 				groupIndex = 0;
 				ch = commaMark;
 			}
-			
+
 			if (ch != NULL ) {
 				format_push_wrap(*ch++);
 				if (*ch == '\0') ch = NULL;
@@ -842,21 +842,21 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 				zeroNeeded = 0;
 				digit = value % 10;
 				value /= 10;
-				
+
 				format_push_wrap('0' + digit);
 				groupIndex++;
 			}
 		}
-		
+
 		// Reverse first half of string
 		nend = ncur - 1;
 		reverse_string();
-		
+
 		// Reverse second half of string
 		nbegin = ncur;
 		nend = (*dest) - 1;
 		reverse_string();
-		
+
 		format_push_char_safe('\0'); // truncate overflowed string
 	} else {
 		// Reverse string
@@ -868,9 +868,9 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 static void format_currency(char **dest, size_t *size, long long value)
 {
 	if ((*size) == 0) return;
-	
+
 	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
-	
+
 	value *= currencyDesc->rate;
 
 	// Negative sign
@@ -878,7 +878,7 @@ static void format_currency(char **dest, size_t *size, long long value)
 		format_push_char('-');
 		value = -value;
 	}
-	
+
 	//Round the value away from zero
 	value = (value + 99) / 100;
 
@@ -906,7 +906,7 @@ static void format_currency(char **dest, size_t *size, long long value)
 static void format_currency_2dp(char **dest, size_t *size, long long value)
 {
 	if ((*size) == 0) return;
-	
+
 	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
 	int rate = currencyDesc->rate;
@@ -1005,7 +1005,7 @@ static void format_duration(char **dest, size_t *size, uint16 value)
 		if (minutes != 1) {
 			minuteIndex = 2;
 		}
-		
+
 		argsRef--;
 	}
 
@@ -1015,7 +1015,7 @@ static void format_duration(char **dest, size_t *size, uint16 value)
 	}
 
 	rct_string_id stringId = DurationFormats[minuteIndex][secondsIndex];
-	
+
 	format_string_part(dest, size, stringId, (char**)&argsRef);
 }
 
@@ -1055,7 +1055,7 @@ static void format_realtime(char **dest, size_t *size, uint16 value)
 static void format_string_code(unsigned int format_code, char **dest, size_t *size, char **args)
 {
 	intptr_t value;
-	
+
 	if ((*size) == 0) return;
 
 #ifdef DEBUG

@@ -151,13 +151,13 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
-			
-			// Edges have been rotated around the rotation to check addition status 
+
+			// Edges have been rotated around the rotation to check addition status
 			// this will also need to be rotated.
 			if (!(mapElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation()))))
 				imageId += 8;
 		}
-		
+
 
 		sub_98197C(imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
 	}
@@ -169,12 +169,12 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			// Edges have been rotated around the rotation to check addition status 
+			// Edges have been rotated around the rotation to check addition status
 			// this will also need to be rotated.
 			if (!(mapElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
-		
+
 
 		sub_98197C(imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
 	}
@@ -186,13 +186,13 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
-			
-			// Edges have been rotated around the rotation to check addition status 
+
+			// Edges have been rotated around the rotation to check addition status
 			// this will also need to be rotated.
 			if (!(mapElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
-		
+
 
 		sub_98197C(imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
 	}
@@ -205,12 +205,12 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			// Edges have been rotated around the rotation to check addition status 
+			// Edges have been rotated around the rotation to check addition status
 			// this will also need to be rotated.
 			if (!(mapElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
-		
+
 
 		sub_98197C(imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
 	}
@@ -381,7 +381,7 @@ static void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp,
 		};
 
 		uint32 imageId = (direction << 1) + base_image_id + 101;
-		
+
 		sub_98197C(imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
 
 		boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
@@ -623,7 +623,7 @@ static void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, 
 					path_bit_jumping_fountains_paint(sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags, dpi);
 					break;
 				}
-				
+
 				gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
 				if (sceneryImageFlags != 0) {
@@ -987,7 +987,7 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 	}
 
 	paint_util_set_general_support_height(height, 0x20);
-	
+
 	if ((mapElement->type & 1)
 	    || (mapElement->properties.path.edges != 0xFF && hasFences)
 		) {

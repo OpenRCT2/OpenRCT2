@@ -908,7 +908,7 @@ static bool track_remove_station_element(int x, int y, int z, int direction, int
 			finaliseStationDone = false;
 		}
 	} while (!finaliseStationDone);
-	
+
 	return true;
 }
 

@@ -33,7 +33,7 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 	if (png_ptr == NULL) {
 		return false;
 	}
- 
+
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL) {
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
@@ -52,14 +52,14 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 		SDL_RWclose(fp);
 		return false;
 	}
- 
+
 	// Setup png reading
 	png_set_read_fn(png_ptr, fp, my_png_read_data);
 	png_set_sig_bytes(png_ptr, sig_read);
 
 	// To simplify the reading process, convert 4-16 bit data to 24-32 bit data
 	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, NULL);
- 
+
 	// Read header
 	png_uint_32 pngWidth, pngHeight;
 	int bit_depth, colour_type, interlace_type;
@@ -90,7 +90,7 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 			dst += rowBytes;
 		}
 	}
- 
+
 	// Close the PNG
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 	SDL_RWclose(fp);

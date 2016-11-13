@@ -521,7 +521,7 @@ typedef struct scenery_item {
 } scenery_item;
 
 static scenery_item window_scenery_count_rows_with_selected_item(int tabIndex)
-{	
+{
 	scenery_item sceneryItem = { 0, 0, -1 };
 	int totalItems = 0;
 	sint16 id = 0;
@@ -532,19 +532,19 @@ static scenery_item window_scenery_count_rows_with_selected_item(int tabIndex)
 			sceneryItem.selected_item = totalItems;
 			sceneryItem.sceneryId = sceneryId;
 		}
-		totalItems++;		
+		totalItems++;
 	}
 	sceneryItem.allRows = count_rows(totalItems + 8);
 	return sceneryItem;
 }
 
 static int window_scenery_count_rows()
-{	
+{
 	int tabIndex = gWindowSceneryActiveTabIndex;
 	int totalItems = 0;
 
 	while (window_scenery_tab_entries[tabIndex][totalItems] != -1){
-		totalItems++;		
+		totalItems++;
 	}
 
 	int rows = count_rows(totalItems + 8);

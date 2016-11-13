@@ -62,7 +62,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		baseImageid = construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 	uint32 dword_F64EB0 = baseImageid;
-	
+
 	rct_scenery_entry *entry = get_small_scenery_entry(mapElement->properties.scenery.type);
 	baseImageid = entry->image + direction;
 	boxlength.x = 2;
@@ -186,7 +186,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				if (image_id >= 48) {
 					image_id -= 48;
 				}
-				
+
 				image_id = image_id + entry->image + 68;
 				if (dword_F64EB0 != 0) {
 					image_id = (image_id & 0x7FFFF) | dword_F64EB0;

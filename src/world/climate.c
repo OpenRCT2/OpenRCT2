@@ -296,10 +296,10 @@ static void climate_update_thunder_sound()
 
 static void climate_update_lightning()
 {
-	if (_lightningTimer == 0 || gConfigGeneral.disable_lightning_effect || 
+	if (_lightningTimer == 0 || gConfigGeneral.disable_lightning_effect ||
 		(!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom))
 		return;
-	
+
 	_lightningTimer--;
 	if (gClimateLightningFlash == 0)
 		if ((util_rand() & 0xFFFF) <= 0x2000)

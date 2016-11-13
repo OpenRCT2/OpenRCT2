@@ -67,17 +67,17 @@ utf8 *path_get_directory(const utf8 *path)
 {
 	// Find the last slash or backslash in the path
 	char *filename = strrchr(path, *PATH_SEPARATOR);
-	
+
 	// If the path is invalid (e.g. just a file name), return NULL
 	if (filename == NULL)
 		return NULL;
-	
+
 	char *directory = _strdup(path);
 	safe_strtrunc(directory, strlen(path) - strlen(filename) + 2);
-	
+
 	return directory;
 }
-	
+
 const char *path_get_filename(const utf8 *path)
 {
 	// Find last slash or backslash in the path
@@ -145,7 +145,7 @@ void path_remove_extension(utf8 *path)
 void path_end_with_separator(utf8 *path, size_t size) {
 	size_t length = strnlen(path, size);
 	if (length >= size - 1) return;
-	
+
 	if (path[length - 1] != *PATH_SEPARATOR)
 		safe_strcat(path, PATH_SEPARATOR, size);
 }
@@ -241,7 +241,7 @@ static int bitcount_popcnt(uint32 source)
 static int bitcount_lut(uint32 source)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html
-	static const unsigned char BitsSetTable256[256] = 
+	static const unsigned char BitsSetTable256[256] =
 	{
 	#define B2(n) n,     n+1,     n+1,     n+2
 	#define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
@@ -319,7 +319,7 @@ utf8 * safe_strtrunc(utf8 * text, size_t size)
 	assert(text != NULL);
 
 	if (size == 0) return text;
-	
+
 	const char *sourceLimit = text + size - 1;
 	char *ch = text;
 	char *last = text;

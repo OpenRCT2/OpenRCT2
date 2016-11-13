@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../common.h"
 
 typedef struct track_design_file_ref
@@ -34,7 +36,7 @@ interface ITrackDesignRepository
                                           uint8 rideType,
                                           const utf8 * entry) const abstract;
 
-    virtual void Scan() abstract; 
+    virtual void Scan() abstract;
     virtual bool Delete(const utf8 * path) abstract;
     virtual const utf8 * Rename(const utf8 * path, const utf8 * newName) abstract;
     virtual const utf8 * Install(const utf8 * path) abstract;

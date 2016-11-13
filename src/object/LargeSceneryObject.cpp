@@ -24,11 +24,6 @@ extern "C"
     #include "../localisation/localisation.h"
 }
 
-enum OBJ_STRING_ID
-{
-    OBJ_STRING_ID_NAME,
-};
-
 LargeSceneryObject::~LargeSceneryObject()
 {
     Memory::Free(_3dFont);

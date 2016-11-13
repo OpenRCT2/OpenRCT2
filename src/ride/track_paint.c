@@ -1531,7 +1531,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(sint8 t
 // 	if (sprite < 0) {
 // 		return;
 // 	}
-// 
+//
 // 	const sprite_bb *spriteBB = &sprites[direction][sprite];
 // 	uint32 imageId = spriteBB->sprite_id | colourFlags;
 // 	sub_98197C(imageId,

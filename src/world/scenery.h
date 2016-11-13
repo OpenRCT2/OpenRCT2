@@ -221,7 +221,7 @@ extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
 
 extern rct_map_element *gSceneryMapElement;
-extern uint8 gSceneryMapElementType; 
+extern uint8 gSceneryMapElementType;
 
 extern money32 gSceneryPlaceCost;
 extern sint16 gSceneryPlaceObject;
