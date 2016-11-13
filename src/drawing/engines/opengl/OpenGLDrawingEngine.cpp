@@ -258,6 +258,8 @@ public:
     ~OpenGLDrawingEngine() override
     {
         delete _copyFramebufferShader;
+        delete _screenFramebuffer;
+        delete _swapFramebuffer;
 
         delete _drawingContext;
         delete [] _bits;
