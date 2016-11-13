@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../common.h"
 
 typedef struct track_design_file_ref
