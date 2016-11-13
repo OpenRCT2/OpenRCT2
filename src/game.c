@@ -139,6 +139,19 @@ void game_create_windows()
 	window_resize_gui(gScreenWidth, gScreenHeight);
 }
 
+enum {
+	SPR_GAME_PALETTE_DEFAULT = 1532,
+	SPR_GAME_PALETTE_WATER = 1533,
+	SPR_GAME_PALETTE_WATER_DARKER_1 = 1534,
+	SPR_GAME_PALETTE_WATER_DARKER_2 = 1535,
+	SPR_GAME_PALETTE_3 = 1536,
+	SPR_GAME_PALETTE_3_DARKER_1 = 1537,
+	SPR_GAME_PALETTE_3_DARKER_2 = 1538,
+	SPR_GAME_PALETTE_4 = 1539,
+	SPR_GAME_PALETTE_4_DARKER_1 = 1540,
+	SPR_GAME_PALETTE_4_DARKER_2 = 1541,
+};
+
 /**
 *
 *  rct2: 0x006838BD
@@ -149,7 +162,7 @@ void update_palette_effects()
 
 	if (gClimateLightningFlash == 1) {
 		// change palette to lighter colour during lightning
-		int palette = 1532;
+		int palette = SPR_GAME_PALETTE_DEFAULT;
 
 		if ((intptr_t)water_type != -1) {
 			palette = water_type->image_id;
@@ -168,7 +181,7 @@ void update_palette_effects()
 	} else {
 		if (gClimateLightningFlash == 2) {
 			// change palette back to normal after lightning
-			int palette = 1532;
+			int palette = SPR_GAME_PALETTE_DEFAULT;
 
 			if ((intptr_t)water_type != -1) {
 				palette = water_type->image_id;
@@ -190,16 +203,16 @@ void update_palette_effects()
 		if (gConfigGeneral.render_weather_gloom) {
 			uint8 gloom = gClimateCurrentWeatherGloom;
 			if (gloom != 0) {
-				uint32 weatherColour = ClimateWeatherGloomColours[gloom];
+				FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];
 				q = 1;
-				if (weatherColour != 0x2000031) {
+				if (weatherColour != PALETTE_DARKEN_1) {
 					q = 2;
 				}
 			}
 		}
 		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
-		int p = 1533;
+		int p = SPR_GAME_PALETTE_WATER;
 		if ((intptr_t)water_type != -1) {
 			p = water_type->var_06;
 		}
@@ -218,7 +231,7 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		p = 1536;
+		p = SPR_GAME_PALETTE_3;
 		if ((intptr_t)water_type != -1) {
 			p = water_type->var_0A;
 		}
@@ -237,7 +250,7 @@ void update_palette_effects()
 		}
 
 		j = ((uint16)(gPaletteEffectFrame * -960) * 3) >> 16;
-		p = 1539;
+		p = SPR_GAME_PALETTE_4;
 		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
 		vd += 12;

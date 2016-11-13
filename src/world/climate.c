@@ -346,11 +346,11 @@ static int climate_play_thunder(int instanceIndex, int soundId, int volume, int 
 #pragma region Climate / Weather data tables
 
 /** rct2: 0x0098195C */
-const uint32 ClimateWeatherGloomColours[4] = {
-	0xFFFFFFFF,
-	0x2000000 | 49,
-	0x2000000 | 50,
-	0x2000000 | 47,
+const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
+	0,
+	PALETTE_DARKEN_1,
+	PALETTE_DARKEN_2,
+	PALETTE_DARKEN_3,
 };
 
 // rct2: 0x00993C94

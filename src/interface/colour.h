@@ -54,7 +54,9 @@ enum {
 	COLOUR_BRIGHT_RED,
 	COLOUR_DARK_PINK,
 	COLOUR_BRIGHT_PINK,
-	COLOUR_LIGHT_PINK
+	COLOUR_LIGHT_PINK,
+
+	COLOUR_COUNT
 };
 
 /**
@@ -68,8 +70,10 @@ enum {
 #define COLOUR_FLAG_OUTLINE		(1 << 5)
 #define COLOUR_FLAG_INSET 		(1 << 6)
 #define COLOUR_FLAG_TRANSLUCENT (1 << 7)
+#define COLOUR_FLAG_8 			(1 << 8)
 #define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
 #define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define BASE_COLOUR(x) 			((x) & 0x1F)
 
 #define NUM_COLOURS 32
 
@@ -88,7 +92,7 @@ typedef struct rct_colour_map {
 	uint8 colour_11;
 } rct_colour_map;
 
-extern rct_colour_map ColourMapA[32];
+extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
 

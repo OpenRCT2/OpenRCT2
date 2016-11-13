@@ -35,36 +35,38 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 {
 	uint8 shadow, fill, hilight;
 
-	if (colour & 0x180) {
-		if (colour & 0x100) {
-			colour = NOT_TRANSLUCENT(colour);
+	if (colour & (COLOUR_FLAG_TRANSLUCENT | COLOUR_FLAG_8)) {
+		translucent_window_palette palette;
+		if (colour & COLOUR_FLAG_8) {
+			// TODO: This can't be added up
+			// palette = NOT_TRANSLUCENT(colour);
+			assert(false);
+			return;
 		} else {
-			colour = _9DEDF4[colour];
+			palette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 		}
 
-		colour = colour | 0x2000000; //Transparent
-
 		if (flags & INSET_RECT_FLAG_BORDER_NONE) {
-			gfx_fill_rect(dpi, left, top, right, bottom, colour);
+			gfx_filter_rect(dpi, left, top, right, bottom, palette.base);
 		} else if (flags & INSET_RECT_FLAG_BORDER_INSET) {
 			// Draw outline of box
-			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);
-			gfx_fill_rect(dpi, left, top, right, top, colour + 1);
-			gfx_fill_rect(dpi, right, top, right, bottom, colour + 2);
-			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 2);
+			gfx_filter_rect(dpi, left, top, left, bottom, palette.highlight);
+			gfx_filter_rect(dpi, left, top, right, top, palette.highlight);
+			gfx_filter_rect(dpi, right, top, right, bottom, palette.shadow);
+			gfx_filter_rect(dpi, left, bottom, right, bottom, palette.shadow);
 
 			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
-				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+				gfx_filter_rect(dpi, left+1, top+1, right-1, bottom-1, palette.base);
 			}
 		} else {
 			// Draw outline of box
-			gfx_fill_rect(dpi, left, top, left, bottom, colour + 2);
-			gfx_fill_rect(dpi, left, top, right, top, colour + 2);
-			gfx_fill_rect(dpi, right, top, right, bottom, colour + 1);
-			gfx_fill_rect(dpi, left, bottom, right, bottom, colour + 1);
+			gfx_filter_rect(dpi, left, top, left, bottom, palette.shadow);
+			gfx_filter_rect(dpi, left, top, right, top, palette.shadow);
+			gfx_filter_rect(dpi, right, top, right, bottom, palette.highlight);
+			gfx_filter_rect(dpi, left, bottom, right, bottom, palette.highlight);
 
 			if (!(flags & INSET_RECT_FLAG_FILL_NONE)) {
-				gfx_fill_rect(dpi, left+1, top+1, right-1, bottom-1, colour);
+				gfx_filter_rect(dpi, left+1, top+1, right-1, bottom-1, palette.base);
 			}
 		}
 	} else {

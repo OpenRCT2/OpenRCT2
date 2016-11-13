@@ -253,7 +253,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		int format = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
 			format = STR_WINDOW_COLOUR_2_STRINGID;
-			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
 		}
 
 		char templateString[128];

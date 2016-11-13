@@ -524,7 +524,7 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		stringId = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
-			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
 		}
 
 		set_format_arg(0, rct_string_id, STR_STRING);

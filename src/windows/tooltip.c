@@ -194,20 +194,20 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int bottom = w->y + w->height - 1;
 
 	// Background
-	gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, 0x0200002D);
-	gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, 0x02000084);
+	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_45);
+	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_GLASS_LIGHT_ORANGE);
 
 	// Sides
-	gfx_fill_rect(dpi, left  + 0, top    + 2, left  + 0, bottom - 2, 0x0200002F);
-	gfx_fill_rect(dpi, right + 0, top    + 2, right + 0, bottom - 2, 0x0200002F);
-	gfx_fill_rect(dpi, left  + 2, bottom + 0, right - 2, bottom + 0, 0x0200002F);
-	gfx_fill_rect(dpi, left  + 2, top    + 0, right - 2, top    + 0, 0x0200002F);
+	gfx_filter_rect(dpi, left  + 0, top    + 2, left  + 0, bottom - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, right + 0, top    + 2, right + 0, bottom - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, left  + 2, bottom + 0, right - 2, bottom + 0, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, left  + 2, top    + 0, right - 2, top    + 0, PALETTE_DARKEN_3);
 
 	// Corners
-	gfx_draw_pixel(dpi, left  + 1, top    + 1, 0x0200002F);
-	gfx_draw_pixel(dpi, right - 1, top    + 1, 0x0200002F);
-	gfx_draw_pixel(dpi, left  + 1, bottom - 1, 0x0200002F);
-	gfx_draw_pixel(dpi, right - 1, bottom - 1, 0x0200002F);
+	gfx_filter_pixel(dpi, left  + 1, top    + 1, PALETTE_DARKEN_3);
+	gfx_filter_pixel(dpi, right - 1, top    + 1, PALETTE_DARKEN_3);
+	gfx_filter_pixel(dpi, left  + 1, bottom - 1, PALETTE_DARKEN_3);
+	gfx_filter_pixel(dpi, right - 1, bottom - 1, PALETTE_DARKEN_3);
 
 	// Text
 	left = w->x + ((w->width + 1) / 2) - 1;

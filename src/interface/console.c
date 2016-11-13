@@ -167,7 +167,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Background
 	console_invalidate();
-	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 0x2000000 | 56);
+	gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT);
 
 	int x = _consoleLeft + 4;
 	int y = _consoleTop + 4;

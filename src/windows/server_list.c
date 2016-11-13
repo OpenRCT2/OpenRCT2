@@ -436,7 +436,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 		// Draw hover highlight
 		if (highlighted) {
-			gfx_fill_rect(dpi, 0, y, width, y + ITEM_HEIGHT, 0x02000031);
+			gfx_filter_rect(dpi, 0, y, width, y + ITEM_HEIGHT, PALETTE_DARKEN_1);
 			gVersion = serverDetails->version;
 			w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
 		}

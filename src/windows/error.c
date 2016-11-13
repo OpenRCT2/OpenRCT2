@@ -161,18 +161,18 @@ static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	r = w->x + w->width - 1;
 	b = w->y + w->height - 1;
 
-	gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x200002D);
-	gfx_fill_rect(dpi, l, t, r, b, 0x200008B);
+	gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
+	gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
 
-	gfx_fill_rect(dpi, l, t + 2, l, b - 2, 0x200002F);
-	gfx_fill_rect(dpi, r, t + 2, r, b - 2, 0x200002F);
-	gfx_fill_rect(dpi, l + 2, b, r - 2, b, 0x200002F);
-	gfx_fill_rect(dpi, l + 2, t, r - 2, t, 0x200002F);
+	gfx_filter_rect(dpi, l, t + 2, l, b - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r, t + 2, r, b - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 2, b, r - 2, b, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 2, t, r - 2, t, PALETTE_DARKEN_3);
 
-	gfx_fill_rect(dpi, r + 1, t + 1, r + 1, t + 1, 0x200002F);
-	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, t + 1, 0x200002F);
-	gfx_fill_rect(dpi, l + 1, b - 1, l + 1, b - 1, 0x200002F);
-	gfx_fill_rect(dpi, r - 1, b - 1, r - 1, b - 1, 0x200002F);
+	gfx_filter_rect(dpi, r + 1, t + 1, r + 1, t + 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r - 1, t + 1, r - 1, t + 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, PALETTE_DARKEN_3);
 
 	l = w->x + (w->width + 1) / 2 - 1;
 	t = w->y + 1;

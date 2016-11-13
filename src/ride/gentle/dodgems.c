@@ -42,7 +42,7 @@ static void paint_dodgems_roof(int height, int offset)
 	uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | gTrackColours[SCHEME_TRACK];
 	sub_98196C(image_id, 0, 0, 32, 32, 2, height, get_current_rotation());
 
-	image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (0xF << 19) | (0x1 << 24) | 0x40000000;
+	image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
 	paint_attach_to_previous_ps(image_id, 0, 0);
 }
 

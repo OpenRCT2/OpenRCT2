@@ -1210,7 +1210,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		// Highlighted
 		if (i == w->selected_list_item) {
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
-			gfx_fill_rect(dpi, 0, y, w->width, y + 11, 0x2000031);
+			gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
 		} else {
 			stringId = STR_BLACK_STRING;
 		}

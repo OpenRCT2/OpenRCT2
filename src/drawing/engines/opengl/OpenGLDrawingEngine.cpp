@@ -210,6 +210,7 @@ public:
 
     void Clear(uint32 colour) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
+    void FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom) override;
     void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
@@ -575,26 +576,68 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     }
     else if (colour & 0x2000000)
     {
-        uint8 tableIndex = colour & 0xFF;
-        if (tableIndex <   44) return;
-        if (tableIndex >= 144) return;
-        tableIndex -= 44;
-
-        vec3f transformColour = TransparentColourTable[tableIndex];
-        paletteColour[0].r = transformColour.r;
-        paletteColour[0].g = transformColour.g;
-        paletteColour[0].b = transformColour.b;
-        paletteColour[0].a = 1;
-        paletteColour[1] = paletteColour[0];
-
-        GLuint srcTexture =  _engine->SwapCopyReturningSourceTexture();
-        command.flags = 1;
-        command.sourceFramebuffer = srcTexture;
+        assert(false);
+        // Should be FilterRect
     }
     else
     {
         command.flags = 0;
     }
+
+    command.colours[0] = paletteColour[0];
+    command.colours[1] = paletteColour[1];
+
+    command.clip[0] = _clipLeft;
+    command.clip[1] = _clipTop;
+    command.clip[2] = _clipRight;
+    command.clip[3] = _clipBottom;
+
+    command.bounds[0] = left;
+    command.bounds[1] = top;
+    command.bounds[2] = right + 1;
+    command.bounds[3] = bottom + 1;
+
+    _commandBuffers.rectangles.push_back(command);
+
+    // Must be rendered in order, depends on already rendered contents
+    FlushCommandBuffers();
+}
+
+void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
+{
+    left += _offsetX;
+    top += _offsetY;
+    right += _offsetX;
+    bottom += _offsetY;
+
+    DrawRectCommand command = {};
+
+    command.sourceFramebuffer = _fillRectShader->GetSourceFramebuffer();
+
+    vec4f paletteColour[2];
+    //paletteColour[0] = _engine->GLPalette[(colour >> 0) & 0xFF];
+    //paletteColour[1] = paletteColour[0];
+
+    // START FILTER
+
+    uint8 tableIndex = palette;
+    if (tableIndex <   44) return;
+    if (tableIndex >= 144) return;
+    tableIndex -= 44;
+
+    vec3f transformColour = TransparentColourTable[tableIndex];
+    paletteColour[0].r = transformColour.r;
+    paletteColour[0].g = transformColour.g;
+    paletteColour[0].b = transformColour.b;
+    paletteColour[0].a = 1;
+    paletteColour[1] = paletteColour[0];
+
+    GLuint srcTexture =  _engine->SwapCopyReturningSourceTexture();
+    command.flags = 1;
+    command.sourceFramebuffer = srcTexture;
+
+    // END FILTER
+
 
     command.colours[0] = paletteColour[0];
     command.colours[1] = paletteColour[1];
