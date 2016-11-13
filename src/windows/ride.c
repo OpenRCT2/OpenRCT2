@@ -4675,7 +4675,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &w->widgets[WIDX_ENTRANCE_PREVIEW];
 	if (widget->type != WWT_EMPTY) {
 		if (clip_drawpixelinfo(
-			&clippedDpi, 
+			&clippedDpi,
 			dpi,
 			w->x + widget->left + 1,
 			w->y + widget->top + 1,

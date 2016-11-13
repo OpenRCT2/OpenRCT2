@@ -93,15 +93,15 @@ public:
         const uint8 * pattern = RainPattern;
         uint8 patternXSpace = *pattern++;
         uint8 patternYSpace = *pattern++;
-    
+
         uint8 patternStartXOffset = xStart % patternXSpace;
         uint8 patternStartYOffset = yStart % patternYSpace;
-    
+
         uint32 pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
         uint8 patternYPos = patternStartYOffset % patternYSpace;
 
         uint8 * screenBits = _screenDPI->bits;
-    
+
         //Stores the colours of changed pixels
         RainPixel * newPixels = &_rainPixels[_rainPixelsCount];
         for (; height != 0; height--)
@@ -149,7 +149,7 @@ public:
                     // Pixel out of bounds, bail
                     break;
                 }
-                
+
                 bits[rainPixel.Position] = rainPixel.Colour;
             }
             _rainPixelsCount = 0;
@@ -417,7 +417,7 @@ public:
 
         // Originally 0x00683359
         // Adjust for move off screen
-        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
+        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
         // screen; hence the checks. This code should ultimately not be called when
         // zooming because this function is specific to updating the screen on move
         int lmargin = Math::Min(x - dx, 0);
@@ -962,29 +962,29 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     else if (colour & 0x4000000)
     {
         uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
-    
+
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
         int patternY = (startY + dpi->y) % 16;
-    
+
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
         int startPatternX = (startX + dpi->x) % 16;
         int patternX = startPatternX;
-    
+
         const uint16 * patternsrc = Patterns[colour >> 28]; // or possibly uint8)[esi*4] ?
-    
+
         for (int numLines = height; numLines > 0; numLines--)
         {
             uint8 * nextdst = dst + dpi->width + dpi->pitch;
             uint16  pattern = patternsrc[patternY];
-    
+
             for (int numPixels = width; numPixels > 0; numPixels--)
             {
                 if (pattern & (1 << patternX))
                 {
                     *dst = colour & 0xFF;
-                }    
+                }
                 patternX = (patternX + 1) % 16;
                 dst++;
             }

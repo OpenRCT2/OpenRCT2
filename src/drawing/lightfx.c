@@ -147,7 +147,7 @@ void lightfx_init()
 	calc_rescale_light_half(_bakedLightTexture_spot_2, _bakedLightTexture_spot_3, 128, 128);
 	calc_rescale_light_half(_bakedLightTexture_spot_1, _bakedLightTexture_spot_2, 64, 64);
 	calc_rescale_light_half(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
-}	
+}
 
 void lightfx_update_buffers(rct_drawpixelinfo *info)
 {
@@ -194,7 +194,7 @@ void lightfx_prepare_light_list()
 			entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
 			continue;
 		}
-			
+
 
 	//	entry->x >>= _current_view_zoom_front;
 	//	entry->y >>= _current_view_zoom_front;
@@ -319,7 +319,7 @@ void lightfx_prepare_light_list()
 					//	sub_688217();
 					//	sub_68862C();
 					//}
-				}	
+				}
 
 				sint32 minDist = 0;
 				sint32 baseHeight = -999;
@@ -377,14 +377,14 @@ void lightfx_prepare_light_list()
 			totalSamplePoints -= startSamplePoint;
 
 		//	lightIntensityOccluded = totalSamplePoints * 100;
-		
+
 		//	log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded);
 
 			if (lightIntensityOccluded == 0) {
 				entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
 				continue;
 			}
-			
+
 		//	log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
 			entry->lightIntensity = min(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));

@@ -375,12 +375,12 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
  			w->selected_tab = widgetIndex;
  			w->list_information_type = 0;
 			break;
-	
+
 	case WIDX_MAP_GENERATOR:
 			window_mapgen_open();
 			break;
  		}
-		
+
  		break;
  	}
  }

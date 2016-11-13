@@ -103,7 +103,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
 	window_multiplayer_groups_widgets,
 	window_multiplayer_options_widgets
 };
- 
+
 const uint64 window_multiplayer_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),

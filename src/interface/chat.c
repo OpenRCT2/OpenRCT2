@@ -123,7 +123,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatTop - 4, _chatRight - 1, _chatBottom - inputLineHeight - 6, chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
 		gfx_fill_rect_inset(dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET); //Textbox
 	}
-	
+
 	int x = _chatLeft + 5;
 	int y = _chatBottom - inputLineHeight - 20;
 	int stringHeight = 0;
@@ -143,7 +143,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 			break;
 		}
 	}
-	
+
 	// Draw current chat input
 	if (gChatOpen) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
@@ -155,7 +155,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		lineCh = lineBuffer;
 		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, 255);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
-		
+
 		//TODO: Show caret if the input text have multiple lines
 		if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10)) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
@@ -215,7 +215,7 @@ static void chat_clear_input()
 int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, int width)
 {
 	int fontSpriteBase, lineHeight, lineY, numLines;
-	
+
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	gfx_draw_string(dpi, "", 255, dpi->x, dpi->y);
@@ -256,7 +256,7 @@ int chat_string_wrapped_get_height(void *args, int width)
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
 	lineHeight = font_get_line_height(fontSpriteBase);
-	
+
 	gCurrentFontFlags = 0;
 
 	lineY = 0;

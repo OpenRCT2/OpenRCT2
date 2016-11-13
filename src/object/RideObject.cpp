@@ -85,7 +85,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _presetColours.count = stream->ReadValue<uint8>();
 
     int coloursCount = _presetColours.count;
-    // To indicate a ride has different colours each train the count 
+    // To indicate a ride has different colours each train the count
     // is set to 255. There are only actually 32 colours though.
     if (coloursCount == 255)
     {

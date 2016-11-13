@@ -77,7 +77,7 @@ struct ObjectEntryHash
         return hash;
     }
 };
- 
+
 struct ObjectEntryEqual
 {
     bool operator()(const rct_object_entry &lhs, const rct_object_entry &rhs) const
@@ -114,7 +114,7 @@ public:
         QueryDirectory(&_queryDirectoryResult, path);
         GetUserObjectPath(path, sizeof(path));
         QueryDirectory(&_queryDirectoryResult, path);
-        
+
         if (!Load())
         {
             _languageId = gCurrentLanguage;

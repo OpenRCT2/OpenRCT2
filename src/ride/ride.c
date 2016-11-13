@@ -2082,7 +2082,7 @@ static void ride_chairlift_update(rct_ride *ride)
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
 		return;
-	if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) && 
+	if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) &&
 		ride->breakdown_reason_pending == 0)
 		return;
 
@@ -3835,7 +3835,7 @@ static bool ride_is_valid_operation_option(rct_ride *ride, uint8 value)
 		minValue = 0;
 		maxValue = 255;
 	}
-	
+
 	return value >= minValue && value <= maxValue;
 }
 
@@ -4520,7 +4520,7 @@ static rct_vehicle *vehicle_create_car(
 	int vehicleIndex,
 	int x,
 	int y,
-	int z,	
+	int z,
 	int *remainingDistance,
 	rct_map_element *mapElement
 ) {
@@ -4588,7 +4588,7 @@ static rct_vehicle *vehicle_create_car(
 		vehicle->track_y = y;
 		vehicle->track_z = z;
 		vehicle->current_station = map_get_station(mapElement);
-		
+
 		z += RideData5[ride->type].z_offset;
 
 		vehicle->track_type = mapElement->properties.track.type << 2;
@@ -4860,7 +4860,7 @@ static bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *
 	int z = element->element->base_height;
 	int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 
-	// 
+	//
 	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
 		x = element->x - TileDirectionDelta[direction].x;
 		y = element->y - TileDirectionDelta[direction].y;
@@ -4886,7 +4886,7 @@ static bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *
 		ride->station_depart[i] = (ride->station_depart[i] & 0x80) | 1;
 	}
 
-	// 
+	//
 	if (ride->type != RIDE_TYPE_SPACE_RINGS && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16)) {
 		if (ride_is_block_sectioned(ride)) {
 			rct_xy_element firstBlock;
@@ -6709,7 +6709,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		for (uint8 rideId = 0; rideId < 0xFF; rideId++, ride++) {
 			// Unplaced rides have a type of NULL
 			if (ride->type == RIDE_TYPE_NULL)
-				continue; 			
+				continue;
 
 			rideEntry = get_ride_entry(ride->subtype);
 
@@ -7700,7 +7700,7 @@ void ride_update_max_vehicles(int rideIndex)
 		numCarsPerTrain = rideEntry->max_cars_in_train;
 		maxNumTrains = rideEntry->cars_per_flat_ride;
 	}
-	
+
 	if (gCheatsDisableTrainLengthLimit) {
 		maxNumTrains = 31;
 	}
@@ -8202,7 +8202,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 		}
 
 		sint16 clear_z = z / 8 + (is_exit ? 5 : 7);
-		
+
 		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost)) {
 			return MONEY32_UNDEFINED;
 		}

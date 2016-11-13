@@ -554,7 +554,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 						}
 					}
 				}
-			
+
 				if (inputMapElement->clearance_height == mapElement->base_height) {
 					proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
 					if (isStation) {

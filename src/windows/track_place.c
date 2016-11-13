@@ -171,7 +171,7 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
 
 	window_track_place_clear_mini_preview();
 	window_track_place_draw_mini_preview(td6);
-	
+
 	_trackDesign = td6;
 }
 
@@ -432,7 +432,7 @@ static void window_track_place_attempt_placement(rct_track_td6 *td6, int x, int 
 	ebx = bl;
 	ecx = y;
 	edi = z;
-	
+
 	gActiveTrackDesign = _trackDesign;
 	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
 	gActiveTrackDesign = NULL;

@@ -495,7 +495,7 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 			gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
 		}
-		
+
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
 			w->y + widget->top,

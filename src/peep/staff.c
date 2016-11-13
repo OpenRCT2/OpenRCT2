@@ -659,67 +659,67 @@ void staff_toggle_patrol_area(int staffIndex, int x, int y)
 }
 
 /**
- * 
+ *
  *  rct2: 0x006BFBE8
- * 
+ *
  * Returns 0xFF when no nearby litter or unpathable litter
  */
 static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	uint16 nearestLitterDist = (uint16)-1;
 	rct_litter* nearestLitter = NULL;
 	rct_litter* litter = NULL;
-	
+
 	for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next){
 		litter = &get_sprite(litterIndex)->litter;
-		
-		uint16 distance = 
-			abs(litter->x - peep->x) + 
-			abs(litter->y - peep->y) + 
+
+		uint16 distance =
+			abs(litter->x - peep->x) +
+			abs(litter->y - peep->y) +
 			abs(litter->z - peep->z) * 4;
-	
+
 		if (distance < nearestLitterDist){
 			nearestLitterDist = distance;
 			nearestLitter = litter;
 		}
 	}
-	
+
 	if (nearestLitterDist > 0x60){
 		return 0xFF;
 	}
-	
-	rct_xy16 litterTile = { 
+
+	rct_xy16 litterTile = {
 		.x = nearestLitter->x & 0xFFE0,
 		.y = nearestLitter->y & 0xFFE0
 	};
-	
+
 	if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y)){
 		return 0xFF;
 	}
-	
+
 	litterTile.x += 16;
 	litterTile.y += 16;
-	
+
 	sint16 x_diff = litterTile.x - peep->x;
 	sint16 y_diff = litterTile.y - peep->y;
-	
+
 	uint8 nextDirection = 0;
-	
+
 	if (abs(x_diff) <= abs(y_diff)){
 		nextDirection = y_diff < 0 ? 3 : 1;
 	}
 	else {
 		nextDirection = x_diff < 0 ? 0 : 2;
 	}
-	
+
 	rct_xy16 nextTile = {
 		.x = (nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x,
 		.y = (nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y
 	};
-	
+
 	sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
-	
+
 	rct_map_element* mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
-	
+
 	do {
 		if (mapElement->base_height != nextZ)
 			continue;
@@ -728,12 +728,12 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 			return 0xFF;
 		}
 	} while(!map_element_is_last_for_tile(mapElement++));
-	
+
 	nextTile.x = (peep->x & 0xFFE0) + TileDirectionDelta[nextDirection].x;
 	nextTile.y = (peep->y & 0xFFE0) + TileDirectionDelta[nextDirection].y;
-	
+
 	mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
-			
+
 	do {
 		if (mapElement->base_height != nextZ)
 			continue;
@@ -742,7 +742,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 			return 0xFF;
 		}
 	} while(!map_element_is_last_for_tile(mapElement++));
-	
+
 	return nextDirection;
 }
 
@@ -822,7 +822,7 @@ static int staff_handyman_direction_rand_surface(rct_peep* peep, uint8 validDire
 		break;
 	}
 	// If it tries all directions this is required
-	// to make it back to the first direction and 
+	// to make it back to the first direction and
 	// override validDirections
 	direction &= 3;
 	return direction;
@@ -843,9 +843,9 @@ static int staff_path_finding_handyman(rct_peep* peep)
 		((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110) {
 		litterDirection = staff_handyman_direction_to_nearest_litter(peep);
 	}
-	
+
 	uint8 direction = 0xFF;
-	if (litterDirection == 0xFF && 
+	if (litterDirection == 0xFF &&
 		(peep->staff_orders & STAFF_ORDERS_MOWING) &&
 		peep->var_E2 >= 12
 	) {
@@ -1005,7 +1005,7 @@ static uint8 staff_mechanic_direction_path_rand(rct_peep* peep, uint8 pathDirect
 		if (pathDirections & (1 << peep->direction))
 			return peep->direction;
 	}
-	
+
 	// Modified from original to spam scenario_rand less
 	uint8 direction = scenario_rand() & 3;
 	for (int i = 0; i < 4; ++i, ++direction) {
@@ -1163,7 +1163,7 @@ static int staff_path_finding_mechanic(rct_peep* peep) {
 	peep->destination_x = chosenTile.x + 16;
 	peep->destination_y = chosenTile.y + 16;
 	peep->destination_tolerence = (scenario_rand() & 7) + 2;
-	
+
 	return 0;
 }
 
@@ -1292,9 +1292,9 @@ static int staff_path_finding_entertainer(rct_peep* peep) {
 
 	if (((scenario_rand() & 0xFFFF) <= 0x4000) &&
 		(peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2)) {
-		
+
 		invalidate_sprite_2((rct_sprite*)peep);
-		
+
 		peep->action = scenario_rand() & 1 ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;

@@ -103,7 +103,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         log_error("Unable to allocate enough space for a write buffer.");
         throw Exception("Unable to allocate memory.");
     }
-    
+
     sawyercoding_chunk_header chunkHeader;
     size_t encodedLength;
 
@@ -211,7 +211,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
     }
 
     free(buffer);
-    
+
     // Determine number of bytes written
     size_t fileSize = (size_t)SDL_RWtell(rw);
     SDL_RWseek(rw, 0, RW_SEEK_SET);

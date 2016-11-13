@@ -61,7 +61,7 @@ namespace Path
     IFileScanner * ScanDirectory(const utf8 * pattern, bool recurse);
 
     /**
-     * Scans a directory and all sub directories 
+     * Scans a directory and all sub directories
      * @param result The query result to modify.
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      * @returns An aggregated result of all scanned files.

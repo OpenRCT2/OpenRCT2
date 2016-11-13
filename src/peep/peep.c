@@ -1955,7 +1955,7 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
 		gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
 		return false;
 	}
-	
+
 	if (!map_can_construct_at(tile_x, tile_y, dest_z / 8, (dest_z / 8) + 1, 15)){
 		if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST) {
 			if (gGameCommandErrorText != STR_FOOTPATH_IN_THE_WAY) {
@@ -4704,7 +4704,7 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 		peep->action_frame == 0x2B) {
 		audio_play_sound_at_location(SOUND_MECHANIC_FIX, peep->x, peep->y, peep->z);
 	}
-	
+
 	return false;
 }
 
@@ -8698,7 +8698,7 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
  * For return values 5, 6 & 8 the rideIndex is stored in outRideIndex.
  *
  *  rct2: 0x006949B9
- * 
+ *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
 static uint8 footpath_element_dest_in_dir(
@@ -9410,7 +9410,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 /**
  * Returns:
  *   -1   - no direction chosen
- *   0..3 - chosen direction 
+ *   0..3 - chosen direction
  *
  *  rct2: 0x0069A5F0
  */
@@ -9752,7 +9752,7 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
  */
 static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_element, uint8 edges){
 	uint8 entranceNum;
-	
+
 	// Resolves already-corrupt guests (e.g. loaded from save)
 	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
 		(peep->current_ride >= 4 || gParkEntranceX[peep->current_ride] == (sint16)0x8000)
@@ -10598,7 +10598,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	peep->happiness = peep->happiness_growth_rate;
 	peep->nausea = peep->nausea_growth_rate;
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
-	
+
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
 		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 

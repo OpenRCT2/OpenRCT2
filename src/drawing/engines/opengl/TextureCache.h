@@ -42,7 +42,7 @@ struct GlyphId
             return hash;
         }
     };
- 
+
     struct Equal
     {
         bool operator()(const GlyphId &lhs, const GlyphId &rhs) const

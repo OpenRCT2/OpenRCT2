@@ -213,7 +213,7 @@ public:
                     sizeof(hostName),
                     nullptr,
                     0,
-                    NI_NUMERICHOST | NI_NUMERICSERV); 
+                    NI_NUMERICHOST | NI_NUMERICSERV);
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);
                 if (rc == 0)
@@ -231,7 +231,7 @@ public:
         {
             throw Exception("Socket not closed.");
         }
-        
+
         try
         {
             // Resolve address
@@ -420,7 +420,7 @@ public:
         SDL_UnlockMutex(_connectMutex);
     }
 
-    const char * GetHostName() const override 
+    const char * GetHostName() const override
     {
         return _hostName.empty() ? nullptr : _hostName.c_str();
     }

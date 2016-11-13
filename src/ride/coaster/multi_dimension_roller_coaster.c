@@ -102,7 +102,7 @@ static void multi_dimension_rc_track_station(uint8 rideIndex, uint8 trackSequenc
 		sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0, 3, height + 3);
 	}
 	track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 11);
-	
+
 	rct_ride * ride = get_ride(rideIndex);
 	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 	bool hasFence;

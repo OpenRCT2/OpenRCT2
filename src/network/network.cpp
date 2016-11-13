@@ -1722,7 +1722,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	int commandCommand = args[4];
 
 	int ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
-	
+
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.Player->group);
 	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
@@ -1730,7 +1730,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		return;
 	}
 	// In case someone modifies the code / memory to enable cluster build,
-	// require a small delay in between placing scenery to provide some security, as 
+	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if ((ticks - connection.Player->last_action_time) < 20) {
@@ -2380,7 +2380,7 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
-int network_can_perform_command(unsigned int groupindex, unsigned int index) 
+int network_can_perform_command(unsigned int groupindex, unsigned int index)
 {
 	return gNetwork.group_list[groupindex]->CanPerformCommand(index);
 }

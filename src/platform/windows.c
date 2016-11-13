@@ -1098,7 +1098,7 @@ static bool windows_setup_file_association(
 ) {
 	wchar_t exePathW[MAX_PATH];
 	wchar_t dllPathW[MAX_PATH];
-	
+
 	int printResult;
 
 	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));

@@ -510,7 +510,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 
 /**
  *
- *  rct2: 0x006837E3 
+ *  rct2: 0x006837E3
  */
 void load_palette(){
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];

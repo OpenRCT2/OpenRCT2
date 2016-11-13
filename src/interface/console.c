@@ -477,7 +477,7 @@ static int cc_rides(const utf8 **argv, int argc)
 				bool int_valid[2] = { 0 };
 				int ride_index = console_parse_int(argv[2], &int_valid[0]);
 				int friction = console_parse_int(argv[3], &int_valid[1]);
-					
+
 				if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
 				} else if (!int_valid[0] || !int_valid[1]) {
@@ -496,7 +496,7 @@ static int cc_rides(const utf8 **argv, int argc)
 								vehicle->friction=friction;
 								vehicle_index=vehicle->next_vehicle_on_train;
 							}
-						}			
+						}
 					}
 				}
 			}
@@ -528,7 +528,7 @@ static int cc_staff(const utf8 **argv, int argc)
 				bool int_valid[3] = { 0 };
 				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
 				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
-				
+
 				if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != NULL)) {
 					rct_peep *peep = GET_PEEP(int_val[0]);
 

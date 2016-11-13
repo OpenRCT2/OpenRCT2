@@ -348,7 +348,7 @@ rct_string_id language_allocate_object_string(const utf8 * target)
             _availableObjectStringIds.push(stringId);
         }
     }
-    
+
     rct_string_id stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
     _languageCurrent->SetString(stringId, target);

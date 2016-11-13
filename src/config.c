@@ -434,7 +434,7 @@ void config_set_defaults()
 					destValue->value_string = _strdup(username);
 				} else {
 					destValue->value_string = _strdup(language_get_string(STR_MULTIPLAYER_DEFAULT_NAME));
-				}				
+				}
 			}
 			else {
 				// Use static default
@@ -946,7 +946,7 @@ bool config_find_or_browse_install_directory()
 
 			SafeFree(gConfigGeneral.game_path);
 			gConfigGeneral.game_path = installPath;
-			
+
 			if (platform_original_game_data_exists(installPath))
 				return true;
 

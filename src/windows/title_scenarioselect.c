@@ -529,7 +529,7 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int lef
 	// Draw string
 	int centreX = (left + right) / 2;
 	gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, NULL);
-	
+
 	// Get string dimensions
 	utf8 *buffer = gCommonStringFormatBuffer;
 	format_string(buffer, 256, stringId, NULL);

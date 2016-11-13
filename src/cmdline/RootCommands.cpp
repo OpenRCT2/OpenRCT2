@@ -236,7 +236,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
         gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     }
 
-    return EXITCODE_CONTINUE; 
+    return EXITCODE_CONTINUE;
 }
 
 exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)

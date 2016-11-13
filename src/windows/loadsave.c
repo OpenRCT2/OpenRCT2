@@ -409,7 +409,7 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 
 			safe_strcpy(path, _directory, sizeof(path));
 			safe_strcat_path(path, text, sizeof(path));
-			
+
 			if (!platform_ensure_directory_exists(path)) {
 				window_error_open(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
 				return;
@@ -457,8 +457,8 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 				window_loadsave_select(w, path);
 			break;
 	}
-	
-	
+
+
 }
 
 static void window_loadsave_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
@@ -965,7 +965,7 @@ static void window_overwrite_prompt_invalidate(rct_window *w)
 static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
-	
+
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, char *, _window_overwrite_prompt_name);
 

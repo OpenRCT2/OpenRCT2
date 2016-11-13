@@ -63,7 +63,7 @@ void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *ho
 		exit(-1);
 		return;
 	}
-	
+
 	safe_strcpy(buffer, homedir, size);
 	safe_strcat_path(buffer, "Library", size);
 	safe_strcat_path(buffer, "Application Support", size);
@@ -135,7 +135,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 				[extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
 			}
 		}
-		
+
 		NSString *directory;
 		NSSavePanel *panel;
 		if (desc->type == FD_SAVE)
@@ -157,7 +157,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 		} else {
 			return false;
 		}
-		
+
 		panel.title = [NSString stringWithUTF8String:desc->title];
 		panel.allowedFileTypes = extensions;
 		panel.directoryURL = [NSURL fileURLWithPath:directory];
@@ -196,17 +196,17 @@ bool platform_has_matching_language(NSString *preferredLocale, uint16* languageI
 			*languageIdentifier = LANGUAGE_ENGLISH_US;
 			return YES;
 		}
-		
+
 		if ([preferredLocale isEqualToString:@"zh-CN"]) {
 			*languageIdentifier = LANGUAGE_CHINESE_SIMPLIFIED;
 			return YES;
 		}
-		
+
 		if ([preferredLocale isEqualToString:@"zh-TW"]) {
 			*languageIdentifier = LANGUAGE_CHINESE_TRADITIONAL;
 			return YES;
 		}
-		
+
 		// Find an exact match (language and region)
 		for (int i = 1; i < LANGUAGE_COUNT; i++) {
 			if([preferredLocale isEqualToString:[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]]) {
@@ -214,8 +214,8 @@ bool platform_has_matching_language(NSString *preferredLocale, uint16* languageI
 				return YES;
 			}
 		}
-		
-		
+
+
 		// Only check for a matching language
 		NSString *languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
 		for (int i = 1; i < LANGUAGE_COUNT; i++) {
@@ -225,7 +225,7 @@ bool platform_has_matching_language(NSString *preferredLocale, uint16* languageI
 				return YES;
 			}
 		}
-		
+
 		return NO;
 	}
 }
@@ -241,7 +241,7 @@ uint16 platform_get_locale_language()
 				return languageIdentifier;
 			}
 		}
-		
+
 		// Fallback
 		return LANGUAGE_ENGLISH_UK;
 	}
@@ -265,7 +265,7 @@ uint8 platform_get_locale_measurement_format()
 		if (metricSystem.boolValue) {
 			return MEASUREMENT_FORMAT_METRIC;
 		}
-		
+
 		return MEASUREMENT_FORMAT_IMPERIAL;
 	}
 }

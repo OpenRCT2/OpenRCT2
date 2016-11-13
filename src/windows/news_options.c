@@ -215,7 +215,7 @@ static void window_news_options_invalidate(rct_window *w)
 	for (int i = 0; i < countof(NewsItemOptionDefinitions); i++) {
 		const notification_def *ndef = &NewsItemOptionDefinitions[i];
 		if (ndef->category != w->page) continue;
-		
+
 		w->enabled_widgets |= (1ULL << checkboxWidgetIndex);
 
 		checkboxWidget->type = WWT_CHECKBOX;
@@ -236,7 +236,7 @@ static void window_news_options_invalidate(rct_window *w)
 	// Remove unused checkboxes
 	while (checkboxWidget->type != WWT_LAST) {
 		w->enabled_widgets &= ~(1ULL << checkboxWidgetIndex);
-		
+
 		checkboxWidget->type = WWT_EMPTY;
 		checkboxWidgetIndex++;
 		checkboxWidget++;

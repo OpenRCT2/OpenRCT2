@@ -111,7 +111,7 @@ namespace ObjectFactory
             log_error("Unable to allocate data buffer.");
             return nullptr;
         }
-        
+
         bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
         if (bufferSize == SIZE_MAX)
         {

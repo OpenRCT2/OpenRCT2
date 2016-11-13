@@ -343,7 +343,7 @@ namespace ScenarioSources
                 String::Set(buffer, bufferSize, name + 3);
             }
         }
-    
+
         // Trim (for the sake of the above and WW / TT scenarios
         String::TrimStart(buffer, bufferSize, name);
 

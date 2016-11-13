@@ -162,7 +162,7 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 		swingImageId = vehicle->vehicle_sprite_type;
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 	}
-	
+
 	bound_box bb = MagicCarpetBounds[direction];
 	rct_xyz16 offset, bbOffset, bbSize;
 	offset.x = (direction & 1) ? 0 : axisOffset;

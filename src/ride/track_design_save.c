@@ -127,7 +127,7 @@ static void track_design_save_callback(int result) {
 	free(_trackDesign->entrance_elements);
 	free(_trackDesign->scenery_elements);
 	free(_trackDesign);
-	
+
 	if (result == MODAL_RESULT_OK) {
 		track_repository_scan();
 	}
@@ -174,7 +174,7 @@ bool track_design_save(uint8 rideIndex)
 
 	utf8 track_name[MAX_PATH];
 	format_string(track_name, MAX_PATH, ride->name, &ride->name_arguments);
-	
+
 	window_loadsave_open(LOADSAVETYPE_TRACK | LOADSAVETYPE_SAVE, track_name);
 	gLoadSaveCallback = track_design_save_callback;
 
@@ -1231,7 +1231,7 @@ static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
 			buffer->capacity = max(8, buffer->capacity * 2);
 			remainingSpace = buffer->capacity - buffer->length;
 		} while (remainingSpace < len);
-		
+
 		buffer->ptr = realloc(buffer->ptr, buffer->capacity);
 	}
 	memcpy((void*)((uintptr_t)buffer->ptr + buffer->length), src, len);

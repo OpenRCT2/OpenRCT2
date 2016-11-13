@@ -773,13 +773,13 @@ uint8 platform_get_currency_value(const char *currCode) {
 	if (currCode == NULL || strlen(currCode) < 3) {
 			return CURRENCY_POUNDS;
 	}
-	
+
 	for (int currency = 0; currency < CURRENCY_END; ++currency) {
 		if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0) {
 			return currency;
 		}
 	}
-	
+
 	return CURRENCY_POUNDS;
 }
 

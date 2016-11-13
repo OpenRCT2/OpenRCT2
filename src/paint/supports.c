@@ -856,7 +856,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special,
 
 		height += z;
 	}
-	
+
 	return true;
 
 	//int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;

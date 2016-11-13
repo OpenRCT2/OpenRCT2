@@ -37,7 +37,7 @@ colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 
 rct_map_element *gSceneryMapElement;
-uint8 gSceneryMapElementType; 
+uint8 gSceneryMapElementType;
 
 money32 gSceneryPlaceCost;
 sint16 gSceneryPlaceObject;

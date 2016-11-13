@@ -341,7 +341,7 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-	
+
 	snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
 	// Draw Text

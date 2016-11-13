@@ -117,7 +117,7 @@ static rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride
 	if (mapElement == NULL) {
 		return NULL;
 	}
-	
+
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->properties.track.ride_index != rideIndex) continue;
