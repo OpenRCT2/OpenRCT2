@@ -74,6 +74,11 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
+    if (strcmp(this->GetIdentifier(), "RCKC    ") == 0) {
+        // The rocket cars could take 3 cars per train in RCT1. Restore this.
+        _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
+    }
+
     // TODO: Move to its own function when ride construction window is merged.
     if (gConfigInterface.select_by_track_type) {
         _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
