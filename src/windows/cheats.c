@@ -662,7 +662,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_UNLOCKALLPRICES, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_SANDBOX_MODE:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
 		// To prevent tools from staying active after disabling cheat
 		//tool_cancel();
 		break;

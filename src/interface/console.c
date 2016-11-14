@@ -27,6 +27,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../network/twitch.h"
+#include "../network/network.h"
 #include "../object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -665,6 +666,15 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "render_weather_gloom") == 0) {
 			console_printf("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
 		}
+		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0) {
+			console_printf("cheat_sandbox_mode %d", gCheatsSandboxMode);
+		}
+		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0) {
+			console_printf("cheat_disable_clearance_checks %d", gCheatsDisableClearanceChecks);
+		}
+		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0) {
+			console_printf("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -846,6 +856,45 @@ static int cc_set(const utf8 **argv, int argc)
 			gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
 			config_save_default();
 			console_execute_silent("get render_weather_gloom");
+		}
+		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsSandboxMode != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_sandbox_mode")" line when in network client mode
+					gCheatsSandboxMode = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_sandbox_mode");
+		}
+		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_disable_clearance_checks")" line when in network client mode
+					gCheatsDisableClearanceChecks = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_disable_clearance_checks");
+		}
+		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_disable_support_limits")" line when in network client mode
+					gCheatsDisableSupportLimits = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_disable_support_limits");
 		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
@@ -1033,6 +1082,9 @@ utf8* console_variable_table[] = {
 	"window_limit",
 	"render_weather_effects",
 	"render_weather_gloom",
+	"cheat_sandbox_mode",
+	"cheat_disable_clearance_checks",
+	"cheat_disable_support_limits",
 };
 utf8* console_window_table[] = {
 	"object_selection",

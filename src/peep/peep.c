@@ -8974,7 +8974,7 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *
  *  rct2: 0x0069A997
  */
-static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_element *currentMapElement, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
+static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *currentMapElement, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
 	uint8 searchResult = PATH_SEARCH_FAILED;
 
 	x += TileDirectionDelta[test_edge].x;
@@ -9280,21 +9280,41 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				 * junction on this map element. Only 'thin' junctions
 				 * are counted towards the junction search limit. */
 
-				/* Check the pathfind_history to see if this junction has been
-				 * previously passed through in the current search path.
-				 * i.e. this is a loop in the current search path.
-				 * If so, the current search path ends here.
-				 * Continue to the next map element without updating the parameters (best result so far). */
+				/* First check if going through the junction would be
+				 * a loop.  If so, the current search path ends here.
+				 * Path finding loop detection can take advantage of both the
+				 * peep->pathfind_history - loops through remembered junctions
+				 *     the peep has already passed through getting to its
+				 *     current position while on the way to its current goal;
+				 * _peepPathFindHistory - loops in the current search path. */
 				bool pathLoop = false;
-				for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
-					if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
-						(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
-						(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
-							pathLoop = true;
-							break;
+				/* Check the peep->pathfind_history to see if this junction has
+				 * already been visited by the peep while heading for this goal. */
+				for (int i = 0; i < 4; ++i) {
+					if (peep->pathfind_history[i].x == x >> 5 &&
+						peep->pathfind_history[i].y == y >> 5 &&
+						peep->pathfind_history[i].z == z) {
+						pathLoop = true;
+						break;
+					}
+				}
+
+				if (!pathLoop) {
+					/* Check the _peepPathFindHistory to see if this junction has been
+					 * previously passed through in the current search path.
+					 * i.e. this is a loop in the current search path. */
+					for (int junctionNum = _peepPathFindNumJunctions + 1; junctionNum <= _peepPathFindMaxJunctions; junctionNum++) {
+						if ((_peepPathFindHistory[junctionNum].location.x == (uint8)(x >> 5)) &&
+							(_peepPathFindHistory[junctionNum].location.y == (uint8)(y >> 5)) &&
+							(_peepPathFindHistory[junctionNum].location.z == (uint8)z)) {
+								pathLoop = true;
+								break;
+						}
 					}
 				}
 				if (pathLoop) {
+					/* Loop detected.  The current search path ends here.
+					 * Continue to the next map element without updating the parameters (best result so far). */
 					#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 					if (gPathFindDebug) {
 						log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
@@ -9376,7 +9396,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_map_
 				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
 			}
 
-			peep_pathfind_heuristic_search(x, y, height, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+			peep_pathfind_heuristic_search(x, y, height, peep, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
 			_peepPathFindNumJunctions = savedNumJunctions;
 
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -9480,7 +9500,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				edges = peep->pathfind_history[i].direction & 0xF;
 				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				if (gPathFindDebug) {
-					log_verbose("Getting untried edges from pf_history for %d,%d,%d: %d", x >> 5, y >> 5, z, edges);
+					log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", x >> 5, y >> 5, z, (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
 				}
 				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				break;
@@ -9566,7 +9586,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			rct_xyz8 endJunctionList[16] = { 0 };
 			uint8 endDirectionList[16] = { 0 };
 
-			peep_pathfind_heuristic_search(x, y, height, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
 				log_verbose("Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);

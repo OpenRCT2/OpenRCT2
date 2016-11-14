@@ -583,13 +583,13 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			window_cheats_open();
 			break;
 		case DDIDX_ENABLE_SANDBOX_MODE:
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		case DDIDX_DISABLE_CLEARANCE_CHECKS:
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, 0, GAME_COMMAND_CHEAT, 0, 0);
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		case DDIDX_DISABLE_SUPPORT_LIMITS:
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, 0, GAME_COMMAND_CHEAT, 0, 0);
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		}
 		break;
