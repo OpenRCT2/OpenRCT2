@@ -3721,31 +3721,31 @@ STR_5375    :{UP}
 STR_5376    :{DOWN}
 STR_5377    :{SMALLFONT}{BLACK}Salva
 STR_5378    :{SMALLFONT}{BLACK}Script
-STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
-STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
-STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
-STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
-STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
-STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
-STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
-STR_5386    :{SMALLFONT}{BLACK}Insert a new command
-STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
-STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
-STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
-STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
-STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
-STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
-STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
-STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
-STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
-STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it's playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can't change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
+STR_5379    :{SMALLFONT}{BLACK}Salta al successivo comando di attesa
+STR_5380    :{SMALLFONT}{BLACK}Avvia riproduzione sequenza del titolo
+STR_5381    :{SMALLFONT}{BLACK}Ferma riproduzione sequenza del titolo
+STR_5382    :{SMALLFONT}{BLACK}Riavvia sequenza del titolo
+STR_5383    :{SMALLFONT}{BLACK}Crea nuova sequenza del titolo basata su quella attuale
+STR_5384    :{SMALLFONT}{BLACK}Elimina l'attuale sequenza del titolo
+STR_5385    :{SMALLFONT}{BLACK}Rinomina l'attuale sequenza del titolo
+STR_5386    :{SMALLFONT}{BLACK}Inserisci un nuovo comando
+STR_5387    :{SMALLFONT}{BLACK}Modifica il comando selezionato
+STR_5388    :{SMALLFONT}{BLACK}Elimina il comando selezionato
+STR_5389    :{SMALLFONT}{BLACK}Salta al comando selezionato nella sequenza del titolo
+STR_5390    :{SMALLFONT}{BLACK}Sposta il comando selezionato in giù
+STR_5391    :{SMALLFONT}{BLACK}Sposta il comando selezionato in su
+STR_5392    :{SMALLFONT}{BLACK}Aggiungi un salvataggio alla sequenza del titolo
+STR_5393    :{SMALLFONT}{BLACK}Rimuovi il salvataggio selezionato dalla sequenza del titolo
+STR_5394    :{SMALLFONT}{BLACK}Rinomina il salvataggio selezionato
+STR_5395    :{SMALLFONT}{BLACK}Carica il salvataggio selezionato nel gioco
+STR_5396    :{SMALLFONT}{BLACK}Ricarica la sequenza del titolo se sono state effettuate modifiche al di fuori del gioco
+STR_5397    :Può essere utilizzato solo sulla sequenza del titolo
+STR_5398    :Non si può modificare la sequenza del titolo mentre è in riproduzione
+STR_5399    :Premere il pulsante di stop per modificare la sequenza
+STR_5400    :Impossibile modificare questa sequenza del titolo
+STR_5401    :Crea una nuova sequenza del titolo per modificarla
+STR_5402    :Impossibile caricare la sequenza del video
+STR_5403    :Potrebbe non esserci un comando di caricamento o attesa o il salvataggio potrebbe non essere valido
 STR_5404    :Il nome è già utilizzato
 STR_5405    :Inserisci un nome per il salvataggio
 STR_5406    :Inserisci un nome per la sequenza del titolo
@@ -4297,6 +4297,12 @@ STR_5981    :{WINDOW_COLOUR_2}Non è un cartello
 STR_5982    :{WINDOW_COLOUR_2}Tipo scenario grande: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID pezzo di scenario grande: {BLACK}{COMMA16}
 STR_5984    :Sentieri bloccati:
+STR_5985    :Nuova cartella
+STR_5986    :Inserire il nome della nuova cartella.
+STR_5987    :Impossibile creare la cartella
+STR_5988    :{SMALLFONT}{BLACK}Non vi sono ulteriori terreni in vendita
+STR_5989    :{SMALLFONT}{BLACK}Non vi sono ulteriori permessi di costruzione in vendita
+STR_5990    :{SMALLFONT}{BLACK}Non vi sono ulteriori terreni né permessi di costruzione in vendita
 
 
 #############
