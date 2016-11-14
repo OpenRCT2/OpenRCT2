@@ -27,6 +27,7 @@
 - Improved: Performance and reliability of loading objects.
 - Improved: Screenshots are now saved with the name of the park and the current date and time.
 - Improved: More accurate frame rate calculation
+- Improved: In-game file dialog now shows more formats (sv6, sc6, sv4, etc.)
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.

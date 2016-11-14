@@ -45,6 +45,7 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
+#include "rct1.h"
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 	STR_BEGINNER_PARKS,
@@ -129,8 +130,18 @@ int scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();
 
-	if (!scenario_load(path))
+	uint32 extension = get_file_extension_type(path);
+	if (extension == FILE_EXTENSION_SC6) {
+		if (!scenario_load(path))
+			return 0;
+	}
+	else if (extension == FILE_EXTENSION_SC4) {
+		if (!rct1_load_scenario(path))
+			return 0;
+	}
+	else {
 		return 0;
+	}
 
 	reset_sprite_spatial_index();
 	reset_all_sprite_quadrant_placements();
