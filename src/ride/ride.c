@@ -5672,6 +5672,22 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		// Log ride rename command if we are in multiplayer and logging is enabled
+		if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
+			// Get player name
+			int player_index = network_get_player_index(game_command_playerid);
+			const char* player_name = network_get_player_name(player_index);
+
+			char log_msg[256];
+			char* args[3] = {
+				(char *) player_name,
+				oldName,
+				newName
+			};
+			format_string(log_msg, 256, STR_LOG_RIDE_NAME, args);
+			network_append_server_log(log_msg);
+		}
+
 		if (ride->overall_view != (uint16)-1) {
 			rct_xyz16 coord;
 			coord.x = (ride->overall_view & 0xFF) * 32 + 16;

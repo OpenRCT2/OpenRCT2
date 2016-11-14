@@ -252,6 +252,7 @@ typedef struct network_configuration {
 	utf8string provider_website;
 	uint8 known_keys_only;
 	uint8 log_chat;
+	uint8 log_server_actions;
 } network_configuration;
 
 typedef struct notification_configuration {

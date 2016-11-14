@@ -25,6 +25,7 @@
 #include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../management/research.h"
+#include "../network/network.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
@@ -935,6 +936,22 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		// Log park rename command if we are in multiplayer and logging is enabled
+		if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions) {
+			// Get player name
+			int player_index = network_get_player_index(game_command_playerid);
+			const char* player_name = network_get_player_name(player_index);
+
+			char log_msg[256];
+			char* args[3] = {
+				(char *) player_name,
+				oldName,
+				newName
+			};
+			format_string(log_msg, 256, STR_LOG_PARK_NAME, args);
+			network_append_server_log(log_msg);
+		}
+
 		// Free the old ride name
 		user_string_free(gParkName);
 		gParkName = newUserStringId;

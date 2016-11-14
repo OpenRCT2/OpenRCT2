@@ -4299,6 +4299,38 @@ STR_5987    :Unable to create folder
 STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
 STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
 STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
+STR_5991    :Log user actions
+STR_5992    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_5993    :Server started.
+STR_5994    :Server shutdown.
+STR_5995    :{STRING} was kicked from the server by {STRING}.
+STR_5996    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_5997    :{STRING} created new player group '{STRING}'.
+STR_5998    :{STRING} deleted player group '{String}'.
+STR_5999    :{STRING} edited permissions for player group '{String}'.
+STR_6000    :{STRING} changed player group name from '{String}' to '{String}'.
+STR_6001    :{STRING} changed the default player group to '{String}'.
+STR_6002    :{STRING} used/toggled cheat '{STRING}'.
+STR_6003    :Add Money
+STR_6004    :{STRING} demolished ride '{STRING}'.
+STR_6005    :{STRING} changed the appearance of ride '{STRING}'.
+STR_6006    :{STRING} changed the status of ride '{STRING}' to closed.
+STR_6007    :{STRING} changed the status of ride '{STRING}' to open.
+STR_6008    :{STRING} changed the status of ride '{STRING}' to testing.
+STR_6009    :{STRING} changed the vehicle settings of ride '{STRING}'.
+STR_6010    :{STRING} changed the ride settings of ride '{STRING}'.
+STR_6011    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
+STR_6012    :{STRING} changed the price of ride '{STRING}' to {STRING}
+STR_6013    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
+STR_6014    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6015    :{STRING} opened the park.
+STR_6016    :{STRING} closed the park.
+STR_6017    :{STRING} changed the park entrance fee to {STRING}
+STR_6018    :{STRING} placed new scenery.
+STR_6019    :{STRING} removed scenery.
+STR_6020    :{STRING} edited scenery.
+STR_6021    :You connected to the server.
+STR_6022    :You disconnected from the server.
 
 #############
 # Scenarios #
