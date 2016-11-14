@@ -16,6 +16,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "ObjectRepository.h"
 #include "RideObject.h"
@@ -74,7 +75,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
-    if (strcmp(this->GetIdentifier(), "RCKC    ") == 0) {
+    if (String::Equals(this->GetIdentifier(), "RCKC    ")) {
         // The rocket cars could take 3 cars per train in RCT1. Restore this.
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
     }
