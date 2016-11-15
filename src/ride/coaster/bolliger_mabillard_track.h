@@ -107,10 +107,6 @@ void bolliger_mabillard_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 tr
 void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
-void bolliger_mabillard_track_diag_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
-void bolliger_mabillard_track_diag_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
-void bolliger_mabillard_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
-void bolliger_mabillard_track_diag_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_diag_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_diag_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_diag_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
@@ -173,6 +169,10 @@ void bolliger_mabillard_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequ
 void bolliger_mabillard_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_brake_for_drop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_diag_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_diag_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_diag_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 
 /* Previously specific to the Steel Twister */
 void bolliger_mabillard_track_half_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
@@ -181,3 +181,7 @@ void bolliger_mabillard_track_left_corkscrew_up(uint8 rideIndex, uint8 trackSequ
 void bolliger_mabillard_track_right_corkscrew_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_left_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
 void bolliger_mabillard_track_right_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_flat_to_60_deg_up_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_60_deg_up_to_flat_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_flat_to_60_deg_down_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
+void bolliger_mabillard_track_60_deg_up_to_flat_long_base122(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int supportType);
