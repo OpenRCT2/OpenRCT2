@@ -49,4 +49,5 @@ public:
 
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
+    void PerformRCT1CompatibilityFixes();
 };

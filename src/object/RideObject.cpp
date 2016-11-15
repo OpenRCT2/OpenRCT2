@@ -75,11 +75,6 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
-    if (String::Equals(this->GetIdentifier(), "RCKC    ")) {
-        // The rocket cars could take 3 cars per train in RCT1. Restore this.
-        _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
-    }
-
     // TODO: Move to its own function when ride construction window is merged.
     if (gConfigInterface.select_by_track_type) {
         _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
@@ -129,6 +124,8 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
+
+    this->PerformRCT1CompatibilityFixes();
 }
 
 void RideObject::Load()
@@ -443,4 +440,12 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->draw_order = stream->ReadValue<uint8>();
     vehicle->special_frames = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
+}
+
+void RideObject::PerformRCT1CompatibilityFixes()
+{
+    if (String::Equals(this->GetIdentifier(), "RCKC    ")) {
+        // The rocket cars could take 3 cars per train in RCT1. Restore this.
+        _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
+    }
 }
