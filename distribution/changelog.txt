@@ -23,6 +23,7 @@
 - Feature: Objects are scanned from the user directory as well as the RCT2 directory.
 - Feature: Objects directory is scanned recursively.
 - Feature: Optionally zoom in towards the cursor rather than the screen centre.
+- Change: The maximum height of Junior Roller Coasters is now 14 units, like it was in RCT1.
 - Improved: Pathfinding algorithm.
 - Improved: Performance and reliability of loading objects.
 - Improved: Screenshots are now saved with the name of the park and the current date and time.
@@ -50,6 +51,7 @@
 - Fix: [#3824] Segfault when passing invalid arguments to ride set type.
 - Fix: [#3858] Tooltip shown when hovering over title logo.
 - Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
+- Fix: Lay-down Roller Coasters from RCT1 saves are imported with an incorrect vehicle type (not reported).
 - Technical: Multiplayer groups are now stored in JSON format.
 
 0.0.4-beta (2016-04-15)
