@@ -125,7 +125,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
 
-    this->PerformRCT1CompatibilityFixes();
+    PerformRCT1CompatibilityFixes();
 }
 
 void RideObject::Load()
@@ -444,7 +444,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
 
 void RideObject::PerformRCT1CompatibilityFixes()
 {
-    if (String::Equals(this->GetIdentifier(), "RCKC    ")) {
+    if (String::Equals(GetIdentifier(), "RCKC    ")) {
         // The rocket cars could take 3 cars per train in RCT1. Restore this.
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
     }
