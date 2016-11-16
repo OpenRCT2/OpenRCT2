@@ -4285,6 +4285,16 @@ STR_5981    :{WINDOW_COLOUR_2}Geen lichtkrant
 STR_5982    :{WINDOW_COLOUR_2}Type groot decor: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID groot decorstuk: {BLACK}{COMMA16}
 STR_5984    :Geblokkeerde paden:
+STR_5985    :Nieuwe map
+STR_5986    :Naam voor de nieuwe map:
+STR_5987    :Kon map niet aanmaken
+STR_5988    :{SMALLFONT}{BLACK}Er is geen land meer te koop.
+STR_5989    :{SMALLFONT}{BLACK}Er zijn geen bouwrechten meer te koop.
+STR_5990    :{SMALLFONT}{BLACK}Er zijn geen land en geen bouwrechten meer te koop.
+STR_5991    :Kan element niet plakken
+STR_5992    :De limiet voor kaartelementen is bereikt
+STR_5993    :{SMALLFONT}{BLACK}Geselecteerd element kopiëren
+STR_5994    :{SMALLFONT}{BLACK}Gekopieerd element plakken
 
 #############
 # Scenarios #

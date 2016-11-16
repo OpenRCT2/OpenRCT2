@@ -4299,6 +4299,10 @@ STR_5987    :Nepodařilo se vytvořit složku
 STR_5988    :{SMALLFONT}{BLACK}Žádná další pozemková práva ke koupi
 STR_5989    :{SMALLFONT}{BLACK}Žádná další stavební práva ke koupi
 STR_5990    :{SMALLFONT}{BLACK}Žádná další pozemková ani stavební práva ke koupi
+STR_5991    :Nelze vložit prvek...
+STR_5992    :Dosažen limit prvků mapy
+STR_5993    :{SMALLFONT}{BLACK}Kopírovat prvek
+STR_5994    :{SMALLFONT}{BLACK}Vložit prvek
 
 ###############################################################################
 ## RCT2 Objects

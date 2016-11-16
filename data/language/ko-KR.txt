@@ -4297,6 +4297,10 @@ STR_5987    :폴더를 만들 수 없습니다.
 STR_5988    :{SMALLFONT}{BLACK}판매 중인 땅이 더 이상 없습니다.
 STR_5989    :{SMALLFONT}{BLACK}판매 중인 건설권이 더 이상 없습니다.
 STR_5990    :{SMALLFONT}{BLACK}판매 중인 땅이나 건설권이 더 이상 없습니다.
+STR_5991    :붙여넣을 수 없습니다...
+STR_5992    :맵 요소 제한 개수를 초과했습니다
+STR_5993    :{SMALLFONT}{BLACK}선택한 요소를 복사합니다.
+STR_5994    :{SMALLFONT}{BLACK}복사했던 요소를 붙여넣습니다.
 
 #############
 # Scenarios #
