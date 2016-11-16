@@ -1218,7 +1218,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		// Checkbox mark
 		ride = get_ride(w->list_item_positions[i]);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-			gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? -2 : -1;
+			gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
 		}
 

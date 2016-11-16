@@ -153,7 +153,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		y = _chatBottom - inputLineHeight - 5;
 
 		lineCh = lineBuffer;
-		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, 255);
+		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 
 		//TODO: Show caret if the input text have multiple lines
@@ -218,7 +218,7 @@ int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, i
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-	gfx_draw_string(dpi, "", 255, dpi->x, dpi->y);
+	gfx_draw_string(dpi, "", TEXT_COLOUR_255, dpi->x, dpi->y);
 	char *buffer = gCommonStringFormatBuffer;
 	format_string(buffer, 256, STR_STRING, args);
 
@@ -235,7 +235,7 @@ int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, i
 
 	lineY = y;
 	for (int line = 0; line <= numLines; ++line) {
-		gfx_draw_string(dpi, buffer, 0xFE, x, lineY - (numLines * lineHeight));
+		gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight));
 		buffer = get_string_end(buffer) + 1;
 		lineY += lineHeight;
 	}

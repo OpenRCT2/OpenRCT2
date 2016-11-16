@@ -493,7 +493,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			set_format_arg(2, char *, buffer);
 			colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
 			if (isDisabled) {
-				gCurrentFontSpriteBase = -1;
+				gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
 			}
 			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, gCommonFormatArgs);
 

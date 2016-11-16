@@ -227,7 +227,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 	lineCh = lineBuffer;
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
 	safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
-	gfx_draw_string(dpi, lineBuffer, 255, x, y);
+	gfx_draw_string(dpi, lineBuffer, TEXT_COLOUR_255, x, y);
 
 	// Draw caret
 	if (_consoleCaretTicks < 15) {
