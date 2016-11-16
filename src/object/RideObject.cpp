@@ -16,6 +16,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "ObjectRepository.h"
 #include "RideObject.h"
@@ -123,6 +124,8 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
+
+    PerformRCT1CompatibilityFixes();
 }
 
 void RideObject::Load()
@@ -437,4 +440,12 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->draw_order = stream->ReadValue<uint8>();
     vehicle->special_frames = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
+}
+
+void RideObject::PerformRCT1CompatibilityFixes()
+{
+    if (String::Equals(GetIdentifier(), "RCKC    ")) {
+        // The rocket cars could take 3 cars per train in RCT1. Restore this.
+        _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
+    }
 }
