@@ -417,11 +417,8 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	uint32 colour;
-
-	colour = ColourMapA[w->colours[1]].mid_light;
-	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
-	gfx_clear(dpi, colour);
+	uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
+	gfx_clear(dpi, paletteIndex);
 
 	int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 

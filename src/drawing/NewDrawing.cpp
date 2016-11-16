@@ -192,12 +192,12 @@ extern "C"
     {
     }
 
-    void gfx_clear(rct_drawpixelinfo * dpi, uint32 colour)
+    void gfx_clear(rct_drawpixelinfo * dpi, uint8 paletteIndex)
     {
         if (_drawingEngine != nullptr)
         {
             IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
-            dc->Clear(colour);
+            dc->Clear(paletteIndex);
         }
     }
 

@@ -556,9 +556,8 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int colour = ColourMapA[w->colours[0]].mid_light;
-	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
-	gfx_clear(dpi, colour);
+	uint8 paletteIndex = ColourMapA[w->colours[0]].mid_light;
+	gfx_clear(dpi, paletteIndex);
 
 	int x = 0;
 	int y = 0;

@@ -780,7 +780,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
 		return;
 
-	gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light * 0x1010101);
+	gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
 	int x = 1;
 	int y = 1;

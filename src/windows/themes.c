@@ -800,7 +800,7 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 
 	if ((w->colours[1] & 0x80) == 0)
 		//gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
-		gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light * 0x1010101);
+		gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 	y = 0;
 	for (int i = 0; i < get_colour_scheme_tab_count(); i++) {
 		if (y > dpi->y + dpi->height) {
