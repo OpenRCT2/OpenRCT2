@@ -417,6 +417,13 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size)
 	return safe_strcpy(destination, source, size);
 }
 
+char *substr(char *start, int length) {
+	char *result = malloc(length + 1);
+	memcpy(result, start, length);
+	result[length] = 0;
+	return result;
+}
+
 bool utf8_is_bom(const char *str)
 {
 	return str[0] == (char)0xEF && str[1] == (char)0xBB && str[2] == (char)0xBF;
