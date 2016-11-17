@@ -57,12 +57,7 @@ void misc_paint(rct_sprite *misc, int imageDirection)
 
 			rct_money_effect moneyEffect = misc->money_effect;
 			money32 amount = moneyEffect.value;
-			rct_string_id stringId = STR_MONEY_EFFECT_RECEIVE;
-			if (amount < 0) {
-				amount = -amount;
-				stringId = STR_MONEY_EFFECT_SPEND;
-			}
-
+			uint16 stringId = moneyEffect.flags;
 			sub_685EBC(amount, stringId, moneyEffect.y, moneyEffect.z, (sint8 *) &money_wave[moneyEffect.wiggle % 22], moneyEffect.offset_x, get_current_rotation());
 			break;
 		}

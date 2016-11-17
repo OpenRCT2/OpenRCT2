@@ -20,6 +20,8 @@
 #include "common.h"
 
 extern bool gCheatsSandboxMode;
+extern bool gCheatsIgnoreMoney;
+extern bool gCheatsFreeBuilding;
 extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
 extern bool gCheatsShowAllOperatingModes;
@@ -56,7 +58,8 @@ enum {
 	CHEAT_IGNORERIDEINTENSITY,
 	CHEAT_DISABLEVANDALISM,
 	CHEAT_DISABLELITTERING,
-	CHEAT_INCREASEMONEY,
+	CHEAT_ADDMONEY,
+	CHEAT_SETMONEY,
 	CHEAT_CLEARLOAN,
 	CHEAT_SETGUESTPARAMETER,
 	CHEAT_GENERATEGUESTS,
@@ -83,6 +86,11 @@ enum {
 	CHEAT_NEVERENDINGMARKETING,
 	CHEAT_RESETDATE,
 	CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,
+	CHEAT_NOMONEY,
+	CHEAT_IGNOREMONEY,
+	CHEAT_FREEBUILDING,
+	CHEAT_OWNALLLAND,
+	CHEAT_INVENTALL,
 };
 
 enum {
@@ -103,7 +111,6 @@ enum {
 	OBJECT_UMBRELLA
 };
 
-#define CHEATS_MONEY_INCREMENT MONEY(5000,00)
 #define CHEATS_TRAM_INCREMENT 250
 
 extern int park_rating_spinner_value;
