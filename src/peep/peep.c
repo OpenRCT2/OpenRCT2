@@ -1990,8 +1990,12 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
 	return true;
 }
 
-bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply)
+bool peep_pickup_command(unsigned int peepnum, int x, int y, int z, int action, bool apply)
 {
+	if (peepnum >= MAX_SPRITES) {
+		log_error("Failed to pick up peep for sprite %d", peepnum);
+		return false;
+	}
 	rct_peep* peep = GET_PEEP(peepnum);
 	if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP) {
 		return false;

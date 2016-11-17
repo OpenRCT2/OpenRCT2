@@ -102,10 +102,15 @@ static void balloon_press(rct_balloon *balloon)
 
 void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	int balloon_num = *eax;
+	unsigned int balloon_num = *eax;
 	int flags = *ebx;
 	*ebx = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		return;
+	}
+	if (balloon_num >= MAX_SPRITES) {
+		log_error("Tried getting invalid sprite for balloon: %u", balloon_num);
+		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 	rct_sprite* sprite = get_sprite(balloon_num);

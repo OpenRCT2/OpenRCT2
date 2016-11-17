@@ -655,7 +655,7 @@ int peep_has_food(rct_peep* peep);
 void peep_pickup(rct_peep* peep);
 void peep_pickup_abort(rct_peep* peep, int old_x);
 bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply);
-bool peep_pickup_command(int peepnum, int x, int y, int z, int action, bool apply);
+bool peep_pickup_command(unsigned int peepnum, int x, int y, int z, int action, bool apply);
 void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void peep_sprite_remove(rct_peep* peep);
 void peep_remove(rct_peep* peep);

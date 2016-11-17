@@ -65,7 +65,12 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	colour = (*edx >> 8) & 0xFF;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		staff_set_colour(staffType, colour);
+		// Client may send invalid data
+		bool ok = staff_set_colour(staffType, colour);
+		if (!ok) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
@@ -384,6 +389,11 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 		if(order_id & 0x80){ // change costume
 			uint8 sprite_type = order_id & ~0x80;
 			sprite_type += 4;
+			if (sprite_type > countof(peep_slow_walking_types)) {
+				log_error("Invalid change costume order for sprite_type %u", sprite_type);
+				*ebx = MONEY32_UNDEFINED;
+				return;
+			}
 			peep->sprite_type = sprite_type;
 			peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
 			if(peep_slow_walking_types[sprite_type]){
@@ -1380,7 +1390,7 @@ colour_t staff_get_colour(uint8 staffType)
 	}
 }
 
-void staff_set_colour(uint8 staffType, colour_t value)
+bool staff_set_colour(uint8 staffType, colour_t value)
 {
 	switch (staffType) {
 	case STAFF_TYPE_HANDYMAN:
@@ -1393,7 +1403,7 @@ void staff_set_colour(uint8 staffType, colour_t value)
 		gStaffSecurityColour = value;
 		break;
 	default:
-		assert(false);
-		break;
+		return false;
 	}
+	return true;
 }
