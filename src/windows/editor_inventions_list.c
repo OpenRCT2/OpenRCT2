@@ -29,6 +29,7 @@
 #include "../sprites.h"
 #include "../util/util.h"
 #include "../world/scenery.h"
+#include "editor.h"
 
 #pragma region Widgets
 
@@ -286,7 +287,7 @@ static void research_scenery_sets_setup(){
  *
  *  rct2: 0x00685901
  */
-static void research_always_researched_setup()
+void research_always_researched_setup()
 {
 	research_rides_setup();
 	research_scenery_sets_setup();
@@ -297,7 +298,7 @@ static void research_always_researched_setup()
  *  rct2: 0x00685A79
  *  Do not use the research list outside of the inventions list window with the flags
  */
-static void research_remove_flags()
+void research_remove_flags()
 {
 	for (rct_research_item* research = gResearchItems;
 		research->entryIndex != RESEARCHED_ITEMS_END_2;
@@ -394,7 +395,7 @@ static void research_items_make_all_unresearched()
 	} while (!sorted);
 }
 
-static void research_items_make_all_researched()
+void research_items_make_all_researched()
 {
 	rct_research_item *researchItem, researchItemTemp;
 

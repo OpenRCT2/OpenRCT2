@@ -4303,6 +4303,18 @@ STR_5991    :Can't paste element...
 STR_5992    :The map elements limit has been reached
 STR_5993    :{SMALLFONT}{BLACK}Copy selected element
 STR_5994    :{SMALLFONT}{BLACK}Paste copied element
+STR_5995    :Ignore money
+STR_5996    :{SMALLFONT}{BLACK}Allows building even if funds are insufficient
+STR_5997    :Add/set money
+STR_5998    :Add money
+STR_5999    :Set money
+STR_6000    :Enter new value
+STR_6001    :Free building
+STR_6002    :{SMALLFONT}{BLACK}Construction does not impact your funds
+STR_6003    :{OUTLINE}{PALESILVER}+ {CURRENCY}
+STR_6004    :{OUTLINE}{GREY}- {CURRENCY}
+STR_6005    :Own all land
+STR_6006    :Invent all
 
 #############
 # Scenarios #
