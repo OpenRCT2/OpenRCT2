@@ -29,10 +29,18 @@ interface IZipArchive
     virtual const utf8 *    GetFileName(size_t index) const abstract;
     virtual const uint64    GetFileSize(size_t index) const abstract;
     virtual void *          GetFileData(const utf8 * path, size_t * outSize) const abstract;
+
+    virtual void            SetFileData(const utf8 * path, void * data, size_t dataSize) abstract;
+};
+
+enum ZIP_ACCESS
+{
+    ZIP_ACCESS_READ,
+    ZIP_ACCESS_WRITE,
 };
 
 namespace Zip
 {
-    IZipArchive * Open(const utf8 * path);
-    IZipArchive * TryOpen(const utf8 * path);
+    IZipArchive * Open(const utf8 * path, ZIP_ACCESS zipAccess);
+    IZipArchive * TryOpen(const utf8 * path, ZIP_ACCESS zipAccess);
 }

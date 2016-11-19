@@ -89,6 +89,7 @@ extern "C"
 
     TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
     void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
+    bool TileSequenceSave(TitleSequence * seq);
 #ifdef __cplusplus
 }
 #endif

@@ -21,17 +21,26 @@
 class ZipArchive : public IZipArchive
 {
 private:
-    zip_t * _zip;
+    zip_t *     _zip;
+    ZIP_ACCESS  _access;
 
 public:
-    ZipArchive(const utf8 * path)
+    ZipArchive(const utf8 * path, ZIP_ACCESS access)
     {
+        int zipOpenMode = ZIP_RDONLY;
+        if (access == ZIP_ACCESS_WRITE)
+        {
+            zipOpenMode = ZIP_CREATE;
+        }
+
         int error;
-        _zip = zip_open(path, ZIP_RDONLY, &error);
+        _zip = zip_open(path, zipOpenMode, &error);
         if (_zip == nullptr)
         {
             throw IOException("Unable to open zip file.");
         }
+
+        _access = access;
     }
 
     ~ZipArchive() override
@@ -89,21 +98,36 @@ public:
         if (outSize != nullptr) *outSize = dataSize;
         return data;
     }
+
+    void SetFileData(const utf8 * path, void * data, size_t dataSize) override
+    {
+        zip_source_t * source = zip_source_buffer(_zip, data, dataSize, 0);
+        sint64 index = zip_name_locate(_zip, path, 0);
+        if (index == -1)
+        {
+            zip_add(_zip, path, source);
+        }
+        else
+        {
+            zip_replace(_zip, index, source);
+        }
+        zip_source_free(source);
+    }
 };
 
 namespace Zip
 {
-    IZipArchive * Open(const utf8 * path)
+    IZipArchive * Open(const utf8 * path, ZIP_ACCESS access)
     {
-        return new ZipArchive(path);
+        return new ZipArchive(path, access);
     }
 
-    IZipArchive * TryOpen(const utf8 * path)
+    IZipArchive * TryOpen(const utf8 * path, ZIP_ACCESS access)
     {
         IZipArchive * result = nullptr;
         try
         {
-            result = new ZipArchive(path);
+            result = new ZipArchive(path, access);
         }
         catch (Exception)
         {

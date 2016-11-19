@@ -26,6 +26,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
 #include "TitleSequence.h"
 
@@ -34,6 +35,7 @@ static std::vector<utf8 *> GetSaves(IZipArchive * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
 static void LegacyScriptGetLine(SDL_RWops * file, char * parts);
 static void * ReadScriptFile(const utf8 * path, size_t * outSize);
+static utf8 * LegacyScriptWrite(TitleSequence * seq);
 
 extern "C"
 {
@@ -47,7 +49,7 @@ extern "C"
         const utf8 * ext = Path::GetExtension(path);
         if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
         {
-            IZipArchive * zip = Zip::TryOpen(path);
+            IZipArchive * zip = Zip::TryOpen(path, ZIP_ACCESS_READ);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", path);
@@ -119,7 +121,7 @@ extern "C"
             const utf8 * filename = seq->Saves[index];
             if (seq->IsZip)
             {
-                IZipArchive * zip = Zip::TryOpen(seq->Path);
+                IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_READ);
                 if (zip != nullptr)
                 {
                     handle = Memory::Allocate<TitleSequenceParkHandle>();
@@ -152,6 +154,38 @@ extern "C"
             Memory::Free(handle->Data);
             Memory::Free(handle);
         }
+    }
+
+    bool TileSequenceSave(TitleSequence * seq)
+    {
+        bool success = false;
+        utf8 * script = LegacyScriptWrite(seq);
+        if (seq->IsZip)
+        {
+            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+            zip->SetFileData("script.txt", script, String::SizeOf(script));
+            delete zip;
+            success = true;
+        }
+        else
+        {
+            utf8 scriptPath[260];
+            String::Set(scriptPath, sizeof(scriptPath), seq->Path);
+            Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
+
+            try
+            {
+                auto fs = FileStream(scriptPath, FILE_MODE_WRITE);
+                fs.Write(script, String::SizeOf(script));
+                success = true;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        Memory::Free(script);
+        return success;
     }
 }
 
@@ -353,59 +387,53 @@ static void * ReadScriptFile(const utf8 * path, size_t * outSize)
     return buffer;
 }
 
-/*
-void title_sequence_save_preset_script(int preset)
+static utf8 * LegacyScriptWrite(TitleSequence * seq)
 {
-    utf8 path[MAX_PATH];
-    SDL_RWops *file;
-    int i;
+    utf8 buffer[128];
+    auto sb = StringBuilder(128);
 
-
-    platform_get_user_directory(path, "title sequences", sizeof(path));
-    safe_strcat_path(path, gConfigTitleSequences.presets[preset].name, MAX_PATH);
-    safe_strcat_path(path, "script.txt", MAX_PATH);
-
-    file = SDL_RWFromFile(path, "wb");
-    if (file == NULL) {
-        log_error("Unable to write to script file.");
-        return;
-    }
-
-    for (i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
-        title_command *command = &gConfigTitleSequences.presets[preset].commands[i];
-        switch (command->command) {
+    for (size_t i = 0; i < seq->NumCommands; i++)
+    {
+        const TitleCommand * command = &seq->Commands[i];
+        switch (command->Type) {
         case TITLE_SCRIPT_LOAD:
-            if (command->saveIndex == 0xFF)
-                rwopsprintf(file, "LOAD <No save file>");
-            else
-                rwopsprintf(file, "LOAD %s", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+            if (command->SaveIndex == 0xFF)
+            {
+                sb.Append("LOAD <No save file>");
+            } else
+            {
+                sb.Append("LOAD ");
+                sb.Append(seq->Saves[command->SaveIndex]);
+            }
             break;
         case TITLE_SCRIPT_LOCATION:
-            rwopsprintf(file, "LOCATION %i %i", command->x, command->y);
+            String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command->X, command->Y);
+            sb.Append(buffer);
             break;
         case TITLE_SCRIPT_ROTATE:
-            rwopsprintf(file, "ROTATE %i", command->rotations);
+            String::Format(buffer, sizeof(buffer), "ROTATE %u", command->Rotations);
+            sb.Append(buffer);
             break;
         case TITLE_SCRIPT_ZOOM:
-            rwopsprintf(file, "ZOOM %i", command->zoom);
+            String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
+            sb.Append(buffer);
             break;
         case TITLE_SCRIPT_SPEED:
-            rwopsprintf(file, "SPEED %i", command->speed);
+            String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
+            sb.Append(buffer);
             break;
         case TITLE_SCRIPT_WAIT:
-            rwopsprintf(file, "WAIT %i", command->seconds);
-            rwopswritenewline(file);
-            break;
+            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Seconds);
+            sb.Append(buffer);
         case TITLE_SCRIPT_RESTART:
-            rwopsprintf(file, "RESTART");
+            sb.Append("RESTART");
             break;
         case TITLE_SCRIPT_END:
-            rwopsprintf(file, "END");
-            break;
+            sb.Append("END");
         }
-        rwopswritenewline(file);
+        sb.Append("\n");
     }
 
-    SDL_RWclose(file);
+    utf8 * result = sb.StealString();
+    return result;
 }
-*/

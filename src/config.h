@@ -327,6 +327,5 @@ bool config_find_or_browse_install_directory();
 
 void title_sequences_set_default();
 void title_sequences_load_presets();
-void title_sequence_save_preset_script(int preset);
 
 #endif
