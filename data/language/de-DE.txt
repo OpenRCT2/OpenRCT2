@@ -4290,6 +4290,10 @@ STR_5987    :Ordner konnte nicht erstellt werden
 STR_5988    :{SMALLFONT}{BLACK}Keine verbleibenden Landrechte zum Verkauf
 STR_5989    :{SMALLFONT}{BLACK}Keine verbleibenden Baurechte zum Verkauf
 STR_5990    :{SMALLFONT}{BLACK}Keine verbleibenden Land- oder{NEWLINE}Baurechte zum Verkauf
+STR_5991    :Kann Element nicht einfügen...
+STR_5992    :Das Limit der Kartenelemente wurde erreicht
+STR_5993    :{SMALLFONT}{BLACK}Ausgewähltes Element kopieren
+STR_5994    :{SMALLFONT}{BLACK}Kopiertes Element einfügen
 
 #############
 # Scenarios #
