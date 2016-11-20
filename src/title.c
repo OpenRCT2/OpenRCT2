@@ -298,6 +298,10 @@ static bool title_do_sequence_command(const TitleCommand * command)
 		break;
 	case TITLE_SCRIPT_LOAD:
 	{
+		if (gTitleScriptSkipTo != -1) {
+			break;
+		}
+
 		bool loadSuccess = false;
 		uint8 saveIndex = command->SaveIndex;
 		TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_loadedTitleSequence, saveIndex);
@@ -318,6 +322,10 @@ static bool title_do_sequence_command(const TitleCommand * command)
 	}
 	case TITLE_SCRIPT_LOADRCT1:
 	{
+		if (gTitleScriptSkipTo != -1) {
+			break;
+		}
+
 		source_desc sourceDesc;
 		if (!scenario_get_source_desc_by_id(command->SaveIndex, &sourceDesc) || sourceDesc.index == -1) {
 			log_error("Invalid scenario id.");
@@ -409,6 +417,9 @@ static void title_update_showcase()
 		} while (_scriptWaitCounter == 0);
 	}
 	_scriptWaitCounter--;
+	if (gTitleScriptSkipTo != -1) {
+		_scriptWaitCounter = 0;
+	}
 	_sequenceAttemptId = 0;
 }
 
@@ -418,7 +429,14 @@ void title_update()
 	title_handle_keyboard_input();
 
 	if (game_is_not_paused()) {
-		title_update_showcase();
+		if (gTitleScriptCommand == gTitleScriptSkipTo) {
+			gTitleScriptSkipTo = -1;
+			_scriptWaitCounter = 0;
+		}
+		do {
+			title_update_showcase();
+		} while (gTitleScriptCommand < gTitleScriptSkipTo);
+		gTitleScriptSkipTo = -1;
 
 		int numUpdates = 1;
 		if (gGameSpeed > 1) {

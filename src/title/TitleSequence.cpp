@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
-#include <SDL.h>
 #include <vector>
+#include <SDL.h>
+#include "../common.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileScanner.h"
