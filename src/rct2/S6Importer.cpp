@@ -366,7 +366,7 @@ extern "C"
      *
      *  rct2: 0x00675E1B
      */
-    int game_load_sv6(SDL_RWops * rw)
+    bool game_load_sv6(SDL_RWops * rw)
     {
         if (!sawyercoding_validate_checksum(rw))
         {

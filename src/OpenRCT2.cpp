@@ -39,7 +39,7 @@ extern "C"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct2/interop.h"
-    #include "title.h"
+    #include "title/TitleScreen.h"
     #include "version.h"
 }
 

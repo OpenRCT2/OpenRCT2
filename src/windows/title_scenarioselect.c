@@ -24,7 +24,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
-#include "../title.h"
 #include "../util/util.h"
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5

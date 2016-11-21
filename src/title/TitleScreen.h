@@ -14,26 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _TITLE_H_
-#define _TITLE_H_
+#pragma once
 
-#include <SDL.h>
-#include "drawing/drawing.h"
+#include "../drawing/drawing.h"
 
-extern bool gTitleHideVersionInfo;
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    extern bool gTitleHideVersionInfo;
 
-extern sint32 gTitleScriptCommand;
-extern uint8 gTitleScriptSave;
-extern sint32 gTitleScriptSkipTo;
-extern sint32 gTitleScriptSkipLoad;
-
-void title_load();
-void title_create_windows();
-void title_update();
-void title_skip_from_beginning();
-void title_script_get_line(SDL_RWops *file, char *parts);
-void title_refresh_sequence();
-void title_fix_location();
-void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
-
+    void title_load();
+    void title_create_windows();
+    void title_update();
+    void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
+#ifdef __cplusplus
+}
 #endif

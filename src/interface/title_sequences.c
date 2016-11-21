@@ -74,7 +74,6 @@ void title_sequence_change_preset(int preset)
 	gConfigInterface.current_title_sequence_preset = _strdup(configId);
 
 	gCurrentPreviewTitleSequence = preset;
-	title_refresh_sequence();
 	window_invalidate_all();
 }
 

@@ -37,7 +37,6 @@
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../sprites.h"
-#include "../title.h"
 #include "../title/TitleSequence.h"
 #include "../title/TitleSequenceManager.h"
 #include "dropdown.h"

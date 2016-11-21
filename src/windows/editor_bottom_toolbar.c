@@ -28,7 +28,6 @@
 #include "../interface/window.h"
 #include "../platform/platform.h"
 #include "../ride/track_data.h"
-#include "../title.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"

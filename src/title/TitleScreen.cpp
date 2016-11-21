@@ -1,0 +1,218 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include "../network/network.h"
+#include "../openrct2.h"
+#include "TitleScreen.h"
+#include "TitleSequence.h"
+#include "TitleSequenceManager.h"
+#include "TitleSequencePlayer.h"
+
+extern "C"
+{
+    #include "../audio/audio.h"
+    #include "../drawing/drawing.h"
+    #include "../game.h"
+    #include "../input.h"
+    #include "../interface/screenshot.h"
+    #include "../interface/title_sequences.h"
+    #include "../interface/viewport.h"
+    #include "../interface/window.h"
+    #include "../localisation/localisation.h"
+    #include "../peep/staff.h"
+    #include "../world/climate.h"
+    #include "../world/scenery.h"
+}
+
+extern "C"
+{
+    bool gTitleHideVersionInfo = false;
+}
+
+static sint32                   _sequenceAttemptId;
+static sint32                   _loadedTitleSequenceId = -1;
+static ITitleSequencePlayer *   _sequencePlayer = nullptr;
+
+static void TitleInitialise();
+static void TryLoadSequence();
+static void TryNextSequence();
+
+/**
+ *
+ *  rct2: 0x00678680
+ */
+static void TitleInitialise()
+{
+    if (_sequencePlayer == nullptr)
+    {
+        _sequencePlayer = CreateTitleSequencePlayer();
+    }
+    size_t seqId = title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+    if (seqId == SIZE_MAX)
+    {
+        seqId = title_sequence_manager_get_index_for_config_id("*OPENRCT2");
+        if (seqId == SIZE_MAX)
+        {
+            seqId = 0;
+        }
+    }
+    title_sequence_change_preset((int)seqId);
+    TryLoadSequence();
+}
+
+static void TryLoadSequence()
+{
+    if (_loadedTitleSequenceId != gCurrentPreviewTitleSequence)
+    {
+        if (_sequencePlayer->Begin(gCurrentPreviewTitleSequence))
+        {
+            _loadedTitleSequenceId = gCurrentPreviewTitleSequence;
+            gfx_invalidate_screen();
+        }
+    }
+}
+
+static void TryNextSequence()
+{
+    gCurrentPreviewTitleSequence = _sequenceAttemptId++;
+    if (_sequenceAttemptId >= (sint32)TitleSequenceManager::GetCount())
+    {
+        _sequenceAttemptId = 0;
+    }
+    TryLoadSequence();
+}
+
+extern "C"
+{
+    /**
+     *
+     *  rct2: 0x0068E8DA
+     */
+    void title_load()
+    {
+        log_verbose("loading title");
+
+        if (gGamePaused & GAME_PAUSED_NORMAL)
+            pause_toggle();
+
+        gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+
+#ifndef DISABLE_NETWORK
+        network_close();
+#endif
+        reset_park_entrances();
+        user_string_clear_all();
+        reset_sprite_list();
+        ride_init_all();
+        window_guest_list_init_vars_a();
+        staff_reset_modes();
+        map_init(150);
+        park_init();
+        date_reset();
+        climate_reset(CLIMATE_COOL_AND_WET);
+        scenery_set_default_placement_configuration();
+        window_new_ride_init_vars();
+        window_guest_list_init_vars_b();
+        window_staff_list_init_vars();
+        map_update_tile_pointers();
+        reset_sprite_spatial_index();
+        audio_stop_all_music_and_sounds();
+        viewport_init_all();
+        news_item_init_queue();
+        window_main_open();
+        title_create_windows();
+        TitleInitialise();
+        gfx_invalidate_screen();
+        audio_start_title_music();
+        gScreenAge = 0;
+
+        if (gOpenRCT2ShowChangelog) {
+            gOpenRCT2ShowChangelog = false;
+            window_changelog_open();
+        }
+
+        log_verbose("loading title finished");
+    }
+
+    /**
+     * Creates the windows shown on the title screen; New game, load game,
+     * tutorial, toolbox and exit.
+     *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
+     */
+    void title_create_windows()
+    {
+        window_title_menu_open();
+        window_title_exit_open();
+        window_title_options_open();
+        window_title_logo_open();
+        window_resize_gui(gScreenWidth, gScreenHeight);
+        gTitleHideVersionInfo = false;
+    }
+
+    void title_update()
+    {
+        screenshot_check();
+        title_handle_keyboard_input();
+
+        if (game_is_not_paused())
+        {
+            TryLoadSequence();
+            if (_sequencePlayer != nullptr && !_sequencePlayer->Update())
+            {
+                TryNextSequence();
+            }
+
+            sint32 numUpdates = 1;
+            if (gGameSpeed > 1) {
+                numUpdates = 1 << (gGameSpeed - 1);
+            }
+            for (sint32 i = 0; i < numUpdates; i++)
+            {
+                game_logic_update();
+            }
+            update_palette_effects();
+            // update_rain_animation();
+        }
+
+        gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
+
+        window_map_tooltip_update_visibility();
+        window_dispatch_update_all();
+
+        gSavedAge++;
+
+        game_handle_input();
+    }
+
+    void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y)
+    {
+        utf8 buffer[256];
+
+        // Write format codes
+        utf8 *ch = buffer;
+        ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+        ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+        ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+
+        // Write name and version information
+        openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
+
+        // Write platform information
+        snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
+    }
+}

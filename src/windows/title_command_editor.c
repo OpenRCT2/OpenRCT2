@@ -14,20 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
+#include "../interface/title_sequences.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../rct2.h"
 #include "../sprites.h"
-#include "../world/map.h"
-#include "../game.h"
-#include "../interface/themes.h"
-#include "../interface/title_sequences.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../title/TitleSequence.h"
 #include "../util/util.h"
+#include "../world/map.h"
 #include "dropdown.h"
 
 #if 0

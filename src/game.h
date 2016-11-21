@@ -170,7 +170,7 @@ void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);
-int game_load_sv6(SDL_RWops* rw);
+bool game_load_sv6(SDL_RWops* rw);
 int game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();

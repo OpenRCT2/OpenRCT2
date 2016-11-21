@@ -83,11 +83,11 @@ public:
             zip_file_t * zipFile = zip_fopen(_zip, path, 0);
             if (zipFile != nullptr)
             {
-                data = malloc(dataSize);
-                size_t readBytes = zip_fread(zipFile, data, dataSize);
+                data = Memory::Allocate<void>((size_t)dataSize);
+                uint64 readBytes = zip_fread(zipFile, data, dataSize);
                 if (readBytes != dataSize)
                 {
-                    free(data);
+                    Memory::Free(data);
                     data = nullptr;
                     dataSize = 0;
                 }
@@ -95,7 +95,7 @@ public:
             }
         }
 
-        if (outSize != nullptr) *outSize = dataSize;
+        if (outSize != nullptr) *outSize = (size_t)dataSize;
         return data;
     }
 

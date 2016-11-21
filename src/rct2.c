@@ -44,11 +44,11 @@
 #include "ride/track_design.h"
 #include "ride/TrackDesignRepository.h"
 #include "ScenarioRepository.h"
-#include "title.h"
+#include "title/TitleScreen.h"
 #include "util/util.h"
+#include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
-#include "world/climate.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
 

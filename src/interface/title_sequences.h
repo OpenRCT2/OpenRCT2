@@ -18,10 +18,10 @@
 #define _TITLE_SEQUENCES_H_
 
 #include "../common.h"
-#include "window.h"
 #include "../config.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../title/TitleSequence.h"
+#include "window.h"
 
 #define TITLE_SEQUENCE_DEFAULT_PRESETS 2
 

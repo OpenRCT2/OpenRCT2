@@ -191,7 +191,6 @@ static void platform_resize(int width, int height)
 		window_relocate_windows(dst_w, dst_h);
 	}
 
-	title_fix_location();
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly

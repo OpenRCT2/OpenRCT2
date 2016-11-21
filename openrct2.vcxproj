@@ -325,8 +325,10 @@
     <ClCompile Include="src\ride\water\water_coaster.c" />
     <ClCompile Include="src\scenario.c" />
     <ClCompile Include="src\ScenarioRepository.cpp" />
+    <ClCompile Include="src\title\TitleScreen.cpp" />
     <ClCompile Include="src\title\TitleSequence.cpp" />
     <ClCompile Include="src\title\TitleSequenceManager.cpp" />
+    <ClCompile Include="src\title\TitleSequencePlayer.cpp" />
     <ClCompile Include="src\windows\changelog.c" />
     <ClCompile Include="src\windows\multiplayer.c" />
     <ClCompile Include="src\windows\network_status.c" />
@@ -342,7 +344,6 @@
     <ClCompile Include="src\world\duck.c" />
     <ClCompile Include="src\world\money_effect.c" />
     <ClCompile Include="src\world\particle.c" />
-    <ClCompile Include="src\title.c" />
     <ClCompile Include="src\util\sawyercoding.c" />
     <ClCompile Include="src\util\util.c" />
     <ClCompile Include="src\version.c" />
@@ -574,8 +575,9 @@
     <ClInclude Include="src\sprites.h" />
     <ClInclude Include="src\title\TitleSequence.h" />
     <ClInclude Include="src\title\TitleSequenceManager.h" />
+    <ClInclude Include="src\title\TitleSequencePlayer.h" />
     <ClInclude Include="src\version.h" />
-    <ClInclude Include="src\title.h" />
+    <ClInclude Include="src\title\TitleScreen.h" />
     <ClInclude Include="src\util\sawyercoding.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\dropdown.h" />

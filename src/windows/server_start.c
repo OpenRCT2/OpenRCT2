@@ -21,7 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "error.h"
 
