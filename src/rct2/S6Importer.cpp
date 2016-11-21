@@ -352,6 +352,7 @@ void S6Importer::Import()
     }
     map_update_tile_pointers();
     game_convert_strings_to_utf8();
+    map_count_remaining_land_rights();
     if (FixIssues)
     {
         game_fix_save_vars();

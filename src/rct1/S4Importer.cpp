@@ -157,6 +157,7 @@ public:
         ImportSavedView();
 
         game_convert_strings_to_utf8();
+        map_count_remaining_land_rights();
     }
 
 private:
