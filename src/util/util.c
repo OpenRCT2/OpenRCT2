@@ -146,7 +146,7 @@ void path_end_with_separator(utf8 *path, size_t size) {
 	size_t length = strnlen(path, size);
 	if (length >= size - 1) return;
 
-	if (path[length - 1] != *PATH_SEPARATOR)
+	if ((length == 0) || (path[length - 1] != *PATH_SEPARATOR))
 		safe_strcat(path, PATH_SEPARATOR, size);
 }
 
