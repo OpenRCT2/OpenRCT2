@@ -4179,7 +4179,7 @@ STR_5875    :Renderengine:
 STR_5876    :{SMALLFONT}{BLACK}De engine die wordt gebruikt om het spel te renderen.
 STR_5877    :Software
 STR_5878    :Software (omgeleid via hardware)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimenteel)
 STR_5880    :Geselecteerd
 STR_5881    :Niet-geselecteerd
 STR_5882    :Eigen valuta

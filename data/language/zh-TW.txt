@@ -4187,8 +4187,8 @@ STR_5874    :{SMALLFONT}{BLACK}容許將任何軌道變成有鏈條裝置的軌�
 STR_5875    :渲染引擎:
 STR_5876    :{SMALLFONT}{BLACK}選擇使用於渲染遊戲的引擎.
 STR_5877    :軟件渲染
-STR_5878    :軟件渲染 (使用硬體顯示)
-STR_5879    :OpenGL
+STR_5878    :軟件渲染 (使用硬件渲染)
+STR_5879    :OpenGL (實驗性質)
 STR_5880    :只顯示已選擇的物件
 STR_5881    :只顯示未選擇的物件
 STR_5882    :自訂貨幣
@@ -4233,6 +4233,77 @@ STR_5920    :渲染天氣效果
 STR_5921    :{SMALLFONT}{BLACK}啟用後, 於雷暴天氣中的雨和灰濛濛的濾鏡會被渲染在畫面中.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}最多 {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}每列車最多為 {COMMA16} {STRINGID}
+STR_5924    :地面詳情
+STR_5925    :道路詳情
+STR_5926    :軌道詳情
+STR_5927    :景物詳情
+STR_5928    :入口詳情
+STR_5929    :圍欄詳情
+STR_5930    :巨型景物詳情
+STR_5931    :橫額詳情
+STR_5932    :已毀壞元素詳情
+STR_5933    :屬性
+STR_5934    :{WINDOW_COLOUR_2}地型素材: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}地型邊緣: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}土地擁有權: {BLACK}{STRINGID}
+STR_5937    :並未擁有亦並不可買
+STR_5938    :{WINDOW_COLOUR_2}水位: {BLACK}{COMMA16}
+STR_5939    :移除樂園邊界
+STR_5940    :還原樂園邊界
+STR_5941    :{WINDOW_COLOUR_2}地面高度:
+STR_5942    :{WINDOW_COLOUR_2}道路名稱: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}附加物品: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}附加物品: {BLACK}暫無
+STR_5945    :{WINDOW_COLOUR_2}已連接的邊緣:
+STR_5946    :{WINDOW_COLOUR_2}遊樂設施種類: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}遊樂設施編號: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}遊樂設施名稱: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}鏈條坡道
+STR_5950    :{WINDOW_COLOUR_2}將改變應用於整個軌道組件中
+STR_5951    :{WINDOW_COLOUR_2}軌道組件編號: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}次序數目: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}以底部高度排序目前網格上的地圖元素
+STR_5954    :{WINDOW_COLOUR_2}景物年齡: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrant放置: {BLACK}{STRINGID}
+STR_5956    :西南
+STR_5957    :西北
+STR_5958    :東北
+STR_5959    :東南
+STR_5960    :{WINDOW_COLOUR_2}Quadrant放置:
+STR_5961    :{WINDOW_COLOUR_2}入口編號: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}衝突檢測:
+STR_5963    :{WINDOW_COLOUR_2}已升起的角落:
+STR_5964    :{WINDOW_COLOUR_2}斜角
+STR_5965    :{WINDOW_COLOUR_2}入口類型: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}樂園入口部份: {BLACK}{STRINGID}
+STR_5967    :中間
+STR_5968    :左
+STR_5969    :右
+STR_5970    :{WINDOW_COLOUR_2}入口編號: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}出口編號: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}遊樂設施編號: {BLACK}{COMMA16}
+STR_5973    :與下一地圖元素並列
+STR_5974    :{SMALLFONT}{BLACK}將此元素的底部及清空高度與下一元素調整成一致. 此舉會讓於此網格上建造得更加容易.
+STR_5975    :坡道:
+STR_5976    :平坦
+STR_5977    :右邊向上
+STR_5978    :左邊向上
+STR_5979    :{WINDOW_COLOUR_2}圍欄類型: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}橫額文字: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}不是橫額
+STR_5982    :{WINDOW_COLOUR_2}巨型景物類型: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}巨型景物組件編號: {BLACK}{COMMA16}
+STR_5984    :被擋住的道路:
+STR_5985    :建立新文件夾
+STR_5986    :請輸入新文件夾的名字
+STR_5987    :無法建立新文件夾
+STR_5988    :{SMALLFONT}{BLACK}已經沒有可供購買的土地使用權
+STR_5989    :{SMALLFONT}{BLACK}已經沒有可供購買的建造權
+STR_5990    :{SMALLFONT}{BLACK}已經沒有可供購買的土地使用或建造權
+STR_5991    :無法貼上元素...
+STR_5992    :此地圖元素的數量已達上限
+STR_5993    :{SMALLFONT}{BLACK}複製所選元素
+STR_5994    :{SMALLFONT}{BLACK}貼上所選元素
 
 #############
 # Scenarios #
