@@ -53,7 +53,7 @@ rct_xyz16 gTrackPreviewMax;
 rct_xyz16 gTrackPreviewOrigin;
 
 uint8 byte_F4414E;
-uint8 byte_9D8150;
+bool byte_9D8150;
 static uint8 _trackDesignPlaceOperation;
 static uint8 byte_F44150;
 static money32 _trackDesignPlaceCost;
@@ -1396,7 +1396,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 		ride->track_colour_supports[i] = td6->track_support_colour[i];
 	}
 
-	byte_9D8150 |= 1;
+	byte_9D8150 = true;
 	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = gParkFlags;
 	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
@@ -1426,7 +1426,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 		}
 
 		_currentTrackPieceDirection = backup_rotation;
-		byte_9D8150 &= ~1;
+		byte_9D8150 = false;
 		*cost = resultCost;
 		*rideId = rideIndex;
 		return true;
@@ -1434,7 +1434,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 		_currentTrackPieceDirection = backup_rotation;
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
-		byte_9D8150 &= ~1;
+		byte_9D8150 = false;
 		return false;
 	}
 }

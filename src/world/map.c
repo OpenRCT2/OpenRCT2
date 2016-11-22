@@ -3051,12 +3051,12 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		return;
 	}
 
-	if (!(byte_9D8150 & 1) && (x > gMapSizeMaxXY || y > gMapSizeMaxXY)) {
+	if (!byte_9D8150 && (x > gMapSizeMaxXY || y > gMapSizeMaxXY)) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
-	rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
+	rct_scenery_entry* scenery_entry = get_small_scenery_entry(scenery_type);
 
 	if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 		if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
@@ -3095,7 +3095,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		return;
 	}
 
-	if(flags & GAME_COMMAND_FLAG_APPLY && !(flags & 0x40)){
+	if(flags & GAME_COMMAND_FLAG_APPLY && !(flags & GAME_COMMAND_FLAG_GHOST)){
 		footpath_remove_litter(x, y, targetHeight);
 		if(!gCheatsDisableClearanceChecks && (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS)) {
 			map_remove_walls_at(x, y, targetHeight, targetHeight + scenery_entry->small_scenery.height);
@@ -3104,8 +3104,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 
 	rct_map_element* surface_element = map_get_surface_element_at(x / 32, y / 32);
 
-	if(!gCheatsDisableClearanceChecks && (surface_element->properties.surface.terrain & 0x1F)){
-		int water_height = ((surface_element->properties.surface.terrain & 0x1F) * 16) - 1;
+	if(!gCheatsDisableClearanceChecks && (surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK)){
+		int water_height = ((surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16) - 1;
 		if(water_height > targetHeight){
 			gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 			*ebx = MONEY32_UNDEFINED;
@@ -3120,8 +3120,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 			return;
 		}
 
-		if(surface_element->properties.surface.terrain & 0x1F){
-			if(((surface_element->properties.surface.terrain & 0x1F) * 16) > targetHeight){
+		if(surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK){
+			if(((surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16) > targetHeight){
 				gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
@@ -3145,7 +3145,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		supportsRequired) {
 
 		if(!isOnWater){
-			if((surface_element->properties.surface.terrain & 0x1F) || 
+			if((surface_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) || 
 				(surface_element->base_height * 8) != targetHeight){
 
 				gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
@@ -3162,43 +3162,29 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 
 	int bp = quadrant;
 	int zLow = targetHeight / 8;
-	int zHigh = zLow + ((scenery_entry->small_scenery.height + 7) / 8);
-	int bl = 0xF;
+	int zHigh = zLow + ceil2(scenery_entry->small_scenery.height, 8) / 8;
+	uint8 collisionQuadrants = 0xF;
+	uint8 unk_bl = 0;
 	if(!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
-		bp ^= 2;
-		bl = 1;
-		bl <<= bp;
+		collisionQuadrants = 1 << (quadrant ^ 2);
 	}
 	if(!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG24)){
 		if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9 && scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE){
 			if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG25){
-				bp ^= 2;
-				bp += rotation;
-				bp &= 3;
-				bl = 0xBB;
-				bl = rol8(bl, bp);
-				bl &= 0xF;
+				collisionQuadrants = 0xF & rol8(0xBB, ((quadrant ^ 2) + rotation) & 3);
 			}else{
-				bp += rotation;
-				bp &= 1;
-				bl = 0xA;
-				bl >>= bp;
+				collisionQuadrants = 0xA >> ((quadrant + rotation) & 1);
 			}
 		}
 	}else{
-		bp ^= 2;
-		bp += rotation;
-		bp &= 3;
-		bl = 0x33;
-		bl = rol8(bl, bp);
-		bl &= 0xF;
+		collisionQuadrants = 0xF & rol8(0x33, ((quadrant ^ 2) + rotation) & 3);
 	}
 	if(!supportsRequired){
-		bl |= 0xF0;
+		unk_bl |= 0xF0;
 	}
 
 	if (!gCheatsDisableClearanceChecks &&
-		!map_can_construct_with_clear_at(x, y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &clearCost)) {
+		!map_can_construct_with_clear_at(x, y, zLow, zHigh, &map_place_scenery_clear_func, unk_bl | collisionQuadrants, flags, &clearCost)) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -3222,7 +3208,6 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
-	int collisionQuadrants = (bl & 0xf);
 	rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
 	assert(new_map_element != NULL);
 	gSceneryMapElement = new_map_element;
@@ -3504,7 +3489,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-		!(flags & (1 << 7)) && !gCheatsSandboxMode){
+		!(flags & GAME_COMMAND_FLAG_7) && !gCheatsSandboxMode){
 
 		if (position.z == 0){
 			if (!map_is_location_in_park(position.x, position.y)){
@@ -3654,7 +3639,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 	clearanceHeight += fence->wall.height;
 
-	if (!(flags & (1 << 7)) && !gCheatsDisableClearanceChecks){
+	if (!(flags & GAME_COMMAND_FLAG_7) && !gCheatsDisableClearanceChecks){
 		if (!map_place_fence_check_obstruction(fence, position.x, position.y, position.z / 8, clearanceHeight, edge)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
