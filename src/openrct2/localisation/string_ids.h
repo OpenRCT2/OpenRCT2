@@ -3687,6 +3687,12 @@ enum {
 	STR_SERVER_DESCRIPTION = 6031,
 	STR_SERVER_GREETING = 6032,
 
+	STR_PATH_TO_RCT1 = 6033,
+	STR_STRING_TOOLTIP = 6034,
+	STR_PATH_TO_RCT1_BROWSER = 6035,
+	STR_PATH_TO_RCT1_CLEAR_TIP = 6036,
+	STR_PATH_TO_RCT1_WRONG_ERROR = 6037,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
