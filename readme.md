@@ -52,7 +52,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 ### Windows:
 - Vista / 7 / 8 / 10
-- Visual Studio 2015 Update 2 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
+- Visual Studio 2015 Update 2+ (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
 - [NSIS](http://nsis.sourceforge.net/) (for deployment only)
 
@@ -79,14 +79,15 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new Developer Command Prompt for VS2015, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
-3. Run `msbuild openrct2.proj /t:build`.
+3. Run `msbuild openrct2.proj /t:build /t:platform=x64`.
 
 Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`.
 
 Other examples:
 ```
+set platform=x64
 msbuild openrct2.proj /t:clean
-msbuild openrct2.proj /t:rebuild /p:configuration=release /p:platform=x64
+msbuild openrct2.proj /t:rebuild /p:configuration=release
 msbuild openrct2.proj /t:g2
 msbuild openrct2.proj /t:PublishPortable
 ```
