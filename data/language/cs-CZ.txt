@@ -4187,7 +4187,7 @@ STR_5875    :Vykreslovací engine:
 STR_5876    :{SMALLFONT}{BLACK}Engine, který bude použit pro vykreslování hry.
 STR_5877    :Software
 STR_5878    :Software (hardwarové zobrazování)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimentální podpora)
 STR_5880    :Pouze vybrané
 STR_5881    :Pouze nevybrané
 STR_5882    :Vlastní měna
