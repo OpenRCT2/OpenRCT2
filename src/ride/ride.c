@@ -5943,10 +5943,21 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 			if (rideEntry->shop_item_secondary == shopItem) {
 				return ride->price_secondary;
 			}
+			if (shop_item_is_photo(shopItem) && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)) {
+				return ride->price_secondary;
+			}
 		}
 	}
 
 	return MONEY32_UNDEFINED;
+}
+
+bool shop_item_is_photo(int shopItem)
+{
+	return (
+		shopItem == SHOP_ITEM_PHOTO || shopItem == SHOP_ITEM_PHOTO2 ||
+		shopItem == SHOP_ITEM_PHOTO3 || shopItem == SHOP_ITEM_PHOTO4
+	);
 }
 
 bool shop_item_has_common_price(int shopItem)
@@ -6175,6 +6186,14 @@ foundRideEntry:
 				if (price != MONEY32_UNDEFINED) {
 					ride->price_secondary = (money16)price;
 				}
+			}
+		}
+
+		// Set the on-ride photo price. (Whether the ride has one or not.)
+		if (shop_item_has_common_price(SHOP_ITEM_PHOTO)) {
+			money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
+			if (price != MONEY32_UNDEFINED) {
+				ride->price_secondary = (money16)price;
 			}
 		}
 	}
@@ -6725,8 +6744,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 			// If the shop item is the same or an on-ride photo
 			if (rideEntry->shop_item_secondary == shop_item ||
-				(rideEntry->shop_item_secondary == SHOP_ITEM_NONE &&
-				(shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4))) {
+				(rideEntry->shop_item_secondary == SHOP_ITEM_NONE && shop_item_is_photo(shop_item))) {
 
 				ride->price_secondary = price;
 				window_invalidate_by_number(WC_RIDE, rideId);
