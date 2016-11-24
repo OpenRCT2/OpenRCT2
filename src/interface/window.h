@@ -605,6 +605,7 @@ void window_zoom_out(rct_window *w);
 
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
 void window_text_input_key(rct_window* w, int key);
+void window_text_input_clear(rct_window* w);
 
 void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom);
 void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);

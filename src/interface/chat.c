@@ -38,7 +38,6 @@ int _chatHeight;
 
 static const char* chat_history_get(unsigned int index);
 static uint32 chat_history_get_time(unsigned int index);
-static void chat_clear_input();
 
 void chat_open()
 {
@@ -205,7 +204,7 @@ static uint32 chat_history_get_time(unsigned int index)
 	return _chatHistoryTime[(_chatHistoryIndex + CHAT_HISTORY_SIZE - index - 1) % CHAT_HISTORY_SIZE];
 }
 
-static void chat_clear_input()
+void chat_clear_input()
 {
 	_chatCurrentLine[0] = 0;
 }

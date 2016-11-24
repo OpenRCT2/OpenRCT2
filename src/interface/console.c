@@ -67,7 +67,6 @@ static int _consoleHistoryCount = 0;
 static void console_invalidate();
 static void console_write_prompt();
 static void console_update_scroll();
-static void console_clear_input();
 static void console_history_add(const utf8 *src);
 static void console_write_all_commands();
 static int console_parse_int(const utf8 *src, bool *valid);
@@ -404,7 +403,7 @@ void console_refresh_caret()
 	_consoleCaretTicks = 0;
 }
 
-static void console_clear_input()
+void console_clear_input()
 {
 	_consoleCurrentLine[0] = 0;
 	if (gConsoleOpen) {

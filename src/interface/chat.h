@@ -37,6 +37,7 @@ void chat_draw(rct_drawpixelinfo * dpi);
 
 void chat_history_add(const char *src);
 void chat_input(int c);
+void chat_clear_input();
 
 int chat_string_wrapped_get_height(void *args, int width);
 int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, int width);

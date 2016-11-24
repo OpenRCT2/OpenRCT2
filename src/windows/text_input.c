@@ -354,6 +354,14 @@ void window_text_input_key(rct_window* w, int key)
 	window_invalidate(w);
 }
 
+void window_text_input_clear(rct_window *w)
+{
+	memset(text_input, 0, _maxInputLength);
+        gTextInputCursorPosition = 0;
+
+	window_invalidate(w);
+}
+
 void window_text_input_update7(rct_window *w)
 {
 	rct_window* calling_w = window_find_by_number(calling_class, calling_number);

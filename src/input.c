@@ -1497,8 +1497,12 @@ void game_handle_keyboard_input()
 
 	// Handle key input
 	while (!gOpenRCT2Headless && (key = get_next_key()) != 0) {
+                bool mod_ctrl, clear_input;
 		if (key == 255)
 			continue;
+
+                mod_ctrl = gKeysState[SDL_SCANCODE_LCTRL] || gKeysState[SDL_SCANCODE_RCTRL];
+                clear_input = (key == SDL_SCANCODE_BACKSPACE) && mod_ctrl;
 
 		// Reserve backtick for console
 		if (key == SDL_SCANCODE_GRAVE) {
@@ -1508,10 +1512,16 @@ void game_handle_keyboard_input()
 			}
 			continue;
 		} else if (gConsoleOpen) {
-			console_input(key);
+                        if (clear_input)
+                            console_clear_input();
+                        else
+                            console_input(key);
 			continue;
 		} else if (gChatOpen) {
-			chat_input(key);
+                        if (clear_input)
+                            chat_clear_input();
+                        else
+                            chat_input(key);
 			continue;
 		}
 
@@ -1523,7 +1533,10 @@ void game_handle_keyboard_input()
 		} else {
 			w = window_find_by_class(WC_TEXTINPUT);
 			if (w != NULL) {
-				window_text_input_key(w, key);
+                            if (clear_input) {
+                                window_text_input_clear(w);
+                            } else
+                                window_text_input_key(w, key);
 			} else if (!gUsingWidgetTextBox) {
 				keyboard_shortcut_handle(key);
 			}

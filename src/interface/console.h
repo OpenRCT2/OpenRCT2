@@ -39,6 +39,7 @@ void console_execute(const utf8 *src);
 void console_execute_silent(const utf8 *src);
 void console_clear();
 void console_clear_line();
+void console_clear_input();
 void console_refresh_caret();
 void console_scroll(int delta);
 
