@@ -30,6 +30,8 @@
 	#define OPENRCT2_ARCHITECTURE		"AArch64"
 #elif defined(__arm__) || defined(_M_ARM)
 	#define OPENRCT2_ARCHITECTURE		"ARMv7"
+#elif defined(__powerpc__) || defined(_M_PPC)
+	#define OPENRCT2_ARCHITECTURE		"PowerPC"
 #endif
 
 #ifndef OPENRCT2_ARCHITECTURE
