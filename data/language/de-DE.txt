@@ -4178,7 +4178,7 @@ STR_5875    :Grafikschnittstelle:
 STR_5876    :{SMALLFONT}{BLACK}Die Grafikschnittstelle, die zur Darstellung{NEWLINE}des Spiels verwendet wird
 STR_5877    :Software
 STR_5878    :Software (Anzeige durch Hardware)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimentell)
 STR_5880    :Ausgewählte
 STR_5881    :Nicht ausgewählte
 STR_5882    :Benutzerdefinierte Währung

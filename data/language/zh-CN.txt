@@ -1506,51 +1506,51 @@ STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
 STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
 STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
 STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These chips from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This candyfloss from {STRINGID} is really good value{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}我累了{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}我饿了{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}我渴了{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}我需要去厕所{ENDQUOTES}
+STR_1503    :{SMALLFONT}{OPENQUOTES}我找不到 {STRINGID}{ENDQUOTES}
+STR_1504    :{SMALLFONT}{OPENQUOTES}我没有那么多钱去 {STRINGID}{ENDQUOTES}
+STR_1505    :{SMALLFONT}{OPENQUOTES}我不去 {STRINGID} 因为在下雨{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}这里的垃圾真的很糟糕{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}我找不到乐园的出口{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}我想下车 {STRINGID}{ENDQUOTES}
+STR_1509    :{SMALLFONT}{OPENQUOTES}我想离开 {STRINGID}{ENDQUOTES}
+STR_1510    :{SMALLFONT}{OPENQUOTES}我不想去{STRINGID} - 它不安全{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}这条路是令人厌恶的{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}这里太拥挤了{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}这里的损坏是非常糟糕的{ENDQUOTES}
+STR_1514    :{SMALLFONT}{OPENQUOTES}壮丽的景色！{ENDQUOTES}
+STR_1515    :{SMALLFONT}{OPENQUOTES}这个公园真的很干净{ENDQUOTES}
+STR_1516    :{SMALLFONT}{OPENQUOTES}跳跃喷泉太好了{ENDQUOTES}
+STR_1517    :{SMALLFONT}{OPENQUOTES}这里的音乐很好{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的热气球真是便宜{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的可爱的玩具真是便宜{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的乐园地图真是便宜{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的在乘坐时的照片真是便宜{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的伞真是便宜{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的饮料真是便宜{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的汉堡真是便宜{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的薯条真是便宜{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的冰激凌真是便宜{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的棉花糖真是便宜{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的披萨真是便宜{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This toffee apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This doughnut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的爆米花真是便宜{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的热狗真是便宜{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的触手真是便宜{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的帽子真是便宜{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的太妃糖苹果真是便宜{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的T恤真是便宜{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的甜甜圈真是便宜{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的咖啡真是便宜{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的炸鸡真是便宜{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}这个{STRINGID}的柠檬水真是便宜{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -1572,19 +1572,19 @@ STR_1561    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买�
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份披萨{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a toffee apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a doughnut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份爆米花{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个热狗{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份触手{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个帽子{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个太妃糖苹果{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一件T恤{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份甜甜圈{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯咖啡{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份炸鸡{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯柠檬水{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
@@ -1643,7 +1643,7 @@ STR_1632    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买�
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份烤香肠{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1655,9 +1655,9 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
+STR_1648    :{SMALLFONT}{OPENQUOTES}救命! 放我下来!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}我的现金不够了!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}喔!一个新的设施正在建造{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
@@ -2396,14 +2396,14 @@ STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}你的目标
 STR_2385    :{BLACK}None
-STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
-STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2386    :{BLACK}在 {MONTHYEAR} 之前乐园内至少有 {COMMA16} 游客, 并且乐园评分不低于 600
+STR_2387    :{BLACK}在 {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR} 之前乐园价值不低于 {POP16}{POP16}{CURRENCY}
 STR_2388    :{BLACK}Have Fun!
 STR_2389    :{BLACK}Build the best {STRINGID} you can!
-STR_2390    :{BLACK}To have 10 different types of roller coasters operating in your park, each with an excitement value of at least 6.00
-STR_2391    :{BLACK}To have at least {COMMA16} guests in your park. You must not let the park rating drop below 700 at any time!
-STR_2392    :{BLACK}To achieve a monthly income from ride tickets of at least {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}To have 10 different types of roller coasters operating in your park, each with a minimum length of {LENGTH}, and an excitement rating of at least 7.00
+STR_2390    :{BLACK}在你的乐园中运营10种类型的过山车, 并且每一个的兴奋度不低于 6.00
+STR_2391    :{BLACK}乐园内至少有 {COMMA16} 游客，并且在任何时候你都不能让公园评分低于700 ！
+STR_2392    :{BLACK}每个月的门票收入至少 {POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}在你的乐园中运营10种类型的过山车, 每一个的长度至少 {LENGTH}, 并且每一个的兴奋度不低于 7.00
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
@@ -2767,9 +2767,9 @@ STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
 STR_2752    :Clear grass
 STR_2753    :修剪好的草地
-STR_2754    :Water plants
-STR_2755    :Fix vandalism
-STR_2756    :Remove litter
+STR_2754    :浇灌植物
+STR_2755    :修复路面设施破损
+STR_2756    :去除路面垃圾
 STR_2757    :<not used anymore>
 STR_2758    :<not used anymore>
 STR_2759    :Zero Clearance
@@ -2779,7 +2779,7 @@ STR_2762    :<not used anymore>
 STR_2763    :???
 STR_2764    :<not used anymore>
 STR_2765    :Large Tram
-STR_2766    :Win scenario
+STR_2766    :完成剧情目标
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :开放游乐园
@@ -2800,18 +2800,18 @@ STR_2780    :额外的查看窗口
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
-STR_2784    :Change keyboard shortcut
+STR_2784    :变更快捷键
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
 STR_2790    :Enter name into scenario chart
-STR_2791    :Enter name
+STR_2791    :输入名字
 STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
-STR_2795    :Sort
+STR_2795    :排序
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :当鼠标位于屏幕边缘时滚动视图
 STR_2798    :{SMALLFONT}{BLACK}当鼠标位于屏幕边缘时滚动视图
@@ -2819,8 +2819,8 @@ STR_2799    :{SMALLFONT}{BLACK}查看或改变控制按键分配
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
 STR_2802    :地图
-STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
-STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
+STR_2803    :{SMALLFONT}{BLACK}高亮显示游客
+STR_2804    :{SMALLFONT}{BLACK}高亮显示雇员
 STR_2805    :{SMALLFONT}{BLACK}显示游乐园地图
 STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
@@ -2865,10 +2865,10 @@ STR_2845    :{TOPAZ}你的游乐园获得了'拥有最大胆色彩搭配乐园�
 STR_2846    :{TOPAZ}你的游乐园获得了'拥有最令人迷失布局乐园奖'!
 STR_2847    :{TOPAZ}你的游乐园获得了'拥有最温和游乐设施乐园奖'!
 STR_2848    :{WINDOW_COLOUR_2}No recent awards
-STR_2849    :New scenario installed successfully
-STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
-STR_2852    :Track design already installed
+STR_2849    :新的剧情副本安装完毕
+STR_2850    :新的轨道设计安装完毕
+STR_2851    :剧情副本已经安装过了
+STR_2852    :轨道设计已经安装过了
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
@@ -3622,18 +3622,18 @@ STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小型景观
 STR_5273    :{SMALLFONT}{BLACK}大型景观
 STR_5274    :{SMALLFONT}{BLACK}道路
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
-STR_5278    :Sandbox mode
-STR_5279    :Sandbox mode off
+STR_5275    :搜索物件
+STR_5276    :输入名称以搜索物件
+STR_5277    :清除
+STR_5278    :沙盒模式
+STR_5279    :关闭沙盒模式
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
 STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
-STR_5285    :EXPLODE!!!
-STR_5286    :{SMALLFONT}{BLACK}Makes some guests explode
+STR_5285    :爆炸!!!
+STR_5286    :{SMALLFONT}{BLACK}让一些游客爆炸
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
@@ -3697,30 +3697,30 @@ STR_5346    :Guest cheats
 STR_5347    :Park cheats
 STR_5348    :Ride cheats
 STR_5349    :{SMALLFONT}{BLACK}All Rides
-STR_5350    :Max
-STR_5351    :Min
-STR_5352    :{BLACK}Happiness:
-STR_5353    :{BLACK}Energy:
-STR_5354    :{BLACK}Hunger:
-STR_5355    :{BLACK}Thirst:
-STR_5356    :{BLACK}Nausea:
-STR_5357    :{BLACK}Nausea tolerance:
-STR_5358    :{BLACK}Bathroom:
-STR_5359    :Remove guests
-STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
-STR_5361    :Give all guests:
-STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
-STR_5363    :More than 1
-STR_5364    :Less than 15
-STR_5365    :{BLACK}Staff speed:
-STR_5366    :Normal
-STR_5367    :Fast
-STR_5368    :Reset crash status
-STR_5369    :Park parameters...
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
+STR_5350    :最大
+STR_5351    :最小
+STR_5352    :{BLACK}兴奋度:
+STR_5353    :{BLACK}活力度:
+STR_5354    :{BLACK}饥饿度:
+STR_5355    :{BLACK}口渴度:
+STR_5356    :{BLACK}恶心度:
+STR_5357    :{BLACK}恶心耐受度:
+STR_5358    :{BLACK}如厕度:
+STR_5359    :移除游客
+STR_5360    :{SMALLFONT}{BLACK}移除地图上的所有游客
+STR_5361    :给所有游客:
+STR_5362    :{BLACK}设置所有客人的首选乘坐强度:
+STR_5363    :大于 1
+STR_5364    :小于 15
+STR_5365    :{BLACK}雇员速度:
+STR_5366    :正常
+STR_5367    :快速
+STR_5368    :复位故障状态
+STR_5369    :乐园参数...
+STR_5370    :{SMALLFONT}{BLACK}点击修改乐园参数{NEWLINE}例如关于限制，生成游客{NEWLINE}及金钱的选项。
+STR_5371    :选取对象
 STR_5372    :拖拽时反转鼠标右键
-STR_5373    :Name {STRINGID}
+STR_5373    :名称 {STRINGID}
 STR_5374    :日期 {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
@@ -3799,21 +3799,21 @@ STR_5448    :Ride / Vehicle {STRINGID}
 STR_5449    :减慢游戏速度
 STR_5450    :加快游戏速度
 STR_5451    :打开作弊窗口
-STR_5452    :Toggle visibility of toolbars
-STR_5453    :Select another ride
-STR_5454    :去除帧数上限
-STR_5455    :Enable sandbox mode
-STR_5456    :Disable clearance checks
-STR_5457    :Disable support limits
-STR_5458    :Rotate clockwise
-STR_5459    :Rotate anti-clockwise
-STR_5460    :Rotate view anti-clockwise
-STR_5461    :Set guests' parameters
+STR_5452    :调整工具栏的可视度
+STR_5453    :选择另一类游乐设施
+STR_5454    :去除FPS上限
+STR_5455    :启用沙盒模式
+STR_5456    :去除阻碍检查
+STR_5457    :去除支撑限制
+STR_5458    :顺时计旋转
+STR_5459    :逆时计旋转
+STR_5460    :逆时针旋转检视范围
+STR_5461    :设置游客的属性
 STR_5462    :{CURRENCY}
-STR_5463    :Goal: Have fun!
-STR_5464    :General
-STR_5465    :Climate
-STR_5466    :Staff
+STR_5463    :目标：尽情玩吧！
+STR_5464    :一般
+STR_5465    :气候
+STR_5466    :雇员
 STR_5467    :ALT +
 STR_5468    :最近消息
 STR_5469    :向上滚动地图
@@ -3828,31 +3828,31 @@ STR_5478    :控制
 STR_5479    :工具条
 STR_5480    :显示工具条按钮:
 STR_5481    :主题
-STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
-STR_5483    :{BLACK}({COMMA16} weeks remaining)
-STR_5484    :{BLACK}({COMMA16} week remaining)
+STR_5482    :{WINDOW_COLOUR_2}上次检查时间: {BLACK} 1分钟前
+STR_5483    :{BLACK}(还剩{COMMA16}周结束)
+STR_5484    :{BLACK}(还剩{COMMA16}周结束)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance (OpenRCT2 only!)
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5487    :{SMALLFONT}{BLACK}显示最近消息
+STR_5488    :隐藏入口(只适用于OpenRCT2！)
+STR_5489    :{SMALLFONT}{BLACK}只显示追踪中的游客
 STR_5490    :游戏失去焦点时静音
-STR_5491    :Inventions list
-STR_5492    :Scenario options
-STR_5493    :Send Message
+STR_5491    :研发列表
+STR_5492    :剧情选项
+STR_5493    :发送信息
 STR_5494    :<not used anymore>
-STR_5495    :Player List
-STR_5496    :Player:
-STR_5497    :Ping:
-STR_5498    :Server List
-STR_5499    :Player Name:
-STR_5500    :Add Server
-STR_5501    :Start Server
-STR_5502    :Multiplayer
-STR_5503    :Enter hostname or IP address:
-STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
-STR_5505    :Unable to connect to server.
-STR_5506    :Guests ignore intensities
+STR_5495    :玩家列表
+STR_5496    :玩家:
+STR_5497    :延迟值(Ping):
+STR_5498    :服务器列表
+STR_5499    :玩家名称:
+STR_5500    :新增服务器
+STR_5501    :开设服务器
+STR_5502    :多人联机模式
+STR_5503    :请输入主机名称或IP地址:
+STR_5504    :{SMALLFONT}{BLACK}显示多人联机状态
+STR_5505    :无法连接至服务器.
+STR_5506    :游客忽略强烈程度
 STR_5507    :清洁工默认会修剪草皮
 STR_5508    :允许读取校验失败的文件
 STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
@@ -3860,7 +3860,7 @@ STR_5510    :默认音频设备
 STR_5511    :(UNKNOWN)
 STR_5512    :另存游戏
 STR_5513    :(快速)保存游戏
-STR_5514    :Disable vandalism
+STR_5514    :禁止故意破坏
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
 STR_5516    :{SMALLFONT}{BLACK}黑色
 STR_5517    :{SMALLFONT}{BLACK}灰色
@@ -3900,18 +3900,18 @@ STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :当Steam overlay打开时暂停游戏
-STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
-STR_5555    :Show vehicles from other track types
-STR_5556    :{SMALLFONT}{BLACK}Kick player
-STR_5557    :不同步时依然保持连接 (多人游戏)
-STR_5558    :A restart is required for this setting to take effect
-STR_5559    :10 min. inspections
-STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
-STR_5561    :Failed to load language
-STR_5562    :WARNING!
-STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564    :Insert Corrupt Element
-STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5554    :{SMALLFONT}{BLACK}启用山丘工具
+STR_5555    :显示来自其他类型轨道的车辆种类
+STR_5556    :{SMALLFONT}{BLACK}踢除玩家
+STR_5557    :多人游戏不同步时依然保持联机
+STR_5558    :此设定会于重启游戏后生效
+STR_5559    :检查时距为10分钟
+STR_5560    :将所有游乐设施的检查时距设定为'每10分钟'
+STR_5561    :加载语言失败
+STR_5562    :警告！
+STR_5563    :此功能暂未稳定地使用，请多加留意.
+STR_5564    :插入已损坏元素
+STR_5565    :{SMALLFONT}{BLACK}在一个网格的最上插入一个已损坏的地图元素.此插入会隐藏其他元素.
 STR_5566    :Password:
 STR_5567    :Advertise
 STR_5568    :Password Required
@@ -3931,32 +3931,32 @@ STR_5581    :显示帧数
 STR_5582    :限制鼠标指针仅在窗口内移动
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5585    :{SMALLFONT}{BLACK}移除游乐设施的运行限制，例如允许链条上拉速度高达{VELOCITY}
 STR_5586    :自动开放商店和摊位
 STR_5587    :{SMALLFONT}{BLACK}商店和摊位将在建造好后自动开放
 STR_5588    :{SMALLFONT}{BLACK}与其他玩家一起玩
-STR_5589    :Notification Settings
-STR_5590    :Park awards
-STR_5591    :Marketing campaign has finished
-STR_5592    :Park warnings
-STR_5593    :Park rating warnings
-STR_5594    :Ride has broken down
-STR_5595    :Ride has crashed
-STR_5596    :Ride warnings
-STR_5597    :Ride / scenery researched
-STR_5598    :Guest warnings
-STR_5599    :Guest is lost
-STR_5600    :Guest has left the park
-STR_5601    :Guest is queuing for ride
-STR_5602    :Guest is on ride
-STR_5603    :Guest has left ride
-STR_5604    :Guest has bought item
-STR_5605    :Guest has used facility
-STR_5606    :Guest has died
-STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5589    :消息选项
+STR_5590    :乐园奖项
+STR_5591    :推广计划已完结
+STR_5592    :有关乐园的警告
+STR_5593    :有关乐园评价的警告
+STR_5594    :游乐设施发生故障
+STR_5595    :游乐设施毁坏了
+STR_5596    :有关游乐设施的警告
+STR_5597    :研发好的游乐设施，商店或景物
+STR_5598    :有关游客的警告
+STR_5599    :游客迷路了
+STR_5600    :游客已离开乐园
+STR_5601    :游客正在排队游玩某个游乐设施
+STR_5602    :游客已乘上游乐设施
+STR_5603    :游客已离开游乐设施
+STR_5604    :游客已购买物品
+STR_5605    :游客已使用设施
+STR_5606    :游客已死亡
+STR_5607    :{SMALLFONT}{BLACK}强制移除选中的地图元素。
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5610    :{SMALLFONT}{BLACK}移除选中的地图元素. 使用时请注意. 因为强制移除地图元素并不会对游戏中的现金做成影响.
 STR_5611    :G
 STR_5612    :{SMALLFONT}{BLACK}Ghost flag
 STR_5613    :B
@@ -4066,7 +4066,7 @@ STR_5747    :已断线: {STRING}
 STR_5748    :已被踢出
 STR_5749    :请离开当前服务器!
 STR_5750    :连接已关闭
-STR_5751    :No Data
+STR_5751    :接收不到任何数据
 STR_5752    :{OUTLINE}{RED}{STRING} 已离开游戏
 STR_5753    :{OUTLINE}{RED}{STRING} 已离开游戏 ({STRING})
 STR_5754    :玩家命名错误
@@ -4104,13 +4104,13 @@ STR_5785    :不能重命名组...
 STR_5786    :不正确的组名称
 STR_5787    :{COMMA32} 玩家在线
 STR_5788    :默认检查的时间间隔:
-STR_5789    :禁用闪电效果
-STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5789    :禁用光影效果
+STR_5790    :{SMALLFONT}{BLACK}切换RCT1式的收费{NEWLINE}(例如同时收取游乐设施及入园门票费用)
+STR_5791    :{SMALLFONT}{BLACK}{SMALLFONT}{BLACK}设定所有游乐设施的可靠度为100%{NEWLINE}并重设他们的落成年份为“今年”
 STR_5792    :{SMALLFONT}{BLACK}修理所有已有故障的游乐设施
-STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
-STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
-STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
+STR_5793    :{SMALLFONT}{BLACK}重设指定游乐设施的故障记录，{NEWLINE}令游客不觉得该设施不安全
+STR_5794    :{SMALLFONT}{BLACK}此密技移除某些剧情禁止修改{NEWLINE}某些已预先建设好的游乐设施的限制
+STR_5795    :{SMALLFONT}{BLACK}游客会乘坐所有乐园内的游乐设施{NEWLINE}即使它们的刺激度极端地高
 STR_5796    :{SMALLFONT}{BLACK}强制开发或关闭游乐园
 STR_5797    :{SMALLFONT}{BLACK}禁止天气变化并{NEWLINE}固定于选择的天气
 STR_5798    :{SMALLFONT}{BLACK}暂停时允许建造
@@ -4130,7 +4130,6 @@ STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}�
 STR_5812    :显示多人模式窗口
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
-
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
 STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
@@ -4201,7 +4200,7 @@ STR_5881    :只显示未被选中的物体
 STR_5882    :自定义货币
 STR_5883    :自定义货币选项
 STR_5884    :{WINDOW_COLOUR_2}汇率: 
-STR_5885    :{WINDOW_COLOUR_2}等价于英镑(£){COMMA32}
+STR_5885    :{WINDOW_COLOUR_2}等价于英镑(￡){COMMA32}
 STR_5886    :{WINDOW_COLOUR_2}货币符号:
 STR_5887    :前缀
 STR_5888    :后缀
@@ -4236,6 +4235,81 @@ STR_5916    :{COMMA16}位玩家
 STR_5917    :{COMMA16}位玩家
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :渲染天气效果
+STR_5921    :{SMALLFONT}{BLACK}启用后，于雷暴天气中的雨和灰蒙蒙的滤镜会被渲染在画面中.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}最多{STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}每列车最多为{COMMA16} {STRINGID}
+STR_5924    :地面详情
+STR_5925    :道路详情
+STR_5926    :轨道详情
+STR_5927    :景物详情
+STR_5928    :入口详情
+STR_5929    :围栏详情
+STR_5930    :巨型景物详情
+STR_5931    :条幅详情
+STR_5932    :已毁坏元素详情
+STR_5933    :属性
+STR_5934    :{WINDOW_COLOUR_2}地型素材:{BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}地型边缘:{BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}土地拥有权:{BLACK}{STRINGID}
+STR_5937    :未拥有且不可购买
+STR_5938    :{WINDOW_COLOUR_2}水位:{BLACK}{COMMA16}
+STR_5939    :移除乐园边界
+STR_5940    :还原乐园边界
+STR_5941    :{WINDOW_COLOUR_2}地面高度:
+STR_5942    :{WINDOW_COLOUR_2}道路名称:{BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}附加物品:{BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}附加物品:{BLACK}暂无
+STR_5945    :{WINDOW_COLOUR_2}已连接的边缘:
+STR_5946    :{WINDOW_COLOUR_2}游乐设施种类:{BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}游乐设施ID:{BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}游乐设施名称:{BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}链条坡道
+STR_5950    :{WINDOW_COLOUR_2}将改变应用于整个轨道组件中
+STR_5951    :{WINDOW_COLOUR_2}轨道组件ID:{BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}编号:{BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}以底部高度排序目前网格上的地图元素
+STR_5954    :{WINDOW_COLOUR_2}景物年龄:{BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}四角放置:{BLACK}{STRINGID}
+STR_5956    :西南
+STR_5957    :西北
+STR_5958    :东北
+STR_5959    :东南
+STR_5960    :{WINDOW_COLOUR_2}四角放置:
+STR_5961    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}冲突检测:
+STR_5963    :{WINDOW_COLOUR_2}已升起的角:
+STR_5964    :{WINDOW_COLOUR_2}斜角
+STR_5965    :{WINDOW_COLOUR_2}入口类型:{BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}乐园入口部份:{BLACK}{STRINGID}
+STR_5967    :中间
+STR_5968    :左
+STR_5969    :右
+STR_5970    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}出口编号:{BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}游乐设施编号:{BLACK}{COMMA16}
+STR_5973    :与下一地图元素并列
+STR_5974    :{SMALLFONT}{BLACK}将此元素的底部及清空高度与下一元素调整成一致。这会让在此网格上建造变得更加容易。
+STR_5975    :坡道:
+STR_5976    :平坦
+STR_5977    :右边向上
+STR_5978    :左边向上
+STR_5979    :{WINDOW_COLOUR_2}围栏类型:{BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}条幅文字:{BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}不是条幅
+STR_5982    :{WINDOW_COLOUR_2}巨型景物类型:{BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}巨型景物组件编号:{BLACK}{COMMA16}
+STR_5984    :被挡住的道路:
+STR_5985    :建立新文件夹
+STR_5986    :请输入新文件夹的名字
+STR_5987    :无法建立新文件夹
+STR_5988    :{SMALLFONT}{BLACK}已经没有可供购买的土地使用权
+STR_5989    :{SMALLFONT}{BLACK}已经没有可供购买的建造权
+STR_5990    :{SMALLFONT}{BLACK}已经没有可供购买的土地使用或建造权
+STR_5991    :无法粘贴元素...
+STR_5992    :此地图元素的数量已达上限
+STR_5993    :{SMALLFONT}{BLACK}复制所选元素
+STR_5994    :{SMALLFONT}{BLACK}粘贴所选元素
 
 #############
 # Scenarios #
@@ -4245,67 +4319,67 @@ STR_5919    :{COMMA16}
 <Forest Frontiers>
 STR_SCNR    :Forest Frontiers
 STR_PARK    :Forest Frontiers
-STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+STR_DTLS    :在隐藏于森林深处的空地中，建造一个很受欢迎的游乐园
 
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
 STR_PARK    :Dynamite Dunes
-STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+STR_DTLS    :这个座立于沙漠中的乐园只有一座云霄飞车，但不缺乏可供扩充的空地
 
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
 STR_PARK    :Leafy Lake
-STR_DTLS    :Starting from scratch, build a theme park around a large lake
+STR_DTLS    :在一个大型湖泊的旁边，由零开始建造一个乐园
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+STR_DTLS    :Diamond Heights已经是一个拥有极佳游乐设施，并且很发展得很成功的乐园-继续发展它让它的价值翻倍
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
 STR_PARK    :Evergreen Gardens
-STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+STR_DTLS    :将景色优美的Evergreen Gardens转型成一个很受欢迎的乐园
 
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :将Bumbly Beach这个小型乐园发展成一个很受欢迎的乐园
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Several islands form the basis for this new park
+STR_DTLS    :几个邻近的岛屿组成了这个新乐园的基本地势
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :一个只有几个游乐设施但有扩展空间的小型乐园-你的目标是让它的价值翻倍
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :Pokey Park
-STR_DTLS    :A small, cramped amusement park which requires major expansion
+STR_DTLS    :一个拥挤的小型乐园，它需要大扩张
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :A park with some excellent water-based rides requires expansion
+STR_DTLS    :一个附有优良水上类游乐设施的乐园，它需要大扩张
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+STR_DTLS    :将一个已被遗弃的大型矿坑由景点转型成一个乐园
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+STR_DTLS    :一个隐藏在森林的大型乐园，但当中只有小型赛车及木制过山车
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+STR_DTLS    :这个乐园已经有一些既优秀又现代的游乐设施，但它亦有很大的扩充空间
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
