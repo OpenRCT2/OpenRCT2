@@ -388,9 +388,9 @@ static void cheat_remove_all_guests()
 		ride_clear_for_construction(i);
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 
-		for(int ii = 0; ii < 4; ii++) {
-			ride->queue_length[ii] = 0;
-			ride->last_peep_in_queue[ii] = 0xFFFF;
+		for(int j = 0; j < 4; j++) {
+			ride->queue_length[j] = 0;
+			ride->last_peep_in_queue[j] = 0xFFFF;
 		}
 	}
 	window_invalidate_by_class(WC_RIDE);
