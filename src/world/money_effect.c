@@ -50,13 +50,21 @@ static void money_effect_create_at(money32 value, int x, int y, int z)
 	moneyEffect->num_movements = 0;
 	moneyEffect->move_delay = 0;
 
-	stringId = !gCheatsFreeBuilding ? STR_MONEY_EFFECT_RECEIVE : STR_MONEY_EFFECT_RECEIVE_GREY;
+	if (gCheatsFreeBuilding)
+		moneyEffect->flags |= MONEY_EFFECT_FLAGS_GREY;
 	if (value < 0) {
 		value *= -1;
-		stringId = !gCheatsFreeBuilding ? STR_MONEY_EFFECT_SPEND : STR_MONEY_EFFECT_SPEND_GREY;
+		moneyEffect->flags |= MONEY_EFFECT_FLAGS_SPEND;
 	}
+	
+	if (moneyEffect->flags & MONEY_EFFECT_FLAGS_SPEND) {
+		stringId = (moneyEffect->flags & MONEY_EFFECT_FLAGS_GREY) ? STR_MONEY_EFFECT_SPEND_GREY : STR_MONEY_EFFECT_SPEND;
+	}
+	else {
+		stringId = (moneyEffect->flags & MONEY_EFFECT_FLAGS_GREY) ? STR_MONEY_EFFECT_RECEIVE_GREY : STR_MONEY_EFFECT_RECEIVE;
+	}
+	
 	moneyEffect->value = value;
-	moneyEffect->flags = stringId;
 	format_string(buffer, 128, stringId, &value);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);

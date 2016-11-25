@@ -399,6 +399,11 @@ enum {
 	LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
+enum
+{
+	MONEY_EFFECT_FLAGS_GREY = 1 << 1,
+	MONEY_EFFECT_FLAGS_SPEND = 1 << 2,
+};
 rct_sprite *get_sprite(size_t sprite_idx);
 void store_sprite_locations(rct_xyz16 *sprite_locations);
 
