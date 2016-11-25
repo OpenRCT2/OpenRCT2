@@ -523,10 +523,10 @@ unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_
 	return buffer;
 }
 
-money32 string_to_money(char * string_to_monetize)
+money32 string_to_money(char * string_to_monetise)
 {
 	const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-	char * text_ptr = string_to_monetize;
+	char * text_ptr = string_to_monetise;
 	int i, j;
 	//Remove everything except numbers and decimal
 	for (i = 0; text_ptr[i] != '\0'; ++i) {
@@ -544,13 +544,13 @@ money32 string_to_money(char * string_to_monetize)
 	}
 
 	//determine if decimal exists in text
-	char *decimal_place = strstr(string_to_monetize, decimal_char);
+	char *decimal_place = strstr(string_to_monetise, decimal_char);
 	if (decimal_place == NULL) {
 		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
-		return atoi(string_to_monetize) * 10;
+		return atoi(string_to_monetise) * 10;
 	}
 	
-	char *tokenize = _strdup(string_to_monetize);
+	char *tokenize = _strdup(string_to_monetise);
 	char *numberText = strtok(tokenize, decimal_char);
 	char *decimalText = strtok(NULL, decimal_char);
 
