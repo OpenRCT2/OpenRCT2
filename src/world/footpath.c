@@ -1517,17 +1517,17 @@ static void footpath_unown(int x, int y, rct_map_element *pathElement)
  	int z = pathElement->base_height;
  	if (z != surfaceElement->base_height) {
  		if (z > surfaceElement->base_height + 2 || z < surfaceElement->base_height) {
-			type = 0;
+			type = 0; //not owned nor available
 			game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
 			return;
   		}
   	}
 	if (ownership == OWNERSHIP_OWNED) {
-		type = 1;
+		type = 1; //construction rights owned
 		game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
 	}
-	else if (ownership = OWNERSHIP_AVAILABLE) {
-		type = 4;
+	else if (ownership == OWNERSHIP_AVAILABLE) {
+		type = 4; //construction rights available
 		game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
 	}
 }
