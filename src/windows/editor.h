@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 #pragma once
+
+//Defined in windows/editor_inventions_list.c
 void research_always_researched_setup();
 void research_items_make_all_researched();
 void research_remove_flags();
