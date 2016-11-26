@@ -4173,7 +4173,7 @@ STR_5875    :Grafikmotor:
 STR_5876    :{SMALLFONT}{BLACK}Spelmotorn som ska användas för att rita spelet.
 STR_5877    :Mjukvara
 STR_5878    :Mjukvara (hårdvaruhantering)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experiment)
 STR_5880    :Ibockade objekt
 STR_5881    :Obockade objekt
 STR_5882    :Skapa valuta

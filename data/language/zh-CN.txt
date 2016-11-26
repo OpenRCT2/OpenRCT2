@@ -3688,8 +3688,8 @@ STR_5337    :Park entrance
 STR_5338    :Element type
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :Flags
-STR_5342    :Choose a map tile
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :自动放置员工
 STR_5344    :更新日志
 STR_5345    :Financial cheats
@@ -4125,8 +4125,8 @@ STR_5806    :切换窗口模式
 STR_5807    :{WINDOW_COLOUR_2}游乐设施数量: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量: {BLACK}{COMMA16}
-STR_5810    :解除车厢长度限制
-STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}有255辆车厢
+STR_5810    :禁用车辆限制
+STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}有255辆车厢以及每个游乐设施最多有31辆列车
 STR_5812    :显示多人模式窗口
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4194,7 +4194,7 @@ STR_5875    :渲染引擎:
 STR_5876    :{SMALLFONT}{BLACK}渲染游戏图像的引擎.
 STR_5877    :软件渲染
 STR_5878    :软件渲染(硬件显示)
-STR_5879    :OpenGL
+STR_5879    :OpenGL(实验性质)
 STR_5880    :只显示选中的物体
 STR_5881    :只显示未被选中的物体
 STR_5882    :自定义货币
@@ -4246,7 +4246,7 @@ STR_5927    :景物详情
 STR_5928    :入口详情
 STR_5929    :围栏详情
 STR_5930    :巨型景物详情
-STR_5931    :条幅详情
+STR_5931    :横幅详情
 STR_5932    :已毁坏元素详情
 STR_5933    :属性
 STR_5934    :{WINDOW_COLOUR_2}地型素材:{BLACK}{STRINGID}
@@ -4277,11 +4277,12 @@ STR_5958    :东北
 STR_5959    :东南
 STR_5960    :{WINDOW_COLOUR_2}四角放置:
 STR_5961    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
+#碰撞检测?
 STR_5962    :{WINDOW_COLOUR_2}冲突检测:
 STR_5963    :{WINDOW_COLOUR_2}已升起的角:
 STR_5964    :{WINDOW_COLOUR_2}斜角
 STR_5965    :{WINDOW_COLOUR_2}入口类型:{BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}乐园入口部份:{BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}游乐园入口部份:{BLACK}{STRINGID}
 STR_5967    :中间
 STR_5968    :左
 STR_5969    :右
@@ -4289,25 +4290,25 @@ STR_5970    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}出口编号:{BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}游乐设施编号:{BLACK}{COMMA16}
 STR_5973    :与下一地图元素并列
-STR_5974    :{SMALLFONT}{BLACK}将此元素的底部及清空高度与下一元素调整成一致。这会让在此网格上建造变得更加容易。
+STR_5974    :{SMALLFONT}{BLACK}将此元素的基准和净高度与下一元素调整一致. 这可以让在网格上建造变得更加容易.
 STR_5975    :坡道:
 STR_5976    :平坦
 STR_5977    :右边向上
 STR_5978    :左边向上
 STR_5979    :{WINDOW_COLOUR_2}围栏类型:{BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}条幅文字:{BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}不是条幅
+STR_5980    :{WINDOW_COLOUR_2}横幅文字:{BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}不是横幅
 STR_5982    :{WINDOW_COLOUR_2}巨型景物类型:{BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}巨型景物组件编号:{BLACK}{COMMA16}
 STR_5984    :被挡住的道路:
-STR_5985    :建立新文件夹
+STR_5985    :新建文件夹
 STR_5986    :请输入新文件夹的名字
 STR_5987    :无法建立新文件夹
-STR_5988    :{SMALLFONT}{BLACK}已经没有可供购买的土地使用权
-STR_5989    :{SMALLFONT}{BLACK}已经没有可供购买的建造权
-STR_5990    :{SMALLFONT}{BLACK}已经没有可供购买的土地使用或建造权
+STR_5988    :{SMALLFONT}{BLACK}已经没有可出售的土地使用权
+STR_5989    :{SMALLFONT}{BLACK}已经没有可出售的土地建造权
+STR_5990    :{SMALLFONT}{BLACK}已经没有可出售的土地使用权或建造权
 STR_5991    :无法粘贴元素...
-STR_5992    :此地图元素的数量已达上限
+STR_5992    :地图元素已达上限
 STR_5993    :{SMALLFONT}{BLACK}复制所选元素
 STR_5994    :{SMALLFONT}{BLACK}粘贴所选元素
 
