@@ -83,50 +83,53 @@ public:
 
     bool Update() override
     {
+        sint32 entryPosition = _position;
         FixViewLocation();
 
-        sint32 entryPosition = _position;
-        if (_waitCounter <= 0)
+        // Check that position is valid
+        if (_position > (sint32)_sequence->NumCommands)
         {
-            do
-            {
-                if (_position > (sint32)_sequence->NumCommands)
-                {
-                    _position = 0;
-                    return false;
-                }
+            _position = 0;
+            return false;
+        }
 
+        // Don't execute next command until we are done with the current wait command
+        if (_waitCounter != 0)
+        {
+            _waitCounter--;
+            if (_waitCounter == 0)
+            {
                 const TitleCommand * command = &_sequence->Commands[_position];
-                bool successful = ExecuteCommand(command);
-                IncrementPosition();
-                if (!successful)
+                if (command->Type == TITLE_SCRIPT_WAIT)
                 {
-                    bool isLoadCommand = false;
-                    do
-                    {
-                        const TitleCommand * command = &_sequence->Commands[_position];
-                        switch (command->Type) {
-                        case TITLE_SCRIPT_LOADMM:
-                        case TITLE_SCRIPT_LOAD:
-                        case TITLE_SCRIPT_LOADRCT1:
-                            isLoadCommand = true;
-                            break;
-                        default:
-                            IncrementPosition();
-                            if (_position == entryPosition)
-                            {
-                                // We have got back to where we started so we can't load any of these parks
-                                return false;
-                            }
-                            break;
-                        }
-                    }
-                    while (!isLoadCommand);
+                    IncrementPosition();
                 }
             }
-            while (_waitCounter == 0);
         }
-        _waitCounter--;
+        else
+        {
+            while (true)
+            {
+                const TitleCommand * command = &_sequence->Commands[_position];
+                if (ExecuteCommand(command))
+                {
+                    if (command->Type == TITLE_SCRIPT_WAIT)
+                    {
+                        break;
+                    }
+                    IncrementPosition();
+                }
+                else
+                {
+                    SkipToNextLoadCommand();
+                    if (_position == entryPosition)
+                    {
+                        // Unable to load any of the parks
+                        return false;
+                    }
+                }
+            }
+        }
         return true;
     }
 
@@ -151,12 +154,11 @@ public:
         // Set position to the last LOAD command before target position
         for (sint32 i = targetPosition; i >= 0; i--)
         {
-            uint8 commandType = _sequence->Commands[i].Type;
-            if (commandType == TITLE_SCRIPT_LOADMM ||
-                commandType == TITLE_SCRIPT_LOAD ||
-                commandType == TITLE_SCRIPT_LOADRCT1)
+            const TitleCommand * command = &_sequence->Commands[i];
+            if (TitleSequenceIsLoadCommand(command))
             {
                 _position = i;
+                break;
             }
         }
 
@@ -172,6 +174,8 @@ public:
                 break;
             }
         }
+
+        _waitCounter = 0;
     }
 
 private:
@@ -182,6 +186,17 @@ private:
         {
             _position = 0;
         }
+    }
+
+    void SkipToNextLoadCommand()
+    {
+        const TitleCommand * command;
+        do
+        {
+            IncrementPosition();
+            command = &_sequence->Commands[_position];
+        }
+        while (!TitleSequenceIsLoadCommand(command));
     }
 
     bool ExecuteCommand(const TitleCommand * command)
@@ -399,4 +414,32 @@ private:
 ITitleSequencePlayer * CreateTitleSequencePlayer()
 {
     return new TitleSequencePlayer();
+}
+
+extern "C"
+{
+    sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
+    {
+        return player->GetCurrentPosition();
+    }
+
+    bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId)
+    {
+        return player->Begin(titleSequenceId);
+    }
+
+    void title_sequence_player_reset(ITitleSequencePlayer * player)
+    {
+        player->Reset();
+    }
+
+    bool title_sequence_player_update(ITitleSequencePlayer * player)
+    {
+        return player->Update();
+    }
+
+    void title_sequence_player_seek(ITitleSequencePlayer * player, uint32 position)
+    {
+        player->Seek(position);
+    }
 }

@@ -32,6 +32,7 @@
 #include "../title/TitleScreen.h"
 #include "../title/TitleSequence.h"
 #include "../title/TitleSequenceManager.h"
+#include "../title/TitleSequencePlayer.h"
 #include "../util/util.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
@@ -62,6 +63,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_title_editor_load_sequence();
+static ITitleSequencePlayer * window_title_editor_get_player();
 
 static rct_window_event_list window_title_editor_events = {
 	window_title_editor_close,
@@ -190,12 +192,8 @@ static rct_widget window_title_editor_widgets[] = {
 };
 
 static sint16 _window_title_editor_highlighted_index;
-static TitleSequence * _loadedTitleSequence;
-
-int gTitleScriptCommand;
-int gTitleScriptSkipLoad;
-int gTitleScriptSkipTo;
-int gTitleScriptSave;
+static TitleSequence * _editingTitleSequence = NULL;
+static bool _playingTitleSequence = false;
 
 static int window_title_editor_tab_animation_loops[] = {
 	64,
@@ -299,7 +297,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 		if (!commandEditorOpen) {
-			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_loadedTitleSequence->Name, 64);
+			window_text_input_open(w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
@@ -309,7 +307,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
 		if (!readOnly && !commandEditorOpen) {
-			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_loadedTitleSequence->Name, 64);
+			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_ADD:
@@ -324,8 +322,8 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 				title_sequence_remove_save(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0) {
 					w->selected_list_item--;
-				} else if (w->selected_list_item > (sint16)_loadedTitleSequence->NumSaves) {
-					w->selected_list_item = (sint16)(_loadedTitleSequence->NumSaves - 1);
+				} else if (w->selected_list_item > (sint16)_editingTitleSequence->NumSaves) {
+					w->selected_list_item = (sint16)(_editingTitleSequence->NumSaves - 1);
 				}
 			}
 		}
@@ -333,22 +331,22 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_RENAME:
 		if (!readOnly && !playing && !commandEditorOpen) {
 			if (w->selected_list_item != -1) {
-				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uintptr_t)_loadedTitleSequence->Saves[w->selected_list_item], 52 - 1);
+				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uintptr_t)_editingTitleSequence->Saves[w->selected_list_item], 52 - 1);
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_LOAD:
 		if (w->selected_list_item != -1) {
 			utf8 path[MAX_PATH];
-			if (str_is_null_or_empty(_loadedTitleSequence->Path)) {
-				safe_strcpy(path, _loadedTitleSequence->Path, sizeof(path));
+			if (str_is_null_or_empty(_editingTitleSequence->Path)) {
+				safe_strcpy(path, _editingTitleSequence->Path, sizeof(path));
 			} else {
 				// TODO: This should probably use a constant
 				platform_get_user_directory(path, "title sequences", sizeof(path));
-				safe_strcat_path(path, _loadedTitleSequence->Name, sizeof(path));
+				safe_strcat_path(path, _editingTitleSequence->Name, sizeof(path));
 			}
 
-			safe_strcat_path(path, _loadedTitleSequence->Saves[w->selected_list_item], sizeof(path));
+			safe_strcat_path(path, _editingTitleSequence->Saves[w->selected_list_item], sizeof(path));
 			game_load_save(path);
 			window_title_editor_open(1);
 		}
@@ -358,25 +356,25 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			if (w->selected_list_item != -1) {
 				window_title_command_editor_open(w->selected_list_item + 1, true);
 			} else {
-				window_title_command_editor_open((int)_loadedTitleSequence->NumCommands, true);
+				window_title_command_editor_open((int)_editingTitleSequence->NumCommands, true);
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_EDIT:
 		if (!readOnly && !playing && !commandEditorOpen) {
-			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_loadedTitleSequence->NumCommands) {
+			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
 				window_title_command_editor_open(w->selected_list_item, false);
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE:
 		if (!readOnly && !playing && !commandEditorOpen) {
-			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_loadedTitleSequence->NumCommands) {
+			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
 				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0) {
 					w->selected_list_item--;
-				} else if (w->selected_list_item >= (sint16)_loadedTitleSequence->NumCommands) {
-					w->selected_list_item = (sint16)(_loadedTitleSequence->NumCommands - 1);
+				} else if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
+					w->selected_list_item = (sint16)(_editingTitleSequence->NumCommands - 1);
 				}
 			}
 		}
@@ -387,27 +385,18 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;*/
 	case WIDX_TITLE_EDITOR_SKIP_TO:
-		if (playing && w->selected_list_item != -1 && w->selected_list_item < (sint16)_loadedTitleSequence->NumCommands) {
-			if (gTitleScriptCommand > w->selected_list_item) {
-				gTitleScriptCommand = 0;
-			}
-			if (gTitleScriptCommand != w->selected_list_item) {
-				for (int i = gTitleScriptCommand + 1; i < (int)_loadedTitleSequence->NumCommands; i++) {
-					if (_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_LOAD ||
-						_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_LOADMM) {
-						gTitleScriptSkipLoad = i;
-					}
-					if (i == w->selected_list_item) {
-						gTitleScriptSkipTo = i;
-						break;
-					}
-				}
-			}
+	{
+		sint32 position = w->selected_list_item;
+		if (playing && position != -1 && position < (sint32)_editingTitleSequence->NumCommands) {
+			ITitleSequencePlayer * player = window_title_editor_get_player();
+			title_sequence_player_seek(player, position);
+			title_sequence_player_update(player);
 		}
 		break;
+	}
 	case WIDX_TITLE_EDITOR_MOVE_DOWN:
 		if (!readOnly && !playing && !commandEditorOpen) {
-			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_loadedTitleSequence->NumCommands - 1) {
+			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands - 1) {
 				title_sequence_move_down_command(gCurrentTitleSequence, w->selected_list_item);
 				w->selected_list_item++;
 			}
@@ -422,6 +411,11 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REPLAY:
+		if (playing) {
+			ITitleSequencePlayer * player = window_title_editor_get_player();
+			title_sequence_player_reset(player);
+			title_sequence_player_update(player);
+		}
 		break;
 	case WIDX_TITLE_EDITOR_STOP:
 		if (playing) {
@@ -431,31 +425,18 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_PLAY:
 		if (gCurrentTitleSequence != gCurrentPreviewTitleSequence && inTitle) {
 			gCurrentPreviewTitleSequence = gCurrentTitleSequence;
+			_playingTitleSequence = true;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_SKIP:
 		if (playing) {
-			int i;
-			for (i = gTitleScriptCommand; i < (int)_loadedTitleSequence->NumCommands; i++) {
-				if (_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_LOAD ||
-					_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_LOADMM
-				) {
-					gTitleScriptSkipLoad = i;
-					break;
-				} else if (_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_WAIT ||
-					_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_END) {
-					gTitleScriptSkipTo = i;
-					break;
-				} else if (_loadedTitleSequence->Commands[i].Type == TITLE_SCRIPT_RESTART) {
-					gTitleScriptSkipLoad = -1;
-					gTitleScriptSkipTo = -1;
-					break;
-				}
+			ITitleSequencePlayer * player = window_title_editor_get_player();
+			sint32 position = title_sequence_player_get_current_position(player) + 1;
+			if (position >= (sint32)_editingTitleSequence->NumCommands) {
+				position = 0;
 			}
-			if (i == _loadedTitleSequence->NumCommands && i - 1 > gTitleScriptCommand) {
-				gTitleScriptSkipTo = i - 1;
-				gTitleScriptSkipLoad = -1;
-			}
+			title_sequence_player_seek(player, position);
+			title_sequence_player_update(player);
 		}
 		break;
 	}
@@ -471,7 +452,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 static void window_title_editor_resize(rct_window *w)
 {
 	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_PRESETS) {
-		window_set_resize(w, WW, WH, WH2, WH2);
+		window_set_resize(w, WW, WH, 500, WH2);
 	} else {
 		window_set_resize(w, WW, WH, 500, 580);
 	}
@@ -554,9 +535,9 @@ static void window_title_editor_scrollgetsize(rct_window *w, int scrollIndex, in
 {
 	size_t lineCount = 1;
 	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES) {
-		lineCount = _loadedTitleSequence->NumSaves;
+		lineCount = _editingTitleSequence->NumSaves;
 	} else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT) {
-		lineCount = _loadedTitleSequence->NumCommands;
+		lineCount = _editingTitleSequence->NumCommands;
 	}
 
 	*height = (int)(lineCount * ROW_HEIGHT);
@@ -578,13 +559,13 @@ static void window_title_editor_scrollmousedown(rct_window *w, int scrollIndex, 
 	w->selected_list_item = -1;
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
-		if (index < (int)_loadedTitleSequence->NumSaves) {
+		if (index < (int)_editingTitleSequence->NumSaves) {
 			w->selected_list_item = index;
 			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
 		}
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-		if (index < (int)_loadedTitleSequence->NumCommands) {
+		if (index < (int)_editingTitleSequence->NumCommands) {
 			w->selected_list_item = index;
 			widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
 		}
@@ -597,11 +578,11 @@ static void window_title_editor_scrollmouseover(rct_window *w, int scrollIndex, 
 	int index = y / ROW_HEIGHT;
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
-		if (index < (int)_loadedTitleSequence->NumSaves)
+		if (index < (int)_editingTitleSequence->NumSaves)
 			_window_title_editor_highlighted_index = (sint16)index;
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-		if (index < (int)_loadedTitleSequence->NumCommands)
+		if (index < (int)_editingTitleSequence->NumCommands)
 			_window_title_editor_highlighted_index = (sint16)index;
 		break;
 	}
@@ -640,7 +621,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 		if (filename_valid_characters(text)) {
 			if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
 				title_sequence_rename_save(gCurrentTitleSequence, w->selected_list_item, text);
-				TileSequenceSave(_loadedTitleSequence);
+				TileSequenceSave(_editingTitleSequence);
 				window_invalidate(w);
 			} else {
 				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
@@ -770,7 +751,7 @@ static void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw strings
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-		set_format_arg(0, uintptr_t, _loadedTitleSequence->Name);
+		set_format_arg(0, uintptr_t, _editingTitleSequence->Name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
@@ -803,16 +784,21 @@ static void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 
 static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	sint32 currentSaveIndex = -1;
+	// ITitleSequencePlayer * player = window_title_editor_get_player();
+	// sint32 position = title_sequence_player_get_current_position(player);
+	// const TitleCommand * command = &_editingTitleSequence->Commands[position];
+
 	int x = 0;
 	int y = 0;
 	bool inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	for (int i = 0; i < (int)_loadedTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
+	for (int i = 0; i < (int)_editingTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
 		bool selected = false;
 		bool hover = false;
 		if (i == w->selected_list_item) {
 			selected = true;
 			gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
-		} else if (i == _window_title_editor_highlighted_index || (i == gTitleScriptSave && inTitle && gCurrentTitleSequence == gCurrentPreviewTitleSequence)) {
+		} else if (i == _window_title_editor_highlighted_index || i == currentSaveIndex) {
 			hover = true;
 			gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
 		} else if (i & 1) {
@@ -820,7 +806,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 		}
 
 		char buffer[256];
-		set_format_arg(0, uintptr_t, _loadedTitleSequence->Saves[i]);
+		set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[i]);
 		if (selected || hover) {
 			format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
 		} else {
@@ -834,18 +820,24 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 
 static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	sint32 position = -1;
+	if (_playingTitleSequence) {
+		ITitleSequencePlayer * player = window_title_editor_get_player();
+		position = title_sequence_player_get_current_position(player);
+	}
+
 	int x = 0;
 	int y = 0;
 	bool inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	for (int i = 0; i < (int)_loadedTitleSequence->NumCommands; i++, y += ROW_HEIGHT) {
-		TitleCommand * command = &_loadedTitleSequence->Commands[i];
+	for (int i = 0; i < (int)_editingTitleSequence->NumCommands; i++, y += ROW_HEIGHT) {
+		TitleCommand * command = &_editingTitleSequence->Commands[i];
 		bool selected = false;
 		bool hover = false;
 		bool error = false;
 		if (i == w->selected_list_item) {
 			selected = true;
 			gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
-		} else if (i == (int)_window_title_editor_highlighted_index || (i == gTitleScriptCommand && inTitle && gCurrentTitleSequence == gCurrentPreviewTitleSequence)) {
+		} else if (i == (int)_window_title_editor_highlighted_index || i == position) {
 			hover = true;
 			gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
 		} else if (i & 1) {
@@ -860,7 +852,7 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
 				commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
 				error = true;
 			}
-			set_format_arg(0, uintptr_t, _loadedTitleSequence->Saves[command->SaveIndex]);
+			set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[command->SaveIndex]);
 			break;
 		case TITLE_SCRIPT_LOADMM:
 			commandName = STR_TITLE_EDITOR_COMMAND_LOAD_SFMM;
@@ -939,5 +931,10 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_wind
 static void window_title_editor_load_sequence()
 {
 	const char * path = title_sequence_manager_get_path(gCurrentTitleSequence);
-	_loadedTitleSequence = LoadTitleSequence(path);
+	_editingTitleSequence = LoadTitleSequence(path);
+}
+
+static ITitleSequencePlayer * window_title_editor_get_player()
+{
+	return (ITitleSequencePlayer *)title_get_sequence_player();
 }

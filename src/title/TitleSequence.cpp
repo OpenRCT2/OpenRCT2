@@ -437,3 +437,15 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
     utf8 * result = sb.StealString();
     return result;
 }
+
+bool TitleSequenceIsLoadCommand(const TitleCommand * command)
+{
+    switch (command->Type) {
+    case TITLE_SCRIPT_LOADMM:
+    case TITLE_SCRIPT_LOAD:
+    case TITLE_SCRIPT_LOADRCT1:
+        return true;
+    default:
+        return false;
+    }
+}

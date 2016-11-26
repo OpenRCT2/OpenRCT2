@@ -215,4 +215,9 @@ extern "C"
         snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
     }
+
+    void * title_get_sequence_player()
+    {
+        return _sequencePlayer;
+    }
 }
