@@ -62,8 +62,9 @@ static void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_title_editor_load_sequence();
+static void window_title_editor_load_sequence(size_t index);
 static ITitleSequencePlayer * window_title_editor_get_player();
+static bool window_title_editor_check_can_edit();
 
 static rct_window_event_list window_title_editor_events = {
 	window_title_editor_close,
@@ -191,9 +192,13 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static sint16 _window_title_editor_highlighted_index;
+static size_t _selectedTitleSequence = SIZE_MAX;
+static bool _isSequenceReadOnly;
 static TitleSequence * _editingTitleSequence = NULL;
-static bool _playingTitleSequence = false;
+static bool _isSequencePlaying = false;
+static const utf8 * _sequenceName;
+
+static sint16 _window_title_editor_highlighted_index;
 
 static int window_title_editor_tab_animation_loops[] = {
 	64,
@@ -267,7 +272,7 @@ void window_title_editor_open(int tab)
 	window->max_width = 500;
 	window->max_height = 450;
 
-	window_title_editor_load_sequence();
+	window_title_editor_load_sequence(0);
 }
 
 static void window_title_editor_close(rct_window *w)
@@ -281,14 +286,15 @@ static void window_title_editor_close(rct_window *w)
 
 static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 {
-	bool readOnly = (gCurrentTitleSequence < TITLE_SEQUENCE_DEFAULT_PRESETS);
-	bool playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	bool inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_CLOSE:
 		window_close(w);
 		break;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Presets tab
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	case WIDX_TITLE_EDITOR_NEW_BUTTON:
 		if (!commandEditorOpen) {
 			// TODO: This should probably be 'NEW'
@@ -301,25 +307,29 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
-		if (!readOnly && !commandEditorOpen) {
-			title_sequence_delete_preset(gCurrentTitleSequence);
+		if (window_title_editor_check_can_edit()) {
+			// title_sequence_delete_preset(_selectedTitleSequence);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-		if (!readOnly && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
 		break;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Editor tab
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	case WIDX_TITLE_EDITOR_ADD:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 			gLoadSaveTitleSequenceSave = true;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REMOVE:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
-				title_sequence_remove_save(gCurrentTitleSequence, w->selected_list_item);
+				// title_sequence_remove_save(_selectedTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0) {
 					w->selected_list_item--;
 				} else if (w->selected_list_item > (sint16)_editingTitleSequence->NumSaves) {
@@ -329,7 +339,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
 				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uintptr_t)_editingTitleSequence->Saves[w->selected_list_item], 52 - 1);
 			}
@@ -351,8 +361,12 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			window_title_editor_open(1);
 		}
 		break;
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Commands tab
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	case WIDX_TITLE_EDITOR_INSERT:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
 				window_title_command_editor_open(w->selected_list_item + 1, true);
 			} else {
@@ -361,16 +375,16 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_EDIT:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
 				window_title_command_editor_open(w->selected_list_item, false);
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_DELETE:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
-				title_sequence_delete_command(gCurrentTitleSequence, w->selected_list_item);
+				// title_sequence_delete_command(_selectedTitleSequence, w->selected_list_item);
 				if (w->selected_list_item > 0) {
 					w->selected_list_item--;
 				} else if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
@@ -379,15 +393,10 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			}
 		}
 		break;
-	/*case WIDX_TITLE_EDITOR_RELOAD:
-		if (!playing && !commandEditorOpen) {
-			//title_sequence_open
-		}
-		break;*/
 	case WIDX_TITLE_EDITOR_SKIP_TO:
 	{
 		sint32 position = w->selected_list_item;
-		if (playing && position != -1 && position < (sint32)_editingTitleSequence->NumCommands) {
+		if (_isSequencePlaying && position != -1 && position < (sint32)_editingTitleSequence->NumCommands) {
 			ITitleSequencePlayer * player = window_title_editor_get_player();
 			title_sequence_player_seek(player, position);
 			title_sequence_player_update(player);
@@ -395,41 +404,42 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	case WIDX_TITLE_EDITOR_MOVE_DOWN:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands - 1) {
-				title_sequence_move_down_command(gCurrentTitleSequence, w->selected_list_item);
+				// title_sequence_move_down_command(_selectedTitleSequence, w->selected_list_item);
 				w->selected_list_item++;
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_MOVE_UP:
-		if (!readOnly && !playing && !commandEditorOpen) {
+		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item > 0) {
-				title_sequence_move_up_command(gCurrentTitleSequence, w->selected_list_item);
+				// title_sequence_move_up_command(_selectedTitleSequence, w->selected_list_item);
 				w->selected_list_item--;
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REPLAY:
-		if (playing) {
+		if (_isSequencePlaying) {
 			ITitleSequencePlayer * player = window_title_editor_get_player();
 			title_sequence_player_reset(player);
 			title_sequence_player_update(player);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_STOP:
-		if (playing) {
+		if (_isSequencePlaying) {
 			gCurrentPreviewTitleSequence = 0;
+			_isSequencePlaying = false;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_PLAY:
-		if (gCurrentTitleSequence != gCurrentPreviewTitleSequence && inTitle) {
-			gCurrentPreviewTitleSequence = gCurrentTitleSequence;
-			_playingTitleSequence = true;
+		if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
+			gCurrentPreviewTitleSequence = (int)_selectedTitleSequence;
+			_isSequencePlaying = true;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_SKIP:
-		if (playing) {
+		if (_isSequencePlaying) {
 			ITitleSequencePlayer * player = window_title_editor_get_player();
 			sint32 position = title_sequence_player_get_current_position(player) + 1;
 			if (position >= (sint32)_editingTitleSequence->NumCommands) {
@@ -439,13 +449,6 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			title_sequence_player_update(player);
 		}
 		break;
-	}
-	if (readOnly == 2) {
-		window_error_open(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
-	} else if (commandEditorOpen == 2) {
-		window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
-	} else if (playing == 2) {
-		window_error_open(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
 	}
 }
 
@@ -496,7 +499,7 @@ static void window_title_editor_mousedown(int widgetIndex, rct_window* w, rct_wi
 				DROPDOWN_FLAG_STAY_OPEN,
 				numItems,
 				widget->right - widget->left - 3);
-			dropdown_set_checked(gCurrentTitleSequence, true);
+			dropdown_set_checked((int)_selectedTitleSequence, true);
 		}
 		break;
 	}
@@ -507,12 +510,9 @@ static void window_title_editor_dropdown(rct_window *w, int widgetIndex, int dro
 	if (dropdownIndex == -1)
 		return;
 
-	switch (widgetIndex) {
-	case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
-		gCurrentTitleSequence = dropdownIndex;
-		window_title_editor_load_sequence();
+	if (widgetIndex == WIDX_TITLE_EDITOR_PRESETS_DROPDOWN) {
+		window_title_editor_load_sequence(dropdownIndex);
 		window_invalidate(w);
-		break;
 	}
 }
 
@@ -604,9 +604,9 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
 					title_sequence_create_preset(text);
 				} else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
-					title_sequence_duplicate_preset(gCurrentTitleSequence, text);
+					// title_sequence_duplicate_preset(_selectedTitleSequence, text);
 				} else {
-					title_sequence_rename_preset(gCurrentTitleSequence, text);
+					// title_sequence_rename_preset(_selectedTitleSequence, text);
 				}
 				config_save_default();
 				window_invalidate(w);
@@ -618,17 +618,17 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME:
-		if (filename_valid_characters(text)) {
-			if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
-				title_sequence_rename_save(gCurrentTitleSequence, w->selected_list_item, text);
-				TileSequenceSave(_editingTitleSequence);
-				window_invalidate(w);
-			} else {
-				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
-			}
-		} else {
-			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
-		}
+		// if (filename_valid_characters(text)) {
+		// 	if (!title_sequence_save_exists(_selectedTitleSequence, text)) {
+		// 		title_sequence_rename_save(_selectedTitleSequence, w->selected_list_item, text);
+		// 		TileSequenceSave(_editingTitleSequence);
+		// 		window_invalidate(w);
+		// 	} else {
+		// 		window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+		// 	}
+		// } else {
+		// 	window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+		// }
 		break;
 	}
 }
@@ -728,14 +728,12 @@ static void window_title_editor_invalidate(rct_window *w)
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].top = w->height - 32;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
 
-	int playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	int inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	if (!inTitle) {
+	if (!gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
 	} else {
 		w->disabled_widgets &= ~(1 << WIDX_TITLE_EDITOR_PLAY);
 	}
-	if (!playing) {
+	if (!_isSequencePlaying) {
 		w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP) | (1 << WIDX_TITLE_EDITOR_SKIP_TO);
 	} else {
 		w->disabled_widgets &= ~((1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP) | (1 << WIDX_TITLE_EDITOR_SKIP_TO));
@@ -751,7 +749,7 @@ static void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw strings
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-		set_format_arg(0, uintptr_t, _editingTitleSequence->Name);
+		set_format_arg(0, uintptr_t, _sequenceName);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
@@ -821,7 +819,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	sint32 position = -1;
-	if (_playingTitleSequence) {
+	if (_isSequencePlaying) {
 		ITitleSequencePlayer * player = window_title_editor_get_player();
 		position = title_sequence_player_get_current_position(player);
 	}
@@ -928,13 +926,38 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_wind
 	}
 }
 
-static void window_title_editor_load_sequence()
+static void window_title_editor_load_sequence(size_t index)
 {
-	const char * path = title_sequence_manager_get_path(gCurrentTitleSequence);
-	_editingTitleSequence = LoadTitleSequence(path);
+	const char * path = title_sequence_manager_get_path(index);
+	TitleSequence * titleSequence = LoadTitleSequence(path);
+	if (titleSequence == NULL) {
+		window_error_open(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+		return;
+	}
+
+	_selectedTitleSequence = index;
+	uint16 predefinedIndex = title_sequence_manager_get_predefined_index(index);
+	_isSequenceReadOnly = (predefinedIndex != UINT16_MAX);
+	_sequenceName = title_sequence_manager_get_name(index);
+	_editingTitleSequence = titleSequence;
 }
 
 static ITitleSequencePlayer * window_title_editor_get_player()
 {
 	return (ITitleSequencePlayer *)title_get_sequence_player();
+}
+
+static bool window_title_editor_check_can_edit()
+{
+	bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
+	if (_isSequenceReadOnly) {
+		window_error_open(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
+	} else if (_isSequencePlaying) {
+		window_error_open(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
+	} else if (commandEditorOpen) {
+		window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+	} else {
+		return true;
+	}
+	return false;
 }

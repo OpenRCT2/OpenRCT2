@@ -198,6 +198,13 @@ extern "C"
         return name;
     }
 
+    uint16 title_sequence_manager_get_predefined_index(size_t index)
+    {
+        auto item = TitleSequenceManager::GetItem(index);
+        uint16 predefinedIndex = item->PredefinedIndex;
+        return predefinedIndex;
+    }
+
     size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId)
     {
         size_t count = TitleSequenceManager::GetCount();

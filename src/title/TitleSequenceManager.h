@@ -45,6 +45,7 @@ extern "C" {
     const utf8 * title_sequence_manager_get_name(size_t index);
     const utf8 * title_sequence_manager_get_path(size_t index);
     const utf8 * title_sequence_manager_get_config_id(size_t index);
+    uint16 title_sequence_manager_get_predefined_index(size_t index);
     size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId);
     void title_sequence_manager_scan();
 
