@@ -28,6 +28,8 @@ static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_
 static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, size_t length);
 static void encode_chunk_rotate(uint8 *buffer, size_t length);
 
+bool gUseRLE = true;
+
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
 {
 	size_t i;
@@ -138,24 +140,29 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 	}
 
 	// Decode chunk data
+	size_t data_size = sawyercoding_read_chunk_buffer(buffer, src_buffer, chunkHeader, buffer_size);
+	free(src_buffer);
+	return data_size;
+}
+
+size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader, size_t dst_buffer_size) {
 	switch (chunkHeader.encoding) {
 	case CHUNK_ENCODING_NONE:
-		assert(chunkHeader.length <= buffer_size);
-		memcpy(buffer, src_buffer, chunkHeader.length);
+		assert(chunkHeader.length <= dst_buffer_size);
+		memcpy(dst_buffer, src_buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_RLE:
-		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
+		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, dst_buffer, chunkHeader.length, dst_buffer_size);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
-		chunkHeader.length = (uint32)decode_chunk_repeat(buffer, chunkHeader.length);
+		chunkHeader.length = (uint32)decode_chunk_rle_with_size(src_buffer, dst_buffer, chunkHeader.length, dst_buffer_size);
+		chunkHeader.length = (uint32)decode_chunk_repeat(dst_buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
-		memcpy(buffer, src_buffer, chunkHeader.length);
-		decode_chunk_rotate(buffer, chunkHeader.length);
+		memcpy(dst_buffer, src_buffer, chunkHeader.length);
+		decode_chunk_rotate(dst_buffer, chunkHeader.length);
 		break;
 	}
-	free(src_buffer);
 	return chunkHeader.length;
 }
 
@@ -164,7 +171,7 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 *  rct2: 0x006762E1
 *
 */
-size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
+size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8* buffer, sawyercoding_chunk_header chunkHeader) {
 	uint8 *encode_buffer, *encode_buffer2;
 
 	if (gUseRLE == false) {

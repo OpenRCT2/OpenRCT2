@@ -24,8 +24,6 @@
 #include "util.h"
 #include "zlib.h"
 
-bool gUseRLE = true;
-
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
 	// 1 metre squared = 10.7639104 feet squared

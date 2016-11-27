@@ -28,6 +28,7 @@
 extern "C" {
 #include "../openrct2.h"
 #include "../platform/platform.h"
+#include "../util/sawyercoding.h"
 }
 
 #include "network.h"
