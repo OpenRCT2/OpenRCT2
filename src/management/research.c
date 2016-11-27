@@ -122,13 +122,11 @@ void research_invalidate_related_windows()
 	window_invalidate_by_class(WC_RESEARCH);
 }
 
-/**
- *
- *  rct2: 0x00684BE5
- */
-static void research_next_design()
+//Extracted from research_next_design to allow external scoping to
+//see if research is finished, while not effecting the actual research process
+rct_research_item* research_get_next_unresearched_item()
 {
-	rct_research_item *firstUnresearchedItem, *researchItem, tmp;
+	rct_research_item *firstUnresearchedItem, *researchItem;
 	int ignoreActiveResearchTypes;
 
 	// Skip already researched items
@@ -145,18 +143,31 @@ static void research_next_design()
 				ignoreActiveResearchTypes = 1;
 				researchItem = firstUnresearchedItem;
 				continue;
-			} else {
+			}else {
 				gResearchProgress = 0;
 				gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
 				research_invalidate_related_windows();
 				// Reset funding to 0 if no more rides.
 				research_set_funding(0);
-				return;
+				return NULL;
 			}
 		} else if (ignoreActiveResearchTypes || (gResearchPriorities & (1 << researchItem->category))) {
 			break;
 		}
 	}
+	return researchItem;
+}
+
+/**
+ *
+ *  rct2: 0x00684BE5
+ */
+static void research_next_design()
+{
+	rct_research_item* researchItem, tmp;
+	researchItem = research_get_next_unresearched_item();
+	if (researchItem == NULL)
+		return;
 
 	gResearchNextItem = researchItem->entryIndex;
 	gResearchNextCategory = researchItem->category;

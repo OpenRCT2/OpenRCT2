@@ -494,6 +494,9 @@ static void cheat_invent_all()
 	gSilentResearch = true;
 	sub_684AC3();
 	gSilentResearch = false;
+	//Validates all items have been properly researched, also
+	// sets funding to 0 and research flags appropriately
+	assert(research_get_next_unresearched_item() == NULL);
 	research_invalidate_related_windows();
 }
 
