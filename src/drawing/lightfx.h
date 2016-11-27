@@ -22,8 +22,6 @@
 #include "../common.h"
 #include "drawing.h"
 
-typedef struct SDL_Texture;
-
 enum LIGHTFX_LIGHT_TYPE {
 	LIGHTFX_LIGHT_TYPE_NONE				= 0,
 	LIGHTFX_LIGHT_TYPE_RESERVED_01		= 1,

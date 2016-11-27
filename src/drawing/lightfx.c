@@ -78,7 +78,7 @@ static uint8 soft_light(uint8 a, uint8 b);
 static uint8 lerp(uint8 a, uint8 b, float t);
 static float flerp(float a, float b, float t);
 
-uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
+static uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
 	double distance = (double)(x * x + y * y);
 
 	double light = 0.03 + pow(10.0 / (1.0 + distance / 100.0), 0.55);
@@ -88,7 +88,7 @@ uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
 	return (uint8)(min(255.0, light * 255.0));
 }
 
-uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
+static uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
 	double distance = (double)(x * x + y * y);
 
 	double light = 0.3 + pow(10.0 / (1.0 + distance / 100.0), 0.75);
@@ -98,7 +98,7 @@ uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
 	return (uint8)(min(255.0, light * 255.0)) >> 4;
 }
 
-void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetWidth, uint32 targetHeight) {
+static void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetWidth, uint32 targetHeight) {
 	uint8 *parcerRead = source;
 	uint8 *parcerWrite = target;
 
@@ -199,50 +199,61 @@ void lightfx_prepare_light_list()
 	//	entry->x >>= _current_view_zoom_front;
 	//	entry->y >>= _current_view_zoom_front;
 
-		static sint16 offsetPattern[26]	= {		0, 0,		-4, 0,		0, -3,		4, 0,		0, 3,
-															-2, -1,		-1, -1,		2, 1,		1, 1,
-															-3, -2,		-3, 2,		3, -2,		3, 2	};
-
-		int mapFrontDiv = 1 << _current_view_zoom_front;
-
 		uint32 lightIntensityOccluded = 0x0;
 
 		sint32 dirVecX = 707;
 		sint32 dirVecY = 707;
 
-		sint32 tileOffsetX = 0;
-		sint32 tileOffsetY = 0;
-
 		switch (_current_view_rotation_front) {
 		case 0:
 			dirVecX	= 707;
 			dirVecY = 707;
-			tileOffsetX = 0;
-			tileOffsetY = 0;
 			break;
 		case 1:
 			dirVecX = -707;
 			dirVecY = 707;
-			tileOffsetX = 16;
-			tileOffsetY = 0;
 			break;
 		case 2:
 			dirVecX = -707;
 			dirVecY = -707;
-			tileOffsetX = 32;
-			tileOffsetY = 32;
 			break;
 		case 3:
 			dirVecX = 707;
 			dirVecY = -707;
-			tileOffsetX = 0;
-			tileOffsetY = 16;
 			break;
 		default:
 			dirVecX = 0;
 			dirVecY = 0;
 			break;
 		}
+
+#ifdef LIGHTFX_UNKNOWN_PART_1
+		sint32 tileOffsetX = 0;
+		sint32 tileOffsetY = 0;
+		switch (_current_view_rotation_front) {
+		case 0:
+			tileOffsetX = 0;
+			tileOffsetY = 0;
+			break;
+		case 1:
+			tileOffsetX = 16;
+			tileOffsetY = 0;
+			break;
+		case 2:
+			tileOffsetX = 32;
+			tileOffsetY = 32;
+			break;
+		case 3:
+			tileOffsetX = 0;
+			tileOffsetY = 16;
+			break;
+		}
+
+		int mapFrontDiv = 1 << _current_view_zoom_front;
+		static sint16 offsetPattern[26]	= {		0, 0,		-4, 0,		0, -3,		4, 0,		0, 3,
+															-2, -1,		-1, -1,		2, 1,		1, 1,
+															-3, -2,		-3, 2,		3, -2,		3, 2	};
+#endif //LIGHTFX_UNKNOWN_PART_1
 
 		if (true) {
 			int totalSamplePoints = 5;
@@ -265,7 +276,7 @@ void lightfx_prepare_light_list()
 				if (w != NULL) {
 				//	get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 
-#if 0
+#ifdef LIGHTFX_UNKNOWN_PART_1
 					_unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
 					_viewportDpi1.zoom = _current_view_zoom_front;
 					_viewportDpi1.x = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
@@ -289,7 +300,7 @@ void lightfx_prepare_light_list()
 					mapCoord.y = _unk9AC14E + tileOffsetY;
 					interactionType = _unk9AC148;
 					mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
-#endif
+#endif //LIGHTFX_UNKNOWN_PART_1
 
 					//RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
 					//RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -685,15 +696,8 @@ void lightfx_add_lights_magic_vehicles()
 
 		rct_vehicle *mother_vehicle = vehicle;
 
-		rct_ride_entry *rideEntry = 0;
-		const rct_ride_entry_vehicle *vehicleEntry;
-
 		if (mother_vehicle->ride_subtype == 0xFF) {
 			continue;
-		}
-		else {
-			rideEntry = get_ride_entry(mother_vehicle->ride_subtype);
-			vehicleEntry = &rideEntry->vehicles[mother_vehicle->vehicle_type];
 		}
 
 		for (uint16 q = vehicleID; q != SPRITE_INDEX_NULL; ) {
@@ -818,9 +822,11 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
 	natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
 	natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
 
-	float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
-	float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
 	float overExpose = 0.0f;
+	float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
+#ifdef LIGHTFX_UNKNOWN_PART_2
+	float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
+#endif // LIGHTFX_UNKNOWN_PART_2
 
 	//	overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
 
@@ -831,7 +837,9 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
 		//		overExpose += offset * 0.1f;
 	}
 
-	//	lightAvg += (lightMax - lightAvg) * 0.6f;
+#ifdef LIGHTFX_UNKNOWN_PART_2
+	lightAvg += (lightMax - lightAvg) * 0.6f;
+#endif // LIGHTFX_UNKNOWN_PART_2
 
 	if (lightAvg > 1.0f) {
 		natLightR /= lightAvg;
