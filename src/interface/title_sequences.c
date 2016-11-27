@@ -38,8 +38,9 @@ bool title_sequence_name_exists(const char *name)
 {
 	size_t count = title_sequence_manager_get_count();
 	for (size_t i = 0; i < count; i++) {
-		if (_stricmp(title_sequence_manager_get_name(i), name) == 0)
+		if (_stricmp(title_sequence_manager_get_name(i), name) == 0) {
 			return true;
+		}
 	}
 	return false;
 }

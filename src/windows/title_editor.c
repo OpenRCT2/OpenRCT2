@@ -308,7 +308,8 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TITLE_EDITOR_DELETE_BUTTON:
 		if (window_title_editor_check_can_edit()) {
-			// title_sequence_delete_preset(_selectedTitleSequence);
+			title_sequence_manager_delete(_selectedTitleSequence);
+			window_title_editor_load_sequence(0);
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
@@ -600,13 +601,14 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
 	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
 		if (filename_valid_characters(text)) {
-			if (!title_sequence_name_exists(text)) {
+			if (title_sequence_manager_get_index_for_name(text) == SIZE_MAX) {
 				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
 					title_sequence_create_preset(text);
 				} else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
 					// title_sequence_duplicate_preset(_selectedTitleSequence, text);
 				} else {
-					// title_sequence_rename_preset(_selectedTitleSequence, text);
+					title_sequence_manager_rename(_selectedTitleSequence, text);
+					_sequenceName = title_sequence_manager_get_name(_selectedTitleSequence);
 				}
 				config_save_default();
 				window_invalidate(w);

@@ -21,6 +21,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 
 extern "C"
@@ -62,6 +63,43 @@ namespace TitleSequenceManager
     const TitleSequenceManagerItem * GetItem(size_t i)
     {
         return &_items[i];
+    }
+
+    void DeleteItem(size_t i)
+    {
+        auto item = GetItem(i);
+        const utf8 * path = item->Path.c_str();
+        if (item->IsZip)
+        {
+            platform_file_delete(path);
+        }
+        else
+        {
+            platform_directory_delete(path);
+        }
+        _items.erase(_items.begin() + i);
+    }
+
+    void RenameItem(size_t i, const utf8 * newName)
+    {
+        auto item = &_items[i];
+        const utf8 * oldPath = item->Path.c_str();
+
+        utf8 newPath[MAX_PATH];
+        Path::GetDirectory(newPath, sizeof(newPath), oldPath);
+        Path::Append(newPath, sizeof(newPath), newName);
+        if (item->IsZip)
+        {
+            String::Append(newPath, sizeof(newPath), TITLE_SEQUENCE_EXTENSION);
+            platform_file_move(oldPath, newPath);
+        }
+        else
+        {
+            platform_file_move(oldPath, newPath);
+        }
+
+        item->Name = std::string(newName);
+        item->Path = std::string(newPath);
     }
 
     static const uint16 GetPredefinedIndex(const std::string &path)
@@ -219,8 +257,32 @@ extern "C"
         return SIZE_MAX;
     }
 
+    size_t title_sequence_manager_get_index_for_name(const utf8 * name)
+    {
+        size_t count = TitleSequenceManager::GetCount();
+        for (size_t i = 0; i < count; i++)
+        {
+            const utf8 * tn = title_sequence_manager_get_name(i);
+            if (String::Equals(tn, name))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
+    }
+
     void title_sequence_manager_scan()
     {
         TitleSequenceManager::Scan();
+    }
+
+    void title_sequence_manager_delete(size_t i)
+    {
+        TitleSequenceManager::DeleteItem(i);
+    }
+
+    void title_sequence_manager_rename(size_t i, const utf8 * newName)
+    {
+        TitleSequenceManager::RenameItem(i, newName);
     }
 }
