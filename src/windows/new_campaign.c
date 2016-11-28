@@ -42,17 +42,17 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 };
 
 static rct_widget window_new_campaign_widgets[] = {
-	{ WWT_FRAME,			0,		0,		349,	0,		106,		0xFFFFFFFF,										STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,		1,		348,	1,		14,			0,												STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,		337,	347,	2,		13,			STR_CLOSE_X,									STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_24,				0,		0,		139,	24,		35,			0,												STR_NONE },				// ride label
-	{ WWT_DROPDOWN,			0,		100,	341,	24,		35,			0,												STR_NONE },				// ride dropdown
-	{ WWT_DROPDOWN_BUTTON,	0,		330,	340,	25,		34,			STR_DROPDOWN_GLYPH,								STR_NONE },				// ride dropdown button
-	{ WWT_24,				0,		0,		139,	41,		52,			STR_LENGTH_OF_TIME,								STR_NONE },				// weeks label
-	{ WWT_SPINNER,			0,		120,	219,	41,		52,			0,												STR_NONE },				// weeks
-	{ WWT_DROPDOWN_BUTTON,	0,		208,	218,	42,		46,			STR_NUMERIC_UP,									STR_NONE },				// weeks +
-	{ WWT_DROPDOWN_BUTTON,	0,		208,	218,	47,		51,			STR_NUMERIC_DOWN,								STR_NONE },				// weeks -
-	{ WWT_DROPDOWN_BUTTON,	0,		14,		335,	89,		100,		STR_MARKETING_START_THIS_MARKETING_CAMPAIGN,	STR_NONE },				// start button
+	{ WWT_FRAME,			0,		0,		349,	0,		106,		{0xFFFFFFFF},										STR_NONE },				// panel / background
+	{ WWT_CAPTION,			0,		1,		348,	1,		14,			{0},												STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,			0,		337,	347,	2,		13,			{STR_CLOSE_X},									STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_24,				0,		0,		139,	24,		35,			{0},												STR_NONE },				// ride label
+	{ WWT_DROPDOWN,			0,		100,	341,	24,		35,			{0},												STR_NONE },				// ride dropdown
+	{ WWT_DROPDOWN_BUTTON,	0,		330,	340,	25,		34,			{STR_DROPDOWN_GLYPH},								STR_NONE },				// ride dropdown button
+	{ WWT_24,				0,		0,		139,	41,		52,			{STR_LENGTH_OF_TIME},								STR_NONE },				// weeks label
+	{ WWT_SPINNER,			0,		120,	219,	41,		52,			{0},												STR_NONE },				// weeks
+	{ WWT_DROPDOWN_BUTTON,	0,		208,	218,	42,		46,			{STR_NUMERIC_UP},									STR_NONE },				// weeks +
+	{ WWT_DROPDOWN_BUTTON,	0,		208,	218,	47,		51,			{STR_NUMERIC_DOWN},								STR_NONE },				// weeks -
+	{ WWT_DROPDOWN_BUTTON,	0,		14,		335,	89,		100,		{STR_MARKETING_START_THIS_MARKETING_CAMPAIGN},	STR_NONE },				// start button
 	{ WIDGETS_END }
 };
 

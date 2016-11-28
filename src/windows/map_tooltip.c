@@ -20,7 +20,7 @@
 #include "../interface/window.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
+	{ WWT_IMGBTN, 0, 0, 199, 0, 29, {0xFFFFFFFF}, STR_NONE },
 	{ WIDGETS_END }
 };
 

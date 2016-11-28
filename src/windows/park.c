@@ -80,29 +80,29 @@ enum WINDOW_PARK_WIDGET_IDX {
 #pragma region Widgets
 
 #define MAIN_PARK_WIDGETS \
-	{ WWT_FRAME,			0,	0,		229,	0,		223,	0xFFFFFFFF,						STR_NONE },						/* panel / background */	\
-	{ WWT_CAPTION,			0,	1,		228,	1,		14,		STR_STRINGID,					STR_WINDOW_TITLE_TIP },			/* title bar		  */	\
-	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },			/* close x button	  */	\
-	{ WWT_RESIZE,			1,	0,		229,	43,		173,	0xFFFFFFFF,						STR_NONE },						/* tab content panel  */	\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,			STR_PARK_ENTRANCE_TAB_TIP },	/* tab 1			  */	\
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,			STR_PARK_RATING_TAB_TIP },		/* tab 2			  */	\
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,			STR_PARK_GUESTS_TAB_TIP },		/* tab 3			  */	\
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,			STR_PARK_PRICE_TAB_TIP },		/* tab 4			  */	\
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,			STR_PARK_STATS_TAB_TIP },		/* tab 5			  */	\
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,			STR_PARK_OBJECTIVE_TAB_TIP },	/* tab 6			  */	\
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x20000000 | SPR_TAB,			STR_PARK_AWARDS_TAB_TIP }		/* tab 7			  */
+	{ WWT_FRAME,			0,	0,		229,	0,		223,	{0xFFFFFFFF},					STR_NONE },						/* panel / background */	\
+	{ WWT_CAPTION,			0,	1,		228,	1,		14,		{STR_STRINGID},					STR_WINDOW_TITLE_TIP },			/* title bar		  */	\
+	{ WWT_CLOSEBOX,			0,	217,	227,	2,		13,		{STR_CLOSE_X},					STR_CLOSE_WINDOW_TIP },			/* close x button	  */	\
+	{ WWT_RESIZE,			1,	0,		229,	43,		173,	{0xFFFFFFFF},					STR_NONE },						/* tab content panel  */	\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_ENTRANCE_TAB_TIP },	/* tab 1			  */	\
+	{ WWT_TAB,				1,	34,		64,		17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_RATING_TAB_TIP },		/* tab 2			  */	\
+	{ WWT_TAB,				1,	65,		95,		17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_GUESTS_TAB_TIP },		/* tab 3			  */	\
+	{ WWT_TAB,				1,	96,		126,	17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_PRICE_TAB_TIP },		/* tab 4			  */	\
+	{ WWT_TAB,				1,	127,	157,	17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_STATS_TAB_TIP },		/* tab 5			  */	\
+	{ WWT_TAB,				1,	158,	188,	17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_OBJECTIVE_TAB_TIP },	/* tab 6			  */	\
+	{ WWT_TAB,				1,	189,	219,	17,		43,		{0x20000000 | SPR_TAB},			STR_PARK_AWARDS_TAB_TIP }		/* tab 7			  */
 
 static rct_widget window_park_entrance_widgets[] = {
 	MAIN_PARK_WIDGETS,
-	{ WWT_VIEWPORT,			1,	3,		204,	46,		160,	0xFFFFFFFF,						STR_NONE },							// viewport
-	{ WWT_12,				1,	3,		204,	161,	171,	0xFFFFFFFF,						STR_NONE },							// status
-	{ WWT_FLATBTN,			1,	205,	228,	49,		72,		0xFFFFFFFF,						STR_OPEN_OR_CLOSE_PARK_TIP },		// open / close
-	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		SPR_BUY_LAND_RIGHTS,			STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP },			// buy land rights
+	{ WWT_VIEWPORT,			1,	3,		204,	46,		160,	{0xFFFFFFFF},						STR_NONE },							// viewport
+	{ WWT_12,				1,	3,		204,	161,	171,	{0xFFFFFFFF},						STR_NONE },							// status
+	{ WWT_FLATBTN,			1,	205,	228,	49,		72,		{0xFFFFFFFF},						STR_OPEN_OR_CLOSE_PARK_TIP },		// open / close
+	{ WWT_FLATBTN,			1,	205,	228,	73,		96,		{SPR_BUY_LAND_RIGHTS},			STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP },			// buy land rights
 	//{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_BUY_CONSTRUCTION_RIGHTS,	STR_BUY_CONSTRUCTION_RIGHTS_TIP },	// buy construction rights
-	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	SPR_LOCATE,						STR_LOCATE_SUBJECT_TIP },			// locate
-	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	SPR_RENAME,						STR_NAME_PARK_TIP },				// rename
-	{ WWT_IMGBTN,			1,	210,	223,	51,		65,		SPR_G2_RCT1_CLOSE_BUTTON_0,		STR_CLOSE_PARK_TIP },
-	{ WWT_IMGBTN,			1,	210,	223,	66,		79,		SPR_G2_RCT1_OPEN_BUTTON_0,		STR_OPEN_PARK_TIP },
+	{ WWT_FLATBTN,			1,	205,	228,	97,		120,	{SPR_LOCATE},						STR_LOCATE_SUBJECT_TIP },			// locate
+	{ WWT_FLATBTN,			1,	205,	228,	121,	144,	{SPR_RENAME},						STR_NAME_PARK_TIP },				// rename
+	{ WWT_IMGBTN,			1,	210,	223,	51,		65,		{SPR_G2_RCT1_CLOSE_BUTTON_0},		STR_CLOSE_PARK_TIP },
+	{ WWT_IMGBTN,			1,	210,	223,	66,		79,		{SPR_G2_RCT1_OPEN_BUTTON_0},		STR_OPEN_PARK_TIP },
 	{ WIDGETS_END },
 };
 
@@ -118,10 +118,10 @@ static rct_widget window_park_guests_widgets[] = {
 
 static rct_widget window_park_price_widgets[] = {
 	MAIN_PARK_WIDGETS,
-	{ WWT_24,				1,	7,		146,	50,		61,		STR_ADMISSION_PRICE,			STR_NONE },							//
-	{ WWT_SPINNER,			1,	147,	222,	50,		61,		STR_ARG_6_CURRENCY2DP,			STR_NONE },							// price
-	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	51,		55,		STR_NUMERIC_UP,					STR_NONE },							// increase price
-	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	56,		60,		STR_NUMERIC_DOWN,				STR_NONE },							// decrease price
+	{ WWT_24,				1,	7,		146,	50,		61,		{STR_ADMISSION_PRICE},			STR_NONE },							//
+	{ WWT_SPINNER,			1,	147,	222,	50,		61,		{STR_ARG_6_CURRENCY2DP},			STR_NONE },							// price
+	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	51,		55,		{STR_NUMERIC_UP},					STR_NONE },							// increase price
+	{ WWT_DROPDOWN_BUTTON,	1,	211,	221,	56,		60,		{STR_NUMERIC_DOWN},				STR_NONE },							// decrease price
 	{ WIDGETS_END },
 };
 
@@ -132,7 +132,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
 	MAIN_PARK_WIDGETS,
-	{ WWT_DROPDOWN_BUTTON,	1,	7,		222,	209,	220,	STR_ENTER_NAME_INTO_SCENARIO_CHART,			STR_NONE },				// enter name
+	{ WWT_DROPDOWN_BUTTON,	1,	7,		222,	209,	220,	{STR_ENTER_NAME_INTO_SCENARIO_CHART},			STR_NONE },				// enter name
 	{ WIDGETS_END },
 };
 

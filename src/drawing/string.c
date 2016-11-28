@@ -49,7 +49,7 @@ typedef struct ttf_cache_entry {
 	uint32 lastUseTick;
 } ttf_cache_entry;
 
-static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { 0 };
+static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { {0} };
 static int _ttfSurfaceCacheCount = 0;
 static int _ttfSurfaceCacheHitCount = 0;
 static int _ttfSurfaceCacheMissCount = 0;
@@ -61,7 +61,7 @@ typedef struct ttf_getwidth_cache_entry {
 	uint32 lastUseTick;
 } ttf_getwidth_cache_entry;
 
-static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0 };
+static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { {0} };
 static int _ttfGetWidthCacheCount = 0;
 static int _ttfGetWidthCacheHitCount = 0;
 static int _ttfGetWidthCacheMissCount = 0;

@@ -437,8 +437,8 @@ static void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, ui
 {
 	registers regs;
 
-	rct_xy8 offset = {0, 0};
-	rct_xy8 bounds = {0, 0};
+	rct_xy8 offset = {{{0, 0}}};
+	rct_xy8 bounds = {{{0, 0}}};
 	switch (edge) {
 		case EDGE_TOPLEFT:
 			regs.al = self.corner_heights.top;
@@ -533,8 +533,8 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 {
 	registers regs;
 
-	rct_xy8 offset = {0, 0};
-	rct_xy8 bounds = {0, 0};
+	rct_xy8 offset = {{{0, 0}}};
+	rct_xy8 bounds = {{{0, 0}}};
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
@@ -693,8 +693,8 @@ static void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, u
 {
 	registers regs;
 
-	rct_xy8 offset = {0, 0};
-	rct_xy8 bounds = {0, 0};
+	rct_xy8 offset = {{{0, 0}}};
+	rct_xy8 bounds = {{{0, 0}}};
 	switch (edge) {
 		case EDGE_TOPLEFT:
 			regs.al = self.corner_heights.top;
@@ -795,8 +795,8 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 {
 	registers regs;
 
-	rct_xy8 offset = {0, 0};
-	rct_xy8 bounds = {0, 0};
+	rct_xy8 offset = {{{0, 0}}};
+	rct_xy8 bounds = {{{0, 0}}};
 	rct_xy16 tunnelBounds = {1, 1};
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
@@ -1243,7 +1243,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 							local_height = waterHeight;
 							local_surfaceShape = 0;
 						} else {
-							registers regs = { 0 };
+							registers regs = { {0} };
 
 							regs.bl = (surfaceShape ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
@@ -1389,7 +1389,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		// Owned land boundary fences
 		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
-		registers regs = { 0 };
+		registers regs = { {0} };
 		regs.al = mapElement->properties.surface.ownership & 0x0F;
 		regs.ax = regs.ax << rotation;
 		regs.ah = regs.al >> 4;
@@ -1419,7 +1419,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 					image_1 = 22872;
 					image_2 = 22876;
 					image_3 = 22874;
-					offset = (rct_xy8) {1, 31};
+					offset = (rct_xy8) {{{1, 31}}};
 					box_size = (struct rct_xy16) {.x=30, .y=1};
 					box_offset = (struct rct_xy16) {.x=1, .y=31};
 					break;
@@ -1433,7 +1433,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 					image_1 = 22873;
 					image_2 = 22877;
 					image_3 = 22875;
-					offset = (rct_xy8) {31, 0};
+					offset = (rct_xy8) {{{31, 0}}};
 					box_size = (struct rct_xy16) {.x=1, .y=30};
 					box_offset = (struct rct_xy16) {.x=31, .y=1};
 					break;
@@ -1447,7 +1447,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 					image_1 = 22872;
 					image_2 = 22874;
 					image_3 = 22876;
-					offset = (rct_xy8) {1, 0};
+					offset = (rct_xy8) {{{1, 0}}};
 					box_size = (struct rct_xy16) {30, 1};
 					box_offset = (struct rct_xy16) {1, 1};
 					// TODO: Fences on top tile get clipped after a while
@@ -1462,7 +1462,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 					image_1 = 22873;
 					image_2 = 22875;
 					image_3 = 22877;
-					offset = (rct_xy8) {1, 1};
+					offset = (rct_xy8) {{{1, 1}}};
 					box_size = (struct rct_xy16) {1, 30};
 					box_offset = (struct rct_xy16) {1, 1};
 					break;

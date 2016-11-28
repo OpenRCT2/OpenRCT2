@@ -50,17 +50,17 @@ enum {
 
 // 0x9DE48C
 static rct_widget window_loadsave_widgets[] = {
-	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		STR_NONE,							STR_NONE },
-	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			STR_NONE,							STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },		//Window close button
-	{ WWT_CLOSEBOX,		0,		4,					84,				36,			47,			STR_LOADSAVE_DEFAULT,				STR_LOADSAVE_DEFAULT_TIP },	// Go to default directory
-	{ WWT_CLOSEBOX,		0,		85,					165,			36,			47,			STR_FILEBROWSER_ACTION_UP,			STR_NONE},					// Up
-	{ WWT_CLOSEBOX,		0,		166,				246,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FOLDER,	STR_NONE },					// New
-	{ WWT_CLOSEBOX,		0,		247,				328,			36,			47,			STR_FILEBROWSER_ACTION_NEW_FILE,	STR_NONE },					// New
-	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			STR_NONE,							STR_NONE },					// Name
-	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			STR_NONE,							STR_NONE },					// Date
-	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	SCROLL_VERTICAL,					STR_NONE },					// File list
-	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	STR_FILEBROWSER_USE_SYSTEM_WINDOW,	STR_NONE },					// Use native browser
+	{ WWT_FRAME,		0,		0,					WW - 1,			0,			WH - 1,		{STR_NONE},							STR_NONE },
+	{ WWT_CAPTION,		0,		1,					WW - 2,			1,			14,			{STR_NONE},							STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,		0,		WW - 13,			WW - 3,			2,			13,			{STR_CLOSE_X},						STR_CLOSE_WINDOW_TIP },		//Window close button
+	{ WWT_CLOSEBOX,		0,		4,					84,				36,			47,			{STR_LOADSAVE_DEFAULT},				STR_LOADSAVE_DEFAULT_TIP },	// Go to default directory
+	{ WWT_CLOSEBOX,		0,		85,					165,			36,			47,			{STR_FILEBROWSER_ACTION_UP},			STR_NONE},					// Up
+	{ WWT_CLOSEBOX,		0,		166,				246,			36,			47,			{STR_FILEBROWSER_ACTION_NEW_FOLDER},	STR_NONE },					// New
+	{ WWT_CLOSEBOX,		0,		247,				328,			36,			47,			{STR_FILEBROWSER_ACTION_NEW_FILE},	STR_NONE },					// New
+	{ WWT_CLOSEBOX,		0,		4,					(WW - 5) / 2,	50,			61,			{STR_NONE},							STR_NONE },					// Name
+	{ WWT_CLOSEBOX,		0,		(WW - 5) / 2 + 1,	WW - 5 - 1,		50,			61,			{STR_NONE},							STR_NONE },					// Date
+	{ WWT_SCROLL,		0,		4,					WW - 5,			61,			WH - 40,	{SCROLL_VERTICAL},					STR_NONE },					// File list
+	{ WWT_CLOSEBOX,		0,		4,					200,			WH - 36,	WH - 18,	{STR_FILEBROWSER_USE_SYSTEM_WINDOW},	STR_NONE },					// Use native browser
 	{ WIDGETS_END }
 };
 
@@ -889,11 +889,11 @@ enum {
 };
 
 static rct_widget window_overwrite_prompt_widgets[] = {
-	{ WWT_FRAME,			0, 0,					OVERWRITE_WW - 1,	0,					OVERWRITE_WH - 1,	STR_NONE,							STR_NONE },
-	{ WWT_CAPTION,			0, 1,					OVERWRITE_WW - 2,	1,					14,					STR_FILEBROWSER_OVERWRITE_TITLE,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0, OVERWRITE_WW - 13,	OVERWRITE_WW - 3,	2,					13,					STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
-	{ WWT_DROPDOWN_BUTTON,	0, 10,					94,					OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	STR_FILEBROWSER_OVERWRITE_TITLE,	STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	0, OVERWRITE_WW - 95,	OVERWRITE_WW - 11,	OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	STR_SAVE_PROMPT_CANCEL, 			STR_NONE },
+	{ WWT_FRAME,			0, 0,					OVERWRITE_WW - 1,	0,					OVERWRITE_WH - 1,	{STR_NONE},							STR_NONE },
+	{ WWT_CAPTION,			0, 1,					OVERWRITE_WW - 2,	1,					14,					{STR_FILEBROWSER_OVERWRITE_TITLE},	STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0, OVERWRITE_WW - 13,	OVERWRITE_WW - 3,	2,					13,					{STR_CLOSE_X},						STR_CLOSE_WINDOW_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0, 10,					94,					OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	{STR_FILEBROWSER_OVERWRITE_TITLE},	STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	0, OVERWRITE_WW - 95,	OVERWRITE_WW - 11,	OVERWRITE_WH - 20,	OVERWRITE_WH - 9,	{STR_SAVE_PROMPT_CANCEL}, 			STR_NONE },
 	{ WIDGETS_END }
 };
 

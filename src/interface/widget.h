@@ -49,7 +49,7 @@ typedef enum {
 	WWT_TEXT_BOX = 27,
 	WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
-#define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+#define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, {0}, 0
 
 enum {
 	SCROLL_HORIZONTAL = (1 << 0),

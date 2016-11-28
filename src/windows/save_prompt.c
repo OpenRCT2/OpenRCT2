@@ -35,13 +35,13 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 };
 
 static rct_widget window_save_prompt_widgets[] = {
-	{ WWT_FRAME,			0,	0,		259,	0,	49,	STR_NONE,					STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		258,	1,	14,	0,							STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_12,				0,	2,		257,	19,	30,	0,							STR_NONE },					// question/label
-	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	STR_SAVE_PROMPT_SAVE,		STR_NONE },		// save
-	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	STR_SAVE_PROMPT_DONT_SAVE,	STR_NONE },		// don't save
-	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	STR_SAVE_PROMPT_CANCEL,		STR_NONE },		// cancel
+	{ WWT_FRAME,			0,	0,		259,	0,	49,	{STR_NONE},					STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		258,	1,	14,	{0},							STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	247,	257,	2,	13,	{STR_CLOSE_X},				STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_12,				0,	2,		257,	19,	30,	{0},							STR_NONE },					// question/label
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		35,	46,	{STR_SAVE_PROMPT_SAVE},		STR_NONE },		// save
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	35,	46,	{STR_SAVE_PROMPT_DONT_SAVE},	STR_NONE },		// don't save
+	{ WWT_DROPDOWN_BUTTON,	0,	174,	251,	35,	46,	{STR_SAVE_PROMPT_CANCEL},		STR_NONE },		// cancel
 	{ WIDGETS_END },
 };
 
@@ -54,11 +54,11 @@ enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
 };
 
 static rct_widget window_quit_prompt_widgets[] = {
-	{ WWT_FRAME,			0,	0,		176,	0,	33,	STR_NONE,					STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		175,	1,	14,	STR_QUIT_GAME_PROMPT_TITLE,	STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	164,	174,	2,	13,	STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		19,	30,	STR_OK,						STR_NONE },		// ok
-	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	19,	30,	STR_CANCEL,					STR_NONE },		// cancel
+	{ WWT_FRAME,			0,	0,		176,	0,	33,	{STR_NONE},					STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		175,	1,	14,	{STR_QUIT_GAME_PROMPT_TITLE},	STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	164,	174,	2,	13,	{STR_CLOSE_X},				STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_DROPDOWN_BUTTON,	0,	8,		85,		19,	30,	{STR_OK},						STR_NONE },		// ok
+	{ WWT_DROPDOWN_BUTTON,	0,	91,		168,	19,	30,	{STR_CANCEL},					STR_NONE },		// cancel
 	{ WIDGETS_END },
 };
 

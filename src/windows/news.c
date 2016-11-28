@@ -33,11 +33,11 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		299,	0xFFFFFFFF,				STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_RECENT_MESSAGES,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		SPR_TAB_GEARS_0,		STR_NONE },				// settings
-	{ WWT_SCROLL,			0,	4,			395,	44,		295,	SCROLL_VERTICAL,						STR_NONE },				// scroll
+	{ WWT_FRAME,			0,	0,			399,	0,		299,	{0xFFFFFFFF},				STR_NONE },				// panel / background
+	{ WWT_CAPTION,			0,	1,			398,	1,		14,		{STR_RECENT_MESSAGES},	STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		{STR_CLOSE_X},			STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		{SPR_TAB_GEARS_0},		STR_NONE },				// settings
+	{ WWT_SCROLL,			0,	4,			395,	44,		295,	{SCROLL_VERTICAL},						STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 

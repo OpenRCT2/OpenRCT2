@@ -29,11 +29,11 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 };
 
 rct_widget window_about_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		329,	0xFFFFFFFF,								STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_ROLLERCOASTER_TYCOON_2,				STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_DROPDOWN_BUTTON,	1,	100,		299,	230,	241,	STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS,	STR_NONE },				// music credits button
-	{ WWT_DROPDOWN_BUTTON,	1,	157,		356,	307,	318,	STR_INFOGRAMES_INTERACTIVE_CREDITS,		STR_NONE },				// infogrames credits button
+	{ WWT_FRAME,			0,	0,			399,	0,		329,	{0xFFFFFFFF},								STR_NONE },				// panel / background
+	{ WWT_CAPTION,			0,	1,			398,	1,		14,		{STR_ROLLERCOASTER_TYCOON_2},				STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		{STR_CLOSE_X},							STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_DROPDOWN_BUTTON,	1,	100,		299,	230,	241,	{STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS},	STR_NONE },				// music credits button
+	{ WWT_DROPDOWN_BUTTON,	1,	157,		356,	307,	318,	{STR_INFOGRAMES_INTERACTIVE_CREDITS},		STR_NONE },				// infogrames credits button
 	{ WIDGETS_END },
 };
 

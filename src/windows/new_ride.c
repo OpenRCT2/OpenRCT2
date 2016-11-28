@@ -178,22 +178,22 @@ enum {
 };
 
 static rct_widget window_new_ride_widgets[] = {
-	{ WWT_FRAME,			0,	0,		600,	0,		369,	0xFFFFFFFF,								STR_NONE							},
-	{ WWT_CAPTION,			0,	1,		599,	1,		14,		0xFFFFFFFF,								STR_WINDOW_TITLE_TIP				},
-	{ WWT_CLOSEBOX,			0,	588,	598,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP				},
-	{ WWT_RESIZE,			1,	0,		600,	43,		369,	0xFFFFFFFF,								STR_NONE							},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_TRANSPORT_RIDES_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_GENTLE_RIDES_TIP				},
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_ROLLER_COASTERS_TIP				},
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,					STR_THRILL_RIDES_TIP				},
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,					STR_WATER_RIDES_TIP					},
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,					STR_SHOPS_STALLS_TIP				},
-	{ WWT_TAB,				1,	189,	219,	17,		43,		0x20000000 | SPR_TAB,					STR_RESEARCH_AND_DEVELOPMENT_TIP	},
-	{ WWT_SCROLL,			1,	3,		597,	46,		317,	SCROLL_VERTICAL,									STR_NONE							},
-	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	STR_CURRENTLY_IN_DEVELOPMENT,			STR_NONE							},
-	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	STR_LAST_DEVELOPMENT,					STR_NONE							},
-	{ WWT_FLATBTN,			2,	265,	288,	161,	184,	0xFFFFFFFF,								STR_RESEARCH_SHOW_DETAILS_TIP		},
-	{ WWT_FLATBTN,			2,	265,	288,	68,		91,		SPR_FINANCE,							STR_FINANCES_RESEARCH_TIP			},
+	{ WWT_FRAME,			0,	0,		600,	0,		369,	{0xFFFFFFFF},								STR_NONE							},
+	{ WWT_CAPTION,			0,	1,		599,	1,		14,		{0xFFFFFFFF},								STR_WINDOW_TITLE_TIP				},
+	{ WWT_CLOSEBOX,			0,	588,	598,	2,		13,		{STR_CLOSE_X},							STR_CLOSE_WINDOW_TIP				},
+	{ WWT_RESIZE,			1,	0,		600,	43,		369,	{0xFFFFFFFF},								STR_NONE							},
+	{ WWT_TAB,				1,	3,		33,		17,		43,		{0x20000000 | SPR_TAB},					STR_TRANSPORT_RIDES_TIP				},
+	{ WWT_TAB,				1,	34,		64,		17,		43,		{0x20000000 | SPR_TAB},					STR_GENTLE_RIDES_TIP				},
+	{ WWT_TAB,				1,	65,		95,		17,		43,		{0x20000000 | SPR_TAB},					STR_ROLLER_COASTERS_TIP				},
+	{ WWT_TAB,				1,	96,		126,	17,		43,		{0x20000000 | SPR_TAB},					STR_THRILL_RIDES_TIP				},
+	{ WWT_TAB,				1,	127,	157,	17,		43,		{0x20000000 | SPR_TAB},					STR_WATER_RIDES_TIP					},
+	{ WWT_TAB,				1,	158,	188,	17,		43,		{0x20000000 | SPR_TAB},					STR_SHOPS_STALLS_TIP				},
+	{ WWT_TAB,				1,	189,	219,	17,		43,		{0x20000000 | SPR_TAB},					STR_RESEARCH_AND_DEVELOPMENT_TIP	},
+	{ WWT_SCROLL,			1,	3,		597,	46,		317,	{SCROLL_VERTICAL},									STR_NONE							},
+	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	{STR_CURRENTLY_IN_DEVELOPMENT},			STR_NONE							},
+	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	{STR_LAST_DEVELOPMENT},					STR_NONE							},
+	{ WWT_FLATBTN,			2,	265,	288,	161,	184,	{0xFFFFFFFF},								STR_RESEARCH_SHOW_DETAILS_TIP		},
+	{ WWT_FLATBTN,			2,	265,	288,	68,		91,		{SPR_FINANCE},							STR_FINANCES_RESEARCH_TIP			},
 	{ WIDGETS_END },
 };
 
@@ -287,7 +287,7 @@ void window_new_ride_init_vars()
 		Reset what is highlighted in each tab.
 		Each 16bit number represents the item in its respective tab.
 		*/
-		_windowNewRideHighlightedItem[i] = (ride_list_item){ 255, 255 };
+		_windowNewRideHighlightedItem[i] = (ride_list_item){ {{255, 255}} };
 	}
 }
 

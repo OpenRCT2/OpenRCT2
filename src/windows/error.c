@@ -27,7 +27,7 @@ enum {
 };
 
 static rct_widget window_error_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 199, 0, 41, 0xFFFFFFFF, STR_NONE },
+	{ WWT_IMGBTN, 0, 0, 199, 0, 41, {0xFFFFFFFF}, STR_NONE },
 	{ WIDGETS_END }
 };
 

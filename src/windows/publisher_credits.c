@@ -26,10 +26,10 @@ enum WINDOW_PUBLISHER_CREDITS_WIDGET_IDX {
 };
 
 rct_widget window_publisher_credits_widgets[] = {
-	{WWT_FRAME,    0, 0,   419, 0,  383, 0xFFFFFFFF, STR_NONE},                // panel / background
-	{WWT_CAPTION,  0, 1,   418, 1,  14,  STR_ROLLERCOASTER_TYCOON_2,	STR_WINDOW_TITLE_TIP },	// title bar
-	{WWT_CLOSEBOX, 0, 407, 417, 2,  13,  STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
-	{WWT_SCROLL,   0, 4,   415, 18, 379, SCROLL_VERTICAL,         STR_NONE },				// scroll
+	{WWT_FRAME,    0, 0,   419, 0,  383, {0xFFFFFFFF}, STR_NONE},                // panel / background
+	{WWT_CAPTION,  0, 1,   418, 1,  14,  {STR_ROLLERCOASTER_TYCOON_2},	STR_WINDOW_TITLE_TIP },	// title bar
+	{WWT_CLOSEBOX, 0, 407, 417, 2,  13,  {STR_CLOSE_X},				STR_CLOSE_WINDOW_TIP },	// close x button
+	{WWT_SCROLL,   0, 4,   415, 18, 379, {SCROLL_VERTICAL},         STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
