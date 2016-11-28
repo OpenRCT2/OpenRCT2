@@ -5798,7 +5798,7 @@ static void update_same_price_throughout_flags(uint32 shop_item)
 {
 	uint32 newFlags;
 
-	if (shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4) {
+	if (shop_item_is_photo(shop_item)) {
 		newFlags = gSamePriceThroughoutParkA;
 		newFlags ^= (1 << SHOP_ITEM_PHOTO);
 		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
