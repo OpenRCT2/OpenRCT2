@@ -144,6 +144,11 @@ extern "C"
             window_changelog_open();
         }
 
+        if (_sequencePlayer != nullptr)
+        {
+            _sequencePlayer->Reset();
+        }
+
         log_verbose("loading title finished");
     }
 

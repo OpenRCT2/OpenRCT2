@@ -192,7 +192,7 @@ static rct_widget window_title_editor_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static size_t _selectedTitleSequence = SIZE_MAX;
+static size_t _selectedTitleSequence = 0;
 static bool _isSequenceReadOnly;
 static TitleSequence * _editingTitleSequence = NULL;
 static bool _isSequencePlaying = false;
@@ -272,7 +272,10 @@ void window_title_editor_open(int tab)
 	window->max_width = 500;
 	window->max_height = 450;
 
-	window_title_editor_load_sequence(0);
+	if (_selectedTitleSequence >= title_sequence_manager_get_count()) {
+		_selectedTitleSequence = 0;
+	}
+	window_title_editor_load_sequence(_selectedTitleSequence);
 }
 
 static void window_title_editor_close(rct_window *w)
@@ -282,6 +285,11 @@ static void window_title_editor_close(rct_window *w)
 	if (gLoadSaveTitleSequenceSave) {
 		window_close_by_class(WC_LOADSAVE);
 	}
+
+	FreeTitleSequence(_editingTitleSequence);
+	_editingTitleSequence = NULL;
+	_isSequencePlaying = false;
+	_sequenceName = NULL;
 }
 
 static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
@@ -347,19 +355,17 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_LOAD:
-		if (w->selected_list_item != -1) {
-			utf8 path[MAX_PATH];
-			if (str_is_null_or_empty(_editingTitleSequence->Path)) {
-				safe_strcpy(path, _editingTitleSequence->Path, sizeof(path));
+		if (w->selected_list_item >= 0 && w->selected_list_item < _editingTitleSequence->NumSaves) {
+			TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
+			if (handle->IsScenario) {
+				scenario_load_rw(handle->RWOps);
+				scenario_begin();
 			} else {
-				// TODO: This should probably use a constant
-				platform_get_user_directory(path, "title sequences", sizeof(path));
-				safe_strcat_path(path, _editingTitleSequence->Name, sizeof(path));
+				game_load_sv6(handle->RWOps);
+				game_load_init();
 			}
-
-			safe_strcat_path(path, _editingTitleSequence->Saves[w->selected_list_item], sizeof(path));
-			game_load_save(path);
-			window_title_editor_open(1);
+			TitleSequenceCloseParkHandle(handle);
+			window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
 		}
 		break;
 
@@ -941,6 +947,7 @@ static void window_title_editor_load_sequence(size_t index)
 	uint16 predefinedIndex = title_sequence_manager_get_predefined_index(index);
 	_isSequenceReadOnly = (predefinedIndex != UINT16_MAX);
 	_sequenceName = title_sequence_manager_get_name(index);
+	FreeTitleSequence(_editingTitleSequence);
 	_editingTitleSequence = titleSequence;
 }
 

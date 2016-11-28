@@ -36,7 +36,7 @@
 
 rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 rct_window * gWindowFirst;
-rct_window * gWindowNextSlot;
+rct_window * gWindowNextSlot = NULL;
 rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
