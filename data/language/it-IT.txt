@@ -525,7 +525,7 @@ STR_0520    :Una piattaforma dalla quale i passeggeri possono guidare una piccol
 STR_0521    :Un ottovolante veloce e snodato con curve strette e discese ripide. L'intensità non può essere che alta.
 STR_0522    :Un piccolo ottovolante dove i passeggeri siedono sopra al percorso senza un vagone attorno
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
-STR_0524    :Le macchine in caduta libera sono lanciate pneumaticamente su una torre alta di acciaio e poi scendono in caduta libera
+STR_0524    :I carrelli sono lanciati pneumaticamente su un'alta torre di acciaio e poi sono lasciati cadere liberamente
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
 STR_0526    :I passeggeri viaggiano in una cabina di osservazione rotante mentre salgono su un'alta torre
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
@@ -591,7 +591,7 @@ STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratteriz
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :I visitatori viaggiano in un sottomarino attraverso una percorso sottacqua
+STR_0590    :I visitatori viaggiano in un sottomarino attraverso un percorso subacqueo
 STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
@@ -601,9 +601,9 @@ STR_0596    :
 STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
-STR_0600    :La ferrovia della miniera potenziata che percorre un percorso morbido e emozionante
+STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
 STR_0601    :
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0602    :I treni dell'ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Visitatore {INT32}
 STR_0604    :Visitatore {INT32}
 STR_0605    :Visitatore {INT32}
@@ -4190,7 +4190,7 @@ STR_5875    :Motore di rendering:
 STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica del gioco.
 STR_5877    :Software
 STR_5878    :Software (display hardware)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (sperimentale)
 STR_5880    :Solo selezionati
 STR_5881    :Solo non selezionati
 STR_5882    :Valuta personalizzata
@@ -4303,6 +4303,10 @@ STR_5987    :Impossibile creare la cartella
 STR_5988    :{SMALLFONT}{BLACK}Non vi sono ulteriori terreni in vendita
 STR_5989    :{SMALLFONT}{BLACK}Non vi sono ulteriori permessi di costruzione in vendita
 STR_5990    :{SMALLFONT}{BLACK}Non vi sono ulteriori terreni né permessi di costruzione in vendita
+STR_5991    :Impossibile incollare l'elemento
+STR_5992    :È stato raggiunto il numero massimo di elementi della mappa
+STR_5993    :{SMALLFONT}{BLACK}Copia elemento selezionato
+STR_5994    :{SMALLFONT}{BLACK}Incolla elemento copiato
 
 
 #############
@@ -4499,17 +4503,17 @@ STR_DTLS    :Quest'area intorno a una diga è pronta per diventare un parco a te
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :Un vasto canyon è tuo per trasformare in un parco a tema
+STR_DTLS    :Un vasto canyon è tuo per trasformarlo in un parco a tema
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :Il clima qui è così umido che è stata costruita una piramide gigante per permettere la costruzione sotterranea di alcune attrazioni
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :L'autorità locale non permette di costruire sopra la linea di altezza degli alberi in questo parco
 
 <Roman Village>
 STR_SCNR    :Roman Village
@@ -4519,17 +4523,17 @@ STR_DTLS    :Sviluppa questo parco a tema romano aggiungendo attrazioni e ottovo
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Costruito parzialmente su una serie di piccole isole, questo parco ha già un paio di ottovolanti come principale attrattiva
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Costruisci un parco per attirare gli amanti del brivido della zona
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :Un'oasi nel mezzo del deserto offre un'opportunità unica per costruire un parco a tema
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
