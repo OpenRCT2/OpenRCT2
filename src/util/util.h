@@ -19,8 +19,6 @@
 
 #include "../common.h"
 
-extern bool gUseRLE;
-
 int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
