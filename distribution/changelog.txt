@@ -31,6 +31,7 @@
 - Improved: In-game file dialog now shows more formats (sv6, sc6, sv4, etc.)
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
+- Fix: [#933] On-ride photo price sometimes gets reset to £2 when using 'same price in whole park'
 - Fix: [#1038] Guest List is out of order.
 - Fix: [#1238] Track place window does not fully adjust to custom colour scheme.
 - Fix: [#2042] Guests entering queues are immediately annoyed when many entertainers are around (original bug).
