@@ -115,6 +115,7 @@ option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags")
 option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla. On by default." ON)
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
+option(WITH_TESTS "Build tests")
 
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment")
 
@@ -406,6 +407,11 @@ install(FILES resources/logo/icon_x128.png DESTINATION share/icons/hicolor/128x1
 install(FILES resources/logo/icon_x256.png DESTINATION share/icons/hicolor/256x256/apps RENAME openrct2.png)
 install(FILES resources/logo/icon_flag.svg DESTINATION share/icons/hicolor/scalable/apps RENAME openrct2.svg)
 install(FILES distribution/linux/openrct2.desktop DESTINATION share/applications)
+
+if (WITH_TESTS)
+	enable_testing()
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/tests/)
+endif ()
 
 if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
 	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")

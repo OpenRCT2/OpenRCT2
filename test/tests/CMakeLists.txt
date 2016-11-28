@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-
+# Bootstrap GoogleTest
 INCLUDE(ExternalProject)
 
 ExternalProject_Add(
@@ -47,11 +47,14 @@ set_property(TARGET ${GTEST_MAIN_LIBRARY} PROPERTY IMPORTED_LOCATION ${GTEST_MAI
 add_dependencies(${GTEST_LIBRARY} googletest)
 add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
-include_directories(${GTEST_INCLUDE_DIR})
+include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
+
+# Start of our tests
 
 set(SAWYERCODING_TEST_SOURCES "sawyercoding_test.cpp" "../../src/diagnostic.c" "../../src/util/sawyercoding.c" "../../src/localisation/utf8.c")
 set (CMAKE_CXX_STANDARD 11)
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding gtest gtest_main pthread)
 target_include_directories(test_sawyercoding PUBLIC "../../src")
-target_include_directories(test_sawyercoding PUBLIC "/usr/include/SDL2")
+add_test(NAME sawyercoding
+	COMMAND test_sawyercoding)
