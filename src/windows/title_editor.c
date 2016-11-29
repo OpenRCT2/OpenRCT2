@@ -611,10 +611,11 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
 					title_sequence_create_preset(text);
 				} else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
-					// title_sequence_duplicate_preset(_selectedTitleSequence, text);
+					size_t newIndex = title_sequence_manager_duplicate(_selectedTitleSequence, text);
+					window_title_editor_load_sequence(newIndex);
 				} else {
-					title_sequence_manager_rename(_selectedTitleSequence, text);
-					_sequenceName = title_sequence_manager_get_name(_selectedTitleSequence);
+					size_t newIndex = title_sequence_manager_rename(_selectedTitleSequence, text);
+					window_title_editor_load_sequence(newIndex);
 				}
 				config_save_default();
 				window_invalidate(w);
@@ -936,6 +937,10 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_wind
 
 static void window_title_editor_load_sequence(size_t index)
 {
+	if (index >= title_sequence_manager_get_count()) {
+		return;
+	}
+
 	const char * path = title_sequence_manager_get_path(index);
 	TitleSequence * titleSequence = LoadTitleSequence(path);
 	if (titleSequence == NULL) {

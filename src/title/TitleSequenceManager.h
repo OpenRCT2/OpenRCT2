@@ -35,7 +35,8 @@ namespace TitleSequenceManager
     size_t GetCount();
     const TitleSequenceManagerItem * GetItem(size_t i);
     void DeleteItem(size_t i);
-    void RenameItem(size_t i, const utf8 * newName);
+    size_t RenameItem(size_t i, const utf8 * name);
+    size_t DuplicateItem(size_t i, const utf8 * name);
 }
 
 constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
@@ -52,7 +53,8 @@ extern "C" {
     size_t title_sequence_manager_get_index_for_name(const utf8 * name);
     void title_sequence_manager_scan();
     void title_sequence_manager_delete(size_t i);
-    void title_sequence_manager_rename(size_t i, const utf8 * newName);
+    size_t title_sequence_manager_rename(size_t i, const utf8 * name);
+    size_t title_sequence_manager_duplicate(size_t i, const utf8 * name);
 
 #ifdef __cplusplus
 }

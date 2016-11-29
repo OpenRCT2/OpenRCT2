@@ -57,6 +57,21 @@ namespace Collections
         return SIZE_MAX;
     }
 
+    template<typename TCollection, typename TPred>
+    static size_t IndexOf(TCollection &collection, TPred predicate)
+    {
+        size_t index = 0;
+        for (auto item : collection)
+        {
+            if (predicate(item))
+            {
+                return index;
+            }
+            index++;
+        }
+        return SIZE_MAX;
+    }
+
     #pragma region String helpers
 
     template<typename TCollection>
