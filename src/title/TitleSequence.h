@@ -84,6 +84,7 @@ constexpr const utf8 * TITLE_SEQUENCE_EXTENSION = ".parkseq";
 extern "C"
 {
 #endif
+    TitleSequence * CreateTitleSequence();
     TitleSequence * LoadTitleSequence(const utf8 * path);
     void FreeTitleSequence(TitleSequence * seq);
 

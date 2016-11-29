@@ -37,6 +37,7 @@ namespace TitleSequenceManager
     void DeleteItem(size_t i);
     size_t RenameItem(size_t i, const utf8 * name);
     size_t DuplicateItem(size_t i, const utf8 * name);
+    size_t CreateItem(const utf8 * name);
 }
 
 constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;
@@ -55,6 +56,7 @@ extern "C" {
     void title_sequence_manager_delete(size_t i);
     size_t title_sequence_manager_rename(size_t i, const utf8 * name);
     size_t title_sequence_manager_duplicate(size_t i, const utf8 * name);
+    size_t title_sequence_manager_create(const utf8 * name);
 
 #ifdef __cplusplus
 }

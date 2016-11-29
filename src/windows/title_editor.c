@@ -609,7 +609,8 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 		if (filename_valid_characters(text)) {
 			if (title_sequence_manager_get_index_for_name(text) == SIZE_MAX) {
 				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
-					title_sequence_create_preset(text);
+					size_t newIndex = title_sequence_manager_create(text);
+					window_title_editor_load_sequence(newIndex);
 				} else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) {
 					size_t newIndex = title_sequence_manager_duplicate(_selectedTitleSequence, text);
 					window_title_editor_load_sequence(newIndex);

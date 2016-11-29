@@ -39,6 +39,13 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq);
 
 extern "C"
 {
+    TitleSequence * CreateTitleSequence()
+    {
+        TitleSequence * seq = Memory::Allocate<TitleSequence>();
+        Memory::Set(seq, 0, sizeof(TitleSequence));
+        return seq;
+    }
+
     TitleSequence * LoadTitleSequence(const utf8 * path)
     {
         size_t scriptLength;
@@ -87,7 +94,7 @@ extern "C"
 
         std::vector<TitleCommand> commands = LegacyScriptRead(script, scriptLength, saves);
 
-        TitleSequence * seq = Memory::Allocate<TitleSequence>();
+        TitleSequence * seq = CreateTitleSequence();
         seq->Name = Path::GetFileNameWithoutExtension(path);
         seq->Path = String::Duplicate(path);
         seq->NumSaves = saves.size();

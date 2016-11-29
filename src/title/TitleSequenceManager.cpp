@@ -142,6 +142,31 @@ namespace TitleSequenceManager
         return index;
     }
 
+    size_t CreateItem(const utf8 * name)
+    {
+        utf8 path[MAX_PATH];
+        GetUserSequencesPath(path, sizeof(path));
+        Path::Append(path, sizeof(path), name);
+        String::Append(path, sizeof(path), TITLE_SEQUENCE_EXTENSION);
+
+        TitleSequence * seq = CreateTitleSequence();
+        seq->Name = String::Duplicate(name);
+        seq->Path = String::Duplicate(path);
+        seq->IsZip = true;
+
+        bool success = TileSequenceSave(seq);
+        FreeTitleSequence(seq);
+
+        size_t index = SIZE_MAX;
+        if (success)
+        {
+            AddSequence(path);
+            SortSequences();
+            index = FindItemIndexByPath(path);
+        }
+        return success;
+    }
+
     static const uint16 GetPredefinedIndex(const std::string &path)
     {
         const utf8 * filename = Path::GetFileName(path.c_str());
@@ -345,5 +370,10 @@ extern "C"
     size_t title_sequence_manager_duplicate(size_t i, const utf8 * name)
     {
         return TitleSequenceManager::DuplicateItem(i, name);
+    }
+
+    size_t title_sequence_manager_create(const utf8 * name)
+    {
+        return TitleSequenceManager::CreateItem(name);
     }
 }

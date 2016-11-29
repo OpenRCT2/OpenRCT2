@@ -30,6 +30,13 @@ interface IZipArchive
     virtual const uint64    GetFileSize(size_t index) const abstract;
     virtual void *          GetFileData(const utf8 * path, size_t * outSize) const abstract;
 
+    /**
+     * Creates or overwrites a file within the zip archive to the given data buffer.
+     * @param path The path of the file within the zip.
+     * @param data The data to write, this buffer must not be mutated or disposed until
+     *             the zip archive has been disposed.
+     * @param dataSize The size of the data in bytes.
+     */
     virtual void            SetFileData(const utf8 * path, void * data, size_t dataSize) abstract;
 };
 

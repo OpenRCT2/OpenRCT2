@@ -111,7 +111,6 @@ public:
         {
             zip_replace(_zip, index, source);
         }
-        zip_source_free(source);
     }
 };
 
