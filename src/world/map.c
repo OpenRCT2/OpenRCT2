@@ -3160,7 +3160,6 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		}
 	}
 
-	int bp = quadrant;
 	int zLow = targetHeight / 8;
 	int zHigh = zLow + ceil2(scenery_entry->small_scenery.height, 8) / 8;
 	uint8 collisionQuadrants = 0xF;
