@@ -526,10 +526,10 @@ enum GUEST_LIST_FILTER_TYPE
 };
 
 typedef void (*modal_callback)(int result);
+typedef void (*loadsave_callback)(int result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
-extern bool gLoadSaveTitleSequenceSave;
-extern modal_callback gLoadSaveCallback;
+extern loadsave_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 

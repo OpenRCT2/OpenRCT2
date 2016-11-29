@@ -65,6 +65,7 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo *dpi, rct_wind
 static void window_title_editor_load_sequence(size_t index);
 static ITitleSequencePlayer * window_title_editor_get_player();
 static bool window_title_editor_check_can_edit();
+static void window_title_editor_add_park_callback(int result, const utf8 * path);
 
 static rct_window_event_list window_title_editor_events = {
 	window_title_editor_close,
@@ -113,12 +114,12 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_NEW_BUTTON,
 	WIDX_TITLE_EDITOR_DUPLICATE_BUTTON,
 	WIDX_TITLE_EDITOR_DELETE_BUTTON,
-	WIDX_TITLE_EDITOR_RENAME_BUTTON,
+	WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON,
 
 	// Saves Tab
 	WIDX_TITLE_EDITOR_ADD,
 	WIDX_TITLE_EDITOR_REMOVE,
-	WIDX_TITLE_EDITOR_RENAME,
+	WIDX_TITLE_EDITOR_RENAME_SAVE,
 	WIDX_TITLE_EDITOR_LOAD,
 
 	// Script Tab
@@ -198,6 +199,8 @@ static TitleSequence * _editingTitleSequence = NULL;
 static bool _isSequencePlaying = false;
 static const utf8 * _sequenceName;
 
+static utf8 * _renameSavePath = NULL;
+
 static sint16 _window_title_editor_highlighted_index;
 
 static int window_title_editor_tab_animation_loops[] = {
@@ -238,11 +241,11 @@ void window_title_editor_open(int tab)
 		(1 << WIDX_TITLE_EDITOR_NEW_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_DELETE_BUTTON) |
-		(1 << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
+		(1 << WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON) |
 
 		(1 << WIDX_TITLE_EDITOR_ADD) |
 		(1 << WIDX_TITLE_EDITOR_REMOVE) |
-		(1 << WIDX_TITLE_EDITOR_RENAME) |
+		(1 << WIDX_TITLE_EDITOR_RENAME_SAVE) |
 		(1 << WIDX_TITLE_EDITOR_LOAD) |
 
 		(1 << WIDX_TITLE_EDITOR_INSERT) |
@@ -282,14 +285,14 @@ static void window_title_editor_close(rct_window *w)
 {
 	// Close the related windows
 	window_close_by_class(WC_TITLE_COMMAND_EDITOR);
-	if (gLoadSaveTitleSequenceSave) {
-		window_close_by_class(WC_LOADSAVE);
-	}
 
 	FreeTitleSequence(_editingTitleSequence);
 	_editingTitleSequence = NULL;
 	_isSequencePlaying = false;
 	_sequenceName = NULL;
+
+	free(_renameSavePath);
+	_renameSavePath = NULL;
 }
 
 static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
@@ -320,7 +323,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			window_title_editor_load_sequence(0);
 		}
 		break;
-	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
+	case WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON:
 		if (window_title_editor_check_can_edit()) {
 			window_text_input_open(w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING, (uintptr_t)_editingTitleSequence->Name, 64);
 		}
@@ -332,7 +335,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_ADD:
 		if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-			gLoadSaveTitleSequenceSave = true;
+			gLoadSaveCallback = window_title_editor_add_park_callback;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_REMOVE:
@@ -347,7 +350,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			}
 		}
 		break;
-	case WIDX_TITLE_EDITOR_RENAME:
+	case WIDX_TITLE_EDITOR_RENAME_SAVE:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
 				window_text_input_open(w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING, (uintptr_t)_editingTitleSequence->Saves[w->selected_list_item], 52 - 1);
@@ -605,7 +608,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_NEW_BUTTON:
 	case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
-	case WIDX_TITLE_EDITOR_RENAME_BUTTON:
+	case WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON:
 		if (filename_valid_characters(text)) {
 			if (title_sequence_manager_get_index_for_name(text) == SIZE_MAX) {
 				if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON) {
@@ -627,7 +630,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 			window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
 		}
 		break;
-	case WIDX_TITLE_EDITOR_RENAME:
+	case WIDX_TITLE_EDITOR_RENAME_SAVE:
 		// if (filename_valid_characters(text)) {
 		// 	if (!title_sequence_save_exists(_selectedTitleSequence, text)) {
 		// 		title_sequence_rename_save(_selectedTitleSequence, w->selected_list_item, text);
@@ -664,11 +667,11 @@ static void window_title_editor_invalidate(rct_window *w)
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_EMPTY;
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON].type = WWT_EMPTY;
 
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE].type = WWT_EMPTY;
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD].type = WWT_EMPTY;
 
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_EMPTY;
@@ -690,13 +693,13 @@ static void window_title_editor_invalidate(rct_window *w)
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE].type = WWT_DROPDOWN_BUTTON;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
@@ -975,4 +978,36 @@ static bool window_title_editor_check_can_edit()
 		return true;
 	}
 	return false;
+}
+
+static bool save_filename_exists(const utf8 * filename)
+{
+	TitleSequence * seq = _editingTitleSequence;
+	for (size_t i = 0; i < seq->NumSaves; i++) {
+		const utf8 * savePath = seq->Saves[i];
+		if (_stricmp(savePath, filename) == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+static void window_title_editor_add_park_callback(int result, const utf8 * path)
+{
+	uint32 extension = get_file_extension_type(path);
+	if (extension != FILE_EXTENSION_SV4 && extension != FILE_EXTENSION_SV6) {
+		return;
+	}
+
+	const utf8 * filename = path_get_filename(path);
+	if (save_filename_exists(filename)) {
+		free(_renameSavePath);
+		_renameSavePath = _strdup(filename);
+		// set_format_arg(0, intptr_t, (intptr_t)&_renameSavePath);
+		rct_window * w = window_find_by_class(WC_TITLE_EDITOR);
+		window_text_input_open(w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uintptr_t)_renameSavePath, 52 - 1);
+		return;
+	}
+
+	// title_sequence_add_save(gCurrentTitleSequence, path, newName);
 }

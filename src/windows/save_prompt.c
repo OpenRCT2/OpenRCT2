@@ -74,7 +74,7 @@ static void window_save_prompt_close(rct_window *w);
 static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_save_prompt_callback(int result);
+static void window_save_prompt_callback(int result, const utf8 * path);
 
 static rct_window_event_list window_save_prompt_events = {
 	window_save_prompt_close,
@@ -259,7 +259,7 @@ static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 }
 
-static void window_save_prompt_callback(int result)
+static void window_save_prompt_callback(int result, const utf8 * path)
 {
 	if (result == MODAL_RESULT_OK) {
 		game_load_or_quit_no_save_prompt();

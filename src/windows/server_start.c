@@ -159,9 +159,9 @@ static void window_server_start_scenarioselect_callback(const utf8 *path)
 	}
 }
 
-static void window_server_start_loadsave_callback(int result)
+static void window_server_start_loadsave_callback(int result, const utf8 * path)
 {
-	if (result == MODAL_RESULT_OK) {
+	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
 		network_begin_server(gConfigNetwork.default_port);
 	}
 }

@@ -68,7 +68,7 @@ uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT] = {
 	_editorSelectedStexs,
 };
 
-void editor_convert_save_to_scenario_callback(int result);
+static void editor_convert_save_to_scenario_callback(int result, const utf8 * path);
 static void set_all_land_owned();
 static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
@@ -130,9 +130,13 @@ void editor_convert_save_to_scenario()
 	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
 }
 
-void editor_convert_save_to_scenario_callback(int result)
+static void editor_convert_save_to_scenario_callback(int result, const utf8 * path)
 {
 	if (result != MODAL_RESULT_OK) {
+		return;
+	}
+
+	if (!game_load_save_or_scenario(path)) {
 		return;
 	}
 

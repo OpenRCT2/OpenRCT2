@@ -45,7 +45,6 @@ char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
 int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
-bool gLoadSaveTitleSequenceSave = 0;
 
 uint16 gWindowUpdateTicks;
 uint8 gToolbarDirtyFlags;

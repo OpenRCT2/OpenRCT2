@@ -1099,6 +1099,27 @@ void rct2_exit()
 	openrct2_finish();
 }
 
+bool game_load_save_or_scenario(const utf8 * path)
+{
+	uint32 extension = get_file_extension_type(path);
+	switch (extension) {
+	case FILE_EXTENSION_SV4:
+	case FILE_EXTENSION_SV6:
+		return game_load_save(path);
+	case FILE_EXTENSION_SC4:
+	case FILE_EXTENSION_SC6:
+		return scenario_load_and_play_from_path(path);
+	}
+	return false;
+}
+
+static void game_load_or_quit_no_save_prompt_callback(int result, const utf8 * path)
+{
+	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
+		gFirstTimeSave = 0;
+	}
+}
+
 /**
  *
  *  rct2: 0x0066DB79
@@ -1113,6 +1134,7 @@ void game_load_or_quit_no_save_prompt()
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+			gLoadSaveCallback = game_load_or_quit_no_save_prompt_callback;
 		}
 		break;
 	case PM_SAVE_BEFORE_QUIT:
