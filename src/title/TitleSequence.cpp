@@ -399,6 +399,9 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
     utf8 buffer[128];
     auto sb = StringBuilder(128);
 
+    sb.Append("# SCRIPT FOR ");
+    sb.Append(seq->Name);
+    sb.Append("\n");
     for (size_t i = 0; i < seq->NumCommands; i++)
     {
         const TitleCommand * command = &seq->Commands[i];

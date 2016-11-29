@@ -87,7 +87,7 @@ public:
         FixViewLocation();
 
         // Check that position is valid
-        if (_position > (sint32)_sequence->NumCommands)
+        if (_position >= (sint32)_sequence->NumCommands)
         {
             _position = 0;
             return false;

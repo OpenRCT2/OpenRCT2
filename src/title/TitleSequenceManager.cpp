@@ -164,7 +164,7 @@ namespace TitleSequenceManager
             SortSequences();
             index = FindItemIndexByPath(path);
         }
-        return success;
+        return index;
     }
 
     static const uint16 GetPredefinedIndex(const std::string &path)
