@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,31 +19,31 @@
 #endif
 
 #ifdef OPENRCT2_BUILD_NUMBER
-	const char *gBuildNumber = OPENRCT2_BUILD_NUMBER;
+const char * gBuildNumber = OPENRCT2_BUILD_NUMBER;
 #else
-	const char *gBuildNumber = "";
+const char * gBuildNumber = "";
 #endif
 
 #ifdef OPENRCT2_BUILD_SERVER
-	const char *gBuildServer = OPENRCT2_BUILD_SERVER;
+const char * gBuildServer = OPENRCT2_BUILD_SERVER;
 #else
-	const char *gBuildServer = "";
+const char * gBuildServer = "";
 #endif
 
 #ifdef OPENRCT2_BRANCH
-	const char *gGitBranch = OPENRCT2_BRANCH;
+const char * gGitBranch = OPENRCT2_BRANCH;
 #else
-	const char *gGitBranch = "";
+const char * gGitBranch   = "";
 #endif
 
 #ifdef OPENRCT2_COMMIT_SHA1
-	const char *gCommitSha1 = OPENRCT2_COMMIT_SHA1;
+const char * gCommitSha1 = OPENRCT2_COMMIT_SHA1;
 #else
-	const char *gCommitSha1 = "";
+const char * gCommitSha1 = "";
 #endif
 
 #ifdef OPENRCT2_COMMIT_SHA1_SHORT
-	const char *gCommitSha1Short = OPENRCT2_COMMIT_SHA1_SHORT;
+const char * gCommitSha1Short = OPENRCT2_COMMIT_SHA1_SHORT;
 #else
-	const char *gCommitSha1Short = "";
+const char * gCommitSha1Short = "";
 #endif

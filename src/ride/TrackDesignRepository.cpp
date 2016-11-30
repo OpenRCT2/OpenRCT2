@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,32 +14,31 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <algorithm>
-#include <memory>
-#include <vector>
+#include "TrackDesignRepository.h"
 #include "../core/Console.hpp"
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "TrackDesignRepository.h"
+#include <algorithm>
+#include <memory>
+#include <vector>
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "track_design.h"
+extern "C" {
+#include "../platform/platform.h"
+#include "track_design.h"
 }
 
 #pragma pack(push, 1)
 struct TrackRepositoryHeader
 {
-    uint32  MagicNumber;
-    uint16  Version;
-    uint32  TotalFiles;
-    uint64  TotalFileSize;
-    uint32  FileDateModifiedChecksum;
-    uint32  PathChecksum;
-    uint32  NumItems;
+    uint32 MagicNumber;
+    uint16 Version;
+    uint32 TotalFiles;
+    uint64 TotalFileSize;
+    uint32 FileDateModifiedChecksum;
+    uint32 PathChecksum;
+    uint32 NumItems;
 };
 #pragma pack(pop)
 
@@ -47,13 +46,13 @@ struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    uint8 RideType = 0;
+    uint8       RideType = 0;
     std::string ObjectEntry;
-    uint32 Flags;
+    uint32      Flags;
 };
 
 constexpr uint32 TRACK_REPOSITORY_MAGIC_NUMBER = 0x58444954;
-constexpr uint16 TRACK_REPOSITORY_VERSION = 1;
+constexpr uint16 TRACK_REPOSITORY_VERSION      = 1;
 
 enum TRACK_REPO_ITEM_FLAGS
 {
@@ -64,12 +63,11 @@ class TrackDesignRepository : public ITrackDesignRepository
 {
 private:
     std::vector<TrackRepositoryItem> _items;
-    QueryDirectoryResult _directoryQueryResult;
+    QueryDirectoryResult             _directoryQueryResult;
 
 public:
     virtual ~TrackDesignRepository()
     {
-
     }
 
     size_t GetCount() const override
@@ -82,8 +80,7 @@ public:
         size_t count = 0;
         for (const auto item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
+            if (item.RideType == rideType && (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
             {
                 count++;
             }
@@ -91,13 +88,12 @@ public:
         return count;
     }
 
-    size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry) const override
+    size_t GetItemsForObjectEntry(track_design_file_ref ** outRefs, uint8 rideType, const utf8 * entry) const override
     {
         std::vector<track_design_file_ref> refs;
         for (const auto item : _items)
         {
-            if (item.RideType == rideType &&
-                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
+            if (item.RideType == rideType && (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
             {
                 track_design_file_ref ref;
                 ref.name = GetNameFromTrackPath(item.Path.c_str());
@@ -138,8 +134,8 @@ public:
 
     bool Delete(const utf8 * path) override
     {
-        bool result = false;
-        size_t index = GetTrackIndex(path);
+        bool   result = false;
+        size_t index  = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
             const TrackRepositoryItem * item = &_items[index];
@@ -158,7 +154,7 @@ public:
     const utf8 * Rename(const utf8 * path, const utf8 * newName) override
     {
         const utf8 * result = nullptr;
-        size_t index = GetTrackIndex(path);
+        size_t       index  = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem * item = &_items[index];
@@ -184,7 +180,7 @@ public:
 
     const utf8 * Install(const utf8 * path) override
     {
-        const utf8 * result = nullptr;
+        const utf8 * result   = nullptr;
         const utf8 * fileName = Path::GetFileName(path);
 
         utf8 newPath[MAX_PATH];
@@ -235,11 +231,11 @@ private:
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;
-            item.Name = std::string(GetNameFromTrackPath(path));
-            item.Path = std::string(path);
-            item.RideType = td6->type;
+            item.Name        = std::string(GetNameFromTrackPath(path));
+            item.Path        = std::string(path);
+            item.RideType    = td6->type;
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
-            item.Flags = flags;
+            item.Flags       = flags;
             _items.push_back(item);
             track_design_dispose(td6);
         }
@@ -247,18 +243,16 @@ private:
 
     void SortItems()
     {
-        std::sort(_items.begin(), _items.end(), [](const TrackRepositoryItem &a,
-                                                   const TrackRepositoryItem &b) -> bool
+        std::sort(_items.begin(), _items.end(), [](const TrackRepositoryItem & a, const TrackRepositoryItem & b) -> bool {
+            if (a.RideType != b.RideType)
             {
-                if (a.RideType != b.RideType)
-                {
-                    return a.RideType < b.RideType;
-                }
+                return a.RideType < b.RideType;
+            }
 
-                const utf8 * nameA = a.Name.c_str();
-                const utf8 * nameB = b.Name.c_str();
-                return _stricmp(nameA, nameB) < 0;
-            });
+            const utf8 * nameA = a.Name.c_str();
+            const utf8 * nameB = b.Name.c_str();
+            return _stricmp(nameA, nameB) < 0;
+        });
     }
 
     bool Load()
@@ -273,8 +267,7 @@ private:
 
             // Read header, check if we need to re-scan
             auto header = fs.ReadValue<TrackRepositoryHeader>();
-            if (header.MagicNumber == TRACK_REPOSITORY_MAGIC_NUMBER &&
-                header.Version == TRACK_REPOSITORY_VERSION &&
+            if (header.MagicNumber == TRACK_REPOSITORY_MAGIC_NUMBER && header.Version == TRACK_REPOSITORY_VERSION &&
                 header.TotalFiles == _directoryQueryResult.TotalFiles &&
                 header.TotalFileSize == _directoryQueryResult.TotalFileSize &&
                 header.FileDateModifiedChecksum == _directoryQueryResult.FileDateModifiedChecksum &&
@@ -284,11 +277,11 @@ private:
                 for (uint32 i = 0; i < header.NumItems; i++)
                 {
                     TrackRepositoryItem item;
-                    item.Name = fs.ReadStdString();
-                    item.Path = fs.ReadStdString();
-                    item.RideType = fs.ReadValue<uint8>();
+                    item.Name        = fs.ReadStdString();
+                    item.Path        = fs.ReadStdString();
+                    item.RideType    = fs.ReadValue<uint8>();
                     item.ObjectEntry = fs.ReadStdString();
-                    item.Flags = fs.ReadValue<uint32>();
+                    item.Flags       = fs.ReadValue<uint32>();
                     _items.push_back(item);
                 }
                 result = true;
@@ -311,14 +304,14 @@ private:
             auto fs = FileStream(path, FILE_MODE_WRITE);
 
             // Write header
-            TrackRepositoryHeader header = { 0 };
-            header.MagicNumber = TRACK_REPOSITORY_MAGIC_NUMBER;
-            header.Version = TRACK_REPOSITORY_VERSION;
-            header.TotalFiles = _directoryQueryResult.TotalFiles;
-            header.TotalFileSize = _directoryQueryResult.TotalFileSize;
+            TrackRepositoryHeader header    = { 0 };
+            header.MagicNumber              = TRACK_REPOSITORY_MAGIC_NUMBER;
+            header.Version                  = TRACK_REPOSITORY_VERSION;
+            header.TotalFiles               = _directoryQueryResult.TotalFiles;
+            header.TotalFileSize            = _directoryQueryResult.TotalFileSize;
             header.FileDateModifiedChecksum = _directoryQueryResult.FileDateModifiedChecksum;
-            header.PathChecksum = _directoryQueryResult.PathChecksum;
-            header.NumItems = (uint32)_items.size();
+            header.PathChecksum             = _directoryQueryResult.PathChecksum;
+            header.NumItems                 = (uint32)_items.size();
             fs.WriteValue(header);
 
             // Write items
@@ -352,7 +345,7 @@ private:
     TrackRepositoryItem * GetTrackItem(const utf8 * path)
     {
         TrackRepositoryItem * result = nullptr;
-        size_t index = GetTrackIndex(path);
+        size_t                index  = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
             result = &_items[index];
@@ -401,46 +394,45 @@ ITrackDesignRepository * GetTrackRepository()
     return _trackRepository.get();
 }
 
-extern "C"
+extern "C" {
+void track_repository_scan()
 {
-    void track_repository_scan()
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        repo->Scan();
-    }
+    ITrackDesignRepository * repo = GetTrackRepository();
+    repo->Scan();
+}
 
-    size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        return repo->GetCountForObjectEntry(rideType, entry);
-    }
+size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
+{
+    ITrackDesignRepository * repo = GetTrackRepository();
+    return repo->GetCountForObjectEntry(rideType, entry);
+}
 
-    size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        return repo->GetItemsForObjectEntry(outRefs, rideType, entry);
-    }
+size_t track_repository_get_items_for_ride(track_design_file_ref ** outRefs, uint8 rideType, const utf8 * entry)
+{
+    ITrackDesignRepository * repo = GetTrackRepository();
+    return repo->GetItemsForObjectEntry(outRefs, rideType, entry);
+}
 
-    bool track_repository_delete(const utf8 * path)
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        return repo->Delete(path);
-    }
+bool track_repository_delete(const utf8 * path)
+{
+    ITrackDesignRepository * repo = GetTrackRepository();
+    return repo->Delete(path);
+}
 
-    const utf8 * track_repository_rename(const utf8 * path, const utf8 * newName)
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        return repo->Rename(path, newName);
-    }
+const utf8 * track_repository_rename(const utf8 * path, const utf8 * newName)
+{
+    ITrackDesignRepository * repo = GetTrackRepository();
+    return repo->Rename(path, newName);
+}
 
-    const utf8 * track_repository_install(const utf8 * srcPath)
-    {
-        ITrackDesignRepository * repo = GetTrackRepository();
-        return repo->Install(srcPath);
-    }
+const utf8 * track_repository_install(const utf8 * srcPath)
+{
+    ITrackDesignRepository * repo = GetTrackRepository();
+    return repo->Install(srcPath);
+}
 
-    utf8 * track_repository_get_name_from_path(const utf8 * path)
-    {
-        return TrackDesignRepository::GetNameFromTrackPath(path);
-    }
+utf8 * track_repository_get_name_from_path(const utf8 * path)
+{
+    return TrackDesignRepository::GetNameFromTrackPath(path);
+}
 }

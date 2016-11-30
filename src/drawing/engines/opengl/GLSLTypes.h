@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,37 +22,97 @@
 
 struct vec2i
 {
-    union { sint32 x; sint32 s; sint32 r; };
-    union { sint32 y; sint32 t; sint32 g; };
+    union {
+        sint32 x;
+        sint32 s;
+        sint32 r;
+    };
+    union {
+        sint32 y;
+        sint32 t;
+        sint32 g;
+    };
 };
 
 struct vec2f
 {
-    union { float x; float s; float r; };
-    union { float y; float t; float g; };
+    union {
+        float x;
+        float s;
+        float r;
+    };
+    union {
+        float y;
+        float t;
+        float g;
+    };
 };
 
 struct vec3f
 {
-    union { float x; float s; float r; };
-    union { float y; float t; float g; };
-    union { float z; float p; float b; };
+    union {
+        float x;
+        float s;
+        float r;
+    };
+    union {
+        float y;
+        float t;
+        float g;
+    };
+    union {
+        float z;
+        float p;
+        float b;
+    };
 };
 
 struct vec4i
 {
-    union { sint32 x; sint32 s; sint32 r; };
-    union { sint32 y; sint32 t; sint32 g; };
-    union { sint32 z; sint32 p; sint32 b; };
-    union { sint32 w; sint32 q; sint32 a; };
+    union {
+        sint32 x;
+        sint32 s;
+        sint32 r;
+    };
+    union {
+        sint32 y;
+        sint32 t;
+        sint32 g;
+    };
+    union {
+        sint32 z;
+        sint32 p;
+        sint32 b;
+    };
+    union {
+        sint32 w;
+        sint32 q;
+        sint32 a;
+    };
 };
 
 struct vec4f
 {
-    union { float x; float s; float r; };
-    union { float y; float t; float g; };
-    union { float z; float p; float b; };
-    union { float w; float q; float a; };
+    union {
+        float x;
+        float s;
+        float r;
+    };
+    union {
+        float y;
+        float t;
+        float g;
+    };
+    union {
+        float z;
+        float p;
+        float b;
+    };
+    union {
+        float w;
+        float q;
+        float a;
+    };
 };
 
 #pragma pack(pop)

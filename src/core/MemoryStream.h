@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,9 +21,9 @@
 
 enum MEMORY_ACCESS
 {
-    MEMORY_ACCESS_READ      = 1 << 0,
-    MEMORY_ACCESS_WRITE     = 1 << 1,
-    MEMORY_ACCESS_OWNER     = 1 << 2,
+    MEMORY_ACCESS_READ  = 1 << 0,
+    MEMORY_ACCESS_WRITE = 1 << 1,
+    MEMORY_ACCESS_OWNER = 1 << 2,
 };
 
 /**
@@ -32,15 +32,15 @@ enum MEMORY_ACCESS
 class MemoryStream final : public IStream
 {
 private:
-    uint16  _access;
-    size_t  _dataCapacity;
-    size_t  _dataSize;
-    void *  _data;
-    void *  _position;
+    uint16 _access;
+    size_t _dataCapacity;
+    size_t _dataSize;
+    void * _data;
+    void * _position;
 
 public:
     MemoryStream();
-    MemoryStream(const MemoryStream &copy);
+    MemoryStream(const MemoryStream & copy);
     explicit MemoryStream(size_t capacity);
     MemoryStream(void * data, size_t dataSize, uint32 access = MEMORY_ACCESS_READ);
     MemoryStream(const void * data, size_t dataSize);
@@ -52,18 +52,18 @@ public:
     ///////////////////////////////////////////////////////////////////////////
     // ISteam methods
     ///////////////////////////////////////////////////////////////////////////
-    bool    CanRead()                                 const override;
-    bool    CanWrite()                                const override;
+    bool CanRead() const override;
+    bool CanWrite() const override;
 
-    uint64  GetLength()                               const override;
-    uint64  GetPosition()                             const override;
-    void    SetPosition(uint64 position)                    override;
-    void    Seek(sint64 offset, int origin)                 override;
+    uint64 GetLength() const override;
+    uint64 GetPosition() const override;
+    void SetPosition(uint64 position) override;
+    void Seek(sint64 offset, int origin) override;
 
-    void    Read(void * buffer, uint64 length)              override;
-    void    Write(const void * buffer, uint64 length)       override;
+    void Read(void * buffer, uint64 length) override;
+    void Write(const void * buffer, uint64 length) override;
 
-    uint64  TryRead(void * buffer, uint64 length)           override;
+    uint64 TryRead(void * buffer, uint64 length) override;
 
 private:
     void EnsureCapacity(size_t capacity);

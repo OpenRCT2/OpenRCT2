@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,35 +24,35 @@
 
 namespace RCT1
 {
-    colour_t GetColour(colour_t colour);
-    uint8 GetTerrain(uint8 terrain);
-    uint8 GetTerrainEdge(uint8 terrainEdge);
+colour_t GetColour(colour_t colour);
+uint8 GetTerrain(uint8 terrain);
+uint8 GetTerrainEdge(uint8 terrainEdge);
 
-    uint8 GetRideType(uint8 rideType);
-    bool RideTypeUsesVehicles(uint8 rideType);
-    bool PathIsQueue(uint8 pathType);
-    uint8 NormalisePathAddition(uint8 pathAdditionType);
+uint8 GetRideType(uint8 rideType);
+bool RideTypeUsesVehicles(uint8 rideType);
+bool PathIsQueue(uint8 pathType);
+uint8 NormalisePathAddition(uint8 pathAdditionType);
 
-    const char * GetRideTypeObject(uint8 rideType);
-    const char * GetVehicleObject(uint8 vehicleType);
-    const char * GetSmallSceneryObject(uint8 smallSceneryType);
-    const char * GetLargeSceneryObject(uint8 largeSceneryType);
-    const char * GetWallObject(uint8 wallType);
-    const char * GetPathObject(uint8 pathType);
-    const char * GetPathAddtionObject(uint8 pathAdditionType);
-    const char * GetSceneryGroupObject(uint8 sceneryGroupType);
+const char * GetRideTypeObject(uint8 rideType);
+const char * GetVehicleObject(uint8 vehicleType);
+const char * GetSmallSceneryObject(uint8 smallSceneryType);
+const char * GetLargeSceneryObject(uint8 largeSceneryType);
+const char * GetWallObject(uint8 wallType);
+const char * GetPathObject(uint8 pathType);
+const char * GetPathAddtionObject(uint8 pathAdditionType);
+const char * GetSceneryGroupObject(uint8 sceneryGroupType);
 
-    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
+const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
 
-    const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType);
+const std::vector<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }
 
 extern "C" {
 #endif
 
-    uint8 rct1_get_ride_type(uint8 rideType);
-    const char * rct1_get_ride_type_object(uint8 rideType);
-    const char * rct1_get_vehicle_object(uint8 vehicleType);
+uint8 rct1_get_ride_type(uint8 rideType);
+const char * rct1_get_ride_type_object(uint8 rideType);
+const char * rct1_get_vehicle_object(uint8 vehicleType);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,37 +14,40 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <algorithm>
-#include <memory>
-#include <vector>
+#include "ScenarioRepository.h"
+#include "ScenarioSources.h"
 #include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/FileStream.hpp"
 #include "core/Math.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "ScenarioRepository.h"
-#include "ScenarioSources.h"
+#include <algorithm>
+#include <memory>
+#include <vector>
 
-extern "C"
-{
-    #include "config.h"
-    #include "localisation/localisation.h"
-    #include "scenario.h"
+extern "C" {
+#include "config.h"
+#include "localisation/localisation.h"
+#include "scenario.h"
 }
 
 static int ScenarioCategoryCompare(int categoryA, int categoryB)
 {
-    if (categoryA == categoryB) return 0;
-    if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
-    if (categoryB == SCENARIO_CATEGORY_DLC) return 1;
-    if (categoryA == SCENARIO_CATEGORY_BUILD_YOUR_OWN) return -1;
-    if (categoryB == SCENARIO_CATEGORY_BUILD_YOUR_OWN) return 1;
+    if (categoryA == categoryB)
+        return 0;
+    if (categoryA == SCENARIO_CATEGORY_DLC)
+        return -1;
+    if (categoryB == SCENARIO_CATEGORY_DLC)
+        return 1;
+    if (categoryA == SCENARIO_CATEGORY_BUILD_YOUR_OWN)
+        return -1;
+    if (categoryB == SCENARIO_CATEGORY_BUILD_YOUR_OWN)
+        return 1;
     return Math::Sign(categoryA - categoryB);
 }
 
-static int scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
-                                                  const scenario_index_entry &entryB)
+static int scenario_index_entry_CompareByCategory(const scenario_index_entry & entryA, const scenario_index_entry & entryB)
 {
     // Order by category
     if (entryA.category != entryB.category)
@@ -53,7 +56,8 @@ static int scenario_index_entry_CompareByCategory(const scenario_index_entry &en
     }
 
     // Then by source game / name
-    switch (entryA.category) {
+    switch (entryA.category)
+    {
     default:
         if (entryA.source_game != entryB.source_game)
         {
@@ -66,8 +70,7 @@ static int scenario_index_entry_CompareByCategory(const scenario_index_entry &en
     }
 }
 
-static int scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
-                                               const scenario_index_entry &entryB)
+static int scenario_index_entry_CompareByIndex(const scenario_index_entry & entryA, const scenario_index_entry & entryB)
 {
     // Order by source game
     if (entryA.source_game != entryB.source_game)
@@ -77,7 +80,8 @@ static int scenario_index_entry_CompareByIndex(const scenario_index_entry &entry
 
     // Then by index / category / name
     uint8 sourceGame = entryA.source_game;
-    switch (sourceGame) {
+    switch (sourceGame)
+    {
     default:
         if (entryA.source_index == -1 && entryB.source_index == -1)
         {
@@ -119,8 +123,8 @@ class ScenarioRepository final : public IScenarioRepository
 private:
     static constexpr uint32 HighscoreFileVersion = 1;
 
-    std::vector<scenario_index_entry> _scenarios;
-    std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<scenario_index_entry>       _scenarios;
+    std::vector<scenario_highscore_entry *> _highscores;
 
 public:
     virtual ~ScenarioRepository()
@@ -167,8 +171,8 @@ public:
     {
         for (size_t i = 0; i < _scenarios.size(); i++)
         {
-            const scenario_index_entry * scenario = &_scenarios[i];
-            const utf8 * scenarioFilename = Path::GetFileName(scenario->path);
+            const scenario_index_entry * scenario         = &_scenarios[i];
+            const utf8 *                 scenarioFilename = Path::GetFileName(scenario->path);
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(filename, scenarioFilename, true))
@@ -204,9 +208,9 @@ public:
             {
                 if (highscore == nullptr)
                 {
-                    highscore = InsertHighscore();
+                    highscore            = InsertHighscore();
                     highscore->timestamp = platform_get_datetime_now_utc();
-                    scenario->highscore = highscore;
+                    scenario->highscore  = highscore;
                 }
                 else
                 {
@@ -217,8 +221,8 @@ public:
                     SafeFree(highscore->fileName);
                     SafeFree(highscore->name);
                 }
-                highscore->fileName = String::Duplicate(Path::GetFileName(scenario->path));
-                highscore->name = String::Duplicate(name);
+                highscore->fileName      = String::Duplicate(Path::GetFileName(scenario->path));
+                highscore->name          = String::Duplicate(name);
                 highscore->company_value = companyValue;
                 SaveHighscores();
                 return true;
@@ -249,7 +253,7 @@ private:
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
-            auto path = scanner->GetPath();
+            auto path     = scanner->GetPath();
             auto fileInfo = scanner->GetFileInfo();
             AddScenario(path, fileInfo->LastModified);
         }
@@ -259,14 +263,14 @@ private:
     void AddScenario(const utf8 * path, uint64 timestamp)
     {
         rct_s6_header s6Header;
-        rct_s6_info s6Info;
+        rct_s6_info   s6Info;
         if (!scenario_load_basic(path, &s6Header, &s6Info))
         {
             Console::Error::WriteLine("Unable to read scenario: '%s'", path);
             return;
         }
 
-        const utf8 * filename = Path::GetFileName(path);
+        const utf8 *           filename      = Path::GetFileName(path);
         scenario_index_entry * existingEntry = GetByFilename(filename);
         if (existingEntry != nullptr)
         {
@@ -299,13 +303,13 @@ private:
 
         // Set new entry
         String::Set(entry.path, sizeof(entry.path), path);
-        entry.timestamp = timestamp;
-        entry.category = s6Info->category;
-        entry.objective_type = s6Info->objective_type;
+        entry.timestamp       = timestamp;
+        entry.category        = s6Info->category;
+        entry.objective_type  = s6Info->objective_type;
         entry.objective_arg_1 = s6Info->objective_arg_1;
         entry.objective_arg_2 = s6Info->objective_arg_2;
         entry.objective_arg_3 = s6Info->objective_arg_3;
-        entry.highscore = nullptr;
+        entry.highscore       = nullptr;
         String::Set(entry.name, sizeof(entry.name), s6Info->name);
         String::Set(entry.details, sizeof(entry.details), s6Info->details);
 
@@ -316,14 +320,14 @@ private:
         source_desc desc;
         if (ScenarioSources::TryGetByName(entry.name, &desc))
         {
-            entry.sc_id = desc.id;
+            entry.sc_id        = desc.id;
             entry.source_index = desc.index;
-            entry.source_game = desc.source;
-            entry.category = desc.category;
+            entry.source_game  = desc.source;
+            entry.category     = desc.category;
         }
         else
         {
-            entry.sc_id = SC_UNIDENTIFIED;
+            entry.sc_id        = SC_UNIDENTIFIED;
             entry.source_index = -1;
             if (entry.category == SCENARIO_CATEGORY_REAL)
             {
@@ -343,19 +347,17 @@ private:
     {
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
         {
-            std::sort(_scenarios.begin(), _scenarios.end(), [](const scenario_index_entry &a,
-                                                               const scenario_index_entry &b) -> bool
-            {
-                return scenario_index_entry_CompareByIndex(a, b) < 0;
-            });
+            std::sort(_scenarios.begin(), _scenarios.end(),
+                      [](const scenario_index_entry & a, const scenario_index_entry & b) -> bool {
+                          return scenario_index_entry_CompareByIndex(a, b) < 0;
+                      });
         }
         else
         {
-            std::sort(_scenarios.begin(), _scenarios.end(), [](const scenario_index_entry &a,
-                                                               const scenario_index_entry &b) -> bool
-            {
-                return scenario_index_entry_CompareByCategory(a, b) < 0;
-            });
+            std::sort(_scenarios.begin(), _scenarios.end(),
+                      [](const scenario_index_entry & a, const scenario_index_entry & b) -> bool {
+                          return scenario_index_entry_CompareByCategory(a, b) < 0;
+                      });
         }
     }
 
@@ -370,7 +372,7 @@ private:
 
         try
         {
-            auto fs = FileStream(scoresPath, FILE_MODE_OPEN);
+            auto   fs          = FileStream(scoresPath, FILE_MODE_OPEN);
             uint32 fileVersion = fs.ReadValue<uint32>();
             if (fileVersion != 1)
             {
@@ -384,10 +386,10 @@ private:
             for (uint32 i = 0; i < numHighscores; i++)
             {
                 scenario_highscore_entry * highscore = InsertHighscore();
-                highscore->fileName = fs.ReadString();
-                highscore->name = fs.ReadString();
-                highscore->company_value = fs.ReadValue<money32>();
-                highscore->timestamp = fs.ReadValue<datetime64>();
+                highscore->fileName                  = fs.ReadString();
+                highscore->name                      = fs.ReadString();
+                highscore->company_value             = fs.ReadValue<money32>();
+                highscore->timestamp                 = fs.ReadValue<datetime64>();
             }
         }
         catch (Exception ex)
@@ -450,9 +452,9 @@ private:
                             if (scBasic.company_value > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
+                                highscore->name          = win1252_to_utf8_alloc(scBasic.completed_by);
                                 highscore->company_value = scBasic.company_value;
-                                highscore->timestamp = DATETIME64_MIN;
+                                highscore->timestamp     = DATETIME64_MIN;
                                 break;
                             }
                         }
@@ -460,10 +462,10 @@ private:
                     if (notFound)
                     {
                         scenario_highscore_entry * highscore = InsertHighscore();
-                        highscore->fileName = String::Duplicate(scBasic.path);
-                        highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
-                        highscore->company_value = scBasic.company_value;
-                        highscore->timestamp = DATETIME64_MIN;
+                        highscore->fileName                  = String::Duplicate(scBasic.path);
+                        highscore->name                      = win1252_to_utf8_alloc(scBasic.completed_by);
+                        highscore->company_value             = scBasic.company_value;
+                        highscore->timestamp                 = DATETIME64_MIN;
                     }
                 }
             }
@@ -501,7 +503,7 @@ private:
         for (size_t i = 0; i < _highscores.size(); i++)
         {
             scenario_highscore_entry * highscore = _highscores[i];
-            scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
+            scenario_index_entry *     scenerio  = GetByFilename(highscore->fileName);
             if (scenerio != nullptr)
             {
                 scenerio->highscore = highscore;
@@ -576,29 +578,28 @@ IScenarioRepository * GetScenarioRepository()
     return _scenarioRepository.get();
 }
 
-extern "C"
+extern "C" {
+void scenario_repository_scan()
 {
-    void scenario_repository_scan()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        repo->Scan();
-    }
+    IScenarioRepository * repo = GetScenarioRepository();
+    repo->Scan();
+}
 
-    size_t scenario_repository_get_count()
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetCount();
-    }
+size_t scenario_repository_get_count()
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetCount();
+}
 
-    const scenario_index_entry *scenario_repository_get_by_index(size_t index)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->GetByIndex(index);
-    }
+const scenario_index_entry * scenario_repository_get_by_index(size_t index)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->GetByIndex(index);
+}
 
-    bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
-    {
-        IScenarioRepository * repo = GetScenarioRepository();
-        return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
-    }
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
+{
+    IScenarioRepository * repo = GetScenarioRepository();
+    return repo->TryRecordHighscore(scenarioFileName, companyValue, name);
+}
 }

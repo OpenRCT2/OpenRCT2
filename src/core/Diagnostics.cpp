@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,24 +17,24 @@
 #include <SDL_platform.h>
 
 #if defined(DEBUG) && defined(__WINDOWS__)
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #undef GetMessage
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef GetMessage
 #endif
 
 #include "Diagnostics.hpp"
 
 namespace Debug
 {
-    void Break()
-    {
+void Break()
+{
 #if defined(DEBUG)
 #if defined(__WINDOWS__)
-        if (IsDebuggerPresent())
-        {
-            DebugBreak();
-        }
-#endif
-#endif
+    if (IsDebuggerPresent())
+    {
+        DebugBreak();
     }
+#endif
+#endif
+}
 }

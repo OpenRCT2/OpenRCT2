@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,16 +16,16 @@
 
 #pragma once
 
+#include "../common.h"
+#include "NetworkPacket.h"
 #include <array>
 #include <jansson.h>
-#include "NetworkPacket.h"
-#include "../common.h"
 
 class NetworkGroup final
 {
 public:
-    std::array<uint8, 8>    ActionsAllowed;
-    uint8                   Id = 0;
+    std::array<uint8, 8> ActionsAllowed;
+    uint8 Id = 0;
 
     static NetworkGroup FromJson(const json_t * json);
 
@@ -35,8 +35,8 @@ public:
     const std::string & GetName() const;
     void SetName(std::string name);
 
-    void Read(NetworkPacket &packet);
-    void Write(NetworkPacket &packet);
+    void Read(NetworkPacket & packet);
+    void Write(NetworkPacket & packet);
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
     bool CanPerformCommand(int command) const;

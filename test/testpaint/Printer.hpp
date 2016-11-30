@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,16 +20,17 @@
 #include <vector>
 
 #include "FunctionCall.hpp"
-#include "SideTunnelCall.hpp"
 #include "SegmentSupportHeightCall.hpp"
+#include "SideTunnelCall.hpp"
 
-namespace Printer {
-    std::string PrintFunctionCall(function_call call, uint16 baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16 baseHeight);
+namespace Printer
+{
+std::string PrintFunctionCall(function_call call, uint16 baseHeight);
+std::string PrintFunctionCalls(std::vector<function_call> calls, uint16 baseHeight);
 
-    std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
+std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
 
-    std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
+std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
 
-    std::string PrintHeightOffset(uint16 height, uint16 baseHeight);
+std::string PrintHeightOffset(uint16 height, uint16 baseHeight);
 }

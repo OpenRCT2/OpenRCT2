@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,8 +21,8 @@
 #include "../world/map.h"
 #include "ride.h"
 
-void ride_update_station(rct_ride *ride, int stationIndex);
-rct_map_element *ride_get_station_start_track_element(rct_ride *ride, int stationIndex);
-rct_map_element *ride_get_station_exit_element(rct_ride *ride, int x, int y, int z);
+void ride_update_station(rct_ride * ride, int stationIndex);
+rct_map_element * ride_get_station_start_track_element(rct_ride * ride, int stationIndex);
+rct_map_element * ride_get_station_exit_element(rct_ride * ride, int x, int y, int z);
 
 #endif

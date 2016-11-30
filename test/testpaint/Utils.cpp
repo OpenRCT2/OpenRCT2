@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,53 +17,65 @@
 #include "Utils.hpp"
 
 extern "C" {
-    #include "../../src/ride/ride.h"
-    #include "../../src/ride/track.h"
-    #include "../../src/ride/track_data.h"
+#include "../../src/ride/ride.h"
+#include "../../src/ride/track.h"
+#include "../../src/ride/track_data.h"
 }
 
-namespace Utils {
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType) {
-        int sequenceCount = 0;
-        const rct_preview_track **trackBlocks;
+namespace Utils
+{
+int getTrackSequenceCount(uint8 rideType, uint8 trackType)
+{
+    int                        sequenceCount = 0;
+    const rct_preview_track ** trackBlocks;
 
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-            trackBlocks = FlatRideTrackBlocks;
-        } else {
-            trackBlocks = TrackBlocks;
-        }
-
-        for (int i = 0; i < 256; i++) {
-            if (trackBlocks[trackType][i].index == 0xFF) {
-                break;
-            }
-
-            sequenceCount++;
-        }
-
-        return sequenceCount;
+    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+    {
+        trackBlocks = FlatRideTrackBlocks;
+    }
+    else
+    {
+        trackBlocks = TrackBlocks;
     }
 
-    bool rideSupportsTrackType(uint8 rideType, uint8 trackType) {
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-
-        if (newPaintGetter == NULL) {
-            return false;
+    for (int i = 0; i < 256; i++)
+    {
+        if (trackBlocks[trackType][i].index == 0xFF)
+        {
+            break;
         }
 
-        if (newPaintGetter(trackType, 0) == NULL) {
-            return false;
-        }
-
-        if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0) {
-            return false;
-        }
-
-        return true;
+        sequenceCount++;
     }
 
-    bool rideIsImplemented(uint8 rideType) {
-        TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
-        return (newPaintGetter != 0);
+    return sequenceCount;
+}
+
+bool rideSupportsTrackType(uint8 rideType, uint8 trackType)
+{
+    TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+
+    if (newPaintGetter == NULL)
+    {
+        return false;
     }
+
+    if (newPaintGetter(trackType, 0) == NULL)
+    {
+        return false;
+    }
+
+    if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool rideIsImplemented(uint8 rideType)
+{
+    TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
+    return (newPaintGetter != 0);
+}
 }

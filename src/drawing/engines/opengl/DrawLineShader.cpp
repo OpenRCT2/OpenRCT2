@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -52,7 +52,7 @@ void DrawLineShader::GetLocations()
     uBounds     = GetUniformLocation("uBounds");
     uColour     = GetUniformLocation("uColour");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vIndex = GetAttributeLocation("vIndex");
 }
 
 void DrawLineShader::SetScreenSize(sint32 width, sint32 height)

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,16 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "ImageTable.h"
 #include "../core/Console.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "ImageTable.h"
 #include "Object.h"
 
 ImageTable::~ImageTable()
 {
     Memory::Free(_data);
-    _data = nullptr;
+    _data     = nullptr;
     _dataSize = 0;
 }
 
@@ -31,11 +31,11 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 {
     try
     {
-        uint32 numImages = stream->ReadValue<uint32>();
+        uint32 numImages     = stream->ReadValue<uint32>();
         uint32 imageDataSize = stream->ReadValue<uint32>();
 
         uint64 headerTableSize = numImages * 16;
-        uint64 remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
+        uint64 remainingBytes  = stream->GetLength() - stream->GetPosition() - headerTableSize;
         if (remainingBytes > imageDataSize)
         {
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
@@ -43,7 +43,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         }
 
         _dataSize = imageDataSize;
-        _data = Memory::Reallocate(_data, _dataSize);
+        _data     = Memory::Reallocate(_data, _dataSize);
         if (_data == nullptr)
         {
             context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
@@ -57,13 +57,13 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
             rct_g1_element g1Element;
 
             uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32>();
-            g1Element.offset = (uint8*)(imageDataBase + imageDataOffset);
+            g1Element.offset          = (uint8 *)(imageDataBase + imageDataOffset);
 
-            g1Element.width = stream->ReadValue<sint16>();
-            g1Element.height = stream->ReadValue<sint16>();
-            g1Element.x_offset = stream->ReadValue<sint16>();
-            g1Element.y_offset = stream->ReadValue<sint16>();
-            g1Element.flags = stream->ReadValue<uint16>();
+            g1Element.width         = stream->ReadValue<sint16>();
+            g1Element.height        = stream->ReadValue<sint16>();
+            g1Element.x_offset      = stream->ReadValue<sint16>();
+            g1Element.y_offset      = stream->ReadValue<sint16>();
+            g1Element.flags         = stream->ReadValue<uint16>();
             g1Element.zoomed_offset = stream->ReadValue<uint16>();
 
             _entries.push_back(g1Element);
@@ -76,7 +76,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         size_t unreadBytes = _dataSize - readBytes;
         if (unreadBytes > 0)
         {
-            void * ptr = (void*)(((uintptr_t)_data) + readBytes);
+            void * ptr = (void *)(((uintptr_t)_data) + readBytes);
             Memory::Set(ptr, 0, unreadBytes);
 
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size shorter than expected.");

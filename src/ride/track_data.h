@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -28,52 +28,56 @@ extern const rct_track_coordinates FlatTrackCoordinates[253];
 extern const uint8 TrackSequenceProperties[256][16];
 extern const uint8 FlatRideTrackSequenceProperties[256][16];
 
-extern const uint64 RideTypePossibleTrackConfigurations[91];
-extern const rct_preview_track *TrackBlocks[256];
-extern const rct_preview_track *FlatRideTrackBlocks[255];
+extern const uint64              RideTypePossibleTrackConfigurations[91];
+extern const rct_preview_track * TrackBlocks[256];
+extern const rct_preview_track * FlatRideTrackBlocks[255];
 
 extern const uint8 TrackPieceLengths[256];
 
-typedef struct track_curve_chain {
-	uint16 next;
-	uint16 previous;
+typedef struct track_curve_chain
+{
+    uint16 next;
+    uint16 previous;
 } track_curve_chain;
 
 extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
 
 extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91];
-extern const uint32 * RideTypeTrackPaintFunctionsOld[91];
+extern const uint32 *                    RideTypeTrackPaintFunctionsOld[91];
 
-typedef struct track_descriptor {
-	bool starts_diagonal;
-	uint8 slope_start;
-	uint8 bank_start;
-	uint8 track_curve;
-	uint8 slope_end;
-	uint8 bank_end;
-	uint8 track_element;
+typedef struct track_descriptor
+{
+    bool  starts_diagonal;
+    uint8 slope_start;
+    uint8 bank_start;
+    uint8 track_curve;
+    uint8 slope_end;
+    uint8 bank_end;
+    uint8 track_element;
 } track_descriptor;
 
 extern const track_descriptor gTrackDescriptors[142];
 
-typedef struct {
-	uint16 size;
-	const rct_vehicle_info info[];
+typedef struct
+{
+    uint16                 size;
+    const rct_vehicle_info info[];
 } rct_vehicle_info_list;
 
-extern const rct_vehicle_info_list **gTrackVehicleInfo[17];
+extern const rct_vehicle_info_list ** gTrackVehicleInfo[17];
 
 extern const sint16 AlternativeTrackTypes[256];
 
 extern const money32 TrackPricing[256];
 extern const money32 FlatRideTrackPricing[256];
 
-typedef struct dodgems_track_size {
-	uint8 left;
-	uint8 top;
-	uint8 right;
-	uint8 bottom;
+typedef struct dodgems_track_size
+{
+    uint8 left;
+    uint8 top;
+    uint8 right;
+    uint8 bottom;
 } dodgems_track_size;
 
 extern const dodgems_track_size DodgemsTrackSize[256];

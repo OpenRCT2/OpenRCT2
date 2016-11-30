@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,22 +16,22 @@
 
 #ifndef DISABLE_OPENGL
 
-#include <SDL_video.h>
-#include "../../../core/Memory.hpp"
 #include "OpenGLFramebuffer.h"
+#include "../../../core/Memory.hpp"
+#include <SDL_video.h>
 
 constexpr GLuint BACKBUFFER_ID = 0;
 
 OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
 {
-    _id = BACKBUFFER_ID;
+    _id      = BACKBUFFER_ID;
     _texture = 0;
     SDL_GetWindowSize(window, &_width, &_height);
 }
 
 OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height)
 {
-    _width = width;
+    _width  = width;
     _height = height;
 
     glGenTextures(1, &_texture);
@@ -66,10 +66,10 @@ void * OpenGLFramebuffer::GetPixels() const
     glReadPixels(0, 0, _width, _height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
     // Flip pixels vertically
-    void * flippedPixels = Memory::Allocate<void>(_width * _height * 4);
-    size_t stride = _width * 4;
-    uint8 * src = (uint8 *)pixels + ((_height - 1) * stride);
-    uint8 * dst = (uint8 *)flippedPixels;
+    void *  flippedPixels = Memory::Allocate<void>(_width * _height * 4);
+    size_t  stride        = _width * 4;
+    uint8 * src           = (uint8 *)pixels + ((_height - 1) * stride);
+    uint8 * dst           = (uint8 *)flippedPixels;
     for (sint32 y = 0; y < _height; y++)
     {
         Memory::Copy(dst, src, stride);

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,61 +14,65 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "news_item.h"
 #include "../audio/audio.h"
 #include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
-#include "../world/sprite.h"
 #include "../util/util.h"
-#include "news_item.h"
+#include "../world/sprite.h"
 
 rct_news_item gNewsItems[MAX_NEWS_ITEMS];
 
 /** rct2: 0x0097BE7C */
-const uint8 news_type_properties[] =	{
-	0,												// NEWS_ITEM_NULL
-	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_RIDE
-	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP_ON_RIDE
-	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP
-	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_MONEY
-	NEWS_TYPE_HAS_LOCATION,							// NEWS_ITEM_BLANK
-	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_RESEARCH
-	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_PEEPS
-	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_AWARD
-	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_GRAPH
+const uint8 news_type_properties[] = {
+    0,                                              // NEWS_ITEM_NULL
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_RIDE
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP_ON_RIDE
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP
+    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_MONEY
+    NEWS_TYPE_HAS_LOCATION,                         // NEWS_ITEM_BLANK
+    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_RESEARCH
+    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_PEEPS
+    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_AWARD
+    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
 };
 
-void window_game_bottom_toolbar_invalidate_news_item();
+void       window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
 bool news_item_is_valid_idx(int index)
 {
-	if (index >= MAX_NEWS_ITEMS) {
-		log_error("Tried to get news item past MAX_NEWS.");
-		return false;
-	}
-	return true;
+    if (index >= MAX_NEWS_ITEMS)
+    {
+        log_error("Tried to get news item past MAX_NEWS.");
+        return false;
+    }
+    return true;
 }
 
-rct_news_item *news_item_get(int index)
+rct_news_item * news_item_get(int index)
 {
-	if (news_item_is_valid_idx(index)) {
-		return &gNewsItems[index];
-	} else {
-		return NULL;
-	}
+    if (news_item_is_valid_idx(index))
+    {
+        return &gNewsItems[index];
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 bool news_item_is_empty(int index)
 {
-	return news_item_get(index)->type == NEWS_ITEM_NULL;
+    return news_item_get(index)->type == NEWS_ITEM_NULL;
 }
 
 bool news_item_is_queue_empty()
 {
-	return news_item_is_empty(0);
+    return news_item_is_empty(0);
 }
 
 /**
@@ -77,43 +81,42 @@ bool news_item_is_queue_empty()
  */
 void news_item_init_queue()
 {
-	int i;
+    int i;
 
-	news_item_get(0)->type = NEWS_ITEM_NULL;
-	news_item_get(11)->type = NEWS_ITEM_NULL;
+    news_item_get(0)->type  = NEWS_ITEM_NULL;
+    news_item_get(11)->type = NEWS_ITEM_NULL;
 
-	// Throttles for warning types (PEEP_*_WARNING)
-	for (i = 0; i < 16; i++) {
-		gPeepWarningThrottle[i] = 0;
-	}
+    // Throttles for warning types (PEEP_*_WARNING)
+    for (i = 0; i < 16; i++)
+    {
+        gPeepWarningThrottle[i] = 0;
+    }
 
-	window_game_bottom_toolbar_invalidate_news_item();
+    window_game_bottom_toolbar_invalidate_news_item();
 }
 
 static void news_item_tick_current()
 {
-	int ticks;
-	ticks = ++news_item_get(0)->ticks;
-	// Only play news item sound when in normal playing mode
-	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
-		// Play sound
-		audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
-	}
+    int ticks;
+    ticks = ++news_item_get(0)->ticks;
+    // Only play news item sound when in normal playing mode
+    if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
+    {
+        // Play sound
+        audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
+    }
 }
 
 static bool news_item_is_current_old()
 {
-	int remove_time = 320;
-	if (!news_item_is_empty(5) &&
-		!news_item_is_empty(4) &&
-		!news_item_is_empty(3) &&
-		!news_item_is_empty(2))
-		remove_time = 256;
+    int remove_time = 320;
+    if (!news_item_is_empty(5) && !news_item_is_empty(4) && !news_item_is_empty(3) && !news_item_is_empty(2))
+        remove_time = 256;
 
-	if (news_item_get(0)->ticks >= remove_time)
-		return true;
+    if (news_item_get(0)->ticks >= remove_time)
+        return true;
 
-	return false;
+    return false;
 }
 
 /**
@@ -122,18 +125,18 @@ static bool news_item_is_current_old()
  */
 void news_item_update_current()
 {
-	// Check if there is a current news item
-	if (news_item_is_queue_empty())
-		return;
+    // Check if there is a current news item
+    if (news_item_is_queue_empty())
+        return;
 
-	window_game_bottom_toolbar_invalidate_news_item();
+    window_game_bottom_toolbar_invalidate_news_item();
 
-	// Update the current news item
-	news_item_tick_current();
+    // Update the current news item
+    news_item_tick_current();
 
-	// Removal of current news item
-	if (news_item_is_current_old())
-		news_item_close_current();
+    // Removal of current news item
+    if (news_item_is_current_old())
+        news_item_close_current();
 }
 
 /**
@@ -142,43 +145,42 @@ void news_item_update_current()
  */
 void news_item_close_current()
 {
-	int i;
-	rct_news_item *newsItems = gNewsItems;
+    int             i;
+    rct_news_item * newsItems = gNewsItems;
 
-	// Check if there is a current message
-	if (news_item_is_queue_empty())
-		return;
+    // Check if there is a current message
+    if (news_item_is_queue_empty())
+        return;
 
-	// Find an available history news item slot for current message
-	i = news_item_get_new_history_slot();
+    // Find an available history news item slot for current message
+    i = news_item_get_new_history_slot();
 
-	// Set the history news item slot to the current news item
-	newsItems[i] = newsItems[0];
+    // Set the history news item slot to the current news item
+    newsItems[i] = newsItems[0];
 
-	// Set the end of the end of the history list
-	if (i < MAX_NEWS_ITEMS - 1)
-		newsItems[i + 1].type = NEWS_ITEM_NULL;
+    // Set the end of the end of the history list
+    if (i < MAX_NEWS_ITEMS - 1)
+        newsItems[i + 1].type = NEWS_ITEM_NULL;
 
-	// Invalidate the news window
-	window_invalidate_by_class(WC_RECENT_NEWS);
+    // Invalidate the news window
+    window_invalidate_by_class(WC_RECENT_NEWS);
 
-	// Dequeue the current news item, shift news up
-	for (i = 0; i < 10; i++)
-		newsItems[i] = newsItems[i + 1];
-	newsItems[10].type = NEWS_ITEM_NULL;
+    // Dequeue the current news item, shift news up
+    for (i             = 0; i < 10; i++)
+        newsItems[i]   = newsItems[i + 1];
+    newsItems[10].type = NEWS_ITEM_NULL;
 
-	// Invalidate current news item bar
-	window_game_bottom_toolbar_invalidate_news_item();
+    // Invalidate current news item bar
+    window_game_bottom_toolbar_invalidate_news_item();
 }
 
 static void news_item_shift_history_up()
 {
-	const int history_idx = 11;
-	rct_news_item *history_start = news_item_get(history_idx);
-	const size_t count = sizeof(rct_news_item) * (MAX_NEWS_ITEMS - 1 - history_idx);
-	memmove(history_start, history_start + 1, count);
+    const int       history_idx   = 11;
+    rct_news_item * history_start = news_item_get(history_idx);
+    const size_t    count         = sizeof(rct_news_item) * (MAX_NEWS_ITEMS - 1 - history_idx);
+    memmove(history_start, history_start + 1, count);
 }
-
 
 /**
  * Finds a spare history slot or replaces an existing one if there are no spare
@@ -186,16 +188,16 @@ static void news_item_shift_history_up()
  */
 static int news_item_get_new_history_slot()
 {
-	int i;
+    int i;
 
-	// Find an available history news item slot
-	for (i = 11; i < MAX_NEWS_ITEMS; i++)
-		if (news_item_is_empty(i))
-			return i;
+    // Find an available history news item slot
+    for (i = 11; i < MAX_NEWS_ITEMS; i++)
+        if (news_item_is_empty(i))
+            return i;
 
-	// Dequeue the first history news item, shift history up
-	news_item_shift_history_up();
-	return MAX_NEWS_ITEMS - 1;
+    // Dequeue the first history news item, shift history up
+    news_item_shift_history_up();
+    return MAX_NEWS_ITEMS - 1;
 }
 
 /**
@@ -204,70 +206,73 @@ static int news_item_get_new_history_slot()
  *
  *  rct2: 0x0066BA74
  */
-void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z)
+void news_item_get_subject_location(int type, int subject, int * x, int * y, int * z)
 {
-	int i;
-	rct_ride *ride;
-	rct_peep *peep;
-	rct_vehicle *vehicle;
+    int           i;
+    rct_ride *    ride;
+    rct_peep *    peep;
+    rct_vehicle * vehicle;
 
-	switch (type) {
-	case NEWS_ITEM_RIDE:
-		ride = get_ride(subject);
-		if (ride->overall_view == 0xFFFF) {
-			*x = SPRITE_LOCATION_NULL;
-			break;
-		}
-		*x = (ride->overall_view & 0xFF) * 32 + 16;
-		*y = (ride->overall_view >> 8) * 32 + 16;
-		*z = map_element_height(*x, *y);
-		break;
-	case NEWS_ITEM_PEEP_ON_RIDE:
-		peep = GET_PEEP(subject);
-		*x = peep->x;
-		*y = peep->y;
-		*z = peep->z;
-		if (*x != SPRITE_LOCATION_NULL)
-			break;
+    switch (type)
+    {
+    case NEWS_ITEM_RIDE:
+        ride = get_ride(subject);
+        if (ride->overall_view == 0xFFFF)
+        {
+            *x = SPRITE_LOCATION_NULL;
+            break;
+        }
+        *x = (ride->overall_view & 0xFF) * 32 + 16;
+        *y = (ride->overall_view >> 8) * 32 + 16;
+        *z = map_element_height(*x, *y);
+        break;
+    case NEWS_ITEM_PEEP_ON_RIDE:
+        peep = GET_PEEP(subject);
+        *x   = peep->x;
+        *y   = peep->y;
+        *z   = peep->z;
+        if (*x != SPRITE_LOCATION_NULL)
+            break;
 
-		if (peep->state != 3 && peep->state != 7) {
-			*x = SPRITE_LOCATION_NULL;
-			break;
-		}
+        if (peep->state != 3 && peep->state != 7)
+        {
+            *x = SPRITE_LOCATION_NULL;
+            break;
+        }
 
-		// Find which ride peep is on
-		ride = get_ride(peep->current_ride);
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
-			*x = SPRITE_LOCATION_NULL;
-			break;
-		}
+        // Find which ride peep is on
+        ride = get_ride(peep->current_ride);
+        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+        {
+            *x = SPRITE_LOCATION_NULL;
+            break;
+        }
 
-		// Find the first car of the train peep is on
-		vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
-		// Find the actual car peep is on
-		for (i = 0; i < peep->current_car; i++)
-			vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
-		*x = vehicle->x;
-		*y = vehicle->y;
-		*z = vehicle->z;
-		break;
-	case NEWS_ITEM_PEEP:
-		peep = GET_PEEP(subject);
-		*x = peep->x;
-		*y = peep->y;
-		*z = peep->z;
-		break;
-	case NEWS_ITEM_BLANK:
-		*x = subject;
-		*y = subject >> 16;
-		*z = map_element_height(*x, *y);
-		 break;
-	default:
-		*x = SPRITE_LOCATION_NULL;
-		break;
-	}
+        // Find the first car of the train peep is on
+        vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
+        // Find the actual car peep is on
+        for (i = 0; i < peep->current_car; i++)
+            vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
+        *x          = vehicle->x;
+        *y          = vehicle->y;
+        *z          = vehicle->z;
+        break;
+    case NEWS_ITEM_PEEP:
+        peep = GET_PEEP(subject);
+        *x   = peep->x;
+        *y   = peep->y;
+        *z   = peep->z;
+        break;
+    case NEWS_ITEM_BLANK:
+        *x = subject;
+        *y = subject >> 16;
+        *z = map_element_height(*x, *y);
+        break;
+    default:
+        *x = SPRITE_LOCATION_NULL;
+        break;
+    }
 }
-
 
 /**
  *
@@ -279,39 +284,40 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	utf8 buffer[256];
-	void *args = gCommonFormatArgs;
+    utf8   buffer[256];
+    void * args = gCommonFormatArgs;
 
-	format_string(buffer, 256, string_id, args); // overflows possible?
-	news_item_add_to_queue_raw(type, buffer, assoc);
+    format_string(buffer, 256, string_id, args); // overflows possible?
+    news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
+void news_item_add_to_queue_raw(uint8 type, const utf8 * text, uint32 assoc)
 {
-	rct_news_item *newsItem = gNewsItems;
+    rct_news_item * newsItem = gNewsItems;
 
-	// find first open slot
-	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= &gNewsItems[10]) // &news_list[10]
-			news_item_close_current();
-		else
-			newsItem++;
-	}
+    // find first open slot
+    while (newsItem->type != NEWS_ITEM_NULL)
+    {
+        if (newsItem + 1 >= &gNewsItems[10]) // &news_list[10]
+            news_item_close_current();
+        else
+            newsItem++;
+    }
 
-	//now we have found an item slot to place the new news in
-	newsItem->type = type;
-	newsItem->flags = 0;
-	newsItem->assoc = assoc;
-	newsItem->ticks = 0;
-	newsItem->month_year = gDateMonthsElapsed;
-	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * gDateMonthTicks) >> 16) + 1;
-	safe_strcpy(newsItem->text, text, 255);
-	newsItem->text[254] = 0;
+    // now we have found an item slot to place the new news in
+    newsItem->type       = type;
+    newsItem->flags      = 0;
+    newsItem->assoc      = assoc;
+    newsItem->ticks      = 0;
+    newsItem->month_year = gDateMonthsElapsed;
+    newsItem->day        = ((days_in_month[(newsItem->month_year & 7)] * gDateMonthTicks) >> 16) + 1;
+    safe_strcpy(newsItem->text, text, 255);
+    newsItem->text[254] = 0;
 
-	// blatant disregard for what happens on the last element.
-	// Change this when we implement the queue ourselves.
-	newsItem++;
-	newsItem->type = 0;
+    // blatant disregard for what happens on the last element.
+    // Change this when we implement the queue ourselves.
+    newsItem++;
+    newsItem->type = 0;
 }
 
 /**
@@ -322,62 +328,68 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
  */
 void news_item_open_subject(int type, int subject)
 {
-	rct_peep* peep;
-	rct_window* window;
+    rct_peep *   peep;
+    rct_window * window;
 
-	switch (type) {
-	case NEWS_ITEM_RIDE:
-		window_ride_main_open(subject);
-		break;
-	case NEWS_ITEM_PEEP_ON_RIDE:
-	case NEWS_ITEM_PEEP:
-		peep = GET_PEEP(subject);
-		window_guest_open(peep);
-		break;
-	case NEWS_ITEM_MONEY:
-		window_finances_open();
-		break;
-	case NEWS_ITEM_RESEARCH:
-		if (subject >= 0x10000) {
-			// Open ride list window
-			window_new_ride_open();
+    switch (type)
+    {
+    case NEWS_ITEM_RIDE:
+        window_ride_main_open(subject);
+        break;
+    case NEWS_ITEM_PEEP_ON_RIDE:
+    case NEWS_ITEM_PEEP:
+        peep = GET_PEEP(subject);
+        window_guest_open(peep);
+        break;
+    case NEWS_ITEM_MONEY:
+        window_finances_open();
+        break;
+    case NEWS_ITEM_RESEARCH:
+        if (subject >= 0x10000)
+        {
+            // Open ride list window
+            window_new_ride_open();
 
-			// Switch to right tab and scroll to ride location
-			ride_list_item rideItem;
-			rideItem.type = subject >> 8;
-			rideItem.entry_index = subject & 0xFF;
-			window_new_ride_focus(rideItem);
-			break;
-		}
+            // Switch to right tab and scroll to ride location
+            ride_list_item rideItem;
+            rideItem.type        = subject >> 8;
+            rideItem.entry_index = subject & 0xFF;
+            window_new_ride_focus(rideItem);
+            break;
+        }
 
-		// Check if window is already open
-		window = window_bring_to_front_by_class(WC_SCENERY);
-		if (window == NULL) {
-			window = window_find_by_class(WC_TOP_TOOLBAR);
-			if (window != NULL) {
-				window_invalidate(window);
-				if (!tool_set(window, 9, 0)) {
-					gInputFlags |= INPUT_FLAG_6;
-					window_scenery_open();
-				}
-			}
-		}
+        // Check if window is already open
+        window = window_bring_to_front_by_class(WC_SCENERY);
+        if (window == NULL)
+        {
+            window = window_find_by_class(WC_TOP_TOOLBAR);
+            if (window != NULL)
+            {
+                window_invalidate(window);
+                if (!tool_set(window, 9, 0))
+                {
+                    gInputFlags |= INPUT_FLAG_6;
+                    window_scenery_open();
+                }
+            }
+        }
 
-		// Switch to new scenery tab
-		window = window_find_by_class(WC_SCENERY);
-		if (window != NULL)
-			window_event_mouse_down_call(window, 4 + subject);
-		break;
-	case NEWS_ITEM_PEEPS:
-		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;
-		break;
-	case NEWS_ITEM_AWARD:
-		window_park_awards_open();
-		break;
-	case NEWS_ITEM_GRAPH:
-		window_park_rating_open();
-		break;
-	}
+        // Switch to new scenery tab
+        window = window_find_by_class(WC_SCENERY);
+        if (window != NULL)
+            window_event_mouse_down_call(window, 4 + subject);
+        break;
+    case NEWS_ITEM_PEEPS:
+        window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);
+        ;
+        break;
+    case NEWS_ITEM_AWARD:
+        window_park_awards_open();
+        break;
+    case NEWS_ITEM_GRAPH:
+        window_park_rating_open();
+        break;
+    }
 }
 
 /**
@@ -386,47 +398,59 @@ void news_item_open_subject(int type, int subject)
  */
 void news_item_disable_news(uint8 type, uint32 assoc)
 {
-	// TODO: write test invalidating windows
-	for (int i = 0; i < 11; i++) {
-		if (!news_item_is_empty(i)) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (type == newsItem->type && assoc == newsItem->assoc) {
-				newsItem->flags |= 0x1;
-				if (i == 0) {
-					window_game_bottom_toolbar_invalidate_news_item();
-				}
-			}
-		} else {
-			break;
-		}
-	}
+    // TODO: write test invalidating windows
+    for (int i = 0; i < 11; i++)
+    {
+        if (!news_item_is_empty(i))
+        {
+            rct_news_item * const newsItem = news_item_get(i);
+            if (type == newsItem->type && assoc == newsItem->assoc)
+            {
+                newsItem->flags |= 0x1;
+                if (i == 0)
+                {
+                    window_game_bottom_toolbar_invalidate_news_item();
+                }
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
 
-	for (int i = 11; i < MAX_NEWS_ITEMS; i++) {
-		if (!news_item_is_empty(i)) {
-			rct_news_item * const newsItem = news_item_get(i);
-			if (type == newsItem->type && assoc == newsItem->assoc) {
-				newsItem->flags |= 0x1;
-				window_invalidate_by_class(WC_RECENT_NEWS);
-			}
-		} else {
-			break;
-		}
-	}
+    for (int i = 11; i < MAX_NEWS_ITEMS; i++)
+    {
+        if (!news_item_is_empty(i))
+        {
+            rct_news_item * const newsItem = news_item_get(i);
+            if (type == newsItem->type && assoc == newsItem->assoc)
+            {
+                newsItem->flags |= 0x1;
+                window_invalidate_by_class(WC_RECENT_NEWS);
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
-void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
+void news_item_add_to_queue_custom(rct_news_item * newNewsItem)
 {
-	rct_news_item *newsItem = gNewsItems;
+    rct_news_item * newsItem = gNewsItems;
 
-	// Find first open slot
-	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= &gNewsItems[10])
-			news_item_close_current();
-		else
-			newsItem++;
-	}
+    // Find first open slot
+    while (newsItem->type != NEWS_ITEM_NULL)
+    {
+        if (newsItem + 1 >= &gNewsItems[10])
+            news_item_close_current();
+        else
+            newsItem++;
+    }
 
-	*newsItem = *newNewsItem;
-	newsItem++;
-	newsItem->type = 0;
+    *newsItem = *newNewsItem;
+    newsItem++;
+    newsItem->type = 0;
 }

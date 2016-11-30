@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,14 +16,13 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
+#include <string>
 
-extern "C"
-{
-    #include "../peep/peep.h"
-    #include "../world/map.h"
-    #include "../world/sprite.h"
+extern "C" {
+#include "../peep/peep.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 }
 
 class NetworkPacket;
@@ -31,25 +30,25 @@ class NetworkPacket;
 class NetworkPlayer final
 {
 public:
-    uint8       id                  = 0;
+    uint8       id = 0;
     std::string name;
-    uint16      ping                = 0;
-    uint8       flags               = 0;
-    uint8       group               = 0;
-    money32     money_spent         = MONEY(0, 0);
-    uint32      commands_ran        = 0;
-    int         last_action         = -999;
-    uint32      last_action_time    = 0;
-    rct_xyz16   last_action_coord   = { 0 };
-    rct_peep*   pickup_peep         = 0;
-    int         pickup_peep_old_x   = SPRITE_LOCATION_NULL;
+    uint16      ping              = 0;
+    uint8       flags             = 0;
+    uint8       group             = 0;
+    money32     money_spent       = MONEY(0, 0);
+    uint32      commands_ran      = 0;
+    int         last_action       = -999;
+    uint32      last_action_time  = 0;
+    rct_xyz16   last_action_coord = { 0 };
+    rct_peep *  pickup_peep       = 0;
+    int         pickup_peep_old_x = SPRITE_LOCATION_NULL;
     std::string keyhash;
 
     NetworkPlayer() = default;
 
-    void SetName(const std::string &name);
+    void SetName(const std::string & name);
 
-    void Read(NetworkPacket &packet);
-    void Write(NetworkPacket &packet);
+    void Read(NetworkPacket & packet);
+    void Write(NetworkPacket & packet);
     void AddMoneySpent(money32 cost);
 };

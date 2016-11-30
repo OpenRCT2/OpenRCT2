@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -28,81 +28,80 @@
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
 
-extern "C"
+extern "C" {
+#include "../openrct2.h"
+
+void openrct2_assert(bool expression, const char * message, ...)
 {
-    #include "../openrct2.h"
-
-    void openrct2_assert(bool expression, const char * message, ...)
-    {
-        va_list args;
-        va_start(args, message);
-        Guard::Assert_VA(expression, message, args);
-        va_end(args);
-    }
-
+    va_list args;
+    va_start(args, message);
+    Guard::Assert_VA(expression, message, args);
+    va_end(args);
+}
 }
 
 namespace Guard
 {
-    void Assert(bool expression, const char * message, ...)
+void Assert(bool expression, const char * message, ...)
+{
+    va_list args;
+    va_start(args, message);
+    Assert_VA(expression, message, args);
+    va_end(args);
+}
+
+void Assert_VA(bool expression, const char * message, va_list args)
+{
+    if (expression)
+        return;
+
+    if (message != nullptr)
     {
-        va_list args;
-        va_start(args, message);
-        Assert_VA(expression, message, args);
-        va_end(args);
+        Console::Error::WriteLine("Assertion failed:");
+        Console::Error::WriteLine_VA(message, args);
     }
 
-    void Assert_VA(bool expression, const char * message, va_list args)
-    {
-        if (expression) return;
-
-        if (message != nullptr)
-        {
-            Console::Error::WriteLine("Assertion failed:");
-            Console::Error::WriteLine_VA(message, args);
-        }
-
 #ifdef DEBUG
-        Debug::Break();
+    Debug::Break();
 #endif
 #ifdef __WINDOWS__
-        char version[128];
-        openrct2_write_full_version_info(version, sizeof(version));
+    char version[128];
+    openrct2_write_full_version_info(version, sizeof(version));
 
-        char buffer[512];
-        strcpy(buffer, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
-        strcat(buffer, version);
-        if (message != nullptr)
-        {
-            strcat(buffer, "\r\n");
-            char *bufend = (char *)strchr(buffer, 0);
-            vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
-        }
-        int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
-        if (result == IDABORT)
-        {
+    char buffer[512];
+    strcpy(buffer, "An assertion failed, please report this to the OpenRCT2 developers.\r\n\r\nVersion: ");
+    strcat(buffer, version);
+    if (message != nullptr)
+    {
+        strcat(buffer, "\r\n");
+        char * bufend = (char *)strchr(buffer, 0);
+        vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
+    }
+    int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+    if (result == IDABORT)
+    {
 #ifdef USE_BREAKPAD
-            // Force a crash that breakpad will handle allowing us to get a dump
-            *((void**)0) = 0;
-#else
-            assert(false);
-#endif
-        }
+        // Force a crash that breakpad will handle allowing us to get a dump
+        *((void **)0) = 0;
 #else
         assert(false);
 #endif
     }
+#else
+    assert(false);
+#endif
+}
 
-    void Fail(const char * message, ...)
-    {
-        va_list args;
-        va_start(args, message);
-        Assert_VA(false, message, args);
-        va_end(args);
-    }
+void Fail(const char * message, ...)
+{
+    va_list args;
+    va_start(args, message);
+    Assert_VA(false, message, args);
+    va_end(args);
+}
 
-    void Fail_VA(const char * message, va_list args)
-    {
-        Assert_VA(false, message, args);
-    }
+void Fail_VA(const char * message, va_list args)
+{
+    Assert_VA(false, message, args);
+}
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,27 +16,26 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
+extern "C" {
+#include "../common.h"
 }
 
 namespace Console
 {
-    void Write(char c);
-    void Write(const utf8 * str);
-    void WriteSpace(size_t count);
-    void WriteFormat(const utf8 * format, ...);
-    void WriteLine();
-    void WriteLine(const utf8 * format, ...);
+void Write(char c);
+void Write(const utf8 * str);
+void WriteSpace(size_t count);
+void WriteFormat(const utf8 * format, ...);
+void WriteLine();
+void WriteLine(const utf8 * format, ...);
 
-    namespace Error
-    {
-        void Write(char c);
-        void Write(const utf8 * str);
-        void WriteFormat(const utf8 * format, ...);
-        void WriteLine();
-        void WriteLine(const utf8 * format, ...);
-        void WriteLine_VA(const utf8 * format, va_list args);
-    }
+namespace Error
+{
+void Write(char c);
+void Write(const utf8 * str);
+void WriteFormat(const utf8 * format, ...);
+void WriteLine();
+void WriteLine(const utf8 * format, ...);
+void WriteLine_VA(const utf8 * format, va_list args);
+}
 }

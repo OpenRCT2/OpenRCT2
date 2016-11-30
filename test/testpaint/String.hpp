@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,6 +18,7 @@
 
 #include <string>
 
-namespace String {
-    std::string Format(const char *format, ...);
+namespace String
+{
+std::string Format(const char * format, ...);
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,35 +19,35 @@
 #include "common.h"
 
 #ifndef MAX_PATH
-    #define MAX_PATH 260
+#define MAX_PATH 260
 #endif
 
 struct rct_object_entry;
 
 typedef struct scenario_highscore_entry
 {
-    utf8 *      fileName;
-    utf8 *      name;
-    money32     company_value;
-    datetime64  timestamp;
+    utf8 *     fileName;
+    utf8 *     name;
+    money32    company_value;
+    datetime64 timestamp;
 } scenario_highscore_entry;
 
 typedef struct scenario_index_entry
 {
-    utf8    path[MAX_PATH];
-    uint64  timestamp;
+    utf8   path[MAX_PATH];
+    uint64 timestamp;
 
     // Category / sequence
-    uint8   category;
-    uint8   source_game;
-    sint16  source_index;
-    uint16  sc_id;
+    uint8  category;
+    uint8  source_game;
+    sint16 source_index;
+    uint16 sc_id;
 
     // Objective
-    uint8   objective_type;
-    uint8   objective_arg_1;
-    sint32  objective_arg_2;
-    sint16  objective_arg_3;
+    uint8                      objective_type;
+    uint8                      objective_arg_1;
+    sint32                     objective_arg_2;
+    sint16                     objective_arg_3;
     scenario_highscore_entry * highscore;
 
     utf8 name[64];
@@ -65,8 +65,8 @@ interface IScenarioRepository
      */
     virtual void Scan() abstract;
 
-    virtual size_t GetCount() const abstract;
-    virtual const scenario_index_entry * GetByIndex(size_t index) const  abstract;
+    virtual size_t                       GetCount() const abstract;
+    virtual const scenario_index_entry * GetByIndex(size_t index) const abstract;
     virtual const scenario_index_entry * GetByFilename(const utf8 * filename) const abstract;
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
@@ -78,15 +78,14 @@ IScenarioRepository * GetScenarioRepository();
 #endif
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-    void    scenario_repository_scan();
-    size_t  scenario_repository_get_count();
-    const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
-    bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
-    void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
+void                         scenario_repository_scan();
+size_t                       scenario_repository_get_count();
+const scenario_index_entry * scenario_repository_get_by_index(size_t index);
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
+void scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);
 
 #ifdef __cplusplus
 }

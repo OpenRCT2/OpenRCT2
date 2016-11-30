@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,25 +19,26 @@
 
 #include <SDL.h>
 
-enum {
-	TITLE_SCRIPT_WAIT,
-	TITLE_SCRIPT_LOADMM,
-	TITLE_SCRIPT_LOCATION,
-	TITLE_SCRIPT_ROTATE,
-	TITLE_SCRIPT_ZOOM,
-	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD,
-	TITLE_SCRIPT_END,
-	TITLE_SCRIPT_SPEED,
-	TITLE_SCRIPT_LOOP,
-	TITLE_SCRIPT_ENDLOOP,
-	TITLE_SCRIPT_LOADRCT1,
+enum
+{
+    TITLE_SCRIPT_WAIT,
+    TITLE_SCRIPT_LOADMM,
+    TITLE_SCRIPT_LOCATION,
+    TITLE_SCRIPT_ROTATE,
+    TITLE_SCRIPT_ZOOM,
+    TITLE_SCRIPT_RESTART,
+    TITLE_SCRIPT_LOAD,
+    TITLE_SCRIPT_END,
+    TITLE_SCRIPT_SPEED,
+    TITLE_SCRIPT_LOOP,
+    TITLE_SCRIPT_ENDLOOP,
+    TITLE_SCRIPT_LOADRCT1,
 };
 
 extern bool gTitleHideVersionInfo;
 
 extern sint32 gTitleScriptCommand;
-extern uint8 gTitleScriptSave;
+extern uint8  gTitleScriptSave;
 extern sint32 gTitleScriptSkipTo;
 extern sint32 gTitleScriptSkipLoad;
 
@@ -45,9 +46,9 @@ void title_load();
 void title_create_windows();
 void title_update();
 void title_skip_from_beginning();
-void title_script_get_line(SDL_RWops *file, char *parts);
+void title_script_get_line(SDL_RWops * file, char * parts);
 bool title_refresh_sequence();
 void title_fix_location();
-void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
+void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y);
 
 #endif

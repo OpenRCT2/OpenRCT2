@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,33 +19,36 @@
 
 #include "../common.h"
 
-enum {
-	MONTH_MARCH,
-	MONTH_APRIL,
-	MONTH_MAY,
-	MONTH_JUNE,
-	MONTH_JULY,
-	MONTH_AUGUST,
-	MONTH_SEPTEMBER,
-	MONTH_OCTOBER,
+enum
+{
+    MONTH_MARCH,
+    MONTH_APRIL,
+    MONTH_MAY,
+    MONTH_JUNE,
+    MONTH_JULY,
+    MONTH_AUGUST,
+    MONTH_SEPTEMBER,
+    MONTH_OCTOBER,
 
-	MONTH_COUNT
+    MONTH_COUNT
 };
 
-enum {
-	DATE_FORMAT_DAY_MONTH_YEAR,
-	DATE_FORMAT_MONTH_DAY_YEAR,
-	DATE_FORMAT_YEAR_MONTH_DAY,
-	DATE_FORMAT_YEAR_DAY_MONTH
+enum
+{
+    DATE_FORMAT_DAY_MONTH_YEAR,
+    DATE_FORMAT_MONTH_DAY_YEAR,
+    DATE_FORMAT_YEAR_MONTH_DAY,
+    DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-typedef struct openrct_timeofday {
-	uint8 second;
-	uint8 minute;
-	uint8 hour;
+typedef struct openrct_timeofday
+{
+    uint8 second;
+    uint8 minute;
+    uint8 hour;
 } openrct_timeofday;
 
-extern const sint16 days_in_month[MONTH_COUNT];
+extern const sint16        days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
 

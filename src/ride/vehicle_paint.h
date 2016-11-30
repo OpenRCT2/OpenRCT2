@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,30 +19,40 @@
 
 #include "vehicle.h"
 
-typedef struct vehicle_boundbox {
-	sint8 offset_x;
-	sint8 offset_y;
-	sint8 offset_z;
-	uint8 length_x;
-	uint8 length_y;
-	uint8 length_z;
+typedef struct vehicle_boundbox
+{
+    sint8 offset_x;
+    sint8 offset_y;
+    sint8 offset_z;
+    uint8 length_x;
+    uint8 length_y;
+    uint8 length_z;
 } vehicle_boundbox;
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
-void vehicle_paint(rct_vehicle *vehicle, int imageDirection);
+void vehicle_paint(rct_vehicle * vehicle, int imageDirection);
 
-void vehicle_visual_default(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_splash_effect(int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_submarine(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
-void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle);
-void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle);
+void vehicle_visual_default(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                            const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                              const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                                      const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                                 const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                             const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                                                  const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                                      const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_splash_effect(int z, rct_vehicle * vehicle, const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                                  const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_submarine(int x, int imageDirection, int y, int z, rct_vehicle * vehicle,
+                              const rct_ride_entry_vehicle * vehicleEntry);
+void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle * vehicle);
+void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle * vehicle);
 
 #endif

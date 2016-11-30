@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,17 +16,17 @@
 
 #pragma once
 
-#include <vector>
 #include "../common.h"
+#include <vector>
 
 interface IReadObjectContext;
 interface IStream;
 
 struct StringTableEntry
 {
-    uint8   Id;
-    uint8   LanguageId;
-    utf8 *  Text;
+    uint8  Id;
+    uint8  LanguageId;
+    utf8 * Text;
 };
 
 class StringTable
@@ -37,7 +37,7 @@ private:
 public:
     ~StringTable();
 
-    void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
-    void            Sort();
-    const utf8 *    GetString(uint8 id) const;
+    void Read(IReadObjectContext * context, IStream * stream, uint8 id);
+    void         Sort();
+    const utf8 * GetString(uint8 id) const;
 };

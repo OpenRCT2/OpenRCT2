@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -27,10 +27,12 @@ enum ADVERTISE_STATUS
 
 interface INetworkServerAdvertiser
 {
-    virtual ~INetworkServerAdvertiser() { }
+    virtual ~INetworkServerAdvertiser()
+    {
+    }
 
-    virtual ADVERTISE_STATUS    GetStatus() abstract;
-    virtual void                Update() abstract;
+    virtual ADVERTISE_STATUS GetStatus() abstract;
+    virtual void             Update() abstract;
 };
 
 INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port);

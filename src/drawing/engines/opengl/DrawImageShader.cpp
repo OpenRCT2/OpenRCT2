@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -35,17 +35,24 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
-    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourAtlas));
-    glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourBounds));
-    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskAtlas));
-    glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskBounds));
-    glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteAtlas));
-    glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteBounds));
-    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
-    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
-    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
-    glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, mask));
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageInstance), (void *)offsetof(DrawImageInstance, clip));
+    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageInstance),
+                           (void *)offsetof(DrawImageInstance, texColourAtlas));
+    glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance),
+                          (void *)offsetof(DrawImageInstance, texColourBounds));
+    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance),
+                           (void *)offsetof(DrawImageInstance, texMaskAtlas));
+    glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance),
+                          (void *)offsetof(DrawImageInstance, texMaskBounds));
+    glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageInstance),
+                           (void *)offsetof(DrawImageInstance, texPaletteAtlas));
+    glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance),
+                          (void *)offsetof(DrawImageInstance, texPaletteBounds));
+    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void *)offsetof(DrawImageInstance, flags));
+    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance),
+                          (void *)offsetof(DrawImageInstance, colour));
+    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageInstance), (void *)offsetof(DrawImageInstance, bounds));
+    glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageInstance), (void *)offsetof(DrawImageInstance, mask));
 
     glEnableVertexAttribArray(vIndex);
     glEnableVertexAttribArray(vClip);
@@ -87,22 +94,22 @@ DrawImageShader::~DrawImageShader()
 
 void DrawImageShader::GetLocations()
 {
-    uScreenSize         = GetUniformLocation("uScreenSize");
-    uTexture            = GetUniformLocation("uTexture");
-    uPalette            = GetUniformLocation("uPalette");
+    uScreenSize = GetUniformLocation("uScreenSize");
+    uTexture    = GetUniformLocation("uTexture");
+    uPalette    = GetUniformLocation("uPalette");
 
-    vIndex              = GetAttributeLocation("vIndex");
-    vClip               = GetAttributeLocation("ivClip");
-    vTexColourAtlas     = GetAttributeLocation("ivTexColourAtlas");
-    vTexColourBounds    = GetAttributeLocation("ivTexColourBounds");
-    vTexMaskAtlas       = GetAttributeLocation("ivTexMaskAtlas");
-    vTexMaskBounds      = GetAttributeLocation("ivTexMaskBounds");
-    vTexPaletteAtlas    = GetAttributeLocation("ivTexPaletteAtlas");
-    vTexPaletteBounds   = GetAttributeLocation("ivTexPaletteBounds");
-    vFlags              = GetAttributeLocation("ivFlags");
-    vColour             = GetAttributeLocation("ivColour");
-    vBounds             = GetAttributeLocation("ivBounds");
-    vMask               = GetAttributeLocation("ivMask");
+    vIndex            = GetAttributeLocation("vIndex");
+    vClip             = GetAttributeLocation("ivClip");
+    vTexColourAtlas   = GetAttributeLocation("ivTexColourAtlas");
+    vTexColourBounds  = GetAttributeLocation("ivTexColourBounds");
+    vTexMaskAtlas     = GetAttributeLocation("ivTexMaskAtlas");
+    vTexMaskBounds    = GetAttributeLocation("ivTexMaskBounds");
+    vTexPaletteAtlas  = GetAttributeLocation("ivTexPaletteAtlas");
+    vTexPaletteBounds = GetAttributeLocation("ivTexPaletteBounds");
+    vFlags            = GetAttributeLocation("ivFlags");
+    vColour           = GetAttributeLocation("ivColour");
+    vBounds           = GetAttributeLocation("ivBounds");
+    vMask             = GetAttributeLocation("ivMask");
 }
 
 void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
@@ -110,12 +117,12 @@ void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
     glUniform2i(uScreenSize, width, height);
 }
 
-void DrawImageShader::SetPalette(const vec4f *glPalette)
+void DrawImageShader::SetPalette(const vec4f * glPalette)
 {
-    glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
+    glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
 }
 
-void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instances)
+void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance> & instances)
 {
     glBindVertexArray(_vao);
 

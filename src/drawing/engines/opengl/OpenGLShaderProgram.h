@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,7 +25,7 @@ private:
     static constexpr uint64 MaxSourceSize = 8 * 1024 * 1024; // 8 MiB
 
     GLenum _type;
-    GLuint _id      = 0;
+    GLuint _id = 0;
 
 public:
     OpenGLShader(const char * name, GLenum type);
@@ -41,19 +41,18 @@ private:
 class OpenGLShaderProgram
 {
 private:
-    GLuint         _id              = 0;
-    OpenGLShader * _vertexShader    = nullptr;
-    OpenGLShader * _fragmentShader  = nullptr;
+    GLuint         _id             = 0;
+    OpenGLShader * _vertexShader   = nullptr;
+    OpenGLShader * _fragmentShader = nullptr;
 
 public:
     OpenGLShaderProgram(const char * name);
     virtual ~OpenGLShaderProgram();
 
-    GLuint  GetAttributeLocation(const char * name);
-    GLuint  GetUniformLocation(const char * name);
-    void    Use();
+    GLuint GetAttributeLocation(const char * name);
+    GLuint GetUniformLocation(const char * name);
+    void Use();
 
 private:
     bool Link();
 };
-

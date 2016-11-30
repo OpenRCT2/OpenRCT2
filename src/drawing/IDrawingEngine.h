@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -35,18 +35,20 @@ enum DRAWING_ENGINE_FLAGS
 
 interface IDrawingEngine
 {
-    virtual ~IDrawingEngine() { }
+    virtual ~IDrawingEngine()
+    {
+    }
 
-    virtual void Initialise(SDL_Window * window)     abstract;
+    virtual void Initialise(SDL_Window * window) abstract;
     virtual void Resize(uint32 width, uint32 height) abstract;
-    virtual void SetPalette(SDL_Color * colours)     abstract;
+    virtual void SetPalette(SDL_Color * colours) abstract;
 
     virtual void SetUncappedFrameRate(bool uncapped) abstract;
 
-    virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void    Draw() abstract;
-    virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
-    virtual sint32  Screenshot() abstract;
+    virtual void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
+    virtual void Draw() abstract;
+    virtual void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
+    virtual sint32 Screenshot() abstract;
 
     virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
     virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
@@ -58,18 +60,15 @@ interface IDrawingEngine
 
 namespace DrawingEngineFactory
 {
-    IDrawingEngine * CreateSoftware();
-    IDrawingEngine * CreateSoftwareWithHardwareDisplay();
-    IDrawingEngine * CreateOpenGL();
+IDrawingEngine * CreateSoftware();
+IDrawingEngine * CreateSoftwareWithHardwareDisplay();
+IDrawingEngine * CreateOpenGL();
 };
 
 interface IRainDrawer
 {
-    virtual ~IRainDrawer() { }
-    virtual void Draw(sint32 x,
-                      sint32 y,
-                      sint32 width,
-                      sint32 height,
-                      sint32 xStart,
-                      sint32 yStart) abstract;
+    virtual ~IRainDrawer()
+    {
+    }
+    virtual void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart) abstract;
 };

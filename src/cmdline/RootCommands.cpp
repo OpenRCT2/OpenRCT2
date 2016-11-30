@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,11 +18,10 @@
 
 #include "../core/Guard.hpp"
 
-extern "C"
-{
-    #include "../config.h"
-    #include "../openrct2.h"
-    #include "../platform/crash.h"
+extern "C" {
+#include "../config.h"
+#include "../openrct2.h"
+#include "../platform/crash.h"
 }
 
 #include "../core/Console.hpp"
@@ -39,7 +38,7 @@ extern "C"
 #endif // USE_BREAKPAD
 
 #if defined(__WINDOWS__) && !defined(DEBUG)
-    #define __PROVIDE_CONSOLE__ 1
+#define __PROVIDE_CONSOLE__ 1
 #endif // defined(__WINDOWS__) && !defined(DEBUG)
 
 #ifndef DISABLE_NETWORK
@@ -47,11 +46,11 @@ int  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
 int  gNetworkStartPort = NETWORK_DEFAULT_PORT;
 
-static uint32 _port            = 0;
+static uint32 _port = 0;
 #endif
 
 #ifdef __PROVIDE_CONSOLE__
-    static bool _provideConsole;
+static bool _provideConsole;
 #endif
 
 static bool   _help            = false;
@@ -67,27 +66,29 @@ static utf8 * _openrctDataPath = nullptr;
 static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
 
-static const CommandLineOptionDefinition StandardOptions[]
-{
-    { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
-    { CMDLINE_TYPE_SWITCH,  &_version,         'v', "version",           "show version information and exit"                          },
-    { CMDLINE_TYPE_SWITCH,  &_noInstall,       'n', "no-install",        "do not install scenario if passed"                          },
-    { CMDLINE_TYPE_SWITCH,  &_all,             'a', "all",               "show help for all commands"                                 },
-    { CMDLINE_TYPE_SWITCH,  &_about,           NAC, "about",             "show information about " OPENRCT2_NAME                      },
-    { CMDLINE_TYPE_SWITCH,  &_verbose,         NAC, "verbose",           "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+static const CommandLineOptionDefinition StandardOptions[]{
+    { CMDLINE_TYPE_SWITCH, &_help, 'h', "help", "show this help message and exit" },
+    { CMDLINE_TYPE_SWITCH, &_version, 'v', "version", "show version information and exit" },
+    { CMDLINE_TYPE_SWITCH, &_noInstall, 'n', "no-install", "do not install scenario if passed" },
+    { CMDLINE_TYPE_SWITCH, &_all, 'a', "all", "show help for all commands" },
+    { CMDLINE_TYPE_SWITCH, &_about, NAC, "about", "show information about " OPENRCT2_NAME },
+    { CMDLINE_TYPE_SWITCH, &_verbose, NAC, "verbose", "log verbose messages" },
+    { CMDLINE_TYPE_SWITCH, &_headless, NAC, "headless", "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD },
 #ifdef __PROVIDE_CONSOLE__
-    { CMDLINE_TYPE_SWITCH,  &_provideConsole,  NAC, "console",           "creates a new or attaches to an existing console window for standard output" },
+    { CMDLINE_TYPE_SWITCH, &_provideConsole, NAC, "console",
+      "creates a new or attaches to an existing console window for standard output" },
 #endif
 #ifndef DISABLE_NETWORK
-    { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
+    { CMDLINE_TYPE_INTEGER, &_port, NAC, "port", "port to use for hosting or joining a server" },
 #endif
-    { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
-    { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
-    { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
-    { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
+    { CMDLINE_TYPE_STRING, &_password, NAC, "password", "password needed to join the server" },
+    { CMDLINE_TYPE_STRING, &_userDataPath, NAC, "user-data-path", "path to the user data directory (containing config.ini)" },
+    { CMDLINE_TYPE_STRING, &_openrctDataPath, NAC, "openrct-data-path",
+      "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING, &_rct2DataPath, NAC, "rct2-data-path",
+      "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
 #ifdef USE_BREAKPAD
-    { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
+    { CMDLINE_TYPE_SWITCH, &_silentBreakpad, NAC, "silent-breakpad", "make breakpad crash reporting silent" },
 #endif // USE_BREAKPAD
     OptionTableEnd
 };
@@ -103,8 +104,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 
 static bool _removeShell = false;
 
-static const CommandLineOptionDefinition RegisterShellOptions[]
-{
+static const CommandLineOptionDefinition RegisterShellOptions[]{
     { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
 };
 
@@ -119,35 +119,34 @@ static void PrintLaunchInformation();
 const CommandLineCommand CommandLine::RootCommands[]
 {
     // Main commands
-    DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
-    DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
-    DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
+    DefineCommand("", "<uri>", StandardOptions, HandleNoCommand),
+        DefineCommand("edit", "<uri>", StandardOptions, HandleCommandEdit),
+        DefineCommand("intro", "", StandardOptions, HandleCommandIntro),
 #ifndef DISABLE_NETWORK
-    DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
-    DefineCommand("join",     "<hostname>",             StandardOptions, HandleCommandJoin   ),
+        DefineCommand("host", "<uri>", StandardOptions, HandleCommandHost),
+        DefineCommand("join", "<hostname>", StandardOptions, HandleCommandJoin),
 #endif
-    DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
-    DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
+        DefineCommand("set-rct2", "<path>", StandardOptions, HandleCommandSetRCT2),
+        DefineCommand("convert", "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
-    DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
+        DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
 #endif
 
-    // Sub-commands
-    DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
-    DefineSubCommand("sprite",     CommandLine::SpriteCommands    ),
+        // Sub-commands
+        DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
+        DefineSubCommand("sprite", CommandLine::SpriteCommands),
 
-    CommandTableEnd
+        CommandTableEnd
 };
 
-const CommandLineExample CommandLine::RootExamples[]
-{
-    { "./my_park.sv6",                                "open a saved park"                      },
-    { "./SnowyPark.sc6",                              "install and open a scenario"            },
-    { "./ShuttleLoop.td6",                            "install a track"                        },
-    { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
+const CommandLineExample CommandLine::RootExamples[]{
+    { "./my_park.sv6", "open a saved park" },
+    { "./SnowyPark.sc6", "install and open a scenario" },
+    { "./ShuttleLoop.td6", "install a track" },
+    { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park" },
 #ifndef DISABLE_NETWORK
-    { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
+    { "host ./my_park.sv6 --port 11753 --headless", "run a headless server for a saved park" },
 #endif
     ExampleTableEnd
 };
@@ -167,7 +166,8 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         PrintAbout();
         result = EXITCODE_OK;
-    } else
+    }
+    else
     {
         if (_verbose)
         {
@@ -191,7 +191,7 @@ exitcode_t CommandLine::HandleCommandDefault()
         result = EXITCODE_OK;
     }
 
-    gOpenRCT2Headless = _headless;
+    gOpenRCT2Headless       = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
     if (_userDataPath != nullptr)
@@ -291,7 +291,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gNetworkStart = NETWORK_MODE_SERVER;
+    gNetworkStart     = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
     return EXITCODE_CONTINUE;
 }
@@ -311,7 +311,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 
-    gNetworkStart = NETWORK_MODE_CLIENT;
+    gNetworkStart     = NETWORK_MODE_CLIENT;
     gNetworkStartPort = _port;
     String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
     return EXITCODE_CONTINUE;
@@ -364,7 +364,8 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     utf8 userPath[MAX_PATH];
     platform_resolve_user_data_path();
     platform_get_user_directory(userPath, NULL, sizeof(userPath));
-    if (!platform_ensure_directory_exists(userPath)) {
+    if (!platform_ensure_directory_exists(userPath))
+    {
         Console::Error::WriteLine("Unable to access or create directory '%s'.", userPath);
         return EXITCODE_FAIL;
     }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,21 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/IStream.hpp"
 #include "FootpathObject.h"
+#include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-    #include "../world/footpath.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
+#include "../world/footpath.h"
 }
 
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.var_0A = stream->ReadValue<uint8>();
-    _legacyType.flags = stream->ReadValue<uint8>();
+    _legacyType.var_0A         = stream->ReadValue<uint8>();
+    _legacyType.flags          = stream->ReadValue<uint8>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
@@ -45,8 +44,8 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 void FootpathObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.string_idx   = language_allocate_object_string(GetName());
+    _legacyType.image        = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 }
 
@@ -56,7 +55,7 @@ void FootpathObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
     _legacyType.string_idx = 0;
-    _legacyType.image = 0;
+    _legacyType.image      = 0;
 }
 
 void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,89 +16,71 @@
 
 #pragma once
 
-#include <initializer_list>
 #include "../common.h"
 #include "String.hpp"
+#include <initializer_list>
 
 namespace Collections
 {
-    template<typename TCollection, typename TItem>
-    static void AddRange(TCollection &collection, std::initializer_list<TItem> initializerList)
-    {
-        collection.insert(collection.end(), initializerList.begin(), initializerList.end());
-    }
+template <typename TCollection, typename TItem>
+static void AddRange(TCollection & collection, std::initializer_list<TItem> initializerList)
+{
+    collection.insert(collection.end(), initializerList.begin(), initializerList.end());
+}
 
-    template<typename TCollection, typename TItem, typename TComparer>
-    static bool Contains(TCollection &collection, TItem needle, TComparer comparer)
+template <typename TCollection, typename TItem, typename TComparer>
+static bool Contains(TCollection & collection, TItem needle, TComparer comparer)
+{
+    for (TItem item : collection)
     {
-        for (TItem item : collection)
+        if (comparer(item, needle))
         {
-            if (comparer(item, needle))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    template<typename TCollection, typename TItem, typename TComparer>
-    static size_t IndexOf(TCollection &collection, TItem needle, TComparer comparer)
-    {
-        size_t index = 0;
-        for (TItem item : collection)
-        {
-            if (comparer(item, needle))
-            {
-                return index;
-            }
-            index++;
-        }
-        return SIZE_MAX;
-    }
-
-    #pragma region String helpers
-
-    template<typename TCollection>
-    static bool Contains(TCollection &collection, const char * item, bool ignoreCase = false)
-    {
-        if (ignoreCase)
-        {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
-        }
-        else
-        {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
+            return true;
         }
     }
+    return false;
+}
 
-    template<typename TCollection>
-    static size_t IndexOf(TCollection &collection, const char * item, bool ignoreCase = false)
+template <typename TCollection, typename TItem, typename TComparer>
+static size_t IndexOf(TCollection & collection, TItem needle, TComparer comparer)
+{
+    size_t index = 0;
+    for (TItem item : collection)
     {
-        if (ignoreCase)
+        if (comparer(item, needle))
         {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
+            return index;
         }
-        else
-        {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
-        }
+        index++;
     }
+    return SIZE_MAX;
+}
 
-    #pragma endregion
+#pragma region String helpers
+
+template <typename TCollection> static bool Contains(TCollection & collection, const char * item, bool ignoreCase = false)
+{
+    if (ignoreCase)
+    {
+        return Contains(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, true); });
+    }
+    else
+    {
+        return Contains(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, false); });
+    }
+}
+
+template <typename TCollection> static size_t IndexOf(TCollection & collection, const char * item, bool ignoreCase = false)
+{
+    if (ignoreCase)
+    {
+        return IndexOf(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, true); });
+    }
+    else
+    {
+        return IndexOf(collection, item, [](const char * a, const char * b) { return String::Equals(a, b, false); });
+    }
+}
+
+#pragma endregion
 }

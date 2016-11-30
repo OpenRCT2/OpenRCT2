@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,7 +21,7 @@
 #include "../../src/common.h"
 
 extern "C" {
-    #include "../../src/paint/paint.h"
+#include "../../src/paint/paint.h"
 }
 
 struct SegmentSupportCall
@@ -30,12 +30,15 @@ struct SegmentSupportCall
     sint32 height;
     sint16 slope;
 
-    bool operator<(const SegmentSupportCall &other) const {
-        if (height != other.height) {
+    bool operator<(const SegmentSupportCall & other) const
+    {
+        if (height != other.height)
+        {
             return height < other.height;
         }
 
-        if (segments != other.segments) {
+        if (segments != other.segments)
+        {
             return segments < other.segments;
         }
 
@@ -43,7 +46,8 @@ struct SegmentSupportCall
     }
 };
 
-class SegmentSupportHeightCall {
+class SegmentSupportHeightCall
+{
 public:
     static std::vector<SegmentSupportCall> getSegmentCalls(support_height supports[9], uint8 rotation);
     static bool CallsMatch(std::vector<SegmentSupportCall> tileSegmentSupportCalls[4]);

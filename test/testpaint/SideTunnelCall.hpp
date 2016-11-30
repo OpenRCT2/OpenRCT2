@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -22,23 +22,26 @@ extern "C" {
 #include "../../src/paint/map_element/map_element.h"
 }
 
-enum {
+enum
+{
     TUNNELCALL_SKIPPED,
     TUNNELCALL_NONE,
     TUNNELCALL_CALL,
 };
 
-struct TunnelCall {
-    uint8 call;
+struct TunnelCall
+{
+    uint8  call;
     sint16 offset;
-    uint8 type;
+    uint8  type;
 };
 
-namespace SideTunnelCall {
-    sint16 GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
-    TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8 count, uint16 baseHeight, bool * error);
+namespace SideTunnelCall
+{
+sint16 GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
+TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8 count, uint16 baseHeight, bool * error);
 
-    bool TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4]);
-    void GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4]);
-    bool TunnelCallsLineUp(TunnelCall tunnelCalls[4][4]);
+bool TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4]);
+void GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4]);
+bool TunnelCallsLineUp(TunnelCall tunnelCalls[4][4]);
 };

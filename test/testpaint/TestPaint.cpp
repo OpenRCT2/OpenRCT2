@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,138 +14,140 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
-#include "TestPaint.hpp"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
+#include "TestPaint.hpp"
 #include "Utils.hpp"
 
 extern "C" {
-    #include "../../src/paint/paint.h"
-    #include "../../src/paint/supports.h"
-    #include "../../src/ride/track_data.h"
-    #include "../../src/interface/viewport.h"
-    #include "../../src/hook.h"
+#include "../../src/hook.h"
+#include "../../src/interface/viewport.h"
+#include "../../src/paint/paint.h"
+#include "../../src/paint/supports.h"
+#include "../../src/ride/track_data.h"
 }
 
 namespace TestPaint
 {
-    void ResetEnvironment() {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
-        gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
-        gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
-        gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
+void ResetEnvironment()
+{
+    gPaintInteractionType          = VIEWPORT_INTERACTION_ITEM_RIDE;
+    gTrackColours[SCHEME_TRACK]    = DEFAULT_SCHEME_TRACK;
+    gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+    gTrackColours[SCHEME_MISC]     = DEFAULT_SCHEME_MISC;
+    gTrackColours[SCHEME_3]        = DEFAULT_SCHEME_3;
 
-        rct_drawpixelinfo dpi = { 0 };
-        dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
+    rct_drawpixelinfo dpi = { 0 };
+    dpi.zoom_level        = 1;
+    unk_140E9A8           = &dpi;
 
-        rct_ride ride = {0};
-        ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+    rct_ride ride       = { 0 };
+    ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
 
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
+    rct_ride_entry         rideEntry = { 0 };
+    rct_ride_entry_vehicle vehicleEntry{ 0 };
+    vehicleEntry.base_image_id = 0x70000;
+    rideEntry.vehicles[0]      = vehicleEntry;
 
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+    gRideList[0]    = ride;
+    gRideEntries[0] = &rideEntry;
 
-        g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
-    }
-
-    void ResetTunnels() {
-        gLeftTunnelCount = 0;
-        gRightTunnelCount = 0;
-
-        for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            gLeftTunnels[i].height = 0;
-            gLeftTunnels[i].type = 0;
-            gRightTunnels[i].height = 0;
-            gRightTunnels[i].type = 0;
-        }
-
-        gLeftTunnels[0].height = 0xFF;
-        gLeftTunnels[0].type = 0xFF;
-        gRightTunnels[0].height = 0xFF;
-        gRightTunnels[0].type = 0xFF;
-    }
-
-    void ResetSupportHeights() {
-        for (int s = 0; s < 9; ++s)
-        {
-            gSupportSegments[s].height = 0;
-            gSupportSegments[s].slope = 0xFF;
-        }
-
-        gSupport.height = 0;
-        gSupport.slope = 0xFF;
-    }
-
-    struct IgnoredEntry
-    {
-        uint8 Direction;
-        uint8 TrackSequence;
-    };
-
-    static bool _ignoredAll;
-    static std::vector<IgnoredEntry> _ignoredEntries;
-
-    static void testClearIgnore()
-    {
-        _ignoredAll = false;
-        _ignoredEntries.clear();
-    }
-
-    static void testIgnore(uint8 direction, uint8 trackSequence)
-    {
-        _ignoredEntries.push_back({ direction, trackSequence });
-    }
-
-    static void testIgnoreAll()
-    {
-        _ignoredAll = true;
-    }
-
-    static bool testIsIgnored(uint8 direction, uint8 trackSequence)
-    {
-        if (_ignoredAll) return true;
-        for (const IgnoredEntry &entry : _ignoredEntries)
-        {
-            if (entry.Direction == direction &&
-                entry.TrackSequence == trackSequence)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 }
 
-extern "C"
+void ResetTunnels()
 {
-    void testpaint_clear_ignore()
+    gLeftTunnelCount  = 0;
+    gRightTunnelCount = 0;
+
+    for (int i = 0; i < TUNNEL_MAX_COUNT; i++)
     {
-        TestPaint::testClearIgnore();
+        gLeftTunnels[i].height  = 0;
+        gLeftTunnels[i].type    = 0;
+        gRightTunnels[i].height = 0;
+        gRightTunnels[i].type   = 0;
     }
 
-    void testpaint_ignore(uint8 direction, uint8 trackSequence)
+    gLeftTunnels[0].height  = 0xFF;
+    gLeftTunnels[0].type    = 0xFF;
+    gRightTunnels[0].height = 0xFF;
+    gRightTunnels[0].type   = 0xFF;
+}
+
+void ResetSupportHeights()
+{
+    for (int s = 0; s < 9; ++s)
     {
-        TestPaint::testIgnore(direction, trackSequence);
+        gSupportSegments[s].height = 0;
+        gSupportSegments[s].slope  = 0xFF;
     }
 
-    void testpaint_ignore_all()
-    {
-        TestPaint::testIgnoreAll();
-    }
+    gSupport.height = 0;
+    gSupport.slope  = 0xFF;
+}
 
-    bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
-    {
-        return TestPaint::testIsIgnored(direction, trackSequence);
-    }
+struct IgnoredEntry
+{
+    uint8 Direction;
+    uint8 TrackSequence;
+};
 
+static bool                      _ignoredAll;
+static std::vector<IgnoredEntry> _ignoredEntries;
+
+static void testClearIgnore()
+{
+    _ignoredAll = false;
+    _ignoredEntries.clear();
+}
+
+static void testIgnore(uint8 direction, uint8 trackSequence)
+{
+    _ignoredEntries.push_back({ direction, trackSequence });
+}
+
+static void testIgnoreAll()
+{
+    _ignoredAll = true;
+}
+
+static bool testIsIgnored(uint8 direction, uint8 trackSequence)
+{
+    if (_ignoredAll)
+        return true;
+    for (const IgnoredEntry & entry : _ignoredEntries)
+    {
+        if (entry.Direction == direction && entry.TrackSequence == trackSequence)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+}
+
+extern "C" {
+void testpaint_clear_ignore()
+{
+    TestPaint::testClearIgnore();
+}
+
+void testpaint_ignore(uint8 direction, uint8 trackSequence)
+{
+    TestPaint::testIgnore(direction, trackSequence);
+}
+
+void testpaint_ignore_all()
+{
+    TestPaint::testIgnoreAll();
+}
+
+bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+{
+    return TestPaint::testIsIgnored(direction, trackSequence);
+}
 }

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -51,7 +51,7 @@ void CopyFramebufferShader::GetLocations()
     uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
 
-    vIndex              = GetAttributeLocation("vIndex");
+    vIndex = GetAttributeLocation("vIndex");
 }
 
 void CopyFramebufferShader::SetScreenSize(sint32 width, sint32 height)

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,53 +17,57 @@
 #ifndef _SAWYERCODING_H_
 #define _SAWYERCODING_H_
 
-#include <SDL.h>
 #include "../common.h"
+#include <SDL.h>
 
 #pragma pack(push, 1)
-typedef struct sawyercoding_chunk_header {
-	uint8 encoding;
-	uint32 length;
+typedef struct sawyercoding_chunk_header
+{
+    uint8  encoding;
+    uint32 length;
 } sawyercoding_chunk_header;
 assert_struct_size(sawyercoding_chunk_header, 5);
 #pragma pack(pop)
 
 extern bool gUseRLE;
 
-enum {
-	CHUNK_ENCODING_NONE,
-	CHUNK_ENCODING_RLE,
-	CHUNK_ENCODING_RLECOMPRESSED,
-	CHUNK_ENCODING_ROTATE
+enum
+{
+    CHUNK_ENCODING_NONE,
+    CHUNK_ENCODING_RLE,
+    CHUNK_ENCODING_RLECOMPRESSED,
+    CHUNK_ENCODING_ROTATE
 };
 
-enum {
-	FILE_VERSION_MASK = (3 << 0),
-	FILE_VERSION_RCT1 = (0 << 0),
-	FILE_VERSION_RCT1_AA = (1 << 0),
-	FILE_VERSION_RCT1_LL = (2 << 0),
+enum
+{
+    FILE_VERSION_MASK    = (3 << 0),
+    FILE_VERSION_RCT1    = (0 << 0),
+    FILE_VERSION_RCT1_AA = (1 << 0),
+    FILE_VERSION_RCT1_LL = (2 << 0),
 
-	FILE_TYPE_MASK = (3 << 2),
-	FILE_TYPE_TD4 = (0 << 2),
-	FILE_TYPE_SV4 = (1 << 2),
-	FILE_TYPE_SC4 = (2 << 2)
+    FILE_TYPE_MASK = (3 << 2),
+    FILE_TYPE_TD4  = (0 << 2),
+    FILE_TYPE_SV4  = (1 << 2),
+    FILE_TYPE_SC4  = (2 << 2)
 };
 
-int sawyercoding_validate_checksum(SDL_RWops* rw);
-uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
-bool sawyercoding_read_chunk_safe(SDL_RWops *rw, void *dst, size_t dstLength);
-bool sawyercoding_skip_chunk(SDL_RWops *rw);
-size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const size_t buffer_size);
-size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader, size_t dst_buffer_size);
-size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader);
-size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength);
-size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength);
-size_t sawyercoding_encode_sv4(const uint8 *src, uint8 *dst, size_t length);
-size_t sawyercoding_decode_td6(const uint8 *src, uint8 *dst, size_t length);
-size_t sawyercoding_encode_td6(const uint8 *src, uint8 *dst, size_t length);
-int sawyercoding_validate_track_checksum(const uint8* src, size_t length);
+int sawyercoding_validate_checksum(SDL_RWops * rw);
+uint32 sawyercoding_calculate_checksum(const uint8 * buffer, size_t length);
+bool sawyercoding_read_chunk_safe(SDL_RWops * rw, void * dst, size_t dstLength);
+bool sawyercoding_skip_chunk(SDL_RWops * rw);
+size_t sawyercoding_read_chunk_with_size(SDL_RWops * rw, uint8 * buffer, const size_t buffer_size);
+size_t sawyercoding_read_chunk_buffer(uint8 * dst_buffer, const uint8 * src_buffer, sawyercoding_chunk_header chunkHeader,
+                                      size_t dst_buffer_size);
+size_t sawyercoding_write_chunk_buffer(uint8 * dst_file, const uint8 * src_buffer, sawyercoding_chunk_header chunkHeader);
+size_t sawyercoding_decode_sv4(const uint8 * src, uint8 * dst, size_t length, size_t bufferLength);
+size_t sawyercoding_decode_sc4(const uint8 * src, uint8 * dst, size_t length, size_t bufferLength);
+size_t sawyercoding_encode_sv4(const uint8 * src, uint8 * dst, size_t length);
+size_t sawyercoding_decode_td6(const uint8 * src, uint8 * dst, size_t length);
+size_t sawyercoding_encode_td6(const uint8 * src, uint8 * dst, size_t length);
+int sawyercoding_validate_track_checksum(const uint8 * src, size_t length);
 
-int sawyercoding_detect_file_type(const uint8 *src, size_t length);
+int sawyercoding_detect_file_type(const uint8 * src, size_t length);
 int sawyercoding_detect_rct1_version(int gameVersion);
 
 #endif

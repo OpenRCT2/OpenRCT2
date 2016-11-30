@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,8 +18,8 @@
 
 #include "../common.h"
 
-#include <SDL.h>
 #include "IStream.hpp"
+#include <SDL.h>
 
 enum
 {
@@ -43,15 +43,16 @@ public:
     FileStream(const utf8 * path, int fileMode)
     {
         const char * mode;
-        switch (fileMode) {
+        switch (fileMode)
+        {
         case FILE_MODE_OPEN:
-            mode = "rb";
-            _canRead = true;
+            mode      = "rb";
+            _canRead  = true;
             _canWrite = false;
             break;
         case FILE_MODE_WRITE:
-            mode = "wb";
-            _canRead = false;
+            mode      = "wb";
+            _canRead  = false;
             _canWrite = true;
             break;
         default:
@@ -77,11 +78,23 @@ public:
         }
     }
 
-    bool CanRead()  const override { return _canRead;  }
-    bool CanWrite() const override { return _canWrite; }
+    bool CanRead() const override
+    {
+        return _canRead;
+    }
+    bool CanWrite() const override
+    {
+        return _canWrite;
+    }
 
-    uint64 GetLength()   const override { return _fileSize; }
-    uint64 GetPosition() const override { return SDL_RWtell(_file); }
+    uint64 GetLength() const override
+    {
+        return _fileSize;
+    }
+    uint64 GetPosition() const override
+    {
+        return SDL_RWtell(_file);
+    }
 
     void SetPosition(uint64 position) override
     {
@@ -90,7 +103,8 @@ public:
 
     void Seek(sint64 offset, int origin) override
     {
-        switch (origin) {
+        switch (origin)
+        {
         case STREAM_SEEK_BEGIN:
             SDL_RWseek(_file, offset, RW_SEEK_SET);
             break;

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,13 +20,12 @@
 typedef void * CExceptionHandler;
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-    extern bool gOpenRCT2SilentBreakpad;
-    CExceptionHandler crash_init();
+extern bool       gOpenRCT2SilentBreakpad;
+CExceptionHandler crash_init();
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* _OPENRCT2_CRASH_ */
+#endif /* _OPENRCT2_CRASH_ */

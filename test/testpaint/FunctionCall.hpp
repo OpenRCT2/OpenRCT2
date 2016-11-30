@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -39,24 +39,25 @@ typedef struct
     uint8 function;
     struct paint
     {
-        uint32 image_id;
-        rct_xy16 offset;
+        uint32    image_id;
+        rct_xy16  offset;
         rct_xyz16 bound_box_length;
-        sint16 z_offset;
+        sint16    z_offset;
         rct_xyz16 bound_box_offset;
-        uint32 rotation;
+        uint32    rotation;
     } paint;
     struct supports
     {
-        int type;
-        uint8 segment;
-        int special;
-        int height;
+        int    type;
+        uint8  segment;
+        int    special;
+        int    height;
         uint32 colour_flags;
     } supports;
 } function_call;
 
-class FunctionCall {
+class FunctionCall
+{
 public:
     static bool AssertsEquals(function_call expected, function_call actual);
     static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);

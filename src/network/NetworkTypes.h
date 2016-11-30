@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,7 +20,6 @@
 #include <SDL_platform.h>
 
 #ifndef DISABLE_NETWORK
-
 
 #include "../common.h"
 #endif
@@ -63,11 +62,11 @@ enum NETWORK_COMMAND
 
 #ifdef __cplusplus
 
-template <size_t size>
-struct ByteSwapT { };
+template <size_t size> struct ByteSwapT
+{
+};
 
-template <>
-struct ByteSwapT<1>
+template <> struct ByteSwapT<1>
 {
     static uint8 SwapBE(uint8 value)
     {
@@ -75,8 +74,7 @@ struct ByteSwapT<1>
     }
 };
 
-template <>
-struct ByteSwapT<2>
+template <> struct ByteSwapT<2>
 {
     static uint16 SwapBE(uint16 value)
     {
@@ -84,8 +82,7 @@ struct ByteSwapT<2>
     }
 };
 
-template <>
-struct ByteSwapT<4>
+template <> struct ByteSwapT<4>
 {
     static uint32 SwapBE(uint32 value)
     {
@@ -93,8 +90,7 @@ struct ByteSwapT<4>
     }
 };
 
-template <typename T>
-static T ByteSwapBE(const T& value)
+template <typename T> static T ByteSwapBE(const T & value)
 {
     return ByteSwapT<sizeof(T)>::SwapBE(value);
 }

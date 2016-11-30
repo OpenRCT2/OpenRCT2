@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -49,7 +49,10 @@ public:
     /**
      * Gets the current target framebuffer.
      */
-    const OpenGLFramebuffer * GetTargetFramebuffer() const { return _targetFramebuffer; }
+    const OpenGLFramebuffer * GetTargetFramebuffer() const
+    {
+        return _targetFramebuffer;
+    }
 
     /**
      * Gets the texture ID for the source framebuffer.

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,26 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "WallObject.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "WallObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.wall.tool_id = stream->ReadValue<uint8>();
-    _legacyType.wall.flags = stream->ReadValue<uint8>();
-    _legacyType.wall.height = stream->ReadValue<uint8>();
-    _legacyType.wall.flags2 = stream->ReadValue<uint8>();
-    _legacyType.wall.price = stream->ReadValue<uint16>();
+    _legacyType.wall.tool_id        = stream->ReadValue<uint8>();
+    _legacyType.wall.flags          = stream->ReadValue<uint8>();
+    _legacyType.wall.height         = stream->ReadValue<uint8>();
+    _legacyType.wall.flags2         = stream->ReadValue<uint8>();
+    _legacyType.wall.price          = stream->ReadValue<uint16>();
     _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8>();
-    _legacyType.wall.var_0D = stream->ReadValue<uint8>();
+    _legacyType.wall.var_0D         = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -52,7 +51,7 @@ void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 void WallObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name  = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 }
 
@@ -61,7 +60,7 @@ void WallObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 

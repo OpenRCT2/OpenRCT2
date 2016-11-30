@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,9 +20,9 @@
 #include "common.h"
 #include "drawing/drawing.h"
 
-bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8 *path);
+bool image_io_png_read(uint8 ** pixels, uint32 * width, uint32 * height, const utf8 * path);
 
-bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path);
-bool image_io_png_write_32bpp(sint32 width, sint32 height, const void *pixels, const utf8 *path);
+bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path);
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path);
 
 #endif

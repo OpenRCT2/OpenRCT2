@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,19 +21,20 @@
 extern "C" {
 #endif // __cplusplus
 #include "../common.h"
-#include <SDL.h>
 #include "../platform/platform.h"
+#include <SDL.h>
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#define MIXER_LOOP_NONE			0
-#define MIXER_LOOP_INFINITE		-1
+#define MIXER_LOOP_NONE 0
+#define MIXER_LOOP_INFINITE -1
 
-enum {
-	MIXER_GROUP_SOUND,
-	MIXER_GROUP_RIDE_MUSIC,
-	MIXER_GROUP_TITLE_MUSIC,
+enum
+{
+    MIXER_GROUP_SOUND,
+    MIXER_GROUP_RIDE_MUSIC,
+    MIXER_GROUP_TITLE_MUSIC,
 };
 
 #ifdef __cplusplus
@@ -43,151 +44,154 @@ extern "C" {
 #include <speex/speex_resampler.h>
 }
 
-typedef struct AudioFormat {
-	int BytesPerSample() const { return (SDL_AUDIO_BITSIZE(format)) / 8; }
-	int freq;
-	SDL_AudioFormat format;
-	int channels;
+typedef struct AudioFormat
+{
+    int BytesPerSample() const
+    {
+        return (SDL_AUDIO_BITSIZE(format)) / 8;
+    }
+    int             freq;
+    SDL_AudioFormat format;
+    int             channels;
 } AudioFormat;
 
 class Source
 {
 public:
-	virtual ~Source();
-	unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
-	unsigned long Length();
-	const AudioFormat& Format();
+    virtual ~Source();
+    unsigned long GetSome(unsigned long offset, const uint8 ** data, unsigned long length);
+    unsigned long       Length();
+    const AudioFormat & Format();
 
-	friend class Mixer;
+    friend class Mixer;
 
 protected:
-	virtual unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) = 0;
+    virtual unsigned long Read(unsigned long offset, const uint8 ** data, unsigned long length) = 0;
 
-	AudioFormat format;
-	unsigned long length;
+    AudioFormat   format;
+    unsigned long length;
 };
 
 class Source_Null : public Source
 {
 public:
-	Source_Null();
+    Source_Null();
 
 protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
+    unsigned long Read(unsigned long offset, const uint8 ** data, unsigned long length);
 };
 
 class Source_Sample : public Source
 {
 public:
-	Source_Sample();
-	~Source_Sample();
-	bool LoadWAV(const char* filename);
-	bool LoadCSS1(const char* filename, unsigned int offset);
+    Source_Sample();
+    ~Source_Sample();
+    bool LoadWAV(const char * filename);
+    bool LoadCSS1(const char * filename, unsigned int offset);
 
-	friend class Mixer;
+    friend class Mixer;
 
 protected:
-	bool Convert(AudioFormat format);
+    bool Convert(AudioFormat format);
 
 private:
-	void Unload();
+    void Unload();
 
-	uint8* data;
-	bool issdlwav;
+    uint8 * data;
+    bool    issdlwav;
 
 protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
+    unsigned long Read(unsigned long offset, const uint8 ** data, unsigned long length);
 };
 
 class Source_SampleStream : public Source
 {
 public:
-	Source_SampleStream() = default;
-	~Source_SampleStream();
-	bool LoadWAV(SDL_RWops* rw);
+    Source_SampleStream() = default;
+    ~Source_SampleStream();
+    bool LoadWAV(SDL_RWops * rw);
 
 private:
-	Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id);
-	void Unload();
+    Uint32 FindChunk(SDL_RWops * rw, Uint32 wanted_id);
+    void Unload();
 
-	SDL_RWops* rw = nullptr;
-	Uint64 databegin = 0;
-	uint8* buffer = nullptr;
-	unsigned long buffersize = 0;
+    SDL_RWops *   rw         = nullptr;
+    Uint64        databegin  = 0;
+    uint8 *       buffer     = nullptr;
+    unsigned long buffersize = 0;
 
 protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
+    unsigned long Read(unsigned long offset, const uint8 ** data, unsigned long length);
 };
 
 class Channel
 {
 public:
-	Channel();
-	~Channel();
-	void Play(Source& source, int loop);
-	void SetRate(double rate);
-	void SetVolume(int volume);
-	void SetPan(float pan);
-	bool IsPlaying();
-	unsigned long GetOffset();
-	bool SetOffset(unsigned long offset);
-	void SetGroup(int group);
+    Channel();
+    ~Channel();
+    void Play(Source & source, int loop);
+    void SetRate(double rate);
+    void SetVolume(int volume);
+    void SetPan(float pan);
+    bool          IsPlaying();
+    unsigned long GetOffset();
+    bool SetOffset(unsigned long offset);
+    void SetGroup(int group);
 
-	friend class Mixer;
+    friend class Mixer;
 
 private:
-	int loop = 0;
-	unsigned long offset = 0;
-	double rate = 0;
-	int volume = 1;
-	float volume_l = 0.f, volume_r = 0.f;
-	float oldvolume_l = 0.f, oldvolume_r = 0.f;
-	float pan = 0;
-	bool done = true;
-	bool deleteondone = false;
-	bool deletesourceondone = false;
-	bool stopping = false;
-	int oldvolume = 0;
-	int group = MIXER_GROUP_SOUND;
-	SpeexResamplerState* resampler = nullptr;
-	Source* source = nullptr;
+    int                   loop     = 0;
+    unsigned long         offset   = 0;
+    double                rate     = 0;
+    int                   volume   = 1;
+    float                 volume_l = 0.f, volume_r = 0.f;
+    float                 oldvolume_l = 0.f, oldvolume_r = 0.f;
+    float                 pan                = 0;
+    bool                  done               = true;
+    bool                  deleteondone       = false;
+    bool                  deletesourceondone = false;
+    bool                  stopping           = false;
+    int                   oldvolume          = 0;
+    int                   group              = MIXER_GROUP_SOUND;
+    SpeexResamplerState * resampler          = nullptr;
+    Source *              source             = nullptr;
 };
 
 class Mixer
 {
 public:
-	Mixer();
-	void Init(const char* device);
-	void Close();
-	void Lock();
-	void Unlock();
-	Channel* Play(Source& source, int loop, bool deleteondone, bool deletesourceondone);
-	void Stop(Channel& channel);
-	bool LoadMusic(size_t pathid);
-	void SetVolume(float volume);
+    Mixer();
+    void Init(const char * device);
+    void      Close();
+    void      Lock();
+    void      Unlock();
+    Channel * Play(Source & source, int loop, bool deleteondone, bool deletesourceondone);
+    void Stop(Channel & channel);
+    bool LoadMusic(size_t pathid);
+    void SetVolume(float volume);
 
-	Source* css1sources[SOUND_MAXID];
-	Source* musicsources[PATH_ID_END];
+    Source * css1sources[SOUND_MAXID];
+    Source * musicsources[PATH_ID_END];
 
 private:
-	static void SDLCALL Callback(void* arg, uint8* data, int length);
-	void MixChannel(Channel& channel, uint8* buffer, int length);
-	void EffectPanS16(Channel& channel, sint16* data, int length);
-	void EffectPanU8(Channel& channel, uint8* data, int length);
-	void EffectFadeS16(sint16* data, int length, int startvolume, int endvolume);
-	void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume);
-	bool MustConvert(Source& source);
-	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
-	SDL_AudioDeviceID deviceid;
-	AudioFormat format;
-	uint8* effectbuffer;
-	std::list<Channel*> channels;
-	Source_Null source_null;
-	float volume;
+    static void SDLCALL Callback(void * arg, uint8 * data, int length);
+    void MixChannel(Channel & channel, uint8 * buffer, int length);
+    void EffectPanS16(Channel & channel, sint16 * data, int length);
+    void EffectPanU8(Channel & channel, uint8 * data, int length);
+    void EffectFadeS16(sint16 * data, int length, int startvolume, int endvolume);
+    void EffectFadeU8(uint8 * data, int length, int startvolume, int endvolume);
+    bool MustConvert(Source & source);
+    bool Convert(SDL_AudioCVT & cvt, const uint8 * data, unsigned long length, uint8 ** dataout);
+    SDL_AudioDeviceID    deviceid;
+    AudioFormat          format;
+    uint8 *              effectbuffer;
+    std::list<Channel *> channels;
+    Source_Null          source_null;
+    float                volume;
 };
 
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifndef DSBPAN_LEFT
@@ -197,22 +201,31 @@ extern "C"
 #define DSBPAN_RIGHT 10000
 #endif
 
-void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone);
-void Mixer_Stop_Channel(void* channel);
-void Mixer_Channel_Volume(void* channel, int volume);
-void Mixer_Channel_Pan(void* channel, float pan);
-void Mixer_Channel_Rate(void* channel, double rate);
-int Mixer_Channel_IsPlaying(void* channel);
-unsigned long Mixer_Channel_GetOffset(void* channel);
-int Mixer_Channel_SetOffset(void* channel, unsigned long offset);
-void Mixer_Channel_SetGroup(void* channel, int group);
-void* Mixer_Play_Music(int pathId, int loop, int streaming);
+void Mixer_Init(const char * device);
+void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone);
+void Mixer_Stop_Channel(void * channel);
+void Mixer_Channel_Volume(void * channel, int volume);
+void Mixer_Channel_Pan(void * channel, float pan);
+void Mixer_Channel_Rate(void * channel, double rate);
+int Mixer_Channel_IsPlaying(void * channel);
+unsigned long Mixer_Channel_GetOffset(void * channel);
+int Mixer_Channel_SetOffset(void * channel, unsigned long offset);
+void Mixer_Channel_SetGroup(void * channel, int group);
+void * Mixer_Play_Music(int pathId, int loop, int streaming);
 void Mixer_SetVolume(float volume);
 
-static int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); }
-static float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; }
-static double DStoMixerRate(int frequency) { return (double)frequency / 22050; }
+static int DStoMixerVolume(int volume)
+{
+    return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000)));
+}
+static float DStoMixerPan(int pan)
+{
+    return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+}
+static double DStoMixerRate(int frequency)
+{
+    return (double)frequency / 22050;
+}
 
 #ifdef __cplusplus
 }

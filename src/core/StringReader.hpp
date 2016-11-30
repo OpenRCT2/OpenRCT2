@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -25,10 +25,10 @@ interface IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t * outCodepoint)       abstract;
-    virtual bool TryRead(codepoint_t * outCodepoint)       abstract;
-    virtual void Skip()                                    abstract;
-    virtual bool CanRead()                           const abstract;
+    virtual bool TryPeek(codepoint_t * outCodepoint) abstract;
+    virtual bool TryRead(codepoint_t * outCodepoint) abstract;
+    virtual void Skip() abstract;
+    virtual bool CanRead() const abstract;
 };
 
 class UTF8StringReader final : public IStringReader
@@ -38,25 +38,27 @@ public:
     {
         text = String::SkipBOM(text);
 
-        _text = text;
+        _text    = text;
         _current = text;
     }
 
     bool TryPeek(codepoint_t * outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current);
-        *outCodepoint = codepoint;
+        *outCodepoint         = codepoint;
         return true;
     }
 
     bool TryRead(codepoint_t * outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
-        *outCodepoint = codepoint;
+        *outCodepoint         = codepoint;
         if (codepoint == 0)
         {
             _current = nullptr;
@@ -77,6 +79,6 @@ public:
     }
 
 private:
-    const utf8 *_text;
-    const utf8 *_current;
+    const utf8 * _text;
+    const utf8 * _current;
 };
