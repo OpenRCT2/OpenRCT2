@@ -89,6 +89,7 @@
     <ClCompile Include="src\interface\colour.c" />
     <ClCompile Include="src\interface\Theme.cpp" />
     <ClCompile Include="src\interface\console.c" />
+    <ClCompile Include="src\interface\Fonts.cpp" />
     <ClCompile Include="src\interface\graph.c" />
     <ClCompile Include="src\interface\keyboard_shortcut.c" />
     <ClCompile Include="src\interface\screenshot.c" />
@@ -417,6 +418,7 @@
     <ClInclude Include="src\interface\colour.h" />
     <ClInclude Include="src\interface\themes.h" />
     <ClInclude Include="src\interface\console.h" />
+    <ClInclude Include="src\interface\Fonts.h" />
     <ClInclude Include="src\interface\graph.h" />
     <ClInclude Include="src\interface\keyboard_shortcut.h" />
     <ClInclude Include="src\interface\screenshot.h" />

@@ -334,7 +334,6 @@ sound_configuration gConfigSound;
 twitch_configuration gConfigTwitch;
 network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
-font_configuration gConfigFonts;
 title_sequences_configuration gConfigTitleSequences;
 
 static bool config_open(const utf8string path);
