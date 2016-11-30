@@ -48,13 +48,32 @@ add_dependencies(${GTEST_LIBRARY} googletest)
 add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
 include_directories(SYSTEM ${GTEST_INCLUDE_DIR})
+include_directories("../../src")
+
+set(GTEST_LIBRARIES gtest gtest_main pthread)
 
 # Start of our tests
 
+# sawyercoding test
+
 set(SAWYERCODING_TEST_SOURCES "sawyercoding_test.cpp" "../../src/diagnostic.c" "../../src/util/sawyercoding.c" "../../src/localisation/utf8.c")
-set (CMAKE_CXX_STANDARD 11)
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
-target_link_libraries(test_sawyercoding gtest gtest_main pthread)
-target_include_directories(test_sawyercoding PUBLIC "../../src")
-add_test(NAME sawyercoding
-	COMMAND test_sawyercoding)
+target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES})
+add_test(NAME sawyercoding COMMAND test_sawyercoding)
+
+# LanguagePack test
+set(LANGUAGEPACK_TEST_SOURCES
+		"LanguagePackTest.cpp"
+		"../../src/localisation/LanguagePack.cpp"
+		"../../src/core/Console.cpp"
+		"../../src/core/Diagnostics.cpp"
+		"../../src/core/Guard.cpp"
+		"../../src/core/String.cpp"
+		"../../src/diagnostic.c"
+		"../../src/localisation/format_codes.c"
+		"../../src/localisation/utf8.c"
+		"../../src/util/util.c"
+		)
+add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} dl z SDL2 SDL2_ttf ssl crypto)
+add_test(NAME languagepack COMMAND test_languagepack)
