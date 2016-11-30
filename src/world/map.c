@@ -3195,7 +3195,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		*ebx = 0;
 	}
 
-	if (!flags & GAME_COMMAND_FLAG_APPLY) {
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		return;
 	}
 
