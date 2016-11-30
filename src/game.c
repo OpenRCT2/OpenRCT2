@@ -436,6 +436,7 @@ static int game_check_affordability(int cost)
 	if (cost <= 0)return cost;
 	if (gUnk141F568 & 0xF0) return cost;
 	if (cost <= (sint32)(DECRYPT_MONEY(gCashEncrypted)))return cost;
+	if (gCheatsFreeBuilding || gCheatsIgnoreMoney)return cost;
 
 	set_format_arg(0, uint32, cost);
 
@@ -554,6 +555,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 			*edx = *ebx;
 
+			//If destroying a piece.
 			if (*edx != MONEY32_UNDEFINED && *edx < cost)
 				cost = *edx;
 
@@ -563,9 +565,11 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				return cost;
 
 			//
-			if (!(flags & 0x20)) {
+			if (!(flags & GAME_COMMAND_FLAG_5)) {
 				// Update money balance
-				finance_payment(cost, gCommandExpenditureType);
+				if (!gCheatsFreeBuilding)
+					finance_payment(cost, gCommandExpenditureType);
+				// Money effect will check if freebuilding is enabled, and will colour it grey if so.
 				if (gUnk141F568 == gUnk13CA740) {
 					// Create a +/- money text effect
 					if (cost != 0)
