@@ -20,6 +20,7 @@ extern "C" {
 	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"
 	#include "../openrct2.h"
+	#include "../rct2.h"
 	#include "audio.h"
 }
 #include "mixer.h"

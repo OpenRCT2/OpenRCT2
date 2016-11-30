@@ -26,6 +26,7 @@ extern "C"
     #include "../interface/screenshot.h"
     #include "../localisation/string_ids.h"
     #include "../platform/platform.h"
+    #include "../rct2.h"
 }
 
 static sint32           _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;

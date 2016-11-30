@@ -19,6 +19,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
+#include "../rct2.h"
 #include "../world/map.h"
 #include "dropdown.h"
 #include "../interface/themes.h"

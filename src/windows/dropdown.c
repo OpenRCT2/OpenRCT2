@@ -20,6 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../scenario.h"
 #include "../sprites.h"
+#include "../rct2.h"
 #include "dropdown.h"
 
 int gAppropriateImageDropdownItemsPerRow[] = {

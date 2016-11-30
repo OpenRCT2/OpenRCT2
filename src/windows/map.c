@@ -24,6 +24,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../sprites.h"
+#include "../rct2.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "error.h"

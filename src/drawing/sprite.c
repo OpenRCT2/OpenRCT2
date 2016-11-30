@@ -21,6 +21,7 @@
 #include "../sprites.h"
 #include "../util/util.h"
 #include "drawing.h"
+#include "../rct2.h"
 
 void *_g1Buffer = NULL;
 

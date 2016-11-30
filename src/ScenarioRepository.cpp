@@ -31,6 +31,7 @@ extern "C"
     #include "config.h"
     #include "localisation/localisation.h"
     #include "scenario.h"
+    #include "rct2.h"
 }
 
 static int ScenarioCategoryCompare(int categoryA, int categoryB)

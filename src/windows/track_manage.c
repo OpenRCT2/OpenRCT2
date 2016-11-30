@@ -19,6 +19,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
 #include "../ride/TrackDesignRepository.h"

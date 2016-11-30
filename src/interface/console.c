@@ -31,6 +31,7 @@
 #include "../object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../rct2.h"
 #include "../world/banner.h"
 #include "../world/climate.h"
 #include "../world/scenery.h"

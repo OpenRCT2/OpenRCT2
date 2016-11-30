@@ -22,6 +22,7 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
+#include "../rct2.h"
 
 bool gChatOpen = false;
 char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];

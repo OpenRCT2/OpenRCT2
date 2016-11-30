@@ -22,6 +22,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../openrct2.h"
+#include "../rct2.h"
 #include "../sprites.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {

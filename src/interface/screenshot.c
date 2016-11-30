@@ -23,6 +23,7 @@
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "screenshot.h"

@@ -21,6 +21,7 @@
 #include "../object.h"
 #include "../world/water.h"
 #include "drawing.h"
+#include "../rct2.h"
 
 // HACK These were originally passed back through registers
 int gLastDrawStringX;

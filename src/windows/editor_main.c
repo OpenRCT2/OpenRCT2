@@ -17,6 +17,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../rct2.h"
 #include "../world/footpath.h"
 
 static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);

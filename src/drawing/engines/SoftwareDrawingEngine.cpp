@@ -31,6 +31,7 @@ extern "C"
     #include "../../intro.h"
     #include "../drawing.h"
     #include "../lightfx.h"
+    #include "../../rct2.h"
 }
 
 class SoftwareDrawingEngine;

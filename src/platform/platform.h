@@ -20,6 +20,7 @@
 #include "../common.h"
 
 #ifdef __WINDOWS__
+#include "../rct2.h"
 	#ifndef HAVE_MATH_H
 		#define HAVE_MATH_H
 	#endif

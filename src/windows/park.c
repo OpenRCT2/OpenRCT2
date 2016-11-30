@@ -25,6 +25,7 @@
 #include "../interface/window.h"
 #include "../management/award.h"
 #include "../peep/peep.h"
+#include "../rct2.h"
 #include "../ride/ride.h"
 #include "../scenario.h"
 #include "../sprites.h"

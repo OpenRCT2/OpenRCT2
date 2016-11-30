@@ -21,6 +21,7 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../peep/staff.h"
+#include "../rct2.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
 #include "../sprites.h"

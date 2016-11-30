@@ -28,6 +28,7 @@
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
+#include "../rct2.h"
 #include "../title.h"
 #include "../util/util.h"
 #include "../world/climate.h"
