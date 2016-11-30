@@ -526,6 +526,34 @@ int editor_check_object_selection()
 	return -1;
 }
 
+bool editor_check_park_entrance_paths() 
+{
+	for (int i = 0; i < 4; i++) {
+		if (gParkEntranceX[i] == (sint16)0x8000)
+			continue;
+
+		int x = gParkEntranceX[i];
+		int y = gParkEntranceY[i];
+		int z = gParkEntranceZ[i] / 8;
+		int direction = gParkEntranceDirection[i] ^ 2;
+
+		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
+			case FOOTPATH_SEARCH_NOT_FOUND:
+				gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+				return false;
+			case FOOTPATH_SEARCH_INCOMPLETE:
+			case FOOTPATH_SEARCH_TOO_COMPLEX:
+				gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+				return false;
+			case FOOTPATH_SEARCH_SUCCESS:
+				// Run the search again and unown the path
+				footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
+				break;
+		}
+	}
+	return true;
+}
+
 /**
  *
  *  rct2: 0x0066FEAC
@@ -548,28 +576,8 @@ bool editor_check_park()
 		}
 	}
 
-	for (int i = 0; i < 4; i++) {
-		if (gParkEntranceX[i] == (sint16)0x8000)
-			continue;
-
-		int x = gParkEntranceX[i];
-		int y = gParkEntranceY[i];
-		int z = gParkEntranceZ[i] / 8;
-		int direction = gParkEntranceDirection[i] ^ 2;
-
-		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
-		case FOOTPATH_SEARCH_NOT_FOUND:
-			gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
-			return false;
-		case FOOTPATH_SEARCH_INCOMPLETE:
-		case FOOTPATH_SEARCH_TOO_COMPLEX:
-			gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
-			return false;
-		case FOOTPATH_SEARCH_SUCCESS:
-			// Run the search again and unown the path
-			footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
-			break;
-		}
+	if (!editor_check_park_entrance_paths()) {
+		return false;
 	}
 
 	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {

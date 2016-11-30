@@ -1,5 +1,6 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: New cheats: No money, add/set custom money, ignore money, freebuilder mode, invent all, own all land. 
 - Feature: Ability to disable rendering of weather effects and gloom
 - Feature: New view option: "See-Through Paths"
 - Feature: Add cheat to reset date.
@@ -29,6 +30,7 @@
 - Improved: Screenshots are now saved with the name of the park and the current date and time.
 - Improved: More accurate frame rate calculation
 - Improved: In-game file dialog now shows more formats (sv6, sc6, sv4, etc.)
+- Improved: Scenario Editor now allows construction rights on paths to park entrance.
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#933] On-ride photo price sometimes gets reset to £2 when using 'same price in whole park'

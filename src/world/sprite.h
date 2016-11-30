@@ -201,7 +201,7 @@ typedef struct rct_money_effect {
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;
 	uint16 sprite_index;			// 0x0A
-	uint16 flags;			// 0x0C
+	uint16 flags;					// 0x0C (Flags on money_effects do not seem to be used, so it is used for string_id)
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -399,6 +399,11 @@ enum {
 	LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
+enum
+{
+	MONEY_EFFECT_FLAGS_GREY = 1 << 1,
+	MONEY_EFFECT_FLAGS_SPEND = 1 << 2,
+};
 rct_sprite *get_sprite(size_t sprite_idx);
 void store_sprite_locations(rct_xyz16 *sprite_locations);
 

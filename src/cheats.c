@@ -24,8 +24,14 @@
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
+#include "management/research.h"
+#include "windows/editor.h"
+#include "world/map.h"
+#include "editor.h"
 
 bool gCheatsSandboxMode = false;
+bool gCheatsIgnoreMoney = false;
+bool gCheatsFreeBuilding = false;
 bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
 bool gCheatsShowAllOperatingModes = false;
@@ -195,9 +201,9 @@ static void cheat_reset_crash_status()
 	FOR_ALL_RIDES(i, ride){
 		//reset crash status
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-			ride->lifecycle_flags&=~RIDE_LIFECYCLE_CRASHED;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
 		//reset crash history
-		ride->last_crash_type=RIDE_CRASH_TYPE_NONE;
+		ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
 	}
 	window_invalidate_by_class(WC_RIDE);
 }
@@ -214,17 +220,57 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
-static void cheat_increase_money(money32 amount)
+static void cheat_no_money(int enabled)
+{
+	if (enabled == 1) {
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
+	}
+	else {
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	}
+	// Invalidate all windows that have anything to do with finance
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_PEEP);
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_ignore_money(int enabled)
+{
+	gCheatsIgnoreMoney = enabled;
+	gCheatsFreeBuilding = false;
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_free_building(int enabled) 
+{
+	gCheatsFreeBuilding = enabled;
+	gCheatsIgnoreMoney = false;
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
+static void cheat_set_money(money32 amount) 
+{
+	money32 money = clamp(INT_MIN, amount, INT_MAX);
+	gCashEncrypted = ENCRYPT_MONEY(money);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+}
+
+static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney;
-
 	currentMoney = DECRYPT_MONEY(gCashEncrypted);
 	if (currentMoney < INT_MAX - amount)
 		currentMoney += amount;
 	else
 		currentMoney = INT_MAX;
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
-
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
@@ -232,7 +278,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
+	cheat_add_money(gBankLoan);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -290,7 +336,6 @@ static void cheat_set_guest_parameter(int parameter, int value)
 		}
 		peep_update_sprite_type(peep);
 	}
-
 }
 
 static void cheat_give_all_guests(int object)
@@ -309,12 +354,12 @@ static void cheat_give_all_guests(int object)
 				break;
 			case OBJECT_BALLOON:
 				peep->item_standard_flags |= PEEP_ITEM_BALLOON;
-				peep->balloon_colour=scenario_rand_max(31);
+				peep->balloon_colour = scenario_rand_max(31);
 				peep_update_sprite_type(peep);
 				break;
 			case OBJECT_UMBRELLA:
 				peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
-				peep->umbrella_colour=scenario_rand_max(31);
+				peep->umbrella_colour = scenario_rand_max(31);
 				peep_update_sprite_type(peep);
 				break;
 		}
@@ -343,9 +388,9 @@ static void cheat_remove_all_guests()
 		ride_clear_for_construction(i);
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 
-		for(int i=0;i<4;i++) {
-			ride->queue_length[i] = 0;
-			ride->last_peep_in_queue[i]=0xFFFF;
+		for(int j = 0; j < 4; j++) {
+			ride->queue_length[j] = 0;
+			ride->last_peep_in_queue[j] = 0xFFFF;
 		}
 	}
 	window_invalidate_by_class(WC_RIDE);
@@ -385,6 +430,76 @@ static void cheat_set_staff_speed(uint8 value)
 	}
 }
 
+static void cheat_own_all_land()
+{
+	uint8 prev_sandbox, prev_no_money, i;
+	uint16 spriteIndex, nextSpriteIndex, spawns_x[2];
+	int min, max, flags, cmd, type;
+	rct_peep *peep;
+
+	//Store states of sandbox, no money, and spawn points to restore when finished
+	prev_sandbox = gCheatsSandboxMode;
+	prev_no_money = gParkFlags & PARK_FLAGS_NO_MONEY;
+	for (i = 0; i < 2; i++) {
+		spawns_x[i] = gPeepSpawns[i].x;
+	}
+
+	//Sandbox mode is needed for this. Also a cheat should not cost, so enable no money.
+	gCheatsSandboxMode = true;
+	if (!prev_no_money)
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
+	
+	//Own the entire map
+	min = 32;
+	max = gMapSizeUnits - 32;
+	type = 2;
+	flags = GAME_COMMAND_FLAG_APPLY;
+	cmd = GAME_COMMAND_SET_LAND_OWNERSHIP;
+	game_command_set_land_ownership(&min, &flags, &min, &type, &cmd, &max, &max);
+
+	//remove path from map edge to park entrances
+	editor_check_park_entrance_paths();
+
+	//Go through and remove any guests that get stuck inside the park
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		peep = &(get_sprite(spriteIndex)->peep);
+		nextSpriteIndex = peep->next;
+		if (peep->type == PEEP_TYPE_GUEST) {
+			if (peep->outside_of_park) {
+				if (map_is_location_in_park(peep->x, peep->y)) {
+					peep_remove(peep);
+				}
+			}
+		}
+	}
+
+	//Restore peep spawn points
+	for (i = 0; i < 2; i++) {
+		gPeepSpawns[i].x = spawns_x[i];
+	}
+
+	//Restore sandbox and money state
+	gCheatsSandboxMode = prev_sandbox;
+	if (prev_no_money == 0)
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+}
+
+static void cheat_invent_all()
+{
+	//Call the same functions that are called when opening "inventions list",
+	//selecting "move all to top", and closing window.
+	research_always_researched_setup();
+	research_items_make_all_researched();
+	research_remove_flags();
+	gSilentResearch = true;
+	sub_684AC3();
+	gSilentResearch = false;
+	//Validates all items have been properly researched, also
+	// sets funding to 0 and research flags appropriately
+	assert(research_get_next_unresearched_item() == NULL);
+	research_invalidate_related_windows();
+}
+
 #pragma endregion
 
 void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
@@ -407,7 +522,8 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = !gCheatsDisableVandalism; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = !gCheatsDisableLittering; break;
-			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
+			case CHEAT_ADDMONEY: cheat_add_money(*edx); break;
+			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
 			case CHEAT_GENERATEGUESTS: cheat_generate_guests(*edx); break;
@@ -434,6 +550,11 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
 			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
+			case CHEAT_NOMONEY: cheat_no_money(*edx != 0); break;
+			case CHEAT_IGNOREMONEY: cheat_ignore_money(*edx != 0); break;
+			case CHEAT_FREEBUILDING: cheat_free_building(*edx != 0); break;
+			case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
+			case CHEAT_INVENTALL: cheat_invent_all(); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
@@ -446,6 +567,8 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 void cheats_reset()
 {
 	gCheatsSandboxMode = false;
+	gCheatsIgnoreMoney = false;
+	gCheatsFreeBuilding = false;
 	gCheatsDisableClearanceChecks = false;
 	gCheatsDisableSupportLimits = false;
 	gCheatsShowAllOperatingModes = false;

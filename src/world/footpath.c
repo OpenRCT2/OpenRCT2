@@ -1506,7 +1506,30 @@ void sub_6A759F()
  */
 static void footpath_unown(int x, int y, rct_map_element *pathElement)
 {
-	map_buy_land_rights(x, y, x, y, 6, 1);
+	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+	int ownership = surfaceElement->properties.surface.ownership;
+	if (ownership == 0)
+		return;
+	int type = 0, xx = x, yy = y, cmd = GAME_COMMAND_SET_LAND_OWNERSHIP, flags = GAME_COMMAND_FLAG_APPLY;
+
+	//if footpath is higher than 2 units or lower than land, do not own land.
+ 	//doing so will confuse outside guests.
+ 	int z = pathElement->base_height;
+ 	if (z != surfaceElement->base_height) {
+ 		if (z > surfaceElement->base_height + 2 || z < surfaceElement->base_height) {
+			type = 0; //not owned nor available
+			game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
+			return;
+  		}
+  	}
+	if (ownership == OWNERSHIP_OWNED) {
+		type = 1; //construction rights owned
+		game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
+	}
+	else if (ownership == OWNERSHIP_AVAILABLE) {
+		type = 4; //construction rights available
+		game_command_set_land_ownership(&xx, &flags, &yy, &type, &cmd, &xx, &yy);
+	}
 }
 
 static bool get_next_direction(int edges, int *direction)

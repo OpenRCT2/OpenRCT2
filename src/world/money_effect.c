@@ -17,6 +17,7 @@
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
+#include "../cheats.h"
 #include "sprite.h"
 
 static const rct_xy16 _moneyEffectMoveOffset[] = {
@@ -40,7 +41,6 @@ static void money_effect_create_at(money32 value, int x, int y, int z)
 	if (moneyEffect == NULL)
 		return;
 
-	moneyEffect->value = value;
 	moneyEffect->var_14 = 64;
 	moneyEffect->var_09 = 20;
 	moneyEffect->var_15 = 30;
@@ -50,11 +50,21 @@ static void money_effect_create_at(money32 value, int x, int y, int z)
 	moneyEffect->num_movements = 0;
 	moneyEffect->move_delay = 0;
 
-	stringId = 1388;
+	if (gCheatsFreeBuilding)
+		moneyEffect->flags |= MONEY_EFFECT_FLAGS_GREY;
 	if (value < 0) {
 		value *= -1;
-		stringId = 1399;
+		moneyEffect->flags |= MONEY_EFFECT_FLAGS_SPEND;
 	}
+	
+	if (moneyEffect->flags & MONEY_EFFECT_FLAGS_SPEND) {
+		stringId = (moneyEffect->flags & MONEY_EFFECT_FLAGS_GREY) ? STR_MONEY_EFFECT_SPEND_GREY : STR_MONEY_EFFECT_SPEND;
+	}
+	else {
+		stringId = (moneyEffect->flags & MONEY_EFFECT_FLAGS_GREY) ? STR_MONEY_EFFECT_RECEIVE_GREY : STR_MONEY_EFFECT_RECEIVE;
+	}
+	
+	moneyEffect->value = value;
 	format_string(buffer, 128, stringId, &value);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
