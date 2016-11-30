@@ -19,6 +19,7 @@
 #include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../game.h"

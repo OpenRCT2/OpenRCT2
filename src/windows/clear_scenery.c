@@ -16,6 +16,7 @@
 
 #include "../input.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"

@@ -23,6 +23,7 @@
 #include "../util/util.h"
 #include "../localisation/string_ids.h"
 #include "../intro.h"
+#include "../rct2.h"
 
 typedef struct rct_audio_params {
 	bool in_range;

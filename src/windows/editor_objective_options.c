@@ -21,6 +21,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../scenario.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../world/climate.h"
 #include "../world/park.h"

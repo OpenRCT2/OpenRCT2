@@ -19,6 +19,7 @@
 #include "../common.h"
 #include "Guard.hpp"
 #include <typeinfo>
+#include <cstring>
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.

@@ -25,6 +25,7 @@
 #include "../scenario.h"
 #include "../util/util.h"
 #include "climate.h"
+#include "../rct2.h"
 #include "../sprites.h"
 
 enum {

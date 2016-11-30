@@ -23,6 +23,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
+#include "../rct2.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"

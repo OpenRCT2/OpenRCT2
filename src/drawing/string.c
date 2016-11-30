@@ -23,6 +23,7 @@
 #include "../util/util.h"
 #include "../world/map.h"
 #include "drawing.h"
+#include "../rct2.h"
 
 enum {
 	TEXT_DRAW_FLAG_INSET = 1 << 0,

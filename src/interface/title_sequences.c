@@ -19,6 +19,7 @@
 #include "title_sequences.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../rct2.h"
 
 
 uint16 gCurrentTitleSequence;

@@ -19,6 +19,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../ride/ride.h"
 #include "../world/sprite.h"
 #include "../util/util.h"
