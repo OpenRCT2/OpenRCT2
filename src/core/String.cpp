@@ -225,8 +225,6 @@ namespace String
 
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
     {
-        va_list args;
-
         utf8 * dst = buffer;
         size_t i;
         for (i = 0; i < bufferSize; i++)
@@ -237,6 +235,7 @@ namespace String
 
         if (i < bufferSize - 1)
         {
+            va_list args;
             va_start(args, format);
             vsnprintf(dst, bufferSize - i - 1, format, args);
             va_end(args);

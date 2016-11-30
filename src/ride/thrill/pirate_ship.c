@@ -121,7 +121,6 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 	if (dpi->zoom_level <= 1
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && vehicle != NULL) {
-		int frameNum;
 		int peep = 0;
 		int offset = 1;
 		while (peep < 16) {
@@ -129,7 +128,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 				break;
 			}
 
-			frameNum = offset + (direction >> 1);
+			int frameNum = offset + (direction >> 1);
 			imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | 0xA0000000;
 			imageId = (baseImageId + frameNum) | imageColourFlags;
 			sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());

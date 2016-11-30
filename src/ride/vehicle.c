@@ -5647,7 +5647,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			uint8 direction = vehicle->sprite_direction | 1;
 
 			if (collideSprite != 0xFFFF) {
-				vehicle->var_34 = scenario_rand() & 1 ? 1 : -1;
+				vehicle->var_34 = (scenario_rand() & 1) ? 1 : -1;
 
 				if (oldVelocity >= 131072) {
 					rct_vehicle* collideVehicle = GET_VEHICLE(collideSprite);
@@ -5656,7 +5656,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 				}
 			}
 			else {
-				vehicle->var_34 = scenario_rand() & 1 ? 6 : -6;
+				vehicle->var_34 = (scenario_rand() & 1) ? 6 : -6;
 
 				if (oldVelocity >= 131072) {
 					vehicle->var_C4 = direction ^ (1 << 4);
@@ -8307,8 +8307,6 @@ loc_6DCA9A:
 
 	vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
 	vehicle->var_CF = (mapElement->properties.track.colour >> 4) << 1;
-
-	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 
 	// There are two bytes before the move info list
 	regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);

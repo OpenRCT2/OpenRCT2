@@ -822,10 +822,9 @@ static const sint8 paint_monorail_eighth_to_diag_index[] = {0, 1, 2, -1, 3};
 /** rct2: 0x008AE31C */
 static void paint_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	uint32 imageId;
 	sint8 index = paint_monorail_eighth_to_diag_index[trackSequence];
 	if (index >= 0) {
-		imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
+		uint32 imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
 		const rct_xy16 offset = ghost_train_track_pieces_left_eight_to_diag_offset[direction][index];
 		const rct_xy16 bounds = ghost_train_track_pieces_left_eight_to_diag_bounds[direction][index];
 		sub_98197C(imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());
@@ -866,10 +865,9 @@ static void paint_monorail_track_left_eighth_to_diag(uint8 rideIndex, uint8 trac
 /** rct2: 0x008AE32C */
 static void paint_monorail_track_right_eighth_to_diag(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	uint32 imageId;
 	sint8 index = paint_monorail_eighth_to_diag_index[trackSequence];
 	if (index >= 0) {
-		imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
+		uint32 imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
 		const rct_xy16 offset = ghost_train_track_pieces_right_eight_to_diag_offset[direction][index];
 		const rct_xy16 bounds = ghost_train_track_pieces_right_eight_to_diag_bounds[direction][index];
 		sub_98197C(imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());

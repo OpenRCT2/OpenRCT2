@@ -67,19 +67,18 @@ static void money_effect_create_at(money32 value, int x, int y, int z)
  */
 void money_effect_create(money32 value)
 {
-	rct_window *mainWindow;
-	rct_viewport *mainViewport;
-	rct_xyz16 mapPosition;
+	rct_xyz16 mapPosition = {
+		.x = gCommandPosition.x,
+		.y = gCommandPosition.y,
+		.z = gCommandPosition.z
+	};
 
-	mapPosition.x = gCommandPosition.x;
-	mapPosition.y = gCommandPosition.y;
-	mapPosition.z = gCommandPosition.z;
 	if (mapPosition.x == (sint16)0x8000) {
-		mainWindow = window_get_main();
+		rct_window *mainWindow = window_get_main();
 		if (mainWindow == NULL)
 			return;
 
-		mainViewport = mainWindow->viewport;
+		rct_viewport *mainViewport = mainWindow->viewport;
 		screen_get_map_xy(
 			mainViewport->x + (mainViewport->width / 2),
 			mainViewport->y + (mainViewport->height / 2),

@@ -20,11 +20,11 @@
 #include "NetworkPacket.h"
 
 NetworkPacket::NetworkPacket()
+    : size(0)
+    , data(std::make_shared<std::vector<uint8>>())
+    , transferred(0)
+    , read(0)
 {
-    transferred = 0;
-    read = 0;
-    size = 0;
-    data = std::make_shared<std::vector<uint8>>();
 }
 
 std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()

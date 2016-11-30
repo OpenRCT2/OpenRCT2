@@ -62,7 +62,7 @@ private:
     std::string         _key;
 
 public:
-    NetworkServerAdvertiser(uint16 port)
+    explicit NetworkServerAdvertiser(uint16 port)
     {
         _port = port;
         _key = GenerateAdvertiseKey();
@@ -118,7 +118,7 @@ private:
             }
             else
             {
-                auto advertiser = (NetworkServerAdvertiser *)response->tag;
+                auto advertiser = static_cast<NetworkServerAdvertiser*>(response->tag);
                 advertiser->OnRegistrationResponse(response->root);
                 http_request_json_dispose(response);
             }
@@ -146,7 +146,7 @@ private:
             }
             else
             {
-                auto advertiser = (NetworkServerAdvertiser *)response->tag;
+                auto advertiser = static_cast<NetworkServerAdvertiser*>(response->tag);
                 advertiser->OnHeartbeatResponse(response->root);
                 http_request_json_dispose(response);
             }

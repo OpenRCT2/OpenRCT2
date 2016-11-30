@@ -245,10 +245,7 @@ static void window_track_place_update(rct_window *w)
  */
 static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
-	int i;
 	short mapX, mapY, mapZ;
-	money32 cost;
-	uint8 rideIndex;
 
 	map_invalidate_map_selection_tiles();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -268,7 +265,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 		return;
 	}
 
-	cost = MONEY32_UNDEFINED;
+	money32 cost = MONEY32_UNDEFINED;
 
 	// Get base Z position
 	mapZ = window_track_place_get_base_z(mapX, mapY);
@@ -276,7 +273,8 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found
-		for (i = 0; i < 7; i++) {
+		for (int i = 0; i < 7; i++) {
+			uint8 rideIndex;
 			window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 105, &cost, &rideIndex);
 			if (cost != MONEY32_UNDEFINED) {
 				_window_track_place_ride_index = rideIndex;
@@ -532,7 +530,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 					bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
 					// Station track is a lighter colour
-					uint8 colour = TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
+					uint8 colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
 					for (int i = 0; i < 4; i++) {
 						if (bits & 1) pixel[338 + i] = colour; // x + 2, y + 2

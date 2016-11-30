@@ -100,6 +100,4 @@ enum
     SPR_TERRAIN_PATTERN_ICE = 29007,
 };
 
-
-
 #endif //_PAINT_SURFACE_H

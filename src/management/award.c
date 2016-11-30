@@ -625,14 +625,12 @@ void award_reset()
  */
 void award_update_all()
 {
-	int i, activeAwardTypes, freeAwardEntryIndex;
-
 	// Only add new awards if park is open
 	if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
 		// Set active award types as flags
-		activeAwardTypes = 0;
-		freeAwardEntryIndex = -1;
-		for (i = 0; i < MAX_AWARDS; i++) {
+		int activeAwardTypes = 0;
+		int freeAwardEntryIndex = -1;
+		for (int i = 0; i < MAX_AWARDS; i++) {
 			if (gCurrentAwards[i].time != 0)
 				activeAwardTypes |= (1 << gCurrentAwards[i].type);
 			else if (freeAwardEntryIndex == -1)
@@ -661,7 +659,7 @@ void award_update_all()
 	}
 
 	// Decrease award times
-	for (i = 0; i < MAX_AWARDS; i++)
+	for (int i = 0; i < MAX_AWARDS; i++)
 		if (gCurrentAwards[i].time != 0)
 			if (--gCurrentAwards[i].time == 0)
 				window_invalidate_by_class(WC_PARK_INFORMATION);

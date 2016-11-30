@@ -100,7 +100,7 @@ public:
             fs.Read(fileData, fileLength);
             fileData[fileLength] = '\0';
         }
-        catch (Exception ex)
+        catch (const Exception &ex)
         {
             Memory::Free(fileData);
             log_error("Unable to open %s: %s", path, ex.GetMessage());

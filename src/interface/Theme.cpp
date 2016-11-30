@@ -66,7 +66,7 @@ public:
     std::vector<UIThemeWindowEntry> Entries;
     uint8                           Flags;
 
-    UITheme(const utf8 * name);
+    explicit UITheme(const utf8 * name);
     UITheme(const UITheme & copy);
     ~UITheme();
 
@@ -394,7 +394,7 @@ bool UITheme::WriteToFile(const utf8 * path) const
         Json::WriteToFile(path, jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         result = true;
     }
-    catch (Exception ex)
+    catch (const Exception & ex)
     {
         log_error("Unable to save %s: %s", path, ex.GetMessage());
         result = false;
@@ -445,10 +445,10 @@ UITheme * UITheme::FromJson(const json_t * json)
 
         return result;
     }
-    catch (Exception ex)
+    catch (const Exception &)
     {
         delete result;
-        throw ex;
+        throw;
     }
 }
 
@@ -461,7 +461,7 @@ UITheme * UITheme::FromFile(const utf8 * path)
         json = Json::ReadFromFile(path);
         result = UITheme::FromJson(json);
     }
-    catch (Exception ex)
+    catch (const Exception &)
     {
         log_error("Unable to read theme: %s", path);
         result = nullptr;

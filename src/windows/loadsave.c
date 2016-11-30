@@ -492,20 +492,17 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y;
-	rct_string_id stringId;
-
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-	for (i = 0; i < w->no_list_items; i++) {
-		y = i * 10;
+	for (int i = 0; i < w->no_list_items; i++) {
+		int y = i * 10;
 		if (y > dpi->y + dpi->height)
 			break;
 
 		if (y + 10 < dpi->y)
 			continue;
 
-		stringId = STR_BLACK_STRING;
+		rct_string_id stringId = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
@@ -574,7 +571,12 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		for (int x = 0; x < 26; x++){
 			if (listItemCapacity <= _listItemsCount) {
 				listItemCapacity *= 2;
-				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				void *new_memory = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				if (new_memory == NULL) {
+					log_error("Failed to reallocate memory for loadsave list");
+					return;
+				}
+				_listItems = (loadsave_list_item*)new_memory;
 			}
 
 			if (drives & (1 << x)){

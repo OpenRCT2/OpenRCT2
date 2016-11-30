@@ -25,13 +25,8 @@ class Exception : public std::exception
 {
 public:
     Exception() : Exception("") { }
-
-    Exception(const char * message) : Exception(std::string(message)) { }
-
-    Exception(const std::string &message) : std::exception()
-    {
-        _message = message;
-    }
+    explicit Exception(const char * message) : Exception(std::string(message)) { }
+    explicit Exception(const std::string &message) : std::exception(), _message(message) { }
 
     virtual ~Exception() { }
 

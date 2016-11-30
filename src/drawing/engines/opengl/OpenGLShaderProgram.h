@@ -46,7 +46,8 @@ private:
     OpenGLShader * _fragmentShader  = nullptr;
 
 public:
-    OpenGLShaderProgram(const char * name);
+    explicit OpenGLShaderProgram(const char * name);
+    explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = default;
     virtual ~OpenGLShaderProgram();
 
     GLuint  GetAttributeLocation(const char * name);
@@ -56,4 +57,3 @@ public:
 private:
     bool Link();
 };
-

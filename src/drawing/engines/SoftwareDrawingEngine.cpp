@@ -165,7 +165,7 @@ private:
     rct_drawpixelinfo *     _dpi;
 
 public:
-    SoftwareDrawingContext(SoftwareDrawingEngine * engine);
+    explicit SoftwareDrawingContext(SoftwareDrawingEngine * engine);
     ~SoftwareDrawingContext() override;
 
     IDrawingEngine * GetEngine() override;
@@ -221,7 +221,7 @@ private:
     SoftwareDrawingContext *    _drawingContext;
 
 public:
-    SoftwareDrawingEngine(bool hardwareDisplay)
+    explicit SoftwareDrawingEngine(bool hardwareDisplay)
     {
         _hardwareDisplay = hardwareDisplay;
         _drawingContext = new SoftwareDrawingContext(this);

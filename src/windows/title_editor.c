@@ -741,7 +741,7 @@ static void window_title_editor_invalidate(rct_window *w)
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].top = w->height - 32;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
 
-	if (!gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
 	} else {
 		w->disabled_widgets &= ~(1 << WIDX_TITLE_EDITOR_PLAY);

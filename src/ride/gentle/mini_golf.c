@@ -669,7 +669,7 @@ static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 
 		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
@@ -752,7 +752,7 @@ static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int he
 {
 	uint32 imageId;
 
-	bool drewSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	bool drewSupports = wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
@@ -770,7 +770,7 @@ static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int he
 	sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24, get_current_rotation());
 
 	if (drewSupports) {
-		imageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
+		imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = sprites[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];
@@ -798,7 +798,7 @@ static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 d
 {
 	uint32 imageId;
 
-	bool drewSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+	bool drewSupports = wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
@@ -829,7 +829,7 @@ static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
+		imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];
@@ -845,7 +845,7 @@ static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 d
 {
 	uint32 imageId;
 
-	int supportType = direction & 1;
+	int supportType = (direction & 1);
 	if (trackSequence == 2) supportType = 1 - supportType;
 	bool drewSupports = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -895,7 +895,7 @@ static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (supportType & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
+		imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];
@@ -911,7 +911,7 @@ static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 d
 {
 	uint32 imageId;
 
-	int supportType = direction & 1;
+	int supportType = (direction & 1);
 	if (trackSequence == 2) supportType = 1 - supportType;
 	bool drewSupports = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -961,7 +961,7 @@ static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (supportType & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
+		imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_SUPPORTS];
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | gTrackColours[SCHEME_TRACK];

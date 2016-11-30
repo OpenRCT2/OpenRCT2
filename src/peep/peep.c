@@ -1073,7 +1073,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
-		if ((scenario_rand() & 0xFFFF) <= (peep->item_standard_flags & PEEP_ITEM_MAP ? 8192U : 2184U)){
+		if ((scenario_rand() & 0xFFFF) <= ((peep->item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U)){
 			peep_pick_ride_to_go_on(peep);
 		}
 
@@ -7358,7 +7358,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 			*argument_2 = ride->name_arguments;
 		}
 		else{
-			*argument_1 = peep->peep_flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
+			*argument_1 = (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING;
 			*argument_2 = 0;
 		}
 		break;
@@ -7383,7 +7383,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 				*argument_1 = STR_WATCHING_RIDE | ((uint32)ride->name << 16);
 		}
 		else{
-			*argument_1 = peep->current_seat & 0x1 ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
+			*argument_1 = (peep->current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
 			*argument_2 = 0;
 		}
 		break;
@@ -7859,7 +7859,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 void peep_set_map_tooltip(rct_peep *peep)
 {
 	if (peep->type == PEEP_TYPE_GUEST) {
-		set_map_tooltip_format_arg(0, rct_string_id, peep->peep_flags & PEEP_FLAGS_TRACKING ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+		set_map_tooltip_format_arg(0, rct_string_id, (peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
 		set_map_tooltip_format_arg(2, uint32, get_peep_face_sprite_small(peep));
 		set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
 		set_map_tooltip_format_arg(8, uint32, peep->id);

@@ -46,7 +46,7 @@ uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
  */
 int sawyercoding_validate_checksum(SDL_RWops* rw)
 {
-	size_t i, dataSize, bufferSize;
+	size_t i, dataSize;
 	uint32 checksum, fileChecksum;
 	uint8 buffer[1024];
 
@@ -62,7 +62,7 @@ int sawyercoding_validate_checksum(SDL_RWops* rw)
 	SDL_RWseek(rw, 0, RW_SEEK_SET);
 	checksum = 0;
 	do {
-		bufferSize = min(dataSize, 1024);
+		size_t bufferSize = min(dataSize, 1024);
 		if (SDL_RWread(rw, buffer, bufferSize, 1) != 1)
 			return 0;
 
@@ -232,20 +232,17 @@ size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length, size
 
 size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength)
 {
-	size_t decodedLength, i;
-	uint32 *code;
-
 	// Uncompress
-	decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
+	size_t decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
 	// Decode
-	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)
+	for (size_t i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)
 		dst[i] = dst[i] ^ 0x9C;
 
-	for (i = 0x60018; i <= min(decodedLength - 1, 0x1F8350); i += 4) {
+	for (size_t i = 0x60018; i <= min(decodedLength - 1, 0x1F8350); i += 4) {
 		dst[i + 1] = ror8(dst[i + 1], 3);
 
-		code = (uint32*)&dst[i];
+		uint32 *code = (uint32*)&dst[i];
 		*code = rol32(*code, 9);
 	}
 
@@ -470,14 +467,10 @@ static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_
 
 static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, size_t length)
 {
-	size_t i, j, outLength;
-	size_t searchIndex, searchEnd, maxRepeatCount;
-	size_t bestRepeatIndex = 0, bestRepeatCount = 0, repeatIndex, repeatCount;
-
 	if (length == 0)
 		return 0;
 
-	outLength = 0;
+	size_t outLength = 0;
 
 	// Need to emit at least one byte, otherwise there is nothing to repeat
 	*dst_buffer++ = 255;
@@ -485,18 +478,19 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 	outLength += 2;
 
 	// Iterate through remainder of the source buffer
-	for (i = 1; i < length; ) {
-		searchIndex = (i < 32) ? 0 : (i - 32);
-		searchEnd = i - 1;
+	for (size_t i = 1; i < length; ) {
+		size_t searchIndex = (i < 32) ? 0 : (i - 32);
+		size_t searchEnd = i - 1;
 
-		bestRepeatCount = 0;
-		for (repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
-			repeatCount = 0;
-			maxRepeatCount = min(min(7, searchEnd - repeatIndex), length - i - 1);
+		size_t bestRepeatIndex = 0;
+		size_t bestRepeatCount = 0;
+		for (size_t repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
+			size_t repeatCount = 0;
+			size_t maxRepeatCount = min(min(7, searchEnd - repeatIndex), length - i - 1);
 			// maxRepeatCount should not exceed length
 			assert(repeatIndex + maxRepeatCount < length);
 			assert(i + maxRepeatCount < length);
-			for (j = 0; j <= maxRepeatCount; j++) {
+			for (size_t j = 0; j <= maxRepeatCount; j++) {
 				if (src_buffer[repeatIndex + j] == src_buffer[i + j]) {
 					repeatCount++;
 				} else {

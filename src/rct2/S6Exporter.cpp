@@ -469,7 +469,7 @@ int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectReposito
         s6exporter->SaveGame(rw);
         result = true;
     }
-    catch (Exception)
+    catch (const Exception &)
     {
     }
     delete s6exporter;
@@ -613,7 +613,7 @@ extern "C"
             }
             result = true;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6exporter;

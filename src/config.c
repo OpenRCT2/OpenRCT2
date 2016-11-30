@@ -522,7 +522,7 @@ bool config_open(const utf8string path)
 
 	while ((c = rwopsreadc(file)) != EOF) {
 		if (c == '\n' || c == '\r') {
-			lineBuffer[lineLength++] = 0;
+			lineBuffer[lineLength] = 0;
 			config_read_properties(&currentSection, (const_utf8string)lineBuffer);
 			lineLength = 0;
 		} else {

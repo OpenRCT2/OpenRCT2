@@ -91,7 +91,7 @@ extern "C"
                 _drawingEngine->Initialise(gWindow);
                 _drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
             }
-            catch (Exception ex)
+            catch (const Exception &ex)
             {
                 delete _drawingEngine;
                 _drawingEngine = nullptr;

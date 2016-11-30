@@ -436,7 +436,7 @@ static void ride_ratings_score_close_proximity_loops(rct_map_element *inputMapEl
 	if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
 		int x = gRideRatingsCalcData.proximity_x;
 		int y = gRideRatingsCalcData.proximity_y;
-		ride_ratings_score_close_proximity_loops_helper(inputMapElement, gRideRatingsCalcData.proximity_x, gRideRatingsCalcData.proximity_y);
+		ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
 
 		int direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 		x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;

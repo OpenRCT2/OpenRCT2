@@ -229,7 +229,6 @@ unsigned long Source_SampleStream::Read(unsigned long offset, const uint8** data
 		if (newposition == -1) {
 			return 0;
 		}
-		currentposition = newposition;
 	}
 	*data = buffer;
 	size_t read = SDL_RWread(rw, buffer, 1, length);
@@ -438,9 +437,11 @@ void Channel::SetGroup(int group)
 }
 
 Mixer::Mixer()
+	: deviceid(0)
+	, format({ 0 })
+	, effectbuffer(0)
+	, volume(1)
 {
-	effectbuffer = 0;
-	volume = 1;
 	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		css1sources[i] = 0;
 	}
@@ -565,7 +566,7 @@ void Mixer::SetVolume(float volume)
 
 void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 {
-	Mixer* mixer = (Mixer*)arg;
+	Mixer* mixer = static_cast<Mixer*>(arg);
 	memset(stream, 0, length);
 	std::list<Channel*>::iterator i = mixer->channels.begin();
 	while (i != mixer->channels.end()) {
@@ -574,7 +575,7 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 			delete (*i);
 			i = mixer->channels.erase(i);
 		} else {
-			i++;
+			++i;
 		}
 	}
 }
@@ -845,7 +846,7 @@ void Mixer_Stop_Channel(void* channel)
 {
 	if (gOpenRCT2Headless) return;
 
-	gMixer.Stop(*(Channel*)channel);
+	gMixer.Stop(*static_cast<Channel*>(channel));
 }
 
 void Mixer_Channel_Volume(void* channel, int volume)
@@ -853,7 +854,7 @@ void Mixer_Channel_Volume(void* channel, int volume)
 	if (gOpenRCT2Headless) return;
 
 	gMixer.Lock();
-	((Channel*)channel)->SetVolume(volume);
+	static_cast<Channel*>(channel)->SetVolume(volume);
 	gMixer.Unlock();
 }
 
@@ -862,7 +863,7 @@ void Mixer_Channel_Pan(void* channel, float pan)
 	if (gOpenRCT2Headless) return;
 
 	gMixer.Lock();
-	((Channel*)channel)->SetPan(pan);
+	static_cast<Channel*>(channel)->SetPan(pan);
 	gMixer.Unlock();
 }
 
@@ -871,7 +872,7 @@ void Mixer_Channel_Rate(void* channel, double rate)
 	if (gOpenRCT2Headless) return;
 
 	gMixer.Lock();
-	((Channel*)channel)->SetRate(rate);
+	static_cast<Channel*>(channel)->SetRate(rate);
 	gMixer.Unlock();
 }
 
@@ -879,28 +880,28 @@ int Mixer_Channel_IsPlaying(void* channel)
 {
 	if (gOpenRCT2Headless) return false;
 
-	return ((Channel*)channel)->IsPlaying();
+	return static_cast<Channel*>(channel)->IsPlaying();
 }
 
 unsigned long Mixer_Channel_GetOffset(void* channel)
 {
 	if (gOpenRCT2Headless) return 0;
 
-	return ((Channel*)channel)->GetOffset();
+	return static_cast<Channel*>(channel)->GetOffset();
 }
 
 int Mixer_Channel_SetOffset(void* channel, unsigned long offset)
 {
 	if (gOpenRCT2Headless) return 0;
 
-	return ((Channel*)channel)->SetOffset(offset);
+	return static_cast<Channel*>(channel)->SetOffset(offset);
 }
 
 void Mixer_Channel_SetGroup(void* channel, int group)
 {
 	if (gOpenRCT2Headless) return;
 
-	((Channel*)channel)->SetGroup(group);
+	static_cast<Channel*>(channel)->SetGroup(group);
 }
 
 void* Mixer_Play_Music(int pathId, int loop, int streaming)

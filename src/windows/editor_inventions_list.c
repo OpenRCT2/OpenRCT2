@@ -316,18 +316,15 @@ static void research_remove_flags()
  */
 static rct_string_id research_item_get_name(uint32 researchItem)
 {
-	rct_ride_entry *rideEntry;
-	rct_scenery_set_entry *sceneryEntry;
-
 	if (researchItem < 0x10000) {
-		sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
+		rct_scenery_set_entry *sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
 		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)-1)
 			return 0;
 
 		return sceneryEntry->name;
 	}
 
-	rideEntry = get_ride_entry(researchItem & 0xFF);
+	rct_ride_entry *rideEntry = get_ride_entry(researchItem & 0xFF);
 	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1)
 		return 0;
 
@@ -344,7 +341,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 static void research_items_shuffle()
 {
 	rct_research_item *researchItem, *researchOrderBase, researchItemTemp;
-	int i, ri, numNonResearchedItems;
+	int i, numNonResearchedItems;
 
 	// Skip pre-researched items
 	for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {}
@@ -358,7 +355,7 @@ static void research_items_shuffle()
 
 	// Shuffle list
 	for (i = 0; i < numNonResearchedItems; i++) {
-		ri = util_rand() % numNonResearchedItems;
+		int ri = util_rand() % numNonResearchedItems;
 		if (ri == i)
 			continue;
 
@@ -503,22 +500,18 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
 
 static rct_research_item *get_research_item_at(int x, int y)
 {
-	rct_window *w;
-	rct_widget *widget;
-	int scrollY, outX, outY, outScrollArea, outScrollId;
-	short widgetIndex;
-
-	w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+	rct_window *w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (w != NULL && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y) {
-		widgetIndex = window_find_widget_from_point(w, x, y);
-		widget = &w->widgets[widgetIndex];
+		short widgetIndex = window_find_widget_from_point(w, x, y);
+		rct_widget *widget = &w->widgets[widgetIndex];
 		if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
 			gPressedWidget.widget_index = widgetIndex;
+			int outX, outY, outScrollArea, outScrollId;
 			widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, &outScrollId);
 			if (outScrollArea == SCROLL_PART_VIEW) {
 				outScrollId = outScrollId == 0 ? 0 : 1;
 
-				scrollY = y - (w->y + widget->top) + w->scrolls[outScrollId].v_top + 5;
+				int scrollY = y - (w->y + widget->top) + w->scrolls[outScrollId].v_top + 5;
 				return window_editor_inventions_list_get_item_from_scroll_y_include_seps(outScrollId, scrollY);
 			}
 		}
@@ -951,12 +944,9 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
  */
 static void window_editor_inventions_list_drag_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {
-	rct_window *inventionListWindow;
-	rct_research_item *researchItem;
-
-	inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+	rct_window *inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
 	if (inventionListWindow != NULL) {
-		researchItem = get_research_item_at(x, y);
+		rct_research_item *researchItem = get_research_item_at(x, y);
 		if (researchItem != inventionListWindow->research_item) {
 			inventionListWindow = (rct_window *)researchItem;
 			window_invalidate(inventionListWindow);

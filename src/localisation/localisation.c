@@ -1037,9 +1037,8 @@ static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *s
 	}
 #endif
 
-	unsigned int code;
 	while (*size > 1) {
-		code = utf8_get_next(src, &src);
+		unsigned int code = utf8_get_next(src, &src);
 		if (code < ' ') {
 			if (code == 0) {
 				break;

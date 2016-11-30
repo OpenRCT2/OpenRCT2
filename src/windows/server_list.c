@@ -506,13 +506,23 @@ static char *freadstralloc(SDL_RWops *file)
 
 		if (length >= capacity) {
 			capacity *= 2;
-			buffer = realloc(buffer, capacity);
+			void *new_memory = realloc(buffer, capacity);
+			if (new_memory == NULL) {
+				log_error("Failed to reallocate memory for file buffer");
+				return NULL;
+			}
+			buffer = (char*)new_memory;
 		}
 		buffer[length] = c;
 		length++;
 	}
 
-	buffer = realloc(buffer, length + 1);
+	void *new_memory = realloc(buffer, length + 1);
+	if (new_memory == NULL) {
+		log_error("Failed to reallocate memory for file buffer");
+		return NULL;
+	}
+	buffer = (char*)new_memory;
 	buffer[length] = 0;
 	return buffer;
 }

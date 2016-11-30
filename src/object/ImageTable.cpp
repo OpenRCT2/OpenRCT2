@@ -84,7 +84,7 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
         // TODO validate the image data to prevent crashes in-game
     }
-    catch (Exception ex)
+    catch (const Exception &)
     {
         context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Bad image table.");
         throw;

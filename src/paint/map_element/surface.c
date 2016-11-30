@@ -419,9 +419,8 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 
 	uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
-	attached_paint_struct * out;
 	if (paint_attach_to_previous_ps(image_id, 0, 0)) {
-		out = g_aps_F1AD2C;
+		attached_paint_struct * out = g_aps_F1AD2C;
 		// set content and enable masking
 		out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
 		out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
@@ -1722,5 +1721,4 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			paint_util_set_segment_support_height(SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
 			break;
 	}
-
 }

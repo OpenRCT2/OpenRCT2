@@ -464,7 +464,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 */
 int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	int cost, flags, insufficientFunds;
+	int cost, flags;
 	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
 	*esi = command;
@@ -510,7 +510,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
-		insufficientFunds = 0;
+		int insufficientFunds = 0;
 		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
@@ -694,8 +694,8 @@ static void utf8_to_rct2_self(char *buffer, size_t length)
 
 static void rct2_to_utf8_self(char *buffer, size_t length)
 {
-	char tempBuffer[512];
 	if (length > 0) {
+		char tempBuffer[512];
 		rct2_to_utf8(tempBuffer, buffer);
 		safe_strcpy(buffer, tempBuffer, length);
 	}

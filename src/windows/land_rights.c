@@ -240,7 +240,6 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gLandToolSize > 7) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	}
-	y = w->y + window_land_rights_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw cost amount
 	x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;

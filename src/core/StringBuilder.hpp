@@ -36,7 +36,7 @@ public:
         _length = 0;
     }
 
-    StringBuilder(size_t capacity) : StringBuilder()
+    explicit StringBuilder(size_t capacity) : StringBuilder()
     {
         EnsureCapacity(capacity);
     }
