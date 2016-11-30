@@ -403,6 +403,7 @@
 		D44272A51CC81B3200D84D28 /* particle.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271EF1CC81B3200D84D28 /* particle.c */; };
 		D44272A61CC81B3200D84D28 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F01CC81B3200D84D28 /* scenery.c */; };
 		D44272A71CC81B3200D84D28 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271F21CC81B3200D84D28 /* sprite.c */; };
+		D4469DAD1DEF84480039A779 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4469DAB1DEF84480039A779 /* Fonts.cpp */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38BE1CF3006400659A24 /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B51CF3006400659A24 /* libjansson.dylib */; };
 		D45A38C01CF3006400659A24 /* libSDL2_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; };
@@ -941,6 +942,8 @@
 		D44271F21CC81B3200D84D28 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
 		D44271F31CC81B3200D84D28 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		D44271F41CC81B3200D84D28 /* water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
+		D4469DAB1DEF84480039A779 /* Fonts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fonts.cpp; sourceTree = "<group>"; };
+		D4469DAC1DEF84480039A779 /* Fonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fonts.h; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
 		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
 		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjansson.dylib; sourceTree = "<group>"; };
@@ -1616,6 +1619,8 @@
 				D4F5B5EC1DAD8A4300AB6075 /* CursorData.cpp */,
 				D4F5B5ED1DAD8A4300AB6075 /* Cursors.cpp */,
 				D4F5B5EE1DAD8A4300AB6075 /* Cursors.h */,
+				D4469DAB1DEF84480039A779 /* Fonts.cpp */,
+				D4469DAC1DEF84480039A779 /* Fonts.h */,
 				D442711F1CC81B3200D84D28 /* graph.c */,
 				D44271201CC81B3200D84D28 /* graph.h */,
 				D44271211CC81B3200D84D28 /* keyboard_shortcut.c */,
@@ -2702,6 +2707,7 @@
 				C686F91A1CDBC3B7009F9BFC /* mine_train_coaster.c in Sources */,
 				D44272A11CC81B3200D84D28 /* map_helpers.c in Sources */,
 				C686F9431CDBC3B7009F9BFC /* motion_simulator.c in Sources */,
+				D4469DAD1DEF84480039A779 /* Fonts.cpp in Sources */,
 				D44272281CC81B3200D84D28 /* language.cpp in Sources */,
 				D442729B1CC81B3200D84D28 /* climate.c in Sources */,
 				D464FEC01D31A68800CBABAC /* Image.cpp in Sources */,
