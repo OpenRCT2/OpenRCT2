@@ -19,6 +19,7 @@
 #include "../common.h"
 
 class Object;
+struct rct_object_entry;
 
 namespace ObjectFactory
 {

@@ -19,6 +19,7 @@
 #include "../../../common.h"
 #include "GLSLTypes.h"
 #include "OpenGLAPI.h"
+#include "TextureCache.h"
 
 struct DrawRectCommand
 {

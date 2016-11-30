@@ -18,6 +18,7 @@
 #define _VEHICLE_H_
 
 #include "../common.h"
+#include "../world/map.h"
 
 #pragma pack(push, 1)
 /* size: 0x2 */

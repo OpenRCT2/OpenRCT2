@@ -17,6 +17,8 @@
 #ifndef _INTERFACE_KEYBOARD_SHORTCUT_H_
 #define _INTERFACE_KEYBOARD_SHORTCUT_H_
 
+#include "../rct2.h"
+
 #define SHORTCUT_UNDEFINED 0xFFFF
 
 /** The current shortcut being changed. */
