@@ -1426,8 +1426,8 @@ static void window_options_invalidate(rct_window *w)
 		set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
 		set_format_arg(12, rct_string_id, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
-		// disable resolution dropdown on "Fullscreen (desktop)"
-		if (gConfigGeneral.fullscreen_mode == 2){
+		// disable resolution dropdown on "Fullscreen (desktop)" and on "Windowed"
+		if ((gConfigGeneral.fullscreen_mode == 2)||(gConfigGeneral.fullscreen_mode == 0)){
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
 			w->disabled_widgets |= (1 << WIDX_RESOLUTION);
 		}
