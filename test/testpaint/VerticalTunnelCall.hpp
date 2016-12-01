@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,6 +18,7 @@
 
 #include "../../src/common.h"
 
-namespace VerticalTunnelCall {
-    bool HeightIsConsistent(uint8 heights[4]);
+namespace VerticalTunnelCall
+{
+bool HeightIsConsistent(uint8 heights[4]);
 };

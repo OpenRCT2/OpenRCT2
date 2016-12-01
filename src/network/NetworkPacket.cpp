@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,15 +16,15 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkTypes.h"
 #include "NetworkPacket.h"
+#include "NetworkTypes.h"
 
 NetworkPacket::NetworkPacket()
 {
     transferred = 0;
-    read = 0;
-    size = 0;
-    data = std::make_shared<std::vector<uint8>>();
+    read        = 0;
+    size        = 0;
+    data        = std::make_shared<std::vector<uint8>>();
 }
 
 std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
@@ -32,7 +32,7 @@ std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
     return std::unique_ptr<NetworkPacket>(new NetworkPacket); // change to make_unique in c++14
 }
 
-std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
+std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket & packet)
 {
     return std::unique_ptr<NetworkPacket>(new NetworkPacket(packet)); // change to make_unique in c++14
 }
@@ -57,13 +57,14 @@ uint32 NetworkPacket::GetCommand()
 void NetworkPacket::Clear()
 {
     transferred = 0;
-    read = 0;
+    read        = 0;
     data->clear();
 }
 
 bool NetworkPacket::CommandRequiresAuth()
 {
-    switch (GetCommand()) {
+    switch (GetCommand())
+    {
     case NETWORK_COMMAND_PING:
     case NETWORK_COMMAND_AUTH:
     case NETWORK_COMMAND_TOKEN:
@@ -101,7 +102,7 @@ const uint8 * NetworkPacket::Read(size_t size)
 
 const utf8 * NetworkPacket::ReadString()
 {
-    char * str = (char *)&GetData()[read];
+    char * str    = (char *)&GetData()[read];
     char * strend = str;
     while (read < size && *strend != 0)
     {

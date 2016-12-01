@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,7 +24,9 @@
 interface IS4Importer
 {
 public:
-    virtual ~IS4Importer() { }
+    virtual ~IS4Importer()
+    {
+    }
     virtual void LoadSavedGame(const utf8 * path) abstract;
     virtual void LoadScenario(const utf8 * path) abstract;
     virtual void Import() abstract;

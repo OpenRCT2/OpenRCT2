@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -31,9 +31,9 @@ class StringBuilder final
 public:
     StringBuilder()
     {
-        _buffer = nullptr;
+        _buffer   = nullptr;
         _capacity = 0;
-        _length = 0;
+        _length   = 0;
     }
 
     StringBuilder(size_t capacity) : StringBuilder()
@@ -111,7 +111,7 @@ public:
      */
     void Reset()
     {
-        _length = 0;
+        _length   = 0;
         _capacity = 0;
         if (_buffer != nullptr)
         {
@@ -125,13 +125,13 @@ public:
      */
     utf8 * StealString()
     {
-        utf8 * result = _buffer;
-        result = Memory::ReallocateArray<utf8>(result, _length + 1);
+        utf8 * result   = _buffer;
+        result          = Memory::ReallocateArray<utf8>(result, _length + 1);
         result[_length] = 0;
 
-        _length = 0;
+        _length   = 0;
         _capacity = 0;
-        _buffer = nullptr;
+        _buffer   = nullptr;
 
         return result;
     }
@@ -155,19 +155,26 @@ public:
     const utf8 * GetBuffer() const
     {
         // buffer may be null, so return an immutable empty string
-        if (_buffer == nullptr) return "";
+        if (_buffer == nullptr)
+            return "";
         return _buffer;
     }
 
     /**
      * Gets the amount of allocated memory for the string buffer.
      */
-    size_t GetCapacity() const { return _capacity; }
+    size_t GetCapacity() const
+    {
+        return _capacity;
+    }
 
     /**
      * Gets the length of the current string.
      */
-    size_t GetLength() const { return _length; }
+    size_t GetLength() const
+    {
+        return _length;
+    }
 
 private:
     utf8 * _buffer;
@@ -176,7 +183,8 @@ private:
 
     void EnsureCapacity(size_t capacity)
     {
-        if (_capacity > capacity) return;
+        if (_capacity > capacity)
+            return;
 
         _capacity = Math::Max((size_t)8, _capacity);
         while (_capacity < capacity)

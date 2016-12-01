@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,10 @@
 
 #pragma once
 
+#include "../common.h"
+#include "NetworkTypes.h"
 #include <memory>
 #include <vector>
-#include "NetworkTypes.h"
-#include "../common.h"
 
 class NetworkPacket final
 {
@@ -30,7 +30,7 @@ public:
     size_t                              read;
 
     static std::unique_ptr<NetworkPacket> Allocate();
-    static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
+    static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket & packet);
 
     NetworkPacket();
 
@@ -41,13 +41,12 @@ public:
     bool CommandRequiresAuth();
 
     const uint8 * Read(size_t size);
-    const utf8 *  ReadString();
+    const utf8 * ReadString();
 
     void Write(const uint8 * bytes, size_t size);
     void WriteString(const utf8 * string);
 
-    template <typename T>
-    NetworkPacket & operator >>(T &value)
+    template <typename T> NetworkPacket & operator>>(T & value)
     {
         if (read + sizeof(value) > size)
         {
@@ -61,10 +60,10 @@ public:
         return *this;
     }
 
-    template <typename T>
-    NetworkPacket & operator <<(T value) {
-        T swapped = ByteSwapBE(value);
-        uint8 * bytes = (uint8 *)&swapped;
+    template <typename T> NetworkPacket & operator<<(T value)
+    {
+        T       swapped = ByteSwapBE(value);
+        uint8 * bytes   = (uint8 *)&swapped;
         data->insert(data->end(), bytes, bytes + sizeof(value));
         return *this;
     }

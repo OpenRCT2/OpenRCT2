@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,8 +18,9 @@
 
 #include "../../src/common.h"
 
-namespace Utils {
-    int getTrackSequenceCount(uint8 rideType, uint8 trackType);
-    bool rideSupportsTrackType(uint8 rideType, uint8 trackType);
-    bool rideIsImplemented(uint8 rideType);
+namespace Utils
+{
+int getTrackSequenceCount(uint8 rideType, uint8 trackType);
+bool rideSupportsTrackType(uint8 rideType, uint8 trackType);
+bool rideIsImplemented(uint8 rideType);
 }

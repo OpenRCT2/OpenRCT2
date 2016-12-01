@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,19 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "ObjectFactory.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/String.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
-#include "ObjectFactory.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -34,22 +34,27 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-extern "C"
-{
-    #include "../object.h"
-    #include "../util/sawyercoding.h"
+extern "C" {
+#include "../object.h"
+#include "../util/sawyercoding.h"
 }
 
 class ReadObjectContext : public IReadObjectContext
 {
 private:
-    utf8 *  _objectName;
-    bool    _wasWarning = false;
-    bool    _wasError = false;
+    utf8 * _objectName;
+    bool   _wasWarning = false;
+    bool   _wasError   = false;
 
 public:
-    bool WasWarning() const { return _wasWarning; }
-    bool WasError() const { return _wasError; }
+    bool WasWarning() const
+    {
+        return _wasWarning;
+    }
+    bool WasError() const
+    {
+        return _wasError;
+    }
 
     ReadObjectContext(const utf8 * objectFileName)
     {
@@ -85,150 +90,151 @@ public:
 
 namespace ObjectFactory
 {
-    static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
+static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
+{
+    try
     {
-        try
-        {
-            object->ReadLegacy(context, stream);
-        }
-        catch (IOException ex)
-        {
-            // TODO check that ex is really EOF and not some other error
-            context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
-        }
-        catch (Exception ex)
-        {
-            context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
-        }
+        object->ReadLegacy(context, stream);
+    }
+    catch (IOException ex)
+    {
+        // TODO check that ex is really EOF and not some other error
+        context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
+    }
+    catch (Exception ex)
+    {
+        context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
+    }
+}
+
+static MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
+{
+    size_t bufferSize = 0x600000;
+    void * buffer     = Memory::Allocate<void>(bufferSize);
+    if (buffer == nullptr)
+    {
+        log_error("Unable to allocate data buffer.");
+        return nullptr;
     }
 
-    static MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
+    bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
+    if (bufferSize == SIZE_MAX)
     {
-        size_t bufferSize = 0x600000;
-        void * buffer = Memory::Allocate<void>(bufferSize);
-        if (buffer == nullptr)
-        {
-            log_error("Unable to allocate data buffer.");
-            return nullptr;
-        }
-
-        bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
-        if (bufferSize == SIZE_MAX)
-        {
-            context->LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
-            Memory::Free(buffer);
-            return nullptr;
-        }
-        else
-        {
-            buffer = Memory::Reallocate(buffer, bufferSize);
-            return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
-        }
+        context->LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
+        Memory::Free(buffer);
+        return nullptr;
     }
-
-    Object * CreateObjectFromLegacyFile(const utf8 * path)
+    else
     {
-        Object * result = nullptr;
+        buffer = Memory::Reallocate(buffer, bufferSize);
+        return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+    }
+}
 
-        SDL_RWops * file = SDL_RWFromFile(path, "rb");
-        if (file != nullptr)
+Object * CreateObjectFromLegacyFile(const utf8 * path)
+{
+    Object * result = nullptr;
+
+    SDL_RWops * file = SDL_RWFromFile(path, "rb");
+    if (file != nullptr)
+    {
+        rct_object_entry entry;
+        if (SDL_RWread(file, &entry, sizeof(entry), 1) == 1)
         {
-            rct_object_entry entry;
-            if (SDL_RWread(file, &entry, sizeof(entry), 1) == 1)
+            result = CreateObject(entry);
+            if (result != nullptr)
             {
-                result = CreateObject(entry);
-                if (result != nullptr)
+                utf8 objectName[9] = { 0 };
+                Memory::Copy(objectName, entry.name, 8);
+
+                auto readContext = ReadObjectContext(objectName);
+                auto chunkStream = GetDecodedChunkStream(&readContext, file);
+                if (chunkStream != nullptr)
                 {
-                    utf8 objectName[9] = { 0 };
-                    Memory::Copy(objectName, entry.name, 8);
+                    ReadObjectLegacy(result, &readContext, chunkStream);
+                    delete chunkStream;
+                }
 
-                    auto readContext = ReadObjectContext(objectName);
-                    auto chunkStream = GetDecodedChunkStream(&readContext, file);
-                    if (chunkStream != nullptr)
-                    {
-                        ReadObjectLegacy(result, &readContext, chunkStream);
-                        delete chunkStream;
-                    }
+                if (readContext.WasError())
+                {
+                    Console::Error::WriteLine("Error reading object: '%s'", path);
 
-                    if (readContext.WasError())
-                    {
-                        Console::Error::WriteLine("Error reading object: '%s'", path);
-
-                        delete result;
-                        result = nullptr;
-                    }
+                    delete result;
+                    result = nullptr;
                 }
             }
-            SDL_RWclose(file);
         }
-        return result;
+        SDL_RWclose(file);
     }
+    return result;
+}
 
-    Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize)
+Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize)
+{
+    Guard::ArgumentNotNull(entry, GUARD_LINE);
+    Guard::ArgumentNotNull(data, GUARD_LINE);
+
+    Object * result = CreateObject(*entry);
+    if (result != nullptr)
     {
-        Guard::ArgumentNotNull(entry, GUARD_LINE);
-        Guard::ArgumentNotNull(data, GUARD_LINE);
+        utf8 objectName[9];
+        object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-        Object * result = CreateObject(*entry);
-        if (result != nullptr)
+        auto readContext = ReadObjectContext(objectName);
+        auto chunkStream = MemoryStream(data, dataSize);
+        ReadObjectLegacy(result, &readContext, &chunkStream);
+
+        if (readContext.WasError())
         {
-            utf8 objectName[9];
-            object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
-
-            auto readContext = ReadObjectContext(objectName);
-            auto chunkStream = MemoryStream(data, dataSize);
-            ReadObjectLegacy(result, &readContext, &chunkStream);
-
-            if (readContext.WasError())
-            {
-                delete result;
-                result = nullptr;
-            }
+            delete result;
+            result = nullptr;
         }
-        return result;
     }
+    return result;
+}
 
-    Object * CreateObject(const rct_object_entry &entry)
+Object * CreateObject(const rct_object_entry & entry)
+{
+    Object * result = nullptr;
+
+    uint8 objectType = entry.flags & 0x0F;
+    switch (objectType)
     {
-        Object * result = nullptr;
-
-        uint8 objectType = entry.flags & 0x0F;
-        switch (objectType) {
-        case OBJECT_TYPE_RIDE:
-            result = new RideObject(entry);
-            break;
-        case OBJECT_TYPE_SMALL_SCENERY:
-            result = new SmallSceneryObject(entry);
-            break;
-        case OBJECT_TYPE_LARGE_SCENERY:
-            result = new LargeSceneryObject(entry);
-            break;
-        case OBJECT_TYPE_WALLS:
-            result = new WallObject(entry);
-            break;
-        case OBJECT_TYPE_BANNERS:
-            result = new BannerObject(entry);
-            break;
-        case OBJECT_TYPE_PATHS:
-            result = new FootpathObject(entry);
-            break;
-        case OBJECT_TYPE_PATH_BITS:
-            result = new FootpathItemObject(entry);
-            break;
-        case OBJECT_TYPE_SCENERY_SETS:
-            result = new SceneryGroupObject(entry);
-            break;
-        case OBJECT_TYPE_PARK_ENTRANCE:
-            result = new EntranceObject(entry);
-            break;
-        case OBJECT_TYPE_WATER:
-            result = new WaterObject(entry);
-            break;
-        case OBJECT_TYPE_SCENARIO_TEXT:
-            result = new StexObject(entry);
-            break;
-        }
-
-        return result;
+    case OBJECT_TYPE_RIDE:
+        result = new RideObject(entry);
+        break;
+    case OBJECT_TYPE_SMALL_SCENERY:
+        result = new SmallSceneryObject(entry);
+        break;
+    case OBJECT_TYPE_LARGE_SCENERY:
+        result = new LargeSceneryObject(entry);
+        break;
+    case OBJECT_TYPE_WALLS:
+        result = new WallObject(entry);
+        break;
+    case OBJECT_TYPE_BANNERS:
+        result = new BannerObject(entry);
+        break;
+    case OBJECT_TYPE_PATHS:
+        result = new FootpathObject(entry);
+        break;
+    case OBJECT_TYPE_PATH_BITS:
+        result = new FootpathItemObject(entry);
+        break;
+    case OBJECT_TYPE_SCENERY_SETS:
+        result = new SceneryGroupObject(entry);
+        break;
+    case OBJECT_TYPE_PARK_ENTRANCE:
+        result = new EntranceObject(entry);
+        break;
+    case OBJECT_TYPE_WATER:
+        result = new WaterObject(entry);
+        break;
+    case OBJECT_TYPE_SCENARIO_TEXT:
+        result = new StexObject(entry);
+        break;
     }
+
+    return result;
+}
 }

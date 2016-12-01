@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -41,20 +41,22 @@ enum NETWORK_READPACKET
 interface ITcpSocket
 {
 public:
-    virtual ~ITcpSocket() { }
+    virtual ~ITcpSocket()
+    {
+    }
 
-    virtual SOCKET_STATUS   GetStatus() abstract;
-    virtual const char *    GetError() abstract;
-    virtual const char *    GetHostName() const abstract;
+    virtual SOCKET_STATUS GetStatus() abstract;
+    virtual const char *  GetError() abstract;
+    virtual const char *  GetHostName() const abstract;
 
-    virtual void         Listen(uint16 port)                       abstract;
-    virtual void         Listen(const char * address, uint16 port) abstract;
-    virtual ITcpSocket * Accept()                                  abstract;
+    virtual void Listen(uint16 port) abstract;
+    virtual void Listen(const char * address, uint16 port) abstract;
+    virtual ITcpSocket * Accept() abstract;
 
-    virtual void Connect(const char * address, uint16 port)      abstract;
+    virtual void Connect(const char * address, uint16 port) abstract;
     virtual void ConnectAsync(const char * address, uint16 port) abstract;
 
-    virtual size_t             SendData(const void * buffer, size_t size)                     abstract;
+    virtual size_t SendData(const void * buffer, size_t size) abstract;
     virtual NETWORK_READPACKET ReceiveData(void * buffer, size_t size, size_t * sizeReceived) abstract;
 
     virtual void Disconnect() abstract;

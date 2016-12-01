@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,14 +23,16 @@
 #ifdef NO_RCT2
 extern paint_struct * gWoodenSupportsPrependTo;
 #else
-#define gWoodenSupportsPrependTo		RCT2_GLOBAL(0x009DEA58, paint_struct *)
+#define gWoodenSupportsPrependTo RCT2_GLOBAL(0x009DEA58, paint_struct *)
 #endif
 
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
+bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool * underground);
+bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool * underground);
 bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
 bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
-bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground);
-bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry);
+bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags,
+                                 rct_footpath_entry * pathEntry, bool * underground);
+bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags,
+                                 rct_footpath_entry * pathEntry);
 
 #endif

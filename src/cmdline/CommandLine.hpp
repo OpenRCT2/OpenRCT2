@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,10 +16,9 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-    #include "../cmdline_sprite.h"
+extern "C" {
+#include "../cmdline_sprite.h"
+#include "../common.h"
 }
 
 /**
@@ -33,9 +32,18 @@ private:
     uint16               _index;
 
 public:
-    const char * const * GetArguments() const { return _arguments; }
-    uint16               GetCount()     const { return _count; }
-    uint16               GetIndex()     const { return _index; }
+    const char * const * GetArguments() const
+    {
+        return _arguments;
+    }
+    uint16 GetCount() const
+    {
+        return _count;
+    }
+    uint16 GetIndex() const
+    {
+        return _index;
+    }
 
     CommandLineArgEnumerator(const char * const * arguments, int count);
 
@@ -44,7 +52,7 @@ public:
     bool TryPop();
     bool TryPopInteger(sint32 * result);
     bool TryPopReal(float * result);
-    bool TryPopString(const char * * result);
+    bool TryPopString(const char ** result);
 };
 
 typedef int exitcode_t;
@@ -53,8 +61,8 @@ typedef exitcode_t (*CommandLineFunc)(CommandLineArgEnumerator *);
 enum
 {
     EXITCODE_FAIL     = -1,
-    EXITCODE_OK       =  0,
-    EXITCODE_CONTINUE =  1,
+    EXITCODE_OK       = 0,
+    EXITCODE_CONTINUE = 1,
 };
 
 struct CommandLineExample
@@ -91,23 +99,38 @@ enum
 
 constexpr char NAC = '\0';
 
-#define ExampleTableEnd { NULL, NULL }
-#define OptionTableEnd  { UINT8_MAX, NULL, NAC, NULL, NULL }
-#define CommandTableEnd { NULL, NULL, NULL, NULL }
+#define ExampleTableEnd                                                                                                        \
+    {                                                                                                                          \
+        NULL, NULL                                                                                                             \
+    }
+#define OptionTableEnd                                                                                                         \
+    {                                                                                                                          \
+        UINT8_MAX, NULL, NAC, NULL, NULL                                                                                       \
+    }
+#define CommandTableEnd                                                                                                        \
+    {                                                                                                                          \
+        NULL, NULL, NULL, NULL                                                                                                 \
+    }
 
-#define DefineCommand(name, params, options, func) { name, params, options, NULL,            func }
-#define DefineSubCommand(name, subcommandtable)    { name, "",     NULL,    subcommandtable, NULL }
+#define DefineCommand(name, params, options, func)                                                                             \
+    {                                                                                                                          \
+        name, params, options, NULL, func                                                                                      \
+    }
+#define DefineSubCommand(name, subcommandtable)                                                                                \
+    {                                                                                                                          \
+        name, "", NULL, subcommandtable, NULL                                                                                  \
+    }
 
 namespace CommandLine
 {
-    extern const CommandLineCommand RootCommands[];
-    extern const CommandLineCommand ScreenshotCommands[];
-    extern const CommandLineCommand SpriteCommands[];
+extern const CommandLineCommand RootCommands[];
+extern const CommandLineCommand ScreenshotCommands[];
+extern const CommandLineCommand SpriteCommands[];
 
-    extern const CommandLineExample RootExamples[];
+extern const CommandLineExample RootExamples[];
 
-    void PrintHelp(bool allCommands = false);
-    exitcode_t HandleCommandDefault();
+void PrintHelp(bool allCommands = false);
+exitcode_t HandleCommandDefault();
 
-    exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
+exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
 }

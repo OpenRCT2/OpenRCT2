@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,25 +18,24 @@
 
 #include "../common.h"
 
-template<typename T>
-struct Nullable
+template <typename T> struct Nullable
 {
 public:
     Nullable()
     {
-        _value = T();
+        _value    = T();
         _hasValue = false;
     }
 
     Nullable(std::nullptr_t)
     {
-        _value = T();
+        _value    = T();
         _hasValue = false;
     }
 
-    Nullable(const T &value)
+    Nullable(const T & value)
     {
-        _value = value;
+        _value    = value;
         _hasValue = true;
     }
 
@@ -56,6 +55,6 @@ public:
     }
 
 private:
-    T       _value;
-    bool    _hasValue;
+    T    _value;
+    bool _hasValue;
 };

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,7 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <vector>
+#include "S4Importer.h"
+#include "../ScenarioSources.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/Exception.hpp"
@@ -23,34 +24,32 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../ScenarioSources.h"
 #include "../object/ObjectManager.h"
-#include "S4Importer.h"
 #include "Tables.h"
+#include <vector>
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../editor.h"
-    #include "../game.h"
-    #include "../interface/window.h"
-    #include "../localisation/date.h"
-    #include "../localisation/localisation.h"
-    #include "../management/finance.h"
-    #include "../management/marketing.h"
-    #include "../object.h"
-    #include "../object/ObjectManager.h"
-    #include "../peep/staff.h"
-    #include "../rct1.h"
-    #include "../util/sawyercoding.h"
-    #include "../util/util.h"
-    #include "../world/climate.h"
-    #include "../world/footpath.h"
-    #include "../world/map_animation.h"
-    #include "../world/park.h"
-    #include "../world/scenery.h"
-    #include "../ride/ride_data.h"
+extern "C" {
+#include "../audio/audio.h"
+#include "../cheats.h"
+#include "../editor.h"
+#include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../management/finance.h"
+#include "../management/marketing.h"
+#include "../object.h"
+#include "../object/ObjectManager.h"
+#include "../peep/staff.h"
+#include "../rct1.h"
+#include "../ride/ride_data.h"
+#include "../util/sawyercoding.h"
+#include "../util/util.h"
+#include "../world/climate.h"
+#include "../world/footpath.h"
+#include "../world/map_animation.h"
+#include "../world/park.h"
+#include "../world/scenery.h"
 }
 
 class EntryList
@@ -165,12 +164,12 @@ private:
     {
         _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
 
-        Memory::Set(_rideTypeToRideEntryMap,     255, sizeof(_rideTypeToRideEntryMap));
-        Memory::Set(_vehicleTypeToRideEntryMap,  255, sizeof(_vehicleTypeToRideEntryMap));
+        Memory::Set(_rideTypeToRideEntryMap, 255, sizeof(_rideTypeToRideEntryMap));
+        Memory::Set(_vehicleTypeToRideEntryMap, 255, sizeof(_vehicleTypeToRideEntryMap));
         Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
         Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
-        Memory::Set(_wallTypeToEntryMap,         255, sizeof(_wallTypeToEntryMap));
-        Memory::Set(_pathTypeToEntryMap,         255, sizeof(_pathTypeToEntryMap));
+        Memory::Set(_wallTypeToEntryMap, 255, sizeof(_wallTypeToEntryMap));
+        Memory::Set(_pathTypeToEntryMap, 255, sizeof(_pathTypeToEntryMap));
         Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
         Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
 
@@ -217,36 +216,23 @@ private:
     {
         // Add default scenery groups
         _sceneryGroupEntries.AddRange({
-            "SCGTREES",
-            "SCGSHRUB",
-            "SCGGARDN",
-            "SCGFENCE",
-            "SCGWALLS",
-            "SCGPATHX",
+            "SCGTREES", "SCGSHRUB", "SCGGARDN", "SCGFENCE", "SCGWALLS", "SCGPATHX",
         });
 
         // Add default footpaths
         _pathEntries.AddRange({
-            "TARMAC  ",
-            "TARMACG ",
-            "TARMACB ",
-            "PATHCRZY",
-            "PATHSPCE",
-            "PATHDIRT",
-            "PATHASH ",
-            "ROAD    ",
+            "TARMAC  ", "TARMACG ", "TARMACB ", "PATHCRZY", "PATHSPCE", "PATHDIRT", "PATHASH ", "ROAD    ",
         });
     }
 
     void AddAvailableEntriesFromResearchList()
     {
-        size_t researchListCount;
+        size_t                     researchListCount;
         const rct1_research_item * researchList = GetResearchList(&researchListCount);
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item * researchItem = &researchList[i];
-            if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                researchItem->item == RCT1_RESEARCH_END)
+            if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem->item == RCT1_RESEARCH_END)
             {
                 break;
             }
@@ -255,7 +241,8 @@ private:
                 continue;
             }
 
-            switch (researchItem->category) {
+            switch (researchItem->category)
+            {
             case RCT1_RESEARCH_CATEGORY_THEME:
                 AddEntriesForSceneryTheme(researchItem->item);
                 break;
@@ -267,15 +254,14 @@ private:
                 uint32 numVehicles = 0;
                 for (size_t j = 0; j < researchListCount; j++)
                 {
-                    const rct1_research_item *researchItem2 = &researchList[j];
+                    const rct1_research_item * researchItem2 = &researchList[j];
                     if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
                         researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
                     {
                         break;
                     }
 
-                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
-                        researchItem2->related_ride == rideType)
+                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE && researchItem2->related_ride == rideType)
                     {
                         AddEntryForVehicleType(rideType, researchItem2->item);
                         numVehicles++;
@@ -295,19 +281,20 @@ private:
 
     void AddAvailableEntriesFromMap()
     {
-        size_t maxTiles = 128 * 128;
-        size_t tileIndex = 0;
+        size_t            maxTiles   = 128 * 128;
+        size_t            tileIndex  = 0;
         rct_map_element * mapElement = _s4.map_elements;
 
         while (tileIndex < maxTiles)
         {
-            switch (map_element_get_type(mapElement)) {
+            switch (map_element_get_type(mapElement))
+            {
             case MAP_ELEMENT_TYPE_PATH:
             {
                 uint8 pathColour = mapElement->type & 3;
-                uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = (mapElement->properties.path.type & 0xF0) >> 4;
 
-                pathType = (pathType << 2) | pathColour;
+                pathType                = (pathType << 2) | pathColour;
                 uint8 pathAdditionsType = mapElement->properties.path.additions & 0x0F;
 
                 AddEntryForPath(pathType);
@@ -323,8 +310,7 @@ private:
             case MAP_ELEMENT_TYPE_FENCE:
             {
                 uint8  var_05 = mapElement->properties.fence.item[0];
-                uint16 var_06 = mapElement->properties.fence.item[1] |
-                               (mapElement->properties.fence.item[2] << 8);
+                uint16 var_06 = mapElement->properties.fence.item[1] | (mapElement->properties.fence.item[2] << 8);
 
                 for (int edge = 0; edge < 4; edge++)
                 {
@@ -363,8 +349,8 @@ private:
     {
         for (int sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
         {
-            if (sceneryTheme != 0 &&
-                _sceneryThemeTypeToEntryMap[sceneryTheme] == 255) continue;
+            if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == 255)
+                continue;
 
             std::vector<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
             for (const char * objectName : objects)
@@ -373,7 +359,8 @@ private:
                 if (foundEntry != nullptr)
                 {
                     uint8 objectType = foundEntry->flags & 0x0F;
-                    switch (objectType) {
+                    switch (objectType)
+                    {
                     case OBJECT_TYPE_SMALL_SCENERY:
                     case OBJECT_TYPE_LARGE_SCENERY:
                     case OBJECT_TYPE_WALLS:
@@ -401,8 +388,8 @@ private:
         assert(rideType < Util::CountOf(_rideTypeToRideEntryMap));
         if (_rideTypeToRideEntryMap[rideType] == 255)
         {
-            const char * entryName = RCT1::GetRideTypeObject(rideType);
-            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetRideTypeObject(rideType);
+            size_t       entryIndex = _rideEntries.GetOrAddEntry(entryName);
 
             _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
         }
@@ -413,11 +400,11 @@ private:
         assert(vehicleType < Util::CountOf(_vehicleTypeToRideEntryMap));
         if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
         {
-            const char * entryName = RCT1::GetVehicleObject(vehicleType);
-            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetVehicleObject(vehicleType);
+            size_t       entryIndex = _rideEntries.GetOrAddEntry(entryName);
 
             _vehicleTypeToRideEntryMap[vehicleType] = (uint8)entryIndex;
-            _rideTypeToRideEntryMap[rideType] = (uint8)entryIndex;
+            _rideTypeToRideEntryMap[rideType]       = (uint8)entryIndex;
         }
     }
 
@@ -426,8 +413,8 @@ private:
         assert(smallSceneryType < Util::CountOf(_smallSceneryTypeToEntryMap));
         if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
         {
-            const char * entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
-            size_t entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetSmallSceneryObject(smallSceneryType);
+            size_t       entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
 
             _smallSceneryTypeToEntryMap[smallSceneryType] = (uint8)entryIndex;
         }
@@ -438,8 +425,8 @@ private:
         assert(largeSceneryType < Util::CountOf(_largeSceneryTypeToEntryMap));
         if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
         {
-            const char * entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
-            size_t entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetLargeSceneryObject(largeSceneryType);
+            size_t       entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
 
             _largeSceneryTypeToEntryMap[largeSceneryType] = (uint8)entryIndex;
         }
@@ -450,8 +437,8 @@ private:
         assert(wallType < Util::CountOf(_wallTypeToEntryMap));
         if (_wallTypeToEntryMap[wallType] == 255)
         {
-            const char * entryName = RCT1::GetWallObject(wallType);
-            size_t entryIndex = _wallEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetWallObject(wallType);
+            size_t       entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
             _wallTypeToEntryMap[wallType] = (uint8)entryIndex;
         }
@@ -462,8 +449,8 @@ private:
         assert(pathType < Util::CountOf(_pathTypeToEntryMap));
         if (_pathTypeToEntryMap[pathType] == 255)
         {
-            const char * entryName = RCT1::GetPathObject(pathType);
-            size_t entryIndex = _pathEntries.GetOrAddEntry(entryName);
+            const char * entryName  = RCT1::GetPathObject(pathType);
+            size_t       entryIndex = _pathEntries.GetOrAddEntry(entryName);
 
             _pathTypeToEntryMap[pathType] = (uint8)entryIndex;
         }
@@ -471,15 +458,16 @@ private:
 
     void AddEntryForPathAddition(uint8 pathAdditionType)
     {
-        if (pathAdditionType == RCT1_PATH_ADDITION_NONE) return;
+        if (pathAdditionType == RCT1_PATH_ADDITION_NONE)
+            return;
 
         if (_pathAdditionTypeToEntryMap[pathAdditionType] == 255)
         {
             uint8 normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
             if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == 255)
             {
-                const char * entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
-                size_t entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
+                const char * entryName  = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
+                size_t       entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
 
                 _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = (uint8)entryIndex;
             }
@@ -490,8 +478,7 @@ private:
 
     void AddEntriesForSceneryTheme(uint8 sceneryThemeType)
     {
-        if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL ||
-            sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS ||
+        if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL || sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS ||
             sceneryThemeType == RCT1_SCENERY_THEME_GARDEN_CLOCK)
         {
             _sceneryThemeTypeToEntryMap[sceneryThemeType] = 254;
@@ -506,7 +493,7 @@ private:
             }
             else
             {
-                size_t entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
+                size_t entryIndex                             = _sceneryGroupEntries.GetOrAddEntry(entryName);
                 _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)entryIndex;
             }
         }
@@ -538,7 +525,7 @@ private:
         }
 
         rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);
-        Guard::Assert(rideEntry != nullptr && rideEntry != (rct_ride_entry*)-1);
+        Guard::Assert(rideEntry != nullptr && rideEntry != (rct_ride_entry *)-1);
 
         // Ride name
         dst->name = 0;
@@ -558,35 +545,39 @@ private:
         {
             dst->name = 1;
 
-            uint16 * args = (uint16*)&dst->name_arguments;
-            args[0] = 2 + dst->type;
-            args[1] = src->name_argument_number;
+            uint16 * args = (uint16 *)&dst->name_arguments;
+            args[0]       = 2 + dst->type;
+            args[1]       = src->name_argument_number;
         }
 
         // We can't convert vehicles yet so just close the ride
         dst->status = RIDE_STATUS_CLOSED;
 
         // Flags
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+            dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)
+            dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+            dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+            dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
 
         // Station
         dst->overall_view = src->overall_view;
         for (int i = 0; i < 4; i++)
         {
-            dst->station_starts[i] = src->station_starts[i];
+            dst->station_starts[i]  = src->station_starts[i];
             dst->station_heights[i] = src->station_height[i] / 2;
-            dst->station_length[i] = src->station_length[i];
-            dst->station_depart[i] = src->station_light[i];
+            dst->station_length[i]  = src->station_length[i];
+            dst->station_depart[i]  = src->station_light[i];
 
             // Use src->station_depart[i] when we import with guests and vehicles intact
             dst->train_at_station[i] = 0xFF;
 
-            dst->entrances[i] = src->entrance[i];
-            dst->exits[i] = src->exit[i];
-            dst->queue_time[i] = src->queue_time[i];
+            dst->entrances[i]          = src->entrance[i];
+            dst->exits[i]              = src->exit[i];
+            dst->queue_time[i]         = src->queue_time[i];
             dst->last_peep_in_queue[i] = 0xFFFF;
         }
         dst->num_stations = src->num_stations;
@@ -595,18 +586,18 @@ private:
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
-        dst->num_vehicles = src->num_trains;
-        dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
-        dst->proposed_num_vehicles = src->num_trains;
-        dst->max_trains = 32;
+        dst->num_vehicles                = src->num_trains;
+        dst->num_cars_per_train          = src->num_cars_per_train + rideEntry->zero_cars;
+        dst->proposed_num_vehicles       = src->num_trains;
+        dst->max_trains                  = 32;
         dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
 
         // Operation
-        dst->depart_flags = src->depart_flags;
-        dst->min_waiting_time = src->min_waiting_time;
-        dst->max_waiting_time = src->max_waiting_time;
-        dst->operation_option = src->operation_option;
-        dst->num_circuits = 1;
+        dst->depart_flags           = src->depart_flags;
+        dst->min_waiting_time       = src->min_waiting_time;
+        dst->max_waiting_time       = src->max_waiting_time;
+        dst->operation_option       = src->operation_option;
+        dst->num_circuits           = 1;
         dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
 
         // RCT1 used 5mph / 8 km/h for every lift hill
@@ -636,17 +627,17 @@ private:
         dst->colour_scheme_type = src->colour_scheme;
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
+            dst->track_colour_main[0]       = RCT1::GetColour(src->track_primary_colour);
             dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
-            dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+            dst->track_colour_supports[0]   = RCT1::GetColour(src->track_support_colour);
         }
         else
         {
             for (int i = 0; i < 4; i++)
             {
-                dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
+                dst->track_colour_main[i]       = RCT1::GetColour(src->track_colour_main[i]);
                 dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
-                dst->track_colour_supports[i] = RCT1::GetColour(src->track_colour_supports[i]);
+                dst->track_colour_supports[i]   = RCT1::GetColour(src->track_colour_supports[i]);
             }
             // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
             dst->entrance_style = src->entrance_style;
@@ -678,29 +669,29 @@ private:
         // dst->chairlift_bullwheel_z[1] /= 2;
 
         // Maintenance
-        dst->build_date = src->build_date;
-        dst->inspection_interval = src->inspection_interval;
-        dst->last_inspection = src->last_inspection;
-        dst->reliability = src->reliability;
+        dst->build_date           = src->build_date;
+        dst->inspection_interval  = src->inspection_interval;
+        dst->last_inspection      = src->last_inspection;
+        dst->reliability          = src->reliability;
         dst->unreliability_factor = src->unreliability_factor;
-        dst->breakdown_reason = src->breakdown_reason;
+        dst->breakdown_reason     = src->breakdown_reason;
 
         // Finance
-        dst->upkeep_cost = src->upkeep_cost;
-        dst->price = src->price;
+        dst->upkeep_cost     = src->upkeep_cost;
+        dst->price           = src->price;
         dst->income_per_hour = src->income_per_hour;
 
-        dst->value = src->value;
-        dst->satisfaction = 255;
+        dst->value                 = src->value;
+        dst->satisfaction          = 255;
         dst->satisfaction_time_out = 0;
-        dst->satisfaction_next = 0;
-        dst->popularity = src->popularity;
-        dst->popularity_next = src->popularity_next;
-        dst->popularity_time_out = src->popularity_time_out;
+        dst->satisfaction_next     = 0;
+        dst->popularity            = src->popularity;
+        dst->popularity_next       = src->popularity_next;
+        dst->popularity_time_out   = src->popularity_time_out;
 
-        dst->music_tune_id = 255;
+        dst->music_tune_id     = 255;
         dst->measurement_index = 255;
-        dst->excitement = (ride_rating)-1;
+        dst->excitement        = (ride_rating)-1;
     }
 
     void ImportRideMeasurements()
@@ -734,7 +725,7 @@ private:
     void ImportMapAnimations()
     {
         // This is sketchy, ideally we should try to re-create them
-        rct_map_animation * s4Animations = (rct_map_animation*)_s4.map_animations;
+        rct_map_animation * s4Animations = (rct_map_animation *)_s4.map_animations;
         for (int i = 0; i < 1000; i++)
         {
             gAnimatedObjects[i] = s4Animations[i];
@@ -745,23 +736,23 @@ private:
 
     void ImportFinance()
     {
-        gParkEntranceFee = _s4.park_entrance_fee;
-        gLandPrice = _s4.land_price;
+        gParkEntranceFee         = _s4.park_entrance_fee;
+        gLandPrice               = _s4.land_price;
         gConstructionRightsPrice = _s4.construction_rights_price;
 
         gCashEncrypted = ENCRYPT_MONEY(_s4.cash);
-        gBankLoan = _s4.loan;
-        gMaxBankLoan = _s4.max_loan;
-        gInitialCash = _s4.cash;
+        gBankLoan      = _s4.loan;
+        gMaxBankLoan   = _s4.max_loan;
+        gInitialCash   = _s4.cash;
 
-        gCompanyValue = _s4.company_value;
-        gParkValue = _s4.park_value;
+        gCompanyValue  = _s4.company_value;
+        gParkValue     = _s4.park_value;
         gCurrentProfit = _s4.profit;
 
         for (int i = 0; i < 128; i++)
         {
-            gCashHistory[i] = _s4.cash_history[i];
-            gParkValueHistory[i] = _s4.park_value_history[i];
+            gCashHistory[i]         = _s4.cash_history[i];
+            gParkValueHistory[i]    = _s4.park_value_history[i];
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
@@ -771,13 +762,13 @@ private:
         }
         gCurrentExpenditure = _s4.total_expenditure;
 
-        gTotalAdmissions = _s4.num_admissions;
+        gTotalAdmissions           = _s4.num_admissions;
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
         // TODO marketing campaigns not working
         for (int i = 0; i < 6; i++)
         {
-            gMarketingCampaignDaysLeft[i] = _s4.marketing_status[i];
+            gMarketingCampaignDaysLeft[i]  = _s4.marketing_status[i];
             gMarketingCampaignRideIndex[i] = _s4.marketing_assoc[i];
         }
     }
@@ -791,27 +782,18 @@ private:
         LoadObjects(OBJECT_TYPE_PATHS, _pathEntries);
         LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
         LoadObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries);
-        LoadObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
-            "BN1     ",
-            "BN2     ",
-            "BN3     ",
-            "BN4     ",
-            "BN5     ",
-            "BN6     ",
-            "BN7     ",
-            "BN8     ",
-            "BN9     "
-        }));
+        LoadObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({ "BN1     ", "BN2     ", "BN3     ", "BN4     ", "BN5     ",
+                                                                     "BN6     ", "BN7     ", "BN8     ", "BN9     " }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char *>({ "PKENT1  " }));
         LoadObjects(OBJECT_TYPE_WATER, std::vector<const char *>({ "WTRCYAN " }));
     }
 
-    void LoadObjects(uint8 objectType, const EntryList &entries)
+    void LoadObjects(uint8 objectType, const EntryList & entries)
     {
         LoadObjects(objectType, entries.GetEntries());
     }
 
-    void LoadObjects(uint8 objectType, const std::vector<const char *> &entries)
+    void LoadObjects(uint8 objectType, const std::vector<const char *> & entries)
     {
         IObjectManager * objectManager = GetObjectManager();
 
@@ -855,7 +837,7 @@ private:
 
         research_reset_items();
 
-        size_t researchListCount;
+        size_t                     researchListCount;
         const rct1_research_item * researchList = GetResearchList(&researchListCount);
 
         // Initialise the "seen" tables
@@ -876,19 +858,18 @@ private:
             {
                 researched = false;
             }
-            else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE ||
-                     researchItem->item == RCT1_RESEARCH_END)
+            else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem->item == RCT1_RESEARCH_END)
             {
                 break;
             }
 
-            switch (researchItem->category) {
+            switch (researchItem->category)
+            {
             case RCT1_RESEARCH_CATEGORY_THEME:
             {
-                uint8 rct1SceneryTheme = researchItem->item;
+                uint8 rct1SceneryTheme       = researchItem->item;
                 uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-                if (sceneryGroupEntryIndex != 254 &&
-                    sceneryGroupEntryIndex != 255)
+                if (sceneryGroupEntryIndex != 254 && sceneryGroupEntryIndex != 255)
                 {
                     research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
                 }
@@ -902,7 +883,7 @@ private:
                 uint32 numVehicles = 0;
                 for (size_t j = 0; j < researchListCount; j++)
                 {
-                    const rct1_research_item *researchItem2 = &researchList[j];
+                    const rct1_research_item * researchItem2 = &researchList[j];
                     if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
                         researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
                     {
@@ -978,13 +959,13 @@ private:
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
         }
-        gResearchPriorities = activeResearchTypes;
+        gResearchPriorities   = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
 
         // Research history
         gResearchProgress = _s4.research_progress;
         // gResearchProgressStage =
-        gResearchNextItem = _s4.next_research_item;
+        gResearchNextItem     = _s4.next_research_item;
         gResearchNextCategory = _s4.next_research_category;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
@@ -992,7 +973,7 @@ private:
 
     void InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
     {
-        uint8 vehicle = researchItem->item;
+        uint8 vehicle        = researchItem->item;
         uint8 rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
         if (!_researchRideEntryUsed[rideEntryIndex])
         {
@@ -1016,7 +997,7 @@ private:
         rct_string_id stringId = user_string_allocate(4, parkName);
         if (stringId != 0)
         {
-            gParkName = stringId;
+            gParkName     = stringId;
             gParkNameArgs = 0;
         }
     }
@@ -1024,11 +1005,11 @@ private:
     void ImportParkFlags()
     {
         // Date and srand
-        gCurrentTicks = _s4.ticks;
-        gScenarioSrand0 = _s4.random_a;
-        gScenarioSrand1 = _s4.random_b;
+        gCurrentTicks      = _s4.ticks;
+        gScenarioSrand0    = _s4.random_a;
+        gScenarioSrand1    = _s4.random_b;
         gDateMonthsElapsed = _s4.month;
-        gDateMonthTicks = _s4.day;
+        gDateMonthTicks    = _s4.day;
 
         // Park rating
         gParkRating = _s4.park_rating;
@@ -1050,14 +1031,14 @@ private:
         }
 
         // News items
-        rct_news_item *newsItems = gNewsItems;
+        rct_news_item * newsItems = gNewsItems;
         for (int i = 0; i < MAX_NEWS_ITEMS; i++)
         {
             newsItems[i] = _s4.messages[i];
         }
 
         // Initial guest status
-        gGuestInitialCash = _s4.guest_initial_cash;
+        gGuestInitialCash   = _s4.guest_initial_cash;
         gGuestInitialHunger = _s4.guest_initial_hunger;
         gGuestInitialThirst = _s4.guest_initial_thirst;
 
@@ -1083,18 +1064,18 @@ private:
 
     void ImportClimate()
     {
-        gClimate = _s4.climate;
-        gClimateUpdateTimer = _s4.climate_timer;
-        gClimateCurrentTemperature = _s4.temperature;
-        gClimateCurrentWeather = _s4.weather;
+        gClimate                     = _s4.climate;
+        gClimateUpdateTimer          = _s4.climate_timer;
+        gClimateCurrentTemperature   = _s4.temperature;
+        gClimateCurrentWeather       = _s4.weather;
         gClimateCurrentWeatherEffect = 0;
-        gClimateCurrentWeatherGloom = _s4.weather_gloom;
-        gClimateCurrentRainLevel = _s4.rain;
-        gClimateNextTemperature = _s4.target_temperature;
-        gClimateNextWeather = _s4.target_weather;
-        gClimateNextWeatherEffect = 0;
-        gClimateNextWeatherGloom = _s4.target_weather_gloom;
-        gClimateNextRainLevel = _s4.target_rain;
+        gClimateCurrentWeatherGloom  = _s4.weather_gloom;
+        gClimateCurrentRainLevel     = _s4.rain;
+        gClimateNextTemperature      = _s4.target_temperature;
+        gClimateNextWeather          = _s4.target_weather;
+        gClimateNextWeatherEffect    = 0;
+        gClimateNextWeatherGloom     = _s4.target_weather_gloom;
+        gClimateNextRainLevel        = _s4.target_rain;
     }
 
     void ImportScenarioNameDetails()
@@ -1126,17 +1107,17 @@ private:
 
     void ImportScenarioObjective()
     {
-        gScenarioObjectiveType = _s4.scenario_objective_type;
-        gScenarioObjectiveYear = _s4.scenario_objective_years;
-        gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+        gScenarioObjectiveType      = _s4.scenario_objective_type;
+        gScenarioObjectiveYear      = _s4.scenario_objective_years;
+        gScenarioObjectiveCurrency  = _s4.scenario_objective_currency;
         gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
     }
 
     void ImportSavedView()
     {
-        gSavedViewX = _s4.view_x;
-        gSavedViewY = _s4.view_y;
-        gSavedViewZoom = _s4.view_zoom;
+        gSavedViewX        = _s4.view_x;
+        gSavedViewY        = _s4.view_y;
+        gSavedViewZoom     = _s4.view_zoom;
         gSavedViewRotation = _s4.view_rotation;
     }
 
@@ -1152,11 +1133,13 @@ private:
         rct_map_element * nextFreeMapElement = gMapElements;
         for (int i = 0; i < 128 * 128; i++)
         {
-            do { } while (!map_element_is_last_for_tile(nextFreeMapElement++));
+            do
+            {
+            } while (!map_element_is_last_for_tile(nextFreeMapElement++));
         }
 
-        rct_map_element * mapElement = gMapElements;
-        rct_map_element * * tilePointer = gMapElementTilePointers;
+        rct_map_element *  mapElement  = gMapElements;
+        rct_map_element ** tilePointer = gMapElementTilePointers;
 
         // 128 rows of map data from RCT1 map
         for (int x = 0; x < 128; x++)
@@ -1165,36 +1148,38 @@ private:
             for (int y = 0; y < 128; y++)
             {
                 *tilePointer++ = mapElement;
-                do { } while (!map_element_is_last_for_tile(mapElement++));
+                do
+                {
+                } while (!map_element_is_last_for_tile(mapElement++));
             }
 
             // Fill the rest of the row with blank tiles
             for (int y = 0; y < 128; y++)
             {
-                nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
-                nextFreeMapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE;
-                nextFreeMapElement->base_height = 2;
-                nextFreeMapElement->clearance_height = 0;
-                nextFreeMapElement->properties.surface.slope = 0;
-                nextFreeMapElement->properties.surface.terrain = 0;
+                nextFreeMapElement->type                            = MAP_ELEMENT_TYPE_SURFACE;
+                nextFreeMapElement->flags                           = MAP_ELEMENT_FLAG_LAST_TILE;
+                nextFreeMapElement->base_height                     = 2;
+                nextFreeMapElement->clearance_height                = 0;
+                nextFreeMapElement->properties.surface.slope        = 0;
+                nextFreeMapElement->properties.surface.terrain      = 0;
                 nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-                nextFreeMapElement->properties.surface.ownership = 0;
-                *tilePointer++ = nextFreeMapElement++;
+                nextFreeMapElement->properties.surface.ownership    = 0;
+                *tilePointer++                                      = nextFreeMapElement++;
             }
         }
 
         // 128 extra rows left to fill with blank tiles
         for (int y = 0; y < 128 * 256; y++)
         {
-            nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
-            nextFreeMapElement->flags = MAP_ELEMENT_FLAG_LAST_TILE;
-            nextFreeMapElement->base_height = 2;
-            nextFreeMapElement->clearance_height = 0;
-            nextFreeMapElement->properties.surface.slope = 0;
-            nextFreeMapElement->properties.surface.terrain = 0;
+            nextFreeMapElement->type                            = MAP_ELEMENT_TYPE_SURFACE;
+            nextFreeMapElement->flags                           = MAP_ELEMENT_FLAG_LAST_TILE;
+            nextFreeMapElement->base_height                     = 2;
+            nextFreeMapElement->clearance_height                = 0;
+            nextFreeMapElement->properties.surface.slope        = 0;
+            nextFreeMapElement->properties.surface.terrain      = 0;
             nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-            nextFreeMapElement->properties.surface.ownership = 0;
-            *tilePointer++ = nextFreeMapElement++;
+            nextFreeMapElement->properties.surface.ownership    = 0;
+            *tilePointer++                                      = nextFreeMapElement++;
         }
 
         gNextFreeMapElement = nextFreeMapElement;
@@ -1234,14 +1219,16 @@ private:
         {
             if (mapElement->base_height != 255)
             {
-                switch (map_element_get_type(mapElement)) {
+                switch (map_element_get_type(mapElement))
+                {
                 case MAP_ELEMENT_TYPE_SCENERY:
                     colour = RCT1::GetColour(mapElement->properties.scenery.colour_1 & 0x1F);
                     mapElement->properties.scenery.colour_1 &= 0xE0;
                     mapElement->properties.scenery.colour_1 |= colour;
 
                     // Copied from [rct2: 0x006A2956]
-                    switch (mapElement->properties.scenery.type) {
+                    switch (mapElement->properties.scenery.type)
+                    {
                     case 157: // TGE1 (Geometric Sculpture)
                     case 162: // TGE2 (Geometric Sculpture)
                     case 168: // TGE3 (Geometric Sculpture)
@@ -1252,8 +1239,7 @@ private:
                     }
                     break;
                 case MAP_ELEMENT_TYPE_FENCE:
-                    colour = ((mapElement->type & 0xC0) >> 3) |
-                             ((mapElement->properties.fence.type & 0xE0) >> 5);
+                    colour = ((mapElement->type & 0xC0) >> 3) | ((mapElement->properties.fence.type & 0xE0) >> 5);
                     colour = RCT1::GetColour(colour);
 
                     mapElement->type &= 0x3F;
@@ -1296,14 +1282,15 @@ private:
         rct_map_element * mapElement = gMapElements;
         while (mapElement < gNextFreeMapElement)
         {
-            switch (map_element_get_type(mapElement)) {
+            switch (map_element_get_type(mapElement))
+            {
             case MAP_ELEMENT_TYPE_PATH:
             {
                 // Type
                 uint8 pathColour = mapElement->type & 3;
-                uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = (mapElement->properties.path.type & 0xF0) >> 4;
 
-                pathType = (pathType << 2) | pathColour;
+                pathType         = (pathType << 2) | pathColour;
                 uint8 entryIndex = _pathTypeToEntryMap[pathType];
 
                 mapElement->type &= 0xFC;
@@ -1322,7 +1309,7 @@ private:
                 if (additionType != RCT1_PATH_ADDITION_NONE)
                 {
                     uint8 normalisedType = RCT1::NormalisePathAddition(additionType);
-                    uint8 entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
+                    uint8 entryIndex     = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
                         mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
@@ -1339,7 +1326,7 @@ private:
                     {
                         pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                     }
-                    uint8 entryIndex = _pathTypeToEntryMap[pathType];
+                    uint8 entryIndex                          = _pathTypeToEntryMap[pathType];
                     mapElement->properties.entrance.path_type = entryIndex & 0x7F;
                 }
                 break;
@@ -1362,9 +1349,9 @@ private:
                         rct_map_element originalMapElement = *mapElement;
                         map_element_remove(mapElement);
 
-                        uint8 var_05 = originalMapElement.properties.fence.item[0];
-                        uint16 var_06 = originalMapElement.properties.fence.item[1] |
-                                       (originalMapElement.properties.fence.item[2] << 8);
+                        uint8  var_05 = originalMapElement.properties.fence.item[0];
+                        uint16 var_06 =
+                            originalMapElement.properties.fence.item[1] | (originalMapElement.properties.fence.item[2] << 8);
 
                         for (int edge = 0; edge < 4; edge++)
                         {
@@ -1373,8 +1360,8 @@ private:
                             if (typeB != 0x0F)
                             {
                                 int type = typeA | (typeB << 2);
-                                int colourA = ((originalMapElement.type & 0xC0) >> 3) |
-                                               (originalMapElement.properties.fence.type >> 5);
+                                int colourA =
+                                    ((originalMapElement.type & 0xC0) >> 3) | (originalMapElement.properties.fence.type >> 5);
                                 int colourB = 0;
                                 int colourC = 0;
                                 ConvertWall(&type, &colourA, &colourB, &colourC);
@@ -1385,40 +1372,40 @@ private:
                         }
                         break;
                     }
-                }
-                while (!map_element_is_last_for_tile(mapElement++));
+                } while (!map_element_is_last_for_tile(mapElement++));
             }
         }
     }
 
     void ConvertWall(int * type, int * colourA, int * colourB, int * colourC)
     {
-        switch (*type) {
-        case 12:    // creepy gate
+        switch (*type)
+        {
+        case 12: // creepy gate
             *colourA = 24;
             break;
-        case 26:    // white wooden fence
-            *type = 12;
+        case 26: // white wooden fence
+            *type    = 12;
             *colourA = 2;
             break;
-        case 27:    // red wooden fence
-            *type = 12;
+        case 27: // red wooden fence
+            *type    = 12;
             *colourA = 25;
             break;
-        case 50:    // plate glass
+        case 50: // plate glass
             *colourA = 24;
             break;
         case 13:
             *colourB = *colourA;
             *colourA = 24;
             break;
-        case 11:    // tall castle wall with grey gate
-        case 22:    // brick wall with gate
+        case 11: // tall castle wall with grey gate
+        case 22: // brick wall with gate
             *colourB = 2;
             break;
-        case 35:    // wood post fence
-        case 42:    // tall grey castle wall
-        case 43:    // wooden fence with snow
+        case 35: // wood post fence
+        case 42: // tall grey castle wall
+        case 43: // wooden fence with snow
         case 44:
         case 45:
         case 46:
@@ -1438,20 +1425,19 @@ private:
                 {
                     if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_BANNER)
                     {
-                        uint8 index = mapElement->properties.banner.index;
-                        rct_banner * src = &_s4.banners[index];
-                        rct_banner * dst = &gBanners[index];
+                        uint8        index = mapElement->properties.banner.index;
+                        rct_banner * src   = &_s4.banners[index];
+                        rct_banner * dst   = &gBanners[index];
                         ImportBanner(dst, src);
                     }
-                }
-                while (!map_element_is_last_for_tile(mapElement++));
+                } while (!map_element_is_last_for_tile(mapElement++));
             }
         }
     }
 
     void ImportBanner(rct_banner * dst, rct_banner * src)
     {
-        *dst = *src;
+        *dst        = *src;
         dst->colour = RCT1::GetColour(src->colour);
 
         dst->string_idx = STR_DEFAULT_SIGN;
@@ -1499,13 +1485,16 @@ private:
         {
             rct_map_element * element = it.element;
 
-            if (map_element_get_type(element) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
-            if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) continue;
-            if ((element->properties.entrance.index & 0x0F) != 0) continue;
+            if (map_element_get_type(element) != MAP_ELEMENT_TYPE_ENTRANCE)
+                continue;
+            if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                continue;
+            if ((element->properties.entrance.index & 0x0F) != 0)
+                continue;
 
-            gParkEntranceX[entranceIndex] = it.x * 32;
-            gParkEntranceY[entranceIndex] = it.y * 32;
-            gParkEntranceZ[entranceIndex] = element->base_height * 8;
+            gParkEntranceX[entranceIndex]         = it.x * 32;
+            gParkEntranceY[entranceIndex]         = it.y * 32;
+            gParkEntranceZ[entranceIndex]         = element->base_height * 8;
             gParkEntranceDirection[entranceIndex] = element->type & 3;
             entranceIndex++;
         }
@@ -1518,7 +1507,8 @@ private:
         while (map_element_iterator_next(&it))
         {
             rct_map_element * mapElement = it.element;
-            switch (map_element_get_type(mapElement)) {
+            switch (map_element_get_type(mapElement))
+            {
             case MAP_ELEMENT_TYPE_SCENERY:
                 mapElement->properties.scenery.type = _smallSceneryTypeToEntryMap[mapElement->properties.scenery.type];
                 break;
@@ -1535,14 +1525,22 @@ private:
 
     EntryList * GetEntryList(uint8 objectType)
     {
-        switch (objectType) {
-        case OBJECT_TYPE_RIDE:          return &_rideEntries;
-        case OBJECT_TYPE_SMALL_SCENERY: return &_smallSceneryEntries;
-        case OBJECT_TYPE_LARGE_SCENERY: return &_largeSceneryEntries;
-        case OBJECT_TYPE_WALLS:         return &_wallEntries;
-        case OBJECT_TYPE_PATHS:         return &_pathEntries;
-        case OBJECT_TYPE_PATH_BITS:     return &_pathAdditionEntries;
-        case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
+        switch (objectType)
+        {
+        case OBJECT_TYPE_RIDE:
+            return &_rideEntries;
+        case OBJECT_TYPE_SMALL_SCENERY:
+            return &_smallSceneryEntries;
+        case OBJECT_TYPE_LARGE_SCENERY:
+            return &_largeSceneryEntries;
+        case OBJECT_TYPE_WALLS:
+            return &_wallEntries;
+        case OBJECT_TYPE_PATHS:
+            return &_pathEntries;
+        case OBJECT_TYPE_PATH_BITS:
+            return &_pathAdditionEntries;
+        case OBJECT_TYPE_SCENERY_SETS:
+            return &_sceneryGroupEntries;
         }
         return nullptr;
     }
@@ -1565,11 +1563,12 @@ private:
     int GetSCNumber()
     {
         const utf8 * fileName = Path::GetFileName(_s4Path);
-        if (tolower(fileName[0]) == 's' && tolower(fileName[1]) == 'c') {
+        if (tolower(fileName[0]) == 's' && tolower(fileName[1]) == 'c')
+        {
             constexpr size_t maxDigits = 7;
-            utf8 digitBuffer[maxDigits + 1];
-            utf8 * dst = digitBuffer;
-            const utf8 * src = fileName + 2;
+            utf8             digitBuffer[maxDigits + 1];
+            utf8 *           dst = digitBuffer;
+            const utf8 *     src = fileName + 2;
             for (size_t i = 0; i < maxDigits && *src != '.'; i++)
             {
                 *dst++ = *src++;
@@ -1606,69 +1605,70 @@ IS4Importer * CreateS4Importer()
 /////////////////////////////////////////
 // C -> C++ transfer
 /////////////////////////////////////////
-extern "C"
+extern "C" {
+bool rct1_load_saved_game(const utf8 * path)
 {
-    bool rct1_load_saved_game(const utf8 * path)
-    {
-        bool result;
+    bool result;
 
-        auto s4Importer = new S4Importer();
-        try
+    auto s4Importer = new S4Importer();
+    try
+    {
+        s4Importer->LoadSavedGame(path);
+        s4Importer->Import();
+        result = true;
+    }
+    catch (Exception ex)
+    {
+        result = false;
+    }
+    delete s4Importer;
+    return result;
+}
+
+bool rct1_load_scenario(const utf8 * path)
+{
+    bool result;
+
+    auto s4Importer = new S4Importer();
+    try
+    {
+        s4Importer->LoadScenario(path);
+        s4Importer->Import();
+        result = true;
+    }
+    catch (Exception ex)
+    {
+        result = false;
+    }
+    delete s4Importer;
+    return result;
+}
+
+colour_t rct1_get_colour(colour_t colour)
+{
+    return RCT1::GetColour(colour);
+}
+
+/**
+ * This function keeps a list of the preferred vehicle for every generic track
+ * type, out of the available vehicle types in the current game. It determines
+ * which picture is shown on the new ride tab and which train type is selected
+ * by default.
+ */
+int vehicle_preference_compare(uint8 rideType, const char * a, const char * b)
+{
+    std::vector<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
+    for (const char * object : rideEntryOrder)
+    {
+        if (String::Equals(object, a, true))
         {
-            s4Importer->LoadSavedGame(path);
-            s4Importer->Import();
-            result = true;
-        } catch (Exception ex)
-        {
-            result = false;
+            return -1;
         }
-        delete s4Importer;
-        return result;
-    }
-
-    bool rct1_load_scenario(const utf8 * path)
-    {
-        bool result;
-
-        auto s4Importer = new S4Importer();
-        try
+        if (String::Equals(object, b, true))
         {
-            s4Importer->LoadScenario(path);
-            s4Importer->Import();
-            result = true;
-        } catch (Exception ex)
-        {
-            result = false;
+            return 1;
         }
-        delete s4Importer;
-        return result;
     }
-
-    colour_t rct1_get_colour(colour_t colour)
-    {
-        return RCT1::GetColour(colour);
-    }
-
-    /**
-     * This function keeps a list of the preferred vehicle for every generic track
-     * type, out of the available vehicle types in the current game. It determines
-     * which picture is shown on the new ride tab and which train type is selected
-     * by default.
-     */
-    int vehicle_preference_compare(uint8 rideType, const char * a, const char * b)
-    {
-        std::vector<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
-        for (const char * object : rideEntryOrder)
-        {
-            if (String::Equals(object, a, true))
-            {
-                return -1;
-            }
-            if (String::Equals(object, b, true))
-            {
-                return  1;
-            }
-        }
-        return 0;
-    }
+    return 0;
+}
 }

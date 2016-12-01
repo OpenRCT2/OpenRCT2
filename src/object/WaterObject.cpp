@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,12 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/IStream.hpp"
 #include "WaterObject.h"
+#include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../localisation/localisation.h"
 }
 
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
@@ -37,9 +36,9 @@ void WaterObject::Load()
 {
     GetStringTable()->Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
-    _legacyType.var_06 = _legacyType.image_id + 1;
-    _legacyType.var_0A = _legacyType.image_id + 4;
+    _legacyType.image_id   = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.var_06     = _legacyType.image_id + 1;
+    _legacyType.var_0A     = _legacyType.image_id + 4;
 
     load_palette();
     gfx_invalidate_screen();

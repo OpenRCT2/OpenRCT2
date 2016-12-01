@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,32 +16,31 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkPacket.h"
 #include "NetworkPlayer.h"
+#include "NetworkPacket.h"
 
-extern "C"
-{
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
 }
 
-void NetworkPlayer::SetName(const std::string &name)
+void NetworkPlayer::SetName(const std::string & name)
 {
     // 36 == 31 + strlen(" #255");
     NetworkPlayer::name = name.substr(0, 36);
     utf8_remove_format_codes((utf8 *)NetworkPlayer::name.data(), false);
 }
 
-void NetworkPlayer::Read(NetworkPacket &packet)
+void NetworkPlayer::Read(NetworkPacket & packet)
 {
     const utf8 * name = packet.ReadString();
     SetName(name);
     packet >> id >> flags >> group;
 }
 
-void NetworkPlayer::Write(NetworkPacket &packet)
+void NetworkPlayer::Write(NetworkPacket & packet)
 {
-    packet.WriteString((const char*)name.c_str());
+    packet.WriteString((const char *)name.c_str());
     packet << id << flags << group;
 }
 

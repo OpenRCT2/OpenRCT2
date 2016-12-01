@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <stack>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -22,6 +21,7 @@
 #include "../core/StringBuilder.hpp"
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
+#include <stack>
 
 extern "C" {
 
@@ -32,87 +32,86 @@ extern "C" {
 #include "../util/util.h"
 #include "localisation.h"
 
-static TTFFontSetDescriptor TTFFontMSGothic =
-{{
-    { "msgothic.ttc",   "MS PGothic",   9,      1,      0,      15,     nullptr },
-    { "msgothic.ttc",   "MS PGothic",   12,     1,      0,      17,     nullptr },
-    { "msgothic.ttc",   "MS PGothic",   12,     1,      0,      17,     nullptr },
-    { "msgothic.ttc",   "MS PGothic",   13,     1,      0,      20,     nullptr },
-}};
+static TTFFontSetDescriptor TTFFontMSGothic = { {
+    { "msgothic.ttc", "MS PGothic", 9, 1, 0, 15, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
+    { "msgothic.ttc", "MS PGothic", 13, 1, 0, 20, nullptr },
+} };
 
-static TTFFontSetDescriptor TTFFontMingLiu =
-{{
-    { "msjh.ttc",       "JhengHei", 9,      -1,     -3,     6,      nullptr },
-    { "mingliu.ttc",    "MingLiU",  11,     1,      1,      12,     nullptr },
-    { "mingliu.ttc",    "MingLiU",  12,     1,      0,      12,     nullptr },
-    { "mingliu.ttc",    "MingLiU",  13,     1,      0,      20,     nullptr },
-}};
+static TTFFontSetDescriptor TTFFontMingLiu = { {
+    { "msjh.ttc", "JhengHei", 9, -1, -3, 6, nullptr },
+    { "mingliu.ttc", "MingLiU", 11, 1, 1, 12, nullptr },
+    { "mingliu.ttc", "MingLiU", 12, 1, 0, 12, nullptr },
+    { "mingliu.ttc", "MingLiU", 13, 1, 0, 20, nullptr },
+} };
 
-static TTFFontSetDescriptor TTFFontSimSun =
-{{
-    { "msyh.ttc",       "YaHei",    9,      -1,     -3,     6,      nullptr },
-    { "simsun.ttc",     "SimSun",   11,     1,      -1,     14,     nullptr },
-    { "simsun.ttc",     "SimSun",   12,     1,      -2,     14,     nullptr },
-    { "simsun.ttc",     "SimSun",   13,     1,      0,      20,     nullptr },
-}};
+static TTFFontSetDescriptor TTFFontSimSun = { {
+    { "msyh.ttc", "YaHei", 9, -1, -3, 6, nullptr },
+    { "simsun.ttc", "SimSun", 11, 1, -1, 14, nullptr },
+    { "simsun.ttc", "SimSun", 12, 1, -2, 14, nullptr },
+    { "simsun.ttc", "SimSun", 13, 1, 0, 20, nullptr },
+} };
 
-static TTFFontSetDescriptor TTFFontGulim =
-{{
-    { "gulim.ttc",      "Gulim",    11,     1,      0,      15,     nullptr },
-    { "gulim.ttc",      "Gulim",    12,     1,      0,      17,     nullptr },
-    { "gulim.ttc",      "Gulim",    12,     1,      0,      17,     nullptr },
-    { "gulim.ttc",      "Gulim",    13,     1,      0,      20,     nullptr },
-}};
+static TTFFontSetDescriptor TTFFontGulim = { {
+    { "gulim.ttc", "Gulim", 11, 1, 0, 15, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
+    { "gulim.ttc", "Gulim", 13, 1, 0, 20, nullptr },
+} };
 
-static TTFFontSetDescriptor TTFFontArial =
-{{
-    { "arial.ttf",      "Arial",    8,      0,      -1,     6,      nullptr },
-    { "arial.ttf",      "Arial",    10,     0,      -1,     12,     nullptr },
-    { "arial.ttf",      "Arial",    11,     0,      -1,     12,     nullptr },
-    { "arial.ttf",      "Arial",    12,     0,      -1,     20,     nullptr },
-}};
+static TTFFontSetDescriptor TTFFontArial = { {
+    { "arial.ttf", "Arial", 8, 0, -1, 6, nullptr },
+    { "arial.ttf", "Arial", 10, 0, -1, 12, nullptr },
+    { "arial.ttf", "Arial", 11, 0, -1, 12, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 20, nullptr },
+} };
 
-const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
-{
-    { "",      "",                        "",                       FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_UNDEFINED
-    { "en-GB", "English (UK)",            "English (UK)",           FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_ENGLISH_UK
-    { "en-US", "English (US)",            "English (US)",           FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_US             },  // LANGUAGE_ENGLISH_US
-    { "de-DE", "German",                  "Deutsch",                FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_GERMAN                 },  // LANGUAGE_GERMAN
-    { "nl-NL", "Dutch",                   "Nederlands",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_DUTCH                  },  // LANGUAGE_DUTCH
-    { "fr-FR", "French",                u8"Français",               FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_FRENCH                 },  // LANGUAGE_FRENCH
-    { "hu-HU", "Hungarian",               "Magyar",                 FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_HUNGARIAN
-    { "pl-PL", "Polish",                  "Polski",                 &TTFFontArial,          RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_POLISH
-    { "es-ES", "Spanish",               u8"Español",                FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH                },  // LANGUAGE_SPANISH
-    { "sv-SE", "Swedish",                 "Svenska",                FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SWEDISH                },  // LANGUAGE_SWEDISH
-    { "it-IT", "Italian",                 "Italiano",               FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ITALIAN                },  // LANGUAGE_ITALIAN
-    { "pt-BR", "Portuguese (BR)",       u8"Português (BR)",         FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_PORTUGUESE             },  // LANGUAGE_PORTUGUESE_BR
-    { "zh-TW", "Chinese (Traditional)",   "Chinese (Traditional)",  &TTFFontMingLiu,        RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL    },  // LANGUAGE_CHINESE_TRADITIONAL
-    { "zh-CN", "Chinese (Simplified)",    "Chinese (Simplified)",   &TTFFontSimSun,         RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED     },  // LANGUAGE_CHINESE_SIMPLIFIED
-    { "fi-FI", "Finnish",                 "Suomi",                  FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_FINNISH
-    { "ko-KR", "Korean",                  "Korean",                 &TTFFontGulim,          RCT2_LANGUAGE_ID_KOREAN                 },  // LANGUAGE_KOREAN
-    { "ru-RU", "Russian",                 "Russian",                &TTFFontArial,          RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_RUSSIAN
-    { "cs-CZ", "Czech",                   "Czech",                  &TTFFontArial,          RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_CZECH
-    { "ja-JP", "Japanese",                "Japanese",               &TTFFontMSGothic,       RCT2_LANGUAGE_ID_ENGLISH_UK             },  // LANGUAGE_JAPANESE
-    { "nb-NO", "Norwegian",               "Norsk",                  FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK,            },  // LANGUAGE_NORWEGIAN
+const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
+    { "", "", "", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },                              // LANGUAGE_UNDEFINED
+    { "en-GB", "English (UK)", "English (UK)", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_ENGLISH_UK
+    { "en-US", "English (US)", "English (US)", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_US }, // LANGUAGE_ENGLISH_US
+    { "de-DE", "German", "Deutsch", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_GERMAN },                // LANGUAGE_GERMAN
+    { "nl-NL", "Dutch", "Nederlands", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
+    { "fr-FR", "French", u8"Français", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_FRENCH },             // LANGUAGE_FRENCH
+    { "hu-HU", "Hungarian", "Magyar", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
+    { "pl-PL", "Polish", "Polski", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },                    // LANGUAGE_POLISH
+    { "es-ES", "Spanish", u8"Español", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },            // LANGUAGE_SPANISH
+    { "sv-SE", "Swedish", "Svenska", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SWEDISH },              // LANGUAGE_SWEDISH
+    { "it-IT", "Italian", "Italiano", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
+    { "pt-BR", "Portuguese (BR)", u8"Português (BR)", FONT_OPENRCT2_SPRITE,
+      RCT2_LANGUAGE_ID_PORTUGUESE }, // LANGUAGE_PORTUGUESE_BR
+    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", &TTFFontMingLiu,
+      RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
+    { "zh-CN", "Chinese (Simplified)", "Chinese (Simplified)", &TTFFontSimSun,
+      RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },                                            // LANGUAGE_CHINESE_SIMPLIFIED
+    { "fi-FI", "Finnish", "Suomi", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_FINNISH
+    { "ko-KR", "Korean", "Korean", &TTFFontGulim, RCT2_LANGUAGE_ID_KOREAN },            // LANGUAGE_KOREAN
+    { "ru-RU", "Russian", "Russian", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
+    { "cs-CZ", "Czech", "Czech", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
+    { "ja-JP", "Japanese", "Japanese", &TTFFontMSGothic, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
+    {
+        "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK,
+    }, // LANGUAGE_NORWEGIAN
 };
 
-int gCurrentLanguage = LANGUAGE_UNDEFINED;
+int  gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
 static ILanguagePack * _languageFallback = nullptr;
-static ILanguagePack * _languageCurrent = nullptr;
+static ILanguagePack * _languageCurrent  = nullptr;
 
-const utf8 BlackUpArrowString[] =       { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
+const utf8 BlackUpArrowString[]    = { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB2, (utf8)0x00 };
+const utf8 BlackDownArrowString[]  = { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xBC, (utf8)0x00 };
+const utf8 BlackLeftArrowString[]  = { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x97, (utf8)0x80, (utf8)0x00 };
+const utf8 BlackRightArrowString[] = { (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
+const utf8 CheckBoxMarkString[]    = { (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
 void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
-    const utf8 * ch = text;
-    utf8 * dstCh = text;
-    int codepoint;
+    const utf8 * ch    = text;
+    utf8 *       dstCh = text;
+    int          codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
@@ -158,13 +157,13 @@ static utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageI
 static void LoadSpriteFont()
 {
     ttf_dispose();
-    gUseTrueTypeFont = false;
+    gUseTrueTypeFont   = false;
     gCurrentTTFFontSet = nullptr;
 }
 
 static bool LoadFont(TTFFontSetDescriptor * font)
 {
-    gUseTrueTypeFont = true;
+    gUseTrueTypeFont   = true;
     gCurrentTTFFontSet = font;
 
     bool fontInitialised = ttf_initialise();
@@ -173,16 +172,19 @@ static bool LoadFont(TTFFontSetDescriptor * font)
 
 static bool LoadCustomConfigFont()
 {
-    static TTFFontSetDescriptor TTFFontCustom =
-    {{
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny,   gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_tiny,   nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small,  gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_small,  nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_medium, nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_big,    gConfigFonts.x_offset, gConfigFonts.y_offset, gConfigFonts.height_big,    nullptr },
-    }};
+    static TTFFontSetDescriptor TTFFontCustom = { {
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
+          gConfigFonts.height_tiny, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
+          gConfigFonts.height_small, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
+          gConfigFonts.y_offset, gConfigFonts.height_medium, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_big, gConfigFonts.x_offset, gConfigFonts.y_offset,
+          gConfigFonts.height_big, nullptr },
+    } };
 
     ttf_dispose();
-    gUseTrueTypeFont = true;
+    gUseTrueTypeFont   = true;
     gCurrentTTFFontSet = &TTFFontCustom;
 
     bool fontInitialised = ttf_initialise();
@@ -256,12 +258,13 @@ void language_close_all()
     gCurrentLanguage = LANGUAGE_UNDEFINED;
 }
 
-constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
+constexpr rct_string_id NONSTEX_BASE_STRING_ID    = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
 static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
 {
-    switch (languageId) {
+    switch (languageId)
+    {
     case RCT2_LANGUAGE_ID_KOREAN:
         return codepoint;
     case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
@@ -283,8 +286,8 @@ static utf8 * convert_multibyte_charset(const char * src, int languageId)
         if (*ch == CODEPOINT_DOUBLEBYTE)
         {
             ch++;
-            uint8 a = *ch++;
-            uint8 b = *ch++;
+            uint8   a           = *ch++;
+            uint8   b           = *ch++;
             wchar_t codepoint16 = (wchar_t)((a << 8) | b);
 
             codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
@@ -301,7 +304,8 @@ static utf8 * convert_multibyte_charset(const char * src, int languageId)
 
 static bool rct2_language_is_multibyte_charset(int languageId)
 {
-    switch (languageId) {
+    switch (languageId)
+    {
     case RCT2_LANGUAGE_ID_KOREAN:
     case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
     case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
@@ -312,7 +316,7 @@ static bool rct2_language_is_multibyte_charset(int languageId)
     }
 }
 
-utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
+utf8 * rct2_language_string_to_utf8(const char * src, int languageId)
 {
     if (rct2_language_is_multibyte_charset(languageId))
     {
@@ -324,26 +328,24 @@ utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+bool language_get_localised_scenario_strings(const utf8 * scenarioFilename, rct_string_id * outStringIds)
 {
     outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);
     outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
     outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
-    return
-        outStringIds[0] != STR_NONE ||
-        outStringIds[1] != STR_NONE ||
-        outStringIds[2] != STR_NONE;
+    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
-static bool                         _availableObjectStringIdsInitialised = false;
-static std::stack<rct_string_id>    _availableObjectStringIds;
+static bool                      _availableObjectStringIdsInitialised = false;
+static std::stack<rct_string_id> _availableObjectStringIds;
 
 rct_string_id language_allocate_object_string(const utf8 * target)
 {
     if (!_availableObjectStringIdsInitialised)
     {
         _availableObjectStringIdsInitialised = true;
-        for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
+        for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID;
+             stringId--)
         {
             _availableObjectStringIds.push(stringId);
         }
@@ -375,5 +377,4 @@ rct_string_id language_get_object_override_string_id(const char * identifier, ui
     }
     return _languageCurrent->GetObjectOverrideStringId(identifier, index);
 }
-
 }

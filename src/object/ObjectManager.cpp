@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,30 +14,29 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <array>
-#include <memory>
-#include <unordered_set>
+#include "ObjectManager.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
-#include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "WallObject.h"
+#include <array>
+#include <memory>
+#include <unordered_set>
 
-extern "C"
-{
-    #include "../object_list.h"
+extern "C" {
+#include "../object_list.h"
 }
 
 class ObjectManager : public IObjectManager
 {
 private:
     IObjectRepository * _objectRepository;
-    Object * *          _loadedObjects = nullptr;
+    Object **           _loadedObjects = nullptr;
 
 public:
     ObjectManager(IObjectRepository * objectRepository)
@@ -61,8 +60,8 @@ public:
 
     Object * GetLoadedObject(const rct_object_entry * entry) override
     {
-        Object * loadedObject = nullptr;
-        const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+        Object *                     loadedObject = nullptr;
+        const ObjectRepositoryItem * ori          = _objectRepository->FindObject(entry);
         if (ori != nullptr)
         {
             loadedObject = ori->LoadedObject;
@@ -72,8 +71,8 @@ public:
 
     uint8 GetLoadedObjectEntryIndex(const Object * object) override
     {
-        uint8 result = UINT8_MAX;
-        size_t index = GetLoadedObjectIndex(object);
+        uint8  result = UINT8_MAX;
+        size_t index  = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
             get_type_entry_index(index, nullptr, &result);
@@ -83,15 +82,15 @@ public:
 
     Object * LoadObject(const rct_object_entry * entry) override
     {
-        Object * loadedObject = nullptr;
-        const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+        Object *                     loadedObject = nullptr;
+        const ObjectRepositoryItem * ori          = _objectRepository->FindObject(entry);
         if (ori != nullptr)
         {
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8 objectType = entry->flags & 0x0F;
-                sint32 slot = FindSpareSlot(objectType);
+                uint8  objectType = entry->flags & 0x0F;
+                sint32 slot       = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
                     loadedObject = GetOrLoadObject(ori);
@@ -112,7 +111,7 @@ public:
     {
         // Find all the required objects
         size_t numRequiredObjects;
-        auto requiredObjects = new const ObjectRepositoryItem *[OBJECT_ENTRY_COUNT];
+        auto   requiredObjects = new const ObjectRepositoryItem *[OBJECT_ENTRY_COUNT];
         if (!GetRequiredObjects(entries, requiredObjects, &numRequiredObjects))
         {
             delete[] requiredObjects;
@@ -120,8 +119,8 @@ public:
         }
 
         // Create a new list of loaded objects
-        size_t numNewLoadedObjects;
-        Object * * loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
+        size_t    numNewLoadedObjects;
+        Object ** loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
         delete[] requiredObjects;
 
@@ -150,8 +149,8 @@ public:
         size_t numObjectsUnloaded = 0;
         for (size_t i = 0; i < count; i++)
         {
-            const rct_object_entry * entry = &entries[i];
-            const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+            const rct_object_entry *     entry = &entries[i];
+            const ObjectRepositoryItem * ori   = _objectRepository->FindObject(entry);
             if (ori != nullptr)
             {
                 Object * loadedObject = ori->LoadedObject;
@@ -210,7 +209,7 @@ private:
         if (_loadedObjects != nullptr)
         {
             sint32 firstIndex = GetIndexFromTypeEntry(objectType, 0);
-            sint32 endIndex = firstIndex + object_entry_group_counts[objectType];
+            sint32 endIndex   = firstIndex + object_entry_group_counts[objectType];
             for (sint32 i = firstIndex; i < endIndex; i++)
             {
                 if (_loadedObjects[i] == nullptr)
@@ -241,7 +240,7 @@ private:
         return result;
     }
 
-    void SetNewLoadedObjectList(Object * * newLoadedObjects)
+    void SetNewLoadedObjectList(Object ** newLoadedObjects)
     {
         if (newLoadedObjects == nullptr)
         {
@@ -284,7 +283,7 @@ private:
         }
     }
 
-    void UnloadObjectsExcept(Object * * newLoadedObjects)
+    void UnloadObjectsExcept(Object ** newLoadedObjects)
     {
         if (_loadedObjects == nullptr)
         {
@@ -336,7 +335,7 @@ private:
             get_type_entry_index(i, &objectType, &entryIndex);
 
             rct_object_entry_extended * legacyEntry = &object_entry_groups[objectType].entries[entryIndex];
-            void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
+            void **                     legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
                 Memory::Set(legacyEntry, 0xFF, sizeof(rct_object_entry_extended));
@@ -344,9 +343,9 @@ private:
             }
             else
             {
-                legacyEntry->entry = *loadedObject->GetObjectEntry();
+                legacyEntry->entry      = *loadedObject->GetObjectEntry();
                 legacyEntry->chunk_size = 0;
-                *legacyChunk = loadedObject->GetLegacyData();
+                *legacyChunk            = loadedObject->GetLegacyData();
             }
         }
     }
@@ -361,25 +360,26 @@ private:
                 if (loadedObject != nullptr)
                 {
                     rct_scenery_entry * sceneryEntry;
-                    switch (loadedObject->GetObjectType()) {
+                    switch (loadedObject->GetObjectType())
+                    {
                     case OBJECT_TYPE_SMALL_SCENERY:
-                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry                               = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_LARGE_SCENERY:
-                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry                               = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_WALLS:
-                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry                      = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_BANNERS:
-                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry                        = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_PATH_BITS:
-                        sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
+                        sceneryEntry                          = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_SCENERY_SETS:
@@ -398,9 +398,9 @@ private:
 
     uint8 GetPrimarySceneryGroupEntryIndex(Object * loadedObject)
     {
-        auto sceneryObject = static_cast<SceneryObject *>(loadedObject);
+        auto                     sceneryObject  = static_cast<SceneryObject *>(loadedObject);
         const rct_object_entry * primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
-        Object * sgObject = GetLoadedObject(primarySGEntry);
+        Object *                 sgObject       = GetLoadedObject(primarySGEntry);
 
         uint8 entryIndex = 255;
         if (sgObject != nullptr)
@@ -410,16 +410,15 @@ private:
         return entryIndex;
     }
 
-    bool GetRequiredObjects(const rct_object_entry * entries,
-                            const ObjectRepositoryItem * * requiredObjects,
+    bool GetRequiredObjects(const rct_object_entry * entries, const ObjectRepositoryItem ** requiredObjects,
                             size_t * outNumRequiredObjects)
     {
-        bool missingObjects = false;
+        bool   missingObjects     = false;
         size_t numRequiredObjects = 0;
         for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
-            const rct_object_entry * entry = &entries[i];
-            const ObjectRepositoryItem * ori = nullptr;
+            const rct_object_entry *     entry = &entries[i];
+            const ObjectRepositoryItem * ori   = nullptr;
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository->FindObject(entry);
@@ -440,14 +439,14 @@ private:
         return !missingObjects;
     }
 
-    Object * * LoadObjects(const ObjectRepositoryItem * * requiredObjects, size_t * outNewObjectsLoaded)
+    Object ** LoadObjects(const ObjectRepositoryItem ** requiredObjects, size_t * outNewObjectsLoaded)
     {
-        size_t newObjectsLoaded = 0;
-        Object * * loadedObjects = Memory::AllocateArray<Object *>(OBJECT_ENTRY_COUNT);
+        size_t    newObjectsLoaded = 0;
+        Object ** loadedObjects    = Memory::AllocateArray<Object *>(OBJECT_ENTRY_COUNT);
         for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
-            Object * loadedObject = nullptr;
-            const ObjectRepositoryItem * ori = requiredObjects[i];
+            Object *                     loadedObject = nullptr;
+            const ObjectRepositoryItem * ori          = requiredObjects[i];
             if (ori != nullptr)
             {
                 loadedObject = ori->LoadedObject;
@@ -459,7 +458,9 @@ private:
                         ReportObjectLoadProblem(&ori->ObjectEntry);
                         Memory::Free(loadedObjects);
                         return nullptr;
-                    } else {
+                    }
+                    else
+                    {
                         newObjectsLoaded++;
                     }
                 }
@@ -524,51 +525,50 @@ IObjectManager * GetObjectManager()
     if (_objectManager == nullptr)
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+        _objectManager                       = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
     }
     return _objectManager.get();
 }
 
-extern "C"
+extern "C" {
+void * object_manager_get_loaded_object_by_index(size_t index)
 {
-    void * object_manager_get_loaded_object_by_index(size_t index)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(index);
-        return (void *)loadedObject;
-    }
+    IObjectManager * objectManager = GetObjectManager();
+    Object *         loadedObject  = objectManager->GetLoadedObject(index);
+    return (void *)loadedObject;
+}
 
-    void * object_manager_get_loaded_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->GetLoadedObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_get_loaded_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object *         loadedObject  = objectManager->GetLoadedObject(entry);
+    return (void *)loadedObject;
+}
 
-    uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        const Object * object = (const Object *)loadedObject;
-        uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
-        return entryIndex;
-    }
+uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    const Object *   object        = (const Object *)loadedObject;
+    uint8            entryIndex    = objectManager->GetLoadedObjectEntryIndex(object);
+    return entryIndex;
+}
 
-    void * object_manager_load_object(const rct_object_entry * entry)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        Object * loadedObject = objectManager->LoadObject(entry);
-        return (void *)loadedObject;
-    }
+void * object_manager_load_object(const rct_object_entry * entry)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    Object *         loadedObject  = objectManager->LoadObject(entry);
+    return (void *)loadedObject;
+}
 
-    void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadObjects(entries, count);
-    }
+void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
+{
+    IObjectManager * objectManager = GetObjectManager();
+    objectManager->UnloadObjects(entries, count);
+}
 
-    void object_manager_unload_all_objects()
-    {
-        IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadAll();
-    }
+void object_manager_unload_all_objects()
+{
+    IObjectManager * objectManager = GetObjectManager();
+    objectManager->UnloadAll();
+}
 }

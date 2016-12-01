@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -21,22 +21,23 @@
 
 typedef int rct_expenditure_type;
 
-enum {
-	RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
-	RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS,
-	RCT_EXPENDITURE_TYPE_LAND_PURCHASE,
-	RCT_EXPENDITURE_TYPE_LANDSCAPING,
-	RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS,
-	RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS,
-	RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES,
-	RCT_EXPENDITURE_TYPE_SHOP_STOCK,
-	RCT_EXPENDITURE_TYPE_FOODDRINK_SALES,
-	RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK,
-	RCT_EXPENDITURE_TYPE_WAGES,
-	RCT_EXPENDITURE_TYPE_MARKETING,
-	RCT_EXPENDITURE_TYPE_RESEARCH,
-	RCT_EXPENDITURE_TYPE_INTEREST,
-	RCT_EXPENDITURE_TYPE_COUNT
+enum
+{
+    RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
+    RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS,
+    RCT_EXPENDITURE_TYPE_LAND_PURCHASE,
+    RCT_EXPENDITURE_TYPE_LANDSCAPING,
+    RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS,
+    RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS,
+    RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES,
+    RCT_EXPENDITURE_TYPE_SHOP_STOCK,
+    RCT_EXPENDITURE_TYPE_FOODDRINK_SALES,
+    RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK,
+    RCT_EXPENDITURE_TYPE_WAGES,
+    RCT_EXPENDITURE_TYPE_MARKETING,
+    RCT_EXPENDITURE_TYPE_RESEARCH,
+    RCT_EXPENDITURE_TYPE_INTEREST,
+    RCT_EXPENDITURE_TYPE_COUNT
 };
 
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
@@ -48,7 +49,7 @@ extern const money32 wage_table[4];
 extern money32 gInitialCash;
 extern money32 gCashEncrypted;
 extern money32 gBankLoan;
-extern uint8 gBankLoanInterestRate;
+extern uint8   gBankLoanInterestRate;
 extern money32 gMaxBankLoan;
 extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
@@ -60,7 +61,7 @@ extern money32 gCurrentProfit;
 extern money32 gHistoricalProfit;
 
 extern money32 gWeeklyProfitAverageDividend;
-extern uint16 gWeeklyProfitAverageDivisor;
+extern uint16  gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[128];
 extern money32 gWeeklyProfitHistory[128];
 extern money32 gParkValueHistory[128];
@@ -84,7 +85,7 @@ money32 finance_get_initial_cash();
 money32 finance_get_current_loan();
 money32 finance_get_maximum_loan();
 money32 finance_get_current_cash();
-void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_set_current_loan(int * eax, int * ebx, int * ecx, int * edx, int * esi, int * edi, int * ebp);
 
 money32 finance_get_last_month_shop_profit();
 

@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -23,11 +23,11 @@
 
 namespace Json
 {
-    // Don't try to load JSON files that exceed 64 MiB
-    constexpr uint64 MAX_JSON_SIZE = 64 * 1024 * 1024;
+// Don't try to load JSON files that exceed 64 MiB
+constexpr uint64 MAX_JSON_SIZE = 64 * 1024 * 1024;
 
-    json_t * ReadFromFile(const utf8 * path, size_t maxSize = MAX_JSON_SIZE);
-    void     WriteToFile(const utf8 * path, const json_t * json, size_t flags = 0);
+json_t * ReadFromFile(const utf8 * path, size_t maxSize = MAX_JSON_SIZE);
+void WriteToFile(const utf8 * path, const json_t * json, size_t flags = 0);
 }
 
 class JsonException final : public Exception
@@ -36,7 +36,9 @@ private:
     json_error_t _jsonError = { 0 };
 
 public:
-    JsonException(const char * message) : Exception(message) { }
+    JsonException(const char * message) : Exception(message)
+    {
+    }
 
     JsonException(const json_error_t * jsonError) : JsonException(jsonError->text)
     {

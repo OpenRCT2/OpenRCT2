@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,10 +19,11 @@
 #include "../common.h"
 
 class Object;
+struct rct_object_entry;
 
 namespace ObjectFactory
 {
-    Object * CreateObjectFromLegacyFile(const utf8 * path);
-    Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize);
-    Object * CreateObject(const rct_object_entry &entry);
+Object * CreateObjectFromLegacyFile(const utf8 * path);
+Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize);
+Object * CreateObject(const rct_object_entry & entry);
 }

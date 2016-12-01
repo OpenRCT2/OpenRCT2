@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,27 +16,29 @@
 
 #pragma once
 
+#include <SDL_video.h>
+
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
+#include "../rct2.h"
+#include "drawing.h"
 
 extern rct_string_id DrawingEngineStringIds[3];
 
 sint32 drawing_engine_get_type();
-void drawing_engine_init();
-void drawing_engine_resize();
+void   drawing_engine_init();
+void   drawing_engine_resize();
 void drawing_engine_set_palette(SDL_Color * colours);
 void drawing_engine_draw();
 void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy);
 void drawing_engine_dispose();
 
 rct_drawpixelinfo * drawing_engine_get_dpi();
-bool drawing_engine_has_dirty_optimisations();
+bool                drawing_engine_has_dirty_optimisations();
 void drawing_engine_invalidate_image(uint32 image);
 void drawing_engine_set_fps_uncapped(bool uncapped);
 
 #ifdef __cplusplus
 }
 #endif
-

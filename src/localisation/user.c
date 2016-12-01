@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "user.h"
 #include "../game.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "localisation.h"
-#include "user.h"
 
 utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
 
-static bool user_string_exists(const utf8 *text);
+static bool user_string_exists(const utf8 * text);
 
 /**
  *
@@ -30,33 +30,35 @@ static bool user_string_exists(const utf8 *text);
  */
 void user_string_clear_all()
 {
-	memset(gUserStrings, 0, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
+    memset(gUserStrings, 0, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
 }
 
 /**
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(int base, const utf8 *text)
+rct_string_id user_string_allocate(int base, const utf8 * text)
 {
-	int highBits = (base & 0x7F) << 9;
-	bool allowDuplicates = base & 0x80;
+    int  highBits        = (base & 0x7F) << 9;
+    bool allowDuplicates = base & 0x80;
 
-	if (!allowDuplicates && user_string_exists(text)) {
-		gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
-		return 0;
-	}
+    if (!allowDuplicates && user_string_exists(text))
+    {
+        gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
+        return 0;
+    }
 
-	char *userString = gUserStrings;
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
-		if (userString[0] != 0)
-			continue;
+    char * userString = gUserStrings;
+    for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
+        if (userString[0] != 0)
+            continue;
 
-		safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
-		return 0x8000 + (i | highBits);
-	}
-	gGameCommandErrorText = STR_TOO_MANY_NAMES_DEFINED;
-	return 0;
+        safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
+        return 0x8000 + (i | highBits);
+    }
+    gGameCommandErrorText = STR_TOO_MANY_NAMES_DEFINED;
+    return 0;
 }
 
 /**
@@ -65,38 +67,40 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
  */
 void user_string_free(rct_string_id id)
 {
-	if (!is_user_string_id(id))
-		return;
+    if (!is_user_string_id(id))
+        return;
 
-	id %= MAX_USER_STRINGS;
-	gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
+    id %= MAX_USER_STRINGS;
+    gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
 }
 
-static bool user_string_exists(const utf8 *text)
+static bool user_string_exists(const utf8 * text)
 {
-	char *userString = gUserStrings;
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
-		if (userString[0] == 0)
-			continue;
+    char * userString = gUserStrings;
+    for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
+        if (userString[0] == 0)
+            continue;
 
-		if (strcmp(userString, text) == 0)
-			return true;
-	}
-	return false;
+        if (strcmp(userString, text) == 0)
+            return true;
+    }
+    return false;
 }
 
 bool is_user_string_id(rct_string_id stringId)
 {
-	return stringId >= 0x8000 && stringId < 0x9000;
+    return stringId >= 0x8000 && stringId < 0x9000;
 }
 
 void reset_user_strings()
 {
-	char *userString = gUserStrings;
+    char * userString = gUserStrings;
 
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
-		userString[0] = 0;
-	}
+    for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
+        userString[0] = 0;
+    }
 
-	ride_reset_all_names();
+    ride_reset_all_names();
 }

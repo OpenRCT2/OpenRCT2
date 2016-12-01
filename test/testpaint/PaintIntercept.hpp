@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,11 +19,12 @@
 #include "../../src/common.h"
 #include "FunctionCall.hpp"
 
-namespace PaintIntercept {
-    void InitHooks();
+namespace PaintIntercept
+{
+void InitHooks();
 
-    void ClearCalls();
-    int GetCalls(function_call *buffer);
+void ClearCalls();
+int GetCalls(function_call * buffer);
 
-    void SetSimulateWoodenSupports(bool enabled);
+void SetSimulateWoodenSupports(bool enabled);
 };

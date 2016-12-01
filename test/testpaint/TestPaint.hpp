@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,17 +20,17 @@
 
 #include "../../src/common.h"
 
-extern "C"
-{
-    #include "../../src/interface/colour.h"
-    #include "../../src/paint/paint.h"
-    #include "../../src/paint/map_element/map_element.h"
+extern "C" {
+#include "../../src/interface/colour.h"
+#include "../../src/paint/map_element/map_element.h"
+#include "../../src/paint/paint.h"
 }
 
-#define gRideEntries            RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*)
-#define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
+#define gRideEntries RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry *)
+#define gCurrentRotation RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
-enum {
+enum
+{
     TEST_SUCCESS,
     TEST_FAILED,
     TEST_SKIPPED,
@@ -38,22 +38,22 @@ enum {
 
 namespace TestPaint
 {
-    static const uint32 DEFAULT_SCHEME_TRACK = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_MISC = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
-    static const uint32 DEFAULT_SCHEME_3 = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_TRACK    = COLOUR_GREY << 19 | COLOUR_WHITE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_SUPPORTS = COLOUR_LIGHT_BLUE << 19 | COLOUR_ICY_BLUE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_MISC     = COLOUR_DARK_PURPLE << 19 | COLOUR_LIGHT_PURPLE << 24 | 0xA0000000;
+static const uint32 DEFAULT_SCHEME_3        = COLOUR_BRIGHT_PURPLE << 19 | COLOUR_DARK_BLUE << 24 | 0xA0000000;
 
-    void ResetEnvironment();
-    void ResetTunnels();
-    void ResetSupportHeights();
+void ResetEnvironment();
+void ResetTunnels();
+void ResetSupportHeights();
 }
 
-enum Verbosity {
+enum Verbosity
+{
     QUIET,
     NORMAL,
 };
 
-extern "C"
-{
+extern "C" {
 int generatePaintCode(uint8 rideType);
 }

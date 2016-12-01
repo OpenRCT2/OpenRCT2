@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,9 +18,8 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../scenario.h"
+extern "C" {
+#include "../scenario.h"
 }
 
 class StexObject final : public Object
@@ -29,9 +28,14 @@ private:
     rct_stex_entry _legacyType = { 0 };
 
 public:
-    explicit StexObject(const rct_object_entry &entry) : Object(entry) { }
+    explicit StexObject(const rct_object_entry & entry) : Object(entry)
+    {
+    }
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    void * GetLegacyData() override
+    {
+        return &_legacyType;
+    }
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;

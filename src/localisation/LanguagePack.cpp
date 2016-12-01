@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,10 +17,9 @@
 #include <string>
 #include <vector>
 
-extern "C"
-{
-    #include "../common.h"
-    #include "localisation.h"
+extern "C" {
+#include "../common.h"
+#include "localisation.h"
 }
 
 #include "../core/FileStream.hpp"
@@ -32,12 +31,12 @@ extern "C"
 #include "LanguagePack.h"
 
 // Don't try to load more than language files that exceed 64 MiB
-constexpr uint64 MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
-constexpr uint64 MAX_OBJECT_OVERRIDES = 4096;
+constexpr uint64 MAX_LANGUAGE_SIZE      = 64 * 1024 * 1024;
+constexpr uint64 MAX_OBJECT_OVERRIDES   = 4096;
 constexpr uint64 MAX_SCENARIO_OVERRIDES = 4096;
 
-constexpr rct_string_id ObjectOverrideBase             = 0x6000;
-constexpr int           ObjectOverrideMaxStringCount   = 4;
+constexpr rct_string_id ObjectOverrideBase           = 0x6000;
+constexpr int           ObjectOverrideMaxStringCount = 4;
 
 constexpr rct_string_id ScenarioOverrideBase           = 0x7000;
 constexpr int           ScenarioOverrideMaxStringCount = 3;
@@ -53,7 +52,8 @@ struct ScenarioOverride
     std::string filename;
     union {
         const utf8 * strings[3];
-        struct {
+        struct
+        {
             const utf8 * name;
             const utf8 * park;
             const utf8 * details;
@@ -67,7 +67,7 @@ private:
     uint16 _id;
     utf8 * _stringData;
 
-    std::vector<const utf8*>      _strings;
+    std::vector<const utf8 *>     _strings;
     std::vector<ObjectOverride>   _objectOverrides;
     std::vector<ScenarioOverride> _scenarioOverrides;
 
@@ -123,10 +123,10 @@ public:
     {
         Guard::ArgumentNotNull(text);
 
-        _id = id;
-        _stringData = nullptr;
-        _currentGroup = nullptr;
-        _currentObjectOverride = nullptr;
+        _id                      = id;
+        _stringData              = nullptr;
+        _currentGroup            = nullptr;
+        _currentObjectOverride   = nullptr;
         _currentScenarioOverride = nullptr;
 
         auto reader = UTF8StringReader(text);
@@ -142,17 +142,17 @@ public:
         {
             if (_strings[i] != nullptr)
             {
-                _strings[i] = (utf8*)(stringDataBaseAddress + (size_t)_strings[i]);
+                _strings[i] = (utf8 *)(stringDataBaseAddress + (size_t)_strings[i]);
             }
         }
         for (size_t i = 0; i < _objectOverrides.size(); i++)
         {
             for (int j = 0; j < ObjectOverrideMaxStringCount; j++)
             {
-                const utf8 * * strPtr = &(_objectOverrides[i].strings[j]);
+                const utf8 ** strPtr = &(_objectOverrides[i].strings[j]);
                 if (*strPtr != nullptr)
                 {
-                    *strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
+                    *strPtr = (utf8 *)(stringDataBaseAddress + (size_t)*strPtr);
                 }
             }
         }
@@ -160,10 +160,10 @@ public:
         {
             for (int j = 0; j < ScenarioOverrideMaxStringCount; j++)
             {
-                const utf8 **strPtr = &(_scenarioOverrides[i].strings[j]);
+                const utf8 ** strPtr = &(_scenarioOverrides[i].strings[j]);
                 if (*strPtr != nullptr)
                 {
-                    *strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
+                    *strPtr = (utf8 *)(stringDataBaseAddress + (size_t)*strPtr);
                 }
             }
         }
@@ -171,9 +171,9 @@ public:
         // Clean up the parsing work data
         Memory::Free(_currentGroup);
         // Destruct the string builder to free memory
-        _stringDataSB = StringBuilder();
-        _currentGroup = nullptr;
-        _currentObjectOverride = nullptr;
+        _stringDataSB            = StringBuilder();
+        _currentGroup            = nullptr;
+        _currentObjectOverride   = nullptr;
         _currentScenarioOverride = nullptr;
     }
 
@@ -205,8 +205,8 @@ public:
     {
         if (stringId >= ScenarioOverrideBase)
         {
-            int offset = stringId - ScenarioOverrideBase;
-            int ooIndex = offset / ScenarioOverrideMaxStringCount;
+            int offset        = stringId - ScenarioOverrideBase;
+            int ooIndex       = offset / ScenarioOverrideMaxStringCount;
             int ooStringIndex = offset % ScenarioOverrideMaxStringCount;
 
             if (_scenarioOverrides.size() > (size_t)ooIndex)
@@ -220,8 +220,8 @@ public:
         }
         else if (stringId >= ObjectOverrideBase)
         {
-            int offset = stringId - ObjectOverrideBase;
-            int ooIndex = offset / ObjectOverrideMaxStringCount;
+            int offset        = stringId - ObjectOverrideBase;
+            int ooIndex       = offset / ObjectOverrideMaxStringCount;
             int ooStringIndex = offset % ObjectOverrideMaxStringCount;
 
             if (_objectOverrides.size() > (size_t)ooIndex)
@@ -252,7 +252,7 @@ public:
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
         int ooIndex = 0;
-        for (const ObjectOverride &objectOverride : _objectOverrides)
+        for (const ObjectOverride & objectOverride : _objectOverrides)
         {
             if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
             {
@@ -274,7 +274,7 @@ public:
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
         int ooIndex = 0;
-        for (const ScenarioOverride &scenarioOverride : _scenarioOverrides)
+        for (const ScenarioOverride & scenarioOverride : _scenarioOverrides)
         {
             if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
             {
@@ -296,7 +296,7 @@ public:
 
         for (size_t i = 0; i < _objectOverrides.size(); i++)
         {
-            ObjectOverride *oo = &_objectOverrides[i];
+            ObjectOverride * oo = &_objectOverrides[i];
             if (strncmp(oo->name, objectIdentifier, 8) == 0)
             {
                 return oo;
@@ -311,10 +311,10 @@ public:
 
         for (size_t i = 0; i < _scenarioOverrides.size(); i++)
         {
-            ScenarioOverride *so = &_scenarioOverrides[i];
+            ScenarioOverride * so = &_scenarioOverrides[i];
             // At this point ScenarioOverrides were not yet rewritten to point at
             // strings, but rather still hold offsets from base.
-            const utf8 *name = _stringDataSB.GetBuffer() + (size_t)so->name;
+            const utf8 * name = _stringDataSB.GetBuffer() + (size_t)so->name;
             if (_stricmp(name, scenarioIdentifier) == 0)
             {
                 return so;
@@ -333,7 +333,8 @@ public:
     // Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
     // strings for the time being. Further investigation is required.
     //
-    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the colon
+    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
+    // colon
     // and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
     // Use # at the beginning of a line to leave a comment.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -383,7 +384,8 @@ public:
     static void SkipToEndOfLine(IStringReader * reader)
     {
         codepoint_t codepoint;
-        while (reader->TryPeek(&codepoint)) {
+        while (reader->TryPeek(&codepoint))
+        {
             if (codepoint != '\r' && codepoint != '\n')
             {
                 reader->Skip();
@@ -395,14 +397,15 @@ public:
         }
     }
 
-    void ParseLine(IStringReader *reader)
+    void ParseLine(IStringReader * reader)
     {
         SkipWhitespace(reader);
 
         codepoint_t codepoint;
         if (reader->TryPeek(&codepoint))
         {
-            switch (codepoint) {
+            switch (codepoint)
+            {
             case '#':
                 SkipToEndOfLine(reader);
                 break;
@@ -426,7 +429,7 @@ public:
 
     void ParseGroupObject(IStringReader * reader)
     {
-        auto sb = StringBuilder();
+        auto        sb = StringBuilder();
         codepoint_t codepoint;
 
         // Should have already deduced that the next codepoint is a [
@@ -436,7 +439,8 @@ public:
         bool closedCorrectly = false;
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) break;
+            if (IsNewLine(codepoint))
+                break;
 
             reader->Skip();
             if (codepoint == ']')
@@ -457,8 +461,8 @@ public:
             }
             if (sb.GetLength() == 8)
             {
-                _currentGroup = sb.GetString();
-                _currentObjectOverride = GetObjectOverride(_currentGroup);
+                _currentGroup            = sb.GetString();
+                _currentObjectOverride   = GetObjectOverride(_currentGroup);
                 _currentScenarioOverride = nullptr;
                 if (_currentObjectOverride == nullptr)
                 {
@@ -478,7 +482,7 @@ public:
 
     void ParseGroupScenario(IStringReader * reader)
     {
-        auto sb = StringBuilder();
+        auto        sb = StringBuilder();
         codepoint_t codepoint;
 
         // Should have already deduced that the next codepoint is a <
@@ -488,7 +492,8 @@ public:
         bool closedCorrectly = false;
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) break;
+            if (IsNewLine(codepoint))
+                break;
 
             reader->Skip();
             if (codepoint == '>')
@@ -503,8 +508,8 @@ public:
         {
             SafeFree(_currentGroup);
 
-            _currentGroup = sb.GetString();
-            _currentObjectOverride = nullptr;
+            _currentGroup            = sb.GetString();
+            _currentObjectOverride   = nullptr;
             _currentScenarioOverride = GetScenarioOverride(_currentGroup);
             if (_currentScenarioOverride == nullptr)
             {
@@ -514,16 +519,16 @@ public:
                 }
 
                 _scenarioOverrides.push_back(ScenarioOverride());
-                _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
+                _currentScenarioOverride           = &_scenarioOverrides[_scenarioOverrides.size() - 1];
                 _currentScenarioOverride->filename = std::string(sb.GetBuffer());
                 Memory::Set(_currentScenarioOverride->strings, 0, sizeof(_currentScenarioOverride->strings));
             }
         }
     }
 
-    void ParseString(IStringReader *reader)
+    void ParseString(IStringReader * reader)
     {
-        auto sb = StringBuilder();
+        auto        sb = StringBuilder();
         codepoint_t codepoint;
 
         // Parse string identifier
@@ -569,14 +574,33 @@ public:
         }
         else
         {
-            if (String::Equals(identifier, "STR_NAME")) { stringId = 0; }
-            else if (String::Equals(identifier, "STR_DESC")) { stringId = 1; }
-            else if (String::Equals(identifier, "STR_CPTY")) { stringId = 2; }
+            if (String::Equals(identifier, "STR_NAME"))
+            {
+                stringId = 0;
+            }
+            else if (String::Equals(identifier, "STR_DESC"))
+            {
+                stringId = 1;
+            }
+            else if (String::Equals(identifier, "STR_CPTY"))
+            {
+                stringId = 2;
+            }
 
-            else if (String::Equals(identifier, "STR_SCNR")) { stringId = 0; }
-            else if (String::Equals(identifier, "STR_PARK")) { stringId = 1; }
-            else if (String::Equals(identifier, "STR_DTLS")) { stringId = 2; }
-            else {
+            else if (String::Equals(identifier, "STR_SCNR"))
+            {
+                stringId = 0;
+            }
+            else if (String::Equals(identifier, "STR_PARK"))
+            {
+                stringId = 1;
+            }
+            else if (String::Equals(identifier, "STR_DTLS"))
+            {
+                stringId = 2;
+            }
+            else
+            {
                 // Ignore line entirely
                 return;
             }
@@ -589,12 +613,12 @@ public:
             if (codepoint == '{')
             {
                 uint32 token;
-                bool isByte;
+                bool   isByte;
                 if (ParseToken(reader, &token, &isByte))
                 {
                     if (isByte)
                     {
-                        sb.Append((const utf8*)&token, 1);
+                        sb.Append((const utf8 *)&token, 1);
                     }
                     else
                     {
@@ -618,7 +642,7 @@ public:
         _stringDataSB.Append('\0');
 
         // Get the relative offset to the string (add the base offset when we extract the string properly)
-        utf8 * relativeOffset = (utf8*)_stringDataSB.GetLength();
+        utf8 * relativeOffset = (utf8 *)_stringDataSB.GetLength();
 
         if (_currentGroup == nullptr)
         {
@@ -647,7 +671,7 @@ public:
 
     bool ParseToken(IStringReader * reader, uint32 * token, bool * isByte)
     {
-        auto sb = StringBuilder();
+        auto        sb = StringBuilder();
         codepoint_t codepoint;
 
         // Skip open brace
@@ -655,19 +679,22 @@ public:
 
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) return false;
-            if (IsWhitespace(codepoint)) return false;
+            if (IsNewLine(codepoint))
+                return false;
+            if (IsWhitespace(codepoint))
+                return false;
 
             reader->Skip();
 
-            if (codepoint == '}') break;
+            if (codepoint == '}')
+                break;
 
             sb.Append(codepoint);
         }
 
         const utf8 * tokenName = sb.GetBuffer();
-        *token = format_get_code(tokenName);
-        *isByte = false;
+        *token                 = format_get_code(tokenName);
+        *isByte                = false;
 
         // Handle explicit byte values
         if (*token == 0)
@@ -675,7 +702,7 @@ public:
             int number;
             if (sscanf(tokenName, "%d", &number) == 1)
             {
-                *token = Math::Clamp(0, number, 255);
+                *token  = Math::Clamp(0, number, 255);
                 *isByte = true;
             }
         }
@@ -686,15 +713,15 @@ public:
 
 namespace LanguagePackFactory
 {
-    ILanguagePack * FromFile(uint16 id, const utf8 * path)
-    {
-        auto languagePack = LanguagePack::FromFile(id, path);
-        return languagePack;
-    }
+ILanguagePack * FromFile(uint16 id, const utf8 * path)
+{
+    auto languagePack = LanguagePack::FromFile(id, path);
+    return languagePack;
+}
 
-    ILanguagePack * FromText(uint16 id, const utf8 * text)
-    {
-        auto languagePack = LanguagePack::FromText(id, text);
-        return languagePack;
-    }
+ILanguagePack * FromText(uint16 id, const utf8 * text)
+{
+    auto languagePack = LanguagePack::FromText(id, text);
+    return languagePack;
+}
 }

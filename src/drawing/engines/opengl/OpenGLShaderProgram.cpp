@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,17 +16,16 @@
 
 #ifndef DISABLE_OPENGL
 
+#include "OpenGLShaderProgram.h"
 #include "../../../core/Console.hpp"
 #include "../../../core/Exception.hpp"
 #include "../../../core/FileStream.hpp"
 #include "../../../core/Memory.hpp"
 #include "../../../core/Path.hpp"
 #include "../../../core/String.hpp"
-#include "OpenGLShaderProgram.h"
 
-extern "C"
-{
-    #include "../../../platform/platform.h"
+extern "C" {
+#include "../../../platform/platform.h"
 }
 
 OpenGLShader::OpenGLShader(const char * name, GLenum type)
@@ -38,7 +37,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
     char * sourceCode = ReadSourceCode(path);
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, (const GLchar**)&sourceCode, nullptr);
+    glShaderSource(_id, 1, (const GLchar **)&sourceCode, nullptr);
     glCompileShader(_id);
 
     Memory::Free(sourceCode);
@@ -101,7 +100,7 @@ char * OpenGLShader::ReadSourceCode(const utf8 * path)
 
 OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
 {
-    _vertexShader = new OpenGLShader(name, GL_VERTEX_SHADER);
+    _vertexShader   = new OpenGLShader(name, GL_VERTEX_SHADER);
     _fragmentShader = new OpenGLShader(name, GL_FRAGMENT_SHADER);
 
     _id = glCreateProgram();
@@ -111,7 +110,7 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
 
     if (!Link())
     {
-        char buffer[512];
+        char    buffer[512];
         GLsizei length;
         glGetProgramInfoLog(_id, sizeof(buffer), &length, buffer);
 

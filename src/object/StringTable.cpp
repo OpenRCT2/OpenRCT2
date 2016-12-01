@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,16 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <algorithm>
+#include "StringTable.h"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Object.h"
-#include "StringTable.h"
+#include <algorithm>
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../localisation/localisation.h"
 }
 
 static bool StringIsBlank(utf8 * str)
@@ -54,11 +53,11 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
         while ((languageId = stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
         {
             StringTableEntry entry;
-            entry.Id = id;
+            entry.Id         = id;
             entry.LanguageId = languageId;
 
             char * stringAsWin1252 = stream->ReadString();
-            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252, languageId);
+            utf8 * stringAsUtf8    = rct2_language_string_to_utf8(stringAsWin1252, languageId);
             Memory::Free(stringAsWin1252);
 
             if (StringIsBlank(stringAsUtf8))
@@ -81,7 +80,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
 
 const utf8 * StringTable::GetString(uint8 id) const
 {
-    for (auto &string : _strings)
+    for (auto & string : _strings)
     {
         if (string.Id == id)
         {
@@ -93,8 +92,7 @@ const utf8 * StringTable::GetString(uint8 id) const
 
 void StringTable::Sort()
 {
-    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool
-    {
+    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry & a, const StringTableEntry & b) -> bool {
         if (a.Id == b.Id)
         {
             if (a.LanguageId == b.LanguageId)

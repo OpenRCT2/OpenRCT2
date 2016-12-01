@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,13 +20,28 @@
 #include "diagnostic.h"
 #include "rct2.h"
 
-#define SafeFree(x) do { free(x); (x) = NULL; } while (0)
+#define SafeFree(x)                                                                                                            \
+    do                                                                                                                         \
+    {                                                                                                                          \
+        free(x);                                                                                                               \
+        (x) = NULL;                                                                                                            \
+    } while (0)
 
-#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (0)
-#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (0)
+#define SafeDelete(x)                                                                                                          \
+    do                                                                                                                         \
+    {                                                                                                                          \
+        delete (x);                                                                                                            \
+        (x) = nullptr;                                                                                                         \
+    } while (0)
+#define SafeDeleteArray(x)                                                                                                     \
+    do                                                                                                                         \
+    {                                                                                                                          \
+        delete[](x);                                                                                                           \
+        (x) = nullptr;                                                                                                         \
+    } while (0)
 
 #ifndef interface
-	#define interface struct
+#define interface struct
 #endif
 #define abstract = 0
 
@@ -37,9 +52,9 @@
 #endif
 
 #if defined(__LP64__) || defined(_WIN64)
-	#define PLATFORM_64BIT
+#define PLATFORM_64BIT
 #else
-	#define PLATFORM_32BIT
+#define PLATFORM_32BIT
 #endif
 
 // C99's restrict keywords guarantees the pointer in question, for the whole of its lifetime,
@@ -47,97 +62,102 @@
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
 #ifdef __cplusplus
-	#ifdef _MSC_VER
-		#define RESTRICT __restrict
-	#else
-		#define RESTRICT __restrict__
-	#endif
+#ifdef _MSC_VER
+#define RESTRICT __restrict
 #else
-	#ifdef _MSC_VER
-		#define RESTRICT __restrict
-	#else
-		#define RESTRICT restrict
-	#endif
+#define RESTRICT __restrict__
+#endif
+#else
+#ifdef _MSC_VER
+#define RESTRICT __restrict
+#else
+#define RESTRICT restrict
+#endif
 #endif
 #ifndef RESTRICT
-	#define RESTRICT
+#define RESTRICT
 #endif
 
 #ifdef __cplusplus
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 #else
-	// Visual Studio does not know _Static_assert
-	#if !defined(_MSC_VER)
-		#define assert_struct_size(x, y) _Static_assert(sizeof(x) == (y), "Improper struct size")
-	#else
-		#define assert_struct_size(x, y)
-	#endif // !defined(_MSC_VER)
+// Visual Studio does not know _Static_assert
+#if !defined(_MSC_VER)
+#define assert_struct_size(x, y) _Static_assert(sizeof(x) == (y), "Improper struct size")
+#else
+#define assert_struct_size(x, y)
+#endif // !defined(_MSC_VER)
 #endif
 
 #ifdef PLATFORM_X86
-	#ifndef FASTCALL
-		#ifdef __GNUC__
-			#define FASTCALL __attribute__((fastcall))
-		#elif defined(_MSC_VER)
-			#define FASTCALL __fastcall
-		#else
-			#pragma message "Not using fastcall calling convention, please check your compiler support"
-			#define FASTCALL
-		#endif
-	#endif // FASTCALL
-#else // PLATFORM_X86
-	#define FASTCALL
+#ifndef FASTCALL
+#ifdef __GNUC__
+#define FASTCALL __attribute__((fastcall))
+#elif defined(_MSC_VER)
+#define FASTCALL __fastcall
+#else
+#pragma message "Not using fastcall calling convention, please check your compiler support"
+#define FASTCALL
+#endif
+#endif // FASTCALL
+#else  // PLATFORM_X86
+#define FASTCALL
 #endif // PLATFORM_X86
 
 /**
  * x86 register structure, only used for easy interop to RCT2 code.
  */
 #pragma pack(push, 1)
-typedef struct registers {
-	union {
-		int eax;
-		short ax;
-		struct {
-			char al;
-			char ah;
-		};
-	};
-	union {
-		int ebx;
-		short bx;
-		struct {
-			char bl;
-			char bh;
-		};
-	};
-	union {
-		int ecx;
-		short cx;
-		struct {
-			char cl;
-			char ch;
-		};
-	};
-	union {
-		int edx;
-		short dx;
-		struct {
-			char dl;
-			char dh;
-		};
-	};
-	union {
-		int esi;
-		short si;
-	};
-	union {
-		int edi;
-		short di;
-	};
-	union {
-		int ebp;
-		short bp;
-	};
+typedef struct registers
+{
+    union {
+        int   eax;
+        short ax;
+        struct
+        {
+            char al;
+            char ah;
+        };
+    };
+    union {
+        int   ebx;
+        short bx;
+        struct
+        {
+            char bl;
+            char bh;
+        };
+    };
+    union {
+        int   ecx;
+        short cx;
+        struct
+        {
+            char cl;
+            char ch;
+        };
+    };
+    union {
+        int   edx;
+        short dx;
+        struct
+        {
+            char dl;
+            char dh;
+        };
+    };
+    union {
+        int   esi;
+        short si;
+    };
+    union {
+        int   edi;
+        short di;
+    };
+    union {
+        int   ebp;
+        short bp;
+    };
 } registers;
 assert_struct_size(registers, 7 * 4);
 #pragma pack(pop)

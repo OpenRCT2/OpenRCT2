@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,7 +24,7 @@
 #include <SDL_rwops.h>
 #include <string>
 
-typedef struct evp_pkey_st EVP_PKEY;
+typedef struct evp_pkey_st     EVP_PKEY;
 typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
 
 class NetworkKey final
@@ -39,13 +39,14 @@ public:
     bool SavePublic(SDL_RWops * file);
     std::string PublicKeyString();
     std::string PublicKeyHash();
-    void Unload();
+    void        Unload();
     bool Sign(const uint8 * md, const size_t len, char ** signature, size_t * out_size);
     bool Verify(const uint8 * md, const size_t len, const char * sig, const size_t siglen);
+
 private:
-    NetworkKey (const NetworkKey &) = delete;
-    EVP_PKEY_CTX * _ctx = nullptr;
-    EVP_PKEY *     _key = nullptr;
+    NetworkKey(const NetworkKey &) = delete;
+    EVP_PKEY_CTX * _ctx            = nullptr;
+    EVP_PKEY *     _key            = nullptr;
 };
 
 #endif // DISABLE_NETWORK

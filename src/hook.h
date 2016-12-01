@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,15 +19,16 @@
 
 #ifndef NO_RCT2
 
-enum REGISTER_ARGS {
-	EAX = 1 << 0,
-	EBX = 1 << 1,
-	ECX = 1 << 2,
-	EDX = 1 << 3,
-	ESI = 1 << 4,
-	EDI = 1 << 5,
-	EBP = 1 << 6,
-	END = 0
+enum REGISTER_ARGS
+{
+    EAX = 1 << 0,
+    EBX = 1 << 1,
+    ECX = 1 << 2,
+    EDX = 1 << 3,
+    ESI = 1 << 4,
+    EDI = 1 << 5,
+    EBP = 1 << 6,
+    END = 0
 };
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister);

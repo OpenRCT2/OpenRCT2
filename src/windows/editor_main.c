@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -19,44 +19,42 @@
 #include "../interface/window.h"
 #include "../world/footpath.h"
 
-static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_editor_main_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
 static rct_window_event_list window_editor_main_events = {
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	window_editor_main_paint,// 0x0066FC97, //window_editor_main_paint,
-	NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    window_editor_main_paint, // 0x0066FC97, //window_editor_main_paint,
+    NULL,
 };
 
 static rct_widget window_editor_main_widgets[] = {
-	{ WWT_VIEWPORT, 0, 0, 0xFFFF, 0, 0xFFFF, 0xFFFFFFFE, 0xFFFF },
-	{ WIDGETS_END },
+    { WWT_VIEWPORT, 0, 0, 0xFFFF, 0, 0xFFFF, 0xFFFFFFFE, 0xFFFF }, { WIDGETS_END },
 };
-
 
 /**
 * Creates the main editor window that holds the main viewport.
@@ -64,25 +62,25 @@ static rct_widget window_editor_main_widgets[] = {
 */
 void window_editor_main_open()
 {
-	rct_window* window;
+    rct_window * window;
 
-	window_editor_main_widgets[0].right = gScreenWidth;
-	window_editor_main_widgets[0].bottom = gScreenHeight;
-	window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
-		&window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
-	window->widgets = window_editor_main_widgets;
+    window_editor_main_widgets[0].right  = gScreenWidth;
+    window_editor_main_widgets[0].bottom = gScreenHeight;
+    window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
+                           &window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
+    window->widgets = window_editor_main_widgets;
 
-	viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
-	window->viewport->flags |= 0x0400;
+    viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
+    window->viewport->flags |= 0x0400;
 
-	gCurrentRotation = 0;
-	gShowGridLinesRefCount = 0;
-	gShowLandRightsRefCount = 0;
-	gShowConstuctionRightsRefCount = 0;
-	gFootpathSelectedType = 0;
+    gCurrentRotation               = 0;
+    gShowGridLinesRefCount         = 0;
+    gShowLandRightsRefCount        = 0;
+    gShowConstuctionRightsRefCount = 0;
+    gFootpathSelectedType          = 0;
 
-	window_top_toolbar_open();
-	window_editor_bottom_toolbar_open();
+    window_top_toolbar_open();
+    window_editor_bottom_toolbar_open();
 }
 
 /**
@@ -90,7 +88,7 @@ void window_editor_main_open()
 * rct2: 0x0066FC97
 * This function immediately jumps to 0x00685BE1
 */
-static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_main_paint(rct_window * w, rct_drawpixelinfo * dpi)
 {
-	viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
+    viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }

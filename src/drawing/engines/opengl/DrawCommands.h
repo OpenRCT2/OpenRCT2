@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
@@ -17,30 +17,34 @@
 #pragma once
 
 #include "../../../common.h"
-#include "OpenGLAPI.h"
 #include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+#include "TextureCache.h"
 
-struct DrawRectCommand {
+struct DrawRectCommand
+{
     uint32 flags;
     GLuint sourceFramebuffer;
-    vec4f colours[2];
+    vec4f  colours[2];
     sint32 clip[4];
     sint32 bounds[4];
 };
 
-struct DrawLineCommand {
-    vec4f colour;
+struct DrawLineCommand
+{
+    vec4f  colour;
     sint32 clip[4];
     sint32 pos[4];
 };
 
-struct DrawImageCommand {
-    uint32 flags;
-    vec4f colour;
-    sint32 clip[4];
+struct DrawImageCommand
+{
+    uint32            flags;
+    vec4f             colour;
+    sint32            clip[4];
     CachedTextureInfo texMask;
     CachedTextureInfo texColour;
     CachedTextureInfo texPalette;
-    sint32 bounds[4];
-    bool mask;
+    sint32            bounds[4];
+    bool              mask;
 };

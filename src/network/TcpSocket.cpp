@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -24,39 +24,39 @@
 #include <SDL_timer.h>
 
 #ifdef __WINDOWS__
-    // winsock2 must be included before windows.h
-    #include <winsock2.h>
-    #include <ws2tcpip.h>
+// winsock2 must be included before windows.h
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
-    #undef GetMessage
-    #define LAST_SOCKET_ERROR() WSAGetLastError()
-    #undef EWOULDBLOCK
-    #define EWOULDBLOCK WSAEWOULDBLOCK
-    #ifndef SHUT_RD
-        #define SHUT_RD SD_RECEIVE
-    #endif
-    #ifndef SHUT_RDWR
-        #define SHUT_RDWR SD_BOTH
-    #endif
-    #define FLAG_NO_PIPE 0
+#undef GetMessage
+#define LAST_SOCKET_ERROR() WSAGetLastError()
+#undef EWOULDBLOCK
+#define EWOULDBLOCK WSAEWOULDBLOCK
+#ifndef SHUT_RD
+#define SHUT_RD SD_RECEIVE
+#endif
+#ifndef SHUT_RDWR
+#define SHUT_RDWR SD_BOTH
+#endif
+#define FLAG_NO_PIPE 0
 #else
-    #include <errno.h>
-    #include <arpa/inet.h>
-    #include <netdb.h>
-    #include <netinet/tcp.h>
-    #include <sys/socket.h>
-    #include <fcntl.h>
-    typedef int SOCKET;
-    #define SOCKET_ERROR -1
-    #define INVALID_SOCKET -1
-    #define LAST_SOCKET_ERROR() errno
-    #define closesocket close
-    #define ioctlsocket ioctl
-    #if defined(__LINUX__)
-        #define FLAG_NO_PIPE MSG_NOSIGNAL
-    #else
-        #define FLAG_NO_PIPE 0
-    #endif // defined(__LINUX__)
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+typedef int SOCKET;
+#define SOCKET_ERROR -1
+#define INVALID_SOCKET -1
+#define LAST_SOCKET_ERROR() errno
+#define closesocket close
+#define ioctlsocket ioctl
+#if defined(__LINUX__)
+#define FLAG_NO_PIPE MSG_NOSIGNAL
+#else
+#define FLAG_NO_PIPE 0
+#endif // defined(__LINUX__)
 #endif // __WINDOWS__
 
 #include "../core/Exception.hpp"
@@ -69,8 +69,12 @@ class TcpSocket;
 class SocketException : public Exception
 {
 public:
-    SocketException(const char * message) : Exception(message) { }
-    SocketException(const std::string &message) : Exception(message) { }
+    SocketException(const char * message) : Exception(message)
+    {
+    }
+    SocketException(const std::string & message) : Exception(message)
+    {
+    }
 };
 
 struct ConnectRequest
@@ -83,14 +87,14 @@ struct ConnectRequest
 class TcpSocket : public ITcpSocket
 {
 private:
-    SOCKET_STATUS   _status         = SOCKET_STATUS_CLOSED;
-    uint16          _listeningPort  = 0;
-    SOCKET          _socket         = INVALID_SOCKET;
+    SOCKET_STATUS _status        = SOCKET_STATUS_CLOSED;
+    uint16        _listeningPort = 0;
+    SOCKET        _socket        = INVALID_SOCKET;
 
-    std::string     _hostName;
+    std::string _hostName;
 
-    SDL_mutex *     _connectMutex   = nullptr;
-    std::string     _error;
+    SDL_mutex * _connectMutex = nullptr;
+    std::string _error;
 
 public:
     TcpSocket()
@@ -131,7 +135,7 @@ public:
         }
 
         sockaddr_storage ss;
-        int ss_len;
+        int              ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
             throw SocketException("Unable to resolve address.");
@@ -146,7 +150,7 @@ public:
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
         int value = 0;
-        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0)
+        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char *)&value, sizeof(value)) != 0)
         {
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
@@ -175,7 +179,7 @@ public:
         }
 
         _listeningPort = port;
-        _status = SOCKET_STATUS_LISTENING;
+        _status        = SOCKET_STATUS_LISTENING;
     }
 
     ITcpSocket * Accept() override
@@ -185,10 +189,10 @@ public:
             throw Exception("Socket not listening.");
         }
         struct sockaddr_storage client_addr;
-        socklen_t client_len = sizeof(struct sockaddr_storage);
+        socklen_t               client_len = sizeof(struct sockaddr_storage);
 
         ITcpSocket * tcpSocket = nullptr;
-        SOCKET socket = accept(_socket, (struct sockaddr *)&client_addr, &client_len);
+        SOCKET       socket    = accept(_socket, (struct sockaddr *)&client_addr, &client_len);
         if (socket == INVALID_SOCKET)
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
@@ -206,14 +210,8 @@ public:
             else
             {
                 char hostName[NI_MAXHOST];
-                int rc = getnameinfo(
-                    (struct sockaddr *)&client_addr,
-                    client_len,
-                    hostName,
-                    sizeof(hostName),
-                    nullptr,
-                    0,
-                    NI_NUMERICHOST | NI_NUMERICSERV);
+                int  rc = getnameinfo((struct sockaddr *)&client_addr, client_len, hostName, sizeof(hostName), nullptr, 0,
+                                     NI_NUMERICHOST | NI_NUMERICSERV);
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);
                 if (rc == 0)
@@ -238,7 +236,7 @@ public:
             _status = SOCKET_STATUS_RESOLVING;
 
             sockaddr_storage ss;
-            int ss_len;
+            int              ss_len;
             if (!ResolveAddress(address, port, &ss, &ss_len))
             {
                 throw SocketException("Unable to resolve address.");
@@ -259,17 +257,16 @@ public:
 
             // Connect
             uint32 connectStartTick;
-            int connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
-            if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS &&
-                                                  LAST_SOCKET_ERROR() != EWOULDBLOCK))
+            int    connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
+            if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS && LAST_SOCKET_ERROR() != EWOULDBLOCK))
             {
                 throw SocketException("Failed to connect.");
             }
 
             connectStartTick = SDL_GetTicks();
 
-            int error = 0;
-            socklen_t len = sizeof(error);
+            int       error = 0;
+            socklen_t len   = sizeof(error);
             if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char *)&error, &len) != 0)
             {
                 throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
@@ -288,13 +285,13 @@ public:
                 FD_ZERO(&writeFD);
                 FD_SET(_socket, &writeFD);
                 timeval timeout;
-                timeout.tv_sec = 0;
+                timeout.tv_sec  = 0;
                 timeout.tv_usec = 0;
                 if (select((int)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
-                    error = 0;
+                    error         = 0;
                     socklen_t len = sizeof(error);
-                    if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
+                    if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char *)&error, &len) != 0)
                     {
                         throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
                     }
@@ -326,26 +323,27 @@ public:
         if (SDL_TryLockMutex(_connectMutex) == 0)
         {
             // Spin off a worker thread for resolving the address
-            auto req = new ConnectRequest();
-            req->Socket = this;
+            auto req     = new ConnectRequest();
+            req->Socket  = this;
             req->Address = std::string(address);
-            req->Port = port;
-            SDL_CreateThread([](void * pointer) -> int
-            {
-                auto req = (ConnectRequest *)pointer;
-                try
-                {
-                    req->Socket->Connect(req->Address.c_str(), req->Port);
-                }
-                catch (Exception ex)
-                {
-                    req->Socket->_error = std::string(ex.GetMessage());
-                }
+            req->Port    = port;
+            SDL_CreateThread(
+                [](void * pointer) -> int {
+                    auto req = (ConnectRequest *)pointer;
+                    try
+                    {
+                        req->Socket->Connect(req->Address.c_str(), req->Port);
+                    }
+                    catch (Exception ex)
+                    {
+                        req->Socket->_error = std::string(ex.GetMessage());
+                    }
 
-                SDL_UnlockMutex(req->Socket->_connectMutex);
-                delete req;
-                return 0;
-            }, 0, req);
+                    SDL_UnlockMutex(req->Socket->_connectMutex);
+                    delete req;
+                    return 0;
+                },
+                0, req);
         }
     }
 
@@ -367,9 +365,9 @@ public:
         size_t totalSent = 0;
         do
         {
-            const char * bufferStart = (const char *)buffer + totalSent;
-            size_t remainingSize = size - totalSent;
-            int sentBytes = send(_socket, (const char *)bufferStart, (int)remainingSize, FLAG_NO_PIPE);
+            const char * bufferStart   = (const char *)buffer + totalSent;
+            size_t       remainingSize = size - totalSent;
+            int          sentBytes     = send(_socket, (const char *)bufferStart, (int)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;
@@ -429,7 +427,7 @@ private:
     TcpSocket(SOCKET socket)
     {
         _socket = socket;
-		_status = SOCKET_STATUS_CONNECTED;
+        _status = SOCKET_STATUS_CONNECTED;
     }
 
     void CloseSocket()
@@ -446,7 +444,7 @@ private:
     {
         std::string serviceName = std::to_string(port);
 
-        addrinfo hints = { 0 };
+        addrinfo hints  = { 0 };
         hints.ai_family = AF_UNSPEC;
         if (address == nullptr)
         {
@@ -481,7 +479,7 @@ private:
 
     static bool SetTCPNoDelay(SOCKET socket, bool enabled)
     {
-        return setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&enabled, sizeof(enabled)) == 0;
+        return setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&enabled, sizeof(enabled)) == 0;
     }
 };
 

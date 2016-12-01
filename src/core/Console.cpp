@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,95 +14,94 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../platform/platform.h"
+extern "C" {
+#include "../platform/platform.h"
 }
 
 #include "Console.hpp"
 
 namespace Console
 {
-    void Write(char c)
+void Write(char c)
+{
+    fputc(c, stdout);
+}
+
+void Write(const utf8 * str)
+{
+    fputs(str, stdout);
+}
+
+void WriteSpace(size_t count)
+{
+    for (size_t i = 0; i < count; i++)
     {
-        fputc(c, stdout);
+        Write(' ');
     }
+}
 
-    void Write(const utf8 * str)
-    {
-        fputs(str, stdout);
-    }
+void WriteFormat(const utf8 * format, ...)
+{
+    va_list args;
 
-    void WriteSpace(size_t count)
-    {
-        for (size_t i = 0; i < count; i++)
-        {
-            Write(' ');
-        }
-    }
+    va_start(args, format);
+    vfprintf(stdout, format, args);
+    va_end(args);
+}
 
-    void WriteFormat(const utf8 * format, ...)
-    {
-        va_list args;
+void WriteLine()
+{
+    puts("");
+}
 
-        va_start(args, format);
-        vfprintf(stdout, format, args);
-        va_end(args);
-    }
+void WriteLine(const utf8 * format, ...)
+{
+    va_list args;
 
-    void WriteLine()
-    {
-        puts("");
-    }
+    va_start(args, format);
+    vfprintf(stdout, format, args);
+    puts("");
+    va_end(args);
+}
 
-    void WriteLine(const utf8 * format, ...)
-    {
-        va_list args;
+namespace Error
+{
+void Write(char c)
+{
+    fputc(c, stderr);
+}
 
-        va_start(args, format);
-        vfprintf(stdout, format, args);
-        puts("");
-        va_end(args);
-    }
+void Write(const utf8 * str)
+{
+    fputs(str, stderr);
+}
 
-    namespace Error
-    {
-        void Write(char c)
-        {
-            fputc(c, stderr);
-        }
+void WriteFormat(const utf8 * format, ...)
+{
+    va_list args;
 
-        void Write(const utf8 * str)
-        {
-            fputs(str, stderr);
-        }
+    va_start(args, format);
+    vfprintf(stderr, format, args);
+    va_end(args);
+}
 
-        void WriteFormat(const utf8 * format, ...)
-        {
-            va_list args;
+void WriteLine()
+{
+    fputs(PLATFORM_NEWLINE, stderr);
+}
 
-            va_start(args, format);
-            vfprintf(stderr, format, args);
-            va_end(args);
-        }
+void WriteLine(const utf8 * format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    WriteLine_VA(format, args);
+    va_end(args);
+}
 
-        void WriteLine()
-        {
-            fputs(PLATFORM_NEWLINE, stderr);
-        }
-
-        void WriteLine(const utf8 * format, ...)
-        {
-            va_list args;
-            va_start(args, format);
-            WriteLine_VA(format, args);
-            va_end(args);
-        }
-
-        void WriteLine_VA(const utf8 * format, va_list args)
-        {
-            vfprintf(stdout, format, args);
-            puts("");
-        }
-    }
+void WriteLine_VA(const utf8 * format, va_list args)
+{
+    vfprintf(stdout, format, args);
+    puts("");
+}
+}
 }

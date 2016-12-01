@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -20,7 +20,7 @@
 #include "../common.h"
 #include "../drawing/drawing.h"
 
-void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, int count, int baseX, int baseY);
-void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, int count, int baseX, int baseY, int modifier, int offset);
+void graph_draw_uint8(rct_drawpixelinfo * dpi, uint8 * history, int count, int baseX, int baseY);
+void graph_draw_money32(rct_drawpixelinfo * dpi, money32 * history, int count, int baseX, int baseY, int modifier, int offset);
 
 #endif

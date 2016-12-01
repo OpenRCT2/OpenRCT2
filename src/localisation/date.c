@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
-#include "../game.h"
 #include "date.h"
+#include "../game.h"
 #include "string_ids.h"
+#include <time.h>
 
 uint16 gDateMonthTicks;
 uint16 gDateMonthsElapsed;
@@ -25,35 +25,27 @@ uint16 gDateMonthsElapsed;
 // rct2: 0x00993988
 const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
-const rct_string_id DateFormatStringIds[] = {
-	STR_DATE_FORMAT_DAY_MONTH_YEAR,
-	STR_DATE_FORMAT_MONTH_DAY_YEAR,
-	STR_DATE_FORMAT_YEAR_MONTH_DAY,
-	STR_DATE_FORMAT_YEAR_DAY_MONTH
-};
+const rct_string_id DateFormatStringIds[] = { STR_DATE_FORMAT_DAY_MONTH_YEAR, STR_DATE_FORMAT_MONTH_DAY_YEAR,
+                                              STR_DATE_FORMAT_YEAR_MONTH_DAY, STR_DATE_FORMAT_YEAR_DAY_MONTH };
 
-const rct_string_id DateFormatStringFormatIds[] = {
-	STR_DATE_FORMAT_DMY,
-	STR_DATE_FORMAT_MDY,
-	STR_DATE_FORMAT_YMD,
-	STR_DATE_FORMAT_YDM
-};
+const rct_string_id DateFormatStringFormatIds[] = { STR_DATE_FORMAT_DMY, STR_DATE_FORMAT_MDY, STR_DATE_FORMAT_YMD,
+                                                    STR_DATE_FORMAT_YDM };
 
 openrct_timeofday gRealTimeOfDay;
 
 int date_get_month(int months)
 {
-	return months % MONTH_COUNT;
+    return months % MONTH_COUNT;
 }
 
 int date_get_year(int months)
 {
-	return months / MONTH_COUNT;
+    return months / MONTH_COUNT;
 }
 
 int date_get_total_months(int month, int year)
 {
-	return (year - 1) * MONTH_COUNT + month;
+    return (year - 1) * MONTH_COUNT + month;
 }
 
 /**
@@ -62,17 +54,17 @@ int date_get_total_months(int month, int year)
  */
 void date_reset()
 {
-	gDateMonthsElapsed = 0;
-	gDateMonthTicks = 0;
-	gCurrentTicks = 0;
+    gDateMonthsElapsed = 0;
+    gDateMonthTicks    = 0;
+    gCurrentTicks      = 0;
 }
 
 void date_update_real_time_of_day()
 {
-	time_t timestamp = time(0);
-	struct tm *now = localtime(&timestamp);
+    time_t      timestamp = time(0);
+    struct tm * now       = localtime(&timestamp);
 
-	gRealTimeOfDay.second = now->tm_sec;
-	gRealTimeOfDay.minute = now->tm_min;
-	gRealTimeOfDay.hour = now->tm_hour;
+    gRealTimeOfDay.second = now->tm_sec;
+    gRealTimeOfDay.minute = now->tm_min;
+    gRealTimeOfDay.hour   = now->tm_hour;
 }

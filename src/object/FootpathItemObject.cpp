@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,22 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/IStream.hpp"
 #include "FootpathItemObject.h"
+#include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
+extern "C" {
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 }
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.path_bit.flags = stream->ReadValue<uint16>();
-    _legacyType.path_bit.draw_type = stream->ReadValue<uint8>();
-    _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
-    _legacyType.path_bit.price = stream->ReadValue<sint16>();
+    _legacyType.path_bit.flags          = stream->ReadValue<uint16>();
+    _legacyType.path_bit.draw_type      = stream->ReadValue<uint8>();
+    _legacyType.path_bit.tool_id        = stream->ReadValue<uint8>();
+    _legacyType.path_bit.price          = stream->ReadValue<sint16>();
     _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
@@ -49,7 +48,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 void FootpathItemObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
+    _legacyType.name  = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 
     _legacyType.path_bit.scenery_tab_id = 0xFF;
@@ -60,7 +59,7 @@ void FootpathItemObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
+    _legacyType.name  = 0;
     _legacyType.image = 0;
 }
 

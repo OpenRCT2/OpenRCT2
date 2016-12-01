@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -18,22 +18,26 @@
 
 #include "SceneryObject.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
+extern "C" {
+#include "../world/scenery.h"
 }
 
 class SmallSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry   _legacyType = { 0 };
-    uint8 *             _var10data = nullptr;
+    rct_scenery_entry _legacyType = { 0 };
+    uint8 *           _var10data  = nullptr;
 
 public:
-    explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
+    explicit SmallSceneryObject(const rct_object_entry & entry) : SceneryObject(entry)
+    {
+    }
     ~SmallSceneryObject();
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    void * GetLegacyData() override
+    {
+        return &_legacyType;
+    }
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;

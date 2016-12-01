@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -34,10 +34,19 @@ public:
     OpenGLFramebuffer(sint32 width, sint32 height);
     ~OpenGLFramebuffer();
 
-    GLuint GetWidth() const { return _width; }
-    GLuint GetHeight() const { return _height; }
-    GLuint GetTexture() const { return _texture; }
+    GLuint GetWidth() const
+    {
+        return _width;
+    }
+    GLuint GetHeight() const
+    {
+        return _height;
+    }
+    GLuint GetTexture() const
+    {
+        return _texture;
+    }
 
-    void Bind() const;
+    void   Bind() const;
     void * GetPixels() const;
 };

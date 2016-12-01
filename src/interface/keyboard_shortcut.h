@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -17,6 +17,8 @@
 #ifndef _INTERFACE_KEYBOARD_SHORTCUT_H_
 #define _INTERFACE_KEYBOARD_SHORTCUT_H_
 
+#include "../rct2.h"
+
 #define SHORTCUT_UNDEFINED 0xFFFF
 
 /** The current shortcut being changed. */
@@ -25,6 +27,6 @@ extern uint8 gKeyboardShortcutChangeId;
 void keyboard_shortcut_set(int key);
 void keyboard_shortcut_handle(int key);
 void keyboard_shortcut_handle_command(int shortcutIndex);
-void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
+void keyboard_shortcut_format_string(char * buffer, size_t size, uint16 shortcutKey);
 
 #endif
