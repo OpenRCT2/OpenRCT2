@@ -18,8 +18,8 @@
 #include "audio/mixer.h"
 #include "drawing/drawing.h"
 #include "intro.h"
-#include "sprites.h"
 #include "rct2.h"
+#include "sprites.h"
 
 #define BACKROUND_COLOUR_DARK		10
 #define BACKROUND_COLOUR_LOGO		245

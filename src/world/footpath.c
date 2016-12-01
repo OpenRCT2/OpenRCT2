@@ -16,17 +16,13 @@
 
 #include "../cheats.h"
 #include "../game.h"
-#include "footpath.h"
 #include "../localisation/localisation.h"
-#include "map.h"
-#include "map_animation.h"
 #include "../network/network.h"
-#include "../util/util.h"
 #include "../object_list.h"
 #include "../rct2.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
-#include "scenery.h"
+#include "../util/util.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
 void sub_6A7642(int x, int y, rct_map_element *mapElement);

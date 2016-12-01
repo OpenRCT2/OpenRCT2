@@ -18,9 +18,9 @@
 #include "../../config.h"
 #include "../../interface/viewport.h"
 #include "../../peep/staff.h"
+#include "../../rct2.h"
 #include "map_element.h"
 #include "surface.h"
-#include "../../rct2.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,

@@ -15,10 +15,10 @@
 #pragma endregion
 
 #include "../common.h"
-#include "Fonts.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
+#include "Fonts.h"
 
 extern "C" {
 #include "../config.h"

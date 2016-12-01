@@ -18,9 +18,9 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../scenario.h"
 #include "../sprites.h"
-#include "../rct2.h"
 #include "dropdown.h"
 
 int gAppropriateImageDropdownItemsPerRow[] = {
