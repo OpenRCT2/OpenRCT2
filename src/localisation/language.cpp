@@ -20,8 +20,8 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
-#include "../object/ObjectManager.h"
 #include "../interface/Fonts.h"
+#include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
 extern "C" {

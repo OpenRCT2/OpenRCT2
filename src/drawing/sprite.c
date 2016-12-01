@@ -14,14 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
 #include "../common.h"
 #include "../openrct2.h"
-#include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "drawing.h"
-#include "../rct2.h"
 
 void *_g1Buffer = NULL;
 

@@ -14,15 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
 #include "../management/finance.h"
-#include "../sprites.h"
 #include "../rct2.h"
-#include "error.h"
+#include "../sprites.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
+#include "error.h"
 
 #pragma region Widgets
 

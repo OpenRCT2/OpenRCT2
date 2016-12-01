@@ -15,13 +15,13 @@
 #pragma endregion
 
 #include "../common.h"
-#include "../localisation/localisation.h"
 #include "../interface/window.h"
-#include "../platform/platform.h"
+#include "../localisation/localisation.h"
 #include "../object.h"
+#include "../platform/platform.h"
+#include "../rct2.h"
 #include "../world/water.h"
 #include "drawing.h"
-#include "../rct2.h"
 
 // HACK These were originally passed back through registers
 int gLastDrawStringX;

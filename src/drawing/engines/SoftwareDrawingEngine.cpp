@@ -29,9 +29,9 @@ extern "C"
     #include "../../interface/viewport.h"
     #include "../../interface/window.h"
     #include "../../intro.h"
+    #include "../../rct2.h"
     #include "../drawing.h"
     #include "../lightfx.h"
-    #include "../../rct2.h"
 }
 
 class SoftwareDrawingEngine;
