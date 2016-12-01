@@ -18,11 +18,6 @@
 
 #include "../common.h"
 
-struct DirectoryInfo
-{
-    const utf8 *    Name;
-};
-
 struct FileInfo
 {
     const utf8 *    Name;

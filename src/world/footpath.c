@@ -15,17 +15,11 @@
 #pragma endregion
 
 #include "../cheats.h"
-#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
 #include "../network/network.h"
 #include "../util/util.h"
 #include "../object_list.h"
-#include "footpath.h"
-#include "map.h"
-#include "map_animation.h"
-#include "scenery.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 

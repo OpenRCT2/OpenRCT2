@@ -20,13 +20,10 @@
 #include "../input.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
-#include "../interface/window.h"
 #include "../interface/viewport.h"
 #include "../world/footpath.h"
-#include "../world/map.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
-#include "../cheats.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,

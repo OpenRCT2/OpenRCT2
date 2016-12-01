@@ -18,6 +18,7 @@
 
 #include <array>
 #include <jansson.h>
+#include <string>
 #include "NetworkPacket.h"
 #include "../common.h"
 
