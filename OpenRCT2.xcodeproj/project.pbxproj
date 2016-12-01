@@ -37,6 +37,7 @@
 		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
+		C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = C649B3D31DF04ED2008AC826 /* format_codes.c */; };
 		C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */; };
 		C64FDA651D6D9A2100F259B9 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BC1CDBC3B7009F9BFC /* bobsleigh_coaster.c */; };
 		C64FDA661D6D9A2100F259B9 /* compact_inverted_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BD1CDBC3B7009F9BFC /* compact_inverted_coaster.c */; };
@@ -535,6 +536,7 @@
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
+		C649B3D31DF04ED2008AC826 /* format_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = format_codes.c; sourceTree = "<group>"; };
 		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S4Importer.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -1650,6 +1652,7 @@
 				D44271351CC81B3200D84D28 /* currency.h */,
 				D44271361CC81B3200D84D28 /* date.c */,
 				D44271371CC81B3200D84D28 /* date.h */,
+				C649B3D31DF04ED2008AC826 /* format_codes.c */,
 				D44271381CC81B3200D84D28 /* format_codes.h */,
 				D44271391CC81B3200D84D28 /* language.cpp */,
 				D442713A1CC81B3200D84D28 /* language.h */,
@@ -2577,6 +2580,7 @@
 				C686F93A1CDBC3B7009F9BFC /* spiral_slide.c in Sources */,
 				C686F9421CDBC3B7009F9BFC /* magic_carpet.c in Sources */,
 				D44272021CC81B3200D84D28 /* Json.cpp in Sources */,
+				C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */,
 				D44272591CC81B3200D84D28 /* dropdown.c in Sources */,
 				D43407DF1D0E14BE00C2B3D4 /* SwapFramebuffer.cpp in Sources */,
 				C686F8AF1CDBC37E009F9BFC /* map_element.c in Sources */,
