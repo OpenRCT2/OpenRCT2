@@ -26,6 +26,11 @@
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <unistd.h>
+#elif defined(__WINDOWS__)
+    extern "C" {
+        // Windows needs this for widechar <-> utf8 conversion utils
+        #include "../localisation/language.h"
+    }
 #endif
 
 #include <stack>
