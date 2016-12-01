@@ -29,7 +29,7 @@
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../rct2.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../world/climate.h"
 #include "platform.h"

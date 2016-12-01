@@ -17,7 +17,6 @@
 #pragma once
 
 #include <SDL.h>
-#include "drawing/drawing.h"
 
 #ifdef __cplusplus
 
