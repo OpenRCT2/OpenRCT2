@@ -102,6 +102,7 @@
     <ClCompile Include="src\localisation\convert.c" />
     <ClCompile Include="src\localisation\currency.c" />
     <ClCompile Include="src\localisation\date.c" />
+    <ClCompile Include="src\localisation\format_codes.c" />
     <ClCompile Include="src\localisation\language.cpp" />
     <ClCompile Include="src\localisation\LanguagePack.cpp" />
     <ClCompile Include="src\localisation\localisation.c" />
