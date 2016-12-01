@@ -1,4 +1,5 @@
 #include "localisation/LanguagePack.h"
+#include "localisation/string_ids.h"
 #include <gtest/gtest.h>
 
 TEST(LanguagePackTest, create_empty)
@@ -34,6 +35,10 @@ TEST(LanguagePackTest, language_pack_simple)
     ASSERT_STREQ(lang->GetString(0x7000), "Arid Heights scenario string");
     ASSERT_EQ(lang->GetObjectOverrideStringId("CONDORRD", 0), 0x6000);
     ASSERT_STREQ(lang->GetString(0x6000), "my test ride");
+    // Test some negatives too
+    ASSERT_EQ(lang->GetString(1000), nullptr);
+    ASSERT_EQ(lang->GetScenarioOverrideStringId("No such park", 0), STR_NONE);
+    ASSERT_EQ(lang->GetObjectOverrideStringId("        ", 0), STR_NONE);
     delete lang;
 }
 
