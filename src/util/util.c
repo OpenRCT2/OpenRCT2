@@ -310,6 +310,7 @@ int strlogicalcmp(char const *a, char const *b) {
 	}
 
 	assert(false);
+	return 0;
 }
 
 utf8 * safe_strtrunc(utf8 * text, size_t size)
