@@ -19,6 +19,7 @@
 #include "../../../common.h"
 #include "OpenGLAPI.h"
 #include "GLSLTypes.h"
+#include "TextureCache.h"
 
 struct DrawRectCommand {
     uint32 flags;

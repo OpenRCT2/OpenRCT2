@@ -18,6 +18,7 @@
 #define _CLIMATE_H_
 
 #include "../common.h"
+#include "../drawing/drawing.h"
 
 enum {
 	CLIMATE_COOL_AND_WET,

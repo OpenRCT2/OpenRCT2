@@ -18,6 +18,7 @@
 #define _TITLE_H_
 
 #include <SDL.h>
+#include "drawing/drawing.h"
 
 enum {
 	TITLE_SCRIPT_WAIT,
