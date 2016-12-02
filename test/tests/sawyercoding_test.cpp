@@ -4,64 +4,67 @@ extern "C" {
 
 #include <gtest/gtest.h>
 
-// These are populated further down in this file, but to do so, they need to be marked `extern`.
-extern const uint8 randomdata[1024];
-extern const uint8 nonedata[1029];
-extern const uint8 rledata[1038];
-extern const uint8 rlecompresseddata[1949];
-extern const uint8 rotatedata[1038];
-
 #define BUFFER_SIZE 0x600000
 
-static void test_encode_decode(uint8 encoding_type)
+class SawyerCodingTest : public testing::Test
 {
-    sawyercoding_chunk_header chdr_in, chdr_out;
-    chdr_in.encoding          = encoding_type;
-    chdr_in.length            = sizeof(randomdata);
-    uint8 * encodedDataBuffer = new uint8[BUFFER_SIZE];
-    size_t  encodedDataSize   = sawyercoding_write_chunk_buffer(encodedDataBuffer, (const uint8 *)randomdata, chdr_in);
-    ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
-    memcpy(&chdr_out, encodedDataBuffer, sizeof(sawyercoding_chunk_header));
-    ASSERT_EQ(chdr_out.encoding, encoding_type);
-    uint8 * decodeBuffer   = new uint8[BUFFER_SIZE];
-    size_t decodedDataSize = sawyercoding_read_chunk_buffer(decodeBuffer, encodedDataBuffer + sizeof(sawyercoding_chunk_header),
-                                                            chdr_out, BUFFER_SIZE);
-    ASSERT_EQ(decodedDataSize, sizeof(randomdata));
-    int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
-    ASSERT_EQ(result, 0);
-    delete[] decodeBuffer;
-    delete[] encodedDataBuffer;
-}
+protected:
+    static const uint8 randomdata[1024];
+    static const uint8 nonedata[1029];
+    static const uint8 rledata[1038];
+    static const uint8 rlecompresseddata[1949];
+    static const uint8 rotatedata[1038];
 
-static void test_decode(const uint8 * data)
-{
-    sawyercoding_chunk_header chdr_in;
-    memcpy(&chdr_in, data, sizeof(sawyercoding_chunk_header));
-    uint8 * decodeBuffer = new uint8[BUFFER_SIZE];
-    size_t  decodedDataSize =
-        sawyercoding_read_chunk_buffer(decodeBuffer, data + sizeof(sawyercoding_chunk_header), chdr_in, BUFFER_SIZE);
-    ASSERT_EQ(decodedDataSize, sizeof(randomdata));
-    int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
-    ASSERT_EQ(result, 0);
-    delete[] decodeBuffer;
-}
+    void test_encode_decode(uint8 encoding_type)
+    {
+        sawyercoding_chunk_header chdr_in, chdr_out;
+        chdr_in.encoding          = encoding_type;
+        chdr_in.length            = sizeof(randomdata);
+        uint8 * encodedDataBuffer = new uint8[BUFFER_SIZE];
+        size_t  encodedDataSize   = sawyercoding_write_chunk_buffer(encodedDataBuffer, (const uint8 *)randomdata, chdr_in);
+        ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
+        memcpy(&chdr_out, encodedDataBuffer, sizeof(sawyercoding_chunk_header));
+        ASSERT_EQ(chdr_out.encoding, encoding_type);
+        uint8 * decodeBuffer    = new uint8[BUFFER_SIZE];
+        size_t  decodedDataSize = sawyercoding_read_chunk_buffer(
+            decodeBuffer, encodedDataBuffer + sizeof(sawyercoding_chunk_header), chdr_out, BUFFER_SIZE);
+        ASSERT_EQ(decodedDataSize, sizeof(randomdata));
+        int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
+        ASSERT_EQ(result, 0);
+        delete[] decodeBuffer;
+        delete[] encodedDataBuffer;
+    }
 
-TEST(sawyercoding, write_read_chunk_none)
+    void test_decode(const uint8 * data)
+    {
+        sawyercoding_chunk_header chdr_in;
+        memcpy(&chdr_in, data, sizeof(sawyercoding_chunk_header));
+        uint8 * decodeBuffer = new uint8[BUFFER_SIZE];
+        size_t  decodedDataSize =
+            sawyercoding_read_chunk_buffer(decodeBuffer, data + sizeof(sawyercoding_chunk_header), chdr_in, BUFFER_SIZE);
+        ASSERT_EQ(decodedDataSize, sizeof(randomdata));
+        int result = memcmp(decodeBuffer, randomdata, sizeof(randomdata));
+        ASSERT_EQ(result, 0);
+        delete[] decodeBuffer;
+    }
+};
+
+TEST_F(SawyerCodingTest, write_read_chunk_none)
 {
     test_encode_decode(CHUNK_ENCODING_NONE);
 }
 
-TEST(sawyercoding, write_read_chunk_rle)
+TEST_F(SawyerCodingTest, write_read_chunk_rle)
 {
     test_encode_decode(CHUNK_ENCODING_RLE);
 }
 
-TEST(sawyercoding, write_read_chunk_rle_compressed)
+TEST_F(SawyerCodingTest, write_read_chunk_rle_compressed)
 {
     test_encode_decode(CHUNK_ENCODING_RLECOMPRESSED);
 }
 
-TEST(sawyercoding, write_read_chunk_rotate)
+TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 {
     test_encode_decode(CHUNK_ENCODING_ROTATE);
 }
@@ -70,29 +73,29 @@ TEST(sawyercoding, write_read_chunk_rotate)
 // The reason for that is we may improve encoding at some point, but the test won't be affected,
 // as we already do a decode test and rountrip (encode + decode), which validates all uses.
 
-TEST(sawyercoding, decode_chunk_none)
+TEST_F(SawyerCodingTest, decode_chunk_none)
 {
     test_decode(nonedata);
 }
 
-TEST(sawyercoding, decode_chunk_rle)
+TEST_F(SawyerCodingTest, decode_chunk_rle)
 {
     test_decode(rledata);
 }
 
-TEST(sawyercoding, decode_chunk_rlecompressed)
+TEST_F(SawyerCodingTest, decode_chunk_rlecompressed)
 {
     test_decode(rlecompresseddata);
 }
 
-TEST(sawyercoding, decode_chunk_rotate)
+TEST_F(SawyerCodingTest, decode_chunk_rotate)
 {
     test_decode(rotatedata);
 }
 
 // 1024 bytes of random data
 // use `dd if=/dev/urandom bs=1024 count=1 | xxd -i` to get your own
-extern const uint8 randomdata[] = {
+const uint8 SawyerCodingTest::randomdata[] = {
     0x3a, 0x97, 0x63, 0x8b, 0xbf, 0xe5, 0x6e, 0x0e, 0xc4, 0xac, 0xdc, 0x84, 0xd7, 0x68, 0xf1, 0x4d, 0xcb, 0xaf, 0x1e, 0x5a,
     0x29, 0x40, 0x87, 0x80, 0x3f, 0xf9, 0xb8, 0xad, 0x01, 0xd3, 0x79, 0x3d, 0xe9, 0x87, 0xa8, 0x95, 0x68, 0xc0, 0xc2, 0x3d,
     0x15, 0x87, 0xdb, 0xa6, 0x90, 0x8c, 0x26, 0x98, 0x2a, 0x3f, 0x2e, 0x0c, 0x82, 0x43, 0x00, 0x10, 0x6d, 0x60, 0xb9, 0xd4,
@@ -149,7 +152,7 @@ extern const uint8 randomdata[] = {
 
 // Following are compressed versions of the data above.
 
-extern const uint8 nonedata[] = {
+const uint8 SawyerCodingTest::nonedata[] = {
     0x00, 0x00, 0x04, 0x00, 0x00, 0x3a, 0x97, 0x63, 0x8b, 0xbf, 0xe5, 0x6e, 0x0e, 0xc4, 0xac, 0xdc, 0x84, 0xd7, 0x68, 0xf1,
     0x4d, 0xcb, 0xaf, 0x1e, 0x5a, 0x29, 0x40, 0x87, 0x80, 0x3f, 0xf9, 0xb8, 0xad, 0x01, 0xd3, 0x79, 0x3d, 0xe9, 0x87, 0xa8,
     0x95, 0x68, 0xc0, 0xc2, 0x3d, 0x15, 0x87, 0xdb, 0xa6, 0x90, 0x8c, 0x26, 0x98, 0x2a, 0x3f, 0x2e, 0x0c, 0x82, 0x43, 0x00,
@@ -204,7 +207,7 @@ extern const uint8 nonedata[] = {
     0x80, 0xbe, 0x9e, 0xd7, 0x5e, 0xb5, 0x72, 0x22, 0xbc
 };
 
-extern const uint8 rledata[] = {
+const uint8 SawyerCodingTest::rledata[] = {
     0x01, 0x09, 0x04, 0x00, 0x00, 0x7d, 0x3a, 0x97, 0x63, 0x8b, 0xbf, 0xe5, 0x6e, 0x0e, 0xc4, 0xac, 0xdc, 0x84, 0xd7, 0x68,
     0xf1, 0x4d, 0xcb, 0xaf, 0x1e, 0x5a, 0x29, 0x40, 0x87, 0x80, 0x3f, 0xf9, 0xb8, 0xad, 0x01, 0xd3, 0x79, 0x3d, 0xe9, 0x87,
     0xa8, 0x95, 0x68, 0xc0, 0xc2, 0x3d, 0x15, 0x87, 0xdb, 0xa6, 0x90, 0x8c, 0x26, 0x98, 0x2a, 0x3f, 0x2e, 0x0c, 0x82, 0x43,
@@ -259,7 +262,7 @@ extern const uint8 rledata[] = {
     0x1d, 0x15, 0x29, 0x5b, 0xd0, 0x66, 0x72, 0xb8, 0x38, 0x80, 0xbe, 0x9e, 0xd7, 0x5e, 0xb5, 0x72, 0x22, 0xbc
 };
 
-extern const uint8 rlecompresseddata[] = {
+const uint8 SawyerCodingTest::rlecompresseddata[] = {
     0x02, 0x98, 0x07, 0x00, 0x00, 0x7d, 0xff, 0x3a, 0xff, 0x97, 0xff, 0x63, 0xff, 0x8b, 0xff, 0xbf, 0xff, 0xe5, 0xff, 0x6e,
     0xff, 0x0e, 0xff, 0xc4, 0xff, 0xac, 0xff, 0xdc, 0xff, 0x84, 0xff, 0xd7, 0xff, 0x68, 0xff, 0xf1, 0xff, 0x4d, 0xff, 0xcb,
     0xff, 0xaf, 0xff, 0x1e, 0xff, 0x5a, 0xff, 0x29, 0xff, 0x40, 0xff, 0x87, 0xff, 0x80, 0xff, 0x3f, 0xff, 0xf9, 0xff, 0xb8,
@@ -360,7 +363,7 @@ extern const uint8 rlecompresseddata[] = {
     0xff, 0x5e, 0xff, 0xb5, 0xb8, 0xff, 0x22, 0xff, 0xbc
 };
 
-extern const uint8 rotatedata[] = {
+const uint8 SawyerCodingTest::rotatedata[] = {
     0x03, 0x00, 0x04, 0x00, 0x00, 0x74, 0xbc, 0x6c, 0xc5, 0x7f, 0x2f, 0xcd, 0x07, 0x89, 0x65, 0x9b, 0x42, 0xaf, 0x43, 0x3e,
     0xa6, 0x97, 0x7d, 0xc3, 0x2d, 0x52, 0x02, 0xf0, 0x40, 0x7e, 0xcf, 0x17, 0xd6, 0x02, 0x9e, 0x2f, 0x9e, 0xd3, 0x3c, 0x15,
     0xca, 0xd0, 0x06, 0x58, 0x9e, 0x2a, 0x3c, 0x7b, 0x53, 0x21, 0x64, 0xc4, 0x4c, 0x54, 0xf9, 0xc5, 0x06, 0x05, 0x1a, 0x00,

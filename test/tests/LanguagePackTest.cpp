@@ -2,7 +2,14 @@
 #include "localisation/string_ids.h"
 #include <gtest/gtest.h>
 
-TEST(LanguagePackTest, create_empty)
+class LanguagePackTest : public testing::Test
+{
+protected:
+    static const utf8 *        LanguageEnGB;
+    static const unsigned char LanguageZhTW[];
+};
+
+TEST_F(LanguagePackTest, create_empty)
 {
     ILanguagePack * empty = LanguagePackFactory::FromText(0, "");
     ASSERT_EQ(empty->GetId(), 0);
@@ -10,7 +17,7 @@ TEST(LanguagePackTest, create_empty)
     delete empty;
 }
 
-TEST(LanguagePackTest, create_mutable_id_1)
+TEST_F(LanguagePackTest, create_mutable_id_1)
 {
     ILanguagePack * lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
@@ -22,10 +29,7 @@ TEST(LanguagePackTest, create_mutable_id_1)
     delete lang;
 }
 
-extern const utf8 *        LanguageEnGB;
-extern const unsigned char LanguageZhTW[];
-
-TEST(LanguagePackTest, language_pack_simple)
+TEST_F(LanguagePackTest, language_pack_simple)
 {
     ILanguagePack * lang = LanguagePackFactory::FromText(0, LanguageEnGB);
     ASSERT_EQ(lang->GetId(), 0);
@@ -42,7 +46,7 @@ TEST(LanguagePackTest, language_pack_simple)
     delete lang;
 }
 
-TEST(LanguagePackTest, language_pack_multibyte)
+TEST_F(LanguagePackTest, language_pack_multibyte)
 {
     ILanguagePack * lang = LanguagePackFactory::FromText(0, (const utf8 *)LanguageZhTW);
     ASSERT_EQ(lang->GetId(), 0);
@@ -57,27 +61,27 @@ TEST(LanguagePackTest, language_pack_multibyte)
     delete lang;
 }
 
-const utf8 * LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
-                            "# Everything after the colon and before the new line will be saved as the "
-                            "string.\n"
-                            "# Use # at the beginning of a line to leave a comment.\n"
-                            "STR_0000    :\n"
-                            "STR_0001    :{STRINGID} {COMMA16}\n"
-                            "STR_0002    :Spiral Roller Coaster\n"
-                            "STR_0003    :Stand-up Roller Coaster\n"
-                            "<Arid Heights>\n"
-                            "STR_SCNR    :Arid Heights scenario string\n"
-                            "STR_PARK    :Arid Heights park string\n"
-                            "STR_DTLS    :Free of any financial limits, your challenge is to develop "
-                            "this desert park while keeping the guests happy\n"
-                            "[CONDORRD]\n"
-                            "STR_NAME    :my test ride\n"
-                            "STR_DESC    :ride description\n"
-                            "STR_CPTY    :ride capacity\n";
+const utf8 * LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
+                                              "# Everything after the colon and before the new line will be saved as the "
+                                              "string.\n"
+                                              "# Use # at the beginning of a line to leave a comment.\n"
+                                              "STR_0000    :\n"
+                                              "STR_0001    :{STRINGID} {COMMA16}\n"
+                                              "STR_0002    :Spiral Roller Coaster\n"
+                                              "STR_0003    :Stand-up Roller Coaster\n"
+                                              "<Arid Heights>\n"
+                                              "STR_SCNR    :Arid Heights scenario string\n"
+                                              "STR_PARK    :Arid Heights park string\n"
+                                              "STR_DTLS    :Free of any financial limits, your challenge is to develop "
+                                              "this desert park while keeping the guests happy\n"
+                                              "[CONDORRD]\n"
+                                              "STR_NAME    :my test ride\n"
+                                              "STR_DESC    :ride description\n"
+                                              "STR_CPTY    :ride capacity\n";
 
 // This includes a few entries extracted from zh-TW localisation.
 // It has to be declared as `unsigned char`, or else the values overflow signed byte.
-const unsigned char LanguageZhTW[] = {
+const unsigned char LanguagePackTest::LanguageZhTW[] = {
     0x53, 0x54, 0x52, 0x5f, 0x30, 0x30, 0x30, 0x30, 0x20, 0x20, 0x20, 0x20, 0x3a, 0xe8, 0x9e, 0xba, 0xe6, 0x97, 0x8b, 0xe5,
     0xbc, 0x8f, 0xe9, 0x9b, 0xb2, 0xe9, 0x9c, 0x84, 0xe9, 0xa3, 0x9b, 0xe8, 0xbb, 0x8a, 0x0a, 0x53, 0x54, 0x52, 0x5f, 0x30,
     0x30, 0x30, 0x31, 0x20, 0x20, 0x20, 0x20, 0x3a, 0xe7, 0xab, 0x99, 0xe7, 0xab, 0x8b, 0xe5, 0xbc, 0x8f, 0xe9, 0x9b, 0xb2,
