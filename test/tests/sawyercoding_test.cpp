@@ -13,7 +13,7 @@ protected:
     static const uint8 nonedata[1029];
     static const uint8 rledata[1038];
     static const uint8 rlecompresseddata[1949];
-    static const uint8 rotatedata[1038];
+    static const uint8 rotatedata[1029];
 
     void test_encode_decode(uint8 encoding_type)
     {
@@ -35,10 +35,11 @@ protected:
         delete[] encodedDataBuffer;
     }
 
-    void test_decode(const uint8 * data)
+    void test_decode(const uint8 * data, size_t size)
     {
         sawyercoding_chunk_header chdr_in;
         memcpy(&chdr_in, data, sizeof(sawyercoding_chunk_header));
+        ASSERT_EQ(chdr_in.length, size - sizeof(sawyercoding_chunk_header));
         uint8 * decodeBuffer = new uint8[BUFFER_SIZE];
         size_t  decodedDataSize =
             sawyercoding_read_chunk_buffer(decodeBuffer, data + sizeof(sawyercoding_chunk_header), chdr_in, BUFFER_SIZE);
@@ -75,22 +76,23 @@ TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 
 TEST_F(SawyerCodingTest, decode_chunk_none)
 {
-    test_decode(nonedata);
+    test_decode(nonedata, sizeof(nonedata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rle)
 {
-    test_decode(rledata);
+    test_decode(rledata, sizeof(rledata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rlecompressed)
 {
-    test_decode(rlecompresseddata);
+    test_decode(rlecompresseddata, sizeof(rlecompresseddata));
 }
 
 TEST_F(SawyerCodingTest, decode_chunk_rotate)
 {
-    test_decode(rotatedata);
+    // Rotate
+    test_decode(rotatedata, sizeof(rotatedata));
 }
 
 // 1024 bytes of random data
