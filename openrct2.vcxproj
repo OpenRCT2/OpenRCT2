@@ -18,6 +18,38 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
+    <RootNamespace>openrct2</RootNamespace>
+    <ProjectName>openrct2</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TEST)'=='true'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\openrct2.common.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(TEST)'=='true'">__NOENTRYPOINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem Condition="'$(Configuration)'=='Debug'">Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+
   <!-- Files -->
   <ItemGroup>
     <None Include="data\shaders\copyframebuffer.frag" />
@@ -536,36 +568,6 @@
   <ItemGroup>
     <Image Include="resources\logo\icon.ico" />
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
-    <RootNamespace>openrct2</RootNamespace>
-    <ProjectName>openrct2</ProjectName>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-  </PropertyGroup>
-  <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TEST)'=='true'">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)\openrct2.common.props" />
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(TEST)'=='true'">__NOENTRYPOINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <SubSystem Condition="'$(Configuration)'=='Debug'">Console</SubSystem>
-    </Link>
-  </ItemDefinitionGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
