@@ -9550,6 +9550,26 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		}
 	}
 
+	/* If this is a new goal for the peep. Store it and reset the peep's
+	 * pathfind_history. */
+	if (peep->pathfind_goal.direction > 3 ||
+		peep->pathfind_goal.x != goal.x ||
+		peep->pathfind_goal.y != goal.y ||
+		peep->pathfind_goal.z != goal.z
+	) {
+		peep->pathfind_goal.x = goal.x;
+		peep->pathfind_goal.y = goal.y;
+		peep->pathfind_goal.z = goal.z;
+		peep->pathfind_goal.direction = 0;
+
+		// Clear pathfinding history
+		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_verbose("New goal; clearing pf_history.");
+		}
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	}
 
 	// Peep has tried all edges.
 	if (edges == 0) return -1;
@@ -9673,27 +9693,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				log_verbose("Junction#%d %d,%d,%d Direction %d", listIdx + 1, bestJunctionList[listIdx].x, bestJunctionList[listIdx].y, bestJunctionList[listIdx].z, bestDirectionList[listIdx]);
 			}
 			log_verbose("End at %d,%d,%d", bestXYZ.x, bestXYZ.y, bestXYZ.z);
-		}
-		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	}
-
-	/* If this is a new goal for the peep. Store it and reset the peep's
-	 * pathfind_history. */
-	if (peep->pathfind_goal.direction > 3 ||
-		peep->pathfind_goal.x != goal.x ||
-		peep->pathfind_goal.y != goal.y ||
-		peep->pathfind_goal.z != goal.z
-	) {
-		peep->pathfind_goal.x = goal.x;
-		peep->pathfind_goal.y = goal.y;
-		peep->pathfind_goal.z = goal.z;
-		peep->pathfind_goal.direction = 0;
-
-		// Clear pathfinding history
-		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
-		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-		if (gPathFindDebug) {
-			log_verbose("New goal; clearing pf_history.");
 		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
