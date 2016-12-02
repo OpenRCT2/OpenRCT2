@@ -52,7 +52,7 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
-#ifdef NO_RCT2
+#if defined(NO_RCT2) && !defined(__NOENTRYPOINT__)
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
