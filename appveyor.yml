@@ -19,16 +19,11 @@ install:
 platform:
   - Win32
   - x64
-configuration:
-  - Release
-  - ReleaseTests
+configuration: Release
 build:
   project: openrct2.proj
 test_script:
-- ps: >-
-    if ($env:configuration -eq "ReleaseTests") {
-        msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    }
+- ps: msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 artifacts:
 - path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable
