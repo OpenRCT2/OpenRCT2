@@ -2,6 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+    <Config Condition="'$(Configuration)'=='Debug' OR '$(Configuration)'=='DebugTests'">Debug</Config>
+    <Config Condition="'$(Configuration)'=='Release' OR '$(Configuration)'=='ReleaseTests'">Release</Config>
   </PropertyGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -14,28 +16,15 @@
     <CharacterSet>MultiByte</CharacterSet>
 
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Config)_$(Platform)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Debug'">
+  <PropertyGroup Condition="'$(Config)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <LinkIncremental />
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='Release'">
+  <PropertyGroup Condition="'$(Config)'=='Release'">
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-    <LinkIncremental />
-    <TargetName>$(ProjectName)</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
 
   <ItemDefinitionGroup>
@@ -49,14 +38,16 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>openrct2-libs-vs2015-x64.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Platform)'=='Win32'">openrct2-libs-vs2015-x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Platform)'=='x64'">openrct2-libs-vs2015-x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Config)'=='Debug'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
@@ -68,7 +59,7 @@
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Config)'=='Release'">
     <ClCompile>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -86,10 +77,18 @@
     </Link>
   </ItemDefinitionGroup>
 
+  <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'!='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>NO_RCT2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
     <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <LinkIncremental />
   </PropertyGroup>
 </Project>

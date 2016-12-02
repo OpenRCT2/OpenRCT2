@@ -4,20 +4,20 @@
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DebugTests|Win32">
+      <Configuration>DebugTests</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="ReleaseTests|Win32">
+      <Configuration>ReleaseTests</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="DebugTests|x64">
+      <Configuration>DebugTests</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="ReleaseTests|x64">
+      <Configuration>ReleaseTests</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -29,7 +29,7 @@
   <PropertyGroup Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\openrct2.common.props" />
+  <Import Project="..\..\openrct2.common.props" />
   <PropertyGroup>
     <OutDir>$(SolutionDir)bin\tests\</OutDir>
     <IncludePath>$(GTestDir)\googletest;$(GTestDir)\googletest\include;$(SolutionDir)src;$(IncludePath)</IncludePath>
@@ -38,6 +38,7 @@
   <ItemDefinitionGroup>
     <Link>
       <AdditionalDependencies>openrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
 
