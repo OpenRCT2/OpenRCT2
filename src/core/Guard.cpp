@@ -78,8 +78,11 @@ namespace Guard
             char *bufend = (char *)strchr(buffer, 0);
             vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
         }
-        // Only show message box if we are not building for testing
-#ifndef __TEST__
+#ifdef __TEST__
+        // Abort if we are building for testing
+        abort();
+#else
+        // Show message box if we are not building for testing
         int result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)
         {
