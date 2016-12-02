@@ -9675,6 +9675,12 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			rct_xyz8 endJunctionList[16] = { 0 };
 			uint8 endDirectionList[16] = { 0 };
 
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
 			peep_pathfind_heuristic_search(x, y, height, peep, first_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
@@ -9755,7 +9761,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
-			log_verbose("Storing new pf_history for %d,%d,%d without edge %d.", x >> 5, y >> 5, z, chosen_edge);
+			log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without edge %d.", i, x >> 5, y >> 5, z, chosen_edge);
 		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
@@ -9882,18 +9888,13 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	gPeepPathFindQueueRideIndex = 255;
 
 	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	/* Determine if the pathfinding debugging is wanted for this peep. */
-	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-	 * determine for which guest(s) the pathfinding debugging will
-	 * be output for. */
-	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
-	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	pathfind_logging_enable(peep);
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	gPathFindDebug = false;
+	pathfind_logging_disable();
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (chosenDirection == -1)
@@ -10033,6 +10034,13 @@ static int guest_path_finding(rct_peep* peep)
 {
 	sint16 x, y, z;
 
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	pathfind_logging_enable(peep);
+	if (gPathFindDebug) {
+		log_info("Starting guest_path_finding for %s", gPathFindDebugPeepName);
+	}
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	if (peep->next_var_29 & 0x18) {
 		return guest_surface_path_finding(peep);
 	}
@@ -10088,6 +10096,12 @@ static int guest_path_finding(rct_peep* peep)
 	direction = bitscanforward(edges);
 	// IF only one edge to choose from
 	if ((edges & ~(1 << direction)) == 0) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName, direction);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return peep_move_one_tile(direction, peep);
 	}
 
@@ -10096,6 +10110,12 @@ static int guest_path_finding(rct_peep* peep)
 	// Peep is outside the park.
 	// loc_694F19:
 	if (peep->outside_of_park != 0){
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is outside the park.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		switch (peep->state) {
 		case PEEP_STATE_ENTERING_PARK:
 			return guest_path_find_entering_park(peep, mapElement, edges);
@@ -10149,18 +10169,39 @@ static int guest_path_finding(rct_peep* peep)
 		}
 	}
 
-	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is leaving the park.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_park_entrance(peep, mapElement, edges);
+	}
 
-	if (peep->guest_heading_to_ride_id == 0xFF)
+	if (peep->guest_heading_to_ride_id == 0xFF) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_aimless(peep, edges);
+	}
 
 	// Peep is heading for a ride.
 	uint8 rideIndex = peep->guest_heading_to_ride_id;
 	rct_ride* ride = get_ride(rideIndex);
 
-	if (ride->status != RIDE_STATUS_OPEN)
+	if (ride->status != RIDE_STATUS_OPEN) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is heading to closed ride == aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_aimless(peep, edges);
+	}
 
 	// The ride is open.
 	gPeepPathFindQueueRideIndex = rideIndex;
@@ -10232,20 +10273,7 @@ static int guest_path_finding(rct_peep* peep)
 	gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z };
 	gPeepPathFindIgnoreForeignQueues = true;
 
-	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	/* Determine if the pathfinding debugging is wanted for this peep. */
-	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-	 * determine for which guest(s) the pathfinding debugging will
-	 * be output for. */
-	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
-	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
-	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
-
-	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	gPathFindDebug = false;
-	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (direction == -1){
 		/* Heuristic search failed for all directions.
@@ -10256,8 +10284,21 @@ static int guest_path_finding(rct_peep* peep)
 		 * save game (e.g. with a worse version of the pathfinding). */
 		peep_reset_pathfind_goal(peep);
 
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 		return guest_path_find_aimless(peep, edges);
 	}
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	if (gPathFindDebug) {
+		log_info("Completed guest_path_finding for %s - direction chosen: %d.", gPathFindDebugPeepName, direction);
+	}
+	pathfind_logging_disable();
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	return peep_move_one_tile(direction, peep);
 }
 
@@ -11015,6 +11056,13 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
  */
 void peep_reset_pathfind_goal(rct_peep *peep)
 {
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	if (gPathFindDebug) {
+		log_info("Resetting pathfind_goal for %s", gPathFindDebugPeepName);
+	}
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	peep->pathfind_goal.x = 0xFF;
 	peep->pathfind_goal.y = 0xFF;
 	peep->pathfind_goal.z = 0xFF;
@@ -12572,4 +12620,30 @@ void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)ebp,
 		(uint8*)edi
 		);
+}
+
+void pathfind_logging_enable(rct_peep* peep) {
+	#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+	/* Determine if the pathfinding debugging is wanted for this peep. */
+	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
+
+	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+	 * determine for which guest(s) the pathfinding debugging will
+	 * be output for. */
+	if (peep->type == PEEP_TYPE_GUEST){
+		gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	}
+	/* For staff, there is no tracking button (any other similar
+	 * suitable existing mechanism?), so fall back to a crude
+	 * string comparison with a compile time hardcoded name. */
+	else {
+		gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+	}
+	#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+
+void pathfind_logging_disable() {
+	#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+	gPathFindDebug = false;
+	#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }

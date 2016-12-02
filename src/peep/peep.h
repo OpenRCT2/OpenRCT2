@@ -20,12 +20,6 @@
 #include "../common.h"
 #include "../world/map.h"
 
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-// Some variables used for the path finding debugging.
-extern bool gPathFindDebug;
-extern utf8 gPathFindDebugPeepName[256];
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 #define PEEP_MAX_THOUGHTS 5
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25
@@ -686,5 +680,18 @@ void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
 void peep_reset_pathfind_goal(rct_peep *peep);
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+#define PATHFIND_DEBUG 0 // Set to 0 to disable pathfinding debugging;
+			 // Set to 1 to enable pathfinding debugging.
+// Some variables used for the path finding debugging.
+extern bool gPathFindDebug; // Use to guard calls to log messages
+extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
+
+// The following calls set the above two variables for a peep.
+// ... when PATHFIND_DEBUG is 1 (non zero) 
+void pathfind_logging_enable(rct_peep* peep);
+void pathfind_logging_disable();
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 #endif
