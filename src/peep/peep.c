@@ -9297,7 +9297,17 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 					if (peep->pathfind_history[i].x == x >> 5 &&
 						peep->pathfind_history[i].y == y >> 5 &&
 						peep->pathfind_history[i].z == z) {
-						pathLoop = true;
+						if (peep->pathfind_history[i].direction == 0) {
+							/* If all directions have already been tried while
+							 * heading to this goal, this is a loop. */
+							pathLoop = true;
+						}
+						else {
+							/* The peep remembers walking through this junction
+							 * before, but has not yet tried all directions.
+							 * Limit the edges to search to those not yet tried. */
+							edges &= peep->pathfind_history[i].direction;
+						}
 						break;
 					}
 				}
