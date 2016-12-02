@@ -1,5 +1,5 @@
 // Make MSVC shut up about M_PI
-#include <math.h>
+#include <cmath>
 
 extern "C" {
 #include "util/sawyercoding.h"
