@@ -9715,7 +9715,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].x = x >> 5;
 		peep->pathfind_history[i].y = y >> 5;
 		peep->pathfind_history[i].z = z;
-		peep->pathfind_history[i].direction = 0xF;
+		peep->pathfind_history[i].direction = permitted_edges;
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
