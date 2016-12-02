@@ -9545,6 +9545,25 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 					log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", x >> 5, y >> 5, z, (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
 				}
 				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+				if (edges == 0) {
+					/* If peep has tried all edges, reset to
+					 * all edges are untried.
+					 * This permits the pathfinding to try
+					 * again, which is good for getting
+					 * unstuck when the player has edited
+					 * the paths or the pathfinding itself
+					 * has changed (been fixed) since
+					 * the game was saved. */
+					peep->pathfind_history[i].direction = permitted_edges;
+					edges = peep->pathfind_history[i].direction;
+
+					#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+					if (gPathFindDebug) {
+						log_verbose("All edges tried for %d,%d,%d - resetting to all untried", x >> 5, y >> 5, z);
+					}
+					#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				}
 				break;
 			}
 		}
