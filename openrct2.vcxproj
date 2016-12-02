@@ -62,7 +62,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem Condition="'$(Configuration)'=='Debug'">Console</SubSystem>

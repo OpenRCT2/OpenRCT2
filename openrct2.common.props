@@ -36,6 +36,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -43,9 +44,6 @@
       <AdditionalDependencies Condition="'$(Platform)'=='x64'">openrct2-libs-vs2015-x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <Manifest>
-      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
-    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Config)'=='Debug'">
     <ClCompile>
@@ -91,4 +89,10 @@
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental />
   </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
 </Project>
