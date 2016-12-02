@@ -12622,6 +12622,7 @@ void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		);
 }
 
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 void pathfind_logging_enable(rct_peep* peep) {
 	#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 	/* Determine if the pathfinding debugging is wanted for this peep. */
@@ -12647,3 +12648,4 @@ void pathfind_logging_disable() {
 	gPathFindDebug = false;
 	#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
