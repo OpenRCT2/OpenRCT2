@@ -1,5 +1,5 @@
 version: 0.0.5.{build}
-os: Visual Studio 2015
+os: Previous Visual Studio 2015
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
