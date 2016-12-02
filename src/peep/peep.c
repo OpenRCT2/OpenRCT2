@@ -9462,21 +9462,50 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 
 	// Get the path element at this location
 	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
+	/* Where there are multiple matching map elements placed with zero
+	 * clearance, save the first one for later use to determine the path
+	 * slope - this maintains the original behaviour (which only processes
+	 * the first matching map element found) and is consistent with peep
+	 * placement (i.e. height) on such paths with differing slopes.
+	 *
+	 * I cannot see a legitimate reason for building overlaid paths with
+	 * differing slopes and do not recall ever seeing this in practise.
+	 * Normal cases I have seen in practise are overlaid paths with the
+	 * same slope (flat) in order to place scenery (e.g. benches) in the
+	 * middle of a wide path that can still be walked through.
+	 * Anyone attempting to overlay paths with different slopes should
+	 * EXPECT to experience path finding irregularities due to those paths!
+	 * In particular common edges at different heights will not work
+	 * in a useful way. Simply do not do it! :-) */
+	rct_map_element *first_map_element = NULL;
+
 	bool found = false;
+	uint8 permitted_edges = 0;
+	bool isThin = false;
 	do {
 		if (dest_map_element->base_height != z) continue;
 		if (map_element_get_type(dest_map_element) != MAP_ELEMENT_TYPE_PATH) continue;
 		found = true;
-		break;
+		if (first_map_element == NULL) {
+			first_map_element = dest_map_element;
+		}
+
+		/* Check if this path element is a thin junction.
+		 * Only 'thin' junctions are remembered in peep->pathfind_history.
+		 * NO attempt is made to merge the overlaid path elements and
+		 * check if the combination is 'thin'!
+		 * The junction is considered 'thin' simply if any of the
+		 * overlaid path elements there is a 'thin junction'. */
+		isThin = isThin || path_is_thin_junction(dest_map_element, x, y, z);
+
+		// Collect the permitted edges of ALL matching path elements at this location.
+		permitted_edges |= path_get_permitted_edges(dest_map_element);
 	} while (!map_element_is_last_for_tile(dest_map_element++));
 	// Peep is not on a path.
 	if (!found) return -1;
 
-	/* Determine if the path is a thin junction.
-	 * Only 'thin' junctions are remembered in peep->pathfind_history. */
-	bool isThin = path_is_thin_junction(dest_map_element, x, y, z);
-
-	uint8 edges = 0xF;
+	permitted_edges &= 0xF;
+	uint8 edges = permitted_edges;
 	if (isThin && peep->pathfind_goal.x == goal.x &&
 		peep->pathfind_goal.y == goal.y &&
 		peep->pathfind_goal.z == goal.z
@@ -9544,8 +9573,8 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
 
-			if (footpath_element_is_sloped(dest_map_element) &&
-				footpath_element_get_slope_direction(dest_map_element) == test_edge
+			if (footpath_element_is_sloped(first_map_element) &&
+				footpath_element_get_slope_direction(first_map_element) == test_edge
 			) {
 				height += 0x2;
 			}
@@ -9589,7 +9618,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			rct_xyz8 endJunctionList[16] = { 0 };
 			uint8 endDirectionList[16] = { 0 };
 
-			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+			peep_pathfind_heuristic_search(x, y, height, peep, first_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
 				log_verbose("Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
