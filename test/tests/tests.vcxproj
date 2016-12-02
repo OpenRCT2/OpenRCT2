@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+    <GtestDir Condition="'$(GtestDir)'==''">$(SolutionDir)lib\googletest\googletest</GtestDir>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugTests|Win32">
@@ -32,7 +33,7 @@
   <Import Project="..\..\openrct2.common.props" />
   <PropertyGroup>
     <OutDir>$(SolutionDir)bin\tests\</OutDir>
-    <IncludePath>$(GTestDir)\googletest;$(GTestDir)\googletest\include;$(SolutionDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(GtestDir);$(GtestDir)\include;$(SolutionDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -48,7 +49,7 @@
   <ItemGroup>
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
-    <ClCompile Include="$(GTestDir)\googletest\src\gtest-all.cc" />
+    <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
     <ClCompile Include="tests.cpp" />
   </ItemGroup>
 
