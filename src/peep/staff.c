@@ -1129,6 +1129,13 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		if (pathfindDirection == -1) {
+			/* Heuristic search failed for all directions.
+			 * Reset the pathfind_goal - this means that the pathfind_history
+			 * will be reset in the next call to peep_pathfind_choose_direction().
+			 * This lets the heuristic search "try again" in case the player has
+			 * edited the path layout or the mechanic was already stuck in the
+			 * save game (e.g. with a worse version of the pathfinding). */
+			peep_reset_pathfind_goal(peep);
 			return staff_mechanic_direction_path_rand(peep, pathDirections);
 		}
 

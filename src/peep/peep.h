@@ -685,5 +685,6 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
+void peep_reset_pathfind_goal(rct_peep *peep);
 
 #endif

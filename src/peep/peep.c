@@ -143,7 +143,7 @@ static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtR
 static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool peepAtRide, bool updateLastRide);
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
-static void peep_reset_pathfind_goal(rct_peep *peep);
+void peep_reset_pathfind_goal(rct_peep *peep);
 static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
@@ -10248,6 +10248,14 @@ static int guest_path_finding(rct_peep* peep)
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (direction == -1){
+		/* Heuristic search failed for all directions.
+		 * Reset the pathfind_goal - this means that the pathfind_history
+		 * will be reset in the next call to peep_pathfind_choose_direction().
+		 * This lets the heuristic search "try again" in case the player has
+		 * edited the path layout or the mechanic was already stuck in the
+		 * save game (e.g. with a worse version of the pathfinding). */
+		peep_reset_pathfind_goal(peep);
+
 		return guest_path_find_aimless(peep, edges);
 	}
 	return peep_move_one_tile(direction, peep);
@@ -11005,7 +11013,7 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
  *
  *  rct2: 0x0069A98C
  */
-static void peep_reset_pathfind_goal(rct_peep *peep)
+void peep_reset_pathfind_goal(rct_peep *peep)
 {
 	peep->pathfind_goal.x = 0xFF;
 	peep->pathfind_goal.y = 0xFF;
