@@ -55,7 +55,6 @@
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
 
     <!-- Set openrct2.sln properties -->
-    <SlnProperties>Configuration=$(Configuration)</SlnProperties>
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
     <SlnProperties Condition="'$(BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
@@ -65,6 +64,8 @@
     <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
     <LibsPath>$(RootDir)lib\</LibsPath>
     <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
+    <GtestVersion>1.8.0</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/release-$(GtestVersion).zip</GtestUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -122,6 +123,7 @@
   <Target Name="DownloadLibs">
     <PropertyGroup>
       <LibsZipPath>$(LibsPath)openrct2-libs-vs2015.zip</LibsZipPath>
+      <GtestZipPath>$(LibsPath)gtest.zip</GtestZipPath>
     </PropertyGroup>
 
     <!-- Clean libs directory -->
@@ -129,15 +131,26 @@
     <MakeDir Directories="$(LibsPath)" />
 
     <Message Text="Downloading libraries..." Importance="normal" />
+    <!-- prebuilt libs -->
     <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(LibsUrl)' -OutFile '$(LibsZipPath)'&quot;" StandardOutputImportance="low" />
     <Unzip Input="$(LibsZipPath)" OutputDirectory="$(LibsPath)" />
     <Delete Files="$(LibsZipPath)" ContinueOnError="true" />
+
+    <!-- googletest -->
+    <Message Text="Downloading googletest..." Importance="normal" />
+    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(GtestUrl)' -OutFile '$(GtestZipPath)'&quot;" StandardOutputImportance="low" />
+    <Unzip Input="$(GtestZipPath)" OutputDirectory="$(LibsPath)" />
+    <Delete Files="$(GtestZipPath)" ContinueOnError="true" />
+    <Exec Command="cmd /c move &quot;$(LibsPath)googletest-release-$(GtestVersion)&quot; &quot;$(LibsPath)googletest&quot;" />
 
     <!-- Update libversion file -->
     <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
   </Target>
 
   <Target Name="Clean">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
       <CleanItems Include="$(g2Output)" />
@@ -169,15 +182,33 @@
   </Target>
 
   <Target Name="Build">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
   </Target>
   <Target Name="Rebuild">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
+  <Target Name="BuildTests">
+    <PropertyGroup>
+      <Configuration Condition="'$(Configuration)'=='Debug'">DebugTests</Configuration>
+      <Configuration Condition="'$(Configuration)'=='Release'">ReleaseTests</Configuration>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
+    <Message Text="SlnProperties: $(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
+  </Target>
 
-  <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
+  <Target Name="Test" DependsOnTargets="BuildTests">
+    <Exec Command="$(TargetDir)tests\tests.exe" />
+  </Target>
+  <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
   </Target>
 

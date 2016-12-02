@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+    <GtestDir Condition="'$(GtestDir)'==''">$(SolutionDir)lib\googletest\googletest</GtestDir>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugTests|Win32">
+      <Configuration>DebugTests</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTests|Win32">
+      <Configuration>ReleaseTests</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTests|x64">
+      <Configuration>DebugTests</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTests|x64">
+      <Configuration>ReleaseTests</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{62B020FA-E4FB-4C6E-B32A-DC999470F155}</ProjectGuid>
+    <RootNamespace>tests</RootNamespace>
+    <ProjectName>tests</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="..\..\openrct2.common.props" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)bin\tests\</OutDir>
+    <IncludePath>$(GtestDir);$(GtestDir)\include;$(SolutionDir)src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>openrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <!-- Files -->
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LanguagePackTest.cpp" />
+    <ClCompile Include="sawyercoding_test.cpp" />
+    <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
+    <ClCompile Include="tests.cpp" />
+  </ItemGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
