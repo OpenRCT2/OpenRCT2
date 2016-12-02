@@ -9529,7 +9529,17 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			if (peep->pathfind_history[i].x == x / 32 &&
 					peep->pathfind_history[i].y == y / 32 &&
 					peep->pathfind_history[i].z == z) {
-				edges = peep->pathfind_history[i].direction & 0xF;
+
+				/* Fix broken pathfind_history[i].direction
+				 * which have untried directions that are not
+				 * currently possible - could be due to pathing
+				 * changes or in earlier code .directions was
+				 * initialised to 0xF rather than the permitted
+				 * edges. */
+				peep->pathfind_history[i].direction &= permitted_edges;
+
+				edges = peep->pathfind_history[i].direction;
+
 				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				if (gPathFindDebug) {
 					log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", x >> 5, y >> 5, z, (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
@@ -9540,8 +9550,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		}
 	}
 
-	// Remove any edges that are not permitted
-	edges &= path_get_permitted_edges(dest_map_element);
 
 	// Peep has tried all edges.
 	if (edges == 0) return -1;
