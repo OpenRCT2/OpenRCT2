@@ -78,7 +78,9 @@ namespace Guard
             char *bufend = (char *)strchr(buffer, 0);
             vsnprintf(bufend, sizeof(buffer) - (bufend - buffer), message, args);
         }
-        int result = MessageBox(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+        // Only show message box if we are not building for testing
+#ifndef __TEST__
+        int result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
         if (result == IDABORT)
         {
 #ifdef USE_BREAKPAD
@@ -88,6 +90,7 @@ namespace Guard
             assert(false);
 #endif
         }
+#endif
 #else
         assert(false);
 #endif

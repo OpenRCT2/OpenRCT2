@@ -74,6 +74,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='DebugTests'">
+    <ClCompile>
+      <PreprocessorDefinitions>__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseTests'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;__TEST__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
 
   <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'!='Debug|Win32'">
