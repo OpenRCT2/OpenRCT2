@@ -8977,7 +8977,7 @@ static bool path_is_thin_junction(rct_map_element *path, sint16 x, sint16 y, uin
  *
  *  rct2: 0x0069A997
  */
-static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *currentMapElement, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
+static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *currentMapElement, bool inPatrolArea, uint8 counter, uint16 *endScore, int test_edge, uint8 *endJunctions, rct_xyz8 junctionList[16], uint8 directionList[16], rct_xyz8 *endXYZ, uint8 *endSteps) {
 	uint8 searchResult = PATH_SEARCH_FAILED;
 
 	x += TileDirectionDelta[test_edge].x;
@@ -8998,6 +8998,23 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 		}
 		#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 		return;
+	}
+
+
+	bool nextInPatrolArea = inPatrolArea;
+	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC) {
+		nextInPatrolArea = staff_is_location_in_patrol(peep, x, y);
+		if (inPatrolArea && !nextInPatrolArea) {
+			/* The mechanic will leave his patrol area by taking
+			 * the test_edge so the current search path ends here.
+			 * Return without updating the parameters (best result so far). */
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			return;
+		}
 	}
 
 	/* Get the next map element of interest in the direction of test_edge. */
@@ -9399,7 +9416,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 				_peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = test_edge;
 			}
 
-			peep_pathfind_heuristic_search(x, y, height, peep, mapElement, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
+			peep_pathfind_heuristic_search(x, y, height, peep, mapElement, nextInPatrolArea, counter, endScore, test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
 			_peepPathFindNumJunctions = savedNumJunctions;
 
 			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -9589,7 +9606,15 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			rct_xyz8 endJunctionList[16] = { 0 };
 			uint8 endDirectionList[16] = { 0 };
 
-			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+			bool inPatrolArea = false;
+			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC) {
+				/* Mechanics are the only staff type that
+				 * pathfind to a destination. Determine if the
+				 * mechanic is in their patrol area. */
+				inPatrolArea = staff_is_location_in_patrol(peep, peep->next_x, peep->next_y);
+			}
+
+			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, inPatrolArea, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
 				log_verbose("Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
