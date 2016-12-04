@@ -68,8 +68,11 @@
       <SubSystem Condition="'$(Configuration)'!='Release'">Console</SubSystem>
       <SubSystem Condition="'$(Configuration)'=='Release'">Windows</SubSystem>
     </Link>
+    <Lib>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Lib>
   </ItemDefinitionGroup>
-
   <!-- Files -->
   <ItemGroup>
     <None Include="data\shaders\copyframebuffer.frag" />
