@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">.\</SolutionDir>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -7,6 +10,14 @@
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTests|Win32">
+      <Configuration>DebugTests</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTests|x64">
+      <Configuration>DebugTests</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -17,7 +28,52 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTests|Win32">
+      <Configuration>ReleaseTests</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTests|x64">
+      <Configuration>ReleaseTests</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
+    <RootNamespace>openrct2</RootNamespace>
+    <ProjectName>openrct2</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="openrct2.common.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">__NOENTRYPOINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem Condition="'$(Configuration)'!='Release'">Console</SubSystem>
+      <SubSystem Condition="'$(Configuration)'=='Release'">Windows</SubSystem>
+    </Link>
+    <Lib>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Lib>
+  </ItemDefinitionGroup>
+  <!-- Files -->
   <ItemGroup>
     <None Include="data\shaders\copyframebuffer.frag" />
     <None Include="data\shaders\copyframebuffer.vert" />
@@ -535,186 +591,5 @@
   <ItemGroup>
     <Image Include="resources\logo\icon.ico" />
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
-    <RootNamespace>openrct2</RootNamespace>
-    <ProjectName>openrct2</ProjectName>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <Import Project="$(SolutionDir)\openrct2.common.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-    <LinkIncremental />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-    <LinkIncremental />
-    <TargetName>$(ProjectName)</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Breakpad)'=='true'">
-    <ClCompile>
-      <PreprocessorDefinitions>USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <MinimalRebuild>false</MinimalRebuild>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>openrct2-libs-vs2015-x86.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck />
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <OmitFramePointers />
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>NO_RCT2;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openrct2-libs-vs2015-x86.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-      <SubSystem>Windows</SubSystem>
-    </Link>
-    <Manifest>
-      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <MinimalRebuild>false</MinimalRebuild>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>openrct2-libs-vs2015-x64.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <Manifest>
-      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck />
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <OmitFramePointers />
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openrct2-libs-vs2015-x64.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-      <SubSystem>Windows</SubSystem>
-    </Link>
-    <Manifest>
-      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
-    </Manifest>
-  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
 </Project>

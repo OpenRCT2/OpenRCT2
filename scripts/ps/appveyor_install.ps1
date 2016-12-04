@@ -2,6 +2,8 @@
 # Script to setup OpenRCT2 for building on AppVeyor
 #########################################################
 
+$testing = (${env:Configuration} -like "*tests")
+
 function Check-ExitCode
 {
     if ($LASTEXITCODE -ne 0)
@@ -10,7 +12,7 @@ function Check-ExitCode
     }
 }
 
-if ($env:ENCKEY)
+if ($env:ENCKEY -and -not $testing)
 {
     if (-not (Test-Path "secure-file"))
     {
@@ -24,7 +26,7 @@ if ($env:ENCKEY)
 }
 
 # Check if OpenRCT2.org API security token is available
-if (${env:OPENRCT2_ORG_TOKEN})
+if (${env:OPENRCT2_ORG_TOKEN} -and -not $testing)
 {
     if (-not (Test-Path "C:\ProgramData\chocolatey\lib\nsis.portable"))
     {
