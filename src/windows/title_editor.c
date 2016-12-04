@@ -395,12 +395,14 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_DELETE:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
-				// title_sequence_delete_command(_selectedTitleSequence, w->selected_list_item);
-				if (w->selected_list_item > 0) {
-					w->selected_list_item--;
-				} else if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
-					w->selected_list_item = (sint16)(_editingTitleSequence->NumCommands - 1);
+				for (int i = w->selected_list_item; i < _editingTitleSequence->NumCommands - 1; i++) {
+					_editingTitleSequence->Commands[i] = _editingTitleSequence->Commands[i + 1];
 				}
+				_editingTitleSequence->NumCommands--;
+				if (w->selected_list_item >= _editingTitleSequence->NumCommands) {
+					w->selected_list_item--;
+				}
+				window_title_editor_save_sequence();
 			}
 		}
 		break;
