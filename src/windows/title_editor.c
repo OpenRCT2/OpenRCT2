@@ -66,6 +66,7 @@ static void window_title_editor_load_sequence(size_t index);
 static ITitleSequencePlayer * window_title_editor_get_player();
 static bool window_title_editor_check_can_edit();
 static void window_title_editor_add_park_callback(int result, const utf8 * path);
+static void window_title_editor_save_sequence();
 
 static rct_window_event_list window_title_editor_events = {
 	window_title_editor_close,
@@ -129,8 +130,8 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	//WIDX_TITLE_EDITOR_RELOAD,
 	WIDX_TITLE_EDITOR_SKIP_TO,
 
-	WIDX_TITLE_EDITOR_MOVE_UP,
 	WIDX_TITLE_EDITOR_MOVE_DOWN,
+	WIDX_TITLE_EDITOR_MOVE_UP,
 
 	WIDX_TITLE_EDITOR_REPLAY,
 	WIDX_TITLE_EDITOR_STOP,
@@ -416,16 +417,26 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_MOVE_DOWN:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands - 1) {
-				// title_sequence_move_down_command(_selectedTitleSequence, w->selected_list_item);
+				TitleCommand * a = &_editingTitleSequence->Commands[w->selected_list_item];
+				TitleCommand * b = &_editingTitleSequence->Commands[w->selected_list_item + 1];
+				TitleCommand tmp = *a;
+				*a = *b;
+				*b = tmp;
 				w->selected_list_item++;
+				window_title_editor_save_sequence();
 			}
 		}
 		break;
 	case WIDX_TITLE_EDITOR_MOVE_UP:
 		if (window_title_editor_check_can_edit()) {
-			if (w->selected_list_item != -1 && w->selected_list_item > 0) {
-				// title_sequence_move_up_command(_selectedTitleSequence, w->selected_list_item);
+			if (w->selected_list_item > 0 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
+				TitleCommand * a = &_editingTitleSequence->Commands[w->selected_list_item - 1];
+				TitleCommand * b = &_editingTitleSequence->Commands[w->selected_list_item];
+				TitleCommand tmp = *b;
+				*b = *a;
+				*a = tmp;
 				w->selected_list_item--;
+				window_title_editor_save_sequence();
 			}
 		}
 		break;
@@ -1010,4 +1021,11 @@ static void window_title_editor_add_park_callback(int result, const utf8 * path)
 	}
 
 	// title_sequence_add_save(gCurrentTitleSequence, path, newName);
+}
+
+static void window_title_editor_save_sequence()
+{
+	if (_editingTitleSequence != NULL) {
+		TileSequenceSave(_editingTitleSequence);
+	}
 }
