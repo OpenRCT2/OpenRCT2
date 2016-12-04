@@ -51,6 +51,7 @@ namespace TitleSequenceManager
 
     std::vector<TitleSequenceManagerItem> _items;
 
+    static std::string GetNewTitleSequencePath(const std::string &name, bool isZip);
     static size_t FindItemIndexByPath(const utf8 * path);
     static void Scan(const utf8 * directory);
     static void AddSequence(const utf8 * scanPath);
@@ -124,34 +125,24 @@ namespace TitleSequenceManager
         auto item = &_items[i];
         const utf8 * srcPath = item->Path.c_str();
 
-        utf8 dstPath[MAX_PATH];
-        Path::GetDirectory(dstPath, sizeof(dstPath), srcPath);
-        Path::Append(dstPath, sizeof(dstPath), name);
-        if (item->IsZip)
-        {
-            String::Append(dstPath, sizeof(dstPath), TITLE_SEQUENCE_EXTENSION);
-        }
-        if (!platform_file_copy(srcPath, dstPath, true))
+        std::string dstPath = GetNewTitleSequencePath(std::string(name), item->IsZip);
+        if (!platform_file_copy(srcPath, dstPath.c_str(), true))
         {
             return SIZE_MAX;
         }
 
-        AddSequence(dstPath);
+        AddSequence(dstPath.c_str());
         SortSequences();
-        size_t index = FindItemIndexByPath(dstPath);
+        size_t index = FindItemIndexByPath(dstPath.c_str());
         return index;
     }
 
     size_t CreateItem(const utf8 * name)
     {
-        utf8 path[MAX_PATH];
-        GetUserSequencesPath(path, sizeof(path));
-        Path::Append(path, sizeof(path), name);
-        String::Append(path, sizeof(path), TITLE_SEQUENCE_EXTENSION);
-
+        std::string path = GetNewTitleSequencePath(std::string(name), true);
         TitleSequence * seq = CreateTitleSequence();
         seq->Name = String::Duplicate(name);
-        seq->Path = String::Duplicate(path);
+        seq->Path = String::Duplicate(path.c_str());
         seq->IsZip = true;
 
         bool success = TileSequenceSave(seq);
@@ -160,11 +151,23 @@ namespace TitleSequenceManager
         size_t index = SIZE_MAX;
         if (success)
         {
-            AddSequence(path);
+            AddSequence(path.c_str());
             SortSequences();
-            index = FindItemIndexByPath(path);
+            index = FindItemIndexByPath(path.c_str());
         }
         return index;
+    }
+
+    static std::string GetNewTitleSequencePath(const std::string &name, bool isZip)
+    {
+        utf8 path[MAX_PATH];
+        GetUserSequencesPath(path, sizeof(path));
+        Path::Append(path, sizeof(path), name.c_str());
+        if (isZip)
+        {
+            String::Append(path, sizeof(path), TITLE_SEQUENCE_EXTENSION);
+        }
+        return std::string(path);
     }
 
     static const uint16 GetPredefinedIndex(const std::string &path)
