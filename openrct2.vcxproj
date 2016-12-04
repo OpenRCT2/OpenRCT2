@@ -65,7 +65,8 @@
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem Condition="'$(Configuration)'=='Debug'">Console</SubSystem>
+      <SubSystem Condition="'$(Configuration)'!='Release'">Console</SubSystem>
+      <SubSystem Condition="'$(Configuration)'=='Release'">Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
 
@@ -587,6 +588,5 @@
   <ItemGroup>
     <Image Include="resources\logo\icon.ico" />
   </ItemGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
