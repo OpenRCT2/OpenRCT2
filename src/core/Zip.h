@@ -37,7 +37,9 @@ interface IZipArchive
      *             the zip archive has been disposed.
      * @param dataSize The size of the data in bytes.
      */
-    virtual void            SetFileData(const utf8 * path, void * data, size_t dataSize) abstract;
+    virtual void SetFileData(const utf8 * path, void * data, size_t dataSize) abstract;
+
+    virtual void DeleteFile(const utf8 * path) abstract;
 };
 
 enum ZIP_ACCESS

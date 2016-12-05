@@ -112,6 +112,12 @@ public:
             zip_replace(_zip, index, source);
         }
     }
+
+    void DeleteFile(const utf8 * path) override
+    {
+        uint64 index = zip_name_locate(_zip, path, 0);
+        zip_delete(_zip, index);
+    }
 };
 
 namespace Zip

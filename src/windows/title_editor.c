@@ -342,11 +342,9 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_REMOVE_SAVE:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
-				// title_sequence_remove_save(_selectedTitleSequence, w->selected_list_item);
-				if (w->selected_list_item > 0) {
+				TitleSequenceRemovePark(_editingTitleSequence, w->selected_list_item);
+				if (w->selected_list_item >= _editingTitleSequence->NumSaves) {
 					w->selected_list_item--;
-				} else if (w->selected_list_item > (sint16)_editingTitleSequence->NumSaves) {
-					w->selected_list_item = (sint16)(_editingTitleSequence->NumSaves - 1);
 				}
 			}
 		}

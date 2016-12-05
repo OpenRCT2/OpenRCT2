@@ -36,6 +36,9 @@ extern "C"
     #include "../platform/platform.h"
 }
 
+// <windows.h> defines DeleteFile, which conflicts with IZipArchive call
+#undef DeleteFile
+
 static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
@@ -84,7 +87,7 @@ extern "C"
         }
         else
         {
-            utf8 scriptPath[260];
+            utf8 scriptPath[MAX_PATH];
             String::Set(scriptPath, sizeof(scriptPath), path);
             Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
             script = (char *)ReadScriptFile(scriptPath, &scriptLength);
@@ -146,7 +149,7 @@ extern "C"
             }
             else
             {
-                utf8 absolutePath[260];
+                utf8 absolutePath[MAX_PATH];
                 String::Set(absolutePath, sizeof(absolutePath), seq->Path);
                 Path::Append(absolutePath, sizeof(absolutePath), filename);
 
@@ -182,7 +185,7 @@ extern "C"
         }
         else
         {
-            utf8 scriptPath[260];
+            utf8 scriptPath[MAX_PATH];
             String::Set(scriptPath, sizeof(scriptPath), seq->Path);
             Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
 
@@ -203,18 +206,6 @@ extern "C"
 
     bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
     {
-        // Determine new path (relative for zip)
-        utf8 dstPath[260];
-        if (seq->IsZip)
-        {
-            String::Set(dstPath, sizeof(dstPath), name);
-        }
-        else
-        {
-            String::Set(dstPath, sizeof(dstPath), seq->Path);
-            Path::Append(dstPath, sizeof(dstPath), name);
-        }
-
         // Get new save index
         size_t index = SIZE_MAX;
         for (size_t i = 0; i < seq->NumSaves; i++)
@@ -232,7 +223,7 @@ extern "C"
             index = seq->NumSaves;
             seq->NumSaves++;
         }
-        seq->Saves[index] = String::Duplicate(dstPath);
+        seq->Saves[index] = String::Duplicate(name);
 
         if (seq->IsZip)
         {
@@ -247,7 +238,7 @@ extern "C"
                     Console::Error::WriteLine("Unable to open '%s'", seq->Path);
                     return false;
                 }
-                zip->SetFileData(dstPath, fdata, fsize);
+                zip->SetFileData(name, fdata, fsize);
                 delete zip;
                 Memory::Free(fdata);
             }
@@ -258,6 +249,10 @@ extern "C"
         }
         else
         {
+            // Determine destination path
+            utf8 dstPath[MAX_PATH];
+            String::Set(dstPath, sizeof(dstPath), seq->Path);
+            Path::Append(dstPath, sizeof(dstPath), name);
             if (!platform_file_copy(path, dstPath, true))
             {
                 Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
@@ -266,13 +261,53 @@ extern "C"
         }
         return true;
     }
+
+    bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
+    {
+        Guard::Assert(seq->NumSaves > index, GUARD_LINE);
+
+        // Delete park file
+        utf8 * relativePath = seq->Saves[index];
+        if (seq->IsZip)
+        {
+            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+            if (zip == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open '%s'", seq->Path);
+                return false;
+            }
+            zip->DeleteFile(relativePath);
+            delete zip;
+        }
+        else
+        {
+            utf8 absolutePath[MAX_PATH];
+            String::Set(absolutePath, sizeof(absolutePath), seq->Path);
+            Path::Append(absolutePath, sizeof(absolutePath), relativePath);
+            if (!platform_file_delete(absolutePath))
+            {
+                Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
+                return false;
+            }
+        }
+
+        // Remove from sequence
+        Memory::Free(relativePath);
+        for (size_t i = index; i < seq->NumSaves - 1; i++)
+        {
+            seq->Saves[i] = seq->Saves[i + 1];
+        }
+        seq->NumSaves--;
+
+        return true;
+    }
 }
 
 static std::vector<utf8 *> GetSaves(const utf8 * directory)
 {
     std::vector<utf8 *> saves;
 
-    utf8 pattern[260];
+    utf8 pattern[MAX_PATH];
     String::Set(pattern, sizeof(pattern), directory);
     Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
 
