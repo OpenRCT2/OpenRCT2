@@ -91,6 +91,7 @@ extern "C"
     TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index);
     void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
     bool TileSequenceSave(TitleSequence * seq);
+    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
 
     bool TitleSequenceIsLoadCommand(const TitleCommand * command);
 #ifdef __cplusplus

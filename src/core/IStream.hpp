@@ -116,4 +116,5 @@ class IOException : public Exception
 {
 public:
     IOException(const char * message) : Exception(message) { }
+    IOException(const std::string &message) : Exception(message) { }
 };

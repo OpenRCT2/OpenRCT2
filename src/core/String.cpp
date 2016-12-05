@@ -34,6 +34,15 @@ namespace String
         else return std::string(str);
     }
 
+    std::string StdFormat(const utf8 * format, ...)
+    {
+        va_list args;
+        va_start(args, format);
+        const utf8 * buffer = Format_VA(format, args);
+        va_end(args);
+        return ToStd(buffer);
+    }
+
     bool IsNullOrEmpty(const utf8 * str)
     {
         return str == nullptr || str[0] == '\0';
@@ -147,6 +156,68 @@ namespace String
         // Terminate buffer in case formatted string overflowed
         buffer[bufferSize - 1] = '\0';
 
+        return buffer;
+    }
+
+    utf8 * Format(const utf8 * format, ...)
+    {
+        va_list args;
+        va_start(args, format);
+        utf8 * result = Format_VA(format, args);
+        va_end(args);
+        return result;
+    }
+
+    utf8 * Format_VA(const utf8 * format, va_list args)
+    {
+        va_list args1, args2;
+        va_copy(args1, args);
+        va_copy(args2, args);
+
+        // Try to format to a initial buffer, enlarge if not big enough
+        size_t bufferSize = 4096;
+        utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
+
+        // Start with initial buffer
+        int len = vsnprintf(buffer, bufferSize, format, args);
+        if (len < 0)
+        {
+            Memory::Free(buffer);
+            va_end(args1);
+            va_end(args2);
+
+            // An error occured...
+            return nullptr;
+        }
+
+        size_t requiredSize = (size_t)len + 1;
+        if (requiredSize > bufferSize)
+        {
+            // Try again with bigger buffer
+            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+            int len = vsnprintf(buffer, bufferSize, format, args);
+            if (len < 0)
+            {
+                Memory::Free(buffer);
+                va_end(args1);
+                va_end(args2);
+
+                // An error occured...
+                return nullptr;
+            }
+        }
+        else
+        {
+            // Reduce buffer size to only what was required
+            bufferSize = requiredSize;
+            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+        }
+
+        // Ensure buffer is terminated
+        buffer[bufferSize - 1] = '\0';
+
+        va_end(args1);
+        va_end(args2);
         return buffer;
     }
 

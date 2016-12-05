@@ -101,6 +101,7 @@
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Diagnostics.cpp" />
+    <ClCompile Include="src\core\File.cpp" />
     <ClCompile Include="src\core\FileScanner.cpp" />
     <ClCompile Include="src\core\Guard.cpp" />
     <ClCompile Include="src\core\IStream.cpp" />
@@ -434,6 +435,7 @@
     <ClInclude Include="src\core\Console.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
+    <ClInclude Include="src\core\File.h" />
     <ClInclude Include="src\core\FileScanner.h" />
     <ClInclude Include="src\core\FileStream.hpp" />
     <ClInclude Include="src\core\Guard.hpp" />

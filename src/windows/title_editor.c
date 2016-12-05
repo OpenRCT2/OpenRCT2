@@ -1022,7 +1022,7 @@ static void window_title_editor_add_park_callback(int result, const utf8 * path)
 		return;
 	}
 
-	// title_sequence_add_save(gCurrentTitleSequence, path, newName);
+	TileSequenceAddPark(_editingTitleSequence, path, filename);
 }
 
 static void window_title_editor_save_sequence()

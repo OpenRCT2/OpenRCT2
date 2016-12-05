@@ -19,6 +19,7 @@
 #include "../common.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
@@ -29,6 +30,11 @@
 #include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
 #include "TitleSequence.h"
+
+extern "C"
+{
+    #include "../platform/platform.h"
+}
 
 static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
@@ -193,6 +199,72 @@ extern "C"
 
         Memory::Free(script);
         return success;
+    }
+
+    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
+    {
+        // Determine new path (relative for zip)
+        utf8 dstPath[260];
+        if (seq->IsZip)
+        {
+            String::Set(dstPath, sizeof(dstPath), name);
+        }
+        else
+        {
+            String::Set(dstPath, sizeof(dstPath), seq->Path);
+            Path::Append(dstPath, sizeof(dstPath), name);
+        }
+
+        // Get new save index
+        size_t index = SIZE_MAX;
+        for (size_t i = 0; i < seq->NumSaves; i++)
+        {
+            if (String::Equals(seq->Saves[i], path, true))
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == SIZE_MAX)
+        {
+            seq->Saves = Memory::ReallocateArray(seq->Saves, seq->NumSaves + 1);
+            Guard::Assert(seq->Saves != nullptr, GUARD_LINE);
+            index = seq->NumSaves;
+            seq->NumSaves++;
+        }
+        seq->Saves[index] = String::Duplicate(dstPath);
+
+        if (seq->IsZip)
+        {
+            try
+            {
+                size_t fsize;
+                void * fdata = File::ReadAllBytes(path, &fsize);
+
+                IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+                if (zip == nullptr)
+                {
+                    Console::Error::WriteLine("Unable to open '%s'", seq->Path);
+                    return false;
+                }
+                zip->SetFileData(dstPath, fdata, fsize);
+                delete zip;
+                Memory::Free(fdata);
+            }
+            catch (Exception ex)
+            {
+                Console::Error::WriteLine(ex.GetMessage());
+            }
+        }
+        else
+        {
+            if (!platform_file_copy(path, dstPath, true))
+            {
+                Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
+                return false;
+            }
+        }
+        return true;
     }
 }
 
