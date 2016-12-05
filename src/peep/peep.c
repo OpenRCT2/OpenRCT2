@@ -19,6 +19,7 @@
 #include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
@@ -2006,9 +2007,17 @@ bool peep_pickup_command(unsigned int peepnum, int x, int y, int z, int action, 
 			if (!peep_can_be_picked_up(peep)) {
 				return false;
 			}
-			if (network_get_pickup_peep(game_command_playerid)) {
+			rct_peep* existing = network_get_pickup_peep(game_command_playerid);
+			if (existing) {
 				// already picking up a peep
-				return false;
+				bool result = peep_pickup_command(existing->sprite_index, network_get_pickup_peep_old_x(game_command_playerid), 0, 0, 1, apply);
+				if (existing == peep) {
+					return result;
+				}
+				if (game_command_playerid == network_get_current_player_id()) {
+					// prevent tool_cancel()
+					gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
+				}
 			}
 			if (apply) {
 				network_set_pickup_peep(game_command_playerid, peep);
