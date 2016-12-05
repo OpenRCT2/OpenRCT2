@@ -38,12 +38,12 @@
 #include "dropdown.h"
 #include "error.h"
 
-enum {
+enum WINDOW_TITLE_EDITOR_TAB {
 	WINDOW_TITLE_EDITOR_TAB_PRESETS,
 	WINDOW_TITLE_EDITOR_TAB_SAVES,
 	WINDOW_TITLE_EDITOR_TAB_SCRIPT,
 	WINDOW_TITLE_EDITOR_TAB_COUNT
-} WINDOW_TITLE_EDITOR_TAB;
+};
 
 static void window_title_editor_close(rct_window *w);
 static void window_title_editor_mouseup(rct_window *w, int widgetIndex);
@@ -118,10 +118,10 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 	WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON,
 
 	// Saves Tab
-	WIDX_TITLE_EDITOR_ADD,
-	WIDX_TITLE_EDITOR_REMOVE,
+	WIDX_TITLE_EDITOR_ADD_SAVE,
+	WIDX_TITLE_EDITOR_REMOVE_SAVE,
 	WIDX_TITLE_EDITOR_RENAME_SAVE,
-	WIDX_TITLE_EDITOR_LOAD,
+	WIDX_TITLE_EDITOR_LOAD_SAVE,
 
 	// Script Tab
 	WIDX_TITLE_EDITOR_INSERT,
@@ -244,10 +244,10 @@ void window_title_editor_open(int tab)
 		(1 << WIDX_TITLE_EDITOR_DELETE_BUTTON) |
 		(1 << WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON) |
 
-		(1 << WIDX_TITLE_EDITOR_ADD) |
-		(1 << WIDX_TITLE_EDITOR_REMOVE) |
+		(1 << WIDX_TITLE_EDITOR_ADD_SAVE) |
+		(1 << WIDX_TITLE_EDITOR_REMOVE_SAVE) |
 		(1 << WIDX_TITLE_EDITOR_RENAME_SAVE) |
-		(1 << WIDX_TITLE_EDITOR_LOAD) |
+		(1 << WIDX_TITLE_EDITOR_LOAD_SAVE) |
 
 		(1 << WIDX_TITLE_EDITOR_INSERT) |
 		(1 << WIDX_TITLE_EDITOR_EDIT) |
@@ -333,13 +333,13 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Editor tab
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	case WIDX_TITLE_EDITOR_ADD:
+	case WIDX_TITLE_EDITOR_ADD_SAVE:
 		if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 			gLoadSaveCallback = window_title_editor_add_park_callback;
 		}
 		break;
-	case WIDX_TITLE_EDITOR_REMOVE:
+	case WIDX_TITLE_EDITOR_REMOVE_SAVE:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
 				// title_sequence_remove_save(_selectedTitleSequence, w->selected_list_item);
@@ -358,7 +358,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 			}
 		}
 		break;
-	case WIDX_TITLE_EDITOR_LOAD:
+	case WIDX_TITLE_EDITOR_LOAD_SAVE:
 		if (w->selected_list_item >= 0 && w->selected_list_item < _editingTitleSequence->NumSaves) {
 			TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
 			if (handle->IsScenario) {
@@ -682,10 +682,10 @@ static void window_title_editor_invalidate(rct_window *w)
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE_BUTTON].type = WWT_EMPTY;
 
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD].type = WWT_EMPTY;
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_EMPTY;
-	window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD].type = WWT_EMPTY;
+	window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_EMPTY;
 
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_EMPTY;
 	window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_EMPTY;
@@ -710,10 +710,10 @@ static void window_title_editor_invalidate(rct_window *w)
 		break;
 	case WINDOW_TITLE_EDITOR_TAB_SAVES:
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD].type = WWT_DROPDOWN_BUTTON;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_DROPDOWN_BUTTON;
-		window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD].type = WWT_DROPDOWN_BUTTON;
+		window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_DROPDOWN_BUTTON;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
 		window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_IMGBTN;
