@@ -31,13 +31,9 @@
 #include "../core/Zip.h"
 #include "TitleSequence.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
-
-// <windows.h> defines DeleteFile, which conflicts with IZipArchive call
-#undef DeleteFile
+#ifndef MAX_PATH
+    #define MAX_PATH 260
+#endif
 
 static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
@@ -253,7 +249,7 @@ extern "C"
             utf8 dstPath[MAX_PATH];
             String::Set(dstPath, sizeof(dstPath), seq->Path);
             Path::Append(dstPath, sizeof(dstPath), name);
-            if (!platform_file_copy(path, dstPath, true))
+            if (!File::Copy(path, dstPath, true))
             {
                 Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
                 return false;
@@ -284,7 +280,7 @@ extern "C"
             utf8 absolutePath[MAX_PATH];
             String::Set(absolutePath, sizeof(absolutePath), seq->Path);
             Path::Append(absolutePath, sizeof(absolutePath), relativePath);
-            if (!platform_file_delete(absolutePath))
+            if (!File::Delete(absolutePath))
             {
                 Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
                 return false;

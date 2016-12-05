@@ -21,8 +21,23 @@
 #include "FileStream.hpp"
 #include "String.hpp"
 
+extern "C"
+{
+    #include "../platform/platform.h"
+}
+
 namespace File
 {
+    bool Copy(const utf8 * srcPath, const utf8 * dstPath, bool overwrite)
+    {
+        return platform_file_copy(srcPath, dstPath, overwrite);
+    }
+
+    bool Delete(const utf8 * path)
+    {
+        return platform_file_delete(path);
+    }
+
     void * ReadAllBytes(const utf8 * path, size_t * length)
     {
         void * result = nullptr;
