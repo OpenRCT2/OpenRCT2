@@ -295,6 +295,25 @@ extern "C"
         }
         seq->NumSaves--;
 
+        // Update load commands
+        for (size_t i = 0; i < seq->NumCommands; i++)
+        {
+            TitleCommand * command = &seq->Commands[i];
+            if (command->Type == TITLE_SCRIPT_LOAD)
+            {
+                if (command->SaveIndex == index)
+                {
+                    // Park no longer exists, so reset load command to invalid
+                    command->SaveIndex = SAVE_INDEX_INVALID;
+                }
+                else if (command->SaveIndex > index)
+                {
+                    // Park index will have shifted by -1
+                    command->SaveIndex--;
+                }
+            }
+        }
+
         return true;
     }
 }
@@ -352,7 +371,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             if (_stricmp(token, "LOAD") == 0)
             {
                 command.Type = TITLE_SCRIPT_LOAD;
-                command.SaveIndex = UINT8_MAX;
+                command.SaveIndex = SAVE_INDEX_INVALID;
                 for (size_t i = 0; i < saves.size(); i++)
                 {
                     if (String::Equals(part1, saves[i], true))

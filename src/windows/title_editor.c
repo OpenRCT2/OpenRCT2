@@ -870,7 +870,7 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
 		switch (command->Type) {
 		case TITLE_SCRIPT_LOAD:
 			commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
-			if (command->SaveIndex == 0xFF) {
+			if (command->SaveIndex == SAVE_INDEX_INVALID) {
 				commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
 				error = true;
 			}

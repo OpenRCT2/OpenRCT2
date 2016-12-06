@@ -77,7 +77,10 @@ enum TITLE_SCRIPT
 };
 
 #ifdef __cplusplus
-constexpr const utf8 * TITLE_SEQUENCE_EXTENSION = ".parkseq";
+    constexpr const utf8 *  TITLE_SEQUENCE_EXTENSION = ".parkseq";
+    constexpr uint8         SAVE_INDEX_INVALID = UINT8_MAX;
+#else
+    #define                 SAVE_INDEX_INVALID   UINT8_MAX
 #endif
 
 #ifdef __cplusplus
