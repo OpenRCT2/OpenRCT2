@@ -1337,6 +1337,7 @@ static void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w
 	colour &= ~(1u << 0x1F);
 	if (!blink_flag ||
 		game_is_paused() ||
+		(gGameSpeed & 8) ||
 		(gCurrentTicks & 8) == 0)
 	{
 		if (value <= 2)
