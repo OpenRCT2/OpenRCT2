@@ -19,7 +19,6 @@
 #include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
-#include "../interface/title_sequences.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -449,13 +448,13 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TITLE_EDITOR_STOP:
 		if (_isSequencePlaying) {
-			gCurrentPreviewTitleSequence = 0;
+			gTitleCurrentSequence = 0;
 			_isSequencePlaying = false;
 		}
 		break;
 	case WIDX_TITLE_EDITOR_PLAY:
 		if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-			gCurrentPreviewTitleSequence = (int)_selectedTitleSequence;
+			gTitleCurrentSequence = (int)_selectedTitleSequence;
 			_isSequencePlaying = true;
 		}
 		break;

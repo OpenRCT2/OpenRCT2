@@ -24,11 +24,11 @@
 extern "C"
 {
     #include "../audio/audio.h"
+    #include "../config.h"
     #include "../drawing/drawing.h"
     #include "../game.h"
     #include "../input.h"
     #include "../interface/screenshot.h"
-    #include "../interface/title_sequences.h"
     #include "../interface/viewport.h"
     #include "../interface/window.h"
     #include "../localisation/localisation.h"
@@ -40,6 +40,7 @@ extern "C"
 extern "C"
 {
     bool gTitleHideVersionInfo = false;
+    uint16 gTitleCurrentSequence;
 }
 
 static sint32                   _sequenceAttemptId;
@@ -75,11 +76,11 @@ static void TitleInitialise()
 
 static void TryLoadSequence()
 {
-    if (_loadedTitleSequenceId != gCurrentPreviewTitleSequence)
+    if (_loadedTitleSequenceId != gTitleCurrentSequence)
     {
-        if (_sequencePlayer->Begin(gCurrentPreviewTitleSequence))
+        if (_sequencePlayer->Begin(gTitleCurrentSequence))
         {
-            _loadedTitleSequenceId = gCurrentPreviewTitleSequence;
+            _loadedTitleSequenceId = gTitleCurrentSequence;
             gfx_invalidate_screen();
         }
     }
@@ -87,7 +88,7 @@ static void TryLoadSequence()
 
 static void TryNextSequence()
 {
-    gCurrentPreviewTitleSequence = _sequenceAttemptId++;
+    gTitleCurrentSequence = _sequenceAttemptId++;
     if (_sequenceAttemptId >= (sint32)TitleSequenceManager::GetCount())
     {
         _sequenceAttemptId = 0;
@@ -224,5 +225,20 @@ extern "C"
     void * title_get_sequence_player()
     {
         return _sequencePlayer;
+    }
+
+    void title_sequence_change_preset(int preset)
+    {
+        int count = (int)title_sequence_manager_get_count();
+        if (preset < 0 || preset >= count) {
+            return;
+        }
+
+        const utf8 * configId = title_sequence_manager_get_config_id(preset);
+        SafeFree(gConfigInterface.current_title_sequence_preset);
+        gConfigInterface.current_title_sequence_preset = _strdup(configId);
+
+        gTitleCurrentSequence = preset;
+        window_invalidate_all();
     }
 }

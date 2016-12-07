@@ -23,6 +23,7 @@ extern "C"
 {
 #endif
     extern bool gTitleHideVersionInfo;
+    extern uint16 gTitleCurrentSequence;
 
     void title_load();
     void title_create_windows();
@@ -30,6 +31,7 @@ extern "C"
     void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
 
     void * title_get_sequence_player();
+    void title_sequence_change_preset(int preset);
 #ifdef __cplusplus
 }
 #endif

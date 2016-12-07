@@ -27,7 +27,6 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../interface/themes.h"
-#include "../interface/title_sequences.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -37,11 +36,12 @@
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../sprites.h"
+#include "../title/TitleScreen.h"
 #include "../title/TitleSequence.h"
 #include "../title/TitleSequenceManager.h"
+#include "../util/util.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../util/util.h"
 
 enum WINDOW_OPTIONS_PAGE {
 	WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -1139,7 +1139,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				num_items
 			);
 
-			dropdown_set_checked(gCurrentPreviewTitleSequence, true);
+			dropdown_set_checked(gTitleCurrentSequence, true);
 			break;
 		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
 			for (i = 0; i < 7; i++) {
@@ -1381,7 +1381,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 			}
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			if (dropdownIndex != gCurrentPreviewTitleSequence) {
+			if (dropdownIndex != gTitleCurrentSequence) {
 				title_sequence_change_preset(dropdownIndex);
 				config_save_default();
 				window_invalidate(w);
@@ -1841,7 +1841,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
 
-		const utf8 * name = title_sequence_manager_get_name(gCurrentPreviewTitleSequence);
+		const utf8 * name = title_sequence_manager_get_name(gTitleCurrentSequence);
 		set_format_arg(0, uintptr_t, (uintptr_t)name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left_clipped(
