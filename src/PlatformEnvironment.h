@@ -31,6 +31,7 @@ enum DIRID
 {
     DIRID_DATA,             // Contains g1.dat, music etc.
     DIRID_LANDSCAPE,        // Contains scenario editor landscapes (SC6).
+    DIRID_LANGUAGE,         // Contains language packs.
     DIRID_LOG_CHAT,         // Contains chat logs.
     DIRID_LOG_SERVER,       // Contains server logs.
     DIRID_NETWORK_KEY,      // Contains the user's public and private keys.
@@ -39,6 +40,7 @@ enum DIRID
     DIRID_SCENARIO,         // Contains scenarios (SC6).
     DIRID_SCREENSHOT,       // Contains screenshots.
     DIRID_SEQUENCE,         // Contains title sequences.
+    DIRID_SHADER,           // Contains OpenGL shaders.
     DIRID_THEME,            // Contains interface themes.
     DIRID_TRACK,            // Contains track designs.
 };
@@ -62,6 +64,8 @@ interface IPlatformEnvironment
 {
     virtual ~IPlatformEnvironment() = default;
 
-    virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) abstract;
-    virtual std::string GetFilePath(PATHID pathid) abstract;
+    virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
+    virtual std::string GetFilePath(PATHID pathid) const abstract;
 };
+
+IPlatformEnvironment * CreatePlatformEnvironment();
