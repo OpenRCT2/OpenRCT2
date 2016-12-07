@@ -51,9 +51,9 @@ namespace File
         }
         else
         {
-            result = fs.ReadArray<uint8>(fsize);
+            result = fs.ReadArray<uint8>((size_t)fsize);
         }
-        *length = fsize;
+        *length = (size_t)fsize;
         return result;
     }
 }

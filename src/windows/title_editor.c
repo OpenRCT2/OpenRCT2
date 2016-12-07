@@ -342,7 +342,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1) {
 				TitleSequenceRemovePark(_editingTitleSequence, w->selected_list_item);
-				if (w->selected_list_item >= _editingTitleSequence->NumSaves) {
+				if (w->selected_list_item >= (sint16)_editingTitleSequence->NumSaves) {
 					w->selected_list_item--;
 				}
 			}
@@ -356,7 +356,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_TITLE_EDITOR_LOAD_SAVE:
-		if (w->selected_list_item >= 0 && w->selected_list_item < _editingTitleSequence->NumSaves) {
+		if (w->selected_list_item >= 0 && w->selected_list_item < (sint16)_editingTitleSequence->NumSaves) {
 			TitleSequenceParkHandle * handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
 			if (handle->IsScenario) {
 				scenario_load_rw(handle->RWOps);
@@ -392,11 +392,11 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_DELETE:
 		if (window_title_editor_check_can_edit()) {
 			if (w->selected_list_item != -1 && w->selected_list_item < (sint16)_editingTitleSequence->NumCommands) {
-				for (int i = w->selected_list_item; i < _editingTitleSequence->NumCommands - 1; i++) {
+				for (int i = w->selected_list_item; i < (sint16)_editingTitleSequence->NumCommands - 1; i++) {
 					_editingTitleSequence->Commands[i] = _editingTitleSequence->Commands[i + 1];
 				}
 				_editingTitleSequence->NumCommands--;
-				if (w->selected_list_item >= _editingTitleSequence->NumCommands) {
+				if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
 					w->selected_list_item--;
 				}
 				window_title_editor_save_sequence();
@@ -454,7 +454,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TITLE_EDITOR_PLAY:
 		if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-			gTitleCurrentSequence = (int)_selectedTitleSequence;
+			gTitleCurrentSequence = (uint16)_selectedTitleSequence;
 			_isSequencePlaying = true;
 		}
 		break;
