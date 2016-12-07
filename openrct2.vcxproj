@@ -219,6 +219,7 @@
     <ClCompile Include="src\peep\peep.c" />
     <ClCompile Include="src\peep\peep_data.c" />
     <ClCompile Include="src\peep\staff.c" />
+    <ClCompile Include="src\PlatformEnvironment.cpp" />
     <ClCompile Include="src\platform\crash.cpp" />
     <ClCompile Include="src\platform\linux.c" />
     <ClCompile Include="src\platform\posix.c" />
@@ -485,6 +486,7 @@
     <ClInclude Include="src\interface\widget.h" />
     <ClInclude Include="src\interface\window.h" />
     <ClInclude Include="src\intro.h" />
+    <ClInclude Include="src\PlatformEnvironment.h" />
     <ClInclude Include="src\localisation\currency.h" />
     <ClInclude Include="src\localisation\date.h" />
     <ClInclude Include="src\localisation\format_codes.h" />
