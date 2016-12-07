@@ -24,7 +24,6 @@ extern "C" {
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
-font_configuration gConfigFonts;
 }
 
 static TTFFontSetDescriptor TTFFontMSGothic = { {

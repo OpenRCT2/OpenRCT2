@@ -447,7 +447,7 @@ extern "C"
             s6Importer->LoadScenario(rw);
             s6Importer->Import();
 
-            openrct2_reset_object_tween_locations();
+            sprite_position_tween_reset();
             result = true;
         }
         catch (ObjectLoadException)

@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#pragma once
-
 #include "Console.hpp"
 #include "File.h"
 #include "FileStream.hpp"
