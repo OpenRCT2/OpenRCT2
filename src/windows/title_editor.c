@@ -65,7 +65,7 @@ static void window_title_editor_load_sequence(size_t index);
 static ITitleSequencePlayer * window_title_editor_get_player();
 static bool window_title_editor_check_can_edit();
 static void window_title_editor_add_park_callback(int result, const utf8 * path);
-static void window_title_editor_save_sequence();
+static void window_title_editor_rename_park(size_t index, const utf8 * name);
 
 static rct_window_event_list window_title_editor_events = {
 	window_title_editor_close,
@@ -399,7 +399,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 				if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
 					w->selected_list_item--;
 				}
-				window_title_editor_save_sequence();
+				TileSequenceSave(_editingTitleSequence);
 			}
 		}
 		break;
@@ -422,7 +422,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 				*a = *b;
 				*b = tmp;
 				w->selected_list_item++;
-				window_title_editor_save_sequence();
+				TileSequenceSave(_editingTitleSequence);
 			}
 		}
 		break;
@@ -435,7 +435,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 				*b = *a;
 				*a = tmp;
 				w->selected_list_item--;
-				window_title_editor_save_sequence();
+				TileSequenceSave(_editingTitleSequence);
 			}
 		}
 		break;
@@ -641,17 +641,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 		}
 		break;
 	case WIDX_TITLE_EDITOR_RENAME_SAVE:
-		// if (filename_valid_characters(text)) {
-		// 	if (!title_sequence_save_exists(_selectedTitleSequence, text)) {
-		// 		title_sequence_rename_save(_selectedTitleSequence, w->selected_list_item, text);
-		// 		TileSequenceSave(_editingTitleSequence);
-		// 		window_invalidate(w);
-		// 	} else {
-		// 		window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
-		// 	}
-		// } else {
-		// 	window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
-		// }
+		window_title_editor_rename_park(w->selected_list_item, text);
 		break;
 	}
 }
@@ -1024,9 +1014,24 @@ static void window_title_editor_add_park_callback(int result, const utf8 * path)
 	TileSequenceAddPark(_editingTitleSequence, path, filename);
 }
 
-static void window_title_editor_save_sequence()
+static void window_title_editor_rename_park(size_t index, const utf8 * name)
 {
-	if (_editingTitleSequence != NULL) {
+	if (!filename_valid_characters(name)) {
+		window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+		return;
+	}
+
+	for (size_t i = 0; i < _editingTitleSequence->NumSaves; i++) {
+		if (i != index) {
+			const utf8 * savePath = _editingTitleSequence->Saves[i];
+			if (_strcmpi(savePath, name) == 0) {
+				window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+				return;
+			}
+		}
+	}
+
+	if (TileSequenceRenamePark(_editingTitleSequence, index, name)) {
 		TileSequenceSave(_editingTitleSequence);
 	}
 }

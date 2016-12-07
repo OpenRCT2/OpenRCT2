@@ -38,6 +38,11 @@ namespace File
         return platform_file_delete(path);
     }
 
+    bool Move(const utf8 * srcPath, const utf8 * dstPath)
+    {
+        return platform_file_move(srcPath, dstPath);
+    }
+
     void * ReadAllBytes(const utf8 * path, size_t * length)
     {
         void * result = nullptr;

@@ -118,6 +118,12 @@ public:
         uint64 index = zip_name_locate(_zip, path, 0);
         zip_delete(_zip, index);
     }
+
+    void RenameFile(const utf8 * path, const utf8 * newPath) override
+    {
+        uint64 index = zip_name_locate(_zip, path, 0);
+        zip_file_rename(_zip, index, newPath, ZIP_FL_ENC_GUESS);
+    }
 };
 
 namespace Zip

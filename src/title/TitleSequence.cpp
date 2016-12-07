@@ -258,9 +258,45 @@ extern "C"
         return true;
     }
 
+    bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
+    {
+        Guard::Assert(index < seq->NumSaves, GUARD_LINE);
+
+        utf8 * oldRelativePath = seq->Saves[index];
+        if (seq->IsZip)
+        {
+            IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
+            if (zip == nullptr)
+            {
+                Console::Error::WriteLine("Unable to open '%s'", seq->Path);
+                return false;
+            }
+            zip->RenameFile(oldRelativePath, name);
+            delete zip;
+        }
+        else
+        {
+            utf8 srcPath[MAX_PATH];
+            utf8 dstPath[MAX_PATH];
+            String::Set(srcPath, sizeof(srcPath), seq->Path);
+            Path::Append(srcPath, sizeof(srcPath), oldRelativePath);
+            String::Set(dstPath, sizeof(dstPath), seq->Path);
+            Path::Append(dstPath, sizeof(dstPath), name);
+            if (!File::Move(srcPath, dstPath))
+            {
+                Console::Error::WriteLine("Unable to move '%s' to '%s'", srcPath, dstPath);
+                return false;
+            }
+        }
+
+        Memory::Free(seq->Saves[index]);
+        seq->Saves[index] = String::Duplicate(name);
+        return true;
+    }
+
     bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
     {
-        Guard::Assert(seq->NumSaves > index, GUARD_LINE);
+        Guard::Assert(index < seq->NumSaves, GUARD_LINE);
 
         // Delete park file
         utf8 * relativePath = seq->Saves[index];
