@@ -32,6 +32,7 @@
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
+struct TitleSequence;
 
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[512];
