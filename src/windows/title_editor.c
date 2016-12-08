@@ -802,7 +802,6 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 
 	int x = 0;
 	int y = 0;
-	bool inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	for (int i = 0; i < (int)_editingTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
 		bool selected = false;
 		bool hover = false;
@@ -839,7 +838,6 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
 
 	int x = 0;
 	int y = 0;
-	bool inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	for (int i = 0; i < (int)_editingTitleSequence->NumCommands; i++, y += ROW_HEIGHT) {
 		TitleCommand * command = &_editingTitleSequence->Commands[i];
 		bool selected = false;
