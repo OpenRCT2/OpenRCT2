@@ -1118,26 +1118,26 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 		}
 
 		rct_scenery_entry* sceneryEntry;
-		if (currentSceneryGlobalId >= 0x400) {
-			sceneryEntry = get_banner_entry(currentSceneryGlobalId - 0x400);
-			uint32 imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
-			imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+		rct_drawpixelinfo clipdpi;
+		if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
+			if (currentSceneryGlobalId >= 0x400) {
+				sceneryEntry = get_banner_entry(currentSceneryGlobalId - 0x400);
+				uint32 imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
+				imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
 
-			gfx_draw_sprite(dpi, imageId, left + 0x21, top + 0x28, w->colours[1]);
-			gfx_draw_sprite(dpi, imageId + 1, left + 0x21, top + 0x28, w->colours[1]);
-		}
-		else if (currentSceneryGlobalId >= 0x300) {
-			sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - 0x300);
-			uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
-			imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
-			imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
+				gfx_draw_sprite(&clipdpi, imageId, 0x21, 0x28, w->colours[1]);
+				gfx_draw_sprite(&clipdpi, imageId + 1, 0x21, 0x28, w->colours[1]);
+			}
+			else if (currentSceneryGlobalId >= 0x300) {
+				sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - 0x300);
+				uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
+				imageId |= (gWindowSceneryPrimaryColour << 19) | 0x20000000;
+				imageId |= (gWindowScenerySecondaryColour << 24) | 0x80000000;
 
-			gfx_draw_sprite(dpi, imageId, left + 0x21, top, w->colours[1]);
-		}
-		else if (currentSceneryGlobalId >= 0x200) {
-			sceneryEntry = get_wall_entry(currentSceneryGlobalId - 0x200);
-			rct_drawpixelinfo clipdpi;
-			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
+				gfx_draw_sprite(&clipdpi, imageId, 0x21, 0, w->colours[1]);
+			}
+			else if (currentSceneryGlobalId >= 0x200) {
+				sceneryEntry = get_wall_entry(currentSceneryGlobalId - 0x200);
 				uint32 imageId = sceneryEntry->image;
 				uint8 tertiaryColour = w->colours[1];
 				uint16 spriteTop = (sceneryEntry->wall.height * 2) + 0x32;
@@ -1171,17 +1171,14 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					}
 				}
 			}
-		}
-		else if (currentSceneryGlobalId >= 0x100) {
-			sceneryEntry = get_footpath_item_entry(currentSceneryGlobalId - 0x100);
-			uint32 imageId = sceneryEntry->image;
+			else if (currentSceneryGlobalId >= 0x100) {
+				sceneryEntry = get_footpath_item_entry(currentSceneryGlobalId - 0x100);
+				uint32 imageId = sceneryEntry->image;
 
-			gfx_draw_sprite(dpi, imageId, left + 0x0B, top + 0x10, w->colours[1]);
-		}
-		else {
-			sceneryEntry = get_small_scenery_entry(currentSceneryGlobalId);
-			rct_drawpixelinfo clipdpi;
-			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
+				gfx_draw_sprite(&clipdpi, imageId, 0x0B, 0x10, w->colours[1]);
+			}
+			else {
+				sceneryEntry = get_small_scenery_entry(currentSceneryGlobalId);
 				uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
