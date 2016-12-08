@@ -42,18 +42,18 @@ public:
 
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
-        const utf8 * basePath = _basePath[base].c_str();
+        const utf8 * basePath = _basePath[(size_t)base].c_str();
         const utf8 * directoryName;
         switch (base) {
         default:
-        case DIRBASE_RCT1:
+        case DIRBASE::RCT1:
             throw Exception("Not implemented");
-        case DIRBASE_RCT2:
-            directoryName = DirectoryNamesRCT2[did];
+        case DIRBASE::RCT2:
+            directoryName = DirectoryNamesRCT2[(size_t)did];
             break;
-        case DIRBASE_OPENRCT2:
-        case DIRBASE_USER:
-            directoryName = DirectoryNamesOpenRCT2[did];
+        case DIRBASE::OPENRCT2:
+        case DIRBASE::USER:
+            directoryName = DirectoryNamesOpenRCT2[(size_t)did];
             break;
         }
 
@@ -65,8 +65,8 @@ public:
 
     std::string GetFilePath(PATHID pathid) const override
     {
-        const utf8 * basePath = _basePath[DIRBASE_USER].c_str();
-        const utf8 * fileName = FileNames[pathid];
+        const utf8 * basePath = _basePath[(size_t)DIRBASE::USER].c_str();
+        const utf8 * fileName = FileNames[(size_t)pathid];
 
         utf8 path[260];
         String::Set(path, sizeof(path), basePath);
@@ -84,58 +84,58 @@ IPlatformEnvironment * CreatePlatformEnvironment()
 {
     utf8 path[260];
     std::string basePaths[4];
-    basePaths[DIRBASE_RCT2] = std::string(gRCT2AddressAppPath);
+    basePaths[(size_t)DIRBASE::RCT2] = std::string(gRCT2AddressAppPath);
     platform_get_openrct_data_path(path, sizeof(path));
-    basePaths[DIRBASE_OPENRCT2] = std::string(path);
-    platform_get_user_directory(path, NULL, sizeof(path));
-    basePaths[DIRBASE_USER] = std::string(path);
+    basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
+    platform_get_user_directory(path, nullptr, sizeof(path));
+    basePaths[(size_t)DIRBASE::USER] = std::string(path);
     return new PlatformEnvironment(basePaths);
 }
 
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =
 {
-    "Data",                 // DIRID_DATA
-    "Landscapes",           // DIRID_LANDSCAPE
-    nullptr,                // DIRID_LANGUAGE
-    nullptr,                // DIRID_LOG_CHAT
-    nullptr,                // DIRID_LOG_SERVER
-    nullptr,                // DIRID_NETWORK_KEY
-    "ObjData",              // DIRID_OBJECT
-    "Saved Games",          // DIRID_SAVE
-    "Scenarios",            // DIRID_SCENARIO
-    nullptr,                // DIRID_SCREENSHOT
-    nullptr,                // DIRID_SEQUENCE
-    nullptr,                // DIRID_SHADER
-    nullptr,                // DIRID_THEME
-    "Tracks",               // DIRID_TRACK
+    "Data",                 // DATA
+    "Landscapes",           // LANDSCAPE
+    nullptr,                // LANGUAGE
+    nullptr,                // LOG_CHAT
+    nullptr,                // LOG_SERVER
+    nullptr,                // NETWORK_KEY
+    "ObjData",              // OBJECT
+    "Saved Games",          // SAVE
+    "Scenarios",            // SCENARIO
+    nullptr,                // SCREENSHOT
+    nullptr,                // SEQUENCE
+    nullptr,                // SHADER
+    nullptr,                // THEME
+    "Tracks",               // TRACK
 };
 
 const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
 {
-    "data",                 // DIRID_DATA
-    "landscape",            // DIRID_LANDSCAPE
-    "language",             // DIRID_LANGUAGE
-    "chatlogs",             // DIRID_LOG_CHAT
-    "serverlogs",           // DIRID_LOG_SERVER
-    "keys",                 // DIRID_NETWORK_KEY
-    "object",               // DIRID_OBJECT
-    "save",                 // DIRID_SAVE
-    "scenario",             // DIRID_SCENARIO
-    "screenshot",           // DIRID_SCREENSHOT
-    "sequence",             // DIRID_SEQUENCE
-    "shader",               // DIRID_SHADER
-    "themes",               // DIRID_THEME
-    "track",                // DIRID_TRACK
+    "data",                 // DATA
+    "landscape",            // LANDSCAPE
+    "language",             // LANGUAGE
+    "chatlogs",             // LOG_CHAT
+    "serverlogs",           // LOG_SERVER
+    "keys",                 // NETWORK_KEY
+    "object",               // OBJECT
+    "save",                 // SAVE
+    "scenario",             // SCENARIO
+    "screenshot",           // SCREENSHOT
+    "sequence",             // SEQUENCE
+    "shader",               // SHADER
+    "themes",               // THEME
+    "track",                // TRACK
 };
 
 const char * PlatformEnvironment::FileNames[] =
 {
-    "config.ini",           // PATHID_CONFIG
-    "hotkeys.dat",          // PATHID_CONFIG_KEYBOARD
-    "objects.idx",          // PATHID_CACHE_OBJECTS
-    "tracks.idx",           // PATHID_CACHE_TRACKS
-    "groups.json",          // PATHID_NETWORK_GROUPS
-    "servers.cfg",          // PATHID_NETWORK_SERVERS
-    "users.json",           // PATHID_NETWORK_USERS
-    "highscores.dat",       // PATHID_SCORES
+    "config.ini",           // CONFIG
+    "hotkeys.dat",          // CONFIG_KEYBOARD
+    "objects.idx",          // CACHE_OBJECTS
+    "tracks.idx",           // CACHE_TRACKS
+    "groups.json",          // NETWORK_GROUPS
+    "servers.cfg",          // NETWORK_SERVERS
+    "users.json",           // NETWORK_USERS
+    "highscores.dat",       // SCORES
 };

@@ -117,8 +117,8 @@ public:
 
         _queryDirectoryResult = { 0 };
 
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE_RCT2, DIRID_OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE_OPENRCT2, DIRID_OBJECT);
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT);
         QueryDirectory(&_queryDirectoryResult, rct2Path);
         QueryDirectory(&_queryDirectoryResult, openrct2Path);
 
@@ -251,8 +251,8 @@ private:
         auto stopwatch = Stopwatch();
         stopwatch.Start();
 
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE_RCT2, DIRID_OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE_OPENRCT2, DIRID_OBJECT);
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT);
         ScanDirectory(rct2Path);
         ScanDirectory(openrct2Path);
 
@@ -293,7 +293,7 @@ private:
 
     bool Load()
     {
-        const std::string &path = _env->GetFilePath(PATHID_CACHE_OBJECTS);
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -332,7 +332,7 @@ private:
 
     void Save() const
     {
-        const std::string &path = _env->GetFilePath(PATHID_CACHE_OBJECTS);
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
@@ -594,7 +594,7 @@ private:
             }
         }
 
-        const std::string &userObjPath = _env->GetDirectoryPath(DIRBASE_USER, DIRID_OBJECT);
+        const std::string &userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         String::Set(buffer, bufferSize, userObjPath.c_str());
         platform_ensure_directory_exists(buffer);
 
