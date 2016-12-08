@@ -1,0 +1,28 @@
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/engines")
+
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/drawing.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/drawing_fast.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/font.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Image.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lightfx.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/line.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NewDrawing.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Rain.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/rect.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/scrolling_text.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/sprite.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/string.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

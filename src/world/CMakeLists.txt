@@ -1,0 +1,28 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/balloon.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/banner.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/climate.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/duck.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/footpath.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/fountain.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/map.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/map_animation.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/map_helpers.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mapgen.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/money_effect.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/park.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/particle.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/scenery.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/sprite.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

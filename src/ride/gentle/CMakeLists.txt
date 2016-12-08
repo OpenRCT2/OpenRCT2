@@ -1,0 +1,30 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/car_ride.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/circus_show.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/crooked_house.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/dodgems.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ferris_wheel.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/flying_saucers.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ghost_train.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/haunted_house.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/maze.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/merry_go_round.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mini_golf.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mini_helicopters.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/monorail_cycles.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/observation_tower.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/space_rings.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/spiral_slide.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

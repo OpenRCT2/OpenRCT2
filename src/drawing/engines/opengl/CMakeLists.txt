@@ -1,0 +1,24 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/CopyFramebufferShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/DrawImageShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/DrawLineShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/FillRectShader.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLAPI.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLDrawingEngine.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLFramebuffer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLShaderProgram.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/SwapFramebuffer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/TextureCache.cpp"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )
