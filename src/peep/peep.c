@@ -4889,7 +4889,20 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 
 	if (peep->sub_state != 10){
-		if (peep->next_in_queue == 0xFFFF){
+		bool is_front = true;
+		if (peep->next_in_queue != 0xFFFF) {
+			// Fix #4819: Occasionally the peep->next_in_queue is incorrectly set
+			// to prevent this from causing the peeps to enter a loop
+			// first check if the next in queue is actually nearby
+			// if they are not then its safe to assume that this is
+			// the front of the queue.
+			rct_peep* next_peep = GET_PEEP(peep->next_in_queue);
+			if (abs(next_peep->x - peep->x) < 32 &&
+				abs(next_peep->y - peep->y) < 32) {
+				is_front = false;
+			}
+		}
+		if (is_front){
 			//Happens every time peep goes onto ride.
 			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
