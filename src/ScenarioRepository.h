@@ -56,6 +56,8 @@ typedef struct scenario_index_entry
 
 #ifdef __cplusplus
 
+interface IPlatformEnvironment;
+
 interface IScenarioRepository
 {
     virtual ~IScenarioRepository() = default;
@@ -73,6 +75,7 @@ interface IScenarioRepository
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;
 };
 
+IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env);
 IScenarioRepository * GetScenarioRepository();
 
 #endif

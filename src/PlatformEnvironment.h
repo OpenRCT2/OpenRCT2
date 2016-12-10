@@ -55,6 +55,8 @@ enum class PATHID
     NETWORK_SERVERS,    // Saved servers (servers.cfg).
     NETWORK_USERS,      // Users and their groups (users.json).
     SCORES,             // Scenario scores (highscores.dat).
+    SCORES_LEGACY,      // Scenario scores, legacy (scores.dat).
+    SCORES_RCT2,        // Scenario scores, rct2 (\Saved Games\scores.dat).
 };
 
 /**

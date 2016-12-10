@@ -65,8 +65,12 @@ public:
 
     std::string GetFilePath(PATHID pathid) const override
     {
-        const utf8 * basePath = _basePath[(size_t)DIRBASE::USER].c_str();
         const utf8 * fileName = FileNames[(size_t)pathid];
+        const utf8 * basePath = _basePath[(size_t)DIRBASE::USER].c_str();
+        if (pathid == PATHID::SCORES_RCT2)
+        {
+            basePath = _basePath[(size_t)DIRBASE::RCT2].c_str();
+        }
 
         utf8 path[260];
         String::Set(path, sizeof(path), basePath);
@@ -138,4 +142,6 @@ const char * PlatformEnvironment::FileNames[] =
     "servers.cfg",          // NETWORK_SERVERS
     "users.json",           // NETWORK_USERS
     "highscores.dat",       // SCORES
+    "scores.dat",           // SCORES (LEGACY)
+    "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
 };
