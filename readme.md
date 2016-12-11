@@ -79,7 +79,7 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new Developer Command Prompt for VS2015, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
-3. Run `msbuild openrct2.proj /t:build /t:platform=x64`.
+3. Run `msbuild openrct2.proj /t:build /p:platform=x64`.
 4. Run the game, `bin\openrct2`
 
 Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`.
