@@ -145,6 +145,7 @@ void rct2_quit();
 bool rct2_open_file(const char *path);
 
 uint32 get_file_extension_type(const utf8 *path);
+void rct2_copy_original_user_files_over();
 
 #ifdef __cplusplus
 }

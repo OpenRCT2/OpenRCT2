@@ -38,22 +38,13 @@ static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_spri
 
 uint16 gSpriteSpatialIndex[0x10001];
 
+static rct_xyz16 _spritelocations1[MAX_SPRITES];
+static rct_xyz16 _spritelocations2[MAX_SPRITES];
+
 rct_sprite *get_sprite(size_t sprite_idx)
 {
 	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
 	return &_spriteList[sprite_idx];
-}
-
-void store_sprite_locations(rct_xyz16 * sprite_locations)
-{
-	for (uint16 i = 0; i < MAX_SPRITES; i++) {
-		// skip going through `get_sprite` to not get stalled on assert,
-		// this can get very expensive for busy parks with uncap FPS option on
-		const rct_sprite *sprite = &_spriteList[i];
-		sprite_locations[i].x = sprite->unknown.x;
-		sprite_locations[i].y = sprite->unknown.y;
-		sprite_locations[i].z = sprite->unknown.z;
-	}
 }
 
 uint16 sprite_get_first_in_quadrant(int x, int y)
@@ -699,5 +690,89 @@ void litter_remove_at(int x, int y, int z)
 			}
 		}
 		spriteIndex = nextSpriteIndex;
+	}
+}
+
+/**
+ * Determines whether its worth tweening a sprite or not when frame smoothing is on.
+ */
+static bool sprite_should_tween(rct_sprite *sprite)
+{
+	switch (sprite->unknown.linked_list_type_offset >> 1) {
+	case SPRITE_LIST_VEHICLE:
+	case SPRITE_LIST_PEEP:
+	case SPRITE_LIST_UNKNOWN:
+		return true;
+	}
+	return false;
+}
+
+static void store_sprite_locations(rct_xyz16 * sprite_locations)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		// skip going through `get_sprite` to not get stalled on assert,
+		// this can get very expensive for busy parks with uncap FPS option on
+		const rct_sprite *sprite = &_spriteList[i];
+		sprite_locations[i].x = sprite->unknown.x;
+		sprite_locations[i].y = sprite->unknown.y;
+		sprite_locations[i].z = sprite->unknown.z;
+	}
+}
+
+void sprite_position_tween_store_a()
+{
+	store_sprite_locations(_spritelocations1);
+}
+
+void sprite_position_tween_store_b()
+{
+	store_sprite_locations(_spritelocations2);
+}
+
+void sprite_position_tween_all(float nudge)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		if (sprite_should_tween(sprite)) {
+			rct_xyz16 posA = _spritelocations1[i];
+			rct_xyz16 posB = _spritelocations2[i];
+
+			sprite_set_coordinates(
+				posB.x + (sint16)((posA.x - posB.x) * nudge),
+				posB.y + (sint16)((posA.y - posB.y) * nudge),
+				posB.z + (sint16)((posA.z - posB.z) * nudge),
+				sprite
+			);
+			invalidate_sprite_2(sprite);
+		}
+	}
+}
+
+/**
+ * Restore the real positions of the sprites so they aren't left at the mid-tween positions
+ */
+void sprite_position_tween_restore()
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		if (sprite_should_tween(sprite)) {
+			invalidate_sprite_2(sprite);
+
+			rct_xyz16 pos = _spritelocations2[i];
+			sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
+		}
+	}
+}
+
+void sprite_position_tween_reset()
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		_spritelocations1[i].x =
+		_spritelocations2[i].x = sprite->unknown.x;
+		_spritelocations1[i].y =
+		_spritelocations2[i].y = sprite->unknown.y;
+		_spritelocations1[i].z =
+		_spritelocations2[i].z = sprite->unknown.z;
 	}
 }

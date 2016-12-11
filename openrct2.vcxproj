@@ -228,6 +228,7 @@
     <ClCompile Include="src\rct1\S4Importer.cpp" />
     <ClCompile Include="src\rct1\Tables.cpp" />
     <ClCompile Include="src\rct2.c" />
+    <ClCompile Include="src\rct2\interop.c" />
     <ClCompile Include="src\rct2\S6Exporter.cpp" />
     <ClCompile Include="src\rct2\S6Importer.cpp" />
     <ClCompile Include="src\ride\cable_lift.c" />
@@ -544,6 +545,7 @@
     <ClInclude Include="src\rct1\Tables.h" />
     <ClInclude Include="src\rct1\S4Importer.h" />
     <ClInclude Include="src\rct2.h" />
+    <ClInclude Include="src\rct2\interop.h" />
     <ClInclude Include="src\rct2\S6Exporter.h" />
     <ClInclude Include="src\rct2\S6Importer.h" />
     <ClInclude Include="src\ride\cable_lift.h" />

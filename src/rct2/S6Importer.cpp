@@ -385,7 +385,7 @@ extern "C"
             s6Importer->LoadSavedGame(rw);
             s6Importer->Import();
 
-            openrct2_reset_object_tween_locations();
+            sprite_position_tween_reset();
             result = true;
         }
         catch (ObjectLoadException)
@@ -412,7 +412,7 @@ extern "C"
             s6Importer->LoadSavedGame(path);
             s6Importer->Import();
 
-            openrct2_reset_object_tween_locations();
+            sprite_position_tween_reset();
             result = true;
         }
         catch (ObjectLoadException)
@@ -452,7 +452,7 @@ extern "C"
             s6Importer->LoadScenario(path);
             s6Importer->Import();
 
-            openrct2_reset_object_tween_locations();
+            sprite_position_tween_reset();
             result = true;
         }
         catch (ObjectLoadException)
@@ -486,7 +486,7 @@ extern "C"
             s6Importer->LoadSavedGame(rw);
             s6Importer->Import();
 
-            openrct2_reset_object_tween_locations();
+            sprite_position_tween_reset();
             result = true;
         }
         catch (ObjectLoadException)
