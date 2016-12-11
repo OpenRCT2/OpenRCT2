@@ -400,7 +400,6 @@ enum {
 };
 
 rct_sprite *get_sprite(size_t sprite_idx);
-void store_sprite_locations(rct_xyz16 *sprite_locations);
 
 // rct2: 0x00982708
 extern rct_sprite_entry g_sprite_entries[48];
@@ -432,6 +431,11 @@ void litter_remove_at(int x, int y, int z);
 void sprite_misc_explosion_cloud_create(int x, int y, int z);
 void sprite_misc_explosion_flare_create(int x, int y, int z);
 uint16 sprite_get_first_in_quadrant(int x, int y);
+void sprite_position_tween_store_a();
+void sprite_position_tween_store_b();
+void sprite_position_tween_all(float nudge);
+void sprite_position_tween_restore();
+void sprite_position_tween_reset();
 
 ///////////////////////////////////////////////////////////////
 // Balloon

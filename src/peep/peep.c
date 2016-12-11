@@ -1978,7 +1978,7 @@ bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply)
 		peep->action_sprite_image_offset = 0;
 		peep->action_sprite_type = 0;
 		peep->var_C4 = 0;
-		openrct2_reset_object_tween_locations();
+		sprite_position_tween_reset();
 
 		if (peep->type == PEEP_TYPE_GUEST) {
 			peep->action_sprite_type = 0xFF;
@@ -12245,7 +12245,7 @@ void peep_update_name_sort(rct_peep *peep)
 
 finish_peep_sort:
 	// This is required at the moment because this function reorders peeps in the sprite list
-	openrct2_reset_object_tween_locations();
+	sprite_position_tween_reset();
 }
 
 void peep_sort()

@@ -38,6 +38,8 @@
 #include "version.h"
 #include "world/mapgen.h"
 
+#define UPDATE_TIME_MS		25		// (1000 / 40fps) = 25ms
+
 int gExitCode;
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
@@ -61,9 +63,6 @@ EVP_MD_CTX *gHashCTX = NULL;
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
-
-// Used for object movement tweening
-static rct_xyz16 _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
 
 static void openrct2_loop();
 
@@ -344,20 +343,6 @@ void openrct2_dispose()
 }
 
 /**
- * Determines whether its worth tweening a sprite or not when frame smoothing is on.
- */
-static bool sprite_should_tween(rct_sprite *sprite)
-{
-	switch (sprite->unknown.linked_list_type_offset >> 1) {
-	case SPRITE_LIST_VEHICLE:
-	case SPRITE_LIST_PEEP:
-	case SPRITE_LIST_UNKNOWN:
-		return true;
-	}
-	return false;
-}
-
-/**
  * Run the main game loop until the finished flag is set at 40fps (25ms interval).
  */
 static void openrct2_loop()
@@ -377,44 +362,33 @@ static void openrct2_loop()
 			if (uncapTick == 0) {
 				// Reset sprite locations
 				uncapTick = SDL_GetTicks();
-				openrct2_reset_object_tween_locations();
+				sprite_position_tween_reset();
 			}
 
 			// Limit number of updates per loop (any long pauses or debugging can make this update for a very long time)
-			if (currentTick - uncapTick > 25 * 60) {
-				uncapTick = currentTick - 25 - 1;
+			if (currentTick - uncapTick > UPDATE_TIME_MS * 60) {
+				uncapTick = currentTick - UPDATE_TIME_MS - 1;
 			}
 
 			platform_process_messages();
 
-			while (uncapTick <= currentTick && currentTick - uncapTick > 25) {
+			while (uncapTick <= currentTick && currentTick - uncapTick > UPDATE_TIME_MS) {
 				// Get the original position of each sprite
-				store_sprite_locations(_spritelocations1);
+				sprite_position_tween_store_a();
 
 				// Update the game so the sprite positions update
 				rct2_update();
 
 				// Get the next position of each sprite
-				store_sprite_locations(_spritelocations2);
+				sprite_position_tween_store_b();
 
-				uncapTick += 25;
+				uncapTick += UPDATE_TIME_MS;
 			}
 
 			// Tween the position of each sprite from the last position to the new position based on the time between the last
 			// tick and the next tick.
-			float nudge = 1 - ((float)(currentTick - uncapTick) / 25);
-			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!sprite_should_tween(get_sprite(i)))
-					continue;
-
-				sprite_set_coordinates(
-					_spritelocations2[i].x + (sint16)((_spritelocations1[i].x - _spritelocations2[i].x) * nudge),
-					_spritelocations2[i].y + (sint16)((_spritelocations1[i].y - _spritelocations2[i].y) * nudge),
-					_spritelocations2[i].z + (sint16)((_spritelocations1[i].z - _spritelocations2[i].z) * nudge),
-					get_sprite(i)
-				);
-				invalidate_sprite_2(get_sprite(i));
-			}
+			float nudge = 1 - ((float)(currentTick - uncapTick) / UPDATE_TIME_MS);
+			sprite_position_tween_all(nudge);
 
 			platform_draw();
 
@@ -424,21 +398,14 @@ static void openrct2_loop()
 				secondTick = SDL_GetTicks();
 			}
 
-			// Restore the real positions of the sprites so they aren't left at the mid-tween positions
-			for (uint16 i = 0; i < MAX_SPRITES; i++) {
-				if (!sprite_should_tween(get_sprite(i)))
-					continue;
-
-				invalidate_sprite_2(get_sprite(i));
-				sprite_set_coordinates(_spritelocations2[i].x, _spritelocations2[i].y, _spritelocations2[i].z, get_sprite(i));
-			}
+			sprite_position_tween_restore();
 		} else {
 			uncapTick = 0;
 			currentTick = SDL_GetTicks();
 			ticksElapsed = currentTick - lastTick;
-			if (ticksElapsed < 25) {
-				SDL_Delay(25 - ticksElapsed);
-				lastTick += 25;
+			if (ticksElapsed < UPDATE_TIME_MS) {
+				SDL_Delay(UPDATE_TIME_MS - ticksElapsed);
+				lastTick += UPDATE_TIME_MS;
 			} else {
 				lastTick = currentTick;
 			}
@@ -460,13 +427,4 @@ static void openrct2_loop()
 void openrct2_finish()
 {
 	_finished = 1;
-}
-
-void openrct2_reset_object_tween_locations()
-{
-	for (uint16 i = 0; i < MAX_SPRITES; i++) {
-		_spritelocations1[i].x = _spritelocations2[i].x = get_sprite(i)->unknown.x;
-		_spritelocations1[i].y = _spritelocations2[i].y = get_sprite(i)->unknown.y;
-		_spritelocations1[i].z = _spritelocations2[i].z = get_sprite(i)->unknown.z;
-	}
 }
