@@ -3,7 +3,9 @@
 ###########################################
 
 $testing = (${env:Configuration} -like "*tests")
-if (-not $testing)
+# Only deploy from VS2015 for now.
+$vs2015 = (${env:APPVEYOR_JOB_NAME} -like "*2015*")
+if (-not $testing -and $vs2015)
 {
     # Check if OpenRCT2.org API security token is available
     if (${env:OPENRCT2_ORG_TOKEN})
