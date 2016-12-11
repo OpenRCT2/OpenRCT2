@@ -22,7 +22,7 @@
 
 extern "C"
 {
-    #include "openrct2.h"
+    #include "OpenRCT2.h"
     #include "platform/platform.h"
 }
 

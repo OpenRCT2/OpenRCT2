@@ -19,7 +19,7 @@
 #include "../intro.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "audio.h"
 #include "mixer.h"

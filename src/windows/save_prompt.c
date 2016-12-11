@@ -21,7 +21,7 @@
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../rct2.h"
 #include "../sprites.h"
 

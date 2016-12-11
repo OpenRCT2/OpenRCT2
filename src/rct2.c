@@ -35,7 +35,7 @@
 #include "network/twitch.h"
 #include "object.h"
 #include "object/ObjectManager.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"

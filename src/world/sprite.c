@@ -21,7 +21,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "sprite.h"

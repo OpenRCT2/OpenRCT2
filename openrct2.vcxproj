@@ -200,7 +200,7 @@
     <ClCompile Include="src\object\WallObject.cpp" />
     <ClCompile Include="src\object\WaterObject.cpp" />
     <ClCompile Include="src\object_list.c" />
-    <ClCompile Include="src\openrct2.c" />
+    <ClCompile Include="src\OpenRCT2.cpp" />
     <ClCompile Include="src\paint\map_element\banner.c" />
     <ClCompile Include="src\paint\map_element\entrance.c" />
     <ClCompile Include="src\paint\map_element\fence.c" />
@@ -533,7 +533,7 @@
     <ClInclude Include="src\object\WallObject.h" />
     <ClInclude Include="src\object\WaterObject.h" />
     <ClInclude Include="src\object_list.h" />
-    <ClInclude Include="src\openrct2.h" />
+    <ClInclude Include="src\OpenRCT2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
     <ClInclude Include="src\paint\map_element\surface.h" />
     <ClInclude Include="src\paint\paint.h" />

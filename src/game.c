@@ -32,7 +32,7 @@
 #include "management/research.h"
 #include "network/network.h"
 #include "object.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"

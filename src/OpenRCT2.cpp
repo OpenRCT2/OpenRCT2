@@ -28,7 +28,7 @@
 #include "network/http.h"
 #include "network/network.h"
 #include "object_list.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "platform/crash.h"
 #include "platform/platform.h"
 #include "rct2/interop.h"

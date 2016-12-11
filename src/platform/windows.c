@@ -30,7 +30,7 @@
 #include <shlobj.h>
 #include <SDL_syswm.h>
 #include <sys/stat.h>
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../localisation/language.h"
 #include "../util/util.h"
 #include "../config.h"

@@ -22,7 +22,7 @@
 #include "localisation/language.h"
 #include "localisation/localisation.h"
 #include "network/network.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "util/util.h"
 
 enum {
