@@ -39,6 +39,6 @@ When coding, please also add a string constant for your strings to ```./src/loca
 
 ### Coding style / language
 OpenRCT2 currently does not have a strict coding style. This will be implemented after the entire game is implemented and
-undergoes heavy refactoring. For now, it is recommended that you only write C files as the majority of the game is currenlty in
+undergoes heavy refactoring. For now, it is recommended that you only write C files as the majority of the game is currently in
 C. Exceptions are to modules that have no direct relationship to original code such as the new software audio mixer, the
 HTTP integration and the Twitch integration.
