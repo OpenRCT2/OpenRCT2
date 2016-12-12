@@ -173,14 +173,18 @@ extern "C"
         OpenRCT2::SetupEnvironment();
 
         IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
-
         // TODO Ideally we want to delay this until we show the title so that we can
         //      still open the game window and draw a progress screen for the creation
         //      of the object cache.
         objRepo->LoadOrConstruct();
 
         CreateScenarioRepository(OpenRCT2::_env);
-        GetTrackRepository()->Scan();
+
+        ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
+        // TODO Like objects, this can take a while if there are a lot of track designs
+        //      its also really something really we might want to do in the background
+        //      as its not required until the player wants to place a new ride.
+        tdRepo->Scan();
 
         if (!gOpenRCT2Headless) {
             audio_init();
