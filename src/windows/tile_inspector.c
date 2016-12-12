@@ -21,6 +21,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../openrct2.h"
 #include "../ride/track.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
@@ -1753,6 +1754,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi) {
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, 12, x, y);
 
 			// Edge texture name
+			int idx = map_element_get_terrain_edge(mapElement);
+			openrct2_assert(idx < countof(terrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
 			rct_string_id terrainEdgeNameId = terrainEdgeTypeStringIds[map_element_get_terrain_edge(mapElement)];
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, 12, x, y + 11);
 

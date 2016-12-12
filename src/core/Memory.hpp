@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "Guard.hpp"
+#include <typeinfo>
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.
@@ -25,57 +26,69 @@
 namespace Memory
 {
     template<typename T>
-    T * Allocate()
+    static T * Allocate()
     {
-        return (T*)malloc(sizeof(T));
+        T* result = (T*)malloc(sizeof(T));
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", sizeof(T), typeid(T).name());
+        return result;
     }
 
     template<typename T>
-    T * Allocate(size_t size)
+    static T * Allocate(size_t size)
     {
-        return (T*)malloc(size);
+        T* result = (T*)malloc(size);
+        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", size, typeid(T).name());
+        return result;
     }
 
     template<typename T>
-    T * AllocateArray(size_t count)
+    static T * AllocateArray(size_t count)
     {
-        return (T*)malloc(count * sizeof(T));
+        T* result = (T*)malloc(count * sizeof(T));
+        Guard::ArgumentNotNull(result, "Failed to allocate array of %u * %s (%u bytes)", count, typeid(T).name(), sizeof(T));
+        return result;
     }
 
     template<typename T>
-    T * Reallocate(T * ptr, size_t size)
+    static T * Reallocate(T * ptr, size_t size)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(size);
+            result = (T*)malloc(size);
         }
         else
         {
-            return (T*)realloc((void*)ptr, size);
+            result = (T*)realloc((void*)ptr, size);
         }
+        Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %u bytes", ptr, typeid(T).name(), size);
+        return result;
     }
 
     template<typename T>
-    T * ReallocateArray(T * ptr, size_t count)
+    static T * ReallocateArray(T * ptr, size_t count)
     {
+        T* result;
         if (ptr == nullptr)
         {
-            return (T*)malloc(count * sizeof(T));
+            result = (T*)malloc(count * sizeof(T));
         }
         else
         {
-            return (T*)realloc((void*)ptr, count * sizeof(T));
+            result = (T*)realloc((void*)ptr, count * sizeof(T));
         }
+        Guard::ArgumentNotNull(result, "Failed to reallocate array at %x (%s) to have %u entries", ptr, typeid(T).name(), count);
+        return result;
     }
 
     template<typename T>
-    void Free(T * ptr)
+    static void Free(T * ptr)
     {
         free((void*)ptr);
     }
 
     template<typename T>
-    T * Copy(T * dst, const T * src, size_t size)
+    static T * Copy(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
 #ifdef DEBUG
@@ -89,27 +102,31 @@ namespace Memory
     }
 
     template<typename T>
-    T * Move(T * dst, const T * src, size_t size)
+    static T * Move(T * dst, const T * src, size_t size)
     {
         if (size == 0) return (T*)dst;
-        return (T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(dst, "Trying to move memory to nullptr");
+        Guard::ArgumentNotNull(src, "Trying to move memory from nullptr");
+        T* result =(T*)memmove((void*)dst, (const void*)src, size);
+        Guard::ArgumentNotNull(result, "Failed to move %u bytes of memory from %x to %x for %s", size, src, dst, typeid(T).name());
+        return result;
     }
 
     template<typename T>
-    T * Duplicate(const T * src, size_t size)
+    static T * Duplicate(const T * src, size_t size)
     {
         T *result = Allocate<T>(size);
         return Copy(result, src, size);
     }
 
     template<typename T>
-    T * Set(T * dst, uint8 value, size_t size)
+    static T * Set(T * dst, uint8 value, size_t size)
     {
         return (T*)memset((void*)dst, (int)value, size);
     }
 
     template<typename T>
-    T * CopyArray(T * dst, const T * src, size_t count)
+    static T * CopyArray(T * dst, const T * src, size_t count)
     {
         // Use a loop so that copy constructors are called
         // compiler should optimise to memcpy if possible
@@ -122,14 +139,14 @@ namespace Memory
     }
 
     template<typename T>
-    T * DuplicateArray(const T * src, size_t count)
+    static T * DuplicateArray(const T * src, size_t count)
     {
         T * result = AllocateArray<T>(count);
         return CopyArray(result, src, count);
     }
 
     template<typename T>
-    void FreeArray(T * ptr, size_t count)
+    static void FreeArray(T * ptr, size_t count)
     {
         for (size_t i = 0; i < count; i++)
         {

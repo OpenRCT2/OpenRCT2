@@ -18,6 +18,7 @@
 #define _OPENRCT2_H_
 
 #include "common.h"
+#include "core/Guard.hpp"
 #include "platform/platform.h"
 
 #ifndef DISABLE_NETWORK
@@ -61,7 +62,6 @@ void openrct2_dispose();
 void openrct2_finish();
 void openrct2_reset_object_tween_locations();
 bool openrct2_setup_rct2_segment();
-void openrct2_assert(bool expression, const char * message, ...);
 
 int cmdline_run(const char **argv, int argc);
 

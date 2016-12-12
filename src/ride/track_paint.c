@@ -285,12 +285,24 @@ bool track_paint_util_should_paint_supports(rct_xy16 position)
 	return false;
 }
 
-void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB);
+
+void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement)
 {
-	track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 5, 7);
+	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, height, mapElement, 5, 7);
 }
 
-void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB)
+void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB)
+{
+	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, height, mapElement, fenceOffsetA, fenceOffsetB);
+}
+
+void track_paint_util_draw_station_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement)
+{
+	track_paint_util_draw_station_impl(rideIndex, trackSequence, direction, height, coverHeight, mapElement, 5, 7);
+}
+
+void track_paint_util_draw_station_impl(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, int fenceOffsetA, int fenceOffsetB)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -317,7 +329,7 @@ void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8
 		}
 		sub_98196C(imageId, 0, 0, 32, 8, 1, height + fenceOffsetA, get_current_rotation());
 		//height -= 5 (height)
-		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, coverHeight);
 		//height += 5 (height + 5)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
@@ -350,7 +362,7 @@ void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8
 			sub_98196C(imageId, 31, 23, 1, 8, 7, height + fenceOffsetB, get_current_rotation());
 		}
 		//height -= 7 (height)
-		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, coverHeight);
 		//height += 7 (height + 7)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
@@ -377,7 +389,7 @@ void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8
 		}
 		sub_98196C(imageId, 0, 0, 8, 32, 1, height + fenceOffsetA, get_current_rotation());
 		//height -= 5 (height)
-		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, coverHeight);
 		//height += 5 (height + 5)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
@@ -411,7 +423,7 @@ void track_paint_util_draw_station_2(uint8 rideIndex, uint8 trackSequence, uint8
 		}
 
 		//height -= 7 (height)
-		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, coverHeight);
 		//height += 7 (height + 7)
 
 		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
@@ -1564,18 +1576,24 @@ void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 hei
 	}
 }
 
-void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+
+void track_paint_util_right_quarter_turn_1_tile_tunnel(uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel)
+{
+	track_paint_util_left_quarter_turn_1_tile_tunnel((direction + 3) % 4, baseHeight, endOffset, endTunnel, startOffset, startTunnel);
+}
+
+void track_paint_util_left_quarter_turn_1_tile_tunnel(uint8 direction, uint16 baseHeight, sint8 startOffset, uint8 startTunnel, sint8 endOffset, uint8 endTunnel)
 {
 	switch (direction) {
 		case 0:
-			paint_util_push_tunnel_left(height, TUNNEL_0);
+			paint_util_push_tunnel_left(baseHeight + startOffset, startTunnel);
 			break;
 		case 2:
-			paint_util_push_tunnel_right(height, TUNNEL_0);
+			paint_util_push_tunnel_right(baseHeight + endOffset, endTunnel);
 			break;
 		case 3:
-			paint_util_push_tunnel_right(height, TUNNEL_0);
-			paint_util_push_tunnel_left(height, TUNNEL_0);
+			paint_util_push_tunnel_right(baseHeight + startOffset, startTunnel);
+			paint_util_push_tunnel_left(baseHeight + endOffset, endTunnel);
 			break;
 	}
 }
@@ -1678,6 +1696,30 @@ void track_paint_util_onride_photo_paint(uint8 direction, sint32 height, rct_map
 		sub_98196C(flashImageId, 31, 6, 1, 1, 19, height, get_current_rotation());
 		break;
 	}
+}
+
+uint16 RightVerticalLoopSegments[] ={
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,
+	SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+	0,
+	0,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+	SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+	SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
+};
+
+void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackSequence)
+{
+	if (trackSequence > 9)
+	{
+		// P
+		return;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
 }
 
 void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height) {

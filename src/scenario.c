@@ -279,6 +279,7 @@ void scenario_begin()
 	date_reset();
 	duck_remove_all();
 	park_calculate_size();
+	map_count_remaining_land_rights();
 	staff_reset_stats();
 	gLastEntranceStyle = RIDE_ENTRANCE_STYLE_PLAIN;
 	memset(gMarketingCampaignDaysLeft, 0, 20);
@@ -682,41 +683,6 @@ int scenario_prepare_for_save()
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
 	climate_reset(gClimate);
 
-	return 1;
-}
-
-/**
- *
- *  rct2: 0x006AA244
- */
-int scenario_get_num_packed_objects_to_write()
-{
-	int count = 0;
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		const rct_object_entry *entry = get_loaded_object_entry(i);
-		void *entryData = get_loaded_object_chunk(i);
-		if (entryData != (void*)-1 && !(entry->flags & 0xF0)) {
-			count++;
-		}
-	}
-	return count;
-}
-
-/**
- *
- *  rct2: 0x006AA26E
- */
-int scenario_write_packed_objects(SDL_RWops* rw)
-{
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		const rct_object_entry *entry = get_loaded_object_entry(i);
-		void *entryData = get_loaded_object_chunk(i);
-		if (entryData != (void*)-1 && !(entry->flags & 0xF0)) {
-			if (!object_saved_packed(rw, entry)) {
-				return 0;
-			}
-		}
-	}
 	return 1;
 }
 

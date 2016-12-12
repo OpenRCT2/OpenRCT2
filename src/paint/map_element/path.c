@@ -28,6 +28,8 @@
 #include "../supports.h"
 #include "map_element.h"
 #include "surface.h"
+#include "../../world/map.h"
+#include "../../drawing/lightfx.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no
@@ -150,7 +152,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 			
-			if (!(mapElement->properties.path.addition_status & (0x3 << get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0x3,(2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -165,7 +169,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			if (!(mapElement->properties.path.addition_status & rol8(0xC, get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0xC, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -180,8 +186,10 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
-
-			if (!(mapElement->properties.path.addition_status & rol8(0x30, get_current_rotation())))
+			
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0x30, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -197,7 +205,9 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
 		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 			imageId -= 4;
 
-			if (!(mapElement->properties.path.addition_status & rol8(0xC0, get_current_rotation())))
+			// Edges have been rotated around the rotation to check addition status 
+			// this will also need to be rotated.
+			if (!(mapElement->properties.path.addition_status & ror8(0xC0, (2 * get_current_rotation()))))
 				imageId += 8;
 		}
 		
@@ -761,6 +771,26 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	} else {
 		loc_6A3B57(map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
 	}
+
+#ifdef __ENABLE_LIGHTFX__
+	if (footpath_element_has_path_scenery(map_element) && !(map_element->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+		rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
+		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
+			if (!(map_element->properties.path.edges & (1 << 0))) {
+				lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+			}
+			if (!(map_element->properties.path.edges & (1 << 1))) {
+				lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+			}
+			if (!(map_element->properties.path.edges & (1 << 2))) {
+				lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+			}
+			if (!(map_element->properties.path.edges & (1 << 3))) {
+				lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+			}
+		}
+	}
+#endif
 }
 
 void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)

@@ -16,6 +16,15 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
+void openrct2_assert(bool expression, const char * message, ...);
+
+#ifdef __cplusplus
+}
+
 #include <stdarg.h>
 
 /**
@@ -29,7 +38,7 @@ namespace Guard
     void Fail_VA(const char * message, va_list args);
 
     template<typename T>
-    void ArgumentNotNull(T * argument, const char * message = nullptr, ...)
+    static void ArgumentNotNull(T * argument, const char * message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -38,13 +47,15 @@ namespace Guard
     }
 
     template<typename T>
-    void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
+    static void ArgumentInRange(T argument, T min, T max, const char * message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
         Assert(argument >= min && argument <= max, message, args);
         va_end(args);
     }
-};
+}
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__
+
+#endif // __cplusplus

@@ -31,9 +31,10 @@
 #include "../world/scenery.h"
 #include "ride.h"
 #include "ride_data.h"
+#include "track.h"
 #include "track_data.h"
 #include "track_design.h"
-#include "track.h"
+#include "TrackDesignRepository.h"
 
 typedef struct map_backup {
 	rct_map_element map_elements[MAX_MAP_ELEMENTS];
@@ -107,7 +108,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 			free(decoded);
 
 			if (td6 != NULL) {
-				td6->name = track_design_get_name_from_path(path);
+				td6->name = track_repository_get_name_from_path(path);
 				return td6;
 			}
 		}

@@ -229,7 +229,11 @@ static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 	} else {
 		switch (widgetIndex) {
 		case WIDX_SAVE:
-			save_game_as();
+			if (gScreenFlags & (SCREEN_FLAGS_EDITOR)) {
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
+			} else {
+				save_game_as();
+			}
 			window_close(w);
 			gLoadSaveCallback = window_save_prompt_callback;
 			break;

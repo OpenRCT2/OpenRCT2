@@ -8139,16 +8139,21 @@ loc_6DC743:
 			break;
 		case 4: // loc_6DC820
 			z = moveInfo->z;
-			if (z == 2) {
-				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
-				if (peep->id & 7) {
-					z = 7;
+			// When the ride is closed occasionally the peep is removed
+			// but the vehicle is still on the track. This will prevent
+			// it from crashing in that situation.
+			if (vehicle->peep[0] != 0xFFFF) {
+				if (z == 2) {
+					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+					if (peep->id & 7) {
+						z = 7;
+					}
 				}
-			}
-			if (z == 6) {
-				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
-				if (peep->id & 7) {
-					z = 8;
+				if (z == 6) {
+					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+					if (peep->id & 7) {
+						z = 8;
+					}
 				}
 			}
 			vehicle->mini_golf_current_animation = (uint8)z;

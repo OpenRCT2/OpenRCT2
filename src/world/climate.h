@@ -62,6 +62,7 @@ extern uint16 gClimateUpdateTimer;
 extern uint16 gClimateLightningFlash;
 
 extern const rct_weather climate_weather_data[6];
+extern const uint32 ClimateWeatherGloomColours[4];
 
 int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);

@@ -42,6 +42,7 @@
 #include "ride/ride.h"
 #include "ride/track.h"
 #include "ride/track_design.h"
+#include "ride/TrackDesignRepository.h"
 #include "ScenarioRepository.h"
 #include "title.h"
 #include "util/util.h"
@@ -50,6 +51,12 @@
 #include "world/climate.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+
+#ifdef __ENABLE_LIGHTFX__
+
+#include "drawing/lightfx.h"
+
+#endif
 
 // rct2: 0x0097F67C
 const char * const RCT2FilePaths[PATH_ID_END] = {
@@ -166,7 +173,7 @@ bool rct2_init()
 
 	object_list_load();
 	scenario_repository_scan();
-	track_design_index_create();
+	track_repository_scan();
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
@@ -191,6 +198,14 @@ bool rct2_init()
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
+
+
+#ifdef __ENABLE_LIGHTFX__
+
+	lightfx_init();
+
+#endif
+
 
 	log_verbose("initialising game finished");
 	return true;

@@ -23,13 +23,13 @@
 namespace Collections
 {
     template<typename TCollection, typename TItem>
-    void AddRange(TCollection &collection, std::initializer_list<TItem> initializerList)
+    static void AddRange(TCollection &collection, std::initializer_list<TItem> initializerList)
     {
         collection.insert(collection.end(), initializerList.begin(), initializerList.end());
     }
 
     template<typename TCollection, typename TItem, typename TComparer>
-    bool Contains(TCollection &collection, TItem needle, TComparer comparer)
+    static bool Contains(TCollection &collection, TItem needle, TComparer comparer)
     {
         for (TItem item : collection)
         {
@@ -42,7 +42,7 @@ namespace Collections
     }
 
     template<typename TCollection, typename TItem, typename TComparer>
-    size_t IndexOf(TCollection &collection, TItem needle, TComparer comparer)
+    static size_t IndexOf(TCollection &collection, TItem needle, TComparer comparer)
     {
         size_t index = 0;
         for (TItem item : collection)
@@ -59,7 +59,7 @@ namespace Collections
     #pragma region String helpers
 
     template<typename TCollection>
-    bool Contains(TCollection &collection, const char * item, bool ignoreCase = false)
+    static bool Contains(TCollection &collection, const char * item, bool ignoreCase = false)
     {
         if (ignoreCase)
         {
@@ -80,7 +80,7 @@ namespace Collections
     }
 
     template<typename TCollection>
-    size_t IndexOf(TCollection &collection, const char * item, bool ignoreCase = false)
+    static size_t IndexOf(TCollection &collection, const char * item, bool ignoreCase = false)
     {
         if (ignoreCase)
         {

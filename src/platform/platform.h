@@ -130,6 +130,7 @@ void platform_update_fullscreen_resolutions();
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight);
 void platform_init();
 void platform_draw();
+void platform_draw_require_end();
 void platform_free();
 void platform_trigger_resize();
 void platform_update_palette(const uint8 *colours, int start_index, int num_colours);
@@ -195,6 +196,9 @@ bool platform_check_steam_overlay_attached();
 
 datetime64 platform_get_datetime_now_utc();
 
+// Called very early in the program before parsing commandline arguments.
+void core_init();
+
 // Windows specific definitions
 #ifdef __WINDOWS__
 	#ifndef WIN32_LEAN_AND_MEAN
@@ -203,6 +207,8 @@ datetime64 platform_get_datetime_now_utc();
 	#include <windows.h>
 	#undef GetMessage
 
+	void platform_windows_open_console();
+	void platform_windows_close_console();
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
 	void platform_setup_file_associations();

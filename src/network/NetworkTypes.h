@@ -56,6 +56,7 @@ enum NETWORK_COMMAND
     NETWORK_COMMAND_GROUPLIST,
     NETWORK_COMMAND_EVENT,
     NETWORK_COMMAND_TOKEN,
+    NETWORK_COMMAND_OBJECTS,
     NETWORK_COMMAND_MAX,
     NETWORK_COMMAND_INVALID = -1
 };
@@ -93,7 +94,7 @@ struct ByteSwapT<4>
 };
 
 template <typename T>
-T ByteSwapBE(const T& value)
+static T ByteSwapBE(const T& value)
 {
     return ByteSwapT<sizeof(T)>::SwapBE(value);
 }

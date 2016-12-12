@@ -88,9 +88,9 @@ namespace Twitch
             json_t * isMod = json_object_get(json, "isMod");
 
             member.Name = json_string_value(name);
-            member.IsFollower = json_boolean_value(isFollower);
-            member.IsInChat = json_boolean_value(isInChat);
-            member.IsMod = json_boolean_value(isMod);
+            member.IsFollower = json_is_true(isFollower);
+            member.IsInChat = json_is_true(isInChat);
+            member.IsMod = json_is_true(isMod);
             member.Exists = false;
             member.ShouldTrack = false;
             return member;

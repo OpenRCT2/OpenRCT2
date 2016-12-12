@@ -1547,7 +1547,7 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}Det känns som att någon iakttar mig{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för Jag tänker inte betala så mycket för en ballong från {STRINGID}{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en ballong från {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}{ENDQUOTES}
 STR_1554    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en karta från {STRINGID}{ENDQUOTES}
 STR_1555    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}

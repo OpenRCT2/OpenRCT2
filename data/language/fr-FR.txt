@@ -2724,8 +2724,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(dossier parent)
-STR_2719    :(nouveau fichier)
+STR_2718    :Dossier parent
+STR_2719    :Nv. fichier
 STR_2720    :{UINT16}s
 STR_2721    :{UINT16}s
 STR_2722    :{UINT16}m {UINT16}s
@@ -3680,8 +3680,8 @@ STR_5337    :Entrée du parc
 STR_5338    :Type d'élément
 STR_5339    :Hauteur de base
 STR_5340    :Hauteur de collision
-STR_5341    :Drapeaux
-STR_5342    :Choose a map tile
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Placer employés automatiquement
 STR_5344    :Historique
 STR_5345    :Triche financière
@@ -4233,6 +4233,73 @@ STR_5920    :Afficher les effets de météo
 STR_5921    :{SMALLFONT}{BLACK}Activé, la pluie et les couleurs orageuses seront affichées pendant les orages
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}{STRINGID} maximum
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}{COMMA16} {STRINGID} par train maximum
+STR_5924    :Détails de la surface
+STR_5925    :Détails de l'allée
+STR_5926    :Détails du tracé
+STR_5927    :Détails du décor
+STR_5928    :Détails de l'entrée
+STR_5929    :Détails de la clôture
+STR_5930    :Détails du grand décor
+STR_5931    :Détails de la bannière
+STR_5932    :Détails de l'élément corrompu
+STR_5933    :Propriétés
+STR_5934    :{WINDOW_COLOUR_2}Texture du terrain : {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Bords du terrain : {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Propriété du terrain : {BLACK}{STRINGID}
+STR_5937    :Pas acquis et pas à vendre
+STR_5938    :{WINDOW_COLOUR_2}Niveau de l'eau : {BLACK}{COMMA16}
+STR_5939    :Suppr. clôtures du parc
+STR_5940    :Restaur. clôtures du parc
+STR_5941    :{WINDOW_COLOUR_2}Hauteur de base :
+STR_5942    :{WINDOW_COLOUR_2}Nom de l'allée : {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Ajouts : {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Ajouts : {BLACK}aucun
+STR_5945    :{WINDOW_COLOUR_2}Côtés connectés :
+STR_5946    :{WINDOW_COLOUR_2}Type d'attraction : {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}ID de l'attraction : {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Nom de l'attraction : {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Remontée à chaîne
+STR_5950    :{WINDOW_COLOUR_2}Appliquer les changements à tout l'élément de voie
+STR_5951    :{WINDOW_COLOUR_2}ID de l'élément de voie : {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Numéro de séquence : {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Trier les éléments sur le carré actuel en fonction de leur hauteur de base
+STR_5954    :{WINDOW_COLOUR_2}Âge du décor : {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Placement sur le carré : {BLACK}{STRINGID}
+STR_5956    :Sud-Ouest
+STR_5957    :Nord-Ouest
+STR_5958    :Nord-Est
+STR_5959    :Sud-Est
+STR_5960    :{WINDOW_COLOUR_2}Placement sur le carré :
+STR_5961    :{WINDOW_COLOUR_2}Index : {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Détection de collision :
+STR_5963    :{WINDOW_COLOUR_2}Coins relevés :
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Type d'entrée : {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Partie de l'entrée : {BLACK}{STRINGID}
+STR_5967    :milieu
+STR_5968    :gauche
+STR_5969    :droite
+STR_5970    :{WINDOW_COLOUR_2}ID de l'entrée : {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}ID de la sortie : {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ID de l'attraction: {BLACK}{COMMA16}
+STR_5973    :Attacher au suivant
+STR_5974    :{SMALLFONT}{BLACK}Change les hauteurs de base et de collision pour qu'elles soient les mêmes que l'élément suivant sur le carré. Rend la construction plus facile sur ce carré
+STR_5975    :Pente :
+STR_5976    :plat
+STR_5977    :côté droit vers le haut
+STR_5978    :côté gauche vers le haut
+STR_5979    :{WINDOW_COLOUR_2}Type de clôture : {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Texte de bannière : {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Pas une bannière
+STR_5982    :{WINDOW_COLOUR_2}Type de grand décor : {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}ID de la pièce de grand décor : {BLACK}{COMMA16}
+STR_5984    :Allées bloquées :
+STR_5985    :Nv. dossier
+STR_5986    :Entrez le nom du nouveau dossier :
+STR_5987    :Impossible de créer le dossier
+STR_5988    :{SMALLFONT}{BLACK}Plus de terrain à vendre
+STR_5989    :{SMALLFONT}{BLACK}Plus de droits de construction à vendre
+STR_5990    :{SMALLFONT}{BLACK}Plus de terrain ou de droits de construction à vendre
 
 #############
 # Scenarios #
@@ -4307,7 +4374,7 @@ STR_DTLS    :Ce parc à thème a quelques attractions modernes bien conçues, ma
 <Mystic Mountain>
 STR_SCNR    :Montagnes Mystiques
 STR_PARK    :Montagnes Mystiques
-STR_DTLS    :Dans les forêts vallonnées de Mystic Mountain, construisez un parc à thème en partant de rien.
+STR_DTLS    :Dans les forêts vallonnées des Montagnes Mystiques, construisez un parc à thème en partant de rien.
 
 <Pacific Pyramids>
 STR_SCNR    :Pyramides Pacifiques

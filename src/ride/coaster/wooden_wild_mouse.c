@@ -501,7 +501,7 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 t
 		break;
 	}
 	wooden_a_supports_paint_setup(supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-	track_paint_util_left_quarter_turn_1_tile_tunnel(height, direction, trackSequence);
+	track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }

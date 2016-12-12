@@ -23,6 +23,8 @@
 	#include <arpa/inet.h>
 #endif
 
+#include "../core/Guard.hpp"
+
 extern "C" {
 #include "../openrct2.h"
 #include "../platform/platform.h"
@@ -50,6 +52,8 @@ int _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/ObjectRepository.h"
+#include "../rct2/S6Exporter.h"
 
 extern "C" {
 #include "../config.h"
@@ -116,6 +120,7 @@ Network::Network()
 	client_command_handlers[NETWORK_COMMAND_EVENT] = &Network::Client_Handle_EVENT;
 	client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
 	client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
+	client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
 	server_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
@@ -123,6 +128,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 	server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
+	server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
 	OpenSSL_add_all_algorithms();
 }
 
@@ -429,7 +435,7 @@ void Network::UpdateClient()
 			}
 			break;
 		}
-		case NETWORK_STATUS_CONNECTED:
+		case SOCKET_STATUS_CONNECTED:
 		{
 			status = NETWORK_STATUS_CONNECTED;
 			server_connection.ResetLastPacketTime();
@@ -858,11 +864,38 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 	server_connection.QueuePacket(std::move(packet));
 }
 
+void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
+{
+	log_verbose("client requests %u objects", uint32(objects.size()));
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
+	for (uint32 i = 0; i < objects.size(); i++)
+	{
+		log_verbose("client requests object %s", objects[i].c_str());
+		packet->Write((const uint8 *)objects[i].c_str(), 8);
+	}
+	server_connection.QueuePacket(std::move(packet));
+}
+
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.Challenge.size();
 	packet->Write(connection.Challenge.data(), connection.Challenge.size());
+	connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem *> &objects) const
+{
+	log_verbose("Server sends objects list with %u items", objects.size());
+	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		log_verbose("Object %.8s (checksum %x)", objects[i]->ObjectEntry.name, objects[i]->ObjectEntry.checksum);
+		packet->Write((const uint8 *)objects[i]->ObjectEntry.name, 8);
+		*packet << objects[i]->ObjectEntry.checksum << objects[i]->ObjectEntry.flags;
+	}
 	connection.QueuePacket(std::move(packet));
 }
 
@@ -886,56 +919,22 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
-	bool RLEState = gUseRLE;
-	gUseRLE = false;
 	FILE* temp = tmpfile();
 	if (!temp) {
 		log_warning("Failed to create temporary file to save map.");
 		return;
 	}
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	scenario_save_network(rw);
-	gUseRLE = RLEState;
-	int size = (int)SDL_RWtell(rw);
-	std::vector<uint8> buffer(size);
-	SDL_RWseek(rw, 0, RW_SEEK_SET);
-	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
-		log_warning("Failed to read temporary map file into memory.");
-		SDL_RWclose(rw);
+	size_t out_size;
+	unsigned char *header;
+	header = save_for_network(rw, out_size, connection->RequestedObjects);
+	SDL_RWclose(rw);
+	if (header == nullptr) {
+		connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+		connection->Socket->Disconnect();
 		return;
 	}
 	size_t chunksize = 65000;
-	size_t out_size = size;
-	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
-	unsigned char *header;
-	if (compressed != NULL)
-	{
-		header = (unsigned char *)_strdup("open2_sv6_zlib");
-		size_t header_len = strlen((char *)header) + 1; // account for null terminator
-		header = (unsigned char *)realloc(header, header_len + out_size);
-		if (header == nullptr) {
-			log_error("Failed to allocate %u bytes.", header_len + out_size);
-			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-			connection->Socket->Disconnect();
-			free(compressed);
-			return;
-		}
-		memcpy(&header[header_len], compressed, out_size);
-		out_size += header_len;
-		free(compressed);
-		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-	} else {
-		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-		header = (unsigned char *)malloc(size);
-		if (header == nullptr) {
-			log_error("Failed to allocate %u bytes.", size);
-			connection->SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-			connection->Socket->Disconnect();
-			return;
-		}
-		out_size = size;
-		memcpy(header, &buffer[0], size);
-	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
 		size_t datasize = Math::Min(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -948,7 +947,48 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		}
 	}
 	free(header);
-	SDL_RWclose(rw);
+}
+
+unsigned char * Network::save_for_network(SDL_RWops *rw_buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const
+{
+	unsigned char * header = nullptr;
+	out_size = 0;
+	bool RLEState = gUseRLE;
+	gUseRLE = false;
+	scenario_save_network(rw_buffer, objects);
+	gUseRLE = RLEState;
+	int size = (int)SDL_RWtell(rw_buffer);
+	std::vector<uint8> buffer(size);
+	SDL_RWseek(rw_buffer, 0, RW_SEEK_SET);
+	if (SDL_RWread(rw_buffer, &buffer[0], size, 1) == 0) {
+		log_warning("Failed to read temporary map file into memory.");
+		return nullptr;
+	}
+	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	if (compressed != NULL)
+	{
+		header = (unsigned char *)_strdup("open2_sv6_zlib");
+		size_t header_len = strlen((char *)header) + 1; // account for null terminator
+		header = (unsigned char *)realloc(header, header_len + out_size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", header_len + out_size);
+		} else {
+			memcpy(&header[header_len], compressed, out_size);
+			out_size += header_len;
+			log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+		}
+		free(compressed);
+	} else {
+		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
+		header = (unsigned char *)malloc(size);
+		if (header == nullptr) {
+			log_error("Failed to allocate %u bytes.", size);
+		} else {
+			out_size = size;
+			memcpy(header, &buffer[0], size);
+		}
+	}
+	return header;
 }
 
 void Network::Client_Send_CHAT(const char* text)
@@ -1228,7 +1268,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		rct_peep* pickup_peep = network_get_pickup_peep(connection_player->id);
 		if(pickup_peep) {
 			game_command_playerid = connection_player->id;
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->id), 0);
+			game_do_command(pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->id), 0);
 		}
 		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->GetLastDisconnectReason());
 	}
@@ -1418,10 +1458,8 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 		const char * player_name = (const char *) player->name.c_str();
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
-		Server_Send_MAP(&connection);
-		gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
-		Server_Send_GROUPLIST(connection);
-		Server_Send_PLAYERLIST();
+		std::vector<const ObjectRepositoryItem *> objects = scenario_get_packable_objects();
+		Server_Send_OBJECTS(connection, objects);
 	}
 }
 
@@ -1433,6 +1471,62 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 		connection.Challenge[i] = (uint8)(rand() & 0xff);
 	}
 	Server_Send_TOKEN(connection);
+}
+
+void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+	IObjectRepository * repo = GetObjectRepository();
+	uint32 size;
+	packet >> size;
+	log_verbose("client received object list, it has %u entries", size);
+	std::vector<std::string> requested_objects;
+	for (uint32 i = 0; i < size; i++)
+	{
+		const char * name = (const char *)packet.Read(8);
+		// Required, as packet has no null terminators.
+		std::string s(name, name + 8);
+		uint32 checksum, flags;
+		packet >> checksum >> flags;
+		const ObjectRepositoryItem * ori = repo->FindObject(s.c_str());
+		// This could potentially request the object if checksums don't match, but since client
+		// won't replace its version with server-provided one, we don't do that.
+		if (ori == nullptr) {
+			log_verbose("Requesting object %s with checksum %x from server",
+						s.c_str(), checksum);
+			requested_objects.push_back(s);
+		} else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags) {
+			log_warning("Object %s has different checksum/flags (%x/%x) than server (%x/%x).",
+						s.c_str(), ori->ObjectEntry.checksum, ori->ObjectEntry.flags, checksum, flags);
+		}
+	}
+	Client_Send_OBJECTS(requested_objects);
+}
+
+void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+{
+	uint32 size;
+	packet >> size;
+	log_verbose("Client requested %u objects", size);
+	IObjectRepository * repo = GetObjectRepository();
+	for (uint32 i = 0; i < size; i++)
+	{
+		const char * name = (const char *)packet.Read(8);
+		// This is required, as packet does not have null terminator
+		std::string s(name, name + 8);
+		log_verbose("Client requested object %s", s.c_str());
+		const ObjectRepositoryItem * item = repo->FindObject(s.c_str());
+		if (item == nullptr) {
+			log_warning("Client tried getting non-existent object %s from us.", s.c_str());
+		} else {
+			connection.RequestedObjects.push_back(item);
+		}
+	}
+
+	const char * player_name = (const char *) connection.Player->name.c_str();
+	Server_Send_MAP(&connection);
+	gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
+	Server_Send_GROUPLIST(connection);
+	Server_Send_PLAYERLIST();
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)

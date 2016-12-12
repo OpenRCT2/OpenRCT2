@@ -889,6 +889,13 @@ enum {
 	MAZE_WALL_TYPE_WOOD,
 };
 
+enum {
+	TRACK_SELECTION_FLAG_ARROW            = 1 << 0,
+	TRACK_SELECTION_FLAG_TRACK            = 1 << 1,
+	TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
+	TRACK_SELECTION_FLAG_RECHECK          = 1 << 3,
+};
+
 typedef struct rct_ride_properties {
 	uint32 flags;
 	uint8 min_value;
@@ -1058,6 +1065,10 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(int rideIndex);
+void ride_restore_provisional_entrance_or_exit();
+void ride_remove_provisional_entrance_or_exit();
+void ride_restore_provisional_track_piece();
+void ride_remove_provisional_track_piece();
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images);
 void invalidate_test_results(int rideIndex);
 
@@ -1137,8 +1148,8 @@ const uint8* ride_seek_available_modes(rct_ride *ride);
 void window_ride_measurements_design_cancel();
 void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type);
 
-const uint32 ride_customers_per_hour(const rct_ride *ride);
-const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
+uint32 ride_customers_per_hour(const rct_ride *ride);
+uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
 
 rct_vehicle * ride_get_broken_vehicle(rct_ride *ride);
 

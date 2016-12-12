@@ -119,6 +119,9 @@ money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
 money32 gLandRightsCost;
 
+uint16 gLandRemainingOwnershipSales;
+uint16 gLandRemainingConstructionSales;
+
 rct_xyz16 gCommandPosition;
 
 uint8 gUnk9E2E28;
@@ -240,6 +243,11 @@ void map_set_tile_elements(int x, int y, rct_map_element *elements)
 int map_element_is_last_for_tile(const rct_map_element *element)
 {
 	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+}
+
+uint8 map_element_get_scenery_quadrant(const rct_map_element *element)
+{
+	return (element->type & MAP_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 int map_element_get_type(const rct_map_element *element)
@@ -392,6 +400,31 @@ void map_init(int size)
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
 	climate_reset(CLIMATE_WARM);
+}
+
+/**
+ * Counts the number of surface tiles that offer land ownership rights for sale,
+ * but haven't been bought yet. It updates gLandRemainingOwnershipSales and
+ * gLandRemainingConstructionSales.
+*/
+void map_count_remaining_land_rights()
+{
+	gLandRemainingOwnershipSales = 0;
+	gLandRemainingConstructionSales = 0;
+
+	for (int x = 0; x <= 255; x++) {
+		for (int y = 0; y <= 255; y++) {
+			rct_map_element *element = map_get_surface_element_at(x, y);
+
+			uint8 flags = element->properties.surface.ownership;
+
+			if ((flags & OWNERSHIP_AVAILABLE) && (flags & OWNERSHIP_OWNED) == 0) {
+				gLandRemainingOwnershipSales++;
+			} else if ((flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0) {
+				gLandRemainingConstructionSales++;
+			}
+		}
+	}
 }
 
 /**
@@ -913,7 +946,9 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		return;
 	}
 
-	map_element_remove_banner_entry(map_element);
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		map_element_remove_banner_entry(map_element);
+	}
 
 	rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
 	rct_xyz16 firstTile = {
@@ -1903,14 +1938,20 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
  */
 void game_command_set_land_ownership(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
+	int flags = *ebx & 0xFF;
+
 	*ebx = map_set_land_ownership(
-		*ebx & 0xFF,
+		flags,
 		*eax & 0xFFFF,
 		*ecx & 0xFFFF,
 		*edi & 0xFFFF,
 		*ebp & 0xFFFF,
 		*edx & 0xFF
 		);
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		map_count_remaining_land_rights();
+	}
 }
 
 
@@ -1967,7 +2008,7 @@ static money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	gCommandPosition.x = x;
@@ -2040,7 +2081,7 @@ static money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	gCommandPosition.x = x;
@@ -2125,7 +2166,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	return cost;
 }
@@ -2201,7 +2242,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	return cost;
 }
@@ -3861,7 +3902,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	}
 
 	// Force ride construction to recheck area
-	_currentTrackSelectionFlags |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
 	*ebx = (scenery_entry->large_scenery.price * 10) + supportsCost;
 	if(gParkFlags & PARK_FLAGS_NO_MONEY){
@@ -4450,6 +4491,11 @@ void map_remove_provisional_elements()
 		footpath_provisional_remove();
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 	}
+	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	{
+		ride_remove_provisional_track_piece();
+		ride_remove_provisional_entrance_or_exit();
+	}
 }
 
 void map_restore_provisional_elements()
@@ -4462,6 +4508,11 @@ void map_restore_provisional_elements()
 				gFootpathProvisionalPosition.y,
 				gFootpathProvisionalPosition.z,
 				gFootpathProvisionalSlope);
+	}
+	if (window_find_by_class(WC_CONSTRUCT_RIDE) != NULL)
+	{
+		ride_restore_provisional_track_piece();
+		ride_restore_provisional_entrance_or_exit();
 	}
 }
 

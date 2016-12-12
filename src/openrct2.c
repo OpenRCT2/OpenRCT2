@@ -661,17 +661,3 @@ static void openrct2_setup_rct2_hooks()
 {
 	// None for now
 }
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1900)
-/**
- * Temporary fix for libraries not compiled with VS2015
- */
-FILE **__iob_func()
-{
-	static FILE* streams[3];
-	streams[0] = stdin;
-	streams[1] = stdout;
-	streams[2] = stderr;
-	return streams;
-}
-#endif

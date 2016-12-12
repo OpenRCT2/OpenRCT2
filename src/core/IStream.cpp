@@ -35,7 +35,22 @@ utf8 * IStream::ReadString()
     return resultString;
 }
 
-void IStream::WriteString(utf8 * str)
+std::string IStream::ReadStdString()
+{
+    std::vector<utf8> result;
+
+    uint8 ch;
+    while ((ch = ReadValue<uint8>()) != 0)
+    {
+        result.push_back(ch);
+    }
+    result.push_back(0);
+
+    std::string resultString(result.data(), result.data() + result.size());
+    return resultString;
+}
+
+void IStream::WriteString(const utf8 * str)
 {
     if (str == nullptr)
     {
@@ -46,4 +61,9 @@ void IStream::WriteString(utf8 * str)
         size_t numBytes = String::SizeOf(str) + 1;
         Write(str, numBytes);
     }
+}
+
+void IStream::WriteString(const std::string &str)
+{
+    WriteString(str.c_str());
 }

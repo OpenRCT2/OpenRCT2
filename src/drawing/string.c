@@ -469,6 +469,7 @@ static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* p
 
 	int eax;
 
+	colour = NOT_TRANSLUCENT(colour);
 	eax = ColourMapB[colour].b;
 	if (*current_font_flags & 2) {
 		eax |= 0x0A0A00;

@@ -18,7 +18,7 @@
 
     InstallDir "$PROGRAMFILES32\OpenRCT2\"
 !else
-    !define OPENRCT2_EXE            "openrct2_x64.exe"
+    !define OPENRCT2_EXE            "openrct2.exe"
     !define APPBITS                 64
     !define APPARCH                 "win64"
 

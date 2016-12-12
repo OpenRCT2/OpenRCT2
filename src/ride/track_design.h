@@ -152,11 +152,6 @@ assert_struct_size(rct_track_td6, 0xbf);
 #endif
 #pragma pack(pop)
 
-typedef struct track_design_file_ref {
-	utf8 *name;
-	utf8 *path;
-} track_design_file_ref;
-
 enum {
 	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
 	TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31)		// Not used anymore.
@@ -204,14 +199,6 @@ void track_design_dispose(rct_track_td6 *td6);
 void track_design_mirror(rct_track_td6 *td6);
 
 int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
-
-void track_design_index_create();
-size_t track_design_index_get_count_for_ride(uint8 rideType, const char *entry);
-size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry);
-utf8 *track_design_get_name_from_path(const utf8 *path);
-bool track_design_index_rename(const utf8 *path, const utf8 *newName);
-bool track_design_index_delete(const utf8 *path);
-bool track_design_index_install(const utf8 *srcPath, const utf8 *destPath);
 
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);

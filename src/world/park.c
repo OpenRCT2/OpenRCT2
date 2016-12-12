@@ -1114,14 +1114,23 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 */
 void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
+	int flags = *ebx & 0xFFFF;
+
 	*ebx = map_buy_land_rights(
 		(*eax & 0xFFFF),
 		(*ecx & 0xFFFF),
 		(*edi & 0xFFFF),
 		(*ebp & 0xFFFF),
 		(*edx & 0xFF00) >> 8,
-		*ebx & 0xFFFF
+		flags
 	);
+
+	// Too expensive to always call in map_buy_land_rights.
+	// It's already counted when the park is loaded, after
+	// that it should only be called for user actions.
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		map_count_remaining_land_rights();
+	}
 }
 
 

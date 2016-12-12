@@ -345,6 +345,14 @@ static int climate_play_thunder(int instanceIndex, int soundId, int volume, int 
 
 #pragma region Climate / Weather data tables
 
+/** rct2: 0x0098195C */
+const uint32 ClimateWeatherGloomColours[4] = {
+	0xFFFFFFFF,
+	0x2000000 | 49,
+	0x2000000 | 50,
+	0x2000000 | 47,
+};
+
 // rct2: 0x00993C94
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const rct_weather climate_weather_data[6] = {

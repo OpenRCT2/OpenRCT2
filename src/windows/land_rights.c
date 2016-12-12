@@ -208,6 +208,23 @@ static void window_land_rights_invalidate(rct_window *w)
 	window_land_rights_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
 		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
+
+	// Disable ownership and/or construction buying functions if there're no tiles left for sale
+	if (gLandRemainingOwnershipSales == 0) {
+		w->disabled_widgets |= (1 << WIDX_BUY_LAND_RIGHTS);
+		window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
+	} else {
+		w->disabled_widgets &= ~(1 << WIDX_BUY_LAND_RIGHTS);
+		window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
+	}
+
+	if (gLandRemainingConstructionSales == 0) {
+		w->disabled_widgets |= (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
+		window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
+	} else {
+		w->disabled_widgets &= ~(1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
+		window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
+	}
 }
 
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)

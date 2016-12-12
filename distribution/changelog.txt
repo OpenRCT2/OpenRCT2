@@ -30,6 +30,7 @@
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
+- Fix: [#1238] Track place window does not fully adjust to custom colour scheme.
 - Fix: [#2042] Guests entering queues are immediately annoyed when many entertainers are around (original bug).
 - Fix: [#2081] Game hangs when track has infinite loop.
 - Fix: [#2754] Dragging scrollview fails when scaled.
@@ -47,7 +48,7 @@
 - Fix: [#3771] Crash when kicking player in multiplayer.
 - Fix: [#3824] Segfault when passing invalid arguments to ride set type.
 - Fix: [#3858] Tooltip shown when hovering over title logo.
-- Fix: [#3915] Restore horizontal and vertical scrollbar behavior from RCT2 when clicking on one of the scrollbars.
+- Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
 - Technical: Multiplayer groups are now stored in JSON format.
 
 0.0.4-beta (2016-04-15)

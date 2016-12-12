@@ -17,6 +17,8 @@
 #include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
+#include "../object/ObjectRepository.h"
+#include "../object/Object.h"
 #include "S6Exporter.h"
 
 extern "C"
@@ -46,7 +48,6 @@ extern "C"
 
 S6Exporter::S6Exporter()
 {
-    ExportObjects = false;
     RemoveTracklessRides = false;
     memset(&_s6, 0, sizeof(_s6));
 }
@@ -90,7 +91,7 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-    _s6.header.num_packed_objects = ExportObjects ? scenario_get_num_packed_objects_to_write() : 0;
+    _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
 
@@ -121,10 +122,11 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
         SDL_RWwrite(rw, buffer, encodedLength, 1);
     }
 
+    log_warning("exporting %u objects", _s6.header.num_packed_objects);
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        if (!scenario_write_packed_objects(rw))
+        if (!scenario_write_packed_objects(rw, ExportObjectsList))
         {
             free(buffer);
             throw Exception("Unable to pack objects.");
@@ -330,7 +332,7 @@ void S6Exporter::Export()
     _s6.current_expenditure = gCurrentExpenditure;
     _s6.current_profit = gCurrentProfit;
     _s6.weekly_profit_average_dividend = gWeeklyProfitAverageDividend;
-	_s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
+    _s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
     // pad_0135833A
 
     memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
@@ -451,6 +453,112 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
     return value;
 }
 
+
+// Save game state without modifying any of the state for multiplayer
+int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
+{
+    viewport_set_saved_view();
+
+    bool result = false;
+    auto s6exporter = new S6Exporter();
+    try
+    {
+        s6exporter->ExportObjectsList = objects;
+        s6exporter->Export();
+        s6exporter->SaveGame(rw);
+        result = true;
+    }
+    catch (Exception)
+    {
+    }
+    delete s6exporter;
+
+    if (!result)
+    {
+        return 0;
+    }
+
+    // Write other data not in normal save files
+    SDL_RWwrite(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
+    SDL_WriteLE32(rw, gGamePaused);
+    SDL_WriteLE32(rw, _guestGenerationProbability);
+    SDL_WriteLE32(rw, _suggestedGuestMaximum);
+    SDL_WriteU8(rw, gCheatsSandboxMode);
+    SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+    SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+    SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
+    SDL_WriteU8(rw, gCheatsEnableChainLiftOnAllTrack);
+    SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+    SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+    SDL_WriteU8(rw, gCheatsFastLiftHill);
+    SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+    SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+    SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+    SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+    SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+    SDL_WriteU8(rw, gCheatsDisableVandalism);
+    SDL_WriteU8(rw, gCheatsDisableLittering);
+    SDL_WriteU8(rw, gCheatsNeverendingMarketing);
+    SDL_WriteU8(rw, gCheatsFreezeClimate);
+    SDL_WriteU8(rw, gCheatsDisablePlantAging);
+    SDL_WriteU8(rw, gCheatsAllowArbitraryRideTypeChanges);
+
+    gfx_invalidate_screen();
+    return 1;
+}
+
+static bool object_is_custom(const ObjectRepositoryItem * object)
+{
+    Guard::ArgumentNotNull(object);
+
+    // Validate the object is not one from base game or expansion pack
+    return (object->LoadedObject != nullptr &&
+            object->LoadedObject->GetLegacyData() != nullptr
+            && !(object->ObjectEntry.flags & 0xF0));
+}
+
+int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects)
+{
+    log_verbose("exporting packed objects");
+    for (const auto &object : objects)
+    {
+        Guard::ArgumentNotNull(object);
+        log_verbose("exporting object %.8s", object->ObjectEntry.name);
+        if (object_is_custom(object))
+        {
+            if (!object_saved_packed(rw, &object->ObjectEntry))
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
+        }
+    }
+    return 1;
+}
+
+/**
+ *
+ *  rct2: 0x006AA244
+ */
+std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects()
+{
+    std::vector<const ObjectRepositoryItem *> objects;
+    IObjectRepository * repo = GetObjectRepository();
+    for (size_t i = 0; i < repo->GetNumObjects(); i++)
+    {
+        const ObjectRepositoryItem *item = &repo->GetObjects()[i];
+        // Validate the object is not one from base game or expansion pack
+        if (object_is_custom(item))
+        {
+            objects.push_back(item);
+        }
+    }
+    return objects;
+}
+
 extern "C"
 {
     enum {
@@ -489,7 +597,9 @@ extern "C"
         auto s6exporter = new S6Exporter();
         try
         {
-            s6exporter->ExportObjects = (flags & S6_SAVE_FLAG_EXPORT);
+            if (flags & S6_SAVE_FLAG_EXPORT) {
+                s6exporter->ExportObjectsList = scenario_get_packable_objects();
+            }
             s6exporter->RemoveTracklessRides = true;
             s6exporter->Export();
             if (flags & S6_SAVE_FLAG_SCENARIO)
@@ -514,58 +624,5 @@ extern "C"
             gScreenAge = 0;
         }
         return result;
-    }
-
-    // Save game state without modifying any of the state for multiplayer
-    int scenario_save_network(SDL_RWops * rw)
-    {
-        viewport_set_saved_view();
-
-        bool result = false;
-        auto s6exporter = new S6Exporter();
-        try
-        {
-            s6exporter->ExportObjects = true;
-            s6exporter->Export();
-            s6exporter->SaveGame(rw);
-            result = true;
-        }
-        catch (Exception)
-        {
-        }
-        delete s6exporter;
-
-        if (!result)
-        {
-            return 0;
-        }
-
-        // Write other data not in normal save files
-        SDL_RWwrite(rw, gSpriteSpatialIndex, 0x10001 * sizeof(uint16), 1);
-        SDL_WriteLE32(rw, gGamePaused);
-        SDL_WriteLE32(rw, _guestGenerationProbability);
-        SDL_WriteLE32(rw, _suggestedGuestMaximum);
-        SDL_WriteU8(rw, gCheatsSandboxMode);
-        SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
-        SDL_WriteU8(rw, gCheatsDisableSupportLimits);
-        SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
-        SDL_WriteU8(rw, gCheatsEnableChainLiftOnAllTrack);
-        SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
-        SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
-        SDL_WriteU8(rw, gCheatsFastLiftHill);
-        SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
-        SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
-        SDL_WriteU8(rw, gCheatsUnlockAllPrices);
-        SDL_WriteU8(rw, gCheatsBuildInPauseMode);
-        SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
-        SDL_WriteU8(rw, gCheatsDisableVandalism);
-        SDL_WriteU8(rw, gCheatsDisableLittering);
-        SDL_WriteU8(rw, gCheatsNeverendingMarketing);
-        SDL_WriteU8(rw, gCheatsFreezeClimate);
-        SDL_WriteU8(rw, gCheatsDisablePlantAging);
-        SDL_WriteU8(rw, gCheatsAllowArbitraryRideTypeChanges);
-
-        gfx_invalidate_screen();
-        return 1;
     }
 }

@@ -85,13 +85,16 @@ enum {
 	WIDX_RIDES = 6
 };
 
+#define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
+	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,					STR_NONE											}, \
+	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								}, \
+	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								}, \
+	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											}, \
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				}, \
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				}
+
 static rct_widget window_editor_objective_options_main_widgets[] = {
-	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,					STR_NONE											},
-	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_SELECTION,	STR_WINDOW_TITLE_TIP								},
-	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP								},
-	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,					STR_NONE											},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP				},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,		STR_SELECT_RIDES_TO_BE_PRESERVED_TIP				},
+	MAIN_OBJECTIVE_OPTIONS_WIDGETS,
 	{ WWT_DROPDOWN,			1,	98,		441,	48,		59,		STR_NONE,					STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP			},
 	{ WWT_DROPDOWN_BUTTON,	1,	430,	440,	49,		58,		STR_DROPDOWN_GLYPH,			STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP			},
 	{ WWT_SPINNER,			1,	158,	237,	65,		76,		STR_NONE,					STR_NONE											},
@@ -111,12 +114,7 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
-	{ WWT_FRAME,			0,	0,		449,	0,		228,	STR_NONE,								STR_NONE								},
-	{ WWT_CAPTION,			0,	1,		448,	1,		14,		STR_OBJECTIVE_PRESERVED_RIDES_TITLE,	STR_WINDOW_TITLE_TIP					},
-	{ WWT_CLOSEBOX,			0,	437,	447,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP					},
-	{ WWT_RESIZE,			1,	0,		279,	43,		148,	STR_NONE,								STR_NONE								},
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP	},
-	{ WWT_TAB,				1,	34,		64,		17,		46,		0x20000000 | SPR_TAB,					STR_SELECT_RIDES_TO_BE_PRESERVED_TIP	},
+	MAIN_OBJECTIVE_OPTIONS_WIDGETS,
 	{ WWT_SCROLL,			1,	3,		376,	60,		220,	SCROLL_VERTICAL,						STR_NONE								},
 	{ WIDGETS_END }
 };
@@ -841,9 +839,9 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	window_editor_objective_options_set_pressed_tab(w);
 
 	if (stex == NULL)
-		w->disabled_widgets &= ~(WIDX_PARK_NAME | WIDX_SCENARIO_NAME);
+		w->disabled_widgets &= ~((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
 	else
-		w->disabled_widgets |= (WIDX_PARK_NAME | WIDX_SCENARIO_NAME);
+		w->disabled_widgets |= ((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
 
 	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_GUESTS_BY:
@@ -1128,7 +1126,7 @@ static void window_editor_objective_options_rides_scrollmousedown(rct_window *w,
 	if (i < 0 || i >= w->no_list_items)
 		return;
 
-	ride = get_ride(i);
+	ride = get_ride(w->list_item_positions[i]);
 	ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
 	window_invalidate(w);
 }
@@ -1218,7 +1216,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		}
 
 		// Checkbox mark
-		ride = get_ride(i);
+		ride = get_ride(w->list_item_positions[i]);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
 			gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? -2 : -1;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
@@ -1246,7 +1244,7 @@ static void window_editor_objective_options_update_disabled_widgets(rct_window *
 		}
 	}
 
-	if (numRides == 0) {
+	if (numRides != 0) {
 		w->disabled_widgets &= ~(1 << WIDX_TAB_2);
 	} else {
 		w->disabled_widgets |= (1 << WIDX_TAB_2);

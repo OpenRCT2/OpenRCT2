@@ -16,42 +16,29 @@
 
 #pragma once
 
-#include <stack>
-#include "../common.h"
+#include "../../src/common.h"
 
-struct file_info;
-class FileEnumerator final
-{
-private:
-    struct DirectoryState
-    {
-        utf8 *  Directory;
-        int     Handle;
-    };
+extern "C" {
+#include "../../src/paint/map_element/map_element.h"
+}
 
-    // Enumeration options
-    utf8 *  _rootPath;
-    utf8 *  _pattern;
-    bool    _recurse;
+enum {
+    TUNNELCALL_SKIPPED,
+    TUNNELCALL_NONE,
+    TUNNELCALL_CALL,
+};
 
-    // Enumeration state
-    int                         _fileHandle;
-    std::stack<DirectoryState>  _directoryStack;
+struct TunnelCall {
+    uint8 call;
+    sint16 offset;
+    uint8 type;
+};
 
-    // Current enumeration
-    file_info * _fileInfo;
-    utf8      * _path;
+namespace SideTunnelCall {
+    sint16 GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]);
+    TunnelCall ExtractTunnelCalls(tunnel_entry * list, uint8 count, uint16 baseHeight, bool * error);
 
-public:
-    FileEnumerator(const utf8 * pattern, bool recurse);
-    ~FileEnumerator();
-
-    const file_info *   GetFileInfo() const { return _fileInfo; }
-    const utf8 *        GetPath() const { return _path; }
-
-    void Reset();
-    bool Next();
-
-private:
-    void CloseHandles();
+    bool TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4]);
+    void GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4]);
+    bool TunnelCallsLineUp(TunnelCall tunnelCalls[4][4]);
 };

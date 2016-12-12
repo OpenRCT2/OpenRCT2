@@ -198,6 +198,9 @@ public:
                     loadedObject->Load();
                 }
             }
+            UpdateLegacyLoadedObjectList();
+            UpdateSceneryGroupIndexes();
+            reset_type_to_ride_entry_index_map();
         }
     }
 
@@ -386,6 +389,10 @@ private:
                     }
                 }
             }
+
+            // HACK Scenery window will lose its tabs after changing the the scenery group indexing
+            //      for now just close it, but it will be better to later tell it to invalidate the tabs
+            window_close_by_class(WC_SCENERY);
         }
     }
 

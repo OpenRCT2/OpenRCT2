@@ -1162,7 +1162,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		rct_map_element* mapElement;
 		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
-		if (x == (sint16)0x8000)
+		if (dest_x == (sint16)0x8000)
 			return;
 
 		game_command_callback = game_command_callback_pickup_staff;

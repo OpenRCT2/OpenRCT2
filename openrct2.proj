@@ -17,7 +17,6 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
-    <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
     <Version>0.0.5.0</Version>
@@ -40,8 +39,7 @@
 
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
-    <OutputExe Condition="'$(Platform)'=='Win32'">$(TargetDir)openrct2.exe</OutputExe>
-    <OutputExe Condition="'$(Platform)'=='x64'">$(TargetDir)openrct2_x64.exe</OutputExe>
+    <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
@@ -60,7 +58,7 @@
     <!-- Set openrct2.sln properties -->
     <SlnProperties>Configuration=$(Configuration)</SlnProperties>
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
-    <SlnProperties>$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
+    <SlnProperties Condition="'$(BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
@@ -214,7 +212,7 @@
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
-    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
           Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) %(SignItems.Identity)"
           StandardOutputImportance="low" />
 
@@ -260,7 +258,7 @@
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." />
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
              Importance="high" />
-    <Exec Condition="'$(SIGN_PASSWORD)'!=''"
+    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
           Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) $(PublishInstallerExe)"
           StandardOutputImportance="low" />
   </Target>
@@ -278,7 +276,7 @@
     <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
     <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
     <Error Condition="'$(GIT_BRANCH)'==''" Text="GIT_BRANCH not set." />
-    <Exec Command="curl.exe -s -o - ^
+    <Exec EchoOff="true" Command="curl.exe -s -o - ^
          --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
          --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
          --form &quot;version=$(Version)&quot; ^

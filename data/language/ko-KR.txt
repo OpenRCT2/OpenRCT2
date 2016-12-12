@@ -835,7 +835,7 @@ STR_0830    :{SMALLFONT}{BLACK}화면 확대하기
 STR_0831    :{SMALLFONT}{BLACK}화면 축소하기
 STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로 90{DEGREE} 회전하기
 STR_0833    :{SMALLFONT}{BLACK}게임 일시정지
-STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
+STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 설정
 STR_0835    :게임 초기화 실패
 STR_0836    :게임을 최소화 상태에서 실행할 수 없습니다
 STR_0837    :그래픽 시스템을 초기화할 수 없습니다
@@ -1053,8 +1053,8 @@ STR_1047    :게임 저장 실패!
 STR_1048    :시나리오 저장 실패
 STR_1049    :풍경 저장 실패!
 STR_1050    :불러오기 실패...{NEWLINE}파일에 유효하지 않은 데이터가 있습니다!
-STR_1051    :트랙 지지대 감추기
-STR_1052    :손님 감추기
+STR_1051    :지지대 감추기
+STR_1052    :사람 감추기
 STR_1053    :{SMALLFONT}{BLACK}공원의 놀이기구나 시설
 STR_1054    :{SMALLFONT}{BLACK}놀이기구/시설 이름
 STR_1055    :{SMALLFONT}{BLACK}손님 이름
@@ -1156,7 +1156,7 @@ STR_1150    :3/4을 태우면
 STR_1151    :모두 태우면
 STR_1152    :한 사람이라도 태우면
 STR_1153    :놀이기구 트랙 높이 표시
-STR_1154    :지형 높이 표시
+STR_1154    :지표면 높이 표시
 STR_1155    :보도 높이 표시
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
@@ -1170,7 +1170,7 @@ STR_1164    :{STRINGID}{NEWLINE}(제거하려면 오른쪽 클릭하세요)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :이곳의 물을 내릴 수 없습니다...
 STR_1167    :이곳의 물을 올릴 수 없습니다...
-STR_1168    :옵션
+STR_1168    :설정
 STR_1169    :(없음)
 STR_1170    :{STRING}
 STR_1171    :{RED}닫힘 - -
@@ -3549,7 +3549,7 @@ STR_5208    :직원 목록
 STR_5209    :전광판
 STR_5210    :오브젝트 선택
 STR_5211    :개발 목록
-STR_5212    :시나리오 옵션
+STR_5212    :시나리오 설정
 STR_5213    :목표 설정
 STR_5214    :지도 생성
 STR_5215    :트랙 디자인 매니저
@@ -3650,8 +3650,8 @@ STR_5309    :OpenRCT2
 STR_5310    :무작위
 STR_5311    :{SMALLFONT}{BLACK}디버그 도구
 STR_5312    :콘솔 보이기
-STR_5313    :칸 탐색기 열기
-STR_5314    :칸 탐색기
+STR_5313    :칸 조사 창 열기
+STR_5314    :칸 조사 창
 STR_5315    :잔디
 STR_5316    :모래
 STR_5317    :진흙
@@ -4291,6 +4291,12 @@ STR_5981    :{WINDOW_COLOUR_2}팻말이 아님
 STR_5982    :{WINDOW_COLOUR_2}대형 풍경 종류: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}대형 풍경 조각 ID: {BLACK}{COMMA16}
 STR_5984    :막힌 보도:
+STR_5985    :새 폴더
+STR_5986    :새 폴더의 이름을 입력하세요.
+STR_5987    :폴더를 만들 수 없습니다.
+STR_5988    :{SMALLFONT}{BLACK}판매 중인 땅이 더 이상 없습니다.
+STR_5989    :{SMALLFONT}{BLACK}판매 중인 건설권이 더 이상 없습니다.
+STR_5990    :{SMALLFONT}{BLACK}판매 중인 땅이나 건설권이 더 이상 없습니다.
 
 #############
 # Scenarios #
