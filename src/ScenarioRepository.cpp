@@ -142,7 +142,7 @@ public:
 
         // Scan RCT2 directory
         std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
-        std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SCENARIO);
+        std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
         Scan(rct2dir);
         Scan(openrct2dir);
 

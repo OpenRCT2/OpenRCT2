@@ -127,7 +127,7 @@ public:
     void Scan() override
     {
         std::string rct2Directory = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK);
-        std::string userDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::TRACK);
+        std::string userDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
         _items.clear();
         _directoryQueryResult = { 0 };

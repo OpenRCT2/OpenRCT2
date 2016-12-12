@@ -118,7 +118,7 @@ public:
         _queryDirectoryResult = { 0 };
 
         const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         QueryDirectory(&_queryDirectoryResult, rct2Path);
         QueryDirectory(&_queryDirectoryResult, openrct2Path);
 
@@ -252,7 +252,7 @@ private:
         stopwatch.Start();
 
         const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         ScanDirectory(rct2Path);
         ScanDirectory(openrct2Path);
 
