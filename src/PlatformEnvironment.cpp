@@ -22,17 +22,16 @@
 
 extern "C"
 {
-    #include "OpenRCT2.h"
     #include "platform/platform.h"
 }
 
 class PlatformEnvironment : public IPlatformEnvironment
 {
 private:
-    std::string _basePath[4];
+    std::string _basePath[DIRBASE_COUNT];
 
 public:
-    PlatformEnvironment(const std::string basePaths[4])
+    PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -84,7 +83,7 @@ private:
     static const char * FileNames[];
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment(const std::string basePaths[4])
+IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
     return new PlatformEnvironment(basePaths);
 }

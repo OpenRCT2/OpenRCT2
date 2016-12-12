@@ -19,13 +19,15 @@
 #include <string>
 #include "common.h"
 
-enum class DIRBASE
+enum class DIRBASE : int
 {
     RCT1,               // Base directory for original RollerCoaster Tycoon 1 content.
     RCT2,               // Base directory for original RollerCoaster Tycoon 2 content.
     OPENRCT2,           // Base directory for OpenRCT2 installation.
     USER,               // Base directory for OpenRCT2 user content.
 };
+constexpr int DIRBASE_COUNT = 4;
+using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
 
 enum class DIRID
 {
@@ -70,4 +72,4 @@ interface IPlatformEnvironment
     virtual std::string GetFilePath(PATHID pathid) const abstract;
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment(const std::string basePaths[4]);
+IPlatformEnvironment * CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
