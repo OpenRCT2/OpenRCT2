@@ -550,14 +550,6 @@ IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env)
 
 IScenarioRepository * GetScenarioRepository()
 {
-    if (_scenarioRepository == nullptr)
-    {
-        // TODO There should only be one platform environment which needs to be global.
-        //      However it should be not be used here. Instead the object repository should be
-        //      constructed in some initialisation method where it passes this dependency.
-        IPlatformEnvironment * env = CreatePlatformEnvironment();
-        CreateScenarioRepository(env);
-    }
     return _scenarioRepository.get();
 }
 

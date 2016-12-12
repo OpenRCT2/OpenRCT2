@@ -84,15 +84,8 @@ private:
     static const char * FileNames[];
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment()
+IPlatformEnvironment * CreatePlatformEnvironment(const std::string basePaths[4])
 {
-    utf8 path[260];
-    std::string basePaths[4];
-    basePaths[(size_t)DIRBASE::RCT2] = std::string(gRCT2AddressAppPath);
-    platform_get_openrct_data_path(path, sizeof(path));
-    basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    basePaths[(size_t)DIRBASE::USER] = std::string(path);
     return new PlatformEnvironment(basePaths);
 }
 

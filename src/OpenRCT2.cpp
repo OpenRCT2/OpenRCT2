@@ -18,8 +18,12 @@
 #include "core/Guard.hpp"
 #include "core/String.hpp"
 #include "network/network.h"
-#include "platform/crash.h"
+#include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
+#include "platform/crash.h"
+#include "PlatformEnvironment.h"
+#include "ride/TrackDesignRepository.h"
+#include "ScenarioRepository.h"
 
 extern "C"
 {
@@ -67,6 +71,7 @@ extern "C"
 
 namespace OpenRCT2
 {
+    static IPlatformEnvironment * _env = nullptr;
     static std::string _versionInfo;
     static bool _isWindowMinimised;
     static uint32 _isWindowMinimisedLastCheckTick;
@@ -76,6 +81,7 @@ namespace OpenRCT2
     /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
     static bool _finished;
 
+    static void SetupEnvironment();
     static void SetVersionInfoString();
     static bool ShouldRunVariableFrame();
     static void RunGameLoop();
@@ -162,6 +168,19 @@ extern "C"
         {
             return false;
         }
+
+        // Sets up the environment OpenRCT2 is running in, e.g. directory paths
+        OpenRCT2::SetupEnvironment();
+
+        IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
+
+        // TODO Ideally we want to delay this until we show the title so that we can
+        //      still open the game window and draw a progress screen for the creation
+        //      of the object cache.
+        objRepo->LoadOrConstruct();
+
+        CreateScenarioRepository(OpenRCT2::_env);
+        GetTrackRepository()->Scan();
 
         if (!gOpenRCT2Headless) {
             audio_init();
@@ -294,6 +313,18 @@ extern "C"
 
 namespace OpenRCT2
 {
+    static void SetupEnvironment()
+    {
+        utf8 path[260];
+        std::string basePaths[4];
+        basePaths[(size_t)DIRBASE::RCT2] = std::string(gRCT2AddressAppPath);
+        platform_get_openrct_data_path(path, sizeof(path));
+        basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
+        platform_get_user_directory(path, nullptr, sizeof(path));
+        basePaths[(size_t)DIRBASE::USER] = std::string(path);
+        OpenRCT2::_env = CreatePlatformEnvironment(basePaths);
+    }
+
     static void SetVersionInfoString()
     {
         utf8 buffer[256];

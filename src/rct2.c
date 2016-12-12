@@ -171,10 +171,6 @@ bool rct2_init()
 		return false;
 	}
 
-	object_list_load();
-	scenario_repository_scan();
-	track_repository_scan();
-
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();

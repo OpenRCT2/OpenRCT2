@@ -626,14 +626,6 @@ IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
 
 IObjectRepository * GetObjectRepository()
 {
-    if (_objectRepository == nullptr)
-    {
-        // TODO There should only be one platform environment which needs to be global.
-        //      However it should be not be used here. Instead the object repository should be
-        //      constructed in some initialisation method where it passes this dependency.
-        IPlatformEnvironment * env = CreatePlatformEnvironment();
-        CreateObjectRepository(env);
-    }
     return _objectRepository.get();
 }
 

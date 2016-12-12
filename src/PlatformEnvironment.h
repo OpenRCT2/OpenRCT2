@@ -70,4 +70,4 @@ interface IPlatformEnvironment
     virtual std::string GetFilePath(PATHID pathid) const abstract;
 };
 
-IPlatformEnvironment * CreatePlatformEnvironment();
+IPlatformEnvironment * CreatePlatformEnvironment(const std::string basePaths[4]);
