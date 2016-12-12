@@ -27,6 +27,7 @@
 extern "C"
 {
     #include "../platform/platform.h"
+    #include "../rct2.h"
     #include "track_design.h"
 }
 

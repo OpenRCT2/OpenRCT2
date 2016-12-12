@@ -60,8 +60,6 @@ bool openrct2_initialise();
 void openrct2_launch();
 void openrct2_dispose();
 void openrct2_finish();
-void openrct2_reset_object_tween_locations();
-bool openrct2_setup_rct2_segment();
 
 int cmdline_run(const char **argv, int argc);
 

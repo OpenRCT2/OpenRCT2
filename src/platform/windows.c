@@ -52,7 +52,7 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
-#ifdef NO_RCT2
+#if defined(NO_RCT2) && !defined(__NOENTRYPOINT__)
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
@@ -966,23 +966,23 @@ uint8 platform_get_locale_measurement_format()
 
 uint8 platform_get_locale_temperature_format()
 {
-	// There does not seem to be a function to obtain this, just check the countries
-	UINT country;
+	UINT fahrenheit;
+
+	// GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
+	// uses the United States measurement system or 0 otherwise.
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&country,
-		sizeof(country)) == 0
+		(LPSTR)&fahrenheit,
+		sizeof(fahrenheit)) == 0
 	) {
+		// Assume celsius by default if function call fails
 		return TEMPERATURE_FORMAT_C;
 	}
 
-	switch (country) {
-	case CTRY_UNITED_STATES:
-	case CTRY_BELIZE:
+	if(fahrenheit)
 		return TEMPERATURE_FORMAT_F;
-	default:
+	else
 		return TEMPERATURE_FORMAT_C;
-	}
 }
 
 bool platform_check_steam_overlay_attached()

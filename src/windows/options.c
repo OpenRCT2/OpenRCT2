@@ -35,6 +35,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../title.h"
 #include "dropdown.h"

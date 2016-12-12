@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "chat.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../util/util.h"
+#include "chat.h"
 
 bool gChatOpen = false;
 char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];

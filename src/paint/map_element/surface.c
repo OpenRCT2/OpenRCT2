@@ -15,12 +15,10 @@
 #pragma endregion
 
 #include "../../cheats.h"
-#include "../../common.h"
 #include "../../config.h"
 #include "../../interface/viewport.h"
 #include "../../peep/staff.h"
-#include "../../world/map.h"
-#include "../paint.h"
+#include "../../rct2.h"
 #include "map_element.h"
 #include "surface.h"
 

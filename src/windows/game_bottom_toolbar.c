@@ -26,6 +26,7 @@
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"

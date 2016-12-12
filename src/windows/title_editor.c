@@ -24,6 +24,7 @@
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../rct2.h"
 #include "../world/sprite.h"
 #include "dropdown.h"
 #include "../interface/themes.h"

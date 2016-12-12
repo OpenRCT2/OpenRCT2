@@ -29,47 +29,46 @@ static uint8 _callCount = 0;
 static function_call _calls[256] = {0};
 
 namespace PaintIntercept {
-    static uint32 InterceptWoodenASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
-    static uint32 InterceptWoodenBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
-    static uint32 InterceptMetalASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
-    static uint32 InterceptMetalBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp);
-    static uint32 InterceptPaint6C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-    static uint32 InterceptPaint7C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-    static uint32 InterceptPaint8C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-    static uint32 InterceptPaint9C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
-    static uint32 InterceptPaintFull(uint8 function, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp);
+    static uint8 InterceptWoodenASupports(registers *regs);
+    static uint8 InterceptWoodenBSupports(registers *regs);
+    static uint8 InterceptMetalASupports(registers *regs);
+    static uint8 InterceptMetalBSupports(registers *regs);
+    static uint8 InterceptPaint6C(registers *regs);
+    static uint8 InterceptPaint7C(registers *regs);
+    static uint8 InterceptPaint8C(registers *regs);
+    static uint8 InterceptPaint9C(registers *regs);
+    static uint8 InterceptPaintFull(uint8 function, registers *regs);
+
     bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
     bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground);
     static void CheckSegmentSupportHeight();
 
     void InitHooks() {
-        int supportsRegisterArgs[] = {EAX, EBX, EDX, EDI, EBP, END};
-        addhook(0x006629BC, (int) InterceptWoodenASupports, 0, supportsRegisterArgs, 0, EAX);
-        addhook(0x00662D5C, (int) InterceptWoodenBSupports, 0, supportsRegisterArgs, 0, EAX);
+        addhook(0x006629BC, InterceptWoodenASupports);
+        addhook(0x00662D5C, InterceptWoodenBSupports);
 
-        addhook(0x00663105, (int) InterceptMetalASupports, 0, supportsRegisterArgs, 0, EAX);
-        addhook(0x00663584, (int) InterceptMetalBSupports, 0, supportsRegisterArgs, 0, EAX);
+        addhook(0x00663105, InterceptMetalASupports);
+        addhook(0x00663584, InterceptMetalBSupports);
 
-        int paintRegisterArgs[] = {EAX, EBX, ECX, EDX, ESI, EDI, EBP, END};
-        addhook(0x006861AC, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00686337, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x006864D0, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x0068666B, (int) InterceptPaint6C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x006861AC, InterceptPaint6C);
+        addhook(0x00686337, InterceptPaint6C);
+        addhook(0x006864D0, InterceptPaint6C);
+        addhook(0x0068666B, InterceptPaint6C);
 
-        addhook(0x00686806, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x006869B2, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00686B6F, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00686D31, (int) InterceptPaint7C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00686806, InterceptPaint7C);
+        addhook(0x006869B2, InterceptPaint7C);
+        addhook(0x00686B6F, InterceptPaint7C);
+        addhook(0x00686D31, InterceptPaint7C);
 
-        addhook(0x00686EF0, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00687056, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x006871C8, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x0068733C, (int) InterceptPaint8C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x00686EF0, InterceptPaint8C);
+        addhook(0x00687056, InterceptPaint8C);
+        addhook(0x006871C8, InterceptPaint8C);
+        addhook(0x0068733C, InterceptPaint8C);
 
-        addhook(0x006874B0, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00687618, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x0068778C, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
-        addhook(0x00687902, (int) InterceptPaint9C, 0, paintRegisterArgs, 0, EBP);
+        addhook(0x006874B0, InterceptPaint9C);
+        addhook(0x00687618, InterceptPaint9C);
+        addhook(0x0068778C, InterceptPaint9C);
+        addhook(0x00687902, InterceptPaint9C);
     }
 
     bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
@@ -110,7 +109,7 @@ namespace PaintIntercept {
         sint16 zOffset,
         uint32 rotation
     ) {
-        function_call call = {0};
+        function_call call = _calls[_callCount];
         call.function = PAINT_98196C;
         call.paint.image_id = imageID;
         call.paint.offset = {xOffset, yOffset};
@@ -133,7 +132,7 @@ namespace PaintIntercept {
         sint16 boundBoxOffsetX, sint16 boundBoxOffsetY, sint16 boundBoxOffsetZ,
         uint32 rotation
     ) {
-        function_call call = {0};
+        function_call call = _calls[_callCount];
         call.function = function;
         call.paint.image_id = imageID;
         call.paint.offset = {xOffset, yOffset};
@@ -162,16 +161,18 @@ namespace PaintIntercept {
         _woodenSupports = enabled;
     }
 
-    static uint32 InterceptMetalASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-        bool output = PaintMetalSupports(SUPPORTS_METAL_A, edi, ebx, (sint16) (eax & 0xFFFF), (edx & 0xFFFF), ebp);
+    static uint8 InterceptMetalASupports(registers *regs)
+    {
+        bool output = PaintMetalSupports(SUPPORTS_METAL_A, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp);
 
-        return output ? 1 : 0;
+        return output ? X86_FLAG_CARRY : 0;
     }
 
-    static uint32 InterceptMetalBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-        bool output = PaintMetalSupports(SUPPORTS_METAL_B, edi, ebx, (sint16) (eax & 0xFFFF), (edx & 0xFFFF), ebp);
+    static uint8 InterceptMetalBSupports(registers *regs)
+    {
+        bool output = PaintMetalSupports(SUPPORTS_METAL_B, regs->edi, regs->ebx, (sint16) regs->ax, regs->dx, regs->ebp);
 
-        return output ? 1 : 0;
+        return output ? X86_FLAG_CARRY : 0;
     }
 
     static void CheckSegmentSupportHeight() {
@@ -192,47 +193,75 @@ namespace PaintIntercept {
         _callCount++;
     }
 
-    static uint32 InterceptWoodenASupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-        bool output = PaintWoodenSupports(SUPPORTS_WOOD_A, edi, eax & 0xFFFF, edx & 0xFFFF, ebp, nullptr);
+    static uint8 InterceptWoodenASupports(registers *regs)
+    {
+        bool cf = false;
+        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_A, regs->edi, regs->ax, regs->dx, regs->ebp, &cf);
 
-        return output ? 1 : 0;
+        if (cf)
+        {
+            return X86_FLAG_CARRY;
+        }
+
+        return 0;
     }
 
-    static uint32 InterceptWoodenBSupports(uint32 eax, uint32 ebx, uint32 edx, uint32 edi, uint32 ebp) {
-        bool output = PaintWoodenSupports(SUPPORTS_WOOD_B, edi, eax & 0xFFFF, edx & 0xFFFF, ebp, nullptr);
+    static uint8 InterceptWoodenBSupports(registers *regs)
+    {
+        bool cf = false;
+        regs->al = PaintWoodenSupports(SUPPORTS_WOOD_B, regs->edi, regs->ax, regs->dx, regs->ebp, &cf);
 
-        return output ? 1 : 0;
+        if (cf)
+        {
+            return X86_FLAG_CARRY;
+        }
+
+        return 0;
     }
 
-    static uint32 InterceptPaint6C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-        if ((ebp & 0x03) != get_current_rotation()) {
+    static uint8 InterceptPaint6C(registers *regs)
+    {
+        if ((regs->ebp & 0x03) != get_current_rotation())
+        {
             // Log error
             log_error("Ebp is different from current rotation");
         }
 
-        return (uintptr_t) Paint6C(
-            ebx,
-            (sint8) (eax & 0xFF), (sint8) (ecx & 0xFF),
-            (sint16) (edi & 0xFFFF), (sint16) (esi & 0xFFFF), (sint8) ((eax >> 8) & 0xFF),
-            edx & 0xFFFF,
-            ebp & 0x03
+        paint_struct *out = Paint6C(
+            regs->ebx,
+            (sint8) regs->al, (sint8) regs->cl,
+            (sint16) regs->di, (sint16) regs->si, (sint8) regs->ah,
+            regs->dx,
+            regs->ebp & 0x03
         );
+
+        if (out == nullptr)
+        {
+            return X86_FLAG_CARRY;
+        }
+
+        regs->ebp = (int) out;
+		regs->al = 1;
+        return 0;
     }
 
-    static uint32 InterceptPaint7C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-        return InterceptPaintFull(PAINT_98197C, eax, ebx, ecx, edx, esi, edi, ebp);
+    static uint8 InterceptPaint7C(registers *regs)
+    {
+        return InterceptPaintFull(PAINT_98197C, regs);
     }
 
-    static uint32 InterceptPaint8C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-        return InterceptPaintFull(PAINT_98198C, eax, ebx, ecx, edx, esi, edi, ebp);
+    static uint8 InterceptPaint8C(registers *regs)
+    {
+        return InterceptPaintFull(PAINT_98198C, regs);
     }
 
-    static uint32 InterceptPaint9C(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-        return InterceptPaintFull(PAINT_98199C, eax, ebx, ecx, edx, esi, edi, ebp);
+    static uint8 InterceptPaint9C(registers *regs)
+    {
+        return InterceptPaintFull(PAINT_98199C, regs);
     }
 
-    static uint32 InterceptPaintFull(uint8 function, uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp) {
-        if ((ebp & 0x03) != get_current_rotation()) {
+    static uint8 InterceptPaintFull(uint8 function, registers *regs) {
+        if ((regs->ebp & 0x03) != get_current_rotation()) {
             // Log error
             log_error("Ebp is different from current rotation");
         }
@@ -243,15 +272,23 @@ namespace PaintIntercept {
             RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
         };
 
-        return (uintptr_t) PaintFull(
+        paint_struct *out = PaintFull(
             function,
-            ebx,
-            (sint8) (eax & 0xFF), (sint8) (ecx & 0xFF),
-            (sint16) (edi & 0xFFFF), (sint16) (esi & 0xFFFF), (sint8) ((eax >> 8) & 0xFF),
-            edx & 0xFFFF,
+            regs->ebx,
+            (sint8) regs->al, (sint8) regs->cl,
+            (sint16) regs->di, (sint16) regs->si, (sint8) regs->ah,
+            regs->dx,
             boundOffset.x, boundOffset.y, boundOffset.z,
-            ebp & 0x03
+            regs->ebp & 0x03
         );
+
+        if (out == nullptr)
+        {
+            return X86_FLAG_CARRY;
+        }
+
+        regs->ebp = (int) out;
+        return 0;
     }
 };
 

@@ -15,10 +15,11 @@
 #pragma endregion
 
 #include "../localisation/string_ids.h"
-#include "window.h"
-#include "title_sequences.h"
+#include "../rct2.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "title_sequences.h"
+#include "window.h"
 
 
 uint16 gCurrentTitleSequence;

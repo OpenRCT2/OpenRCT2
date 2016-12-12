@@ -19,18 +19,21 @@
 
 #ifndef NO_RCT2
 
-enum REGISTER_ARGS {
-	EAX = 1 << 0,
-	EBX = 1 << 1,
-	ECX = 1 << 2,
-	EDX = 1 << 3,
-	ESI = 1 << 4,
-	EDI = 1 << 5,
-	EBP = 1 << 6,
-	END = 0
+#include "common.h"
+
+enum {
+	X86_FLAG_CARRY = 1 << 0,
+	X86_FLAG_PARITY = 1 << 2,
+
+	X86_FLAG_ADJUST = 1 << 4,
+
+	X86_FLAG_ZERO = 1 << 6,
+	X86_FLAG_SIGN = 1 << 7,
 };
 
-void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister);
+typedef uint8 (hook_function)(registers *regs);
+
+void addhook(uintptr_t address, hook_function *function);
 
 #endif
 

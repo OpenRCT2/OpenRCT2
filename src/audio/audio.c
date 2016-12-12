@@ -16,18 +16,13 @@
 
 #include "../config.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
+#include "../intro.h"
 #include "../localisation/language.h"
-#include "../platform/platform.h"
-#include "../ride/ride.h"
-#include "../world/map.h"
-#include "../world/sprite.h"
-#include "audio.h"
-#include "mixer.h"
+#include "../localisation/string_ids.h"
 #include "../openrct2.h"
 #include "../util/util.h"
-#include "../localisation/string_ids.h"
-#include "../intro.h"
+#include "audio.h"
+#include "mixer.h"
 
 typedef struct rct_audio_params {
 	bool in_range;

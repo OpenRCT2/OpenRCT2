@@ -1,5 +1,5 @@
 version: 0.0.5.{build}
-os: Visual Studio 2015
+os: Previous Visual Studio 2015
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
@@ -22,6 +22,8 @@ platform:
 configuration: Release
 build:
   project: openrct2.proj
+test_script:
+- ps: msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 artifacts:
 - path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable

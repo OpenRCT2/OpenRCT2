@@ -16,6 +16,7 @@
 
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../rct2.h"
 #include "../world/map.h"
 #include "ride.h"
 #include "ride_data.h"

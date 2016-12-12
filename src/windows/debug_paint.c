@@ -15,15 +15,16 @@
 #pragma endregion
 
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../paint/map_element/map_element.h"
+#include "../paint/paint.h"
+#include "../rct2.h"
+#include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/map.h"
-#include "../interface/themes.h"
-#include "../paint/map_element/map_element.h"
-#include "../ride/track_paint.h"
-#include "../paint/paint.h"
 
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {

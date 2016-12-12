@@ -699,9 +699,16 @@ void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
 void platform_resolve_openrct_data_path()
 {
 	if (gCustomOpenrctDataPath[0] != 0) {
-		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath) == NULL) {
+		// NOTE: second argument to `realpath` is meant to either be NULL or `PATH_MAX`-sized buffer,
+		// since our `MAX_PATH` macro is set to some other value, pass NULL to have `realpath` return
+		// a `malloc`ed buffer.
+		char *resolved_path = realpath(gCustomOpenrctDataPath, NULL);
+		if (resolved_path == NULL) {
 			log_error("Could not resolve path \"%s\", errno = %d", gCustomOpenrctDataPath, errno);
 			return;
+		} else {
+			safe_strcpy(_openrctDataDirectoryPath, resolved_path, MAX_PATH);
+			free(resolved_path);
 		}
 
 		path_end_with_separator(_openrctDataDirectoryPath, MAX_PATH);

@@ -1,0 +1,16 @@
+﻿---
+BasedOnStyle: LLVM
+AccessModifierOffset: '-4'
+AlignConsecutiveAssignments: 'true'
+AlignConsecutiveDeclarations: 'true'
+AllowShortFunctionsOnASingleLine: Empty
+BreakBeforeBraces: Allman
+ColumnLimit: '128'
+Cpp11BracedListStyle: 'false'
+IndentWidth: '4'
+PointerAlignment: Middle
+SortIncludes: 'true'
+Standard: Cpp11
+TabWidth: '4'
+
+...

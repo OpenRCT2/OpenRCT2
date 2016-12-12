@@ -22,10 +22,11 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../rct2.h"
 #include "../scenario.h"
+#include "../sprites.h"
 #include "../util/util.h"
 #include "climate.h"
-#include "../sprites.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,

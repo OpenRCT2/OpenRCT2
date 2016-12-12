@@ -75,7 +75,7 @@ pushd build
 		chmod a+rwx $(pwd)
 		chmod g+s $(pwd)
 		# CMAKE and MAKE opts from environment
-		docker run -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
+		docker run -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS && make test ARGS=\"-V\""
 	elif [[ $TARGET == "linux" ]]
 	then
 		cmake $OPENRCT2_CMAKE_OPTS .. -DCMAKE_BUILD_TYPE=debug
