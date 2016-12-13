@@ -470,7 +470,7 @@ private:
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path);
+            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
 
         if (highscoresDirty)
@@ -528,7 +528,7 @@ private:
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine("Unable to save highscores to '%s'", path);
+            Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }
     }
 
