@@ -174,14 +174,36 @@ static mode_t getumask()
 
 bool platform_ensure_directory_exists(const utf8 *path)
 {
+	mode_t mask = getumask();
 	char buffer[MAX_PATH];
 	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
-	mode_t mask = getumask();
-	log_verbose("%s", buffer);
-	const int result = mkdir(buffer, mask);
-	if (result == 0 || (result == -1 && errno == EEXIST))
-		return true;
-	return false;
+
+	log_verbose("Create directory: %s", buffer);
+	for (char *p = buffer + 1; *p != '\0'; p++) {
+		if (*p == '/') {
+			// Temporarily truncate
+			*p = '\0';
+
+			log_verbose("mkdir(%s)", buffer);
+			if (mkdir(buffer, mask) != 0) {
+				if (errno != EEXIST) {
+					return false;
+				}
+			}
+
+			// Restore truncation
+			*p = '/';
+		}
+	}
+
+	log_verbose("mkdir(%s)", buffer);
+	if (mkdir(buffer, mask) != 0) {
+		if (errno != EEXIST) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool platform_directory_delete(const utf8 *path)
