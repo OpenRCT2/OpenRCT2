@@ -176,7 +176,11 @@ public:
                     item->Path = std::string(newPath);
                     SortItems();
 
-                    result = newPath;
+                    item = GetTrackItem(newPath);
+                    if (item != nullptr)
+                    {
+                        result = item->Path.c_str();
+                    }
                 }
             }
         }
