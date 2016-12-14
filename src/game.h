@@ -20,7 +20,7 @@
 #include "addresses.h"
 #include "common.h"
 #include "platform/platform.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 
 enum GAME_COMMAND {
 	GAME_COMMAND_SET_RIDE_APPEARANCE,

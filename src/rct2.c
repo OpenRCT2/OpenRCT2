@@ -43,7 +43,7 @@
 #include "ride/track.h"
 #include "ride/track_design.h"
 #include "ride/TrackDesignRepository.h"
-#include "ScenarioRepository.h"
+#include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "util/util.h"
 #include "world/climate.h"

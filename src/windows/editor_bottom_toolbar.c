@@ -19,7 +19,7 @@
 #include "../game.h"
 #include "../editor.h"
 #include "../input.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"

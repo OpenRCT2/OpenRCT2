@@ -41,7 +41,7 @@
 #include "ride/track.h"
 #include "ride/track_design.h"
 #include "ride/vehicle.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 #include "title/TitleScreen.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"

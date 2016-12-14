@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "common.h"
+#include "../common.h"
 
 #ifndef MAX_PATH
     #define MAX_PATH 260

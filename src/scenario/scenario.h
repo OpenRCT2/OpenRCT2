@@ -17,20 +17,20 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
-#include "addresses.h"
-#include "common.h"
-#include "management/award.h"
-#include "management/finance.h"
-#include "management/news_item.h"
-#include "management/research.h"
-#include "ride/ride.h"
-#include "ride/ride_ratings.h"
-#include "object.h"
-#include "platform/platform.h"
-#include "world/banner.h"
-#include "world/map.h"
-#include "world/map_animation.h"
-#include "world/sprite.h"
+#include "../addresses.h"
+#include "../common.h"
+#include "../management/award.h"
+#include "../management/finance.h"
+#include "../management/news_item.h"
+#include "../management/research.h"
+#include "../ride/ride.h"
+#include "../ride/ride_ratings.h"
+#include "../object.h"
+#include "../platform/platform.h"
+#include "../world/banner.h"
+#include "../world/map.h"
+#include "../world/map_animation.h"
+#include "../world/sprite.h"
 
 #pragma pack(push, 1)
 /**

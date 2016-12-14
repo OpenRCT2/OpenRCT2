@@ -30,7 +30,7 @@
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../peep/staff.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../title/TitleScreen.h"
 #include "../util/util.h"

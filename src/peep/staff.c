@@ -16,7 +16,7 @@
 
 #include "../config.h"
 #include "../game.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/string_ids.h"

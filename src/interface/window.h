@@ -24,8 +24,8 @@
 #include "../ride/ride.h"
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
-#include "../scenario.h"
-#include "../ScenarioRepository.h"
+#include "../scenario/scenario.h"
+#include "../scenario/ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
 

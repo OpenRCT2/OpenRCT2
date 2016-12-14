@@ -19,7 +19,7 @@
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/sprite.h"
 #include "award.h"
 #include "news_item.h"

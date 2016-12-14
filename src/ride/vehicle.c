@@ -23,7 +23,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"

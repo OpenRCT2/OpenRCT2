@@ -29,7 +29,7 @@
 #include "localisation/localisation.h"
 #include "platform/platform.h"
 #include "ride/ride_data.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 #include "windows/tooltip.h"
 #include "windows/dropdown.h"
 #include "world/banner.h"

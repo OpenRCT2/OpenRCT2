@@ -23,7 +23,7 @@
 #include "platform/crash.h"
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
-#include "ScenarioRepository.h"
+#include "scenario/ScenarioRepository.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
 

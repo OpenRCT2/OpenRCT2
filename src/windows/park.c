@@ -27,7 +27,7 @@
 #include "../peep/peep.h"
 #include "../rct2.h"
 #include "../ride/ride.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
 #include "../world/park.h"

@@ -23,7 +23,7 @@
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/themes.h"

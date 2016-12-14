@@ -323,8 +323,8 @@
     <ClCompile Include="src\ride\water\splash_boats.c" />
     <ClCompile Include="src\ride\water\submarine_ride.c" />
     <ClCompile Include="src\ride\water\water_coaster.c" />
-    <ClCompile Include="src\scenario.c" />
-    <ClCompile Include="src\ScenarioRepository.cpp" />
+    <ClCompile Include="src\scenario\scenario.c" />
+    <ClCompile Include="src\scenario\ScenarioRepository.cpp" />
     <ClCompile Include="src\title\TitleScreen.cpp" />
     <ClCompile Include="src\title\TitleSequence.cpp" />
     <ClCompile Include="src\title\TitleSequenceManager.cpp" />
@@ -568,10 +568,10 @@
     <ClInclude Include="src\ride\vehicle.h" />
     <ClInclude Include="src\ride\vehicle_data.h" />
     <ClInclude Include="src\ride\vehicle_paint.h" />
-    <ClInclude Include="src\scenario.h" />
-    <ClCompile Include="src\ScenarioSources.cpp" />
-    <ClInclude Include="src\ScenarioRepository.h" />
-    <ClInclude Include="src\ScenarioSources.h" />
+    <ClInclude Include="src\scenario\scenario.h" />
+    <ClCompile Include="src\scenario\ScenarioSources.cpp" />
+    <ClInclude Include="src\scenario\ScenarioRepository.h" />
+    <ClInclude Include="src\scenario\ScenarioSources.h" />
     <ClInclude Include="src\sprites.h" />
     <ClInclude Include="src\title\TitleSequence.h" />
     <ClInclude Include="src\title\TitleSequenceManager.h" />

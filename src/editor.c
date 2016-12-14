@@ -31,7 +31,7 @@
 #include "platform/platform.h"
 #include "rct1.h"
 #include "ride/ride.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/banner.h"

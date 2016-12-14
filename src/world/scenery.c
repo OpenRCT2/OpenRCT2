@@ -17,7 +17,7 @@
 #include "../game.h"
 #include "../common.h"
 #include "../localisation/localisation.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../cheats.h"
 #include "../object_list.h"
 #include "climate.h"
