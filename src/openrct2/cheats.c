@@ -214,6 +214,24 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
+static void cheat_no_money(int enabled)
+{
+	if (enabled == 1) {
+		gParkFlags |= PARK_FLAGS_NO_MONEY;	
+	}
+	else {
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	}
+	// Invalidate all windows that have anything to do with finance
+	window_invalidate_by_class(WC_RIDE);
+	window_invalidate_by_class(WC_PEEP);
+	window_invalidate_by_class(WC_PARK_INFORMATION);
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+	window_invalidate_by_class(WC_TOP_TOOLBAR);
+	window_invalidate_by_class(WC_CHEATS);
+}
+
 static void cheat_set_money(money32 amount)
 {
 	money32 money = clamp(INT_MIN, amount, INT_MAX);
@@ -416,6 +434,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = *edx != 0; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = *edx != 0; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = *edx != 0; break;
+			case CHEAT_NOMONEY: cheat_no_money(*edx != 0); break;
 			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
 			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;

@@ -65,6 +65,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_2,
 	WIDX_TAB_3,
 	WIDX_TAB_4,
+	WIDX_NO_MONEY,
 	WIDX_ADD_SET_MONEY_GROUP,
 	WIDX_MONEY_SPINNER,
 	WIDX_MONEY_SPINNER_INCREMENT,
@@ -184,13 +185,14 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(2.5),		STR_ADD_SET_MONEY,					STR_NONE },								// add / set money group frame
-	{ WWT_SPINNER,			1,		XPL(0),					WPL(1) - 10,			YPL(1) + 2,		HPL(1) - 3,		STR_NONE,							STR_NONE },								// money value
-	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(1) + 3,		YPL(1) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase money
-	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(1) + 8,		YPL(1) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease money
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_ADD_MONEY,						STR_NONE },								// add money
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_SET_MONEY,						STR_NONE },								// set money
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(4),			HPL(4),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_MAKE_PARK_NO_MONEY,				STR_NONE },								// No money
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(1),			HPL(3.5),		STR_ADD_SET_MONEY,					STR_NONE },								// add / set money group frame
+	{ WWT_SPINNER,			1,		XPL(0),					WPL(1) - 10,			YPL(2) + 2,		HPL(2) - 3,		STR_NONE,							STR_NONE },								// money value
+	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(2) + 3,		YPL(2) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase money
+	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(2) + 8,		YPL(2) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease money
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(3),			HPL(3),			STR_ADD_MONEY,						STR_NONE },								// add money
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(3),			HPL(3),			STR_SET_MONEY,						STR_NONE },								// set money
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5),			HPL(5),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
   	{ WIDGETS_END },
 };
 
@@ -431,7 +433,7 @@ static rct_window_event_list *window_cheats_page_events[] = {
 #define MAIN_CHEAT_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4)
 
 static uint64 window_cheats_page_enabled_widgets[] = {
-	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_ADD_SET_MONEY_GROUP) | (1ULL << WIDX_MONEY_SPINNER) | (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
+	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_NO_MONEY) | (1ULL << WIDX_ADD_SET_MONEY_GROUP) | (1ULL << WIDX_MONEY_SPINNER) | (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
 	(1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY) | (1ULL << WIDX_SET_MONEY) | (1ULL << WIDX_CLEAR_LOAN),
 	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_GUEST_PARAMETERS_GROUP) |
 		(1ULL << WIDX_GUEST_HAPPINESS_MAX) | (1ULL << WIDX_GUEST_HAPPINESS_MIN) | (1ULL << WIDX_GUEST_ENERGY_MAX) | (1ULL << WIDX_GUEST_ENERGY_MIN) |
@@ -840,6 +842,8 @@ static void window_cheats_invalidate(rct_window *w)
 	
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:{
+		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY); 
+		
 		uint64 money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
 			(1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY) | (1 << WIDX_SET_MONEY) | (1 << WIDX_CLEAR_LOAN);
 		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
