@@ -854,7 +854,8 @@ static void window_cheats_invalidate(rct_window *w)
 	}
 
 	w->pressed_widgets = 0;
-	
+	w->disabled_widgets = 0;
+
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:{
 		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY); 
@@ -916,8 +917,12 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
+		uint8 colour = w->colours[2];
 		set_format_arg(0, money32, money_spinner_value);
-		gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, w->colours[2], w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
+		if (widget_is_disabled(w, WIDX_MONEY_SPINNER)) {
+			colour |= 0x40;
+		}
+		gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
