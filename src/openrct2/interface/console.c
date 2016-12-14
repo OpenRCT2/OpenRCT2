@@ -737,7 +737,17 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			gCashEncrypted = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
+			money32 money = MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100);
+			if (gCashEncrypted != ENCRYPT_MONEY(money)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get money")" line when in network client mode
+					gCashEncrypted = ENCRYPT_MONEY(money);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
 			console_execute_silent("get money");
 		}
 		else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
