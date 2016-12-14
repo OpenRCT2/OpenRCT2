@@ -22,6 +22,7 @@ ExternalProject_Add(
 		DEPENDS googletest-distribution
 		DOWNLOAD_COMMAND ""
 		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
+		CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
 		# Disable install step
 		INSTALL_COMMAND ""
 		# Wrap download, configure and build steps in a script to log output
