@@ -471,30 +471,31 @@ void window_cheats_open()
 
 static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
-	rct_widget *dropdownWidget;
-	int i;
+	switch (widgetIndex) {
+	case WIDX_WEATHER_DROPDOWN_BUTTON:{
+		rct_widget *dropdownWidget;
+		int i, currentWeather;
 
-	if (widgetIndex != WIDX_WEATHER_DROPDOWN_BUTTON)
-		return;
-
-	dropdownWidget = widget - 1;
-
-	for (i = 0; i < 6; i++) {
-		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = WeatherTypes[i];
-	}
-	window_dropdown_show_text_custom_width(
-		w->x + dropdownWidget->left,
-		w->y + dropdownWidget->top,
-		dropdownWidget->bottom - dropdownWidget->top + 1,
-		w->colours[1],
-		DROPDOWN_FLAG_STAY_OPEN,
-		6,
-		dropdownWidget->right - dropdownWidget->left - 3
+		dropdownWidget = widget - 1;
+			
+		for (i = 0; i < 6; i++) {
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[i] = WeatherTypes[i];
+		}
+		window_dropdown_show_text_custom_width(
+			w->x + dropdownWidget->left,
+			w->y + dropdownWidget->top,
+			dropdownWidget->bottom - dropdownWidget->top + 1,
+			w->colours[1],
+			DROPDOWN_FLAG_STAY_OPEN,
+			6,
+			dropdownWidget->right - dropdownWidget->left - 3
 		);
 
-	int currentWeather = gClimateCurrentWeather;
-	dropdown_set_checked(currentWeather, true);
+		currentWeather = gClimateCurrentWeather;
+		dropdown_set_checked(currentWeather, true);
+	}break;
+	}
 }
 
 static void window_cheats_misc_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
