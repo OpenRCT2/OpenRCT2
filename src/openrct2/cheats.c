@@ -195,9 +195,9 @@ static void cheat_reset_crash_status()
 	FOR_ALL_RIDES(i, ride){
 		//reset crash status
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-			ride->lifecycle_flags&=~RIDE_LIFECYCLE_CRASHED;
+			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
 		//reset crash history
-		ride->last_crash_type=RIDE_CRASH_TYPE_NONE;
+		ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
 	}
 	window_invalidate_by_class(WC_RIDE);
 }
@@ -309,12 +309,12 @@ static void cheat_give_all_guests(int object)
 				break;
 			case OBJECT_BALLOON:
 				peep->item_standard_flags |= PEEP_ITEM_BALLOON;
-				peep->balloon_colour=scenario_rand_max(31);
+				peep->balloon_colour = scenario_rand_max(31);
 				peep_update_sprite_type(peep);
 				break;
 			case OBJECT_UMBRELLA:
 				peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
-				peep->umbrella_colour=scenario_rand_max(31);
+				peep->umbrella_colour = scenario_rand_max(31);
 				peep_update_sprite_type(peep);
 				break;
 		}
@@ -343,9 +343,9 @@ static void cheat_remove_all_guests()
 		ride_clear_for_construction(i);
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 
-		for(int i=0;i<4;i++) {
-			ride->queue_length[i] = 0;
-			ride->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+		for(int j = 0; j < 4; j++) {
+			ride->queue_length[j] = 0;
+			ride->last_peep_in_queue[j] = SPRITE_INDEX_NULL;
 		}
 	}
 	window_invalidate_by_class(WC_RIDE);
