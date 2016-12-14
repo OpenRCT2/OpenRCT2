@@ -39,6 +39,9 @@ utf8 *get_string_end(const utf8 *text);
 size_t get_string_size(const utf8 *text);
 int get_string_length(const utf8 *text);
 
+money32 string_to_money(char * string_to_monetise);
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
+
 void user_string_clear_all();
 rct_string_id user_string_allocate(int base, const utf8 *text);
 void user_string_free(rct_string_id id);
