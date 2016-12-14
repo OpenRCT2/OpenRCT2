@@ -30,7 +30,7 @@
 
 extern "C"
 {
-    #include "../openrct2.h"
+    #include "../OpenRCT2.h"
 
     void openrct2_assert(bool expression, const char * message, ...)
     {

@@ -29,7 +29,7 @@
 #include "management/news_item.h"
 #include "management/research.h"
 #include "network/network.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "ride/ride.h"
 #include "scenario.h"

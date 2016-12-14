@@ -32,7 +32,7 @@
 
 #include "../addresses.h"
 #include "../hook.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "interop.h"

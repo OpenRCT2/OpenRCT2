@@ -42,7 +42,13 @@ private:
 public:
     ObjectManager(IObjectRepository * objectRepository)
     {
+        Guard::ArgumentNotNull(objectRepository);
+
         _objectRepository = objectRepository;
+
+        UpdateLegacyLoadedObjectList();
+        UpdateSceneryGroupIndexes();
+        reset_type_to_ride_entry_index_map();
     }
 
     ~ObjectManager() override

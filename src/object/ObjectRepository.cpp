@@ -30,6 +30,7 @@
 #include "../core/Path.hpp"
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
+#include "../PlatformEnvironment.h"
 #include "../ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -93,12 +94,18 @@ static void ReportMissingObject(const rct_object_entry * entry);
 
 class ObjectRepository : public IObjectRepository
 {
+    IPlatformEnvironment *              _env;
     std::vector<ObjectRepositoryItem>   _items;
     QueryDirectoryResult                _queryDirectoryResult;
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId;
 
 public:
+    ObjectRepository(IPlatformEnvironment * env)
+    {
+        _env = env;
+    }
+
     ~ObjectRepository()
     {
         ClearItems();
@@ -110,11 +117,10 @@ public:
 
         _queryDirectoryResult = { 0 };
 
-        utf8 path[MAX_PATH];
-        GetRCT2ObjectPath(path, sizeof(path));
-        QueryDirectory(&_queryDirectoryResult, path);
-        GetUserObjectPath(path, sizeof(path));
-        QueryDirectory(&_queryDirectoryResult, path);
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        QueryDirectory(&_queryDirectoryResult, rct2Path);
+        QueryDirectory(&_queryDirectoryResult, openrct2Path);
 
         if (!Load())
         {
@@ -227,10 +233,10 @@ private:
         _itemMap.clear();
     }
 
-    void QueryDirectory(QueryDirectoryResult * result, const utf8 * directory)
+    void QueryDirectory(QueryDirectoryResult * result, const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.dat");
         Path::QueryDirectory(result, pattern);
     }
@@ -245,20 +251,19 @@ private:
         auto stopwatch = Stopwatch();
         stopwatch.Start();
 
-        utf8 path[MAX_PATH];
-        GetRCT2ObjectPath(path, sizeof(path));
-        ScanDirectory(path);
-        GetUserObjectPath(path, sizeof(path));
-        ScanDirectory(path);
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        ScanDirectory(rct2Path);
+        ScanDirectory(openrct2Path);
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
     }
 
-    void ScanDirectory(const utf8 * directory)
+    void ScanDirectory(const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.dat");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
@@ -288,9 +293,7 @@ private:
 
     bool Load()
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -329,9 +332,7 @@ private:
 
     void Save() const
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
@@ -355,7 +356,7 @@ private:
         }
         catch (IOException ex)
         {
-            log_error("Unable to write object repository index.");
+            log_error("Unable to write object repository index to '%s'.", path.c_str());
         }
     }
 
@@ -578,7 +579,7 @@ private:
         return salt;
     }
 
-    static void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
+    void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
     {
         char normalisedName[9] = { 0 };
         for (int i = 0; i < 8; i++)
@@ -593,7 +594,8 @@ private:
             }
         }
 
-        GetUserObjectPath(buffer, bufferSize);
+        const std::string &userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        String::Set(buffer, bufferSize, userObjPath.c_str());
         platform_ensure_directory_exists(buffer);
 
         Path::Append(buffer, bufferSize, normalisedName);
@@ -606,38 +608,24 @@ private:
             snprintf(counterString, sizeof(counterString), "-%02X", counter);
             counter++;
 
-            GetUserObjectPath(buffer, bufferSize);
+            String::Set(buffer, bufferSize, userObjPath.c_str());
             Path::Append(buffer, bufferSize, normalisedName);
             String::Append(buffer, bufferSize, counterString);
             String::Append(buffer, bufferSize, ".DAT");
         }
     }
-
-    static void GetRepositoryPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, nullptr, bufferSize);
-        safe_strcat_path(buffer, "objects.idx", bufferSize);
-    }
-
-    static void GetRCT2ObjectPath(utf8 * buffer, size_t bufferSize)
-    {
-        Path::GetDirectory(buffer, bufferSize, gRCT2AddressObjectDataPath);
-    }
-
-    static void GetUserObjectPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, "object", bufferSize);
-    }
 };
 
 static std::unique_ptr<ObjectRepository> _objectRepository;
 
+IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
+{
+    _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository(env));
+    return _objectRepository.get();
+}
+
 IObjectRepository * GetObjectRepository()
 {
-    if (_objectRepository == nullptr)
-    {
-        _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository());
-    }
     return _objectRepository.get();
 }
 

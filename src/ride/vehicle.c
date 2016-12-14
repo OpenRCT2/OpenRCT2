@@ -22,7 +22,7 @@
 #include "../hook.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../scenario.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"

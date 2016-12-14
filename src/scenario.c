@@ -30,7 +30,7 @@
 #include "network/network.h"
 #include "object.h"
 #include "object_list.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "ride/ride.h"

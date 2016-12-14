@@ -36,7 +36,7 @@
 #include "world/map.h"
 #include "world/sprite.h"
 #include "world/scenery.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "rct2.h"
 
 typedef struct rct_mouse_data {

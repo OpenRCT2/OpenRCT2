@@ -200,7 +200,7 @@
     <ClCompile Include="src\object\WallObject.cpp" />
     <ClCompile Include="src\object\WaterObject.cpp" />
     <ClCompile Include="src\object_list.c" />
-    <ClCompile Include="src\openrct2.c" />
+    <ClCompile Include="src\OpenRCT2.cpp" />
     <ClCompile Include="src\paint\map_element\banner.c" />
     <ClCompile Include="src\paint\map_element\entrance.c" />
     <ClCompile Include="src\paint\map_element\fence.c" />
@@ -219,6 +219,7 @@
     <ClCompile Include="src\peep\peep.c" />
     <ClCompile Include="src\peep\peep_data.c" />
     <ClCompile Include="src\peep\staff.c" />
+    <ClCompile Include="src\PlatformEnvironment.cpp" />
     <ClCompile Include="src\platform\crash.cpp" />
     <ClCompile Include="src\platform\linux.c" />
     <ClCompile Include="src\platform\posix.c" />
@@ -485,6 +486,7 @@
     <ClInclude Include="src\interface\widget.h" />
     <ClInclude Include="src\interface\window.h" />
     <ClInclude Include="src\intro.h" />
+    <ClInclude Include="src\PlatformEnvironment.h" />
     <ClInclude Include="src\localisation\currency.h" />
     <ClInclude Include="src\localisation\date.h" />
     <ClInclude Include="src\localisation\format_codes.h" />
@@ -531,7 +533,7 @@
     <ClInclude Include="src\object\WallObject.h" />
     <ClInclude Include="src\object\WaterObject.h" />
     <ClInclude Include="src\object_list.h" />
-    <ClInclude Include="src\openrct2.h" />
+    <ClInclude Include="src\OpenRCT2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
     <ClInclude Include="src\paint\map_element\surface.h" />
     <ClInclude Include="src\paint\paint.h" />

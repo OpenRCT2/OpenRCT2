@@ -26,6 +26,8 @@ typedef struct track_design_file_ref
 
 #ifdef __cplusplus
 
+interface IPlatformEnvironment;
+
 interface ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
@@ -42,7 +44,8 @@ interface ITrackDesignRepository
     virtual const utf8 * Install(const utf8 * path) abstract;
 };
 
-ITrackDesignRepository * GetTrackRepository();
+ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env);
+ITrackDesignRepository * GetTrackDesignRepository();
 
 #endif
 

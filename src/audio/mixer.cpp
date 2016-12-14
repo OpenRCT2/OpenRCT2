@@ -18,7 +18,7 @@
 extern "C" {
 	#include "../config.h"
 	#include "../localisation/localisation.h"
-	#include "../openrct2.h"
+	#include "../OpenRCT2.h"
 	#include "../platform/platform.h"
 	#include "../rct2.h"
 	#include "audio.h"

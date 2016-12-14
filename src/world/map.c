@@ -25,7 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../network/network.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../rct2.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"

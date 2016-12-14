@@ -19,7 +19,7 @@
 extern "C"
 {
     #include "../platform/platform.h"
-    #include "../openrct2.h"
+    #include "../OpenRCT2.h"
 }
 
 #include "../core/Console.hpp"

@@ -296,7 +296,6 @@
 		D44272341CC81B3200D84D28 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271521CC81B3200D84D28 /* network.cpp */; };
 		D44272351CC81B3200D84D28 /* twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271541CC81B3200D84D28 /* twitch.cpp */; };
 		D44272361CC81B3200D84D28 /* object_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271561CC81B3200D84D28 /* object_list.c */; };
-		D44272381CC81B3200D84D28 /* openrct2.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271591CC81B3200D84D28 /* openrct2.c */; };
 		D44272391CC81B3200D84D28 /* peep.c in Sources */ = {isa = PBXBuildFile; fileRef = D442715C1CC81B3200D84D28 /* peep.c */; };
 		D442723A1CC81B3200D84D28 /* staff.c in Sources */ = {isa = PBXBuildFile; fileRef = D442715E1CC81B3200D84D28 /* staff.c */; };
 		D442723B1CC81B3200D84D28 /* crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271611CC81B3200D84D28 /* crash.cpp */; };
@@ -418,6 +417,8 @@
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45B202D1D1E92DB00B67CC7 /* custom_currency.c in Sources */ = {isa = PBXBuildFile; fileRef = D45B202C1D1E92DB00B67CC7 /* custom_currency.c */; };
+		D460DFD11E01239D007BA2FE /* OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */; };
+		D460DFD41E0123D1007BA2FE /* PlatformEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D460DFD31E0123D1007BA2FE /* PlatformEnvironment.cpp */; };
 		D464FEBB1D31A65300CBABAC /* IStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBA1D31A65300CBABAC /* IStream.cpp */; };
 		D464FEBE1D31A66E00CBABAC /* MemoryStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */; };
 		D464FEC01D31A68800CBABAC /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D464FEBF1D31A68800CBABAC /* Image.cpp */; };
@@ -800,8 +801,6 @@
 		D44271551CC81B3200D84D28 /* twitch.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = twitch.h; sourceTree = "<group>"; usesTabs = 0; };
 		D44271561CC81B3200D84D28 /* object_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = object_list.c; sourceTree = "<group>"; };
 		D44271581CC81B3200D84D28 /* object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = "<group>"; };
-		D44271591CC81B3200D84D28 /* openrct2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = openrct2.c; sourceTree = "<group>"; };
-		D442715A1CC81B3200D84D28 /* openrct2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openrct2.h; sourceTree = "<group>"; };
 		D442715C1CC81B3200D84D28 /* peep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = peep.c; sourceTree = "<group>"; };
 		D442715D1CC81B3200D84D28 /* peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peep.h; sourceTree = "<group>"; };
 		D442715E1CC81B3200D84D28 /* staff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = staff.c; sourceTree = "<group>"; };
@@ -1101,6 +1100,10 @@
 		D45A39571CF3007A00659A24 /* speexdsp_config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_config_types.h; sourceTree = "<group>"; };
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
 		D45B202C1D1E92DB00B67CC7 /* custom_currency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = custom_currency.c; sourceTree = "<group>"; };
+		D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenRCT2.cpp; sourceTree = "<group>"; };
+		D460DFD21E0123B5007BA2FE /* OpenRCT2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenRCT2.h; sourceTree = "<group>"; };
+		D460DFD31E0123D1007BA2FE /* PlatformEnvironment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlatformEnvironment.cpp; sourceTree = "<group>"; };
+		D460DFD51E0123DB007BA2FE /* PlatformEnvironment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlatformEnvironment.h; sourceTree = "<group>"; };
 		D464FEBA1D31A65300CBABAC /* IStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IStream.cpp; sourceTree = "<group>"; };
 		D464FEBC1D31A66E00CBABAC /* MemoryStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryStream.cpp; sourceTree = "<group>"; };
 		D464FEBD1D31A66E00CBABAC /* MemoryStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryStream.h; sourceTree = "<group>"; };
@@ -1456,7 +1459,8 @@
 				D44271161CC81B3200D84D28 /* input.c */,
 				D44271301CC81B3200D84D28 /* intro.c */,
 				D44271561CC81B3200D84D28 /* object_list.c */,
-				D44271591CC81B3200D84D28 /* openrct2.c */,
+				D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */,
+				D460DFD51E0123DB007BA2FE /* PlatformEnvironment.h */,
 				D44271691CC81B3200D84D28 /* rct1.c */,
 				D442716B1CC81B3200D84D28 /* rct2.c */,
 				D44271831CC81B3200D84D28 /* scenario.c */,
@@ -1476,7 +1480,8 @@
 				D44271171CC81B3200D84D28 /* input.h */,
 				D44271311CC81B3200D84D28 /* intro.h */,
 				D44271581CC81B3200D84D28 /* object.h */,
-				D442715A1CC81B3200D84D28 /* openrct2.h */,
+				D460DFD21E0123B5007BA2FE /* OpenRCT2.h */,
+				D460DFD31E0123D1007BA2FE /* PlatformEnvironment.cpp */,
 				D442716A1CC81B3200D84D28 /* rct1.h */,
 				D442716C1CC81B3200D84D28 /* rct2.h */,
 				D44271841CC81B3200D84D28 /* scenario.h */,
@@ -2558,6 +2563,7 @@
 				D442726D1CC81B3200D84D28 /* mapgen.c in Sources */,
 				C686F9211CDBC3B7009F9BFC /* spiral_roller_coaster.c in Sources */,
 				C686F9291CDBC3B7009F9BFC /* wooden_roller_coaster.c in Sources */,
+				D460DFD41E0123D1007BA2FE /* PlatformEnvironment.cpp in Sources */,
 				D44272A71CC81B3200D84D28 /* sprite.c in Sources */,
 				D44272941CC81B3200D84D28 /* track_list.c in Sources */,
 				D44272711CC81B3200D84D28 /* network_status.c in Sources */,
@@ -2612,7 +2618,6 @@
 				D44272501CC81B3200D84D28 /* title.c in Sources */,
 				D43407DD1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp in Sources */,
 				D442721D1CC81B3200D84D28 /* screenshot.c in Sources */,
-				D44272381CC81B3200D84D28 /* openrct2.c in Sources */,
 				C686F92C1CDBC3B7009F9BFC /* circus_show.c in Sources */,
 				D44271FD1CC81B3200D84D28 /* cmdline_sprite.c in Sources */,
 				D464FEEE1D31A6AA00CBABAC /* ObjectRepository.cpp in Sources */,
@@ -2647,6 +2652,7 @@
 				C686F9241CDBC3B7009F9BFC /* suspended_swinging_coaster.c in Sources */,
 				C686F92D1CDBC3B7009F9BFC /* crooked_house.c in Sources */,
 				D442727F1CC81B3200D84D28 /* scenery.c in Sources */,
+				D460DFD11E01239D007BA2FE /* OpenRCT2.cpp in Sources */,
 				C686F93C1CDBC3B7009F9BFC /* misc.c in Sources */,
 				D442723A1CC81B3200D84D28 /* staff.c in Sources */,
 				D44272931CC81B3200D84D28 /* top_toolbar.c in Sources */,

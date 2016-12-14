@@ -23,6 +23,7 @@
 #include "core/Math.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "PlatformEnvironment.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
@@ -120,10 +121,16 @@ class ScenarioRepository final : public IScenarioRepository
 private:
     static constexpr uint32 HighscoreFileVersion = 1;
 
+    IPlatformEnvironment * _env;
     std::vector<scenario_index_entry> _scenarios;
     std::vector<scenario_highscore_entry*> _highscores;
 
 public:
+    ScenarioRepository(IPlatformEnvironment * env)
+    {
+        _env = env;
+    }
+
     virtual ~ScenarioRepository()
     {
         ClearHighscores();
@@ -131,17 +138,13 @@ public:
 
     void Scan() override
     {
-        utf8 directory[MAX_PATH];
-
         _scenarios.clear();
 
         // Scan RCT2 directory
-        GetRCT2Directory(directory, sizeof(directory));
-        Scan(directory);
-
-        // Scan user directory
-        GetUserDirectory(directory, sizeof(directory));
-        Scan(directory);
+        std::string rct2dir = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO);
+        std::string openrct2dir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+        Scan(rct2dir);
+        Scan(openrct2dir);
 
         Sort();
         LoadScores();
@@ -241,10 +244,10 @@ private:
         return (scenario_index_entry *)repo->GetByPath(path);
     }
 
-    void Scan(const utf8 * directory)
+    void Scan(const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.sc6");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
@@ -362,16 +365,15 @@ private:
 
     void LoadScores()
     {
-        utf8 scoresPath[MAX_PATH];
-        GetScoresPath(scoresPath, sizeof(scoresPath));
-        if (!platform_file_exists(scoresPath))
+        std::string path = _env->GetFilePath(PATHID::SCORES);
+        if (!platform_file_exists(path.c_str()))
         {
             return;
         }
 
         try
         {
-            auto fs = FileStream(scoresPath, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FILE_MODE_OPEN);
             uint32 fileVersion = fs.ReadValue<uint32>();
             if (fileVersion != 1)
             {
@@ -403,18 +405,15 @@ private:
      */
     void LoadLegacyScores()
     {
-        utf8 scoresPath[MAX_PATH];
-
-        GetLegacyScoresPath(scoresPath, sizeof(scoresPath));
-        LoadLegacyScores(scoresPath);
-
-        GetRCT2ScoresPath(scoresPath, sizeof(scoresPath));
-        LoadLegacyScores(scoresPath);
+        std::string rct2Path = _env->GetFilePath(PATHID::SCORES_RCT2);
+        std::string legacyPath = _env->GetFilePath(PATHID::SCORES_LEGACY);
+        LoadLegacyScores(legacyPath);
+        LoadLegacyScores(rct2Path);
     }
 
-    void LoadLegacyScores(const utf8 * path)
+    void LoadLegacyScores(const std::string &path)
     {
-        if (!platform_file_exists(path))
+        if (!platform_file_exists(path.c_str()))
         {
             return;
         }
@@ -471,7 +470,7 @@ private:
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path);
+            Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
 
         if (highscoresDirty)
@@ -512,12 +511,10 @@ private:
 
     void SaveHighscores()
     {
-        utf8 scoresPath[MAX_PATH];
-        GetScoresPath(scoresPath, sizeof(scoresPath));
-
+        std::string path = _env->GetFilePath(PATHID::SCORES);
         try
         {
-            auto fs = FileStream(scoresPath, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FILE_MODE_WRITE);
             fs.WriteValue<uint32>(HighscoreFileVersion);
             fs.WriteValue<uint32>((uint32)_highscores.size());
             for (size_t i = 0; i < _highscores.size(); i++)
@@ -531,7 +528,7 @@ private:
         }
         catch (Exception ex)
         {
-            Console::Error::WriteLine("Unable to save highscores to '%s'", scoresPath);
+            Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }
     }
 
@@ -541,39 +538,18 @@ private:
         Path::Append(buffer, bufferSize, "Scenarios");
         return buffer;
     }
-
-    static utf8 * GetUserDirectory(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, "scenario", bufferSize);
-        return buffer;
-    }
-
-    static void GetScoresPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, nullptr, bufferSize);
-        Path::Append(buffer, bufferSize, "highscores.dat");
-    }
-
-    static void GetLegacyScoresPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, nullptr, bufferSize);
-        Path::Append(buffer, bufferSize, "scores.dat");
-    }
-
-    static void GetRCT2ScoresPath(utf8 * buffer, size_t bufferSize)
-    {
-        String::Set(buffer, bufferSize, get_file_path(PATH_ID_SCORES));
-    }
 };
 
 static std::unique_ptr<ScenarioRepository> _scenarioRepository;
 
+IScenarioRepository * CreateScenarioRepository(IPlatformEnvironment * env)
+{
+    _scenarioRepository = std::unique_ptr<ScenarioRepository>(new ScenarioRepository(env));
+    return _scenarioRepository.get();
+}
+
 IScenarioRepository * GetScenarioRepository()
 {
-    if (_scenarioRepository == nullptr)
-    {
-        _scenarioRepository = std::unique_ptr<ScenarioRepository>(new ScenarioRepository());
-    }
     return _scenarioRepository.get();
 }
 

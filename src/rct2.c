@@ -35,7 +35,7 @@
 #include "network/twitch.h"
 #include "object.h"
 #include "object/ObjectManager.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
@@ -170,10 +170,6 @@ bool rct2_init()
 	if (!gfx_load_g2()) {
 		return false;
 	}
-
-	object_list_load();
-	scenario_repository_scan();
-	track_repository_scan();
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {

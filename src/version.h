@@ -54,11 +54,18 @@
 
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
-// The following constants are for automated build servers
-extern const char *gBuildNumber;
-extern const char *gBuildServer;
-extern const char *gGitBranch;
-extern const char *gCommitSha1;
-extern const char *gCommitSha1Short;
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+	// The following constants are for automated build servers
+	extern const char *gBuildNumber;
+	extern const char *gBuildServer;
+	extern const char *gGitBranch;
+	extern const char *gCommitSha1;
+	extern const char *gCommitSha1Short;
+#ifdef __cplusplus
+}
+#endif
 
 #endif

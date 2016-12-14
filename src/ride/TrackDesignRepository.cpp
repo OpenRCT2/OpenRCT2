@@ -22,6 +22,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../PlatformEnvironment.h"
 #include "TrackDesignRepository.h"
 
 extern "C"
@@ -64,13 +65,21 @@ enum TRACK_REPO_ITEM_FLAGS
 class TrackDesignRepository : public ITrackDesignRepository
 {
 private:
+    IPlatformEnvironment * _env;
+
     std::vector<TrackRepositoryItem> _items;
     QueryDirectoryResult _directoryQueryResult;
 
 public:
+    TrackDesignRepository(IPlatformEnvironment * env)
+    {
+        Guard::ArgumentNotNull(env);
+
+        _env = env;
+    }
+
     virtual ~TrackDesignRepository()
     {
-
     }
 
     size_t GetCount() const override
@@ -117,11 +126,8 @@ public:
 
     void Scan() override
     {
-        utf8 rct2Directory[MAX_PATH];
-        utf8 userDirectory[MAX_PATH];
-
-        GetRCT2Directory(rct2Directory, sizeof(rct2Directory));
-        GetUserDirectory(userDirectory, sizeof(userDirectory));
+        std::string rct2Directory = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK);
+        std::string userDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
         _items.clear();
         _directoryQueryResult = { 0 };
@@ -191,9 +197,10 @@ public:
     {
         const utf8 * result = nullptr;
         const utf8 * fileName = Path::GetFileName(path);
+        std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
         utf8 newPath[MAX_PATH];
-        GetUserDirectory(newPath, sizeof(newPath));
+        String::Set(newPath, sizeof(newPath), installDir.c_str());
         Path::Append(newPath, sizeof(newPath), fileName);
 
         if (platform_file_copy(path, newPath, false))
@@ -211,18 +218,18 @@ public:
     }
 
 private:
-    void Query(const utf8 * directory)
+    void Query(const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
         Path::QueryDirectory(&_directoryQueryResult, pattern);
     }
 
-    void Scan(const utf8 * directory, uint32 flags = 0)
+    void Scan(const std::string &directory, uint32 flags = 0)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
@@ -268,9 +275,7 @@ private:
 
     bool Load()
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        std::string path = _env->GetFilePath(PATHID::CACHE_TRACKS);
         bool result = false;
         try
         {
@@ -308,9 +313,7 @@ private:
 
     void Save() const
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        std::string path = _env->GetFilePath(PATHID::CACHE_TRACKS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
@@ -372,19 +375,6 @@ private:
         return buffer;
     }
 
-    utf8 * GetUserDirectory(utf8 * buffer, size_t bufferSize) const
-    {
-        platform_get_user_directory(buffer, "track", bufferSize);
-        return buffer;
-    }
-
-    utf8 * GetRepositoryPath(utf8 * buffer, size_t bufferSize) const
-    {
-        platform_get_user_directory(buffer, nullptr, bufferSize);
-        Path::Append(buffer, bufferSize, "tracks.idx");
-        return buffer;
-    }
-
 public:
     static utf8 * GetNameFromTrackPath(const utf8 * path)
     {
@@ -395,52 +385,54 @@ public:
     }
 };
 
-static std::unique_ptr<TrackDesignRepository> _trackRepository;
+static std::unique_ptr<TrackDesignRepository> _trackDesignRepository;
 
-ITrackDesignRepository * GetTrackRepository()
+ITrackDesignRepository * CreateTrackDesignRepository(IPlatformEnvironment * env)
 {
-    if (_trackRepository == nullptr)
-    {
-        _trackRepository = std::unique_ptr<TrackDesignRepository>(new TrackDesignRepository());
-    }
-    return _trackRepository.get();
+    _trackDesignRepository = std::unique_ptr<TrackDesignRepository>(new TrackDesignRepository(env));
+    return _trackDesignRepository.get();
+}
+
+ITrackDesignRepository * GetTrackDesignRepository()
+{
+    return _trackDesignRepository.get();
 }
 
 extern "C"
 {
     void track_repository_scan()
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         repo->Scan();
     }
 
     size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetCountForObjectEntry(rideType, entry);
     }
 
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetItemsForObjectEntry(outRefs, rideType, entry);
     }
 
     bool track_repository_delete(const utf8 * path)
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->Delete(path);
     }
 
     const utf8 * track_repository_rename(const utf8 * path, const utf8 * newName)
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->Rename(path, newName);
     }
 
     const utf8 * track_repository_install(const utf8 * srcPath)
     {
-        ITrackDesignRepository * repo = GetTrackRepository();
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->Install(srcPath);
     }
 

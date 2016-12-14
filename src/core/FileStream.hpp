@@ -40,6 +40,11 @@ private:
     uint64      _fileSize;
 
 public:
+    FileStream(const std::string &path, int fileMode) :
+        FileStream(path.c_str(), fileMode)
+    {
+    }
+
     FileStream(const utf8 * path, int fileMode)
     {
         const char * mode;

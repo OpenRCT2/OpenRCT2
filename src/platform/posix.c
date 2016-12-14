@@ -28,7 +28,7 @@
 #include <SDL_syswm.h>
 #include "../config.h"
 #include "../localisation/language.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "platform.h"
 #include <dirent.h>
