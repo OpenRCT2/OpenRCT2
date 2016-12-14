@@ -125,7 +125,8 @@ extern "C"
 
         crash_init();
 
-        if (!rct2_interop_setup_segment()) {
+        if (!rct2_interop_setup_segment())
+        {
             log_fatal("Unable to load RCT2 data sector");
             return false;
         }
@@ -186,7 +187,8 @@ extern "C"
         //      as its not required until the player wants to place a new ride.
         tdRepo->Scan();
 
-        if (!gOpenRCT2Headless) {
+        if (!gOpenRCT2Headless)
+        {
             audio_init();
             audio_populate_devices();
         }
@@ -228,7 +230,9 @@ extern "C"
         {
             gIntroState = INTRO_STATE_NONE;
             if ((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
+            {
                 gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+            }
 
             switch (gOpenRCT2StartupAction) {
             case STARTUP_ACTION_INTRO:
@@ -239,8 +243,9 @@ extern "C"
                 title_load();
                 break;
             case STARTUP_ACTION_OPEN:
-                assert(gOpenRCT2StartupActionPath != NULL);
-                if (!rct2_open_file(gOpenRCT2StartupActionPath)) {
+                Guard::Assert(gOpenRCT2StartupActionPath != nullptr);
+                if (!rct2_open_file(gOpenRCT2StartupActionPath))
+                {
                     fprintf(stderr, "Failed to load '%s'", gOpenRCT2StartupActionPath);
                     title_load();
                     break;
@@ -249,14 +254,19 @@ extern "C"
                 gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 #ifndef DISABLE_NETWORK
-                if (gNetworkStart == NETWORK_MODE_SERVER) {
-                    if (gNetworkStartPort == 0) {
+                if (gNetworkStart == NETWORK_MODE_SERVER)
+                {
+                    if (gNetworkStartPort == 0)
+                    {
                         gNetworkStartPort = gConfigNetwork.default_port;
                     }
 
-                    if (String::IsNullOrEmpty(gCustomPassword)) {
+                    if (String::IsNullOrEmpty(gCustomPassword))
+                    {
                         network_set_password(gConfigNetwork.default_password);
-                    } else {
+                    }
+                    else
+                    {
                         network_set_password(gCustomPassword);
                     }
                     network_begin_server(gNetworkStartPort);
@@ -264,22 +274,24 @@ extern "C"
 #endif // DISABLE_NETWORK
                 break;
             case STARTUP_ACTION_EDIT:
-                if (strlen(gOpenRCT2StartupActionPath) == 0) {
+                if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
+                {
                     editor_load();
-                } else {
-                    if (!editor_load_landscape(gOpenRCT2StartupActionPath)) {
-                        title_load();
-                    }
+                }
+                else if (!editor_load_landscape(gOpenRCT2StartupActionPath))
+                {
+                    title_load();
                 }
                 break;
             }
 
 #ifndef DISABLE_NETWORK
-            if (gNetworkStart == NETWORK_MODE_CLIENT) {
-                if (gNetworkStartPort == 0) {
+            if (gNetworkStart == NETWORK_MODE_CLIENT)
+            {
+                if (gNetworkStartPort == 0)
+                {
                     gNetworkStartPort = gConfigNetwork.default_port;
                 }
-
                 network_begin_client(gNetworkStartHost, gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
@@ -381,7 +393,7 @@ namespace OpenRCT2
         {
             uint32 windowFlags = SDL_GetWindowFlags(gWindow);
             _isWindowMinimised = (windowFlags & SDL_WINDOW_MINIMIZED) ||
-                (windowFlags & SDL_WINDOW_HIDDEN);
+                                 (windowFlags & SDL_WINDOW_HIDDEN);
         }
         return _isWindowMinimised;
     }
@@ -404,7 +416,8 @@ namespace OpenRCT2
         {
             SDL_Delay(UPDATE_TIME_MS - ticksElapsed);
             _lastTick += UPDATE_TIME_MS;
-        } else
+        }
+        else
         {
             _lastTick = currentTick;
         }
