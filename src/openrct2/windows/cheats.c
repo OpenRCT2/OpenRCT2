@@ -31,6 +31,7 @@
 #include "../cheats.h"
 #include "../network/network.h"
 #include "../management/marketing.h"
+#include "../util/util.h"
 #include "error.h"
 #include "dropdown.h"
 
@@ -297,6 +298,7 @@ static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int page);
+static void window_cheats_text_input(rct_window *w, int widgetIndex, char *text);
 
 static rct_window_event_list window_cheats_money_events = {
 	NULL,
@@ -318,7 +320,7 @@ static rct_window_event_list window_cheats_money_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_cheats_text_input,
 	NULL,
 	NULL,
 	NULL,
@@ -817,6 +819,19 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
 		break;
+	}
+}
+
+static void window_cheats_text_input(rct_window *w, int widgetIndex, char *text) {
+	if (text == NULL)
+		return;
+
+	if (w->page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER) {
+		money32 val = string_to_money(text);
+		if (val != MONEY32_UNDEFINED) {
+			money_spinner_value = val;
+		}
+		window_invalidate(w);
 	}
 }
 
