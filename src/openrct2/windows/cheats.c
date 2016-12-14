@@ -438,8 +438,8 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 static rct_string_id window_cheats_page_titles[] = {
 	STR_CHEAT_TITLE_FINANCIAL,
 	STR_CHEAT_TITLE_GUEST,
-	STR_CHEAT_TITLE_RIDE,
 	STR_CHEAT_TITLE_PARK,
+	STR_CHEAT_TITLE_RIDE,
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
