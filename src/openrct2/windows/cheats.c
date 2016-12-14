@@ -472,6 +472,18 @@ void window_cheats_open()
 static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
+	case WIDX_INCREASE_PARK_RATING:
+		park_rating_spinner_value = min(999, 10 * (park_rating_spinner_value / 10 + 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+		if (get_forced_park_rating() >= 0)
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
+		break;
+	case WIDX_DECREASE_PARK_RATING:
+		park_rating_spinner_value = max(0, 10 * (park_rating_spinner_value / 10 - 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
+		if (get_forced_park_rating() >= 0)
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
+		break;
 	case WIDX_WEATHER_DROPDOWN_BUTTON:{
 		rct_widget *dropdownWidget;
 		int i, currentWeather;
@@ -691,18 +703,6 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		} else {
 			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
 		}
-		break;
-	case WIDX_INCREASE_PARK_RATING:
-		park_rating_spinner_value = min(999, 10 * (park_rating_spinner_value / 10 + 1));
-		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
-		if (get_forced_park_rating() >= 0)
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
-		break;
-	case WIDX_DECREASE_PARK_RATING:
-		park_rating_spinner_value = max(0, 10 * (park_rating_spinner_value / 10 - 1));
-		widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
-		if (get_forced_park_rating() >= 0)
-			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETFORCEDPARKRATING, park_rating_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	}
 }
