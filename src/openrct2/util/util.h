@@ -56,4 +56,7 @@ uint32 util_rand();
 unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
 unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
 
+money32 string_to_money(char * string_to_monetise);
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
+
 #endif
