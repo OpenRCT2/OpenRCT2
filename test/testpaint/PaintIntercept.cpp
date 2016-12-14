@@ -19,7 +19,7 @@
 
 extern "C" {
 #include "../../src/common.h"
-#include "../../src/hook.h"
+#include "../../src/rct2/hook.h"
 #include "../../src/interface/viewport.h"
 #include "../../src/paint/supports.h"
 }

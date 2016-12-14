@@ -17,7 +17,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "addresses.h"
+#include "rct2/addresses.h"
 #include "common.h"
 #include "platform/platform.h"
 #include "scenario/scenario.h"

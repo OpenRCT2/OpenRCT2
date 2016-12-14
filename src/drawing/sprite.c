@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../common.h"
 #include "../OpenRCT2.h"
 #include "../sprites.h"

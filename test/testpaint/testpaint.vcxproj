@@ -93,10 +93,10 @@
     <ClCompile Include="TestTrack.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VerticalTunnelCall.cpp" />
-    <ClCompile Include="..\..\src\addresses.c" />
     <ClCompile Include="..\..\src\diagnostic.c" />
-    <ClCompile Include="..\..\src\hook.c" />
     <ClCompile Include="..\..\src\paint\map_element\map_element.c" />
+    <ClCompile Include="..\..\src\rct2\addresses.c" />
+    <ClCompile Include="..\..\src\rct2\hook.c" />
     <ClCompile Include="..\..\src\ride\coaster\air_powered_vertical_coaster.c" />
     <ClCompile Include="..\..\src\ride\coaster\bobsleigh_coaster.c" />
     <ClCompile Include="..\..\src\ride\coaster\compact_inverted_coaster.c" />

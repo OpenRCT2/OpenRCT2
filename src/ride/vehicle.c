@@ -19,7 +19,7 @@
 #include "../audio/mixer.h"
 #include "../config.h"
 #include "../editor.h"
-#include "../hook.h"
+#include "../rct2/hook.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"

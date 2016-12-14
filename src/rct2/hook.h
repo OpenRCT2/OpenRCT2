@@ -19,7 +19,7 @@
 
 #ifndef NO_RCT2
 
-#include "common.h"
+#include "../common.h"
 
 enum {
 	X86_FLAG_CARRY = 1 << 0,

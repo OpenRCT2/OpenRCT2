@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../config.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"

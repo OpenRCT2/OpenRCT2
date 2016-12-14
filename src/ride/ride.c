@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../cheats.h"

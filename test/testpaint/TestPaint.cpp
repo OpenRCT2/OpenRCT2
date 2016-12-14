@@ -28,7 +28,7 @@ extern "C" {
     #include "../../src/paint/supports.h"
     #include "../../src/ride/track_data.h"
     #include "../../src/interface/viewport.h"
-    #include "../../src/hook.h"
+    #include "../../src/rct2/hook.h"
 }
 
 namespace TestPaint

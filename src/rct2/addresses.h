@@ -19,7 +19,7 @@
 
 #ifndef NO_RCT2
 
-#include "common.h"
+#include "../common.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4731)
