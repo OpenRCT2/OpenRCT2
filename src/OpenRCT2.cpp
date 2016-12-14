@@ -243,7 +243,6 @@ extern "C"
                 title_load();
                 break;
             case STARTUP_ACTION_OPEN:
-                Guard::Assert(gOpenRCT2StartupActionPath != nullptr);
                 if (!rct2_open_file(gOpenRCT2StartupActionPath))
                 {
                     fprintf(stderr, "Failed to load '%s'", gOpenRCT2StartupActionPath);
