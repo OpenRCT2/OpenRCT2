@@ -456,7 +456,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 };
 
 static uint64 window_cheats_page_hold_down_widgets[] = {
-	(1ULL << WIDX_MONEY_SPINNER_INCREMENT) | (1ULL << WIDX_MONEY_SPINNER_DECREMENT),
+	(1ULL << WIDX_MONEY_SPINNER_INCREMENT) | (1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY),
 	0,
 	(1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
 	0
@@ -499,6 +499,9 @@ static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_wi
 	case WIDX_MONEY_SPINNER_DECREMENT:
 		money_spinner_value = max(INT_MIN, MONEY_INCREMENT_DIV * (money_spinner_value / MONEY_INCREMENT_DIV - 1));
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
+		break;
+	case WIDX_ADD_MONEY:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	}
 }
@@ -566,9 +569,6 @@ static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_NO_MONEY:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0); 
-		break;
-	case WIDX_INCREASE_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, money_spinner_text, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_MONEY_SPINNER:
 		money_to_string(money_spinner_value, money_spinner_text, MONEY_DIGITS);
