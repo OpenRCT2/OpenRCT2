@@ -4187,7 +4187,7 @@ STR_5875    :Grafikkmotor
 STR_5876    :{SMALLFONT}{BLACK}Motoren som bruker for å tegne spillgrafikk
 STR_5877    :Software
 STR_5878    :Software (hardware rendering)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (eksperimentell)
 STR_5880    :Valgte objekter
 STR_5881    :Ikke valgte objekter
 STR_5882    :Egendefinert valuta
