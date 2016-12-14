@@ -503,7 +503,7 @@ static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_wi
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
 		break;
 	case WIDX_ADD_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ADDMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	}
 }

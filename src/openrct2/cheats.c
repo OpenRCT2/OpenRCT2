@@ -241,7 +241,7 @@ static void cheat_set_money(money32 amount)
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 
-static void cheat_increase_money(money32 amount)
+static void cheat_add_money(money32 amount)
 {
 	money32 currentMoney;
 
@@ -259,7 +259,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	cheat_increase_money(gBankLoan);
+	cheat_add_money(gBankLoan);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -435,7 +435,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = *edx != 0; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = *edx != 0; break;
 			case CHEAT_NOMONEY: cheat_no_money(*edx != 0); break;
-			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
+			case CHEAT_ADDMONEY: cheat_add_money(*edx); break;
 			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
