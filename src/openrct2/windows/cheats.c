@@ -34,8 +34,6 @@
 #include "error.h"
 #include "dropdown.h"
 
-#define CHEATS_PARK_RATING_SPINNER_PAUSE 20
-
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
 	WINDOW_CHEATS_PAGE_GUESTS,
@@ -437,6 +435,13 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 		(1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) | (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES)
 };
 
+static uint64 window_cheats_page_hold_down_widgets[] = {
+	0,
+	0,
+	(1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
+	0
+};
+
 static rct_string_id window_cheats_page_titles[] = {
 	STR_CHEAT_TITLE_FINANCIAL,
 	STR_CHEAT_TITLE_GUEST,
@@ -445,8 +450,6 @@ static rct_string_id window_cheats_page_titles[] = {
 };
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-
-int park_rating_spinner_pressed_for = 0;
 
 void window_cheats_open()
 {
@@ -460,6 +463,7 @@ void window_cheats_open()
 	window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
 	window->widgets = window_cheats_money_widgets;
 	window->enabled_widgets = window_cheats_page_enabled_widgets[0];
+	window->hold_down_widgets = window_cheats_page_hold_down_widgets[0];
 	window_init_scroll_widgets(window);
 	window_cheats_set_page(window, WINDOW_CHEATS_PAGE_MONEY);
 	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
@@ -775,25 +779,6 @@ static void window_cheats_update(rct_window *w)
 {
 	w->frame_no++;
 	widget_invalidate(w, WIDX_TAB_1 + w->page);
-
-	if (widget_is_pressed(w, WIDX_INCREASE_PARK_RATING) || widget_is_pressed(w, WIDX_DECREASE_PARK_RATING))
-		park_rating_spinner_pressed_for++;
-	else
-		park_rating_spinner_pressed_for = 0;
-	if (park_rating_spinner_pressed_for >= CHEATS_PARK_RATING_SPINNER_PAUSE)
-		if (!(w->frame_no % 3)){
-			if (widget_is_pressed(w, WIDX_INCREASE_PARK_RATING)){
-				park_rating_spinner_value = min(999, 10 * (park_rating_spinner_value / 10 + 1));
-				widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
-				if (get_forced_park_rating() >= 0)
-					set_forced_park_rating(park_rating_spinner_value);
-			} else if (widget_is_pressed(w, WIDX_DECREASE_PARK_RATING)){
-				park_rating_spinner_value = max(0, 10 * (park_rating_spinner_value / 10 - 1));
-				widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
-				if (get_forced_park_rating() >= 0)
-					set_forced_park_rating(park_rating_spinner_value);
-			}
-		}
 }
 
 static void window_cheats_invalidate(rct_window *w)
@@ -924,7 +909,7 @@ static void window_cheats_set_page(rct_window *w, int page)
 	w->frame_no = 0;
 
 	w->enabled_widgets = window_cheats_page_enabled_widgets[page];
-
+	w->hold_down_widgets = window_cheats_page_hold_down_widgets[page];
 	w->pressed_widgets = 0;
 
 	w->event_handlers = window_cheats_page_events[page];
