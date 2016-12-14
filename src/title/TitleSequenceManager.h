@@ -38,6 +38,7 @@ namespace TitleSequenceManager
     size_t RenameItem(size_t i, const utf8 * name);
     size_t DuplicateItem(size_t i, const utf8 * name);
     size_t CreateItem(const utf8 * name);
+    void Scan();
 }
 
 constexpr uint16 PREDEFINED_INDEX_CUSTOM = UINT16_MAX;

@@ -24,6 +24,8 @@
 #include "PlatformEnvironment.h"
 #include "ride/TrackDesignRepository.h"
 #include "ScenarioRepository.h"
+#include "title/TitleScreen.h"
+#include "title/TitleSequenceManager.h"
 
 extern "C"
 {
@@ -39,7 +41,6 @@ extern "C"
     #include "object_list.h"
     #include "platform/platform.h"
     #include "rct2/interop.h"
-    #include "title/TitleScreen.h"
     #include "version.h"
 }
 
@@ -187,6 +188,8 @@ extern "C"
         //      as its not required until the player wants to place a new ride.
         tdRepo->Scan();
 
+        TitleSequenceManager::Scan();
+
         if (!gOpenRCT2Headless)
         {
             audio_init();
@@ -205,8 +208,6 @@ extern "C"
 
         http_init();
         theme_manager_initialise();
-        title_sequences_set_default();
-        title_sequences_load_presets();
 
         rct2_interop_setup_hooks();
 

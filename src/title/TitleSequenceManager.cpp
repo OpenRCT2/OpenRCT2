@@ -22,13 +22,13 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../OpenRCT2.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 
 extern "C"
 {
     #include "../localisation/localisation.h"
-    #include "../openrct2.h"
 }
 
 namespace TitleSequenceManager
@@ -201,7 +201,7 @@ namespace TitleSequenceManager
         });
     }
 
-    static void Scan()
+    void Scan()
     {
         utf8 path[MAX_PATH];
 
