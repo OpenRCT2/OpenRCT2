@@ -4305,6 +4305,10 @@ STR_5993    :{SMALLFONT}{BLACK}Copy selected element
 STR_5994    :{SMALLFONT}{BLACK}Paste copied element
 STR_5995    :Booster
 STR_5996    :Booster speed
+STR_5997    :Add/set money
+STR_5998    :Add money
+STR_5999    :Set money
+STR_6000    :Enter new value
 
 #############
 # Scenarios #

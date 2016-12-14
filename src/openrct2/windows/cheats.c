@@ -34,6 +34,12 @@
 #include "error.h"
 #include "dropdown.h"
 
+#define MONEY_DEFAULT MONEY(5000,00)
+#define MONEY_INCREMENT_DIV MONEY(1000,00)
+#define MONEY_DIGITS 14
+char money_spinner_text[MONEY_DIGITS];
+int money_spinner_value = MONEY_DEFAULT;
+
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
 	WINDOW_CHEATS_PAGE_GUESTS,
@@ -59,7 +65,12 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_2,
 	WIDX_TAB_3,
 	WIDX_TAB_4,
-	WIDX_HIGH_MONEY,
+	WIDX_ADD_SET_MONEY_GROUP,
+	WIDX_MONEY_SPINNER,
+	WIDX_MONEY_SPINNER_INCREMENT,
+	WIDX_MONEY_SPINNER_DECREMENT,
+	WIDX_ADD_MONEY,
+	WIDX_SET_MONEY,
 	WIDX_CLEAR_LOAN,
 	WIDX_GUEST_PARAMETERS_GROUP = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_GUEST_HAPPINESS_MAX,
@@ -173,9 +184,14 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_5K_MONEY,					STR_NONE },								// high money
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(3),			HPL(3),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
-	{ WIDGETS_END },
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(2.5),		STR_ADD_SET_MONEY,					STR_NONE },								// add / set money group frame
+	{ WWT_SPINNER,			1,		XPL(0),					WPL(1) - 10,			YPL(1) + 2,		HPL(1) - 3,		STR_NONE,							STR_NONE },								// money value
+	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(1) + 3,		YPL(1) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase money
+	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(1) + 8,		YPL(1) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease money
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_ADD_MONEY,						STR_NONE },								// add money
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_SET_MONEY,						STR_NONE },								// set money
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(4),			HPL(4),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
+  	{ WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] = {
@@ -269,6 +285,7 @@ static rct_widget *window_cheats_page_widgets[] = {
 };
 
 static void window_cheats_money_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
 static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
 static void window_cheats_misc_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex);
@@ -283,7 +300,7 @@ static rct_window_event_list window_cheats_money_events = {
 	NULL,
 	window_cheats_money_mouseup,
 	NULL,
-	NULL,
+	window_cheats_money_mousedown,
 	NULL,
 	NULL,
 	window_cheats_update,
@@ -414,7 +431,8 @@ static rct_window_event_list *window_cheats_page_events[] = {
 #define MAIN_CHEAT_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4)
 
 static uint64 window_cheats_page_enabled_widgets[] = {
-	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_HIGH_MONEY) | (1ULL << WIDX_CLEAR_LOAN),
+	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_ADD_SET_MONEY_GROUP) | (1ULL << WIDX_MONEY_SPINNER) | (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
+	(1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY) | (1ULL << WIDX_SET_MONEY) | (1ULL << WIDX_CLEAR_LOAN),
 	MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_GUEST_PARAMETERS_GROUP) |
 		(1ULL << WIDX_GUEST_HAPPINESS_MAX) | (1ULL << WIDX_GUEST_HAPPINESS_MIN) | (1ULL << WIDX_GUEST_ENERGY_MAX) | (1ULL << WIDX_GUEST_ENERGY_MIN) |
 		(1ULL << WIDX_GUEST_HUNGER_MAX) | (1ULL << WIDX_GUEST_HUNGER_MIN) | (1ULL << WIDX_GUEST_THIRST_MAX) | (1ULL << WIDX_GUEST_THIRST_MIN) |
@@ -436,7 +454,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 };
 
 static uint64 window_cheats_page_hold_down_widgets[] = {
-	0,
+	(1ULL << WIDX_MONEY_SPINNER_INCREMENT) | (1ULL << WIDX_MONEY_SPINNER_DECREMENT),
 	0,
 	(1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
 	0
@@ -467,6 +485,20 @@ void window_cheats_open()
 	window_init_scroll_widgets(window);
 	window_cheats_set_page(window, WINDOW_CHEATS_PAGE_MONEY);
 	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
+}
+
+static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_widget* widget) 
+{
+	switch (widgetIndex) {
+	case WIDX_MONEY_SPINNER_INCREMENT:
+		money_spinner_value = min(INT_MAX, MONEY_INCREMENT_DIV * (money_spinner_value / MONEY_INCREMENT_DIV + 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
+		break;
+	case WIDX_MONEY_SPINNER_DECREMENT:
+		money_spinner_value = max(INT_MIN, MONEY_INCREMENT_DIV * (money_spinner_value / MONEY_INCREMENT_DIV - 1));
+		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
+		break;
+	}
 }
 
 static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
@@ -530,8 +562,18 @@ static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TAB_4:
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
-	case WIDX_HIGH_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
+	case WIDX_NO_MONEY:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0); 
+		break;
+	case WIDX_INCREASE_MONEY:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, money_spinner_text, GAME_COMMAND_CHEAT, 0, 0);
+		break;
+	case WIDX_MONEY_SPINNER:
+		money_to_string(money_spinner_value, money_spinner_text, MONEY_DIGITS);
+		window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, money_spinner_text, MONEY_DIGITS);
+		break;
+	case WIDX_SET_MONEY:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_CLEAR_LOAN:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
@@ -795,11 +837,18 @@ static void window_cheats_invalidate(rct_window *w)
 	}
 
 	w->pressed_widgets = 0;
-
+	
 	switch (w->page) {
-	case WINDOW_CHEATS_PAGE_MONEY:
-		set_format_arg(0, int, 50000);
-		break;
+	case WINDOW_CHEATS_PAGE_MONEY:{
+		uint64 money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER) | (1 << WIDX_MONEY_SPINNER_INCREMENT) |
+			(1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY) | (1 << WIDX_SET_MONEY) | (1 << WIDX_CLEAR_LOAN);
+		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+			w->disabled_widgets |= money_widgets;
+		}
+		else {
+			w->disabled_widgets &= ~money_widgets;
+		}
+	}break;
 	case WINDOW_CHEATS_PAGE_GUESTS:
 		set_format_arg(0, int, 10000);
 		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
@@ -848,9 +897,8 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		set_format_arg(0, money32, CHEATS_MONEY_INCREMENT);
-		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	gCommonFormatArgs,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		set_format_arg(0, money32, money_spinner_value);
+		gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, w->colours[2], w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
