@@ -214,6 +214,15 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
+static void cheat_set_money(money32 amount)
+{
+	money32 money = clamp(INT_MIN, amount, INT_MAX);
+	gCashEncrypted = ENCRYPT_MONEY(money);
+
+	window_invalidate_by_class(WC_FINANCES);
+	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+}
+
 static void cheat_increase_money(money32 amount)
 {
 	money32 currentMoney;
@@ -408,6 +417,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = *edx != 0; break;
 			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = *edx != 0; break;
 			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
+			case CHEAT_SETMONEY: cheat_set_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
 			case CHEAT_GENERATEGUESTS: cheat_generate_guests(*edx); break;
