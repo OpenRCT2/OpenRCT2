@@ -628,11 +628,6 @@
  */
 int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp);
 
-static int RCT2_CALLPROC_EBPSAFE(int address)
-{
-	return RCT2_CALLPROC_X(address, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB);
-}
-
 /**
  * Returns the flags register
  *
@@ -646,17 +641,6 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
  * All other bits are undefined.
  */
 int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
-
-static int RCT2_CALLFUNC_Y(int address, registers *inOut)
-{
-	return RCT2_CALLFUNC_X(address, &inOut->eax, &inOut->ebx, &inOut->ecx, &inOut->edx, &inOut->esi, &inOut->edi, &inOut->ebp);
-}
-
-static int RCT2_CALLFUNC_Z(int address, const registers *in, registers *out)
-{
-	*out = *in;
-	return RCT2_CALLFUNC_Y(address, out);
-}
 
 #endif
 
