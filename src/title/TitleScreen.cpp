@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../network/network.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "TitleScreen.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
