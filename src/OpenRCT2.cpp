@@ -173,16 +173,25 @@ extern "C"
 
         // Sets up the environment OpenRCT2 is running in, e.g. directory paths
         OpenRCT2::SetupEnvironment();
-
         IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
+        ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
+        CreateScenarioRepository(OpenRCT2::_env);
+
+        if (!language_open(gConfigGeneral.language))
+        {
+            log_error("Failed to open configured language...");
+            if (!language_open(LANGUAGE_ENGLISH_UK))
+            {
+                log_fatal("Failed to open fallback language...");
+                return false;
+            }
+        }
+
         // TODO Ideally we want to delay this until we show the title so that we can
         //      still open the game window and draw a progress screen for the creation
         //      of the object cache.
         objRepo->LoadOrConstruct();
 
-        CreateScenarioRepository(OpenRCT2::_env);
-
-        ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
         // TODO Like objects, this can take a while if there are a lot of track designs
         //      its also really something really we might want to do in the background
         //      as its not required until the player wants to place a new ride.
@@ -194,16 +203,6 @@ extern "C"
         {
             audio_init();
             audio_populate_devices();
-        }
-
-        if (!language_open(gConfigGeneral.language))
-        {
-            log_error("Failed to open configured language...");
-            if (!language_open(LANGUAGE_ENGLISH_UK))
-            {
-                log_fatal("Failed to open fallback language...");
-                return false;
-            }
         }
 
         http_init();
