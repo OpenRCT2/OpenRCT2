@@ -36,7 +36,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalOptions>/utf-8</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /std:c++latest</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;version.lib;winmm.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
