@@ -67,6 +67,8 @@
     <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-$(GtestVersion).zip</GtestUrl>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>79ffb2585d12abcbfce205d7696e3472a504b005</TitleSequencesSha1>
   </PropertyGroup>
 
   <ItemGroup>
@@ -221,37 +223,13 @@
           StandardOutputImportance="low" />
   </Target>
 
-  <PropertyGroup>
-    <SequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</SequencesUrl>
-    <SequencesPath>$(TargetDir)data\title</SequencesPath>
-    <SequencesZip>$(TargetDir)data\title\seqs.zip</SequencesZip>
-    <SequencesVersionPath>$(TargetDir)sequencesversion</SequencesVersionPath>
-  </PropertyGroup>
-
-  <Target Name="CheckTitleSequences" AfterTargets="Build">
-    <PropertyGroup>
-      <CurrentSequencesVersion Condition="Exists($(SequencesVersionPath))">$([System.IO.File]::ReadAllText($(SequencesVersionPath)).Trim())</CurrentSequencesVersion>
-      <UpdateSequences Condition="'$(CurrentSequencesVersion)'!='$(SequencesUrl)'">true</UpdateSequences>
-    </PropertyGroup>
-
-    <Message Condition="'$(UpdateSequences)'!='true'" Text="Sequences up to date" Importance="high" />
-    <Message Condition="'$(UpdateSequences)'=='true'" Text="Sequences out of date, updating..." Importance="high" />
-    <CallTarget Condition="'$(UpdateSequences)'=='true'" Targets="DownloadTitleSequences" />
-  </Target>
-
   <!-- Target to download the title sequences -->
   <Target Name="DownloadTitleSequences">
-    <!-- Clean sequences directory -->
-    <RemoveDir Directories="$(SequencesPath)" />
-    <MakeDir Directories="$(SequencesPath)" />
-
-    <Message Text="Downloading title sequences..." Importance="normal" />
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(SequencesUrl)' -OutFile '$(SequencesZip)'&quot;" StandardOutputImportance="low" />
-    <Unzip Input="$(SequencesZip)" OutputDirectory="$(SequencesPath)" />
-    <Delete Files="$(SequencesZip)" ContinueOnError="true" />
-
-    <!-- Update version file -->
-    <WriteLinesToFile Lines="$(SequencesUrl)" File="$(SequencesVersionPath)" Overwrite="true" />
+    <DownloadDependency Name="TitleSequences"
+                        Url="$(TitleSequencesUrl)"
+                        Sha1="$(TitleSequencesSha1)"
+                        CheckFile="$(RootDir).dependencies"
+                        OutputDirectory="$(TargetDir)data\title" />
   </Target>
 
   <!-- Target to sign OpenRCT2
