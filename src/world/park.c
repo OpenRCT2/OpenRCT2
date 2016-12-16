@@ -30,7 +30,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/map.h"
 #include "park.h"
 #include "sprite.h"

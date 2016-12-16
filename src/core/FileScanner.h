@@ -31,6 +31,7 @@ interface IFileScanner
 
     virtual const FileInfo *    GetFileInfo() const abstract;
     virtual const utf8 *        GetPath() const abstract;
+    virtual const utf8 *        GetPathRelative() const abstract;
 
     virtual void Reset() abstract;
     virtual bool Next() abstract;

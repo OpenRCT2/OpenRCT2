@@ -30,7 +30,7 @@
 
 extern "C" {
     #include "../localisation/language.h"
-    #include "../scenario.h"
+    #include "../scenario/scenario.h"
     #include "platform.h"
 }
 

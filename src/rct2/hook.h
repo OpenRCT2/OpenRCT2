@@ -14,41 +14,27 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _TITLE_H_
-#define _TITLE_H_
+#ifndef _HOOK_H_
+#define _HOOK_H_
 
-#include <SDL.h>
-#include "drawing/drawing.h"
+#ifndef NO_RCT2
+
+#include "../common.h"
 
 enum {
-	TITLE_SCRIPT_WAIT,
-	TITLE_SCRIPT_LOADMM,
-	TITLE_SCRIPT_LOCATION,
-	TITLE_SCRIPT_ROTATE,
-	TITLE_SCRIPT_ZOOM,
-	TITLE_SCRIPT_RESTART,
-	TITLE_SCRIPT_LOAD,
-	TITLE_SCRIPT_END,
-	TITLE_SCRIPT_SPEED,
-	TITLE_SCRIPT_LOOP,
-	TITLE_SCRIPT_ENDLOOP,
-	TITLE_SCRIPT_LOADRCT1,
+	X86_FLAG_CARRY = 1 << 0,
+	X86_FLAG_PARITY = 1 << 2,
+
+	X86_FLAG_ADJUST = 1 << 4,
+
+	X86_FLAG_ZERO = 1 << 6,
+	X86_FLAG_SIGN = 1 << 7,
 };
 
-extern bool gTitleHideVersionInfo;
+typedef uint8 (hook_function)(registers *regs);
 
-extern sint32 gTitleScriptCommand;
-extern uint8 gTitleScriptSave;
-extern sint32 gTitleScriptSkipTo;
-extern sint32 gTitleScriptSkipLoad;
+void addhook(uintptr_t address, hook_function *function);
 
-void title_load();
-void title_create_windows();
-void title_update();
-void title_skip_from_beginning();
-void title_script_get_line(SDL_RWops *file, char *parts);
-bool title_refresh_sequence();
-void title_fix_location();
-void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y);
+#endif
 
 #endif

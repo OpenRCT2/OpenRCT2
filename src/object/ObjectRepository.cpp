@@ -31,7 +31,7 @@
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "../PlatformEnvironment.h"
-#include "../ScenarioRepository.h"
+#include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectManager.h"

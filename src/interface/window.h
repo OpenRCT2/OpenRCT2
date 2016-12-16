@@ -24,14 +24,15 @@
 #include "../ride/ride.h"
 #include "../ride/track_design.h"
 #include "../ride/vehicle.h"
-#include "../scenario.h"
-#include "../ScenarioRepository.h"
+#include "../scenario/scenario.h"
+#include "../scenario/ScenarioRepository.h"
 #include "../world/park.h"
 #include "colour.h"
 
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
+struct TitleSequence;
 
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[512];
@@ -526,10 +527,10 @@ enum GUEST_LIST_FILTER_TYPE
 };
 
 typedef void (*modal_callback)(int result);
+typedef void (*loadsave_callback)(int result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
-extern bool gLoadSaveTitleSequenceSave;
-extern modal_callback gLoadSaveCallback;
+extern loadsave_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 
@@ -707,7 +708,7 @@ void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
 void window_title_editor_open(int tab);
-void window_title_command_editor_open(int command, bool insert);
+void window_title_command_editor_open(struct TitleSequence * sequence, int command, bool insert);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int maxLength);

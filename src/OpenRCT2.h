@@ -18,7 +18,15 @@
 
 #include "common.h"
 #include "core/Guard.hpp"
-#include "platform/platform.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "platform/platform.h"
+#ifdef __cplusplus
+}
+#endif
 
 #ifndef DISABLE_NETWORK
     #include <openssl/evp.h>

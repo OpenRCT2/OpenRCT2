@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -30,7 +30,7 @@
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "banner.h"
 #include "climate.h"

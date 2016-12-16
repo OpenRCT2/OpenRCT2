@@ -24,6 +24,7 @@ namespace String
     constexpr const utf8 * Empty = "";
 
     std::string ToStd(const utf8 * str);
+    std::string StdFormat(const utf8 * format, ...);
 
     bool   IsNullOrEmpty(const utf8 * str);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
@@ -44,6 +45,8 @@ namespace String
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize);
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src);
     utf8 * Format(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
+    utf8 * Format(const utf8 * format, ...);
+    utf8 * Format_VA(const utf8 * format, va_list args);
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
     utf8 * Duplicate(const utf8 * src);
 

@@ -80,8 +80,9 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
 void viewport_init_all()
 {
 	colours_init_maps();
-
-	// Setting up windows
+	if (gWindowNextSlot != NULL) {
+		window_close_all();
+	}
 	gWindowNextSlot = g_window_list;
 
 	// Setting up viewports

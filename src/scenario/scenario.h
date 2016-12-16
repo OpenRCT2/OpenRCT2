@@ -17,20 +17,20 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
-#include "addresses.h"
-#include "common.h"
-#include "management/award.h"
-#include "management/finance.h"
-#include "management/news_item.h"
-#include "management/research.h"
-#include "ride/ride.h"
-#include "ride/ride_ratings.h"
-#include "object.h"
-#include "platform/platform.h"
-#include "world/banner.h"
-#include "world/map.h"
-#include "world/map_animation.h"
-#include "world/sprite.h"
+#include "../rct2/addresses.h"
+#include "../common.h"
+#include "../management/award.h"
+#include "../management/finance.h"
+#include "../management/news_item.h"
+#include "../management/research.h"
+#include "../ride/ride.h"
+#include "../ride/ride_ratings.h"
+#include "../object.h"
+#include "../platform/platform.h"
+#include "../world/banner.h"
+#include "../world/map.h"
+#include "../world/map_animation.h"
+#include "../world/sprite.h"
 
 #pragma pack(push, 1)
 /**
@@ -408,6 +408,7 @@ extern uint32 gLastAutoSaveTick;
 extern const char *_scenarioFileName;
 
 bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info);
+bool scenario_load_rw(SDL_RWops * rw);
 int scenario_load(const char *path);
 int scenario_load_and_play_from_path(const char *path);
 void scenario_begin();

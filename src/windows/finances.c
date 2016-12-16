@@ -26,7 +26,7 @@
 #include "../management/research.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
 #include "../interface/themes.h"

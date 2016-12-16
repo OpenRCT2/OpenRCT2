@@ -22,7 +22,7 @@
 #include "../world/park.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"

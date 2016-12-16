@@ -18,13 +18,12 @@
 #include "../audio/audio.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../ScenarioRepository.h"
-#include "../ScenarioSources.h"
+#include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
-#include "../title.h"
 #include "../util/util.h"
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5

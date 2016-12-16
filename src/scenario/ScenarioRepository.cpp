@@ -17,22 +17,22 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
-#include "core/Console.hpp"
-#include "core/FileScanner.h"
-#include "core/FileStream.hpp"
-#include "core/Math.hpp"
-#include "core/Path.hpp"
-#include "core/String.hpp"
-#include "PlatformEnvironment.h"
+#include "../core/Console.hpp"
+#include "../core/FileScanner.h"
+#include "../core/FileStream.hpp"
+#include "../core/Math.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
+#include "../PlatformEnvironment.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
 extern "C"
 {
-    #include "config.h"
-    #include "localisation/localisation.h"
+    #include "../config.h"
+    #include "../localisation/localisation.h"
+    #include "../rct2.h"
     #include "scenario.h"
-    #include "rct2.h"
 }
 
 static int ScenarioCategoryCompare(int categoryA, int categoryB)

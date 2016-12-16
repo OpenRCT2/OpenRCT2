@@ -22,7 +22,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/banner.h"
 #include "../world/footpath.h"
 #include "../world/map.h"

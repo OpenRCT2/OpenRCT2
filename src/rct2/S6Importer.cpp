@@ -35,7 +35,7 @@ extern "C"
     #include "../rct2.h"
     #include "../ride/ride.h"
     #include "../ride/ride_ratings.h"
-    #include "../scenario.h"
+    #include "../scenario/scenario.h"
     #include "../util/sawyercoding.h"
     #include "../world/climate.h"
     #include "../world/map_animation.h"
@@ -366,7 +366,7 @@ extern "C"
      *
      *  rct2: 0x00675E1B
      */
-    int game_load_sv6(SDL_RWops * rw)
+    bool game_load_sv6(SDL_RWops * rw)
     {
         if (!sawyercoding_validate_checksum(rw))
         {
@@ -410,6 +410,41 @@ extern "C"
         {
             s6Importer->FixIssues = true;
             s6Importer->LoadSavedGame(path);
+            s6Importer->Import();
+
+            sprite_position_tween_reset();
+            result = true;
+        }
+        catch (ObjectLoadException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (IOException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
+        }
+        catch (Exception)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        }
+        delete s6Importer;
+
+        gScreenAge = 0;
+        gLastAutoSaveTick = SDL_GetTicks();
+        return result;
+    }
+
+    bool scenario_load_rw(SDL_RWops * rw)
+    {
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->FixIssues = true;
+            s6Importer->LoadScenario(rw);
             s6Importer->Import();
 
             sprite_position_tween_reset();

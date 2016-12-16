@@ -30,11 +30,11 @@
 	#include <unistd.h>
 #endif // defined(__unix__) || defined(__MACOSX__)
 
-#include "../addresses.h"
-#include "../hook.h"
 #include "../OpenRCT2.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "addresses.h"
+#include "hook.h"
 #include "interop.h"
 
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)

@@ -88,7 +88,7 @@
     <None Include="openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\addresses.c" />
+    <ClCompile Include="src\rct2\addresses.c" />
     <ClCompile Include="src\audio\audio.c" />
     <ClCompile Include="src\audio\mixer.cpp" />
     <ClCompile Include="src\cheats.c" />
@@ -101,6 +101,7 @@
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Diagnostics.cpp" />
+    <ClCompile Include="src\core\File.cpp" />
     <ClCompile Include="src\core\FileScanner.cpp" />
     <ClCompile Include="src\core\Guard.cpp" />
     <ClCompile Include="src\core\IStream.cpp" />
@@ -110,6 +111,7 @@
     <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\core\String.cpp" />
     <ClCompile Include="src\core\textinputbuffer.c" />
+    <ClCompile Include="src\core\Zip.cpp" />
     <ClCompile Include="src\interface\CursorData.cpp" />
     <ClCompile Include="src\interface\Cursors.cpp" />
     <ClCompile Include="src\diagnostic.c" />
@@ -138,7 +140,7 @@
     <ClCompile Include="src\drawing\string.c" />
     <ClCompile Include="src\editor.c" />
     <ClCompile Include="src\game.c" />
-    <ClCompile Include="src\hook.c" />
+    <ClCompile Include="src\rct2\hook.c" />
     <ClCompile Include="src\image_io.c" />
     <ClCompile Include="src\input.c" />
     <ClCompile Include="src\interface\chat.c" />
@@ -149,7 +151,6 @@
     <ClCompile Include="src\interface\graph.c" />
     <ClCompile Include="src\interface\keyboard_shortcut.c" />
     <ClCompile Include="src\interface\screenshot.c" />
-    <ClCompile Include="src\interface\title_sequences.c" />
     <ClCompile Include="src\interface\viewport.c" />
     <ClCompile Include="src\interface\viewport_interaction.c" />
     <ClCompile Include="src\interface\widget.c" />
@@ -322,8 +323,12 @@
     <ClCompile Include="src\ride\water\splash_boats.c" />
     <ClCompile Include="src\ride\water\submarine_ride.c" />
     <ClCompile Include="src\ride\water\water_coaster.c" />
-    <ClCompile Include="src\scenario.c" />
-    <ClCompile Include="src\ScenarioRepository.cpp" />
+    <ClCompile Include="src\scenario\scenario.c" />
+    <ClCompile Include="src\scenario\ScenarioRepository.cpp" />
+    <ClCompile Include="src\title\TitleScreen.cpp" />
+    <ClCompile Include="src\title\TitleSequence.cpp" />
+    <ClCompile Include="src\title\TitleSequenceManager.cpp" />
+    <ClCompile Include="src\title\TitleSequencePlayer.cpp" />
     <ClCompile Include="src\windows\changelog.c" />
     <ClCompile Include="src\windows\multiplayer.c" />
     <ClCompile Include="src\windows\network_status.c" />
@@ -339,7 +344,6 @@
     <ClCompile Include="src\world\duck.c" />
     <ClCompile Include="src\world\money_effect.c" />
     <ClCompile Include="src\world\particle.c" />
-    <ClCompile Include="src\title.c" />
     <ClCompile Include="src\util\sawyercoding.c" />
     <ClCompile Include="src\util\util.c" />
     <ClCompile Include="src\version.c" />
@@ -418,7 +422,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
-    <ClInclude Include="src\addresses.h" />
+    <ClInclude Include="src\rct2\addresses.h" />
     <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\mixer.h" />
     <ClInclude Include="src\cheats.h" />
@@ -430,6 +434,7 @@
     <ClInclude Include="src\core\Console.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
+    <ClInclude Include="src\core\File.h" />
     <ClInclude Include="src\core\FileScanner.h" />
     <ClInclude Include="src\core\FileStream.hpp" />
     <ClInclude Include="src\core\Guard.hpp" />
@@ -447,6 +452,7 @@
     <ClInclude Include="src\core\StringReader.hpp" />
     <ClInclude Include="src\core\textinputbuffer.h" />
     <ClInclude Include="src\core\Util.hpp" />
+    <ClInclude Include="src\core\Zip.h" />
     <ClInclude Include="src\interface\Cursors.h" />
     <ClInclude Include="src\diagnostic.h" />
     <ClInclude Include="src\drawing\drawing.h" />
@@ -470,7 +476,7 @@
     <ClInclude Include="src\drawing\lightfx.h" />
     <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\hook.h" />
+    <ClInclude Include="src\rct2\hook.h" />
     <ClInclude Include="src\image_io.h" />
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\interface\chat.h" />
@@ -481,7 +487,6 @@
     <ClInclude Include="src\interface\graph.h" />
     <ClInclude Include="src\interface\keyboard_shortcut.h" />
     <ClInclude Include="src\interface\screenshot.h" />
-    <ClInclude Include="src\interface\title_sequences.h" />
     <ClInclude Include="src\interface\viewport.h" />
     <ClInclude Include="src\interface\widget.h" />
     <ClInclude Include="src\interface\window.h" />
@@ -563,13 +568,16 @@
     <ClInclude Include="src\ride\vehicle.h" />
     <ClInclude Include="src\ride\vehicle_data.h" />
     <ClInclude Include="src\ride\vehicle_paint.h" />
-    <ClInclude Include="src\scenario.h" />
-    <ClCompile Include="src\ScenarioSources.cpp" />
-    <ClInclude Include="src\ScenarioRepository.h" />
-    <ClInclude Include="src\ScenarioSources.h" />
+    <ClInclude Include="src\scenario\scenario.h" />
+    <ClCompile Include="src\scenario\ScenarioSources.cpp" />
+    <ClInclude Include="src\scenario\ScenarioRepository.h" />
+    <ClInclude Include="src\scenario\ScenarioSources.h" />
     <ClInclude Include="src\sprites.h" />
+    <ClInclude Include="src\title\TitleSequence.h" />
+    <ClInclude Include="src\title\TitleSequenceManager.h" />
+    <ClInclude Include="src\title\TitleSequencePlayer.h" />
     <ClInclude Include="src\version.h" />
-    <ClInclude Include="src\title.h" />
+    <ClInclude Include="src\title\TitleScreen.h" />
     <ClInclude Include="src\util\sawyercoding.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\dropdown.h" />

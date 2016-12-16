@@ -23,7 +23,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "dropdown.h"
 
 enum {

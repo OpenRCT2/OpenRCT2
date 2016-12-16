@@ -14,15 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "core/Guard.hpp"
-#include "core/String.hpp"
-#include "core/Util.hpp"
+#include "../core/Guard.hpp"
+#include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "ScenarioSources.h"
 
 extern "C"
 {
     #include "scenario.h"
-    #include "util/util.h"
 }
 
 namespace ScenarioSources

@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/sprite.h"
 #include "station.h"
 

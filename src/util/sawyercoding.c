@@ -16,7 +16,7 @@
 
 #include "../platform/platform.h"
 #include "sawyercoding.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "util.h"
 
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);

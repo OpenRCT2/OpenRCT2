@@ -17,10 +17,10 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "addresses.h"
+#include "rct2/addresses.h"
 #include "common.h"
 #include "platform/platform.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 
 enum GAME_COMMAND {
 	GAME_COMMAND_SET_RIDE_APPEARANCE,
@@ -170,7 +170,7 @@ void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);
-int game_load_sv6(SDL_RWops* rw);
+bool game_load_sv6(SDL_RWops* rw);
 int game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();
@@ -186,5 +186,6 @@ void game_autosave();
 void game_convert_strings_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data *s6);
 void game_fix_save_vars();
+bool game_load_save_or_scenario(const utf8 * path);
 
 #endif
