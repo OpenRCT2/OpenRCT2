@@ -20,6 +20,7 @@
 #include <SDL.h>
 #include "../core/Guard.hpp"
 #include "../localisation/localisation.h"
+#include "../localisation/language.h"
 #include "../platform/platform.h"
 #include "util.h"
 #include "zlib.h"
