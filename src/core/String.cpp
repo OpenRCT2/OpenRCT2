@@ -236,7 +236,7 @@ namespace String
         if (i < bufferSize - 1)
         {
             va_start(args, format);
-            vsnprintf(buffer, bufferSize - i - 1, format, args);
+            vsnprintf(dst, bufferSize - i - 1, format, args);
             va_end(args);
 
             // Terminate buffer in case formatted string overflowed
