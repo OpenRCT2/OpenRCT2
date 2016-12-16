@@ -16,6 +16,10 @@
 
 #include "FunctionCall.hpp"
 
+extern "C" {
+#include "../../src/sprites.h"
+}
+
 enum SpriteGroup {
     SPRITEGROUP_NONE,
 
@@ -61,6 +65,13 @@ bool FunctionCall::AssertsEquals(function_call expected, function_call actual) {
         if (expected.supports.special != actual.supports.special) return false;
         if (expected.supports.height != actual.supports.height) return false;
         if (expected.supports.colour_flags != actual.supports.colour_flags) return false;
+
+        if (expected.supports.special == 14 || expected.supports.special == 15 ||
+            expected.supports.special == 18 || expected.supports.special == 19 ||
+            expected.supports.special == 22 || expected.supports.special == 23)
+        {
+            if (expected.supports.prepend_to != actual.supports.prepend_to) return false;
+        }
 
         return true;
     }
