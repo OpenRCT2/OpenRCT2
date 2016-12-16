@@ -24,7 +24,7 @@
 #include "../rct2.h"
 
 static rct_widget window_title_options_widgets[] = {
-	{ WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, STR_OPTIONS, STR_OPTIONS_TIP },
+	{ WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 11, {STR_OPTIONS}, STR_OPTIONS_TIP },
 	{ WIDGETS_END },
 };
 

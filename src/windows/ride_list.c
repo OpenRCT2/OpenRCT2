@@ -52,20 +52,20 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_ride_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,		339,	0,		239,	0xFFFFFFFF,					STR_NONE },									// panel / background
-	{ WWT_CAPTION,			0,	1,		338,	1,		14,		0xFFFFFFFF,					STR_WINDOW_TITLE_TIP },						// title bar
-	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
-	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0xFFFFFFFF,					STR_NONE },									// tab page background
-	{ WWT_FLATBTN,			1,	315,	338,	60,		83,		SPR_TOGGLE_OPEN_CLOSE,		STR_OPEN_OR_CLOSE_ALL_RIDES },				// open / close all toggle
-	{ WWT_DROPDOWN,			1,	150,	273,	46,		57,		0xFFFFFFFF,					STR_NONE },									// current information type
-	{ WWT_DROPDOWN_BUTTON,	1,	262,	272,	47,		56,		STR_DROPDOWN_GLYPH,			STR_RIDE_LIST_INFORMATION_TYPE_TIP },		// information type dropdown button
-	{ WWT_DROPDOWN_BUTTON,	1,	280,	333,	46,		57,		STR_SORT,					STR_RIDE_LIST_SORT_TIP },					// sort button
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_RIDES_TIP },						// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_SHOPS_AND_STALLS_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_KIOSKS_AND_FACILITIES_TIP },		// tab 3
-	{ WWT_SCROLL,			1,	3,		336,	60,		236,	SCROLL_VERTICAL,							STR_NONE },									// list
-	{ WWT_IMGBTN,			1,	320,	333,	62,		75,		SPR_G2_RCT1_CLOSE_BUTTON_0,	STR_NONE },
-	{ WWT_IMGBTN,			1,	320,	333,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,	STR_NONE },
+	{ WWT_FRAME,			0,	0,		339,	0,		239,	{0xFFFFFFFF},					STR_NONE },									// panel / background
+	{ WWT_CAPTION,			0,	1,		338,	1,		14,		{0xFFFFFFFF},					STR_WINDOW_TITLE_TIP },						// title bar
+	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		{STR_CLOSE_X},				STR_CLOSE_WINDOW_TIP },						// close x button
+	{ WWT_RESIZE,			1,	0,		339,	43,		239,	{0xFFFFFFFF},					STR_NONE },									// tab page background
+	{ WWT_FLATBTN,			1,	315,	338,	60,		83,		{SPR_TOGGLE_OPEN_CLOSE},		STR_OPEN_OR_CLOSE_ALL_RIDES },				// open / close all toggle
+	{ WWT_DROPDOWN,			1,	150,	273,	46,		57,		{0xFFFFFFFF},					STR_NONE },									// current information type
+	{ WWT_DROPDOWN_BUTTON,	1,	262,	272,	47,		56,		{STR_DROPDOWN_GLYPH},			STR_RIDE_LIST_INFORMATION_TYPE_TIP },		// information type dropdown button
+	{ WWT_DROPDOWN_BUTTON,	1,	280,	333,	46,		57,		{STR_SORT},					STR_RIDE_LIST_SORT_TIP },					// sort button
+	{ WWT_TAB,				1,	3,		33,		17,		43,		{0x20000000 | SPR_TAB},		STR_LIST_RIDES_TIP },						// tab 1
+	{ WWT_TAB,				1,	34,		64,		17,		43,		{0x20000000 | SPR_TAB},		STR_LIST_SHOPS_AND_STALLS_TIP },			// tab 2
+	{ WWT_TAB,				1,	65,		95,		17,		43,		{0x20000000 | SPR_TAB},		STR_LIST_KIOSKS_AND_FACILITIES_TIP },		// tab 3
+	{ WWT_SCROLL,			1,	3,		336,	60,		236,	{SCROLL_VERTICAL},							STR_NONE },									// list
+	{ WWT_IMGBTN,			1,	320,	333,	62,		75,		{SPR_G2_RCT1_CLOSE_BUTTON_0},	STR_NONE },
+	{ WWT_IMGBTN,			1,	320,	333,	76,		89,		{SPR_G2_RCT1_OPEN_BUTTON_0},	STR_NONE },
 	{ WIDGETS_END },
 };
 

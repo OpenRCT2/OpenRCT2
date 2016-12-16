@@ -41,19 +41,19 @@ enum WINDOW_LAND_WIDGET_IDX {
 };
 
 static rct_widget window_land_widgets[] = {
-	{ WWT_FRAME,	0,	0,	97,	0,	159,		0xFFFFFFFF,								STR_NONE },						// panel / background
-	{ WWT_CAPTION,	0,	1,	96,	1,	14,			STR_LAND,								STR_WINDOW_TITLE_TIP },			// title bar
-	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,			STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },			// close x button
+	{ WWT_FRAME,	0,	0,	97,	0,	159,		{0xFFFFFFFF},								STR_NONE },						// panel / background
+	{ WWT_CAPTION,	0,	1,	96,	1,	14,			{STR_LAND},								STR_WINDOW_TITLE_TIP },			// title bar
+	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,			{STR_CLOSE_X},							STR_CLOSE_WINDOW_TIP },			// close x button
 
-	{ WWT_FLATBTN,  1,	19,	42,	19,	42,			SPR_RIDE_CONSTRUCTION_SLOPE_UP,			STR_ENABLE_MOUNTAIN_TOOL_TIP },	// mountain mode
-	{ WWT_FLATBTN,  1,	55,	78,	19,	42,			SPR_PAINTBRUSH,							STR_DISABLE_ELEVATION },		// paint mode
+	{ WWT_FLATBTN,  1,	19,	42,	19,	42,			{SPR_RIDE_CONSTRUCTION_SLOPE_UP},			STR_ENABLE_MOUNTAIN_TOOL_TIP },	// mountain mode
+	{ WWT_FLATBTN,  1,	55,	78,	19,	42,			{SPR_PAINTBRUSH},							STR_DISABLE_ELEVATION },		// paint mode
 
-	{ WWT_IMGBTN,	0,	27,	70,	48,	79,			SPR_LAND_TOOL_SIZE_0,					STR_NONE },						// preview box
-	{ WWT_TRNBTN,	1,	28,	43,	49,	64,			0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },	// decrement size
-	{ WWT_TRNBTN,	1,	54,	69,	63,	78,			0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },	// increment size
+	{ WWT_IMGBTN,	0,	27,	70,	48,	79,			{SPR_LAND_TOOL_SIZE_0},					STR_NONE },						// preview box
+	{ WWT_TRNBTN,	1,	28,	43,	49,	64,			{0x20000000 | SPR_LAND_TOOL_DECREASE},	STR_ADJUST_SMALLER_LAND_TIP },	// decrement size
+	{ WWT_TRNBTN,	1,	54,	69,	63,	78,			{0x20000000 | SPR_LAND_TOOL_INCREASE},	STR_ADJUST_LARGER_LAND_TIP },	// increment size
 
-	{ WWT_FLATBTN,	1,	2,	48,	106,	141,	0xFFFFFFFF,								STR_CHANGE_BASE_LAND_TIP },		// floor texture
-	{ WWT_FLATBTN,	1,	49,	95,	106,	141,	0xFFFFFFFF,								STR_CHANGE_VERTICAL_LAND_TIP },	// wall texture
+	{ WWT_FLATBTN,	1,	2,	48,	106,	141,	{0xFFFFFFFF},								STR_CHANGE_BASE_LAND_TIP },		// floor texture
+	{ WWT_FLATBTN,	1,	49,	95,	106,	141,	{0xFFFFFFFF},								STR_CHANGE_VERTICAL_LAND_TIP },	// wall texture
 	{ WIDGETS_END },
 };
 

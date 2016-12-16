@@ -9609,7 +9609,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			 * In the future these could be used to visualise the
 			 * pathfinding on the map. */
 			uint8 endJunctions = 0;
-			rct_xyz8 endJunctionList[16] = { 0 };
+			rct_xyz8 endJunctionList[16] = { {0} };
 			uint8 endDirectionList[16] = { 0 };
 
 			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);

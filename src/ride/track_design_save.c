@@ -1246,7 +1246,7 @@ static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
 bool track_design_save_to_file(const utf8 *path)
 {
 	rct_track_td6 *td6 = _trackDesign;
-	const rct_td6_maze_element EndMarkerForMaze = { 0 };
+	const rct_td6_maze_element EndMarkerForMaze = { {0} };
 	const uint8 EndMarker = 0xFF;
 
 	window_close_construction_windows();

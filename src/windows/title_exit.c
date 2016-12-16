@@ -25,7 +25,7 @@
 #include "../rct2.h"
 
 static rct_widget window_title_exit_widgets[] = {
-	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
+	{ WWT_IMGBTN, 2, 0, 39, 0, 63, {SPR_MENU_EXIT}, STR_EXIT },
 	{ WIDGETS_END },
 };
 

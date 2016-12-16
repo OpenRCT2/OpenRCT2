@@ -55,20 +55,20 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
 #define WIDTH_MOD 22
 
 rct_widget window_game_bottom_toolbar_widgets[] = {
-	{ WWT_IMGBTN,	0,	0x0000,	0x0077+WIDTH_MOD,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Left outset panel
-	{ WWT_IMGBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Left inset panel
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	1,		12,		0xFFFFFFFF,	STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },	// Money window
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	11,		22,		0xFFFFFFFF,	STR_NONE },	// Guests window
-	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	21,		31,		0xFFFFFFFF,	STR_PARK_RATING_TIP },	// Park rating window
+	{ WWT_IMGBTN,	0,	0x0000,	0x0077+WIDTH_MOD,	0,		33,		{0xFFFFFFFF},	STR_NONE },	// Left outset panel
+	{ WWT_IMGBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	2,		31,		{0xFFFFFFFF},	STR_NONE },	// Left inset panel
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	1,		12,		{0xFFFFFFFF},	STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },	// Money window
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	11,		22,		{0xFFFFFFFF},	STR_NONE },	// Guests window
+	{ WWT_FLATBTN,	0,	0x0002,	0x0075+WIDTH_MOD,	21,		31,		{0xFFFFFFFF},	STR_PARK_RATING_TIP },	// Park rating window
 
-	{ WWT_IMGBTN,	2,	0x0078+WIDTH_MOD,	0x0207-WIDTH_MOD,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Middle outset panel
-	{ WWT_25,		2,	0x007A+WIDTH_MOD,	0x0205-WIDTH_MOD,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Middle inset panel
-	{ WWT_FLATBTN,	2,	0x007D+WIDTH_MOD,	0x0094+WIDTH_MOD,	5,		28,		0xFFFFFFFF,	STR_SHOW_SUBJECT_TIP },	// Associated news item window
-	{ WWT_FLATBTN,	2,	0x01EB-WIDTH_MOD,	0x0202-WIDTH_MOD,	5,		28,		SPR_LOCATE,	STR_LOCATE_SUBJECT_TIP },	// Scroll to news item target
+	{ WWT_IMGBTN,	2,	0x0078+WIDTH_MOD,	0x0207-WIDTH_MOD,	0,		33,		{0xFFFFFFFF},	STR_NONE },	// Middle outset panel
+	{ WWT_25,		2,	0x007A+WIDTH_MOD,	0x0205-WIDTH_MOD,	2,		31,		{0xFFFFFFFF},	STR_NONE },	// Middle inset panel
+	{ WWT_FLATBTN,	2,	0x007D+WIDTH_MOD,	0x0094+WIDTH_MOD,	5,		28,		{0xFFFFFFFF},	STR_SHOW_SUBJECT_TIP },	// Associated news item window
+	{ WWT_FLATBTN,	2,	0x01EB-WIDTH_MOD,	0x0202-WIDTH_MOD,	5,		28,		{SPR_LOCATE},	STR_LOCATE_SUBJECT_TIP },	// Scroll to news item target
 
-	{ WWT_IMGBTN,	0,	0x0208-WIDTH_MOD,	0x027F,	0,		33,		0xFFFFFFFF,	STR_NONE },	// Right outset panel
-	{ WWT_IMGBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		31,		0xFFFFFFFF,	STR_NONE },	// Right inset panel
-	{ WWT_FLATBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		13,		0xFFFFFFFF,	STR_NONE },	// Date
+	{ WWT_IMGBTN,	0,	0x0208-WIDTH_MOD,	0x027F,	0,		33,		{0xFFFFFFFF},	STR_NONE },	// Right outset panel
+	{ WWT_IMGBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		31,		{0xFFFFFFFF},	STR_NONE },	// Right inset panel
+	{ WWT_FLATBTN,	0,	0x020A-WIDTH_MOD,	0x027D,	2,		13,		{0xFFFFFFFF},	STR_NONE },	// Date
 	{ WIDGETS_END },
 };
 

@@ -64,23 +64,23 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_options_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		299,	0xFFFFFFFF,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_NOTIFICATION_SETTINGS,		STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_RESIZE,			1,	0,			399,	43,		299,	0xFFFFFFFF,						STR_NONE },				// tab content panel
-	{ WWT_TAB,				1,	3,			33,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 1
-	{ WWT_TAB,				1,	34,			64,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 2
+	{ WWT_FRAME,			0,	0,			399,	0,		299,	{0xFFFFFFFF},						STR_NONE },				// panel / background
+	{ WWT_CAPTION,			0,	1,			398,	1,		14,		{STR_NOTIFICATION_SETTINGS},		STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		{STR_CLOSE_X},					STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_RESIZE,			1,	0,			399,	43,		299,	{0xFFFFFFFF},						STR_NONE },				// tab content panel
+	{ WWT_TAB,				1,	3,			33,		17,		43, 	{0x20000000 | SPR_TAB},			STR_NONE },				// tab 1
+	{ WWT_TAB,				1,	34,			64,		17,		43, 	{0x20000000 | SPR_TAB},			STR_NONE },				// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43, 	{0x20000000 | SPR_TAB},			STR_NONE },				// tab 2
 
-	{ WWT_CHECKBOX,			2,	3,			349,	46,		59,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
+	{ WWT_CHECKBOX,			2,	3,			349,	46,		59,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
+	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		{STR_NONE},						STR_NONE },
 
 	{ WIDGETS_END },
 };

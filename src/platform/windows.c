@@ -303,7 +303,7 @@ typedef struct {
 	WIN32_FIND_DATAW data;
 	utf8 *outFilename;
 } enumerate_file_info;
-static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
+static enumerate_file_info _enumerateFileInfoList[8] = {{ 0 }};
 
 int platform_enumerate_files_begin(const utf8 *pattern)
 {

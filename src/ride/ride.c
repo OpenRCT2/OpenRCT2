@@ -3629,7 +3629,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 	return position;
 }
 
-#define INIT_MUSIC_INFO(path_id, offset, length, unknown) (rct_ride_music_info[]){length, offset, path_id, unknown}
+#define INIT_MUSIC_INFO(path_id, offset, length, unknown) (rct_ride_music_info[]){{length, offset, path_id, unknown}}
 
 //0x009AF1C8
 rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
@@ -4524,7 +4524,7 @@ static rct_vehicle *vehicle_create_car(
 	int *remainingDistance,
 	rct_map_element *mapElement
 ) {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 
 	rct_ride *ride = get_ride(rideIndex);
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
@@ -7021,7 +7021,7 @@ void ride_all_has_any_track_elements(bool *rideIndexArray)
  *  rct2: 0x006847BA
  */
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images){
-	uint8 bitmap[200][200] = { 0 };
+	uint8 bitmap[200][200] = {{ 0 }};
 
 	rct_drawpixelinfo dpi = {
 		.bits = (uint8*)bitmap,

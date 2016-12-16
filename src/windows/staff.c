@@ -66,53 +66,53 @@ enum WINDOW_STAFF_WIDGET_IDX {
 };
 
 rct_widget window_staff_overview_widgets[] = {
-	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,		1, 34,		64,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,		1, 65,		95,			17,			43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,		1, 96,		126,		17,			43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
-	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,0xFFFFFFFF,				STR_NONE},				// Viewport
-	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	0xFFFFFFFF,				STR_NONE },				// Label at bottom of viewport
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		SPR_PICKUP_BTN,			STR_PICKUP_TIP},		// Pickup Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		SPR_PATROL_BTN,			STR_SET_PATROL_TIP},	// Patrol Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	SPR_RENAME,				STR_NAME_STAFF_TIP},	// Rename Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	SPR_LOCATE,				STR_LOCATE_SUBJECT_TIP},// Locate Button
-	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	SPR_DEMOLISH,			STR_FIRE_STAFF_TIP},	// Fire Button
+	{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,		{STR_STRINGID},			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,		{STR_CLOSE_X},			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,		43,			WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,			17,			43,		{0x20000000 | SPR_TAB},	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,			17,			43,		{0x20000000 | SPR_TAB},	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,			17,			43,		{0x20000000 | SPR_TAB},	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,		1, 96,		126,		17,			43,		{0x20000000 | SPR_TAB},	STR_NONE},				// Tab 4
+	{ WWT_VIEWPORT,	1, 3,		WW - 26,	47,			WH - 14,{0xFFFFFFFF},				STR_NONE},				// Viewport
+	{ WWT_12,		1, 3,		WW - 26,	WH - 13,	WH - 3,	{0xFFFFFFFF},				STR_NONE },				// Label at bottom of viewport
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		45,			68,		{SPR_PICKUP_BTN},			STR_PICKUP_TIP},		// Pickup Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		69,			92,		{SPR_PATROL_BTN},			STR_SET_PATROL_TIP},	// Patrol Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		93,			116,	{SPR_RENAME},				STR_NAME_STAFF_TIP},	// Rename Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		117,		140,	{SPR_LOCATE},				STR_LOCATE_SUBJECT_TIP},// Locate Button
+	{ WWT_FLATBTN,	1, WW - 25,	WW - 2,		141,		164,	{SPR_DEMOLISH},			STR_FIRE_STAFF_TIP},	// Fire Button
 	{ WIDGETS_END },
 };
 
 //0x9AF910
 rct_widget window_staff_options_widgets[] = {
-	{ WWT_FRAME,			0, 0,		WW - 1,	0,		WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
-	{ WWT_TAB,				1, 3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,				1, 34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,				1, 65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,				1, 96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		0xFFFFFFFF,				STR_NONE},				// Checkbox 1
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		0xFFFFFFFF,				STR_NONE },				// Checkbox 2
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		0xFFFFFFFF,				STR_NONE},				// Checkbox 3
-	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	0xFFFFFFFF,				STR_NONE},				// Checkbox 4
-	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		0xFFFFFFFF,				STR_NONE},				// Costume Dropdown
-	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		STR_DROPDOWN_GLYPH,	STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
+	{ WWT_FRAME,			0, 0,		WW - 1,	0,		WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,			0, 1,		WW - 2,	1,		14,		{STR_STRINGID},			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX,			0, WW - 13, WW - 3,	2,		13,		{STR_CLOSE_X},			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,			1, 0,		WW - 1,	43,		WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Resize
+	{ WWT_TAB,				1, 3,		33,		17,		43,		{0x20000000 | SPR_TAB},	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,				1, 34,		64,		17,		43,		{0x20000000 | SPR_TAB},	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,				1, 65,		95,		17,		43,		{0x20000000 | SPR_TAB},	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,				1, 96,		126,	17,		43,		{0x20000000 | SPR_TAB},	STR_NONE},				// Tab 4
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	50,		61,		{0xFFFFFFFF},				STR_NONE},				// Checkbox 1
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	67,		78,		{0xFFFFFFFF},				STR_NONE },				// Checkbox 2
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	84,		95,		{0xFFFFFFFF},				STR_NONE},				// Checkbox 3
+	{ WWT_CHECKBOX,			1, 5,		WW - 6,	101,	112,	{0xFFFFFFFF},				STR_NONE},				// Checkbox 4
+	{ WWT_DROPDOWN,			1, 5,		WW - 6,	50,		61,		{0xFFFFFFFF},				STR_NONE},				// Costume Dropdown
+	{ WWT_DROPDOWN_BUTTON,	1, WW - 17,	WW - 7,	51,		60,		{STR_DROPDOWN_GLYPH},	STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
 	{ WIDGETS_END },
 };
 
 //0x9AF9F4
 rct_widget window_staff_stats_widgets[] = {
-	{ WWT_FRAME,	0, 0,		WW - 1,	0,	WH - 1,	0xFFFFFFFF,				STR_NONE },				// Panel / Background
-	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		STR_STRINGID,			STR_WINDOW_TITLE_TIP }, // Title
-	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP }, // Close x button
-	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	0xFFFFFFFF,				STR_NONE },				// Resize
-	{ WWT_TAB,		1, 3,		33,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_OVERVIEW_TIP },// Tab 1
-	{ WWT_TAB,		1, 34,		64,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_OPTIONS_TIP},	// Tab 2
-	{ WWT_TAB,		1, 65,		95,		17,	43,		0x20000000 | SPR_TAB,	STR_STAFF_STATS_TIP},	// Tab 3
-	{ WWT_TAB,		1, 96,		126,	17,	43,		0x20000000 | SPR_TAB,	STR_NONE},				// Tab 4
+	{ WWT_FRAME,	0, 0,		WW - 1,	0,	WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Panel / Background
+	{ WWT_CAPTION,	0, 1,		WW - 2,	1,	14,		{STR_STRINGID},			STR_WINDOW_TITLE_TIP }, // Title
+	{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,	2,	13,		{STR_CLOSE_X},			STR_CLOSE_WINDOW_TIP }, // Close x button
+	{ WWT_RESIZE,	1, 0,		WW - 1,	43,	WH - 1,	{0xFFFFFFFF},				STR_NONE },				// Resize
+	{ WWT_TAB,		1, 3,		33,		17,	43,		{0x20000000 | SPR_TAB},	STR_STAFF_OVERVIEW_TIP },// Tab 1
+	{ WWT_TAB,		1, 34,		64,		17,	43,		{0x20000000 | SPR_TAB},	STR_STAFF_OPTIONS_TIP},	// Tab 2
+	{ WWT_TAB,		1, 65,		95,		17,	43,		{0x20000000 | SPR_TAB},	STR_STAFF_STATS_TIP},	// Tab 3
+	{ WWT_TAB,		1, 96,		126,	17,	43,		{0x20000000 | SPR_TAB},	STR_NONE},				// Tab 4
 	{ WIDGETS_END },
 };
 

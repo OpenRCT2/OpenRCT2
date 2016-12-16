@@ -46,14 +46,14 @@ enum WINDOW_SIGN_WIDGET_IDX {
 
 // 0x9AEE00
 rct_widget window_sign_widgets[] = {
-		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		0xFFFFFFFF,		STR_NONE },							// panel / background
-		{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,			STR_SIGN,		STR_WINDOW_TITLE_TIP },				// title bar
-		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },				// close x button
-		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	0xFFFFFFFE,		STR_NONE },							// Viewport
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			SPR_RENAME,		STR_CHANGE_SIGN_TEXT_TIP },			// change sign button
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			SPR_DEMOLISH,	STR_DEMOLISH_SIGN_TIP },			// demolish button
-		{ WWT_COLOURBTN, 1, 5,		16,			WH - 16,	WH - 5,		0xFFFFFFFF,		STR_SELECT_MAIN_SIGN_COLOUR_TIP },	// Main colour
-		{ WWT_COLOURBTN, 1, 17,		28,			WH - 16,	WH - 5,		0xFFFFFFFF,		STR_SELECT_TEXT_COLOUR_TIP },		// Text colour
+		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		{0xFFFFFFFF},		STR_NONE },							// panel / background
+		{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,			{STR_SIGN},		STR_WINDOW_TITLE_TIP },				// title bar
+		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,			{STR_CLOSE_X},	STR_CLOSE_WINDOW_TIP },				// close x button
+		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	{0xFFFFFFFE},		STR_NONE },							// Viewport
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			{SPR_RENAME},		STR_CHANGE_SIGN_TEXT_TIP },			// change sign button
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			{SPR_DEMOLISH},	STR_DEMOLISH_SIGN_TIP },			// demolish button
+		{ WWT_COLOURBTN, 1, 5,		16,			WH - 16,	WH - 5,		{0xFFFFFFFF},		STR_SELECT_MAIN_SIGN_COLOUR_TIP },	// Main colour
+		{ WWT_COLOURBTN, 1, 17,		28,			WH - 16,	WH - 5,		{0xFFFFFFFF},		STR_SELECT_TEXT_COLOUR_TIP },		// Text colour
 		{ WIDGETS_END },
 };
 

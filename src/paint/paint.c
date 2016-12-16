@@ -47,7 +47,7 @@ sint16 gUnk9DE568;
 sint16 gUnk9DE56C;
 paint_struct gUnkF1A4CC;
 uint8 gPaintInteractionType;
-support_height gSupportSegments[9] = { 0 };
+support_height gSupportSegments[9] = { {0} };
 support_height gSupport;
 
 #else

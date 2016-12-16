@@ -67,19 +67,19 @@ enum {
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-	{ WWT_FRAME,	0,	0,		733,	0,		333,	0xFFFFFFFF,					STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	    STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	0xFFFFFFFF,					STR_NONE },				// tab content panel
-	{ WWT_TAB,		1,	3,		93,		17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 1
-	{ WWT_TAB,		1,	94,		184,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 2
-	{ WWT_TAB,		1,	185,	275,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 3
-	{ WWT_TAB,		1,	276,	366,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 4
-	{ WWT_TAB,		1,	367,	457,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 5
-	{ WWT_TAB,		1,	458,	593,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 6
-	{ WWT_TAB,		1,	594,	684,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 7
-	{ WWT_TAB,		1,	685,	775,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 8
-	{ WWT_SCROLL,	1,	3,		555,	54,		329,	SCROLL_VERTICAL,		    STR_NONE },				// level list
+	{ WWT_FRAME,	0,	0,		733,	0,		333,	{0xFFFFFFFF},					STR_NONE },				// panel / background
+	{ WWT_CAPTION,	0,	1,		732,	1,		14,		{STR_SELECT_SCENARIO},	    STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		{STR_CLOSE_X},				STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	{0xFFFFFFFF},					STR_NONE },				// tab content panel
+	{ WWT_TAB,		1,	3,		93,		17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 1
+	{ WWT_TAB,		1,	94,		184,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 2
+	{ WWT_TAB,		1,	185,	275,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 3
+	{ WWT_TAB,		1,	276,	366,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 4
+	{ WWT_TAB,		1,	367,	457,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 5
+	{ WWT_TAB,		1,	458,	593,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 6
+	{ WWT_TAB,		1,	594,	684,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 7
+	{ WWT_TAB,		1,	685,	775,	17,		50,		{0x20000000 | SPR_TAB_LARGE},	STR_NONE },				// tab 8
+	{ WWT_SCROLL,	1,	3,		555,	54,		329,	{SCROLL_VERTICAL},		    STR_NONE },				// level list
 	{ WIDGETS_END },
 };
 

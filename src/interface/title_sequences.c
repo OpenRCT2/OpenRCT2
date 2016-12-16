@@ -27,7 +27,7 @@ uint16 gCurrentPreviewTitleSequence;
 
 title_command TitleScriptMakeCommand(int command, int parameter1, int parameter2)
 {
-	title_command titleCommand = { (uint8)command, (uint8)parameter1, (uint8)parameter2 };
+	title_command titleCommand = { (uint8)command, {(uint8)parameter1}, (uint8)parameter2 };
 	return titleCommand;
 }
 

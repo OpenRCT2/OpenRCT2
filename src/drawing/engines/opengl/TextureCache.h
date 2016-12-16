@@ -164,10 +164,10 @@ private:
 
         return vec4i
         {
-            _imageSize * col,
-            _imageSize * row,
-            _imageSize * col + actualWidth,
-            _imageSize * row + actualHeight,
+            {_imageSize * col},
+            {_imageSize * row},
+            {_imageSize * col + actualWidth},
+            {_imageSize * row + actualHeight},
         };
     }
 
@@ -175,10 +175,10 @@ private:
     {
         return vec4f
         {
-            coords.x / (float) _atlasWidth,
-            coords.y / (float) _atlasHeight,
-            coords.z / (float) _atlasWidth,
-            coords.w / (float) _atlasHeight
+            {coords.x / (float) _atlasWidth},
+            {coords.y / (float) _atlasHeight},
+            {coords.z / (float) _atlasWidth},
+            {coords.w / (float) _atlasHeight}
         };
     }
 };

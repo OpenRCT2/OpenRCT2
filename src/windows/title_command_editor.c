@@ -76,26 +76,26 @@ static int _window_title_command_editor_index;
 #define BUF_SIZE 50
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
-static title_command command = { 6, 0, 0 };
+static title_command command = { 6, {0}, 0 };
 
 static rct_widget window_title_command_editor_widgets[] = {
-	{ WWT_FRAME,				1,	0,			WW-1,		0,		WH-1,	0xFFFFFFFF,							STR_NONE },							// panel / background
-	{ WWT_CAPTION,				1,	1,			WW-2,		1,		14,		STR_TITLE_COMMAND_EDITOR_TITLE,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,				1,	WW-13,		WW-3,		2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_DROPDOWN,				1,	WS,			WW-WS-1,	BY,		BY+11,	STR_NONE,					STR_NONE }, // Command dropdown
-	{ WWT_DROPDOWN_BUTTON,		1,	WW-WS-12,	WW-WS-2,	BY+1,	BY+10,	STR_DROPDOWN_GLYPH,			STR_NONE },
-	{ WWT_TEXT_BOX,				1,	WS,			WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // full textbox
+	{ WWT_FRAME,				1,	0,			WW-1,		0,		WH-1,	{0xFFFFFFFF},							STR_NONE },							// panel / background
+	{ WWT_CAPTION,				1,	1,			WW-2,		1,		14,		{STR_TITLE_COMMAND_EDITOR_TITLE},						STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CLOSEBOX,				1,	WW-13,		WW-3,		2,		13,		{STR_CLOSE_X},						STR_CLOSE_WINDOW_TIP },				// close x button
+	{ WWT_DROPDOWN,				1,	WS,			WW-WS-1,	BY,		BY+11,	{STR_NONE},					STR_NONE }, // Command dropdown
+	{ WWT_DROPDOWN_BUTTON,		1,	WW-WS-12,	WW-WS-2,	BY+1,	BY+10,	{STR_DROPDOWN_GLYPH},			STR_NONE },
+	{ WWT_TEXT_BOX,				1,	WS,			WW-WS-1,	BY2,	BY2+11,	{STR_NONE},					STR_NONE }, // full textbox
 
-	{ WWT_TEXT_BOX,				1,	WS,			WS+WHA-4,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // x textbox
-	{ WWT_TEXT_BOX,				1,	WS+WHA+3,	WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // y textbox
+	{ WWT_TEXT_BOX,				1,	WS,			WS+WHA-4,	BY2,	BY2+11,	{STR_NONE},					STR_NONE }, // x textbox
+	{ WWT_TEXT_BOX,				1,	WS+WHA+3,	WW-WS-1,	BY2,	BY2+11,	{STR_NONE},					STR_NONE }, // y textbox
 
-	{ WWT_DROPDOWN,				1,	16,			WW-17,		BY2,	BY2+11,	STR_NONE,					STR_NONE }, // Save dropdown
-	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	STR_DROPDOWN_GLYPH,			STR_NONE },
+	{ WWT_DROPDOWN,				1,	16,			WW-17,		BY2,	BY2+11,	{STR_NONE},					STR_NONE }, // Save dropdown
+	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	{STR_DROPDOWN_GLYPH},			STR_NONE },
 
-	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION,						STR_NONE }, // Get location/zoom/etc
+	{ WWT_DROPDOWN_BUTTON,		1,	WS+WHA+3,	WW-WS-1,	BY2-14,	BY2-3,	{STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION},						STR_NONE }, // Get location/zoom/etc
 
-	{ WWT_DROPDOWN_BUTTON,		1,	10,			80,			WH-21,	WH-10,	STR_OK,						STR_NONE }, // OKAY
-	{ WWT_DROPDOWN_BUTTON,		1,	WW-80,		WW-10,		WH-21,	WH-10,	STR_CANCEL,					STR_NONE }, // Cancel
+	{ WWT_DROPDOWN_BUTTON,		1,	10,			80,			WH-21,	WH-10,	{STR_OK},						STR_NONE }, // OKAY
+	{ WWT_DROPDOWN_BUTTON,		1,	WW-80,		WW-10,		WH-21,	WH-10,	{STR_CANCEL},					STR_NONE }, // Cancel
 
 	{ WIDGETS_END },
 };

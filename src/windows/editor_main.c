@@ -54,7 +54,7 @@ static rct_window_event_list window_editor_main_events = {
 };
 
 static rct_widget window_editor_main_widgets[] = {
-	{ WWT_VIEWPORT, 0, 0, 0xFFFF, 0, 0xFFFF, 0xFFFFFFFE, 0xFFFF },
+	{ WWT_VIEWPORT, 0, 0, 0xFFFF, 0, 0xFFFF, {0xFFFFFFFE}, 0xFFFF },
 	{ WIDGETS_END },
 };
 

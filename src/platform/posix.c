@@ -298,7 +298,7 @@ typedef struct enumerate_file_info {
 	int handle;
 	void* data;
 } enumerate_file_info;
-static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
+static enumerate_file_info _enumerateFileInfoList[8] = { {0} };
 
 char *g_file_pattern;
 

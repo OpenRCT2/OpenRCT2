@@ -70,94 +70,94 @@ enum WINDOW_GUEST_WIDGET_IDX {
 };
 
 rct_widget window_guest_overview_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
-	{WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},            // Title
-	{WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},            // Close x button
-	{WWT_RESIZE,   1, 0,   191, 43,  156, 0xFFFFFFFF, STR_NONE},                            // Resize
-	{WWT_TAB,      1, 3,   33,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},            // Tab 1
-	{WWT_TAB,      1, 73,  64,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},            // Tab 2
-	{WWT_TAB,      1, 65,  95,  17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},    // Tab 3
-	{WWT_TAB,      1, 96,  126, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
-	{WWT_TAB,      1, 127, 157, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},        // Tab 5
-	{WWT_TAB,      1, 158, 188, 17,  43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},            // Tab 6
-	{WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                            // Label Thought marquee
-	{WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                            // Viewport
-	{WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                            // Label Action
-	{WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
-	{WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
-	{WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button
-	{WWT_FLATBTN,  1, 167, 190, 117, 140, SPR_TRACK_PEEP,       STR_TOGGLE_GUEST_TRACKING_TIP},        // Track Button
+	{WWT_FRAME,    0, 0,   191, 0,   156, {0xFFFFFFFF}, STR_NONE},                            // Panel / Background
+	{WWT_CAPTION,  0, 1,   190, 1,   14,  {STR_STRINGID},         STR_WINDOW_TITLE_TIP},            // Title
+	{WWT_CLOSEBOX, 0, 179, 189, 2,   13,  {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},            // Close x button
+	{WWT_RESIZE,   1, 0,   191, 43,  156, {0xFFFFFFFF}, STR_NONE},                            // Resize
+	{WWT_TAB,      1, 3,   33,  17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},            // Tab 1
+	{WWT_TAB,      1, 73,  64,  17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},            // Tab 2
+	{WWT_TAB,      1, 65,  95,  17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},    // Tab 3
+	{WWT_TAB,      1, 96,  126, 17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
+	{WWT_TAB,      1, 127, 157, 17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},        // Tab 5
+	{WWT_TAB,      1, 158, 188, 17,  43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},            // Tab 6
+	{WWT_12,       1, 3,   166, 45,  56,  {0xFFFFFFFF}, STR_NONE},                            // Label Thought marquee
+	{WWT_VIEWPORT, 1, 3,   166, 57,  143, {0xFFFFFFFF}, STR_NONE},                            // Viewport
+	{WWT_12,       1, 3,   166, 144, 154, {0xFFFFFFFF}, STR_NONE},                            // Label Action
+	{WWT_FLATBTN,  1, 167, 190, 45,  68,  {SPR_PICKUP_BTN},       STR_PICKUP_TIP},                    // Pickup Button
+	{WWT_FLATBTN,  1, 167, 190, 69,  92,  {SPR_RENAME},           STR_NAME_GUEST_TIP},                // Rename Button
+	{WWT_FLATBTN,  1, 167, 190, 93,  116, {SPR_LOCATE},           STR_LOCATE_SUBJECT_TIP},            // Locate Button
+	{WWT_FLATBTN,  1, 167, 190, 117, 140, {SPR_TRACK_PEEP},       STR_TOGGLE_GUEST_TRACKING_TIP},        // Track Button
 	{ WIDGETS_END },
 };
 
 rct_widget window_guest_stats_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, {STR_NONE}, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, {STR_STRINGID},         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, {STR_NONE}, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_rides_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-	{WWT_CAPTION,  0, 1,   190, 1,  14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX, 0, 179, 189, 2,  13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-	{WWT_TAB,      1, 3,   33,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,      1, 34,  64,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,      1, 65,  95,  17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,      1, 96,  126, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,      1, 127, 157, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,      1, 158, 188, 17, 43,  0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-	{WWT_SCROLL,   1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE},
+	{WWT_FRAME,    0, 0,   191, 0,  156, {STR_NONE}, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14,  {STR_STRINGID},         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13,  {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, {STR_NONE}, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43,  {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_SCROLL,   1, 3,   188, 57, 143, {SCROLL_VERTICAL},  STR_NONE},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_finance_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, {STR_NONE}, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, {STR_STRINGID},         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, {STR_NONE}, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_thoughts_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, {STR_NONE}, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, {STR_STRINGID},         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, {STR_NONE}, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
 rct_widget window_guest_inventory_widgets[] = {
-	{WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-	{WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-	{WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-	{WWT_TAB,      1, 3,   33,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-	{WWT_TAB,      1, 34,  64,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-	{WWT_TAB,      1, 65,  95,  17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-	{WWT_TAB,      1, 96,  126, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-	{WWT_TAB,      1, 127, 157, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-	{WWT_TAB,      1, 158, 188, 17, 43, 0x20000000 | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
+	{WWT_FRAME,    0, 0,   191, 0,  156, {STR_NONE}, STR_NONE},
+	{WWT_CAPTION,  0, 1,   190, 1,  14, {STR_STRINGID},         STR_WINDOW_TITLE_TIP},
+	{WWT_CLOSEBOX, 0, 179, 189, 2,  13, {STR_CLOSE_X},          STR_CLOSE_WINDOW_TIP},
+	{WWT_RESIZE,   1, 0,   191, 43, 156, {STR_NONE}, STR_NONE},
+	{WWT_TAB,      1, 3,   33,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VIEW_TIP},
+	{WWT_TAB,      1, 34,  64,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_NEEDS_TIP},
+	{WWT_TAB,      1, 65,  95,  17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_VISITED_RIDES_TIP},
+	{WWT_TAB,      1, 96,  126, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_FINANCE_TIP},
+	{WWT_TAB,      1, 127, 157, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_THOUGHTS_TIP},
+	{WWT_TAB,      1, 158, 188, 17, 43, {0x20000000 | SPR_TAB}, STR_SHOW_GUEST_ITEMS_TIP},
 	{WIDGETS_END},
 };
 
@@ -711,7 +711,7 @@ void window_guest_viewport_init(rct_window* w){
 	union{
 		sprite_focus sprite;
 		coordinate_focus coordinate;
-	} focus = { 0 }; //The focus will be either a sprite or a coordinate.
+	} focus = { {0} }; //The focus will be either a sprite or a coordinate.
 
 	focus.sprite.sprite_id = w->number;
 

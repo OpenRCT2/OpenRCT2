@@ -2272,7 +2272,7 @@ assert_struct_size(rct_synchronised_vehicle, 4);
 #define SYNCHRONISED_VEHICLE_COUNT 8
 
 // 8 synchronised vehicle info
-rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
+rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = {{ 0 }};
 
 static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
 
@@ -7268,7 +7268,7 @@ static void sub_6DBF3E(rct_vehicle *vehicle)
  *  rct2: 0x006DB08C
  */
 static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 
 	_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
 	_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
@@ -7443,7 +7443,7 @@ loc_6DB41D:
  *  rct2: 0x006DAEB9
  */
 static bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
 	regs.cx = vehicle->track_type >> 2;
@@ -7803,7 +7803,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
  *  rct2: 0x006DBA33
  */
 static bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 
 loc_6DBA33:;
 	uint16 trackType = vehicle->track_type >> 2;
@@ -7927,7 +7927,7 @@ extern const uint8 mini_golf_peep_animation_lengths[];
  *
  */
 static int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation) {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -8566,7 +8566,7 @@ loc_6DD069:
  */
 int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 {
-	registers regs = { 0 };
+	registers regs = {{ 0 }};
 
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
