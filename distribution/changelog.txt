@@ -55,6 +55,7 @@ This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer r
 - Fix: [#3858] Tooltip shown when hovering over title logo.
 - Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
 - Fix: Lay-down Roller Coasters from RCT1 saves are imported with an incorrect vehicle type (not reported).
+- Fix: High lateral G-forces penalty applied too early (not reported).
 - Technical: Multiplayer groups are now stored in JSON format.
 
 0.0.4-beta (2016-04-15)
