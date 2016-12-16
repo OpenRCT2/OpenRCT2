@@ -1,5 +1,7 @@
 version: 0.0.5.{build}
-os: Previous Visual Studio 2015
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017 RC
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
