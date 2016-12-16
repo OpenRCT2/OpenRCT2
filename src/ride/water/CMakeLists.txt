@@ -1,0 +1,22 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/boat_ride.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/dingy_slide.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/log_flume.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/river_rafts.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/river_rapids.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/splash_boats.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/submarine_ride.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/water_coaster.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

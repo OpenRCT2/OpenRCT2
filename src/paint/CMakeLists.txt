@@ -1,0 +1,20 @@
+add_subdirectory(map_element)
+add_subdirectory(sprite)
+
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/paint.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/paint_helpers.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/supports.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

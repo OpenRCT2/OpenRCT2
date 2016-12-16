@@ -1,0 +1,31 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/BannerObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/EntranceObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/FootpathItemObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/FootpathObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ImageTable.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/LargeSceneryObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Object.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ObjectFactory.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ObjectManager.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/ObjectRepository.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/RideObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/SceneryGroupObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/SmallSceneryObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/StexObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/StringTable.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/WallObject.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/WaterObject.cpp"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

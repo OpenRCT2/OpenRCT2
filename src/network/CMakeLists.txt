@@ -1,0 +1,26 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/http.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkAction.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkConnection.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/network.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkGroup.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkKey.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkPacket.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkPlayer.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkServerAdvertiser.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/NetworkUser.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/TcpSocket.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/twitch.cpp"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

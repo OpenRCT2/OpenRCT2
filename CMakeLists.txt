@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 #
 # Execute these commands in this directory:
@@ -241,14 +241,11 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
 # include lib
-include_directories("lib/")
+include_directories("lib/" "src/")
+set(OPENRCT2_INCLUDES "")
+set(OPENRCT2_SOURCES "")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
-if (APPLE)
-	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
-	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
-endif (APPLE)
-
+add_subdirectory(src)
 
 if (APPLE AND NOT USE_MMAP)
 	set(PIE_FLAG "-fno-pie")
@@ -330,7 +327,15 @@ if (UNIX)
 	set(DLLIB dl)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR} ${SSL_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS}
+		${LIBCURL_INCLUDE_DIRS}
+		${JANSSON_INCLUDE_DIRS}
+		${SPEEX_INCLUDE_DIRS}
+		${PNG_INCLUDE_DIRS}
+		${ZLIB_INCLUDE_DIRS}
+		${BREAKPAD_INCLUDE_DIR}
+		${SSL_INCLUDE_DIRS}
+		)
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS})
 
@@ -343,12 +348,12 @@ endif (NOT DISABLE_RCT2)
 if (WIN32)
 	# build as library for now, replace with add_executable
 	if (USE_MMAP OR DISABLE_RCT2)
-		add_executable(${PROJECT} ${ORCT2_SOURCES} ${SPEEX_SOURCES})
+		add_executable(${PROJECT} ${OPENRCT2_SOURCES} ${SPEEX_SOURCES})
 	else ()
-		add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
+		add_library(${PROJECT} SHARED ${OPENRCT2_SOURCES} ${SPEEX_SOURCES})
 	endif ()
 else (WIN32)
-	add_executable(${PROJECT} ${ORCT2_SOURCES} ${ORCT2_MM_SOURCES} ${RCT2_SECTIONS})
+	add_executable(${PROJECT} ${OPENRCT2_SOURCES} ${ORCT2_MM_SOURCES} ${RCT2_SECTIONS})
 	if (NOT DISABLE_RCT2)
 		add_dependencies(${PROJECT} segfiles)
 		if (NOT APPLE AND NOT USE_MMAP)
@@ -376,7 +381,6 @@ endif (UNIX AND NOT APPLE)
 
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
-set_target_properties(${PROJECT} PROPERTIES COMPILE_FLAGS "-Wundef")
 
 # Link shared libs first
 TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})

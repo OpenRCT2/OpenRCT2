@@ -1,0 +1,29 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/chat.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/colour.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/console.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/CursorData.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Cursors.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Fonts.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/graph.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/keyboard_shortcut.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/screenshot.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Theme.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/title_sequences.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/viewport.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/viewport_interaction.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/widget.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/window.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )

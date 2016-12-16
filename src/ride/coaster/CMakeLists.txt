@@ -1,0 +1,46 @@
+file(GLOB LOCAL_OPENRCT2_HEADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+
+set(OPENRCT2_SOURCES
+    ${OPENRCT2_SOURCES}
+    ${LOCAL_OPENRCT2_HEADERS}
+    "${CMAKE_CURRENT_SOURCE_DIR}/air_powered_vertical_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/bobsleigh_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/compact_inverted_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/corkscrew_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/flying_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/giga_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/heartline_twister_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/inverted_hairpin_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/inverted_impulse_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/inverted_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/junior_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lay_down_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/lim_launched_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/looping_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mine_ride.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mine_train_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mini_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mini_suspended_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/multi_dimension_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/reverse_freefall_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/reverser_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/side_friction_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/spiral_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/stand_up_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/steeplechase.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/suspended_swinging_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/twister_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/vertical_drop_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/virginia_reel.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/wild_mouse.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/wooden_roller_coaster.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/wooden_wild_mouse.c"
+    PARENT_SCOPE
+    )
+set(OPENRCT2_INCLUDES
+    ${OPENRCT2_INCLUDES}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+    )
