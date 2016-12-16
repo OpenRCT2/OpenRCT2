@@ -21,7 +21,7 @@ if [[ ! -d build ]]; then
 fi
 
 if [[ $TARGET != "ubuntu_i686" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
-	sha256sum=f124c954bbd0b58c93e5fba46902806bd3637d3a1c5fb8e4b67441052f182df2
+	sha256sum=c71bb6b488376853252a00f3ed216e09d645f71357ea76b9b55c56e40b4f44ca
 	libVFile="./libversion"
 	libdir="./lib"
 	currentversion=0
