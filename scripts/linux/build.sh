@@ -89,7 +89,7 @@ pushd build
 		chmod a+rwx $(pwd)
 		chmod g+s $(pwd)
 		# CMAKE and MAKE opts from environment
-		docker run -v $PARENT:$PARENT -w $PARENT/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS && make test ARGS=\"-V\""
+		docker run -v $PARENT:$PARENT -w $PARENT/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS install && make test ARGS=\"-V\""
 	elif [[ $TARGET == "windows" ]]
 	then
 		PARENT=$(readlink -f ../)
