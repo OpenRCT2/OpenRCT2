@@ -578,6 +578,16 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
+	// Did the volume level get changed? Recalculate level in this case.
+	if (setting_sound_vol != gConfigSound.sound_volume) {
+		setting_sound_vol = gConfigSound.sound_volume;
+		adjust_sound_vol = powf(setting_sound_vol / 100.f, 10.f / 6.f);
+	}
+	if (setting_music_vol != gConfigSound.ride_music_volume) {
+		setting_music_vol = gConfigSound.ride_music_volume;
+		adjust_music_vol = powf(setting_music_vol / 100.f, 10.f / 6.f);
+	}
+
 	// Do not mix channel if channel is a sound and sound is disabled
 	if (channel.group == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
 		return;
@@ -675,7 +685,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				volumeadjust *= (gConfigSound.master_volume / 100.0f);
 				switch (channel.group) {
 				case MIXER_GROUP_SOUND:
-					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
+					volumeadjust *= adjust_sound_vol;
 
 					// Cap sound volume on title screen so music is more audible
 					if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
@@ -683,7 +693,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					}
 					break;
 				case MIXER_GROUP_RIDE_MUSIC:
-					volumeadjust *= (gConfigSound.ride_music_volume / 100.0f);
+					volumeadjust *= adjust_music_vol;
 					break;
 				}
 				int startvolume = (int)(channel.oldvolume * volumeadjust);

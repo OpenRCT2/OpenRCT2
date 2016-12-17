@@ -184,6 +184,10 @@ private:
 	std::list<Channel*> channels;
 	Source_Null source_null;
 	float volume = 1.0f;
+	float adjust_sound_vol = 0.0f;
+	float adjust_music_vol = 0.0f;
+	uint8 setting_sound_vol = 0xFF;
+	uint8 setting_music_vol = 0xFF;
 };
 
 extern "C"
