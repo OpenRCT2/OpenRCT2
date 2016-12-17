@@ -254,7 +254,7 @@ static void paint_splash_boats_track_60_deg_up(uint8 rideIndex, uint8 trackSeque
 	uint32 imageId = SplashBoats60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
 	wooden_a_supports_paint_setup((direction & 1), 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -311,7 +311,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uin
 	uint32 imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
 	wooden_a_supports_paint_setup((direction & 1), 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -330,7 +330,7 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uin
 	uint32 imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | gTrackColours[SCHEME_TRACK];
 	uint32 frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | gTrackColours[SCHEME_TRACK];
 
-	sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+	gWoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 	sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
 	wooden_a_supports_paint_setup((direction & 1), 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
