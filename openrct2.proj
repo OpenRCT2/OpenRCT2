@@ -62,11 +62,12 @@
 
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
+    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
     <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
-    <LibsPath>$(RootDir)lib\</LibsPath>
-    <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
+    <LibsSha1>f088adcd12450c2672f78679ea5d1fbffc28fd22</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
-    <GtestUrl>https://github.com/google/googletest/archive/release-$(GtestVersion).zip</GtestUrl>
+    <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
+    <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</TitleSequencesUrl>
     <TitleSequencesSha1>79ffb2585d12abcbfce205d7696e3472a504b005</TitleSequencesSha1>
   </PropertyGroup>
@@ -109,45 +110,25 @@
     </UploadArtifacts>
   </ItemGroup>
 
-  <Target Name="CheckLibs">
-    <!-- Get libversion file and check version -->
-    <Message Text="Checking if libraries need updating..." Importance="high" />
-    <PropertyGroup>
-      <CurrentLibsVersion>0</CurrentLibsVersion>
-      <CurrentLibsVersion Condition="Exists($(LibsVersionPath))">$([System.IO.File]::ReadAllText($(LibsVersionPath)).Trim())</CurrentLibsVersion>
-      <UpdateLibs Condition="$(TargetLibsVersion) &gt; $(CurrentLibsVersion)">true</UpdateLibs>
-    </PropertyGroup>
-
-    <Message Condition="'$(UpdateLibs)'!='true'" Text="Libraries up to date" Importance="high" />
-    <Message Condition="'$(UpdateLibs)'=='true'" Text="Libraries out of date, updating..." Importance="high" />
-    <CallTarget Condition="'$(UpdateLibs)'=='true'" Targets="DownloadLibs" />
-  </Target>
-
   <Target Name="DownloadLibs">
-    <PropertyGroup>
-      <LibsZipPath>$(LibsPath)openrct2-libs-vs2015.zip</LibsZipPath>
-      <GtestZipPath>$(LibsPath)gtest.zip</GtestZipPath>
-    </PropertyGroup>
-
-    <!-- Clean libs directory -->
-    <RemoveDir Directories="$(LibsPath)" />
-    <MakeDir Directories="$(LibsPath)" />
-
-    <Message Text="Downloading libraries..." Importance="normal" />
-    <!-- prebuilt libs -->
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(LibsUrl)' -OutFile '$(LibsZipPath)'&quot;" StandardOutputImportance="low" />
-    <Unzip Input="$(LibsZipPath)" OutputDirectory="$(LibsPath)" />
-    <Delete Files="$(LibsZipPath)" ContinueOnError="true" />
+    <!-- libs -->
+    <DownloadDependency Name="Libs"
+                        Url="$(LibsUrl)"
+                        Sha1="$(LibsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
 
     <!-- googletest -->
-    <Message Text="Downloading googletest..." Importance="normal" />
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(GtestUrl)' -OutFile '$(GtestZipPath)'&quot;" StandardOutputImportance="low" />
-    <Unzip Input="$(GtestZipPath)" OutputDirectory="$(LibsPath)" />
-    <Delete Files="$(GtestZipPath)" ContinueOnError="true" />
-    <Exec Command="cmd /c move &quot;$(LibsPath)googletest-release-$(GtestVersion)&quot; &quot;$(LibsPath)googletest&quot;" />
-
-    <!-- Update libversion file -->
-    <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
+    <DownloadDependency Name="googletest"
+                        Url="$(GtestUrl)"
+                        Sha1="$(GtestSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
+    <PropertyGroup>
+      <GtestSrc>$(RootDir)lib\googletest-release-$(GtestVersion)</GtestSrc>
+      <GtestDst>$(RootDir)lib\googletest</GtestDst>
+    </PropertyGroup>
+    <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
   </Target>
 
   <Target Name="Clean">
@@ -167,7 +148,7 @@
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="CheckLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
@@ -224,11 +205,11 @@
   </Target>
 
   <!-- Target to download the title sequences -->
-  <Target Name="DownloadTitleSequences">
+  <Target Name="DownloadTitleSequences" AfterTargets="Build">
     <DownloadDependency Name="TitleSequences"
                         Url="$(TitleSequencesUrl)"
                         Sha1="$(TitleSequencesSha1)"
-                        CheckFile="$(RootDir).dependencies"
+                        CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\title" />
   </Target>
 

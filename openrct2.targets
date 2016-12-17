@@ -132,7 +132,7 @@
     <ParameterGroup>
       <Name            Required="true"  ParameterType="System.String" />
       <Url             Required="true"  ParameterType="System.String" />
-      <Sha1            Required="false" ParameterType="System.String" />
+      <Sha1            Required="true"  ParameterType="System.String" />
       <CheckFile       Required="false" ParameterType="System.String" />
       <OutputDirectory Required="true"  ParameterType="System.String" />
     </ParameterGroup>
