@@ -184,6 +184,8 @@ private:
 	std::list<Channel*> channels;
 	Source_Null source_null;
 	float volume;
+	float adjust_sound_vol, adjust_music_vol;
+	uint8 setting_sound_vol, setting_music_vol;
 };
 
 extern "C"
