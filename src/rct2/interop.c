@@ -63,6 +63,9 @@ bool rct2_interop_setup_segment()
 	// in some configurations err and len may be unused
 	UNUSED(err);
 	UNUSED(len);
+#if !defined(NO_RCT2)
+	UNUSED(segments);
+#endif
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__MACOSX__)) && !defined(NO_RCT2)
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
