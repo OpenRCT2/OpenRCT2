@@ -137,7 +137,7 @@
       <OutputDirectory Required="true"  ParameterType="System.String" />
     </ParameterGroup>
     <Task>
-      <Reference Include="System.IO.Compression" />
+      <Reference Include="System.IO.Compression, Version=4.0.0.0" />
       <Reference Include="System.IO.Compression.FileSystem" />
       <Using Namespace="System"/>
       <Using Namespace="System.IO"/>
