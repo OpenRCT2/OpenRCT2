@@ -66,6 +66,7 @@ char gScenarioExpansionPacks[3256];
 int gFirstTimeSave = 1;
 uint16 gSavedAge;
 uint32 gLastAutoSaveTick = 0;
+uint32 gLastPauseTick = 0;
 
 #if defined(NO_RCT2)
 uint32 gScenarioTicks;
@@ -391,31 +392,46 @@ static void scenario_entrance_fee_too_high_check()
 
 void scenario_autosave_check()
 {
+	uint32 timeSinceSave = 0;
+	
 	// Milliseconds since last save
-	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
-
-	bool shouldSave = false;
-	switch (gConfigGeneral.autosave_frequency) {
-	case AUTOSAVE_EVERY_MINUTE:
-		shouldSave = timeSinceSave >= 1 * 60 * 1000;
-		break;
-	case AUTOSAVE_EVERY_5MINUTES:
-		shouldSave = timeSinceSave >= 5 * 60 * 1000;
-		break;
-	case AUTOSAVE_EVERY_15MINUTES:
-		shouldSave = timeSinceSave >= 15 * 60 * 1000;
-		break;
-	case AUTOSAVE_EVERY_30MINUTES:
-		shouldSave = timeSinceSave >= 30 * 60 * 1000;
-		break;
-	case AUTOSAVE_EVERY_HOUR:
-		shouldSave = timeSinceSave >= 60 * 60 * 1000;
-		break;
-	}
-
-	if (shouldSave) {
-		gLastAutoSaveTick = SDL_GetTicks();
-		game_autosave();
+	if(game_is_paused()) {
+		if(gLastPauseTick == 0) {
+			gLastPauseTick = SDL_GetTicks();
+		}
+	} else {
+		if(gLastPauseTick == 0) {
+			timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
+		} else {
+			uint32 timeSincePause = SDL_GetTicks() - gLastPauseTick;
+			gLastAutoSaveTick += timeSincePause;
+			timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
+			gLastPauseTick = 0;
+		}
+		
+		bool shouldSave = false;
+		switch (gConfigGeneral.autosave_frequency) {
+		case AUTOSAVE_EVERY_MINUTE:
+			shouldSave = timeSinceSave >= 1 * 60 * 1000;
+			break;
+		case AUTOSAVE_EVERY_5MINUTES:
+			shouldSave = timeSinceSave >= 5 * 60 * 1000;
+			break;
+		case AUTOSAVE_EVERY_15MINUTES:
+			shouldSave = timeSinceSave >= 15 * 60 * 1000;
+			break;
+		case AUTOSAVE_EVERY_30MINUTES:
+			shouldSave = timeSinceSave >= 30 * 60 * 1000;
+			break;
+		case AUTOSAVE_EVERY_HOUR:
+			shouldSave = timeSinceSave >= 60 * 60 * 1000;
+			break;
+		}
+		
+		if (shouldSave) {
+			gLastAutoSaveTick = SDL_GetTicks();
+			game_autosave();
+		}
 	}
 }
 
