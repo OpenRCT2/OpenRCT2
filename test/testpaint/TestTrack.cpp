@@ -30,6 +30,7 @@
 #include "VerticalTunnelCall.hpp"
 
 extern "C" {
+#include "../../src/paint/supports.h"
 #include "../../src/ride/ride.h"
 #include "../../src/ride/track.h"
 #include "../../src/ride/track_data.h"
@@ -347,6 +348,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 
                 PaintIntercept::ClearCalls();
                 TestPaint::ResetSupportHeights();
+                gWoodenSupportsPrependTo = nullptr;
 
                 CallOriginal(rideType, trackType, direction, trackSequence, height, &mapElement);
 
@@ -357,6 +359,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
                 PaintIntercept::ClearCalls();
                 testpaint_clear_ignore();
                 TestPaint::ResetSupportHeights();
+                gWoodenSupportsPrependTo = nullptr;
 
                 CallNew(rideType, trackType, direction, trackSequence, height, &mapElement);
 

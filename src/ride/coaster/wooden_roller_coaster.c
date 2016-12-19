@@ -405,7 +405,7 @@ static uint32 wooden_rc_get_rails_colour()
 	return gTrackColours[SCHEME_TRACK];
 }
 
-static void wooden_rc_track_paint(
+static paint_struct * wooden_rc_track_paint(
 	uint32 imageIdTrack,
 	uint32 imageIdRails,
 	uint8 direction,
@@ -418,7 +418,7 @@ static void wooden_rc_track_paint(
 	uint32 railsImageId = imageIdRails | wooden_rc_get_rails_colour();
 
 	sub_98197C_rotated(direction, imageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
-	sub_98199C_rotated(direction, railsImageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+	return sub_98199C_rotated(direction, railsImageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
 }
 
 static void wooden_rc_track_paint_bb(const sprite_bb_2 *bb, sint16 height)
@@ -530,7 +530,7 @@ static void wooden_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint
 	if (direction == 0 || direction == 3) {
 		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
 	} else {
-		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4, height - 16);
+		gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 93, height, 28, 4, height - 16);
 	}
 	wooden_a_supports_paint_setup(direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -592,7 +592,7 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackS
 	if (direction == 0 || direction == 3) {
 		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
 	} else {
-		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
+		gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 2, 24, 43, height, 28, 4, height + 2);
 		wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
 	}
 	wooden_a_supports_paint_setup(direction & 1, 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -620,7 +620,7 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackS
 	if (direction == 0 || direction == 3) {
 		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3, height);
 	} else {
-		wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
+		gWoodenSupportsPrependTo = wooden_rc_track_paint(imageIds[direction][0], imageIds[direction][1], direction, 0, 0, 24, 1, 61, height, 4, 28, height - 16);
 		wooden_rc_track_paint(imageIds[direction][2], imageIds[direction][3], direction, 0, 0, 32, 2, 43, height, 0, 4, height);
 	}
 	wooden_a_supports_paint_setup(direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);

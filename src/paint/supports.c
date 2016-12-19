@@ -222,7 +222,7 @@ typedef struct unk_supports_desc_bound_box {
 		uint8 x, y, z;
 	} offset;
 	struct {
-		uint8 y, x, z;
+		uint8 x, y, z;
 	} length;
 } unk_supports_desc_bound_box;
 
@@ -436,7 +436,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		if ((z & 16) == 0 && height >= 2 && z + 16 != gUnk141E9DC) {
 			// Full support
 			int imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
-			uint8 ah = special == 2 ? 23 : 28;
+			uint8 ah = height == 2 ? 23 : 28;
 			sub_98196C(imageId, 0, 0, 32, 32, ah, z, rotation);
 			hasSupports = true;
 			z += 32;
@@ -444,7 +444,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		} else {
 			// Half support
 			int imageId = WoodenSupportImageIds[supportType].half | imageColourFlags;
-			uint8 ah = special == 1 ? 7 : 12;
+			uint8 ah = height == 1 ? 7 : 12;
 			sub_98196C(imageId, 0, 0, 32, 32, ah, z, rotation);
 			hasSupports = true;
 			z += 16;
@@ -651,7 +651,7 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
 				sub_98197C(
 					imageId | imageColourFlags,
 					0, 0,
-					boundBox.length.y, boundBox.length.x, boundBox.length.z,
+					boundBox.length.x, boundBox.length.y, boundBox.length.z,
 					baseHeight,
 					boundBox.offset.x, boundBox.offset.y, boundBox.offset.z + baseHeight,
 					get_current_rotation()

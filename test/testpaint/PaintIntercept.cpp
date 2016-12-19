@@ -16,17 +16,20 @@
 
 
 #include "PaintIntercept.hpp"
+#include "FunctionCall.hpp"
 
 extern "C" {
 #include "../../src/common.h"
 #include "../../src/rct2/hook.h"
 #include "../../src/interface/viewport.h"
 #include "../../src/paint/supports.h"
+#include "../../src/sprites.h"
 }
 
 static bool _woodenSupports = false;
 static uint8 _callCount = 0;
 static function_call _calls[256] = {0};
+static paint_struct _paintStructs = {0};
 
 namespace PaintIntercept {
     static uint8 InterceptWoodenASupports(registers *regs);
@@ -72,14 +75,26 @@ namespace PaintIntercept {
     }
 
     bool PaintWoodenSupports(uint8 function, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
-        function_call call = {0};
-        call.function = function;
-        call.supports.type = supportType;
-        call.supports.special = special;
-        call.supports.height = height;
-        call.supports.colour_flags = imageColourFlags;
+        function_call * call = &_calls[_callCount];
+        call->function = function;
+        call->supports.type = supportType;
+        call->supports.special = special;
+        call->supports.height = height;
+        call->supports.colour_flags = imageColourFlags;
 
-        _calls[_callCount] = call;
+        call->supports.prepend_to = SPR_NONE;
+        if (gWoodenSupportsPrependTo != nullptr)
+        {
+            for (int i = 0; i < _callCount; i++)
+            {
+                if (&_calls[i].paint.output_struct == gWoodenSupportsPrependTo)
+                {
+                    call->supports.prepend_to = _calls[i].paint.image_id;
+                    break;
+                }
+            }
+        }
+
         _callCount++;
 
         return _woodenSupports;
@@ -88,15 +103,14 @@ namespace PaintIntercept {
     bool PaintMetalSupports(uint8 function, int supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
         CheckSegmentSupportHeight();
 
-        function_call call = {0};
-        call.function = function;
-        call.supports.type = supportType;
-        call.supports.segment = segment;
-        call.supports.special = special;
-        call.supports.height = height;
-        call.supports.colour_flags = imageColourFlags;
+        function_call * call = &_calls[_callCount];
+        call->function = function;
+        call->supports.type = supportType;
+        call->supports.segment = segment;
+        call->supports.special = special;
+        call->supports.height = height;
+        call->supports.colour_flags = imageColourFlags;
 
-        _calls[_callCount] = call;
         _callCount++;
 
         return false;
@@ -109,18 +123,17 @@ namespace PaintIntercept {
         sint16 zOffset,
         uint32 rotation
     ) {
-        function_call call = _calls[_callCount];
-        call.function = PAINT_98196C;
-        call.paint.image_id = imageID;
-        call.paint.offset = {xOffset, yOffset};
-        call.paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
-        call.paint.z_offset = zOffset;
-        call.paint.rotation = rotation;
+        function_call * call = &_calls[_callCount];
+        call->function = PAINT_98196C;
+        call->paint.image_id = imageID;
+        call->paint.offset = {xOffset, yOffset};
+        call->paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
+        call->paint.z_offset = zOffset;
+        call->paint.rotation = rotation;
 
-        _calls[_callCount] = call;
         _callCount++;
 
-        return nullptr;
+        return &call->paint.output_struct;
     }
 
     static paint_struct *PaintFull(
@@ -132,19 +145,18 @@ namespace PaintIntercept {
         sint16 boundBoxOffsetX, sint16 boundBoxOffsetY, sint16 boundBoxOffsetZ,
         uint32 rotation
     ) {
-        function_call call = _calls[_callCount];
-        call.function = function;
-        call.paint.image_id = imageID;
-        call.paint.offset = {xOffset, yOffset};
-        call.paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
-        call.paint.bound_box_offset = {boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ};
-        call.paint.z_offset = zOffset;
-        call.paint.rotation = rotation;
+        function_call * call = &_calls[_callCount];
+        call->function = function;
+        call->paint.image_id = imageID;
+        call->paint.offset = {xOffset, yOffset};
+        call->paint.bound_box_length = {boundBoxLengthX, boundBoxLengthY, boundBoxLengthZ};
+        call->paint.bound_box_offset = {boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ};
+        call->paint.z_offset = zOffset;
+        call->paint.rotation = rotation;
 
-        _calls[_callCount] = call;
         _callCount++;
 
-        return nullptr;
+        return &call->paint.output_struct;
     }
 
     void ClearCalls() {
@@ -241,7 +253,7 @@ namespace PaintIntercept {
         }
 
         regs->ebp = (int) out;
-		regs->al = 1;
+        regs->al = 1;
         return 0;
     }
 
