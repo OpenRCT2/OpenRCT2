@@ -376,6 +376,8 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+#define AUTOSAVE_PAUSE 0
+
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #if defined(NO_RCT2)
@@ -403,7 +405,7 @@ extern char gScenarioSavePath[MAX_PATH];
 extern char gScenarioExpansionPacks[3256];
 extern int gFirstTimeSave;
 extern uint16 gSavedAge;
-extern uint32 gLastAutoSaveTick;
+extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 
