@@ -68,7 +68,7 @@ private:
     IPlatformEnvironment * _env;
 
     std::vector<TrackRepositoryItem> _items;
-    QueryDirectoryResult _directoryQueryResult;
+    QueryDirectoryResult _directoryQueryResult = { 0 };
 
 public:
     TrackDesignRepository(IPlatformEnvironment * env)
