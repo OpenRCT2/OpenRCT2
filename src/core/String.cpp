@@ -40,7 +40,9 @@ namespace String
         va_start(args, format);
         const utf8 * buffer = Format_VA(format, args);
         va_end(args);
-        return ToStd(buffer);
+        std::string returnValue = ToStd(buffer);
+        Memory::Free(buffer);
+        return returnValue;
     }
 
     bool IsNullOrEmpty(const utf8 * str)

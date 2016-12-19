@@ -240,7 +240,9 @@ namespace TitleSequenceManager
         if (String::Equals(Path::GetExtension(scanPath), ".txt", true))
         {
             // If we are given a .txt file, set the path to the containing directory
-            path = std::string(Path::GetDirectory(scanPath));
+            utf8 * utf8Path = Path::GetDirectory(scanPath);
+            path = std::string(utf8Path);
+            Memory::Free(utf8Path);
             isZip = false;
         }
         else
