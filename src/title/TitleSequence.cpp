@@ -593,6 +593,7 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
         case TITLE_SCRIPT_WAIT:
             String::Format(buffer, sizeof(buffer), "WAIT %u", command->Seconds);
             sb.Append(buffer);
+            break;
         case TITLE_SCRIPT_RESTART:
             sb.Append("RESTART");
             break;
