@@ -400,7 +400,7 @@ extern "C"
 
         // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -435,7 +435,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -470,7 +470,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -510,7 +510,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -568,7 +568,7 @@ extern "C"
         gCheatsDisablePlantAging = SDL_ReadU8(rw) != 0;
         gCheatsAllowArbitraryRideTypeChanges = SDL_ReadU8(rw) != 0;
 
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return 1;
     }
 }

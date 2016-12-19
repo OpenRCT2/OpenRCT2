@@ -423,6 +423,10 @@ void game_logic_update()
 
 		window_error_open(title_text, body_text);
 	}
+
+	// start autosave timer after update
+	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+		gLastAutoSaveUpdate = SDL_GetTicks();
 }
 
 /**
@@ -577,6 +581,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
 				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
+
+			// start autosave timer after game command
+			if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+				gLastAutoSaveUpdate = SDL_GetTicks();
 
 			return cost;
 		}
