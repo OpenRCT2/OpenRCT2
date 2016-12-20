@@ -377,10 +377,12 @@ bool rct2_open_file(const char *path)
 	} else if (_stricmp(extension, "sv4") == 0) {
 		if (rct1_load_saved_game(path)) {
 			game_load_init();
+			return true;
 		}
 	} else if (_stricmp(extension, "sc4") == 0) {
 		if (rct1_load_scenario(path)) {
 			scenario_begin();
+			return true;
 		}
 	}
 

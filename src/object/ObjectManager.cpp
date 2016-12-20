@@ -45,6 +45,11 @@ public:
         Guard::ArgumentNotNull(objectRepository);
 
         _objectRepository = objectRepository;
+        _loadedObjects = Memory::AllocateArray<Object *>(OBJECT_ENTRY_COUNT);
+        for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        {
+            _loadedObjects[i] = nullptr;
+        }
 
         UpdateLegacyLoadedObjectList();
         UpdateSceneryGroupIndexes();
