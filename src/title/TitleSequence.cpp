@@ -122,6 +122,7 @@ extern "C"
                 Memory::Free(seq->Saves[i]);
             }
             Memory::Free(seq->Saves);
+            Memory::Free(seq);
         }
     }
 
