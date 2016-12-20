@@ -84,75 +84,6 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	*ebx = 0;
 }
 
-static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
-{
-	// Find a location to place new staff member
-
-	newPeep->state = PEEP_STATE_FALLING;
-
-	sint16 x, y, z;
-	uint32 count = 0;
-	uint16 sprite_index;
-	rct_peep *guest = NULL;
-
-	// Count number of walking guests
-	FOR_ALL_GUESTS(sprite_index, guest) {
-		if (guest->state == PEEP_STATE_WALKING)
-			++count;
-	}
-
-	if (count > 0) {
-		// Place staff at a random guest
-		uint32 rand = scenario_rand_max(count);
-		FOR_ALL_GUESTS(sprite_index, guest) {
-			if (guest->state == PEEP_STATE_WALKING) {
-				if (rand == 0)
-					break;
-				--rand;
-			}
-		}
-
-		x = guest->x;
-		y = guest->y;
-		z = guest->z;
-	} else {
-		// No walking guests; pick random park entrance
-		count = 0;
-		uint8 i;
-		for (i = 0; i < 4; ++i) {
-			if (gParkEntranceX[i] != SPRITE_LOCATION_NULL)
-				++count;
-		}
-
-		if (count > 0) {
-			uint32 rand = scenario_rand_max(count);
-			for (i = 0; i < 4; ++i) {
-				if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
-					if (rand == 0)
-						break;
-					--rand;
-				}
-			}
-
-			uint8 dir = gParkEntranceDirection[i];
-			x = gParkEntranceX[i];
-			y = gParkEntranceY[i];
-			z = gParkEntranceZ[i];
-			x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
-			y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
-		} else {
-			// No more options; user must pick a location
-			newPeep->state = PEEP_STATE_PICKED;
-			x = newPeep->x;
-			y = newPeep->y;
-			z = newPeep->z;
-		}
-	}
-
-	sprite_move(x, y, z + 16, (rct_sprite *)newPeep);
-	invalidate_sprite_2((rct_sprite *)newPeep);
-}
-
 static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int *newPeep_sprite_index)
 {
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
@@ -276,7 +207,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
 		// gConfigGeneral.auto_staff_placement is client specific so we need to force this
 		if (network_get_mode() == NETWORK_MODE_NONE && gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
-			staff_autoposition_new_staff_member(newPeep);
+			peep_autoposition(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
 
@@ -366,7 +297,7 @@ static const bool peep_slow_walking_types[] = {
 	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
 	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
 	true,	// PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
-	true,	// PEEP_SPRITE_TYPE_19
+	true,	// PEEP_SPRITE_TYPE_BALLOON
 };
 
 /**

@@ -70,6 +70,45 @@ namespace RCT1
         return map[colour];
     }
 
+    uint8 GetPeepSpriteType(uint8 rct1SpriteType)
+    {
+        static const uint8 map[] =
+        {
+            PEEP_SPRITE_TYPE_NORMAL,
+            PEEP_SPRITE_TYPE_HANDYMAN,
+            PEEP_SPRITE_TYPE_MECHANIC,
+            PEEP_SPRITE_TYPE_SECURITY,
+            PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
+            PEEP_SPRITE_TYPE_ENTERTAINER_TIGER,
+            PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT,
+            PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN,
+            PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA,
+            PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN,
+            PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT,
+            PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT,
+            PEEP_SPRITE_TYPE_NORMAL, // Not used
+            PEEP_SPRITE_TYPE_NORMAL, // Not used
+            PEEP_SPRITE_TYPE_NORMAL, // Not used
+            PEEP_SPRITE_TYPE_NORMAL, // Not used
+            PEEP_SPRITE_TYPE_BALLOON,
+            PEEP_SPRITE_TYPE_CANDYFLOSS,
+            PEEP_SPRITE_TYPE_UMBRELLA,
+            PEEP_SPRITE_TYPE_PIZZA,
+            PEEP_SPRITE_TYPE_SECURITY_ALT,
+            PEEP_SPRITE_TYPE_POPCORN,
+            PEEP_SPRITE_TYPE_ARMS_CROSSED,
+            PEEP_SPRITE_TYPE_HEAD_DOWN,
+            PEEP_SPRITE_TYPE_NAUSEOUS,
+            PEEP_SPRITE_TYPE_VERY_NAUSEOUS,
+            PEEP_SPRITE_TYPE_REQUIRE_BATHROOM,
+            PEEP_SPRITE_TYPE_HAT,
+            PEEP_SPRITE_TYPE_BURGER,
+            PEEP_SPRITE_TYPE_TENTACLE,
+            PEEP_SPRITE_TYPE_TOFFEE_APPLE
+        };
+        return map[rct1SpriteType];
+    }
+
     uint8 GetTerrain(uint8 terrain)
     {
         static const uint8 map[] =
