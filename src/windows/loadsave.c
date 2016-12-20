@@ -721,9 +721,9 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
 		safe_strcpy(gScenarioSavePath, path, MAX_PATH);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		window_close(w);
 		gfx_invalidate_screen();
-		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
