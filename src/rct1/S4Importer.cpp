@@ -569,10 +569,11 @@ private:
         dst->status = RIDE_STATUS_CLOSED;
 
         // Flags
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        dst->lifecycle_flags = src->lifecycle_flags;
 
         // Station
         dst->overall_view = src->overall_view;
@@ -687,6 +688,24 @@ private:
         dst->unreliability_factor = src->unreliability_factor;
         dst->breakdown_reason = src->breakdown_reason;
 
+        // Measurement data
+        dst->excitement = src->excitement;
+        dst->intensity = src->intensity;
+        dst->nausea = src->nausea;
+
+        dst->max_speed = src->max_speed;
+        dst->average_speed = src->average_speed;
+        for (int i = 0; i < 4; i++) {
+            dst->time[i] = src->time[i];
+            dst->length[i] = src->length[i];
+        }
+        dst->max_positive_vertical_g = src->max_positive_vertical_g;
+        dst->max_negative_vertical_g = src->max_negative_vertical_g;
+        dst->max_lateral_g = src->max_lateral_g;
+        dst->drops = src->num_drops;
+        dst->highest_drop_height = src->highest_drop_height / 2;
+        dst->inversions = src->num_inversions;
+
         // Finance
         dst->upkeep_cost = src->upkeep_cost;
         dst->price = src->price;
@@ -737,15 +756,12 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep *srcPeep = &_s4.sprites[i].peep;
-                if (srcPeep->x != (sint16)0x8000)
+                if (srcPeep->x != (sint16)0x8000 || srcPeep->state == PEEP_STATE_ON_RIDE)
                 {
-                    rct_peep *peep = (rct_peep*)create_sprite(1);
+                    rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                     move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
 
-                    if (srcPeep->state != PEEP_STATE_ON_RIDE)
-                    {
-                        ImportPeep(peep, srcPeep);
-                    }
+                    ImportPeep(peep, srcPeep);
                 }
             }
         }
@@ -754,7 +770,8 @@ private:
     void ImportPeep(rct_peep * dst, rct1_peep * src)
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
-        dst->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
+        // Peep vs. staff (including which kind)
+        dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->action = PEEP_ACTION_NONE_2;
         dst->special_sprite = 0;
         dst->action_sprite_image_offset = 0;
@@ -774,12 +791,27 @@ private:
         dst->name_string_idx = src->name_string_idx;
 
         dst->outside_of_park = src->outside_of_park;
-        dst->state = src->state;
 
-        dst->type = PEEP_TYPE_GUEST;
+        // We cannot yet import peeps that are on a ride properly. Move these to a safe place.
+        switch(src->state) {
+            case PEEP_STATE_ON_RIDE:
+            case PEEP_STATE_QUEUING_FRONT:
+            case PEEP_STATE_LEAVING_RIDE:
+            case PEEP_STATE_ENTERING_RIDE:
+                dst->state = PEEP_STATE_FALLING;
+                peep_autoposition(dst);
+                break;
+            default:
+                dst->state = src->state;
+        }
+
+        dst->type = src->type;
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
         dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
+        dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
+        dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
+        dst->hat_colour = RCT1::GetColour(src->hat_colour);
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
         dst->destination_tolerence = src->destination_tolerence;
@@ -795,6 +827,9 @@ private:
         dst->bathroom = src->bathroom;
         dst->var_41 = src->var_41;
 
+        dst->litter_count = src->litter_count;
+        dst->disgusting_count = src->disgusting_count;
+
         dst->intensity = src->intensity;
         dst->nausea_tolerance = src->nausea_tolerance;
         dst->window_invalidate_flags = 0;
@@ -802,12 +837,41 @@ private:
         dst->current_ride = src->current_ride;
         dst->current_ride_station = src->current_ride_station;
 
-        dst->var_79 = 0xFF;
+        dst->interactionRideIndex = 0xFF;
 
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
         dst->cash_spent = src->cash_spent;
-        dst->time_in_park = -1;
+        dst->time_in_park = src->time_in_park;
+
+        // This doubles as staff type
+        dst->no_of_rides = src->no_of_rides;
+
+        dst->no_of_drinks = src->no_of_drinks;
+        dst->no_of_food = src->no_of_food;
+        dst->no_of_souvenirs = src->no_of_souvenirs;
+
+        dst->paid_to_enter = src->paid_to_enter;
+        dst->paid_on_rides = src->paid_on_rides;
+        dst->paid_on_drink = src->paid_on_drink;
+        dst->paid_on_food = src->paid_on_food;
+        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+
+        dst->voucher_arguments = src->voucher_arguments;
+        dst->voucher_type = src->voucher_type;
+
+        for (int i = 0; i < 32; i++) {
+            dst->rides_been_on[i] = src->rides_been_on[i];
+        }
+        for (int i = 0; i < 16; i++) {
+            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+        }
+
+        dst->photo1_ride_ref = src->photo1_ride_ref;
+
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+            dst->thoughts[i] = src->thoughts[i];
+        }
 
         dst->previous_ride = 0xFF;
 
@@ -815,6 +879,8 @@ private:
 
         dst->var_C4 = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
+        // Doubles as staff orders
+        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
 
         dst->peep_flags = 0;
         dst->pathfind_goal.x = 0xFF;
@@ -829,9 +895,33 @@ private:
 
         peep_update_name_sort(dst);
 
-        if (!dst->outside_of_park)
+        if (!dst->outside_of_park && dst->type == PEEP_TYPE_GUEST)
         {
             gNumGuestsInPark++;
+        }
+    }
+
+    void ImportLitter()
+    {
+        for (int i = 0; i < 5000; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER) {
+                rct_litter *srcLitter = &_s4.sprites[i].litter;
+                if (srcLitter->x != (sint16) 0x8000) {
+                    rct_litter *litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
+                    move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
+
+                    litter->x = srcLitter->x;
+                    litter->y = srcLitter->y;
+                    litter->z = srcLitter->z;
+
+                    sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite *) litter);
+                    invalidate_sprite_2((rct_sprite *) litter);
+
+                    litter->sprite_direction = srcLitter->sprite_direction;
+                    litter->type = srcLitter->type;
+                }
+            }
         }
     }
 

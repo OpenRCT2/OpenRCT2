@@ -86,6 +86,12 @@ public:
         sint32 entryPosition = _position;
         FixViewLocation();
 
+        if (_sequence == nullptr)
+        {
+            SetViewLocation(75 * 32, 75 * 32);
+            return false;
+        }
+
         // Check that position is valid
         if (_position >= (sint32)_sequence->NumCommands)
         {
