@@ -147,7 +147,6 @@ public:
     {
         _position = 0;
         _waitCounter = 0;
-        _lastLoadedSaveIndex = -1;
         Update();
     }
 
@@ -246,6 +245,7 @@ private:
             gGameSpeed = Math::Clamp<uint8>(1, command->Speed, 4);
             break;
         case TITLE_SCRIPT_RESTART:
+            _lastLoadedSaveIndex = -1;
             Reset();
             break;
         case TITLE_SCRIPT_LOAD:
