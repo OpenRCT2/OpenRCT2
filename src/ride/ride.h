@@ -1120,6 +1120,8 @@ money32 ride_remove_track_piece(int x, int y, int z, int direction, int type, ui
 bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
+void ride_remove_peeps(int rideIndex);
+
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
 uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex, int numCarsPerTrain, int position);
 void ride_update_max_vehicles(int rideIndex);

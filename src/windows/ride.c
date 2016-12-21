@@ -183,7 +183,8 @@ enum {
 
 	WIDX_SHOW_GUESTS_THOUGHTS = 14,
 	WIDX_SHOW_GUESTS_ON_RIDE,
-	WIDX_SHOW_GUESTS_QUEUING
+	WIDX_SHOW_GUESTS_QUEUING,
+	WIDX_KICK_GUESTS_OUT_OF_ATTRACTION
 };
 
 #define RCT1_LIGHT_OFFSET 4
@@ -491,6 +492,7 @@ static rct_widget window_ride_customer_widgets[] = {
 	{ WWT_FLATBTN,			1,	289,	312,	54,		77,		SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION,	STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP	},
 	{ WWT_FLATBTN,			1,	289,	312,	78,		101,	SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,				STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP				},
 	{ WWT_FLATBTN,			1,	289,	312,	102,	125,	SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,		STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP	},
+	{ WWT_FLATBTN,			1,	265,	288,	54,		77,		SPR_GUESTS,	STR_KICK_GUESTS_FROM_ATTRACTION },
 	{ WIDGETS_END },
 };
 
@@ -517,7 +519,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 	0x000000000007FFF4,
 	0x000000000007BFF4,
 	0x0000000000E73FF4,
-	0x000000000001FFF4
+	0x000000000003FFF4
 };
 
 const uint64 window_ride_page_hold_down_widgets[] = {
@@ -6252,6 +6254,9 @@ static void window_ride_customer_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_SHOW_GUESTS_QUEUING:
 		window_guest_list_open_with_filter(GLFT_GUESTS_IN_QUEUE, w->number);
 		break;
+	case WIDX_KICK_GUESTS_OUT_OF_ATTRACTION:
+		ride_remove_peeps(w->number);
+		break;
 	}
 }
 
@@ -6313,10 +6318,13 @@ static void window_ride_customer_invalidate(rct_window *w)
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 		window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WWT_EMPTY;
 		window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WWT_EMPTY;
+		window_ride_customer_widgets[WIDX_KICK_GUESTS_OUT_OF_ATTRACTION].type = WWT_EMPTY;
 	} else {
 		window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WWT_FLATBTN;
 		window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WWT_FLATBTN;
+		window_ride_customer_widgets[WIDX_KICK_GUESTS_OUT_OF_ATTRACTION].type = WWT_FLATBTN;
 	}
+	
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
