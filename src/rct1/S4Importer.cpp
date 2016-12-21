@@ -569,10 +569,11 @@ private:
         dst->status = RIDE_STATUS_CLOSED;
 
         // Flags
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        dst->lifecycle_flags = src->lifecycle_flags;
 
         // Station
         dst->overall_view = src->overall_view;
@@ -687,6 +688,24 @@ private:
         dst->unreliability_factor = src->unreliability_factor;
         dst->breakdown_reason = src->breakdown_reason;
 
+        // Measurement data
+        dst->excitement = src->excitement;
+        dst->intensity = src->intensity;
+        dst->nausea = src->nausea;
+
+        dst->max_speed = src->max_speed;
+        dst->average_speed = src->average_speed;
+        for (int i = 0; i < 4; i++) {
+            dst->time[i] = src->time[i];
+            dst->length[i] = src->length[i];
+        }
+        dst->max_positive_vertical_g = src->max_positive_vertical_g;
+        dst->max_negative_vertical_g = src->max_negative_vertical_g;
+        dst->max_lateral_g = src->max_lateral_g;
+        dst->drops = src->num_drops;
+        dst->highest_drop_height = src->highest_drop_height / 2;
+        dst->inversions = src->num_inversions;
+
         // Finance
         dst->upkeep_cost = src->upkeep_cost;
         dst->price = src->price;
@@ -772,12 +791,20 @@ private:
         dst->name_string_idx = src->name_string_idx;
 
         dst->outside_of_park = src->outside_of_park;
-        if (src->state != PEEP_STATE_ON_RIDE) {
-            dst->state = src->state;
-        } else {
-            dst->state = PEEP_STATE_FALLING;
-            peep_autoposition(dst);
+
+        // We cannot yet import peeps that are on a ride properly. Move these to a safe place.
+        switch(src->state) {
+            case PEEP_STATE_ON_RIDE:
+            case PEEP_STATE_QUEUING_FRONT:
+            case PEEP_STATE_LEAVING_RIDE:
+            case PEEP_STATE_ENTERING_RIDE:
+                dst->state = PEEP_STATE_FALLING;
+                peep_autoposition(dst);
+                break;
+            default:
+                dst->state = src->state;
         }
+
         dst->type = src->type;
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);

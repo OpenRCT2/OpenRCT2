@@ -6154,6 +6154,11 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
+		// This seems to happen in some SV4 files.
+		if (map_element == NULL) {
+			continue;
+		}
+
 		do {
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY){
 				continue;
