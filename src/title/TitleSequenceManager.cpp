@@ -67,7 +67,9 @@ namespace TitleSequenceManager
 
     const TitleSequenceManagerItem * GetItem(size_t i)
     {
-        return &_items[i];
+        TitleSequenceManagerItem * item = &_items[i];
+        assert(item != nullptr);
+        return item;
     }
 
     static size_t FindItemIndexByPath(const utf8 * path)

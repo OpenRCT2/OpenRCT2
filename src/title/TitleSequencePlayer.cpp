@@ -46,6 +46,7 @@ private:
     sint32          _lastScreenWidth = 0;
     sint32          _lastScreenHeight = 0;
     rct_xy32        _viewCentreLocation = { 0 };
+    sint32          _lastLoadedSaveIndex = -1;
 
 public:
     ~TitleSequencePlayer() override
@@ -116,11 +117,14 @@ public:
         {
             while (true)
             {
-                const TitleCommand * command = &_sequence->Commands[_position];
+                TitleCommand * command = &_sequence->Commands[_position];
                 if (ExecuteCommand(command))
                 {
-                    if (command->Type == TITLE_SCRIPT_WAIT)
+                    if (command->Type == TITLE_SCRIPT_WAIT || command->Type == TITLE_SCRIPT_END)
                     {
+                        //it is safe to attempt to load previous park again
+                        _lastLoadedSaveIndex = -1;
+
                         break;
                     }
                     IncrementPosition();
@@ -143,6 +147,7 @@ public:
     {
         _position = 0;
         _waitCounter = 0;
+        _lastLoadedSaveIndex = -1;
         Update();
     }
 
@@ -205,7 +210,7 @@ private:
         while (!TitleSequenceIsLoadCommand(command));
     }
 
-    bool ExecuteCommand(const TitleCommand * command)
+    bool ExecuteCommand(TitleCommand * command)
     {
         switch (command->Type) {
         case TITLE_SCRIPT_END:
@@ -247,6 +252,15 @@ private:
         {
             bool loadSuccess = false;
             uint8 saveIndex = command->SaveIndex;
+            if (_lastLoadedSaveIndex == saveIndex)
+            {
+                //Sequence has attempted to load same park without any waiting,
+                //end sequence to prevent infinite hanging.
+                _waitCounter = 1;
+                command->Type = TITLE_SCRIPT_END;
+                break;
+            }
+            _lastLoadedSaveIndex = saveIndex;
             TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
