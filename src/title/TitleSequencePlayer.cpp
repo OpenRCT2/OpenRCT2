@@ -117,14 +117,12 @@ public:
         {
             while (true)
             {
-                TitleCommand * command = &_sequence->Commands[_position];
-                if (ExecuteCommand(command))
+                const TitleCommand * command = &_sequence->Commands[_position];
+                bool forceBreak = false;
+                if (ExecuteCommand(command, &forceBreak))
                 {
-                    if (command->Type == TITLE_SCRIPT_WAIT || command->Type == TITLE_SCRIPT_END)
+                    if (forceBreak || command->Type == TITLE_SCRIPT_WAIT || command->Type == TITLE_SCRIPT_END)
                     {
-                        //it is safe to attempt to load previous park again
-                        _lastLoadedSaveIndex = -1;
-
                         break;
                     }
                     IncrementPosition();
@@ -209,7 +207,7 @@ private:
         while (!TitleSequenceIsLoadCommand(command));
     }
 
-    bool ExecuteCommand(TitleCommand * command)
+    bool ExecuteCommand(const TitleCommand * command, bool * forceBreak)
     {
         switch (command->Type) {
         case TITLE_SCRIPT_END:
@@ -217,6 +215,7 @@ private:
             break;
         case TITLE_SCRIPT_WAIT:
             _waitCounter = command->Seconds * 32;
+            _lastLoadedSaveIndex = -1;
             break;
         case TITLE_SCRIPT_LOADMM:
         {
@@ -224,7 +223,7 @@ private:
             if (!LoadParkFromFile(path))
             {
                 Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
-                return false;
+				return false;
             }
             break;
         }
@@ -257,7 +256,7 @@ private:
                 //Sequence has attempted to load same park without any waiting,
                 //end sequence to prevent infinite hanging.
                 _waitCounter = 1;
-                command->Type = TITLE_SCRIPT_END;
+                *forceBreak = true;
                 break;
             }
             _lastLoadedSaveIndex = saveIndex;

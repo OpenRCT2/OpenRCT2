@@ -904,8 +904,11 @@ void window_scenery_invalidate(rct_window *w)
 
 	uint16 tabIndex = gWindowSceneryActiveTabIndex;
 	uint32 titleStringId = STR_MISCELLANEOUS;
-	if (tabIndex < 19)
-		titleStringId = get_scenery_group_entry(tabIndex)->name;
+	if (tabIndex < 19) {
+		if (get_scenery_group_entry(tabIndex) != NULL) {
+			titleStringId = get_scenery_group_entry(tabIndex)->name;
+		}
+	}
 
 	window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
@@ -927,7 +930,7 @@ void window_scenery_invalidate(rct_window *w)
 				window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_FLATBTN;
 
 			rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
-			if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
+			if (sceneryEntry != NULL && sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
 				window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
 			}
 		}
@@ -958,7 +961,7 @@ void window_scenery_invalidate(rct_window *w)
 		if (tabSelectedSceneryId >= 0x400) {
 			sceneryEntry = get_banner_entry(tabSelectedSceneryId - 0x400);
 
-			if (sceneryEntry->banner.flags & 1)
+			if (sceneryEntry != NULL && sceneryEntry->banner.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x300) {
 			sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - 0x300);
@@ -969,7 +972,7 @@ void window_scenery_invalidate(rct_window *w)
 				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x200) {
 			sceneryEntry = get_wall_entry(tabSelectedSceneryId - 0x200);
-			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
+			if (sceneryEntry != NULL && sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
@@ -984,7 +987,7 @@ void window_scenery_invalidate(rct_window *w)
 		} else if (tabSelectedSceneryId < 0x100) {
 			sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
-			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS)) {
+			if (sceneryEntry != NULL && sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
