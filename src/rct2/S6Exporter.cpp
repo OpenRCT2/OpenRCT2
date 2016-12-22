@@ -92,6 +92,7 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
+    _s6.header.classic_flag = 0;
     _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;

@@ -112,6 +112,7 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
     {
         throw Exception("Data is not a saved game.");
     }
+    log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
@@ -133,6 +134,7 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
     {
         throw Exception("Data is not a scenario.");
     }
+    log_verbose("scenario classic_flag = 0x%02x\n", _s6.header.classic_flag);
 
     sawyercoding_read_chunk_safe(rw, &_s6.info, sizeof(_s6.info));
 

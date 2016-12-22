@@ -38,7 +38,8 @@
  * size: 0x20
  */
 typedef struct rct_s6_header {
-	uint16 type;				// 0x00
+	uint8 type;					// 0x00
+	uint8 classic_flag;			// 0x01
 	uint16 num_packed_objects;	// 0x02
 	uint32 version;				// 0x04
 	uint32 magic_number;		// 0x08
