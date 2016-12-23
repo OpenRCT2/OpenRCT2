@@ -437,10 +437,6 @@ void Channel::SetGroup(int group)
 }
 
 Mixer::Mixer()
-	: deviceid(0)
-	, format({ 0 })
-	, effectbuffer(0)
-	, volume(1)
 {
 	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		css1sources[i] = 0;
