@@ -535,7 +535,10 @@ IObjectManager * GetObjectManager()
     if (_objectManager == nullptr)
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+        if (objectRepository != nullptr)
+        {
+            _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+        }
     }
     return _objectManager.get();
 }
@@ -580,6 +583,9 @@ extern "C"
     void object_manager_unload_all_objects()
     {
         IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadAll();
+        if (objectManager != nullptr)
+        {
+            objectManager->UnloadAll();
+        }
     }
 }
