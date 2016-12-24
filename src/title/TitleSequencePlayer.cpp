@@ -129,7 +129,10 @@ public:
                     {
                         break;
                     }
-                    IncrementPosition();
+                    if (command->Type != TITLE_SCRIPT_RESTART)
+                    {
+                        IncrementPosition();
+                    }
                     if (_position == entryPosition)
                     {
                         Console::Error::WriteLine("Infinite loop detected in title sequence.");
