@@ -181,6 +181,7 @@ extern "C"
         if (game_is_not_paused())
         {
             TryLoadSequence();
+            _sequencePlayer->Update();
 
             sint32 numUpdates = 1;
             if (gGameSpeed > 1) {
