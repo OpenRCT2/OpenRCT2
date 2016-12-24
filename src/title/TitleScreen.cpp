@@ -44,7 +44,6 @@ extern "C"
     uint16 gTitleCurrentSequence;
 }
 
-static sint32                   _sequenceAttemptId;
 static uint16                   _loadedTitleSequenceId = UINT16_MAX;
 static ITitleSequencePlayer *   _sequencePlayer = nullptr;
 
