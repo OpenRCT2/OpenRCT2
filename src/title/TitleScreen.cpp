@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Console.hpp"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "TitleScreen.h"
@@ -44,12 +45,11 @@ extern "C"
 }
 
 static sint32                   _sequenceAttemptId;
-static sint32                   _loadedTitleSequenceId = -1;
+static uint16                   _loadedTitleSequenceId = UINT16_MAX;
 static ITitleSequencePlayer *   _sequencePlayer = nullptr;
 
 static void TitleInitialise();
 static void TryLoadSequence();
-static void TryNextSequence();
 
 /**
  *
@@ -78,22 +78,28 @@ static void TryLoadSequence()
 {
     if (_loadedTitleSequenceId != gTitleCurrentSequence)
     {
-        if (_sequencePlayer->Begin(gTitleCurrentSequence))
+        uint16 numSequences = (uint16)TitleSequenceManager::GetCount();
+        if (numSequences > 0)
         {
-            _loadedTitleSequenceId = gTitleCurrentSequence;
-            gfx_invalidate_screen();
+            uint16 targetSequence = gTitleCurrentSequence;
+            do
+            {
+                if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
+                {
+                    _loadedTitleSequenceId = targetSequence;
+                    gTitleCurrentSequence = targetSequence;
+                    gfx_invalidate_screen();
+                    return;
+                }
+                targetSequence = (targetSequence + 1) % numSequences;
+            }
+            while (targetSequence != gTitleCurrentSequence);
         }
+        Console::Error::WriteLine("Unable to play any title sequences.");
+        _sequencePlayer->Eject();
+        gTitleCurrentSequence = UINT16_MAX;
+        _loadedTitleSequenceId = UINT16_MAX;
     }
-}
-
-static void TryNextSequence()
-{
-    gTitleCurrentSequence = _sequenceAttemptId++;
-    if (_sequenceAttemptId >= (sint32)TitleSequenceManager::GetCount())
-    {
-        _sequenceAttemptId = 0;
-    }
-    TryLoadSequence();
 }
 
 extern "C"
@@ -176,10 +182,6 @@ extern "C"
         if (game_is_not_paused())
         {
             TryLoadSequence();
-            if (_sequencePlayer != nullptr && !_sequencePlayer->Update())
-            {
-                TryNextSequence();
-            }
 
             sint32 numUpdates = 1;
             if (gGameSpeed > 1) {

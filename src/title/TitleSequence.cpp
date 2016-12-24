@@ -58,6 +58,8 @@ extern "C"
         std::vector<utf8 *> saves;
         bool isZip;
 
+        log_verbose("Loading title sequence: %s", path);
+
         const utf8 * ext = Path::GetExtension(path);
         if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
         {

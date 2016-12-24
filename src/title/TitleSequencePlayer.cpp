@@ -50,14 +50,20 @@ private:
 public:
     ~TitleSequencePlayer() override
     {
-        FreeTitleSequence(_sequence);
+        Eject();
     }
 
     sint32 GetCurrentPosition() const override
     {
         return _position;
     }
-    
+
+    void Eject() override
+    {
+        FreeTitleSequence(_sequence);
+        _sequence = nullptr;
+    }
+
     bool Begin(uint32 titleSequenceId) override
     {
         size_t numSequences = TitleSequenceManager::GetCount();
@@ -73,7 +79,7 @@ public:
             return false;
         }
 
-        FreeTitleSequence(_sequence);
+        Eject();
         _sequence = sequence;
         _sequenceId = titleSequenceId;
 
@@ -124,13 +130,19 @@ public:
                         break;
                     }
                     IncrementPosition();
+                    if (_position == entryPosition)
+                    {
+                        Console::Error::WriteLine("Infinite loop detected in title sequence.");
+                        Console::Error::WriteLine("  A wait command may be missing.");
+                        return false;
+                    }
                 }
                 else
                 {
                     SkipToNextLoadCommand();
                     if (_position == entryPosition)
                     {
-                        // Unable to load any of the parks
+                        Console::Error::WriteLine("Unable to load any parks within title sequence.");
                         return false;
                     }
                 }
@@ -143,7 +155,6 @@ public:
     {
         _position = 0;
         _waitCounter = 0;
-        Update();
     }
 
     void Seek(sint32 targetPosition) override
