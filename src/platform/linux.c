@@ -16,7 +16,11 @@
 
 #include "../common.h"
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__FreeBSD__)
+
+#ifdef __FreeBSD__
+#include <sys/sysctl.h>
+#endif
 
 #include <ctype.h>
 #include <dlfcn.h>
@@ -49,12 +53,21 @@ typedef enum { DT_NONE, DT_KDIALOG, DT_ZENITY } dialog_type;
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
 	char exePath[MAX_PATH];
+#ifdef __LINUX__
 	ssize_t bytesRead;
 	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
 	if (bytesRead == -1) {
 		log_fatal("failed to read /proc/self/exe");
 	}
 	exePath[bytesRead - 1] = '\0';
+#else
+	size_t exeLen = sizeof(exePath);
+	const int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+	if (sysctl(mib, 4, exePath, &exeLen, NULL, 0) == -1) {
+		log_fatal("failed to get process path");
+
+	}
+#endif
 	char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
 	if (exeDelimiter == NULL)
 	{
