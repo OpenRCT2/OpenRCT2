@@ -370,7 +370,7 @@ extern "C"
      */
     bool game_load_sv6(SDL_RWops * rw)
     {
-        if (!sawyercoding_validate_checksum(rw))
+        if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum)
         {
             log_error("invalid checksum");
 
