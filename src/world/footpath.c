@@ -851,6 +851,8 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+		return false;
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
 			continue;
