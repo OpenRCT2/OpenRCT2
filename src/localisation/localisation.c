@@ -1213,18 +1213,17 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 	}
 }
 
-utf8 *win1252_to_utf8_alloc(const char *src)
+utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize)
 {
-	size_t reservedSpace = (strlen(src) * 4) + 1;
+	size_t stringLength = strnlen(src, srcMaxSize);
+	size_t reservedSpace = (stringLength * 4) + 1;
 	utf8 *result = malloc(reservedSpace);
-	int actualSpace = win1252_to_utf8(result, src, reservedSpace);
+	int actualSpace = win1252_to_utf8(result, src, stringLength, reservedSpace);
 	return (utf8*)realloc(result, actualSpace);
 }
 
-int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
+int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength)
 {
-	size_t srcLength = strlen(src);
-
 #ifdef __WINDOWS__
 	utf16 stackBuffer[256];
 	utf16 *heapBuffer = NULL;
