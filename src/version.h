@@ -48,7 +48,7 @@
 #ifdef __MACOSX__
 	#define OPENRCT2_PLATFORM		"macOS"
 #endif
-#ifdef __FreeBSD__
+#ifdef __FREEBSD__
 	#define OPENRCT2_PLATFORM		"FreeBSD"
 #endif
 #ifndef OPENRCT2_PLATFORM
