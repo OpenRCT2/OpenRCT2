@@ -39,6 +39,9 @@
 // Native resource IDs
 #include "../../resources/resource.h"
 
+// Enable visual styles
+#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
