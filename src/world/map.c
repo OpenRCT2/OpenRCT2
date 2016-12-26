@@ -5146,6 +5146,10 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 
 	mapElement = map_get_surface_element_at(x / 32, y / 32);
 
+	if (mapElement == NULL) {
+		return true;
+	}
+
 	sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 	water_height *= 2;
 	if (water_height > mapElement->base_height)
