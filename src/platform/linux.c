@@ -16,8 +16,8 @@
 
 #include "../common.h"
 
-// here we possibly support more oses than linux as long as the necessary
-// changes remain small and support all features as possible
+// Despite the name, this file contains support for more OSs besides Linux, provided the necessary ifdefs remain small.
+// Otherwise, they should be spun off into their own files.
 #if defined(__LINUX__) || defined(__FreeBSD__)
 
 #ifdef __FreeBSD__
