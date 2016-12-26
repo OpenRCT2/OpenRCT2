@@ -60,13 +60,15 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 		log_fatal("failed to read /proc/self/exe");
 	}
 	exePath[bytesRead - 1] = '\0';
-#else
+#elif __FreeBSD__
 	size_t exeLen = sizeof(exePath);
 	const int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
 	if (sysctl(mib, 4, exePath, &exeLen, NULL, 0) == -1) {
 		log_fatal("failed to get process path");
 
 	}
+#else
+#error "Platform does not support full path exe retrieval"
 #endif
 	char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
 	if (exeDelimiter == NULL)
