@@ -57,9 +57,8 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
             entry.Id = id;
             entry.LanguageId = languageId;
 
-            char * stringAsWin1252 = stream->ReadString();
-            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252, languageId);
-            Memory::Free(stringAsWin1252);
+            std::string stringAsWin1252 = stream->ReadStdString();
+            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252.c_str(), stringAsWin1252.size(), languageId);
 
             if (StringIsBlank(stringAsUtf8))
             {
