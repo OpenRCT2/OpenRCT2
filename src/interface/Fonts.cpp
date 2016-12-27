@@ -101,6 +101,7 @@ static bool LoadFont(TTFFontSetDescriptor * font)
     gUseTrueTypeFont   = true;
     gCurrentTTFFontSet = font;
 
+    ttf_dispose();
     bool fontInitialised = ttf_initialise();
     return fontInitialised;
 }
