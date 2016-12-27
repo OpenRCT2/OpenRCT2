@@ -395,18 +395,18 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = *edx != 0; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
 			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = *edx != 0; break;
 			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = *edx != 0; break;
-			case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes; break;
-			case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes; break;
-			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = !gCheatsFastLiftHill; break;
-			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = !gCheatsDisableBrakesFailure; break;
-			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = !gCheatsDisableAllBreakdowns; break;
-			case CHEAT_DISABLETRAINLENGTHLIMIT: gCheatsDisableTrainLengthLimit = !gCheatsDisableTrainLengthLimit; break;
-			case CHEAT_ENABLECHAINLIFTONALLTRACK: gCheatsEnableChainLiftOnAllTrack = !gCheatsEnableChainLiftOnAllTrack; break;
-			case CHEAT_UNLOCKALLPRICES: gCheatsUnlockAllPrices = !gCheatsUnlockAllPrices; window_invalidate_by_class(WC_RIDE); window_invalidate_by_class(WC_PARK_INFORMATION); break;
-			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = !gCheatsBuildInPauseMode; break;
-			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
-			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = !gCheatsDisableVandalism; break;
-			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = !gCheatsDisableLittering; break;
+			case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = *edx != 0; break;
+			case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = *edx != 0; break;
+			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = *edx != 0; break;
+			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = *edx != 0; break;
+			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = *edx != 0; break;
+			case CHEAT_DISABLETRAINLENGTHLIMIT: gCheatsDisableTrainLengthLimit = *edx != 0; break;
+			case CHEAT_ENABLECHAINLIFTONALLTRACK: gCheatsEnableChainLiftOnAllTrack = *edx != 0; break;
+			case CHEAT_UNLOCKALLPRICES: gCheatsUnlockAllPrices = *edx != 0; window_invalidate_by_class(WC_RIDE); window_invalidate_by_class(WC_PARK_INFORMATION); break;
+			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = *edx != 0; break;
+			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = *edx != 0; break;
+			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = *edx != 0; break;
+			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = *edx != 0; break;
 			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
@@ -418,7 +418,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_WATERPLANTS: cheat_water_plants(); break;
 			case CHEAT_FIXVANDALISM: cheat_fix_vandalism(); break;
 			case CHEAT_REMOVELITTER: cheat_remove_litter(); break;
-			case CHEAT_DISABLEPLANTAGING: gCheatsDisablePlantAging = !gCheatsDisablePlantAging; break;
+			case CHEAT_DISABLEPLANTAGING: gCheatsDisablePlantAging = *edx != 0; break;
 			case CHEAT_SETSTAFFSPEED: cheat_set_staff_speed(*edx); break;
 			case CHEAT_RENEWRIDES: cheat_renew_rides(); break;
 			case CHEAT_MAKEDESTRUCTIBLE: cheat_make_destructible(); break;
@@ -427,13 +427,13 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_10MINUTEINSPECTIONS: cheat_10_minute_inspections(); break;
 			case CHEAT_WINSCENARIO: scenario_success(); break;
 			case CHEAT_FORCEWEATHER: climate_force_weather(*edx); break;
-			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = !gCheatsFreezeClimate; break;
-			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = !gCheatsNeverendingMarketing; break;
+			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = *edx != 0; break;
+			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = *edx != 0; break;
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
 			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
-			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
+			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = *edx != 0; window_invalidate_by_class(WC_RIDE); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
