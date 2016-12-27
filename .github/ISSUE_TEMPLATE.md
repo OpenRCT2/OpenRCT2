@@ -2,7 +2,7 @@
   Fill in the placeholders below. Delete any headings and placeholders that you do not fill in.
 -->
 **OS:** [e.g. Windows 10]
-**Version:** [e.g. 0.0.5]
+**Version:** [e.g. 0.0.6]
 **Commit/Build:** [e.g. 426e106]
 
 <!-- Explanation of the issue -->
