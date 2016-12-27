@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _WIDGET_H_
 #define _WIDGET_H_
@@ -28,14 +24,14 @@ typedef enum {
 	WWT_FRAME = 1,
 	WWT_RESIZE = 2,
 	WWT_IMGBTN = 3,
-	WWT_4 = 4,
+	WWT_4 = 4, // Same as IMGBTN but uses .image + 1 while pressed/active
 	WWT_5 = 5,
 	WWT_COLOURBTN = 6,
 	WWT_TRNBTN = 7,
 	WWT_TAB = 8,
 	WWT_FLATBTN = 9,
 	WWT_DROPDOWN_BUTTON = 10,
-	WWT_11,
+	WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
 	WWT_12, // looks like a normal label to me
 	WWT_13,
 	WWT_14,
@@ -55,6 +51,12 @@ typedef enum {
 } WINDOW_WIDGET_TYPES;
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 
+enum {
+	SCROLL_HORIZONTAL = (1 << 0),
+	SCROLL_VERTICAL = (1 << 1),
+	SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
+};
+
 void widget_scroll_update_thumbs(rct_window *w, int widget_index);
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);
 
@@ -65,6 +67,7 @@ int widget_is_highlighted(rct_window *w, int widgetIndex);
 int widget_is_active_tool(rct_window *w, int widgetIndex);
 void widget_scroll_get_part(rct_window *w, rct_widget* widget, int x, int y, int *output_x, int *output_y, int *output_scroll_area, int *scroll_id);
 
+void widget_set_enabled(rct_window *w, uint64 widgetIndex, bool enabled);
 void widget_set_checkbox_value(rct_window *w, int widgetIndex, int value);
 
 #endif

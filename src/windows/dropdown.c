@@ -1,29 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../input.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../scenario.h"
+#include "../rct2.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
 
@@ -39,7 +35,7 @@ enum {
 };
 
 static rct_widget window_dropdown_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 0, 0, 0, -1, STR_NONE },
+	{ WWT_IMGBTN, 0, 0, 0, 0, 0, SPR_NONE, STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -49,7 +45,7 @@ int _dropdown_item_width;
 int _dropdown_item_height;
 
 int gDropdownNumItems;
-uint16 gDropdownItemsFormat[64];
+rct_string_id gDropdownItemsFormat[64];
 sint64 gDropdownItemsArgs[64];
 uint64 gDropdownItemsChecked;
 uint64 gDropdownItemsDisabled;
@@ -138,8 +134,8 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	// Calculate the longest string width
 	max_string_width = 0;
 	for (i = 0; i < num_items; i++) {
-		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+		format_string(buffer, 256, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		string_width = gfx_get_string_width(buffer);
 		max_string_width = max(string_width, max_string_width);
 	}
@@ -162,10 +158,6 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 {
 	rct_window* w;
 
-	// Copy the formats and arguments until all use of it is decompiled
-	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
-	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
-
 	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
 		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
@@ -183,10 +175,10 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	int height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
+	if (x + width > gScreenWidth)
+		x = max(0, gScreenWidth - width);
+	if (y + height > gScreenHeight)
+		y = max(0, gScreenHeight - height);
 
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
 	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
@@ -198,10 +190,10 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 		window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
 		&window_dropdown_events,
 		WC_DROPDOWN,
-		0x02
+		WF_STICK_TO_FRONT
 	);
 	w->widgets = window_dropdown_widgets;
-	if (colour & 0x80)
+	if (colour & COLOUR_FLAG_TRANSLUCENT)
 		w->flags |= WF_TRANSPARENT;
 	w->colours[0] = colour;
 
@@ -233,10 +225,6 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	int width, height;
 	rct_window* w;
 
-	// Copy the formats and arguments until all use of it is decompiled
-	memcpy((void*)0x009DEBA4, gDropdownItemsFormat, 40 * 2);
-	memcpy((void*)0x009DEBF4, gDropdownItemsArgs, 40 * 8);
-
 	gInputFlags &= ~(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP);
 	if (flags & DROPDOWN_FLAG_STAY_OPEN)
 		gInputFlags |= INPUT_FLAG_DROPDOWN_STAY_OPEN;
@@ -256,10 +244,10 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	// Calculate position and size
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
+	if (x + width > gScreenWidth)
+		x = max(0, gScreenWidth - width);
+	if (y + height > gScreenHeight)
+		y = max(0, gScreenHeight - height);
 	window_dropdown_widgets[WIDX_BACKGROUND].right = width;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
@@ -273,7 +261,7 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 		WF_STICK_TO_FRONT
 	);
 	w->widgets = window_dropdown_widgets;
-	if (colour & 0x80)
+	if (colour & COLOUR_FLAG_TRANSLUCENT)
 		w->flags |= WF_TRANSPARENT;
 	w->colours[0] = colour;
 
@@ -309,9 +297,10 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			t += (_dropdown_item_height / 2);
 			b = t;
 
-			if (w->colours[0] & 0x80) {
-				gfx_fill_rect(dpi, l, t, r, b, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 1);
-				gfx_fill_rect(dpi, l, t + 1, r, b + 1, (RCT2_ADDRESS(0x009DEDF4, uint8)[w->colours[0]] | 0x02000000) + 2);
+			if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
+				translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(w->colours[0])];
+				gfx_filter_rect(dpi, l, t, r, b, palette.highlight);
+				gfx_filter_rect(dpi, l, t + 1, r, b + 1, palette.shadow);
 			} else {
 				gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
 				gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
@@ -323,7 +312,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				t = w->y + 2 + (cell_y * _dropdown_item_height);
 				r = l + _dropdown_item_width - 1;
 				b = t + _dropdown_item_height - 1;
-				gfx_fill_rect(dpi, l, t, r, b, 0x2000000 | 0x2F);
+				gfx_filter_rect(dpi, l, t, r, b, PALETTE_DARKEN_3);
 			}
 
 			item = gDropdownItemsFormat[i];
@@ -348,12 +337,12 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				}
 
 				// Calculate colour
-				colour = w->colours[0] & 0x7F;
+				colour = NOT_TRANSLUCENT(w->colours[0]);
 				if (i == highlightedIndex)
-					colour = 2;
+					colour = COLOUR_WHITE;
 				if (dropdown_is_disabled(i))
 					if (i < 64)
-						colour = (w->colours[0] & 0x7F) | 0x40;
+						colour = NOT_TRANSLUCENT(w->colours[0]) | COLOUR_FLAG_INSET;
 
 				// Draw item string
 				gfx_draw_string_left_clipped(
@@ -428,7 +417,7 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 				defaultIndex = i;
 
 			gDropdownItemsFormat[i] = 0xFFFE;
-			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
+			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | SPR_PALETTE_BTN);
 		}
 	}
 

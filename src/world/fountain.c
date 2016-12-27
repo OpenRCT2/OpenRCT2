@@ -1,25 +1,21 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
-#include "../scenario.h"
+#include "../game.h"
+#include "../scenario/scenario.h"
 #include "fountain.h"
 #include "map.h"
 #include "scenery.h"
@@ -106,7 +102,7 @@ void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement)
 	int z = mapElement->base_height * 8;
 
 	// Change pattern approximately every 51 seconds
-	int pattern = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >> 11) & 7;
+	int pattern = (gCurrentTicks >> 11) & 7;
 	switch (pattern) {
 	case PATTERN_CYCLIC_SQUARES:
 		// 0, 1, 2, 3
@@ -305,8 +301,8 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 			continue;
 
 		uint8 additionIndex = footpath_element_get_path_scenery_index(mapElement);
-		rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additionIndex];
-		if (!(sceneryEntry->path_bit.var_06 & pathBitFlagMask))
+		rct_scenery_entry *sceneryEntry = get_footpath_item_entry(additionIndex);
+		if (!(sceneryEntry->path_bit.flags & pathBitFlagMask))
 			continue;
 
 		return true;

@@ -1,25 +1,22 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include <time.h>
-#include "../addresses.h"
+#include "../common.h"
+#include <SDL.h>
+
 #include "../object.h"
 #include "../util/util.h"
 #include "map.h"
@@ -127,7 +124,7 @@ void mapgen_generate(mapgen_settings *settings)
 	int x, y, mapSize, floorTexture, wallTexture, waterLevel;
 	rct_map_element *mapElement;
 
-	util_srand((unsigned int)time(NULL));
+	util_srand((int)SDL_GetTicks());
 
 	mapSize = settings->mapSize;
 	floorTexture = settings->floor;
@@ -230,7 +227,7 @@ static void mapgen_place_tree(int type, int x, int y)
 {
 	int surfaceZ;
 	rct_map_element *mapElement;
-	rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[type];
+	rct_scenery_entry *sceneryEntry = get_small_scenery_entry(type);
 
 	surfaceZ = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
 	mapElement = map_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
@@ -258,10 +255,10 @@ static void mapgen_place_trees()
 	int *snowTreeIds = (int*)malloc(countof(SnowTrees) * sizeof(int));
 
 	for (i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
-		rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[i];
+		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
-		if (sceneryEntry == (rct_scenery_entry*)0xFFFFFFFF || sceneryEntry == NULL)
+		if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
 			continue;
 
 		for (j = 0; j < countof(GrassTrees); j++)
@@ -289,7 +286,7 @@ static void mapgen_place_trees()
 		}
 	}
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 
 	int availablePositionsCount = 0;
 	struct { int x; int y; } tmp, *pos, *availablePositions;
@@ -325,7 +322,7 @@ static void mapgen_place_trees()
 	float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
 	int numTrees = max(4, (int)(availablePositionsCount * treeToLandRatio));
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 	for (i = 0; i < numTrees; i++) {
 		pos = &availablePositions[i];
 
@@ -377,7 +374,7 @@ static void mapgen_set_water_level(int waterLevel)
 	int x, y, mapSize;
 	rct_map_element *mapElement;
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 
 	for (y = 1; y < mapSize - 1; y++) {
 		for (x = 1; x < mapSize - 1; x++) {

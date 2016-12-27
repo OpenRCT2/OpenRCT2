@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../world/map.h"
@@ -46,8 +41,8 @@ enum {
 
 static rct_widget window_viewport_widgets[] = {
 	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,			STR_NONE				},	// panel / background
-	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,				STR_WINDOW_TITLE_TIP	},	// title bar
-	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,				STR_CLOSE_WINDOW_TIP	},	// close x button
+	{ WWT_CAPTION,			0,	1,	0,	1,	14,	STR_VIEWPORT_NO,	STR_WINDOW_TITLE_TIP	},	// title bar
+	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP	},	// close x button
 	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,			STR_NONE				},	// resize
 	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,			STR_NONE				},	// viewport
 
@@ -103,7 +98,7 @@ void window_viewport_open()
 {
 	rct_window *w, *mainWindow;
 	rct_viewport *mainViewport;
-	int x, y, rotation;
+	int x, y;
 
 	w = window_create_auto_pos(
 		INITIAL_WIDTH, INITIAL_HEIGHT,
@@ -118,8 +113,6 @@ void window_viewport_open()
 		(1 << WIDX_ZOOM_OUT) |
 		(1 << WIDX_LOCATE);
 	w->number = _viewportNumber++;
-
-	rotation = get_current_rotation();
 
 	// Create viewport
 	viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
@@ -221,7 +214,7 @@ static void window_viewport_invalidate(rct_window *w)
 	}
 
 	// Set title
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = w->number;
+	set_format_arg(0, uint32, w->number);
 
 	// Set disabled widgets
 	w->disabled_widgets = 0;

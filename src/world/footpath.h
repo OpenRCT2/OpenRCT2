@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _WORLD_FOOTPATH_H_
 #define _WORLD_FOOTPATH_H_
@@ -26,16 +22,27 @@
 #include "../object.h"
 
 enum {
-	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0)
+	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
+	PROVISIONAL_PATH_FLAG_1 = (1 << 1),
+	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-typedef struct {
+#pragma pack(push, 1)
+typedef struct rct_footpath_entry {
 	rct_string_id string_idx;	// 0x00
 	uint32 image;				// 0x02
 	uint32 bridge_image;		// 0x06
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
-} rct_path_type;
+	uint8 scrolling_mode;		// 0x0C
+} rct_footpath_entry;
+assert_struct_size(rct_footpath_entry, 13);
+#pragma pack(pop)
+
+enum {
+	FOOTPATH_ENTRY_FLAG_1 = (1 << 0),
+	FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+};
 
 enum {
 	FOOTPATH_SEARCH_SUCCESS,
@@ -44,7 +51,19 @@ enum {
 	FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
-#define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
+extern uint8 gFootpathProvisionalFlags;
+extern rct_xyz16 gFootpathProvisionalPosition;
+extern uint8 gFootpathProvisionalType;
+extern uint8 gFootpathProvisionalSlope;
+extern uint8 gFootpathConstructionMode;
+extern uint16 gFootpathSelectedId;
+extern uint8 gFootpathSelectedType;
+extern rct_xyz16 gFootpathConstructFromPosition;
+extern uint8 gFootpathConstructDirection;
+extern uint8 gFootpathConstructSlope;
+extern uint8 gFootpathConstructValidDirections;
+extern money32 gFootpathPrice;
+extern uint8 gFootpathGroundFlags;
 
 extern const rct_xy16 word_981D6C[4];
 
@@ -81,5 +100,11 @@ uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
 bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
+int entrance_get_directions(rct_map_element *mapElement);
+
+rct_footpath_entry *get_footpath_entry(int entryIndex);
+
+void footpath_queue_chain_reset();
+void footpath_queue_chain_push(uint8 rideIndex);
 
 #endif

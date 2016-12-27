@@ -1,7 +1,23 @@
-#include "../addresses.h"
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "../audio/audio.h"
+#include "../game.h"
 #include "../localisation/date.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "sprite.h"
 
 enum {
@@ -19,22 +35,46 @@ static void duck_update_double_drink(rct_duck *duck);
 static void duck_update_fly_away(rct_duck *duck);
 
 // rct2: 0x009A3B04
-static const rct_xy16 duck_move_offset[] = {
+const rct_xy16 duck_move_offset[4] = {
 	{ -1,  0 },
 	{ 0,  1 },
 	{ 1,  0 },
 	{ 0, -1 }
 };
 
+/** rct2: 0x0097F06C */
+static const uint8 duck_fly_to_water_animation[] = {
+	8, 9, 10, 11, 12, 13
+};
+
+/** rct2: 0x0097F072 */
+static const uint8 duck_swim_animation[] = {
+	0
+};
+
 // rct2: 0x0097F073
 static const uint8 duck_drink_animation[] = {
-	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 255
+	1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
 // rct2: 0x0097F08C
 static const uint8 duck_double_drink_animation[] = {
 	4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
-	6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 255
+	6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
+};
+
+/** rct2: 0x0097F0B4 */
+static const uint8 duck_fly_away_animation[] = {
+	8, 9, 10, 11, 12, 13
+};
+
+/** rct2: 0x0097F058 */
+const uint8 * duck_animations[] = {
+	duck_fly_to_water_animation,	// DUCK_STATE_FLY_TO_WATER
+	duck_swim_animation,			// DUCK_STATE_SWIM
+	duck_drink_animation,			// DUCK_STATE_DRINK
+	duck_double_drink_animation,	// DUCK_STATE_DOUBLE_DRINK
+	duck_fly_away_animation,		// DUCK_STATE_FLY_AWAY
 };
 
 /**
@@ -73,7 +113,7 @@ void create_duck(int targetX, int targetY)
 		sprite->duck.sprite_direction = direction << 3;
 		sprite_move(targetX, targetY, 496, sprite);
 		sprite->duck.state = DUCK_STATE_FLY_TO_WATER;
-		sprite->duck.var_26 = 0;
+		sprite->duck.frame = 0;
 	}
 }
 
@@ -113,12 +153,12 @@ static void duck_invalidate(rct_duck *duck)
  */
 static void duck_update_fly_to_water(rct_duck *duck)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+	if (gCurrentTicks & 3)
 		return;
 
-	duck->var_26++;
-	if (duck->var_26 >= 6)
-		duck->var_26 = 0;
+	duck->frame++;
+	if (duck->frame >= countof(duck_fly_to_water_animation))
+		duck->frame = 0;
 
 	duck_invalidate(duck);
 	int manhattanDistance = abs(duck->target_x - duck->x) + abs(duck->target_y - duck->y);
@@ -143,7 +183,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
 			if (waterHeight >= duck->z)
 				z += 4;
 
-			duck->var_26 = 1;
+			duck->frame = 1;
 		} else {
 			z = duck->z;
 		}
@@ -155,7 +195,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
 			duck_update_fly_away(duck);
 		} else {
 			duck->state = DUCK_STATE_SWIM;
-			duck->var_26 = 0;
+			duck->frame = 0;
 			duck_update_swim(duck);
 		}
 	}
@@ -167,24 +207,24 @@ static void duck_update_fly_to_water(rct_duck *duck)
  */
 static void duck_update_swim(rct_duck *duck)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + duck->sprite_index) & 3)
+	if ((gCurrentTicks + duck->sprite_index) & 3)
 		return;
 
 	uint32 randomNumber = scenario_rand();
 	if ((randomNumber & 0xFFFF) < 0x666) {
 		if (randomNumber & 0x80000000) {
 			duck->state = DUCK_STATE_DOUBLE_DRINK;
-			duck->var_26 = -1;
+			duck->frame = -1;
 			duck_update_double_drink(duck);
 		} else {
 			duck->state = DUCK_STATE_DRINK;
-			duck->var_26 = -1;
+			duck->frame = -1;
 			duck_update_drink(duck);
 		}
 		return;
 	}
 
-	int currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
+	int currentMonth = date_get_month(gDateMonthsElapsed);
 	if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218) {
 		duck->state = DUCK_STATE_FLY_AWAY;
 		duck_update_fly_away(duck);
@@ -229,10 +269,10 @@ static void duck_update_swim(rct_duck *duck)
  */
 static void duck_update_drink(rct_duck *duck)
 {
-	duck->var_26++;
-	if (duck_drink_animation[duck->var_26] == 255) {
+	duck->frame++;
+	if (duck_drink_animation[duck->frame] == 0xFF) {
 		duck->state = DUCK_STATE_SWIM;
-		duck->var_26 = 0;
+		duck->frame = 0;
 		duck_update_swim(duck);
 	} else {
 		duck_invalidate(duck);
@@ -245,10 +285,10 @@ static void duck_update_drink(rct_duck *duck)
  */
 static void duck_update_double_drink(rct_duck *duck)
 {
-	duck->var_26++;
-	if (duck_double_drink_animation[duck->var_26] == 255) {
+	duck->frame++;
+	if (duck_double_drink_animation[duck->frame] == 0xFF) {
 		duck->state = DUCK_STATE_SWIM;
-		duck->var_26 = 0;
+		duck->frame = 0;
 		duck_update_swim(duck);
 	} else {
 		duck_invalidate(duck);
@@ -261,12 +301,12 @@ static void duck_update_double_drink(rct_duck *duck)
  */
 static void duck_update_fly_away(rct_duck *duck)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+	if (gCurrentTicks & 3)
 		return;
 
-	duck->var_26++;
-	if (duck->var_26 >= 6)
-		duck->var_26 = 0;
+	duck->frame++;
+	if (duck->frame >= countof(duck_fly_away_animation))
+		duck->frame = 0;
 
 	duck_invalidate(duck);
 	int direction = duck->sprite_direction >> 3;
@@ -300,8 +340,8 @@ void duck_remove_all()
 	rct_unk_sprite* sprite;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-		sprite = &(g_sprite_list[spriteIndex].unknown);
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		sprite = &(get_sprite(spriteIndex)->unknown);
 		nextSpriteIndex = sprite->next;
 		if (sprite->misc_identifier == SPRITE_MISC_DUCK)
 			sprite_remove((rct_sprite*)sprite);

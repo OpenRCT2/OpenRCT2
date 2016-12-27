@@ -1,3 +1,21 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include <cwctype>
+
 extern "C"
 {
     #include "../localisation/localisation.h"
@@ -10,6 +28,23 @@ extern "C"
 
 namespace String
 {
+    std::string ToStd(const utf8 * str)
+    {
+        if (str == nullptr) return std::string();
+        else return std::string(str);
+    }
+
+    std::string StdFormat(const utf8 * format, ...)
+    {
+        va_list args;
+        va_start(args, format);
+        const utf8 * buffer = Format_VA(format, args);
+        va_end(args);
+        std::string returnValue = ToStd(buffer);
+        Memory::Free(buffer);
+        return returnValue;
+    }
+
     bool IsNullOrEmpty(const utf8 * str)
     {
         return str == nullptr || str[0] == '\0';
@@ -126,6 +161,68 @@ namespace String
         return buffer;
     }
 
+    utf8 * Format(const utf8 * format, ...)
+    {
+        va_list args;
+        va_start(args, format);
+        utf8 * result = Format_VA(format, args);
+        va_end(args);
+        return result;
+    }
+
+    utf8 * Format_VA(const utf8 * format, va_list args)
+    {
+        va_list args1, args2;
+        va_copy(args1, args);
+        va_copy(args2, args);
+
+        // Try to format to a initial buffer, enlarge if not big enough
+        size_t bufferSize = 4096;
+        utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
+
+        // Start with initial buffer
+        int len = vsnprintf(buffer, bufferSize, format, args);
+        if (len < 0)
+        {
+            Memory::Free(buffer);
+            va_end(args1);
+            va_end(args2);
+
+            // An error occured...
+            return nullptr;
+        }
+
+        size_t requiredSize = (size_t)len + 1;
+        if (requiredSize > bufferSize)
+        {
+            // Try again with bigger buffer
+            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+            int len = vsnprintf(buffer, bufferSize, format, args);
+            if (len < 0)
+            {
+                Memory::Free(buffer);
+                va_end(args1);
+                va_end(args2);
+
+                // An error occured...
+                return nullptr;
+            }
+        }
+        else
+        {
+            // Reduce buffer size to only what was required
+            bufferSize = requiredSize;
+            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+        }
+
+        // Ensure buffer is terminated
+        buffer[bufferSize - 1] = '\0';
+
+        va_end(args1);
+        va_end(args2);
+        return buffer;
+    }
+
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
     {
         va_list args;
@@ -141,7 +238,7 @@ namespace String
         if (i < bufferSize - 1)
         {
             va_start(args, format);
-            vsnprintf(buffer, bufferSize - i - 1, format, args);
+            vsnprintf(dst, bufferSize - i - 1, format, args);
             va_end(args);
 
             // Terminate buffer in case formatted string overflowed
@@ -153,8 +250,13 @@ namespace String
 
     utf8 * Duplicate(const utf8 * src)
     {
-        size_t srcSize = SizeOf(src);
-        return Memory::DuplicateArray(src, srcSize + 1);
+        utf8 * result = nullptr;
+        if (src != nullptr)
+        {
+            size_t srcSize = SizeOf(src);
+            result = Memory::DuplicateArray(src, srcSize + 1);
+        }
+        return result;
     }
 
     utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)
@@ -201,5 +303,65 @@ namespace String
     utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint)
     {
         return utf8_write_codepoint(dst, codepoint);
+    }
+
+    utf8 * Trim(utf8 * str)
+    {
+        utf8 * firstNonWhitespace = nullptr;
+
+        codepoint_t codepoint;
+        utf8 * ch = str;
+        utf8 * nextCh;
+        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        {
+            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            {
+                if (firstNonWhitespace == nullptr)
+                {
+                    firstNonWhitespace = ch;
+                }
+            }
+            ch = nextCh;
+        }
+
+        if (firstNonWhitespace != nullptr &&
+            firstNonWhitespace != str)
+        {
+            size_t newStringSize = ch - firstNonWhitespace;
+#if DEBUG
+            size_t currentStringSize = String::SizeOf(str);
+            Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
+#endif
+
+            Memory::Move(str, firstNonWhitespace, newStringSize);
+            str[newStringSize] = '\0';
+        }
+        else
+        {
+            *ch = '\0';
+        }
+
+        return str;
+    }
+
+    const utf8 * TrimStart(const utf8 * str)
+    {
+        codepoint_t codepoint;
+        const utf8 * ch = str;
+        const utf8 * nextCh;
+        while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
+        {
+            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            {
+                return ch;
+            }
+            ch = nextCh;
+        }
+        return str;
+    }
+
+    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    {
+        return String::Set(buffer, bufferSize, TrimStart(src));
     }
 }

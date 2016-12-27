@@ -1,4 +1,20 @@
-#include "../addresses.h"
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "drawing.h"
@@ -6,7 +22,11 @@
 
 static const int SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
-static uint8 *_spriteFontCharacterWidths = (uint8*)RCT2_ADDRESS_FONT_CHAR_WIDTH;
+#ifdef NO_RCT2
+static uint8 _spriteFontCharacterWidths[896];
+#else
+static uint8 *_spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
+#endif
 
 TTFFontSetDescriptor *gCurrentTTFFontSet;
 
@@ -31,16 +51,6 @@ void font_sprite_initialise_characters()
 	}
 
 	scrolling_text_initialise_bitmaps();
-
-	for (int i = 0; i < 32; i++) {
-		rct_g1_element* g1 = &g1Elements[0x606 + i];
-		uint8* unknown_pointer = RCT2_ADDRESS(0x009C3852, uint8) + 0xA12 * i;
-		g1->offset = unknown_pointer;
-		g1->width = 64;
-		g1->height = 40;
-		*((uint16*)unknown_pointer) = 0xFFFF;
-		*((uint32*)(unknown_pointer + 0x0E)) = 0;
-	}
 }
 
 int font_sprite_get_codepoint_offset(int codepoint)
@@ -94,7 +104,7 @@ int font_sprite_get_codepoint_width(int fontSpriteBase, int codepoint)
 
 int font_sprite_get_codepoint_sprite(int fontSpriteBase, int codepoint)
 {
-	return SPR_CHAR_START + ((IMAGE_TYPE_USE_PALETTE << 28) | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+	return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
 }
 
 int font_get_size_from_sprite_base(uint16 spriteBase)

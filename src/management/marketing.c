@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/window.h"
@@ -41,8 +36,8 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
 
 static const int AdvertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
 
-uint8 *gMarketingCampaignDaysLeft = RCT2_ADDRESS(0x01358102, uint8);
-uint8 *gMarketingCampaignRideIndex = RCT2_ADDRESS(0x01358116, uint8);
+uint8 gMarketingCampaignDaysLeft[20];
+uint8 gMarketingCampaignRideIndex[22];
 
 int marketing_get_campaign_guest_generation_probability(int campaign)
 {
@@ -52,11 +47,11 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 	// Lower probability of guest generation if price was already low
 	switch (campaign) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) < 4)
+		if (park_get_entrance_fee() < 4)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) < 6)
+		if (park_get_entrance_fee() < 6)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
@@ -99,14 +94,14 @@ void marketing_update()
 		// This sets the string parameters for the marketing types that have an argument.
 		if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
 			rct_ride* ride = get_ride(campaignItem);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ShopItemStringIds[campaignItem].plural;
+			set_format_arg(0, rct_string_id, ShopItemStringIds[campaignItem].plural);
 		}
 
 		if (gConfigNotifications.park_marketing_campaign_finished) {
-			news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + campaign, 0);
+			news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign][2], 0);
 		}
 	}
 }
@@ -145,7 +140,7 @@ void marketing_set_guest_campaign(rct_peep *peep, int campaign)
 
 void marketing_start_campaign(int type, int rideOrItem, int numWeeks)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
+	gGameCommandErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
 	game_do_command(0, (numWeeks << 8) | GAME_COMMAND_FLAG_APPLY, 0, (rideOrItem << 8) | type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
 }
 
@@ -166,9 +161,9 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3048;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_MARKETING;
+	if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
+		gGameCommandErrorText = STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -192,12 +187,12 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 	switch (campaignType) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+		if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
 			return false;
 		return true;
 
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY))
+		if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
 			return false;
 
 		// fall-through

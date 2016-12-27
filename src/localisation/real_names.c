@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #include "localisation.h"
 
@@ -24,6 +20,7 @@ const char real_name_initials[] = {
 	'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'
 };
 
+// The peep sorter assumes this array is alphabetically ordered
 const char *real_names[] = {
 	"Aaron",
 	"Abdul",
@@ -37,7 +34,6 @@ const char *real_names[] = {
 	"Akiko",
 	"Akira",
 	"Al",
-	"Ali",
 	"Alan",
 	"Alana",
 	"Albert",
@@ -52,6 +48,7 @@ const char *real_names[] = {
 	"Alf",
 	"Alfonso",
 	"Alfred",
+	"Ali",
 	"Alice",
 	"Alicia",
 	"Alison",
@@ -127,19 +124,19 @@ const char *real_names[] = {
 	"Benny",
 	"Bernadette",
 	"Bernard",
+	"Bernard",
+	"Bernardette",
 	"Bernice",
+	"Bernice",
+	"Berty",
 	"Bess",
 	"Beth",
 	"Bethany",
 	"Bette",
 	"Betty",
-	"Bernard",
-	"Bernardette",
-	"Bernice",
-	"Berty",
 	"Bev",
-	"Beverly",
 	"Beverley",
+	"Beverly",
 	"Bianca",
 	"Bill",
 	"Billie",
@@ -232,11 +229,11 @@ const char *real_names[] = {
 	"Christopher",
 	"Chuck",
 	"Cindy",
-	"Clark",
 	"Clair",
 	"Claire",
 	"Clara",
 	"Clarabell",
+	"Clark",
 	"Claude",
 	"Claudette",
 	"Claudia",
@@ -257,7 +254,6 @@ const char *real_names[] = {
 	"Curtis",
 	"Cynthia",
 	"Cyril",
-	"Darby",
 	"Daisy",
 	"Dale",
 	"Damien",
@@ -269,6 +265,7 @@ const char *real_names[] = {
 	"Danni",
 	"Danny",
 	"Daphne",
+	"Darby",
 	"Darla",
 	"Darlene",
 	"Darrell",
@@ -362,13 +359,13 @@ const char *real_names[] = {
 	"Eve",
 	"Evelyn",
 	"Everett",
-	"Felix",
 	"Fabio",
 	"Falicia",
 	"Farah",
 	"Felicity",
-	"Fernando",
+	"Felix",
 	"Fergus",
+	"Fernando",
 	"Fidelia",
 	"Finlay",
 	"Fiona",
@@ -482,16 +479,16 @@ const char *real_names[] = {
 	"Ivy",
 	"Izola",
 	"Jack",
+	"Jacob",
 	"Jacque",
 	"Jacqueline",
 	"Jacqui",
 	"Jake",
 	"Jakob",
 	"James",
-	"Jacob",
 	"Jan",
-	"Janet",
 	"Jane",
+	"Janet",
 	"Janice",
 	"Jason",
 	"Jasper",
@@ -559,8 +556,8 @@ const char *real_names[] = {
 	"Julius",
 	"June",
 	"Justin",
-	"Kaley",
 	"Kaitlyn",
+	"Kaley",
 	"Kandice",
 	"Kara",
 	"Kareen",
@@ -571,11 +568,11 @@ const char *real_names[] = {
 	"Kate",
 	"Katelyn",
 	"Katey",
-	"Kathy",
 	"Katherine",
 	"Kathie",
 	"Kathleen",
 	"Kathryn",
+	"Kathy",
 	"Katie",
 	"Katrina",
 	"Katy",
@@ -613,8 +610,8 @@ const char *real_names[] = {
 	"Latisha",
 	"Laura",
 	"Lauren",
-	"Lauryn",
 	"Laurie",
+	"Lauryn",
 	"Lawrence",
 	"Leah",
 	"Lee",
@@ -629,8 +626,8 @@ const char *real_names[] = {
 	"Leone",
 	"Leroy",
 	"Les",
-	"Leslie",
 	"Lesley",
+	"Leslie",
 	"Lester",
 	"Lewis",
 	"Liam",
@@ -747,9 +744,9 @@ const char *real_names[] = {
 	"Monique",
 	"Monty",
 	"Morgan",
+	"Morris",
 	"Morten",
 	"Moses",
-	"Morris",
 	"Muriel",
 	"Murphy",
 	"Murray",
@@ -834,8 +831,8 @@ const char *real_names[] = {
 	"Ralph",
 	"Ramon",
 	"Randal",
-	"Rashid",
 	"Raquel",
+	"Rashid",
 	"Raul",
 	"Ray",
 	"Raymond",
@@ -865,13 +862,13 @@ const char *real_names[] = {
 	"Rod",
 	"Rodney",
 	"Rodrigo",
+	"Roger",
 	"Roland",
 	"Rolf",
 	"Romeo",
 	"Ronald",
 	"Ronan",
 	"Ronnie",
-	"Roger",
 	"Rosalind",
 	"Rosanna",
 	"Rosanned",
@@ -880,12 +877,12 @@ const char *real_names[] = {
 	"Rosetta",
 	"Rosie",
 	"Ross",
+	"Rosty",
 	"Roxanne",
 	"Roy",
-	"Russell",
-	"Rosty",
 	"Ruben",
 	"Ruby",
+	"Russell",
 	"Ruth",
 	"Ryan",
 	"Sabrina",
@@ -919,8 +916,8 @@ const char *real_names[] = {
 	"Sheri",
 	"Sherman",
 	"Sherry",
-	"Shirley",
 	"Sheryl",
+	"Shirley",
 	"Shivani",
 	"Shona",
 	"Sian",
@@ -930,8 +927,8 @@ const char *real_names[] = {
 	"Sindy",
 	"Sinead",
 	"Sofia",
-	"Sonny",
 	"Sonja",
+	"Sonny",
 	"Sonya",
 	"Sophia",
 	"Sophie",
@@ -940,8 +937,8 @@ const char *real_names[] = {
 	"Stan",
 	"Stanley",
 	"Stefan",
-	"Stephen",
 	"Stephanie",
+	"Stephen",
 	"Steve",
 	"Steven",
 	"Stewart",

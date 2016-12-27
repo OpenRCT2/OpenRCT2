@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "../config.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -10,11 +26,10 @@ enum {
 	NOTIFICATION_CATEGORY_GUEST
 };
 
-typedef struct {
+typedef struct notification_def {
 	uint8 category;
 	rct_string_id caption;
 	size_t config_offset;
-
 } notification_def;
 
 static const notification_def NewsItemOptionDefinitions[] = {
@@ -49,13 +64,13 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_options_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		299,	0x0FFFFFFFF,					STR_NONE },				// panel / background
+	{ WWT_FRAME,			0,	0,			399,	0,		299,	0xFFFFFFFF,						STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_NOTIFICATION_SETTINGS,		STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_RESIZE,			1,	0,			399,	43,		299,	0x0FFFFFFFF,					STR_NONE },				// tab content panel
-	{ WWT_TAB,				1,	3,			33,		17,		43, 	0x02000144E,					STR_NONE },				// tab 1
-	{ WWT_TAB,				1,	34,			64,		17,		43, 	0x02000144E,					STR_NONE },				// tab 2
-	{ WWT_TAB,				1,	65,			95,		17,		43, 	0x02000144E,					STR_NONE },				// tab 2
+	{ WWT_RESIZE,			1,	0,			399,	43,		299,	0xFFFFFFFF,						STR_NONE },				// tab content panel
+	{ WWT_TAB,				1,	3,			33,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 1
+	{ WWT_TAB,				1,	34,			64,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 2
+	{ WWT_TAB,				1,	65,			95,		17,		43, 	0x20000000 | SPR_TAB,			STR_NONE },				// tab 2
 
 	{ WWT_CHECKBOX,			2,	3,			349,	46,		59,		STR_NONE,						STR_NONE },
 	{ WWT_CHECKBOX,			2,	0,			0,		0,		0,		STR_NONE,						STR_NONE },
@@ -200,7 +215,7 @@ static void window_news_options_invalidate(rct_window *w)
 	for (int i = 0; i < countof(NewsItemOptionDefinitions); i++) {
 		const notification_def *ndef = &NewsItemOptionDefinitions[i];
 		if (ndef->category != w->page) continue;
-		
+
 		w->enabled_widgets |= (1ULL << checkboxWidgetIndex);
 
 		checkboxWidget->type = WWT_CHECKBOX;
@@ -208,7 +223,7 @@ static void window_news_options_invalidate(rct_window *w)
 		checkboxWidget->right = baseCheckBox->right;
 		checkboxWidget->top = y;
 		checkboxWidget->bottom = checkboxWidget->top + 13;
-		checkboxWidget->image = ndef->caption;
+		checkboxWidget->text = ndef->caption;
 
 		const bool *configValue = get_notification_value_ptr(ndef);
 		widget_set_checkbox_value(w, checkboxWidgetIndex, *configValue);
@@ -221,7 +236,7 @@ static void window_news_options_invalidate(rct_window *w)
 	// Remove unused checkboxes
 	while (checkboxWidget->type != WWT_LAST) {
 		w->enabled_widgets &= ~(1ULL << checkboxWidgetIndex);
-		
+
 		checkboxWidget->type = WWT_EMPTY;
 		checkboxWidgetIndex++;
 		checkboxWidget++;

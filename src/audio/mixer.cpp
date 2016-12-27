@@ -1,29 +1,26 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
+#include "../core/Guard.hpp"
 extern "C" {
-	#include "../addresses.h"
 	#include "../config.h"
-	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"
-	#include "../openrct2.h"
+	#include "../OpenRCT2.h"
+	#include "../platform/platform.h"
+	#include "../rct2.h"
 	#include "audio.h"
 }
 #include "mixer.h"
@@ -141,6 +138,7 @@ bool Source_Sample::LoadCSS1(const char *filename, unsigned int offset)
 	Uint32 soundsize;
 	SDL_RWread(rw, &soundsize, sizeof(soundsize), 1);
 	length = soundsize;
+#pragma pack(push, 1)
 	struct WaveFormatEx
 	{
 		Uint16 encoding;
@@ -151,6 +149,8 @@ bool Source_Sample::LoadCSS1(const char *filename, unsigned int offset)
 		Uint16 bitspersample;
 		Uint16 extrasize;
 	} waveformat;
+#pragma pack(pop)
+	assert_struct_size(waveformat, 18);
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
 	format.freq = waveformat.frequency;
 	format.format = AUDIO_S16LSB;
@@ -232,11 +232,11 @@ unsigned long Source_SampleStream::Read(unsigned long offset, const uint8** data
 		currentposition = newposition;
 	}
 	*data = buffer;
-	int read = SDL_RWread(rw, buffer, 1, length);
-	if (read == -1) {
+	size_t read = SDL_RWread(rw, buffer, 1, length);
+	if (read == (size_t)-1) {
 		return 0;
 	}
-	return read;
+	return (unsigned long)read;
 }
 
 bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
@@ -253,6 +253,7 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		return false;
 	}
 	Uint32 chunk_size = SDL_ReadLE32(rw);
+	(void)chunk_size;
 	Uint32 chunk_format = SDL_ReadLE32(rw);
 	const Uint32 WAVE = 0x45564157;
 	if (chunk_format != WAVE) {
@@ -266,6 +267,7 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		return false;
 	}
 	Uint64 chunkstart = SDL_RWtell(rw);
+#pragma pack(push, 1)
 	struct WaveFormat
 	{
 		Uint16 encoding;
@@ -275,6 +277,8 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		Uint16 blockalign;
 		Uint16 bitspersample;
 	} waveformat;
+#pragma pack(pop)
+	assert_struct_size(waveformat, 16);
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
 	SDL_RWseek(rw, chunkstart + fmtchunk_size, RW_SEEK_SET);
 	const Uint16 pcmformat = 0x0001;
@@ -461,7 +465,7 @@ void Mixer::Init(const char* device)
 	format.channels = have.channels;
 	format.freq = have.freq;
 	const char* filename = get_file_path(PATH_ID_CSS1);
-	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
+	for (int i = 0; i < (int)Util::CountOf(css1sources); i++) {
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadCSS1(filename, i)) {
 			source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
@@ -539,7 +543,7 @@ bool Mixer::LoadMusic(size_t pathId)
 		return false;
 	}
 	if (!musicsources[pathId]) {
-		const char* filename = get_file_path(pathId);
+		const char* filename = get_file_path((int)pathId);
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadWAV(filename)) {
 			musicsources[pathId] = source_sample;
@@ -677,7 +681,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
 
 					// Cap sound volume on title screen so music is more audible
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+					if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 						volumeadjust = Math::Min(volumeadjust, 0.75f);
 					}
 					break;
@@ -907,21 +911,19 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 		const utf8 *filename = get_file_path(pathId);
 
 		SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-		if (rw == NULL) {
-			return 0;
-		}
-		Source_SampleStream* source_samplestream = new Source_SampleStream;
-		if (source_samplestream->LoadWAV(rw)) {
-			Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
-			if (!channel) {
-				delete source_samplestream;
+		if (rw != NULL) {
+			Source_SampleStream* source_samplestream = new Source_SampleStream;
+			if (source_samplestream->LoadWAV(rw)) {
+				Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
+				if (!channel) {
+					delete source_samplestream;
+				} else {
+					channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+				}
+				return channel;
 			} else {
-				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+				delete source_samplestream;
 			}
-			return channel;
-		} else {
-			delete source_samplestream;
-			return 0;
 		}
 	} else {
 		if (gMixer.LoadMusic(pathId)) {
@@ -932,7 +934,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 			return channel;
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 void Mixer_SetVolume(float volume)

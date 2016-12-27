@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill, Duncan Frost
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #include "drawing.h"
 
@@ -24,7 +20,7 @@
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */
-void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, int no_pixels)
+static void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, int no_pixels)
 {
 	y -= dpi->y;
 
@@ -53,9 +49,8 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
 		if (no_pixels <= 0)return;
 	}
 
-	uint8* bits_pointer;
 	//Get the buffer we are drawing to and move to the first coordinate.
-	bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
+	uint8* bits_pointer = dpi->bits + y*(dpi->pitch + dpi->width) + x;
 
 	//Draw the line to the specified colour
 	for (; no_pixels > 0; --no_pixels, ++bits_pointer){
@@ -73,7 +68,7 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
  * y2 (dx)
  * colour (ebp)
  */
-void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
+void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
 {
 	// Check to make sure the line is within the drawing area
 	if ((x1 < dpi->x) && (x2 < dpi->x)){

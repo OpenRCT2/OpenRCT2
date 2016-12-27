@@ -1,30 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/sprite.h"
 #include "award.h"
 #include "news_item.h"
@@ -52,7 +47,27 @@ static const uint8 AwardPositiveMap[] = {
 	POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
 };
 
-rct_award *gCurrentAwards = (rct_award*)RCT2_ADDRESS_AWARD_LIST;
+static const rct_string_id AwardNewsStrings[] = {
+	STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
+	STR_NEWS_ITEM_MOST_TIDY,
+	STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
+	STR_NEWS_ITEM_BEST_VALUE,
+	STR_NEWS_ITEM_MOST_BEAUTIFUL,
+	STR_NEWS_ITEM_WORST_VALUE,
+	STR_NEWS_ITEM_SAFEST,
+	STR_NEWS_ITEM_BEST_STAFF,
+	STR_NEWS_ITEM_BEST_FOOD,
+	STR_NEWS_ITEM_WORST_FOOD,
+	STR_NEWS_ITEM_BEST_RESTROOMS,
+	STR_NEWS_ITEM_MOST_DISAPPOINTING,
+	STR_NEWS_ITEM_BEST_WATER_RIDES,
+	STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
+	STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS,
+	STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,
+	STR_NEWS_ITEM_BEST_GENTLE_RIDES,
+};
+
+rct_award gCurrentAwards[MAX_AWARDS];
 
 bool award_is_positive(int type)
 {
@@ -91,7 +106,7 @@ static int award_is_deserved_most_untidy(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 16);
+	return (negativeCount > gNumGuestsInPark / 16);
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
@@ -116,7 +131,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 		if (peep->thoughts[0].var_2 > 5)
 			continue;
 
-		if (peep->thoughts[0].type == PEEP_THOUGHT_VERY_CLEAN)
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
 			positiveCount++;
 
 		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
@@ -127,7 +142,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount <= 5 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 64);
+	return (negativeCount <= 5 && positiveCount > gNumGuestsInPark / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -162,11 +177,11 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
+	if (gParkFlags & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) < MONEY(10, 00))
+	if (gTotalRideValue < MONEY(10, 00))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(0, 10) >= RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) / 2)
+	if (park_get_entrance_fee() + MONEY(0, 10) >= gTotalRideValue / 2)
 		return 0;
 	return 1;
 }
@@ -204,7 +219,7 @@ static int award_is_deserved_most_beautiful(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount <= 15 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128);
+	return (negativeCount <= 15 && positiveCount > gNumGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -212,11 +227,13 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 {
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY(0, 00))
+
+	money32 parkEntranceFee = park_get_entrance_fee();
+	if (parkEntranceFee == MONEY(0, 00))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) >= RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16))
+	if (gTotalRideValue >= parkEntranceFee)
 		return 0;
 	return 1;
 }
@@ -308,7 +325,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 		}
 	}
 
-	if (shops < 7 || uniqueShops < 4 || shops < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128)
+	if (shops < 7 || uniqueShops < 4 || shops < gNumGuestsInPark / 128)
 		return 0;
 
 	// Count hungry peeps
@@ -357,7 +374,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 		}
 	}
 
-	if (uniqueShops > 2 || shops > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 256)
+	if (uniqueShops > 2 || shops > gNumGuestsInPark / 256)
 		return 0;
 
 	// Count hungry peeps
@@ -392,7 +409,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 		return 0;
 
 	// At least one open restroom for every 128 guests
-	if (numRestrooms < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128U)
+	if (numRestrooms < gNumGuestsInPark / 128U)
 		return 0;
 
 	// Count number of guests who are thinking they need the restroom
@@ -408,7 +425,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 	return (guestsWhoNeedRestroom <= 16);
 }
 
-/** More than half of the rides have satisfication <= 6 and park rating <= 650. */
+/** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
 static int award_is_deserved_most_disappointing(int awardType, int activeAwardTypes)
 {
 	unsigned int i, countedRides, disappointingRides;
@@ -416,7 +433,7 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) > 650)
+	if (gParkRating > 650)
 		return 0;
 
 	// Count the number of disappointing rides
@@ -611,7 +628,7 @@ void award_update_all()
 	int i, activeAwardTypes, freeAwardEntryIndex;
 
 	// Only add new awards if park is open
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
+	if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
 		// Set active award types as flags
 		activeAwardTypes = 0;
 		freeAwardEntryIndex = -1;
@@ -636,7 +653,7 @@ void award_update_all()
 				gCurrentAwards[freeAwardEntryIndex].type = awardType;
 				gCurrentAwards[freeAwardEntryIndex].time = 5;
 				if (gConfigNotifications.park_award) {
-					news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+					news_item_add_to_queue(NEWS_ITEM_AWARD, AwardNewsStrings[awardType], 0);
 				}
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}

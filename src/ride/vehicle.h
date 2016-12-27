@@ -1,39 +1,38 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _VEHICLE_H_
 #define _VEHICLE_H_
 
 #include "../common.h"
+#include "../world/map.h"
 
+#pragma pack(push, 1)
 /* size: 0x2 */
-typedef struct{
+typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
 } rct_vehicle_colour;
+assert_struct_size(rct_vehicle_colour, 2);
 
 /**
  * Ride type vehicle structure.
  * size: 0x65
  */
-typedef struct {
+typedef struct rct_ride_entry_vehicle {
 	uint16 rotation_frame_mask;		// 0x00 , 0x1A
 	uint8 var_02;					// 0x02 , 0x1C
 	uint8 var_03;					// 0x03 , 0x1D
@@ -74,13 +73,16 @@ typedef struct {
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
 	uint8 car_visual;				// 0x5D , 0x77
-	uint8 pad_5E;
+	uint8 effect_visual;
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_entry_vehicle;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_ride_entry_vehicle, 0x65);
+#endif
 
-typedef struct {
+typedef struct rct_vehicle {
 	uint8 sprite_identifier;		// 0x00
 	uint8 is_child;					// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -190,24 +192,26 @@ typedef struct {
 	uint16 lost_time_out;			// 0xD0
 	sint8 vertical_drop_countdown;	// 0xD1
 	uint8 var_D3;
-	uint8 var_D4;
+	uint8 mini_golf_current_animation;
 	uint8 mini_golf_flags;			// 0xD5
 	uint8 ride_subtype;				// 0xD6
 	uint8 colours_extended;			// 0xD7
 	uint8 seat_rotation;			// 0xD8
 	uint8 target_seat_rotation;		// 0xD9
 } rct_vehicle;
+assert_struct_size(rct_vehicle, 0xDA);
+#pragma pack(pop)
 
-typedef struct {
+typedef struct train_ref {
 	rct_vehicle *head;
 	rct_vehicle *tail;
 } train_ref;
 
 // Size: 0x09
-typedef struct {
-	uint16 x;			// 0x00
-	uint16 y;			// 0x02
-	uint16 z;			// 0x04
+typedef struct rct_vehicle_info {
+	sint16 x;			// 0x00
+	sint16 y;			// 0x02
+	sint16 z;			// 0x04
 	uint8 direction;	// 0x06
 	uint8 vehicle_sprite_type;	// 0x07
 	uint8 bank_rotation;	// 0x08
@@ -334,7 +338,12 @@ enum {
 	VEHICLE_VISUAL_REVERSER,
 	VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER,
 	VEHICLE_VISUAL_ROTO_DROP,
-	VEHICLE_VISUAL_VIRGINIA_REEL = 15,
+	VEHICLE_VISUAL_SPLASH1_EFFECT,
+	VEHICLE_VISUAL_SPLASH2_EFFECT,
+	VEHICLE_VISUAL_SPLASH3_EFFECT,
+	VEHICLE_VISUAL_SPLASH4_EFFECT,
+	VEHICLE_VISUAL_SPLASH5_EFFECT,
+	VEHICLE_VISUAL_VIRGINIA_REEL,
 	VEHICLE_VISUAL_SUBMARINE
 };
 
@@ -374,9 +383,22 @@ void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset);
+uint16 vehicle_get_move_info_size(int cd, int typeAndDirection);
 bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
+extern rct_vehicle *gCurrentVehicle;
+extern uint8 _vehicleStationIndex;
+extern uint32 _vehicleMotionTrackFlags;
+extern sint32 _vehicleVelocityF64E08;
+extern sint32 _vehicleVelocityF64E0C;
+extern sint32 _vehicleUnkF64E10;
+extern uint8 _vehicleVAngleEndF64E36;
+extern uint8 _vehicleBankEndF64E37;
+extern uint8 _vehicleF64E2C;
+extern rct_vehicle * _vehicleFrontVehicle;
+extern rct_xyz16 unk_F64E20;
+
 /** Helper macro until rides are stored in this module. */
-#define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)
+#define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)
 
 #endif

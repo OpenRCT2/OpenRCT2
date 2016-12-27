@@ -1,25 +1,21 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
-#include "../scenario.h"
+#include "../game.h"
+#include "../scenario/scenario.h"
 #include "../world/sprite.h"
 #include "station.h"
 
@@ -69,7 +65,7 @@ static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
 		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement->properties.track.sequence & 0x80))
+		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & 0x80)))
 			ride_invalidate_station_start(ride, stationIndex, 0);
 	} else {
 		if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
@@ -104,7 +100,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		dl = dx & 0xFF;
 		dh = (dx >> 8) & 0xFF;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
 				continue;
 
@@ -119,7 +115,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 	} else {
 		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) {
 				ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 				return;
@@ -146,7 +142,7 @@ static void ride_update_station_normal(rct_ride *ride, int stationIndex)
 		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))  ||
 		(ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
 	) {
-		if (time != 0 && time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
+		if (time != 0 && time != 127 && !(gCurrentTicks & 7))
 			time--;
 
 		ride->station_depart[stationIndex] = time;
@@ -156,7 +152,7 @@ static void ride_update_station_normal(rct_ride *ride, int stationIndex)
 			ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
 			ride_invalidate_station_start(ride, stationIndex, 1);
 		} else {
-			if (time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 31))
+			if (time != 127 && !(gCurrentTicks & 31))
 				time--;
 
 			ride->station_depart[stationIndex] = time;
@@ -189,11 +185,11 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
 		numLaps = ride->num_laps;
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps) {
 				// Found a winner
 				if (vehicle->num_peeps != 0) {
-					peep = &(g_sprite_list[vehicle->peep[0]].peep);
+					peep = &(get_sprite(vehicle->peep[0])->peep);
 					ride->race_winner = peep->sprite_index;
 					ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 				}
@@ -213,7 +209,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
 	} else {
 		// Check if all vehicles are ready to go
 		for (i = 0; i < ride->num_vehicles; i++) {
-			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
+			vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
 			if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING) {
 				if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
 					ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
@@ -247,7 +243,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 	int i;
 
 	for (i = 0; i < ride->num_vehicles; i++) {
-		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
+		vehicle = &get_sprite(ride->vehicles[i])->vehicle;
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
 		rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -255,7 +251,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
 		if (vehicle->num_peeps != 0) {
-			rct_peep *peep = &g_sprite_list[vehicle->peep[0]].peep;
+			rct_peep *peep = &get_sprite(vehicle->peep[0])->peep;
 
 			switch (peep_get_easteregg_name_id(peep)) {
 			case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:

@@ -1,9 +1,28 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include <time.h>
+
+#include "../core/Guard.hpp"
 
 extern "C"
 {
     #include "../config.h"
-    #include "../openrct2.h"
+    #include "../OpenRCT2.h"
+    #include "../platform/crash.h"
 }
 
 #include "../core/Console.hpp"
@@ -13,10 +32,26 @@ extern "C"
 #include "../network/network.h"
 #include "CommandLine.hpp"
 
+#ifdef USE_BREAKPAD
+#define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
+#else
+#define IMPLIES_SILENT_BREAKPAD
+#endif // USE_BREAKPAD
+
+#if defined(__WINDOWS__) && !defined(DEBUG)
+    #define __PROVIDE_CONSOLE__ 1
+#endif // defined(__WINDOWS__) && !defined(DEBUG)
+
 #ifndef DISABLE_NETWORK
 int  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
 int  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+
+static uint32 _port            = 0;
+#endif
+
+#ifdef __PROVIDE_CONSOLE__
+    static bool _provideConsole;
 #endif
 
 static bool   _help            = false;
@@ -26,12 +61,11 @@ static bool   _all             = false;
 static bool   _about           = false;
 static bool   _verbose         = false;
 static bool   _headless        = false;
-#ifndef DISABLE_NETWORK
-static uint32 _port            = 0;
-#endif
 static utf8 * _password        = nullptr;
 static utf8 * _userDataPath    = nullptr;
 static utf8 * _openrctDataPath = nullptr;
+static utf8 * _rct2DataPath    = nullptr;
+static bool   _silentBreakpad  = false;
 
 static const CommandLineOptionDefinition StandardOptions[]
 {
@@ -41,13 +75,20 @@ static const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_all,             'a', "all",               "show help for all commands"                                 },
     { CMDLINE_TYPE_SWITCH,  &_about,           NAC, "about",             "show information about " OPENRCT2_NAME                      },
     { CMDLINE_TYPE_SWITCH,  &_verbose,         NAC, "verbose",           "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless"                             },
+    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+#ifdef __PROVIDE_CONSOLE__
+    { CMDLINE_TYPE_SWITCH,  &_provideConsole,  NAC, "console",           "creates a new or attaches to an existing console window for standard output" },
+#endif
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
 #endif
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
+#ifdef USE_BREAKPAD
+    { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
+#endif // USE_BREAKPAD
     OptionTableEnd
 };
 
@@ -58,6 +99,19 @@ static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+
+static bool _removeShell = false;
+
+static const CommandLineOptionDefinition RegisterShellOptions[]
+{
+    { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
+};
+
+static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
+
+#endif
+
 static void PrintAbout();
 static void PrintVersion();
 static void PrintLaunchInformation();
@@ -65,14 +119,19 @@ static void PrintLaunchInformation();
 const CommandLineCommand CommandLine::RootCommands[]
 {
     // Main commands
-    DefineCommand("",         "<uri>",      StandardOptions, HandleNoCommand     ),
-    DefineCommand("edit",     "<uri>",      StandardOptions, HandleCommandEdit   ),
-    DefineCommand("intro",    "",           StandardOptions, HandleCommandIntro  ),
-#ifndef DISABLE_NETWORK 
-    DefineCommand("host",     "<uri>",      StandardOptions, HandleCommandHost   ),
-    DefineCommand("join",     "<hostname>", StandardOptions, HandleCommandJoin   ),
+    DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
+    DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
+    DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
+#ifndef DISABLE_NETWORK
+    DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
+    DefineCommand("join",     "<hostname>",             StandardOptions, HandleCommandJoin   ),
 #endif
-    DefineCommand("set-rct2", "<path>",     StandardOptions, HandleCommandSetRCT2),
+    DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
+    DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
+
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+    DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
+#endif
 
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
@@ -96,6 +155,13 @@ const CommandLineExample CommandLine::RootExamples[]
 exitcode_t CommandLine::HandleCommandDefault()
 {
     exitcode_t result = EXITCODE_CONTINUE;
+
+#ifdef __PROVIDE_CONSOLE__
+    if (_provideConsole)
+    {
+        platform_windows_open_console();
+    }
+#endif
 
     if (_about)
     {
@@ -126,18 +192,28 @@ exitcode_t CommandLine::HandleCommandDefault()
     }
 
     gOpenRCT2Headless = _headless;
+    gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
-    if (_userDataPath != NULL) {
+    if (_userDataPath != nullptr)
+    {
         String::Set(gCustomUserDataPath, sizeof(gCustomUserDataPath), _userDataPath);
         Memory::Free(_userDataPath);
     }
 
-    if (_openrctDataPath != NULL) {
+    if (_openrctDataPath != nullptr)
+    {
         String::Set(gCustomOpenrctDataPath, sizeof(gCustomOpenrctDataPath), _openrctDataPath);
         Memory::Free(_openrctDataPath);
     }
 
-    if (_password != NULL) {
+    if (_rct2DataPath != nullptr)
+    {
+        String::Set(gCustomRCT2DataPath, sizeof(gCustomRCT2DataPath), _rct2DataPath);
+        Memory::Free(_rct2DataPath);
+    }
+
+    if (_password != nullptr)
+    {
         String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
         Memory::Free(_password);
     }
@@ -160,7 +236,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
         gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     }
 
-    return EXITCODE_CONTINUE; 
+    return EXITCODE_CONTINUE;
 }
 
 exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
@@ -266,8 +342,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     Console::WriteLine("Checking path...");
     if (!platform_directory_exists(path))
     {
-        Console::Error::WriteFormat("The path '%s' does not exist", path);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("The path '%s' does not exist", path);
         return EXITCODE_FAIL;
     }
 
@@ -281,29 +356,20 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     if (!platform_file_exists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
-        Console::Error::WriteFormat("Unable to find %s.", pathG1Check);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("Unable to find %s.", pathG1Check);
         return EXITCODE_FAIL;
     }
 
     // Check user path that will contain the config
     utf8 userPath[MAX_PATH];
     platform_resolve_user_data_path();
-    platform_get_user_directory(userPath, NULL);
+    platform_get_user_directory(userPath, NULL, sizeof(userPath));
     if (!platform_ensure_directory_exists(userPath)) {
-        Console::Error::WriteFormat("Unable to access or create directory '%s'.", userPath);
-        Console::Error::WriteLine();
+        Console::Error::WriteLine("Unable to access or create directory '%s'.", userPath);
         return EXITCODE_FAIL;
     }
 
     // Update RCT2 path in config
-
-    // TODO remove this when we get rid of config_apply_to_old_addresses
-    if (!openrct2_setup_rct2_segment()) {
-        Console::Error::WriteLine("Unable to load RCT2 data sector");
-        return EXITCODE_FAIL;
-    }
-
     config_set_defaults();
     config_open_default();
     String::DiscardDuplicate(&gConfigGeneral.game_path, path);
@@ -320,6 +386,27 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 }
+
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
+{
+    exitcode_t result = CommandLine::HandleCommandDefault();
+    if (result != EXITCODE_CONTINUE)
+    {
+        return result;
+    }
+
+    if (!_removeShell)
+    {
+        platform_setup_file_associations();
+    }
+    else
+    {
+        platform_remove_file_associations();
+    }
+    return EXITCODE_OK;
+}
+#endif // defined(__WINDOWS__) && !defined(__MINGW32__)
 
 static void PrintAbout()
 {
@@ -344,6 +431,9 @@ static void PrintVersion()
     openrct2_write_full_version_info(buffer, sizeof(buffer));
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+#ifdef NO_RCT2
+    Console::Write(" (NO_RCT2)");
+#endif
     Console::WriteLine();
 }
 

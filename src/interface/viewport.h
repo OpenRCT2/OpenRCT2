@@ -1,28 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "../paint/paint.h"
 #include "window.h"
 
 enum {
@@ -41,7 +38,8 @@ enum {
 	VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
 	VIEWPORT_FLAG_HIDE_VERTICAL = (1 << 13),
 	VIEWPORT_FLAG_INVISIBLE_SPRITES = (1 << 14),
-	VIEWPORT_FLAG_15 = (1 << 15)
+	VIEWPORT_FLAG_15 = (1 << 15),
+	VIEWPORT_FLAG_SEETHROUGH_PATHS = (1 << 16)
 };
 
 enum {
@@ -76,7 +74,7 @@ enum {
 	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-typedef struct {
+typedef struct viewport_interaction_info {
 	int type;
 	int x;
 	int y;
@@ -88,8 +86,33 @@ typedef struct {
 	};
 } viewport_interaction_info;
 
+#define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
+
+/**
+ * A reference counter for whether something is forcing the grid lines to show. When the counter
+ * is decremented to 0, the grid lines are hidden.
+ */
+extern uint8 gShowGridLinesRefCount;
+extern uint8 gShowLandRightsRefCount;
+extern uint8 gShowConstuctionRightsRefCount;
+
 // rct2: 0x014234BC
-extern rct_viewport* g_viewport_list;
+extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
+extern rct_viewport *g_music_tracking_viewport;
+extern sint16 gSavedViewX;
+extern sint16 gSavedViewY;
+extern uint8 gSavedViewZoom;
+extern uint8 gSavedViewRotation;
+
+#ifdef NO_RCT2
+extern paint_entry *gNextFreePaintStruct;
+extern uint8 gCurrentRotation;
+extern uint32 gCurrentViewportFlags;
+#else
+	#define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_entry*)
+	#define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
+	#define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint32)
+#endif
 
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
@@ -98,7 +121,7 @@ void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_update_sprite_follow(rct_window *window);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
-void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom);
+void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
 
 void sub_689174(sint16* x, sint16* y, sint16 *z);
 
@@ -127,14 +150,6 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
 
 void sub_68B2B7(int x, int y);
-void painter_setup();
-void sub_688485();
-void sub_688217();
-
-int sub_98196C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
@@ -146,5 +161,8 @@ void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16
 void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side);
 
 uint8 get_current_rotation();
+sint16 get_height_marker_offset();
+
+void viewport_set_saved_view();
 
 #endif

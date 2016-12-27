@@ -1,3 +1,20 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include <vector>
 #include <jansson.h>
 
 extern "C"
@@ -9,17 +26,14 @@ extern "C"
 }
 
 #include "../core/Json.hpp"
-#include "../core/List.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../localisation/string_ids.h"
 
 struct WindowThemeDesc;
-
-// Don't try to load theme files that exceed 64 MiB
-constexpr uint64 MAX_THEME_SIZE = 64 * 1024 * 1024;
 
 /**
  * Represents a window theming style such as the colour scheme.
@@ -48,9 +62,9 @@ struct UIThemeWindowEntry
 class UITheme
 {
 public:
-    utf8 *                   Name;
-    List<UIThemeWindowEntry> Entries;
-    uint8                    Flags;
+    utf8 *                          Name;
+    std::vector<UIThemeWindowEntry> Entries;
+    uint8                           Flags;
 
     UITheme(const utf8 * name);
     UITheme(const UITheme & copy);
@@ -99,63 +113,64 @@ struct WindowThemeDesc
 WindowThemeDesc WindowThemeDescriptors[] =
 {
    // WindowClass, WindowClassSZ                   WindowName  NumColours, DefaultTheme
-    { THEME_WC(WC_TOP_TOOLBAR),                    5245,       COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
-    { THEME_WC(WC_BOTTOM_TOOLBAR),                 5246,       COLOURS_4(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  COLOUR_BLACK,                  COLOUR_BRIGHT_GREEN ) },
-    { THEME_WC(WC_RIDE),                           5203,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_GREY                                        ) },
-    { THEME_WC(WC_RIDE_CONSTRUCTION),              5199,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_RIDE_LIST),                      5204,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_SAVE_PROMPT),                    5223,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
-    { THEME_WC(WC_CONSTRUCT_RIDE),                 5201,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_DEMOLISH_RIDE_PROMPT),           5224,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
-    { THEME_WC(WC_SCENERY),                        5197,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
-    { THEME_WC(WC_OPTIONS),                        5219,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_FOOTPATH),                       5198,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_LAND),                           5193,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_WATER),                          5194,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_PEEP),                           5205,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
-    { THEME_WC(WC_GUEST_LIST),                     5206,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
-    { THEME_WC(WC_STAFF_LIST),                     5208,       COLOURS_3(COLOUR_GREY,                     COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE                                ) },
-    { THEME_WC(WC_FIRE_PROMPT),                    5225,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
-    { THEME_WC(WC_PARK_INFORMATION),               5253,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_FINANCES),                       5187,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_TITLE_MENU),                     5249,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
-    { THEME_WC(WC_TITLE_EXIT),                     5250,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
-    { THEME_WC(WC_RECENT_NEWS),                    5192,       COLOURS_3(COLOUR_GREY,                     COLOUR_GREY,                     COLOUR_BLACK                                       ) },
-    { THEME_WC(WC_SCENARIO_SELECT),                5252,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_TRACK_DESIGN_LIST),              5202,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_TRACK_DESIGN_PLACE),             5200,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_NEW_CAMPAIGN),                   5188,       COLOURS_3(COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_KEYBOARD_SHORTCUT_LIST),         5220,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_CHANGE_KEYBOARD_SHORTCUT),       5221,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_MAP),                            5190,       COLOURS_2(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN                                                                   ) },
-    { THEME_WC(WC_BANNER),                         5209,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_EDITOR_OBJECT_SELECTION),        5210,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
-    { THEME_WC(WC_EDITOR_INVENTION_LIST),          5211,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
-    { THEME_WC(WC_EDITOR_SCENARIO_OPTIONS),        5212,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
-    { THEME_WC(WC_EDTIOR_OBJECTIVE_OPTIONS),       5213,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
-    { THEME_WC(WC_MANAGE_TRACK_DESIGN),            5215,       COLOURS_3(COLOUR_GREY,                     COLOUR_GREY,                     COLOUR_GREY                                        ) },
-    { THEME_WC(WC_TRACK_DELETE_PROMPT),            5226,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_INSTALL_TRACK),                  5216,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
-    { THEME_WC(WC_CLEAR_SCENERY),                  5195,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_CHEATS),                         5217,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_RESEARCH),                       5189,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_VIEWPORT),                       5191,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_MAPGEN),                         5214,       COLOURS_3(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
-    { THEME_WC(WC_LOADSAVE),                       5222,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_LOADSAVE_OVERWRITE_PROMPT),      5227,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
-    { THEME_WC(WC_TITLE_OPTIONS),                  5251,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
-    { THEME_WC(WC_LAND_RIGHTS),                    5196,       COLOURS_3(COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
-    { THEME_WC(WC_THEMES),                         5218,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
-    { THEME_WC(WC_STAFF),                          5207,       COLOURS_3(COLOUR_GREY,                     COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE                                ) },
-    { THEME_WC(WC_EDITOR_TRACK_BOTTOM_TOOLBAR),    5247,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE)                     ) },
-    { THEME_WC(WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR), 5248,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_MOSS_GREEN)                     ) },
-    { THEME_WC(WC_TITLE_EDITOR),                   5433,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
-    { THEME_WC(WC_TILE_INSPECTOR),                 5314,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
-    { THEME_WC(WC_CHANGELOG),                      5344,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
-    { THEME_WC(WC_MULTIPLAYER),                    5502,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_PLAYER),                         5736,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_NETWORK_STATUS),                 5735,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
-    { THEME_WC(WC_SERVER_LIST),                    5498,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_TOP_TOOLBAR),                    STR_THEMES_WINDOW_TOP_TOOLBAR,       COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
+    { THEME_WC(WC_BOTTOM_TOOLBAR),                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,       COLOURS_4(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  COLOUR_BLACK,                  COLOUR_BRIGHT_GREEN ) },
+    { THEME_WC(WC_RIDE),                           STR_THEMES_WINDOW_RIDE,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_GREY                                        ) },
+    { THEME_WC(WC_RIDE_CONSTRUCTION),              STR_THEMES_WINDOW_RIDE_CONSTRUCTION,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_RIDE_LIST),                      STR_THEMES_WINDOW_RIDE_LIST,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_SAVE_PROMPT),                    STR_THEMES_WINDOW_SAVE_PROMPT,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
+    { THEME_WC(WC_CONSTRUCT_RIDE),                 STR_THEMES_WINDOW_CONSTRUCT_RIDE,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_DEMOLISH_RIDE_PROMPT),           STR_THEMES_WINDOW_DEMOLISH_RIDE_PROMPT,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
+    { THEME_WC(WC_SCENERY),                        STR_THEMES_WINDOW_SCENERY,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
+    { THEME_WC(WC_OPTIONS),                        STR_THEMES_WINDOW_OPTIONS,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_FOOTPATH),                       STR_THEMES_WINDOW_FOOTPATH,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_LAND),                           STR_THEMES_WINDOW_LAND,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_WATER),                          STR_THEMES_WINDOW_WATER,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_PEEP),                           STR_THEMES_WINDOW_PEEP,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
+    { THEME_WC(WC_GUEST_LIST),                     STR_THEMES_WINDOW_GUEST_LIST,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
+    { THEME_WC(WC_STAFF_LIST),                     STR_THEMES_WINDOW_STAFF_LIST,       COLOURS_3(COLOUR_GREY,                     COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE                                ) },
+    { THEME_WC(WC_FIRE_PROMPT),                    STR_THEMES_WINDOW_FIRE_PROMPT,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
+    { THEME_WC(WC_PARK_INFORMATION),               STR_THEMES_WINDOW_PARK_INFORMATION,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_FINANCES),                       STR_THEMES_WINDOW_FINANCES,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_TITLE_MENU),                     STR_THEMES_WINDOW_TITLE_MENU_BUTTONS,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
+    { THEME_WC(WC_TITLE_EXIT),                     STR_THEMES_WINDOW_TITLE_MENU_EXIT,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
+    { THEME_WC(WC_RECENT_NEWS),                    STR_THEMES_WINDOW_RECENT_NEWS,       COLOURS_3(COLOUR_GREY,                     COLOUR_GREY,                     COLOUR_BLACK                                       ) },
+    { THEME_WC(WC_SCENARIO_SELECT),                STR_THEMES_WINDOW_TITLE_MENU_SCENARIO_SELECTION,       COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_TRACK_DESIGN_LIST),              STR_THEMES_WINDOW_TRACK_DESIGN_LIST,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_TRACK_DESIGN_PLACE),             STR_THEMES_WINDOW_TRACK_DESIGN_PLACE,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_NEW_CAMPAIGN),                   STR_THEMES_WINDOW_NEW_CAMPAIGN,       COLOURS_3(COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_KEYBOARD_SHORTCUT_LIST),         STR_THEMES_WINDOW_KEYBOARD_SHORTCUT_LIST,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_CHANGE_KEYBOARD_SHORTCUT),       STR_THEMES_WINDOW_CHANGE_KEYBOARD_SHORTCUT,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_MAP),                            STR_THEMES_WINDOW_MAP,       COLOURS_2(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN                                                                   ) },
+    { THEME_WC(WC_BANNER),                         STR_THEMES_WINDOW_BANNER,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_EDITOR_OBJECT_SELECTION),        STR_THEMES_WINDOW_EDITOR_OBJECT_SELECTION,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
+    { THEME_WC(WC_EDITOR_INVENTION_LIST),          STR_THEMES_WINDOW_EDITOR_INVENTION_LIST,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
+    { THEME_WC(WC_EDITOR_SCENARIO_OPTIONS),        STR_THEMES_WINDOW_EDITOR_SCENARIO_OPTIONS,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
+    { THEME_WC(WC_EDTIOR_OBJECTIVE_OPTIONS),       STR_THEMES_WINDOW_EDTIOR_OBJECTIVE_OPTIONS,       COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
+    { THEME_WC(WC_MANAGE_TRACK_DESIGN),            STR_THEMES_WINDOW_MANAGE_TRACK_DESIGN,       COLOURS_3(COLOUR_GREY,                     COLOUR_GREY,                     COLOUR_GREY                                        ) },
+    { THEME_WC(WC_TRACK_DELETE_PROMPT),            STR_THEMES_WINDOW_TRACK_DELETE_PROMPT,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_INSTALL_TRACK),                  STR_THEMES_WINDOW_INSTALL_TRACK,       COLOURS_3(COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
+    { THEME_WC(WC_CLEAR_SCENERY),                  STR_THEMES_WINDOW_CLEAR_SCENERY,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_CHEATS),                         STR_CHEAT_TITLE,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_RESEARCH),                       STR_THEMES_WINDOW_RESEARCH,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_VIEWPORT),                       STR_THEMES_WINDOW_VIEWPORT,       COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_MAPGEN),                         STR_THEMES_WINDOW_MAPGEN,       COLOURS_3(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
+    { THEME_WC(WC_LOADSAVE),                       STR_THEMES_WINDOW_LOADSAVE,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_LOADSAVE_OVERWRITE_PROMPT),      STR_THEMES_WINDOW_LOADSAVE_OVERWRITE_PROMPT,       COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
+    { THEME_WC(WC_TITLE_OPTIONS),                  STR_THEMES_WINDOW_TITLE_MENU_OPTIONS,       COLOURS_3(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN)                     ) },
+    { THEME_WC(WC_LAND_RIGHTS),                    STR_THEMES_WINDOW_LAND_RIGHTS,       COLOURS_3(COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
+    { THEME_WC(WC_THEMES),                         STR_THEMES_WINDOW_THEMES,       COLOURS_3(COLOUR_GREY,                     COLOUR_DARK_GREEN,               COLOUR_DARK_GREEN                                  ) },
+    { THEME_WC(WC_STAFF),                          STR_THEMES_WINDOW_STAFF,       COLOURS_3(COLOUR_GREY,                     COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE                                ) },
+    { THEME_WC(WC_EDITOR_TRACK_BOTTOM_TOOLBAR),    STR_THEMES_WINDOW_BOTTOM_TOOLBAR_TRACK_EDITOR,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE)                     ) },
+    { THEME_WC(WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR), STR_THEMES_WINDOW_BOTTOM_TOOLBAR_SCENARIO_EDITOR,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_MOSS_GREEN)                     ) },
+    { THEME_WC(WC_TITLE_EDITOR),                   STR_TITLE_EDITOR_TITLE,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
+    { THEME_WC(WC_TILE_INSPECTOR),                 STR_TILE_INSPECTOR_TITLE,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_CHANGELOG),                      STR_CHANGELOG_TITLE,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_MULTIPLAYER),                    STR_MULTIPLAYER,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_PLAYER),                         STR_THEMES_WINDOW_PLAYER,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_NETWORK_STATUS),                 STR_THEMES_WINDOW_NETWORK_STATUS,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
+    { THEME_WC(WC_SERVER_LIST),                    STR_SERVER_LIST,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_CHAT),                           STR_CHAT,       COLOURS_1(TRANSLUCENT(COLOUR_GREY)                                                                                             ) },
 };
 
 #pragma endregion
@@ -240,7 +255,7 @@ static void ThrowThemeLoadException()
 json_t * UIThemeWindowEntry::ToJson() const
 {
     const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(WindowClass);
-        
+
     json_t * jsonColours = json_array();
     for (uint8 i = 0; i < wtDesc->NumColours; i++) {
         colour_t colour = Theme.Colours[i];
@@ -267,7 +282,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
     UIThemeWindowEntry result;
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
-    
+
     for (uint8 i = 0; i < numColours; i++)
     {
         result.Theme.Colours[i] = (colour_t)json_integer_value(json_array_get(jsonColours, i));
@@ -305,7 +320,7 @@ void UITheme::SetName(const utf8 * name)
 
 const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
 {
-    for (size_t i = 0; i < Entries.GetCount(); i++)
+    for (size_t i = 0; i < Entries.size(); i++)
     {
         const UIThemeWindowEntry * entry = &Entries[i];
         if (entry->WindowClass == windowClass)
@@ -319,7 +334,7 @@ const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
 void UITheme::SetEntry(const UIThemeWindowEntry * newEntry)
 {
     // Try to replace existing entry
-    for (size_t i = 0; i < Entries.GetCount(); i++)
+    for (size_t i = 0; i < Entries.size(); i++)
     {
         UIThemeWindowEntry * entry = &Entries[i];
         if (entry->WindowClass == newEntry->WindowClass)
@@ -329,18 +344,18 @@ void UITheme::SetEntry(const UIThemeWindowEntry * newEntry)
         }
     }
 
-    Entries.Add(*newEntry);
+    Entries.push_back(*newEntry);
 }
 
 void UITheme::RemoveEntry(rct_windowclass windowClass)
 {
     // Remove existing entry
-    for (size_t i = 0; i < Entries.GetCount(); i++)
+    for (size_t i = 0; i < Entries.size(); i++)
     {
         UIThemeWindowEntry * entry = &Entries[i];
         if (entry->WindowClass == windowClass)
         {
-            Entries.RemoveAt(i);
+            Entries.erase(Entries.begin() + i);
             break;
         }
     }
@@ -398,7 +413,6 @@ UITheme * UITheme::FromJson(const json_t * json)
     }
 
     json_t * jsonEntries = json_object_get(json, "entries");
-    size_t numEntries = json_object_size(jsonEntries);
 
     UITheme * result = nullptr;
     try
@@ -420,7 +434,6 @@ UITheme * UITheme::FromJson(const json_t * json)
 
         const char * jkey;
         json_t     * jvalue;
-        size_t       i = 0;
         json_object_foreach(jsonEntries, jkey, jvalue)
         {
             const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(jkey);
@@ -469,7 +482,7 @@ UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeWindowEntry * 
         numEntries++;
     }
 
-    theme.Entries = List<UIThemeWindowEntry>(entries, numEntries);
+    theme.Entries = std::vector<UIThemeWindowEntry>(entries, entries + numEntries);
     return theme;
 }
 
@@ -483,21 +496,21 @@ namespace ThemeManager
         utf8 Name[96];
     };
 
-    utf8 *               CurrentThemePath;
-    UITheme *            CurrentTheme;
-    List<AvailableTheme> AvailableThemes;
-    size_t               ActiveAvailableThemeIndex = SIZE_MAX;
-    size_t               NumPredefinedThemes = 0;
+    utf8 *                      CurrentThemePath;
+    UITheme *                   CurrentTheme;
+    std::vector<AvailableTheme> AvailableThemes;
+    size_t                      ActiveAvailableThemeIndex = SIZE_MAX;
+    size_t                      NumPredefinedThemes = 0;
 
     void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name);
     bool EnsureThemeDirectoryExists();
     void GetThemePath(utf8 * buffer, size_t bufferSize);
 
-    void GetAvailableThemes(List<AvailableTheme> * outThemes)
+    static void GetAvailableThemes(std::vector<AvailableTheme> * outThemes)
     {
-        Guard::ArgumentNotNull(outThemes);
+        Guard::ArgumentNotNull(outThemes, GUARD_LINE);
 
-        outThemes->Clear();
+        outThemes->clear();
 
         NumPredefinedThemes = 0;
         for (const UITheme * * predefinedTheme = PredefinedThemes; *predefinedTheme != nullptr; predefinedTheme++)
@@ -505,7 +518,7 @@ namespace ThemeManager
             AvailableTheme theme;
             String::Set(theme.Path, sizeof(theme.Path), String::Empty);
             String::Set(theme.Name, sizeof(theme.Name), (*predefinedTheme)->Name);
-            outThemes->Add(theme);
+            outThemes->push_back(theme);
 
             NumPredefinedThemes++;
         }
@@ -523,19 +536,19 @@ namespace ThemeManager
                 AvailableTheme theme;
                 Path::GetFileNameWithoutExtension(theme.Name, sizeof(theme.Name), fileInfo.path);
                 GetThemeFileName(theme.Path, sizeof(theme.Path), theme.Name);
-                
-                outThemes->Add(theme);
+
+                outThemes->push_back(theme);
 
                 if (Path::Equals(CurrentThemePath, fileInfo.path))
                 {
-                    ActiveAvailableThemeIndex = outThemes->GetCount() - 1;
+                    ActiveAvailableThemeIndex = outThemes->size() - 1;
                 }
             }
             platform_enumerate_files_end(handle);
         }
     }
 
-    void LoadTheme(UITheme * theme)
+    static void LoadTheme(UITheme * theme)
     {
         if (CurrentTheme == theme)
         {
@@ -556,7 +569,7 @@ namespace ThemeManager
         gfx_invalidate_screen();
     }
 
-    void LoadTheme(const utf8 * path)
+    static void LoadTheme(const utf8 * path)
     {
         UITheme * theme = UITheme::FromFile(path);
         if (theme == nullptr)
@@ -572,9 +585,9 @@ namespace ThemeManager
         }
     }
 
-    bool LoadThemeByName(const utf8 * name)
+    static bool LoadThemeByName(const utf8 * name)
     {
-        for (size_t i = 0; i < ThemeManager::AvailableThemes.GetCount(); i++)
+        for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
         {
             if (String::Equals(name, ThemeManager::AvailableThemes[i].Name))
             {
@@ -594,7 +607,7 @@ namespace ThemeManager
         return false;
     }
 
-    void Initialise()
+    static void Initialise()
     {
         ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
         LoadTheme((UITheme *)&PredefinedThemeRCT2);
@@ -608,7 +621,7 @@ namespace ThemeManager
                 configValid = true;
             }
         }
-        
+
         if (!configValid)
         {
             String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_name(1));
@@ -631,7 +644,7 @@ namespace ThemeManager
 
     void GetThemePath(utf8 * buffer, size_t bufferSize)
     {
-        platform_get_user_directory(buffer, "themes");
+        platform_get_user_directory(buffer, "themes", bufferSize);
     }
 }
 
@@ -644,7 +657,7 @@ extern "C"
 
     size_t theme_manager_get_num_available_themes()
     {
-        return ThemeManager::AvailableThemes.GetCount();
+        return ThemeManager::AvailableThemes.size();
     }
 
     const utf8 * theme_manager_get_available_theme_path(size_t index)
@@ -750,7 +763,7 @@ extern "C"
         ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
 
         theme_manager_load_available_themes();
-        for (size_t i = 0; i < ThemeManager::AvailableThemes.GetCount(); i++)
+        for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
         {
             if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
             {
@@ -778,7 +791,7 @@ extern "C"
         ThemeManager::LoadTheme(newPath);
 
         theme_manager_load_available_themes();
-        for (size_t i = 0; i < ThemeManager::AvailableThemes.GetCount(); i++)
+        for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
         {
             if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
             {
@@ -833,12 +846,8 @@ extern "C"
             windowTheme = &desc->DefaultTheme;
         }
 
-        bool transparent = false;
         for (int i = 0; i < 6; i++) {
             window->colours[i] = windowTheme->Colours[i];
-            if (windowTheme->Colours[i] & COLOUR_FLAG_TRANSLUCENT) {
-                transparent = true;
-            }
         }
         // Some windows need to be transparent even if the colours aren't.
         // There doesn't seem to be any side-effects for all windows being transparent

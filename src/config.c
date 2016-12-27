@@ -1,36 +1,28 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "addresses.h"
 #include "config.h"
 #include "interface/keyboard_shortcut.h"
 #include "interface/themes.h"
-#include "interface/title_sequences.h"
+#include "interface/viewport.h"
 #include "localisation/language.h"
 #include "localisation/localisation.h"
 #include "network/network.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "util/util.h"
-
-// Magic number for original game cfg file
-static const int MagicNumber = 0x0003113A;
 
 enum {
 	CONFIG_VALUE_TYPE_BOOLEAN,
@@ -72,14 +64,14 @@ typedef union {
 	utf8string value_string;
 } value_union;
 
-typedef struct {
+typedef struct config_enum_definition {
 	const_utf8string key;
 	value_union value;
 } config_enum_definition;
 
 #define END_OF_ENUM { NULL, 0 }
 
-typedef struct {
+typedef struct config_property_definition {
 	size_t offset;
 	const_utf8string property_name;
 	uint8 type;
@@ -87,7 +79,7 @@ typedef struct {
 	config_enum_definition *enum_definitions;
 } config_property_definition;
 
-typedef struct {
+typedef struct config_section_definition {
 	void *base_address;
 	const_utf8string section_name;
 	config_property_definition *property_definitions;
@@ -96,9 +88,10 @@ typedef struct {
 
 #pragma region Enum definitions
 
-config_enum_definition _screenShotFormatEnum[] = {
-	{ "BMP", SCREENSHOT_FORMAT_BMP },
-	{ "PNG", SCREENSHOT_FORMAT_PNG },
+config_enum_definition _drawingEngineFormatEnum[] = {
+	{ "SOFTWARE", DRAWING_ENGINE_SOFTWARE },
+	{ "SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY },
+	{ "OPENGL", DRAWING_ENGINE_OPENGL },
 	END_OF_ENUM
 };
 
@@ -135,6 +128,12 @@ config_enum_definition _currencyEnum[] = {
 	END_OF_ENUM
 };
 
+config_enum_definition _currencySymbolAffixEnum[] = {
+	{ "PREFIX", CURRENCY_PREFIX },
+	{ "SUFFIX", CURRENCY_SUFFIX },
+	END_OF_ENUM
+};
+
 config_enum_definition _languageEnum[] = {
 	{ "en-GB", 	LANGUAGE_ENGLISH_UK },
 	{ "en-US", 	LANGUAGE_ENGLISH_US },
@@ -147,13 +146,14 @@ config_enum_definition _languageEnum[] = {
 	{ "sv-SE", 	LANGUAGE_SWEDISH },
 	{ "it-IT", 	LANGUAGE_ITALIAN },
 	{ "pt-BR", 	LANGUAGE_PORTUGUESE_BR },
-	{ "zh-Hant",LANGUAGE_CHINESE_TRADITIONAL },
-	{ "zh-Hans",LANGUAGE_CHINESE_SIMPLIFIED },
+	{ "zh-TW",	LANGUAGE_CHINESE_TRADITIONAL },
+	{ "zh-CN",	LANGUAGE_CHINESE_SIMPLIFIED },
 	{ "fi-FI", 	LANGUAGE_FINNISH },
-	{ "ko", 	LANGUAGE_KOREAN },
+	{ "ko-KR", 	LANGUAGE_KOREAN },
 	{ "ru-RU", 	LANGUAGE_RUSSIAN },
-	{ "cz-CZ", 	LANGUAGE_CZECH },
-	{ "jp-JP", 	LANGUAGE_JAPANESE },
+	{ "cs-CZ", 	LANGUAGE_CZECH },
+	{ "ja-JP", 	LANGUAGE_JAPANESE },
+	{ "nb-NO",	LANGUAGE_NORWEGIAN },
 	END_OF_ENUM
 };
 
@@ -175,6 +175,9 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, confirmation_prompt),				"confirmation_prompt",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, construction_marker_colour),		"construction_marker_colour",	CONFIG_VALUE_TYPE_UINT8,		false,							NULL					},
 	{ offsetof(general_configuration, currency_format),					"currency_format",				CONFIG_VALUE_TYPE_UINT8,		CURRENCY_POUNDS,				_currencyEnum			},
+	{ offsetof(general_configuration, custom_currency_rate),			"custom_currency_rate",			CONFIG_VALUE_TYPE_SINT32,		10,								NULL					},
+	{ offsetof(general_configuration, custom_currency_affix),			"custom_currency_affix",		CONFIG_VALUE_TYPE_SINT8,		CURRENCY_SUFFIX,				_currencySymbolAffixEnum},
+	{ offsetof(general_configuration, custom_currency_symbol),			"custom_currency_symbol",		CONFIG_VALUE_TYPE_STRING,		{ .value_string = "Ctm" },		NULL					},
 	{ offsetof(general_configuration, edge_scrolling),					"edge_scrolling",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, fullscreen_mode),					"fullscreen_mode",				CONFIG_VALUE_TYPE_UINT8,		0,								NULL					},
 	{ offsetof(general_configuration, fullscreen_height),				"fullscreen_height",			CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
@@ -184,30 +187,29 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, language),						"language",						CONFIG_VALUE_TYPE_UINT16,		LANGUAGE_ENGLISH_UK,			_languageEnum			},
 	{ offsetof(general_configuration, measurement_format),				"measurement_format",			CONFIG_VALUE_TYPE_UINT8,		MEASUREMENT_FORMAT_METRIC,	_measurementFormatEnum	},
 	{ offsetof(general_configuration, play_intro),						"play_intro",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(general_configuration, save_plugin_data),				"save_plugin_data",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, save_plugin_data),				"save_plugin_data",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, debugging_tools),					"debugging_tools",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(general_configuration, screenshot_format),				"screenshot_format",			CONFIG_VALUE_TYPE_UINT8,		SCREENSHOT_FORMAT_PNG,			_screenShotFormatEnum	},
 	{ offsetof(general_configuration, show_height_as_units),			"show_height_as_units",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, temperature_format),				"temperature_format",			CONFIG_VALUE_TYPE_UINT8,		TEMPERATURE_FORMAT_C,			_temperatureFormatEnum	},
 	{ offsetof(general_configuration, window_height),					"window_height",				CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
 	{ offsetof(general_configuration, window_snap_proximity),			"window_snap_proximity",		CONFIG_VALUE_TYPE_UINT8,		5,								NULL					},
 	{ offsetof(general_configuration, window_width),					"window_width",					CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
-	{ offsetof(general_configuration, hardware_display),				"hardware_display",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, drawing_engine),					"drawing_engine",				CONFIG_VALUE_TYPE_UINT8,		DRAWING_ENGINE_SOFTWARE,		_drawingEngineFormatEnum},
 	{ offsetof(general_configuration, uncap_fps),						"uncap_fps",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					}, //Default config setting is false until ghost trains are implemented #4540
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, date_format),						"date_format",					CONFIG_VALUE_TYPE_UINT8,		DATE_FORMAT_DMY,				_dateFormatEnum			},
-	{ offsetof(general_configuration, auto_staff_placement),			"auto_staff",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, auto_staff_placement),			"auto_staff",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, handymen_mow_default),			"handymen_mow_default",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, default_inspection_interval),		"default_inspection_interval",	CONFIG_VALUE_TYPE_UINT8,		2,								NULL					},
 	{ offsetof(general_configuration, last_run_version),				"last_run_version",				CONFIG_VALUE_TYPE_STRING,		{ .value_string = NULL },		NULL					},
 	{ offsetof(general_configuration, invert_viewport_drag),			"invert_viewport_drag",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, load_save_sort),					"load_save_sort",				CONFIG_VALUE_TYPE_UINT8,		SORT_NAME_ASCENDING,			NULL					},
 	{ offsetof(general_configuration, minimize_fullscreen_focus_loss),	"minimize_fullscreen_focus_loss",CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
-	{ offsetof(general_configuration, day_night_cycle),					"day_night_cycle",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, day_night_cycle),					"day_night_cycle",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					}, //Default config setting is false until the games canvas can be seperated from the effect
 	{ offsetof(general_configuration, upper_case_banners),				"upper_case_banners",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, disable_lightning_effect),		"disable_lightning_effect",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
-	{ offsetof(general_configuration, allow_loading_with_incorrect_checksum),"allow_loading_with_incorrect_checksum",	CONFIG_VALUE_TYPE_BOOLEAN,		false,			NULL					},
+	{ offsetof(general_configuration, allow_loading_with_incorrect_checksum),"allow_loading_with_incorrect_checksum",	CONFIG_VALUE_TYPE_BOOLEAN,		true,			NULL					},
 	{ offsetof(general_configuration, steam_overlay_pause),				"steam_overlay_pause",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, window_scale),					"window_scale",					CONFIG_VALUE_TYPE_FLOAT,		{ .value_float = 1.0f },		NULL					},
 	{ offsetof(general_configuration, scale_quality),					"scale_quality",				CONFIG_VALUE_TYPE_UINT8,		1,								NULL					},
@@ -218,11 +220,18 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, scenario_select_mode),			"scenario_select_mode",			CONFIG_VALUE_TYPE_UINT8,		SCENARIO_SELECT_MODE_ORIGIN,	NULL					},
 	{ offsetof(general_configuration, scenario_unlocking_enabled),		"scenario_unlocking_enabled",	CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(general_configuration, scenario_hide_mega_park),			"scenario_hide_mega_park",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
-
+	{ offsetof(general_configuration, last_save_game_directory),        "last_game_directory",          CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
+	{ offsetof(general_configuration, last_save_landscape_directory),   "last_landscape_directory",     CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
+	{ offsetof(general_configuration, last_save_scenario_directory),    "last_scenario_directory",      CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
+	{ offsetof(general_configuration, last_save_track_directory),       "last_track_directory",         CONFIG_VALUE_TYPE_STRING,       { .value_string = NULL },       NULL                    },
+	{ offsetof(general_configuration, window_limit),					"window_limit",					CONFIG_VALUE_TYPE_UINT8,		WINDOW_LIMIT_MAX,				NULL					},
+	{ offsetof(general_configuration, zoom_to_cursor),					"zoom_to_cursor",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_effects),			"render_weather_effects",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
+	{ offsetof(general_configuration, render_weather_gloom),			"render_weather_gloom",			CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 };
 
 config_property_definition _interfaceDefinitions[] = {
-	{ offsetof(interface_configuration, toolbar_show_finances),			"toolbar_show_finances",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(interface_configuration, toolbar_show_finances),			"toolbar_show_finances",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(interface_configuration, toolbar_show_research),			"toolbar_show_research",		CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(interface_configuration, toolbar_show_cheats),			"toolbar_show_cheats",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(interface_configuration, toolbar_show_news),				"toolbar_show_news",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
@@ -258,14 +267,17 @@ config_property_definition _networkDefinitions[] = {
 	{ offsetof(network_configuration, default_port),					"default_port",					CONFIG_VALUE_TYPE_UINT32,		NETWORK_DEFAULT_PORT,			NULL					},
 	{ offsetof(network_configuration, default_password),				"default_password",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL		},	NULL					},
 	{ offsetof(network_configuration, stay_connected),					"stay_connected",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
-	{ offsetof(network_configuration, advertise),						"advertise",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(network_configuration, advertise),						"advertise",					CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
 	{ offsetof(network_configuration, maxplayers),						"maxplayers",					CONFIG_VALUE_TYPE_UINT8,		16,								NULL					},
 	{ offsetof(network_configuration, server_name),						"server_name",					CONFIG_VALUE_TYPE_STRING,		{.value_string = "Server" },	NULL					},
 	{ offsetof(network_configuration, server_description),				"server_description",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(network_configuration, server_greeting),					"server_greeting",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
 	{ offsetof(network_configuration, master_server_url),				"master_server_url",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
 	{ offsetof(network_configuration, provider_name),					"provider_name",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
 	{ offsetof(network_configuration, provider_email),					"provider_email",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
-	{ offsetof(network_configuration, provider_website),				"provider_website",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					}
+	{ offsetof(network_configuration, provider_website),				"provider_website",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(network_configuration, known_keys_only),					"known_keys_only",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(network_configuration, log_chat),						"log_chat",						CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 };
 
 config_property_definition _notificationsDefinitions[] = {
@@ -288,6 +300,21 @@ config_property_definition _notificationsDefinitions[] = {
 	{ offsetof(notification_configuration, guest_died),							"guest_died",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
 };
 
+config_property_definition _fontsDefinitions[] = {
+	{ offsetof(font_configuration, file_name),				"file_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, font_name),				"font_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, x_offset),				"x_offset",				CONFIG_VALUE_TYPE_SINT8,		0,								NULL			},
+	{ offsetof(font_configuration, y_offset),				"y_offset",				CONFIG_VALUE_TYPE_SINT8,		-1,								NULL			},
+	{ offsetof(font_configuration, size_tiny),				"size_tiny",			CONFIG_VALUE_TYPE_UINT8,		8,								NULL			},
+	{ offsetof(font_configuration, size_small),				"size_small",			CONFIG_VALUE_TYPE_UINT8,		10,								NULL			},
+	{ offsetof(font_configuration, size_medium),			"size_medium",			CONFIG_VALUE_TYPE_UINT8,		11,								NULL			},
+	{ offsetof(font_configuration, size_big),				"size_big",				CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_tiny),			"height_tiny",			CONFIG_VALUE_TYPE_UINT8,		6,								NULL			},
+	{ offsetof(font_configuration, height_small),			"height_small",			CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_medium),			"height_medium",		CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_big),				"height_big",			CONFIG_VALUE_TYPE_UINT8,		20,								NULL			}
+};
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
@@ -295,6 +322,7 @@ config_section_definition _sectionDefinitions[] = {
 	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
 	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) },
 	{ &gConfigNotifications, "notifications", _notificationsDefinitions, countof(_notificationsDefinitions) },
+	{ &gConfigFonts, "fonts", _fontsDefinitions, countof(_fontsDefinitions) }
 };
 
 #pragma endregion
@@ -305,7 +333,7 @@ sound_configuration gConfigSound;
 twitch_configuration gConfigTwitch;
 network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
-title_sequences_configuration gConfigTitleSequences;
+font_configuration gConfigFonts;
 
 static bool config_open(const utf8string path);
 static bool config_save(const utf8string path);
@@ -316,8 +344,6 @@ static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, c
 
 static void utf8_skip_whitespace(utf8 **outch);
 static void utf8_skip_non_whitespace(utf8 **outch);
-
-void config_apply_to_old_addresses();
 
 static int rwopsreadc(SDL_RWops *file)
 {
@@ -343,7 +369,7 @@ static void rwopsprintf(SDL_RWops *file, const char *format, ...)
 	va_start(args, format);
 
 	char buffer[64];
-	vsprintf(buffer, format, args);
+	vsnprintf(buffer, 64, format, args);
 
 	SDL_RWwrite(file, buffer, strlen(buffer), 1);
 
@@ -352,7 +378,7 @@ static void rwopsprintf(SDL_RWops *file, const char *format, ...)
 
 static void rwopswritenewline(SDL_RWops *file)
 {
-	rwopswritestr(file, platform_get_new_line());
+	rwopswritestr(file, PLATFORM_NEWLINE);
 }
 
 static void rwopswritestresc(SDL_RWops *file, const char *str) {
@@ -405,8 +431,8 @@ void config_set_defaults()
 				if (username) {
 					destValue->value_string = _strdup(username);
 				} else {
-					destValue->value_string = _strdup(language_get_string(STR_PLAYER_DEFAULT_NAME));
-				}				
+					destValue->value_string = _strdup(language_get_string(STR_MULTIPLAYER_DEFAULT_NAME));
+				}
 			}
 			else {
 				// Use static default
@@ -440,19 +466,19 @@ void config_release()
 	}
 }
 
-void config_get_default_path(utf8 *outPath)
+void config_get_default_path(utf8 *outPath, size_t size)
 {
-	platform_get_user_directory(outPath, NULL);
-	strcat(outPath, "config.ini");
+	platform_get_user_directory(outPath, NULL, size);
+	safe_strcat_path(outPath, "config.ini", size);
 }
 
 bool config_open_default()
 {
 	utf8 path[MAX_PATH];
 
-	config_get_default_path(path);
+	config_get_default_path(path, sizeof(path));
 	if (config_open(path)) {
-		config_apply_to_old_addresses();
+		currency_load_custom_currency_config();
 		return true;
 	}
 
@@ -463,9 +489,8 @@ bool config_save_default()
 {
 	utf8 path[MAX_PATH];
 
-	config_get_default_path(path);
+	config_get_default_path(path, sizeof(path));
 	if (config_save(path)) {
-		config_apply_to_old_addresses();
 		return true;
 	}
 
@@ -601,7 +626,7 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 	}
 }
 
-bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
+static bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
 {
 	utf8 *ch;
 	int c;
@@ -618,11 +643,11 @@ bool config_get_section(const utf8string line, const utf8 **sectionName, int *se
 		if (c == ']') break;
 	}
 
-	*sectionNameSize = ch - *sectionName - 1;
+	*sectionNameSize = (int)(ch - *sectionName - 1);
 	return true;
 }
 
-bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
+static bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
 {
 	utf8 *ch, *clast;
 	int c;
@@ -638,7 +663,7 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
 			if (c == '=') equals = true;
-			*propertyNameSize = ch - *propertyName - 1;
+			*propertyNameSize = (int)(ch - *propertyName - 1);
 			break;
 		} else if (c == '#') {
 			return false;
@@ -669,19 +694,19 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 			if (c != ' ') clast = ch;
 		}
 	}
-	if (!quotes) *valueSize = clast - *value;
-	else *valueSize = ch - *value - 1;
+	if (!quotes) *valueSize = (int)(clast - *value);
+	else *valueSize = (int)(ch - *value - 1);
 	if (quotes) (*valueSize)--;
 	return true;
 }
 
-config_section_definition *config_get_section_def(const utf8 *name, int size)
+static config_section_definition *config_get_section_def(const utf8 *name, int size)
 {
 	int i;
 
 	for (i = 0; i < countof(_sectionDefinitions); i++) {
 		const_utf8string sectionName = _sectionDefinitions[i].section_name;
-		const int sectionNameSize = strnlen(sectionName, size);
+		int sectionNameSize = (int)strnlen(sectionName, size);
 		if (sectionNameSize == size && sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
 			return &_sectionDefinitions[i];
 	}
@@ -689,13 +714,13 @@ config_section_definition *config_get_section_def(const utf8 *name, int size)
 	return NULL;
 }
 
-config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
+static config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
 {
 	int i;
 
 	for (i = 0; i < section->property_definitions_count; i++) {
 		const_utf8string propertyName = section->property_definitions[i].property_name;
-		const int propertyNameSize = strnlen(propertyName, size);
+		int propertyNameSize = (int)strnlen(propertyName, size);
 		if (propertyNameSize == size && propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
 		{
 			return &section->property_definitions[i];
@@ -729,12 +754,12 @@ static utf8string escape_string(const utf8 *value, int valueSize) {
 	return escaped;
 }
 
-void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
+static void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
 {
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
 	if (property->enum_definitions != NULL)
-		if (config_read_enum(destValue, _configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+		if (config_read_enum(destValue, (int)_configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
 			return;
 
 	switch (property->type) {
@@ -787,7 +812,7 @@ static void config_read_properties(config_section_definition **currentSection, c
 	} else {
 		if (*currentSection != NULL) {
 			utf8 *propertyName, *value;
-			int propertyNameSize, valueSize;
+			int propertyNameSize = 0, valueSize;
 			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
 				config_property_definition *property;
 				property = config_get_property_def(*currentSection, propertyName, propertyNameSize);
@@ -884,6 +909,10 @@ static bool config_find_rct2_path(utf8 *resultPath)
 		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		"C:\\Program Files\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		"C:\\Program Files (x86)\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		"C:\\Program Files\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2",
+		"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2",
 		gExePath
 	};
 
@@ -908,20 +937,19 @@ bool config_find_or_browse_install_directory()
 		safe_strcpy(gConfigGeneral.game_path, path, MAX_PATH);
 	} else {
 		while (1) {
-			platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+			platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
 			installPath = platform_open_directory_browser("Please select your RCT2 directory");
 			if (installPath == NULL)
 				return false;
 
 			SafeFree(gConfigGeneral.game_path);
 			gConfigGeneral.game_path = installPath;
-			
+
 			if (platform_original_game_data_exists(installPath))
 				return true;
 
-			utf8 message[MAX_PATH] = { 0 };
-			char separator = platform_get_path_separator();
-			sprintf(message, "Could not find %s%cData%cg1.dat at this path", installPath, separator, separator);
+			utf8 message[MAX_PATH];
+			snprintf(message, MAX_PATH, "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath);
 			platform_show_messagebox(message);
 		}
 	}
@@ -929,59 +957,7 @@ bool config_find_or_browse_install_directory()
 	return true;
 }
 
-#pragma region Obsolete
-
-/**
- * Any code not implemented in OpenRCT2 will still uses the old configuration option addresses. This function copies all the
- * OpenRCT2 configuration options to those addresses until the process is no longer necessary.
- */
-void config_apply_to_old_addresses()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	if (gConfigGeneral.show_height_as_units) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
-	} else {
-		switch (gConfigGeneral.measurement_format) {
-		default:
-		case MEASUREMENT_FORMAT_IMPERIAL:
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 1 * 256;
-			break;
-		case MEASUREMENT_FORMAT_METRIC:
-		case MEASUREMENT_FORMAT_SI:
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 2 * 256;
-			break;
-		}
-	}
-	int configFlags = 0;
-	if (gConfigGeneral.always_show_gridlines)
-		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;
-	if (!gConfigGeneral.landscape_smoothing)
-		configFlags |= CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE;
-	if (gConfigGeneral.show_height_as_units)
-		configFlags |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
-	if (gConfigGeneral.save_plugin_data)
-		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
-}
-
-#pragma endregion
-
 #pragma region Shortcuts
-
-#define SHIFT 0x100
-#define CTRL 0x200
-#define ALT 0x400
-#define CMD 0x800
-#ifdef __MACOSX__
-	#define PLATFORM_MODIFIER CMD
-#else
-	#define PLATFORM_MODIFIER CTRL
-#endif
 
 // Current keyboard shortcuts
 uint16 gShortcutKeys[SHORTCUT_COUNT];
@@ -1035,6 +1011,12 @@ static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] = {
 	PLATFORM_MODIFIER | SDL_SCANCODE_F10,	// SHORTCUT_QUICK_SAVE_GAME
 
 	SHORTCUT_UNDEFINED,					// SHORTCUT_SHOW_OPTIONS
+	SHORTCUT_UNDEFINED,					// SHORTCUT_MUTE_SOUND
+	ALT | SDL_SCANCODE_RETURN,			// SHORTCUT_WINDOWED_MODE_TOGGLE
+	SHORTCUT_UNDEFINED,					// SHORTCUT_SHOW_MULTIPLAYER
+	SHORTCUT_UNDEFINED,					// SHORTCUT_PAINT_ORIGINAL_TOGGLE
+	SHORTCUT_UNDEFINED,					// SHORTCUT_DEBUG_PAINT_TOGGLE
+	SHORTCUT_UNDEFINED,					// SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
 };
 
 #define SHORTCUT_FILE_VERSION 1
@@ -1048,10 +1030,10 @@ void config_reset_shortcut_keys()
 	memcpy(gShortcutKeys, _defaultShortcutKeys, sizeof(gShortcutKeys));
 }
 
-void config_shortcut_keys_get_path(utf8 *outPath)
+static void config_shortcut_keys_get_path(utf8 *outPath, size_t size)
 {
-	platform_get_user_directory(outPath, NULL);
-	strcat(outPath, "hotkeys.cfg");
+	platform_get_user_directory(outPath, NULL, size);
+	safe_strcat_path(outPath, "hotkeys.cfg", size);
 }
 
 bool config_shortcut_keys_load()
@@ -1061,7 +1043,7 @@ bool config_shortcut_keys_load()
 	bool result;
 	uint16 version;
 
-	config_shortcut_keys_get_path(path);
+	config_shortcut_keys_get_path(path, sizeof(path));
 
 	file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
@@ -1091,7 +1073,7 @@ bool config_shortcut_keys_save()
 	SDL_RWops *file;
 	bool result;
 
-	config_shortcut_keys_get_path(path);
+	config_shortcut_keys_get_path(path, sizeof(path));
 
 	file = SDL_RWFromFile(path, "wb");
 	if (file != NULL) {
@@ -1106,278 +1088,5 @@ bool config_shortcut_keys_save()
 
 	return result;
 }
-
-#pragma endregion
-
-#pragma region Title Sequences
-
-static void title_sequence_open(const char *path, const char *customName);
-
-void title_sequences_set_default()
-{
-	char path[MAX_PATH];
-	char dataPath[MAX_PATH];
-	char sep = platform_get_path_separator();
-
-	platform_get_user_directory(path, "title sequences");
-	platform_ensure_directory_exists(path);
-
-	gConfigTitleSequences.presets = malloc(0);
-	gConfigTitleSequences.num_presets = 0;
-
-	platform_get_openrct_data_path(dataPath);
-
-	// RCT1 title sequence
-	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1", sep);
-	title_sequence_open(path, language_get_string(5305));
-
-	// RCT1 (AA) title sequence
-	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aa", sep);
-	title_sequence_open(path, language_get_string(5306));
-
-	// RCT1 (AA + LL) title sequence
-	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aall", sep);
-	title_sequence_open(path, language_get_string(5307));
-
-	// RCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct2", sep);
-	title_sequence_open(path, language_get_string(5308));
-
-	// OpenRCT2 title sequence
-	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "openrct2", sep);
-	title_sequence_open(path, language_get_string(5309));
-}
-
-void title_sequences_load_presets()
-{
-	utf8 path[MAX_PATH], titleDir[MAX_PATH];
-	int dirEnumHandle, i;
-
-	// Find all directories in the title sequences folder
-	platform_get_user_directory(path, "title sequences");
-	dirEnumHandle = platform_enumerate_directories_begin(path);
-	while (platform_enumerate_directories_next(dirEnumHandle, titleDir)) {
-		platform_get_user_directory(path, "title sequences");
-		strcat(path, titleDir);
-		title_sequence_open(path, NULL);
-	}
-	platform_enumerate_directories_end(dirEnumHandle);
-
-	// Check which title sequence is the current one
-	if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1") == 0) {
-		gCurrentTitleSequence = 0;
-	}
-	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1AA") == 0) {
-		gCurrentTitleSequence = 1;
-	}
-	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT1AALL") == 0) {
-		gCurrentTitleSequence = 2;
-	}
-	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*RCT2") == 0) {
-		gCurrentTitleSequence = 3;
-	}
-	else if (_stricmp(gConfigInterface.current_title_sequence_preset, "*OPENRCT2") == 0) {
-		gCurrentTitleSequence = 4;
-	}
-	else {
-		for (i = TITLE_SEQUENCE_DEFAULT_PRESETS; i < gConfigTitleSequences.num_presets; i++) {
-			if (_stricmp(gConfigInterface.current_title_sequence_preset, gConfigTitleSequences.presets[i].name) == 0) {
-				gCurrentTitleSequence = i;
-				break;
-			}
-		}
-		if (i == gConfigTitleSequences.num_presets) {
-			gCurrentTitleSequence = 0;
-		}
-	}
-	gCurrentPreviewTitleSequence = gCurrentTitleSequence;
-}
-
-static void title_sequence_open(const char *path, const char *customName)
-{
-	utf8 titlePath[MAX_PATH], scriptPath[MAX_PATH];
-	file_info fileInfo;
-	SDL_RWops *file;
-	int fileEnumHandle, i, preset;
-	char parts[3 * 128], *token, *part1, *part2;
-	char separator = platform_get_path_separator();
-
-	// Check for the script file
-	safe_strcpy(scriptPath, path, MAX_PATH);
-	strcat(scriptPath, "script.txt");
-	if (!platform_file_exists(scriptPath)) {
-		// No script file, title sequence is invalid
-		return;
-	}
-
-	// Check if the preset is already loaded
-	// No nead to read the first two presets as they're hardcoded in
-	for (preset = 0; preset < gConfigTitleSequences.num_presets; preset++) {
-		if (_stricmp(path, gConfigTitleSequences.presets[preset].name) == 0) {
-			return;
-		}
-	}
-	// Otherwise allocate one
-	if (preset == gConfigTitleSequences.num_presets) {
-		gConfigTitleSequences.num_presets++;
-		gConfigTitleSequences.presets = realloc(gConfigTitleSequences.presets, sizeof(title_sequence) * (size_t)gConfigTitleSequences.num_presets);
-
-		if (customName == NULL) {
-			char nameBuffer[MAX_PATH];
-			safe_strcpy(nameBuffer, path, MAX_PATH);
-			// Get folder name
-			// First strip off the last folder separator
-			*strrchr(nameBuffer, platform_get_path_separator()) = '\0';
-			// Then find the name of the folder
-			char *name = strrchr(nameBuffer, platform_get_path_separator()) + 1;
-			safe_strcpy(gConfigTitleSequences.presets[preset].name, name, TITLE_SEQUENCE_NAME_SIZE);
-			gConfigTitleSequences.presets[preset].path[0] = 0;
-		}
-		else {
-			safe_strcpy(gConfigTitleSequences.presets[preset].name, customName, TITLE_SEQUENCE_NAME_SIZE);
-			safe_strcpy(gConfigTitleSequences.presets[preset].path, path, MAX_PATH);
-		}
-
-		gConfigTitleSequences.presets[preset].saves = malloc(0);
-		gConfigTitleSequences.presets[preset].commands = malloc(0);
-		gConfigTitleSequences.presets[preset].num_saves = 0;
-		gConfigTitleSequences.presets[preset].num_commands = 0;
-	}
-
-	// Get the save file list
-	safe_strcpy(titlePath, path, MAX_PATH);
-	strcat(titlePath, "*.sv6");
-	fileEnumHandle = platform_enumerate_files_begin(titlePath);
-	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		gConfigTitleSequences.presets[preset].num_saves++;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		safe_strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
-		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
-	}
-	platform_enumerate_files_end(fileEnumHandle);
-	safe_strcpy(titlePath, path, MAX_PATH);
-	strcat(titlePath, "*.sc6");
-	fileEnumHandle = platform_enumerate_files_begin(titlePath);
-	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		gConfigTitleSequences.presets[preset].num_saves++;
-		gConfigTitleSequences.presets[preset].saves = realloc(gConfigTitleSequences.presets[preset].saves, sizeof(char[TITLE_SEQUENCE_MAX_SAVE_LENGTH]) * (size_t)gConfigTitleSequences.presets[preset].num_saves);
-		safe_strcpy(gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1], fileInfo.path, TITLE_SEQUENCE_MAX_SAVE_LENGTH);
-		gConfigTitleSequences.presets[preset].saves[gConfigTitleSequences.presets[preset].num_saves - 1][TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1] = '\0';
-	}
-	platform_enumerate_files_end(fileEnumHandle);
-
-	// Load the script file
-	file = SDL_RWFromFile(scriptPath, "r");
-	sint64 fileSize = SDL_RWsize(file);
-	do {
-		title_script_get_line(file, parts);
-
-		token = &parts[0 * 128];
-		part1 = &parts[1 * 128];
-		part2 = &parts[2 * 128];
-		title_command command = { 0 };
-		command.command = 0xFF;
-
-		if (token[0] != 0) {
-			if (_stricmp(token, "LOAD") == 0) {
-				command.command = TITLE_SCRIPT_LOAD;
-				command.saveIndex = 0xFF;
-				for (i = 0; i < gConfigTitleSequences.presets[preset].num_saves && command.saveIndex == 0xFF; i++) {
-					if (_stricmp(part1, gConfigTitleSequences.presets[preset].saves[i]) == 0)
-						command.saveIndex = i;
-				}
-			} else if (_stricmp(token, "LOCATION") == 0) {
-				command.command = TITLE_SCRIPT_LOCATION;
-				command.x = atoi(part1) & 0xFF;
-				command.y = atoi(part2) & 0xFF;
-			} else if (_stricmp(token, "ROTATE") == 0) {
-				command.command = TITLE_SCRIPT_ROTATE;
-				command.rotations = atoi(part1) & 0xFF;
-			} else if (_stricmp(token, "ZOOM") == 0) {
-				command.command = TITLE_SCRIPT_ZOOM;
-				command.zoom = atoi(part1) & 0xFF;
-			} else if (_stricmp(token, "SPEED") == 0) {
-				command.command = TITLE_SCRIPT_SPEED;
-				command.speed = max(1, min(4, atoi(part1) & 0xFF));
-			} else if (_stricmp(token, "WAIT") == 0) {
-				command.command = TITLE_SCRIPT_WAIT;
-				command.seconds = atoi(part1) & 0xFF;
-			} else if (_stricmp(token, "RESTART") == 0) {
-				command.command = TITLE_SCRIPT_RESTART;
-			} else if (_stricmp(token, "END") == 0) {
-				command.command = TITLE_SCRIPT_END;
-			} else if (_stricmp(token, "LOADMM") == 0) {
-				command.command = TITLE_SCRIPT_LOADMM;
-			} else if (_stricmp(token, "LOADRCT1") == 0) {
-				command.command = TITLE_SCRIPT_LOADRCT1;
-				command.saveIndex = atoi(part1) & 0xFF;
-			}
-		}
-		if (command.command != 0xFF) {
-			gConfigTitleSequences.presets[preset].num_commands++;
-			gConfigTitleSequences.presets[preset].commands = realloc(gConfigTitleSequences.presets[preset].commands, sizeof(title_command) * (size_t)gConfigTitleSequences.presets[preset].num_commands);
-			gConfigTitleSequences.presets[preset].commands[gConfigTitleSequences.presets[preset].num_commands - 1] = command;
-		}
-	} while (SDL_RWtell(file) < fileSize);
-	SDL_RWclose(file);
-}
-
-void title_sequence_save_preset_script(int preset)
-{
-	utf8 path[MAX_PATH];
-	SDL_RWops *file;
-	int i;
-	char separator = platform_get_path_separator();
-
-
-	platform_get_user_directory(path, "title sequences");
-	strcat(path, gConfigTitleSequences.presets[preset].name);
-	strncat(path, &separator, 1);
-	strcat(path, "script.txt");
-
-	file = SDL_RWFromFile(path, "wb");
-	if (file == NULL) {
-		log_error("Unable to write to script file.");
-		return;
-	}
-
-	for (i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
-		title_command *command = &gConfigTitleSequences.presets[preset].commands[i];
-		switch (command->command) {
-		case TITLE_SCRIPT_LOAD:
-			if (command->saveIndex == 0xFF)
-				rwopsprintf(file, "LOAD <No save file>");
-			else
-				rwopsprintf(file, "LOAD %s", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
-			break;
-		case TITLE_SCRIPT_LOCATION:
-			rwopsprintf(file, "LOCATION %i %i", command->x, command->y);
-			break;
-		case TITLE_SCRIPT_ROTATE:
-			rwopsprintf(file, "ROTATE %i", command->rotations);
-			break;
-		case TITLE_SCRIPT_ZOOM:
-			rwopsprintf(file, "ZOOM %i", command->zoom);
-			break;
-		case TITLE_SCRIPT_SPEED:
-			rwopsprintf(file, "SPEED %i", command->speed);
-			break;
-		case TITLE_SCRIPT_WAIT:
-			rwopsprintf(file, "WAIT %i", command->seconds);
-			rwopswritenewline(file);
-			break;
-		case TITLE_SCRIPT_RESTART:
-			rwopsprintf(file, "RESTART");
-			break;
-		case TITLE_SCRIPT_END:
-			rwopsprintf(file, "END");
-			break;
-		}
-		rwopswritenewline(file);
-	}
-
-	SDL_RWclose(file);
-}
-
 
 #pragma endregion

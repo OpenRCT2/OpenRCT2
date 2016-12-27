@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _DATE_H_
 #define _DATE_H_
@@ -43,13 +39,25 @@ enum {
 	DATE_FORMAT_YEAR_DAY_MONTH
 };
 
+typedef struct openrct_timeofday {
+	uint8 second;
+	uint8 minute;
+	uint8 hour;
+} openrct_timeofday;
+
 extern const sint16 days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
+
+extern uint16 gDateMonthTicks;
+extern uint16 gDateMonthsElapsed;
+
+extern openrct_timeofday gRealTimeOfDay;
 
 int date_get_month(int months);
 int date_get_year(int months);
 int date_get_total_months(int month, int year);
 void date_reset();
+void date_update_real_time_of_day();
 
 #endif

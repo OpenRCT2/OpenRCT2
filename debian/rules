@@ -2,12 +2,5 @@
 
 BUILDDIR=build_dir
 
-build:
-	scripts/linux/install.sh
-	mkdir $(BUILDDIR)
-	cd $(BUILDDIR); cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-	make -C $(BUILDDIR)
-	touch build
-
 %:
 	dh $@

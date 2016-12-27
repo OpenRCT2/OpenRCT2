@@ -1,6 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include "../core/Guard.hpp"
+
 extern "C"
 {
     #include "../platform/platform.h"
+    #include "../OpenRCT2.h"
 }
 
 #include "../core/Console.hpp"
@@ -56,7 +75,7 @@ bool CommandLineArgEnumerator::TryPopInteger(sint32 * result)
         *result = (sint32)atol(arg);
         return true;
     }
-    
+
     return false;
 }
 
@@ -68,7 +87,7 @@ bool CommandLineArgEnumerator::TryPopReal(float * result)
         *result = (float)atof(arg);
         return true;
     }
-    
+
     return false;
 }
 
@@ -114,8 +133,7 @@ namespace CommandLine
 
         if (allCommands)
         {
-            const CommandLineCommand * command;
-            for (command = RootCommands; command->Name != nullptr; command++)
+            for (const CommandLineCommand *command = RootCommands; command->Name != nullptr; command++)
             {
                 if (command->SubCommands != nullptr)
                 {
@@ -143,8 +161,6 @@ namespace CommandLine
 
     static void PrintHelpFor(const CommandLineCommand * commands)
     {
-        const CommandLineCommand * command;
-
         // Print usage
         const char * usageString = "usage: openrct2 ";
         const size_t usageStringLength = String::LengthOf(usageString);
@@ -153,6 +169,7 @@ namespace CommandLine
         // Get the largest command name length and parameter length
         size_t maxNameLength = 0;
         size_t maxParamsLength = 0;
+        const CommandLineCommand * command;
         for (command = commands; command->Name != nullptr; command++)
         {
             maxNameLength = Math::Max(maxNameLength, String::LengthOf(command->Name));
@@ -276,7 +293,7 @@ namespace CommandLine
         return buffer;
     }
 
-    const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
+    static const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
     {
         // Check if end of arguments or options have started
         const char * firstArgument;
@@ -383,8 +400,7 @@ namespace CommandLine
         const CommandLineOptionDefinition * option = FindOption(options, optionName);
         if (option == nullptr)
         {
-            Console::Error::Write("Unknown option: --");
-            Console::Error::WriteLine(optionName);
+            Console::Error::WriteLine("Unknown option: --%s", optionName);
             return false;
         }
 
@@ -399,11 +415,10 @@ namespace CommandLine
                 const char * valueString = nullptr;
                 if (!argEnumerator->TryPopString(&valueString))
                 {
-                    Console::Error::Write("Expected value for option: ");
-                    Console::Error::WriteLine(optionName);
+                    Console::Error::WriteLine("Expected value for option: %s", optionName);
                     return false;
                 }
-                
+
                 if (!ParseOptionValue(option, valueString))
                 {
                     return false;
@@ -414,8 +429,7 @@ namespace CommandLine
         {
             if (option->Type == CMDLINE_TYPE_SWITCH)
             {
-                Console::Error::Write("Option is a switch: ");
-                Console::Error::WriteLine(optionName);
+                Console::Error::WriteLine("Option is a switch: %s", optionName);
                 return false;
             }
             else
@@ -442,9 +456,7 @@ namespace CommandLine
             option = FindOption(options, shortOption[0]);
             if (option == nullptr)
             {
-                Console::Error::Write("Unknown option: -");
-                Console::Error::Write(shortOption[0]);
-                Console::Error::WriteLine();
+                Console::Error::WriteLine("Unknown option: -%c", shortOption[0]);
                 return false;
             }
             if (option->Type == CMDLINE_TYPE_SWITCH)
@@ -469,12 +481,10 @@ namespace CommandLine
             const char * valueString = nullptr;
             if (!argEnumerator->TryPopString(&valueString))
             {
-                Console::Error::Write("Expected value for option: ");
-                Console::Error::Write(option->ShortName);
-                Console::Error::WriteLine();
+                Console::Error::WriteLine("Expected value for option: %c", option->ShortName);
                 return false;
             }
-                
+
             if (!ParseOptionValue(option, valueString))
             {
                 return false;
@@ -502,8 +512,7 @@ namespace CommandLine
             *((utf8 * *)option->OutAddress) = String::Duplicate(valueString);
             return true;
         default:
-            Console::Error::Write("Unknown CMDLINE_TYPE for: ");
-            Console::Error::WriteLine(option->LongName);
+            Console::Error::WriteLine("Unknown CMDLINE_TYPE for: %s", option->LongName);
             return false;
         }
     }

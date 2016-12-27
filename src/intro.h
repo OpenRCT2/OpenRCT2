@@ -1,26 +1,42 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
+#include "drawing/drawing.h"
+
+enum INTRO_STATE {
+	INTRO_STATE_NONE,
+	INTRO_STATE_PUBLISHER_BEGIN,
+	INTRO_STATE_PUBLISHER_SCROLL,
+	INTRO_STATE_DEVELOPER_BEGIN,
+	INTRO_STATE_DEVELOPER_SCROLL,
+	INTRO_STATE_LOGO_FADE_IN,
+	INTRO_STATE_LOGO_WAIT,
+	INTRO_STATE_LOGO_FADE_OUT,
+	INTRO_STATE_DISCLAIMER_1,
+	INTRO_STATE_DISCLAIMER_2,
+	INTRO_STATE_CLEAR				= 254,
+	INTRO_STATE_FINISH				= 255,
+};
+
+extern uint8 gIntroState;
+
 void intro_update();
+void intro_draw(rct_drawpixelinfo *dpi);
 
 #endif

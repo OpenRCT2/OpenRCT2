@@ -1,38 +1,39 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
 #include "../common.h"
 #include "../drawing/drawing.h"
+#include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/track_design.h"
 #include "../ride/vehicle.h"
+#include "../scenario/scenario.h"
+#include "../scenario/ScenarioRepository.h"
 #include "../world/park.h"
-#include "../management/research.h"
-#include "../scenario.h"
 #include "colour.h"
 
 struct rct_window;
 union rct_window_event;
+struct track_design_file_ref;
+struct TitleSequence;
+
 extern uint16 TextInputDescriptionArgs[4];
 extern char gTextBoxInput[512];
 extern int gMaxTextBoxInputLength;
@@ -45,12 +46,12 @@ typedef uint8 rct_windowclass;
 typedef uint16 rct_windownumber;
 typedef sint16 rct_widgetindex;
 
-typedef struct {
+typedef struct window_identifier {
 	rct_windowclass classification;
 	rct_windownumber number;
 } window_identifier;
 
-typedef struct {
+typedef struct widget_identifier {
 	window_identifier window;
 	int widget_index;
 } widget_identifier;
@@ -61,22 +62,26 @@ extern widget_identifier gCurrentTextBox;
  * Widget structure
  * size: 0x10
  */
-typedef struct {
+typedef struct rct_widget {
 	uint8 type;						// 0x00
 	uint8 colour;					// 0x01
 	sint16 left;					// 0x02
 	sint16 right;					// 0x04
 	sint16 top;						// 0x06
 	sint16 bottom;					// 0x08
-	uint32 image;					// 0x0A
-	uint16 tooltip;					// 0x0E
+	union {							// 0x0A
+		uint32 image;
+		rct_string_id text;
+		uint32 content;
+		utf8 * string;
+	};
+	rct_string_id tooltip;			// 0x0E
 } rct_widget;
 
 /**
  * Viewport structure
- * size: 0x14
  */
-typedef struct {
+typedef struct rct_viewport {
 	sint16 width;					// 0x00
 	sint16 height;					// 0x02
 	sint16 x;						// 0x04
@@ -85,16 +90,17 @@ typedef struct {
 	sint16 view_y;					// 0x0A
 	sint16 view_width;				// 0x0C
 	sint16 view_height;				// 0x0E
+	uint32 flags;					// 0x12
 	uint8 zoom;						// 0x10
 	uint8 var_11;
-	uint16 flags;					// 0x12
+	uint8 visibility;				// VISIBILITY_CACHE
 } rct_viewport;
 
 /**
  * Scroll structure
  * size: 0x12
  */
-typedef struct {
+typedef struct rct_scroll {
 	uint16 flags;				// 0x00
 	uint16 h_left;				// 0x02
 	uint16 h_right;				// 0x04
@@ -111,17 +117,19 @@ typedef struct {
  * size: 0xA
  * Use sprite.type to work out type.
  */
-typedef struct{
+typedef struct coordinate_focus {
 	sint16 var_480;
 	sint16 x; //0x482
 	sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
 	sint16 z; //0x486
 	uint8 rotation;//0x488
 	uint8 zoom;//0x489
+	sint16 width;
+	sint16 height;
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
-typedef struct{
+typedef struct sprite_focus {
 	sint16 var_480;
 	uint16 sprite_id; //0x482
 	uint8 pad_484;
@@ -138,7 +146,7 @@ enum{
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
-typedef struct {
+typedef struct rct_window_event_list {
 	void (*close)(struct rct_window*);
 	void (*mouse_up)(struct rct_window*, int);
 	void (*resize)(struct rct_window*);
@@ -169,14 +177,14 @@ typedef struct {
 	void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int);
 } rct_window_event_list;
 
-typedef struct{
+typedef struct campaign_variables {
 	sint16 campaign_type;
 	sint16 no_weeks; //0x482
 	uint16 ride_id; //0x484
 	uint32 pad_486;
 } campaign_variables;
 
-typedef struct{
+typedef struct new_ride_variables {
 	sint16 selected_ride_id; //0x480
 	sint16 highlighted_ride_id; //0x482
 	uint16 pad_484;
@@ -184,7 +192,7 @@ typedef struct{
 	uint16 selected_ride_countdown; //488
 } new_ride_variables;
 
-typedef struct{
+typedef struct news_variables {
 	sint16 var_480;
 	sint16 var_482;
 	uint16 var_484;
@@ -192,7 +200,7 @@ typedef struct{
 	uint16 var_488;
 } news_variables;
 
-typedef struct{
+typedef struct map_variables {
 	sint16 rotation;
 	sint16 var_482;
 	uint16 var_484;
@@ -200,24 +208,24 @@ typedef struct{
 	uint16 var_488;
 } map_variables;
 
-typedef struct {
+typedef struct ride_variables {
 	sint16 view;
 	sint32 var_482;
 	sint32 var_486;
 } ride_variables;
 
-typedef struct {
+typedef struct scenery_variables {
 	sint16 selected_scenery_id;
 	sint16 hover_counter;
 } scenery_variables;
 
-typedef struct {
+typedef struct track_list_variables {
 	uint16 var_480;
-	uint16 var_482;
 	uint16 var_484;
+	bool reload_track_designs;
 } track_list_variables;
 
-typedef struct {
+typedef struct error_variables {
 	uint16 var_480;
 } error_variables;
 
@@ -278,7 +286,11 @@ typedef struct rct_window {
 		uint16 ride_colour;
 		rct_research_item* research_item;
 		rct_object_entry* object_entry;
-		scenario_index_entry* highlighted_scenario;
+		const scenario_index_entry* highlighted_scenario;
+		struct {
+			uint16 var_494;
+			uint16 var_496;
+		};
 	};
 	uint8 var_498[0x14];
 	sint16 selected_tab;			// 0x4AC
@@ -291,6 +303,7 @@ typedef struct rct_window {
 	sint8 var_4B8;
 	sint8 var_4B9;
 	uint8 colours[6];			// 0x4BA
+	uint8 visibility;			// VISIBILITY_CACHE
 } rct_window;
 
 #define RCT_WINDOW_RIGHT(w) (w->x + w->width)
@@ -456,11 +469,14 @@ enum {
 	WC_NETWORK_STATUS = 126,
 	WC_SERVER_LIST = 127,
 	WC_SERVER_START = 128,
+	WC_CUSTOM_CURRENCY_CONFIG = 129,
+	WC_DEBUG_PAINT = 130,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
 	WC_EDITOR_TRACK_BOTTOM_TOOLBAR = 221,
 	WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
+	WC_CHAT = 223,
 };
 
 enum PROMPT_MODE {
@@ -495,23 +511,57 @@ enum {
 	MODAL_RESULT_OK
 };
 
+enum VISIBILITY_CACHE
+{
+	VC_UNKNOWN,
+	VC_VISIBLE,
+	VC_COVERED
+};
+
+enum GUEST_LIST_FILTER_TYPE
+{
+	GLFT_GUESTS_ON_RIDE,
+	GLFT_GUESTS_IN_QUEUE,
+	GLFT_GUESTS_THINKING_ABOUT_RIDE,
+	GLFT_GUESTS_THINKING_X,
+};
+
 typedef void (*modal_callback)(int result);
+typedef void (*loadsave_callback)(int result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
-extern bool gLoadSaveTitleSequenceSave;
-extern modal_callback gLoadSaveCallback;
+extern loadsave_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 
+#define WINDOW_LIMIT_MIN 4
+#define WINDOW_LIMIT_MAX 64
+#define WINDOW_LIMIT_RESERVED 4 // Used to reserve room for the main viewport, toolbars, etc.
+
 // rct2: 0x01420078
-extern rct_window* g_window_list;
+extern rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
+
+extern rct_window * gWindowFirst;
+extern rct_window * gWindowNextSlot;
+extern rct_window * gWindowAudioExclusive;
 
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
 
+extern uint16 gWindowUpdateTicks;
+extern uint8 gToolbarDirtyFlags;
+extern uint16 gWindowMapFlashingFlags;
+
+extern colour_t gCurrentWindowColours[4];
+
+extern bool gDisableErrorWindowSound;
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
+
+void window_set_window_limit(int value);
+
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_auto_pos(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_centred(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
@@ -548,6 +598,8 @@ rct_window *window_get_main();
 void window_scroll_to_viewport(rct_window *w);
 void window_scroll_to_location(rct_window *w, int x, int y, int z);
 void window_rotate_camera(rct_window *w, int direction);
+void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y);
+void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y);
 void window_zoom_set(rct_window *w, int zoomLevel);
 void window_zoom_in(rct_window *w);
 void window_zoom_out(rct_window *w);
@@ -555,7 +607,8 @@ void window_zoom_out(rct_window *w);
 void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value);
 void window_text_input_key(rct_window* w, int key);
 
-void window_draw(rct_window *w, int left, int top, int right, int bottom);
+void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom);
+void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
 void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi);
 void window_draw_viewport(rct_drawpixelinfo *dpi, rct_window *w);
 
@@ -578,6 +631,7 @@ void window_resize_gui(int width, int height);
 void window_resize_gui_scenario_editor(int width, int height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
+void window_game_bottom_toolbar_invalidate_news_item();
 void window_about_open();
 void window_footpath_open();
 void window_save_prompt_open();
@@ -623,8 +677,10 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
 void ride_construction_toolupdate_construct(int screenX, int screenY);
 void ride_construction_tooldown_construct(int screenX, int screenY);
 
+void custom_currency_window_open();
+
 void window_maze_construction_update_pressed_widgets();
-void window_track_place_open();
+void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_install_track_open(const char* path);
@@ -648,17 +704,19 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, i
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
-void window_track_manage_open();
+void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
 void window_title_editor_open(int tab);
-void window_title_command_editor_open(int command, bool insert);
+void window_title_command_editor_open(struct TitleSequence * sequence, int command, bool insert);
 void window_tile_inspector_open();
-void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uint32 existing_args, int maxLength);
+void window_tile_inspector_clear_clipboard();
+void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int maxLength);
 void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, int maxLength);
 rct_window *window_mapgen_open();
 rct_window *window_loadsave_open(int type, char *defaultName);
 rct_window *window_changelog_open();
+void window_debug_paint_open();
 
 void window_editor_main_open();
 void window_editor_bottom_toolbar_open();
@@ -679,6 +737,9 @@ void window_new_ride_focus(ride_list_item rideItem);
 void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();
+
+void game_command_callback_pickup_guest(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+void game_command_callback_pickup_staff(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, int widgetIndex);
@@ -715,10 +776,12 @@ void textinput_cancel();
 void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int snapProximity);
 int window_can_resize(rct_window *w);
 
-void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength);
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, char *existing_args, int maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
+
+bool window_is_visible(rct_window* w);
 
 bool land_tool_is_active();
 

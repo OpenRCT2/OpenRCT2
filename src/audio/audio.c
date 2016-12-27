@@ -1,36 +1,28 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
+#include "../intro.h"
 #include "../localisation/language.h"
-#include "../platform/platform.h"
-#include "../ride/ride.h"
-#include "../world/map.h"
-#include "../world/sprite.h"
+#include "../localisation/string_ids.h"
+#include "../OpenRCT2.h"
+#include "../util/util.h"
 #include "audio.h"
 #include "mixer.h"
-#include "../openrct2.h"
-#include "../util/util.h"
 
 typedef struct rct_audio_params {
 	bool in_range;
@@ -40,16 +32,84 @@ typedef struct rct_audio_params {
 
 audio_device *gAudioDevices = NULL;
 int gAudioDeviceCount;
+int gAudioCurrentDevice = -1;
 void *gCrowdSoundChannel = 0;
 bool gGameSoundsOff = false;
 void *gRainSoundChannel = 0;
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params gRideMusicParamsList[6];
 rct_ride_music_params *gRideMusicParamsListEnd;
 void *gTitleMusicChannel = 0;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+int gVolumeAdjustZoom = 0;
+
+int _volumeAdjust[SOUND_MAXID] = {
+	0,		// SOUND_LIFT_1
+	0,		// SOUND_TRACK_FRICTION_1
+	0,		// SOUND_LIFT_2
+	0,		// SOUND_SCREAM_1
+	0,		// SOUND_CLICK_1
+	0,		// SOUND_CLICK_2
+	0,		// SOUND_PLACE_ITEM
+	0,		// SOUND_SCREAM_2
+	0,		// SOUND_SCREAM_3
+	0,		// SOUND_SCREAM_4
+	0,		// SOUND_SCREAM_5
+	0,		// SOUND_SCREAM_6
+	0,		// SOUND_LIFT_3
+	-400,	// SOUND_PURCHASE
+	0,		// SOUND_CRASH
+	0,		// SOUND_LAYING_OUT_WATER
+	0,		// SOUND_WATER_1
+	0,		// SOUND_WATER_2
+	0,		// SOUND_TRAIN_WHISTLE
+	0,		// SOUND_TRAIN_CHUGGING
+	-1000,	// SOUND_WATER_SPLASH
+	0,		// SOUND_HAMMERING
+	-800,	// SOUND_RIDE_LAUNCH_1
+	-1700,	// SOUND_RIDE_LAUNCH_2
+	-700,	// SOUND_COUGH_1
+	-700,	// SOUND_COUGH_2
+	-700,	// SOUND_COUGH_3
+	-700,	// SOUND_COUGH_4
+	0,		// SOUND_RAIN_1
+	0,		// SOUND_THUNDER_1
+	0,		// SOUND_THUNDER_2
+	0,		// SOUND_RAIN_2
+	0,		// SOUND_RAIN_3
+	0,		// SOUND_BALLOON_POP
+	-700,	// SOUND_MECHANIC_FIX
+	0,		// SOUND_SCREAM_7
+	-2500,	// SOUND_TOILET_FLUSH original value: -1000
+	0,		// SOUND_CLICK_3
+	0,		// SOUND_QUACK
+	0,		// SOUND_NEWS_ITEM
+	0,		// SOUND_WINDOW_OPEN
+	-900,	// SOUND_LAUGH_1
+	-900,	// SOUND_LAUGH_2
+	-900,	// SOUND_LAUGH_3
+	0,		// SOUND_APPLAUSE
+	-600,	// SOUND_HAUNTED_HOUSE_SCARE
+	-700,	// SOUND_HAUNTED_HOUSE_SCREAM_1
+	-700,	// SOUND_HAUNTED_HOUSE_SCREAM_2
+	-2550,	// SOUND_48
+	-2900,	// SOUND_49
+	0,		// SOUND_ERROR
+	-3400,	// SOUND_51
+	0,		// SOUND_LIFT_4
+	0,		// SOUND_LIFT_5
+	0,		// SOUND_TRACK_FRICTION_2
+	0,		// SOUND_LIFT_6
+	0,		// SOUND_LIFT_7
+	0,		// SOUND_TRACK_FRICTION_3
+	0,		// SOUND_SCREAM_8
+	0,		// SOUND_TRAM
+	-2000,	// SOUND_DOOR_OPEN
+	-2700,	// SOUND_DOOR_CLOSE
+	-700	// SOUND_62
+};
 
 rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *location);
 void audio_stop_channel(void **channel);
@@ -57,11 +117,22 @@ void audio_stop_channel(void **channel);
 void audio_init()
 {
 	int result = SDL_Init(SDL_INIT_AUDIO);
-	if (result >= 0)
+	if (result < 0) {
+		log_error("SDL_Init %s", SDL_GetError());
 		return;
+	}
 
-	log_fatal("SDL_Init %s", SDL_GetError());
-	exit(-1);
+	if (str_is_null_or_empty(gConfigSound.device)) {
+		Mixer_Init(NULL);
+		gAudioCurrentDevice = 0;
+	} else {
+		Mixer_Init(gConfigSound.device);
+		for (int i = 0; i < gAudioDeviceCount; i++) {
+			if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
+				gAudioCurrentDevice = i;
+			}
+		}
+	}
 }
 
 void audio_quit()
@@ -82,14 +153,14 @@ void audio_populate_devices()
 	for (int i = 0; i < gAudioDeviceCount; i++) {
 		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
-			utf8Name = language_get_string(5511);
+			utf8Name = language_get_string(STR_OPTIONS_SOUND_VALUE_UNKNOWN);
 
 		safe_strcpy(systemAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
 	}
 #ifndef __LINUX__
 	gAudioDeviceCount++;
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-	safe_strcpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
+	safe_strcpy(gAudioDevices[0].name, language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT), AUDIO_DEVICE_NAME_SIZE);
 	memcpy(&gAudioDevices[1], systemAudioDevices, (gAudioDeviceCount - 1) * sizeof(audio_device));
 #else
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
@@ -144,10 +215,10 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 
 	uint8 rotation = get_current_rotation();
 	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
-	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+	rct_window *window = gWindowNextSlot;
 	while (true) {
 		window--;
-		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
+		if (window < g_window_list)
 			break;
 
 		rct_viewport *viewport = window->viewport;
@@ -157,7 +228,7 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 		sint16 vy = pos2.y - viewport->view_y;
 		sint16 vx = pos2.x - viewport->view_x;
 		params.pan = viewport->x + (vx >> viewport->zoom);
-		params.volume = RCT2_ADDRESS(0x0099282C, int)[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
+		params.volume = _volumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) << volumeDown) + 1;
 
 		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000) {
 			params.in_range = false;
@@ -176,7 +247,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 	int mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
 		int x2 = pan << 16;
-		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+		uint16 screenWidth = max(64, gScreenWidth);
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
 
@@ -186,7 +257,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 
 void audio_start_title_music()
 {
-	if (gGameSoundsOff || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != INTRO_STATE_NONE) {
 		audio_stop_title_music();
 		return;
 	}
@@ -213,7 +284,9 @@ void audio_start_title_music()
 	}
 
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
-	Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	if (gTitleMusicChannel != NULL) {
+		Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	}
 }
 
 void audio_stop_ride_music()
@@ -228,6 +301,15 @@ void audio_stop_ride_music()
 
 		rideMusic->ride_id = -1;
 	}
+}
+
+void audio_stop_all_music_and_sounds()
+{
+	audio_stop_title_music();
+	audio_stop_vehicle_sounds();
+	audio_stop_ride_music();
+	audio_stop_crowd_sound();
+	audio_stop_rain_sound();
 }
 
 void audio_stop_crowd_sound()
@@ -286,7 +368,7 @@ void audio_init_ride_sounds(int device)
 		vehicleSound->id = -1;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = device;
+	gAudioCurrentDevice = device;
 	config_save_default();
 	for (int i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++) {
 		rct_ride_music *rideMusic = &gRideMusicList[i];
@@ -300,7 +382,7 @@ void audio_close()
 	audio_stop_title_music();
 	audio_stop_ride_music();
 	audio_stop_rain_sound();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = -1;
+	gAudioCurrentDevice = -1;
 }
 
 void audio_toggle_all_sounds(){
@@ -329,7 +411,7 @@ void audio_unpause_sounds()
 
 void audio_stop_vehicle_sounds()
 {
-	if (gOpenRCT2Headless || RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) == -1)
+	if (gOpenRCT2Headless || gAudioCurrentDevice == -1)
 		return;
 
 	for (int i = 0; i < countof(gVehicleSoundList); i++) {

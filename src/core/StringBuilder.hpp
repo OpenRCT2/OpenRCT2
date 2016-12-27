@@ -1,8 +1,23 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #pragma once
 
 #include "../common.h"
 
-#include "../localisation/localisation.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
@@ -41,7 +56,7 @@ public:
      */
     void Append(codepoint_t codepoint)
     {
-        codepoint_t codepointLength = String::GetCodepointLength(codepoint);
+        size_t codepointLength = String::GetCodepointLength(codepoint);
         EnsureCapacity(_length + codepointLength + 1);
         String::WriteCodepoint(_buffer + _length, codepoint);
         _length += codepointLength;
@@ -103,6 +118,22 @@ public:
             Memory::Free(_buffer);
             _buffer = nullptr;
         }
+    }
+
+    /**
+     * Resets the StringBuilder and returns the working buffer (resized to the string size).
+     */
+    utf8 * StealString()
+    {
+        utf8 * result = _buffer;
+        result = Memory::ReallocateArray<utf8>(result, _length + 1);
+        result[_length] = 0;
+
+        _length = 0;
+        _capacity = 0;
+        _buffer = nullptr;
+
+        return result;
     }
 
     /**

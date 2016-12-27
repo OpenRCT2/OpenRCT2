@@ -1,27 +1,22 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #pragma warning(disable : 4996) // GetVersionExA deprecated
 
 #include <time.h>
-#include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
 #include "config.h"
@@ -39,77 +34,100 @@
 #include "network/network.h"
 #include "network/twitch.h"
 #include "object.h"
-#include "openrct2.h"
+#include "object/ObjectManager.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
 #include "ride/ride.h"
 #include "ride/track.h"
-#include "scenario.h"
-#include "title.h"
+#include "ride/track_design.h"
+#include "ride/TrackDesignRepository.h"
+#include "scenario/ScenarioRepository.h"
+#include "title/TitleScreen.h"
 #include "util/util.h"
+#include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
-#include "world/climate.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
 
+#ifdef __ENABLE_LIGHTFX__
+
+#include "drawing/lightfx.h"
+
+#endif
+
 // rct2: 0x0097F67C
 const char * const RCT2FilePaths[PATH_ID_END] = {
-	"Data\\g1.dat",
-	"Data\\plugin.dat",
-	"Data\\css1.dat",
-	"Data\\css2.dat",
-	"Data\\css4.dat",
-	"Data\\css5.dat",
-	"Data\\css6.dat",
-	"Data\\css7.dat",
-	"Data\\css8.dat",
-	"Data\\css9.dat",
-	"Data\\css11.dat",
-	"Data\\css12.dat",
-	"Data\\css13.dat",
-	"Data\\css14.dat",
-	"Data\\css15.dat",
-	"Data\\css3.dat",
-	"Data\\css17.dat",
-	"Data\\css18.dat",
-	"Data\\css19.dat",
-	"Data\\css20.dat",
-	"Data\\css21.dat",
-	"Data\\css22.dat",
-	"Saved Games\\scores.dat",
-	"Data\\css23.dat",
-	"Data\\css24.dat",
-	"Data\\css25.dat",
-	"Data\\css26.dat",
-	"Data\\css27.dat",
-	"Data\\css28.dat",
-	"Data\\css29.dat",
-	"Data\\css30.dat",
-	"Data\\css31.dat",
-	"Data\\css32.dat",
-	"Data\\css33.dat",
-	"Data\\css34.dat",
-	"Data\\css35.dat",
-	"Data\\css36.dat",
-	"Data\\css37.dat",
-	"Data\\css38.dat",
-	"Data\\CUSTOM1.WAV",
-	"Data\\CUSTOM2.WAV",
-	"Data\\css39.dat",
-	"Data\\css40.dat",
-	"Data\\css41.dat",
-	"Scenarios\\Six Flags Magic Mountain.SC6",
-	"Data\\css42.dat",
-	"Data\\css43.dat",
-	"Data\\css44.dat",
-	"Data\\css45.dat",
-	"Data\\css46.dat",
-	"Data\\css50.dat"
+	"Data" PATH_SEPARATOR "g1.dat",
+	"Data" PATH_SEPARATOR "plugin.dat",
+	"Data" PATH_SEPARATOR "css1.dat",
+	"Data" PATH_SEPARATOR "css2.dat",
+	"Data" PATH_SEPARATOR "css4.dat",
+	"Data" PATH_SEPARATOR "css5.dat",
+	"Data" PATH_SEPARATOR "css6.dat",
+	"Data" PATH_SEPARATOR "css7.dat",
+	"Data" PATH_SEPARATOR "css8.dat",
+	"Data" PATH_SEPARATOR "css9.dat",
+	"Data" PATH_SEPARATOR "css11.dat",
+	"Data" PATH_SEPARATOR "css12.dat",
+	"Data" PATH_SEPARATOR "css13.dat",
+	"Data" PATH_SEPARATOR "css14.dat",
+	"Data" PATH_SEPARATOR "css15.dat",
+	"Data" PATH_SEPARATOR "css3.dat",
+	"Data" PATH_SEPARATOR "css17.dat",
+	"Data" PATH_SEPARATOR "css18.dat",
+	"Data" PATH_SEPARATOR "css19.dat",
+	"Data" PATH_SEPARATOR "css20.dat",
+	"Data" PATH_SEPARATOR "css21.dat",
+	"Data" PATH_SEPARATOR "css22.dat",
+	"Saved Games" PATH_SEPARATOR "scores.dat",
+	"Data" PATH_SEPARATOR "css23.dat",
+	"Data" PATH_SEPARATOR "css24.dat",
+	"Data" PATH_SEPARATOR "css25.dat",
+	"Data" PATH_SEPARATOR "css26.dat",
+	"Data" PATH_SEPARATOR "css27.dat",
+	"Data" PATH_SEPARATOR "css28.dat",
+	"Data" PATH_SEPARATOR "css29.dat",
+	"Data" PATH_SEPARATOR "css30.dat",
+	"Data" PATH_SEPARATOR "css31.dat",
+	"Data" PATH_SEPARATOR "css32.dat",
+	"Data" PATH_SEPARATOR "css33.dat",
+	"Data" PATH_SEPARATOR "css34.dat",
+	"Data" PATH_SEPARATOR "css35.dat",
+	"Data" PATH_SEPARATOR "css36.dat",
+	"Data" PATH_SEPARATOR "css37.dat",
+	"Data" PATH_SEPARATOR "css38.dat",
+	"Data" PATH_SEPARATOR "CUSTOM1.WAV",
+	"Data" PATH_SEPARATOR "CUSTOM2.WAV",
+	"Data" PATH_SEPARATOR "css39.dat",
+	"Data" PATH_SEPARATOR "css40.dat",
+	"Data" PATH_SEPARATOR "css41.dat",
+	"Scenarios" PATH_SEPARATOR "Six Flags Magic Mountain.SC6",
+	"Data" PATH_SEPARATOR "css42.dat",
+	"Data" PATH_SEPARATOR "css43.dat",
+	"Data" PATH_SEPARATOR "css44.dat",
+	"Data" PATH_SEPARATOR "css45.dat",
+	"Data" PATH_SEPARATOR "css46.dat",
+	"Data" PATH_SEPARATOR "css50.dat"
 };
 
 uint32 gCurrentDrawCount = 0;
+
+uint8 gScreenFlags;
+uint32 gScreenAge;
+uint8 gSavePromptMode;
+sint32 gScreenWidth;
+sint32 gScreenHeight;
+
+char gRCT2AddressAppPath[MAX_PATH];
+char gRCT2AddressSavedGamesPath[MAX_PATH];
+char gRCT2AddressSavedGamesPath2[MAX_PATH];
+char gRCT2AddressScenariosPath[MAX_PATH];
+char gRCT2AddressLandscapesPath[MAX_PATH];
+char gRCT2AddressObjectDataPath[MAX_PATH];
+char gRCT2AddressTracksPath[MAX_PATH];
 
 typedef struct tm tm_t;
 
@@ -118,47 +136,41 @@ void print_launch_information();
 int rct2_init_directories();
 int rct2_startup_checks();
 
-static void rct2_draw_fps();
+static void rct2_draw_fps(rct_drawpixelinfo *dpi);
 
 void rct2_quit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	gSavePromptMode = PM_QUIT;
 	window_save_prompt_open();
 }
 
 void rct2_dispose()
 {
+	object_manager_unload_all_objects();
+	gfx_object_check_all_images_freed();
 	gfx_unload_g2();
 	gfx_unload_g1();
-	object_unload_all();
 }
 
-int rct2_init()
+bool rct2_init()
 {
 	log_verbose("initialising game");
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
-	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
+	gScenarioTicks = 0;
 	util_srand((unsigned int)time(0));
-	if (!rct2_init_directories())
-		return 0;
-
-	if (!rct2_startup_checks())
-		return 0;
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
 	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 	// config_load();
 
-	object_list_load();
-	scenario_load_list();
+	if (!gfx_load_g1()) {
+		return false;
+	}
+	if (!gfx_load_g2()) {
+		return false;
+	}
 
-	ride_list_item item = { 253, 0 };
-	track_load_list(item);
-
-	gfx_load_g1();
-	gfx_load_g2();
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
@@ -182,15 +194,18 @@ int rct2_init()
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
+	load_palette();
 
-	if (!gOpenRCT2Headless) {
-		title_load();
 
-		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
-	}
+#ifdef __ENABLE_LIGHTFX__
+
+	lightfx_init();
+
+#endif
+
 
 	log_verbose("initialising game finished");
-	return 1;
+	return true;
 }
 
 /**
@@ -201,63 +216,55 @@ int rct2_init_directories()
 {
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
-	// check install directory
-	if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
-		log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
-		if (!config_find_or_browse_install_directory()) {
-			utf8 path[MAX_PATH];
-			config_get_default_path(path);
-			log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
-			return 0;
+	if (str_is_null_or_empty(gCustomRCT2DataPath)) {
+		// check install directory
+		if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
+			log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
+			if (!config_find_or_browse_install_directory()) {
+				utf8 path[MAX_PATH];
+				config_get_default_path(path, sizeof(path));
+				log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
+				return 0;
+			}
+		}
+		safe_strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path, sizeof(gRCT2AddressAppPath));
+	} else {
+		safe_strcpy(gRCT2AddressAppPath, gCustomRCT2DataPath, sizeof(gRCT2AddressAppPath));
 	}
-	}
+	path_end_with_separator(gRCT2AddressAppPath, sizeof(gRCT2AddressAppPath));
 
-	char separator[] = {platform_get_path_separator(), 0};
+	safe_strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressSavedGamesPath));
+	safe_strcat_path(gRCT2AddressSavedGamesPath, "Saved Games", sizeof(gRCT2AddressSavedGamesPath));
+	path_end_with_separator(gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath));
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
+	safe_strcpy(gRCT2AddressScenariosPath, gRCT2AddressAppPath, sizeof(gRCT2AddressScenariosPath));
+	safe_strcat_path(gRCT2AddressScenariosPath, "Scenarios", sizeof(gRCT2AddressScenariosPath));
+	safe_strcat_path(gRCT2AddressScenariosPath, "*.SC6", sizeof(gRCT2AddressScenariosPath));
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), separator);
+	safe_strcpy(gRCT2AddressLandscapesPath, gRCT2AddressAppPath, sizeof(gRCT2AddressLandscapesPath));
+	safe_strcat_path(gRCT2AddressLandscapesPath, "Landscapes", sizeof(gRCT2AddressLandscapesPath));
+	safe_strcat_path(gRCT2AddressLandscapesPath, "*.SC6", sizeof(gRCT2AddressLandscapesPath));
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), "Saved Games");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
+	safe_strcpy(gRCT2AddressObjectDataPath, gRCT2AddressAppPath, sizeof(gRCT2AddressObjectDataPath));
+	safe_strcat_path(gRCT2AddressObjectDataPath, "ObjData", sizeof(gRCT2AddressObjectDataPath));
+	safe_strcat_path(gRCT2AddressObjectDataPath, "*.DAT", sizeof(gRCT2AddressObjectDataPath));
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "Scenarios");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "*.SC6");
+	safe_strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath, sizeof(gRCT2AddressTracksPath));
+	safe_strcat_path(gRCT2AddressTracksPath, "Tracks", sizeof(gRCT2AddressTracksPath));
+	safe_strcat_path(gRCT2AddressTracksPath, "*.TD?", sizeof(gRCT2AddressTracksPath));
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "Landscapes");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "*.SC6");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "ObjData");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "*.DAT");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "Tracks");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "*.TD?");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+	safe_strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath, sizeof(gRCT2AddressSavedGamesPath2));
 	return 1;
 }
 
-void substitute_path(char *dest, const char *path, const char *filename)
+void substitute_path(char *dest, size_t size, const char *path, const char *filename)
 {
-	while (*path != '*') {
+	size_t written = 0;
+	while (*path != '*' && *path != '\0' && written < size) {
 		*dest++ = *path++;
+		++written;
 	}
-	strcpy(dest, filename);
+	safe_strcpy(dest, filename, size - written);
 }
 
 /**
@@ -272,59 +279,58 @@ int rct2_startup_checks()
 	return 1;
 }
 
-void rct2_draw()
+void rct2_draw(rct_drawpixelinfo *dpi)
 {
-	redraw_rain();
-	window_update_all();
-	gfx_invalidate_pickedup_peep();
-	gfx_draw_pickedup_peep();
-	update_rain_animation();
+	if (gIntroState != INTRO_STATE_NONE) {
+		return;
+	}
+
+	// redraw_rain();
+	// window_update_all();
+	// gfx_invalidate_pickedup_peep();
+	// gfx_draw_pickedup_peep();
+	// update_rain_animation();
 	update_palette_effects();
 
-	chat_draw();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+	chat_draw(dpi);
+	console_draw(dpi);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
-		//intro
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
-		//title
-		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
-	} else {
-		//game
+	if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gTitleHideVersionInfo) {
+		DrawOpenRCT2(dpi, 0, gScreenHeight - 20);
 	}
 
 	if (gConfigGeneral.show_fps) {
-		rct2_draw_fps();
+		rct2_draw_fps(dpi);
 	}
 
 	gCurrentDrawCount++;
 }
 
-static uint32 _lastFPSUpdateTicks;
-static uint32 _lastFPSTicks;
-static float _currentFPS;
+static time_t _lastSecond;
+static int _currentFPS;
+static int _frames;
 
-static float rct2_measure_fps()
+static void rct2_measure_fps()
 {
-	uint32 currentTicks = SDL_GetTicks();
-	if (currentTicks - _lastFPSUpdateTicks > 500) {
-		_lastFPSUpdateTicks = currentTicks;
+	_frames++;
 
-		uint32 frameDelta = currentTicks - _lastFPSTicks;
-		_currentFPS = 1000.0f / frameDelta;
+	time_t currentTime = time(NULL);
+
+	if (currentTime != _lastSecond) {
+		_currentFPS = _frames;
+		_frames = 0;
 	}
-	_lastFPSTicks = currentTicks;
-	return _currentFPS;
+
+	_lastSecond = currentTime;
 }
 
-static void rct2_draw_fps()
+static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	int x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2;
+	int x = gScreenWidth / 2;
 	int y = 2;
 
 	// Measure FPS
-	float fps = rct2_measure_fps();
+	rct2_measure_fps();
 
 	// Format string
 	utf8 buffer[64];
@@ -333,8 +339,7 @@ static void rct2_draw_fps()
 	ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
 	ch = utf8_write_codepoint(ch, FORMAT_WHITE);
 
-	const char *formatString = (_currentFPS >= 100.0f ? "%.0f" : "%.1f");
-	sprintf(ch, formatString, _currentFPS);
+	snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
 	// Draw Text
 	int stringWidth = gfx_get_string_width(buffer);
@@ -354,21 +359,31 @@ bool rct2_open_file(const char *path)
 	extension++;
 
 	if (_stricmp(extension, "sv6") == 0) {
-		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
-		game_load_save(path);
-		gFirstTimeSave = 0;
-		return true;
+		safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, sizeof(gRCT2AddressSavedGamesPath2));
+		if (game_load_save(path)) {
+			gFirstTimeSave = 0;
+			return true;
+		}
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
-		strcpy(scenarioBasic.path, path);
-		scenario_load_and_play_from_path(scenarioBasic.path);
-		return true;
+		safe_strcpy(scenarioBasic.path, path, sizeof(scenarioBasic.path));
+		if (scenario_load_and_play_from_path(scenarioBasic.path)) {
+			return true;
+		}
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
-		return true;
-	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
 		return true;
+	} else if (_stricmp(extension, "sv4") == 0) {
+		if (rct1_load_saved_game(path)) {
+			game_load_init();
+			return true;
+		}
+	} else if (_stricmp(extension, "sc4") == 0) {
+		if (rct1_load_scenario(path)) {
+			scenario_begin();
+			return true;
+		}
 	}
 
 	return false;
@@ -429,16 +444,14 @@ int check_file_path(int pathId)
 
 void rct2_update()
 {
-	int tick, tick2;
+	int tickCount = SDL_GetTicks();
+	gTicksSinceLastUpdate = min(tickCount - gLastTickCount, 500);
+	gLastTickCount = tickCount;
+	if (game_is_not_paused()) {
+		gPaletteEffectFrame += gTicksSinceLastUpdate;
+	}
 
-	tick = SDL_GetTicks();
-
-	tick2 = tick - RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
+	date_update_real_time_of_day();
 
 	// TODO: screenshot countdown process
 
@@ -446,12 +459,13 @@ void rct2_update()
 
 	// check_cmdline_arg();
 	// Screens
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
+	if (gIntroState != INTRO_STATE_NONE) {
 		intro_update();
-	else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+	} else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless) {
 		title_update();
-	else
+	} else {
 		game_update();
+	}
 
 	//stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 
@@ -467,33 +481,89 @@ void rct2_update()
 const utf8 *get_file_path(int pathId)
 {
 	static utf8 path[MAX_PATH];
-	strcpy(path, gConfigGeneral.game_path);
-
-	// Make sure base path is terminated with a slash
-	if (strlen(path) == 0 || path[strlen(path) - 1] != platform_get_path_separator()) {
-		if (strlen(path) >= MAX_PATH - 1) {
-			log_error("Path for %s too long", RCT2FilePaths[pathId]);
-			path[0] = '\0';
-			return path;
-		}
-
-		char separator[] = {platform_get_path_separator(), 0};
-		strcat(path, separator);
-	}
-
-	// Concatenate file path
-	if (strlen(path) + strlen(RCT2FilePaths[pathId]) > MAX_PATH) {
-		log_error("Path for %s too long", RCT2FilePaths[pathId]);
-		path[0] = '\0';
-		return path;
-	}
-
-	char *pathp = path + strnlen(path, sizeof(path));
-	strcat(path, RCT2FilePaths[pathId]);
-	while (*pathp) {
-		if (*pathp == '\\') *pathp = platform_get_path_separator();
-		pathp++;
-	}
-
+	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
+	safe_strcat_path(path, RCT2FilePaths[pathId], sizeof(path));
 	return path;
+}
+
+uint32 get_file_extension_type(const utf8 *path)
+{
+	const utf8 *extension = path_get_extension(path);
+	if (strcicmp(extension, ".dat") == 0) return FILE_EXTENSION_DAT;
+	if (strcicmp(extension, ".sc4") == 0) return FILE_EXTENSION_SC4;
+	if (strcicmp(extension, ".sv4") == 0) return FILE_EXTENSION_SV4;
+	if (strcicmp(extension, ".td4") == 0) return FILE_EXTENSION_TD4;
+	if (strcicmp(extension, ".sc6") == 0) return FILE_EXTENSION_SC6;
+	if (strcicmp(extension, ".sv6") == 0) return FILE_EXTENSION_SV6;
+	if (strcicmp(extension, ".td6") == 0) return FILE_EXTENSION_TD6;
+	return FILE_EXTENSION_UNKNOWN;
+}
+
+static void rct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
+{
+	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
+	int fileEnumHandle;
+	file_info fileInfo;
+
+	if (!platform_ensure_directory_exists(newDirectory)) {
+		log_error("Could not create directory %s.", newDirectory);
+		return;
+	}
+
+	// Create filter path
+	safe_strcpy(filter, originalDirectory, sizeof(filter));
+	ch = strchr(filter, '*');
+	if (ch != NULL)
+		*ch = 0;
+	safe_strcat_path(filter, "*", sizeof(filter));
+	path_append_extension(filter, extension, sizeof(filter));
+
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, fileInfo.path, sizeof(newPath));
+
+		safe_strcpy(oldPath, originalDirectory, sizeof(oldPath));
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		safe_strcat_path(oldPath, fileInfo.path, sizeof(oldPath));
+
+		if (!platform_file_exists(newPath))
+			platform_file_copy(oldPath, newPath, false);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+
+	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
+	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, filter, sizeof(newPath));
+
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		safe_strcat_path(oldPath, filter, sizeof(oldPath));
+
+		if (!platform_ensure_directory_exists(newPath)) {
+			log_error("Could not create directory %s.", newPath);
+			return;
+		}
+		rct2_copy_files_over(oldPath, newPath, extension);
+	}
+	platform_enumerate_directories_end(fileEnumHandle);
+}
+
+/**
+ * Copy saved games and landscapes to user directory
+ */
+void rct2_copy_original_user_files_over()
+{
+	utf8 path[MAX_PATH];
+
+	platform_get_user_directory(path, "save", sizeof(path));
+	rct2_copy_files_over((utf8*)gRCT2AddressSavedGamesPath, path, ".sv6");
+
+	platform_get_user_directory(path, "landscape", sizeof(path));
+	rct2_copy_files_over((utf8*)gRCT2AddressLandscapesPath, path, ".sc6");
 }

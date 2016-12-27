@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
 #include "../config.h"
 #include "../interface/themes.h"
@@ -25,7 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "error.h"
 
@@ -52,18 +48,18 @@ enum {
 #define WH 120
 
 static rct_widget window_server_start_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,				STR_NONE },					// panel / background
-	{ WWT_CAPTION,			0,	1,		WW-2,	1,			14,		STR_START_SERVER,		STR_WINDOW_TITLE_TIP },		// title bar
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		(uint32)_port,			STR_NONE },					// port text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		(uint32)_name,			STR_NONE },					// name text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		(uint32)_password,		STR_NONE },					// password text box
-	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		1871,					STR_NONE },					// max players
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_NONE },					// advertise checkbox
-	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,			STR_NONE },					// start server button
-	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,			STR_NONE },
+	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,						STR_NONE },					// panel / background
+	{ WWT_CAPTION,			0,	1,		WW-2,	1,			14,		STR_START_SERVER,				STR_WINDOW_TITLE_TIP },		// title bar
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },		// close x button
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,						STR_NONE },					// port text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,						STR_NONE },					// name text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,						STR_NONE },					// password text box
+	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		STR_SERVER_MAX_PLAYERS_VALUE,	STR_NONE },					// max players
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,					STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,				STR_NONE },
+	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,					STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
+	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,					STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,					STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -116,6 +112,9 @@ void window_server_start_open()
 
 	window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
+	window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
+	window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
+	window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
 	window->widgets = window_server_start_widgets;
 	window->enabled_widgets = (
 		(1 << WIDX_CLOSE) |
@@ -141,7 +140,7 @@ void window_server_start_open()
 	window->page = 0;
 	window->list_information_type = 0;
 
-	sprintf(_port, "%u", gConfigNetwork.default_port);
+	snprintf(_port, 7, "%u", gConfigNetwork.default_port);
 	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 
@@ -160,9 +159,9 @@ static void window_server_start_scenarioselect_callback(const utf8 *path)
 	}
 }
 
-static void window_server_start_loadsave_callback(int result)
+static void window_server_start_loadsave_callback(int result, const utf8 * path)
 {
-	if (result == MODAL_RESULT_OK) {
+	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
 		network_begin_server(gConfigNetwork.default_port);
 	}
 }
@@ -174,13 +173,13 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_PORT_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_port, 6);
+		window_start_textbox(w, widgetIndex, STR_STRING, _port, 6);
 		break;
 	case WIDX_NAME_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_name, 64);
+		window_start_textbox(w, widgetIndex, STR_STRING, _name, 64);
 		break;
 	case WIDX_PASSWORD_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_password, 32);
+		window_start_textbox(w, widgetIndex, STR_STRING, _password, 32);
 		break;
 	case WIDX_MAXPLAYERS_INCREASE:
 		if (gConfigNetwork.maxplayers < 255) {
@@ -276,7 +275,7 @@ static void window_server_start_invalidate(rct_window *w)
 	colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
 	widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = gConfigNetwork.maxplayers;
+	set_format_arg(18, uint16, gConfigNetwork.maxplayers);
 }
 
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)

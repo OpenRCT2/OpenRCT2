@@ -1,40 +1,50 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../cheats.h"
-#include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
 #include "../network/network.h"
+#include "../object_list.h"
+#include "../rct2.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
 #include "../util/util.h"
-#include "footpath.h"
-#include "map.h"
-#include "map_animation.h"
-#include "scenery.h"
 
 void footpath_interrupt_peeps(int x, int y, int z);
 void sub_6A7642(int x, int y, rct_map_element *mapElement);
-void sub_6A76E9(int rideIndex);
 
+uint8 gFootpathProvisionalFlags;
+rct_xyz16 gFootpathProvisionalPosition;
+uint8 gFootpathProvisionalType;
+uint8 gFootpathProvisionalSlope;
+uint8 gFootpathConstructionMode;
+uint16 gFootpathSelectedId;
+uint8 gFootpathSelectedType;
+rct_xyz16 gFootpathConstructFromPosition;
+uint8 gFootpathConstructDirection;
+uint8 gFootpathConstructSlope;
+uint8 gFootpathConstructValidDirections;
+money32 gFootpathPrice;
+uint8 gFootpathGroundFlags;
+
+static uint8 *_footpathQueueChainNext;
+static uint8 _footpathQueueChain[64];
+
+/** rct2: 0x00981D6C, 0x00981D6E */
 const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
 	{  0,  1 },
@@ -49,7 +59,27 @@ static const uint16 EntranceDirections[] = {
 	(4 | 1), 0, 0, 0, 0, 0, 0, 0,	// ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
-static int entrance_get_directions(rct_map_element *mapElement)
+/** rct2: 0x0098D7F0 */
+static const uint8 connected_path_count[] = {
+	0, // 0b0000
+	1, // 0b0001
+	1, // 0b0010
+	2, // 0b0011
+	1, // 0b0100
+	2, // 0b0101
+	2, // 0b0110
+	3, // 0b0111
+	1, // 0b1000
+	2, // 0b1001
+	2, // 0b1010
+	3, // 0b1011
+	2, // 0b1100
+	3, // 0b1101
+	3, // 0b1110
+	4, // 0b1111
+};
+
+int entrance_get_directions(rct_map_element *mapElement)
 {
 	uint8 entranceType = mapElement->properties.entrance.type;
 	uint8 sequence = mapElement->properties.entrance.index & 0x0F;
@@ -67,13 +97,12 @@ static bool entrance_has_direction(rct_map_element *mapElement, int direction)
  */
 static void automatically_set_peep_spawn(int x, int y, int z)
 {
-	rct2_peep_spawn *peepSpawn = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 	int direction = 0;
 	if (x != 32) {
 		direction++;
-		if (y != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+		if (y != gMapSizeUnits - 32) {
 			direction++;
-			if (x != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+			if (x != gMapSizeUnits - 32) {
 				direction++;
 				if (y != 32)
 					return;
@@ -81,13 +110,14 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 		}
 	}
 
+	rct2_peep_spawn *peepSpawn = &gPeepSpawns[0];
 	peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
 	peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
 	peepSpawn->direction = direction;
 	peepSpawn->z = z;
 }
 
-rct_map_element *map_get_footpath_element(int x, int y, int z)
+static rct_map_element *map_get_footpath_element(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
@@ -100,7 +130,7 @@ rct_map_element *map_get_footpath_element(int x, int y, int z)
 	return NULL;
 }
 
-rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
+static rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int slope)
 {
 	rct_map_element *mapElement;
 
@@ -137,40 +167,45 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 	map_invalidate_tile_full(x, y);
 }
 
+/** rct2: 0x0098D7EC */
+static const uint8 byte_98D7EC[] = {
+	207, 159, 63, 111
+};
+
 static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 	int bl, zHigh;
 
-	if (!sub_68B044())
+	if (!map_check_free_elements_and_reorganise(1))
 		return MONEY32_UNDEFINED;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
-		footpath_remove_litter(x, y, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		footpath_remove_litter(x, y, gCommandPosition.z);
 
 	// loc_6A649D:
-	RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(12, 00);
+	gFootpathPrice += MONEY(12, 00);
 
 	bl = 15;
 	zHigh = z + 4;
 	if (slope & 4) {
-		bl = RCT2_ADDRESS(0x0098D7EC, uint8)[slope & 3];
+		bl = byte_98D7EC[slope & 3];
 		zHigh += 2;
 	}
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F3EFD9, money32)))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
-	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
+	gFootpathGroundFlags = gMapGroundFlags;
+	if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
+		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
 
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
 	int supportHeight = z - mapElement->base_height;
-	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
@@ -182,26 +217,26 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement->properties.path.additions = pathItemType;
 		mapElement->properties.path.addition_status = 255;
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-		if (flags & (1 << 6))
+		if (flags & GAME_COMMAND_FLAG_GHOST)
 			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
-		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
+		footpath_queue_chain_reset();
 
 		if (!(flags & (1 << 7)))
 			footpath_remove_edges_at(x, y, mapElement);
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
 		loc_6A6620(flags, x, y, mapElement);
 	}
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags, uint8 pathItemType)
 {
 	if ((mapElement->properties.path.type >> 4) != (type & 0x0F) || (mapElement->type & 1) != (type >> 7)) {
-		RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(6, 00);
+		gFootpathPrice += MONEY(6, 00);
 	} else if (pathItemType != 0) {
 		if (
 			!(flags & GAME_COMMAND_FLAG_GHOST) &&
@@ -211,34 +246,34 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			if (flags & GAME_COMMAND_FLAG_4)
 				return MONEY32_UNDEFINED;
 
-			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 		}
 
 		if (pathItemType != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
-			uint16 unk6 = scenery_entry->path_bit.var_06;
+			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
+			uint16 unk6 = scenery_entry->path_bit.flags;
 
-			if ((unk6 & 0x80) && (mapElement->properties.path.type & 4)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
+			if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && footpath_element_is_sloped(mapElement)) {
+				gGameCommandErrorText = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & 0x40) && footpath_element_is_queue(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
+			if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && footpath_element_is_queue(mapElement)) {
+				gGameCommandErrorText = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
 				return MONEY32_UNDEFINED;
 			}
 
-			if (!(unk6 & 0x30) && (mapElement->properties.path.edges & 0x0F) == 0x0F) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
+			if (!(unk6 & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)) && (mapElement->properties.path.edges & 0x0F) == 0x0F) {
+				gGameCommandErrorText = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & 0x100) && !footpath_element_is_queue(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
+			if ((unk6 & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !footpath_element_is_queue(mapElement)) {
+				gGameCommandErrorText = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
 				return MONEY32_UNDEFINED;
 			}
 
-			RCT2_GLOBAL(0x00F3EFD9, money32) += scenery_entry->path_bit.price;
+			gFootpathPrice += scenery_entry->path_bit.price;
 		}
 
 		if (flags & GAME_COMMAND_FLAG_4)
@@ -248,7 +283,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & GAME_COMMAND_FLAG_GHOST) {
 			// Check if there is something on the path already
 			if (footpath_element_has_path_scenery(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
+				gGameCommandErrorText = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
@@ -258,7 +293,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
-			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 
 		if (
 			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
@@ -270,20 +305,20 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
-			uint16 unk6 = scenery_entry->path_bit.var_06;
-			if (unk6 & 1)
+			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
+			if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) {
 				mapElement->properties.path.addition_status = 255;
+			}
 		}
 		map_invalidate_tile_full(x, y);
-		return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+		return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 	}
 
 	if (flags & GAME_COMMAND_FLAG_4)
 		return MONEY32_UNDEFINED;
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
+		footpath_queue_chain_reset();
 
 		if (!(flags & GAME_COMMAND_FLAG_7))
 			footpath_remove_edges_at(x, y, mapElement);
@@ -296,56 +331,56 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		loc_6A6620(flags, x, y, mapElement);
 	}
 
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 		footpath_interrupt_peeps(x, y, z * 8);
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
+	gFootpathPrice = 0;
+	gFootpathGroundFlags = 0;
 
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
+		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (slope & 8) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_LAND_SLOPE_UNSUITABLE;
+		gGameCommandErrorText = STR_LAND_SLOPE_UNSUITABLE;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z < 2) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		gGameCommandErrorText = STR_TOO_LOW;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z > 248) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+	if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;
 		coord.x = x + 16;
 		coord.y = y + 16;
@@ -366,7 +401,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
  *
  *  rct2: 0x006BA23E
  */
-void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
+static void remove_banners_at_element(int x, int y, rct_map_element* mapElement){
 	while (!map_element_is_last_for_tile(mapElement++)){
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)return;
 		else if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)continue;
@@ -380,13 +415,13 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -395,12 +430,12 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		footpath_remove_litter(x, y, z * 8);
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -408,7 +443,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 		}
 
-		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
+		footpath_queue_chain_reset();
 		remove_banners_at_element(x, y, mapElement);
 		footpath_remove_edges_at(x, y, mapElement);
 		map_invalidate_tile_full(x, y);
@@ -416,7 +451,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		sub_6A759F();
 	}
 
-	return (flags & (1 << 5)) || (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : -MONEY(10,00);
+	return (flags & (1 << 5)) || (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : -MONEY(10,00);
 }
 
 /**
@@ -440,36 +475,36 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 		footpath_interrupt_peeps(x, y, z * 8);
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
+	gFootpathPrice = 0;
+	gFootpathGroundFlags = 0;
 
 	if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode) {
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (z < 2) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		gGameCommandErrorText = STR_TOO_LOW;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z > 248) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -479,30 +514,30 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		}
 	}
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) += 120;
+	gFootpathPrice += 120;
 	uint8 bl = 15;
 	int zHigh = z + 4;
 	if (slope & 4) {
-		bl = RCT2_ADDRESS(0x0098D7EC, uint8)[slope & 3];
+		bl = byte_98D7EC[slope & 3];
 		zHigh += 2;
 	}
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F3EFD9, money32)))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
-	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
+	gFootpathGroundFlags = gMapGroundFlags;
+	if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
+		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
 
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
 	int supportHeight = z - mapElement->base_height;
-	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -525,7 +560,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 		map_invalidate_tile_full(x, y);
 	}
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 /**
@@ -576,12 +611,18 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY);
 	if (cost != MONEY32_UNDEFINED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= (1 << 1);
+		gFootpathProvisionalType = type;
+		gFootpathProvisionalPosition.x = x;
+		gFootpathProvisionalPosition.y = y;
+		gFootpathProvisionalPosition.z = z & 0xFF;
+		gFootpathProvisionalSlope = slope;
+		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
-		viewport_set_visibility(RCT2_GLOBAL(0x00F3EFA4, uint8) & 2 ? 1 : 3);
+		if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND) {
+			viewport_set_visibility(1);
+		} else {
+			viewport_set_visibility(3);
+		}
 	}
 
 	return cost;
@@ -593,13 +634,13 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
  */
 void footpath_provisional_remove()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~(1 << 1);
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) {
+		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
 
 		footpath_remove(
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint16),
+			gFootpathProvisionalPosition.x,
+			gFootpathProvisionalPosition.y,
+			gFootpathProvisionalPosition.z,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
 		);
 	}
@@ -611,13 +652,13 @@ void footpath_provisional_remove()
  */
 void footpath_provisional_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
+		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~(1 << 2);
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16)
+			gFootpathConstructFromPosition.x,
+			gFootpathConstructFromPosition.y
 		);
 	}
 	footpath_provisional_remove();
@@ -642,51 +683,44 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	int z = 0, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	rct_xy16 map_pos = { 0 };
+	rct_xy16 position = { 0 };
 
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
 	if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
-		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
+		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
 		if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 			if (x != NULL) *x = (sint16)0x8000;
 			return;
 		}
 	}
 
-	RCT2_GLOBAL(0x00F1AD3E, uint8) = interactionType;
-	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
+	rct_xy16 minPosition = position;
+	rct_xy16 maxPosition = { position.x + 31, position.y + 31 };
+
+	position.x += 16;
+	position.y += 16;
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
 		z = myMapElement->base_height * 8;
-		if (myMapElement->properties.path.type & (1 << 2))
+		if (myMapElement->properties.path.type & (1 << 2)) {
 			z += 8;
+		}
 	}
-
-	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, sint16) = map_pos.x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = map_pos.y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = map_pos.x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = map_pos.y + 31;
-
-	map_pos.x += 16;
-	map_pos.y += 16;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 
 	for (int i = 0; i < 5; i++) {
-		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
-			z = map_element_height(map_pos.x, map_pos.y);
-		} else {
-			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
+		if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
+			z = map_element_height(position.x, position.y);
 		}
-		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+		position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		position.x = clamp(minPosition.x, position.x, maxPosition.x);
+		position.y = clamp(minPosition.y, position.y, maxPosition.y);
 	}
 
 	// Determine to which edge the cursor is closest
 	uint32 myDirection;
-	int mod_x = map_pos.x & 0x1F, mod_y = map_pos.y & 0x1F;
+	int mod_x = position.x & 0x1F, mod_y = position.y & 0x1F;
 	if (mod_x < mod_y) {
 		if (mod_x + mod_y < 32) {
 			myDirection = 0;
@@ -701,11 +735,10 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 		}
 	}
 
-	if (x != NULL) *x = map_pos.x & ~0x1F;
-	if (y != NULL) *y = map_pos.y & ~0x1F;
+	if (x != NULL) *x = position.x & ~0x1F;
+	if (y != NULL) *y = position.y & ~0x1F;
 	if (direction != NULL) *direction = myDirection;
 	if (mapElement != NULL) *mapElement = myMapElement;
-	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
 }
 
 /**
@@ -767,16 +800,11 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
  */
 void footpath_remove_litter(int x, int y, int z)
 {
-	int index;
-	uint16 spriteIndex, nextSpriteIndex;
-	rct_litter *sprite;
-
-	index = (x & 0x1FE0) << 3 | (y >> 5);
-	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex].litter;
-		nextSpriteIndex = sprite->next_in_quadrant;
-		if (sprite->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+		rct_litter *sprite = &get_sprite(spriteIndex)->litter;
+		uint16 nextSpriteIndex = sprite->next_in_quadrant;
+		if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			int distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
 				invalidate_sprite_0((rct_sprite*)sprite);
@@ -793,16 +821,11 @@ void footpath_remove_litter(int x, int y, int z)
  */
 void footpath_interrupt_peeps(int x, int y, int z)
 {
-	int index;
-	uint16 spriteIndex, nextSpriteIndex;
-	rct_peep *peep;
-
-	index = (x & 0x1FE0) << 3 | (y >> 5);
-	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		peep = &g_sprite_list[spriteIndex].peep;
-		nextSpriteIndex = peep->next_in_quadrant;
-		if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP) {
+		rct_peep *peep = &get_sprite(spriteIndex)->peep;
+		uint16 nextSpriteIndex = peep->next_in_quadrant;
+		if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
 			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
 				if (peep->z == z) {
 					peep_decrement_num_riders(peep);
@@ -828,6 +851,8 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+		return false;
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
 			continue;
@@ -845,13 +870,13 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	return false;
 }
 
-bool map_is_edge(int x, int y)
+static bool map_is_edge(int x, int y)
 {
 	return (
 		x < 32 ||
 		y < 32 ||
-		x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) ||
-		y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+		x >= gMapSizeUnits ||
+		y >= gMapSizeUnits
 	);
 }
 
@@ -940,13 +965,14 @@ static void footpath_connect_corners(int initialX, int initialY, rct_map_element
 	}
 }
 
-typedef struct {
+typedef struct rct_neighbour {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
+	uint8 entrance_index;
 } rct_neighbour;
 
-typedef struct {
+typedef struct rct_neighbour_list {
 	rct_neighbour items[8];
 	int count;
 } rct_neighbour_list;
@@ -960,8 +986,8 @@ static int rct_neighbour_compare(const void *a, const void *b)
 	else {
 		uint8 da = ((rct_neighbour*)a)->direction;
 		uint8 db = ((rct_neighbour*)b)->direction;
-		if (va < vb) return -1;
-		else if (va > vb) return 1;
+		if (da < db) return -1;
+		else if (da > db) return 1;
 		else return 0;
 	}
 }
@@ -971,11 +997,12 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrance_index)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
 	neighbourList->items[neighbourList->count].ride_index = rideIndex;
+	neighbourList->items[neighbourList->count].entrance_index = entrance_index;
 	neighbourList->count++;
 }
 
@@ -1069,7 +1096,7 @@ static bool footpath_disconnect_queue_from_path(int x, int y, rct_map_element *m
 
 	if (footpath_element_is_sloped(mapElement)) return false;
 
-	uint8 c = RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F];
+	uint8 c = connected_path_count[mapElement->properties.path.edges & 0x0F];
 	if ((action < 0) ? (c >= 2) : (c < 2)) return false;
 
 	if (action < 0) {
@@ -1110,9 +1137,9 @@ static void loc_6A6D7E(
 ) {
 	int x = initialX + TileDirectionDelta[direction].x;
 	int y = initialY + TileDirectionDelta[direction].y;
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
+	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
-			neighbour_list_push(neighbourList, 7, direction, 255);
+			neighbour_list_push(neighbourList, 7, direction, 255, 255);
 		}
 	} else {
 		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1139,16 +1166,18 @@ static void loc_6A6D7E(
 					if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 						continue;
 					}
-					uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
-					if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+
+					const uint8 trackType = mapElement->properties.track.type;
+					const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+					if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
 						return;
 					}
 					uint16 dx = ((direction - mapElement->type) & 3) ^ 2;
-					if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+					if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
 						return;
 					}
 					if (query) {
-						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index);
+						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index, 255);
 					}
 					goto loc_6A6FD2;
 				}
@@ -1157,10 +1186,10 @@ static void loc_6A6D7E(
 				if (z == mapElement->base_height) {
 					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
-							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index);
+							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index,  mapElement->properties.entrance.index);
 						} else {
 							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
-								sub_6A76E9(mapElement->properties.entrance.ride_index);
+								footpath_queue_chain_push(mapElement->properties.entrance.ride_index);
 							}
 						}
 						goto loc_6A6FD2;
@@ -1177,24 +1206,24 @@ static void loc_6A6D7E(
 				return;
 			}
 			if (footpath_element_is_queue(mapElement)) {
-				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
-					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index);
+				if (connected_path_count[mapElement->properties.path.edges & 0x0F] < 2) {
+					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 				} else {
 					if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH &&
 						footpath_element_is_queue(initialMapElement)) {
 						if (footpath_disconnect_queue_from_path(x, y, mapElement, 0)) {
-							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index);
+							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 						}
 					}
 				}
 			} else {
-				neighbour_list_push(neighbourList, 2, direction, 255);
+				neighbour_list_push(neighbourList, 2, direction, 255, 255);
 			}
 		} else {
 			footpath_disconnect_queue_from_path(x, y, mapElement, 1 + ((flags >> 6) & 1));
 			mapElement->properties.path.edges |= (1 << (direction ^ 2));
 			if (footpath_element_is_queue(mapElement)) {
-				sub_6A76E9(mapElement->properties.path.ride_index);
+				footpath_queue_chain_push(mapElement->properties.path.ride_index);
 			}
 		}
 		if (!(flags & 0x48)) {
@@ -1230,12 +1259,13 @@ static void loc_6A6C85(
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			return;
 		}
-		uint16 di = (mapElement->properties.track.sequence & 0x0F) | (mapElement->properties.track.type << 4);
-		if (!(RCT2_ADDRESS(0x0099CA64, uint8)[di] & (1 << 5))) {
+		const uint8 trackType = mapElement->properties.track.type;
+		const uint8 trackSequence = mapElement->properties.track.sequence & 0x0F;
+		if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
 			return;
 		}
 		uint16 dx = (direction - mapElement->type) & 3;
-		if (!(RCT2_ADDRESS(0x0099CA64, uint16)[di / 2] & (1 << dx))) {
+		if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
 			return;
 		}
 	}
@@ -1277,11 +1307,17 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
 		int rideIndex = -1;
+		uint8 entranceIndex = 255;
 		for (int i = 0; i < neighbourList.count; i++) {
 			if (neighbourList.items[i].ride_index != 255) {
 				if (rideIndex == -1) {
 					rideIndex = neighbourList.items[i].ride_index;
+					entranceIndex = neighbourList.items[i].entrance_index;
 				} else if (rideIndex != neighbourList.items[i].ride_index) {
+					neighbour_list_remove(&neighbourList, i);
+				} else if (rideIndex == neighbourList.items[i].ride_index
+					&& entranceIndex != neighbourList.items[i].entrance_index
+					&&  neighbourList.items[i].entrance_index != 255) {
 					neighbour_list_remove(&neighbourList, i);
 				}
 			}
@@ -1370,7 +1406,7 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 			mapElement->properties.path.ride_index = rideIndex;
 			mapElement->properties.path.additions &= 0x8F;
 			mapElement->properties.path.additions |= (entranceIndex & 7) << 4;
-			
+
 			map_invalidate_element(x, y, mapElement);
 
 			if (lastQueuePathElement == NULL) {
@@ -1405,7 +1441,25 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 			);
 		}
 	}
+}
 
+void footpath_queue_chain_reset()
+{
+	_footpathQueueChainNext = _footpathQueueChain;
+}
+
+/**
+ *
+ *  rct2: 0x006A76E9
+ */
+void footpath_queue_chain_push(uint8 rideIndex)
+{
+	if (rideIndex != 255) {
+		uint8 * lastSlot = _footpathQueueChain + countof(_footpathQueueChain) - 1;
+		if (_footpathQueueChainNext <= lastSlot) {
+			*_footpathQueueChainNext++ = rideIndex;
+		}
+	}
 }
 
 /**
@@ -1414,35 +1468,29 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
  */
 void sub_6A759F()
 {
-	uint8 *esi;
-	int i, x, y, z, direction, rideIndex;
-	rct_ride *ride;
-	rct_map_element *mapElement;
-
-	for (esi = (uint8*)0x00F3EFF8; esi < RCT2_GLOBAL(0x00F3EFF4, uint8*); esi++) {
-		rideIndex = *esi;
-		ride = get_ride(rideIndex);
-		if (ride->type == RIDE_TYPE_NULL)
+	for (uint8 *queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++) {
+		uint8 rideIndex = *queueChainPtr;
+		rct_ride *ride = get_ride(rideIndex);
+		if (ride->type == RIDE_TYPE_NULL) {
 			continue;
+		}
 
-		for (i = 0; i < 4; i++) {
-			if (ride->entrances[i] == 0xFFFF)
+		for (int i = 0; i < 4; i++) {
+			if (ride->entrances[i] == 0xFFFF) {
 				continue;
+			}
 
-			x = ride->entrances[i] & 0xFF;
-			y = ride->entrances[i] >> 8;
-			z = ride->station_heights[i];
+			uint8 x = ride->entrances[i] & 0xFF;
+			uint8 y = ride->entrances[i] >> 8;
+			uint8 z = ride->station_heights[i];
 
-			mapElement = map_get_first_element_at(x, y);
+			rct_map_element *mapElement = map_get_first_element_at(x, y);
 			do {
-				if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
-					continue;
-				if (mapElement->base_height != z)
-					continue;
-				if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
-					continue;
+				if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
+				if (mapElement->base_height != z) continue;
+				if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE) continue;
 
-				direction = (mapElement->type & 3) ^ 2;
+				uint8 direction = (mapElement->type & 3) ^ 2;
 				footpath_chain_ride_queue(rideIndex, i, x << 5, y << 5, mapElement, direction);
 			} while (!map_element_is_last_for_tile(mapElement++));
 		}
@@ -1455,19 +1503,10 @@ void sub_6A759F()
  */
 static void footpath_unown(int x, int y, rct_map_element *pathElement)
 {
-	int ownershipUnk = 0;
-	int z = pathElement->base_height;
-	rct_map_element *surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
-	if (surfaceElement->base_height != z) {
-		z -= 2;
-		if (surfaceElement->base_height != z) {
-			ownershipUnk = (surfaceElement->properties.surface.ownership & 0xCF) >> 4;
-		}
-	}
 	map_buy_land_rights(x, y, x, y, 6, 1);
 }
 
-bool get_next_direction(int edges, int *direction)
+static bool get_next_direction(int edges, int *direction)
 {
 	int index = bitscanforward(edges);
 	if (index == -1)
@@ -1480,8 +1519,11 @@ bool get_next_direction(int edges, int *direction)
 /**
  *
  *  rct2: 0x0069AC1A
+ * @param flags (1 << 0): Ignore queues
+ *              (1 << 5): Unown
+ *              (1 << 7): Ignore no entry signs
  */
-int footpath_is_connected_to_map_edge_recurse(
+static int footpath_is_connected_to_map_edge_recurse(
 	int x, int y, int z, int direction, int flags,
 	int level, int distanceFromJunction, int junctionTolerance
 ) {
@@ -1496,7 +1538,7 @@ int footpath_is_connected_to_map_edge_recurse(
 	// Check if we are at edge of map
 	if (x < 32 || y < 32)
 		return FOOTPATH_SEARCH_SUCCESS;
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits)
 		return FOOTPATH_SEARCH_SUCCESS;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1514,14 +1556,18 @@ int footpath_is_connected_to_map_edge_recurse(
 			continue;
 		}
 
-		if (mapElement->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+		if (!(flags & (1 << 0))) {
+			if (footpath_element_is_queue(mapElement)) {
+				continue;
+			}
+		}
 
-		if (flags & 0x20) {
+		if (flags & (1 << 5)) {
 			footpath_unown(x, y, mapElement);
 		}
 		edges = mapElement->properties.path.edges & 0x0F;
 		direction ^= 2;
-		if (!(flags & 0x80)) {
+		if (!(flags & (1 << 7))) {
 			if (mapElement[1].type == MAP_ELEMENT_TYPE_BANNER) {
 				for (int i = 1; i < 4; i++) {
 					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
@@ -1588,7 +1634,7 @@ searchFromFootpath:
 
 int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags)
 {
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
+	flags |= (1 << 0);
 	return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
 }
 
@@ -1708,18 +1754,23 @@ void footpath_update_path_wide_flags(int x, int y)
 		return;
 
 	footpath_clear_wide(x, y);
-	x += 0x20;
-	footpath_clear_wide(x, y);
-	y += 0x20;
-	footpath_clear_wide(x, y);
-	x -= 0x20;
-	footpath_clear_wide(x, y);
-	y -= 0x20;
-
-	if (!(x & 0xE0))
-		return;
-	if (!(y & 0xE0))
-		return;
+	/* Rather than clearing the wide flag of the following tiles and
+	 * checking the state of them later, leave them intact and assume
+	 * they were cleared. Consequently only the wide flag for this single
+	 * tile is modified by this update.
+	 * This is important for avoiding glitches in pathfinding that occurs
+	 * between between the batches of updates to the path wide flags.
+	 * Corresponding pathList[] indexes for the following tiles
+	 * are: 2, 3, 4, 5.
+	 * Note: indexes 3, 4, 5 are reset in the current call;
+	 *       index 2 is reset in the previous call. */
+	//x += 0x20;
+	//footpath_clear_wide(x, y);
+	//y += 0x20;
+	//footpath_clear_wide(x, y);
+	//x -= 0x20;
+	//footpath_clear_wide(x, y);
+	//y -= 0x20;
 
 	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
 	do {
@@ -1730,6 +1781,9 @@ void footpath_update_path_wide_flags(int x, int y)
 			continue;
 
 		if (footpath_element_is_sloped(mapElement))
+			continue;
+
+		if ((mapElement->properties.path.edges & 0xF) == 0)
 			continue;
 
 		uint8 height = mapElement->base_height;
@@ -1778,20 +1832,30 @@ void footpath_update_path_wide_flags(int x, int y)
 
 		if (mapElement->properties.path.edges & 2) {
 			F3EFA5 |= 0x8;
-			if (pathList[3] != NULL) {
-				if (footpath_element_is_wide(pathList[3])) {
-					F3EFA5 &= ~0x8;
-				}
-			}
+			/* In the following:
+			 * footpath_element_is_wide(pathList[3])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Commented out since it will never occur. */
+			//if (pathList[3] != NULL) {
+			//	if (footpath_element_is_wide(pathList[3])) {
+			//		F3EFA5 &= ~0x8;
+			//	}
+			//}
 		}
 
 		if (mapElement->properties.path.edges & 4) {
 			F3EFA5 |= 0x20;
-			if (pathList[5] != NULL) {
-				if (footpath_element_is_wide(pathList[5])) {
-					F3EFA5 &= ~0x20;
-				}
-			}
+			/* In the following:
+			 * footpath_element_is_wide(pathList[5])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Commented out since it will never occur. */
+			//if (pathList[5] != NULL) {
+			//	if (footpath_element_is_wide(pathList[5])) {
+			//		F3EFA5 &= ~0x20;
+			//	}
+			//}
 		}
 
 		if ((F3EFA5 & 0x80) && (pathList[7] != NULL) && !(footpath_element_is_wide(pathList[7]))) {
@@ -1802,27 +1866,44 @@ void footpath_update_path_wide_flags(int x, int y)
 				F3EFA5 |= 0x1;
 			}
 
+			/* In the following:
+			 * footpath_element_is_wide(pathList[5])
+			 * is always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Short circuit the logic appropriately. */
 			if ((F3EFA5 & 0x20) &&
 				(pathList[6] != NULL) && (!footpath_element_is_wide(pathList[6])) &&
 				((pathList[6]->properties.path.edges & 3) == 3) && // N W
-				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				(pathList[5] != NULL) && (true || !footpath_element_is_wide(pathList[5]))) {
 				F3EFA5 |= 0x40;
 			}
 		}
 
 
-		if ((F3EFA5 & 0x8) && (pathList[3] != NULL) && !(pathList[3]->type & 2)) {
+		/* In the following:
+		  * footpath_element_is_wide(pathList[2])
+		  * footpath_element_is_wide(pathList[3])
+		 * are always false due to the tile update order
+		 * in combination with reset tiles.
+		 * Short circuit the logic appropriately. */
+		if ((F3EFA5 & 0x8) && (pathList[3] != NULL) && (true || !footpath_element_is_wide(pathList[3]))) {
 			if ((F3EFA5 & 2) &&
-				(pathList[2] != NULL) && (!footpath_element_is_wide(pathList[2])) &&
+				(pathList[2] != NULL) && (true || !footpath_element_is_wide(pathList[2])) &&
 				((pathList[2]->properties.path.edges & 0xC) == 0xC) &&
 				(pathList[1] != NULL) && (!footpath_element_is_wide(pathList[1]))) {
 				F3EFA5 |= 0x4;
 			}
 
+			/* In the following:
+			 * footpath_element_is_wide(pathList[4])
+			 * footpath_element_is_wide(pathList[5])
+			 * are always false due to the tile update order
+			 * in combination with reset tiles.
+			 * Short circuit the logic appropriately. */
 			if ((F3EFA5 & 0x20) &&
-				(pathList[4] != NULL) && (!footpath_element_is_wide(pathList[4])) &&
+				(pathList[4] != NULL) && (true || !footpath_element_is_wide(pathList[4])) &&
 				((pathList[4]->properties.path.edges & 9) == 9) &&
-				(pathList[5] != NULL) && (!footpath_element_is_wide(pathList[5]))) {
+				(pathList[5] != NULL) && (true || !footpath_element_is_wide(pathList[5]))) {
 				F3EFA5 |= 0x10;
 			}
 		}
@@ -1847,20 +1928,6 @@ void footpath_update_path_wide_flags(int x, int y)
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
-
-/**
- *
- *  rct2: 0x006A76E9
- */
-void sub_6A76E9(int rideIndex)
-{
-	if (rideIndex == 255)
-		return;
-
-	*(RCT2_GLOBAL(0x00F3EFF4, uint8*)) = rideIndex;
-	RCT2_GLOBAL(0x00F3EFF4, uint8*)++;
-}
-
 /**
  *
  *  rct2: 0x006A7642
@@ -1871,7 +1938,7 @@ void sub_6A7642(int x, int y, rct_map_element *mapElement)
 	switch (elementType) {
 	case MAP_ELEMENT_TYPE_PATH:
 		if (footpath_element_is_queue(mapElement)) {
-			sub_6A76E9(mapElement->properties.path.ride_index);
+			footpath_queue_chain_push(mapElement->properties.path.ride_index);
 			for (int direction = 0; direction < 4; direction++) {
 				if (mapElement->properties.path.edges & (1 << direction)) {
 					footpath_chain_ride_queue(255, 0, x, y, mapElement, direction);
@@ -1882,7 +1949,7 @@ void sub_6A7642(int x, int y, rct_map_element *mapElement)
 		break;
 	case MAP_ELEMENT_TYPE_ENTRANCE:
 		if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
-			sub_6A76E9(mapElement->properties.entrance.ride_index);
+			footpath_queue_chain_push(mapElement->properties.entrance.ride_index);
 			footpath_chain_ride_queue(255, 0, x, y, mapElement, (mapElement->type & MAP_ELEMENT_DIRECTION_MASK) ^ 2);
 		}
 		break;
@@ -1898,7 +1965,7 @@ static void footpath_remove_edges_towards_here(int x, int y, int z, int directio
 	int d;
 
 	if (footpath_element_is_queue(mapElement)) {
-		sub_6A76E9(mapElement->properties.path.ride_index);
+		footpath_queue_chain_push(mapElement->properties.path.ride_index);
 	}
 
 	d = direction ^ 2;
@@ -2007,4 +2074,9 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 		mapElement->properties.path.edges = 0;
+}
+
+rct_footpath_entry *get_footpath_entry(int entryIndex)
+{
+	return gFootpathEntries[entryIndex];
 }

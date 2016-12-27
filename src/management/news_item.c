@@ -1,41 +1,52 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill, Matthias Lanzinger
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../ride/ride.h"
-#include "../world/sprite.h"
 #include "../util/util.h"
+#include "../world/sprite.h"
 #include "news_item.h"
 
-rct_news_item *gNewsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+rct_news_item gNewsItems[MAX_NEWS_ITEMS];
+
+/** rct2: 0x0097BE7C */
+const uint8 news_type_properties[] =	{
+	0,												// NEWS_ITEM_NULL
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_RIDE
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP_ON_RIDE
+	NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT,	// NEWS_ITEM_PEEP
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_MONEY
+	NEWS_TYPE_HAS_LOCATION,							// NEWS_ITEM_BLANK
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_RESEARCH
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_PEEPS
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_AWARD
+	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_GRAPH
+};
+
 void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
 bool news_item_is_valid_idx(int index)
 {
-	if (index > MAX_NEWS_ITEMS) {
+	if (index >= MAX_NEWS_ITEMS) {
 		log_error("Tried to get news item past MAX_NEWS.");
 		return false;
 	}
@@ -71,9 +82,11 @@ void news_item_init_queue()
 
 	news_item_get(0)->type = NEWS_ITEM_NULL;
 	news_item_get(11)->type = NEWS_ITEM_NULL;
+
 	// Throttles for warning types (PEEP_*_WARNING)
-	for (i = 0; i < 16; i++)
-		RCT2_ADDRESS(0x01358750, uint8)[i] = 0;
+	for (i = 0; i < 16; i++) {
+		gPeepWarningThrottle[i] = 0;
+	}
 
 	window_game_bottom_toolbar_invalidate_news_item();
 }
@@ -83,9 +96,9 @@ static void news_item_tick_current()
 	int ticks;
 	ticks = ++news_item_get(0)->ticks;
 	// Only play news item sound when in normal playing mode
-	if (ticks == 1 && (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING)) {
+	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
 		// Play sound
-		audio_play_sound_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+		audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
 	}
 }
 
@@ -131,7 +144,7 @@ void news_item_update_current()
 void news_item_close_current()
 {
 	int i;
-	rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItems = gNewsItems;
 
 	// Check if there is a current message
 	if (news_item_is_queue_empty())
@@ -144,7 +157,7 @@ void news_item_close_current()
 	newsItems[i] = newsItems[0];
 
 	// Set the end of the end of the history list
-	if (i < MAX_NEWS_ITEMS)
+	if (i < MAX_NEWS_ITEMS - 1)
 		newsItems[i + 1].type = NEWS_ITEM_NULL;
 
 	// Invalidate the news window
@@ -231,10 +244,10 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find the first car of the train peep is on
-		vehicle = &(g_sprite_list[ride->vehicles[peep->current_train]]).vehicle;
+		vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
 		// Find the actual car peep is on
 		for (i = 0; i < peep->current_car; i++)
-			vehicle = &(g_sprite_list[vehicle->next_vehicle_on_train]).vehicle;
+			vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
 		*x = vehicle->x;
 		*y = vehicle->y;
 		*z = vehicle->z;
@@ -267,21 +280,20 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
  */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
-	utf8 *buffer = (char*)0x0141EF68;
-	void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
+	utf8 buffer[256];
+	void *args = gCommonFormatArgs;
 
-	format_string(buffer, string_id, args); // overflows possible?
+	format_string(buffer, 256, string_id, args); // overflows possible?
 	news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
-	int i = 0;
-	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItem = gNewsItems;
 
 	// find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x13CB1CC) // &news_list[10]
+		if (newsItem + 1 >= &gNewsItems[10]) // &news_list[10]
 			news_item_close_current();
 		else
 			newsItem++;
@@ -292,8 +304,8 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 	newsItem->flags = 0;
 	newsItem->assoc = assoc;
 	newsItem->ticks = 0;
-	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
+	newsItem->month_year = gDateMonthsElapsed;
+	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * gDateMonthTicks) >> 16) + 1;
 	safe_strcpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
@@ -358,8 +370,7 @@ void news_item_open_subject(int type, int subject)
 			window_event_mouse_down_call(window, 4 + subject);
 		break;
 	case NEWS_ITEM_PEEPS:
-		// Open guest list to right tab
-		window_guest_list_open_with_filter(3, subject);;
+		window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;
 		break;
 	case NEWS_ITEM_AWARD:
 		window_park_awards_open();
@@ -391,7 +402,7 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 		}
 	}
 
-	for (int i = 11; i <= MAX_NEWS_ITEMS; i++) {
+	for (int i = 11; i < MAX_NEWS_ITEMS; i++) {
 		if (!news_item_is_empty(i)) {
 			rct_news_item * const newsItem = news_item_get(i);
 			if (type == newsItem->type && assoc == newsItem->assoc) {
@@ -406,12 +417,11 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 
 void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 {
-	int i = 0;
-	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+	rct_news_item *newsItem = gNewsItems;
 
 	// Find first open slot
 	while (newsItem->type != NEWS_ITEM_NULL) {
-		if (newsItem + 1 >= (rct_news_item*)0x013CB1CC)
+		if (newsItem + 1 >= &gNewsItems[10])
 			news_item_close_current();
 		else
 			newsItem++;

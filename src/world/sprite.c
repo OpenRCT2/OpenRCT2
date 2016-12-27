@@ -1,49 +1,65 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
+#include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../scenario.h"
+#include "../OpenRCT2.h"
+#include "../scenario/scenario.h"
 #include "fountain.h"
 #include "sprite.h"
 
-rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+#ifdef NO_RCT2
+uint16 gSpriteListHead[6];
+uint16 gSpriteListCount[6];
+static rct_sprite _spriteList[MAX_SPRITES];
+#else
+uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
+uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
+static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+#endif
 
-rct_sprite_entry* g_sprite_entries = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_ENTRIES, rct_sprite_entry);
+uint16 gSpriteSpatialIndex[0x10001];
+
+static rct_xyz16 _spritelocations1[MAX_SPRITES];
+static rct_xyz16 _spritelocations2[MAX_SPRITES];
+
+rct_sprite *get_sprite(size_t sprite_idx)
+{
+	openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
+	return &_spriteList[sprite_idx];
+}
 
 uint16 sprite_get_first_in_quadrant(int x, int y)
 {
 	int offset = ((x & 0x1FE0) << 3) | (y >> 5);
-	return RCT2_ADDRESS(0x00F1EF60, uint16)[offset];
+	return gSpriteSpatialIndex[offset];
 }
 
 static void invalidate_sprite_max_zoom(rct_sprite *sprite, int maxZoom)
 {
 	if (sprite->unknown.sprite_left == SPRITE_LOCATION_NULL) return;
 
-	for (rct_viewport** viewport_p = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*); *viewport_p != NULL; viewport_p++) {
-		rct_viewport* viewport = *viewport_p;
-		if (viewport->zoom <= maxZoom) {
+	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+		rct_viewport *viewport = &g_viewport_list[i];
+		if (viewport->width != 0 && viewport->zoom <= maxZoom) {
 			viewport_invalidate(
 				viewport,
 				sprite->unknown.sprite_left,
@@ -88,19 +104,20 @@ void invalidate_sprite_2(rct_sprite *sprite)
  *
  *  rct2: 0x0069EB13
  */
-void reset_sprite_list(){
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
-	memset(g_sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
+void reset_sprite_list()
+{
+	gSavedAge = 0;
+	memset(_spriteList, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
-	for (int i = 0; i < 6; ++i){
-		RCT2_ADDRESS(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)[i] = -1;
-		RCT2_ADDRESS(0x13573C8, uint16)[i] = 0;
+	for (int i = 0; i < NUM_SPRITE_LISTS; i++) {
+		gSpriteListHead[i] = SPRITE_INDEX_NULL;
+		gSpriteListCount[i] = 0;
 	}
 
 	rct_sprite* previous_spr = (rct_sprite*)SPRITE_INDEX_NULL;
 
-	rct_sprite* spr = g_sprite_list;
 	for (int i = 0; i < MAX_SPRITES; ++i){
+		rct_sprite *spr = get_sprite(i);
 		spr->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
 		spr->unknown.sprite_index = i;
 		spr->unknown.next = SPRITE_INDEX_NULL;
@@ -112,15 +129,15 @@ void reset_sprite_list(){
 		}
 		else{
 			spr->unknown.previous = SPRITE_INDEX_NULL;
-			RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16) = i;
+			gSpriteListHead[SPRITE_LIST_NULL] = i;
 		}
 		previous_spr = spr;
 		spr++;
 	}
 
-	RCT2_GLOBAL(0x13573C8, uint16) = MAX_SPRITES;
+	gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
 
-	reset_0x69EBE4();
+	reset_sprite_spatial_index();
 }
 
 /**
@@ -129,29 +146,72 @@ void reset_sprite_list(){
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share thier position if this is the case.
  */
-void reset_0x69EBE4(){
-	memset((uint16*)0xF1EF60, -1, 0x10001*2);
-
-	rct_sprite* spr = g_sprite_list;
-	for (; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++){
-
-		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL){
-			uint32 edi = spr->unknown.x;
-			if (spr->unknown.x == SPRITE_LOCATION_NULL){
-				edi = 0x10000;
+void reset_sprite_spatial_index()
+{
+	memset(gSpriteSpatialIndex, -1, 0x10001 * sizeof(uint16));
+	for (size_t i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite *spr = get_sprite(i);
+		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
+			uint32 index;
+			if (spr->unknown.x == SPRITE_LOCATION_NULL) {
+				index = 0x10000;
 			} else {
-				int ecx = spr->unknown.y;
-				ecx >>= 5;
-				edi &= 0x1FE0;
-				edi <<= 3;
-				edi |= ecx;
+				sint16 x = floor2(spr->unknown.x, 32);
+				uint8 tileY = spr->unknown.y >> 5;
+				index = (x << 3) | tileY;
 			}
-			uint16 ax = RCT2_ADDRESS(0xF1EF60,uint16)[edi];
-			RCT2_ADDRESS(0xF1EF60,uint16)[edi] = spr->unknown.sprite_index;
-			spr->unknown.next_in_quadrant = ax;
+			uint16 nextSpriteId = gSpriteSpatialIndex[index];
+			gSpriteSpatialIndex[index] = spr->unknown.sprite_index;
+			spr->unknown.next_in_quadrant = nextSpriteId;
 		}
 	}
 }
+
+#ifndef DISABLE_NETWORK
+
+static unsigned char _spriteChecksum[EVP_MAX_MD_SIZE + 1];
+
+const char * sprite_checksum()
+{
+	if (EVP_DigestInit_ex(gHashCTX, EVP_sha1(), NULL) <= 0)
+	{
+		openrct2_assert(false, "Failed to initialise SHA1 engine");
+	}
+	for (size_t i = 0; i < MAX_SPRITES; i++)
+	{
+		rct_sprite *sprite = get_sprite(i);
+		if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL && sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_MISC)
+		{
+			rct_sprite copy = *sprite;
+			copy.unknown.sprite_left = copy.unknown.sprite_right = copy.unknown.sprite_top = copy.unknown.sprite_bottom = 0;
+			if (EVP_DigestUpdate(gHashCTX, &copy, sizeof(rct_sprite)) <= 0)
+			{
+				openrct2_assert(false, "Failed to update digest");
+			}
+		}
+	}
+	unsigned char localhash[EVP_MAX_MD_SIZE + 1];
+	unsigned int size = sizeof(localhash);
+	EVP_DigestFinal(gHashCTX, localhash, &size);
+	assert(size <= sizeof(localhash));
+	localhash[sizeof(localhash) - 1] = '\0';
+	char *x = (char *)_spriteChecksum;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		snprintf(x, EVP_MAX_MD_SIZE + 1, "%02x", localhash[i]);
+		x += 2;
+	}
+	*x = '\0';
+	return (char *)_spriteChecksum;
+}
+#else
+
+const char * sprite_checksum()
+{
+	return NULL;
+}
+
+#endif // DISABLE_NETWORK
 
 /**
  * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
@@ -162,19 +222,35 @@ void sprite_clear_all_unused()
 	rct_unk_sprite *sprite;
 	uint16 spriteIndex, nextSpriteIndex, previousSpriteIndex;
 
-	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
+	spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex].unknown;
+		sprite = &get_sprite(spriteIndex)->unknown;
 		nextSpriteIndex = sprite->next;
 		previousSpriteIndex = sprite->previous;
 		memset(sprite, 0, sizeof(rct_sprite));
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
 		sprite->next = nextSpriteIndex;
 		sprite->previous = previousSpriteIndex;
-		sprite->linked_list_type_offset = SPRITE_LINKEDLIST_OFFSET_NULL;
+		sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
 		sprite->sprite_index = spriteIndex;
 		spriteIndex = nextSpriteIndex;
 	}
+}
+
+static void sprite_reset(rct_unk_sprite *sprite)
+{
+	// Need to retain how the sprite is linked in lists
+	uint8 llto = sprite->linked_list_type_offset;
+	uint16 next = sprite->next;
+	uint16 prev = sprite->previous;
+	uint16 sprite_index = sprite->sprite_index;
+
+	memset(sprite, 0, sizeof(rct_sprite));
+
+	sprite->linked_list_type_offset = llto;
+	sprite->next = next;
+	sprite->previous = prev;
+	sprite->sprite_index = sprite_index;
 }
 
 /*
@@ -183,27 +259,25 @@ void sprite_clear_all_unused()
 */
 rct_sprite *create_sprite(uint8 bl)
 {
-	SPRITE_LINKEDLIST_OFFSET linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_UNKNOWN; // cl
-
-	if ((bl & 2) != 0)
-	{
+	size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
+	if ((bl & 2) != 0) {
 		// 69EC96;
-		sint16 cx = 0x12C - RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
-		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
-		{
+		uint16 cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
+		if (cx >= gSpriteListCount[SPRITE_LIST_NULL]) {
 			return NULL;
 		}
-
-		linkedListTypeOffset = SPRITE_LINKEDLIST_OFFSET_MISC;
-	}
-	else if (RCT2_GLOBAL(0x13573C8, uint16) <= 0)
-	{
+		linkedListTypeOffset = SPRITE_LIST_MISC * 2;
+	} else if (gSpriteListCount[SPRITE_LIST_NULL] == 0) {
 		return NULL;
 	}
 
-	rct_unk_sprite *sprite = &(g_sprite_list[RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16)]).unknown;
+	rct_unk_sprite *sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->unknown;
 
 	move_sprite_to_list((rct_sprite *)sprite, (uint8)linkedListTypeOffset);
+
+	// Need to reset all sprite data, as the uninitialised values
+	// may contain garbage and cause a desync later on.
+	sprite_reset(sprite);
 
 	sprite->x = SPRITE_LOCATION_NULL;
 	sprite->y = SPRITE_LOCATION_NULL;
@@ -215,62 +289,61 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->flags = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
-	sprite->next_in_quadrant = RCT2_ADDRESS(0xF1EF60, uint16)[0x10000];
-	RCT2_ADDRESS(0xF1EF60, uint16)[0x10000] = sprite->sprite_index;
+	sprite->next_in_quadrant = gSpriteSpatialIndex[0x10000];
+	gSpriteSpatialIndex[0x10000] = sprite->sprite_index;
 
 	return (rct_sprite*)sprite;
 }
 
 /*
-* rct2: 0x0069ED0B
-* This function moves a sprite to the specified sprite linked list.
-* There are 5/6 of those, and cl specifies a pointer offset
-* of the desired linked list in a uint16 array. Known valid values are
-* 2, 4, 6, 8 or 10 (SPRITE_LINKEDLIST_OFFSET_...)
-*/
-void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
+ * rct2: 0x0069ED0B
+ * This function moves a sprite to the specified sprite linked list.
+ * There are 5/6 of those, and cl specifies a pointer offset
+ * of the desired linked list in a uint16 array. Known valid values are
+ * 2, 4, 6, 8 or 10 (SPRITE_LIST_... * 2)
+ */
+void move_sprite_to_list(rct_sprite *sprite, uint8 newListOffset)
 {
 	rct_unk_sprite *unkSprite = &sprite->unknown;
+	uint8 oldListOffset = unkSprite->linked_list_type_offset;
+	int oldList = oldListOffset >> 1;
+	int newList = newListOffset >> 1;
 
 	// No need to move if the sprite is already in the desired list
-	if (unkSprite->linked_list_type_offset == cl)
+	if (oldListOffset == newListOffset) {
 		return;
+	}
 
 	// If the sprite is currently the head of the list, the
 	// sprite following this one becomes the new head of the list.
-	if (unkSprite->previous == SPRITE_INDEX_NULL)
-	{
-		RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX + unkSprite->linked_list_type_offset, uint16) = unkSprite->next;
-	}
-	else
-	{
+	if (unkSprite->previous == SPRITE_INDEX_NULL) {
+		gSpriteListHead[oldList] = unkSprite->next;
+	} else {
 		// Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-		g_sprite_list[unkSprite->previous].unknown.next = unkSprite->next;
+		get_sprite(unkSprite->previous)->unknown.next = unkSprite->next;
 	}
 
 	// Similarly, hook up sprite->next->previous to sprite->previous
-	if (unkSprite->next != SPRITE_INDEX_NULL)
-	{
-		g_sprite_list[unkSprite->next].unknown.previous = unkSprite->previous;
+	if (unkSprite->next != SPRITE_INDEX_NULL) {
+		get_sprite(unkSprite->next)->unknown.previous = unkSprite->previous;
 	}
 
-	int oldListTypeOffset = unkSprite->linked_list_type_offset;
 	unkSprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
-	unkSprite->linked_list_type_offset = cl;
+	unkSprite->linked_list_type_offset = newListOffset;
 
-	unkSprite->next = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX + cl, uint16); // This sprite's next sprite is the old head, since we're the new head
-	RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX + cl, uint16) = unkSprite->sprite_index; // Store this sprite's index as head of its new list
+	unkSprite->next = gSpriteListHead[newList]; // This sprite's next sprite is the old head, since we're the new head
+	gSpriteListHead[newList] = unkSprite->sprite_index; // Store this sprite's index as head of its new list
 
 	if (unkSprite->next != SPRITE_INDEX_NULL)
 	{
 		// Fix the chain by settings sprite->next->previous to sprite_index
-		g_sprite_list[unkSprite->next].unknown.previous = unkSprite->sprite_index;
+		get_sprite(unkSprite->next)->unknown.previous = unkSprite->sprite_index;
 	}
 
 	// These globals are probably counters for each sprite list?
 	// Decrement old list counter, increment new list counter.
-	--(RCT2_GLOBAL(0x13573C8 + oldListTypeOffset, uint16));
-	++(RCT2_GLOBAL(0x13573C8 + cl, uint16));
+	gSpriteListCount[oldList]--;
+	gSpriteListCount[newList]++;
 }
 
 /**
@@ -281,7 +354,6 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
 {
 	invalidate_sprite_2((rct_sprite*)steam);
 
-	int original_var24 = steam->var_24;
 	steam->var_24 += 0x5555;
 	if (steam->var_24 < 0x5555) {
 		sprite_move(
@@ -291,8 +363,8 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
 			(rct_sprite*)steam
 		);
 	}
-	steam->var_26 += 64;
-	if (steam->var_26 >= (56 * 64)) {
+	steam->frame += 64;
+	if (steam->frame >= (56 * 64)) {
 		sprite_remove((rct_sprite*)steam);
 	}
 }
@@ -301,7 +373,7 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
  *
  *  rct2: 0x0067363D
  */
-void sprite_misc_3_create(int x, int y, int z)
+void sprite_misc_explosion_cloud_create(int x, int y, int z)
 {
 	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
 	if (sprite != NULL) {
@@ -310,8 +382,8 @@ void sprite_misc_3_create(int x, int y, int z)
 		sprite->sprite_height_positive = 34;
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_3;
-		sprite->var_26 = 0;
+		sprite->misc_identifier = SPRITE_MISC_EXPLOSION_CLOUD;
+		sprite->frame = 0;
 	}
 }
 
@@ -319,11 +391,11 @@ void sprite_misc_3_create(int x, int y, int z)
  *
  *  rct2: 0x00673385
  */
-static void sprite_misc_3_update(rct_sprite *sprite)
+static void sprite_misc_explosion_cloud_update(rct_sprite * sprite)
 {
 	invalidate_sprite_2(sprite);
-	sprite->unknown.var_26 += 128;
-	if (sprite->unknown.var_26 >= (36 * 128)) {
+	sprite->unknown.frame += 128;
+	if (sprite->unknown.frame >= (36 * 128)) {
 		sprite_remove(sprite);
 	}
 }
@@ -332,7 +404,7 @@ static void sprite_misc_3_update(rct_sprite *sprite)
  *
  *  rct2: 0x0067366B
  */
-void sprite_misc_5_create(int x, int y, int z)
+void sprite_misc_explosion_flare_create(int x, int y, int z)
 {
 	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
 	if (sprite != NULL) {
@@ -341,8 +413,8 @@ void sprite_misc_5_create(int x, int y, int z)
 		sprite->sprite_height_positive = 8;
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_5;
-		sprite->var_26 = 0;
+		sprite->misc_identifier = SPRITE_MISC_EXPLOSION_FLARE;
+		sprite->frame = 0;
 	}
 }
 
@@ -350,11 +422,11 @@ void sprite_misc_5_create(int x, int y, int z)
  *
  *  rct2: 0x006733B4
  */
-static void sprite_misc_5_update(rct_sprite *sprite)
+static void sprite_misc_explosion_flare_update(rct_sprite * sprite)
 {
 	invalidate_sprite_2(sprite);
-	sprite->unknown.var_26 += 64;
-	if (sprite->unknown.var_26 >= (124 * 64)) {
+	sprite->unknown.frame += 64;
+	if (sprite->unknown.frame >= (124 * 64)) {
 		sprite_remove(sprite);
 	}
 }
@@ -363,7 +435,7 @@ static void sprite_misc_5_update(rct_sprite *sprite)
  *
  *  rct2: 0x006731CD
  */
-void sprite_misc_update(rct_sprite *sprite)
+static void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
 	case SPRITE_MISC_STEAM_PARTICLE:
@@ -375,14 +447,14 @@ void sprite_misc_update(rct_sprite *sprite)
 	case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
 		crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
 		break;
-	case SPRITE_MISC_3:
-		sprite_misc_3_update(sprite);
+	case SPRITE_MISC_EXPLOSION_CLOUD:
+		sprite_misc_explosion_cloud_update(sprite);
 		break;
 	case SPRITE_MISC_CRASH_SPLASH:
 		crash_splash_update((rct_crash_splash*)sprite);
 		break;
-	case SPRITE_MISC_5:
-		sprite_misc_5_update(sprite);
+	case SPRITE_MISC_EXPLOSION_FLARE:
+		sprite_misc_explosion_flare_update(sprite);
 		break;
 	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
 	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
@@ -406,9 +478,9 @@ void sprite_misc_update_all()
 	rct_sprite *sprite;
 	uint16 spriteIndex;
 
-	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16);
+	spriteIndex = gSpriteListHead[SPRITE_LIST_MISC];
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex];
+		sprite = get_sprite(spriteIndex);
 		spriteIndex = sprite->unknown.next;
 		sprite_misc_update(sprite);
 	}
@@ -442,16 +514,16 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	}
 
 	if (new_position != current_position){
-		uint16* sprite_idx = &RCT2_ADDRESS(0xF1EF60, uint16)[current_position];
-		rct_sprite* sprite2 = &g_sprite_list[*sprite_idx];
+		uint16* sprite_idx = &gSpriteSpatialIndex[current_position];
+		rct_sprite* sprite2 = get_sprite(*sprite_idx);
 		while (sprite != sprite2){
 			sprite_idx = &sprite2->unknown.next_in_quadrant;
-			sprite2 = &g_sprite_list[*sprite_idx];
+			sprite2 = get_sprite(*sprite_idx);
 		}
 		*sprite_idx = sprite->unknown.next_in_quadrant;
 
-		int temp_sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[new_position];
-		RCT2_ADDRESS(0xF1EF60, uint16)[new_position] = sprite->unknown.sprite_index;
+		int temp_sprite_idx = gSpriteSpatialIndex[new_position];
+		gSpriteSpatialIndex[new_position] = sprite->unknown.sprite_index;
 		sprite->unknown.next_in_quadrant = temp_sprite_idx;
 	}
 
@@ -462,6 +534,10 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 		sprite->unknown.z = z;
 		return;
 	}
+	sprite_set_coordinates(x, y, z, sprite);
+}
+
+void sprite_set_coordinates(sint16 x, sint16 y, sint16 z, rct_sprite *sprite){
 	sint16 new_x = x, new_y = y, start_x = x;
 	switch (get_current_rotation()){
 	case 0:
@@ -497,7 +573,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
  */
 void sprite_remove(rct_sprite *sprite)
 {
-	move_sprite_to_list(sprite, SPRITE_LINKEDLIST_OFFSET_NULL);
+	move_sprite_to_list(sprite, SPRITE_LIST_NULL * 2);
 	user_string_free(sprite->unknown.name_string_idx);
 	sprite->unknown.sprite_identifier = SPRITE_IDENTIFIER_NULL;
 
@@ -508,9 +584,9 @@ void sprite_remove(rct_sprite *sprite)
 		quadrantIndex = (floor2(sprite->unknown.x, 32) << 3) | (sprite->unknown.y >> 5);
 	}
 
-	uint16 *spriteIndex = &RCT2_ADDRESS(0x00F1EF60, uint16)[quadrantIndex];
+	uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
 	rct_sprite *quadrantSprite;
-	while ((quadrantSprite = &g_sprite_list[*spriteIndex]) != sprite) {
+	while ((quadrantSprite = get_sprite(*spriteIndex)) != sprite) {
 		spriteIndex = &quadrantSprite->unknown.next_in_quadrant;
 	}
 	*spriteIndex = sprite->unknown.next_in_quadrant;
@@ -546,9 +622,8 @@ static bool litter_can_be_at(int x, int y, int z)
  */
 void litter_create(int x, int y, int z, int direction, int type)
 {
-	rct_litter *litter, *newestLitter;
-	uint16 spriteIndex, nextSpriteIndex;
-	uint32 newestLitterCreationTick;
+	if (gCheatsDisableLittering)
+		return;
 
 	x += TileDirectionDelta[direction >> 3].x / 8;
 	y += TileDirectionDelta[direction >> 3].y / 8;
@@ -556,11 +631,15 @@ void litter_create(int x, int y, int z, int direction, int type)
 	if (!litter_can_be_at(x, y, z))
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16) >= 500) {
+	rct_litter *litter, *newestLitter;
+	uint16 spriteIndex, nextSpriteIndex;
+	uint32 newestLitterCreationTick;
+
+	if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500) {
 		newestLitter = NULL;
 		newestLitterCreationTick = 0;
-		for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-			litter = &(g_sprite_list[spriteIndex].litter);
+		for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+			litter = &get_sprite(spriteIndex)->litter;
 			nextSpriteIndex = litter->next;
 			if (newestLitterCreationTick <= litter->creationTick) {
 				newestLitterCreationTick = litter->creationTick;
@@ -578,7 +657,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 	if (litter == NULL)
 		return;
 
-	move_sprite_to_list((rct_sprite*)litter, SPRITE_LINKEDLIST_OFFSET_LITTER);
+	move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
 	litter->sprite_direction = direction;
 	litter->sprite_width = 6;
 	litter->sprite_height_negative = 6;
@@ -587,7 +666,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 	litter->type = type;
 	sprite_move(x, y, z, (rct_sprite*)litter);
 	invalidate_sprite_0((rct_sprite*)litter);
-	litter->creationTick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	litter->creationTick = gScenarioTicks;
 }
 
 /**
@@ -598,9 +677,9 @@ void litter_remove_at(int x, int y, int z)
 {
 	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		rct_sprite *sprite = &g_sprite_list[spriteIndex];
+		rct_sprite *sprite = get_sprite(spriteIndex);
 		uint16 nextSpriteIndex = sprite->unknown.next_in_quadrant;
-		if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+		if (sprite->unknown.linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			rct_litter *litter = &sprite->litter;
 
 			if (abs(litter->z - z) <= 16) {
@@ -611,5 +690,89 @@ void litter_remove_at(int x, int y, int z)
 			}
 		}
 		spriteIndex = nextSpriteIndex;
+	}
+}
+
+/**
+ * Determines whether its worth tweening a sprite or not when frame smoothing is on.
+ */
+static bool sprite_should_tween(rct_sprite *sprite)
+{
+	switch (sprite->unknown.linked_list_type_offset >> 1) {
+	case SPRITE_LIST_VEHICLE:
+	case SPRITE_LIST_PEEP:
+	case SPRITE_LIST_UNKNOWN:
+		return true;
+	}
+	return false;
+}
+
+static void store_sprite_locations(rct_xyz16 * sprite_locations)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		// skip going through `get_sprite` to not get stalled on assert,
+		// this can get very expensive for busy parks with uncap FPS option on
+		const rct_sprite *sprite = &_spriteList[i];
+		sprite_locations[i].x = sprite->unknown.x;
+		sprite_locations[i].y = sprite->unknown.y;
+		sprite_locations[i].z = sprite->unknown.z;
+	}
+}
+
+void sprite_position_tween_store_a()
+{
+	store_sprite_locations(_spritelocations1);
+}
+
+void sprite_position_tween_store_b()
+{
+	store_sprite_locations(_spritelocations2);
+}
+
+void sprite_position_tween_all(float nudge)
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		if (sprite_should_tween(sprite)) {
+			rct_xyz16 posA = _spritelocations1[i];
+			rct_xyz16 posB = _spritelocations2[i];
+
+			sprite_set_coordinates(
+				posB.x + (sint16)((posA.x - posB.x) * nudge),
+				posB.y + (sint16)((posA.y - posB.y) * nudge),
+				posB.z + (sint16)((posA.z - posB.z) * nudge),
+				sprite
+			);
+			invalidate_sprite_2(sprite);
+		}
+	}
+}
+
+/**
+ * Restore the real positions of the sprites so they aren't left at the mid-tween positions
+ */
+void sprite_position_tween_restore()
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		if (sprite_should_tween(sprite)) {
+			invalidate_sprite_2(sprite);
+
+			rct_xyz16 pos = _spritelocations2[i];
+			sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
+		}
+	}
+}
+
+void sprite_position_tween_reset()
+{
+	for (uint16 i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite * sprite = get_sprite(i);
+		_spritelocations1[i].x =
+		_spritelocations2[i].x = sprite->unknown.x;
+		_spritelocations1[i].y =
+		_spritelocations2[i].y = sprite->unknown.y;
+		_spritelocations1[i].z =
+		_spritelocations2[i].z = sprite->unknown.z;
 	}
 }

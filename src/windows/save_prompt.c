@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
@@ -26,7 +21,8 @@
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
+#include "../rct2.h"
 #include "../sprites.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
@@ -67,11 +63,18 @@ static rct_widget window_quit_prompt_widgets[] = {
 	{ WIDGETS_END },
 };
 
+static const rct_string_id window_save_prompt_labels[][2] = {
+	{ STR_LOAD_GAME_PROMPT_TITLE,	STR_SAVE_BEFORE_LOADING },
+	{ STR_QUIT_GAME_PROMPT_TITLE,	STR_SAVE_BEFORE_QUITTING },
+	{ STR_QUIT_GAME_2_PROMPT_TITLE,	STR_SAVE_BEFORE_QUITTING_2 },
+};
+
+
 static void window_save_prompt_close(rct_window *w);
 static void window_save_prompt_mouseup(rct_window *w, int widgetIndex);
 static void window_save_prompt_invalidate(rct_window *w);
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_save_prompt_callback(int result);
+static void window_save_prompt_callback(int result, const utf8 * path);
 
 static rct_window_event_list window_save_prompt_events = {
 	window_save_prompt_close,
@@ -110,18 +113,19 @@ static rct_window_event_list window_save_prompt_events = {
  */
 void window_save_prompt_open()
 {
-	int stringId, width, height;
+	int width, height;
+	rct_string_id stringId;
 	rct_window* window;
-	unsigned short prompt_mode;
+	uint8 prompt_mode;
 	rct_widget *widgets;
 	uint64 enabled_widgets;
 
-	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
+	prompt_mode = gSavePromptMode;
 	if (prompt_mode == PM_QUIT)
 		prompt_mode = PM_SAVE_BEFORE_QUIT;
 
 	// do not show save prompt if we're in the title demo and click on load game
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		game_load_or_quit_no_save_prompt();
 		return;
 	}
@@ -133,7 +137,7 @@ void window_save_prompt_open()
 		* and game_load_or_quit() are not called by the original binary anymore.
 		*/
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
+		if (gScreenAge < 3840) {
 			game_load_or_quit_no_save_prompt();
 			return;
 		}
@@ -145,7 +149,7 @@ void window_save_prompt_open()
 		window_close(window);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		widgets = window_quit_prompt_widgets;
 		enabled_widgets =
 			(1 << WQIDX_CLOSE) |
@@ -164,6 +168,10 @@ void window_save_prompt_open()
 		height = 50;
 	}
 
+	if (prompt_mode >= countof(window_save_prompt_labels)) {
+		log_warning("Invalid save prompt mode %u", prompt_mode);
+		return;
+	}
 	window = window_create_centred(
 		width,
 		height,
@@ -177,17 +185,17 @@ void window_save_prompt_open()
 	window_init_scroll_widgets(window);
 
 	// Pause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
+	gGamePaused |= GAME_PAUSED_MODAL;
 	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
-	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
-	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	stringId = window_save_prompt_labels[prompt_mode][0];
+	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
-	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
-	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
-	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
+	window_save_prompt_widgets[WIDX_TITLE].text = stringId;
+	window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];
 }
 
 /**
@@ -197,7 +205,7 @@ void window_save_prompt_open()
 static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
+	gGamePaused &= ~GAME_PAUSED_MODAL;
 	audio_unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
@@ -208,7 +216,7 @@ static void window_save_prompt_close(rct_window *w)
  */
 static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
 		case WQIDX_OK:
 			game_load_or_quit_no_save_prompt();
@@ -222,7 +230,11 @@ static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 	} else {
 		switch (widgetIndex) {
 		case WIDX_SAVE:
-			save_game_as();
+			if (gScreenFlags & (SCREEN_FLAGS_EDITOR)) {
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
+			} else {
+				save_game_as();
+			}
 			window_close(w);
 			gLoadSaveCallback = window_save_prompt_callback;
 			break;
@@ -247,7 +259,7 @@ static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 }
 
-static void window_save_prompt_callback(int result)
+static void window_save_prompt_callback(int result, const utf8 * path)
 {
 	if (result == MODAL_RESULT_OK) {
 		game_load_or_quit_no_save_prompt();

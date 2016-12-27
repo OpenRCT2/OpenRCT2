@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
@@ -31,10 +26,10 @@ enum WINDOW_PUBLISHER_CREDITS_WIDGET_IDX {
 };
 
 rct_widget window_publisher_credits_widgets[] = {
-	{ WWT_FRAME,	0,	0,		419,	0,	383,	0x0FFFFFFFF,				STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		418,	1,	14,		STR_ROLLERCOASTER_TYCOON_2,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	407,	417,	2,	13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_SCROLL,	0,	4,		415,	18,	379,	2,							STR_NONE },				// scroll
+	{WWT_FRAME,    0, 0,   419, 0,  383, 0xFFFFFFFF, STR_NONE},                // panel / background
+	{WWT_CAPTION,  0, 1,   418, 1,  14,  STR_ROLLERCOASTER_TYCOON_2,	STR_WINDOW_TITLE_TIP },	// title bar
+	{WWT_CLOSEBOX, 0, 407, 417, 2,  13,  STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
+	{WWT_SCROLL,   0, 4,   415, 18, 379, SCROLL_VERTICAL,         STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -99,9 +94,9 @@ void window_publisher_credits_open()
 	window->enabled_widgets = 1 << WIDX_CLOSE;
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
+	window->colours[0] = COLOUR_LIGHT_BLUE;
+	window->colours[1] = COLOUR_LIGHT_BLUE;
+	window->colours[2] = COLOUR_LIGHT_BLUE;
 
 }
 
@@ -137,28 +132,28 @@ static void window_publisher_credits_paint(rct_window *w, rct_drawpixelinfo *dpi
 }
 
 int credits_order[] = {
-	0xB5D,
-	0xB5E,
-	0xB5F,
-	0xB60,
-	0xB61,
-	0xB62,
-	0xB63,
-	0xB64,
-	0xB72,
-	0xB71,
-	0xB65,
-	0xB66,
-	0xB6F,
-	0xB70,
-	0xB67,
-	0xB68,
-	0xB69,
-	0xB6A,
-	0xB6B,
-	0xB6D,
-	0xB6E,
-	0xB6C,
+	STR_CREDITS_PUBLISHER_LINE_0,
+	STR_CREDITS_PUBLISHER_LINE_1,
+	STR_CREDITS_PUBLISHER_LINE_2,
+	STR_CREDITS_PUBLISHER_LINE_3,
+	STR_CREDITS_PUBLISHER_LINE_4,
+	STR_CREDITS_PUBLISHER_LINE_5,
+	STR_CREDITS_PUBLISHER_LINE_6,
+	STR_CREDITS_PUBLISHER_LINE_7,
+	STR_CREDITS_PUBLISHER_LINE_8,
+	STR_CREDITS_PUBLISHER_LINE_9,
+	STR_CREDITS_PUBLISHER_LINE_10,
+	STR_CREDITS_PUBLISHER_LINE_11,
+	STR_CREDITS_PUBLISHER_LINE_12,
+	STR_CREDITS_PUBLISHER_LINE_13,
+	STR_CREDITS_PUBLISHER_LINE_14,
+	STR_CREDITS_PUBLISHER_LINE_15,
+	STR_CREDITS_PUBLISHER_LINE_16,
+	STR_CREDITS_PUBLISHER_LINE_17,
+	STR_CREDITS_PUBLISHER_LINE_18,
+	STR_CREDITS_PUBLISHER_LINE_19,
+	STR_CREDITS_PUBLISHER_LINE_20,
+	STR_CREDITS_PUBLISHER_LINE_21,
 };
 
 /**
@@ -174,12 +169,12 @@ static void window_publisher_credits_scrollpaint(rct_window *w, rct_drawpixelinf
 
 	y += 86;
 
-	draw_string_centred_underline(dpi, 0xB5C, 0, 0, x, y);
+	draw_string_centred_underline(dpi, STR_CREDITS_PUBLISHER_TILE, NULL, COLOUR_BLACK, x, y);
 
 	y += 14;
 
 	for (int i = 0; i < sizeof(credits_order)/sizeof(int); i++) {
-		gfx_draw_string_centred(dpi, credits_order[i], x, y, 0, 0);
+		gfx_draw_string_centred(dpi, credits_order[i], x, y, COLOUR_BLACK, NULL);
 		y += 11;
 	}
 

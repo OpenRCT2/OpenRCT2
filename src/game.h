@@ -1,29 +1,26 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "rct2/addresses.h"
 #include "common.h"
 #include "platform/platform.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 
 enum GAME_COMMAND {
 	GAME_COMMAND_SET_RIDE_APPEARANCE,
@@ -48,7 +45,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_REMOVE_PATH,
 	GAME_COMMAND_CHANGE_SURFACE_STYLE,
 	GAME_COMMAND_SET_RIDE_PRICE,
-	GAME_COMMAND_SET_PEEP_NAME,
+	GAME_COMMAND_SET_GUEST_NAME,
+	GAME_COMMAND_SET_STAFF_NAME,
 	GAME_COMMAND_RAISE_LAND,
 	GAME_COMMAND_LOWER_LAND,
 	GAME_COMMAND_EDIT_LAND_SMOOTH,
@@ -91,7 +89,11 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_PLAYER_GROUP,
 	GAME_COMMAND_MODIFY_GROUPS,
 	GAME_COMMAND_KICK_PLAYER,
-	GAME_COMMAND_CHEAT
+	GAME_COMMAND_CHEAT,
+	GAME_COMMAND_PICKUP_GUEST,
+	GAME_COMMAND_PICKUP_STAFF,
+	GAME_COMMAND_BALLOON_PRESS,
+	GAME_COMMAND_COUNT
 };
 
 enum {
@@ -102,11 +104,20 @@ enum {
 	GAME_COMMAND_FLAG_5 = (1 << 5),
 	GAME_COMMAND_FLAG_GHOST = (1 << 6),
 	GAME_COMMAND_FLAG_7 = (1 << 7),
-	GAME_COMMAND_FLAG_NETWORKED = (1 << 31) // Game command is coming from network
+	GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
+enum {
+	GAME_PAUSED_NORMAL			= 1 << 0,
+	GAME_PAUSED_MODAL			= 1 << 1,
+	GAME_PAUSED_SAVING_TRACK	= 1 << 2,
+};
 
-
+enum {
+	ERROR_TYPE_NONE = 0,
+	ERROR_TYPE_GENERIC = 254,
+	ERROR_TYPE_FILE_LOAD = 255
+};
 
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
@@ -117,11 +128,30 @@ int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
 extern int game_command_playerid;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[66];
+extern rct_string_id gGameCommandErrorTitle;
+extern rct_string_id gGameCommandErrorText;
+extern uint8 gErrorType;
+extern rct_string_id gErrorStringId;
 
+extern GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT];
+
+#ifndef NO_RCT2
+#define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+#else
+extern uint32 gCurrentTicks;
+#endif
+
+extern uint16 gTicksSinceLastUpdate;
+extern uint32 gLastTickCount;
+extern uint8 gGamePaused;
 extern int gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
+extern int gGameCommandNestLevel;
+extern bool gGameCommandIsNetworked;
+
+extern uint8 gUnk13CA740;
+extern uint8 gUnk141F568;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();
@@ -139,12 +169,15 @@ void game_increase_game_speed();
 void game_reduce_game_speed();
 
 void game_load_or_quit_no_save_prompt();
-int game_load_sv6(SDL_RWops* rw);
+bool game_load_sv6_path(const char * path);
+bool game_load_sv6(SDL_RWops* rw);
 int game_load_network(SDL_RWops* rw);
 bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void pause_toggle();
+bool game_is_paused();
+bool game_is_not_paused();
 void save_game();
 void save_game_as();
 void rct2_exit();
@@ -153,5 +186,6 @@ void game_autosave();
 void game_convert_strings_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data *s6);
 void game_fix_save_vars();
+bool game_load_save_or_scenario(const utf8 * path);
 
 #endif

@@ -1,4 +1,66 @@
-0.0.4
+0.0.5 (in development)
+------------------------------------------------------------------------
+This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer required.
+
+- Feature: Ability to disable rendering of weather effects and gloom
+- Feature: New view option: "See-Through Paths"
+- Feature: Add cheat to reset date.
+- Feature: Add OpenGL drawing engine.
+- Feature: Implementation of the user-defined currency
+- Feature: Extended tile inspector.
+- Feature: Add ride console command for diagnostics and changing vehicle type.
+- Feature: Allow selecting corners when using the mountain tool.
+- Feature: Allow setting ownership of map edges.
+- Feature: Allow up to 255 cars per train.
+- Feature: Importing SV4 and SC4 files with rides.
+- Feature: Filter Object Selection Window by "Selected only" and "Non-selected only"
+- Feature: Allow raising terrain to 64 in-game units.
+- Feature: Assymmetric-key-based authorisation and assignment storage.
+- Feature: Add Norwegian translation.
+- Feature: Add cheat to disable littering.
+- Feature: Add Cheat to disable plant aging.
+- Feature: Add Cheat that allows any track piece to use a chain lift.
+- Feature: Add Console command to set vehicle friction.
+- Feature: Add console command to set scenario initial cash.
+- Feature: Objects are scanned from the user directory as well as the RCT2 directory.
+- Feature: Objects directory is scanned recursively.
+- Feature: Optionally zoom in towards the cursor rather than the screen centre.
+- Change: The maximum height of Junior Roller Coasters is now 14 units, like it was in RCT1.
+- Improved: Pathfinding algorithm.
+- Improved: Performance and reliability of loading objects.
+- Improved: Screenshots are now saved with the name of the park and the current date and time.
+- Improved: More accurate frame rate calculation
+- Improved: In-game file dialog now shows more formats (sv6, sc6, sv4, etc.)
+- Improved: Joining multiplayer will not redownload custom objects
+- Removed: BMP screenshots.
+- Removed: Intamin and Phoenix easter eggs.
+- Fix: [#933] On-ride photo price sometimes gets reset to £2 when using 'same price in whole park' (original bug).
+- Fix: [#1038] Guest List is out of order.
+- Fix: [#1238] Track place window does not fully adjust to custom colour scheme.
+- Fix: [#2042] Guests entering queues are immediately annoyed when many entertainers are around (original bug).
+- Fix: [#2081] Game hangs when track has infinite loop.
+- Fix: [#2754] Dragging scrollview fails when scaled.
+- Fix: [#3210] Scenery window scrolls too far.
+- Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch (original bug).
+- Fix: [#3307] Ride music and sound has degraded since RCT2.
+- Fix: [#3344] Build new ride window can be opened in scenario editor.
+- Fix: [#3347] Ride windows are auto-positioned below the HUD when using RCT1 lights.
+- Fix: [#3352] Assertion triggered while fixing surface tiles.
+- Fix: [#3361] Missing Twister coaster piece.
+- Fix: [#3418] Launched freefall restraints are drawn incorrectly when up (original bug).
+- Fix: [#3451] Renaming staff is a guest command.
+- Fix: [#3635] Inspecting sidewalk path crashes game.
+- Fix: [#3735] Advertisement campaign window bug.
+- Fix: [#3771] Crash when kicking player in multiplayer.
+- Fix: [#3824] Segfault when passing invalid arguments to ride set type.
+- Fix: [#3858] Tooltip shown when hovering over title logo.
+- Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
+- Fix: Lay-down Roller Coasters from RCT1 saves are imported with an incorrect vehicle type (not reported).
+- Fix: High lateral G-forces penalty applied too early (not reported).
+- Technical: Multiplayer groups are now stored in JSON format.
+- Technical: MinGW builds dropped support for Windows XP
+
+0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
 - Feature: Full native OSX .app support.
 - Feature: Add displaying of frames per second (FPS).
@@ -29,6 +91,7 @@
 - Feature: Ability to automatically open shops after placing them.
 - Feature: Ability to change the default inspection interval for rides.
 - Feature: Ability to disable lightning effect during a thunderstorm.
+- Feature: Ability to set ownership of map edges.
 - Feature: Display a chat hotkey when joining a server.
 - Change: Server IP addresses are no longer shown in the server list.
 - Change: Theme format changed from INI to JSON (INI format no longer supported).
@@ -68,13 +131,14 @@
 - Fix: [#3015] Walls in SC4/SV4 files are not imported correctly.
 - Fix: [#3063] Search exe directory for SSL bundle as well as CWD.
 - Fix: [#3120] Negative cash in finance window is not red.
+- Fix: [#4134] Can't enable park-wide photo price for log flume and river rapids.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
 - Fix: [#2407] save game prompt delay is not reset on start scenario
 - Fix: [#2415] day / night cycle did not update colours during gameplay
 - Fix: [#2425] new campaign for ride shows invalid list when over 40 rides
-- Fix: [#2417] peep direction assertion somtimes during pathfinding
+- Fix: [#2417] peep direction assertion sometimes during pathfinding
 - Fix: [#2158] video freeze when window is maximised, minimised and then restored
 - Fix: [#2434] dropdown menus linger when toolbars are hidden
 

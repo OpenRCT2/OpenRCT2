@@ -1,0 +1,394 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
+STR_0020    :Libegő
+STR_0054    :Fa hullámvasút
+STR_0056    :Vad egér
+STR_0065    :Felfüggesztett egysínű
+STR_0089    :Mini hullámvasút
+STR_0603    :{INT32}. vendég
+STR_0604    :{INT32}. vendég
+STR_0605    :{INT32}. vendég
+STR_0606    :{INT32}. vendég
+STR_0607    :{INT32}. vendég
+STR_0608    :{INT32}. vendég
+STR_0609    :{INT32}. vendég
+STR_0610    :{INT32}. vendég
+STR_0611    :{INT32}. vendég
+STR_0612    :{INT32}. vendég
+STR_0613    :{INT32}. vendég
+STR_0614    :{INT32}. vendég
+STR_0615    :{INT32}. vendég
+STR_0616    :{INT32}. vendég
+STR_0617    :{INT32}. vendég
+STR_0618    :{INT32}. vendég
+STR_0619    :{INT32}. vendég
+STR_0620    :{INT32}. vendég
+STR_0621    :{INT32}. vendég
+STR_0622    :{INT32}. vendég
+STR_0623    :{INT32}. vendég
+STR_0624    :{INT32}. vendég
+STR_0625    :{INT32}. vendég
+STR_0626    :{INT32}. vendég
+STR_0627    :{INT32}. vendég
+STR_0628    :{INT32}. vendég
+STR_0629    :{INT32}. vendég
+STR_0630    :{INT32}. vendég
+STR_0631    :{INT32}. vendég
+STR_0632    :{INT32}. vendég
+STR_0633    :{INT32}. vendég
+STR_0634    :{INT32}. vendég
+STR_0635    :{INT32}. vendég
+STR_0636    :{INT32}. vendég
+STR_0637    :{INT32}. vendég
+STR_0638    :{INT32}. vendég
+STR_0639    :{INT32}. vendég
+STR_0640    :{INT32}. vendég
+STR_0641    :{INT32}. vendég
+STR_0642    :{INT32}. vendég
+STR_0643    :{INT32}. vendég
+STR_0644    :{INT32}. vendég
+STR_0645    :{INT32}. vendég
+STR_0646    :{INT32}. vendég
+STR_0647    :{INT32}. vendég
+STR_0648    :{INT32}. vendég
+STR_0649    :{INT32}. vendég
+STR_0650    :{INT32}. vendég
+STR_0651    :{INT32}. vendég
+STR_0652    :{INT32}. vendég
+STR_0653    :{INT32}. vendég
+STR_0654    :{INT32}. vendég
+STR_0655    :{INT32}. vendég
+STR_0656    :{INT32}. vendég
+STR_0657    :{INT32}. vendég
+STR_0658    :{INT32}. vendég
+STR_0659    :{INT32}. vendég
+STR_0660    :{INT32}. vendég
+STR_0661    :{INT32}. vendég
+STR_0662    :{INT32}. vendég
+STR_0663    :{INT32}. vendég
+STR_0664    :{INT32}. vendég
+STR_0665    :{INT32}. vendég
+STR_0666    :{INT32}. vendég
+STR_0667    :{INT32}. vendég
+STR_0668    :{INT32}. vendég
+STR_0669    :{INT32}. vendég
+STR_0670    :{INT32}. vendég
+STR_0671    :{INT32}. vendég
+STR_0672    :{INT32}. vendég
+STR_0673    :{INT32}. vendég
+STR_0674    :{INT32}. vendég
+STR_0675    :{INT32}. vendég
+STR_0676    :{INT32}. vendég
+STR_0677    :{INT32}. vendég
+STR_0678    :{INT32}. vendég
+STR_0679    :{INT32}. vendég
+STR_0680    :{INT32}. vendég
+STR_0681    :{INT32}. vendég
+STR_0682    :{INT32}. vendég
+STR_0683    :{INT32}. vendég
+STR_0684    :{INT32}. vendég
+STR_0685    :{INT32}. vendég
+STR_0686    :{INT32}. vendég
+STR_0687    :{INT32}. vendég
+STR_0688    :{INT32}. vendég
+STR_0689    :{INT32}. vendég
+STR_0690    :{INT32}. vendég
+STR_0691    :{INT32}. vendég
+STR_0692    :{INT32}. vendég
+STR_0693    :{INT32}. vendég
+STR_0694    :{INT32}. vendég
+STR_0695    :{INT32}. vendég
+STR_0696    :{INT32}. vendég
+STR_0697    :{INT32}. vendég
+STR_0698    :{INT32}. vendég
+STR_0699    :{INT32}. vendég
+STR_0700    :{INT32}. vendég
+STR_0701    :{INT32}. vendég
+STR_0702    :{INT32}. vendég
+STR_0703    :{INT32}. vendég
+STR_0704    :{INT32}. vendég
+STR_0705    :{INT32}. vendég
+STR_0706    :{INT32}. vendég
+STR_0707    :{INT32}. vendég
+STR_0708    :{INT32}. vendég
+STR_0709    :{INT32}. vendég
+STR_0710    :{INT32}. vendég
+STR_0711    :{INT32}. vendég
+STR_0712    :{INT32}. vendég
+STR_0713    :{INT32}. vendég
+STR_0714    :{INT32}. vendég
+STR_0715    :{INT32}. vendég
+STR_0716    :{INT32}. vendég
+STR_0717    :{INT32}. vendég
+STR_0718    :{INT32}. vendég
+STR_0719    :{INT32}. vendég
+STR_0720    :{INT32}. vendég
+STR_0721    :{INT32}. vendég
+STR_0722    :{INT32}. vendég
+STR_0723    :{INT32}. vendég
+STR_0724    :{INT32}. vendég
+STR_0725    :{INT32}. vendég
+STR_0726    :{INT32}. vendég
+STR_0727    :{INT32}. vendég
+STR_0728    :{INT32}. vendég
+STR_0729    :{INT32}. vendég
+STR_0730    :{INT32}. vendég
+STR_0731    :{INT32}. vendég
+STR_0732    :{INT32}. vendég
+STR_0733    :{INT32}. vendég
+STR_0734    :{INT32}. vendég
+STR_0735    :{INT32}. vendég
+STR_0736    :{INT32}. vendég
+STR_0737    :{INT32}. vendég
+STR_0738    :{INT32}. vendég
+STR_0739    :{INT32}. vendég
+STR_0740    :{INT32}. vendég
+STR_0741    :{INT32}. vendég
+STR_0742    :{INT32}. vendég
+STR_0743    :{INT32}. vendég
+STR_0744    :{INT32}. vendég
+STR_0745    :{INT32}. vendég
+STR_0746    :{INT32}. vendég
+STR_0747    :{INT32}. vendég
+STR_0748    :{INT32}. vendég
+STR_0749    :{INT32}. vendég
+STR_0750    :{INT32}. vendég
+STR_0751    :{INT32}. vendég
+STR_0752    :{INT32}. vendég
+STR_0753    :{INT32}. vendég
+STR_0754    :{INT32}. vendég
+STR_0755    :{INT32}. vendég
+STR_0756    :{INT32}. vendég
+STR_0757    :{INT32}. vendég
+STR_0758    :{INT32}. vendég
+STR_0759    :{INT32}. vendég
+STR_0760    :{INT32}. vendég
+STR_0761    :{INT32}. vendég
+STR_0762    :{INT32}. vendég
+STR_0763    :{INT32}. vendég
+STR_0764    :{INT32}. vendég
+STR_0765    :{INT32}. vendég
+STR_0766    :{INT32}. vendég
+STR_0767    :{INT32}. vendég
+STR_0768    :{INT32}. mindenes
+STR_0769    :{INT32}. szerelő
+STR_0770    :{INT32}. biztonsági őr
+STR_0771    :{INT32}. szórakoztató
+STR_0772    :Névtelen park{POP16}{POP16}
+STR_0773    :Névtelen park{POP16}{POP16}
+STR_0774    :Névtelen park{POP16}{POP16}
+STR_0775    :Névtelen park{POP16}{POP16}
+STR_0776    :Névtelen park{POP16}{POP16}
+STR_0777    :Névtelen park{POP16}{POP16}
+STR_0779    :1.
+STR_0780    :2.
+STR_0781    :3.
+STR_0782    :4.
+STR_0783    :5.
+STR_0784    :6.
+STR_0785    :7.
+STR_0786    :8.
+STR_0787    :9.
+STR_0788    :10.
+STR_0789    :11.
+STR_0790    :12.
+STR_0791    :13.
+STR_0792    :14.
+STR_0793    :15.
+STR_0794    :16.
+STR_0795    :17.
+STR_0796    :18.
+STR_0797    :19.
+STR_0798    :20.
+STR_0799    :21.
+STR_0800    :22.
+STR_0801    :23.
+STR_0802    :24.
+STR_0803    :25.
+STR_0804    :26.
+STR_0805    :27.
+STR_0806    :28.
+STR_0807    :29.
+STR_0808    :30.
+STR_0809    :31.
+STR_0810    :Jan
+STR_0811    :Feb
+STR_0812    :Már
+STR_0813    :Ápr
+STR_0814    :Máj
+STR_0815    :Jún
+STR_0816    :Júl
+STR_0817    :Aug
+STR_0818    :Sze
+STR_0819    :Okt
+STR_0820    :Nov
+STR_0821    :Dec
+STR_0822    :Nem sikerült hozzáférni az adatfájlhoz
+STR_0823    :Hiányzó vagy nem elérhető adatfájl
+STR_0824    :{BLACK}{CROSS}
+STR_0825    :A választott név már használatban van
+STR_0828    :{SMALLFONT}{BLACK}Ablak bezárása
+STR_0829    :{SMALLFONT}{BLACK}Az albak címsora - Húzd az ablak mozgatásához
+STR_0830    :{SMALLFONT}{BLACK}Nagyítás
+STR_0831    :{SMALLFONT}{BLACK}KicsinyítésZoom view out
+STR_0832    :{SMALLFONT}{BLACK}Forgatás 90{DEGREE}-kal órajárás szerint
+STR_0833    :{SMALLFONT}{BLACK}Játék megállítása
+STR_0835    :Nem sikerült inicializálni a játékot
+STR_0877    :Túl alacsony !
+STR_0878    :Túl magas !
+STR_0881    :Egy tárgy van az útba
+STR_0882    :Játék betöltése
+STR_0883    :Játék mentése
+STR_0886    :Kilépés
+STR_0944    :Mentés
+STR_0945    :Nincs mentés
+STR_0946    :Mégse
+STR_0950    :Játék betöltése
+STR_0951    :Kilépés a játékból
+STR_0952    :Kilépés a játékból
+STR_0972    :Mégse
+STR_0973    :OK
+STR_1011    :Összes bezárása
+STR_1012    :Összes megnyitása
+STR_1013    :Park bezárása
+STR_1014    :Park megnyitása
+STR_1036    :Játék betöltése
+STR_1040    :Játék mentése
+STR_1043    :OpenRCT2 mentett játék
+STR_1047    :Játék mentése sikertelen!
+STR_1168    :Beállítások
+STR_1180    :Nem építhető víz alá!
+STR_1182    :Típus
+STR_1183    :Irány
+STR_1194    :Zárva
+STR_1195    :Tesztüzem
+STR_1196    :Nyitva
+STR_1197    :Lerobbant
+STR_1198    :Baleset!
+STR_1201    :Senki nem várakozik
+STR_1202    :Egy ember várakozik
+STR_1203    :{COMMA16} ember várakozik
+STR_1223    :{SMALLFONT}{BLACK}Szállító járművek
+STR_1224    :{SMALLFONT}{BLACK}Enyhe játékok
+STR_1225    :{SMALLFONT}{BLACK}Hullámvasutak
+STR_1226    :{SMALLFONT}{BLACK}Izgalmas játékok
+STR_1227    :{SMALLFONT}{BLACK}Vízi játékok
+STR_1228    :{SMALLFONT}{BLACK}Boltok és bódék
+STR_1426    :Várósor
+STR_1427    :{WINDOW_COLOUR_2}Látogatók: {BLACK}óránként {COMMA32}
+STR_1428    :{WINDOW_COLOUR_2}Belépési díj:
+STR_1430    :Ingyenes
+STR_1431    :Sétál
+STR_1432    :A következő felé tart: {STRINGID}
+STR_1433    :Várakozik a következőre: {STRINGID}
+STR_1438    :Ül
+STR_1440    :Füvet nyír
+STR_1441    :Utat takarít
+STR_1442    :Kukát ürít
+STR_1443    :Kertet locsol
+STR_1452    :Vendég neve
+STR_1453    :Add meg a vendég nevét:
+STR_1700    :Új mindenes felvétele
+STR_1701    :Új szerelő felvétele
+STR_1702    :Új biztonsági őr felvétele
+STR_1703    :Új szórakoztató felvétele
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Utak takarítása
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Kertek locsolása
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Kukák ürítése
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fűnyírás
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakosztüm
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigriskosztüm
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefántkosztüm
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Római kosztüm
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorillakosztüm
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Hóemberkosztüm
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Lovagkosztüm
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Űrhajóskosztüm
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditakosztüm
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Seriffkosztüm
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Kalózkosztüm
+STR_1791    :{WINDOW_COLOUR_2}Egyenruha színe:
+STR_1859    :mindenes
+STR_1860    :szerelő
+STR_1861    :biztonsági őr
+STR_1862    :szórakoztató
+STR_1863    :mindenes
+STR_1864    :szerelő
+STR_1865    :biztonsági őr
+STR_1866    :szórakoztató
+STR_1878    :{WINDOW_COLOUR_2}Ellenőrzés:
+STR_1879    :Minden 10 percben
+STR_1880    :Minden 20 percben
+STR_1881    :Minden 30 percben
+STR_1882    :Minden 45 percben
+STR_1883    :Minden órában
+STR_1884    :Minden második órában
+STR_1885    :Soha
+STR_1988    :Léggömb
+STR_1990    :Térkép
+STR_1992    :Esernyő
+STR_1993    :Innivaló
+STR_1994    :Hamburger
+STR_1995    :Sült krumpli
+STR_1996    :Jégkrém
+STR_1998    :Üres doboz
+STR_1999    :Szemét
+STR_2000    :Üres hamburgerdoboz
+STR_2001    :Pizza
+STR_2002    :Kupon
+STR_2003    :Popcorn
+STR_2004    :Hotdog
+STR_2006    :Kalap
+STR_2008    :Póló
+STR_2010    :Kávé
+STR_2011    :Üres pohár
+STR_2012    :Sült csirke
+STR_2013    :Limonádé
+STR_2014    :Üres doboz
+STR_2015    :Üres flakon
+STR_2236    :Január
+STR_2237    :Februáy
+STR_2238    :Március
+STR_2239    :Április
+STR_2240    :Május
+STR_2241    :Június
+STR_2242    :Július
+STR_2243    :Augusztus
+STR_2244    :Szeptember
+STR_2245    :Október
+STR_2246    :November
+STR_2247    :December
+STR_2334    :Font ({POUND})
+STR_2335    :Dollár ($)
+STR_2336    :Frank (F)
+STR_2337    :Német márka (DM)
+STR_2338    :Jen ({YEN})
+STR_2339    :Pezeta (Pts)
+STR_2340    :Líra (L)
+STR_2341    :Gulden (fl.)
+STR_2342    :Korona (kr)
+STR_2343    :Euró ({EURO})
+STR_2344    :Birodalmi
+STR_2345    :Metrikus
+STR_2347    :{RED}{STRINGID} megfulladt!
+STR_2436    :1 hét
+STR_2443    :{WINDOW_COLOUR_2}Költség hetente: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}Teljes költség: {BLACK}{CURRENCY2DP}
+STR_2445    :Reklámkampány indítása
+STR_2496    :Játék megállítása
+STR_2701    :Minden percben
+STR_2702    :Minden 5 percben
+STR_2703    :Minden 15 percben
+STR_2704    :Minden 30 percben
+STR_2705    :Minden órában
+STR_2706    :Soha
+STR_2776    :Nyelv:
+
+#Thousands separator
+STR_5151    :.
+#Decimal separator
+STR_5152    :,
+
+# This language is unmaintained. All untranslated strings have been removed. 
+# If you intend to become the maintainer, please copy the missing strings from en-GB.txt and translate them.

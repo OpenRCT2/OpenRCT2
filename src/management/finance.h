@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Matthias Lanzinger
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
 #ifndef _FINANCE_H_
 #define _FINANCE_H_
@@ -47,10 +43,30 @@ enum {
 #define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 
 extern const money32 research_cost_table[4];
+extern const money32 wage_table[4];
 
-extern money32 *gCashHistory;
-extern money32 *gWeeklyProfitHistory;
-extern money32 *gParkValueHistory;
+extern money32 gInitialCash;
+extern money32 gCashEncrypted;
+extern money32 gBankLoan;
+extern uint8 gBankLoanInterestRate;
+extern money32 gMaxBankLoan;
+extern money32 gCurrentExpenditure;
+extern money32 gCurrentProfit;
+
+/**
+ * The total profit for the entire scenario that preceeds
+ * the current financial table.
+ */
+extern money32 gHistoricalProfit;
+
+extern money32 gWeeklyProfitAverageDividend;
+extern uint16 gWeeklyProfitAverageDivisor;
+extern money32 gCashHistory[128];
+extern money32 gWeeklyProfitHistory[128];
+extern money32 gParkValueHistory[128];
+extern money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
+
+extern uint8 gCommandExpenditureType;
 
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
@@ -61,7 +77,6 @@ void finance_reset_history();
 void finance_init();
 void finance_update_daily_profit();
 void finance_shift_expenditure_table();
-void finance_update_loan_hash();
 void finance_reset_cash_to_initial();
 
 void finance_set_loan(money32 loan);
@@ -70,5 +85,7 @@ money32 finance_get_current_loan();
 money32 finance_get_maximum_loan();
 money32 finance_get_current_cash();
 void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+money32 finance_get_last_month_shop_profit();
 
 #endif

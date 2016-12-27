@@ -1,27 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
+#include "../config.h"
+#include "../util/util.h"
 #include "currency.h"
 #include "string_ids.h"
 
-const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
+currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 	{	"GBP",	10,		CURRENCY_PREFIX,	"\xC2\xA3",		CURRENCY_SUFFIX,	"GBP",	STR_POUNDS			},	// British Pound
 	{	"USD",	10,		CURRENCY_PREFIX,	"$",			CURRENCY_PREFIX,	"$",	STR_DOLLARS			},	// US Dollar
 	{	"FRF",	10,		CURRENCY_SUFFIX,	"F",			CURRENCY_SUFFIX,	"F",	STR_FRANC			},	// French Franc
@@ -30,12 +28,20 @@ const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 	{	"ESP",	10,		CURRENCY_SUFFIX,	"Pts",			CURRENCY_SUFFIX,	"Pts",	STR_PESETA			},	// Spanish Peseta
 	{	"ITL",	1000,	CURRENCY_PREFIX,	"L",			CURRENCY_PREFIX,	"L",	STR_LIRA			},	// Italian Lira
 	{	"NLG",	10,		CURRENCY_PREFIX,	"\xC6\x92",		CURRENCY_PREFIX,	"fl.",	STR_GUILDERS		},	// Dutch Guilder
-	{	"SEK",	10,		CURRENCY_SUFFIX,	"kr.",			CURRENCY_SUFFIX,	"kr.",	STR_KRONA			},	// Swedish Krona
+	{	"SEK",	10,		CURRENCY_SUFFIX,	" kr",			CURRENCY_SUFFIX,	" kr",	STR_KRONA			},	// Swedish Krona
 	{	"EUR",	10,		CURRENCY_PREFIX,	"\xE2\x82\xAC",	CURRENCY_SUFFIX,	"EUR",	STR_EUROS			},	// Euro
 	{	"KRW",	10000,	CURRENCY_PREFIX,	"\xE2\x82\xA9",	CURRENCY_PREFIX,	"W",	STR_WON				},	// South Korean Won
 	{	"RUB",	1000,	CURRENCY_PREFIX,	"R ",			CURRENCY_PREFIX,	"R ",	STR_ROUBLE			},	// Russian Rouble
 	{	"CZK",	100,	CURRENCY_SUFFIX,	" K\xC4\x8D",	CURRENCY_SUFFIX,	" Kc",	STR_CZECH_KORUNA	},	// Czech koruna
-	{	"HKD",	100,	CURRENCY_SUFFIX,	"$",			CURRENCY_SUFFIX,	"HKD",	STR_HONG_KONG_DOLLAR},	// Hong Kong Dollar
-	{	"TWD",	1000,	CURRENCY_SUFFIX,	"NT$",			CURRENCY_SUFFIX,	"NT$",	STR_NEW_TAIWAN_DOLLAR},	// New Taiwan Dollar
-	{	"HKD",	100,	CURRENCY_SUFFIX,	"CN\xC2\xA5",	CURRENCY_SUFFIX,	"CNY",	STR_CHINESE_YUAN	},	// Chinese Yuan
+	{	"HKD",	100,	CURRENCY_PREFIX,	"$",			CURRENCY_PREFIX,	"HKD",	STR_HONG_KONG_DOLLAR},	// Hong Kong Dollar
+	{	"TWD",	1000,	CURRENCY_PREFIX,	"NT$",			CURRENCY_PREFIX,	"NT$",	STR_NEW_TAIWAN_DOLLAR},	// New Taiwan Dollar
+	{	"CNY",	100,	CURRENCY_PREFIX,	"CN\xC2\xA5",	CURRENCY_PREFIX,	"CNY",	STR_CHINESE_YUAN	},	// Chinese Yuan
+	{	"CTM",	10,		CURRENCY_PREFIX,	"Ctm",			CURRENCY_PREFIX,	"Ctm",	STR_CUSTOM_CURRENCY	},	// Customizable currency
 };
+
+void currency_load_custom_currency_config()
+{
+	CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
+	CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
+	safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+}

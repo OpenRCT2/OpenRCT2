@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Maciek Baron
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/graph.h"
@@ -31,7 +26,7 @@
 #include "../management/research.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
@@ -85,19 +80,19 @@ enum {
 #pragma region Widgets
 
 static rct_widget window_finances_summary_widgets[] = {
-	{ WWT_FRAME,			0,	0,		529,	0,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_SUMMARY,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
-	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
-	{ WWT_SPINNER,			1,	64,		153,	229,	240,	1917,					STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	230,	234,	STR_NUMERIC_UP,			STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	235,	239,	STR_NUMERIC_DOWN,		STR_NONE },
+	{ WWT_FRAME,			0,	0,		529,	0,		256,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_SUMMARY,				STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_SPINNER,			1,	64,		153,	229,	240,	STR_FINANCES_SUMMARY_LOAN_VALUE,	STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	230,	234,	STR_NUMERIC_UP,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	142,	152,	235,	239,	STR_NUMERIC_DOWN,					STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -106,12 +101,12 @@ static rct_widget window_finances_cash_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_FINANCIAL_GRAPH,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -120,12 +115,12 @@ static rct_widget window_finances_park_value_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_PARK_VALUE_GRAPH,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -134,12 +129,12 @@ static rct_widget window_finances_profit_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_PROFIT_GRAPH,		STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,				STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,				STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,				STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,				STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,	STR_FINANCES_RESEARCH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -148,12 +143,12 @@ static rct_widget window_finances_marketing_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		528,	1,		14,		STR_MARKETING,							STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	517,	527,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		529,	43,		256,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		526,	47,		91,		STR_MARKETING_CAMPAIGNS_IN_OPERATION,	STR_NONE },
 	{ WWT_GROUPBOX,			2,	3,		526,	47,		252,	STR_MARKETING_CAMPAIGNS_AVAILABLE,		STR_NONE },
 	{ WWT_IMGBTN,			1,	8,		521,	0,		11,		0xFFFFFFFF,								STR_START_THIS_MARKETING_CAMPAIGN },
@@ -170,23 +165,23 @@ static rct_widget window_finances_research_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_RESEARCH_FUNDING,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		319,	43,		206,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_CASH_TAB_TIP },
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-	{ WWT_TAB,				1,	96,		126,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-	{ WWT_TAB,				1,	127,	157,	17,		43,		0x2000144E,								STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-	{ WWT_TAB,				1,	158,	188,	17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_CASH_TAB_TIP },
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
+	{ WWT_TAB,				1,	96,		126,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
+	{ WWT_TAB,				1,	127,	157,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_SHOW_MARKETING_TAB_TIP },
+	{ WWT_TAB,				1,	158,	188,	17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		316,	47,		91,		STR_RESEARCH_FUNDING_,					STR_NONE },
 	{ WWT_DROPDOWN,			2,	8,		167,	59,		70,		0xFFFFFFFF,								STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		876,									STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		STR_DROPDOWN_GLYPH,			    		STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
 	{ WWT_GROUPBOX,			2,	3,		316,	96,		202,	STR_RESEARCH_PRIORITIES,				STR_NONE },
-	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_TRANSPORT_RIDES,			STR_RESEARCH_NEW_TRANSPORT_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_GENTLE_RIDES,				STR_RESEARCH_NEW_GENTLE_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_ROLLER_COASTERS,			STR_RESEARCH_NEW_ROLLER_COASTERS },
-	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_THRILL_RIDES,				STR_RESEARCH_NEW_THRILL_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_WATER_RIDES,				STR_RESEARCH_NEW_WATER_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_SHOPS_AND_STALLS,			STR_RESEARCH_NEW_SHOPS_AND_STALLS },
-	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_SCENERY_AND_THEMING,		STR_RESEARCH_NEW_SCENERY_AND_THEMING },
+	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_NEW_TRANSPORT_RIDES,		STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_NEW_GENTLE_RIDES,			STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_NEW_ROLLER_COASTERS,		STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_NEW_THRILL_RIDES,			STR_RESEARCH_NEW_THRILL_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_NEW_WATER_RIDES,			STR_RESEARCH_NEW_WATER_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_NEW_SHOPS_AND_STALLS,		STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_NEW_SCENERY_AND_THEMING,	STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
 	{ WIDGETS_END },
 };
 
@@ -526,6 +521,23 @@ static uint32 window_finances_page_hold_down_widgets[] = {
 
 const int window_finances_tab_animation_loops[] = { 16, 32, 32, 32, 38, 16 };
 
+static const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
+	STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
+	STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
+	STR_FINANCES_SUMMARY_LAND_PURCHASE,
+	STR_FINANCES_SUMMARY_LANDSCAPING,
+	STR_FINANCES_SUMMARY_PARK_ENTRANCE_TICKETS,
+	STR_FINANCES_SUMMARY_RIDE_TICKETS,
+	STR_FINANCES_SUMMARY_SHOP_SALES,
+	STR_FINANCES_SUMMARY_SHOP_STOCK,
+	STR_FINANCES_SUMMARY_FOOD_DRINK_SALES,
+	STR_FINANCES_SUMMARY_FOOD_DRINK_STOCK,
+	STR_FINANCES_SUMMARY_STAFF_WAGES,
+	STR_FINANCES_SUMMARY_MARKETING,
+	STR_FINANCES_SUMMARY_RESEARCH,
+	STR_FINANCES_SUMMARY_LOAN_INTEREST,
+};
+
 static void window_finances_set_page(rct_window *w, int page);
 static void window_finances_set_pressed_tab(rct_window *w);
 static void window_finances_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -600,14 +612,14 @@ static void window_finances_summary_mousedown(int widgetIndex, rct_window*w, rct
 
 	switch (widgetIndex) {
 	case WIDX_LOAN_INCREASE:
-		newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) + MONEY(1000, 00);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_BORROW_ANY_MORE_MONEY;
+		newLoan = gBankLoan + MONEY(1000, 00);
+		gGameCommandErrorTitle = STR_CANT_BORROW_ANY_MORE_MONEY;
 		finance_set_loan(newLoan);
 		break;
 	case WIDX_LOAN_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > 0) {
-			newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) - MONEY(1000, 00);
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_PAY_BACK_LOAN;
+		if (gBankLoan > 0) {
+			newLoan = gBankLoan - MONEY(1000, 00);
+			gGameCommandErrorTitle = STR_CANT_PAY_BACK_LOAN;
 			finance_set_loan(newLoan);
 		}
 		break;
@@ -640,7 +652,7 @@ static void window_finances_summary_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	set_format_arg(6, money32, gBankLoan);
 }
 
 /**
@@ -658,7 +670,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + 47;
 
 	// Expenditure / Income heading
-	draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, NULL, 0, x, y - 1);
+	draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, NULL, COLOUR_BLACK, x, y - 1);
 	y += 14;
 
 	// Expenditure / Income row labels
@@ -667,13 +679,13 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (i % 2 == 0)
 			gfx_fill_rect(dpi, x, y, x + 513 - 2, y + 9, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-		gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION + i, NULL, 0, x, y - 1);
+		gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], NULL, COLOUR_BLACK, x, y - 1);
 		y += 10;
 	}
 
 	// Expenditure / Income values for each month
 	x = w->x + 118;
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	sint16 currentMonthYear = gDateMonthsElapsed;
 	for (i = 4; i >= 0; i--) {
 		y = w->y + 47;
 
@@ -682,13 +694,13 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			continue;
 
 		// Month heading
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_FINANCES_SUMMARY_MONTH_HEADING;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = monthyear;
+		set_format_arg(0, rct_string_id, STR_FINANCES_SUMMARY_MONTH_HEADING);
+		set_format_arg(2, uint16, monthyear);
 		draw_string_right_underline(
 			dpi,
-			monthyear == currentMonthYear ? 1193 : 1191,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
-			0,
+			monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING,
+			gCommonFormatArgs,
+			COLOUR_BLACK,
 			x + 80,
 			y - 1
 		);
@@ -696,7 +708,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		// Month expenditures
 		money32 profit = 0;
-		money32 *expenditures = &RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i * 14];
+		money32 *expenditures = &gExpenditureTable[i * RCT_EXPENDITURE_TYPE_COUNT];
 		for (j = 0; j < 14; j++) {
 			money32 expenditure = expenditures[j];
 			if (expenditure != 0) {
@@ -705,7 +717,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 					dpi,
 					expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
 					&expenditure,
-					0,
+					COLOUR_BLACK,
 					x + 80,
 					y - 1
 				);
@@ -719,7 +731,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			dpi,
 			profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE,
 			&profit,
-			0,
+			COLOUR_BLACK,
 			x + 80,
 			y - 1
 		);
@@ -730,34 +742,27 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 
 	// Horizontal rule below expenditure / income table
-	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], 0x20);
+	gfx_fill_rect_inset(dpi, w->x + 8, w->y + 223, w->x + 8 + 513, w->y + 223 + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
 	// Loan and interest rate
-	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, 0, w->x + 4, w->y + 229);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8);
-	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 156, w->y + 229);
+	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, COLOUR_BLACK, w->x + 4, w->y + 229);
+	set_format_arg(0, uint16, gBankLoanInterestRate);
+	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 156, w->y + 229);
 
 	// Current cash
-	money32 currentCash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	money32 currentCash = DECRYPT_MONEY(gCashEncrypted);
 	rct_string_id stringId = currentCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-	gfx_draw_string_left(dpi, stringId, &currentCash, 0, w->x + 4, w->y + 244);
+	gfx_draw_string_left(dpi, stringId, &currentCash, COLOUR_BLACK, w->x + 4, w->y + 244);
 
 	// Objective related financial information
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_MONTHLY_FOOD_INCOME) {
-		// Last month's profit from food, drink and merchandise
-		money32 lastMonthProfit = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) != 0) {
-			lastMonthProfit += RCT2_GLOBAL(0x01357898, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x0135789C, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);
-			lastMonthProfit += RCT2_GLOBAL(0x013578A4, money32);
-		}
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = lastMonthProfit;
-		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 280, w->y + 229);
+	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
+		money32 lastMonthProfit = finance_get_last_month_shop_profit();
+		set_format_arg(0, money32, lastMonthProfit);
+		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + 280, w->y + 229);
 	} else {
 		// Park value and company value
-		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_PARK_VALUE, 0, w->x + 280, w->y + 229);
-		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_COMPANY_VALUE, 0, w->x + 280, w->y + 244);
+		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, COLOUR_BLACK, w->x + 280, w->y + 229);
+		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, COLOUR_BLACK, w->x + 280, w->y + 244);
 	}
 }
 
@@ -824,21 +829,21 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 
 	// Cash (less loan)
 	money32 cashLessLoan =
-		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) -
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		DECRYPT_MONEY(gCashEncrypted) -
+		gBankLoan;
 
 	gfx_draw_string_left(
 		dpi,
 		cashLessLoan >= 0 ?
 			STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
 		&cashLessLoan,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
@@ -847,7 +852,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
-		// Modifier balance then keep halfing until less than 127 pixels
+		// Modifier balance then keep halving until less than 127 pixels
 		balance = abs(balance) >> yAxisScale;
 		while (balance > 127) {
 			balance /= 2;
@@ -861,7 +866,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 	money32 axisBase;
 	for (axisBase = MONEY(12,00); axisBase >= MONEY(-12,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -933,18 +938,18 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	graphBottom = w->y + pageWidget->bottom - 4;
 
 	// Park value
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 parkValue = gParkValue;
 	gfx_draw_string_left(
 		dpi,
-		STR_FINACNES_PARK_VALUE,
+		STR_FINANCES_PARK_VALUE,
 		&parkValue,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
@@ -967,7 +972,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	money32 axisBase;
 	for (axisBase = MONEY(24,00); axisBase >= MONEY(0,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -1039,18 +1044,18 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 	graphBottom = w->y + pageWidget->bottom - 4;
 
 	// Weekly profit
-	money32 weeklyPofit = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+	money32 weeklyPofit = gCurrentProfit;
 	gfx_draw_string_left(
 		dpi,
 		weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS,
 		&weeklyPofit,
-		0,
+		COLOUR_BLACK,
 		graphLeft,
 		graphTop - 11
 	);
 
 	// Graph
-	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], 0x30);
+	gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
 
 	// Calculate the Y axis scale (log2 of highest [+/-]balance)
 	int yAxisScale = 0;
@@ -1073,7 +1078,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 	money32 axisBase;
 	for (axisBase = MONEY(12,00); axisBase >= MONEY(-12,00); axisBase -= MONEY(6,00)) {
 		money32 axisValue = axisBase << yAxisScale;
-		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, 0, x + 70, y);
+		gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, x + 70, y);
 		y += 39;
 	}
 
@@ -1147,7 +1152,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
 	for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++) {
 		rct_widget *campaginButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
 
-		campaginButton->type = 0;
+		campaginButton->type = WWT_EMPTY;
 
 		if (gMarketingCampaignDaysLeft[i] != 0)
 			continue;
@@ -1183,34 +1188,34 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 			continue;
 
 		noCampaignsActive = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		set_format_arg(0, rct_string_id, gParkName);
+		set_format_arg(2, uint32, gParkNameArgs);
 
 		// Set special parameters
 		switch (i) {
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
 			ride = get_ride(gMarketingCampaignRideIndex[i]);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 			break;
 		case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural;
+			set_format_arg(0, rct_string_id, ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural);
 			break;
 		}
 
 		// Advertisement
-		gfx_draw_string_left_clipped(dpi, STR_VOUCHERS_FOR_FREE_ENTRY_TO + i, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 4, y, 296);
+		gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, x + 4, y, 296);
 
 		// Duration
 		weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
-		gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, 0, x + 304, y);
+		gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK, x + 304, y);
 
 		y += 10;
 	}
 
 	if (noCampaignsActive) {
-		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, 0, x + 4, y);
+		gfx_draw_string_left(dpi, STR_MARKETING_CAMPAGINS_NONE, NULL, COLOUR_BLACK, x + 4, y);
 		y += 10;
 	}
 	y += 31;
@@ -1225,8 +1230,8 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
 
 		// Draw button text
-		gfx_draw_string_left(dpi, STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK + i, NULL, 0, x + 4, y - 1);
-		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, 0, x + 310, y - 1);
+		gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], NULL, COLOUR_BLACK, x + 4, y - 1);
+		gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y - 1);
 
 		y += 12;
 	}
@@ -1263,7 +1268,7 @@ static void window_finances_research_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_WATER_RIDES:
 	case WIDX_SHOPS_AND_STALLS:
 	case WIDX_SCENERY_AND_THEMING:
-		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+		activeResearchTypes = gResearchPriorities;
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
 		research_set_priority(activeResearchTypes);
 		break;
@@ -1285,8 +1290,8 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 	dropdownWidget = widget - 1;
 
 	for (i = 0; i < 4; i++) {
-		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = STR_NO_FUNDING + i;
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+		gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -1298,7 +1303,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
 
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 	dropdown_set_checked(currentResearchLevel, true);
 }
 
@@ -1340,17 +1345,17 @@ static void window_finances_research_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL) {
+	if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	}
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 
 	// Current funding
-	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
+	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
 
 	// Checkboxes
-	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+	uint8 activeResearchTypes = gResearchPriorities;
 	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;

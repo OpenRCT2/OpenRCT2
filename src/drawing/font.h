@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #ifndef _DRAWING_FONT_H_
 #define _DRAWING_FONT_H_
 
@@ -14,6 +30,8 @@ enum {
 
 enum {
 	FONT_SPRITE_GLYPH_COUNT = 224,
+	FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
+	FONT_SPRITE_BASE_MEDIUM_DARK = -1,
 
 	FONT_SPRITE_BASE_TINY = 448,
 	FONT_SPRITE_BASE_SMALL = 0,
@@ -21,7 +39,7 @@ enum {
 	FONT_SPRITE_BASE_BIG = 672
 };
 
-typedef struct {
+typedef struct TTFFontDescriptor {
 	const utf8 *filename;
 	const utf8 *font_name;
 	int ptSize;
@@ -31,7 +49,7 @@ typedef struct {
 	TTF_Font *font;
 } TTFFontDescriptor;
 
-typedef struct {
+typedef struct  TTFFontSetDescriptor {
 	TTFFontDescriptor size[FONT_SIZE_COUNT];
 } TTFFontSetDescriptor;
 

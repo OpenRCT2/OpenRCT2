@@ -1,11 +1,27 @@
-#include "../addresses.h"
-#include "../localisation/localisation.h"
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
-#include "../openrct2.h"
+#include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
@@ -25,11 +41,11 @@ enum {
 #define MIN_WH 200
 
 rct_widget window_changelog_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHANGELOG_TITLE,				STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_RESIZE,			1,	0,			WW - 1,	14,		WH - 1,		0x0FFFFFFFF,						STR_NONE },				// content panel
-	{ WWT_SCROLL,			1,	3,			WW - 3,	16,		WH - 15,	3,									STR_NONE },				// scroll area
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,						STR_NONE },				// panel / background
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHANGELOG_TITLE,			STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,					STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_RESIZE,			1,	0,			WW - 1,	14,		WH - 1,		0xFFFFFFFF,						STR_NONE },				// content panel
+	{ WWT_SCROLL,			1,	3,			WW - 3,	16,		WH - 15,	SCROLL_BOTH,								STR_NONE },				// scroll area
 	{ WIDGETS_END },
 };
 
@@ -76,7 +92,7 @@ static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
 
 static char *_changelogText = NULL;
-static long _changelogTextSize = 0;
+static size_t _changelogTextSize = 0;
 static char **_changelogLines = NULL;
 static int _changelogNumLines = 0;
 static int _changelogLongestLineWidth = 0;
@@ -92,8 +108,8 @@ rct_window *window_changelog_open()
 	if (!window_changelog_read_file())
 		return NULL;
 
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	window = window_create_centred(
 		screenWidth * 4 / 5,
@@ -129,8 +145,8 @@ static void window_changelog_mouseup(rct_window *w, int widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	w->max_width = (screenWidth * 4) / 5;
 	w->max_height = (screenHeight * 4) / 5;
@@ -175,16 +191,13 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	uint16 *currentFontFlags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	sint16 *currentFontSpriteBase = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
-	*currentFontFlags = 0;
-	*currentFontSpriteBase = 224;
-	gfx_draw_string(dpi, (char*)0x009C383D, 1, dpi->x, dpi->y);
+	gCurrentFontFlags = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	int x = 3;
 	int y = 3;
 	for (int i = 0; i < _changelogNumLines; i++) {
-		gfx_draw_string(dpi, _changelogLines[i], 254, x, y);
+		gfx_draw_string(dpi, _changelogLines[i], w->colours[0], x, y);
 		y += 11;
 	}
 }
@@ -193,8 +206,9 @@ static bool window_changelog_read_file()
 {
 	window_changelog_dispose_file();
 	utf8 path[MAX_PATH];
-	sprintf(path, "%s%cchangelog.txt", gExePath, platform_get_path_separator());
-	if (!readentirefile(path, (void**)&_changelogText, (int*)&_changelogTextSize)) {
+	safe_strcpy(path, gExePath, MAX_PATH);
+	safe_strcat_path(path, "changelog.txt", MAX_PATH);
+	if (!readentirefile(path, (void**)&_changelogText, &_changelogTextSize)) {
 		log_error("Unable to read changelog.txt");
 		return false;
 	}
@@ -231,7 +245,7 @@ static bool window_changelog_read_file()
 
 	_changelogLines = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_changelogLongestLineWidth = 0;
 	for (int i = 0; i < _changelogNumLines; i++) {
 		int width = gfx_get_string_width(_changelogLines[i]);

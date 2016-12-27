@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John, Duncan Frost
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../config.h"
 #include "../interface/window.h"
 #include "../interface/widget.h"
@@ -40,11 +35,11 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
-	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
-	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	2,				2786 },
-	{ WWT_DROPDOWN_BUTTON,	0,	4,		153,	WH-15,	WH - 4,		2491,			2492 },
+	{ WWT_FRAME,			0,	0,		WW - 1,	0,		WH - 1,		STR_NONE,					STR_NONE },
+	{ WWT_CAPTION,			0,	1,		WW - 2,	1,		14,			STR_SHORTCUTS_TITLE,		STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW-13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
+	{ WWT_SCROLL,			0,	4,		WW - 5,	18,		WH - 18,	SCROLL_VERTICAL,			STR_SHORTCUT_LIST_TIP },
+	{ WWT_DROPDOWN_BUTTON,	0,	4,		153,	WH-15,	WH - 4,		STR_SHORTCUT_ACTION_RESET,	STR_SHORTCUT_ACTION_RESET_TIP },
 	{ WIDGETS_END }
 };
 
@@ -133,6 +128,12 @@ const rct_string_id ShortcutStringIds[] = {
 	STR_SEND_MESSAGE,
 	STR_SHORTCUT_QUICK_SAVE_GAME,
 	STR_SHORTCUT_SHOW_OPTIONS,
+	STR_SHORTCUT_MUTE_SOUND,
+	STR_SHORTCUT_WINDOWED_MODE_TOGGLE,
+	STR_SHORTCUT_SHOW_MULTIPLAYER,
+	STR_SHORTCUT_PAINT_ORIGINAL,
+	STR_SHORTCUT_DEBUG_PAINT_TOGGLE,
+	STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE,
 };
 
 /**
@@ -195,7 +196,7 @@ static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
 */
 static void window_shortcut_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -251,17 +252,17 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		if (y + 10 < dpi->y)continue;
 		int format = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
-			format = STR_WINDOW_COLOUR_2_STRING;
-			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
+			format = STR_WINDOW_COLOUR_2_STRINGID;
+			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
 		}
 
-		rct_string_id templateStringId = 2525;
-		char *templateString = (char*)language_get_string(templateStringId);
-		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
+		char templateString[128];
+		keyboard_shortcut_format_string(templateString, 128, gShortcutKeys[i]);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ShortcutStringIds[i];
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = templateStringId;
-		gfx_draw_string_left(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1);
+		set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
+		set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
+		set_format_arg(4, rct_string_id, STR_STRING);
+		set_format_arg(6, char *, templateString);
+		gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
 	}
 }

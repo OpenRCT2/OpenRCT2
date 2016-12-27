@@ -1,29 +1,27 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../rct2.h"
 #include "error.h"
+
+bool gDisableErrorWindowSound = false;
 
 enum {
 	WIDX_BACKGROUND
@@ -81,25 +79,23 @@ static uint16 _window_error_num_lines;
 void window_error_open(rct_string_id title, rct_string_id message)
 {
 	utf8 *dst;
-	char *args;
 	int numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
 	window_close_by_class(WC_ERROR);
 	dst = _window_error_text;
-	args = (char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 
 	// Format the title
 	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
 	if (title != STR_NONE) {
-		format_string(dst, title, args);
+		format_string(dst, 512 - (dst - _window_error_text), title, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 
 	// Format the message
 	if (message != STR_NONE) {
 		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
-		format_string(dst, message, args);
+		format_string(dst, 512 - (dst - _window_error_text), message, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 
@@ -109,11 +105,11 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	if (dst == _window_error_text + 1)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width_new_lined(_window_error_text);
 	width = min(196, width);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(_window_error_text, width + 1, &numLines, &fontHeight);
 
 	_window_error_num_lines = numLines;
@@ -123,12 +119,12 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	window_error_widgets[WIDX_BACKGROUND].right = width;
 	window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
-	x = RCT2_GLOBAL(0x0142406C, sint32) - (width / 2);
-	x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+	x = gCursorState.x - (width / 2);
+	x = clamp(0, x, gScreenWidth);
 
-	y = RCT2_GLOBAL(0x01424070, sint32) + 26;
+	y = gCursorState.y + 26;
 	y = max(22, y);
-	maxY = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
+	maxY = gScreenHeight - height;
 	if (y > maxY) {
 		y = y - height - 40;
 		y = min(y, maxY);
@@ -137,8 +133,9 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
 	w->widgets = window_error_widgets;
 	w->error.var_480 = 0;
-	if (!(RCT2_GLOBAL(0x009A8C29, uint8) & 1))
+	if (!gDisableErrorWindowSound) {
 		audio_play_sound_panned(SOUND_ERROR, 0, w->x + (w->width / 2), 0, 0);
+	}
 }
 
 /**
@@ -165,18 +162,18 @@ static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	r = w->x + w->width - 1;
 	b = w->y + w->height - 1;
 
-	gfx_fill_rect(dpi, l + 1, t + 1, r - 1, b - 1, 0x200002D);
-	gfx_fill_rect(dpi, l, t, r, b, 0x200008B);
+	gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
+	gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
 
-	gfx_fill_rect(dpi, l, t + 2, l, b - 2, 0x200002F);
-	gfx_fill_rect(dpi, r, t + 2, r, b - 2, 0x200002F);
-	gfx_fill_rect(dpi, l + 2, b, r - 2, b, 0x200002F);
-	gfx_fill_rect(dpi, l + 2, t, r - 2, t, 0x200002F);
+	gfx_filter_rect(dpi, l, t + 2, l, b - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r, t + 2, r, b - 2, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 2, b, r - 2, b, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 2, t, r - 2, t, PALETTE_DARKEN_3);
 
-	gfx_fill_rect(dpi, r + 1, t + 1, r + 1, t + 1, 0x200002F);
-	gfx_fill_rect(dpi, r - 1, t + 1, r - 1, t + 1, 0x200002F);
-	gfx_fill_rect(dpi, l + 1, b - 1, l + 1, b - 1, 0x200002F);
-	gfx_fill_rect(dpi, r - 1, b - 1, r - 1, b - 1, 0x200002F);
+	gfx_filter_rect(dpi, r + 1, t + 1, r + 1, t + 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r - 1, t + 1, r - 1, t + 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, PALETTE_DARKEN_3);
+	gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, PALETTE_DARKEN_3);
 
 	l = w->x + (w->width + 1) / 2 - 1;
 	t = w->y + 1;

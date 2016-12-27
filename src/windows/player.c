@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John, Duncan Frost
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
 #include "../input.h"
@@ -28,7 +23,7 @@
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/themes.h"
@@ -65,20 +60,20 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 };
 
 #define WINDOW_PLAYER_COMMON_WIDGETS																									\
-	{ WWT_FRAME,			0,	0,		191,	0,		156,	0x0FFFFFFFF,	STR_NONE },				/* Panel / Background	*/		\
-	{ WWT_CAPTION,			0,	1,		190,	1,		14,		865,			STR_WINDOW_TITLE_TIP },	/* Title				*/		\
-	{ WWT_CLOSEBOX,			0,	179,	189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP },	/* Close x button		*/		\
-	{ WWT_RESIZE,			1,	0,		191,	43,		156,	0x0FFFFFFFF,	STR_NONE },				/* Resize				*/		\
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,		STR_NONE },				/* Tab 1				*/		\
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,		STR_NONE }				/* Tab 2				*/
+	{ WWT_FRAME,			0,	0,		191,	0,		156,	0xFFFFFFFF,				STR_NONE },				/* Panel / Background	*/		\
+	{ WWT_CAPTION,			0,	1,		190,	1,		14,		STR_STRING,				STR_WINDOW_TITLE_TIP },	/* Title				*/		\
+	{ WWT_CLOSEBOX,			0,	179,	189,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	/* Close x button		*/		\
+	{ WWT_RESIZE,			1,	0,		191,	43,		156,	0xFFFFFFFF,				STR_NONE },				/* Resize				*/		\
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,	STR_NONE },				/* Tab 1				*/		\
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,	STR_NONE }				/* Tab 2				*/
 
 rct_widget window_player_overview_widgets[] = {
 	WINDOW_PLAYER_COMMON_WIDGETS,
-	{ WWT_DROPDOWN,			1,	3,		177,	46,		57,		0x0FFFFFFFF,	STR_NONE },					// Permission group
-	{ WWT_DROPDOWN_BUTTON,	1,	167,	177,	47,		56,		876,			STR_NONE },					//
-	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_LOCATE,		STR_LOCATE_PLAYER_TIP },	// Locate button
-	{ WWT_FLATBTN,			1,	179,	190,	69,		92,		SPR_DEMOLISH,	STR_KICK_PLAYER_TIP },		// Kick button
-	{ WWT_VIEWPORT,			1,	3,		177,	60,		120,	0x0FFFFFFFF,	STR_NONE },					// Viewport
+	{ WWT_DROPDOWN,			1,	3,		177,	46,		57,		0xFFFFFFFF,			STR_NONE },					// Permission group
+	{ WWT_DROPDOWN_BUTTON,	1,	167,	177,	47,		56,		STR_DROPDOWN_GLYPH,	STR_NONE },					//
+	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_LOCATE,			STR_LOCATE_PLAYER_TIP },	// Locate button
+	{ WWT_FLATBTN,			1,	179,	190,	69,		92,		SPR_DEMOLISH,		STR_KICK_PLAYER_TIP },		// Kick button
+	{ WWT_VIEWPORT,			1,	3,		177,	60,		120,	0xFFFFFFFF,			STR_NONE },					// Viewport
 	{ WIDGETS_END },
 };
 
@@ -184,6 +179,7 @@ static rct_window_event_list *window_player_page_events[] = {
 static void window_player_set_page(rct_window* w, int page);
 static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_player_update_viewport(rct_window *w, bool scroll);
+static void window_player_update_title(rct_window* w);
 
 uint32 window_player_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
@@ -203,7 +199,6 @@ void window_player_open(uint8 id)
 {
 	rct_window* window;
 
-	int player = network_get_player_index(id);
 	window = window_bring_to_front_by_number(WC_PLAYER, id);
 	if (window == NULL) {
 		window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
@@ -222,7 +217,6 @@ void window_player_open(uint8 id)
 		window->selected_list_item = -1;
 
 		window->viewport_focus_coordinates.y = -1;
-		window->error.var_480 = user_string_allocate(128, network_get_player_name(player)); // repurposing var_480 to store this
 	}
 
 	window->page = 0;
@@ -238,7 +232,7 @@ void window_player_open(uint8 id)
 	window_player_set_page(window, WINDOW_PLAYER_PAGE_OVERVIEW);
 }
 
-void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
+static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
 {
 	rct_widget *dropdownWidget;
 	int numItems, i;
@@ -262,8 +256,8 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 	);
 
 	for (i = 0; i < network_get_num_groups(); i++) {
-		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = network_get_group_name_string_id(i);
+		gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+		gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
 	}
 
 	dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
@@ -271,10 +265,7 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 
 void window_player_overview_close(rct_window *w)
 {
-	if (w->error.var_480){
-		user_string_free(w->error.var_480);
-		w->error.var_480 = 0;
-	}
+
 }
 
 void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
@@ -369,13 +360,18 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int groupindex = network_get_group_index(network_get_player_group(player));
 	if (groupindex != -1) {
 		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(groupindex);
+		char buffer[300];
+		char* lineCh;
+		lineCh = buffer;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+		safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
+		set_format_arg(0, const char *, buffer);
 
 		gfx_draw_string_centred_clipped(
 			dpi,
-			1193,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
-			0,
+			STR_STRING,
+			gCommonFormatArgs,
+			COLOUR_BLACK,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
 			widget->right - widget->left - 8
@@ -386,22 +382,22 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + 90;
 	int y = w->y + 24;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_PING;
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, rct_string_id, STR_PING);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x, y);
 	char ping[64];
-	sprintf(ping, "%d ms", network_get_player_ping(player));
+	snprintf(ping, 64, "%d ms", network_get_player_ping(player));
 	gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
-	
+
 	// Draw last action
 	x = w->x + (w->width / 2);
 	y = w->y + w->height - 13;
 	int width = w->width - 8;
 	int lastaction = network_get_player_last_action(player, 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_ACTION_NA;
+	set_format_arg(0, rct_string_id, STR_ACTION_NA);
 	if (lastaction != -999) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(lastaction);
+		set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
 	}
-	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
 	if (w->viewport != NULL && w->var_492 != -1) {
 		window_draw_viewport(dpi, w);
@@ -421,7 +417,7 @@ void window_player_overview_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(WIDX_TAB_2);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->error.var_480; // set title caption to player name
+	window_player_update_title(w);
 
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -507,7 +503,7 @@ void window_player_statistics_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(WIDX_TAB_2);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->error.var_480; // set title caption to player name
+	window_player_update_title(w);
 
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -533,13 +529,13 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	int y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = network_get_player_commands_ran(player);
-	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
+	set_format_arg(0, uint32, network_get_player_commands_ran(player));
+	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
 	y += 10;
-	
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = network_get_player_money_spent(player);
-	gfx_draw_string_left(dpi, STR_MONEY_SPENT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
+
+	set_format_arg(0, uint32, network_get_player_money_spent(player));
+	gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, x, y);
 }
 
 static void window_player_set_page(rct_window* w, int page)
@@ -638,12 +634,22 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 				}
 				widget_invalidate(w, WIDX_VIEWPORT);
 			}
-			
+
 			// Draw the viewport
 			w->var_492 = 0;
 		} else {
 			// Don't draw the viewport
 			w->var_492 = -1;
 		}
+	}
+}
+
+static void window_player_update_title(rct_window* w)
+{
+	int player = network_get_player_index((uint8)w->number);
+	if (player != -1) {
+		set_format_arg(0, const char *, network_get_player_name(player)); // set title caption to player name
+	} else {
+		set_format_arg(0, const char *, "");
 	}
 }

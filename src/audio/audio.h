@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _AUDIO_H_
 #define _AUDIO_H_
@@ -35,6 +31,8 @@ typedef struct audio_device {
 	char name[AUDIO_DEVICE_NAME_SIZE];
 } audio_device;
 
+#pragma pack(push, 1)
+
 typedef struct rct_ride_music {
 	uint8 ride_id;
 	uint8 tune_id;
@@ -43,6 +41,9 @@ typedef struct rct_ride_music {
 	uint16 frequency;
 	void* sound_channel;
 } rct_ride_music;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_ride_music, 12);
+#endif
 
 typedef struct rct_ride_music_info {
 	uint32 length;
@@ -50,6 +51,7 @@ typedef struct rct_ride_music_info {
 	uint8 path_id;
 	uint8 var_9;
 } rct_ride_music_info;
+assert_struct_size(rct_ride_music_info, 10);
 
 typedef struct rct_ride_music_params {
 	uint8 ride_id;
@@ -59,6 +61,7 @@ typedef struct rct_ride_music_params {
 	sint16 pan;
 	uint16 frequency;
 } rct_ride_music_params;
+assert_struct_size(rct_ride_music_params, 12);
 
 typedef struct rct_vehicle_sound {
 	uint16 id;
@@ -74,6 +77,9 @@ typedef struct rct_vehicle_sound {
 	void* sound1_channel;
 	void* sound2_channel;
 } rct_vehicle_sound;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_vehicle_sound, 28);
+#endif
 
 typedef struct rct_vehicle_sound_params {
 	uint16 id;
@@ -83,6 +89,9 @@ typedef struct rct_vehicle_sound_params {
 	sint16 volume;
 	uint16 var_A;
 } rct_vehicle_sound_params;
+assert_struct_size(rct_vehicle_sound_params, 12);
+
+#pragma pack(pop)
 
 typedef enum RCT2_SOUND {
 	SOUND_LIFT_1 = 0,
@@ -153,17 +162,19 @@ typedef enum RCT2_SOUND {
 
 extern audio_device *gAudioDevices;
 extern int gAudioDeviceCount;
+extern int gAudioCurrentDevice;
 extern void *gCrowdSoundChannel;
 extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info *gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_params gRideMusicParamsList[6];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gTitleMusicChannel;
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+extern int gVolumeAdjustZoom;
 
 /**
 * Deregisters the audio device.
@@ -269,5 +280,7 @@ void audio_toggle_all_sounds();
 * rct2: 0x006BABD8
 */
 void audio_unpause_sounds();
+
+void audio_stop_all_music_and_sounds();
 
 #endif

@@ -1,28 +1,24 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
+#include "object.h"
 #include "rct2.h"
-#include "addresses.h"
 
 typedef enum {
 	EDITOR_STEP_OBJECT_SELECTION,			// 0
@@ -35,7 +31,7 @@ typedef enum {
 	EDITOR_STEP_TRACK_DESIGNS_MANAGER		// 7
 } RCT2_EDITOR_STEP;
 
-#define g_editor_step RCT2_GLOBAL(0x0141F570, uint8)
+extern uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
 
 void editor_load();
 void editor_convert_save_to_scenario();
@@ -47,5 +43,7 @@ void editor_open_windows_for_current_step();
 
 bool editor_check_park();
 int editor_check_object_selection();
+
+bool editor_check_object_group_at_least_one_selected(int objectType);
 
 #endif

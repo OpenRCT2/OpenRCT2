@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include <png.h>
 
 #include "image_io.h"
@@ -17,7 +33,7 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 	if (png_ptr == NULL) {
 		return false;
 	}
- 
+
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL) {
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
@@ -36,14 +52,14 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 		SDL_RWclose(fp);
 		return false;
 	}
- 
+
 	// Setup png reading
 	png_set_read_fn(png_ptr, fp, my_png_read_data);
 	png_set_sig_bytes(png_ptr, sig_read);
 
 	// To simplify the reading process, convert 4-16 bit data to 24-32 bit data
 	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, NULL);
- 
+
 	// Read header
 	png_uint_32 pngWidth, pngHeight;
 	int bit_depth, colour_type, interlace_type;
@@ -74,7 +90,7 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 			dst += rowBytes;
 		}
 	}
- 
+
 	// Close the PNG
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 	SDL_RWclose(fp);
@@ -155,6 +171,67 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 	return true;
 }
 
+static void image_io_png_warning(png_structp png_ptr, const char *b)
+{
+    log_warning(b);
+}
+
+static void image_io_png_error(png_structp png_ptr, const char *b)
+{
+    log_error(b);
+}
+
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void *pixels, const utf8 *path)
+{
+	// Setup PNG
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, image_io_png_error, image_io_png_warning);
+	if (png_ptr == NULL) {
+		return false;
+	}
+
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+
+	// Open file for writing
+	SDL_RWops *file = SDL_RWFromFile(path, "wb");
+	if (file == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+	png_set_write_fn(png_ptr, file, my_png_write_data, my_png_flush);
+
+	// Set error handler
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		SDL_RWclose(file);
+		return false;
+	}
+
+	// Write header
+	png_set_IHDR(
+		png_ptr, info_ptr, width, height, 8,
+		PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+	);
+	png_write_info(png_ptr, info_ptr);
+
+	// Write pixels
+	uint8 *bits = (uint8*)pixels;
+	for (int y = 0; y < height; y++) {
+		png_write_row(png_ptr, (png_byte *)bits);
+		bits += width * 4;
+	}
+
+	// Finish
+	png_write_end(png_ptr, NULL);
+	SDL_RWclose(file);
+
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	return true;
+}
+
 static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	SDL_RWops *file = (SDL_RWops*)png_get_io_ptr(png_ptr);
@@ -170,129 +247,4 @@ static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t le
 static void my_png_flush(png_structp png_ptr)
 {
 
-}
-
-// Bitmap header structs, for cross platform purposes
-typedef struct {
-	uint16 bfType;
-	uint32 bfSize;
-	uint16 bfReserved1;
-	uint16 bfReserved2;
-	uint32 bfOffBits;
-} BitmapFileHeader;
-
-typedef struct {
-	uint32 biSize;
-	sint32 biWidth;
-	sint32 biHeight;
-	uint16 biPlanes;
-	uint16 biBitCount;
-	uint32 biCompression;
-	uint32 biSizeImage;
-	sint32 biXPelsPerMeter;
-	sint32 biYPelsPerMeter;
-	uint32 biClrUsed;
-	uint32 biClrImportant;
-} BitmapInfoHeader;
-
-/**
- *
- *  rct2: 0x00683D20
- */
-bool image_io_bmp_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path)
-{
-	BitmapFileHeader header;
-	BitmapInfoHeader info;
-
-	int i, y, width, height, stride;
-	uint8 *buffer, *row;
-	SDL_RWops *fp;
-	unsigned int bytesWritten;
-
-	// Open binary file for writing
-	if ((fp = SDL_RWFromFile(path, "wb")) == NULL){
-		return false;
-	}
-
-	// Allocate buffer
-	buffer = malloc(0xFFFF);
-	if (buffer == NULL) {
-		SDL_RWclose(fp);
-		return false;
-	}
-
-	// Get image size
-	width = dpi->width;
-	height = dpi->height;
-	stride = dpi->width + dpi->pitch;
-
-	// File header
-	memset(&header, 0, sizeof(header));
-	header.bfType = 0x4D42;
-	header.bfSize = height * stride + 1038;
-	header.bfOffBits = 1038;
-
-	bytesWritten = SDL_RWwrite(fp, &header, sizeof(BitmapFileHeader), 1);
-	if (bytesWritten != 1) {
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return false;
-	}
-
-	// Info header
-	memset(&info, 0, sizeof(info));
-	info.biSize = sizeof(info);
-	info.biWidth = width;
-	info.biHeight = height;
-	info.biPlanes = 1;
-	info.biBitCount = 8;
-	info.biXPelsPerMeter = 2520;
-	info.biYPelsPerMeter = 2520;
-	info.biClrUsed = 246;
-
-	bytesWritten = SDL_RWwrite(fp, &info, sizeof(BitmapInfoHeader), 1);
-	if (bytesWritten != 1) {
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return false;
-	}
-
-	// Palette
-	memset(buffer, 0, 246 * 4);
-	for (i = 0; i < 246; i++) {
-		const rct_palette_entry *entry = &palette->entries[i];
-		buffer[i * 4 + 0] = entry->blue;
-		buffer[i * 4 + 1] = entry->green;
-		buffer[i * 4 + 2] = entry->red;
-	}
-
-	bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), 246 * 4);
-	if (bytesWritten != 246*4){
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return false;
-	}
-
-	// Image, save upside down
-	for (y = dpi->height - 1; y >= 0; y--) {
-		row = dpi->bits + y * (dpi->width + dpi->pitch);
-
-		memset(buffer, 0, stride);
-		memcpy(buffer, row, dpi->width);
-
-		bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), stride);
-		if (bytesWritten != stride){
-			SDL_RWclose(fp);
-			SafeFree(buffer);
-			log_error("failed to save screenshot");
-			return false;
-		}
-	}
-
-	SDL_RWclose(fp);
-	free(buffer);
-	return true;
 }

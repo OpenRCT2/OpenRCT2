@@ -1,45 +1,43 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John, Peter Hill
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../audio/audio.h"
-#include "../game.h"
 #include "../drawing/drawing.h"
+#include "../editor.h"
+#include "../game.h"
 #include "../input.h"
+#include "../interface/Cursors.h"
+#include "../localisation/localisation.h"
+#include "../localisation/string_ids.h"
 #include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
-#include "viewport.h"
-#include "../localisation/string_ids.h"
-#include "../localisation/localisation.h"
-#include "../cursors.h"
+#include "../config.h"
 
-#define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-#define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
-#define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+#define RCT2_FIRST_WINDOW		(g_window_list)
+#define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
+#define RCT2_NEW_WINDOW			(gWindowNextSlot)
 
-#define MAX_NUMBER_WINDOWS 11
-
-rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
+rct_window * gWindowFirst;
+rct_window * gWindowNextSlot = NULL;
+rct_window * gWindowAudioExclusive;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
@@ -47,7 +45,12 @@ char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
 int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
-bool gLoadSaveTitleSequenceSave = 0;
+
+uint16 gWindowUpdateTicks;
+uint8 gToolbarDirtyFlags;
+uint16 gWindowMapFlashingFlags;
+
+colour_t gCurrentWindowColours[4];
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
@@ -73,30 +76,26 @@ float window_scroll_locations[][2] = {
 
 static bool sub_6EA95D(int x, int y, int width, int height);
 static void window_all_wheel_input();
-static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
+static int window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
+static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
 
-int window_get_widget_index(rct_window *w, rct_widget *widget)
+static int window_get_widget_index(rct_window *w, rct_widget *widget)
 {
-	rct_widget *widget2;
-
 	int i = 0;
-	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+	for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
 		if (widget == widget2)
 			return i;
 	return -1;
 }
 
-int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
+static int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 {
-	int widgetIndex, scrollIndex;
-	rct_widget *widget;
-
 	if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
 		return -1;
 
-	scrollIndex = 0;
-	widgetIndex = 0;
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+	int scrollIndex = 0;
+	int widgetIndex = 0;
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
 		if (widgetIndex == targetWidgetIndex)
 			break;
 		if (widget->type == WWT_SCROLL)
@@ -106,16 +105,13 @@ int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 	return scrollIndex;
 }
 
-int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
+static int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 {
-	int scrollIndex;
-	rct_widget *widget2;
-
 	if (widget->type != WWT_SCROLL)
 		return -1;
 
-	scrollIndex = 0;
-	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
+	int scrollIndex = 0;
+	for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
 		if (widget2 == widget)
 			break;
 		if (widget2->type == WWT_SCROLL)
@@ -125,11 +121,9 @@ int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 	return scrollIndex;
 }
 
-rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
+static rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 {
-	rct_widget *widget;
-
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget->type != WWT_SCROLL)
 			continue;
 
@@ -147,18 +141,15 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
  */
 void window_dispatch_update_all()
 {
-	rct_window *w;
-
-	RCT2_GLOBAL(0x01423604, sint32)++;
 	// gTooltipNotShownTicks++;
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
 }
 
 void window_update_all_viewports()
 {
 	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-		if (w->viewport != NULL)
+		if (w->viewport != NULL && window_is_visible(w))
 			viewport_update_position(w);
 }
 
@@ -168,26 +159,20 @@ void window_update_all_viewports()
  */
 void window_update_all()
 {
-	rct_window* w;
-
-	RCT2_GLOBAL(0x009E3CD8, sint32)++;
-	if (RCT2_GLOBAL(0x009ABDF2, sint8) == 0)
-		return;
-
-	gfx_draw_all_dirty_blocks();
-	window_update_all_viewports();
-	gfx_draw_all_dirty_blocks();
+	// gfx_draw_all_dirty_blocks();
+	// window_update_all_viewports();
+	// gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) >= 1000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
-		for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+	gWindowUpdateTicks += gTicksSinceLastUpdate;
+	if (gWindowUpdateTicks >= 1000) {
+		gWindowUpdateTicks = 0;
+		for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 			window_event_unknown_07_call(w);
 	}
 
 	// Border flash invalidation
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+	for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		if (w->flags & WF_WHITE_BORDER_MASK) {
 			w->flags -= WF_WHITE_BORDER_ONE;
 			if (!(w->flags & WF_WHITE_BORDER_MASK))
@@ -204,22 +189,18 @@ void window_update_all()
  */
 static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 {
-	int widgetIndex, size;
-	rct_scroll *scroll;
-	rct_widget *widget;
-
-	scroll = &w->scrolls[scrollIndex];
-	widget = window_get_scroll_widget(w, scrollIndex);
-	widgetIndex = window_get_widget_index(w, widget);
+	rct_scroll *scroll = &w->scrolls[scrollIndex];
+	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+	int widgetIndex = window_get_widget_index(w, widget);
 
 	if (scroll->flags & VSCROLLBAR_VISIBLE) {
-		size = widget->bottom - widget->top - 1;
+		int size = widget->bottom - widget->top - 1;
 		if (scroll->flags & HSCROLLBAR_VISIBLE)
 			size -= 11;
 		size = max(0, scroll->v_bottom - size);
 		scroll->v_top = min(max(0, scroll->v_top + wheel), size);
 	} else {
-		size = widget->right - widget->left - 1;
+		int size = widget->right - widget->left - 1;
 		if (scroll->flags & VSCROLLBAR_VISIBLE)
 			size -= 11;
 		size = max(0, scroll->h_right - size);
@@ -236,17 +217,13 @@ static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
  */
 static int window_wheel_input(rct_window *w, int wheel)
 {
-	int i;
-	rct_widget *widget;
-	rct_scroll *scroll;
-
-	i = 0;
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+	int i = 0;
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget->type != WWT_SCROLL)
 			continue;
 
 		// Originally always checked first scroll view, bug maybe?
-		scroll = &w->scrolls[i];
+		rct_scroll *scroll = &w->scrolls[i];
 		if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 			window_scroll_wheel_input(w, i, wheel);
 			return 1;
@@ -263,7 +240,7 @@ static int window_wheel_input(rct_window *w, int wheel)
  */
 static void window_viewport_wheel_input(rct_window *w, int wheel)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9)
+	if (gScreenFlags & 9)
 		return;
 
 	if (wheel < 0)
@@ -275,7 +252,7 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
 {
 	// HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
-	//       this selective approch will have to do.
+	//       this selective approach will have to do.
 
 	// Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
 	int previewWidgetIndex;
@@ -311,14 +288,9 @@ static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
  */
 static void window_all_wheel_input()
 {
-	int raw, wheel, widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-	rct_scroll *scroll;
-
 	// Get wheel value
-	raw = gCursorState.wheel;
-	wheel = 0;
+	int raw = gCursorState.wheel;
+	int wheel = 0;
 	while (1) {
 		raw -= 120;
 		if (raw < 0)
@@ -340,7 +312,7 @@ static void window_all_wheel_input()
 
 	// Check window cursor is over
 	if (!(gInputFlags & INPUT_FLAG_5)) {
-		w = window_find_from_point(gCursorState.x, gCursorState.y);
+		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
 			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
@@ -349,11 +321,12 @@ static void window_all_wheel_input()
 			}
 
 			// Check scroll view, cursor is over
-			widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			int widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex != -1) {
-				widget = &w->widgets[widgetIndex];
+				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
-					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
+					int scrollIndex = window_get_scroll_index(w, widgetIndex);
+					rct_scroll *scroll =  &w->scrolls[scrollIndex];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
 						return;
@@ -370,11 +343,50 @@ static void window_all_wheel_input()
 			}
 		}
 	}
+}
 
-	// Check windows, front to back
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
-		if (window_wheel_input(w, wheel))
-			return;
+static void window_close_surplus(int cap, sint8 avoid_classification)
+{
+	int count, i, diff;
+	//find the amount of windows that are currently open
+	count = WINDOW_LIMIT_MAX;
+	for (i = 0; i < WINDOW_LIMIT_MAX; i++) {
+		if (&g_window_list[i] == RCT2_NEW_WINDOW) {
+			count = i;
+			break;
+		}
+	}
+	//difference between amount open and cap = amount to close
+	diff = count - WINDOW_LIMIT_RESERVED - cap;
+	for (i = 0; i < diff; i++) {
+		rct_window *w = NULL;
+		//iterates through the list until it finds the newest window, or a window that can be closed
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+				break;
+		}
+		//skip window if window matches specified rct_windowclass (as user may be modifying via options)
+		if (avoid_classification != -1 && w != NULL && w->classification == avoid_classification) {
+			continue;
+		}
+		window_close(w);
+	}
+}
+
+/*
+ * Changes the maximum amount of windows allowed
+ */
+void window_set_window_limit(int value)
+{
+	int prev = gConfigGeneral.window_limit;
+	int val = clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
+	gConfigGeneral.window_limit = val;
+	config_save_default();
+	// Checks if value decreases and then closes surplus
+	// windows if one sets a limit lower than the number of windows open
+	if (val < prev) {
+		window_close_surplus(val, WC_OPTIONS);
+	}
 }
 
 /**
@@ -391,9 +403,10 @@ static void window_all_wheel_input()
  */
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	rct_window *w;
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_NUMBER_WINDOWS])) {
+	// include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
+	if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED])) {
+		rct_window *w = NULL;
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
@@ -402,7 +415,7 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
 		window_close(w);
 	}
 
-	w = RCT2_NEW_WINDOW;
+	rct_window *w = RCT2_NEW_WINDOW;
 
 	// Flags
 	if (flags & WF_STICK_TO_BACK) {
@@ -475,8 +488,8 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
  */
 static bool sub_6EA8EC(int x, int y, int width, int height)
 {
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	uint16 screenWidth = gScreenWidth;
+	uint16 screenHeight = gScreenHeight;
 	int unk;
 
 	unk = -(width / 4);
@@ -502,8 +515,8 @@ static bool sub_6EA934(int x, int y, int width, int height)
 {
 	if (x < 0) return false;
 	if (y < 28) return false;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16)) return false;
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16)) return false;
+	if (x + width > gScreenWidth) return false;
+	if (y + height > gScreenHeight) return false;
 	return sub_6EA95D(x, y, width, height);
 }
 
@@ -518,9 +531,7 @@ static bool sub_6EA934(int x, int y, int width, int height)
  */
 static bool sub_6EA95D(int x, int y, int width, int height)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
@@ -546,31 +557,31 @@ static bool sub_6EA95D(int x, int y, int width, int height)
  */
 rct_window *window_create_auto_pos(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	rct_window *w;
-	int x, y;
+	uint16 screenWidth = gScreenWidth;
+	uint16 screenHeight = gScreenHeight;
 
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-
-	if (cls & 0x80) {
-		cls &= ~0x80;
-		w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
-		if (w != NULL) {
-			if (w->x > -60 && w->x < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20) {
-				if (w->y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20) {
-					x = w->x;
-					if (w->x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-						x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20 - width;
-					y = w->y;
-					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
-				}
-			}
-		}
-	}
+	// TODO dead code, looks like it is cascading the new window offset from an existing window
+	// we will have to re-implement this in our own way.
+	//
+	// if (cls & 0x80) {
+	// 	cls &= ~0x80;
+	// 	rct_window *w = window_find_by_number(0, 0);
+	// 	if (w != NULL) {
+	// 		if (w->x > -60 && w->x < gScreenWidth - 20) {
+	// 			if (w->y < gScreenHeight - 20) {
+	// 				int x = w->x;
+	// 				if (w->x + width > gScreenWidth)
+	// 					x = gScreenWidth - 20 - width;
+	// 				int y = w->y;
+	// 				return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// Place window in an empty corner of the screen
-	x = 0;
-	y = 30;
+	int x = 0;
+	int y = 30;
 	if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 	x = screenWidth - width;
@@ -586,12 +597,12 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 	// Place window next to another
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		x = w->x + w->width + 2;
-		y = w->y;
+		int x = w->x + w->width + 2;
+		int y = w->y;
 		if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -624,12 +635,12 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	}
 
 	// Overlap
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		x = w->x + w->width + 2;
-		y = w->y;
+		int x = w->x + w->width + 2;
+		int y = w->y;
 		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -648,7 +659,7 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	// Cascade
 	x = 0;
 	y = 30;
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (x != w->x || y != w->y)
 			continue;
 
@@ -670,8 +681,8 @@ rct_window *window_create_centred(int width, int height, rct_window_event_list *
 {
 	int x, y;
 
-	x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width) / 2;
-	y = max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height) / 2);
+	x = (gScreenWidth - width) / 2;
+	y = max(28, (gScreenHeight - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -688,7 +699,7 @@ void window_close(rct_window* window)
 	if (window == NULL)
 		return;
 
-	// Make a copy of the window class and number incase
+	// Make a copy of the window class and number in case
 	// the window order is changed by the close event.
 	rct_windowclass cls = window->classification;
 	rct_windownumber number = window->number;
@@ -710,7 +721,7 @@ void window_close(rct_window* window)
 
 	// Remove window from list and reshift all windows
 	RCT2_NEW_WINDOW--;
-	num_windows = (RCT2_NEW_WINDOW - window);
+	num_windows = (int)(RCT2_NEW_WINDOW - window);
 	if (num_windows > 0)
 		memmove(window, window + 1, num_windows * sizeof(rct_window));
 
@@ -724,9 +735,7 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 		if (w->classification == cls) {
 			window_close(w);
 			w = g_window_list - 1;
@@ -742,9 +751,7 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-	rct_window* w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 		if (w->classification == cls && w->number == number) {
 			window_close(w);
 			w = g_window_list - 1;
@@ -760,9 +767,7 @@ void window_close_by_number(rct_windowclass cls, rct_windownumber number)
  */
 rct_window *window_find_by_class(rct_windowclass cls)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == cls)
 			return w;
 
@@ -798,8 +803,8 @@ void window_close_top()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
-		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
+	if (gScreenFlags & 2)
+		if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
 			return;
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {
@@ -815,12 +820,13 @@ void window_close_top()
  *
  *  rct2: 0x006EE927
  */
-void window_close_all() {
+void window_close_all()
+{
 	rct_window* w;
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++) {
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
@@ -828,12 +834,13 @@ void window_close_all() {
 	}
 }
 
-void window_close_all_except_class(rct_windowclass cls) {
+void window_close_all_except_class(rct_windowclass cls)
+{
 	rct_window* w;
 
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++){
+	for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++){
 		if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
 			window_close(w);
 			w = g_window_list;
@@ -848,7 +855,6 @@ void window_close_all_except_class(rct_windowclass cls) {
 rct_window *window_find_from_point(int x, int y)
 {
 	rct_window *w;
-	rct_widget *widget;
 	int widget_index;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
@@ -859,8 +865,6 @@ rct_window *window_find_from_point(int x, int y)
 			widget_index = window_find_widget_from_point(w, x, y);
 			if (widget_index == -1)
 				continue;
-
-			widget = &w->widgets[widget_index];
 		}
 
 		return w;
@@ -887,20 +891,15 @@ int window_find_widget_from_point(rct_window *w, int x, int y)
 
 	// Find the widget at point x, y
 	widget_index = -1;
-	RCT2_GLOBAL(0x01420074, uint8) = -1;
 	for (i = 0;; i++) {
 		widget = &w->widgets[i];
 		if (widget->type == WWT_LAST) {
 			break;
 		} else if (widget->type != WWT_EMPTY) {
-			if (widget->type == WWT_SCROLL)
-				RCT2_GLOBAL(0x01420074, uint8)++;
-
 			if (x >= w->x + widget->left && x <= w->x + widget->right &&
 				y >= w->y + widget->top && y <= w->y + widget->bottom
 			) {
 				widget_index = i;
-				RCT2_GLOBAL(0x01420075, uint8) = RCT2_GLOBAL(0x01420074, uint8);
 			}
 		}
 	}
@@ -976,6 +975,12 @@ void widget_invalidate(rct_window *w, int widgetIndex)
 	rct_widget* widget;
 
 	assert(w != NULL);
+#if DEBUG
+	for (int i = 0; i <= widgetIndex; i++) {
+		assert(w->widgets[i].type != WWT_LAST);
+	}
+#endif
+
 	widget = &w->widgets[widgetIndex];
 	if (widget->left == -2)
 		return;
@@ -1042,9 +1047,9 @@ void window_init_scroll_widgets(rct_window *w)
 		scroll->v_top = 0;
 		scroll->v_bottom = height + 1;
 
-		if (widget->image & 0x01)
+		if (widget->content & SCROLL_HORIZONTAL)
 			scroll->flags |= HSCROLLBAR_VISIBLE;
-		if (widget->image & 0x02)
+		if (widget->content & SCROLL_VERTICAL)
 			scroll->flags |= VSCROLLBAR_VISIBLE;
 
 		widget_scroll_update_thumbs(w, widget_index);
@@ -1087,12 +1092,12 @@ void window_update_scroll_widgets(rct_window *w)
 		height++;
 
 		scrollPositionChanged = 0;
-		if ((widget->image & 1) && width != scroll->h_right) {
+		if ((widget->content & SCROLL_HORIZONTAL) && width != scroll->h_right) {
 			scrollPositionChanged = 1;
 			scroll->h_right = width;
 		}
 
-		if ((widget->image & 2) && height != scroll->v_bottom) {
+		if ((widget->content & SCROLL_VERTICAL) && height != scroll->v_bottom) {
 			scrollPositionChanged = 1;
 			scroll->v_bottom = height;
 		}
@@ -1196,7 +1201,7 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window* window)
 {
-	for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+	for (rct_window* w = g_window_list; w < gWindowNextSlot; w++) {
 		if (w == window)
 			continue;
 		if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
@@ -1211,7 +1216,7 @@ void window_push_others_right(rct_window* window)
 			continue;
 
 		window_invalidate(w);
-		if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+		if (window->x + window->width + 13 >= gScreenWidth)
 			continue;
 		uint16 push_amount = window->x + window->width - w->x + 3;
 		w->x += push_amount;
@@ -1246,7 +1251,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
+		if (w1->y + w1->height + 80 >= gScreenHeight)
 			continue;
 
 		// Invalidate the window's current area
@@ -1263,7 +1268,6 @@ void window_push_others_below(rct_window *w1)
 			w2->viewport->y += push_amount;
 	}
 }
-
 
 /**
  *
@@ -1294,7 +1298,7 @@ void window_scroll_to_viewport(rct_window *w)
 		return;
 
 	if (w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE) {
-		rct_sprite *sprite = &(g_sprite_list[w->viewport_focus_sprite.sprite_id]);
+		rct_sprite *sprite = get_sprite(w->viewport_focus_sprite.sprite_id);
 		x = sprite->unknown.x;
 		y = sprite->unknown.y;
 		z = sprite->unknown.z;
@@ -1343,7 +1347,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
 		int i = 0;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+		if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 			int found = 0;
 			while (!found) {
 				sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
@@ -1351,7 +1355,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 				rct_window* w2 = w;
 				while (1) {
 					w2++;
-					if (w2 >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)) {
+					if (w2 >= gWindowNextSlot) {
 						found = 1;
 						break;
 					}
@@ -1387,7 +1391,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
  *
  *  rct2: 0x00688956
  */
-void sub_688956()
+static void sub_688956()
 {
 	rct_window *w;
 
@@ -1428,7 +1432,7 @@ void window_rotate_camera(rct_window *w, int direction)
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (get_current_rotation() + direction) & 3;
+	gCurrentRotation = (get_current_rotation() + direction) & 3;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
@@ -1444,6 +1448,49 @@ void window_rotate_camera(rct_window *w, int direction)
 	reset_all_sprite_quadrant_placements();
 }
 
+void window_viewport_get_map_coords_by_cursor(rct_window *w, sint16 *map_x, sint16 *map_y, sint16 *offset_x, sint16 *offset_y)
+{
+	// Get mouse position to offset against.
+	int mouse_x, mouse_y;
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+
+	// Compute map coordinate by mouse position.
+	get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, NULL, NULL, NULL);
+
+	// Get viewport coordinates centring around the tile.
+	int base_height = map_element_height(*map_x, *map_y);
+	int dest_x, dest_y;
+	center_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
+
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
+		rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
+
+	// Compute cursor offset relative to tile.
+	*offset_x = (w->saved_view_x - (dest_x + rebased_x)) * (1 << w->viewport->zoom);
+	*offset_y = (w->saved_view_y - (dest_y + rebased_y)) * (1 << w->viewport->zoom);
+}
+
+void window_viewport_centre_tile_around_cursor(rct_window *w, sint16 map_x, sint16 map_y, sint16 offset_x, sint16 offset_y)
+{
+	// Get viewport coordinates centring around the tile.
+	int dest_x, dest_y;
+	int base_height = map_element_height(map_x, map_y);
+	center_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
+
+	// Get mouse position to offset against.
+	int mouse_x, mouse_y;
+	platform_get_cursor_position_scaled(&mouse_x, &mouse_y);
+
+	// Rebase mouse position onto centre of window, and compensate for zoom level.
+	int rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
+		rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
+
+	// Apply offset to the viewport.
+	w->saved_view_x = dest_x + rebased_x + (offset_x / (1 << w->viewport->zoom));
+	w->saved_view_y = dest_y + rebased_y + (offset_y / (1 << w->viewport->zoom));
+}
+
 void window_zoom_set(rct_window *w, int zoomLevel)
 {
 	rct_viewport* v = w->viewport;
@@ -1452,12 +1499,18 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 	if (v->zoom == zoomLevel)
 		return;
 
+	// Zooming to cursor? Remember where we're pointing at the moment.
+	sint16 saved_map_x, saved_map_y, offset_x, offset_y;
+	if (gConfigGeneral.zoom_to_cursor) {
+		window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
+	}
+
 	// Zoom in
 	while (v->zoom > zoomLevel) {
 		v->zoom--;
 		w->saved_view_x += v->view_width / 4;
 		w->saved_view_y += v->view_height / 4;
-		v->view_width /= 2;
+		v->view_width  /= 2;
 		v->view_height /= 2;
 	}
 
@@ -1466,8 +1519,13 @@ void window_zoom_set(rct_window *w, int zoomLevel)
 		v->zoom++;
 		w->saved_view_x -= v->view_width / 2;
 		w->saved_view_y -= v->view_height / 2;
-		v->view_width *= 2;
+		v->view_width  *= 2;
 		v->view_height *= 2;
+	}
+
+	// Zooming to cursor? Centre around the tile we were hovering over just now.
+	if (gConfigGeneral.zoom_to_cursor) {
+		window_viewport_centre_tile_around_cursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
 	}
 
 	// HACK: Prevents the redraw from failing when there is
@@ -1502,14 +1560,12 @@ void window_zoom_out(rct_window *w)
  * right (dx)
  * bottom (bp)
  */
-void window_draw(rct_window *w, int left, int top, int right, int bottom)
+void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
 {
-	rct_window* v;
-	rct_drawpixelinfo *dpi, copy;
-	int overflow;
+	if (!window_is_visible(w)) return;
 
 	// Split window into only the regions that require drawing
-	if (window_draw_split(w, left, top, right, bottom))
+	if (window_draw_split(dpi, w, left, top, right, bottom))
 		return;
 
 	// Clamp region
@@ -1517,71 +1573,15 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 	top = max(top, w->y);
 	right = min(right, w->x + w->width);
 	bottom = min(bottom, w->y + w->height);
-	if (left >= right)
-		return;
-	if (top >= bottom)
-		return;
+	if (left >= right) return;
+	if (top >= bottom) return;
 
 	// Draw the window in this region
-	for (v = w; v < RCT2_NEW_WINDOW; v++) {
+	for (rct_window *v = w; v < RCT2_NEW_WINDOW; v++) {
 		// Don't draw overlapping opaque windows, they won't have changed
-		if (w != v && !(v->flags & WF_TRANSPARENT))
-			continue;
-
-		copy = *RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
-		dpi = &copy;
-
-		// Clamp left to 0
-		overflow = left - dpi->x;
-		if (overflow > 0) {
-			dpi->x += overflow;
-			dpi->width -= overflow;
-			if (dpi->width <= 0)
-				continue;
-			dpi->pitch += overflow;
-			dpi->bits += overflow;
+		if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v)) {
+			window_draw_single(dpi, v, left, top, right, bottom);
 		}
-
-		// Clamp width to right
-		overflow = dpi->x + dpi->width - right;
-		if (overflow > 0) {
-			dpi->width -= overflow;
-			if (dpi->width <= 0)
-				continue;
-			dpi->pitch += overflow;
-		}
-
-		// Clamp top to 0
-		overflow = top - dpi->y;
-		if (overflow > 0) {
-			dpi->y += overflow;
-			dpi->height -= overflow;
-			if (dpi->height <= 0)
-				continue;
-			dpi->bits += (dpi->width + dpi->pitch) * overflow;
-		}
-
-		// Clamp height to bottom
-		overflow = dpi->y + dpi->height - bottom;
-		if (overflow > 0) {
-			dpi->height -= overflow;
-			if (dpi->height <= 0)
-				continue;
-		}
-
-		RCT2_GLOBAL(0x01420070, sint32) = v->x;
-
-		// Invalidate modifies the window colours so first get the correct
-		// colour before setting the global variables for the string painting
-		window_event_invalidate_call(v);
-
-		// Text colouring
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = v->colours[0] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = v->colours[1] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = v->colours[2] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
-
-		window_event_paint_call(v, dpi);
 	}
 }
 
@@ -1589,7 +1589,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-static int window_draw_split(rct_window *w, int left, int top, int right, int bottom)
+static int window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
 {
 	rct_window* topwindow;
 
@@ -1606,20 +1606,20 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 		// A window overlaps w, split up the draw into two regions where the window starts to overlap
 		if (topwindow->x > left) {
 			// Split draw at topwindow.left
-			window_draw(w, left, top, topwindow->x, bottom);
-			window_draw(w, topwindow->x, top, right, bottom);
+			window_draw(dpi, w, left, top, topwindow->x, bottom);
+			window_draw(dpi, w, topwindow->x, top, right, bottom);
 		} else if (topwindow->x + topwindow->width < right) {
 			// Split draw at topwindow.right
-			window_draw(w, left, top, topwindow->x + topwindow->width, bottom);
-			window_draw(w, topwindow->x + topwindow->width, top, right, bottom);
+			window_draw(dpi, w, left, top, topwindow->x + topwindow->width, bottom);
+			window_draw(dpi, w, topwindow->x + topwindow->width, top, right, bottom);
 		} else if (topwindow->y > top) {
 			// Split draw at topwindow.top
-			window_draw(w, left, top, right, topwindow->y);
-			window_draw(w, left, topwindow->y, right, bottom);
+			window_draw(dpi, w, left, top, right, topwindow->y);
+			window_draw(dpi, w, left, topwindow->y, right, bottom);
 		} else if (topwindow->y + topwindow->height < bottom) {
 			// Split draw at topwindow.bottom
-			window_draw(w, left, top, right, topwindow->y + topwindow->height);
-			window_draw(w, left, topwindow->y + topwindow->height, right, bottom);
+			window_draw(dpi, w, left, top, right, topwindow->y + topwindow->height);
+			window_draw(dpi, w, left, topwindow->y + topwindow->height, right, bottom);
 		}
 
 		// Drawing for this region should be done now, exit
@@ -1628,6 +1628,63 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 
 	// No windows overlap
 	return 0;
+}
+
+static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
+{
+	// Copy dpi so we can crop it
+	rct_drawpixelinfo copy = *dpi;
+	dpi = &copy;
+
+	// Clamp left to 0
+	int overflow = left - dpi->x;
+	if (overflow > 0) {
+		dpi->x += overflow;
+		dpi->width -= overflow;
+		if (dpi->width <= 0)
+			return;
+		dpi->pitch += overflow;
+		dpi->bits += overflow;
+	}
+
+	// Clamp width to right
+	overflow = dpi->x + dpi->width - right;
+	if (overflow > 0) {
+		dpi->width -= overflow;
+		if (dpi->width <= 0)
+			return;
+		dpi->pitch += overflow;
+	}
+
+	// Clamp top to 0
+	overflow = top - dpi->y;
+	if (overflow > 0) {
+		dpi->y += overflow;
+		dpi->height -= overflow;
+		if (dpi->height <= 0)
+			return;
+		dpi->bits += (dpi->width + dpi->pitch) * overflow;
+	}
+
+	// Clamp height to bottom
+	overflow = dpi->y + dpi->height - bottom;
+	if (overflow > 0) {
+		dpi->height -= overflow;
+		if (dpi->height <= 0)
+			return;
+	}
+
+	// Invalidate modifies the window colours so first get the correct
+	// colour before setting the global variables for the string painting
+	window_event_invalidate_call(w);
+
+	// Text colouring
+	gCurrentWindowColours[0] = NOT_TRANSLUCENT(w->colours[0]);
+	gCurrentWindowColours[1] = NOT_TRANSLUCENT(w->colours[1]);
+	gCurrentWindowColours[2] = NOT_TRANSLUCENT(w->colours[2]);
+	gCurrentWindowColours[3] = NOT_TRANSLUCENT(w->colours[3]);
+
+	window_event_paint_call(w, dpi);
 }
 
 /**
@@ -1643,7 +1700,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	int widgetIndex;
 
 	if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
-		gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 0x2000000 | 51);
+		gfx_filter_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, PALETTE_51);
 
 	//todo: some code missing here? Between 006EB18C and 006EB260
 
@@ -1660,7 +1717,7 @@ void window_draw_widgets(rct_window *w, rct_drawpixelinfo *dpi)
 	//todo: something missing here too? Between 006EC32B and 006EC369
 
 	if (w->flags & WF_WHITE_BORDER_MASK) {
-		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, 2, 0x10);
+		gfx_fill_rect_inset(dpi, w->x, w->y, w->x + w->width - 1, w->y + w->height - 1, COLOUR_WHITE, INSET_RECT_FLAG_FILL_NONE);
 	}
 }
 
@@ -1736,20 +1793,14 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
 	w->max_height = maxHeight;
 
 	// Clamp width and height to minimum and maximum
-	if (w->width < minWidth) {
-		w->width = minWidth;
+	int width = clamp(minWidth, w->width, maxWidth);
+	int height = clamp(minHeight, w->height, maxHeight);
+
+	// Resize window if size has changed
+	if (w->width != width || w->height != height) {
 		window_invalidate(w);
-	}
-	if (w->height < minHeight) {
-		w->height = minHeight;
-		window_invalidate(w);
-	}
-	if (w->width > maxWidth) {
-		w->width = maxWidth;
-		window_invalidate(w);
-	}
-	if (w->height > maxHeight) {
-		w->height = maxHeight;
+		w->width = width;
+		w->height = height;
 		window_invalidate(w);
 	}
 }
@@ -1766,9 +1817,9 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 {
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 		if (
-			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
-			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
-			widgetIndex == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+			w->classification == gCurrentToolWidget.window_classification &&
+			w->number == gCurrentToolWidget.window_number &&
+			widgetIndex == gCurrentToolWidget.widget_index
 		) {
 			tool_cancel();
 			return 1;
@@ -1779,10 +1830,10 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 
 	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
 	gInputFlags &= ~INPUT_FLAG_6;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = widgetIndex;
+	gCurrentToolId = tool;
+	gCurrentToolWidget.window_classification = w->classification;
+	gCurrentToolWidget.window_number = w->number;
+	gCurrentToolWidget.widget_index = widgetIndex;
 	return 0;
 }
 
@@ -1801,51 +1852,25 @@ void tool_cancel()
 		map_invalidate_map_selection_tiles();
 
 		// Reset map selection
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
+		gMapSelectFlags = 0;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 0xFFFF) {
+		if (gCurrentToolWidget.widget_index != -1) {
 			// Invalidate tool widget
 			widget_invalidate_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number,
+				gCurrentToolWidget.widget_index
 			);
 
 			// Abort tool event
 			w = window_find_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number
 			);
 			if (w != NULL)
-				window_event_tool_abort_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16));
+				window_event_tool_abort_call(w, gCurrentToolWidget.widget_index);
 		}
 	}
-}
-
-/**
-*
-*  rct2: 0x0068F083
-*/
-void window_guest_list_init_vars_a()
-{
-	RCT2_GLOBAL(0x013B0E6C, uint32) = 1;
-	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
-}
-
-/**
-*
-*  rct2: 0x0068F050
-*/
-void window_guest_list_init_vars_b()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_TAB, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_VIEW, uint8) = 0;
-	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
-	RCT2_GLOBAL(0x00F1AF20, uint16) = 0;
 }
 
 void window_event_close_call(rct_window *w)
@@ -1941,9 +1966,6 @@ void window_event_unknown_0E_call(rct_window *w)
 void window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
 {
 	if (w->event_handlers->get_scroll_size != NULL) {
-		rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
-		int widgetIndex = window_get_widget_index(w, widget);
-
 		w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
 	}
 }
@@ -2075,7 +2097,7 @@ void window_relocate_windows(int width, int height){
 */
 void window_resize_gui(int width, int height)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xE){
+	if (gScreenFlags & 0xE){
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}
@@ -2084,8 +2106,6 @@ void window_resize_gui(int width, int height)
 		rct_viewport* viewport = mainWind->viewport;
 		mainWind->width = width;
 		mainWind->height = height;
-		RCT2_GLOBAL(0x9A9418, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A941C, uint16) = height - 1;
 		viewport->width = width;
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
@@ -2105,21 +2125,11 @@ void window_resize_gui(int width, int height)
 	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
-		RCT2_GLOBAL(0x9A95D0, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A95E0, uint16) = width - 3;
-		RCT2_GLOBAL(0x9A95DE, uint16) = width - 118;
-		RCT2_GLOBAL(0x9A95CE, uint16) = width - 120;
-		RCT2_GLOBAL(0x9A9590, uint16) = width - 121;
-		RCT2_GLOBAL(0x9A95A0, uint16) = width - 123;
-		RCT2_GLOBAL(0x9A95C0, uint16) = width - 126;
-		RCT2_GLOBAL(0x9A95BE, uint16) = width - 149;
-		RCT2_GLOBAL(0x9A95EE, uint16) = width - 118;
-		RCT2_GLOBAL(0x9A95F0, uint16) = width - 3;
 	}
 
 	rct_window *titleWind = window_find_by_class(WC_TITLE_MENU);
 	if (titleWind != NULL) {
-		titleWind->x = width / 2 - 164;
+		titleWind->x = (width - titleWind->width) / 2;
 		titleWind->y = height - 142;
 	}
 
@@ -2133,6 +2143,8 @@ void window_resize_gui(int width, int height)
 	if (optionsWind != NULL) {
 		optionsWind->x = width - 80;
 	}
+
+	gfx_invalidate_screen();
 }
 
 /**
@@ -2145,8 +2157,6 @@ void window_resize_gui_scenario_editor(int width, int height)
 		rct_viewport* viewport = mainWind->viewport;
 		mainWind->width = width;
 		mainWind->height = height;
-		RCT2_GLOBAL(0x9A9834, uint16) = width - 1;
-		RCT2_GLOBAL(0x9A9838, uint16) = height - 1;
 		viewport->width = width;
 		viewport->height = height;
 		viewport->view_width = width << viewport->zoom;
@@ -2166,10 +2176,6 @@ void window_resize_gui_scenario_editor(int width, int height)
 	if (bottomWind != NULL) {
 		bottomWind->y = height - 32;
 		bottomWind->width = max(640, width);
-		RCT2_GLOBAL(0x9A997C, uint16) = bottomWind->width - 1;
-		RCT2_GLOBAL(0x9A997A, uint16) = bottomWind->width - 200;
-		RCT2_GLOBAL(0x9A998A, uint16) = bottomWind->width - 198;
-		RCT2_GLOBAL(0x9A998C, uint16) = bottomWind->width - 3;
 	}
 
 }
@@ -2205,7 +2211,7 @@ void window_close_construction_windows()
  *
  *  rct2: 0x006EA776
  */
-void window_invalidate_pressed_image_buttons(rct_window *w)
+static void window_invalidate_pressed_image_buttons(rct_window *w)
 {
 	int widgetIndex;
 	rct_widget *widget;
@@ -2226,12 +2232,7 @@ void window_invalidate_pressed_image_buttons(rct_window *w)
  */
 void sub_6EA73F()
 {
-	rct_window *w;
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
-		RCT2_GLOBAL(0x01423604, uint32)++;
-
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		window_update_scroll_widgets(w);
 		window_invalidate_pressed_image_buttons(w);
 		window_event_resize_call(w);
@@ -2247,33 +2248,33 @@ void window_update_viewport_ride_music()
 	rct_viewport *viewport;
 	rct_window *w;
 
-	gRideMusicParamsListEnd = &gRideMusicParamsList[0];//RCT2_GLOBAL(0x009AF42C, rct_ride_music_params*) = (rct_ride_music_params*)0x009AF430;
-	RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+	gRideMusicParamsListEnd = &gRideMusicParamsList[0];
+	g_music_tracking_viewport = (rct_viewport*)-1;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		viewport = w->viewport;
 		if (viewport == NULL || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
 			continue;
 
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
-		RCT2_GLOBAL(0x00F438A8, rct_window*) = w;
+		g_music_tracking_viewport = viewport;
+		gWindowAudioExclusive = w;
 
 		switch (viewport->zoom) {
 		case 0:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
+			gVolumeAdjustZoom = 0;
 			break;
 		case 1:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
+			gVolumeAdjustZoom = 30;
 			break;
 		default:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
+			gVolumeAdjustZoom = 60;
 			break;
 		}
 		break;
 	}
 }
 
-void window_snap_left(rct_window *w, int proximity)
+static void window_snap_left(rct_window *w, int proximity)
 {
 	int right, rightMost, wLeftProximity, wRightProximity, wBottom;
 	rct_window *mainWindow, *w2;
@@ -2306,7 +2307,7 @@ void window_snap_left(rct_window *w, int proximity)
 		w->x = rightMost;
 }
 
-void window_snap_top(rct_window *w, int proximity)
+static void window_snap_top(rct_window *w, int proximity)
 {
 	int bottom, bottomMost, wTopProximity, wBottomProximity, wRight;
 	rct_window *mainWindow, *w2;
@@ -2339,7 +2340,7 @@ void window_snap_top(rct_window *w, int proximity)
 		w->y = bottomMost;
 }
 
-void window_snap_right(rct_window *w, int proximity)
+static void window_snap_right(rct_window *w, int proximity)
 {
 	int leftMost, wLeftProximity, wRightProximity, wRight, wBottom, screenWidth;
 	rct_window *mainWindow, *w2;
@@ -2364,7 +2365,7 @@ void window_snap_right(rct_window *w, int proximity)
 		leftMost = min(leftMost, w2->x);
 	}
 
-	screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	screenWidth = gScreenWidth;
 	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
 		leftMost = min(leftMost, screenWidth);
 
@@ -2372,7 +2373,7 @@ void window_snap_right(rct_window *w, int proximity)
 		w->x = leftMost - w->width;
 }
 
-void window_snap_bottom(rct_window *w, int proximity)
+static void window_snap_bottom(rct_window *w, int proximity)
 {
 	int topMost, wTopProximity, wBottomProximity, wRight, wBottom, screenHeight;
 	rct_window *mainWindow, *w2;
@@ -2397,7 +2398,7 @@ void window_snap_bottom(rct_window *w, int proximity)
 		topMost = min(topMost, w2->y);
 	}
 
-	screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	screenHeight = gScreenHeight;
 	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
 		topMost = min(topMost, screenHeight);
 
@@ -2410,7 +2411,7 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 	int originalX = w->x;
 	int originalY = w->y;
 
-	newWindowY = clamp(29, newWindowY, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 34);
+	newWindowY = clamp(29, newWindowY, gScreenHeight - 34);
 
 	if (snapProximity > 0) {
 		w->x = newWindowX;
@@ -2444,23 +2445,10 @@ int window_can_resize(rct_window *w)
  */
 void textinput_cancel()
 {
-	rct_window *w;
-
-	// Close the new text input window
 	window_close_by_class(WC_TEXTINPUT);
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, uint8) != 255) {
-		w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER, rct_windownumber)
-		);
-		if (w != NULL) {
-			window_event_textinput_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WIDGETINDEX, uint16), NULL);
-		}
-	}
 }
 
-void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, uint32 existing_args, int maxLength)
+void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id existing_text, char * existing_args, int maxLength)
 {
 	if (gUsingWidgetTextBox)
 		window_cancel_textbox();
@@ -2481,7 +2469,7 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != STR_NONE)
-		format_string(gTextBoxInput, existing_text, &existing_args);
+		format_string(gTextBoxInput, 512, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.
@@ -2525,4 +2513,40 @@ void window_update_textbox()
 		widget_invalidate(w, gCurrentTextBox.widget_index);
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, gTextBoxInput);
 	}
+}
+
+bool window_is_visible(rct_window* w)
+{
+	// w->visibility is used to prevent repeat calculations within an iteration by caching the result
+
+	if (w->visibility == VC_VISIBLE) return true;
+	if (w->visibility == VC_COVERED) return false;
+
+	// only consider viewports, consider the main window always visible
+	if (w == NULL || w->viewport == NULL || w->classification == WC_MAIN_WINDOW)
+	{
+		// default to previous behaviour
+		w->visibility = VC_VISIBLE;
+		return true;
+	}
+
+	// start from the window above the current
+	for (rct_window *w_other = (w+1); w_other < RCT2_NEW_WINDOW; w_other++)
+	{
+		// if covered by a higher window, no rendering needed
+		if (w_other->x <= w->x
+			&& w_other->y <= w->y
+			&& w_other->x + w_other->width >= w->x + w->width
+			&& w_other->y + w_other->height >= w->y + w->height)
+		{
+			w->visibility = VC_COVERED;
+			w->viewport->visibility = VC_COVERED;
+			return false;
+		}
+	}
+
+	// default to previous behaviour
+	w->visibility = VC_VISIBLE;
+	w->viewport->visibility = VC_VISIBLE;
+	return true;
 }

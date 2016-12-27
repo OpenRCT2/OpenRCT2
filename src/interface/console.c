@@ -1,26 +1,46 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include <stdarg.h>
 #include <SDL_scancode.h>
 
-#include "../addresses.h"
-#include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
-#include "../localisation/user.h"
-#include "../platform/platform.h"
-#include "../world/park.h"
-#include "../util/sawyercoding.h"
 #include "../config.h"
-#include "../cursors.h"
+#include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"
+#include "../localisation/localisation.h"
+#include "../localisation/user.h"
+#include "../management/finance.h"
+#include "../management/research.h"
+#include "../network/network.h"
 #include "../network/twitch.h"
 #include "../object.h"
-#include "../world/banner.h"
-#include "../world/scenery.h"
-#include "../management/research.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
+#include "../platform/platform.h"
+#include "../rct2.h"
+#include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../world/banner.h"
+#include "../world/climate.h"
+#include "../world/park.h"
+#include "../world/scenery.h"
 #include "console.h"
-#include "window.h"
 #include "viewport.h"
+#include "window.h"
 
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
@@ -36,7 +56,6 @@ static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
 static utf8 *_consoleBufferPointer = _consoleBuffer;
 static utf8 *_consoleViewBufferStart = _consoleBuffer;
 static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static utf8 *_consoleCurrentLinePointer = _consoleCurrentLine;
 static int _consoleCaretTicks;
 static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
 static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
@@ -87,7 +106,7 @@ void console_toggle()
 		console_open();
 }
 
-void console_init()
+static void console_init()
 {
 	_consoleInitialised = true;
 	console_writeline(OPENRCT2_NAME " " OPENRCT2_VERSION);
@@ -103,12 +122,10 @@ void console_update()
 
 	_consoleLeft = 0;
 	_consoleTop = 0;
-	_consoleRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	_consoleRight = gScreenWidth;
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {
-		console_invalidate();
-
 		// When scrolling the map, the console pixels get copied... therefore invalidate the screen
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
@@ -123,7 +140,7 @@ void console_update()
 			}
 		}
 
-		// Remove unwated characters in console input
+		// Remove unwanted characters in console input
 		utf8_remove_format_codes(_consoleCurrentLine, false);
 	}
 
@@ -137,9 +154,9 @@ void console_draw(rct_drawpixelinfo *dpi)
 		return;
 
 	// Set font
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-	int lineHeight = font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
+	gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+	gCurrentFontFlags = 0;
+	int lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
 	int lines = 0;
 	int maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
@@ -151,7 +168,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 	}
 
 	// Background
-	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 10);
+	console_invalidate();
+	gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT);
 
 	int x = _consoleLeft + 4;
 	int y = _consoleTop + 4;
@@ -185,13 +203,13 @@ void console_draw(rct_drawpixelinfo *dpi)
 			break;
 		drawLines++;
 
-		int lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_GREEN), (size_t)(nextLine - ch));
+		size_t lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
 		lineCh = lineBuffer;
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-		strncpy(lineCh, ch, lineLength);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+		memcpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
-		gfx_draw_string(dpi, lineBuffer, 255, x, y);
+		gfx_draw_string(dpi, lineBuffer, COLOUR_LIGHT_PURPLE | COLOUR_FLAG_OUTLINE | COLOUR_FLAG_INSET, x, y);
 
 		x = gLastDrawStringX;
 
@@ -208,9 +226,9 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Draw current line
 	lineCh = lineBuffer;
-	lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-	strcpy(lineCh, _consoleCurrentLine);
-	gfx_draw_string(dpi, lineBuffer, 255, x, y);
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+	safe_strcpy(lineCh, _consoleCurrentLine, sizeof(lineBuffer) - (lineCh - lineBuffer));
+	gfx_draw_string(dpi, lineBuffer, TEXT_COLOUR_255, x, y);
 
 	// Draw caret
 	if (_consoleCaretTicks < 15) {
@@ -219,7 +237,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		int caretX = x + gfx_get_string_width(lineBuffer);
 		int caretY = y + lineHeight;
 
-		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_GREEN);
+		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_WHITE);
 	}
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 21, _consoleRight, _consoleBottom - 21, 14);
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 20, _consoleRight, _consoleBottom - 20, 11);
@@ -278,14 +296,15 @@ static void console_write_prompt()
 
 void console_write(const utf8 *src)
 {
-	int charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
-	int charactersToWrite = strlen(src);
-	int bufferShift = charactersToWrite - charactersRemainingInBuffer;
+	size_t charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
+	size_t charactersToWrite = strlen(src);
+	size_t bufferShift = charactersToWrite - charactersRemainingInBuffer;
 	if (charactersToWrite > charactersRemainingInBuffer) {
 		memmove(_consoleBuffer, _consoleBuffer + bufferShift, CONSOLE_BUFFER_SIZE - bufferShift);
 		_consoleBufferPointer -= bufferShift;
+		charactersRemainingInBuffer = CONSOLE_BUFFER_SIZE - (_consoleBufferPointer - _consoleBuffer) - 1;
 	}
-	strcpy(_consoleBufferPointer, src);
+	safe_strcpy(_consoleBufferPointer, src, charactersRemainingInBuffer);
 	_consoleBufferPointer += charactersToWrite;
 	console_update_scroll();
 }
@@ -298,15 +317,15 @@ void console_writeline(const utf8 *src)
 
 void console_writeline_error(const utf8 *src)
 {
-	strcpy(_consoleErrorBuffer + 1, src);
-	_consoleErrorBuffer[0] = FORMAT_RED;
+	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
+	_consoleErrorBuffer[0] = (utf8)FORMAT_RED;
 	console_writeline(_consoleErrorBuffer);
 }
 
 void console_writeline_warning(const utf8 *src)
 {
-	strcpy(_consoleErrorBuffer + 1, src);
-	_consoleErrorBuffer[0] = FORMAT_YELLOW;
+	safe_strcpy(_consoleErrorBuffer + 1, src, CONSOLE_BUFFER_2_SIZE - 1);
+	_consoleErrorBuffer[0] = (utf8)FORMAT_YELLOW;
 	console_writeline(_consoleErrorBuffer);
 }
 
@@ -314,7 +333,7 @@ void console_printf(const utf8 *format, ...)
 {
 	va_list list;
 	va_start(list, format);
-	vsprintf(_consolePrintfBuffer, format, list);
+	vsnprintf(_consolePrintfBuffer, sizeof(_consolePrintfBuffer), format, list);
 	va_end(list);
 	console_writeline(_consolePrintfBuffer);
 }
@@ -424,84 +443,189 @@ static int cc_echo(const utf8 **argv, int argc)
 	return 0;
 }
 
+static int cc_rides(const utf8 **argv, int argc)
+{
+	if (argc > 0) {
+		if (strcmp(argv[0], "list") == 0) {
+			rct_ride *ride;
+			int i;
+			FOR_ALL_RIDES(i, ride) {
+				char name[128];
+				format_string(name, 128, ride->name, &ride->name_arguments);
+				console_printf("rides %03d type: %02u subtype %03u name %s", i, ride->type, ride->subtype, name);
+			}
+		} else if (strcmp(argv[0], "set") == 0) {
+			if (argc < 4) {
+				console_printf("rides set type <ride id> <ride type>");
+				console_printf("rides set friction <ride id> <friction value>");
+				return 0;
+			}
+			if (strcmp(argv[1], "type") == 0) {
+				bool int_valid[3] = { 0 };
+				int ride_index = console_parse_int(argv[2], &int_valid[0]);
+				int type = console_parse_int(argv[3], &int_valid[1]);
+				if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				} else if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				} else {
+					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
+					int res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+					if (res == MONEY32_UNDEFINED) {
+						console_printf("That didn't work");
+					}
+				}
+			} else if (strcmp(argv[1], "friction") == 0) {
+				bool int_valid[2] = { 0 };
+				int ride_index = console_parse_int(argv[2], &int_valid[0]);
+				int friction = console_parse_int(argv[3], &int_valid[1]);
+
+				if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				} else if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				} else {
+					rct_ride *ride = get_ride(ride_index);
+					if (friction <= 0) {
+						console_printf("Friction value must be strictly positive");
+					} else if (ride->type == RIDE_TYPE_NULL) {
+						console_printf("No ride found with index %d",ride_index);
+					} else {
+						for (int i = 0; i < ride->num_vehicles; i++) {
+							uint16 vehicle_index = ride->vehicles[i];
+ 							while (vehicle_index != SPRITE_INDEX_NULL) {
+								rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
+								vehicle->friction=friction;
+								vehicle_index=vehicle->next_vehicle_on_train;
+							}
+						}
+					}
+				}
+			}
+		}
+	} else {
+		console_printf("subcommands: list, set");
+	}
+	return 0;
+}
+
+static int cc_staff(const utf8 **argv, int argc)
+{
+	if (argc > 0) {
+		if (strcmp(argv[0], "list") == 0) {
+			rct_peep *peep;
+			int i;
+			FOR_ALL_STAFF(i, peep) {
+				char name[128];
+				format_string(name, 128, peep->name_string_idx, &peep->id);
+				console_printf("staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+			}
+		} else if (strcmp(argv[0], "set") == 0) {
+			if (argc < 4) {
+				console_printf("staff set energy <staff id> [value 0-255]");
+				return 0;
+			}
+			if (strcmp(argv[1], "energy") == 0) {
+				int int_val[3];
+				bool int_valid[3] = { 0 };
+				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
+				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
+
+				if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != NULL)) {
+					rct_peep *peep = GET_PEEP(int_val[0]);
+
+					peep->energy = int_val[1];
+					peep->energy_growth_rate = int_val[1];
+				}
+			}
+		}
+	} else {
+		console_printf("subcommands: list, set");
+	}
+	return 0;
+}
+
 static int cc_get(const utf8 **argv, int argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "park_rating") == 0) {
-			console_printf("park_rating %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16));
+			console_printf("park_rating %d", gParkRating);
 		}
 		else if (strcmp(argv[0], "money") == 0) {
-			console_printf("money %d.%d0", DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) / 10, DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) % 10);
+			console_printf("money %d.%d0", DECRYPT_MONEY(gCashEncrypted) / 10, DECRYPT_MONEY(gCashEncrypted) % 10);
+		}
+		else if (strcmp(argv[0], "scenario_initial_cash") == 0) {
+			console_printf("scenario_initial_cash %d", gInitialCash / 10);
 		}
 		else if (strcmp(argv[0], "current_loan") == 0) {
-			console_printf("current_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) / 10);
+			console_printf("current_loan %d", gBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "max_loan") == 0) {
-			console_printf("max_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) / 10);
+			console_printf("max_loan %d", gMaxBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0) {
-			console_printf("guest_initial_cash %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) % 10);
+			console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
-			uint32 current_happiness = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+			uint32 current_happiness = gGuestInitialHappiness;
 			for (int i = 15; i <= 99; i++) {
 				if (i == 99) {
-					console_printf("guest_initial_happiness %d%%  (%d)", 15, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
 				}
 				else if (current_happiness == calculate_guest_initial_happiness(i)) {
-					console_printf("guest_initial_happiness %d%%  (%d)", i, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
 					break;
 				}
 			}
 		}
 		else if (strcmp(argv[0], "guest_initial_hunger") == 0) {
-			console_printf("guest_initial_hunger %d%%  (%d)", ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)) * 100) / 255, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8));
+			console_printf("guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0) {
-			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)) * 100) / 255, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8));
+			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0) {
-			console_printf("guest_prefer_less_intense_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+			console_printf("guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
 		}
 		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0) {
-			console_printf("guest_prefer_more_intense_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+			console_printf("guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0) {
-			console_printf("forbid_marketing_campagns %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+			console_printf("forbid_marketing_campagns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_landscape_changes") == 0) {
-			console_printf("forbid_landscape_changes %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+			console_printf("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_tree_removal") == 0) {
-			console_printf("forbid_tree_removal %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+			console_printf("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_high_construction") == 0) {
-			console_printf("forbid_high_construction %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+			console_printf("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
 		}
 		else if (strcmp(argv[0], "pay_for_rides") == 0) {
-			console_printf("pay_for_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+			console_printf("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
 		}
 		else if (strcmp(argv[0], "no_money") == 0) {
-			console_printf("no_money %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) != 0);
+			console_printf("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
 		}
 		else if (strcmp(argv[0], "difficult_park_rating") == 0) {
-			console_printf("difficult_park_rating %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+			console_printf("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
 		}
 		else if (strcmp(argv[0], "difficult_guest_generation") == 0) {
-			console_printf("difficult_guest_generation %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+			console_printf("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
 		}
 		else if (strcmp(argv[0], "park_open") == 0) {
-			console_printf("park_open %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) != 0);
+			console_printf("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0) {
-			console_printf("land_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) % 10);
+			console_printf("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0) {
-			console_printf("construction_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) / 10, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) % 10);
+			console_printf("construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-			console_printf("climate %s  (%d)", climate_names[RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8)], RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8));
+			console_printf("climate %s  (%d)", climate_names[gClimate], gClimate);
 		}
 		else if (strcmp(argv[0], "game_speed") == 0) {
 			console_printf("game_speed %d", gGameSpeed);
@@ -534,6 +658,24 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "window_scale") == 0) {
 			console_printf("window_scale %.3f", gConfigGeneral.window_scale);
 		}
+		else if (strcmp(argv[0], "window_limit") == 0) {
+			console_printf("window_limit %d", gConfigGeneral.window_limit);
+		}
+		else if (strcmp(argv[0], "render_weather_effects") == 0) {
+			console_printf("render_weather_effects %d", gConfigGeneral.render_weather_effects);
+		}
+		else if (strcmp(argv[0], "render_weather_gloom") == 0) {
+			console_printf("render_weather_gloom %d", gConfigGeneral.render_weather_gloom);
+		}
+		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0) {
+			console_printf("cheat_sandbox_mode %d", gCheatsSandboxMode);
+		}
+		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0) {
+			console_printf("cheat_disable_clearance_checks %d", gCheatsDisableClearanceChecks);
+		}
+		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0) {
+			console_printf("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -562,94 +704,98 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
+			gCashEncrypted = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
 			console_execute_silent("get money");
 		}
+		else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gInitialCash = clamp(MONEY(int_val[0], 0), MONEY(0, 0), MONEY(1000000, 00));
+			console_execute_silent("get scenario_initial_cash");
+		}
 		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
 			console_execute_silent("get current_loan");
 		}
 		else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
+			gMaxBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
+			gGuestInitialCash = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness((uint8)int_val[0]);
+			gGuestInitialHappiness = calculate_guest_initial_happiness((uint8)int_val[0]);
 			console_execute_silent("get guest_initial_happiness");
 		}
 		else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+			gGuestInitialHunger = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_hunger");
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+			gGuestInitialThirst = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_thirst");
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_less_intense_rides");
 		}
 		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_more_intense_rides");
 		}
 		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
 			console_execute_silent("get forbid_marketing_campagns");
 		}
 		else if (strcmp(argv[0], "forbid_landscape_changes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
 			console_execute_silent("get forbid_landscape_changes");
 		}
 		else if (strcmp(argv[0], "forbid_tree_removal") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
 			console_execute_silent("get forbid_tree_removal");
 		}
 		else if (strcmp(argv[0], "forbid_high_construction") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
 			console_execute_silent("get forbid_high_construction");
 		}
 		else if (strcmp(argv[0], "pay_for_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
 			console_execute_silent("get pay_for_rides");
 		}
 		else if (strcmp(argv[0], "no_money") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_NO_MONEY, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_NO_MONEY, int_val[0]);
 			console_execute_silent("get no_money");
 		}
 		else if (strcmp(argv[0], "difficult_park_rating") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
 			console_execute_silent("get difficult_park_rating");
 		}
 		else if (strcmp(argv[0], "difficult_guest_generation") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
 			console_execute_silent("get difficult_guest_generation");
 		}
 		else if (strcmp(argv[0], "park_open") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_OPEN, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PARK_OPEN, int_val[0]);
 			console_execute_silent("get park_open");
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gLandPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get land_rights_cost");
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gConstructionRightsPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			if (int_valid[0]) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = clamp(int_val[0], 0, 3);
+				gClimate = clamp(int_val[0], 0, 3);
 			}
 			else {
 				utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
 				for (i = 0; i < 4; i++) {
 					if (strcmp(argv[1], climate_names[i]) == 0) {
-						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = i;
+						gClimate = i;
 						break;
 					}
 				}
@@ -698,6 +844,59 @@ static int cc_set(const utf8 **argv, int argc)
 			platform_trigger_resize();
 			console_execute_silent("get window_scale");
 		}
+		else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			window_set_window_limit(int_val[0]);
+			console_execute_silent("get window_limit");
+		}
+		else if (strcmp(argv[0], "render_weather_effects") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.render_weather_effects = (int_val[0] != 0);
+			config_save_default();
+			console_execute_silent("get render_weather_effects");
+		}
+		else if (strcmp(argv[0], "render_weather_gloom") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gConfigGeneral.render_weather_gloom = (int_val[0] != 0);
+			config_save_default();
+			console_execute_silent("get render_weather_gloom");
+		}
+		else if (strcmp(argv[0], "cheat_sandbox_mode") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsSandboxMode != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_sandbox_mode")" line when in network client mode
+					gCheatsSandboxMode = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_sandbox_mode");
+		}
+		else if (strcmp(argv[0], "cheat_disable_clearance_checks") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsDisableClearanceChecks != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_disable_clearance_checks")" line when in network client mode
+					gCheatsDisableClearanceChecks = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_disable_clearance_checks");
+		}
+		else if (strcmp(argv[0], "cheat_disable_support_limits") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			if (gCheatsDisableSupportLimits != (int_val[0] != 0)) {
+				if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
+					//Change it locally so it shows the accurate value in the 
+					//"console_execute_silent("get cheat_disable_support_limits")" line when in network client mode
+					gCheatsDisableSupportLimits = (int_val[0] != 0);
+				}
+				else {
+					console_writeline_error("Network error: Permission denied!");
+				}
+			}
+			console_execute_silent("get cheat_disable_support_limits");
+		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
 		}
@@ -722,111 +921,66 @@ static int cc_twitch(const utf8 **argv, int argc)
 	return 0;
 }
 
-static void editor_load_selected_objects_console()
-{
-	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = gInstalledObjects;
-
-	if (gInstalledObjectsCount == 0)
-		return;
-
-	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
-		if (*selection_flags & 1) {
-			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
-				int chunk_size;
-				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
-					log_error("Failed to load entry %.8s", installed_entry->name);
-				}
-			}
-		}
-
-		installed_entry = object_get_next(installed_entry);
-	}
-}
-
 static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		utf8 path[MAX_PATH];
-
-		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
-		// Require pointer to start of filename
-		utf8* last_char = path + strlen(path);
-		strcat(path, ".DAT\0");
-
-		rct_object_entry entry;
-		if (object_load_entry(path, &entry)) {
-			uint8 type = entry.flags & 0xF;
-			uint8 index;
-
-			if (check_object_entry(&entry)) {
-				if (!find_object_in_entry_group(&entry, &type, &index)){
-
-					int entryGroupIndex = 0;
-					for (; entryGroupIndex < object_entry_group_counts[type]; entryGroupIndex++){
-						if (object_entry_groups[type].chunks[entryGroupIndex] == (uint8*)-1){
-							break;
-						}
-					}
-
-					if (entryGroupIndex >= object_entry_group_counts[type]) {
-						console_writeline_error("Too many objects of that type.");
-					}
-					else {
-						// Load the obect
-						if (!object_load_chunk(entryGroupIndex, &entry, NULL)) {
-							console_writeline_error("Could not load object file.");
-						}
-						else {
-							reset_loaded_objects();
-							if (type == OBJECT_TYPE_RIDE) {
-								// Automatically research the ride so it's supported by the game.
-								rct_ride_entry *rideEntry;
-								int rideType;
-
-								rideEntry = get_ride_entry(entryGroupIndex);
-
-								for (int j = 0; j < 3; j++) {
-									rideType = rideEntry->ride_type[j];
-									if (rideType != 255)
-										research_insert(true, 0x10000 | (rideType << 8) | entryGroupIndex, rideEntry->category[0]);
-								}
-
-								gSilentResearch = true;
-								sub_684AC3();
-								gSilentResearch = false;
-							}
-							else if (type == OBJECT_TYPE_SCENERY_SETS) {
-								rct_scenery_set_entry *scenerySetEntry;
-
-								scenerySetEntry = g_scenerySetEntries[entryGroupIndex];
-
-								research_insert(true, entryGroupIndex, RESEARCH_CATEGORY_SCENERYSET);
-
-								gSilentResearch = true;
-								sub_684AC3();
-								gSilentResearch = false;
-							}
-							scenery_set_default_placement_configuration();
-							window_new_ride_init_vars();
-
-							RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
-							gfx_invalidate_screen();
-							console_writeline("Object file loaded.");
-						}
-					}
-				}
-				else {
-					console_writeline_error("Object is already in scenario.");
-				}
-			}
-			else {
-				console_writeline_error("The object file was invalid.");
-			}
+		char name[9] = { 0 };
+		memset(name, ' ', 8);
+		int i = 0;
+		for (const char * ch = argv[0]; *ch != '\0' && i < 8; ch++) {
+			name[i++] = *ch;
 		}
-		else {
-			console_writeline_error("Could not find the object file.");
+
+		const ObjectRepositoryItem * ori = object_repository_find_object_by_name(name);
+		if (ori == NULL) {
+			console_writeline_error("Could not find the object.");
+			return 1;
 		}
+
+		const rct_object_entry * entry = &ori->ObjectEntry;
+		void * loadedObject = object_manager_get_loaded_object(entry);
+		if (loadedObject != NULL) {
+			console_writeline_error("Object is already in scenario.");
+			return 1;
+		}
+
+		loadedObject = object_manager_load_object(entry);
+		if (loadedObject == NULL) {
+			console_writeline_error("Unable to load object.");
+			return 1;
+		}
+		int groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+
+		uint8 objectType = entry->flags & 0x0F;
+		if (objectType == OBJECT_TYPE_RIDE) {
+			// Automatically research the ride so it's supported by the game.
+			rct_ride_entry *rideEntry;
+			int rideType;
+
+			rideEntry = get_ride_entry(groupIndex);
+
+			for (int j = 0; j < 3; j++) {
+				rideType = rideEntry->ride_type[j];
+				if (rideType != 255)
+					research_insert(true, 0x10000 | (rideType << 8) | groupIndex, rideEntry->category[0]);
+			}
+
+			gSilentResearch = true;
+			sub_684AC3();
+			gSilentResearch = false;
+		}
+		else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+			research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
+
+			gSilentResearch = true;
+			sub_684AC3();
+			gSilentResearch = false;
+		}
+		scenery_set_default_placement_configuration();
+		window_new_ride_init_vars();
+
+		gWindowUpdateTicks = 0;
+		gfx_invalidate_screen();
+		console_writeline("Object file loaded.");
 	}
 
 	return 0;
@@ -862,7 +1016,7 @@ static int cc_fix_banner_count(const utf8 **argv, int argc)
 
 static int cc_open(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
+		bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
 		bool invalidTitle = false;
 		if (strcmp(argv[0], "object_selection") == 0 && invalidArguments(&invalidTitle, !title)) {
 			// Only this window should be open for safety reasons
@@ -889,7 +1043,7 @@ static int cc_open(const utf8 **argv, int argc) {
 
 
 typedef int (*console_command_func)(const utf8 **argv, int argc);
-typedef struct {
+typedef struct console_command {
 	utf8 *command;
 	console_command_func func;
 	utf8 *help;
@@ -899,6 +1053,7 @@ typedef struct {
 utf8* console_variable_table[] = {
 	"park_rating",
 	"money",
+	"scenario_initial_cash",
 	"current_loan",
 	"max_loan",
 	"guest_initial_cash",
@@ -924,7 +1079,13 @@ utf8* console_variable_table[] = {
 	"test_unfinished_tracks",
 	"no_test_crashes",
 	"location",
-	"window_scale"
+	"window_scale",
+	"window_limit",
+	"render_weather_effects",
+	"render_weather_gloom",
+	"cheat_sandbox_mode",
+	"cheat_disable_clearance_checks",
+	"cheat_disable_support_limits",
 };
 utf8* console_window_table[] = {
 	"object_selection",
@@ -938,7 +1099,7 @@ utf8* console_window_table[] = {
 console_command console_command_table[] = {
 	{ "clear", cc_clear, "Clears the console.", "clear"},
 	{ "hide", cc_hide, "Hides the console.", "hide"},
-	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
+	{ "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
 	{ "help", cc_help, "Lists commands or info about a command.", "help [command]" },
 	{ "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
 	{ "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
@@ -952,7 +1113,9 @@ console_command console_command_table[] = {
 	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
 	{ "twitch", cc_twitch, "Twitch API" },
 	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
-	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" }
+	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" },
+	{ "rides", cc_rides, "Ride management.", "rides <subcommand>" },
+	{ "staff", cc_staff, "Staff management.", "staff <subcommand>"},
 };
 
 static int cc_windows(const utf8 **argv, int argc) {
@@ -1024,7 +1187,7 @@ void console_execute_silent(const utf8 *src)
 				break;
 			end++;
 		}
-		int length = end - start;
+		size_t length = end - start;
 
 		if (length > 0) {
 			utf8 *arg = malloc(length + 1);
@@ -1067,8 +1230,8 @@ void console_execute_silent(const utf8 *src)
 	if (!validCommand) {
 		utf8 output[128];
 		utf8 *dst = output;
-		dst = utf8_write_codepoint(dst, FORMAT_RED);
-		strcpy(dst, "Unknown command. Type help to list available commands.");
+		dst = utf8_write_codepoint(dst, FORMAT_TOPAZ);
+		safe_strcpy(dst, "Unknown command. Type help to list available commands.", sizeof(output) - (dst - output));
 		console_writeline(output);
 	}
 }

@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../management/news_item.h"
 #include "../localisation/localisation.h"
@@ -38,11 +33,11 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_widgets[] = {
-	{ WWT_FRAME,			0,	0,			399,	0,		299,	0x0FFFFFFFF,			STR_NONE },				// panel / background
+	{ WWT_FRAME,			0,	0,			399,	0,		299,	0xFFFFFFFF,				STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_RECENT_MESSAGES,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		5201,					STR_NONE },				// settings
-	{ WWT_SCROLL,			0,	4,			395,	44,		295,	2,						STR_NONE },				// scroll
+	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		SPR_TAB_GEARS_0,		STR_NONE },				// settings
+	{ WWT_SCROLL,			0,	4,			395,	44,		295,	SCROLL_VERTICAL,						STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -225,12 +220,12 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
 				buttonIndex = 0;
 				break;
 			} else if (x < 351) {
-				if (RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) {
+				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) {
 					buttonIndex = 1;
 					break;
 				}
 			} else if (x < 376) {
-				if (RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 1) {
+				if (news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) {
 					buttonIndex = 2;
 					break;
 				}
@@ -254,7 +249,7 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
  */
 static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 3159;
+	set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
@@ -292,12 +287,12 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		}
 
 		// Background
-		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], 0x24);
+		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
 		// Date text
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
-		gfx_draw_string_left(dpi, 2235, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 2, 4, y);
+		set_format_arg(0, rct_string_id, DateDayNames[newsItem->day - 1]);
+		set_format_arg(2, rct_string_id, DateGameMonthNames[(newsItem->month_year % 8)]);
+		gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 4, y);
 
 		// Item text
 		utf8 buffer[400];
@@ -305,10 +300,10 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		ch = utf8_write_codepoint(ch, FORMAT_SMALLFONT);
 		memcpy(ch, newsItem->text, 256);
 		ch = buffer;
-		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, 1170, 14);
+		gfx_draw_string_left_wrapped(dpi, &ch, 2, y + 10, 325, STR_STRING, COLOUR_BRIGHT_GREEN);
 
 		// Subject button
-		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 2) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->flags & 1)) {
 			x = 328;
 			yy = y + 14;
 
@@ -317,7 +312,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				const uint8 idx = 11 + w->news.var_480;
 				news_item_is_valid_idx(idx);
 				if (i == idx && w->news.var_482 == 1)
-					press = 0x20;
+					press = INSET_RECT_FLAG_BORDER_INSET;
 			}
 			gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 
@@ -357,7 +352,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
 				break;
 			case NEWS_ITEM_RESEARCH:
-				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY, x, yy, 0);
+				gfx_draw_sprite(dpi, newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
 				break;
 			case NEWS_ITEM_PEEPS:
 				gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
@@ -372,7 +367,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		}
 
 		// Location button
-		if ((RCT2_ADDRESS(0x0097BE7C, uint8)[newsItem->type] & 1) && !(newsItem->flags & 1)) {
+		if ((news_type_properties[newsItem->type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->flags & 1)) {
 			x = 352;
 			yy = y + 14;
 

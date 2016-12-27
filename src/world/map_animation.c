@@ -1,24 +1,20 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
+#include "../game.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -34,7 +30,8 @@ static bool map_animation_invalidate(rct_map_animation *obj);
 
 static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT];
 
-rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
+uint16 gNumMapAnimations;
+rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
 
 /**
  *
@@ -48,8 +45,8 @@ rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
 void map_animation_create(int type, int x, int y, int z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
-	if (numAnimatedObjects >= 2000) {
+	int numAnimatedObjects = gNumMapAnimations;
+	if (numAnimatedObjects >= MAX_ANIMATED_OBJECTS) {
 		log_error("Exceeded the maximum number of animations");
 		return;
 	}
@@ -67,7 +64,7 @@ void map_animation_create(int type, int x, int y, int z)
 	}
 
 	// Create new animation
-	RCT2_GLOBAL(0x0138B580, uint16)++;
+	gNumMapAnimations++;
 	aobj->type = type;
 	aobj->x = x;
 	aobj->y = y;
@@ -81,11 +78,11 @@ void map_animation_create(int type, int x, int y, int z)
 void map_animation_invalidate_all()
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	int numAnimatedObjects = gNumMapAnimations;
 	while (numAnimatedObjects > 0) {
 		if (map_animation_invalidate(aobj)) {
 			// Remove animated object
-			RCT2_GLOBAL(0x0138B580, uint16)--;
+			gNumMapAnimations--;
 			numAnimatedObjects--;
 			if (numAnimatedObjects > 0)
 				memmove(aobj, aobj + 1, numAnimatedObjects * sizeof(rct_map_animation));
@@ -186,7 +183,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 		if (mapElement->flags & (1 << 4))
 			continue;
 
-		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 		if (sceneryEntry->small_scenery.flags & 0xD800) {
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			return false;
@@ -194,15 +191,15 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 			// Peep, looking at scenery
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+			if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
 				int direction = mapElement->type & 3;
 				int x2 = x - TileDirectionDelta[direction].x;
 				int y2 = y - TileDirectionDelta[direction].y;
 
-				uint16 spriteIdx = RCT2_ADDRESS(0x00F1EF60, uint16)[((x2 & 0x1FE0) << 3) | (y2 >> 5)];
+				uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
 				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.next_in_quadrant) {
-					sprite = &g_sprite_list[spriteIdx];
-					if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
+					sprite = get_sprite(spriteIdx);
+					if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
 						continue;
 
 					peep = &sprite->peep;
@@ -313,7 +310,6 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 {
 	rct_map_element *mapElement;
 
-	bool wasInvalidated = false;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (mapElement->base_height != baseZ)
@@ -322,9 +318,8 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
-			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+			if (game_is_paused()) {
 				return false;
 			}
 			if (mapElement->properties.track.sequence & 0xF0) {
@@ -438,7 +433,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
 			continue;
 
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type & 0x3FF];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
 		if (sceneryEntry->large_scenery.flags & (1 << 3)) {
 			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 16);
@@ -458,7 +453,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1)
+	if (gCurrentTicks & 1)
 		return false;
 
 	bool wasInvalidated = false;
@@ -469,8 +464,8 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
 			continue;
 
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
-		if (!(sceneryEntry->wall.flags & (1 << 4)))
+		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
+		if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
 			continue;
 
 		uint8 di = 0;
@@ -483,7 +478,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 				di |= 2;
 				if (bh != 40) {
 					bh += 8;
-					if (bh == 104 && !(sceneryEntry->wall.flags & (1 << 5)))
+					if (bh == 104 && !(sceneryEntry->wall.flags & WALL_SCENERY_FLAG6))
 						bh = 120;
 
 					di |= 1;
@@ -492,7 +487,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (game_is_paused()) {
 			return false;
 		}
 		mapElement->properties.fence.item[2] = bl;
@@ -524,7 +519,7 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
 			continue;
 
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		if (!(sceneryEntry->wall.flags2 & (1 << 4)) && sceneryEntry->wall.var_0D == 255)
 			continue;
 

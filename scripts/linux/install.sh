@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [[ $TRAVIS != "true" ]]
+then
+	echo This script is only meant to be run on Travis-CI.
+	echo Please use CMake to build the project.
+	exit 1
+fi
+
 SDL2_PV=2.0.3
 SDL2_TTF_PV=2.0.12
 
@@ -11,8 +18,8 @@ else
 fi
 mkdir -p "$cachedir"
 
-# Sets default target to "linux", if none specified
-TARGET=${TARGET-linux}
+# Sets default target to "ubuntu_amd64", if none specified
+TARGET=${TARGET-ubuntu_amd64}
 # keep in sync with version in build.sh
 libversion=3
 libVFile="./libversion"
@@ -114,7 +121,7 @@ function install_pkg_config {
 	cat /usr/local/bin/i686-w64-mingw32-pkg-config
 }
 
-function os_x_install_mingw_32 {
+function mac_os_install_mingw_32 {
 	local mingw_name="mingw-w32-bin_i686-darwin"
 	local mingw_tar="${mingw_name}_20130531.tar.bz2"
 	local mingw_path="/usr/local/$mingw_name"
@@ -150,7 +157,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
 	if [[ $TARGET == "windows" ]]; then
 		brew install wine
-		os_x_install_mingw_32
+		mac_os_install_mingw_32
 	else
 		brew install jansson sdl2 sdl2_ttf speex --universal
 	fi
@@ -163,22 +170,20 @@ elif [[ $(uname) == "Linux" ]]; then
 	else
 		# prevent build.sh from re-doing all the steps again
 		case "$TARGET" in
-			"linux")
-				sudo dpkg --add-architecture i386
-				sudo apt-get update
-				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev:i386 libsdl2-ttf-dev:i386 gcc-4.8 pkg-config:i386 g++-4.8-multilib gcc-4.8-multilib libjansson-dev:i386 libspeex-dev:i386 libspeexdsp-dev:i386 libcurl4-openssl-dev:i386 libcrypto++-dev:i386 clang libfontconfig1-dev:i386 libfreetype6-dev:i386 libpng-dev:i386
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_i386.deb libjansson4_2.7-1ubuntu1_i386.deb
-				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_i386.deb libjansson-dev_2.7-1ubuntu1_i386.deb
-				sudo dpkg -i libjansson4_2.7-1ubuntu1_i386.deb
-				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_i386.deb
-				sudo apt-get install -f
+			"ubuntu_i686")
+				docker pull openrct2/openrct2:ubuntu_i686
+				;;
+			"ubuntu_amd64")
+				docker pull openrct2/openrct2:ubuntu_amd64
 				;;
 			"windows")
-				sudo apt-get update
-				sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+				docker pull openrct2/openrct2:mingw
 				;;
 			"docker32")
 				docker pull openrct2/openrct2:32bit-only
+				;;
+			"docker64")
+				docker pull openrct2/openrct2:64bit-only
 				;;
 			*)
 				echo "unkown target $TARGET"

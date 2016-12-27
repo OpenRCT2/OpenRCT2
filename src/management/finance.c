@@ -1,34 +1,35 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Matthias Lanzinger
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../game.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../util/util.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
 #include "finance.h"
 
-// Monthly staff wages
+/**
+ * Monthly staff wages
+ *
+ * rct2: 0x00992A00
+ */
 const money32 wage_table[4] = {
 	MONEY(50,00),		// Handyman
 	MONEY(80,00),		// Mechanic
@@ -46,9 +47,22 @@ const money32 research_cost_table[4] = {
 
 int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 
-money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
-money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
-money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
+money32 gInitialCash;
+money32 gCashEncrypted;
+money32 gBankLoan;
+uint8 gBankLoanInterestRate;
+money32 gMaxBankLoan;
+money32 gCurrentExpenditure;
+money32 gCurrentProfit;
+money32 gHistoricalProfit;
+money32 gWeeklyProfitAverageDividend;
+uint16 gWeeklyProfitAverageDivisor;
+money32 gCashHistory[128];
+money32 gWeeklyProfitHistory[128];
+money32 gParkValueHistory[128];
+money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
+
+uint8 gCommandExpenditureType;
 
 /**
  * Pay an amount of money.
@@ -58,17 +72,17 @@ money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money
  */
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
-	money32 cur_money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	money32 cur_money = DECRYPT_MONEY(gCashEncrypted);
 	money32 new_money = cur_money - amount;
 
 	//overflow check
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(new_money);
-	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
+	gCashEncrypted = ENCRYPT_MONEY(new_money);
+	gExpenditureTable[type] -= amount;
 	if (dword_988E60[type] & 1)
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
+		gCurrentExpenditure -= amount; // Cumulative amount of money spent this day
 
 
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_MONEY;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
 	window_invalidate_by_class(WC_FINANCES);
 }
 
@@ -81,7 +95,7 @@ void finance_pay_wages()
 	rct_peep* peep;
 	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	FOR_ALL_STAFF(spriteIndex, peep)
@@ -96,10 +110,10 @@ void finance_pay_research()
 {
 	uint8 level;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
-	level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	level = gResearchFundingLevel;
 	finance_payment(research_cost_table[level] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
 }
 
@@ -109,11 +123,11 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-	money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
-	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
+	money32 current_loan = gBankLoan;
+	sint16 current_interest = gBankLoanInterestRate;
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
@@ -130,11 +144,11 @@ void finance_pay_ride_upkeep()
 
 	FOR_ALL_RIDES(i, ride) {
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
-			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+			ride->build_date = gDateMonthsElapsed;
 			ride->reliability = RIDE_INITIAL_RELIABILITY;
 		}
 
-		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->total_profit -= upkeep;
@@ -166,33 +180,30 @@ void finance_init() {
 
 	// It only initializes the first month
 	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+		gExpenditureTable[i] = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
+	gCurrentExpenditure = 0;
+	gCurrentProfit = 0;
 
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
+	gInitialCash = MONEY(10000,00); // Cheat detection
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(MONEY(10000,00));
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = MONEY(20000,00);
+	gCashEncrypted = ENCRYPT_MONEY(MONEY(10000,00));
+	gBankLoan = MONEY(10000,00);
+	gMaxBankLoan = MONEY(20000,00);
 
-	RCT2_GLOBAL(0x013587D0, uint32) = 0;
+	gHistoricalProfit = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
-
-	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
-
-	finance_update_loan_hash();
+	gBankLoanInterestRate = 10;
+	gParkValue = 0;
+	gCompanyValue = 0;
+	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
+	gTotalAdmissions = 0;
+	gTotalIncomeFromAdmissions = 0;
+	safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
 }
 
 /**
@@ -201,28 +212,27 @@ void finance_init() {
 */
 void finance_update_daily_profit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 7 * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = 0; // Reset daily expenditure
+	gCurrentProfit = 7 * gCurrentExpenditure;
+	gCurrentExpenditure = 0; // Reset daily expenditure
 
 	money32 current_profit = 0;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 	{
 		// Staff costs
 		uint16 sprite_index;
 		rct_peep *peep;
 
 		FOR_ALL_STAFF(sprite_index, peep) {
-			uint8 staff_type = peep->staff_type;
 			current_profit -= wage_table[peep->staff_type];
 		}
 
 		// Research costs
-		uint8 level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+		uint8 level = gResearchFundingLevel;
 		current_profit -= research_cost_table[level];
 
 		// Loan costs
-		money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		money32 current_loan = gBankLoan;
 		current_profit -= current_loan / 600;
 
 		// Ride costs
@@ -238,26 +248,13 @@ void finance_update_daily_profit()
 	// This is not equivalent to / 4 due to rounding of negative numbers
 	current_profit = current_profit >> 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += current_profit;
+	gCurrentProfit += current_profit;
 
 	// These are related to weekly profit graph
-	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
-	RCT2_GLOBAL(0x1358338, uint16) += 1;
+	gWeeklyProfitAverageDividend += gCurrentProfit;
+	gWeeklyProfitAverageDivisor += 1;
 
 	window_invalidate_by_class(WC_FINANCES);
-}
-
-// This subroutine is used to mark loan changes as 'legitimate', to prevent cheat detection from incorrectly interfering
-void finance_update_loan_hash()
-{
-	sint32 value = 0x70093A;
-	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
-	value = ror32(value, 5);
-	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	value = ror32(value, 7);
-	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
-	value = ror32(value, 3);
-	RCT2_GLOBAL(0x013587C4, sint32) = value;
 }
 
 void finance_set_loan(money32 loan)
@@ -267,22 +264,22 @@ void finance_set_loan(money32 loan)
 
 money32 finance_get_initial_cash()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
+	return gInitialCash;
 }
 
 money32 finance_get_current_loan()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	return gBankLoan;
 }
 
 money32 finance_get_maximum_loan()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+	return gMaxBankLoan;
 }
 
 money32 finance_get_current_cash()
 {
-	return DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	return DECRYPT_MONEY(gCashEncrypted);
 }
 
 /**
@@ -294,20 +291,20 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	money32 money, loanDifference, currentLoan;
 	money32 newLoan = *edx;
 
-	currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	currentLoan = gBankLoan;
+	money = DECRYPT_MONEY(gCashEncrypted);
 	loanDifference = currentLoan - newLoan;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_INTEREST * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
 	if (newLoan > currentLoan) {
-		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BANK_REFUSES_TO_INCREASE_LOAN;
+		if (newLoan > gMaxBankLoan) {
+			gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	} else {
 		if (loanDifference > money) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_ENOUGH_CASH_AVAILABLE;
+			gGameCommandErrorText = STR_NOT_ENOUGH_CASH_AVAILABLE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -315,45 +312,44 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		money -= loanDifference;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
-		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
-		finance_update_loan_hash();
+		gBankLoan = newLoan;
+		gInitialCash = money;
+		gCashEncrypted = ENCRYPT_MONEY(money);
 
 		window_invalidate_by_class(WC_FINANCES);
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 1;
+		gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
 	}
 
 	*ebx = 0;
 }
 
 /**
-* Shift the expenditure table history one month to the left
-* If the table is full, acumulate the sum of the oldest month first
-* rct2: 0x0069DEAD
-*/
-
-void finance_shift_expenditure_table() {
-
+ * Shift the expenditure table history one month to the left
+ * If the table is full, acumulate the sum of the oldest month first
+ * rct2: 0x0069DEAD
+ */
+void finance_shift_expenditure_table()
+{
 	// If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= EXPENDITURE_TABLE_MONTH_COUNT) {
+	if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT) {
 		money32 sum = 0;
 		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
-			sum += RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i];
+			sum += gExpenditureTable[i];
 		}
-		RCT2_GLOBAL(0x013587D0, money32) += sum;
+		gHistoricalProfit += sum;
 	}
+
 	// Shift the table
 	for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] =
-			RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i - RCT_EXPENDITURE_TYPE_COUNT];
+		gExpenditureTable[i] = gExpenditureTable[i - RCT_EXPENDITURE_TYPE_COUNT];
 	}
-	// Zero the beggining of the table, which is the new month
+
+	// Zero the beginning of the table, which is the new month
 	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+		gExpenditureTable[i] = 0;
 	}
-	// Invalidate the expenditure table window
-	window_invalidate_by_number(0x1C, 0);
+
+	window_invalidate_by_class(WC_FINANCES);
 }
 
 /**
@@ -362,5 +358,21 @@ void finance_shift_expenditure_table() {
  */
 void finance_reset_cash_to_initial()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+	gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+}
+
+/**
+ * Gets the last month's profit from food, drink and merchandise.
+ */
+money32 finance_get_last_month_shop_profit()
+{
+	money32 profit = 0;
+	if (gDateMonthsElapsed != 0) {
+		money32 * lastMonthExpenditure = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+		profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES];
+		profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK];
+		profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES];
+		profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+	}
+	return profit;
 }

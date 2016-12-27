@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 extern "C"
 {
     #include "drawing.h"
@@ -9,10 +25,10 @@ extern "C"
 #define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
 
 template<int image_type, int zoom_level>
-static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
-                                      uint8* dest_bits_pointer,
-                                      const uint8* palette_pointer,
-                                      const rct_drawpixelinfo *dpi,
+static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
+                                      uint8* RESTRICT dest_bits_pointer,
+                                      const uint8* RESTRICT palette_pointer,
+                                      const rct_drawpixelinfo *RESTRICT dpi,
                                       int source_y_start,
                                       int height,
                                       int source_x_start,
@@ -88,18 +104,18 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
-            if (image_type & IMAGE_TYPE_USE_PALETTE) {//In the .exe these are all unraveled loops
+            if (image_type & IMAGE_TYPE_REMAP) {//In the .exe these are all unraveled loops
                 for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
                     uint8 al = *source_pointer;
                     uint8 ah = *dest_pointer;
-                    if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+                    if (image_type & IMAGE_TYPE_TRANSPARENT)
                         al = palette_pointer[(((uint16)al << 8) | ah) - 0x100];
                     else
                         al = palette_pointer[al];
                     *dest_pointer = al;
                 }
-            } else if (image_type & IMAGE_TYPE_MIX_BACKGROUND) {//In the .exe these are all unraveled loops
-                //Doesnt use source pointer ??? mix with background only?
+            } else if (image_type & IMAGE_TYPE_TRANSPARENT) {//In the .exe these are all unraveled loops
+                //Doesn't use source pointer ??? mix with background only?
                 //Not Tested
 
                 for (; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++) {
@@ -155,34 +171,34 @@ extern "C"
      * This function copies the sprite data onto the screen
      *  rct2: 0x0067AA18
      */
-    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer,
-                                             uint8* dest_bits_pointer,
-                                             const uint8* palette_pointer,
-                                             const rct_drawpixelinfo *dpi,
+    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer,
+                                             uint8* RESTRICT dest_bits_pointer,
+                                             const uint8* RESTRICT palette_pointer,
+                                             const rct_drawpixelinfo * RESTRICT dpi,
                                              int image_type,
                                              int source_y_start,
                                              int height,
                                              int source_x_start,
                                              int width)
     {
-        if (image_type & IMAGE_TYPE_USE_PALETTE)
+        if (image_type & IMAGE_TYPE_REMAP)
         {
-            if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+            if (image_type & IMAGE_TYPE_TRANSPARENT)
             {
-                DrawRLESpriteHelper1(IMAGE_TYPE_USE_PALETTE | IMAGE_TYPE_MIX_BACKGROUND);
+                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
             }
             else
             {
-                DrawRLESpriteHelper1(IMAGE_TYPE_USE_PALETTE);
+                DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
             }
         }
-        else if (image_type & IMAGE_TYPE_MIX_BACKGROUND)
+        else if (image_type & IMAGE_TYPE_TRANSPARENT)
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_MIX_BACKGROUND);
+            DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
         }
         else
         {
-            DrawRLESpriteHelper1(0);
+            DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
         }
     }
 }

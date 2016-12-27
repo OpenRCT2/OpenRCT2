@@ -1,33 +1,29 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"
-#include "../hook.h"
+#include "../editor.h"
+#include "../rct2/hook.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
-#include "../scenario.h"
+#include "../OpenRCT2.h"
+#include "../scenario/scenario.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
 #include "../world/scenery.h"
@@ -38,6 +34,7 @@
 #include "track.h"
 #include "track_data.h"
 #include "vehicle.h"
+#include "vehicle_data.h"
 
 static void vehicle_update(rct_vehicle *vehicle);
 
@@ -80,7 +77,19 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 
 #define NO_SCREAM 254
 
-rct_xyz16 *unk_F64E20 = (rct_xyz16*)0x00F64E20;
+rct_vehicle *gCurrentVehicle;
+
+static uint8 _vehicleBreakdown;
+uint8 _vehicleStationIndex;
+uint32 _vehicleMotionTrackFlags;
+sint32 _vehicleVelocityF64E08;
+sint32 _vehicleVelocityF64E0C;
+sint32 _vehicleUnkF64E10;
+uint8 _vehicleVAngleEndF64E36;
+uint8 _vehicleBankEndF64E37;
+uint8 _vehicleF64E2C;
+rct_vehicle * _vehicleFrontVehicle;
+rct_xyz16 unk_F64E20;
 
 const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
 const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
@@ -88,12 +97,490 @@ const uint8 byte_9A3A18[] = {
 	SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
 	SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
 };
+const uint8 _soundParams[SOUND_MAXID][2] = {
+	{ 1, 0 },	// SOUND_LIFT_1
+	{ 1, 0 },	// SOUND_TRACK_FRICTION_1
+	{ 1, 0 },	// SOUND_LIFT_2
+	{ 0, 1 },	// SOUND_SCREAM_1
+	{ 0, 0 },	// SOUND_CLICK_1
+	{ 0, 0 },	// SOUND_CLICK_2
+	{ 0, 0 },	// SOUND_PLACE_ITEM
+	{ 0, 1 },	// SOUND_SCREAM_2
+	{ 0, 1 },	// SOUND_SCREAM_3
+	{ 0, 1 },	// SOUND_SCREAM_4
+	{ 0, 1 },	// SOUND_SCREAM_5
+	{ 0, 1 },	// SOUND_SCREAM_6
+	{ 1, 0 },	// SOUND_LIFT_3
+	{ 0, 0 },	// SOUND_PURCHASE
+	{ 0, 0 },	// SOUND_CRASH
+	{ 0, 0 },	// SOUND_LAYING_OUT_WATER
+	{ 0, 0 },	// SOUND_WATER_1
+	{ 0, 0 },	// SOUND_WATER_2
+	{ 0, 1 },	// SOUND_TRAIN_WHISTLE
+	{ 0, 1 },	// SOUND_TRAIN_CHUGGING
+	{ 0, 0 },	// SOUND_WATER_SPLASH
+	{ 1, 0 },	// SOUND_HAMMERING
+	{ 0, 0 },	// SOUND_RIDE_LAUNCH_1
+	{ 0, 0 },	// SOUND_RIDE_LAUNCH_2
+	{ 0, 0 },	// SOUND_COUGH_1
+	{ 0, 0 },	// SOUND_COUGH_2
+	{ 0, 0 },	// SOUND_COUGH_3
+	{ 0, 0 },	// SOUND_COUGH_4
+	{ 1, 0 },	// SOUND_RAIN_1
+	{ 0, 0 },	// SOUND_THUNDER_1
+	{ 0, 0 },	// SOUND_THUNDER_2
+	{ 1, 0 },	// SOUND_RAIN_2
+	{ 1, 0 },	// SOUND_RAIN_3
+	{ 0, 0 },	// SOUND_BALLOON_POP
+	{ 0, 0 },	// SOUND_MECHANIC_FIX
+	{ 0, 1 },	// SOUND_SCREAM_7
+	{ 0, 0 },	// SOUND_TOILET_FLUSH
+	{ 0, 0 },	// SOUND_CLICK_3
+	{ 0, 0 },	// SOUND_QUACK
+	{ 0, 0 },	// SOUND_NEWS_ITEM
+	{ 0, 0 },	// SOUND_WINDOW_OPEN
+	{ 0, 0 },	// SOUND_LAUGH_1
+	{ 0, 0 },	// SOUND_LAUGH_2
+	{ 0, 0 },	// SOUND_LAUGH_3
+	{ 0, 0 },	// SOUND_APPLAUSE
+	{ 0, 0 },	// SOUND_HAUNTED_HOUSE_SCARE
+	{ 0, 0 },	// SOUND_HAUNTED_HOUSE_SCREAM_1
+	{ 0, 0 },	// SOUND_HAUNTED_HOUSE_SCREAM_2
+	{ 0, 0 },	// SOUND_48
+	{ 0, 0 },	// SOUND_49
+	{ 0, 0 },	// SOUND_ERROR
+	{ 0, 0 },	// SOUND_51
+	{ 1, 0 },	// SOUND_LIFT_4
+	{ 1, 0 },	// SOUND_LIFT_5
+	{ 1, 0 },	// SOUND_TRACK_FRICTION_2
+	{ 1, 0 },	// SOUND_LIFT_6
+	{ 1, 0 },	// SOUND_LIFT_7
+	{ 1, 2 },	// SOUND_TRACK_FRICTION_3
+	{ 0, 1 },	// SOUND_SCREAM_8
+	{ 0, 1 },	// SOUND_TRAM
+	{ 0, 0 },	// SOUND_DOOR_OPEN
+	{ 0, 0 },	// SOUND_DOOR_CLOSE
+	{ 0, 0 }	// SOUND_62
+};
+
+static const uint8 SpaceRingsTimeToSpriteMap[] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+	4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8,
+	8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13,
+	13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18,
+	19, 19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 0,
+	0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5,
+	5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10,
+	11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16,
+	16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21,
+	21, 22, 22, 22, 23, 23, 23, 0, 0, 0, 1, 1, 1, 2, 2, 2,
+	3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8,
+	8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13,
+	13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18,
+	19, 19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 0,
+	0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3,
+	3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6,
+	6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+	7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5,
+	5, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2,
+	2, 1, 1, 1, 1, 0, 0, 0, 0, 23, 23, 23, 22, 22, 22, 21,
+	21, 21, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16,
+	16, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11,
+	10, 10, 10, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 5,
+	5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0,
+	0, 23, 23, 23, 22, 22, 22, 21, 21, 21, 20, 20, 20, 19, 19, 19,
+	18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 13,
+	13, 13, 12, 12, 12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 8, 8,
+	8, 7, 7, 7, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3,
+	2, 2, 2, 1, 1, 1, 0, 0, 0, 23, 23, 23, 22, 22, 22, 21,
+	21, 21, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16,
+	16, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11,
+	10, 10, 10, 9, 9, 9, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6,
+	6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3,
+	3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 24, 24, 24,
+	24, 24, 24, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 27,
+	27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30,
+	30, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 35, 35, 35,
+	36, 36, 36, 37, 37, 37, 38, 38, 38, 39, 39, 39, 40, 40, 40, 41,
+	41, 41, 42, 42, 42, 43, 43, 43, 44, 44, 44, 45, 45, 45, 46, 46,
+	46, 47, 47, 47, 48, 48, 48, 49, 49, 49, 50, 50, 50, 51, 51, 51,
+	52, 52, 52, 53, 53, 53, 54, 54, 54, 55, 55, 55, 56, 56, 56, 57,
+	57, 57, 58, 58, 58, 59, 59, 59, 60, 60, 60, 61, 61, 61, 62, 62,
+	62, 63, 63, 63, 64, 64, 64, 65, 65, 65, 66, 66, 66, 67, 67, 67,
+	68, 68, 68, 69, 69, 69, 70, 70, 70, 71, 71, 71, 72, 72, 72, 73,
+	73, 73, 74, 74, 74, 75, 75, 75, 76, 76, 76, 77, 77, 77, 78, 78,
+	78, 79, 79, 79, 80, 80, 80, 80, 81, 81, 81, 81, 82, 82, 82, 82,
+	82, 83, 83, 83, 83, 83, 84, 84, 84, 84, 84, 84, 85, 85, 85, 85,
+	85, 85, 86, 86, 86, 86, 86, 86, 86, 86, 87, 87, 87, 87, 87, 87,
+	87, 87, 87, 87, 87, 87, 87, 87, 86, 86, 86, 86, 86, 86, 86, 85,
+	85, 85, 85, 85, 85, 84, 84, 84, 84, 84, 84, 83, 83, 83, 83, 83,
+	82, 82, 82, 82, 82, 81, 81, 81, 81, 80, 80, 80, 80, 79, 79, 79,
+	78, 78, 78, 77, 77, 77, 76, 76, 76, 75, 75, 75, 74, 74, 74, 73,
+	73, 73, 72, 72, 72, 71, 71, 71, 70, 70, 70, 69, 69, 69, 68, 68,
+	68, 67, 67, 67, 66, 66, 66, 65, 65, 65, 64, 64, 64, 63, 63, 63,
+	62, 62, 62, 61, 61, 61, 60, 60, 60, 59, 59, 59, 58, 58, 58, 57,
+	57, 57, 56, 56, 56, 55, 55, 55, 54, 54, 54, 53, 53, 53, 52, 52,
+	52, 51, 51, 51, 50, 50, 50, 49, 49, 49, 48, 48, 48, 47, 47, 47,
+	46, 46, 46, 45, 45, 45, 44, 44, 44, 43, 43, 43, 42, 42, 42, 41,
+	41, 41, 40, 40, 40, 39, 39, 39, 38, 38, 38, 37, 37, 37, 36, 36,
+	36, 35, 35, 35, 34, 34, 34, 33, 33, 33, 32, 32, 32, 31, 31, 31,
+	30, 30, 30, 30, 29, 29, 29, 29, 28, 28, 28, 28, 28, 27, 27, 27,
+	27, 27, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 24, 24,
+	24, 24, 24, 24, 24, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
+	3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6,
+	6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11,
+	11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16,
+	16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21, 21,
+	22, 22, 22, 23, 23, 23, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3,
+	3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8,
+	8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13,
+	14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19,
+	19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 0, 0,
+	0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5,
+	6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11,
+	11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16,
+	16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21, 21,
+	22, 22, 22, 23, 23, 23, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2,
+	2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5,
+	5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
+	7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6,
+	6, 6, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 3, 3,
+	3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,
+	23, 23, 23, 22, 22, 22, 21, 21, 21, 20, 20, 20, 19, 19, 19, 18,
+	18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 13, 13,
+	13, 12, 12, 12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 8, 8, 8,
+	7, 7, 7, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2,
+	2, 2, 1, 1, 1, 0, 0, 0, 23, 23, 23, 22, 22, 22, 21, 21,
+	21, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16,
+	15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10,
+	10, 10, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 5, 5,
+	5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0,
+	23, 23, 23, 22, 22, 22, 21, 21, 21, 20, 20, 20, 19, 19, 19, 18,
+	18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 13, 13,
+	13, 12, 12, 12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 8, 8, 8,
+	7, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4,
+	4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1,
+	1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25,
+	26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28,
+	29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 32, 32, 32, 33, 33,
+	33, 34, 34, 34, 35, 35, 35, 36, 36, 36, 37, 37, 37, 38, 38, 38,
+	39, 39, 39, 40, 40, 40, 41, 41, 41, 42, 42, 42, 43, 43, 43, 44,
+	44, 44, 45, 45, 45, 46, 46, 46, 47, 47, 47, 48, 48, 48, 49, 49,
+	49, 50, 50, 50, 51, 51, 51, 52, 52, 52, 53, 53, 53, 54, 54, 54,
+	55, 55, 55, 56, 56, 56, 57, 57, 57, 58, 58, 58, 59, 59, 59, 60,
+	60, 60, 61, 61, 61, 62, 62, 62, 63, 63, 63, 64, 64, 64, 65, 65,
+	65, 66, 66, 66, 67, 67, 67, 68, 68, 68, 69, 69, 69, 70, 70, 70,
+	71, 71, 71, 72, 72, 72, 73, 73, 73, 74, 74, 74, 75, 75, 75, 76,
+	76, 76, 77, 77, 77, 78, 78, 78, 79, 79, 79, 80, 80, 80, 80, 81,
+	81, 81, 81, 82, 82, 82, 82, 82, 83, 83, 83, 83, 83, 84, 84, 84,
+	84, 84, 84, 85, 85, 85, 85, 85, 85, 86, 86, 86, 86, 86, 86, 86,
+	86, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 87, 86,
+	86, 86, 86, 86, 86, 86, 85, 85, 85, 85, 85, 85, 84, 84, 84, 84,
+	84, 84, 83, 83, 83, 83, 83, 82, 82, 82, 82, 82, 81, 81, 81, 81,
+	80, 80, 80, 80, 79, 79, 79, 78, 78, 78, 77, 77, 77, 76, 76, 76,
+	75, 75, 75, 74, 74, 74, 73, 73, 73, 72, 72, 72, 71, 71, 71, 70,
+	70, 70, 69, 69, 69, 68, 68, 68, 67, 67, 67, 66, 66, 66, 65, 65,
+	65, 64, 64, 64, 63, 63, 63, 62, 62, 62, 61, 61, 61, 60, 60, 60,
+	59, 59, 59, 58, 58, 58, 57, 57, 57, 56, 56, 56, 55, 55, 55, 54,
+	54, 54, 53, 53, 53, 52, 52, 52, 51, 51, 51, 50, 50, 50, 49, 49,
+	49, 48, 48, 48, 47, 47, 47, 46, 46, 46, 45, 45, 45, 44, 44, 44,
+	43, 43, 43, 42, 42, 42, 41, 41, 41, 40, 40, 40, 39, 39, 39, 38,
+	38, 38, 37, 37, 37, 36, 36, 36, 35, 35, 35, 34, 34, 34, 33, 33,
+	33, 32, 32, 32, 31, 31, 31, 30, 30, 30, 30, 29, 29, 29, 29, 28,
+	28, 28, 28, 28, 27, 27, 27, 27, 27, 26, 26, 26, 26, 26, 26, 25,
+	25, 25, 25, 25, 25, 24, 24, 24, 24, 24, 24, 24, 24, 0,
+	255
+};
+
+static const sint8 SwingingTimeToSpriteMap_0[] = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_1[] = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, -1, -1, -1, -1, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -4, -4, -4, -4, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_2[] = { 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, -1, -1, -1, -2, -2, -2, -3, -3, -3, -3, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -6, -6, -6, -6, -6, -6, -6, -6, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -6, -6, -6, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_3[] = { 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 3, 3, 2, 2, 1, 1, 0, 0, -1, -1, -2, -2, -3, -3, -4, -4, -4, -5, -5, -5, -5, -6, -6, -6, -6, -6, -7, -7, -7, -7, -7, -7, -8, -8, -8, -8, -8, -8, -8, -8, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -8, -8, -8, -8, -8, -8, -8, -8, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4, -4, -3, -3, -2, -2, -1, -1, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_4[] = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, -1, -1, -1, -1, -1, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -5, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_5[] = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 13, 13, 13, 13, 13, 13, 12, 12, 12, 12, 11, 11, 11, 11, 10, 10, 10, 10, 9, 9, 9, 9, 8, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -1, -2, -2, -2, -2, -3, -3, -3, -3, -4, -4, -4, -4, -5, -5, -5, -5, -6, -6, -6, -6, -7, -7, -7, -7, -8, -8, -8, -8, -9, -9, -9, -9, -10, -10, -10, -10, -11, -11, -11, -11, -12, -12, -12, -12, -13, -13, -13, -13, -13, -13, -14, -14, -14, -14, -14, -14, -14, -14, -14, -14, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -15, -14, -14, -14, -14, -14, -14, -14, -14, -14, -14, -13, -13, -13, -13, -13, -13, -12, -12, -12, -12, -11, -11, -11, -11, -10, -10, -10, -10, -9, -9, -9, -9, -8, -8, -8, -8, -7, -7, -7, -7, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -2, -1, -1, -1, -1, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_6[] = { 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 23, 23, 23, 23, 22, 22, 22, 21, 21, 21, 20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14, 14, 13, 13, 13, 12, 12, 12, 11, 11, 11, 10, 10, 10, 9, 9, 9, 8, 8, 8, 7, 7, 7, 6, 6, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, -1, -1, -1, -2, -2, -2, -3, -3, -3, -4, -4, -4, -5, -5, -5, -6, -6, -6, -7, -7, -7, -8, -8, -8, -9, -9, -9, -10, -10, -10, -11, -11, -11, -12, -12, -12, -13, -13, -13, -14, -14, -14, -15, -15, -15, -16, -16, -16, -17, -17, -17, -18, -18, -18, -19, -19, -19, -20, -20, -20, -21, -21, -21, -22, -22, -22, -23, -23, -23, -23, -23, -24, -24, -24, -24, -24, -24, -24, -24, -24, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -25, -24, -24, -24, -24, -24, -24, -24, -24, -24, -23, -23, -23, -23, -23, -22, -22, -22, -21, -21, -21, -20, -20, -20, -19, -19, -19, -18, -18, -18, -17, -17, -17, -16, -16, -16, -15, -15, -15, -14, -14, -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9, -9, -9, -8, -8, -8, -7, -7, -7, -6, -6, -6, -5, -5, -5, -4, -4, -4, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_7[] = { 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20, 21, 21, 21, 22, 22, 22, 23, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 32, 32, 32, 33, 33, 33, 34, 34, 34, 35, 35, 35, 36, 36, 36, -35, -35, -35, -34, -34, -34, -33, -33, -33, -32, -32, -32, -31, -31, -31, -30, -30, -30, -29, -29, -29, -28, -28, -28, -27, -27, -27, -26, -26, -26, -25, -25, -25, -24, -24, -24, -23, -23, -23, -22, -22, -22, -21, -21, -21, -20, -20, -20, -19, -19, -19, -18, -18, -18, -17, -17, -17, -16, -16, -16, -15, -15, -15, -14, -14, -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9, -9, -9, -8, -8, -8, -7, -7, -7, -6, -6, -6, -5, -5, -5, -4, -4, -4, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_8[] = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29, 29, 29, 29, 29, 28, 28, 28, 28, 28, 27, 27, 27, 27, 27, 27, 27, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_9[] = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29, 29, 29, 29, 29, 28, 28, 28, 28, 28, 27, 27, 27, 27, 27, 27, 27, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_10[] = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 14, 14, 14, 14, 13, 13, 13, 13, 12, 12, 12, 12, 11, 11, 11, 11, 10, 10, 10, 10, 9, 9, 9, 9, 8, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 31, 31, 31, 31, 30, 30, 30, 30, 29, 29, 29, 29, 28, 28, 28, 28, 27, 27, 27, 27, 26, 26, 26, 26, 25, 25, 25, 25, 24, 24, 24, 24, 23, 23, 23, 23, 22, 22, 22, 22, 21, 21, 21, 21, 20, 20, 20, 20, 19, 19, 19, 19, 18, 18, 18, 18, 18, 18, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 25, 25, 25, 25, 26, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 0, 0, -128 };
+static const sint8 SwingingTimeToSpriteMap_11[] = { 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31, 31, 31, 0, -128 };
+
+/** rct2: 0x0099F9D0 */
+static const sint8 * SwingingTimeToSpriteMaps[] = {
+	SwingingTimeToSpriteMap_0,
+	SwingingTimeToSpriteMap_1,
+	SwingingTimeToSpriteMap_2,
+	SwingingTimeToSpriteMap_3,
+	SwingingTimeToSpriteMap_4,
+	SwingingTimeToSpriteMap_5,
+	SwingingTimeToSpriteMap_6,
+	SwingingTimeToSpriteMap_7,
+	SwingingTimeToSpriteMap_8,
+	SwingingTimeToSpriteMap_9,
+	SwingingTimeToSpriteMap_10,
+	SwingingTimeToSpriteMap_11,
+};
+
+typedef struct {
+	sint16 x;
+	sint16 y;
+	uint32 distance;
+} unk_9a36c4;
+
+/** rct2: 0x009A36C4 */
+static const unk_9a36c4 Unk9A36C4[] = {
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 0, 8716},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{-1, 1, 12327},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{0, 1, 8716},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 1, 12327},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, 0, 8716},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{1, -1, 12327},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{0, -1, 8716},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, -1, 12327},
+	{-1, 0, 8716},
+	{-1, -1, 12327},
+};
+
+/** rct2: 0x009A37C4 */
+static const rct_xy16 Unk9A37C4[] = {
+	{ 0,  0},
+	{ 0, +1},
+	{+1,  0},
+	{ 0, -1},
+	{ 0, -1},
+	{-1,  0},
+	{-1,  0},
+	{ 0, +1},
+	{ 0, +1},
+};
+
+/** rct2: 0x009A37E4 */
+static const sint32 Unk9A37E4[] = {
+	2147483647,
+	2106585154,
+	1985590284,
+	1636362342,
+	1127484953,
+	2106585154,
+	1985590284,
+	1636362342,
+	1127484953,
+	58579923,
+	0,
+	-555809667,
+	-1073741824,
+	-1518500249,
+	-1859775391,
+	-2074309916,
+	-2147483647,
+	58579923,
+	0,
+	-555809667,
+	-1073741824,
+	-1518500249,
+	-1859775391,
+	-2074309916,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	1859775393,
+	1073741824,
+	0,
+	-1073741824,
+	-1859775393,
+	2144540595,
+	2139311823,
+	2144540595,
+	2139311823,
+	2135719507,
+	2135719507,
+	2125953864,
+	2061796213,
+	1411702590,
+	2125953864,
+	2061796213,
+	1411702590,
+	1985590284,
+	1636362342,
+	1127484953,
+	2115506168,
+};
+
+/** rct2: 0x009A38D4 */
+static const sint32 Unk9A38D4[] = {
+	0,
+	417115092,
+	817995863,
+	1390684831,
+	1827693544,
+	-417115092,
+	-817995863,
+	-1390684831,
+	-1827693544,
+	2066040965,
+	2147483647,
+	2074309916,
+	1859775393,
+	1518500249,
+	1073741824,
+	555809666,
+	0,
+	-2066040965,
+	-2147483647,
+	-2074309916,
+	-1859775393,
+	-1518500249,
+	-1073741824,
+	-555809666,
+	1073741824,
+	1859775393,
+	2147483647,
+	1859775393,
+	1073741824,
+	-1073741824,
+	-1859775393,
+	-2147483647,
+	-1859775393,
+	-1073741824,
+	1073741824,
+	1859775393,
+	2147483647,
+	1859775393,
+	1073741824,
+	-1073741824,
+	-1859775393,
+	-2147483647,
+	-1859775393,
+	-1073741824,
+	112390610,
+	187165532,
+	-112390610,
+	-187165532,
+	224473165,
+	-224473165,
+	303325208,
+	600568389,
+	1618265062,
+	-303325208,
+	-600568389,
+	-1618265062,
+	-817995863,
+	-1390684831,
+	-1827693544,
+	369214930,
+};
+
+/** rct2: 0x009A39C4 */
+static const sint32 Unk9A39C4[] = {
+	2147483647,
+	2096579710,
+	1946281152,
+	2096579710,
+	1946281152,
+	1380375879,
+	555809667,
+	-372906620,
+	-1231746017,
+	-1859775391,
+	1380375879,
+	555809667,
+	-372906620,
+	-1231746017,
+	-1859775391,
+	0,
+	2096579710,
+	1946281152,
+	2096579710,
+	1946281152,
+};
+
+static bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
+{
+	if (cd >= countof(gTrackVehicleInfo)) {
+		return false;
+	}
+	int size = 0;
+	switch (cd) {
+	case 0: size = 1024; break;
+	case 1: size = 692; break;
+	case 2: size = 404; break;
+	case 3: size = 404; break;
+	case 4: size = 404; break;
+	case 5: size = 208; break;
+	case 6: size = 208; break;
+	case 7: size = 208; break;
+	case 8: size = 208; break;
+	case 9: size = 824; break;
+	case 10: size = 824; break;
+	case 11: size = 824; break;
+	case 12: size = 824; break;
+	case 13: size = 824; break;
+	case 14: size = 824; break;
+	case 15: size = 868; break;
+	case 16: size = 868; break;
+	}
+	if (typeAndDirection >= size) {
+		return false;
+	}
+	if (offset >= gTrackVehicleInfo[cd][typeAndDirection]->size) {
+		return false;
+	}
+	return true;
+}
 
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
 {
-	const rct_vehicle_info **infoListList = RCT2_ADDRESS(0x008B8F30, const rct_vehicle_info**)[cd];
-	const rct_vehicle_info *infoList = infoListList[typeAndDirection];
-	return &infoList[offset];
+	if (!vehicle_move_info_valid(cd, typeAndDirection, offset)) {
+		static const rct_vehicle_info zero = { 0 };
+		return &zero;
+	}
+	return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
+}
+
+uint16 vehicle_get_move_info_size(int cd, int typeAndDirection)
+{
+	if (!vehicle_move_info_valid(cd, typeAndDirection, 0)) {
+		return 0;
+	}
+	return gTrackVehicleInfo[cd][typeAndDirection]->size;
 }
 
 const uint8 DoorOpenSoundIds[] = {
@@ -157,7 +644,7 @@ static const struct { sint8 x, y, z; } SteamParticleOffsets[] = {
 	{  -8,  -4, 17 }
 };
 
-void vehicle_invalidate(rct_vehicle *vehicle)
+static void vehicle_invalidate(rct_vehicle *vehicle)
 {
 	invalidate_sprite_2((rct_sprite*)vehicle);
 }
@@ -166,31 +653,27 @@ void vehicle_invalidate(rct_vehicle *vehicle)
  *
  *  rct2: 0x006BB9FF
  */
-void vehicle_update_sound_params(rct_vehicle* vehicle)
+static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
-				RCT2_GLOBAL(0x009AF5A0, sint16) = vehicle->sprite_left;
-				RCT2_GLOBAL(0x009AF5A2, sint16) = vehicle->sprite_top;
-				RCT2_GLOBAL(0x009AF5A4, sint16) = vehicle->sprite_right;
-				RCT2_GLOBAL(0x009AF5A6, sint16) = vehicle->sprite_bottom;
-				sint16 v4 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
-				sint16 v5 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
-				sint16 v6 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width / 4;
-				sint16 v7 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height / 4;
-				if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
-					v4 -= v6;
-					v5 -= v7;
+				sint16 x = g_music_tracking_viewport->view_x;
+				sint16 y = g_music_tracking_viewport->view_y;
+				sint16 w = g_music_tracking_viewport->view_width / 4;
+				sint16 h = g_music_tracking_viewport->view_height / 4;
+				if (!gWindowAudioExclusive->classification) {
+					x -= w;
+					y -= h;
 				}
-				if (v4 < RCT2_GLOBAL(0x009AF5A4, sint16) && v5 < RCT2_GLOBAL(0x009AF5A6, sint16)) {
-					sint16 t8 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + v4;
-					sint16 t9 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + v5;
-					if (!RCT2_GLOBAL(0x00F438A8, rct_window*)->classification) {
-						t8 += v6 + v6;
-						t9 += v7 + v7;
+				if (x < vehicle->sprite_right && y < vehicle->sprite_bottom) {
+					sint16 w2 = g_music_tracking_viewport->view_width + x;
+					sint16 h2 = g_music_tracking_viewport->view_height + y;
+					if (!gWindowAudioExclusive->classification) {
+						w2 += w + w;
+						h2 += h + h;
 					}
-					if (t8 >= RCT2_GLOBAL(0x009AF5A0, sint16) && t9 >= RCT2_GLOBAL(0x009AF5A2, sint16)) {
+					if (w2 >= vehicle->sprite_left && h2 >= vehicle->sprite_top) {
 						uint16 v9 = sub_6BC2F3(vehicle);
 						rct_vehicle_sound_params* i;
 						for (i = &gVehicleSoundParamsList[0]; i < gVehicleSoundParamsListEnd && v9 <= i->var_A; i++);
@@ -204,50 +687,48 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 								*(j + 1) = *j;
 							}
 							i->var_A = v9;
-							int pan_x = (RCT2_GLOBAL(0x009AF5A0, sint16) / 2) + (RCT2_GLOBAL(0x009AF5A4, sint16) / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
-							pan_x >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
-							pan_x += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x;
+							int pan_x = (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - g_music_tracking_viewport->view_x;
+							pan_x >>= g_music_tracking_viewport->zoom;
+							pan_x += g_music_tracking_viewport->x;
 
-							uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+							uint16 screenwidth = gScreenWidth;
 							if (screenwidth < 64) {
 								screenwidth = 64;
 							}
-							i->pan_x = ((((pan_x << 16) / screenwidth) - 0x8000) >> 4);
+							i->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
 
-							int pan_y = (RCT2_GLOBAL(0x009AF5A2, sint16) / 2) + (RCT2_GLOBAL(0x009AF5A6, sint16) / 2) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y;
-							pan_y >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
-							pan_y += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y;
+							int pan_y = (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+							pan_y >>= g_music_tracking_viewport->zoom;
+							pan_y += g_music_tracking_viewport->y;
 
-							uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+							uint16 screenheight = gScreenHeight;
 							if (screenheight < 64) {
 								screenheight = 64;
 							}
-							i->pan_y = ((((pan_y << 16) / screenheight) - 0x8000) >> 4);
+							i->pan_y = ((((pan_y * 65536) / screenheight) - 0x8000) >> 4);
 
-							sint32 v19 = vehicle->velocity;
+							sint32 v = vehicle->velocity;
 
 							rct_ride_entry* ride_type = get_ride_entry(vehicle->ride_subtype);
 							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {
-								v19 *= 2;
+								v *= 2;
 							}
-							if (v19 < 0) {
-								v19 = -v19;
+							if (v < 0) {
+								v = -v;
 							}
-							v19 >>= 5;
-							v19 *= 5512;
-							v19 >>= 14;
-							v19 += 11025;
-							v19 += 16 * vehicle->var_BF;
-							i->frequency = (uint16)v19;
+							v >>= 5;
+							v *= 5512;
+							v >>= 14;
+							v += 11025;
+							v += 16 * vehicle->var_BF;
+							i->frequency = (uint16)v;
 							i->id = vehicle->sprite_index;
 							i->volume = 0;
 							if (vehicle->x != (sint16)0x8000) {
-								int tile_idx = (((vehicle->y & 0xFFE0) * 256) + (vehicle->x & 0xFFE0)) / 32;
-								rct_map_element* map_element;
-								for (map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx]; map_element->type & MAP_ELEMENT_TYPE_MASK; map_element++);
-								if (map_element->base_height * 8 > vehicle->z) { // vehicle underground
+								rct_map_element* map_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
+								if (map_element != NULL && map_element->base_height * 8 > vehicle->z) { // vehicle underground
 									i->volume = 0x30;
 								}
 							}
@@ -293,13 +774,13 @@ int sub_6BC2F3(rct_vehicle* vehicle)
  */
 void vehicle_sounds_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless) {
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = (rct_viewport*)-1;
+	if (gAudioCurrentDevice != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless) {
+		g_music_tracking_viewport = (rct_viewport*)-1;
 		rct_viewport* viewport = (rct_viewport*)-1;
-		rct_window* window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+		rct_window* window = gWindowNextSlot;
 		while (1) {
 			window--;
-			if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window)) {
+			if (window < g_window_list) {
 				break;
 			}
 			viewport = window->viewport;
@@ -307,21 +788,21 @@ void vehicle_sounds_update()
 				break;
 			}
 		}
-		RCT2_GLOBAL(0x00F438A4, rct_viewport*) = viewport;
+		g_music_tracking_viewport = viewport;
 		if (viewport != (rct_viewport*)-1) {
 			if (window) {
-				RCT2_GLOBAL(0x00F438A8, rct_window*) = window;
-				RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
+				gWindowAudioExclusive = window;
+				gVolumeAdjustZoom = 0;
 				if (viewport->zoom) {
-					RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 35;
+					gVolumeAdjustZoom = 35;
 					if (viewport->zoom != 1) {
-						RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 70;
+						gVolumeAdjustZoom = 70;
 					}
 				}
 			}
 			gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-			for (uint16 i = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
-				vehicle_update_sound_params(&g_sprite_list[i].vehicle);
+			for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next) {
+				vehicle_update_sound_params(&get_sprite(i)->vehicle);
 			}
 			for(int i = 0; i < countof(gVehicleSoundList); i++){
 				rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[i];
@@ -395,10 +876,10 @@ void vehicle_sounds_update()
 				if (vol1 >= vol2) {
 					vol1 = vol2;
 				}
-				if (vol1 < RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8)) {
+				if (vol1 < gVolumeAdjustZoom) {
 					vol1 = 0;
 				} else {
-					vol1 = vol1 - RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8);
+					vol1 = vol1 - gVolumeAdjustZoom;
 				}
 
 				rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
@@ -411,7 +892,7 @@ void vehicle_sounds_update()
 							vehicle_sound++;
 							i++;
 							if (i >= countof(gVehicleSoundList)) {
-								vehicle_sound_params = (rct_vehicle_sound_params*)((int)vehicle_sound_params + 10);
+								vehicle_sound_params = (rct_vehicle_sound_params*)((uintptr_t)vehicle_sound_params + 10);
 								goto label28;
 							}
 						}
@@ -439,7 +920,7 @@ void vehicle_sounds_update()
 				}
 
 				// do sound1 stuff, track noise
-				rct_sprite* sprite = &g_sprite_list[vehicle_sound_params->id];
+				rct_sprite* sprite = get_sprite(vehicle_sound_params->id);
 				int volume = sprite->vehicle.sound1_volume;
 				volume *= vol1;
 				volume = volume / 8;
@@ -464,10 +945,10 @@ void vehicle_sounds_update()
 						vehicle_sound->sound1_volume = volume;
 						vehicle_sound->sound1_freq = vehicle_sound_params->frequency;
 						uint16 frequency = vehicle_sound_params->frequency;
-						if (RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.sound1_id] & 2) {
+						if (_soundParams[sprite->vehicle.sound1_id][1] & 2) {
 							frequency = (frequency / 2) + 4000;
 						}
-						uint8 looping = RCT2_ADDRESS(0x009AF51E, uint8)[2 * sprite->vehicle.sound1_id];
+						uint8 looping = _soundParams[sprite->vehicle.sound1_id][0];
 						int pan = vehicle_sound_params->pan_x;
 						vehicle_sound->sound1_channel = Mixer_Play_Effect(sprite->vehicle.sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
 						goto label87;
@@ -480,17 +961,17 @@ void vehicle_sounds_update()
 						vehicle_sound->sound1_pan = vehicle_sound_params->pan_x;
 						Mixer_Channel_Pan(vehicle_sound->sound1_channel, DStoMixerPan(vehicle_sound_params->pan_x));
 					}
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq) {
+					if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq) {
 						vehicle_sound->sound1_freq = vehicle_sound_params->frequency;
 						uint16 frequency = vehicle_sound_params->frequency;
-						if (RCT2_GLOBAL(0x009AF51F, uint8*)[2 * sprite->vehicle.sound1_id] & 2) {
+						if (_soundParams[sprite->vehicle.sound1_id][1] & 2) {
 							frequency = (frequency / 2) + 4000;
 						}
 						Mixer_Channel_Rate(vehicle_sound->sound1_channel, DStoMixerRate(frequency));
 					}
 				}
 			label87: // do sound2 stuff, screams
-				sprite = &g_sprite_list[vehicle_sound_params->id];
+				sprite = get_sprite(vehicle_sound_params->id);
 				volume = sprite->vehicle.sound2_volume;
 				volume *= vol1;
 				volume = (uint16)volume / 8;
@@ -515,14 +996,14 @@ void vehicle_sounds_update()
 						vehicle_sound->sound2_volume = volume;
 						vehicle_sound->sound2_freq = vehicle_sound_params->frequency;
 						uint16 frequency = vehicle_sound_params->frequency;
-						if (RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.sound2_id] & 1) {
+						if (_soundParams[sprite->vehicle.sound2_id][1] & 1) {
 							frequency = 12649;
 						}
 						frequency = (frequency * 2) - 3248;
 						if (frequency > 25700) {
 							frequency = 25700;
 						}
-						uint8 looping = RCT2_ADDRESS(0x009AF51E, uint8)[2 * sprite->vehicle.sound2_id];
+						uint8 looping = _soundParams[sprite->vehicle.sound2_id][0];
 						int pan = vehicle_sound_params->pan_x;
 						vehicle_sound->sound2_channel = Mixer_Play_Effect(sprite->vehicle.sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
 						goto label114;
@@ -535,9 +1016,9 @@ void vehicle_sounds_update()
 						vehicle_sound->sound2_pan = vehicle_sound_params->pan_x;
 						Mixer_Channel_Pan(vehicle_sound->sound2_channel, DStoMixerPan(vehicle_sound_params->pan_x));
 					}
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq) {
+					if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq) {
 						vehicle_sound->sound2_freq = vehicle_sound_params->frequency;
-						if (!(RCT2_ADDRESS(0x009AF51F, uint8)[2 * sprite->vehicle.sound2_id] & 1)) {
+						if (!(_soundParams[sprite->vehicle.sound2_id][1] & 1)) {
 							uint16 frequency = (vehicle_sound_params->frequency * 2) - 3248;
 							if (frequency > 25700) {
 								frequency = 25700;
@@ -562,16 +1043,16 @@ void vehicle_update_all()
 	uint16 sprite_index;
 	rct_vehicle *vehicle;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return;
 
 
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16);
+	sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE];
 	while (sprite_index != SPRITE_INDEX_NULL) {
-		vehicle = &(g_sprite_list[sprite_index].vehicle);
+		vehicle = &(get_sprite(sprite_index)->vehicle);
 		sprite_index = vehicle->next;
 
 		vehicle_update(vehicle);
@@ -847,7 +1328,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 
 		// ax
-		uint16 track_flags = RCT2_ADDRESS(0x0099423C, uint16)[track_elem_type];
+		uint16 track_flags = TrackFlags[track_elem_type];
 
 		uint32 testing_flags = ride->testing_flags;
 		if (testing_flags & RIDE_TESTING_TURN_LEFT &&
@@ -1020,7 +1501,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
 				continue;
 
-			rct_scenery_entry* scenery = g_smallSceneryEntries[map_element->properties.scenery.type];
+			rct_scenery_entry* scenery = get_small_scenery_entry(map_element->properties.scenery.type);
 			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
 				cover_found = true;
 				break;
@@ -1100,9 +1581,9 @@ static void vehicle_update(rct_vehicle *vehicle)
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
 		vehicle_update_measurements(vehicle);
 
-	RCT2_GLOBAL(0x00F64E34, uint8) = 255;
+	_vehicleBreakdown = 255;
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
-		RCT2_GLOBAL(0x00F64E34, uint8) = ride->breakdown_reason_pending;
+		_vehicleBreakdown = ride->breakdown_reason_pending;
 		if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) ||
 				(
@@ -1581,8 +2062,8 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	if (shouldBreak == true || ride->status != RIDE_STATUS_OPEN) {
 		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
-			uint8 bl = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-			if (vehicle->peep[bl] == 0xFFFF) {
+			uint8 seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
+			if (vehicle->peep[seat * 2] == 0xFFFF) {
 				if (vehicle->num_peeps == 0) {
 					skipCheck = true;
 				}
@@ -1622,7 +2103,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS)) {
 		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT) {
-				if (vehicle_can_depart_synchronised(vehicle)) {
+				if (!vehicle_can_depart_synchronised(vehicle)) {
 					return;
 				}
 			}
@@ -1779,63 +2260,69 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
-typedef struct {
+#pragma pack(push, 1)
+typedef struct rct_synchronised_vehicle {
 	uint8 ride_id;
 	uint8 station_id;
 	uint16 vehicle_id;
-} rct_synchrnoised_vehicle;
+} rct_synchronised_vehicle;
+assert_struct_size(rct_synchronised_vehicle, 4);
+#pragma pack(pop)
 
-// 8 synchrnoised vehicle info
-rct_synchrnoised_vehicle *_synchrnoisedVehicles = (rct_synchrnoised_vehicle*)0x00F64E4C;
+#define SYNCHRONISED_VEHICLE_COUNT 8
 
-#define _lastSynchrnoisedVehicle	RCT2_GLOBAL(0x00F64E48, rct_synchrnoised_vehicle*)
-#define MaxSynchrnoisedVehicle		((rct_synchrnoised_vehicle*)0x00F64E6C)
+// 8 synchronised vehicle info
+rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
+
+static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
 
 /**
- * Checks if a map position contains a synchrnoised ride station and adds the vehicle
- * to synchrnoise to the vehicle synchronisation list.
+ * Checks if a map position contains a synchronised ride station and adds the vehicle
+ * to synchronise to the vehicle synchronisation list.
  *  rct2: 0x006DE1A4
  */
 static bool try_add_synchronised_station(int x, int y, int z)
 {
-	bool foundMapElement = false;
-	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
-	if (mapElement != NULL) {
-		do {
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
-			if (z != mapElement->base_height &&
-				z != mapElement->base_height - 2 &&
-				z != mapElement->base_height + 2
-			) {
-				continue;
-			}
-
-			foundMapElement = true;
-			break;
-		} while (!map_element_is_last_for_tile(mapElement++));
-	}
-	if (!foundMapElement) {
+	rct_map_element *mapElement = get_station_platform(x, y, z, 2);
+	if (mapElement == NULL) {
+		/* No station platform element found,
+		 * so no station to synchronise */
 		return false;
 	}
 
 	int rideIndex = mapElement->properties.track.ride_index;
 	rct_ride *ride = get_ride(rideIndex);
 	if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+		/* Ride is not set to synchronise with adjacent stations. */
 		return false;
 	}
+
+	/* From this point on, the ride of the map element is one that is set
+	 * to sync with adjacent stations, so it will return true.
+	 * Still to determine if a vehicle to sync can be identified. */
 
 	int stationIndex = map_get_station(mapElement);
 
-	rct_synchrnoised_vehicle *sv = _lastSynchrnoisedVehicle;
+	rct_synchronised_vehicle *sv = _lastSynchronisedVehicle;
 	sv->ride_id = rideIndex;
 	sv->station_id = stationIndex;
 	sv->vehicle_id = SPRITE_INDEX_NULL;
-	_lastSynchrnoisedVehicle++;
+	_lastSynchronisedVehicle++;
 
+	/* Ride vehicles are not on the track (e.g. ride is/was under
+	 * construction), so just return; vehicle_id for this station
+	 * is SPRITE_INDEX_NULL. */
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
-		return false;
+		return true;
 	}
 
+	/* Station is not ready to depart, so just return;
+ 	 * vehicle_id for this station is SPRITE_INDEX_NULL. */
+	if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
+		return true;
+	}
+
+	// Look for a vehicle on this station waiting to depart.
 	for (int i = 0; i < ride->num_vehicles; i++) {
 		uint16 spriteIndex = ride->vehicles[i];
 		if (spriteIndex == SPRITE_INDEX_NULL) continue;
@@ -1849,14 +2336,23 @@ static bool try_add_synchronised_station(int x, int y, int z)
 		sv->vehicle_id = spriteIndex;
 		return true;
 	}
-	return false;
+
+	/* No vehicle found waiting to depart (with sync adjacent) at the
+	 * station, so just return; vehicle_id for this station is
+	 * SPRITE_INDEX_NULL. */
+	return true;
 }
 
 /**
- * Checks whether a vehicle can depart a station when set to synchrnoise with adjacent stations.
+ * Checks whether a vehicle can depart a station when set to synchronise with adjacent stations.
  *  rct2: 0x006DE287
  * @param vehicle The vehicle waiting to depart.
  * @returns true if the vehicle can depart (all adjacent trains are ready or broken down), otherwise false.
+ *
+ * Permits vehicles to depart in two ways:
+ *  Returns true, permitting the vehicle in the param to depart immediately;
+ *  The vehicle flag VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT is cleared for those
+ *  vehicles that depart in sync with the vehicle in the param.
  */
 static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 {
@@ -1868,10 +2364,19 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 	int z = ride->station_heights[station];
 
 	rct_map_element *mapElement = map_get_track_element_at(x, y, z);
+	if (mapElement == NULL) {
+		return false;
+	}
+
+	// Reset the list of synchronised vehicles to empty.
+	_lastSynchronisedVehicle = _synchronisedVehicles;
+
+	// Search for stations to sync in both directions from the current tile.
+
+	// First search direction.
 	int direction = (mapElement->type + 1) & 3;
-	_lastSynchrnoisedVehicle = _synchrnoisedVehicles;
 
-	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
+	while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
 		if (!try_add_synchronised_station(x, y, z)) {
@@ -1879,7 +2384,13 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 		}
 	}
 
-	while (_lastSynchrnoisedVehicle < MaxSynchrnoisedVehicle) {
+	// Reset back to starting tile.
+	x = (xy & 0xFF) * 32;
+	y = (xy >> 8) * 32;
+
+	// Other search direction.
+	direction = (direction ^ 2) & 3;
+	while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
 		x += TileDirectionDelta[direction].x;
 		y += TileDirectionDelta[direction].y;
 		if (!try_add_synchronised_station(x, y, z)) {
@@ -1887,55 +2398,63 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 		}
 	}
 
-	if (_lastSynchrnoisedVehicle == _synchrnoisedVehicles) {
+	if (_lastSynchronisedVehicle == _synchronisedVehicles) {
 		// No adjacent stations, allow depart
 		return true;
 	}
 
-	for (rct_synchrnoised_vehicle *sv = _synchrnoisedVehicles; sv < _lastSynchrnoisedVehicle; sv++) {
-		if (ride_is_block_sectioned(ride)) {
-			if (!(ride->station_depart[sv->station_id] & 0x80)) {
-				sv = _synchrnoisedVehicles;
-				uint8 rideId = 0xFF;
-				for (; sv < _lastSynchrnoisedVehicle; sv++) {
-					if (rideId == 0xFF) {
-						rideId = sv->ride_id;
-					}
-					if (rideId != sv->ride_id) {
+	for (rct_synchronised_vehicle *sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++) {
+		rct_ride *sv_ride = get_ride(sv->ride_id);
+
+		if (!(sv_ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+			if (sv_ride->status != RIDE_STATUS_CLOSED) {
+				if (ride_is_block_sectioned(sv_ride)) {
+					if (!(sv_ride->station_depart[sv->station_id] & STATION_DEPART_FLAG)) {
+						sv = _synchronisedVehicles;
+						uint8 rideId = 0xFF;
+						for (; sv < _lastSynchronisedVehicle; sv++) {
+							if (rideId == 0xFF) {
+								rideId = sv->ride_id;
+							}
+							if (rideId != sv->ride_id) {
+								// Here the sync-ed stations are not all from the same ride.
+								return false;
+							}
+						}
+
+						/* Here all the of sync-ed stations are from the same ride */
+						ride = get_ride(rideId);
+						for (int i = 0; i < ride->num_vehicles; i++) {
+							rct_vehicle *v = GET_VEHICLE(ride->vehicles[i]);
+							if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0) {
+								// Here at least one vehicle on the ride is moving.
+								return false;
+							}
+						}
+
+ 						// UNCERTAIN: is the return desired here, or rather continue on with the general checks?
 						return true;
 					}
 				}
-
-				ride = get_ride(rideId);
-				for (int i = 0; i < ride->num_vehicles; i++) {
-					rct_vehicle *v = GET_VEHICLE(ride->vehicles[i]);
-					if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0) {
-						return true;
-					}
-				}
-
-				vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
-				return false;
-			}
-		}
-		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-			if (ride->status != RIDE_STATUS_CLOSED) {
+				// There is no vehicle waiting at this station to sync with.
 				if (sv->vehicle_id == SPRITE_INDEX_NULL) {
-					if (_lastSynchrnoisedVehicle > &_synchrnoisedVehicles[1]) {
-						return true;
+					// Check conditions for departing without all stations being in sync.
+					if (_lastSynchronisedVehicle > &_synchronisedVehicles[1]) {
+						// Sync condition: there are at least 3 stations to sync
+						return false;
 					}
-					uint8 someRideIndex = _synchrnoisedVehicles[0].ride_id;
-					// uint8 currentStation = _synchrnoisedVehicles[0].station_id
+					uint8 someRideIndex = _synchronisedVehicles[0].ride_id;
+					// uint8 currentStation = _synchronisedVehicles[0].station_id
 					if (someRideIndex != vehicle->ride) {
-						return true;
+						// Sync condition: the first station to sync is a different ride
+						return false;
 					}
 
-					ride = get_ride(someRideIndex);
-					int numAdjacentTrainsAtStation = 0;
+					int numTrainsAtStation = 0;
 					int numTravelingTrains = 0;
-					int currentStation = vehicle->current_station;
-					for (int i = 0; i < ride->num_vehicles; i++) {
-						uint16 spriteIndex = ride->vehicles[i];
+					int currentStation = sv->station_id;
+					for (int i = 0; i < sv_ride->num_vehicles; i++) {
+						uint16 spriteIndex = sv_ride->vehicles[i];
 						if (spriteIndex != SPRITE_INDEX_NULL) {
 							rct_vehicle *otherVehicle = GET_VEHICLE(spriteIndex);
 							if (otherVehicle->status != VEHICLE_STATUS_TRAVELLING) {
@@ -1943,7 +2462,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 									if (otherVehicle->status == VEHICLE_STATUS_WAITING_TO_DEPART ||
 										otherVehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION
 									) {
-										numAdjacentTrainsAtStation++;
+										numTrainsAtStation++;
 									}
 								}
 							} else {
@@ -1952,27 +2471,34 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 						}
 					}
 
-					int totalTrains = numAdjacentTrainsAtStation + numTravelingTrains;
-					if (totalTrains != ride->num_vehicles || numTravelingTrains >= ride->num_vehicles / 2) {
-						return true;
-					} else {
-						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
+					int totalTrains = numTrainsAtStation + numTravelingTrains;
+					if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2) {
+					//if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->num_vehicles / 2) {
+						/* Sync condition: If there are trains arriving at the
+						 * station or half or more of the ride trains are
+						 * travelling, this station must be sync-ed before the
+						 * trains can depart! */
 						return false;
+					} else {
+						/* Sync exception - train is not arriving at the station
+						 * and there are less than half the trains for the ride
+						 * travelling. */
+						continue;
 					}
 				}
 			}
 		}
 	}
 
-	for (rct_synchrnoised_vehicle *sv = _synchrnoisedVehicles; sv < _lastSynchrnoisedVehicle; sv++) {
+	// At this point all vehicles in _snychronisedVehicles can depart.
+	for (rct_synchronised_vehicle *sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++) {
 		if (sv->vehicle_id != SPRITE_INDEX_NULL) {
 			rct_vehicle *v = GET_VEHICLE(sv->vehicle_id);
 			v->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
 		}
 	}
 
-	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
-	return false;
+	return true;
 }
 
 /**
@@ -1986,7 +2512,7 @@ void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle) {
 		for (int i = 0; i < vehicle->num_peeps; ++i) {
 			rct_peep* peep = GET_PEEP(vehicle->peep[i]);
 			if (peep->peep_flags & PEEP_FLAGS_HERE_WE_ARE) {
-				peep_insert_new_thought(peep, PEEP_THOUGHT_HERE_WE_ARE, peep->current_ride);
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
 			}
 		}
 	} while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
@@ -2279,7 +2805,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (vehicle->velocity <= speed) {
 				vehicle->acceleration = 15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+					if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 					}
@@ -2293,7 +2819,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (vehicle->velocity >= speed) {
 				vehicle->acceleration = -15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_SAFETY_CUT_OUT) {
+					if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
 					}
@@ -2314,7 +2840,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 
 		if (shouldLaunch) {
-			if (!(flags & (1 << 3)) || (RCT2_GLOBAL(0x00F64E1C, uint8) != vehicle->current_station)) {
+			if (!(flags & (1 << 3)) || _vehicleStationIndex != vehicle->current_station) {
 				vehicle_finish_departing(vehicle);
 				return;
 			}
@@ -2411,7 +2937,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
 		return;
 
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_27))
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
 		return;
 
 	vehicle->lost_time_out++;
@@ -2425,21 +2951,19 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id)
-		= RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6;
+	set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 
 	uint8 vehicleIndex = 0;
 	for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index) break;
 
 	vehicleIndex++;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = vehicleIndex;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 10, rct_string_id) =
-		RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2];
+	set_format_arg(2, uint16, vehicleIndex);
+	set_format_arg(4, rct_string_id, ride->name);
+	set_format_arg(6, uint32, ride->name_arguments);
+	set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
-	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
+	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
 }
 
 /**
@@ -2487,11 +3011,11 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 			train->z
 			);
 
-		sprite_misc_3_create(
+		sprite_misc_explosion_cloud_create(
 			train->x,
 			train->y,
 			train->z
-			);
+		);
 
 		for (int i = 0; i < 10; i++) {
 			crashed_vehicle_particle_create(
@@ -2522,6 +3046,26 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 	vehicle->velocity = 0;
 }
 
+/** rct2: 0x009A3AC4, 0x009A3AC6 */
+static const rct_xy16 stru_9A3AC4[] = {
+	{ -256,    0 },
+	{ -236,   98 },
+	{ -181,  181 },
+	{  -98,  236 },
+	{    0,  256 },
+	{   98,  236 },
+	{  181,  181 },
+	{  236,   98 },
+	{  256,    0 },
+	{  236,  -98 },
+	{  181, -181 },
+	{   98, -236 },
+	{    0, -256 },
+	{  -98, -236 },
+	{ -181, -181 },
+	{ -236,  -98 },
+};
+
 /**
  *
  *  rct2: 0x006D9EFE
@@ -2549,15 +3093,15 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		lastVehicle = trainVehicle;
 
 		trainVehicle->sub_state = 0;
-		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction & 0xFE];
-		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction & 0xFE];
+		int x = stru_9A3AC4[trainVehicle->sprite_direction / 2].x;
+		int y = stru_9A3AC4[trainVehicle->sprite_direction / 2].y;
 
-		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->vehicle_sprite_type] >> 15;
+		int ecx = Unk9A37E4[trainVehicle->vehicle_sprite_type] >> 15;
 		x *= ecx;
 		y *= ecx;
 		x >>= 16;
 		y >>= 16;
-		ecx = RCT2_ADDRESS(0x009A38D4, sint32)[trainVehicle->vehicle_sprite_type] >> 23;
+		ecx = Unk9A38D4[trainVehicle->vehicle_sprite_type] >> 23;
 		x *= edx;
 		y *= edx;
 		ecx *= edx;
@@ -2590,7 +3134,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 	vehicle_check_if_missing(vehicle);
 
 	rct_ride* ride = get_ride(vehicle->ride);
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
+	if (_vehicleBreakdown == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
 		return;
 
 	if (vehicle->sub_state == 2) {
@@ -2693,7 +3237,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 					if (vehicle->velocity >= ride->lift_hill_speed * -31079) {
 						vehicle->acceleration = -15539;
 
-						if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+						if (_vehicleBreakdown == 0) {
 							vehicle->var_B8 &= ~(1 << 1);
 							vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						}
@@ -2706,7 +3250,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 			if (vehicle->velocity <= ride->lift_hill_speed * 31079) {
 				vehicle->acceleration = 15539;
 				if (vehicle->velocity != 0) {
-					if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+					if (_vehicleBreakdown == 0) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
 						vehicle->var_B8 &= ~(1 << 1);
 					}
@@ -2732,7 +3276,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 		return;
 
 	vehicle->status = VEHICLE_STATUS_ARRIVING;
-	vehicle->current_station = RCT2_GLOBAL(0x00F64E1C, uint8);
+	vehicle->current_station = _vehicleStationIndex;
 	vehicle_invalidate_window(vehicle);
 	vehicle->var_C0 = 0;
 
@@ -2745,8 +3289,9 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006D8C36
  */
-static void vehicle_update_arriving(rct_vehicle* vehicle) {
-	RCT2_GLOBAL(0x00F64E35, uint8) = 1;
+static void vehicle_update_arriving(rct_vehicle* vehicle)
+{
+	uint8 unkF64E35 = 1;
 	rct_ride* ride = get_ride(vehicle->ride);
 
 	switch (ride->mode) {
@@ -2778,8 +3323,10 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 		ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
 		ride->inspection_station == vehicle->current_station &&
-		ride->mechanic_status != RIDE_MECHANIC_STATUS_4)
-		RCT2_GLOBAL(0x00F64E35, uint8) = 0;
+		ride->mechanic_status != RIDE_MECHANIC_STATUS_4
+	) {
+		unkF64E35 = 0;
+	}
 
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -2801,7 +3348,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		else
 			velocity_diff /= 16;
 
-		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		if (unkF64E35 == 0) {
 			goto loc_6D8E36;
 		}
 
@@ -2829,7 +3376,7 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		else
 			velocity_diff /= 16;
 
-		if (RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		if (unkF64E35 == 0) {
 			goto loc_6D8E36;
 		}
 
@@ -2858,13 +3405,15 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
  loc_6D8E36:
 	flags = vehicle_update_track_motion(vehicle, NULL);
 	if (flags & (1 << 7) &&
-		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		unkF64E35 == 0
+	) {
 		vehicle_update_collision_setup(vehicle);
 		return;
 	}
 
 	if (flags & (1 << 0) &&
-		RCT2_GLOBAL(0x00F64E35, uint8) == 0) {
+		unkF64E35 == 0
+	) {
 		vehicle->status = VEHICLE_STATUS_DEPARTING;
 		vehicle->sub_state = 1;
 		vehicle_invalidate_window(vehicle);
@@ -2889,6 +3438,10 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		vehicle->track_y,
 		vehicle->track_z / 8
 		);
+
+	if (mapElement == NULL) {
+		return;
+	}
 
 	vehicle->current_station = map_get_station(mapElement);
 	vehicle->num_laps++;
@@ -3103,9 +3656,6 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 		}
 	}
 
-	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
 	if (vehicle->velocity <= 439800) {
 		vehicle->acceleration = 4398;
 	}
@@ -3122,7 +3672,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 	if (vehicle->sub_state == 2)
 		return;
 
-	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == RCT2_GLOBAL(0x00F64E1C, uint8))
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == _vehicleStationIndex)
 		return;
 
 	vehicle->sub_state = 2;
@@ -3172,8 +3722,8 @@ static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
 
 		vehicle->track_progress = 0;
 		vehicle->status = VEHICLE_STATUS_TRAVELLING;
-		unk_F64E20->x = x;
-		unk_F64E20->y = y;
+		unk_F64E20.x = x;
+		unk_F64E20.y = y;
 	}
 }
 
@@ -3183,24 +3733,24 @@ static void loc_6DA9F9(rct_vehicle *vehicle, int x, int y, int bx, int dx)
  */
 static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 {
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	_vehicleMotionTrackFlags = 0;
 	vehicle->velocity += vehicle->acceleration;
-	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
+	_vehicleVelocityF64E08 = vehicle->velocity;
+	_vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
 
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	if (vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_7 | VEHICLE_ENTRY_FLAG_B_8)) {
 		sub_6D63D4(vehicle);
 	}
 
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleUnkF64E10 = 1;
 	vehicle->acceleration = 0;
-	vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+	vehicle->remaining_distance += _vehicleVelocityF64E0C;
 	if (vehicle->remaining_distance >= 0x368A) {
 		vehicle->var_B8 &= ~(1 << 1);
-		unk_F64E20->x = vehicle->x;
-		unk_F64E20->y = vehicle->y;
-		unk_F64E20->z = vehicle->z;
+		unk_F64E20.x = vehicle->x;
+		unk_F64E20.y = vehicle->y;
+		unk_F64E20.z = vehicle->z;
 		vehicle_invalidate(vehicle);
 
 		for (;;) {
@@ -3286,8 +3836,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			}
 
 			int edi = (vehicle->sprite_direction | (vehicle->var_35 & 1)) & 0x1F;
-			x = vehicle->x + RCT2_ADDRESS(0x009A36C4, sint16)[edi * 4];
-			y = vehicle->y + RCT2_ADDRESS(0x009A36C6, sint16)[edi * 4];
+			x = vehicle->x + Unk9A36C4[edi].x;
+			y = vehicle->y + Unk9A36C4[edi].y;
 			z = vehicle->z;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, NULL)) {
 				vehicle->remaining_distance = 0;
@@ -3332,11 +3882,11 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 							break;
 						}
 						if (bp <= 16) {
-							x = unk_F64E20->x;
-							y = unk_F64E20->y + 1;
+							x = unk_F64E20.x;
+							y = unk_F64E20.y + 1;
 						} else {
-							x = unk_F64E20->x;
-							y = unk_F64E20->y - 1;
+							x = unk_F64E20.x;
+							y = unk_F64E20.y - 1;
 						}
 					} else {
 					// loc_6DA9A2:
@@ -3346,19 +3896,19 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 							break;
 						}
 						if (bp <= 16) {
-							x = unk_F64E20->x + 1;
-							y = unk_F64E20->y;
+							x = unk_F64E20.x + 1;
+							y = unk_F64E20.y;
 						} else {
-							x = unk_F64E20->x - 1;
-							y = unk_F64E20->y;
+							x = unk_F64E20.x - 1;
+							y = unk_F64E20.y;
 						}
 					}
 
 				// loc_6DA9D1:
 					vehicle->remaining_distance = 0;
 					if (!vehicle_update_motion_collision_detection(vehicle, x, y, vehicle->z, NULL)) {
-						unk_F64E20->x = x;
-						unk_F64E20->y = y;
+						unk_F64E20.x = x;
+						unk_F64E20.y = y;
 					}
 					break;
 				}
@@ -3366,19 +3916,19 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 				vehicle->track_y = dx;
 			}
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, uint32)[edi * 2];
-			unk_F64E20->x = x;
-			unk_F64E20->y = y;
+			vehicle->remaining_distance -= Unk9A36C4[edi].distance;
+			unk_F64E20.x = x;
+			unk_F64E20.y = y;
 			if (vehicle->remaining_distance < 0x368A) {
 				break;
 			}
-			RCT2_GLOBAL(0x00F64E10, uint32)++;
+			_vehicleUnkF64E10++;
 		}
 
 		sprite_move(
-			unk_F64E20->x,
-			unk_F64E20->y,
-			unk_F64E20->z,
+			unk_F64E20.x,
+			unk_F64E20.y,
+			unk_F64E20.z,
 			(rct_sprite*)vehicle
 		);
 		vehicle_invalidate(vehicle);
@@ -3410,8 +3960,8 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 		}
 		vehicle->acceleration = ecx;
 	}
-	// eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	// ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	// eax = _vehicleMotionTrackFlags;
+	// ebx = _vehicleStationIndex;
 }
 
  /**
@@ -3518,18 +4068,19 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2)
 			swingState += 4;
 	}
-	uint8* edi = RCT2_ADDRESS(0x0099F9D0, uint8*)[swingState];
-	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
+
+	const sint8 *spriteMap = SwingingTimeToSpriteMaps[swingState];
+	sint8 spriteType = spriteMap[vehicle->current_time + 1];
 
 	// 0x80 indicates that a complete swing has been
 	// completed and the next swing can start
-	if (al != 0x80) {
+	if (spriteType != -128) {
 		vehicle->current_time++;
-		if (al == vehicle->vehicle_sprite_type)
-			return;
-		// Used to know which sprite to draw
-		vehicle->vehicle_sprite_type = al;
-		vehicle_invalidate(vehicle);
+		if ((uint8)spriteType != vehicle->vehicle_sprite_type) {
+			// Used to know which sprite to draw
+			vehicle->vehicle_sprite_type = (uint8)spriteType;
+			vehicle_invalidate(vehicle);
+		}
 		return;
 	}
 
@@ -3568,7 +4119,7 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
  *  rct2: 0x006D9413
  */
 static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	rct_ride* ride = get_ride(vehicle->ride);
@@ -3652,12 +4203,12 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
  *  rct2: 0x006D94F2
  */
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A042C, uint8*)[vehicle->sub_state];
-
-	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
+	assert(vehicle->current_time >= -1);
+	assert(vehicle->current_time < MotionSimulatorTimeToSpriteMapCount);
+	uint8 al = MotionSimulatorTimeToSpriteMap[vehicle->current_time + 1];
 	if (al != 0xFF) {
 		vehicle->current_time++;
 		if (al == vehicle->vehicle_sprite_type)
@@ -3678,49 +4229,49 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006D92FF
  */
 static void vehicle_update_rotating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	rct_ride* ride = get_ride(vehicle->ride);
 	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	uint8* edi;
+	const uint8* timeToSpriteMap;
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1) {
-		edi = RCT2_ADDRESS(0x0099F0F4, uint8*)[vehicle->sub_state];
+		timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2) {
-		edi = RCT2_ADDRESS(0x009A2428, uint8*)[vehicle->sub_state];
+		timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
 	}
 	else {
-		edi = RCT2_ADDRESS(0x0099EB1C, uint8*)[vehicle->sub_state];
+		timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
 	}
 
-	sint32 var_4C = (sint16)vehicle->current_time;
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_CONTROL_FAILURE) {
-		var_4C += (ride->breakdown_sound_modifier >> 6) + 1;
+	sint32 time = (sint16)vehicle->current_time;
+	if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE) {
+		time += (ride->breakdown_sound_modifier >> 6) + 1;
 	}
-	var_4C++;
+	time++;
 
-	uint8 al = edi[(uint32)var_4C];
-	if (al != 0xFF) {
-		vehicle->current_time = (uint16)var_4C;
-		if (al == vehicle->vehicle_sprite_type)
+	uint8 sprite = timeToSpriteMap[(uint32)time];
+	if (sprite != 0xFF) {
+		vehicle->current_time = (uint16)time;
+		if (sprite == vehicle->vehicle_sprite_type)
 			return;
-		vehicle->vehicle_sprite_type = al;
+		vehicle->vehicle_sprite_type = sprite;
 		vehicle_invalidate(vehicle);
 		return;
 	}
 
 	vehicle->current_time = -1;
 	vehicle->var_CE++;
-	if (RCT2_GLOBAL(0x00F64E34, uint8) != BREAKDOWN_CONTROL_FAILURE) {
+	if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			al = vehicle->var_CE + 1;
+			sprite = vehicle->var_CE + 1;
 			if (ride->type == RIDE_TYPE_ENTERPRISE)
-				al += 9;
+				sprite += 9;
 
-			if (al < ride->rotations)
+			if (sprite < ride->rotations)
 				shouldStop = false;
 		}
 
@@ -3755,26 +4306,24 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006D97CB
  */
-static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+static void vehicle_update_space_rings_operating(rct_vehicle *vehicle)
+{
+	if (_vehicleBreakdown == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A0ACC, uint8*)[vehicle->sub_state];
-
-	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
-	if (al != 0xFF) {
+	uint8 spriteType = SpaceRingsTimeToSpriteMap[vehicle->current_time + 1];
+	if (spriteType != 255) {
 		vehicle->current_time++;
-		if (al == vehicle->vehicle_sprite_type)
-			return;
-		vehicle->vehicle_sprite_type = al;
-		vehicle_invalidate(vehicle);
-		return;
+		if (spriteType != vehicle->vehicle_sprite_type) {
+			vehicle->vehicle_sprite_type = spriteType;
+			vehicle_invalidate(vehicle);
+		}
+	} else {
+		vehicle->status = VEHICLE_STATUS_ARRIVING;
+		vehicle_invalidate_window(vehicle);
+		vehicle->sub_state = 0;
+		vehicle->var_C0 = 0;
 	}
-
-	vehicle->status = VEHICLE_STATUS_ARRIVING;
-	vehicle_invalidate_window(vehicle);
-	vehicle->sub_state = 0;
-	vehicle->var_C0 = 0;
 }
 
 /**
@@ -3782,11 +4331,11 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006D9641
  */
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	if (vehicle->vehicle_sprite_type != 0) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1) {
+		if (gCurrentTicks & 1) {
 			vehicle->vehicle_sprite_type++;
 			vehicle_invalidate(vehicle);
 
@@ -3795,10 +4344,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 		}
 	}
 
-	uint16* edi = RCT2_ADDRESS(0x009A0ABC, uint16*)[vehicle->sub_state];
-
-	uint16 ax = *edi;
-	if ((uint16)(vehicle->current_time + 1) > ax) {
+	if (vehicle->current_time + 1 > 1500) {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
 		vehicle_invalidate_window(vehicle);
 		vehicle->sub_state = 0;
@@ -3852,7 +4398,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006d9781
  */
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	if ((uint16)(vehicle->current_time + 1) >  RideCrookedHouseLength[vehicle->sub_state]) {
@@ -3871,19 +4417,18 @@ static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle) {
  *  rct2: 0x006D9547
  */
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
-	uint8* edi = RCT2_ADDRESS(0x009A12E0, uint8*)[vehicle->sub_state];
-
-	uint8 al = edi[(vehicle->current_time + 1) * 2];
+	const top_spin_time_to_sprite_map * edi = TopSpinTimeToSpriteMaps[vehicle->sub_state];
+	uint8 al = edi[vehicle->current_time + 1].arm_rotation;
 	if (al != 0xFF) {
 		vehicle->current_time = vehicle->current_time + 1;
 		if (al != vehicle->vehicle_sprite_type) {
 			vehicle->vehicle_sprite_type = al;
 			vehicle_invalidate(vehicle);
 		}
-		al = edi[vehicle->current_time * 2 + 1];
+		al = edi[vehicle->current_time].bank_rotation;
 		if (al != vehicle->bank_rotation) {
 			vehicle->bank_rotation = al;
 			vehicle_invalidate(vehicle);
@@ -3905,7 +4450,7 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
 {
 	int currentTime, totalTime;
 
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
 	totalTime = RideFilmLength[vehicle->sub_state];
@@ -3927,14 +4472,11 @@ static void vehicle_update_showing_film(rct_vehicle *vehicle)
  */
 static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
 {
-	int currentTime, totalTime;
-
-	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
+	if (_vehicleBreakdown == 0)
 		return;
 
-	totalTime = *(RCT2_ADDRESS(0x009A0AB4, uint16*)[vehicle->sub_state]);
-	currentTime = vehicle->current_time + 1;
-	if (currentTime <= totalTime) {
+	int currentTime = vehicle->current_time + 1;
+	if (currentTime <= 5000) {
 		vehicle->current_time = currentTime;
 	} else {
 		vehicle->status = VEHICLE_STATUS_ARRIVING;
@@ -3996,7 +4538,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 	}
 
 	rct_ride* ride = get_ride(vehicle->ride);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = numFatalities;
+	set_format_arg(0, uint16, numFatalities);
 
 	uint8 crashType = numFatalities == 0 ?
 		RIDE_CRASH_TYPE_NO_FATALITIES :
@@ -4006,12 +4548,12 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		ride->last_crash_type = crashType;
 
 	if (numFatalities != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
+		set_format_arg(2, rct_string_id, ride->name);
+		set_format_arg(4, uint32, ride->name_arguments);
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
-		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {
-			RCT2_GLOBAL(0x135882E, uint16) += 200;
+		if (gParkRatingCasualtyPenalty < 500) {
+			gParkRatingCasualtyPenalty += 200;
 		}
 	}
 
@@ -4028,8 +4570,8 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		for (uint8 i = 0; i < curVehicle->num_peeps; i++) {
 			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
 			if (peep->outside_of_park == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-				RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |=
+				gNumGuestsInPark--;
+				gToolbarDirtyFlags |=
 					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 			}
 			ride->num_riders--;
@@ -4071,8 +4613,8 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	vehicle->sub_state = 2;
 	audio_play_sound_at_location(SOUND_CRASH, vehicle->x, vehicle->y, vehicle->z);
 
-	sprite_misc_3_create(vehicle->x, vehicle->y, vehicle->z);
-	sprite_misc_5_create(vehicle->x, vehicle->y, vehicle->z);
+	sprite_misc_explosion_cloud_create(vehicle->x, vehicle->y, vehicle->z);
+	sprite_misc_explosion_flare_create(vehicle->x, vehicle->y, vehicle->z);
 
 	uint8 numParticles = min(vehicle->sprite_width, 7);
 
@@ -4157,11 +4699,11 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 			if (curVehicle->var_4E <= 96) {
 				curVehicle->var_4E++;
 				if ((scenario_rand() & 0xFFFF) <= 0x1555) {
-					sprite_misc_3_create(
+					sprite_misc_explosion_cloud_create(
 						curVehicle->x + ((scenario_rand() & 2) - 1),
 						curVehicle->y + ((scenario_rand() & 2) - 1),
 						curVehicle->z
-						);
+					);
 				}
 			}
 			if (curVehicle->var_C8 + 7281 > 0xFFFF) {
@@ -4259,7 +4801,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	switch (vehicleEntry->sound_range) {
 	case 3:
 		screamId = vehicle->scream_sound_id;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if (!(gCurrentTicks & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
@@ -4275,7 +4817,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
 	case 4:
 		screamId = vehicle->scream_sound_id;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if (!(gCurrentTicks & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
@@ -4320,7 +4862,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
 
 	{
-		int ebx = RCT2_ADDRESS(0x009A3684, sint16)[vehicle->sprite_direction];
+		int ebx = word_9A3684[vehicle->sprite_direction];
 		int eax = ((vehicle->velocity >> 14) * ebx) >> 14;
 		eax = clamp(-127, eax, 127);
 
@@ -4353,7 +4895,7 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 
 		spriteIndex = vehicle->sprite_index;
 		do {
-			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+			vehicle2 = &(get_sprite(spriteIndex)->vehicle);
 			if (vehicle2->vehicle_sprite_type < 1)
 				continue;
 			if (vehicle2->vehicle_sprite_type <= 4)
@@ -4371,7 +4913,7 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 
 	spriteIndex = vehicle->sprite_index;
 	do {
-		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
+		vehicle2 = &(get_sprite(spriteIndex)->vehicle);
 		if (vehicle2->vehicle_sprite_type < 5)
 			continue;
 		if (vehicle2->vehicle_sprite_type <= 8)
@@ -4417,8 +4959,8 @@ produceScream:
  */
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 {
-	int gForceVert = (((sint64)0x280000) * RCT2_ADDRESS(0x009A37E4, sint32)[vehicle->vehicle_sprite_type]) >> 32;
-	gForceVert = (((sint64)gForceVert) * RCT2_ADDRESS(0x009A39C4, sint32)[vehicle->bank_rotation]) >> 32;
+	int gForceVert = (((sint64)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
+	gForceVert = (((sint64)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
 	int lateralFactor = 0, vertFactor = 0;
 
 	// Note shr has meant some of the below functions cast a known negative number to
@@ -4947,17 +5489,19 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
 			break;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1165;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = vehicleIndex + 1;
+	set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+	set_map_tooltip_format_arg(2, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
+	set_map_tooltip_format_arg(4, rct_string_id, ride->name);
+	set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
+	set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
+	set_map_tooltip_format_arg(12, uint16, vehicleIndex + 1);
 
-	int arg0, arg1;
-	ride_get_status(vehicle->ride, &arg0, &arg1);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = (uint16)arg1;
+	rct_string_id formatSecondary;
+	int arg1;
+	ride_get_status(vehicle->ride, &formatSecondary, &arg1);
+	set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
+	// TODO: odd cast
+	set_map_tooltip_format_arg(16, uint32, (uint16)arg1);
 }
 
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)
@@ -4995,7 +5539,7 @@ int vehicle_is_used_in_pairs(rct_vehicle *vehicle)
  *  rct2: 0x006DA44E
  */
 static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	_vehicleMotionTrackFlags = 0;
 	rct_ride* ride = get_ride(vehicle->ride);
 
 	sint32 nextVelocity = vehicle->velocity + vehicle->acceleration;
@@ -5005,14 +5549,14 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	}
 	vehicle->velocity = nextVelocity;
 
-	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity / 1024) * 42;
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleVelocityF64E08 = nextVelocity;
+	_vehicleVelocityF64E0C = (nextVelocity / 1024) * 42;
+	_vehicleUnkF64E10 = 1;
 
 	vehicle->acceleration = 0;
 	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) ||
 		ride->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1 &&
+		if (gCurrentTicks & 1 &&
 			vehicle->var_34 != 0) {
 
 			if (vehicle->var_34 > 0) {
@@ -5048,10 +5592,10 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			.z = vehicle->z
 		};
 
-		location.x += RCT2_ADDRESS(0x009A36C4, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36C6, sint16)[oldC4 * 4];
-		location.x += RCT2_ADDRESS(0x009A36CC, sint16)[oldC4 * 4];
-		location.y += RCT2_ADDRESS(0x009A36CE, sint16)[oldC4 * 4];
+		location.x += Unk9A36C4[oldC4].x;
+		location.y += Unk9A36C4[oldC4].y;
+		location.x += Unk9A36C4[oldC4 + 1].x;
+		location.y += Unk9A36C4[oldC4 + 1].y;
 
 		if (!vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite)) {
 			vehicle_invalidate(vehicle);
@@ -5065,14 +5609,13 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		}
 	}
 
-	vehicle->remaining_distance += RCT2_GLOBAL(0x00F64E0C, sint32);
+	vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
 	if (vehicle->remaining_distance >= 13962) {
 		vehicle->var_B8 &= ~(1 << 1);
-		rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
-		unk_F64E20->x = vehicle->x;
-		unk_F64E20->y = vehicle->y;
-		unk_F64E20->z = vehicle->z;
+		unk_F64E20.x = vehicle->x;
+		unk_F64E20.y = vehicle->y;
+		unk_F64E20.z = vehicle->z;
 
 		vehicle_invalidate(vehicle);
 
@@ -5081,20 +5624,20 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 			uint8 direction = vehicle->sprite_direction;
 			direction |= vehicle->var_35 & 1;
 
-			rct_xyz16 location = *unk_F64E20;
-			location.x += RCT2_ADDRESS(0x009A36C4, sint16)[direction * 4];
-			location.y += RCT2_ADDRESS(0x009A36C6, sint16)[direction * 4];
+			rct_xyz16 location = unk_F64E20;
+			location.x += Unk9A36C4[direction].x;
+			location.y += Unk9A36C4[direction].y;
 
 			if (vehicle_update_bumper_car_collision(vehicle, location.x, location.y, &collideSprite))
 				break;
 
-			vehicle->remaining_distance -= RCT2_ADDRESS(0x009A36C8, sint16)[direction * 4];
-			unk_F64E20->x = location.x;
-			unk_F64E20->y = location.y;
+			vehicle->remaining_distance -= Unk9A36C4[direction].distance;
+			unk_F64E20.x = location.x;
+			unk_F64E20.y = location.y;
 			if (vehicle->remaining_distance < 13962) {
 				break;
 			}
-			RCT2_GLOBAL(0x00F64E10, uint32)++;
+			_vehicleUnkF64E10++;
 		}
 
 		if (vehicle->remaining_distance >= 13962) {
@@ -5122,9 +5665,9 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 		}
 
 		sprite_move(
-			unk_F64E20->x,
-			unk_F64E20->y,
-			unk_F64E20->z,
+			unk_F64E20.x,
+			unk_F64E20.y,
+			unk_F64E20.z,
 			(rct_sprite*)vehicle
 			);
 		vehicle_invalidate(vehicle);
@@ -5143,7 +5686,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 		vehicle->acceleration = -eax;
-		return RCT2_GLOBAL(0x00F64E18, uint32);
+		return _vehicleMotionTrackFlags;
 	}
 
 	sint32 ebx = (vehicle->speed * vehicle->friction) >> 2;
@@ -5156,7 +5699,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	_eax /= ebx;
 
 	vehicle->acceleration = _eax - eax;
-	return RCT2_GLOBAL(0x00F64E18, uint32);
+	return _vehicleMotionTrackFlags;
 }
 
 
@@ -5170,10 +5713,10 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;
 
-	sint16 rideLeft = vehicle->track_x + RCT2_ADDRESS(0x0099E228, uint8)[trackType * 4];
-	sint16 rideRight = vehicle->track_x + RCT2_ADDRESS(0x0099E22A, uint8)[trackType * 4];
-	sint16 rideTop = vehicle->track_y + RCT2_ADDRESS(0x0099E229, uint8)[trackType * 4];
-	sint16 rideBottom = vehicle->track_y + RCT2_ADDRESS(0x0099E22B, uint8)[trackType * 4];
+	sint16 rideLeft = vehicle->track_x + DodgemsTrackSize[trackType].left;
+	sint16 rideRight = vehicle->track_x + DodgemsTrackSize[trackType].right;
+	sint16 rideTop = vehicle->track_y + DodgemsTrackSize[trackType].top;
+	sint16 rideBottom = vehicle->track_y + DodgemsTrackSize[trackType].bottom;
 
 	if (x - bp < rideLeft ||
 		y - bp < rideTop ||
@@ -5184,14 +5727,18 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		return true;
 	}
 
-	uint16 location = (y / 32) | ((x / 32) << 8);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
 
 
 	uint8 rideIndex = vehicle->ride;
-	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
-		uint16 spriteIdx = RCT2_ADDRESS(0xF1EF60, uint16)[location];
-		for (rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx); spriteIdx != 0xFFFF; spriteIdx = vehicle2->next_in_quadrant) {
-			vehicle2 = GET_VEHICLE(spriteIdx);
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		uint16 spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
+		while (spriteIdx != 0xFFFF) {
+			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
+			spriteIdx = vehicle2->next_in_quadrant;
 
 			if (vehicle2 == vehicle)
 				continue;
@@ -5219,14 +5766,10 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 				return true;
 			}
 		}
-		location += *ebp;
 	}
 
 	return false;
 }
-
-// rct2: 0x009A2970
-const sint32 *dword_9A2970 = (sint32*)0x009A2970;
 
 /**
  *
@@ -5254,7 +5797,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->vehicle_sprite_type != 8) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	} else if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_2) {
@@ -5274,17 +5817,66 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 			}
 
 			if (vehicle->vehicle_sprite_type != 8 && vehicle->vehicle_sprite_type != 55) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
 	}
 }
 
 /**
+ * Modifies the train's velocity to match the block-brake fixed velocity.
+ * This function must be called when the car is running through a non-stopping
+ * state block-brake (precondition), which means that the block brake is acting
+ * merely as a velocity regulator, in a closed state. When the brake is open, it
+ * boosts the train to the speed limit
+ */
+static void apply_non_stop_block_brake(rct_vehicle *vehicle, bool block_brake_closed) {
+	if (vehicle->velocity >= 0) {
+		// If the vehicle is below the speed limit
+		if (vehicle->velocity <= 0x20364) {
+			// Boost it to the fixed block brake speed
+			vehicle->velocity = 0x20364;
+			vehicle->acceleration = 0;
+		} else if(block_brake_closed){
+			// Slow it down till the fixed block brake speed
+			vehicle->velocity -= vehicle->velocity >> 4;
+			vehicle->acceleration = 0;
+		}
+	}
+}
+
+/**
+ *
+ * Modifies the train's velocity influenced by a block brake
+ */
+static void apply_block_brakes(rct_vehicle *vehicle, bool is_block_brake_closed)
+{
+	// If the site is in a "train blocking" state
+	if (is_block_brake_closed) {
+		// Slow it down till completely stop the car
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+		vehicle->acceleration = 0;
+		// If the vehicle is slow enough, stop it. If not, slow it down
+		if (vehicle->velocity <= 0x20000) {
+			vehicle->velocity = 0;
+		} else {
+			vehicle->velocity -= vehicle->velocity >> 3;
+		}
+	} else {
+#ifdef NEW_BLOCK_BRAKES
+		apply_non_stop_block_brake(vehicle, false);
+#else
+		apply_non_stop_block_brake(vehicle, true);
+#endif
+	}
+}
+
+
+/**
  *
  *  rct2: 0x006DAC43
  */
-static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
+static void check_and_apply_block_section_stop_site(rct_vehicle *vehicle)
 {
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
@@ -5292,7 +5884,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 	// Is chair lift type
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
 		sint32 velocity = ride->speed << 16;
-		if (RCT2_GLOBAL(0x00F64E34, uint8) == 0) {
+		if (_vehicleBreakdown == 0) {
 			velocity = 0;
 		}
 		vehicle->velocity = velocity;
@@ -5300,25 +5892,6 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 	}
 
 	int trackType = vehicle->track_type >> 2;
-	switch (trackType) {
-	case TRACK_ELEM_END_STATION:
-	case TRACK_ELEM_BLOCK_BRAKES:
-		if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
-	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_CABLE_LIFT_HILL:
-	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		if (ride_is_block_sectioned(ride)) {
-			break;
-		}
-		return;
-	default:
-		return;
-	}
 
 	rct_map_element *trackElement =  map_get_track_element_at_of_type(
 		vehicle->track_x,
@@ -5326,29 +5899,37 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 		vehicle->track_z >> 3,
 		trackType
 	);
-	if (trackType == TRACK_ELEM_END_STATION) {
-		if (trackElement->flags & (1 << 5)) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		}
-	} else if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackType == TRACK_ELEM_BLOCK_BRAKES || track_element_is_lift_hill(trackElement)) {
-		if (!(trackElement->flags & (1 << 5))) {
-			if (trackType == TRACK_ELEM_BLOCK_BRAKES && vehicle->velocity >= 0) {
-				if (vehicle->velocity <= 0x20364) {
-					vehicle->velocity = 0x20364;
-					vehicle->acceleration = 0;
-				} else {
-					vehicle->velocity -= vehicle->velocity >> 4;
-					vehicle->acceleration = 0;
+
+	if (trackElement == NULL) {
+		return;
+	}
+
+	switch (trackType) {
+	case TRACK_ELEM_BLOCK_BRAKES:
+		if (ride_is_block_sectioned(ride))
+			apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
+		else
+			apply_non_stop_block_brake(vehicle, true);
+
+		break;
+	case TRACK_ELEM_END_STATION:
+		if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+
+		break;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_CABLE_LIFT_HILL:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		if(ride_is_block_sectioned(ride)){
+			if(trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement)) {
+				if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) {
+					apply_block_brakes(vehicle, true);
 				}
 			}
-			return;
 		}
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
-		vehicle->acceleration = 0;
-		if (vehicle->velocity <= 0x20000) {
-			vehicle->velocity = 0;
-		}
-		vehicle->velocity -= vehicle->velocity >> 3;
+		break;
 	}
 }
 
@@ -5356,7 +5937,7 @@ static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DADAE
  */
-static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
+static void update_velocity(rct_vehicle *vehicle)
 {
 	sint32 nextVelocity = vehicle->acceleration + vehicle->velocity;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7) {
@@ -5374,8 +5955,8 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 	}
 	vehicle->velocity = nextVelocity;
 
-	RCT2_GLOBAL(0x00F64E08, sint32) = nextVelocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (nextVelocity >> 10) * 42;
+	_vehicleVelocityF64E08 = nextVelocity;
+	_vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
 static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehicle, rct_map_element *mapElement)
@@ -5383,13 +5964,17 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 	int x = vehicle->track_x;
 	int y = vehicle->track_y;
 	int z = vehicle->track_z;
-	track_begin_end trackBeginEnd;
+	track_begin_end trackBeginEnd, slowTrackBeginEnd;
+	rct_map_element slowMapElement = *mapElement;
+	bool counter = true;
+	int slowX = x;
+	int slowY = y;
 	do {
 		if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 			return;
 		}
-		if (trackBeginEnd.begin_x == vehicle->track_x && 
-			trackBeginEnd.begin_y == vehicle->track_y && 
+		if (trackBeginEnd.begin_x == vehicle->track_x &&
+			trackBeginEnd.begin_y == vehicle->track_y &&
 			mapElement == trackBeginEnd.begin_element) {
 			return;
 		}
@@ -5398,6 +5983,21 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 		y = trackBeginEnd.end_y;
 		z = trackBeginEnd.begin_z;
 		mapElement = trackBeginEnd.begin_element;
+
+		//#2081: prevent infinite loop
+		counter = !counter;
+		if (counter) {
+			track_block_get_previous(slowX, slowY, &slowMapElement, &slowTrackBeginEnd);
+			slowX = slowTrackBeginEnd.end_x;
+			slowY = slowTrackBeginEnd.end_y;
+			slowMapElement = *(slowTrackBeginEnd.begin_element);
+			if (slowX == x &&
+				slowY == y &&
+				slowMapElement.base_height == mapElement->base_height &&
+				slowMapElement.type == mapElement->type ) {
+				return;
+			}
+		}
 	} while (!track_element_is_block_start(trackBeginEnd.begin_element));
 
 	// Get the start of the track block instead of the end
@@ -5408,7 +6008,7 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 	if (mapElement == NULL) {
 		return;
 	}
-	mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
+	mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
 	map_invalidate_element(x, y, mapElement);
 
 	int trackType = mapElement->properties.track.type;
@@ -5539,7 +6139,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
  */
 static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 {
-	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	sint32 dword_F64E08 = _vehicleVelocityF64E08;
 	vehicle->var_4E += (-vehicle->swinging_car_var_0) >> 6;
 	int swingAmount = vehicle_get_swing_amount(vehicle);
 	if (swingAmount < 0) {
@@ -5629,7 +6229,7 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 									if (ax >= -2730) {
 										bl = 4;
 										if (ax <= 2730) {
-											ax = 1;
+											bl = 1;
 											if (ax >= -910) {
 												bl = 2;
 												if (ax <= 910) {
@@ -5946,7 +6546,7 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int spinningInertia = vehicleEntry->spinning_inertia;
 	int trackType = vehicle->track_type >> 2;
-	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
+	sint32 dword_F64E08 = _vehicleVelocityF64E08;
 	int unk;
 	switch (off_9A2E84[trackType]) {
 	case loc_6D665A:
@@ -6027,12 +6627,15 @@ static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 	rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
 	if (mapElement != NULL && z > mapElement->base_height * 8) {
 		rct_steam_particle *steam = (rct_steam_particle*)create_sprite(2);
+		if (steam == NULL)
+			return;
+
 		steam->sprite_width = 20;
 		steam->sprite_height_negative = 18;
 		steam->sprite_height_positive = 16;
 		steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		steam->misc_identifier = SPRITE_MISC_STEAM_PARTICLE;
-		steam->var_26 = 256;
+		steam->frame = 256;
 		steam->var_24 = 0;
 		sprite_move(x, y, z, (rct_sprite*)steam);
 	}
@@ -6051,7 +6654,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	switch (vehicleEntry->var_11) {
 	case 1: // loc_6D652B
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 20) & 3;
 		if (vehicle->var_C5 != al) {
 			ah = al;
@@ -6083,7 +6686,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 2: // loc_6D6424
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 18) & 2;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6091,7 +6694,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 3: // loc_6D6482
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		eax = ((*var_C8 >> 13) & 0xFF) * 6;
 		ah = (eax >> 8) & 0xFF;
 		if (vehicle->var_C5 != ah) {
@@ -6100,7 +6703,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 4: // loc_6D64F7
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		eax = ((*var_C8 >> 13) & 0xFF) * 7;
 		ah = (eax >> 8) & 0xFF;
 		if (vehicle->var_C5 != ah) {
@@ -6109,7 +6712,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 5: // loc_6D6453
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 19) & 1;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6127,7 +6730,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 7: // loc_6D63F5
-		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+		*var_C8 += _vehicleVelocityF64E08;
 		al = (*var_C8 >> 18) & 3;
 		if (vehicle->var_C5 != al) {
 			vehicle->var_C5 = al;
@@ -6136,7 +6739,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		break;
 	case 8: // loc_6D64B6
 		if (vehicle->num_peeps != 0) {
-			*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
+			*var_C8 += _vehicleVelocityF64E08;
 			eax = ((*var_C8 >> 13) & 0xFF) << 2;
 			ah = (eax >> 8) & 0xFF;
 			if (vehicle->var_C5 != ah) {
@@ -6152,9 +6755,9 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 			} else {
 				vehicle->var_C8 += 0x3333;
 
-				if (vehicle->seat_rotation >= vehicle->target_seat_rotation) 
+				if (vehicle->seat_rotation >= vehicle->target_seat_rotation)
 					vehicle->seat_rotation--;
-				
+
 				else
 					vehicle->seat_rotation++;
 
@@ -6172,7 +6775,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
  */
 static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -6188,7 +6791,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_e
  */
 static void vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorCloseSoundIds[doorSoundType - 1];
@@ -6243,18 +6846,18 @@ static bool loc_6DB38B(rct_vehicle *vehicle, rct_map_element *mapElement)
 
 	// Get vangle
 	int trackType = mapElement->properties.track.type;
-	int vangleStart = gTrackDefinitions[trackType].vangle_start;
+	int vangleStart = TrackDefinitions[trackType].vangle_start;
 
-	// ?
-	uint16 angleAndBank = vangleStart | (bankStart << 8);
-	if (angleAndBank != RCT2_GLOBAL(0x00F64E36, uint16)) {
+	if (vangleStart != _vehicleVAngleEndF64E36 ||
+		bankStart != _vehicleBankEndF64E37
+	) {
 		return false;
 	}
 
 	return true;
 }
 
-void loc_6DB481(rct_vehicle *vehicle)
+static void loc_6DB481(rct_vehicle *vehicle)
 {
 	uint16 probability = 0x8000;
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6) {
@@ -6317,15 +6920,15 @@ static void sub_6DEDE8(rct_vehicle *vehicle)
 
 static void vehicle_update_play_water_splash_sound()
 {
-	if (RCT2_GLOBAL(0x00F64E08, sint32) <= 0x20364) {
+	if (_vehicleVelocityF64E08 <= 0x20364) {
 		return;
 	}
 
 	audio_play_sound_at_location(
 		SOUND_WATER_SPLASH,
-		unk_F64E20->x,
-		unk_F64E20->y,
-		unk_F64E20->z
+		unk_F64E20.x,
+		unk_F64E20.y,
+		unk_F64E20.z
 	);
 }
 
@@ -6385,6 +6988,8 @@ static void sub_6DB807(rct_vehicle *vehicle)
 	sprite_move(x, y, z, (rct_sprite*)vehicle);
 }
 
+extern const rct_xy16 duck_move_offset[4];
+
 /**
  * Collision Detection
  *  rct2: 0x006DD078
@@ -6433,14 +7038,16 @@ static bool vehicle_update_motion_collision_detection(
 		return true;
 	}
 
-	uint16 eax = ((x / 32) << 8) + (y / 32);
-	// TODO change to using a better technique
-	uint32* ebp = RCT2_ADDRESS(0x009A37C4, uint32);
+	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
+
 	bool mayCollide = false;
 	uint16 collideId = 0xFFFF;
 	rct_vehicle* collideVehicle = NULL;
-	for(; ebp <= RCT2_ADDRESS(0x009A37E4, uint32); ebp++){
-		collideId = RCT2_ADDRESS(0x00F1EF60, uint16)[eax];
+	for (int i = 0; i < countof(Unk9A37C4); i++) {
+		location.x += Unk9A37C4[i].x;
+		location.y += Unk9A37C4[i].y;
+
+		collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
@@ -6450,6 +7057,8 @@ static bool vehicle_update_motion_collision_detection(
 			sint32 z_diff = abs(collideVehicle->z - z);
 
 			if (z_diff > 16) continue;
+
+			if (collideVehicle->ride_subtype == RIDE_TYPE_NULL) continue;
 
 			rct_ride_entry_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
 
@@ -6483,8 +7092,10 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (direction < 0x14) continue;
 
-			uint32 next_x_diff = abs(x + RCT2_ADDRESS(0x009A3B04, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->x);
-			uint32 next_y_diff = abs(y + RCT2_ADDRESS(0x009A3B06, sint16)[((4 + vehicle->sprite_direction) >> 3) * 2] - collideVehicle->y);
+			uint32 offsetSpriteDirection = (vehicle->sprite_direction + 4) & 31;
+			uint32 offsetDirection = offsetSpriteDirection >> 3;
+			uint32 next_x_diff = abs(x + duck_move_offset[offsetDirection].x - collideVehicle->x);
+			uint32 next_y_diff = abs(y + duck_move_offset[offsetDirection].y - collideVehicle->y);
 
 			if (next_x_diff + next_y_diff < x_diff + y_diff){
 				mayCollide = true;
@@ -6495,9 +7106,6 @@ static bool vehicle_update_motion_collision_detection(
 		if (mayCollide == true) {
 			break;
 		}
-
-		// TODO change this
-		eax += *ebp;
 	}
 
 	if (mayCollide == false) {
@@ -6574,35 +7182,43 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DBF3E
  */
-void sub_6DBF3E(rct_vehicle *vehicle)
+static void sub_6DBF3E(rct_vehicle *vehicle)
 {
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-	vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / RCT2_GLOBAL(0x00F64E10, sint32));
+	vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / _vehicleUnkF64E10);
 	if (vehicle->var_CD == 2) {
 		return;
 	}
 
 	int trackType = vehicle->track_type >> 2;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		return;
 	}
 
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
-		vehicle->track_x,
-		vehicle->track_y,
-		vehicle->track_z >> 3,
-		trackType,
-		0
-	);
-	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
-		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
+	rct_map_element *mapElement = NULL;
+	if (map_is_location_valid(vehicle->track_x, vehicle->track_y)) {
+		mapElement = map_get_track_element_at_of_type_seq(
+			vehicle->track_x,
+			vehicle->track_y,
+			vehicle->track_z >> 3,
+			trackType,
+			0
+		);
+	}
+
+	if (mapElement == NULL) {
+		return;
+	}
+
+	if (_vehicleStationIndex == 0xFF) {
+		_vehicleStationIndex = (mapElement->properties.track.sequence >> 4) & 7;
 	}
 
 	if (trackType == TRACK_ELEM_TOWER_BASE &&
-		vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+		vehicle == gCurrentVehicle
 	) {
 		if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)) {
 			rct_xy_element input, output;
@@ -6612,25 +7228,25 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 			input.y = vehicle->track_y;
 			input.element = mapElement;
 			if (!track_block_get_next(&input, &output, &outputZ, &outputDirection)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
 			}
 		}
 
 		if (vehicle->track_progress <= 3) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 
 	if (trackType != TRACK_ELEM_END_STATION ||
-		vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)
+		vehicle != gCurrentVehicle
 	) {
 		return;
 	}
 
 	uint16 ax = vehicle->track_progress;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		if (ax <= 22) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	} else {
 		uint16 cx = 17;
@@ -6642,7 +7258,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		}
 
 		if (ax > cx) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 		}
 	}
 }
@@ -6651,11 +7267,11 @@ void sub_6DBF3E(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DB08C
  */
-bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
-	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
+	_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x,
 		vehicle->track_y,
@@ -6663,13 +7279,18 @@ bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, ui
 		trackType,
 		0
 		);
-	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
+
+	if (mapElement == NULL) {
+		return false;
+	}
+
+	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == gCurrentVehicle) {
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
 
 	if (track_element_is_block_start(mapElement)) {
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED;
+			mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
 			if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION) {
 				if (!(rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 					audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
@@ -6821,22 +7442,21 @@ loc_6DB41D:
  *
  *  rct2: 0x006DAEB9
  */
-bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
 	regs.cx = vehicle->track_type >> 2;
-
 	int trackType = vehicle->track_type >> 2;
 	if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN) {
 		if (vehicle->track_progress == 80) {
 			vehicle->vehicle_type ^= 1;
 			vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 		}
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0x40000) {
-			vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 8;
+		if (_vehicleVelocityF64E08 >= 0x40000) {
+			vehicle->acceleration = -_vehicleVelocityF64E08 * 8;
 		}
-		else if (RCT2_GLOBAL(0x00F64E08, sint32) < 0x20000) {
+		else if (_vehicleVelocityF64E08 < 0x20000) {
 			vehicle->acceleration = 0x50000;
 		}
 	}
@@ -6847,12 +7467,12 @@ loc_6DAEB9:
 			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
 			)) {
 			regs.eax = vehicle->break_speed << 16;
-			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
-				vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+			if (regs.eax < _vehicleVelocityF64E08) {
+				vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
 			}
-			else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x0F)) {
-				if (RCT2_GLOBAL(0x00F64E2C, uint8) == 0) {
-					RCT2_GLOBAL(0x00F64E2C, uint8)++;
+			else if (!(gCurrentTicks & 0x0F)) {
+				if (_vehicleF64E2C == 0) {
+					_vehicleF64E2C++;
 					audio_play_sound_at_location(SOUND_51, vehicle->x, vehicle->y, vehicle->z);
 				}
 			}
@@ -6862,13 +7482,13 @@ loc_6DAEB9:
 	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
 		(trackType == TRACK_ELEM_POWERED_LIFT)
 		) {
-		vehicle->acceleration = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 7, uint8) << 16;
+		vehicle->acceleration = RideProperties[ride->type].acceleration << 16;
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {
 			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)) {
 				if (vehicle->track_progress >= 8) {
-					vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
+					vehicle->acceleration = -_vehicleVelocityF64E08 * 16;
 					if (vehicle->track_progress >= 24) {
 						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
 						vehicle->vertical_drop_countdown = 90;
@@ -6898,7 +7518,7 @@ loc_6DAEB9:
 		);
 
 	// Track Total Progress is in the two bytes before the move info list
-	uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+	uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 	if (regs.ax >= trackTotalProgress) {
 		if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry)) {
 			goto loc_6DB94A;
@@ -6917,13 +7537,13 @@ loc_6DAEB9:
 		);
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
-	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	sint16 z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	trackType = vehicle->track_type >> 2;
 	regs.ebx = 0;
-	if (x != unk_F64E20->x) { regs.ebx |= 1; }
-	if (y != unk_F64E20->y) { regs.ebx |= 2; }
-	if (z != unk_F64E20->z) { regs.ebx |= 4; }
+	if (x != unk_F64E20.x) { regs.ebx |= 1; }
+	if (y != unk_F64E20.y) { regs.ebx |= 2; }
+	if (z != unk_F64E20.z) { regs.ebx |= 4; }
 	if (vehicle->var_CD == 15 &&
 		(trackType == TRACK_ELEM_LEFT_REVERSER ||
 			trackType == TRACK_ELEM_RIGHT_REVERSER) &&
@@ -6950,11 +7570,11 @@ loc_6DAEB9:
 	}
 
 	// loc_6DB8A5
-	regs.ebx = RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
+	regs.ebx = dword_9A2930[regs.ebx];
 	vehicle->remaining_distance -= regs.ebx;
-	unk_F64E20->x = x;
-	unk_F64E20->y = y;
-	unk_F64E20->z = z;
+	unk_F64E20.x = x;
+	unk_F64E20.y = y;
+	unk_F64E20.z = z;
 	vehicle->sprite_direction = moveInfo->direction;
 	vehicle->bank_rotation = moveInfo->bank_rotation;
 	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -6968,8 +7588,8 @@ loc_6DAEB9:
 	}
 
 	// vehicle == frontVehicle
-	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+	if (vehicle == _vehicleFrontVehicle) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->prev_vehicle_on_ride;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16 *)&regs.bp)) {
 				goto loc_6DB967;
@@ -6984,20 +7604,20 @@ loc_6DAEB9:
 
 	regs.ebx = dword_9A2970[regs.ebx];
 	vehicle->acceleration += regs.ebx;
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DAEB9;
 
 loc_6DB94A:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance = 0xFFFFFFFF;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DB967:
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 
 	// Might need to be bp rather than vehicle, but hopefully not
@@ -7007,7 +7627,7 @@ loc_6DB967:
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
@@ -7020,7 +7640,7 @@ loc_6DB967:
 		vehicle->velocity = head->velocity >> 1;
 		head->velocity = newHeadVelocity;
 	}
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
 	return false;
 }
 
@@ -7028,9 +7648,9 @@ loc_6DB967:
  *
  *  rct2: 0x006DBAA6
  */
-bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry, uint16* progress) {
-	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
-	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
+static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry, uint16* progress) {
+	_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
+	_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
 	rct_map_element* mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x,
 		vehicle->track_y,
@@ -7079,11 +7699,11 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		}
 
 		int trackColour = ((vehicle->update_flags >> 9) ^ mapElement->properties.track.colour) & 4;
-		int bank = gTrackDefinitions[trackType].bank_end;
+		int bank = TrackDefinitions[trackType].bank_end;
 		bank = track_get_actual_bank_2(ride->type, trackColour, bank);
-		int vAngle = gTrackDefinitions[trackType].vangle_end;
-		if (RCT2_GLOBAL(0x00F64E36, uint8) != vAngle ||
-			RCT2_GLOBAL(0x00F64E37, uint8) != bank
+		int vAngle = TrackDefinitions[trackType].vangle_end;
+		if (_vehicleVAngleEndF64E36 != vAngle ||
+			_vehicleBankEndF64E37 != bank
 			) {
 			return false;
 		}
@@ -7142,11 +7762,11 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 	}
 
 	if (track_element_is_lift_hill(mapElement)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+		if (_vehicleVelocityF64E08 < 0) {
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				trackType = mapElement->properties.track.type;
-				if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x20)) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
+				if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN)) {
+					_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
 				}
 			}
 			vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
@@ -7156,8 +7776,8 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
 			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-				if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
-					RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+				if (_vehicleVelocityF64E08 < 0) {
+					_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
 				}
 			}
 		}
@@ -7172,14 +7792,8 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 	vehicle->track_direction |= direction;
 	vehicle->break_speed = (mapElement->properties.track.sequence >> 4) << 1;
 
-	const rct_vehicle_info* moveInfo = vehicle_get_move_info(
-		vehicle->var_CD,
-		vehicle->track_type,
-		0
-		);
-
 	// There are two bytes before the move info list
-	uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+	uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 	*progress = trackTotalProgress - 1;
 	return true;
 }
@@ -7188,13 +7802,13 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
  *
  *  rct2: 0x006DBA33
  */
-bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
+static bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
 loc_6DBA33:;
 	uint16 trackType = vehicle->track_type >> 2;
 	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
-		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
+		sint32 unkVelocity = _vehicleVelocityF64E08;
 		if (unkVelocity < -524288) {
 			unkVelocity = abs(unkVelocity);
 			vehicle->acceleration = unkVelocity * 2;
@@ -7203,8 +7817,8 @@ loc_6DBA33:;
 
 	if (trackType == TRACK_ELEM_BRAKES) {
 		regs.eax = -(vehicle->break_speed << 16);
-		if (regs.eax > RCT2_GLOBAL(0x00F64E08, sint32)) {
-			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -16;
+		if (regs.eax > _vehicleVelocityF64E08) {
+			regs.eax = _vehicleVelocityF64E08 * -16;
 			vehicle->acceleration = regs.eax;
 		}
 	}
@@ -7226,17 +7840,17 @@ loc_6DBA33:;
 
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
-	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	sint16 z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	regs.ebx = 0;
-	if (x != unk_F64E20->x) { regs.ebx |= 1; }
-	if (y != unk_F64E20->y) { regs.ebx |= 2; }
-	if (z != unk_F64E20->z) { regs.ebx |= 4; }
-	vehicle->remaining_distance += RCT2_ADDRESS(0x009A2930, sint32)[regs.ebx];
+	if (x != unk_F64E20.x) { regs.ebx |= 1; }
+	if (y != unk_F64E20.y) { regs.ebx |= 2; }
+	if (z != unk_F64E20.z) { regs.ebx |= 4; }
+	vehicle->remaining_distance += dword_9A2930[regs.ebx];
 
-	unk_F64E20->x = x;
-	unk_F64E20->y = y;
-	unk_F64E20->z = z;
+	unk_F64E20.x = x;
+	unk_F64E20.y = y;
+	unk_F64E20.z = z;
 	vehicle->sprite_direction = moveInfo->direction;
 	vehicle->bank_rotation = moveInfo->bank_rotation;
 	regs.ebx = moveInfo->vehicle_sprite_type;
@@ -7248,8 +7862,8 @@ loc_6DBA33:;
 		vehicle->var_4E = 0;
 	}
 
-	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (vehicle == _vehicleFrontVehicle) {
+		if (_vehicleVelocityF64E08 < 0) {
 			regs.bp = vehicle->next_vehicle_on_ride;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp)) {
 				goto loc_6DBE7F;
@@ -7263,54 +7877,56 @@ loc_6DBA33:;
 	}
 	regs.ebx = dword_9A2970[regs.ebx];
 	vehicle->acceleration += regs.ebx;
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DBA33;
 
 loc_6DBE5E:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DBE7F:
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 
 	rct_vehicle *v3 = GET_VEHICLE(regs.bp);
-	rct_vehicle *v4 = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	rct_vehicle *v4 = gCurrentVehicle;
 	regs.eax = abs(v4->velocity - v3->velocity);
 
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_18)) {
 		if (regs.eax > 0xE0000) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 			}
 		}
 	}
 
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) {
 		vehicle->velocity -= vehicle->velocity >> 2;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 	else {
 		sint32 v3Velocity = v3->velocity;
 		v3->velocity = v4->velocity >> 1;
 		v4->velocity = v3Velocity >> 1;
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	}
 
 	return false;
 }
+
+extern const uint8 mini_golf_peep_animation_lengths[];
 
 /**
  *  rct2: 0x006DC3A7
  *
  *
  */
-int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation) {
+static int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation) {
 	registers regs = { 0 };
 
 	rct_ride *ride = get_ride(vehicle->ride);
@@ -7319,21 +7935,21 @@ int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation)
 
 	rct_map_element *mapElement = NULL;
 
-	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
+	gCurrentVehicle = vehicle;
+	_vehicleMotionTrackFlags = 0;
 	vehicle->velocity += vehicle->acceleration;
-	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
-	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	_vehicleVelocityF64E08 = vehicle->velocity;
+	_vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
+	if (_vehicleVelocityF64E08 < 0) {
 		vehicle = vehicle_get_tail(vehicle);
 	}
-	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
+	_vehicleFrontVehicle = vehicle;
 
 loc_6DC40E:
 	regs.ebx = vehicle->vehicle_sprite_type;
-	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+	_vehicleUnkF64E10 = 1;
 	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
-	vehicle->remaining_distance = RCT2_GLOBAL(0x00F64E0C, sint32) + vehicle->remaining_distance;
+	vehicle->remaining_distance = _vehicleVelocityF64E0C + vehicle->remaining_distance;
 	if ((sint32)vehicle->remaining_distance < 0) {
 		goto loc_6DCA7A;
 	}
@@ -7341,9 +7957,9 @@ loc_6DC40E:
 		goto loc_6DCE02;
 	}
 	vehicle->var_B8 &= ~(1 << 1);
-	unk_F64E20->x = vehicle->x;
-	unk_F64E20->y = vehicle->y;
-	unk_F64E20->z = vehicle->z;
+	unk_F64E20.x = vehicle->x;
+	unk_F64E20.y = vehicle->y;
+	unk_F64E20.z = vehicle->z;
 	vehicle_invalidate(vehicle);
 
 loc_6DC462:
@@ -7355,10 +7971,9 @@ loc_6DC462:
 
 loc_6DC476:
 	if (vehicle->mini_golf_flags & (1 << 2)) {
-		regs.edi = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
-		regs.al = vehicle->var_C5 + 1;
-		if ((uint8)regs.al < ((uint8*)regs.edi)[-1]) {
-			vehicle->var_C5 = regs.al;
+		uint8 nextFrame = vehicle->var_C5 + 1;
+		if (nextFrame < mini_golf_peep_animation_lengths[vehicle->mini_golf_current_animation]) {
+			vehicle->var_C5 = nextFrame;
 			goto loc_6DC985;
 		}
 		vehicle->mini_golf_flags &= ~(1 << 2);
@@ -7416,7 +8031,7 @@ loc_6DC476:
 	// There are two bytes before the move info list
 	{
 		uint16 unk16_v34 = vehicle->track_progress + 1;
-		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
+		uint16 unk16 = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 		if (unk16_v34 < unk16) {
 			regs.ax = unk16_v34;
 			goto loc_6DC743;
@@ -7424,8 +8039,8 @@ loc_6DC476:
 	}
 
 	uint16 trackType = vehicle->track_type >> 2;
-	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
+	_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 	mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3,
 		trackType, 0
@@ -7489,7 +8104,7 @@ loc_6DC743:
 
 	for (;;) {
 		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
-		if (moveInfo->x != (uint16)0x8000) {
+		if (moveInfo->x != (sint16)0x8000) {
 			break;
 		}
 		switch (moveInfo->y) {
@@ -7524,19 +8139,24 @@ loc_6DC743:
 			break;
 		case 4: // loc_6DC820
 			z = moveInfo->z;
-			if (z == 2) {
-				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
-				if (peep->id & 7) {
-					z = 7;
+			// When the ride is closed occasionally the peep is removed
+			// but the vehicle is still on the track. This will prevent
+			// it from crashing in that situation.
+			if (vehicle->peep[0] != 0xFFFF) {
+				if (z == 2) {
+					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+					if (peep->id & 7) {
+						z = 7;
+					}
+				}
+				if (z == 6) {
+					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
+					if (peep->id & 7) {
+						z = 8;
+					}
 				}
 			}
-			if (z == 6) {
-				rct_peep *peep = GET_PEEP(vehicle->peep[0]);
-				if (peep->id & 7) {
-					z = 8;
-				}
-			}
-			vehicle->var_D4 = (uint8)z;
+			vehicle->mini_golf_current_animation = (uint8)z;
 			vehicle->var_C5 = 0;
 			vehicle->track_progress++;
 			break;
@@ -7559,17 +8179,17 @@ loc_6DC743:
 	// loc_6DC8A1
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	// Investigate redundant code
 	regs.ebx = 0;
-	if (regs.ax != unk_F64E20->x) {
+	if (regs.ax != unk_F64E20.x) {
 		regs.ebx |= 1;
 	}
-	if (regs.cx == unk_F64E20->y) {
+	if (regs.cx == unk_F64E20.y) {
 		regs.ebx |= 2;
 	}
-	if (regs.dx == unk_F64E20->z) {
+	if (regs.dx == unk_F64E20.z) {
 		regs.ebx |= 4;
 	}
 	regs.ebx = 0x368A;
@@ -7578,9 +8198,9 @@ loc_6DC743:
 		vehicle->remaining_distance = 0;
 	}
 
-	unk_F64E20->x = x;
-	unk_F64E20->y = y;
-	unk_F64E20->z = z;
+	unk_F64E20.x = x;
+	unk_F64E20.y = y;
+	unk_F64E20.z = z;
 	vehicle->sprite_direction = moveInfo->direction;
 	vehicle->bank_rotation = moveInfo->bank_rotation;
 	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -7593,8 +8213,8 @@ loc_6DC743:
 		}
 	}
 
-	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+	if (vehicle == _vehicleFrontVehicle) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->prev_vehicle_on_ride;
 			vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp);
 		}
@@ -7613,13 +8233,13 @@ loc_6DC99A:
 		goto loc_6DCDE4;
 	}
 	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DC462;
 
 loc_6DC9BC:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= 0x20;
+	_vehicleMotionTrackFlags |= 0x20;
 	regs.eax = vehicle->remaining_distance + 1;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DCD2B;
@@ -7630,9 +8250,9 @@ loc_6DC9BC:
 
 loc_6DCA7A:
 	vehicle->var_B8 &= ~(1 << 1);
-	unk_F64E20->x = vehicle->x;
-	unk_F64E20->y = vehicle->y;
-	unk_F64E20->z = vehicle->z;
+	unk_F64E20.x = vehicle->x;
+	unk_F64E20.y = vehicle->y;
+	unk_F64E20.z = vehicle->z;
 	vehicle_invalidate(vehicle);
 
 loc_6DCA9A:
@@ -7642,8 +8262,8 @@ loc_6DCA9A:
 	}
 
 	trackType = vehicle->track_type >> 2;
-	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
-	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
+	_vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
+	_vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 	mapElement = map_get_track_element_at_of_type_seq(
 		vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3,
 		trackType, 0
@@ -7679,8 +8299,8 @@ loc_6DCA9A:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
 		if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
-			if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
-				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+			if (_vehicleVelocityF64E08 < 0) {
+				_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
 			}
 		}
 	}
@@ -7691,7 +8311,7 @@ loc_6DCA9A:
 	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 
 	// There are two bytes before the move info list
-	regs.ax = *((uint16*)((int)moveInfo - 2)) - 1;
+	regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 
 loc_6DCC2C:
 	vehicle->track_progress = regs.ax;
@@ -7699,17 +8319,17 @@ loc_6DCC2C:
 	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	// Investigate redundant code
 	regs.ebx = 0;
-	if (regs.ax != unk_F64E20->x) {
+	if (regs.ax != unk_F64E20.x) {
 		regs.ebx |= 1;
 	}
-	if (regs.cx == unk_F64E20->y) {
+	if (regs.cx == unk_F64E20.y) {
 		regs.ebx |= 2;
 	}
-	if (regs.dx == unk_F64E20->z) {
+	if (regs.dx == unk_F64E20.z) {
 		regs.ebx |= 4;
 	}
 	regs.ebx = 0x368A;
@@ -7718,9 +8338,9 @@ loc_6DCC2C:
 		vehicle->remaining_distance = 0;
 	}
 
-	unk_F64E20->x = x;
-	unk_F64E20->y = y;
-	unk_F64E20->z = z;
+	unk_F64E20.x = x;
+	unk_F64E20.y = y;
+	unk_F64E20.z = z;
 	vehicle->sprite_direction = moveInfo->direction;
 	vehicle->bank_rotation = moveInfo->bank_rotation;
 	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
@@ -7733,8 +8353,8 @@ loc_6DCC2C:
 		}
 	}
 
-	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+	if (vehicle == _vehicleFrontVehicle) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			regs.bp = vehicle->var_44;
 			if (vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp)) {
 				goto loc_6DCD6B;
@@ -7747,56 +8367,56 @@ loc_6DCD2B:
 		goto loc_6DCDE4;
 	}
 	vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
-	RCT2_GLOBAL(0x00F64E10, uint32)++;
+	_vehicleUnkF64E10++;
 	goto loc_6DCA9A;
 
 loc_6DCD4A:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DC99A;
 
 loc_6DCD6B:
 	regs.eax = vehicle->remaining_distance - 0x368A;
-	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
+	_vehicleVelocityF64E0C -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
 	rct_vehicle *vEBP = GET_VEHICLE(regs.bp);
-	rct_vehicle *vEDI = RCT2_GLOBAL(0x00F64E04, rct_vehicle *);
+	rct_vehicle *vEDI = gCurrentVehicle;
 	regs.eax = abs(vEDI->velocity - vEBP->velocity);
 	if (regs.eax > 0xE0000) {
 		if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
 		}
 	}
 	vEDI->velocity = vEBP->velocity >> 1;
 	vEBP->velocity = vEDI->velocity >> 1;
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
 	goto loc_6DC99A;
 
 loc_6DCDE4:
-	sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)vehicle);
+	sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
 	vehicle_invalidate(vehicle);
 
 loc_6DCE02:
-	vehicle->acceleration /= RCT2_GLOBAL(0x00F64E10, uint32);
+	vehicle->acceleration /= _vehicleUnkF64E10;
 	if (vehicle->var_CD == 2) {
 		goto loc_6DCEB2;
 	}
 	trackType = vehicle->track_type >> 2;
-	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
+	if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)) {
 		goto loc_6DCEB2;
 	}
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 	if (trackType != TRACK_ELEM_END_STATION) {
 		goto loc_6DCEB2;
 	}
-	if (vehicle != RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+	if (vehicle != gCurrentVehicle) {
 		goto loc_6DCEB2;
 	}
 	regs.ax = vehicle->track_progress;
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		goto loc_6DCE62;
 	}
 	regs.cx = 8;
@@ -7811,7 +8431,7 @@ loc_6DCE62:
 	}
 
 loc_6DCE68:
-	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
+	_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 	regs.al = vehicle->track_x >> 5;
 	regs.ah = vehicle->track_y >> 5;
 	regs.dl = vehicle->track_z >> 3;
@@ -7822,14 +8442,14 @@ loc_6DCE68:
 		if ((uint16)regs.dl != ride->station_heights[i]) {
 			continue;
 		}
-		RCT2_GLOBAL(0x00F64E1C, uint32) = i;
+		_vehicleStationIndex = i;
 	}
 
 loc_6DCEB2:
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0) {
-		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+		_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 	}
-	if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+	if (_vehicleVelocityF64E08 >= 0) {
 		regs.si = vehicle->next_vehicle_on_train;
 		if ((uint16)regs.si == SPRITE_INDEX_NULL) {
 			goto loc_6DCEFF;
@@ -7838,14 +8458,14 @@ loc_6DCEB2:
 		goto loc_6DC40E;
 	}
 
-	if (vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+	if (vehicle == gCurrentVehicle) {
 		goto loc_6DCEFF;
 	}
 	vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	goto loc_6DC40E;
 
 loc_6DCEFF:
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax = 0;
 	regs.ebp = 0;
 	regs.dx = 0;
@@ -7863,7 +8483,7 @@ loc_6DCEFF:
 		vehicle = GET_VEHICLE((uint16)regs.si);
 	}
 
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax /= regs.ebx;
 	regs.ecx = (regs.eax * 21) >> 9;
 	regs.eax = vehicle->velocity >> 12;
@@ -7933,8 +8553,8 @@ loc_6DCEFF:
 
 loc_6DD069:
 	vehicle->acceleration = regs.ecx;
-	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	regs.eax = _vehicleMotionTrackFlags;
+	regs.ebx = _vehicleStationIndex;
 
 	if (outStation != NULL) *outStation = regs.ebx;
 	return regs.eax;
@@ -7952,30 +8572,29 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-	rct_map_element *mapElement = NULL;
-
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 		return vehicle_update_track_motion_mini_golf(vehicle, outStation);
 	}
 
-	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
-	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = vehicle;
-	RCT2_GLOBAL(0x00F64E18, uint32) = 0;
-	RCT2_GLOBAL(0x00F64E1C, uint32) = 0xFFFFFFFF;
+	_vehicleF64E2C = 0;
+	gCurrentVehicle = vehicle;
+	_vehicleMotionTrackFlags = 0;
+	_vehicleStationIndex = 0xFF;
 
 	vehicle_update_track_motion_up_stop_check(vehicle);
-	sub_6DAB4C_chunk_2(vehicle);
-	sub_6DAB4C_chunk_3(vehicle);
+	check_and_apply_block_section_stop_site(vehicle);
+	update_velocity(vehicle);
 
-	if (RCT2_GLOBAL(0x00F64E08, sint32) < 0) {
+	if (_vehicleVelocityF64E08 < 0) {
 		vehicle = vehicle_get_tail(vehicle);
 	}
 	// This will be the front vehicle even when traveling
 	// backwards.
-	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
+	_vehicleFrontVehicle = vehicle;
 
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* car = vehicle; spriteId != 0xFFFF; car = GET_VEHICLE(spriteId)) {
+	while (spriteId != 0xFFFF) {
+		rct_vehicle* car = GET_VEHICLE(spriteId);
 		vehicleEntry = vehicle_get_vehicle_entry(car);
 
 		// Swinging cars
@@ -7991,15 +8610,15 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 			sub_6D63D4(car);
 		}
 		car->acceleration = dword_9A2970[car->vehicle_sprite_type];
-		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
+		_vehicleUnkF64E10 = 1;
 
-		regs.eax = RCT2_GLOBAL(0x00F64E0C, sint32) + car->remaining_distance;
+		regs.eax = _vehicleVelocityF64E0C + car->remaining_distance;
 		car->remaining_distance = regs.eax;
 
 		car->var_B8 &= ~(1 << 1);
-		unk_F64E20->x = car->x;
-		unk_F64E20->y = car->y;
-		unk_F64E20->z = car->z;
+		unk_F64E20.x = car->x;
+		unk_F64E20.y = car->y;
+		unk_F64E20.z = car->z;
 		invalidate_sprite_2((rct_sprite*)car);
 
 		while (true) {
@@ -8014,7 +8633,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 					}
 					regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 					car->acceleration += regs.ebx;
-					RCT2_GLOBAL(0x00F64E10, uint32)++;
+					_vehicleUnkF64E10++;
 					continue;
 				}
 			}
@@ -8031,12 +8650,12 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 				}
 				regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 				car->acceleration = regs.ebx;
-				RCT2_GLOBAL(0x00F64E10, uint32)++;
+				_vehicleUnkF64E10++;
 				continue;
 			}
 		}
 		// loc_6DBF20
-		sprite_move(unk_F64E20->x, unk_F64E20->y, unk_F64E20->z, (rct_sprite*)car);
+		sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)car);
 		invalidate_sprite_2((rct_sprite*)car);
 
 	loc_6DBF3E:
@@ -8044,20 +8663,20 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 		// loc_6DC0F7
 		if (car->update_flags & VEHICLE_UPDATE_FLAG_0) {
-			RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+			_vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
 		}
-		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
+		if (_vehicleVelocityF64E08 >= 0) {
 			spriteId = car->next_vehicle_on_train;
 		}
 		else {
-			if (car == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
+			if (car == gCurrentVehicle) {
 				break;
 			}
 			spriteId = car->prev_vehicle_on_ride;
 		}
 	}
 	// loc_6DC144
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 
 	vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	//eax
@@ -8083,7 +8702,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 		vehicle = GET_VEHICLE(spriteIndex);
 	}
 
-	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+	vehicle = gCurrentVehicle;
 	regs.eax = (totalAcceleration / numVehicles) * 21;
 	if (regs.eax < 0) {
 		regs.eax += 511;
@@ -8109,7 +8728,10 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 	regs.edx >>= 4;
 	regs.eax = regs.edx;
-	regs.eax = regs.eax / totalFriction;
+	// OpenRCT2: vehicles from different track types can have  0 friction.
+	if (totalFriction != 0) {
+		regs.eax = regs.eax / totalFriction;
+	}
 	regs.ecx -= regs.eax;
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
@@ -8158,10 +8780,12 @@ loc_6DC23A:
 	regs.edx = vehicle->powered_acceleration;
 	regs.edx <<= 1;
 	regs.eax *= regs.edx;
-	regs.eax /= regs.ebx;
+	if (regs.ebx != 0) {
+		regs.eax /= regs.ebx;
+	}
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_15) {
-		regs.eax <<= 2;
+		regs.eax *= 4;
 	}
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13)) {
@@ -8243,8 +8867,8 @@ loc_6DC316:
 
 	vehicle->acceleration = regs.ecx;
 
-	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
-	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
+	regs.eax = _vehicleMotionTrackFlags;
+	regs.ebx = _vehicleStationIndex;
 
 	// hook_setreturnregisters(&regs);
 	if (outStation != NULL) *outStation = regs.ebx;
@@ -8267,7 +8891,7 @@ int vehicle_get_total_num_peeps(rct_vehicle *vehicle)
 		if (spriteIndex == SPRITE_INDEX_NULL)
 			break;
 
-		vehicle = &(g_sprite_list[spriteIndex].vehicle);
+		vehicle = &(get_sprite(spriteIndex)->vehicle);
 	}
 
 	return numPeeps;

@@ -1,13 +1,30 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-}
+#include <string>
+#include "../common.h"
 
 namespace String
 {
     constexpr const utf8 * Empty = "";
+
+    std::string ToStd(const utf8 * str);
+    std::string StdFormat(const utf8 * format, ...);
 
     bool   IsNullOrEmpty(const utf8 * str);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
@@ -28,6 +45,8 @@ namespace String
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize);
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src);
     utf8 * Format(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
+    utf8 * Format(const utf8 * format, ...);
+    utf8 * Format_VA(const utf8 * format, va_list args);
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
     utf8 * Duplicate(const utf8 * src);
 
@@ -48,4 +67,8 @@ namespace String
     codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr = nullptr);
     codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr = nullptr);
     utf8 *      WriteCodepoint(utf8 * dst, codepoint_t codepoint);
+
+    utf8 *          Trim(utf8 * str);
+    const utf8 *    TrimStart(const utf8 * str);
+    utf8 *          TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
 }

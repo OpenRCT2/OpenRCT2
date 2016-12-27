@@ -1,41 +1,35 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../image_io.h"
+#include "../intro.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "screenshot.h"
 #include "viewport.h"
 
-static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
-
-static int screenshot_dump_bmp();
-static int screenshot_dump_png();
+uint8 gScreenshotCountdown = 0;
 
 /**
  *
@@ -45,23 +39,19 @@ void screenshot_check()
 {
 	int screenshotIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
-			update_rain_animation();
+	if (gScreenshotCountdown != 0) {
+		gScreenshotCountdown--;
+		if (gScreenshotCountdown == 0) {
+			// update_rain_animation();
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-				
-				// TODO use a more obvious sound like a camera shutter
-				audio_play_sound(SOUND_CLICK_1, 0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
+				audio_play_sound(SOUND_WINDOW_OPEN, 100, gScreenWidth / 2);
 			} else {
-				window_error_open(STR_SCREENSHOT_FAILED, -1);
+				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
 
-			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-			redraw_rain();
+			// redraw_rain();
 		}
 	}
 }
@@ -78,84 +68,81 @@ static void screenshot_get_rendered_palette(rct_palette* palette) {
 	}
 }
 
-static int screenshot_get_next_path(char *path, int format)
+static int screenshot_get_next_path(char *path, size_t size)
 {
 	char screenshotPath[MAX_PATH];
 
-	platform_get_user_directory(screenshotPath, "screenshot");
+	platform_get_user_directory(screenshotPath, "screenshot", sizeof(screenshotPath));
 	if (!platform_ensure_directory_exists(screenshotPath)) {
 		log_error("Unable to save screenshots in OpenRCT2 screenshot directory.\n");
 		return -1;
 	}
 
+	char park_name[128];
+	format_string(park_name, 128, gParkName, &gParkNameArgs);
+
+	// retrieve current time
+	rct2_date currentDate;
+	platform_get_date_local(&currentDate);
+	rct2_time currentTime;
+	platform_get_time_local(&currentTime);
+
+	// Glue together path and filename
+	snprintf(path, size, "%s%s %d-%02d-%02d %02d-%02d-%02d.png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
+
+	if (!platform_file_exists(path)) {
+		return 0; // path ok
+	}
+
+	// multiple screenshots with same timestamp
+	// might be possible when switching timezones
+	// in the unlikely case that this does happen,
+	// append (%d) to the filename and increment
+	// this int until it doesn't overwrite any
+	// other file in the directory.
 	int i;
 	for (i = 1; i < 1000; i++) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = i;
-
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d%s", screenshotPath, i, _screenshot_format_extension[format]);
+		snprintf(path, size, "%s%s %d-%02d-%02d %02d-%02d-%02d (%d).png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
 
 		if (!platform_file_exists(path)) {
 			return i;
 		}
 	}
 
-	log_error("You have too many saved screenshots.\n");
+	log_error("You have too many saved screenshots saved at exactly the same date and time.\n");
 	return -1;
 }
 
-int screenshot_dump()
-{
-	switch (gConfigGeneral.screenshot_format) {
-	case SCREENSHOT_FORMAT_BMP:
-		return screenshot_dump_bmp();
-	case SCREENSHOT_FORMAT_PNG:
-		return screenshot_dump_png();
-	default:
-		return -1;
-	}
-}
-
-/**
- *
- *  rct2: 0x00683D20
- */
-int screenshot_dump_bmp()
+int screenshot_dump_png(rct_drawpixelinfo *dpi)
 {
 	// Get a free screenshot path
 	int index;
 	char path[MAX_PATH] = "";
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_BMP)) == -1) {
+	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		return -1;
 	}
-
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
 	rct_palette renderedPalette;
 	screenshot_get_rendered_palette(&renderedPalette);
 
-	if (image_io_bmp_write(dpi, &renderedPalette, path)) {
+	if (image_io_png_write(dpi, &renderedPalette, path)) {
 		return index;
 	} else {
 		return -1;
 	}
 }
 
-int screenshot_dump_png()
+int screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
 {
 	// Get a free screenshot path
 	int index;
 	char path[MAX_PATH] = "";
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		return -1;
 	}
 
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-
-	rct_palette renderedPalette;
-	screenshot_get_rendered_palette(&renderedPalette);
-
-	if (image_io_png_write(dpi, &renderedPalette, path)) {
+	if (image_io_png_write_32bpp(width, height, pixels, path)) {
 		return index;
 	} else {
 		return -1;
@@ -173,7 +160,7 @@ void screenshot_giant()
 
 	int rotation = originalRotation;
 	int zoom = originalZoom;
-	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	int mapSize = gMapSize;
 	int resolutionWidth = (mapSize * 32 * 2) >> zoom;
 	int resolutionHeight = (mapSize * 32 * 1) >> zoom;
 
@@ -193,7 +180,7 @@ void screenshot_giant()
 	int centreX = (mapSize / 2) * 32 + 16;
 	int centreY = (mapSize / 2) * 32 + 16;
 
-	int x, y;
+	int x = 0, y = 0;
 	int z = map_element_height(centreX, centreY) & 0xFFFF;
 	switch (rotation) {
 	case 0:
@@ -217,8 +204,7 @@ void screenshot_giant()
 	viewport.view_x = x - ((viewport.view_width << zoom) / 2);
 	viewport.view_y = y - ((viewport.view_height << zoom) / 2);
 	viewport.zoom = zoom;
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = rotation;
+	gCurrentRotation = rotation;
 
 	// Ensure sprites appear regardless of rotation
 	reset_all_sprite_quadrant_placements();
@@ -237,9 +223,9 @@ void screenshot_giant()
 	// Get a free screenshot path
 	char path[MAX_PATH];
 	int index;
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+	if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
 		log_error("Giant screenshot failed, unable to find a suitable destination path.");
-		window_error_open(STR_SCREENSHOT_FAILED, -1);
+		window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 		return;
 	}
 
@@ -251,10 +237,9 @@ void screenshot_giant()
 	free(dpi.bits);
 
 	// Show user that screenshot saved successfully
-	rct_string_id stringId = 3165;
-	strcpy((char*)language_get_string(stringId), path_get_filename(path));
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
-	window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
+	set_format_arg(0, rct_string_id, STR_STRING);
+	set_format_arg(2, char *, path_get_filename(path));
+	window_error_open(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
 int cmdline_for_screenshot(const char **argv, int argc)
@@ -269,7 +254,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	bool customLocation = false;
 	bool centreMapX = false;
 	bool centreMapY = false;
-	int resolutionWidth, resolutionHeight, customX, customY, customZoom, customRotation;
+	int resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation;
 
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];
@@ -304,12 +289,13 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 	gOpenRCT2Headless = true;
 	if (openrct2_initialise()) {
+		drawing_engine_init();
 		rct2_open_file(inputPath);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+		gIntroState = INTRO_STATE_NONE;
+		gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-		int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+		int mapSize = gMapSize;
 		if (resolutionWidth == 0 || resolutionHeight == 0) {
 			resolutionWidth = (mapSize * 32 * 2) >> customZoom;
 			resolutionHeight = (mapSize * 32 * 1) >> customZoom;
@@ -334,7 +320,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 			if (centreMapY)
 				customY = (mapSize / 2) * 32 + 16;
 
-			int x, y;
+			int x = 0, y = 0;
 			int z = map_element_height(customX, customY) & 0xFFFF;
 			switch (customRotation) {
 			case 0:
@@ -358,14 +344,12 @@ int cmdline_for_screenshot(const char **argv, int argc)
 			viewport.view_x = x - ((viewport.view_width << customZoom) / 2);
 			viewport.view_y = y - ((viewport.view_height << customZoom) / 2);
 			viewport.zoom = customZoom;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = customRotation;
+			gCurrentRotation = customRotation;
 		} else {
-			viewport.view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16) - (viewport.view_width / 2);
-			viewport.view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16) - (viewport.view_height / 2);
-			viewport.zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
+			viewport.view_x = gSavedViewX - (viewport.view_width / 2);
+			viewport.view_y = gSavedViewY - (viewport.view_height / 2);
+			viewport.zoom = gSavedViewZoom;
+			gCurrentRotation = gSavedViewRotation;
 		}
 
 		// Ensure sprites appear regardless of rotation
@@ -388,6 +372,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		image_io_png_write(&dpi, &renderedPalette, outputPath);
 
 		free(dpi.bits);
+		drawing_engine_dispose();
 	}
 	openrct2_dispose();
 	return 1;

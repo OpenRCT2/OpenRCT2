@@ -1,31 +1,28 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
-#include "localisation.h"
+#include "../game.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
+#include "localisation.h"
+#include "user.h"
 
-utf8 *gUserStrings = (char*)0x0135A8F4;
+utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
 
-static bool user_string_exists(const char *text);
+static bool user_string_exists(const utf8 *text);
 
 /**
  *
@@ -46,7 +43,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 	bool allowDuplicates = base & 0x80;
 
 	if (!allowDuplicates && user_string_exists(text)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CHOSEN_NAME_IN_USE_ALREADY;
+		gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
 		return 0;
 	}
 
@@ -58,7 +55,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 		safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
 		return 0x8000 + (i | highBits);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_NAMES_DEFINED;
+	gGameCommandErrorText = STR_TOO_MANY_NAMES_DEFINED;
 	return 0;
 }
 

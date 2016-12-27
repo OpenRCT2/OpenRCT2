@@ -1,5 +1,22 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "../audio/audio.h"
 #include "../util/util.h"
+#include "../scenario/scenario.h"
 #include "sprite.h"
 
 /**
@@ -19,12 +36,12 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, i
 		sprite_move(x, y, z, (rct_sprite*)sprite);
 		sprite->misc_identifier = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
-		sprite->var_26 = (util_rand() & 0xFF) * 12;
-		sprite->var_24 = (util_rand() & 0x7F) + 140;
-		sprite->var_2E = ((util_rand() & 0xFF) * 5) >> 8;
-		sprite->acceleration_x = ((sint16)(util_rand() & 0xFFFF)) * 4;
-		sprite->acceleration_y = ((sint16)(util_rand() & 0xFFFF)) * 4;
-		sprite->acceleration_z = (util_rand() & 0xFFFF) * 4 + 0x10000;
+		sprite->frame = (scenario_rand() & 0xFF) * 12;
+		sprite->var_24 = (scenario_rand() & 0x7F) + 140;
+		sprite->var_2E = ((scenario_rand() & 0xFF) * 5) >> 8;
+		sprite->acceleration_x = ((sint16)(scenario_rand() & 0xFFFF)) * 4;
+		sprite->acceleration_y = ((sint16)(scenario_rand() & 0xFFFF)) * 4;
+		sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
 		sprite->velocity_x = 0;
 		sprite->velocity_y = 0;
 		sprite->velocity_z = 0;
@@ -86,9 +103,9 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle)
 	sprite_move(x, y, z, (rct_sprite*)particle);
 	invalidate_sprite_0((rct_sprite*)particle);
 
-	particle->var_26 += 85;
-	if (particle->var_26 >= 3072) {
-		particle->var_26 = 0;
+	particle->frame += 85;
+	if (particle->frame >= 3072) {
+		particle->frame = 0;
 	}
 }
 
@@ -106,7 +123,7 @@ void crash_splash_create(int x, int y, int z)
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 3, (rct_sprite*)sprite);
 		sprite->misc_identifier = SPRITE_MISC_CRASH_SPLASH;
-		sprite->var_26 = 0;
+		sprite->frame = 0;
 	}
 }
 
@@ -117,8 +134,8 @@ void crash_splash_create(int x, int y, int z)
 void crash_splash_update(rct_crash_splash *splash)
 {
 	invalidate_sprite_2((rct_sprite*)splash);
-	splash->var_26 += 85;
-	if (splash->var_26 >= 7168) {
+	splash->frame += 85;
+	if (splash->frame >= 7168) {
 		sprite_remove((rct_sprite*)splash);
 	}
 }

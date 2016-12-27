@@ -1,3 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
@@ -14,7 +30,7 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  *
  *  rct2: 0x0067351F
  */
-void money_effect_create_at(money32 value, int x, int y, int z)
+static void money_effect_create_at(money32 value, int x, int y, int z)
 {
 	rct_money_effect *moneyEffect;
 	rct_string_id stringId;
@@ -39,8 +55,8 @@ void money_effect_create_at(money32 value, int x, int y, int z)
 		value *= -1;
 		stringId = 1399;
 	}
-	format_string(buffer, stringId, &value);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	format_string(buffer, 128, stringId, &value);
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
 	moneyEffect->wiggle = 0;
 }
@@ -55,9 +71,9 @@ void money_effect_create(money32 value)
 	rct_viewport *mainViewport;
 	rct_xyz16 mapPosition;
 
-	mapPosition.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
-	mapPosition.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
-	mapPosition.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
+	mapPosition.x = gCommandPosition.x;
+	mapPosition.y = gCommandPosition.y;
+	mapPosition.z = gCommandPosition.z;
 	if (mapPosition.x == (sint16)0x8000) {
 		mainWindow = window_get_main();
 		if (mainWindow == NULL)

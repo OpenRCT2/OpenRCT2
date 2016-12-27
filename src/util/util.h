@@ -1,29 +1,23 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
 #include "../common.h"
-
-extern bool gUseRLE;
 
 int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
@@ -32,17 +26,21 @@ int mph_to_dmps(int mph);
 
 bool filename_valid_characters(const utf8 *filename);
 
+char *path_get_directory(const utf8 *path);
 const char *path_get_filename(const utf8 *path);
 const char *path_get_extension(const utf8 *path);
-void path_set_extension(utf8 *path, const utf8 *newExtension);
-void path_append_extension(utf8 *path, const utf8 *newExtension);
+void path_set_extension(utf8 *path, const utf8 *newExtension, size_t size);
+void path_append_extension(utf8 *path, const utf8 *newExtension, size_t size);
 void path_remove_extension(utf8 *path);
-bool readentirefile(const utf8 *path, void **outBuffer, int *outLength);
+void path_end_with_separator(utf8 *path, size_t size);
+bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 
 int bitscanforward(int source);
-int bitcount(int source);
+void bitcount_init();
+int bitcount(uint32 source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
+int strlogicalcmp(char const *a, char const *b);
 utf8 * safe_strtrunc(utf8 * text, size_t size);
 char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);

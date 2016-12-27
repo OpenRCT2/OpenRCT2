@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Peter Hill
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _NEWS_ITEM_H_
 #define _NEWS_ITEM_H_
@@ -36,11 +32,19 @@ enum {
 	NEWS_ITEM_GRAPH
 };
 
+enum {
+	NEWS_TYPE_HAS_LOCATION = 1,
+	NEWS_TYPE_HAS_SUBJECT = 2,
+};
+
+extern const uint8 news_type_properties[10];
+
+#pragma pack(push, 1)
 /**
  * News item structure.
  * size: 0x10C
  */
-typedef struct {
+typedef struct rct_news_item {
 	uint8 type;					// 0x00
 	uint8 flags;				// 0x01
 	uint32 assoc;				// 0x02
@@ -50,8 +54,12 @@ typedef struct {
 	uint8 pad_0B;				// 0x0B
 	utf8 text[256];				// 0x0C
 } rct_news_item;
+assert_struct_size(rct_news_item, 12 + 256);
+#pragma pack(pop)
 
-#define MAX_NEWS_ITEMS 60
+#define MAX_NEWS_ITEMS 61
+
+extern rct_news_item gNewsItems[MAX_NEWS_ITEMS];
 
 void news_item_init_queue();
 void news_item_update_current();

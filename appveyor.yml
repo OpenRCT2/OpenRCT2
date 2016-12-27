@@ -1,32 +1,38 @@
-version: 0.0.4.{build}
-os: Visual Studio 2015
+version: 0.0.5.{build}
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017 RC
+cache:
+- C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
+- C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
+- secure-file -> scripts\ps\appveyor_install.ps1
 environment:
   ENCKEY:
     secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
-  CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD:
+  SIGN_PASSWORD:
     secure: bzYmf0ElxisSGyZnIjUOYQ==
-  OPENRCT2.ORG_TOKEN:
+  OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
+  BUILD_SERVER: AppVeyor
+  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
 install:
-- cmd: >-
-    IF DEFINED ENCKEY ( nuget install secure-file -ExcludeVersion && secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %ENCKEY% )
-
-    cinst nsis.portable --version=3.01-beta1 > nul
 - ps: >-
-    curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
-
-    7z x nsisxtra.zip > $null
-
-    cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
-build_script:
-- ps: >-
-    .\setenv.ps1
-
-    appveyor_run
+    .\scripts\ps\appveyor_install.ps1
+platform:
+  - Win32
+  - x64
+configuration: Release
+build:
+  project: openrct2.proj
+test_script:
+- ps: msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
 artifacts:
-- path: .\artifacts\openrct2.zip
+- path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable
-- path: .\artifacts\*.exe
+- path: .\artifacts\openrct2-installer*.exe
   name: OpenRCT2-installer
-- path: .\artifacts\openrct2-symbols-*.zip
+- path: .\artifacts\openrct2-symbols*.zip
   name: OpenRCT2 debug symbols
+deploy_script:
+- ps: >-
+    .\scripts\ps\appveyor_deploy.ps1

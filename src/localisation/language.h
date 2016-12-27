@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _LANGUAGE_H_
 #define _LANGUAGE_H_
@@ -44,16 +40,16 @@ enum {
 	LANGUAGE_RUSSIAN,
 	LANGUAGE_CZECH,
 	LANGUAGE_JAPANESE,
+	LANGUAGE_NORWEGIAN,
 	LANGUAGE_COUNT
 };
 
 #define FONT_OPENRCT2_SPRITE NULL
 
-typedef struct {
+typedef struct language_descriptor {
 	const char *locale;
 	const utf8 *english_name;
 	const utf8 *native_name;
-	const utf8 *path;
 	TTFFontSetDescriptor *font;
 	uint8 rct2_original_id;
 } language_descriptor;
@@ -70,10 +66,8 @@ extern const utf8 BlackRightArrowString[];
 extern const utf8 CheckBoxMarkString[];
 
 const char *language_get_string(rct_string_id id);
-int language_open(int id);
+bool language_open(int id);
 void language_close_all();
-
-rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
@@ -85,6 +79,10 @@ int utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
+rct_string_id language_allocate_object_string(const utf8 * target);
+void language_free_object_string(rct_string_id stringId);
+rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index);
 
 #endif

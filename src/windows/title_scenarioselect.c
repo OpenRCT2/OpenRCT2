@@ -1,34 +1,29 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
-* Copyright (c) 2014 Ted John
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* This file is part of OpenRCT2.
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
 
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*****************************************************************************/
-
-#include "../addresses.h"
 #include "../config.h"
 #include "../audio/audio.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../scenario.h"
+#include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
 #include "../sprites.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
-#include "../title.h"
 #include "../util/util.h"
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
@@ -39,14 +34,14 @@ enum {
 	LIST_ITEM_TYPE_END,
 };
 
-typedef struct {
+typedef struct sc_list_item {
 	uint8 type;
 	union {
 		struct {
 			rct_string_id string_id;
 		} heading;
 		struct {
-			scenario_index_entry *scenario;
+			const scenario_index_entry *scenario;
 			bool is_locked;
 		} scenario;
 	};
@@ -71,20 +66,31 @@ enum {
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-	{ WWT_FRAME,	0,	0,		733,	0,		333,	-1,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	-1,						STR_NONE },				// tab content panel
-	{ WWT_TAB,		1,	3,		93,		17,		50,		0x200015BC,				STR_NONE },				// tab 1
-	{ WWT_TAB,		1,	94,		184,	17,		50,		0x200015BC,				STR_NONE },				// tab 2
-	{ WWT_TAB,		1,	185,	275,	17,		50,		0x200015BC,				STR_NONE },				// tab 3
-	{ WWT_TAB,		1,	276,	366,	17,		50,		0x200015BC,				STR_NONE },				// tab 4
-	{ WWT_TAB,		1,	367,	457,	17,		50,		0x200015BC,				STR_NONE },				// tab 5
-	{ WWT_TAB,		1,	458,	593,	17,		50,		0x200015BC,				STR_NONE },				// tab 6
-	{ WWT_TAB,		1,	594,	684,	17,		50,		0x200015BC,				STR_NONE },				// tab 7
-	{ WWT_TAB,		1,	685,	775,	17,		50,		0x200015BC,				STR_NONE },				// tab 8
-	{ WWT_SCROLL,	1,	3,		555,	54,		329,	2,						STR_NONE },				// level list
+	{ WWT_FRAME,	0,	0,		733,	0,		333,	0xFFFFFFFF,					STR_NONE },				// panel / background
+	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	    STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	0xFFFFFFFF,					STR_NONE },				// tab content panel
+	{ WWT_TAB,		1,	3,		93,		17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 1
+	{ WWT_TAB,		1,	94,		184,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 2
+	{ WWT_TAB,		1,	185,	275,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 3
+	{ WWT_TAB,		1,	276,	366,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 4
+	{ WWT_TAB,		1,	367,	457,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 5
+	{ WWT_TAB,		1,	458,	593,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 6
+	{ WWT_TAB,		1,	594,	684,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 7
+	{ WWT_TAB,		1,	685,	775,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 8
+	{ WWT_SCROLL,	1,	3,		555,	54,		329,	SCROLL_VERTICAL,		    STR_NONE },				// level list
 	{ WIDGETS_END },
+};
+
+static const rct_string_id ScenarioOriginStringIds[] = {
+	STR_SCENARIO_CATEGORY_RCT1,
+	STR_SCENARIO_CATEGORY_RCT1_AA,
+	STR_SCENARIO_CATEGORY_RCT1_LL,
+	STR_SCENARIO_CATEGORY_RCT2,
+	STR_SCENARIO_CATEGORY_RCT2_WW,
+	STR_SCENARIO_CATEGORY_RCT2_TT,
+	STR_SCENARIO_CATEGORY_REAL_PARKS,
+	STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
 
 static void window_scenarioselect_init_tabs(rct_window *w);
@@ -132,7 +138,7 @@ static rct_window_event_list window_scenarioselect_events = {
 
 static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int left, int right, int y, rct_string_id stringId);
 static void initialise_list_items(rct_window *w);
-static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario);
+static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scenario);
 static bool is_locking_enabled(rct_window *w);
 
 static scenarioselect_callback _callback;
@@ -154,7 +160,7 @@ void window_scenarioselect_open(scenarioselect_callback callback)
 		return;
 
 	// Load scenario list
-	scenario_load_list();
+	scenario_repository_scan();
 
 	// Shrink the window if we're showing scenarios by difficulty level.
 	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY) {
@@ -190,8 +196,9 @@ void window_scenarioselect_open(scenarioselect_callback callback)
 static void window_scenarioselect_init_tabs(rct_window *w)
 {
 	int showPages = 0;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
+	size_t numScenarios = scenario_repository_get_count();
+	for (size_t i = 0; i < numScenarios; i++) {
+		const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			showPages |= 1 << scenario->source_game;
 		} else {
@@ -298,7 +305,7 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 {
 	bool originalShowLockedInformation = _showLockedInformation;
 	_showLockedInformation = false;
-	scenario_index_entry *selected = NULL;
+	const scenario_index_entry *selected = NULL;
 	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
 		switch (listItem->type) {
 		case LIST_ITEM_TYPE_HEADING:
@@ -358,11 +365,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int i, x, y, format;
 	rct_widget *widget;
-	scenario_index_entry *scenario;
+	const scenario_index_entry *scenario;
 
 	window_draw_widgets(w, dpi);
 
-	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5138 : 1193;
+	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
 
 	// Text for each tab
 	for (i = 0; i < 8; i++) {
@@ -374,11 +381,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
+			set_format_arg(0, rct_string_id, ScenarioOriginStringIds[i]);
 		} else { // old-style
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = ScenarioCategoryStringIds[i];
+			set_format_arg(0, rct_string_id, ScenarioCategoryStringIds[i]);
 		}
-		gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 87, format, 10);
+		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, COLOUR_AQUAMARINE);
 	}
 
 	// Return if no scenario highlighted
@@ -388,9 +395,9 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			// Show locked information
 			x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 			y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, 0, x + 85, y, 170);
+			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, COLOUR_BLACK, x + 85, y, 170);
 			y += 15;
-			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, 0) + 5;
+			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
 		}
 		return;
 	}
@@ -399,54 +406,56 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gConfigGeneral.debugging_tools) {
 		utf8 path[MAX_PATH];
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
 		const utf8 *pathPtr = path;
-		gfx_draw_string_left(dpi, 1170, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+		gfx_draw_string_left(dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
 	}
 
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	safe_strcpy((char*)0x009BC677, scenario->name, 64);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-	gfx_draw_string_centred_clipped(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 85, y, 170);
+	set_format_arg(0, rct_string_id, STR_STRING);
+	set_format_arg(2, const char *, scenario->name);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	safe_strcpy((char*)0x009BC677, scenario->details, 256);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, 1191, 0) + 5;
+	set_format_arg(0, rct_string_id, STR_STRING);
+	set_format_arg(2, const char *, scenario->details);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
 
 	// Scenario objective
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = scenario->objective_arg_3;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, int) = scenario->objective_arg_2;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_OBJECTIVE, 0) + 5;
+	set_format_arg(0, rct_string_id, ObjectiveNames[scenario->objective_type]);
+	set_format_arg(2, short, scenario->objective_arg_3);
+	set_format_arg(4, short, date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+	set_format_arg(6, int, scenario->objective_arg_2);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
+		// TODO: Should probably be translateable
 		const utf8 *completedByName = "???";
 		if (!str_is_null_or_empty(scenario->highscore->name)) {
 			completedByName = scenario->highscore->name;
 		}
-		safe_strcpy((char*)0x009BC677, completedByName, 64);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
-		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+		set_format_arg(0, rct_string_id, STR_STRING);
+		set_format_arg(2, const char *, completedByName);
+		set_format_arg(2 + sizeof(const char *), money32, scenario->highscore->company_value);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
 	}
 }
 
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int colour = ColourMapA[w->colours[1]].mid_light;
-	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
-	gfx_clear(dpi, colour);
+	int colour;
 
-	int highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1193;
-	int unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1191;
+	uint8 paletteIndex = ColourMapA[w->colours[1]].mid_light;
+	gfx_clear(dpi, paletteIndex);
+
+	rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+	rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_BLACK_STRING;
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
@@ -467,37 +476,42 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			break;
 		case LIST_ITEM_TYPE_SCENARIO:;
 			// Draw hover highlight
-			scenario_index_entry *scenario = listItem->scenario.scenario;
+			const scenario_index_entry *scenario = listItem->scenario.scenario;
 			bool isHighlighted = w->highlighted_scenario == scenario;
 			if (isHighlighted) {
-				gfx_fill_rect(dpi, 0, y, w->width, y + 23, 0x02000031);
+				gfx_filter_rect(dpi, 0, y, w->width, y + 23, PALETTE_DARKEN_1);
 			}
 
 			bool isCompleted = scenario->highscore != NULL;
 			bool isDisabled = listItem->scenario.is_locked;
 
 			// Draw scenario name
-			rct_string_id placeholderStringId = 3165;
-			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
-			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
-			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
-			if (isDisabled) RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
+			char buffer[64];
+			safe_strcpy(buffer, scenario->name, sizeof(buffer));
+			rct_string_id format = isDisabled ? STR_STRINGID : (isHighlighted ? highlighted_format : unhighlighted_format);
+			set_format_arg(0, rct_string_id, STR_STRING);
+			set_format_arg(2, char *, buffer);
+			colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+			if (isDisabled) {
+				gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+			}
+			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, gCommonFormatArgs);
 
 			// Check if scenario is completed
 			if (isCompleted) {
 				// Draw completion tick
-				gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
+				gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, wide ? 500 : 395, y + 1, 0);
 
 				// Draw completion score
 				const utf8 *completedByName = "???";
 				if (!str_is_null_or_empty(scenario->highscore->name)) {
 					completedByName = scenario->highscore->name;
 				}
-				safe_strcpy((char*)language_get_string(placeholderStringId), completedByName, 64);
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
-				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				safe_strcpy(buffer, completedByName, 64);
+				set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
+				set_format_arg(2, rct_string_id, STR_STRING);
+				set_format_arg(4, char *, buffer);
+				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, COLOUR_BLACK, gCommonFormatArgs);
 			}
 
 			y += 24;
@@ -515,10 +529,10 @@ static void draw_category_heading(rct_window *w, rct_drawpixelinfo *dpi, int lef
 	// Draw string
 	int centreX = (left + right) / 2;
 	gfx_draw_string_centred(dpi, stringId, centreX, y, baseColour, NULL);
-	
+
 	// Get string dimensions
-	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
-	format_string(buffer, stringId, NULL);
+	utf8 *buffer = gCommonStringFormatBuffer;
+	format_string(buffer, 256, stringId, NULL);
 	int categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
 	int strLeft = centreX - categoryStringHalfWidth;
 	int strRight = centreX + categoryStringHalfWidth;
@@ -538,19 +552,20 @@ static void initialise_list_items(rct_window *w)
 {
 	SafeFree(_listItems);
 
-	int capacity = gScenarioListCount + 16;
-	int length = 0;
+	size_t numScenarios = scenario_repository_get_count();
+	size_t capacity = numScenarios + 16;
+	size_t length = 0;
 	_listItems = malloc(capacity * sizeof(sc_list_item));
 
 	// Mega park unlock
 	const uint32 rct1RequiredCompletedScenarios = (1 << SC_MEGA_PARK) - 1;
 	uint32 rct1CompletedScenarios = 0;
-	int megaParkListItemIndex = -1;
+	size_t megaParkListItemIndex = SIZE_MAX;
 
 	int numUnlocks = INITIAL_NUM_UNLOCKED_SCENARIOS;
 	uint8 currentHeading = UINT8_MAX;
-	for (int i = 0; i < gScenarioListCount; i++) {
-		scenario_index_entry *scenario = &gScenarioList[i];
+	for (size_t i = 0; i < numScenarios; i++) {
+		const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
 		if (!is_scenario_visible(w, scenario)) {
 			continue;
 		}
@@ -568,7 +583,7 @@ static void initialise_list_items(rct_window *w)
 			if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT) {
 				if (currentHeading != scenario->source_game) {
 					currentHeading = scenario->source_game;
-					headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
+					headingStringId = ScenarioOriginStringIds[currentHeading];
 				}
 			} else if (w->selected_tab == SCENARIO_CATEGORY_OTHER) {
 				int category = scenario->category;
@@ -628,12 +643,12 @@ static void initialise_list_items(rct_window *w)
 	_listItems[length - 1].type = LIST_ITEM_TYPE_END;
 
 	// Mega park handling
-	if (megaParkListItemIndex != -1) {
+	if (megaParkListItemIndex != SIZE_MAX) {
 		bool megaParkLocked = (rct1CompletedScenarios & rct1RequiredCompletedScenarios) != rct1RequiredCompletedScenarios;
 		_listItems[megaParkListItemIndex].scenario.is_locked = megaParkLocked;
 		if (megaParkLocked && gConfigGeneral.scenario_hide_mega_park) {
 			// Remove mega park
-			int remainingItems = length - megaParkListItemIndex - 1;
+			size_t remainingItems = length - megaParkListItemIndex - 1;
 			memmove(&_listItems[megaParkListItemIndex], &_listItems[megaParkListItemIndex + 1], remainingItems);
 
 			// Remove empty headings
@@ -651,7 +666,7 @@ static void initialise_list_items(rct_window *w)
 	}
 }
 
-static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario)
+static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scenario)
 {
 	if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 		if (scenario->source_game != w->selected_tab) {

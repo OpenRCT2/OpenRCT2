@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John, Dennis Devriendt
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../config.h"
 #include "../localisation/localisation.h"
@@ -32,6 +27,7 @@
 #include "dropdown.h"
 #include "../drawing/drawing.h"
 #include "../interface/themes.h"
+#include "../sprites.h"
 
 #define WW 113
 #define WH 96
@@ -49,17 +45,34 @@ enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
+static const rct_string_id BannerColouredTextFormats[] = {
+	STR_TEXT_COLOR_BLACK,
+	STR_TEXT_COLOR_GREY,
+	STR_TEXT_COLOR_WHITE,
+	STR_TEXT_COLOR_RED,
+	STR_TEXT_COLOR_GREEN,
+	STR_TEXT_COLOR_YELLOW,
+	STR_TEXT_COLOR_TOPAZ,
+	STR_TEXT_COLOR_CELADON,
+	STR_TEXT_COLOR_BABYBLUE,
+	STR_TEXT_COLOR_PALELAVENDER,
+	STR_TEXT_COLOR_PALEGOLD,
+	STR_TEXT_COLOR_LIGHTPINK,
+	STR_TEXT_COLOR_PEARLAQUA,
+	STR_TEXT_COLOR_PALESILVER,
+};
+
 rct_widget window_banner_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,	65535},								// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			0xBA9,			STR_WINDOW_TITLE_TIP},				// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,			STR_CLOSE_WINDOW_TIP},				// close x button
-	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,	65535},								// tab content panel
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			0x1430,			STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			0x143A,			STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			0x142D,			STR_DEMOLISH_BANNER_TIP},			// demolish button
-	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
-	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0x0FFFFFFFF,	65535},								// high money
-	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		0x36C,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,					STR_NONE},								// panel / background
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_BANNER_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP},				// title bar
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP},				// close x button
+	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,				STR_NONE},								// tab content panel
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			SPR_RENAME,					STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			SPR_NO_ENTRY,				STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			SPR_DEMOLISH,				STR_DEMOLISH_BANNER_TIP},			// demolish button
+	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
+	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_NONE},								// high money
+	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		STR_DROPDOWN_GLYPH,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
 	{ WIDGETS_END },
 };
 
@@ -168,7 +181,7 @@ void window_banner_open(rct_windownumber number)
 		-1
 	);
 
-	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
 	window_invalidate(w);
 }
 
@@ -198,7 +211,7 @@ static void window_banner_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
 		break;
 	case WIDX_BANNER_TEXT:
-		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0, 32);
+		window_text_input_open(w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
 		break;
 	case WIDX_BANNER_NO_ENTRY:
 		textinput_cancel();
@@ -217,14 +230,13 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
-		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, banner->colour);
+		window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
 		break;
 	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
 		for( int i = 0; i < 13; ++i){
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 2997 + i;
-
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
 		}
 
 		//Switch to the dropdown box widget.
@@ -293,8 +305,8 @@ static void window_banner_invalidate(rct_window *w)
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
 	colour_btn->type = WWT_EMPTY;
 
-	//sceneray item not sure why we use this instead of banner?
-	rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[banner->type];
+	//scenery item not sure why we use this instead of banner?
+	rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
 
 	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLOURBTN;
 
@@ -312,10 +324,10 @@ static void window_banner_invalidate(rct_window *w)
 			(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 	}
 
-	colour_btn->image = (banner->colour << 19) + 0x600013C3;
+	colour_btn->image = (banner->colour << 19) | 0x60000000 | SPR_PALETTE_BTN;
 
 	rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-	drop_down_widget->image = banner->text_colour + 2996;
+	drop_down_widget->text = BannerColouredTextFormats[banner->text_colour];
 }
 
 /* rct2: 0x006BA4C5 */
@@ -363,6 +375,6 @@ static void window_banner_unknown_14(rct_window *w)
 		-1
 	);
 
-	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
 	window_invalidate(w);
 }

@@ -1,7 +1,25 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
 #include "cheats.h"
 #include "config.h"
 #include "game.h"
 #include "interface/window.h"
+#include "localisation/date.h"
+#include "management/finance.h"
 #include "network/network.h"
 #include "world/climate.h"
 #include "world/footpath.h"
@@ -19,8 +37,13 @@ bool gCheatsUnlockAllPrices = false;
 bool gCheatsBuildInPauseMode = false;
 bool gCheatsIgnoreRideIntensity = false;
 bool gCheatsDisableVandalism = false;
+bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
+bool gCheatsDisableTrainLengthLimit = false;
+bool gCheatsDisablePlantAging = false;
+bool gCheatsEnableChainLiftOnAllTrack = false;
+bool gCheatsAllowArbitraryRideTypeChanges = false;
 
 int park_rating_spinner_value;
 
@@ -87,8 +110,8 @@ static void cheat_remove_litter()
 	rct_litter* litter;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-		litter = &(g_sprite_list[spriteIndex].litter);
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		litter = &(get_sprite(spriteIndex)->litter);
 		nextSpriteIndex = litter->next;
 		sprite_remove((rct_sprite*)litter);
 	}
@@ -104,8 +127,8 @@ static void cheat_remove_litter()
 		if (!footpath_element_has_path_scenery(it.element))
 			continue;
 
-		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(it.element)];
-		if(sceneryEntry->path_bit.var_06 & (1 << 0))
+		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(it.element));
+		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
 			it.element->properties.path.addition_status = 0xFF;
 
 	} while (map_element_iterator_next(&it));
@@ -143,7 +166,7 @@ static void cheat_renew_rides()
 	FOR_ALL_RIDES(i, ride)
 	{
 		// Set build date to current date (so the ride is brand new)
-		ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		ride->build_date = gDateMonthsElapsed;
 		// Set reliability to 100
 		ride->reliability = (100 << 8);
 	}
@@ -195,12 +218,12 @@ static void cheat_increase_money(money32 amount)
 {
 	money32 currentMoney;
 
-	currentMoney = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	currentMoney = DECRYPT_MONEY(gCashEncrypted);
 	if (currentMoney < INT_MAX - amount)
 		currentMoney += amount;
 	else
 		currentMoney = INT_MAX;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(currentMoney);
+	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -209,7 +232,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), GAME_COMMAND_CHEAT, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -236,6 +259,12 @@ static void cheat_set_guest_parameter(int parameter, int value)
 		switch(parameter) {
 			case GUEST_PARAMETER_HAPPINESS:
 				peep->happiness = value;
+				// Clear the 'red-faced with anger' status if we're making the guest happy
+				if (value > 0)
+				{
+					peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+					peep->angriness = 0;
+				}
 				break;
 			case GUEST_PARAMETER_ENERGY:
 				peep->energy = value;
@@ -298,8 +327,8 @@ static void cheat_remove_all_guests()
 	rct_peep *peep;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-		peep = &(g_sprite_list[spriteIndex].peep);
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+		peep = &(get_sprite(spriteIndex)->peep);
 		nextSpriteIndex = peep->next;
 		if (peep->type == PEEP_TYPE_GUEST) {
 			peep_remove(peep);
@@ -329,6 +358,16 @@ static void cheat_explode_guests()
 	rct_peep *peep;
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
+		// To prevent blowing up peeps that will break
+		// ride vehicle logic.
+		if (peep->state == PEEP_STATE_ENTERING_RIDE ||
+			peep->state == PEEP_STATE_QUEUING_FRONT ||
+			peep->state == PEEP_STATE_LEAVING_RIDE ||
+			peep->state == PEEP_STATE_ON_RIDE ||
+			peep->state == PEEP_STATE_QUEUING) {
+			continue;
+		}
+
 		if (scenario_rand_max(6) == 0) {
 			peep->peep_flags |= PEEP_FLAGS_EXPLODE;
 		}
@@ -353,18 +392,21 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 	int cheat = *ecx;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (cheat) {
-			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = !gCheatsSandboxMode; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
-			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks; break;
-			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits; break;
+			case CHEAT_SANDBOXMODE: gCheatsSandboxMode = *edx != 0; window_invalidate_by_class(WC_MAP); window_invalidate_by_class(WC_FOOTPATH); break;
+			case CHEAT_DISABLECLEARANCECHECKS: gCheatsDisableClearanceChecks = *edx != 0; break;
+			case CHEAT_DISABLESUPPORTLIMITS: gCheatsDisableSupportLimits = *edx != 0; break;
 			case CHEAT_SHOWALLOPERATINGMODES: gCheatsShowAllOperatingModes = !gCheatsShowAllOperatingModes; break;
 			case CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES: gCheatsShowVehiclesFromOtherTrackTypes = !gCheatsShowVehiclesFromOtherTrackTypes; break;
 			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = !gCheatsFastLiftHill; break;
 			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = !gCheatsDisableBrakesFailure; break;
 			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = !gCheatsDisableAllBreakdowns; break;
+			case CHEAT_DISABLETRAINLENGTHLIMIT: gCheatsDisableTrainLengthLimit = !gCheatsDisableTrainLengthLimit; break;
+			case CHEAT_ENABLECHAINLIFTONALLTRACK: gCheatsEnableChainLiftOnAllTrack = !gCheatsEnableChainLiftOnAllTrack; break;
 			case CHEAT_UNLOCKALLPRICES: gCheatsUnlockAllPrices = !gCheatsUnlockAllPrices; window_invalidate_by_class(WC_RIDE); window_invalidate_by_class(WC_PARK_INFORMATION); break;
 			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = !gCheatsBuildInPauseMode; break;
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = !gCheatsDisableVandalism; break;
+			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = !gCheatsDisableLittering; break;
 			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
@@ -376,6 +418,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_WATERPLANTS: cheat_water_plants(); break;
 			case CHEAT_FIXVANDALISM: cheat_fix_vandalism(); break;
 			case CHEAT_REMOVELITTER: cheat_remove_litter(); break;
+			case CHEAT_DISABLEPLANTAGING: gCheatsDisablePlantAging = !gCheatsDisablePlantAging; break;
 			case CHEAT_SETSTAFFSPEED: cheat_set_staff_speed(*edx); break;
 			case CHEAT_RENEWRIDES: cheat_renew_rides(); break;
 			case CHEAT_MAKEDESTRUCTIBLE: cheat_make_destructible(); break;
@@ -387,8 +430,10 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = !gCheatsFreezeClimate; break;
 			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = !gCheatsNeverendingMarketing; break;
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
-			case CHEAT_HAVEFUN: RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_HAVE_FUN; break;
+			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
+			case CHEAT_RESETDATE: date_reset(); window_invalidate_by_class(WC_BOTTOM_TOOLBAR); break;
+			case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES: gCheatsAllowArbitraryRideTypeChanges = !gCheatsAllowArbitraryRideTypeChanges; window_invalidate_by_class(WC_RIDE); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {
 			config_save_default();
@@ -405,6 +450,8 @@ void cheats_reset()
 	gCheatsDisableSupportLimits = false;
 	gCheatsShowAllOperatingModes = false;
 	gCheatsShowVehiclesFromOtherTrackTypes = false;
+	gCheatsDisableTrainLengthLimit = false;
+	gCheatsEnableChainLiftOnAllTrack = false;
 	gCheatsFastLiftHill = false;
 	gCheatsDisableBrakesFailure = false;
 	gCheatsDisableAllBreakdowns = false;
@@ -412,6 +459,9 @@ void cheats_reset()
 	gCheatsBuildInPauseMode = false;
 	gCheatsIgnoreRideIntensity = false;
 	gCheatsDisableVandalism = false;
+	gCheatsDisableLittering = false;
 	gCheatsNeverendingMarketing = false;
 	gCheatsFreezeClimate = false;
+	gCheatsDisablePlantAging = false;
+	gCheatsAllowArbitraryRideTypeChanges = false;
 }

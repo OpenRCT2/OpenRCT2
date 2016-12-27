@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
@@ -79,13 +75,14 @@ enum {
 	SHORTCUT_OPEN_CHAT_WINDOW,
 	SHORTCUT_QUICK_SAVE_GAME,
 	SHORTCUT_SHOW_OPTIONS,
+	SHORTCUT_MUTE_SOUND,
+	SHORTCUT_WINDOWED_MODE_TOGGLE,
+	SHORTCUT_SHOW_MULTIPLAYER,
+	SHORTCUT_PAINT_ORIGINAL_TOGGLE,
+	SHORTCUT_DEBUG_PAINT_TOGGLE,
+	SHORTCUT_SEE_THROUGH_PATHS_TOGGLE,
 
 	SHORTCUT_COUNT
-};
-
-enum {
-	SCREENSHOT_FORMAT_BMP,
-	SCREENSHOT_FORMAT_PNG
 };
 
 enum {
@@ -136,7 +133,14 @@ enum {
 	SCENARIO_SELECT_MODE_ORIGIN,
 };
 
-typedef struct {
+enum {
+	DRAWING_ENGINE_NONE = -1,
+	DRAWING_ENGINE_SOFTWARE,
+	DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
+	DRAWING_ENGINE_OPENGL,
+};
+
+typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
@@ -144,6 +148,9 @@ typedef struct {
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
+	sint32 custom_currency_rate;
+	sint8 custom_currency_affix;
+	utf8string custom_currency_symbol;
 	sint8 construction_marker_colour;
 	sint8 edge_scrolling;
 	sint8 always_show_gridlines;
@@ -161,7 +168,7 @@ typedef struct {
 	uint16 language;
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
-	uint8 hardware_display;
+	uint8 drawing_engine;
 	uint8 uncap_fps;
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;
@@ -187,9 +194,17 @@ typedef struct {
 	uint8 scenario_select_mode;
 	uint8 scenario_unlocking_enabled;
 	uint8 scenario_hide_mega_park;
+	utf8string last_save_game_directory;
+	utf8string last_save_landscape_directory;
+	utf8string last_save_scenario_directory;
+	utf8string last_save_track_directory;
+	uint8 window_limit;
+	uint8 zoom_to_cursor;
+	uint8 render_weather_effects;
+	uint8 render_weather_gloom;
 } general_configuration;
 
-typedef struct {
+typedef struct interface_configuration {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
@@ -201,7 +216,7 @@ typedef struct {
 	uint32 object_selection_filter_flags;
 } interface_configuration;
 
-typedef struct {
+typedef struct sound_configuration {
 	uint8 master_volume;
 	uint8 title_music;
 	uint8 sound_enabled;
@@ -212,7 +227,7 @@ typedef struct {
 	utf8string device;
 } sound_configuration;
 
-typedef struct {
+typedef struct twitch_configuration {
 	utf8string channel;
 	uint8 enable_follower_peep_names;
 	uint8 enable_follower_peep_tracking;
@@ -221,7 +236,7 @@ typedef struct {
 	uint8 enable_news;
 } twitch_configuration;
 
-typedef struct {
+typedef struct network_configuration {
 	utf8string player_name;
 	uint32 default_port;
 	utf8string default_password;
@@ -230,13 +245,16 @@ typedef struct {
 	uint8 maxplayers;
 	utf8string server_name;
 	utf8string server_description;
+	utf8string server_greeting;
 	utf8string master_server_url;
 	utf8string provider_name;
 	utf8string provider_email;
 	utf8string provider_website;
+	uint8 known_keys_only;
+	uint8 log_chat;
 } network_configuration;
 
-typedef struct {
+typedef struct notification_configuration {
 	bool park_award;
 	bool park_marketing_campaign_finished;
 	bool park_warnings;
@@ -256,47 +274,29 @@ typedef struct {
 	bool guest_died;
 } notification_configuration;
 
+typedef struct font_configuration {
+	utf8string file_name;
+	utf8string font_name;
+	sint8 x_offset;
+	sint8 y_offset;
+	uint8 size_tiny;
+	uint8 size_small;
+	uint8 size_medium;
+	uint8 size_big;
+	uint8 height_tiny;
+	uint8 height_small;
+	uint8 height_medium;
+	uint8 height_big;
+} font_configuration;
+
 // Define structures for any other settings here
-typedef struct {
+typedef struct theme_features {
 	uint8 rct1_ride_lights;
 	uint8 rct1_park_lights;
 	uint8 rct1_scenario_font;
 } theme_features;
 
-#define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
-
-typedef struct {
-	uint8 command;
-	union {
-		uint8 saveIndex;	// LOAD (this index is internal only)
-		uint8 x;			// LOCATION
-		uint8 rotations;	// ROTATE (counter-clockwise)
-		uint8 zoom;			// ZOOM
-		uint8 speed;		// SPEED
-		uint8 seconds;		// WAIT
-	};
-	uint8 y;				// LOCATION
-} title_command;
-
-#define TITLE_SEQUENCE_NAME_SIZE 256
-
-typedef struct {
-	char name[TITLE_SEQUENCE_NAME_SIZE];
-	char path[MAX_PATH]; // Needed for non-modifiable presets
-	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
-	title_command *commands;
-	uint8 num_saves;
-	uint16 num_commands;
-
-} title_sequence;
-
-typedef struct {
-	title_sequence *presets;
-	uint16 num_presets;
-
-} title_sequences_configuration;
-
-typedef struct {
+typedef struct shortcut_entry {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;
@@ -307,11 +307,11 @@ extern sound_configuration gConfigSound;
 extern twitch_configuration gConfigTwitch;
 extern network_configuration gConfigNetwork;
 extern notification_configuration gConfigNotifications;
-extern title_sequences_configuration gConfigTitleSequences;
+extern font_configuration gConfigFonts;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
-void config_get_default_path(utf8 *outPath);
+void config_get_default_path(utf8 *outPath, size_t size);
 void config_set_defaults();
 void config_release();
 bool config_open_default();
@@ -327,6 +327,5 @@ bool config_find_or_browse_install_directory();
 
 void title_sequences_set_default();
 void title_sequences_load_presets();
-void title_sequence_save_preset_script(int preset);
 
 #endif

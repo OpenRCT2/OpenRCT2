@@ -1,24 +1,19 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
@@ -30,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "dropdown.h"
+#include "../sprites.h"
 
 #pragma region Widgets
 
@@ -52,14 +48,14 @@ enum {
 
 static rct_widget window_maze_construction_widgets[] = {
 	{ WWT_FRAME,			0,	0,		165,	0,		199,	0xFFFFFFFF,							STR_NONE												},
-	{ WWT_CAPTION,			0,	1,		164,	1,		14,		896,								STR_WINDOW_TITLE_TIP									},
+	{ WWT_CAPTION,			0,	1,		164,	1,		14,		STR_RIDE_CONSTRUCTION_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP									},
 	{ WWT_CLOSEBOX,			0,	153,	163,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP									},
 	{ WWT_GROUPBOX,			0,	3,		162,	17,		71,		STR_RIDE_CONSTRUCTION_MODE,			STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
-	{ WWT_FLATBTN,			1,	35,		66,		29,		60,		0x15C8,								STR_RIDE_CONSTRUCTION_BUILD_MODE						},
-	{ WWT_FLATBTN,			1,	67,		98,		29,		60,		0x15C9,								STR_RIDE_CONSTRUCTION_MOVE_MODE							},
-	{ WWT_FLATBTN,			1,	99,		130,	29,		60,		0x15CA,								STR_RIDE_CONSTRUCTION_FILL_IN_MODE						},
+	{ WWT_FLATBTN,			1,	35,		66,		29,		60,		SPR_MAZE_CONSTRUCTION_BUILD,		STR_RIDE_CONSTRUCTION_BUILD_MODE						},
+	{ WWT_FLATBTN,			1,	67,		98,		29,		60,		SPR_MAZE_CONSTRUCTION_MOVE,			STR_RIDE_CONSTRUCTION_MOVE_MODE							},
+	{ WWT_FLATBTN,			1,	99,		130,	29,		60,		SPR_MAZE_CONSTRUCTION_FILL_IN,		STR_RIDE_CONSTRUCTION_FILL_IN_MODE						},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
@@ -75,10 +71,10 @@ static rct_widget window_maze_construction_widgets[] = {
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_EMPTY,			0,	0,		0,		0,		0,		0xFFFFFFFF,							STR_NONE												},
 	{ WWT_GROUPBOX,			0,	3,		162,	80,		166,	STR_RIDE_CONSTRUCTION_BUILD,		STR_NONE												},
-	{ WWT_FLATBTN,			1,	83,		127,	96,		124,	0x1603,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	83,		127,	125,	153,	0x1604,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	38,		82,		125,	153,	0x1605,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
-	{ WWT_FLATBTN,			1,	38,		82,		96,		124,	0x1606,								STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	83,		127,	96,		124,	SPR_CONSTRUCTION_DIRECTION_NE,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	83,		127,	125,	153,	SPR_CONSTRUCTION_DIRECTION_SE,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	38,		82,		125,	153,	SPR_CONSTRUCTION_DIRECTION_SW,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
+	{ WWT_FLATBTN,			1,	38,		82,		96,		124,	SPR_CONSTRUCTION_DIRECTION_NW,		STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP	},
 	{ WWT_GROUPBOX,			0,	3,		162,	168,	195,	0xFFFFFFFF,							STR_NONE												},
 	{ WWT_DROPDOWN_BUTTON,	1,	9,		78,		178,	189,	STR_RIDE_CONSTRUCTION_ENTRANCE,		STR_RIDE_CONSTRUCTION_ENTRANCE_TIP						},
 	{ WWT_DROPDOWN_BUTTON,	1,	87,		156,	178,	189,	STR_RIDE_CONSTRUCTION_EXIT,			STR_RIDE_CONSTRUCTION_EXIT_TIP							},
@@ -167,7 +163,7 @@ static void window_maze_construction_close(rct_window *w)
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
 	// In order to cancel the yellow arrow correctly the
 	// selection tool should be cancelled.
@@ -178,10 +174,10 @@ static void window_maze_construction_close(rct_window *w)
 	uint8 rideIndex = _currentRideIndex;
 	rct_ride* ride = get_ride(rideIndex);
 	if (ride->overall_view == 0xFFFF) {
-		int savedPausedState = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
+		int savedPausedState = gGamePaused;
+		gGamePaused = 0;
 		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = savedPausedState;
+		gGamePaused = savedPausedState;
 	} else {
 		window_ride_main_open(rideIndex);
 	}
@@ -191,9 +187,9 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 	if (tool_set(w, widgetIndex, 12))
 		return;
 
-	RCT2_GLOBAL(0x00F44191, uint8) = widgetIndex == WIDX_MAZE_ENTRANCE ? 0 : 1;
-	RCT2_GLOBAL(0x00F44192, uint8) = (uint8)w->number;
-	RCT2_GLOBAL(0x00F44193, uint8) = 0;
+	gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
+	gRideEntranceExitPlaceRideIndex = (uint8)w->number;
+	gRideEntranceExitPlaceStationIndex = 0;
 	gInputFlags |= INPUT_FLAG_6;
 
 	sub_6C9627();
@@ -306,7 +302,7 @@ static void window_maze_construction_update(rct_window *w)
 		break;
 	case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
 		if (!widget_is_active_tool(w, WIDX_MAZE_ENTRANCE) && !widget_is_active_tool(w, WIDX_MAZE_EXIT)) {
-			_rideConstructionState = RCT2_GLOBAL(0x00F440CC, uint8);
+			_rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
 			window_maze_construction_update_pressed_widgets();
 		}
 		break;
@@ -318,7 +314,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
 			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
+			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
 		}
@@ -353,25 +349,26 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	map_invalidate_selection_rect();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~((1 << 0) | (1 << 2));
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	int direction = 0;
 	ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
 
-	if (RCT2_GLOBAL(0x00F44194, uint8) == 0xFF)
+	if (gRideEntranceExitPlaceDirection == 0xFF)
 		return;
 
-	uint8 rideIndex = RCT2_GLOBAL(0x00F44192, uint8);
-	uint8 is_exit = RCT2_GLOBAL(0x00F44191, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = is_exit ? 1144 : 1145;
+	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
+	uint8 entranceExitType = gRideEntranceExitPlaceType;
+	gGameCommandErrorTitle = entranceExitType ? STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION : STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 
 	money32 cost = game_do_command(
 		x,
 		GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8),
 		y,
-		rideIndex | (is_exit << 8),
+		rideIndex | (entranceExitType << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-		RCT2_GLOBAL(0x00F44193, uint8),
+		gRideEntranceExitPlaceStationIndex,
 		0);
 
 	if (cost == MONEY32_UNDEFINED)
@@ -379,9 +376,9 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		gCommandPosition.x,
+		gCommandPosition.y,
+		gCommandPosition.z);
 
 	rct_ride* ride = get_ride(rideIndex);
 	if (ride_are_all_possible_entrances_and_exits_built(ride)){
@@ -390,9 +387,9 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 			window_close(w);
 	}
 	else{
-		RCT2_GLOBAL(0x00F44191, uint8) = is_exit ^ 1;
+		gRideEntranceExitPlaceType = entranceExitType ^ 1;
 		window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+		gCurrentToolWidget.widget_index = entranceExitType ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
 	}
 }
 
@@ -422,8 +419,8 @@ static void window_maze_construction_invalidate(rct_window *w)
 	rct_ride *ride = get_ride(_currentRideIndex);
 
 	// Set window title arguments
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
+	set_format_arg(4, rct_string_id, ride->name);
+	set_format_arg(6, uint32, ride->name_arguments);
 }
 
 /**
@@ -497,7 +494,7 @@ static void window_maze_construction_construct(int direction)
 		break;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+	gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 	money32 cost = game_do_command(
 		x,
 		flags | (direction << 8),

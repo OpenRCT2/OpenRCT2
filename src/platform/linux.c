@@ -1,22 +1,18 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * Copyright (c) 2014 Ted John
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
- * This file is part of OpenRCT2.
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
+#pragma endregion
 
 #include "../common.h"
 
@@ -26,7 +22,10 @@
 #include <dlfcn.h>
 #include <errno.h>
 #include <fontconfig/fontconfig.h>
+#include <fnmatch.h>
+#include <locale.h>
 
+#include "../config.h"
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "../util/util.h"
@@ -47,7 +46,7 @@ struct dummy {
 
 typedef enum { DT_NONE, DT_KDIALOG, DT_ZENITY } dialog_type;
 
-void platform_get_exe_path(utf8 *outPath)
+void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
 	char exePath[MAX_PATH];
 	ssize_t bytesRead;
@@ -56,17 +55,16 @@ void platform_get_exe_path(utf8 *outPath)
 		log_fatal("failed to read /proc/self/exe");
 	}
 	exePath[bytesRead - 1] = '\0';
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
+	char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
 	if (exeDelimiter == NULL)
 	{
 		log_error("should never happen here");
 		outPath[0] = '\0';
 		return;
 	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
+	*exeDelimiter = '\0';
 
-	exePath[exeDelimiterIndex] = '\0';
-	safe_strcpy(outPath, exePath, exeDelimiterIndex + 1);
+	safe_strcpy(outPath, exePath, outSize);
 }
 
 bool platform_check_steam_overlay_attached() {
@@ -95,7 +93,7 @@ bool platform_check_steam_overlay_attached() {
  *   - $XDG_CONFIG_HOME/OpenRCT2
  *   - /home/[uid]/.config/OpenRCT2
  */
-void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator) {
+void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
 	const char *configdir = getenv("XDG_CONFIG_HOME");
 	log_verbose("configdir = '%s'", configdir);
 	if (configdir == NULL)
@@ -108,17 +106,15 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
 			return;
 		}
 
-		strncat(buffer, homedir, MAX_PATH - 1);
-		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+		safe_strcpy(buffer, homedir, size);
+		safe_strcat_path(buffer, ".config", size);
 	}
 	else
 	{
-		strncat(buffer, configdir, MAX_PATH - 1);
+		safe_strcpy(buffer, configdir, size);
 	}
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	safe_strcat_path(buffer, "OpenRCT2", size);
+	path_end_with_separator(buffer, size);
 }
 
 /**
@@ -129,7 +125,7 @@ void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const 
  *   - /var/lib/openrct2
  *   - /usr/share/openrct2
  */
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
 	static const utf8 *searchLocations[] = {
 		"../share/openrct2",
 #ifdef ORCT2_RESOURCE_DIR
@@ -145,15 +141,102 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 		log_verbose("Looking for OpenRCT2 data in %s", searchLocations[i]);
 		if (platform_directory_exists(searchLocations[i]))
 		{
-			out[0] = '\0';
-			safe_strcpy(out, searchLocations[i], MAX_PATH);
+			safe_strcpy(out, searchLocations[i], size);
 			return;
 		}
 	}
 }
 
+uint16 platform_get_locale_language(){
+	const char *langString = setlocale(LC_MESSAGES, "");
+	if(langString != NULL){
+		// The locale has the following form:
+		// language[_territory[.codeset]][@modifier]
+		// (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		// longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		char pattern[32];
+		//strip the codeset and modifier part
+		int length = strlen(langString);
+		{
+			for(int i = 0; i < length; ++i){
+				if(langString[i] == '.' || langString[i] == '@'){
+					length = i;
+					break;
+				}
+			}
+		} //end strip
+		memcpy(pattern, langString, length); //copy all until first '.' or '@'
+		pattern[length] = '\0';
+		//find _ if present
+		const char *strip = strchr(pattern, '_');
+		if(strip != NULL){
+			// could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change.
+			// pattern is now "language?territory"
+			pattern[strip - pattern] = '?';
+		}
 
-void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
+		// Iterate through all available languages
+		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+				return i;
+			}
+		}
+
+		//special cases :(
+		if(!fnmatch(pattern, "en_CA", 0)){
+			return LANGUAGE_ENGLISH_US;
+		}
+		else if (!fnmatch(pattern, "zh_CN", 0)){
+			return LANGUAGE_CHINESE_SIMPLIFIED;
+		}
+		else if (!fnmatch(pattern, "zh_TW", 0)){
+			return LANGUAGE_CHINESE_TRADITIONAL;
+		}
+
+		//no exact match found trying only language part
+		if(strip != NULL){
+			pattern[strip - pattern] = '*';
+			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
+			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+					return i;
+				}
+			}
+		}
+	}
+	return LANGUAGE_ENGLISH_UK;
+}
+
+uint8 platform_get_locale_currency(){
+	char *langstring = setlocale(LC_MONETARY, "");
+
+	if (langstring == NULL) {
+		return platform_get_currency_value(NULL);
+	}
+
+	struct lconv *lc = localeconv();
+
+	return platform_get_currency_value(lc->int_curr_symbol);
+}
+
+uint8 platform_get_locale_measurement_format(){
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
+
+	if(langstring != NULL){
+		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
+			return MEASUREMENT_FORMAT_IMPERIAL;
+		}
+	}
+	return MEASUREMENT_FORMAT_METRIC;
+}
+
+static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
 	size_t n_chars;
 
@@ -163,7 +246,7 @@ void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	if (buf && buf_size) {
 		n_chars = fread(buf, 1, *buf_size, f);
 
-		// some commands may return a new-line terminated result, trim that…
+		// some commands may return a new-line terminated result, trim that
 		if (n_chars > 0 && buf[n_chars - 1] == '\n') {
 			buf[n_chars - 1] = '\0';
 		}
@@ -185,7 +268,7 @@ void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 		pclose(f);
 }
 
-dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
+static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	int exit_value;
 	size_t size;
 	dialog_type dtype;
@@ -217,19 +300,17 @@ dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	return dtype;
 }
 
-bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
 	int exit_value;
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
 	char result[MAX_PATH];
 	size_t size;
 	dialog_type dtype;
-	char *action;
-	char *flags;
+	char *action = NULL;
+	char *flags = NULL;
 	char filter[MAX_PATH] = { 0 };
 	char filterPatternRegex[64];
-	char *allFilesPatternDescription;
-	int allFilesPatternLength = 0;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
@@ -343,7 +424,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
 		platform_show_messagebox(msg);
 
-		return platform_open_common_file_dialog(outFilename, desc);
+		return platform_open_common_file_dialog(outFilename, desc, outSize);
 	} else
 	if (desc->type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
 		snprintf(cmd, MAX_PATH, "%s --yesno \"Overwrite %s?\"", executable, result);
@@ -356,7 +437,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		}
 	}
 
-	strncpy(outFilename, result, MAX_PATH);
+	safe_strcpy(outFilename, result, outSize);
 
 	return 1;
 }
@@ -392,8 +473,7 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 
 	result[size-1] = '\0';
 
-	return_value = (char*) malloc(strlen(result)+1);
-	strcpy(return_value, result);
+	return_value = _strdup(result);
 
 	return return_value;
 }
@@ -401,7 +481,6 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 void platform_show_messagebox(char *message) {
 	size_t size;
 	dialog_type dtype;
-	int exit_value;
 	char cmd[MAX_PATH];
 	char executable[MAX_PATH];
 
@@ -426,7 +505,7 @@ void platform_show_messagebox(char *message) {
 	execute_cmd(cmd, 0, 0, 0);
 }
 
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
 	assert(buffer != NULL);
 	assert(font != NULL);
@@ -454,7 +533,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
 		{
 			found = true;
-			safe_strcpy(buffer, (utf8*) filename, MAX_PATH);
+			safe_strcpy(buffer, (utf8*) filename, size);
 			log_verbose("FontConfig provided font %s", filename);
 		}
 		FcPatternDestroy(match);
