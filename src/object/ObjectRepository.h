@@ -63,7 +63,7 @@ interface IObjectRepository
 {
     virtual ~IObjectRepository() { }
 
-    virtual void                            LoadOrConstruct() abstract;
+    virtual void                            LoadOrConstruct(bool forceScan) abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;

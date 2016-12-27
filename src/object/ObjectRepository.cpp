@@ -99,6 +99,7 @@ class ObjectRepository : public IObjectRepository
     QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId = 0;
+    int                                 _numConflicts;
 
 public:
     ObjectRepository(IPlatformEnvironment * env)
@@ -111,7 +112,7 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct() override
+    void LoadOrConstruct(bool forceScan) override
     {
         ClearItems();
 
@@ -122,8 +123,12 @@ public:
         QueryDirectory(&_queryDirectoryResult, rct2Path);
         QueryDirectory(&_queryDirectoryResult, openrct2Path);
 
-        if (!Load())
+        if (forceScan || !Load())
         {
+            if (forceScan)
+            {
+                Console::WriteLine("Forcing object repository scan.");
+            }
             _languageId = gCurrentLanguage;
 
             Construct();
@@ -247,6 +252,7 @@ private:
         Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
 
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
+        _numConflicts = 0;
 
         auto stopwatch = Stopwatch();
         stopwatch.Start();
@@ -258,6 +264,10 @@ private:
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        if (_numConflicts > 0)
+        {
+            Console::WriteLine("%d object conflicts found.", _numConflicts);
+        }
     }
 
     void ScanDirectory(const std::string &directory)
@@ -390,6 +400,7 @@ private:
         }
         else
         {
+            _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
             Console::Error::WriteLine("               : '%s'", item->Path);
             return false;
@@ -659,7 +670,7 @@ extern "C"
     void object_list_load()
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        objectRepository->LoadOrConstruct();
+        objectRepository->LoadOrConstruct(false);
 
         IObjectManager * objectManager = GetObjectManager();
         objectManager->UnloadAll();

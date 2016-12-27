@@ -30,6 +30,7 @@ extern "C"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
+#include "../object/ObjectRepository.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD
@@ -66,6 +67,7 @@ static utf8 * _userDataPath    = nullptr;
 static utf8 * _openrctDataPath = nullptr;
 static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
+static bool   _forceScan       = false;
 
 static const CommandLineOptionDefinition StandardOptions[]
 {
@@ -89,6 +91,7 @@ static const CommandLineOptionDefinition StandardOptions[]
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
 #endif // USE_BREAKPAD
+    { CMDLINE_TYPE_SWITCH,  &_forceScan,       'f', "force-scan",        "forces scanning of object repository" },
     OptionTableEnd
 };
 
@@ -193,6 +196,14 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     gOpenRCT2Headless = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
+
+    if (_forceScan)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        objectRepository->LoadOrConstruct(true);
+
+        result = EXITCODE_OK;
+    }
 
     if (_userDataPath != nullptr)
     {

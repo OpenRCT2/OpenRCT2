@@ -190,7 +190,7 @@ extern "C"
         // TODO Ideally we want to delay this until we show the title so that we can
         //      still open the game window and draw a progress screen for the creation
         //      of the object cache.
-        objRepo->LoadOrConstruct();
+        objRepo->LoadOrConstruct(false);
 
         // TODO Like objects, this can take a while if there are a lot of track designs
         //      its also really something really we might want to do in the background
