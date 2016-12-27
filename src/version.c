@@ -30,7 +30,11 @@
 	const char *gBuildServer = "";
 #endif
 
-const char *gGitBranch = "";
+#ifdef OPENRCT2_BRANCH
+	const char *gGitBranch = OPENRCT2_BRANCH;
+#else
+	const char *gGitBranch = "";
+#endif
 
 #ifdef OPENRCT2_COMMIT_SHA1
 	const char *gCommitSha1 = OPENRCT2_COMMIT_SHA1;
