@@ -108,16 +108,15 @@ void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		return;
 	}
+
 	if (balloon_num >= MAX_SPRITES) {
 		log_error("Tried getting invalid sprite for balloon: %u", balloon_num);
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
+
 	rct_sprite* sprite = get_sprite(balloon_num);
-	if (!sprite) {
-		return;
-	}
-	if (sprite->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && sprite->balloon.misc_identifier == SPRITE_MISC_BALLOON) {
+	if (sprite != NULL && sprite->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && sprite->balloon.misc_identifier == SPRITE_MISC_BALLOON) {
 		balloon_press(&sprite->balloon);
 	}
 }

@@ -23,6 +23,7 @@
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "../PlatformEnvironment.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
@@ -393,7 +394,7 @@ private:
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Error reading highscores.");
         }
@@ -450,7 +451,7 @@ private:
                             if (scBasic.company_value > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
+                                highscore->name = win1252_to_utf8_alloc(scBasic.completed_by, Util::CountOf(scBasic.completed_by));
                                 highscore->company_value = scBasic.company_value;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
@@ -461,14 +462,14 @@ private:
                     {
                         scenario_highscore_entry * highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.path);
-                        highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
+                        highscore->name = win1252_to_utf8_alloc(scBasic.completed_by, Util::CountOf(scBasic.completed_by));
                         highscore->company_value = scBasic.company_value;
                         highscore->timestamp = DATETIME64_MIN;
                     }
                 }
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
@@ -526,7 +527,7 @@ private:
                 fs.WriteValue(highscore->timestamp);
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }

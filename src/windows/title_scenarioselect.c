@@ -363,8 +363,7 @@ static void window_scenarioselect_invalidate(rct_window *w)
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y, format;
-	rct_widget *widget;
+	int format;
 	const scenario_index_entry *scenario;
 
 	window_draw_widgets(w, dpi);
@@ -372,13 +371,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
 
 	// Text for each tab
-	for (i = 0; i < 8; i++) {
-		widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
+	for (int i = 0; i < 8; i++) {
+		rct_widget *widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
 		if (widget->type == WWT_EMPTY)
 			continue;
 
-		x = (widget->left + widget->right) / 2 + w->x;
-		y = (widget->top + widget->bottom) / 2 + w->y - 3;
+		int x = (widget->left + widget->right) / 2 + w->x;
+		int y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
 			set_format_arg(0, rct_string_id, ScenarioOriginStringIds[i]);
@@ -393,8 +392,8 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (scenario == NULL) {
 		if (_showLockedInformation) {
 			// Show locked information
-			x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-			y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+			int x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+			int y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, COLOUR_BLACK, x + 85, y, 170);
 			y += 15;
 			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK) + 5;
@@ -414,8 +413,8 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Scenario name
-	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
-	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+	int x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+	int y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	set_format_arg(0, rct_string_id, STR_STRING);
 	set_format_arg(2, const char *, scenario->name);
 	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x + 85, y, 170);
@@ -596,6 +595,7 @@ static void initialise_list_items(rct_window *w)
 				}
 			}
 		}
+
 		if (headingStringId != STR_NONE) {
 			// Ensure list capacity
 			if (length == capacity) {

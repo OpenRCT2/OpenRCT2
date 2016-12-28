@@ -619,9 +619,9 @@ static void air_powered_vertical_rc_track_vertical_slope_up(uint8 rideIndex, uin
 				floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
 			}
 			sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
-			sub_98199C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 26, 26, 126, height, isDirection03 ? 3 : 3, 3, height);
+			sub_98199C_rotated(direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
 		} else {
-			sub_98197C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 26, 26, 126, height, isDirection03 ? 3 : 3, 3, height);
+			sub_98197C_rotated(direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
 		}
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);

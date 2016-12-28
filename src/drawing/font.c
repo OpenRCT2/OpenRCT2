@@ -192,6 +192,9 @@ bool font_supports_string_ttf(const utf8 *text, int fontSize)
 {
 	const utf8 *src = text;
 	const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
+	if (font == NULL) {
+		return false;
+	}
 
 	uint32 codepoint;
 	while ((codepoint = utf8_get_next(src, &src)) != 0) {

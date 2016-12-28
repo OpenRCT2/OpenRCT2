@@ -30,6 +30,7 @@
 #include "../object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct2.h"
 #include "../util/sawyercoding.h"
@@ -522,7 +523,16 @@ static int cc_staff(const utf8 **argv, int argc)
 			}
 		} else if (strcmp(argv[0], "set") == 0) {
 			if (argc < 4) {
-				console_printf("staff set energy <staff id> [value 0-255]");
+				console_printf("staff set energy <staff id> <value 0-255>");
+				console_printf("staff set costume <staff id> <costume id>");
+				for (int i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
+					char costume_name[128] = { 0 };
+					rct_string_id costume = STR_STAFF_OPTION_COSTUME_PANDA + i;
+					format_string(costume_name, 128, STR_DROPDOWN_MENU_LABEL, &costume);
+					// That's a terrible hack here. Costume names include inline sprites
+					// that don't work well with the console, so manually skip past them.
+					console_printf("        costume %i: %s", i, costume_name + 7);
+				}
 				return 0;
 			}
 			if (strcmp(argv[1], "energy") == 0) {
@@ -537,6 +547,29 @@ static int cc_staff(const utf8 **argv, int argc)
 					peep->energy = int_val[1];
 					peep->energy_growth_rate = int_val[1];
 				}
+			} else if (strcmp(argv[1], "costume") == 0) {
+				int int_val[2];
+				bool int_valid[2] = { 0 };
+				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
+				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
+				rct_peep *peep = NULL;
+				if (!int_valid[0]) {
+					console_writeline_error("Invalid staff ID");
+					return 1;
+				}
+				peep = GET_PEEP(int_val[0]);
+				bool is_entertainer = peep != NULL && peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER;
+				if (!is_entertainer) {
+					console_writeline_error("Specified staff is not entertainer");
+					return 1;
+				}
+				if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= ENTERTAINER_COSTUME_COUNT) {
+					console_writeline_error("Invalid costume ID");
+					return 1;
+				}
+
+				int costume = int_val[1] | 0x80;
+				game_do_command(peep->x, (costume << 8) | 1, peep->y, int_val[0], GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
 			}
 		}
 	} else {

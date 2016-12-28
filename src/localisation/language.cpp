@@ -142,22 +142,28 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
     }
 }
 
-static utf8 * convert_multibyte_charset(const char * src, int languageId)
+static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int languageId)
 {
     constexpr char CODEPOINT_DOUBLEBYTE = (char)0xFF;
 
     auto sb = StringBuilder(64);
-    for (const char * ch = src; *ch != 0;)
+    for (const char * ch = src; (ch < src + srcMaxSize) && (*ch != '\0');)
     {
         if (*ch == CODEPOINT_DOUBLEBYTE)
         {
             ch++;
-            uint8 a = *ch++;
-            uint8 b = *ch++;
-            wchar_t codepoint16 = (wchar_t)((a << 8) | b);
+            if (ch < src + srcMaxSize)
+            {
+                uint8 a = *ch++;
+                if (a != '\0')
+                {
+                    uint8 b = *ch++;
+                    wchar_t codepoint16 = (wchar_t)((a << 8) | b);
 
-            codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
-            sb.Append(codepoint16);
+                    codepoint16 = convert_specific_language_character_to_unicode(languageId, codepoint16);
+                    sb.Append(codepoint16);
+                }
+            }
         }
         else
         {
@@ -181,15 +187,15 @@ static bool rct2_language_is_multibyte_charset(int languageId)
     }
 }
 
-utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId)
 {
     if (rct2_language_is_multibyte_charset(languageId))
     {
-        return convert_multibyte_charset(src, languageId);
+        return convert_multibyte_charset(src, srcSize, languageId);
     }
     else
     {
-        return win1252_to_utf8_alloc(src);
+        return win1252_to_utf8_alloc(src, srcSize);
     }
 }
 

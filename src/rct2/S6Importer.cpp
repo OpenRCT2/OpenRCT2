@@ -46,7 +46,7 @@ class ObjectLoadException : public Exception
 {
 public:
     ObjectLoadException() : Exception("Unable to load objects.") { }
-    ObjectLoadException(const char * message) : Exception(message) { }
+    explicit ObjectLoadException(const char * message) : Exception(message) { }
 };
 
 S6Importer::S6Importer()
@@ -112,6 +112,7 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
     {
         throw Exception("Data is not a saved game.");
     }
+    log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
@@ -133,6 +134,7 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
     {
         throw Exception("Data is not a scenario.");
     }
+    log_verbose("scenario classic_flag = 0x%02x\n", _s6.header.classic_flag);
 
     sawyercoding_read_chunk_safe(rw, &_s6.info, sizeof(_s6.info));
 
@@ -368,7 +370,7 @@ extern "C"
      */
     bool game_load_sv6(SDL_RWops * rw)
     {
-        if (!sawyercoding_validate_checksum(rw))
+        if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum)
         {
             log_error("invalid checksum");
 
@@ -388,17 +390,17 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6Importer;
 
         // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -415,17 +417,17 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (IOException)
+        catch (const IOException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -433,7 +435,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -468,7 +470,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -490,17 +492,17 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (IOException)
+        catch (const IOException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -508,7 +510,7 @@ extern "C"
         delete s6Importer;
 
         gScreenAge = 0;
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return result;
     }
 
@@ -524,10 +526,10 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6Importer;
@@ -566,7 +568,7 @@ extern "C"
         gCheatsDisablePlantAging = SDL_ReadU8(rw) != 0;
         gCheatsAllowArbitraryRideTypeChanges = SDL_ReadU8(rw) != 0;
 
-        gLastAutoSaveTick = SDL_GetTicks();
+        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         return 1;
     }
 }

@@ -150,11 +150,9 @@ static rct_map_element *map_get_footpath_element_slope(int x, int y, int z, int 
 
 static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 {
-	int direction, z;
-
 	if ((mapElement->properties.path.type & 4) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-		direction = mapElement->properties.path.type & 3;
-		z = mapElement->base_height;
+		int direction = mapElement->properties.path.type & 3;
+		int z = mapElement->base_height;
 		map_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
 		map_remove_intersecting_walls(x, y, z, z + 6, direction);
 		mapElement = map_get_footpath_element(x / 32, y / 32, z);
@@ -211,7 +209,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
 		assert(mapElement != NULL);
 		mapElement->type = MAP_ELEMENT_TYPE_PATH;
-		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
+		mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
 		mapElement->properties.path.type = (type << 4) | (slope & 7);
 		mapElement->type |= type >> 7;
 		mapElement->properties.path.additions = pathItemType;
@@ -548,7 +546,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
 		assert(mapElement != NULL);
 		mapElement->type = MAP_ELEMENT_TYPE_PATH;
-		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
+		mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
 		mapElement->properties.path.type = (type << 4) | (slope & 7);
 		mapElement->type |= type >> 7;
 		mapElement->properties.path.additions = 0;
@@ -851,6 +849,8 @@ bool fence_in_the_way(int x, int y, int z0, int z1, int direction)
 	rct_map_element *mapElement;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL)
+		return false;
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE)
 			continue;
@@ -2042,12 +2042,9 @@ static void footpath_remove_edges_towards(int x, int y, int z0, int z1, int dire
  */
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 {
-	rct_ride *ride;
-	int z0, z1, slope;
-
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
 		int rideIndex = mapElement->properties.track.ride_index;
-		ride = get_ride(rideIndex);
+		rct_ride *ride = get_ride(rideIndex);
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
 			return;
 	}
@@ -2055,17 +2052,17 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 	sub_6A7642(x, y, mapElement);
 
 	for (int direction = 0; direction < 4; direction++) {
-		z1 = mapElement->base_height;
+		int z1 = mapElement->base_height;
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			if (footpath_element_is_sloped(mapElement)) {
-				slope = footpath_element_get_slope_direction(mapElement);
+				int slope = footpath_element_get_slope_direction(mapElement);
 				if ((slope - direction) & 1)
 					continue;
 
 				z1 += slope == direction ? 2 : 0;
 			}
 		}
-		z0 = z1 - 2;
+		int z0 = z1 - 2;
 		footpath_remove_edges_towards(x + TileDirectionDelta[direction].x, y + TileDirectionDelta[direction].y,
 			z0, z1, direction, footpath_element_is_queue(mapElement));
 	}

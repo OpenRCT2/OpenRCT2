@@ -110,7 +110,7 @@ void NetworkUserManager::Load()
             }
             json_decref(jsonUsers);
         }
-        catch (Exception ex)
+        catch (const Exception &ex)
         {
             Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.GetMessage());
         }
@@ -130,7 +130,9 @@ void NetworkUserManager::Save()
             jsonUsers = Json::ReadFromFile(path);
         }
     }
-    catch (Exception) { }
+    catch (const Exception &)
+    {
+    }
 
     if (jsonUsers == nullptr)
     {

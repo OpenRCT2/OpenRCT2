@@ -38,7 +38,8 @@
  * size: 0x20
  */
 typedef struct rct_s6_header {
-	uint16 type;				// 0x00
+	uint8 type;					// 0x00
+	uint8 classic_flag;			// 0x01
 	uint16 num_packed_objects;	// 0x02
 	uint32 version;				// 0x04
 	uint32 magic_number;		// 0x08
@@ -376,6 +377,8 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
+#define AUTOSAVE_PAUSE 0
+
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #if defined(NO_RCT2)
@@ -403,7 +406,7 @@ extern char gScenarioSavePath[MAX_PATH];
 extern char gScenarioExpansionPacks[3256];
 extern int gFirstTimeSave;
 extern uint16 gSavedAge;
-extern uint32 gLastAutoSaveTick;
+extern uint32 gLastAutoSaveUpdate;
 
 extern const char *_scenarioFileName;
 

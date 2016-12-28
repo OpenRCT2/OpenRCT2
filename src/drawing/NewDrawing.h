@@ -44,4 +44,3 @@ void drawing_engine_set_fps_uncapped(bool uncapped);
 #ifdef __cplusplus
 }
 #endif
-

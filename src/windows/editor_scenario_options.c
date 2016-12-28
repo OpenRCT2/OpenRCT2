@@ -580,12 +580,9 @@ static void window_editor_scenario_options_financial_update(rct_window *w)
  */
 static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 {
-	rct_widget *widgets;
-	int i;
-
 	colour_scheme_update(w);
 
-	widgets = window_editor_scenario_options_widgets[w->page];
+	rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
 		window_init_scroll_widgets(w);
@@ -596,7 +593,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
 		(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
 		w->pressed_widgets |= (1 << WIDX_NO_MONEY);
-		for (i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
+		for (int i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
 			w->widgets[i].type = WWT_EMPTY;
 	} else {
 		w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
@@ -620,8 +617,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 	else
 		w->pressed_widgets &= ~(1 << WIDX_FORBID_MARKETING);
 
-	w->widgets[WIDX_CLOSE].type =
-		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+	w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_scenario_options_anchor_border_widgets(w);
 }
@@ -845,8 +841,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
 	else
 		w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
 
-	w->widgets[WIDX_CLOSE].type =
-		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+	w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_scenario_options_anchor_border_widgets(w);
 }
@@ -1094,13 +1089,11 @@ static void window_editor_scenario_options_park_update(rct_window *w)
  */
 static void window_editor_scenario_options_park_invalidate(rct_window *w)
 {
-	rct_widget *widgets;
-	int i;
 	uint64 pressedWidgets;
 
 	colour_scheme_update(w);
 
-	widgets = window_editor_scenario_options_widgets[w->page];
+	rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
 	if (w->widgets != widgets) {
 		w->widgets = widgets;
 		window_init_scroll_widgets(w);
@@ -1110,7 +1103,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
 		(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
-		for (i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
+		for (int i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
 			w->widgets[i].type = WWT_EMPTY;
 	} else {
 		w->widgets[WIDX_LAND_COST].type = WWT_SPINNER;
@@ -1154,8 +1147,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 
 	w->pressed_widgets = pressedWidgets;
 
-	w->widgets[WIDX_CLOSE].type =
-		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+	w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_scenario_options_anchor_border_widgets(w);
 }

@@ -30,6 +30,7 @@ interface ITitleSequencePlayer
     virtual void Reset() abstract;
     virtual bool Update() abstract;
     virtual void Seek(sint32 position) abstract;
+    virtual void Eject() abstract;
 };
 
 ITitleSequencePlayer * CreateTitleSequencePlayer();

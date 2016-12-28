@@ -20,5 +20,3 @@
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../track_paint.h"
-
-

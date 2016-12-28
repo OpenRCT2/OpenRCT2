@@ -1,8 +1,7 @@
-Release version: 0.0.4
+Release version: 0.0.5
 ------------------------------------------------------------------------
 * Scenario editor object selection window will show object names in the selected language at the time of building the object cache. (Deleting plugin.dat in Documents/OpenRCT2 will fix this)
 * Guest AI is slightly worse than the original game.
 * Multiplayer is very experimental and is likely to desynchronise often.
-* Picking up / hiring of staff and guests in multiplayer may cause the game to crash.
 
 Some bugs or limitations present in the original game have not yet been fixed or lifted.

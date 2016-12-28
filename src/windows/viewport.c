@@ -96,11 +96,7 @@ static int _viewportNumber = 1;
  */
 void window_viewport_open()
 {
-	rct_window *w, *mainWindow;
-	rct_viewport *mainViewport;
-	int x, y;
-
-	w = window_create_auto_pos(
+	rct_window *w = window_create_auto_pos(
 		INITIAL_WIDTH, INITIAL_HEIGHT,
 		&window_viewport_events,
 		WC_VIEWPORT,
@@ -116,11 +112,11 @@ void window_viewport_open()
 
 	// Create viewport
 	viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
-	mainWindow = window_get_main();
+	rct_window *mainWindow = window_get_main();
 	if (mainWindow != NULL) {
-		mainViewport = mainWindow->viewport;
-		x = mainViewport->view_x + (mainViewport->view_width / 2);
-		y = mainViewport->view_y + (mainViewport->view_height / 2);
+		rct_viewport *mainViewport = mainWindow->viewport;
+		int x = mainViewport->view_x + (mainViewport->view_width / 2);
+		int y = mainViewport->view_y + (mainViewport->view_height / 2);
 		w->saved_view_x = x - (w->viewport->view_width / 2);
 		w->saved_view_y = y - (w->viewport->view_height / 2);
 	}

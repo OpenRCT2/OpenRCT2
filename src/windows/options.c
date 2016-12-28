@@ -1671,9 +1671,8 @@ static void window_options_update(rct_window *w)
 	w->frame_no++;
 	widget_invalidate(w, WIDX_TAB_1 + w->page);
 
-	rct_widget *widget;
 	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
-		widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
+		rct_widget *widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
 		uint8 sound_volume = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
 		widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
 		uint8 ride_music_volume = (uint8)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);

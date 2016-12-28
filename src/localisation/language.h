@@ -79,7 +79,7 @@ int utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
-utf8 *rct2_language_string_to_utf8(const char *src, int languageId);
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
 rct_string_id language_allocate_object_string(const utf8 * target);
 void language_free_object_string(rct_string_id stringId);

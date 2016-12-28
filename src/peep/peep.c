@@ -145,7 +145,7 @@ static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtR
 static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool peepAtRide, bool updateLastRide);
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
-static void peep_reset_pathfind_goal(rct_peep *peep);
+void peep_reset_pathfind_goal(rct_peep *peep);
 static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
@@ -1073,7 +1073,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
-		if ((scenario_rand() & 0xFFFF) <= (peep->item_standard_flags & PEEP_ITEM_MAP ? 8192U : 2184U)){
+		if ((scenario_rand() & 0xFFFF) <= ((peep->item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U)){
 			peep_pick_ride_to_go_on(peep);
 		}
 
@@ -7358,7 +7358,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 			*argument_2 = ride->name_arguments;
 		}
 		else{
-			*argument_1 = peep->peep_flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
+			*argument_1 = (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING;
 			*argument_2 = 0;
 		}
 		break;
@@ -7383,7 +7383,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 				*argument_1 = STR_WATCHING_RIDE | ((uint32)ride->name << 16);
 		}
 		else{
-			*argument_1 = peep->current_seat & 0x1 ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
+			*argument_1 = (peep->current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
 			*argument_2 = 0;
 		}
 		break;
@@ -7859,7 +7859,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 void peep_set_map_tooltip(rct_peep *peep)
 {
 	if (peep->type == PEEP_TYPE_GUEST) {
-		set_map_tooltip_format_arg(0, rct_string_id, peep->peep_flags & PEEP_FLAGS_TRACKING ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
+		set_map_tooltip_format_arg(0, rct_string_id, (peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
 		set_map_tooltip_format_arg(2, uint32, get_peep_face_sprite_small(peep));
 		set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
 		set_map_tooltip_format_arg(8, uint32, peep->id);
@@ -9320,7 +9320,17 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 					if (peep->pathfind_history[i].x == x >> 5 &&
 						peep->pathfind_history[i].y == y >> 5 &&
 						peep->pathfind_history[i].z == z) {
-						pathLoop = true;
+						if (peep->pathfind_history[i].direction == 0) {
+							/* If all directions have already been tried while
+							 * heading to this goal, this is a loop. */
+							pathLoop = true;
+						}
+						else {
+							/* The peep remembers walking through this junction
+							 * before, but has not yet tried all directions.
+							 * Limit the edges to search to those not yet tried. */
+							edges &= peep->pathfind_history[i].direction;
+						}
 						break;
 					}
 				}
@@ -9485,21 +9495,50 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 
 	// Get the path element at this location
 	rct_map_element *dest_map_element = map_get_first_element_at(x / 32, y / 32);
+	/* Where there are multiple matching map elements placed with zero
+	 * clearance, save the first one for later use to determine the path
+	 * slope - this maintains the original behaviour (which only processes
+	 * the first matching map element found) and is consistent with peep
+	 * placement (i.e. height) on such paths with differing slopes.
+	 *
+	 * I cannot see a legitimate reason for building overlaid paths with
+	 * differing slopes and do not recall ever seeing this in practise.
+	 * Normal cases I have seen in practise are overlaid paths with the
+	 * same slope (flat) in order to place scenery (e.g. benches) in the
+	 * middle of a wide path that can still be walked through.
+	 * Anyone attempting to overlay paths with different slopes should
+	 * EXPECT to experience path finding irregularities due to those paths!
+	 * In particular common edges at different heights will not work
+	 * in a useful way. Simply do not do it! :-) */
+	rct_map_element *first_map_element = NULL;
+
 	bool found = false;
+	uint8 permitted_edges = 0;
+	bool isThin = false;
 	do {
 		if (dest_map_element->base_height != z) continue;
 		if (map_element_get_type(dest_map_element) != MAP_ELEMENT_TYPE_PATH) continue;
 		found = true;
-		break;
+		if (first_map_element == NULL) {
+			first_map_element = dest_map_element;
+		}
+
+		/* Check if this path element is a thin junction.
+		 * Only 'thin' junctions are remembered in peep->pathfind_history.
+		 * NO attempt is made to merge the overlaid path elements and
+		 * check if the combination is 'thin'!
+		 * The junction is considered 'thin' simply if any of the
+		 * overlaid path elements there is a 'thin junction'. */
+		isThin = isThin || path_is_thin_junction(dest_map_element, x, y, z);
+
+		// Collect the permitted edges of ALL matching path elements at this location.
+		permitted_edges |= path_get_permitted_edges(dest_map_element);
 	} while (!map_element_is_last_for_tile(dest_map_element++));
 	// Peep is not on a path.
 	if (!found) return -1;
 
-	/* Determine if the path is a thin junction.
-	 * Only 'thin' junctions are remembered in peep->pathfind_history. */
-	bool isThin = path_is_thin_junction(dest_map_element, x, y, z);
-
-	uint8 edges = 0xF;
+	permitted_edges &= 0xF;
+	uint8 edges = permitted_edges;
 	if (isThin && peep->pathfind_goal.x == goal.x &&
 		peep->pathfind_goal.y == goal.y &&
 		peep->pathfind_goal.z == goal.z
@@ -9523,19 +9562,66 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			if (peep->pathfind_history[i].x == x / 32 &&
 					peep->pathfind_history[i].y == y / 32 &&
 					peep->pathfind_history[i].z == z) {
-				edges = peep->pathfind_history[i].direction & 0xF;
+
+				/* Fix broken pathfind_history[i].direction
+				 * which have untried directions that are not
+				 * currently possible - could be due to pathing
+				 * changes or in earlier code .directions was
+				 * initialised to 0xF rather than the permitted
+				 * edges. */
+				peep->pathfind_history[i].direction &= permitted_edges;
+
+				edges = peep->pathfind_history[i].direction;
+
 				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				if (gPathFindDebug) {
 					log_verbose("Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", x >> 5, y >> 5, z, (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
 				}
 				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+				if (edges == 0) {
+					/* If peep has tried all edges, reset to
+					 * all edges are untried.
+					 * This permits the pathfinding to try
+					 * again, which is good for getting
+					 * unstuck when the player has edited
+					 * the paths or the pathfinding itself
+					 * has changed (been fixed) since
+					 * the game was saved. */
+					peep->pathfind_history[i].direction = permitted_edges;
+					edges = peep->pathfind_history[i].direction;
+
+					#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+					if (gPathFindDebug) {
+						log_verbose("All edges tried for %d,%d,%d - resetting to all untried", x >> 5, y >> 5, z);
+					}
+					#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+				}
 				break;
 			}
 		}
 	}
 
-	// Remove any edges that are not permitted
-	edges &= path_get_permitted_edges(dest_map_element);
+	/* If this is a new goal for the peep. Store it and reset the peep's
+	 * pathfind_history. */
+	if (peep->pathfind_goal.direction > 3 ||
+		peep->pathfind_goal.x != goal.x ||
+		peep->pathfind_goal.y != goal.y ||
+		peep->pathfind_goal.z != goal.z
+	) {
+		peep->pathfind_goal.x = goal.x;
+		peep->pathfind_goal.y = goal.y;
+		peep->pathfind_goal.z = goal.z;
+		peep->pathfind_goal.direction = 0;
+
+		// Clear pathfinding history
+		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_verbose("New goal; clearing pf_history.");
+		}
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	}
 
 	// Peep has tried all edges.
 	if (edges == 0) return -1;
@@ -9567,8 +9653,8 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
 
-			if (footpath_element_is_sloped(dest_map_element) &&
-				footpath_element_get_slope_direction(dest_map_element) == test_edge
+			if (footpath_element_is_sloped(first_map_element) &&
+				footpath_element_get_slope_direction(first_map_element) == test_edge
 			) {
 				height += 0x2;
 			}
@@ -9612,7 +9698,13 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 			rct_xyz8 endJunctionList[16] = { 0 };
 			uint8 endDirectionList[16] = { 0 };
 
-			peep_pathfind_heuristic_search(x, y, height, peep, dest_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
+			#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+			if (gPathFindDebug) {
+				log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, x >> 5, y >> 5, z);
+			}
+			#endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+			peep_pathfind_heuristic_search(x, y, height, peep, first_map_element, 0, &score, test_edge, &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 			#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 			if (gPathFindDebug) {
 				log_verbose("Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps, endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
@@ -9663,27 +9755,6 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
 
-	/* If this is a new goal for the peep. Store it and reset the peep's
-	 * pathfind_history. */
-	if (peep->pathfind_goal.direction > 3 ||
-		peep->pathfind_goal.x != goal.x ||
-		peep->pathfind_goal.y != goal.y ||
-		peep->pathfind_goal.z != goal.z
-	) {
-		peep->pathfind_goal.x = goal.x;
-		peep->pathfind_goal.y = goal.y;
-		peep->pathfind_goal.z = goal.z;
-		peep->pathfind_goal.direction = 0;
-
-		// Clear pathfinding history
-		memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
-		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-		if (gPathFindDebug) {
-			log_verbose("New goal; clearing pf_history.");
-		}
-		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	}
-
 	if (isThin) {
 		for (int i = 0; i < 4; ++i) {
 			if (peep->pathfind_history[i].x == x >> 5 &&
@@ -9709,11 +9780,11 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].x = x >> 5;
 		peep->pathfind_history[i].y = y >> 5;
 		peep->pathfind_history[i].z = z;
-		peep->pathfind_history[i].direction = 0xF;
+		peep->pathfind_history[i].direction = permitted_edges;
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
-			log_verbose("Storing new pf_history for %d,%d,%d without edge %d.", x >> 5, y >> 5, z, chosen_edge);
+			log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without edge %d.", i, x >> 5, y >> 5, z, chosen_edge);
 		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
@@ -9840,18 +9911,13 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	gPeepPathFindQueueRideIndex = 255;
 
 	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	/* Determine if the pathfinding debugging is wanted for this peep. */
-	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-	 * determine for which guest(s) the pathfinding debugging will
-	 * be output for. */
-	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
-	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	pathfind_logging_enable(peep);
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	gPathFindDebug = false;
+	pathfind_logging_disable();
 	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 	if (chosenDirection == -1)
@@ -9991,6 +10057,13 @@ static int guest_path_finding(rct_peep* peep)
 {
 	sint16 x, y, z;
 
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	pathfind_logging_enable(peep);
+	if (gPathFindDebug) {
+		log_info("Starting guest_path_finding for %s", gPathFindDebugPeepName);
+	}
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	if (peep->next_var_29 & 0x18) {
 		return guest_surface_path_finding(peep);
 	}
@@ -10046,6 +10119,12 @@ static int guest_path_finding(rct_peep* peep)
 	direction = bitscanforward(edges);
 	// IF only one edge to choose from
 	if ((edges & ~(1 << direction)) == 0) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName, direction);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return peep_move_one_tile(direction, peep);
 	}
 
@@ -10054,6 +10133,12 @@ static int guest_path_finding(rct_peep* peep)
 	// Peep is outside the park.
 	// loc_694F19:
 	if (peep->outside_of_park != 0){
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is outside the park.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		switch (peep->state) {
 		case PEEP_STATE_ENTERING_PARK:
 			return guest_path_find_entering_park(peep, mapElement, edges);
@@ -10107,18 +10192,39 @@ static int guest_path_finding(rct_peep* peep)
 		}
 	}
 
-	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is leaving the park.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_park_entrance(peep, mapElement, edges);
+	}
 
-	if (peep->guest_heading_to_ride_id == 0xFF)
+	if (peep->guest_heading_to_ride_id == 0xFF) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_aimless(peep, edges);
+	}
 
 	// Peep is heading for a ride.
 	uint8 rideIndex = peep->guest_heading_to_ride_id;
 	rct_ride* ride = get_ride(rideIndex);
 
-	if (ride->status != RIDE_STATUS_OPEN)
+	if (ride->status != RIDE_STATUS_OPEN) {
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - peep is heading to closed ride == aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		return guest_path_find_aimless(peep, edges);
+	}
 
 	// The ride is open.
 	gPeepPathFindQueueRideIndex = rideIndex;
@@ -10190,24 +10296,32 @@ static int guest_path_finding(rct_peep* peep)
 	gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z };
 	gPeepPathFindIgnoreForeignQueues = true;
 
-	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	/* Determine if the pathfinding debugging is wanted for this peep. */
-	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-	 * determine for which guest(s) the pathfinding debugging will
-	 * be output for. */
-	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
-	gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
-	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
-	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-	gPathFindDebug = false;
-	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 	if (direction == -1){
+		/* Heuristic search failed for all directions.
+		 * Reset the pathfind_goal - this means that the pathfind_history
+		 * will be reset in the next call to peep_pathfind_choose_direction().
+		 * This lets the heuristic search "try again" in case the player has
+		 * edited the path layout or the mechanic was already stuck in the
+		 * save game (e.g. with a worse version of the pathfinding). */
+		peep_reset_pathfind_goal(peep);
+
+		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+		if (gPathFindDebug) {
+			log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", gPathFindDebugPeepName);
+		}
+		pathfind_logging_disable();
+		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 		return guest_path_find_aimless(peep, edges);
 	}
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	if (gPathFindDebug) {
+		log_info("Completed guest_path_finding for %s - direction chosen: %d.", gPathFindDebugPeepName, direction);
+	}
+	pathfind_logging_disable();
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	return peep_move_one_tile(direction, peep);
 }
 
@@ -10963,8 +11077,15 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
  *
  *  rct2: 0x0069A98C
  */
-static void peep_reset_pathfind_goal(rct_peep *peep)
+void peep_reset_pathfind_goal(rct_peep *peep)
 {
+
+	#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+	if (gPathFindDebug) {
+		log_info("Resetting pathfind_goal for %s", gPathFindDebugPeepName);
+	}
+	#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
 	peep->pathfind_goal.x = 0xFF;
 	peep->pathfind_goal.y = 0xFF;
 	peep->pathfind_goal.z = 0xFF;
@@ -12523,3 +12644,31 @@ void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *es
 		(uint8*)edi
 		);
 }
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+void pathfind_logging_enable(rct_peep* peep) {
+	#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+	/* Determine if the pathfinding debugging is wanted for this peep. */
+	format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
+
+	/* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+	 * determine for which guest(s) the pathfinding debugging will
+	 * be output for. */
+	if (peep->type == PEEP_TYPE_GUEST){
+		gPathFindDebug = peep->peep_flags & PEEP_FLAGS_TRACKING;
+	}
+	/* For staff, there is no tracking button (any other similar
+	 * suitable existing mechanism?), so fall back to a crude
+	 * string comparison with a compile time hardcoded name. */
+	else {
+		gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+	}
+	#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+
+void pathfind_logging_disable() {
+	#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+	gPathFindDebug = false;
+	#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

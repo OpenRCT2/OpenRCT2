@@ -735,10 +735,12 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW;) {
 		if (w->classification == cls) {
 			window_close(w);
-			w = g_window_list - 1;
+			w = g_window_list;
+		} else {
+			w++;
 		}
 	}
 }
@@ -751,10 +753,12 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW;) {
 		if (w->classification == cls && w->number == number) {
 			window_close(w);
-			w = g_window_list - 1;
+			w = g_window_list;
+		} else {
+			w++;
 		}
 	}
 }
@@ -883,16 +887,13 @@ rct_window *window_find_from_point(int x, int y)
  */
 int window_find_widget_from_point(rct_window *w, int x, int y)
 {
-	rct_widget *widget;
-	int i, widget_index;
-
 	// Invalidate the window
 	window_event_invalidate_call(w);
 
 	// Find the widget at point x, y
-	widget_index = -1;
-	for (i = 0;; i++) {
-		widget = &w->widgets[i];
+	int widget_index = -1;
+	for (int i = 0;; i++) {
+		rct_widget *widget = &w->widgets[i];
 		if (widget->type == WWT_LAST) {
 			break;
 		} else if (widget->type != WWT_EMPTY) {
@@ -1129,19 +1130,17 @@ int window_get_scroll_data_index(rct_window *w, int widget_index)
  */
 rct_window *window_bring_to_front(rct_window *w)
 {
-	int i;
-	rct_window* v, t;
-
 	if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
 		return w;
 
+	rct_window *v;
 	for (v = RCT2_LAST_WINDOW; v >= g_window_list; v--)
 		if (!(v->flags & WF_STICK_TO_FRONT))
 			break;
 
 	if (v >= g_window_list && w != v) {
 		do {
-			t = *w;
+			rct_window t = *w;
 			*w = *(w + 1);
 			*(w + 1) = t;
 			w++;
@@ -1151,7 +1150,7 @@ rct_window *window_bring_to_front(rct_window *w)
 	}
 
 	if (w->x + w->width < 20) {
-		i = 20 - w->x;
+		int i = 20 - w->x;
 		w->x += i;
 		if (w->viewport != NULL)
 			w->viewport->x += i;
@@ -1843,8 +1842,6 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
  */
 void tool_cancel()
 {
-	rct_window *w;
-
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 		gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
 
@@ -1863,7 +1860,7 @@ void tool_cancel()
 			);
 
 			// Abort tool event
-			w = window_find_by_number(
+			rct_window *w = window_find_by_number(
 				gCurrentToolWidget.window_classification,
 				gCurrentToolWidget.window_number
 			);
@@ -2518,12 +2515,14 @@ void window_update_textbox()
 bool window_is_visible(rct_window* w)
 {
 	// w->visibility is used to prevent repeat calculations within an iteration by caching the result
+	if (w == NULL)
+		return false;
 
 	if (w->visibility == VC_VISIBLE) return true;
 	if (w->visibility == VC_COVERED) return false;
 
 	// only consider viewports, consider the main window always visible
-	if (w == NULL || w->viewport == NULL || w->classification == WC_MAIN_WINDOW)
+	if (w->viewport == NULL || w->classification == WC_MAIN_WINDOW)
 	{
 		// default to previous behaviour
 		w->visibility = VC_VISIBLE;

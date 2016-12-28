@@ -326,10 +326,10 @@ endif (NOT DISABLE_HTTP_TWITCH)
 
 PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 
-if (UNIX)
+if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
 	# Include libdl for dlopen
 	set(DLLIB dl)
-endif (UNIX)
+endif ()
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR} ${SSL_INCLUDE_DIRS} ${LIBZIP_INCLUDE_DIRS})
 
@@ -384,10 +384,10 @@ TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
 # if creating a static binary, precede libraries with -static, then name all the libs
 TARGET_LINK_LIBRARIES(${PROJECT} ${STATIC_START} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
 
-if (APPLE OR STATIC)
+if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
-endif (APPLE OR STATIC)
+endif ()
 
 # Don't recurse, grab all *.txt and *.md files
 file(GLOB DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/distribution/*.txt")
@@ -396,7 +396,7 @@ list(APPEND DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/contributors.md" "${CMAKE_CUR
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
-install(CODE "file(DOWNLOAD https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip EXPECTED_HASH_SHA1=79ffb2585d12abcbfce205d7696e3472a504b005 SHOW_PROGRESS)")
+install(CODE "file(DOWNLOAD https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=79ffb2585d12abcbfce205d7696e3472a504b005 SHOW_PROGRESS)")
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
 install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip)")
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)

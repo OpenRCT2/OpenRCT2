@@ -1,5 +1,5 @@
-Last updated:    2016-04-13
-Release version: 0.0.5.0-beta
+Last updated:    2016-12-27
+Release version: 0.0.6.0-beta
 ------------------------------------------------------------------------
 
 
@@ -69,8 +69,8 @@ following information in your bug report:
 3.0) Supported platforms
 ---- -------------------
 OpenRCT2 is currently supported on Windows Vista and above, many distributions of
-Linux, macOS, and OS X 10.7 or higher. OpenRCT2 will only work on x86 architectures
-as the original RollerCoaster Tycoon 2 binary is still required to run the game.
+Linux, macOS, and OS X 10.7 or higher. OpenRCT2 will only work on
+little-endian architectures.
 Further instructions can be found on GitHub.
 
 4.0) Installing and running OpenRCT2
@@ -153,8 +153,9 @@ to all files in this distribution, except as noted below.
 
 Jansson  | MIT licence.
 libcURL  | MIT (or Modified BSD-style) licence.
-libspeex | BSD-style license.
+libspeex | BSD-style licence.
 libpng   | libpng licence.
+libzip   | BSD 3 clause licence.
 SDL2     | zlib licence.
 SDL2 TTF | zlib licence.
 zlib     | zlib licence.

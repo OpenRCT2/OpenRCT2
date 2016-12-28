@@ -402,13 +402,20 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
+			if (rideEntry == NULL) {
+				return;
+			}
 			stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
 				rideEntry->name :
 				((typeId >> 8) & 0xFF) + 2;
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
-			stringId = get_scenery_group_entry(typeId)->name;
+			rct_scenery_set_entry *sse = get_scenery_group_entry(typeId);
+			if (sse == NULL) {
+				return;
+			}
+			stringId = sse->name;
 			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);

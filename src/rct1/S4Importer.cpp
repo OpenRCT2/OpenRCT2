@@ -1618,7 +1618,7 @@ extern "C"
             s4Importer->LoadSavedGame(path);
             s4Importer->Import();
             result = true;
-        } catch (Exception ex)
+        } catch (const Exception &)
         {
             result = false;
         }
@@ -1636,7 +1636,7 @@ extern "C"
             s4Importer->LoadScenario(path);
             s4Importer->Import();
             result = true;
-        } catch (Exception ex)
+        } catch (const Exception &)
         {
             result = false;
         }

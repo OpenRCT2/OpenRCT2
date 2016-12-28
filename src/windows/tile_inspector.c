@@ -2150,7 +2150,6 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int x = 3;
 	int y = LIST_ITEM_HEIGHT * (windowTileInspectorElementCount - 1);
 	int i = 0;
 	char buffer[256];
@@ -2224,7 +2223,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 		}
 
 		// Undo relative scroll offset, but keep the 3 pixel padding
-		x = -w->widgets[WIDX_LIST].left;
+		int x = -w->widgets[WIDX_LIST].left;
 		const bool ghost = (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
 		const bool broken = (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
 		const bool last = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;

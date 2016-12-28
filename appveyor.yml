@@ -1,4 +1,4 @@
-version: 0.0.5.{build}
+version: 0.0.6.{build}
 image:
   - Visual Studio 2015
   - Visual Studio 2017 RC

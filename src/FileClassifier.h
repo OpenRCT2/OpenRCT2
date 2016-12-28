@@ -14,20 +14,27 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <cstdarg>
+#pragma once
 
-#include "String.hpp"
+#include <string>
+#include "common.h"
 
-namespace String {
-    std::string Format(const char * format, ...)
-    {
-        va_list args;
-        char buffer[512];
+interface IStream;
 
-        va_start(args, format);
-        vsnprintf(buffer, sizeof(buffer), format, args);
-        va_end(args);
-
-        return std::string(buffer);
-    }
+enum class FILE_TYPE
+{
+    UNDEFINED,
+    OBJECT,
+    SAVED_GAME,
+    SCENARIO,
+    TRACK_DESIGN,
 };
+
+struct ClassifiedFile
+{
+    FILE_TYPE Type;
+    uint32    Version;
+};
+
+bool TryClassifyFile(const std::string &path, ClassifiedFile * result);
+bool TryClassifyFile(IStream * stream, ClassifiedFile * result);

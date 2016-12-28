@@ -631,15 +631,11 @@ void litter_create(int x, int y, int z, int direction, int type)
 	if (!litter_can_be_at(x, y, z))
 		return;
 
-	rct_litter *litter, *newestLitter;
-	uint16 spriteIndex, nextSpriteIndex;
-	uint32 newestLitterCreationTick;
-
 	if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500) {
-		newestLitter = NULL;
-		newestLitterCreationTick = 0;
-		for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
-			litter = &get_sprite(spriteIndex)->litter;
+		rct_litter *newestLitter = NULL;
+		uint32 newestLitterCreationTick = 0;
+		for (uint16 nextSpriteIndex, spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+			rct_litter *litter = &get_sprite(spriteIndex)->litter;
 			nextSpriteIndex = litter->next;
 			if (newestLitterCreationTick <= litter->creationTick) {
 				newestLitterCreationTick = litter->creationTick;
@@ -653,7 +649,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 		}
 	}
 
-	litter = (rct_litter*)create_sprite(1);
+	rct_litter *litter = (rct_litter*)create_sprite(1);
 	if (litter == NULL)
 		return;
 

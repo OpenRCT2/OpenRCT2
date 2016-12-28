@@ -235,6 +235,8 @@ namespace TitleSequenceManager
 
     static void AddSequence(const utf8 * scanPath)
     {
+        TitleSequenceManagerItem item;
+
         std::string path;
         bool isZip = true;
         if (String::Equals(Path::GetExtension(scanPath), ".txt", true))
@@ -244,23 +246,20 @@ namespace TitleSequenceManager
             path = std::string(utf8Path);
             Memory::Free(utf8Path);
             isZip = false;
+            item.Name = Path::GetFileName(path.c_str());
         }
         else
         {
             path = std::string(scanPath);
+            item.Name = GetNameFromSequencePath(path);
         }
 
-        TitleSequenceManagerItem item;
         item.PredefinedIndex = GetPredefinedIndex(path);
         item.Path = path;
         if (item.PredefinedIndex != PREDEFINED_INDEX_CUSTOM)
         {
             rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
             item.Name = String::Duplicate(language_get_string(stringId));
-        }
-        else
-        {
-            item.Name = GetNameFromSequencePath(path);
         }
         item.IsZip = isZip;
         _items.push_back(item);
