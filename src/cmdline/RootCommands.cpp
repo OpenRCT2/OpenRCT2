@@ -21,7 +21,6 @@
 extern "C"
 {
     #include "../config.h"
-    #include "../OpenRCT2.h"
     #include "../platform/crash.h"
 }
 
@@ -30,6 +29,8 @@ extern "C"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
+#include "../object/ObjectRepository.h"
+#include "../OpenRCT2.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD
@@ -98,6 +99,7 @@ static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
+static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
 
@@ -128,6 +130,7 @@ const CommandLineCommand CommandLine::RootCommands[]
 #endif
     DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
     DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
+    DefineCommand("scan-objects", "<path>",             StandardOptions, HandleCommandScanObjects),
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
@@ -385,6 +388,20 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
         Console::Error::WriteLine("Unable to update config.ini");
         return EXITCODE_FAIL;
     }
+}
+
+static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator)
+{
+    exitcode_t result = CommandLine::HandleCommandDefault();
+    if (result != EXITCODE_CONTINUE)
+    {
+        return result;
+    }
+
+    IPlatformEnvironment * env = OpenRCT2::SetupEnvironment();
+    IObjectRepository * objectRepository = CreateObjectRepository(env);
+    objectRepository->Construct();
+    return EXITCODE_OK;
 }
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)

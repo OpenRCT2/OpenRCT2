@@ -99,6 +99,7 @@ class ObjectRepository : public IObjectRepository
     QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId = 0;
+    int                                 _numConflicts;
 
 public:
     ObjectRepository(IPlatformEnvironment * env)
@@ -115,22 +116,23 @@ public:
     {
         ClearItems();
 
-        _queryDirectoryResult = { 0 };
-
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
-        QueryDirectory(&_queryDirectoryResult, rct2Path);
-        QueryDirectory(&_queryDirectoryResult, openrct2Path);
-
+        Query();
         if (!Load())
         {
             _languageId = gCurrentLanguage;
-
-            Construct();
+            Scan();
             Save();
         }
 
         // SortItems();
+    }
+
+    void Construct() override
+    {
+        _languageId = gCurrentLanguage;
+        Query();
+        Scan();
+        Save();
     }
 
     size_t GetNumObjects() const override
@@ -233,6 +235,16 @@ private:
         _itemMap.clear();
     }
 
+    void Query()
+    {
+        _queryDirectoryResult = { 0 };
+
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        QueryDirectory(&_queryDirectoryResult, rct2Path);
+        QueryDirectory(&_queryDirectoryResult, openrct2Path);
+    }
+
     void QueryDirectory(QueryDirectoryResult * result, const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
@@ -241,12 +253,10 @@ private:
         Path::QueryDirectory(result, pattern);
     }
 
-    void Construct()
+    void Scan()
     {
-        utf8 objectDirectory[MAX_PATH];
-        Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
-
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
+        _numConflicts = 0;
 
         auto stopwatch = Stopwatch();
         stopwatch.Start();
@@ -258,6 +268,10 @@ private:
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        if (_numConflicts > 0)
+        {
+            Console::WriteLine("%d object conflicts found.", _numConflicts);
+        }
     }
 
     void ScanDirectory(const std::string &directory)
@@ -390,6 +404,7 @@ private:
         }
         else
         {
+            _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
             Console::Error::WriteLine("               : '%s'", item->Path);
             return false;

@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <string>
+#include "core/Console.hpp"
 #include "core/Guard.hpp"
 #include "core/String.hpp"
 #include "network/network.h"
@@ -82,7 +83,6 @@ namespace OpenRCT2
     /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
     static bool _finished;
 
-    static void SetupEnvironment();
     static void SetVersionInfoString();
     static bool ShouldRunVariableFrame();
     static void RunGameLoop();
@@ -114,17 +114,14 @@ extern "C"
         Guard::Assert(gHashCTX != nullptr, "EVP_MD_CTX_create failed");
 #endif // DISABLE_NETWORK
 
-        utf8 userPath[MAX_PATH];
-        platform_resolve_openrct_data_path();
-        platform_resolve_user_data_path();
-        platform_get_user_directory(userPath, NULL, sizeof(userPath));
-        if (!platform_ensure_directory_exists(userPath))
+        crash_init();
+
+        // Sets up the environment OpenRCT2 is running in, e.g. directory paths
+        OpenRCT2::_env = OpenRCT2::SetupEnvironment();
+        if (OpenRCT2::_env == nullptr)
         {
-            log_fatal("Could not create user directory (do you have write access to your documents folder?)");
             return false;
         }
-
-        crash_init();
 
         if (!rct2_interop_setup_segment())
         {
@@ -132,29 +129,16 @@ extern "C"
             return false;
         }
 
-        openrct2_set_exe_path();
-
-        config_set_defaults();
-        if (!config_open_default())
-        {
-            if (!config_find_or_browse_install_directory())
-            {
-                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
-                config_save_default();
-                utf8 path[MAX_PATH];
-                config_get_default_path(path, sizeof(path));
-                log_fatal("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
-                return false;
-            }
-        }
-
-        gOpenRCT2ShowChangelog = true;
-        if (gConfigGeneral.last_run_version != NULL && (strcmp(gConfigGeneral.last_run_version, OPENRCT2_VERSION) == 0))
+        if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
         {
             gOpenRCT2ShowChangelog = false;
         }
-        gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
-        config_save_default();
+        else
+        {
+            gOpenRCT2ShowChangelog = true;
+            gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+            config_save_default();
+        }
 
         // TODO add configuration option to allow multiple instances
         // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
@@ -162,17 +146,6 @@ extern "C"
         // 	return false;
         // }
 
-        if (!rct2_init_directories())
-        {
-            return false;
-        }
-        if (!rct2_startup_checks())
-        {
-            return false;
-        }
-
-        // Sets up the environment OpenRCT2 is running in, e.g. directory paths
-        OpenRCT2::SetupEnvironment();
         IObjectRepository * objRepo = CreateObjectRepository(OpenRCT2::_env);
         ITrackDesignRepository * tdRepo = CreateTrackDesignRepository(OpenRCT2::_env);
         CreateScenarioRepository(OpenRCT2::_env);
@@ -328,8 +301,43 @@ extern "C"
 
 namespace OpenRCT2
 {
-    static void SetupEnvironment()
+    IPlatformEnvironment * SetupEnvironment()
     {
+        utf8 userPath[MAX_PATH];
+        platform_resolve_openrct_data_path();
+        platform_resolve_user_data_path();
+        platform_get_user_directory(userPath, NULL, sizeof(userPath));
+        if (!platform_ensure_directory_exists(userPath))
+        {
+            Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
+            return false;
+        }
+        openrct2_set_exe_path();
+
+        config_set_defaults();
+        if (!config_open_default())
+        {
+            if (!config_find_or_browse_install_directory())
+            {
+                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+                config_save_default();
+                utf8 path[MAX_PATH];
+                config_get_default_path(path, sizeof(path));
+                Console::Error::WriteLine("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
+                return nullptr;
+            }
+            config_save_default();
+        }
+
+        if (!rct2_init_directories())
+        {
+            return false;
+        }
+        if (!rct2_startup_checks())
+        {
+            return false;
+        }
+
         utf8 path[260];
         std::string basePaths[4];
         basePaths[(size_t)DIRBASE::RCT2] = std::string(gRCT2AddressAppPath);
@@ -337,7 +345,9 @@ namespace OpenRCT2
         basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
         platform_get_user_directory(path, nullptr, sizeof(path));
         basePaths[(size_t)DIRBASE::USER] = std::string(path);
-        OpenRCT2::_env = CreatePlatformEnvironment(basePaths);
+
+        IPlatformEnvironment * env = CreatePlatformEnvironment(basePaths);
+        return env;
     }
 
     static void SetVersionInfoString()
