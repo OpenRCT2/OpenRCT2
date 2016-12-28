@@ -215,6 +215,7 @@
 		C686F9581CDBC4C7009F9BFC /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9561CDBC4C7009F9BFC /* vehicle_paint.c */; };
 		C6B5A7D41CDFE4CB00C9C006 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */; };
 		C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */; };
+		C6CABA821E1466D600D33A6B /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6CABA801E1466D600D33A6B /* FileClassifier.cpp */; };
 		C6E96E121E04067A0076A04F /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E101E04067A0076A04F /* File.cpp */; };
 		C6E96E151E04069A0076A04F /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E131E04069A0076A04F /* Zip.cpp */; };
 		C6E96E1A1E0406F00076A04F /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E161E0406F00076A04F /* addresses.c */; };
@@ -653,6 +654,8 @@
 		C6B5A7D11CDFE4CB00C9C006 /* S6Exporter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Exporter.h; sourceTree = "<group>"; };
 		C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
 		C6B5A7D31CDFE4CB00C9C006 /* S6Importer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = S6Importer.h; sourceTree = "<group>"; };
+		C6CABA801E1466D600D33A6B /* FileClassifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
+		C6CABA811E1466D600D33A6B /* FileClassifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
 		C6E96E101E04067A0076A04F /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
 		C6E96E111E04067A0076A04F /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		C6E96E131E04069A0076A04F /* Zip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Zip.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1499,35 +1502,37 @@
 				D442718E1CC81B3200D84D28 /* windows */,
 				D44271D81CC81B3200D84D28 /* world */,
 				D44270D41CC81B3200D84D28 /* cheats.c */,
-				D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */,
-				D44270DE1CC81B3200D84D28 /* config.c */,
-				D44270FE1CC81B3200D84D28 /* diagnostic.c */,
-				D442710E1CC81B3200D84D28 /* editor.c */,
-				D44271101CC81B3200D84D28 /* game.c */,
-				D44271141CC81B3200D84D28 /* image_io.c */,
-				D44271161CC81B3200D84D28 /* input.c */,
-				D44271301CC81B3200D84D28 /* intro.c */,
-				D44271561CC81B3200D84D28 /* object_list.c */,
-				D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */,
-				D460DFD51E0123DB007BA2FE /* PlatformEnvironment.h */,
-				D44271691CC81B3200D84D28 /* rct1.c */,
-				D442716B1CC81B3200D84D28 /* rct2.c */,
-				D4CA88651D4E64C800060C11 /* version.c */,
 				D44270D51CC81B3200D84D28 /* cheats.h */,
+				D44270DC1CC81B3200D84D28 /* cmdline_sprite.c */,
 				D44270DD1CC81B3200D84D28 /* common.h */,
+				D44270DE1CC81B3200D84D28 /* config.c */,
 				D44270DF1CC81B3200D84D28 /* config.h */,
+				D44270FE1CC81B3200D84D28 /* diagnostic.c */,
 				D44270FF1CC81B3200D84D28 /* diagnostic.h */,
+				D442710E1CC81B3200D84D28 /* editor.c */,
 				D442710F1CC81B3200D84D28 /* editor.h */,
+				C6CABA801E1466D600D33A6B /* FileClassifier.cpp */,
+				C6CABA811E1466D600D33A6B /* FileClassifier.h */,
+				D44271101CC81B3200D84D28 /* game.c */,
 				D44271111CC81B3200D84D28 /* game.h */,
+				D44271141CC81B3200D84D28 /* image_io.c */,
 				D44271151CC81B3200D84D28 /* image_io.h */,
+				D44271161CC81B3200D84D28 /* input.c */,
 				D44271171CC81B3200D84D28 /* input.h */,
+				D44271301CC81B3200D84D28 /* intro.c */,
 				D44271311CC81B3200D84D28 /* intro.h */,
+				D44271561CC81B3200D84D28 /* object_list.c */,
 				D44271581CC81B3200D84D28 /* object.h */,
+				D460DFD01E01239D007BA2FE /* OpenRCT2.cpp */,
 				D460DFD21E0123B5007BA2FE /* OpenRCT2.h */,
 				D460DFD31E0123D1007BA2FE /* PlatformEnvironment.cpp */,
+				D460DFD51E0123DB007BA2FE /* PlatformEnvironment.h */,
+				D44271691CC81B3200D84D28 /* rct1.c */,
 				D442716A1CC81B3200D84D28 /* rct1.h */,
+				D442716B1CC81B3200D84D28 /* rct2.c */,
 				D442716C1CC81B3200D84D28 /* rct2.h */,
 				D44271851CC81B3200D84D28 /* sprites.h */,
+				D4CA88651D4E64C800060C11 /* version.c */,
 				D442718D1CC81B3200D84D28 /* version.h */,
 			);
 			name = Sources;
@@ -2321,7 +2326,7 @@
 		D497D0701C20FD52002BF46A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
 					C64FDA5C1D6D99F400F259B9 = {
@@ -2733,6 +2738,7 @@
 				C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */,
 				D44272291CC81B3200D84D28 /* LanguagePack.cpp in Sources */,
 				D44272901CC81B3200D84D28 /* title_options.c in Sources */,
+				C6CABA821E1466D600D33A6B /* FileClassifier.cpp in Sources */,
 				C686F94A1CDBC3B7009F9BFC /* lift.c in Sources */,
 				C6E96E321E04072F0076A04F /* TitleSequencePlayer.cpp in Sources */,
 				D46F2A9E1D39A25A00A36AB7 /* peep_data.c in Sources */,
