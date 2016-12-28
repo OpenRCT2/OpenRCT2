@@ -17,7 +17,7 @@
 #ifndef _TEST_PAINT_DATA_H_
 #define _TEST_PAINT_DATA_H_
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 extern const utf8string RideNames[91];
 extern const utf8string TrackNames[256];

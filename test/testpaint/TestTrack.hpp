@@ -18,7 +18,7 @@
 
 #include <string>
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 class TestTrack {
 public:
