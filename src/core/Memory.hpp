@@ -19,6 +19,7 @@
 #include <cstring>
 #include <typeinfo>
 #include "../common.h"
+#include "Console.hpp"
 #include "Guard.hpp"
 
 /**
@@ -155,4 +156,78 @@ namespace Memory
         }
         Free(ptr);
     }
+
+	template<typename T>
+	T * AllocateAligned(size_t alignment, size_t size)
+	{
+		// All targets require alignment to be a power of two.
+		// Posix requires alignment to be at least as big as sizeof(void *).
+		// Return error on both for simplicity.
+		if (alignment % 2 || alignment < sizeof(void *)) {
+			return nullptr;
+		}
+
+		void *ptr;
+#if defined(__MINGW32__)
+		ptr = __mingw_aligned_malloc(size, alignment);
+		if (!ptr) {
+#elif defined(__GNUC__) || defined(__clang__)
+		int ret = posix_memalign(&ptr, alignment, size);
+		if (!ret) {
+#else
+		ptr = _aligned_malloc(size, alignment);
+		if (!ptr) {
+#endif
+			Console::Error::WriteLine("Failed to allocate aligned memory.");
+			Guard::Assert(false);
+		}
+
+		return (T *)ptr;
+	}
+
+	template<typename T>
+	T * AllocateAligned(size_t alignment)
+	{
+		return AllocateAligned<T>(alignment, sizeof(T));
+	}
+
+	template<typename T>
+	void FreeAligned(T * ptr)
+	{
+#if defined(__MINGW32__)
+		__mingw_aligned_free((void *)ptr);
+#elif defined(__GNUC__) || defined(__clang__)
+		free((void *)ptr);
+#else
+		_aligned_free((void *)ptr);
+#endif
+	}
+
+	template<typename T>
+	T * ReallocateAligned(T * ptr, size_t alignment, size_t size)
+	{
+		void *new_ptr;
+#if defined(__GNUC__) || defined(__clang__)
+		new_ptr = realloc(ptr, size);
+		if (!new_ptr) {
+			Console::Error::WriteLine("Failed to allocate aligned memory.");
+			Guard::Assert(false);
+		}
+
+		if (alignment % 2 || alignment < sizeof(void *))
+			__builtin_unreachable();
+
+		if ((ptrdiff_t)new_ptr % alignment) {
+			// Realloc moved the memory out of alignment
+			new_ptr = AllocateAligned<T>(alignment, size);
+			memcpy(new_ptr, ptr, size);
+			FreeAligned<T>(ptr);
+		}
+#elif defined(__MINGW32__)
+		new_ptr = __mingw_aligned_realloc(ptr, size, alignment);
+#else
+		new_ptr = _aligned_realloc(ptr, size, alignment);
+#endif
+		return (T *)new_ptr;
+	}
 }
