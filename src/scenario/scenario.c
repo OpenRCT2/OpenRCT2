@@ -68,7 +68,7 @@ char gScenarioSavePath[MAX_PATH];
 char gScenarioExpansionPacks[3256];
 int gFirstTimeSave = 1;
 uint16 gSavedAge;
-uint32 gLastAutoSaveTick = 0;
+uint32 gLastAutoSaveUpdate = 0;
 
 #if defined(NO_RCT2)
 uint32 gScenarioTicks;
@@ -396,8 +396,10 @@ static void scenario_entrance_fee_too_high_check()
 
 void scenario_autosave_check()
 {
+	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) return;
+	
 	// Milliseconds since last save
-	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
+	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveUpdate;
 
 	bool shouldSave = false;
 	switch (gConfigGeneral.autosave_frequency) {
@@ -419,7 +421,7 @@ void scenario_autosave_check()
 	}
 
 	if (shouldSave) {
-		gLastAutoSaveTick = SDL_GetTicks();
+		gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 		game_autosave();
 	}
 }
