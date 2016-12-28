@@ -671,7 +671,8 @@ static void window_new_ride_scrollgetsize(rct_window *w, int scrollIndex, int *w
 	ride_list_item *listItem = _windowNewRideListItems;
 
 	int count = 0;
-	while (listItem->type != 255 || listItem->entry_index != 255) {
+	const ride_list_item * listEnd = _windowNewRideListItems + countof(_windowNewRideListItems);
+	while (listItem < listEnd && (listItem->type != 255 || listItem->entry_index != 255)) {
 		count++;
 		listItem++;
 	}
