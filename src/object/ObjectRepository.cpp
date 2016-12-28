@@ -932,7 +932,7 @@ extern "C"
 
     int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
     {
-        const uint8 *entryBytePtr = (uint8*)entry;
+        const uint8 * entryBytePtr = (uint8 *)entry;
 
         uint32 checksum = 0xF369A75B;
         checksum ^= entryBytePtr[0];
@@ -943,8 +943,17 @@ extern "C"
             checksum = rol32(checksum, 11);
         }
 
-        uint8 * dataBytes = (uint8 *)data;
-        for (size_t i = 0; i < dataLength; i++)
+        uint8 *      dataBytes    = (uint8 *)data;
+        const size_t dataLength32 = dataLength - (dataLength & 31);
+        for (size_t i = 0; i < 32; i++)
+        {
+            for (size_t j = i; j < dataLength32; j += 32)
+            {
+                checksum ^= dataBytes[j];
+            }
+            checksum = rol32(checksum, 11);
+        }
+        for (size_t i = dataLength32; i < dataLength; i++)
         {
             checksum ^= dataBytes[i];
             checksum = rol32(checksum, 11);
