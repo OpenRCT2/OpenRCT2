@@ -391,6 +391,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window *w)
 
 	// Find row index of the focused ride type
 	rct_widget *listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
+	assert(_windowNewRideCurrentTab < countof(_windowNewRideHighlightedItem));
 	int focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
 	int count = 0, row = 0;
 	ride_list_item *listItem = _windowNewRideListItems;
@@ -513,7 +514,10 @@ static void window_new_ride_set_page(rct_window *w, int page)
 
 	window_new_ride_refresh_widget_sizing(w);
 	window_invalidate(w);
-	window_new_ride_scroll_to_focused_ride(w);
+
+	if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH) {
+		window_new_ride_scroll_to_focused_ride(w);
+	}
 }
 
 /**
