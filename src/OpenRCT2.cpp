@@ -18,6 +18,7 @@
 #include "core/Console.hpp"
 #include "core/Guard.hpp"
 #include "core/String.hpp"
+#include "FileClassifier.h"
 #include "network/network.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
@@ -41,6 +42,7 @@ extern "C"
     #include "network/http.h"
     #include "object_list.h"
     #include "platform/platform.h"
+    #include "rct1.h"
     #include "rct2/interop.h"
     #include "version.h"
 }
@@ -88,6 +90,8 @@ namespace OpenRCT2
     static void RunGameLoop();
     static void RunFixedFrame();
     static void RunVariableFrame();
+
+    static bool OpenParkAutoDetectFormat(const utf8 * path);
 }
 
 extern "C"
@@ -216,9 +220,32 @@ extern "C"
                 title_load();
                 break;
             case STARTUP_ACTION_OPEN:
-                if (!rct2_open_file(gOpenRCT2StartupActionPath))
+            {
+                bool parkLoaded = false;
+                // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
+                // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
+                if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
                 {
-                    fprintf(stderr, "Failed to load '%s'", gOpenRCT2StartupActionPath);
+#ifndef DISABLE_HTTP
+                    // Download park and open it using its temporary filename
+                    char tmpPath[MAX_PATH];
+                    if (!http_download_park(gOpenRCT2StartupActionPath, tmpPath))
+                    {
+                        title_load();
+                        break;
+                    }
+
+                    parkLoaded = OpenRCT2::OpenParkAutoDetectFormat(tmpPath);
+#endif
+                }
+                else
+                {
+                    parkLoaded = rct2_open_file(gOpenRCT2StartupActionPath);
+                }
+
+                if (!parkLoaded)
+                {
+                    Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                     title_load();
                     break;
                 }
@@ -245,6 +272,7 @@ extern "C"
                 }
 #endif // DISABLE_NETWORK
                 break;
+            }
             case STARTUP_ACTION_EDIT:
                 if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
                 {
@@ -477,5 +505,63 @@ namespace OpenRCT2
         platform_draw();
 
         sprite_position_tween_restore();
+    }
+
+    static bool OpenParkAutoDetectFormat(const utf8 * path)
+    {
+        ClassifiedFile info;
+        if (TryClassifyFile(path, &info))
+        {
+            if (info.Type == FILE_TYPE::SAVED_GAME)
+            {
+                if (info.Version <= 2)
+                {
+                    if (rct1_load_saved_game(path))
+                    {
+                        game_load_init();
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (game_load_save(path))
+                    {
+                        gFirstTimeSave = 0;
+                        return true;
+                    }
+                }
+                Console::Error::WriteLine("Error loading saved game.");
+            }
+            else if (info.Type == FILE_TYPE::SCENARIO)
+            {
+                if (info.Version <= 2)
+                {
+
+                    if (rct1_load_scenario(path))
+                    {
+                        scenario_begin();
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (scenario_load_and_play_from_path(path))
+                    {
+                        return true;
+                    }
+                }
+                Console::Error::WriteLine("Error loading scenario.");
+            }
+            else
+            {
+                Console::Error::WriteLine("Invalid file type.");
+                Console::Error::WriteLine("Invalid file type.");
+            }
+        }
+        else
+        {
+            Console::Error::WriteLine("Unable to detect file type.");
+        }
+        return false;
     }
 }
