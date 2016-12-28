@@ -441,8 +441,8 @@ rct_window *window_new_ride_open()
 		(1 << WIDX_TAB_7) |
 		(1 << 14) |
 		(1 << 15);
-	window_init_scroll_widgets(w);
 	window_new_ride_populate_list();
+	window_init_scroll_widgets(w);
 
 	w->frame_no = 0;
 	w->new_ride.selected_ride_id = -1;
