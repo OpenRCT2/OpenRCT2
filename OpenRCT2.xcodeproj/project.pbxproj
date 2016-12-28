@@ -2326,7 +2326,7 @@
 		D497D0701C20FD52002BF46A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
 					C64FDA5C1D6D99F400F259B9 = {
