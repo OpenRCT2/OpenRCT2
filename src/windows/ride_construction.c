@@ -2698,8 +2698,10 @@ static void window_ride_construction_update_enabled_track_pieces()
 		return;
 
 	int rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
-	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[rideType];
-	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[rideType];
+	uint64 supportedPieces = ride_entry_get_supported_track_pieces(rideEntry);
+	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & (uint32)(supportedPieces & 0xFFFFFFFF) & gResearchedTrackTypesA[rideType];
+	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & (uint32)(supportedPieces >> 32) & gResearchedTrackTypesB[rideType];
+	
 }
 
 /**

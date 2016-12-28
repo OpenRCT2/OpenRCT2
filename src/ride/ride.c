@@ -7533,6 +7533,22 @@ uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex,int numCarsPerTrain,
 	}
 }
 
+
+//Finds track pieces that a given ride entry doesn't have the sprites for
+uint64 ride_entry_get_supported_track_pieces(rct_ride_entry* rideEntry)
+{
+	uint64 supportedPieces = 0xFFFFFFFFFFFFFFFFULL;
+	uint16 trackPieceRequiredSprites[55] = {0x0001u,0x0001u,0x0001u,0x0000u,0x0006u,0x0002u,0x0020u,0x000E,0x0003u,0x0006u,0x0007u,0x0002u,0x0004u,0x0001u,0x0001u,0x0001u,0x0001u,0x0061u,0x000E,0x1081u,0x0001u,0x0020u,0x0020u,0x0001u,0x0001u,0x0000u,0x0001u,0x0001u,0x000C,0x0061u,0x0002u,0x000E,0x0480u,0x0001u,0x0061u,0x0001u,0x0001u,0x000Fu,0x0001u,0x0200u,0x0007u,0x0008u,0x0000u,0x0000u,0x4000u,0x0008u,0x0001u,0x0001u,0x0061u,0x0061u,0x0008u,0x0008u,0x0001u,0x000Eu,0x000Eu};
+
+	//Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an exception, at least)
+	for(int j = 0; j < 55; j++)
+	{
+		if((rideEntry->vehicles[rideEntry->default_vehicle].sprite_flags & trackPieceRequiredSprites[j]) != trackPieceRequiredSprites[j])supportedPieces &= ~(1ULL << j);
+	}
+
+	return supportedPieces;
+}
+
 static int ride_get_smallest_station_length(rct_ride *ride)
 {
 	uint32 result = -1;
