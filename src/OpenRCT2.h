@@ -41,6 +41,17 @@ enum STARTUP_ACTION
 };
 
 #ifdef __cplusplus
+
+interface IPlatformEnvironment;
+
+namespace OpenRCT2
+{
+    IPlatformEnvironment * SetupEnvironment();
+}
+
+#endif
+
+#ifdef __cplusplus
 extern "C"
 {
 #endif

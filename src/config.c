@@ -936,6 +936,9 @@ bool config_find_or_browse_install_directory()
 		gConfigGeneral.game_path = malloc(strlen(path) + 1);
 		safe_strcpy(gConfigGeneral.game_path, path, MAX_PATH);
 	} else {
+		if (gOpenRCT2Headless) {
+			return false;
+		}
 		while (1) {
 			platform_show_messagebox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.");
 			installPath = platform_open_directory_browser("Please select your RCT2 directory");

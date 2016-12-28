@@ -112,30 +112,27 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct(bool forceScan) override
+    void LoadOrConstruct() override
     {
         ClearItems();
 
-        _queryDirectoryResult = { 0 };
-
-        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
-        QueryDirectory(&_queryDirectoryResult, rct2Path);
-        QueryDirectory(&_queryDirectoryResult, openrct2Path);
-
-        if (forceScan || !Load())
+        Query();
+        if (!Load())
         {
-            if (forceScan)
-            {
-                Console::WriteLine("Forcing object repository scan.");
-            }
             _languageId = gCurrentLanguage;
-
-            Construct();
+            Scan();
             Save();
         }
 
         // SortItems();
+    }
+
+    void Construct() override
+    {
+        _languageId = gCurrentLanguage;
+        Query();
+        Scan();
+        Save();
     }
 
     size_t GetNumObjects() const override
@@ -238,6 +235,16 @@ private:
         _itemMap.clear();
     }
 
+    void Query()
+    {
+        _queryDirectoryResult = { 0 };
+
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        QueryDirectory(&_queryDirectoryResult, rct2Path);
+        QueryDirectory(&_queryDirectoryResult, openrct2Path);
+    }
+
     void QueryDirectory(QueryDirectoryResult * result, const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
@@ -246,11 +253,8 @@ private:
         Path::QueryDirectory(result, pattern);
     }
 
-    void Construct()
+    void Scan()
     {
-        utf8 objectDirectory[MAX_PATH];
-        Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
-
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
         _numConflicts = 0;
 
@@ -670,7 +674,7 @@ extern "C"
     void object_list_load()
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        objectRepository->LoadOrConstruct(false);
+        objectRepository->LoadOrConstruct();
 
         IObjectManager * objectManager = GetObjectManager();
         objectManager->UnloadAll();
