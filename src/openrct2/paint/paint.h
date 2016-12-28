@@ -25,6 +25,7 @@
 
 // zax: Global paint clipping height.
 extern uint8 gClipHeight;
+extern bool gClipHeightEnable;
 
 typedef struct attached_paint_struct attached_paint_struct;
 typedef struct paint_struct paint_struct;

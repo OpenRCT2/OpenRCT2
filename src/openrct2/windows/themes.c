@@ -245,6 +245,7 @@ static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_MULTIPLAYER,
 	WC_PLAYER,
 	WC_CHAT,
+	WC_VIEW_CLIPPING,
 };
 
 static rct_windowclass window_themes_tab_7_classes[] = {

@@ -25,6 +25,7 @@
 
 // zax: globals for paint clipping height
 uint8 gClipHeight = 255;
+bool gClipHeightEnable = false;
 
 const uint32 construction_markers[] = {
 	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP, // White

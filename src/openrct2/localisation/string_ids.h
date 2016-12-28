@@ -3654,6 +3654,12 @@ enum {
 	STR_ENABLE_LIGHTING_EFFECTS = 6001,
 	STR_ENABLE_LIGHTING_EFFECTS_TIP = 6002,
 
+	STR_VIEW_CLIPPING = 6003,
+	STR_VIEW_CLIPPING_HEIGHT_ENABLE = 6004,
+	STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP = 6005,
+	STR_VIEW_CLIPPING_HEIGHT_VALUE = 6006,
+	STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP = 6007,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

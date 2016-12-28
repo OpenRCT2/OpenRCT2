@@ -4311,6 +4311,11 @@ STR_5999    :Set money
 STR_6000    :Enter new value
 STR_6001    :Enable lighting effects (experimental)
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
+STR_6003    :View Clipping
+STR_6004    :Enable clipping by height
+STR_6005    :Height clipping only displays map elements below the clip height
+STR_6006    :Clip height
+STR_6007    :Select clip height
 
 #############
 # Scenarios #
