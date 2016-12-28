@@ -1552,7 +1552,7 @@
 				D442718D1CC81B3200D84D28 /* version.h */,
 			);
 			name = Sources;
-			path = src;
+			path = src/openrct2;
 			sourceTree = "<group>";
 		};
 		D41B73ED1C21017D0080A7B9 /* Libraries */ = {
