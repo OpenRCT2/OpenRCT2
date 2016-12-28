@@ -700,7 +700,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		if (!gConfigInterface.toolbar_show_research)
 			window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
 
-		if (!gConfigInterface.toolbar_show_cheats)
+		if (!gConfigInterface.toolbar_show_cheats || network_get_mode() != NETWORK_MODE_NONE)
 			window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
 
 		if (!gConfigInterface.toolbar_show_news)
