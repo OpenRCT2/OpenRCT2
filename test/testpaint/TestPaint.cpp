@@ -24,13 +24,11 @@
 #include "Utils.hpp"
 
 extern "C" {
-    #include "../../src/hook.h"
     #include "../../src/interface/viewport.h"
     #include "../../src/paint/paint.h"
     #include "../../src/paint/supports.h"
+    #include "../../src/rct2/hook.h"
     #include "../../src/ride/track_data.h"
-    #include "../../src/interface/viewport.h"
-    #include "../../src/hook.h"
 }
 
 namespace TestPaint
