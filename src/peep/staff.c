@@ -1071,7 +1071,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		gPeepPathFindGoalPosition.z = z;
 
 		/* Find location of the exit for the target ride station
-		 * or if the ride has no exit, the entrance */
+		 * or if the ride has no exit, the entrance. */
 		uint16 location = ride->exits[peep->current_ride_station];
 		if (location == 0xFFFF) {
 			location = ride->entrances[peep->current_ride_station];
@@ -1111,22 +1111,23 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		gPeepPathFindQueueRideIndex = 255;
 
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-		/* Determine if the pathfinding debugging is wanted for this peep. */
-		/* For staff, there is no tracking button (any other similar
-		 * suitable existing mechanism?), so fall back to a crude
-		 * string comparison with a compile time hardcoded name. */
-		format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
-
-		gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+		pathfind_logging_enable(peep);
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		int pathfindDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-		gPathFindDebug = false;
+		pathfind_logging_disable();
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 		if (pathfindDirection == -1) {
+			/* Heuristic search failed for all directions.
+			 * Reset the pathfind_goal - this means that the pathfind_history
+			 * will be reset in the next call to peep_pathfind_choose_direction().
+			 * This lets the heuristic search "try again" in case the player has
+			 * edited the path layout or the mechanic was already stuck in the
+			 * save game (e.g. with a worse version of the pathfinding). */
+			peep_reset_pathfind_goal(peep);
 			return staff_mechanic_direction_path_rand(peep, pathDirections);
 		}
 
