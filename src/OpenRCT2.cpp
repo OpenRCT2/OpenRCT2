@@ -310,7 +310,7 @@ namespace OpenRCT2
         if (!platform_ensure_directory_exists(userPath))
         {
             Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
-            return false;
+            return nullptr;
         }
         openrct2_set_exe_path();
 
@@ -331,11 +331,11 @@ namespace OpenRCT2
 
         if (!rct2_init_directories())
         {
-            return false;
+            return nullptr;
         }
         if (!rct2_startup_checks())
         {
-            return false;
+            return nullptr;
         }
 
         utf8 path[260];
