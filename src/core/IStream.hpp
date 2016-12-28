@@ -115,6 +115,6 @@ interface IStream
 class IOException : public Exception
 {
 public:
-    IOException(const char * message) : Exception(message) { }
-    IOException(const std::string &message) : Exception(message) { }
+    explicit IOException(const char * message) : Exception(message) { }
+    explicit IOException(const std::string &message) : Exception(message) { }
 };

@@ -190,13 +190,13 @@ static int map_get_corner_height(int x, int y, int corner)
 
 	switch (corner) {
 	case 0:
-		return baseHeight + (slope & 1 ? (doubleCorner == 1 ? 4 : 2) : 0);
+		return baseHeight + ((slope & 1) ? (doubleCorner == 1 ? 4 : 2) : 0);
 	case 1:
-		return baseHeight + (slope & 8 ? (doubleCorner == 8 ? 4 : 2) : 0);
+		return baseHeight + ((slope & 8) ? (doubleCorner == 8 ? 4 : 2) : 0);
 	case 2:
-		return baseHeight + (slope & 2 ? (doubleCorner == 2 ? 4 : 2) : 0);
+		return baseHeight + ((slope & 2) ? (doubleCorner == 2 ? 4 : 2) : 0);
 	case 3:
-		return baseHeight + (slope & 4 ? (doubleCorner == 4 ? 4 : 2) : 0);
+		return baseHeight + ((slope & 4) ? (doubleCorner == 4 ? 4 : 2) : 0);
 	default:
 		return baseHeight;
 	}

@@ -288,7 +288,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	{
 		listening_socket->Listen(address, port);
 	}
-	catch (Exception ex)
+	catch (const Exception &ex)
 	{
 		Console::Error::WriteLine(ex.GetMessage());
 		Close();
@@ -712,7 +712,7 @@ void Network::SaveGroups()
 		{
 			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
 		}
-		catch (Exception ex)
+		catch (const Exception &ex)
 		{
 			log_error("Unable to save %s: %s", path, ex.GetMessage());
 		}

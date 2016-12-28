@@ -40,7 +40,7 @@ private:
     Object * *          _loadedObjects = nullptr;
 
 public:
-    ObjectManager(IObjectRepository * objectRepository)
+    explicit ObjectManager(IObjectRepository * objectRepository)
     {
         Guard::ArgumentNotNull(objectRepository);
 
@@ -562,7 +562,7 @@ extern "C"
     uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
     {
         IObjectManager * objectManager = GetObjectManager();
-        const Object * object = (const Object *)loadedObject;
+        const Object * object = static_cast<const Object *>(loadedObject);
         uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
         return entryIndex;
     }

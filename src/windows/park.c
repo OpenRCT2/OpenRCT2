@@ -1087,7 +1087,6 @@ static void window_park_init_viewport(rct_window *w)
 	int i, x, y, z, r, xy, zr, viewportFlags;
 	x = y = z = r = xy = zr = 0;
 	rct_viewport *viewport;
-	rct_widget *viewportWidget;
 
 	if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
 		return;
@@ -1130,7 +1129,7 @@ static void window_park_init_viewport(rct_window *w)
 	if (zr != 0xFFFF) {
 		// Create viewport
 		if (w->viewport == NULL) {
-			viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
+			rct_widget *viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
 			viewport_create(
 				w,
 				w->x + viewportWidget->left + 1,
@@ -1903,18 +1902,14 @@ static void window_park_awards_invalidate(rct_window *w)
  */
 static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, count, x, y;
-	rct_award *award;
-
 	window_draw_widgets(w, dpi);
 	window_park_draw_tab_images(dpi, w);
 
-	x = w->x + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
-
-	count = 0;
-	for (i = 0; i < MAX_AWARDS; i++) {
-		award = &gCurrentAwards[i];
+	int x = w->x + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+	int y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+	int count = 0;
+	for (int i = 0; i < MAX_AWARDS; i++) {
+		rct_award *award = &gCurrentAwards[i];
 		if (award->time == 0)
 			continue;
 

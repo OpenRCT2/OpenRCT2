@@ -441,16 +441,12 @@ rct_window *window_new_ride_open()
 		(1 << 14) |
 		(1 << 15);
 	window_init_scroll_widgets(w);
-
-	w->frame_no = 0;
-
-	w->new_ride.selected_ride_id = -1;
-	w->new_ride.highlighted_ride_id = -1;
-	_lastTrackDesignCountRideType.type = 255;
-	_lastTrackDesignCountRideType.entry_index = 255;
-
 	window_new_ride_populate_list();
 
+	w->frame_no = 0;
+	w->new_ride.selected_ride_id = -1;
+	_lastTrackDesignCountRideType.type = 255;
+	_lastTrackDesignCountRideType.entry_index = 255;
 	w->new_ride.highlighted_ride_id = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
 	if (w->new_ride.highlighted_ride_id == -1)
 		w->new_ride.highlighted_ride_id = _windowNewRideListItems[0].ride_type_and_entry;

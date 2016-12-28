@@ -29,14 +29,8 @@
 class StringBuilder final
 {
 public:
-    StringBuilder()
-    {
-        _buffer = nullptr;
-        _capacity = 0;
-        _length = 0;
-    }
-
-    StringBuilder(size_t capacity) : StringBuilder()
+    StringBuilder() = default;
+    explicit StringBuilder(size_t capacity)
     {
         EnsureCapacity(capacity);
     }
@@ -170,9 +164,9 @@ public:
     size_t GetLength() const { return _length; }
 
 private:
-    utf8 * _buffer;
-    size_t _capacity;
-    size_t _length;
+    utf8 * _buffer = nullptr;
+    size_t _capacity = 0;
+    size_t _length = 0;
 
     void EnsureCapacity(size_t capacity)
     {

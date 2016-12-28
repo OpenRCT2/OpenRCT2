@@ -36,9 +36,9 @@ private:
     json_error_t _jsonError = { 0 };
 
 public:
-    JsonException(const char * message) : Exception(message) { }
+    explicit JsonException(const char * message) : Exception(message) { }
 
-    JsonException(const json_error_t * jsonError) : JsonException(jsonError->text)
+    explicit JsonException(const json_error_t * jsonError) : JsonException(jsonError->text)
     {
         _jsonError = *jsonError;
     }

@@ -301,13 +301,12 @@ static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropd
 */
 void window_staff_list_update(rct_window *w)
 {
-	int spriteIndex;
-	rct_peep *peep;
-
 	w->list_information_type++;
 	if (w->list_information_type >= 24) {
 		w->list_information_type = 0;
 	} else {
+		int spriteIndex;
+		rct_peep *peep;
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + _windowStaffListSelectedTab);
 		gWindowMapFlashingFlags |= (1 << 2);
 		FOR_ALL_STAFF(spriteIndex, peep) {
@@ -326,22 +325,20 @@ void window_staff_list_update(rct_window *w)
  */
 static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, int y)
 {
-	int direction, distance, closestPeepDistance, selectedPeepType;
-	rct_map_element *mapElement;
-	rct_peep *peep, *closestPeep;
-	uint16 spriteIndex;
-
 	if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) {
-		selectedPeepType = _windowStaffListSelectedTab;
+		int selectedPeepType = _windowStaffListSelectedTab;
 
+		int direction;
+		rct_map_element *mapElement;
 		footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &mapElement);
 		if (x == 0x8000)
 			return;
 
 		bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
 
-		closestPeep = NULL;
-		closestPeepDistance = INT_MAX;
+		uint16 spriteIndex;
+		rct_peep *peep, *closestPeep = NULL;
+		int closestPeepDistance = INT_MAX;
 		FOR_ALL_STAFF(spriteIndex, peep) {
 			if (peep->staff_type != selectedPeepType)
 				continue;
@@ -359,7 +356,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 				continue;
 			}
 
-			distance = abs(x - peep->x) + abs(y - peep->y);
+			int distance = abs(x - peep->x) + abs(y - peep->y);
 			if (distance < closestPeepDistance) {
 				closestPeepDistance = distance;
 				closestPeep = peep;

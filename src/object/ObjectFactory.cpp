@@ -51,7 +51,7 @@ public:
     bool WasWarning() const { return _wasWarning; }
     bool WasError() const { return _wasError; }
 
-    ReadObjectContext(const utf8 * objectFileName)
+    explicit ReadObjectContext(const utf8 * objectFileName)
     {
         _objectName = String::Duplicate(objectFileName);
     }
@@ -91,12 +91,12 @@ namespace ObjectFactory
         {
             object->ReadLegacy(context, stream);
         }
-        catch (IOException ex)
+        catch (const IOException &)
         {
             // TODO check that ex is really EOF and not some other error
             context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
         }

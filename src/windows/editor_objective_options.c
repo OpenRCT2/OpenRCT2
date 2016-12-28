@@ -878,7 +878,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	}
 
 	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+		(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1168,8 +1168,7 @@ static void window_editor_objective_options_rides_invalidate(rct_window *w)
 
 	window_editor_objective_options_set_pressed_tab(w);
 
-	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+	window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1192,15 +1191,14 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
  */
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y, colour;
 	rct_string_id stringId;
 	rct_ride *ride;
 
-	colour = ColourMapA[w->colours[1]].mid_light;
+	int colour = ColourMapA[w->colours[1]].mid_light;
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
 
-	for (i = 0; i < w->no_list_items; i++) {
-		y = i * 12;
+	for (int i = 0; i < w->no_list_items; i++) {
+		int y = i * 12;
 
 		if (y + 12 < dpi->y || y >= dpi->y + dpi->height)
 			continue;

@@ -129,7 +129,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
                 scenario_begin();
             }
         }
-        catch (Exception ex)
+        catch (const Exception &ex)
         {
             Console::Error::WriteLine(ex.GetMessage());
             return EXITCODE_FAIL;

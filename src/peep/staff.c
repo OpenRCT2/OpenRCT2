@@ -57,14 +57,10 @@ void staff_reset_modes()
  */
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	uint8 staffType, colour;
-	int spriteIndex;
-	rct_peep *peep;
-
-	staffType = (*ebx >> 8) & 0xFF;
-	colour = (*edx >> 8) & 0xFF;
-
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		uint8 staffType = (*ebx >> 8) & 0xFF;
+		uint8 colour = (*edx >> 8) & 0xFF;
+
 		// Client may send invalid data
 		bool ok = staff_set_colour(staffType, colour);
 		if (!ok) {
@@ -72,6 +68,8 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 			return;
 		}
 
+		int spriteIndex;
+		rct_peep *peep;
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
 				peep->tshirt_colour = colour;
@@ -1305,7 +1303,7 @@ static int staff_path_finding_entertainer(rct_peep* peep) {
 
 		invalidate_sprite_2((rct_sprite*)peep);
 
-		peep->action = scenario_rand() & 1 ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+		peep->action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
 		peep->action_frame = 0;
 		peep->action_sprite_image_offset = 0;
 

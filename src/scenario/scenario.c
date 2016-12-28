@@ -636,13 +636,10 @@ unsigned int scenario_rand_max(unsigned int max)
  */
 static void scenario_prepare_rides_for_save()
 {
-	int i;
-	rct_ride *ride;
-	map_element_iterator it;
-
 	int isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
+	map_element_iterator it;
 	map_element_iterator_begin(&it);
 	do {
 		if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK) {
@@ -654,6 +651,8 @@ static void scenario_prepare_rides_for_save()
 	} while (map_element_iterator_next(&it));
 
 	// Set all existing rides to have indestructible track
+	int i;
+	rct_ride *ride;
 	FOR_ALL_RIDES(i, ride) {
 		if (isFiveCoasterObjective)
 			ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
@@ -945,14 +944,13 @@ static void scenario_objective_check_10_rollercoasters_length()
 
 static void scenario_objective_check_finish_5_rollercoasters()
 {
-	int i;
-	rct_ride* ride;
-
 	money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
 
 	// ORIGINAL BUG?:
 	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
 	// It also did not exclude null rides.
+	int i;
+	rct_ride* ride;
 	int rcs = 0;
 	FOR_ALL_RIDES(i, ride)
 		if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement)

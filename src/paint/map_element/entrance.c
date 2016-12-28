@@ -210,7 +210,7 @@ static void park_entrance_paint(uint8 direction, int height, rct_map_element* ma
 	// Middle, left, right
 	uint8 part_index = map_element->properties.entrance.index & 0xF;
 	rct_entrance_type* entrance;
-	uint8 di = (direction / 2 + part_index / 2) & 1 ? 0x1A : 0x20;
+	uint8 di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
 
 	switch (part_index){
 	case 0:

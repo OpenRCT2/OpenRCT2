@@ -394,7 +394,7 @@ private:
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Error reading highscores.");
         }
@@ -469,7 +469,7 @@ private:
                 }
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
@@ -527,7 +527,7 @@ private:
                 fs.WriteValue(highscore->timestamp);
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }

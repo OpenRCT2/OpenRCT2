@@ -410,7 +410,7 @@ char *safe_strcat_path(char *destination, const char *source, size_t size)
 
 char *safe_strtrimleft(char *destination, const char *source, size_t size)
 {
-	while (*source == ' ' && *source != '\0') {
+	while (*source == ' ') {
 		source++;
 	}
 	return safe_strcpy(destination, source, size);

@@ -813,13 +813,11 @@ static void window_map_invalidate(rct_window *w)
  */
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y;
-
 	window_draw_widgets(w, dpi);
 	window_map_draw_tab_images(w, dpi);
 
-	x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
-	y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
+	int x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
+	int y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
 	// Draw land tool size
 	if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > 7) {
@@ -851,7 +849,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				STR_MAP_TOILET,
 			};
 
-			for (i = 0; i < 8; i++) {
+			for (int i = 0; i < 8; i++) {
 				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
 				gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + 10, y);
 				y += 10;

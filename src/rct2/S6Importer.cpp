@@ -46,7 +46,7 @@ class ObjectLoadException : public Exception
 {
 public:
     ObjectLoadException() : Exception("Unable to load objects.") { }
-    ObjectLoadException(const char * message) : Exception(message) { }
+    explicit ObjectLoadException(const char * message) : Exception(message) { }
 };
 
 S6Importer::S6Importer()
@@ -390,10 +390,10 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6Importer;
@@ -417,17 +417,17 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (IOException)
+        catch (const IOException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -492,17 +492,17 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (IOException)
+        catch (const IOException &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -526,10 +526,10 @@ extern "C"
             sprite_position_tween_reset();
             result = true;
         }
-        catch (ObjectLoadException)
+        catch (const ObjectLoadException &)
         {
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6Importer;

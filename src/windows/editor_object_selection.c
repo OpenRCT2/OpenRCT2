@@ -388,7 +388,12 @@ static void visible_list_refresh(rct_window *w)
 		}
 	}
 
-	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
+	void *new_memory = realloc(_listItems, _numListItems * sizeof(list_item));
+	if (new_memory == NULL) {
+		log_error("Unable to reallocate list items");
+		return;
+	}
+	_listItems = (list_item*)new_memory;
 
 	sortFunc sortFunc = NULL;
 	switch (_listSortType) {
@@ -1009,7 +1014,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 
 	_maxObjectsWasHit = false;
 	if (!window_editor_object_selection_select_object(0, ebx, listItem->entry)) {
-		rct_string_id error_title = ebx & 1 ?
+		rct_string_id error_title = (ebx & 1) ?
 			STR_UNABLE_TO_SELECT_THIS_OBJECT :
 			STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
@@ -1092,9 +1097,6 @@ static void window_editor_object_selection_tooltip(rct_window* w, int widgetInde
  */
 static void window_editor_object_selection_invalidate(rct_window *w)
 {
-	int i, x;
-	rct_widget *widget;
-
 	colour_scheme_update(w);
 
 	// Resize widgets
@@ -1138,9 +1140,9 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 	}
 
 	// Align tabs, hide advanced ones
-	x = 3;
-	for (i = 0; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++) {
-		widget = &w->widgets[WIDX_TAB_1 + i];
+	int x = 3;
+	for (int i = 0; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++) {
+		rct_widget *widget = &w->widgets[WIDX_TAB_1 + i];
 
 		if (!(w->list_information_type & 1) && ((1 << i) & 0x5E)) {
 			widget->type = WWT_EMPTY;
@@ -1154,7 +1156,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 
 	if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
 		w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
-		for (i = 1; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++)
+		for (int i = 1; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++)
 			w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
 		x = 150;
 	} else {
@@ -1182,7 +1184,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 		w->enabled_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL) | (1 << WIDX_FILTER_RIDE_TAB_TRANSPORT) |
 			(1 << WIDX_FILTER_RIDE_TAB_GENTLE) | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) |
 			(1 << WIDX_FILTER_RIDE_TAB_WATER) | (1 << WIDX_FILTER_RIDE_TAB_STALL);
-		for (i = 0; i < 7; i++)
+		for (int i = 0; i < 7; i++)
 			w->pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 		if ((_filter_flags & 0x7E0) == 0x7E0)
 			w->pressed_widgets |= (1 << WIDX_FILTER_RIDE_TAB_ALL);
@@ -1222,7 +1224,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
  */
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y, width, numSelected, totalSelectable, type;
+	int i, x, y, width, type;
 	rct_widget *widget;
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
@@ -1294,8 +1296,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		x = w->x + 3;
 		y = w->y + w->height - 13;
 
-		numSelected = _numSelectedObjectsForType[w->selected_tab];
-		totalSelectable = object_entry_group_counts[w->selected_tab];
+		int numSelected = _numSelectedObjectsForType[w->selected_tab];
+		int totalSelectable = object_entry_group_counts[w->selected_tab];
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 			totalSelectable = 4;
 

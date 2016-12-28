@@ -69,12 +69,9 @@ bool gfx_load_g1()
 {
 	log_verbose("loading g1 graphics");
 
-	SDL_RWops *file;
-	rct_g1_header header;
-	unsigned int i;
-
-	file = SDL_RWFromFile(get_file_path(PATH_ID_G1), "rb");
+	SDL_RWops *file = SDL_RWFromFile(get_file_path(PATH_ID_G1), "rb");
 	if (file != NULL) {
+		rct_g1_header header;
 		if (SDL_RWread(file, &header, 8, 1) == 1) {
 			/* We need to load in the data file, which has an `offset` field,
 			 * which is supposed to hold a pointer, but is only 32 bit long.
@@ -116,7 +113,7 @@ bool gfx_load_g1()
 			SDL_RWclose(file);
 
 			// Fix entry data offsets
-			for (i = 0; i < header.num_entries; i++)
+			for (unsigned int i = 0; i < header.num_entries; i++)
 				g1Elements[i].offset += (uintptr_t)_g1Buffer;
 
 			return true;
@@ -148,14 +145,11 @@ bool gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");
 
-	SDL_RWops *file;
-	unsigned int i;
-
 	char path[MAX_PATH];
 
 	platform_get_openrct_data_path(path, sizeof(path));
 	safe_strcat_path(path, "g2.dat", MAX_PATH);
-	file = SDL_RWFromFile(path, "rb");
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
 		if (SDL_RWread(file, &g2.header, 8, 1) == 1) {
 			// Read element headers
@@ -170,7 +164,7 @@ bool gfx_load_g2()
 			SDL_RWclose(file);
 
 			// Fix entry data offsets
-			for (i = 0; i < g2.header.num_entries; i++)
+			for (unsigned int i = 0; i < g2.header.num_entries; i++)
 				g2.elements[i].offset += (uintptr_t)g2.data;
 
 			return true;
@@ -447,7 +441,6 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	if (height <= 0)return;
 
 	dest_start_y >>= zoom_level;
-	dest_end_y >>= zoom_level;
 
 	//This will be the width of the drawn image
 	int width = g1_source->width;
@@ -486,7 +479,6 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 	}
 
 	dest_start_x >>= zoom_level;
-	dest_end_x >>= zoom_level;
 
 	uint8* dest_pointer = (uint8*)dpi->bits;
 	//Move the pointer to the start point of the destination

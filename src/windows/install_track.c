@@ -350,7 +350,6 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (td6->cost != 0) {
 		gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, COLOUR_BLACK, x, y);
-		y += 14;
 	}
 }
 

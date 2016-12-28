@@ -330,7 +330,6 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
 
 static void td6_set_element_helper_pointers(rct_track_td6 * td6)
 {
-	uintptr_t entranceElementsStart;
 	uintptr_t sceneryElementsStart;
 	if (td6->type == RIDE_TYPE_MAZE) {
 		td6->track_elements = NULL;
@@ -345,7 +344,7 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
 
 		rct_td6_track_element *track = td6->track_elements;
 		for (; track->type != 0xFF; track++) {}
-		entranceElementsStart = (uintptr_t)track + 1;
+		uintptr_t entranceElementsStart = (uintptr_t)track + 1;
 
 		rct_td6_entrance_element *entranceElement = (rct_td6_entrance_element*)entranceElementsStart;
 		td6->entrance_elements = entranceElement;
@@ -1861,9 +1860,8 @@ static void track_design_preview_clear_map()
 	gMapSizeMinus2 = (264 * 32) - 2;
 	gMapSize = 256;
 
-	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
-		map_element = &gMapElements[i];
+		rct_map_element* map_element = &gMapElements[i];
 		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 2;

@@ -45,7 +45,7 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	int lengthX = (direction & 1) == 0 ? 28 : 2;
 	int lengthY = (direction & 1) == 0 ? 2 : 28;
 	if (hasSupports) {
-		uint32 foundationImageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
+		uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
 		sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
 
 		// Door image or base

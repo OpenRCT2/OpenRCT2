@@ -34,7 +34,7 @@ interface IStringReader
 class UTF8StringReader final : public IStringReader
 {
 public:
-    UTF8StringReader(const utf8 * text)
+    explicit UTF8StringReader(const utf8 * text)
     {
         text = String::SkipBOM(text);
 

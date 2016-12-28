@@ -217,7 +217,7 @@ public:
                 SaveObject(path, objectEntry, data, dataSize);
                 ScanObject(path);
             }
-            catch (Exception ex)
+            catch (const Exception &)
             {
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
@@ -338,7 +338,7 @@ private:
             Console::WriteLine("Object repository is out of date.");
             return false;
         }
-        catch (IOException ex)
+        catch (const IOException &)
         {
             return false;
         }
@@ -368,7 +368,7 @@ private:
                 WriteItem(&fs, _items[i]);
             }
         }
-        catch (IOException ex)
+        catch (const IOException &)
         {
             log_error("Unable to write object repository index to '%s'.", path.c_str());
         }
@@ -531,7 +531,7 @@ private:
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
                 }
-                catch (Exception ex)
+                catch (const Exception &)
                 {
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
@@ -558,7 +558,7 @@ private:
 
             Memory::Free(encodedDataBuffer);
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Memory::Free(encodedDataBuffer);
             throw;
@@ -851,7 +851,7 @@ extern "C"
     {
         if (object != nullptr)
         {
-            Object * baseObject = (Object *)object;
+            Object * baseObject = static_cast<Object *>(object);
             baseObject->Unload();
             delete baseObject;
         }
@@ -859,7 +859,7 @@ extern "C"
 
     const utf8 * object_get_description(const void * object)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         switch (baseObject->GetObjectType()) {
         case OBJECT_TYPE_RIDE:
         {
@@ -878,7 +878,7 @@ extern "C"
 
     const utf8 * object_get_capacity(const void * object)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         switch (baseObject->GetObjectType()) {
         case OBJECT_TYPE_RIDE:
         {
@@ -892,7 +892,7 @@ extern "C"
 
     void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         baseObject->DrawPreview(dpi, width, height);
     }
 

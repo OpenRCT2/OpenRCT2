@@ -257,7 +257,6 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::str
 }
 
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -400,7 +399,6 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 }
 
 static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -477,7 +475,6 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 }
 
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -570,7 +567,6 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 }
 
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};
@@ -687,7 +683,6 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 }
 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
-    uint8 rideIndex = 0;
     uint16 height = 3 * 16;
 
     rct_map_element mapElement = {0};

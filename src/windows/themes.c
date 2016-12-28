@@ -302,10 +302,8 @@ static int get_colour_scheme_tab_count()
 
 static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int sprite_idx;
-
 	for (int i = 0; i < WINDOW_THEMES_TAB_COUNT; i++) {
-		sprite_idx = window_themes_tab_sprites[i];
+		int sprite_idx = window_themes_tab_sprites[i];
 		if (_selected_tab == i)
 			sprite_idx += w->frame_no / window_themes_tab_animation_divisor[_selected_tab];
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left, w->y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
