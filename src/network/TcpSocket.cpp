@@ -44,6 +44,7 @@
     #include <arpa/inet.h>
     #include <netdb.h>
     #include <netinet/tcp.h>
+    #include <netinet/in.h>
     #include <sys/socket.h>
     #include <fcntl.h>
     typedef int SOCKET;

@@ -48,6 +48,9 @@
 #ifdef __MACOSX__
 	#define OPENRCT2_PLATFORM		"macOS"
 #endif
+#ifdef __FREEBSD__
+	#define OPENRCT2_PLATFORM		"FreeBSD"
+#endif
 #ifndef OPENRCT2_PLATFORM
 	#error Unknown platform!
 #endif
