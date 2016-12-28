@@ -530,49 +530,38 @@ void viewport_update_position(rct_window *window)
 	viewport_set_underground_flag(0, window, viewport);
 
 	//Clamp to the map minimum value
-	int at_map_edge = 0;
+	int at_map_edge_x = 0;
 	if (x < MAP_MINIMUM_X_Y){
 		x = MAP_MINIMUM_X_Y;
-		at_map_edge = 1;
+		at_map_edge_x = 1;
 	}
+	int at_map_edge_y = 0;
 	if (y < MAP_MINIMUM_X_Y){
 		y = MAP_MINIMUM_X_Y;
-		at_map_edge = 1;
+		at_map_edge_y = 1;
 	}
 
 	//Clamp to the map maximum value (scenario specific)
 	if (x > gMapSizeMinus2){
 		x = gMapSizeMinus2;
-		at_map_edge = 1;
+		at_map_edge_x = 1;
 	}
 	if (y > gMapSizeMinus2){
 		y = gMapSizeMinus2;
-		at_map_edge = 1;
+		at_map_edge_y = 1;
 	}
 
-	if (at_map_edge) {
+	if (at_map_edge_x || at_map_edge_y) {
 		// The &0xFFFF is to prevent the sign extension messing the
 		// function up.
 		int z = map_element_height(x & 0xFFFF, y & 0xFFFF);
 		int _2d_x, _2d_y;
 		center_2d_coordinates(x, y, z, &_2d_x, &_2d_y, viewport);
 
-		if (window->saved_view_x > 0){
-			_2d_x = min(_2d_x, window->saved_view_x);
-		}
-		else{
-			_2d_x = max(_2d_x, window->saved_view_x);
-		}
-
-		if (window->saved_view_y > 0){
-			_2d_y = min(_2d_y, window->saved_view_y);
-		}
-		else{
-			_2d_y = max(_2d_y, window->saved_view_y);
-		}
-
-		window->saved_view_x = _2d_x;
-		window->saved_view_y = _2d_y;
+		if (at_map_edge_x)
+			window->saved_view_x = _2d_x;
+		if (at_map_edge_y)
+			window->saved_view_y = _2d_y;
 	}
 
 	x = window->saved_view_x;
