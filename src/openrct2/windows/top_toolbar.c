@@ -98,7 +98,7 @@ typedef enum {
 	DDIDX_LAND_HEIGHTS = 10,
 	DDIDX_TRACK_HEIGHTS = 11,
 	DDIDX_PATH_HEIGHTS = 12,
-	DDIDX_VIEW_CLIPPING = 13,
+	DDIDX_VIEW_CLIPPING = 14,
 } TOP_TOOLBAR_VIEW_MENU_DDIDX;
 
 typedef enum {
@@ -3045,7 +3045,8 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
 	gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
-	gDropdownItemsFormat[13] = STR_TOGGLE_OPTION;
+	gDropdownItemsFormat[13] = STR_EMPTY;
+	gDropdownItemsFormat[14] = STR_TOGGLE_OPTION;
 
 	gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
 	gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
@@ -3058,7 +3059,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
 	gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
 	gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
-	gDropdownItemsArgs[13] = STR_VIEW_CLIPPING;
+	gDropdownItemsArgs[14] = STR_VIEW_CLIPPING;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -3066,7 +3067,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 		widget->bottom - widget->top + 1,
 		w->colours[1] | 0x80,
 		0,
-		13
+		15
 	);
 
 	// Set checkmarks
@@ -3094,7 +3095,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
 		dropdown_set_checked(12, true);
 	if (mainViewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT)
-		dropdown_set_checked(13, true);
+		dropdown_set_checked(14, true);
 
 	gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }
