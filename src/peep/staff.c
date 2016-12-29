@@ -1035,11 +1035,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 
 	uint8 direction = 0xFF;
 	uint8 pathDirections = pathElement->properties.path.edges & 0xF;
-	if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION) {
-		/* Mechanic is patrolling, so mask with the valid
-		 * patrol directions */
-		pathDirections &= validDirections;
-	}
+	pathDirections &= validDirections;
 
 	if (pathDirections == 0) {
 		return staff_mechanic_direction_surface(peep);
