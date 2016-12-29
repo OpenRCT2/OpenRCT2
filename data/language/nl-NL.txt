@@ -4657,7 +4657,7 @@ STR_DTLS    :Het fundament van dit themapark wordt gevormd door twee enorme rots
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In dit grote moet je tien grote achtbanen ontwerpen en bouwen.
+STR_DTLS    :In dit grote park moet je tien grote achtbanen ontwerpen en bouwen.
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island

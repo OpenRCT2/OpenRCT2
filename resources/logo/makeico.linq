@@ -3,20 +3,19 @@
   <Namespace>System.Drawing.Imaging</Namespace>
 </Query>
 
-string inputDirectory = @"C:\Users\Ted\Documents\Programming\Projects\Hacking\OpenRCT2\resources\logo";
-string outputPath = @"C:\Users\Ted\Documents\Programming\Projects\Hacking\OpenRCT2\resources\logo\icon.ico";
-int numImages = 7;
+string inputDirectory = @"resources\logo";
+string outputPath = Path.Combine(inputDirectory, "icon.ico");
+int[] imageSizes = new int[] { 256, 128, 64, 40, 32, 16, 8, 4 };
 using (FileStream fs = new FileStream(outputPath, FileMode.Create)) {
 	BinaryWriter bw = new BinaryWriter(fs);
 	bw.Write((short)0);
 	bw.Write((short)1);
-	bw.Write((short)numImages);
+	bw.Write((short)imageSizes.Length);
 	
-	int dataStartOffset = 6 + (numImages * 16);
+	int dataStartOffset = 6 + (imageSizes.Length * 16);
 	
 	using (MemoryStream dataStream = new MemoryStream()) {
-		int size = 256;
-		for (int i = 0; i < numImages; i++) {
+		foreach (int size in imageSizes) {
 			bw.Write((byte)(size == 256 ? 0 : size));
 			bw.Write((byte)(size == 256 ? 0 : size));
 			bw.Write((byte)0);
@@ -36,8 +35,6 @@ using (FileStream fs = new FileStream(outputPath, FileMode.Create)) {
 			
 			bw.Write(dataLength);
 			bw.Write(dataOffset);
-			
-			size /= 2;
 		}
 		bw.Write(dataStream.ToArray());
 	}

@@ -556,7 +556,7 @@ STR_0551    :
 STR_0552    :
 STR_0553    :
 STR_0554    :La voiture est propulsée hors de la station à l'aide de moteurs à induction linéaire puis, après avoir atteint une pointe verticale, revient à la station en chute libre
-STR_0555    :Les passagers passent aux différents niveaux d'une tour verticale à bord d'un ascenceur
+STR_0555    :Les passagers passent aux différents niveaux d'une tour verticale à bord d'un ascenseur
 STR_0556    :Des voitures très larges descendent des voies en pente verticale. pour amateurs de chute libre
 STR_0557    :
 STR_0558    :
@@ -3185,7 +3185,7 @@ STR_3173    :Cet objet est déjà utilisé
 STR_3174    :Cet objet est requis par un autre objet
 STR_3175    :Cet objet est toujours requis
 STR_3176    :Impossible de sélectionner cet objet
-STR_3177    :Impossible de déselectionner cet objet
+STR_3177    :Impossible de désélectionner cet objet
 STR_3178    :Au moins un objet d'allée doit être sélectionné
 STR_3179    :Au moins un objet de véhicule ou d'attraction doit être sélectionné
 STR_3180    :Sélection d'objets non valide
@@ -3262,8 +3262,8 @@ STR_3250    :Impossible d'augmenter davantage l'emprunt initial !
 STR_3251    :Impossible de diminuer davantage l'emprunt initial !
 STR_3252    :Impossible d'augmenter davantage l'emprunt maximum !
 STR_3253    :Impossible de diminuer davantage l'emprunt maximum !
-STR_3254    :Impossible d'augmenter davantage le taux d'intérêts !
-STR_3255    :Impossible de diminuer davantage le taux d'intérêts !
+STR_3254    :Impossible d'augmenter davantage le taux d'intérêt !
+STR_3255    :Impossible de diminuer davantage le taux d'intérêt !
 STR_3256    :Attr. moins dures pour visiteurs
 STR_3257    :{SMALLFONT}{BLACK}Choisir si vous souhaitez que les visiteurs préfèrent des attractions moins intenses
 STR_3258    :Attr. plus dures pour visiteurs
@@ -3392,7 +3392,7 @@ STR_3380    :Impossible d'installer ce modèle de circuit...
 STR_3381    :Le fichier n'est pas compatible ou contient des données invalides
 STR_3382    :Copie du fichier échouée
 STR_3383    :Sélectionnez le nouveau nom pour le modèle de circuit
-STR_3384    :Un modèle de circuit possède déjà ce nom - Veuillez en choisir un autre pour celui ci :
+STR_3384    :Un modèle de circuit possède déjà ce nom - Veuillez en choisir un autre pour celui-ci :
 STR_3385    :Didacticiel pour débutants
 STR_3386    :Didacticiel attractions personnalisées
 STR_3387    :Didacticiel construction des montagnes russes
@@ -3431,7 +3431,7 @@ STR_3419    :{SMALLFONT}{BLACK}Pour construire du décor l'un au-dessus de l'aut
 STR_3420    :{SMALLFONT}{BLACK}Certains éléments du décor peuvent être repeints après leur construction...
 STR_3421    :{SMALLFONT}{BLACK}Ajoutons un peu de musique à notre attraction...
 STR_3422    :{SMALLFONT}{BLACK}Construisons un montagne russe !
-STR_3423    :{SMALLFONT}{BLACK}Il y a plein de modèles pré-définis, mais nous allons construire notre propre circuit...
+STR_3423    :{SMALLFONT}{BLACK}Il y a plein de modèles prédéfinis, mais nous allons construire notre propre circuit...
 STR_3424    :{SMALLFONT}{BLACK}Voilà la station construite. Maintenant la montée...
 STR_3425    :{SMALLFONT}{BLACK}Les trains des montagnes russes ne sont pas propulsés, une 'échelle' est nécessaire pour tirer le train lors de la première montée...
 STR_3426    :{SMALLFONT}{BLACK}La montée est terminée - Maintenant la descente...
@@ -3523,7 +3523,7 @@ STR_5180    :{SMALLFONT}{BLACK}Afficher les options de triche du parc
 STR_5181    :{SMALLFONT}{BLACK}Afficher les options de triche des attractions
 STR_5182    :{INT32}
 STR_5183    :Hauteur de base
-STR_5184    :Entrez une hauter de base entre {COMMA16} et {COMMA16}
+STR_5184    :Entrez une hauteur de base entre {COMMA16} et {COMMA16}
 STR_5185    :Niveau de l'eau
 STR_5186    :Entrez un niveau d'eau entre {COMMA16} et {COMMA16} 
 STR_5187    :Finances

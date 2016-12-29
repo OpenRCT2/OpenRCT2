@@ -19,13 +19,12 @@
 #include "../editor.h"
 #include "../game.h"
 #include "../interface/themes.h"
-#include "../interface/title_sequences.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
-#include "../scenario.h"
-#include "../title.h"
+#include "../scenario/scenario.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../windows/error.h"
 
@@ -124,7 +123,7 @@ typedef struct loadsave_list_item {
 	uint8 type;
 } loadsave_list_item;
 
-modal_callback gLoadSaveCallback;
+loadsave_callback gLoadSaveCallback;
 
 int _listItemsCount = 0;
 loadsave_list_item *_listItems = NULL;
@@ -158,7 +157,6 @@ static int window_loadsave_get_dir(utf8 *last_save, char *path, const char *subd
 rct_window *window_loadsave_open(int type, char *defaultName)
 {
 	gLoadSaveCallback = NULL;
-	gLoadSaveTitleSequenceSave = false;
 	_type = type;
 	_defaultName[0] = '\0';
 
@@ -425,21 +423,6 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 			window_invalidate(w);
 			break;
 		case WIDX_NEW_FILE:
-			if (gLoadSaveTitleSequenceSave) {
-				if (filename_valid_characters(text)) {
-					if (!title_sequence_save_exists(gCurrentTitleSequence, text)) {
-						title_sequence_add_save(gCurrentTitleSequence, path, text);
-					}
-					else {
-						window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
-					}
-				}
-				else {
-					window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
-				}
-				return;
-			}
-
 			safe_strcpy(path, _directory, sizeof(path));
 			safe_strcat_path(path, text, sizeof(path));
 			path_append_extension(path, _extension, sizeof(path));
@@ -509,20 +492,17 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int i, y;
-	rct_string_id stringId;
-
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-	for (i = 0; i < w->no_list_items; i++) {
-		y = i * 10;
+	for (int i = 0; i < w->no_list_items; i++) {
+		int y = i * 10;
 		if (y > dpi->y + dpi->height)
 			break;
 
 		if (y + 10 < dpi->y)
 			continue;
 
-		stringId = STR_BLACK_STRING;
+		rct_string_id stringId = STR_BLACK_STRING;
 		if (i == w->selected_list_item) {
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
 			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
@@ -591,7 +571,12 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 		for (int x = 0; x < 26; x++){
 			if (listItemCapacity <= _listItemsCount) {
 				listItemCapacity *= 2;
-				_listItems = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				void *new_memory = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
+				if (new_memory == NULL) {
+					log_error("Failed to reallocate memory for loadsave list");
+					return;
+				}
+				_listItems = (loadsave_list_item*)new_memory;
 			}
 
 			if (drives & (1 << x)){
@@ -698,10 +683,10 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 	}
 }
 
-static void window_loadsave_invoke_callback(int result)
+static void window_loadsave_invoke_callback(int result, const utf8 * path)
 {
 	if (gLoadSaveCallback != NULL) {
-		gLoadSaveCallback(result);
+		gLoadSaveCallback(result, path);
 	}
 }
 
@@ -737,38 +722,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	switch (_type & 0x0F) {
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
-		uint32 extension = get_file_extension_type(path);
-		if (gLoadSaveTitleSequenceSave) {
-			utf8 newName[MAX_PATH];
-			safe_strcpy(newName, path_get_filename(path), MAX_PATH);
-			if (extension != FILE_EXTENSION_SV6 && extension != FILE_EXTENSION_SC6)
-				path_append_extension(newName, ".sv6", sizeof(newName));
-			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
-				set_format_arg(0, intptr_t, (intptr_t)&_listItems[w->selected_list_item].name);
-				window_text_input_open(w, WIDX_SCROLL, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING, (uintptr_t)_listItems[w->selected_list_item].name, TITLE_SEQUENCE_MAX_SAVE_LENGTH - 1);
-			}
-			else {
-				title_sequence_add_save(gCurrentTitleSequence, path, newName);
-				window_close(w);
-			}
-			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-		} else if (
-			(extension == FILE_EXTENSION_SV6 && game_load_save(path)) ||
-			(extension == FILE_EXTENSION_SC6 && scenario_load_and_play_from_path(path)) ||
-			(extension == FILE_EXTENSION_SV4 && game_load_save(path)) ||
-			(extension == FILE_EXTENSION_SC4 && scenario_load_and_play_from_path(path))
-		) {
-			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
-			gFirstTimeSave = 0;
-
-			window_close(w);
-			gfx_invalidate_screen();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK);
-		} else {
-			// Not the best message...
-			window_error_open(STR_LOAD_GAME, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
-		}
+		safe_strcpy(gScenarioSavePath, path, MAX_PATH);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+		window_close(w);
+		gfx_invalidate_screen();
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
 		save_path(&gConfigGeneral.last_save_game_directory, path);
@@ -783,25 +740,25 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				window_close_by_class(WC_LOADSAVE);
 				gfx_invalidate_screen();
 
-				window_loadsave_invoke_callback(MODAL_RESULT_OK);
+				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 			} else {
 				window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 			}
 		} else {
 			window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 		break;
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
 		save_path(&gConfigGeneral.last_save_landscape_directory, path);
 		if (editor_load_landscape(path)) {
 			gfx_invalidate_screen();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		} else {
 			// Not the best message...
 			window_error_open(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
@@ -814,14 +771,14 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			if (success) {
 				window_close_by_class(WC_LOADSAVE);
 				gfx_invalidate_screen();
-				window_loadsave_invoke_callback(MODAL_RESULT_OK);
+				window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 			} else {
 				window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-				window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+				window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 			}
 		} else {
 			window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
@@ -841,12 +798,12 @@ static void window_loadsave_select(rct_window *w, const char *path)
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
-			window_loadsave_invoke_callback(MODAL_RESULT_OK);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 			title_load();
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
 			gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 		break;
 	}
@@ -854,7 +811,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		save_path(&gConfigGeneral.last_save_track_directory, path);
 		window_install_track_open(path);
 		window_close_by_class(WC_LOADSAVE);
-		window_loadsave_invoke_callback(MODAL_RESULT_OK);
+		window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
 	{
@@ -866,10 +823,10 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);
 			window_ride_measurements_design_cancel();
-			window_loadsave_invoke_callback(MODAL_RESULT_OK);
+			window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
-			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
+			window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
 		}
 	}
 	}

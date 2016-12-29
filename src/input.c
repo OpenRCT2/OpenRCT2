@@ -29,14 +29,15 @@
 #include "localisation/localisation.h"
 #include "platform/platform.h"
 #include "ride/ride_data.h"
-#include "scenario.h"
+#include "scenario/scenario.h"
 #include "windows/tooltip.h"
 #include "windows/dropdown.h"
 #include "world/banner.h"
 #include "world/map.h"
 #include "world/sprite.h"
 #include "world/scenery.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
+#include "rct2.h"
 
 typedef struct rct_mouse_data {
 	uint32 x;
@@ -103,7 +104,7 @@ static void input_window_resize_end();
 static void input_viewport_drag_begin(rct_window *w, int x, int y);
 static void input_viewport_drag_continue();
 static void input_viewport_drag_end();
-static void input_scroll_begin();
+static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y);
 static void input_scroll_continue(rct_window *w, int widgetIndex, int state, int x, int y);
 static void input_scroll_end();
 static void input_scroll_part_update_hthumb(rct_window *w, int widgetIndex, int x, int scroll_id);

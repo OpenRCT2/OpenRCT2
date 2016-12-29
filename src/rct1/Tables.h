@@ -25,6 +25,7 @@
 namespace RCT1
 {
     colour_t GetColour(colour_t colour);
+    uint8 GetPeepSpriteType(uint8 rct1SpriteType);
     uint8 GetTerrain(uint8 terrain);
     uint8 GetTerrainEdge(uint8 terrainEdge);
 

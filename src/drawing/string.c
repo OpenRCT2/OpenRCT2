@@ -16,13 +16,9 @@
 
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/util.h"
-#include "../world/map.h"
-#include "drawing.h"
 
 enum {
 	TEXT_DRAW_FLAG_INSET = 1 << 0,

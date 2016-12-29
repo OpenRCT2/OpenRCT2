@@ -30,7 +30,8 @@
 #include "../core/Path.hpp"
 #include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
-#include "../ScenarioRepository.h"
+#include "../PlatformEnvironment.h"
+#include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectManager.h"
@@ -45,6 +46,7 @@ extern "C"
     #include "../object.h"
     #include "../object_list.h"
     #include "../platform/platform.h"
+    #include "../rct2.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
 }
@@ -92,12 +94,19 @@ static void ReportMissingObject(const rct_object_entry * entry);
 
 class ObjectRepository : public IObjectRepository
 {
+    IPlatformEnvironment *              _env = nullptr;
     std::vector<ObjectRepositoryItem>   _items;
-    QueryDirectoryResult                _queryDirectoryResult;
+    QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
-    uint16                              _languageId;
+    uint16                              _languageId = 0;
+    int                                 _numConflicts;
 
 public:
+    ObjectRepository(IPlatformEnvironment * env)
+    {
+        _env = env;
+    }
+
     ~ObjectRepository()
     {
         ClearItems();
@@ -107,23 +116,23 @@ public:
     {
         ClearItems();
 
-        _queryDirectoryResult = { 0 };
-
-        utf8 path[MAX_PATH];
-        GetRCT2ObjectPath(path, sizeof(path));
-        QueryDirectory(&_queryDirectoryResult, path);
-        GetUserObjectPath(path, sizeof(path));
-        QueryDirectory(&_queryDirectoryResult, path);
-
+        Query();
         if (!Load())
         {
             _languageId = gCurrentLanguage;
-
-            Construct();
+            Scan();
             Save();
         }
 
         // SortItems();
+    }
+
+    void Construct() override
+    {
+        _languageId = gCurrentLanguage;
+        Query();
+        Scan();
+        Save();
     }
 
     size_t GetNumObjects() const override
@@ -208,7 +217,7 @@ public:
                 SaveObject(path, objectEntry, data, dataSize);
                 ScanObject(path);
             }
-            catch (Exception ex)
+            catch (const Exception &)
             {
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
@@ -226,38 +235,49 @@ private:
         _itemMap.clear();
     }
 
-    void QueryDirectory(QueryDirectoryResult * result, const utf8 * directory)
+    void Query()
+    {
+        _queryDirectoryResult = { 0 };
+
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        QueryDirectory(&_queryDirectoryResult, rct2Path);
+        QueryDirectory(&_queryDirectoryResult, openrct2Path);
+    }
+
+    void QueryDirectory(QueryDirectoryResult * result, const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.dat");
         Path::QueryDirectory(result, pattern);
     }
 
-    void Construct()
+    void Scan()
     {
-        utf8 objectDirectory[MAX_PATH];
-        Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
-
         Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
+        _numConflicts = 0;
 
         auto stopwatch = Stopwatch();
         stopwatch.Start();
 
-        utf8 path[MAX_PATH];
-        GetRCT2ObjectPath(path, sizeof(path));
-        ScanDirectory(path);
-        GetUserObjectPath(path, sizeof(path));
-        ScanDirectory(path);
+        const std::string &rct2Path = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+        const std::string &openrct2Path = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        ScanDirectory(rct2Path);
+        ScanDirectory(openrct2Path);
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
+        if (_numConflicts > 0)
+        {
+            Console::WriteLine("%d object conflicts found.", _numConflicts);
+        }
     }
 
-    void ScanDirectory(const utf8 * directory)
+    void ScanDirectory(const std::string &directory)
     {
         utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory);
+        String::Set(pattern, sizeof(pattern), directory.c_str());
         Path::Append(pattern, sizeof(pattern), "*.dat");
 
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
@@ -287,9 +307,7 @@ private:
 
     bool Load()
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -320,7 +338,7 @@ private:
             Console::WriteLine("Object repository is out of date.");
             return false;
         }
-        catch (IOException ex)
+        catch (const IOException &)
         {
             return false;
         }
@@ -328,9 +346,7 @@ private:
 
     void Save() const
     {
-        utf8 path[MAX_PATH];
-        GetRepositoryPath(path, sizeof(path));
-
+        const std::string &path = _env->GetFilePath(PATHID::CACHE_OBJECTS);
         try
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
@@ -352,9 +368,9 @@ private:
                 WriteItem(&fs, _items[i]);
             }
         }
-        catch (IOException ex)
+        catch (const IOException &)
         {
-            log_error("Unable to write object repository index.");
+            log_error("Unable to write object repository index to '%s'.", path.c_str());
         }
     }
 
@@ -388,6 +404,7 @@ private:
         }
         else
         {
+            _numConflicts++;
             Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
             Console::Error::WriteLine("               : '%s'", item->Path);
             return false;
@@ -514,7 +531,7 @@ private:
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
                 }
-                catch (Exception ex)
+                catch (const Exception &)
                 {
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
@@ -541,7 +558,7 @@ private:
 
             Memory::Free(encodedDataBuffer);
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             Memory::Free(encodedDataBuffer);
             throw;
@@ -577,7 +594,7 @@ private:
         return salt;
     }
 
-    static void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
+    void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
     {
         char normalisedName[9] = { 0 };
         for (int i = 0; i < 8; i++)
@@ -592,7 +609,8 @@ private:
             }
         }
 
-        GetUserObjectPath(buffer, bufferSize);
+        const std::string &userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        String::Set(buffer, bufferSize, userObjPath.c_str());
         platform_ensure_directory_exists(buffer);
 
         Path::Append(buffer, bufferSize, normalisedName);
@@ -605,38 +623,24 @@ private:
             snprintf(counterString, sizeof(counterString), "-%02X", counter);
             counter++;
 
-            GetUserObjectPath(buffer, bufferSize);
+            String::Set(buffer, bufferSize, userObjPath.c_str());
             Path::Append(buffer, bufferSize, normalisedName);
             String::Append(buffer, bufferSize, counterString);
             String::Append(buffer, bufferSize, ".DAT");
         }
     }
-
-    static void GetRepositoryPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, nullptr, bufferSize);
-        safe_strcat_path(buffer, "objects.idx", bufferSize);
-    }
-
-    static void GetRCT2ObjectPath(utf8 * buffer, size_t bufferSize)
-    {
-        Path::GetDirectory(buffer, bufferSize, gRCT2AddressObjectDataPath);
-    }
-
-    static void GetUserObjectPath(utf8 * buffer, size_t bufferSize)
-    {
-        platform_get_user_directory(buffer, "object", bufferSize);
-    }
 };
 
 static std::unique_ptr<ObjectRepository> _objectRepository;
 
+IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env)
+{
+    _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository(env));
+    return _objectRepository.get();
+}
+
 IObjectRepository * GetObjectRepository()
 {
-    if (_objectRepository == nullptr)
-    {
-        _objectRepository = std::unique_ptr<ObjectRepository>(new ObjectRepository());
-    }
     return _objectRepository.get();
 }
 
@@ -847,7 +851,7 @@ extern "C"
     {
         if (object != nullptr)
         {
-            Object * baseObject = (Object *)object;
+            Object * baseObject = static_cast<Object *>(object);
             baseObject->Unload();
             delete baseObject;
         }
@@ -855,7 +859,7 @@ extern "C"
 
     const utf8 * object_get_description(const void * object)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         switch (baseObject->GetObjectType()) {
         case OBJECT_TYPE_RIDE:
         {
@@ -874,7 +878,7 @@ extern "C"
 
     const utf8 * object_get_capacity(const void * object)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         switch (baseObject->GetObjectType()) {
         case OBJECT_TYPE_RIDE:
         {
@@ -888,7 +892,7 @@ extern "C"
 
     void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
     {
-        const Object * baseObject = (const Object *)object;
+        const Object * baseObject = static_cast<const Object *>(object);
         baseObject->DrawPreview(dpi, width, height);
     }
 
@@ -928,7 +932,7 @@ extern "C"
 
     int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
     {
-        const uint8 *entryBytePtr = (uint8*)entry;
+        const uint8 * entryBytePtr = (uint8 *)entry;
 
         uint32 checksum = 0xF369A75B;
         checksum ^= entryBytePtr[0];
@@ -939,8 +943,17 @@ extern "C"
             checksum = rol32(checksum, 11);
         }
 
-        uint8 * dataBytes = (uint8 *)data;
-        for (size_t i = 0; i < dataLength; i++)
+        uint8 *      dataBytes    = (uint8 *)data;
+        const size_t dataLength32 = dataLength - (dataLength & 31);
+        for (size_t i = 0; i < 32; i++)
+        {
+            for (size_t j = i; j < dataLength32; j += 32)
+            {
+                checksum ^= dataBytes[j];
+            }
+            checksum = rol32(checksum, 11);
+        }
+        for (size_t i = dataLength32; i < dataLength; i++)
         {
             checksum ^= dataBytes[i];
             checksum = rol32(checksum, 11);

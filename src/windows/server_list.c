@@ -141,7 +141,7 @@ static void sort_servers();
 static void join_server(char *address);
 static void fetch_servers();
 #ifndef DISABLE_HTTP
-static void fetch_servers_callback(http_json_response* response);
+static void fetch_servers_callback(http_response_t* response);
 #endif
 
 void window_server_list_open()
@@ -506,13 +506,23 @@ static char *freadstralloc(SDL_RWops *file)
 
 		if (length >= capacity) {
 			capacity *= 2;
-			buffer = realloc(buffer, capacity);
+			void *new_memory = realloc(buffer, capacity);
+			if (new_memory == NULL) {
+				log_error("Failed to reallocate memory for file buffer");
+				return NULL;
+			}
+			buffer = (char*)new_memory;
 		}
 		buffer[length] = c;
 		length++;
 	}
 
-	buffer = realloc(buffer, length + 1);
+	void *new_memory = realloc(buffer, length + 1);
+	if (new_memory == NULL) {
+		log_error("Failed to reallocate memory for file buffer");
+		return NULL;
+	}
+	buffer = (char*)new_memory;
 	buffer[length] = 0;
 	return buffer;
 }
@@ -765,16 +775,17 @@ static void fetch_servers()
 	sort_servers();
 	SDL_UnlockMutex(_mutex);
 
-	http_json_request request;
+	http_request_t request;
 	request.url = masterServerUrl;
 	request.method = HTTP_METHOD_GET;
 	request.body = NULL;
-	http_request_json_async(&request, fetch_servers_callback);
+	request.type = HTTP_DATA_JSON;
+	http_request_async(&request, fetch_servers_callback);
 #endif
 }
 
 #ifndef DISABLE_HTTP
-static void fetch_servers_callback(http_json_response* response)
+static void fetch_servers_callback(http_response_t* response)
 {
 	if (response == NULL) {
 		log_warning("Unable to connect to master server");
@@ -783,21 +794,21 @@ static void fetch_servers_callback(http_json_response* response)
 
 	json_t *jsonStatus = json_object_get(response->root, "status");
 	if (!json_is_number(jsonStatus)) {
-		http_request_json_dispose(response);
+		http_request_dispose(response);
 		log_warning("Invalid response from master server");
 		return;
 	}
 
 	int status = (int)json_integer_value(jsonStatus);
 	if (status != 200) {
-		http_request_json_dispose(response);
+		http_request_dispose(response);
 		log_warning("Master server failed to return servers");
 		return;
 	}
 
 	json_t *jsonServers = json_object_get(response->root, "servers");
 	if (!json_is_array(jsonServers)) {
-		http_request_json_dispose(response);
+		http_request_dispose(response);
 		log_warning("Invalid response from master server");
 		return;
 	}
@@ -842,7 +853,7 @@ static void fetch_servers_callback(http_json_response* response)
 		newserver->maxplayers = (uint8)json_integer_value(maxPlayers);
 		SDL_UnlockMutex(_mutex);
 	}
-	http_request_json_dispose(response);
+	http_request_dispose(response);
 
 	sort_servers();
 	_numPlayersOnline = get_total_player_count();

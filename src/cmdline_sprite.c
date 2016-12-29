@@ -16,7 +16,7 @@
 
 #include "drawing/drawing.h"
 #include "image_io.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/util.h"
 #include "cmdline_sprite.h"

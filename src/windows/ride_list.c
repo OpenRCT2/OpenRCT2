@@ -445,15 +445,13 @@ static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_
  */
 static void window_ride_list_invalidate(rct_window *w)
 {
-	int i;
-	rct_ride *ride;
 
 	colour_scheme_update(w);
 
 	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_window_ride_list_information_type];
 
 	// Set correct active tab
-	for (i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 
@@ -482,6 +480,8 @@ static void window_ride_list_invalidate(rct_window *w)
 
 		sint8 allClosed = -1;
 		sint8 allOpen = -1;
+		int i;
+		rct_ride *ride;
 		FOR_ALL_RIDES(i, ride) {
 			if (w->page != gRideClassifications[ride->type])
 				continue;

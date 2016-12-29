@@ -20,7 +20,7 @@
 
 extern "C"
 {
-    #include "../scenario.h"
+    #include "../scenario/scenario.h"
 }
 
 /**

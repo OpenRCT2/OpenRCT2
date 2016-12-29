@@ -23,7 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../ScenarioSources.h"
+#include "../scenario/ScenarioSources.h"
 #include "../object/ObjectManager.h"
 #include "S4Importer.h"
 #include "Tables.h"
@@ -41,6 +41,7 @@ extern "C"
     #include "../management/marketing.h"
     #include "../object.h"
     #include "../object/ObjectManager.h"
+    #include "../peep/peep.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
     #include "../util/sawyercoding.h"
@@ -144,6 +145,8 @@ public:
 
         ImportRides();
         ImportRideMeasurements();
+        ImportSprites();
+        //FixNumPeepsInQueue();
         ImportMapElements();
         ImportMapAnimations();
         ImportPeepSpawns();
@@ -571,6 +574,12 @@ private:
         if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
         if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)     dst->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)     dst->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)              dst->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_TESTED)               dst->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+
+        //dst->lifecycle_flags = src->lifecycle_flags;
 
         // Station
         dst->overall_view = src->overall_view;
@@ -588,6 +597,7 @@ private:
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = 0xFFFF;
+            dst->queue_length[i] = src->num_peeps_in_queue[i];
         }
         dst->num_stations = src->num_stations;
 
@@ -600,6 +610,8 @@ private:
         dst->proposed_num_vehicles = src->num_trains;
         dst->max_trains = 32;
         dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
+        dst->special_track_elements = src->special_track_elements;
+        dst->num_sheltered_sections = src->num_sheltered_sections;
 
         // Operation
         dst->depart_flags = src->depart_flags;
@@ -668,8 +680,6 @@ private:
         }
 
         // Fix other Z
-        // dst->start_drop_height /= 2;
-        // dst->highest_drop_height = 1;
         // if (dst->cur_test_track_z != 255)
         // {
         //     dst->cur_test_track_z /= 2;
@@ -685,22 +695,56 @@ private:
         dst->unreliability_factor = src->unreliability_factor;
         dst->breakdown_reason = src->breakdown_reason;
 
-        // Finance
+        // Measurement data
+        dst->excitement = src->excitement;
+        dst->intensity = src->intensity;
+        dst->nausea = src->nausea;
+
+        dst->max_speed = src->max_speed;
+        dst->average_speed = src->average_speed;
+        for (int i = 0; i < 4; i++) {
+            dst->time[i] = src->time[i];
+            dst->length[i] = src->length[i];
+        }
+        dst->max_positive_vertical_g = src->max_positive_vertical_g;
+        dst->max_negative_vertical_g = src->max_negative_vertical_g;
+        dst->max_lateral_g = src->max_lateral_g;
+        dst->drops = src->num_drops;
+        dst->start_drop_height = src->start_drop_height / 2;
+        dst->highest_drop_height = src->highest_drop_height / 2;
+        dst->inversions = src->num_inversions;
+        dst->measurement_index = 255;
+
+        // Finance / customers
         dst->upkeep_cost = src->upkeep_cost;
         dst->price = src->price;
         dst->income_per_hour = src->income_per_hour;
-
+        dst->total_customers = src->total_customers;
+        dst->profit = src->profit;
+        dst->total_profit = src->total_profit;
         dst->value = src->value;
-        dst->satisfaction = 255;
-        dst->satisfaction_time_out = 0;
-        dst->satisfaction_next = 0;
+
+        dst->satisfaction = src->satisfaction;
+        dst->satisfaction_time_out = src->satisfaction_time_out;
+        dst->satisfaction_next = src->satisfaction_next;
         dst->popularity = src->popularity;
         dst->popularity_next = src->popularity_next;
         dst->popularity_time_out = src->popularity_time_out;
 
         dst->music_tune_id = 255;
-        dst->measurement_index = 255;
-        dst->excitement = (ride_rating)-1;
+    }
+
+    void FixNumPeepsInQueue()
+    {
+        int i;
+        rct_ride *ride;
+        FOR_ALL_RIDES(i, ride)
+        {
+            for (int stationIndex = 0; stationIndex < 4; stationIndex++)
+            {
+                ride->queue_length[stationIndex] = 0;
+            }
+        }
     }
 
     void ImportRideMeasurements()
@@ -721,6 +765,187 @@ private:
         // {
         //     dst->altitude[i] /= 2;
         // }
+    }
+
+    void ImportSprites()
+    {
+        ImportPeeps();
+    }
+
+    void ImportPeeps()
+    {
+        for (int i = 0; i < 5000; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                rct1_peep *srcPeep = &_s4.sprites[i].peep;
+                if (srcPeep->x != (sint16)0x8000 || srcPeep->state == PEEP_STATE_ON_RIDE)
+                {
+                    rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+
+                    ImportPeep(peep, srcPeep);
+                }
+            }
+        }
+    }
+
+    void ImportPeep(rct_peep * dst, rct1_peep * src)
+    {
+        dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
+        // Peep vs. staff (including which kind)
+        dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
+        dst->action = PEEP_ACTION_NONE_2;
+        dst->special_sprite = 0;
+        dst->action_sprite_image_offset = 0;
+        dst->no_action_frame_no = 0;
+        dst->action_sprite_type = 0;
+
+        const rct_sprite_bounds* spriteBounds = g_sprite_entries[dst->sprite_type].sprite_bounds;
+        dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
+        dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
+
+        sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
+        invalidate_sprite_2((rct_sprite*)dst);
+
+        dst->sprite_direction = src->sprite_direction;
+
+        dst->name_string_idx = src->name_string_idx;
+
+        dst->outside_of_park = src->outside_of_park;
+
+        // We cannot yet import peeps that are on a ride properly. Move these to a safe place.
+        switch(src->state) {
+            case PEEP_STATE_ON_RIDE:
+            case PEEP_STATE_QUEUING_FRONT:
+            case PEEP_STATE_LEAVING_RIDE:
+            case PEEP_STATE_ENTERING_RIDE:
+                dst->state = PEEP_STATE_FALLING;
+                peep_autoposition(dst);
+                break;
+            default:
+                dst->state = src->state;
+        }
+
+        dst->type = src->type;
+
+        dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
+        dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
+        dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
+        dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
+        dst->hat_colour = RCT1::GetColour(src->hat_colour);
+        dst->destination_x = src->destination_x;
+        dst->destination_y = src->destination_y;
+        dst->destination_tolerence = src->destination_tolerence;
+
+        dst->energy = src->energy;
+        dst->energy_growth_rate = src->energy_growth_rate;
+        dst->happiness = src->happiness;
+        dst->happiness_growth_rate = src->happiness_growth_rate;
+        dst->nausea = src->nausea;
+        dst->nausea_growth_rate = src->nausea_growth_rate;
+        dst->hunger = src->hunger;
+        dst->thirst = src->thirst;
+        dst->bathroom = src->bathroom;
+        dst->var_41 = src->var_41;
+
+        dst->litter_count = src->litter_count;
+        dst->disgusting_count = src->disgusting_count;
+
+        dst->intensity = src->intensity;
+        dst->nausea_tolerance = src->nausea_tolerance;
+        dst->window_invalidate_flags = 0;
+
+        dst->current_ride = src->current_ride;
+        dst->current_ride_station = src->current_ride_station;
+
+        dst->interactionRideIndex = 0xFF;
+
+        dst->id = src->id;
+        dst->cash_in_pocket = src->cash_in_pocket;
+        dst->cash_spent = src->cash_spent;
+        dst->time_in_park = src->time_in_park;
+
+        // This doubles as staff type
+        dst->no_of_rides = src->no_of_rides;
+
+        dst->no_of_drinks = src->no_of_drinks;
+        dst->no_of_food = src->no_of_food;
+        dst->no_of_souvenirs = src->no_of_souvenirs;
+
+        dst->paid_to_enter = src->paid_to_enter;
+        dst->paid_on_rides = src->paid_on_rides;
+        dst->paid_on_drink = src->paid_on_drink;
+        dst->paid_on_food = src->paid_on_food;
+        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+
+        dst->voucher_arguments = src->voucher_arguments;
+        dst->voucher_type = src->voucher_type;
+
+        for (int i = 0; i < 32; i++) {
+            dst->rides_been_on[i] = src->rides_been_on[i];
+        }
+        for (int i = 0; i < 16; i++) {
+            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+        }
+
+        dst->photo1_ride_ref = src->photo1_ride_ref;
+
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+            dst->thoughts[i] = src->thoughts[i];
+        }
+
+        dst->previous_ride = 0xFF;
+
+        dst->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
+
+        dst->var_C4 = 0;
+        dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
+        // Doubles as staff orders
+        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+
+        dst->peep_flags = 0;
+        dst->pathfind_goal.x = 0xFF;
+        dst->pathfind_goal.y = 0xFF;
+        dst->pathfind_goal.z = 0xFF;
+        dst->pathfind_goal.direction = 0xFF;
+
+        dst->favourite_ride = src->favourite_ride;
+        dst->favourite_ride_rating = src->favourite_ride_rating;
+
+        dst->item_standard_flags = src->item_standard_flags;
+
+        peep_update_name_sort(dst);
+
+        if (!dst->outside_of_park && dst->type == PEEP_TYPE_GUEST)
+        {
+            gNumGuestsInPark++;
+        }
+    }
+
+    void ImportLitter()
+    {
+        for (int i = 0; i < 5000; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER) {
+                rct_litter *srcLitter = &_s4.sprites[i].litter;
+                if (srcLitter->x != (sint16) 0x8000) {
+                    rct_litter *litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
+                    move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
+
+                    litter->x = srcLitter->x;
+                    litter->y = srcLitter->y;
+                    litter->z = srcLitter->z;
+
+                    sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite *) litter);
+                    invalidate_sprite_2((rct_sprite *) litter);
+
+                    litter->sprite_direction = srcLitter->sprite_direction;
+                    litter->type = srcLitter->type;
+                }
+            }
+        }
     }
 
     void ImportPeepSpawns()
@@ -1618,7 +1843,7 @@ extern "C"
             s4Importer->LoadSavedGame(path);
             s4Importer->Import();
             result = true;
-        } catch (Exception ex)
+        } catch (const Exception &)
         {
             result = false;
         }
@@ -1636,7 +1861,7 @@ extern "C"
             s4Importer->LoadScenario(path);
             s4Importer->Import();
             result = true;
-        } catch (Exception ex)
+        } catch (const Exception &)
         {
             result = false;
         }

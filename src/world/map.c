@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
@@ -25,11 +25,12 @@
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../network/network.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
+#include "../rct2.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "banner.h"
 #include "climate.h"
@@ -366,16 +367,12 @@ rct_map_element* map_get_banner_element_at(int x, int y, int z, uint8 position) 
  */
 void map_init(int size)
 {
-	int i;
-	rct_map_element *map_element;
-
-
 	date_reset();
 	gNumMapAnimations = 0;
 	gNextFreeMapElementPointerIndex = 0;
 
-	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
-		map_element = &gMapElements[i];
+	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
+		rct_map_element *map_element = &gMapElements[i];
 		map_element->type = (MAP_ELEMENT_TYPE_SURFACE << 2);
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 14;
@@ -415,7 +412,11 @@ void map_count_remaining_land_rights()
 	for (int x = 0; x <= 255; x++) {
 		for (int y = 0; y <= 255; y++) {
 			rct_map_element *element = map_get_surface_element_at(x, y);
-
+			// Surface elements are sometimes hacked out to save some space for other map elements
+			if (element == NULL) {
+				continue;	
+			}
+			
 			uint8 flags = element->properties.surface.ownership;
 
 			if ((flags & OWNERSHIP_AVAILABLE) && (flags & OWNERSHIP_OWNED) == 0) {
@@ -743,11 +744,9 @@ bool map_is_location_valid(int x, int y)
  */
 bool map_is_location_owned(int x, int y, int z)
 {
-	rct_map_element *mapElement;
-
 	// This check is to avoid throwing lots of messages in logs.
 	if (map_is_location_valid(x, y)) {
-		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		rct_map_element *mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement != NULL) {
 			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
 				return true;
@@ -770,10 +769,8 @@ bool map_is_location_owned(int x, int y, int z)
  */
 bool map_is_location_in_park(int x, int y)
 {
-	rct_map_element *mapElement;
-
 	if (map_is_location_valid(x, y)) {
-		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		rct_map_element *mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement == NULL)
 			return false;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
@@ -786,10 +783,8 @@ bool map_is_location_in_park(int x, int y)
 
 bool map_is_location_owned_or_has_rights(int x, int y)
 {
-	rct_map_element *mapElement;
-
 	if (map_is_location_valid(x, y)) {
-		mapElement = map_get_surface_element_at(x / 32, y / 32);
+		rct_map_element *mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
 	}
@@ -885,7 +880,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 		map_invalidate_tile_full(x, y);
 		map_element_remove(map_element);
 	}
-	*ebx = (gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : cost);
+	*ebx = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
 /**
@@ -1438,7 +1433,6 @@ restart_from_beginning:
 					goto restart_from_beginning;
 
 			} break;
-			break;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 
@@ -2414,15 +2408,10 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		totalCost += result;
 	}
 
-	int x, y, z;
-	rct_map_element *mapElement;
-
-	x = mapLeft;
-	y = mapTop;
-	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	rct_map_element *mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
 	if (mapElement == NULL)
 	{
-		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", x, y);
+		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", mapLeft, mapTop);
 		return MONEY32_UNDEFINED;
 	}
 
@@ -2446,8 +2435,8 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 		}
 	}
 
-	x = mapLeft;
-	y = mapTop;
+	int x = mapLeft;
+	int y = mapTop;
 	int size = ((mapRight - mapLeft) >> 5) + 1;
 	int initialMinZ = -2;
 
@@ -2461,7 +2450,7 @@ static money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int
 
 		// Corner (North-West)
 		mapElement = map_get_surface_element_at(mapLeft >> 5, mapTop >> 5);
-		z = map_element_get_corner_height(mapElement, 2);
+		int z = map_element_get_corner_height(mapElement, 2);
 		result = smooth_land_tile(0, flags, x, y, z, minZ);
 		if (result != MONEY32_UNDEFINED) {
 			totalCost += result;
@@ -3195,7 +3184,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		*ebx = 0;
 	}
 
-	if (!flags & GAME_COMMAND_FLAG_APPLY) {
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		return;
 	}
 
@@ -5140,6 +5129,10 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 		return true;
 
 	mapElement = map_get_surface_element_at(x / 32, y / 32);
+
+	if (mapElement == NULL) {
+		return true;
+	}
 
 	sint16 water_height = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 	water_height *= 2;

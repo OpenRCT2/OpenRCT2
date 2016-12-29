@@ -45,7 +45,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	imageId += direction;
 
 	if (hasSupports) {
-		uint32 foundationImageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
+		uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
 		sub_98197C(foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
 
 		sub_98199C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());

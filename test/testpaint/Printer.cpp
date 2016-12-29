@@ -17,6 +17,11 @@
 #include "Printer.hpp"
 #include "String.hpp"
 #include "../../src/core/Util.hpp"
+#include "FunctionCall.hpp"
+
+extern "C" {
+#include "../../src/sprites.h"
+}
 
 namespace Printer {
 
@@ -55,14 +60,36 @@ namespace Printer {
         std::string imageId = GetImageIdString(call.supports.colour_flags);
         assert(call.function < Util::CountOf(functionNames));
         const char *functionName = functionNames[call.function];
+        std::string out = "";
 
         switch (call.function) {
             case SUPPORTS_WOOD_A:
             case SUPPORTS_WOOD_B:
-                return String::Format(
+                out += String::Format(
                     "%s(%d, %d, %s, %s)", functionName, call.supports.type, call.supports.special,
                     PrintHeightOffset(call.supports.height, baseHeight).c_str(), imageId.c_str()
                 );
+                if (call.supports.special == 14 ||
+                    call.supports.special == 15 ||
+                    call.supports.special == 18 ||
+                    call.supports.special == 19 ||
+                    call.supports.special == 22 ||
+                    call.supports.special == 23)
+                {
+                    if (call.supports.prepend_to == SPR_NONE)
+                    {
+                        out += " [prependTo:SPR_NONE]";
+                    } else {
+                        std::string prependId = GetImageIdString(call.supports.prepend_to);
+                        out += String::Format(" [prependTo:%s]", prependId.c_str());
+                    }
+                }
+                else if (call.supports.prepend_to != SPR_NONE)
+                {
+                    std::string prependId = GetImageIdString(call.supports.prepend_to);
+                    out += String::Format(" [prependTo:%s]", prependId.c_str());
+                }
+                return out;
 
             case SUPPORTS_METAL_A:
             case SUPPORTS_METAL_B:

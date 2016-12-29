@@ -40,9 +40,20 @@ private:
     Object * *          _loadedObjects = nullptr;
 
 public:
-    ObjectManager(IObjectRepository * objectRepository)
+    explicit ObjectManager(IObjectRepository * objectRepository)
     {
+        Guard::ArgumentNotNull(objectRepository);
+
         _objectRepository = objectRepository;
+        _loadedObjects = Memory::AllocateArray<Object *>(OBJECT_ENTRY_COUNT);
+        for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        {
+            _loadedObjects[i] = nullptr;
+        }
+
+        UpdateLegacyLoadedObjectList();
+        UpdateSceneryGroupIndexes();
+        reset_type_to_ride_entry_index_map();
     }
 
     ~ObjectManager() override
@@ -524,7 +535,10 @@ IObjectManager * GetObjectManager()
     if (_objectManager == nullptr)
     {
         IObjectRepository * objectRepository = GetObjectRepository();
-        _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+        if (objectRepository != nullptr)
+        {
+            _objectManager = std::unique_ptr<ObjectManager>(new ObjectManager(objectRepository));
+        }
     }
     return _objectManager.get();
 }
@@ -548,7 +562,7 @@ extern "C"
     uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
     {
         IObjectManager * objectManager = GetObjectManager();
-        const Object * object = (const Object *)loadedObject;
+        const Object * object = static_cast<const Object *>(loadedObject);
         uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
         return entryIndex;
     }
@@ -569,6 +583,9 @@ extern "C"
     void object_manager_unload_all_objects()
     {
         IObjectManager * objectManager = GetObjectManager();
-        objectManager->UnloadAll();
+        if (objectManager != nullptr)
+        {
+            objectManager->UnloadAll();
+        }
     }
 }

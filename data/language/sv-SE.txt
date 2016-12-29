@@ -3458,10 +3458,10 @@ STR_5129    :Skriv in vald storlek mellan {COMMA16} och {COMMA16}
 STR_5130    :Kartstorlek
 STR_5131    :Skriv in en kartstorlek mellan  {COMMA16} och {COMMA16}
 STR_5132    :Laga alla åkturer
-STR_5133    :{SMALLFONT}{BLACK}Justera mindre storlek av landrättigheter
-STR_5134    :{SMALLFONT}{BLACK}Justera större storlek av landrättigheter
-STR_5135    :{SMALLFONT}{BLACK}Köp land- och konstruktionsrättigheter
-STR_5136    :Landrättigheter
+STR_5133    :{SMALLFONT}{BLACK}Justera mindre storlek av verktyget
+STR_5134    :{SMALLFONT}{BLACK}Justera större storlek av verktyget
+STR_5135    :{SMALLFONT}{BLACK}Köp land- och bygglov
+STR_5136    :Köpa mark
 STR_5137    :Lås upp körlägesgränser
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
@@ -3605,7 +3605,7 @@ STR_5276    :Skriv in namnet på objektet du letar efter
 STR_5277    :Återbetala
 STR_5278    :Sandlådeläge
 STR_5279    :Sandlådeläge av
-STR_5280    :{SMALLFONT}{BLACK}Tillåter ändring av landrättighetsinställningar genom Kartfönstret och andra inställningar som normalt är begränsat till Scenarioredigeraren
+STR_5280    :{SMALLFONT}{BLACK}Tillåter ändring vid köp av mark genom Kartfönstret och andra inställningar som normalt är begränsat till Scenarioredigeraren
 STR_5281    :{SMALLFONT}{BLACK}Tillägg
 STR_5282    :RCT1 Öppen/Stängd Åktursljus
 STR_5283    :RCT1 Öppen/Stängd Parkljus
@@ -4218,6 +4218,17 @@ STR_5920    :Visa väder effekter
 STR_5921    :{SMALLFONT}{BLACK}Om aktiverad, regn och mörkare färger kommer att visas när det stormar.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per tåg
+
+STR_5985    :Ny mapp
+STR_5986    :Skriv in namnet på den nya mappen.
+STR_5987    :Kan inte skapa mappen
+STR_5988    :{SMALLFONT}{BLACK}Ingen mer mark till salu
+STR_5989    :{SMALLFONT}{BLACK}Inga mer bygglov till salu
+STR_5990    :{SMALLFONT}{BLACK}Ingen mer mark eller bygglov till salu
+STR_5991    :Kan inte klistra in ämnet...
+STR_5992    :Kartan har nått sin gräns
+STR_5993    :{SMALLFONT}{BLACK}Kopiera valda ämne
+STR_5994    :{SMALLFONT}{BLACK}Klistra in kopierat ämne
 
 #############
 # Scenarion #

@@ -114,7 +114,7 @@ static void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_
 	const utf8 *fitStr = scenery_multiple_sign_fit_text(str, text, false);
 	int width = scenery_multiple_sign_text_width(fitStr, text);
 	int x_offset = text->offset[(direction & 1)].x;
-	int acc = y_offset * (direction & 1 ? -1 : 1);
+	int acc = y_offset * ((direction & 1) ? -1 : 1);
 	if (!(text->var_C & 0x1)) {
 		// sign is horizontal, center text:
 		x_offset -= (width / 2);
@@ -233,9 +233,8 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		return;
 	}
 	if (entry->large_scenery.flags & 0x4) {
-		int al;
 		if (entry->large_scenery.tiles[1].x_offset != (sint16)0xFFFF) {
-			al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+			int al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
 			if (al != direction) {
 				scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 				return;

@@ -15,13 +15,14 @@
 #pragma endregion
 
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64

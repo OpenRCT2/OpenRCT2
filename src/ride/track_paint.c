@@ -1786,12 +1786,8 @@ static int pick_ride_type_for_drawing(int rideType, int trackType)
  */
 void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 {
-	rct_drawpixelinfo *dpi = unk_140E9A8;
-	rct_ride *ride;
-	int rideIndex, trackType, trackColourScheme, trackSequence;
-
-	rideIndex = mapElement->properties.track.ride_index;
-	ride = get_ride(rideIndex);
+	int rideIndex = mapElement->properties.track.ride_index;
+	rct_ride *ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL) {
 		log_error("Attempted to paint invalid ride: %d", rideIndex);
 		return;
@@ -1804,10 +1800,12 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
 	}
 
+	rct_drawpixelinfo *dpi = unk_140E9A8;
+
 	if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
-		trackType = mapElement->properties.track.type;
-		trackSequence = mapElement->properties.track.sequence & 0x0F;
-		trackColourScheme = mapElement->properties.track.colour & 3;
+		int trackType = mapElement->properties.track.type;
+		int trackSequence = mapElement->properties.track.sequence & 0x0F;
+		int trackColourScheme = mapElement->properties.track.colour & 3;
 
 		if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
 			gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;

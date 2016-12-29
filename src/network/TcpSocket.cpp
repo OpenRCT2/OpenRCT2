@@ -44,6 +44,7 @@
     #include <arpa/inet.h>
     #include <netdb.h>
     #include <netinet/tcp.h>
+    #include <netinet/in.h>
     #include <sys/socket.h>
     #include <fcntl.h>
     typedef int SOCKET;
@@ -69,8 +70,8 @@ class TcpSocket;
 class SocketException : public Exception
 {
 public:
-    SocketException(const char * message) : Exception(message) { }
-    SocketException(const std::string &message) : Exception(message) { }
+    explicit SocketException(const char * message) : Exception(message) { }
+    explicit SocketException(const std::string &message) : Exception(message) { }
 };
 
 struct ConnectRequest
@@ -168,7 +169,7 @@ public:
                 throw SocketException("Failed to set non-blocking mode.");
             }
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             CloseSocket();
             throw;
@@ -309,7 +310,7 @@ public:
             // Connection request timed out
             throw SocketException("Connection timed out.");
         }
-        catch (Exception ex)
+        catch (const Exception &)
         {
             CloseSocket();
             throw;
@@ -332,12 +333,12 @@ public:
             req->Port = port;
             SDL_CreateThread([](void * pointer) -> int
             {
-                auto req = (ConnectRequest *)pointer;
+                auto req = static_cast<ConnectRequest *>(pointer);
                 try
                 {
                     req->Socket->Connect(req->Address.c_str(), req->Port);
                 }
-                catch (Exception ex)
+                catch (const Exception & ex)
                 {
                     req->Socket->_error = std::string(ex.GetMessage());
                 }
@@ -426,7 +427,7 @@ public:
     }
 
 private:
-    TcpSocket(SOCKET socket)
+    explicit TcpSocket(SOCKET socket)
     {
         _socket = socket;
 		_status = SOCKET_STATUS_CONNECTED;

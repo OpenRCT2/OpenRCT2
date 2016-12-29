@@ -109,42 +109,42 @@ extern "C"
 
     void stopwatch_dispose(stopwatch * stopwatch)
     {
-        delete ((Stopwatch*)stopwatch->context);
+        delete static_cast<Stopwatch *>(stopwatch->context);
     }
 
     uint64 stopwatch_GetElapsedTicks(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->GetElapsedTicks();
     }
 
     uint64 stopwatch_GetElapsedMilliseconds(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->GetElapsedMilliseconds();
     }
 
     void stopwatch_Reset(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Reset();
     }
 
     void stopwatch_Start(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Start();
     }
 
     void stopwatch_Restart(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Restart();
     }
 
     void stopwatch_Stop(stopwatch * stopwatch)
     {
-        Stopwatch * ctx = (Stopwatch*)stopwatch->context;
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Stop();
     }
 }

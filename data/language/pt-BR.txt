@@ -3679,8 +3679,8 @@ STR_5337    :Entrada do parque
 STR_5338    :Tipo de elemento
 STR_5339    :{SMALLFONT}{BLACK}Altura da base
 STR_5340    :{SMALLFONT}{BLACK}Altura de segurança
-STR_5341    :Bandeiras
-STR_5342    :Escolha o azulejo do mapa
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Colocar automaticamente funcionários
 STR_5344    :Log de mudanças
 STR_5345    :Trapaça financeira
@@ -4187,7 +4187,7 @@ STR_5875    :Engine de desenho:
 STR_5876    :{SMALLFONT}{BLACK}Engine que será usada para desenhar o jogo.
 STR_5877    :Software
 STR_5878    :Software (exibição por hardware)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimental)
 STR_5880    :Somente selecionados
 STR_5881    :Somente não selecionados
 STR_5882    :Moeda Personalizada
@@ -4232,6 +4232,77 @@ STR_5920    :Renderizar efeitos climáticos
 STR_5921    :{SMALLFONT}{BLACK}Se habilitado, chuva e cores escuras serão renderizadas durante tempestades.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Máx {COMMA16} {STRINGID} por trem
+STR_5924    :Detalhes de superfície
+STR_5925    :Detalhes de caminho
+STR_5926    :Detalhes de pista
+STR_5927    :Detalhes de cenário
+STR_5928    :Detalhes de entrada
+STR_5929    :Detalhes de cerca
+STR_5930    :Detalhes de cenário grande
+STR_5931    :Detalhes de banner
+STR_5932    :Detalhes de elemento corrompido
+STR_5933    :Propriedades
+STR_5934    :{WINDOW_COLOUR_2}Textura do terreno: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Borda do terreno: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Posse de terra: {BLACK}{STRINGID}
+STR_5937    :Não comprado e não está à venda
+STR_5938    :{WINDOW_COLOUR_2}Nível da água: {BLACK}{COMMA16}
+STR_5939    :Remover cercas do parque
+STR_5940    :Restaurar cercas do parque
+STR_5941    :{WINDOW_COLOUR_2}Altura da base:
+STR_5942    :{WINDOW_COLOUR_2}Nome do caminho: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Adições: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Adições: {BLACK}Nenhuma
+STR_5945    :{WINDOW_COLOUR_2}Bordas conectadas:
+STR_5946    :{WINDOW_COLOUR_2}Tipo de atração: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}ID da atração: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Nome da atração: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Corrente de elevação
+STR_5950    :{WINDOW_COLOUR_2}Aplicar mudanças para a pista toda
+STR_5951    :{WINDOW_COLOUR_2}ID do pedaço de pista: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Número sequencial: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sortear os elementos do mapa no azulejo atual baseado em sua altura base.
+STR_5954    :{WINDOW_COLOUR_2}Idade do cenário: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Posicionamento em quadrante: {BLACK}{STRINGID}
+STR_5956    :Sudoeste
+STR_5957    :Noroeste
+STR_5958    :Nordeste
+STR_5959    :Sudeste
+STR_5960    :{WINDOW_COLOUR_2}Posicionamento em quadrante:
+STR_5961    :{WINDOW_COLOUR_2}Índice de entrada: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Detecção de colisão:
+STR_5963    :{WINDOW_COLOUR_2}Cantos elevados:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Tipo de entrada: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Parte de entrada do parque: {BLACK}{STRINGID}
+STR_5967    :Meio
+STR_5968    :Esquerda
+STR_5969    :Direita
+STR_5970    :{WINDOW_COLOUR_2}ID da entrada: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}ID da saída: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ID da atração: {BLACK}{COMMA16}
+STR_5973    :Prender ao próximo
+STR_5974    :{SMALLFONT}{BLACK}Muda a base e a altura de segurançapara que sejam as mesmas que o próximo elemento no azulejo atual. Fazendo isto fica mais fácil de construir neste azulejo.
+STR_5975    :Inclinação:
+STR_5976    :Reto
+STR_5977    :Direita para cima
+STR_5978    :Esquerda para cima
+STR_5979    :{WINDOW_COLOUR_2}Tipo de cerca: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Texto do banner: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Não é um banner
+STR_5982    :{WINDOW_COLOUR_2}Tipo de cenário grande: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}ID da peça de cenário grande: {BLACK}{COMMA16}
+STR_5984    :Caminhos bloqueados:
+STR_5985    :Nova pasta
+STR_5986    :Insira o nome da nova pasta.
+STR_5987    :Impossível criar pasta
+STR_5988    :{SMALLFONT}{BLACK}Não há posse de terra à venda
+STR_5989    :{SMALLFONT}{BLACK}Não há direitos de construção à venda
+STR_5990    :{SMALLFONT}{BLACK}Não há posse de terra ou direitos de construção à venda
+STR_5991    :Impossível colar elemento...
+STR_5992    :O limite de elementos no mapa foi atingido
+STR_5993    :{SMALLFONT}{BLACK}Copiar elemento selecionado
+STR_5994    :{SMALLFONT}{BLACK}Colar elemento selecionado
 
 #############
 # Scenarios #

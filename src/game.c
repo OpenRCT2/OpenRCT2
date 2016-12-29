@@ -17,38 +17,38 @@
 #include "audio/audio.h"
 #include "cheats.h"
 #include "config.h"
-#include "game.h"
 #include "editor.h"
-#include "world/footpath.h"
+#include "game.h"
 #include "input.h"
-#include "localisation/localisation.h"
 #include "interface/screenshot.h"
 #include "interface/viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"
+#include "localisation/localisation.h"
 #include "management/finance.h"
 #include "management/marketing.h"
 #include "management/news_item.h"
 #include "management/research.h"
 #include "network/network.h"
 #include "object.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
-#include "ride/vehicle.h"
 #include "ride/track.h"
 #include "ride/track_design.h"
-#include "scenario.h"
-#include "title.h"
+#include "ride/vehicle.h"
+#include "scenario/scenario.h"
+#include "title/TitleScreen.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "windows/error.h"
 #include "windows/tooltip.h"
 #include "world/climate.h"
+#include "world/footpath.h"
 #include "world/map_animation.h"
 #include "world/park.h"
 #include "world/scenery.h"
@@ -423,6 +423,10 @@ void game_logic_update()
 
 		window_error_open(title_text, body_text);
 	}
+
+	// start autosave timer after update
+	if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+		gLastAutoSaveUpdate = SDL_GetTicks();
 }
 
 /**
@@ -464,7 +468,7 @@ int game_do_command(int eax, int ebx, int ecx, int edx, int esi, int edi, int eb
 */
 int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	int cost, flags, insufficientFunds;
+	int cost, flags;
 	int original_ebx, original_edx, original_esi, original_edi, original_ebp;
 
 	*esi = command;
@@ -510,7 +514,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
-		insufficientFunds = 0;
+		int insufficientFunds = 0;
 		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
@@ -577,6 +581,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
 				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
+
+			// start autosave timer after game command
+			if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+				gLastAutoSaveUpdate = SDL_GetTicks();
 
 			return cost;
 		}
@@ -694,8 +702,8 @@ static void utf8_to_rct2_self(char *buffer, size_t length)
 
 static void rct2_to_utf8_self(char *buffer, size_t length)
 {
-	char tempBuffer[512];
 	if (length > 0) {
+		char tempBuffer[512];
 		rct2_to_utf8(tempBuffer, buffer);
 		safe_strcpy(buffer, tempBuffer, length);
 	}
@@ -1099,6 +1107,27 @@ void rct2_exit()
 	openrct2_finish();
 }
 
+bool game_load_save_or_scenario(const utf8 * path)
+{
+	uint32 extension = get_file_extension_type(path);
+	switch (extension) {
+	case FILE_EXTENSION_SV4:
+	case FILE_EXTENSION_SV6:
+		return game_load_save(path);
+	case FILE_EXTENSION_SC4:
+	case FILE_EXTENSION_SC6:
+		return scenario_load_and_play_from_path(path);
+	}
+	return false;
+}
+
+static void game_load_or_quit_no_save_prompt_callback(int result, const utf8 * path)
+{
+	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
+		gFirstTimeSave = 0;
+	}
+}
+
 /**
  *
  *  rct2: 0x0066DB79
@@ -1113,6 +1142,7 @@ void game_load_or_quit_no_save_prompt()
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+			gLoadSaveCallback = game_load_or_quit_no_save_prompt_callback;
 		}
 		break;
 	case PM_SAVE_BEFORE_QUIT:

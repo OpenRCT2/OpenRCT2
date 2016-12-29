@@ -34,6 +34,16 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
+    utf8 * GetDirectory(const utf8 * path)
+    {
+        size_t maxSize = String::SizeOf(path) + 1;
+        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        GetDirectory(result, maxSize, path);
+        size_t reducedSize = String::SizeOf(path) + 1;
+        result = Memory::Reallocate(result, reducedSize);
+        return result;
+    }
+
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         size_t lastPathSepIndex = String::LastIndexOf(path, *PATH_SEPARATOR);
@@ -69,6 +79,16 @@ namespace Path
         return lastPathSeperator == nullptr ?
             path :
             lastPathSeperator + 1;
+    }
+
+    utf8 * GetFileNameWithoutExtension(const utf8 * path)
+    {
+        size_t maxSize = String::SizeOf(path) + 1;
+        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        GetFileNameWithoutExtension(result, maxSize, path);
+        size_t reducedSize = String::SizeOf(path) + 1;
+        result = Memory::Reallocate(result, reducedSize);
+        return result;
     }
 
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)

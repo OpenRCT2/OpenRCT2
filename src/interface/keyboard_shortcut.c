@@ -16,8 +16,8 @@
 
 #include "../audio/audio.h"
 #include "../config.h"
-#include "../game.h"
 #include "../editor.h"
+#include "../game.h"
 #include "../input.h"
 #include "../interface/chat.h"
 #include "../interface/screenshot.h"
@@ -25,7 +25,7 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../ride/track_paint.h"
-#include "../title.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "keyboard_shortcut.h"
 #include "viewport.h"

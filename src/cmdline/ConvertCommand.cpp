@@ -25,9 +25,9 @@
 extern "C"
 {
     #include "../game.h"
-    #include "../scenario.h"
-    #include "../openrct2.h"
     #include "../interface/window.h"
+    #include "../OpenRCT2.h"
+    #include "../rct2.h"
 }
 
 static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);
@@ -129,7 +129,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
                 scenario_begin();
             }
         }
-        catch (Exception ex)
+        catch (const Exception &ex)
         {
             Console::Error::WriteLine(ex.GetMessage());
             return EXITCODE_FAIL;

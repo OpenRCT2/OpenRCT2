@@ -1,24 +1,27 @@
 language: c
 
 before_install:
-    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; fi
+    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-j2 -k" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
 
 sudo: required
 dist: trusty
 env:
     global:
-        - OPENRCT2_VERSION="0.0.5.0"
+        - OPENRCT2_VERSION="0.0.6.0"
 
 matrix:
     include:
         - os: linux
+          services:
+            - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2" OPENRCT2_MAKE_OPTS="-j2" TARGET=linux64
+            - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
+            - sudo chown -R $USER build
             - cd build
-            - make install
+              # make install is done inside docker
             - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
             - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
             - tar cvzf openrct2-linux.tar.gz OpenRCT2/
@@ -27,12 +30,15 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link;
               fi
         - os: linux
+          services:
+            - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=linux
+            - OPENRCT2_CMAKE_OPTS="-DFORCE32=ON -DDISABLE_RCT2=OFF -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_i686
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
+            - sudo chown -R $USER build
             - cd build
-            - make install
+              # make install is done inside docker
             - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
             - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
             - tar cvzf openrct2-linux.tar.gz OpenRCT2/
@@ -41,7 +47,7 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
               fi
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++" TARGET=linux64
+          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++" TARGET=ubuntu_amd64
         - os: linux
           env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on" TARGET=windows
         - os: linux

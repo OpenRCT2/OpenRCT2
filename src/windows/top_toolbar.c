@@ -30,9 +30,9 @@
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../peep/staff.h"
-#include "../scenario.h"
-#include "../title.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../world/banner.h"
 #include "../world/scenery.h"
@@ -2557,7 +2557,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 {
 	switch (widgetIndex){
 	case WIDX_CLEAR_SCENERY:
-		if (!gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+		if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 			break;
 
 		gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
@@ -2760,7 +2760,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 		if (window_find_by_class(WC_ERROR) != NULL)
 			break;
 
-		if (!gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+		if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 			break;
 
 		gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;

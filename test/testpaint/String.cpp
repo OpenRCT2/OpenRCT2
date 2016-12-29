@@ -31,4 +31,3 @@ namespace String {
         return std::string(buffer);
     }
 };
-

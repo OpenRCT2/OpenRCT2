@@ -26,7 +26,7 @@
 #include "../core/Guard.hpp"
 
 extern "C" {
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../util/sawyercoding.h"
 }
@@ -66,7 +66,7 @@ extern "C" {
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../network/http.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../windows/error.h"
 #include "../util/util.h"
 #include "../cheats.h"
@@ -288,7 +288,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	{
 		listening_socket->Listen(address, port);
 	}
-	catch (Exception ex)
+	catch (const Exception &ex)
 	{
 		Console::Error::WriteLine(ex.GetMessage());
 		Close();
@@ -712,7 +712,7 @@ void Network::SaveGroups()
 		{
 			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
 		}
-		catch (Exception ex)
+		catch (const Exception &ex)
 		{
 			log_error("Unable to save %s: %s", path, ex.GetMessage());
 		}

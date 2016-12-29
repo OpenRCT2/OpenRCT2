@@ -19,8 +19,9 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../rct2.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
@@ -211,7 +212,12 @@ static bool window_changelog_read_file()
 		log_error("Unable to read changelog.txt");
 		return false;
 	}
-	_changelogText = realloc(_changelogText, _changelogTextSize + 1);
+	void* new_memory = realloc(_changelogText, _changelogTextSize + 1);
+	if (new_memory == NULL) {
+		log_error("Failed to reallocate memory for changelog text");
+		return false;
+	}
+	_changelogText = (char*)new_memory;
 	_changelogText[_changelogTextSize++] = 0;
 
 	char *start = _changelogText;
@@ -231,7 +237,12 @@ static bool window_changelog_read_file()
 			_changelogNumLines++;
 			if (_changelogNumLines > changelogLinesCapacity) {
 				changelogLinesCapacity *= 2;
-				_changelogLines = realloc(_changelogLines, changelogLinesCapacity * sizeof(char*));
+				new_memory = realloc(_changelogLines, changelogLinesCapacity * sizeof(char*));
+				if (new_memory == NULL) {
+					log_error("Failed to reallocate memory for change log lines");
+					return false;
+				}
+				_changelogLines = (char**)new_memory;
 			}
 			_changelogLines[_changelogNumLines - 1] = ch;
 		} else if (c < 32 || c > 122) {
@@ -242,7 +253,12 @@ static bool window_changelog_read_file()
 		}
 	}
 
-	_changelogLines = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
+	new_memory = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
+	if (new_memory == NULL) {
+		log_error("Failed to reallocate memory for change log lines");
+		return false;
+	}
+	_changelogLines = (char**)new_memory;
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_changelogLongestLineWidth = 0;

@@ -27,9 +27,10 @@
 #include "../management/research.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../world/map.h"
 #include "park.h"
 #include "sprite.h"
@@ -240,7 +241,7 @@ int calculate_park_rating()
 	// Rides
 	{
 		int i;
-		short total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0, average_intensity, average_excitement;
+		short total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
 		int num_rides, num_exciting_rides = 0;
 		rct_ride* ride;
 
@@ -262,8 +263,8 @@ int calculate_park_rating()
 		result -= 100;
 
 		if (num_exciting_rides>0){
-			average_excitement = total_ride_excitement / num_exciting_rides;
-			average_intensity = total_ride_intensity / num_exciting_rides;
+			short average_excitement = total_ride_excitement / num_exciting_rides;
+			short average_intensity = total_ride_intensity / num_exciting_rides;
 
 			average_excitement -= 46;
 			if (average_excitement < 0){
@@ -324,14 +325,11 @@ static money32 calculate_ride_value(rct_ride *ride)
  */
 money32 calculate_park_value()
 {
-	int i;
-	money32 result;
-	rct_ride* ride;
 
 	// Sum ride values
-	result = 0;
-	for (i = 0; i < 255; i++) {
-		ride = get_ride(i);
+	money32 result = 0;
+	for (int i = 0; i < 255; i++) {
+		rct_ride* ride = get_ride(i);
 		result += calculate_ride_value(ride);
 	}
 

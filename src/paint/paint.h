@@ -17,7 +17,7 @@
 #ifndef _PAINT_H
 #define _PAINT_H
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "../common.h"
 #include "../world/map.h"
 #include "../interface/colour.h"

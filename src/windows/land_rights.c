@@ -14,15 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
-#include "../game.h"
-#include "../interface/themes.h"
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
@@ -239,7 +240,6 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gLandToolSize > 7) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	}
-	y = w->y + window_land_rights_widgets[WIDX_PREVIEW].bottom + 5;
 
 	// Draw cost amount
 	x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;

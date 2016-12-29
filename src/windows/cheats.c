@@ -22,7 +22,7 @@
 #include "../world/park.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
@@ -602,13 +602,13 @@ static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_GIVEALLGUESTS, OBJECT_UMBRELLA, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_IGNORERIDEINTENSITY, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_IGNORERIDEINTENSITY, !gCheatsIgnoreRideIntensity, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_DISABLE_VANDALISM:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEVANDALISM, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEVANDALISM, !gCheatsDisableVandalism, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_DISABLE_LITTERING:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLELITTERING, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLELITTERING, !gCheatsDisableLittering, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	}
 }
@@ -626,7 +626,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FREEZE_CLIMATE:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FREEZECLIMATE, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FREEZECLIMATE, !gCheatsFreezeClimate, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_OPEN_CLOSE_PARK:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_OPENCLOSEPARK, 0, GAME_COMMAND_CHEAT, 0, 0);
@@ -647,7 +647,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_REMOVELITTER, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_DISABLE_PLANT_AGING:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEPLANTAGING, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEPLANTAGING, !gCheatsDisablePlantAging, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_WIN_SCENARIO:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_WINSCENARIO, 0, GAME_COMMAND_CHEAT, 0, 0);
@@ -656,10 +656,10 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_HAVEFUN, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_NEVERENDING_MARKETING:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NEVERENDINGMARKETING, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NEVERENDINGMARKETING, !gCheatsNeverendingMarketing, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_UNLOCK_ALL_PRICES:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_UNLOCKALLPRICES, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_UNLOCKALLPRICES, !gCheatsUnlockAllPrices, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_SANDBOX_MODE:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
@@ -722,16 +722,16 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FIXRIDES, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_FAST_LIFT_HILL:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FASTLIFTHILL, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FASTLIFTHILL, !gCheatsFastLiftHill, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_DISABLE_BRAKES_FAILURE:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEBRAKESFAILURE, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEBRAKESFAILURE, !gCheatsDisableBrakesFailure, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_DISABLE_ALL_BREAKDOWNS:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEALLBREAKDOWNS, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEALLBREAKDOWNS, !gCheatsDisableAllBreakdowns, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_BUILD_IN_PAUSE_MODE:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_BUILDINPAUSEMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_BUILDINPAUSEMODE, !gCheatsBuildInPauseMode, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_RESET_CRASH_STATUS:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETCRASHSTATUS, 0, GAME_COMMAND_CHEAT, 0, 0);
@@ -740,28 +740,28 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_10MINUTEINSPECTIONS, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_SHOW_ALL_OPERATING_MODES:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWALLOPERATINGMODES, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWALLOPERATINGMODES, !gCheatsShowAllOperatingModes, GAME_COMMAND_CHEAT, 0, 0);
 		if (gCheatsShowAllOperatingModes) {
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
 		break;
 	case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, !gCheatsShowVehiclesFromOtherTrackTypes, GAME_COMMAND_CHEAT, 0, 0);
 		if (gCheatsShowVehiclesFromOtherTrackTypes) {
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
 		break;
 	case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLETRAINLENGTHLIMIT, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLETRAINLENGTHLIMIT, !gCheatsDisableTrainLengthLimit, GAME_COMMAND_CHEAT, 0, 0);
 		if (gCheatsDisableTrainLengthLimit) {
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
 		break;
 	case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLECHAINLIFTONALLTRACK, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLECHAINLIFTONALLTRACK, !gCheatsEnableChainLiftOnAllTrack, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, 0, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges, GAME_COMMAND_CHEAT, 0, 0);
 		if (gCheatsAllowArbitraryRideTypeChanges) {
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
@@ -819,8 +819,7 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
 		break;
 	case WINDOW_CHEATS_PAGE_MISC:
-		w->widgets[WIDX_OPEN_CLOSE_PARK].text = gParkFlags & PARK_FLAGS_PARK_OPEN ?
-			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
+		w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
 		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
 		w->widgets[WIDX_SANDBOX_MODE].text = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;

@@ -14,10 +14,15 @@ distribution/windows/*.exe
 # Build artifacts
 artifacts
 .cache
+.dependencies
 
 #lib
 lib
 libversion
+
+#sequences
+data/title
+sequencesversion
 
 #################
 ## Eclipse
@@ -287,3 +292,12 @@ data/g2.dat
 ## JetBrains ##
 ###############
 .idea/
+
+#########################
+## Visual Studio Code
+#########################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

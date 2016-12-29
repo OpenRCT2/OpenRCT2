@@ -34,11 +34,12 @@ extern "C"
     #include "../management/news_item.h"
     #include "../management/research.h"
     #include "../object.h"
-    #include "../openrct2.h"
+    #include "../OpenRCT2.h"
     #include "../peep/staff.h"
+    #include "../rct2.h"
     #include "../ride/ride.h"
     #include "../ride/ride_ratings.h"
-    #include "../scenario.h"
+    #include "../scenario/scenario.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
     #include "../world/climate.h"
@@ -91,6 +92,7 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
+    _s6.header.classic_flag = 0;
     _s6.header.num_packed_objects = uint16(ExportObjectsList.size());
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
@@ -468,7 +470,7 @@ int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectReposito
         s6exporter->SaveGame(rw);
         result = true;
     }
-    catch (Exception)
+    catch (const Exception &)
     {
     }
     delete s6exporter;
@@ -612,7 +614,7 @@ extern "C"
             }
             result = true;
         }
-        catch (Exception)
+        catch (const Exception &)
         {
         }
         delete s6exporter;

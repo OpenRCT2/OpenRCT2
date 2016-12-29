@@ -1,5 +1,18 @@
-0.0.5 (in development)
+0.0.6 (in development)
 ------------------------------------------------------------------------
+- Feature: Allow entertainers' costume changes even in absence of required scenery
+- Feature: FreeBSD support
+- Feature: Allow loading of parks from URLs
+- Improved: Checksum calculations speeded up
+- Improved: Pathfinding [#4847]
+- Improved: Guests and staff are now imported when loading SC4 / SV4 parks.
+- Fix: [#4571] Only start autosave timer after update or game command.
+- Fix: [#4929] Changing TTF language crashes game.
+
+0.0.5 (2016-12-27)
+------------------------------------------------------------------------
+This is the first fully implemented version of OpenRCT2. RCT2.EXE is no longer required.
+
 - Feature: Ability to disable rendering of weather effects and gloom
 - Feature: New view option: "See-Through Paths"
 - Feature: Add cheat to reset date.
@@ -29,9 +42,10 @@
 - Improved: Screenshots are now saved with the name of the park and the current date and time.
 - Improved: More accurate frame rate calculation
 - Improved: In-game file dialog now shows more formats (sv6, sc6, sv4, etc.)
+- Improved: Joining multiplayer will not redownload custom objects
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
-- Fix: [#933] On-ride photo price sometimes gets reset to £2 when using 'same price in whole park'
+- Fix: [#933] On-ride photo price sometimes gets reset to £2 when using 'same price in whole park' (original bug).
 - Fix: [#1038] Guest List is out of order.
 - Fix: [#1238] Track place window does not fully adjust to custom colour scheme.
 - Fix: [#2042] Guests entering queues are immediately annoyed when many entertainers are around (original bug).
@@ -53,7 +67,9 @@
 - Fix: [#3858] Tooltip shown when hovering over title logo.
 - Fix: [#3915] Restore horizontal and vertical scrollbar behaviour from RCT2 when clicking on one of the scrollbars.
 - Fix: Lay-down Roller Coasters from RCT1 saves are imported with an incorrect vehicle type (not reported).
+- Fix: High lateral G-forces penalty applied too early (not reported).
 - Technical: Multiplayer groups are now stored in JSON format.
+- Technical: MinGW builds dropped support for Windows XP
 
 0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------

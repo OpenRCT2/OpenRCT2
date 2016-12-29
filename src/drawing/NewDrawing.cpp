@@ -26,6 +26,7 @@ extern "C"
     #include "../interface/screenshot.h"
     #include "../localisation/string_ids.h"
     #include "../platform/platform.h"
+    #include "../rct2.h"
 }
 
 static sint32           _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
@@ -90,7 +91,7 @@ extern "C"
                 _drawingEngine->Initialise(gWindow);
                 _drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
             }
-            catch (Exception ex)
+            catch (const Exception &ex)
             {
                 delete _drawingEngine;
                 _drawingEngine = nullptr;

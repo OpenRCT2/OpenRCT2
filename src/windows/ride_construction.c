@@ -526,7 +526,7 @@ static bool is_track_enabled(int trackFlagIndex)
 
 static int ride_get_alternative_type(rct_ride *ride)
 {
-	return _currentTrackCovered & 2 ?
+	return (_currentTrackCovered & 2) ?
 		RideData4[ride->type].alternate_type :
 		ride->type;
 }
@@ -1838,7 +1838,6 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
 void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, int direction, int type)
 {
-	int slope, slopeEnd, b2, bankEnd, bankStart, b5, b4;
 	if (gGotoStartPlacementMode) {
 		z &= 0xFFF0;
 		_currentTrackBeginZ = z;
@@ -1846,13 +1845,13 @@ void window_ride_construction_mouseup_demolish_next_piece(int x, int y, int z, i
 		_currentTrackSelectionFlags = 0;
 		_rideConstructionArrowPulseTime = 0;
 		direction = _currentTrackPieceDirection;
-		slope = _currentTrackCurve;
-		slopeEnd = _previousTrackSlopeEnd;
-		b2 = _currentTrackSlopeEnd;
-		bankEnd = _previousTrackBankEnd;
-		bankStart = _currentTrackBankEnd;
-		b5 = _currentTrackCovered;
-		b4 = _currentTrackLiftHill;
+		int slope = _currentTrackCurve;
+		int slopeEnd = _previousTrackSlopeEnd;
+		int b2 = _currentTrackSlopeEnd;
+		int bankEnd = _previousTrackBankEnd;
+		int bankStart = _currentTrackBankEnd;
+		int b5 = _currentTrackCovered;
+		int b4 = _currentTrackLiftHill;
 		ride_construction_set_default_next_piece();
 		sub_6C84CE();
 		if (!ride_try_get_origin_element(_currentRideIndex, NULL)) {
@@ -2304,7 +2303,7 @@ static void sub_6CBCE2(
 	rct_ride *ride;
 	const rct_preview_track *trackBlock;
 	int preserve_current_viewport_flags;
-	int x, y, baseZ, clearanceZ, offsetX, offsetY;
+	int offsetX, offsetY;
 
 	preserve_current_viewport_flags = gCurrentViewportFlags;
 	gCurrentViewportFlags = 0;
@@ -2364,10 +2363,10 @@ static void sub_6CBCE2(
 			bl |= bh;
 			break;
 		}
-		x = originX + offsetX;
-		y = originY + offsetY;
-		baseZ = (originZ + trackBlock->z) >> 3;
-		clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
+		int x = originX + offsetX;
+		int y = originY + offsetY;
+		int baseZ = (originZ + trackBlock->z) >> 3;
+		int clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
 		int tileX = x >> 5;
 		int tileY = y >> 5;
@@ -2385,13 +2384,13 @@ static void sub_6CBCE2(
 		map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackMapElement);
 
 		// Set the temporary track element
-		_tempTrackMapElement.type = trackDirection | MAP_ELEMENT_TYPE_TRACK | (edx & 0x10000 ? 0x80 : 0);
+		_tempTrackMapElement.type = trackDirection | MAP_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
 		_tempTrackMapElement.flags = (bl & 0x0F) | MAP_ELEMENT_FLAG_LAST_TILE;
 		_tempTrackMapElement.base_height = baseZ;
 		_tempTrackMapElement.clearance_height = clearanceZ;
 		_tempTrackMapElement.properties.track.type = trackType;
 		_tempTrackMapElement.properties.track.sequence = trackBlock->index;
-		_tempTrackMapElement.properties.track.colour = (edx & 0x20000 ? 4 : 0);
+		_tempTrackMapElement.properties.track.colour = (edx & 0x20000) ? 4 : 0;
 		_tempTrackMapElement.properties.track.ride_index = rideIndex;
 
 		// Draw this map tile
@@ -2697,7 +2696,7 @@ static void window_ride_construction_update_enabled_track_pieces()
 	if (rideEntry == NULL)
 		return;
 
-	int rideType = _currentTrackCovered & 2 ? RideData4[ride->type].alternate_type : ride->type;
+	int rideType = (_currentTrackCovered & 2) ? RideData4[ride->type].alternate_type : ride->type;
 	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[rideType];
 	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[rideType];
 }
@@ -2723,7 +2722,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		_unkF440C5.z = z;
 		_unkF440C5.direction = trackDirection;
 		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
+		viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
 			viewport_set_visibility(2);
 
@@ -2742,7 +2741,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 		_unkF440C5.z = z;
 		_unkF440C5.direction = trackDirection;
 		_currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-		viewport_set_visibility(gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND ? 1 : 3);
+		viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
 		if (_currentTrackSlopeEnd != 0)
 			viewport_set_visibility(2);
 
@@ -2898,7 +2897,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 {
 	rct_ride *ride;
 	int trackType;
-	int edx, edi;
+	int edi;
 
 	ride = get_ride(_currentRideIndex);
 
@@ -2911,7 +2910,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 	int currentPossibleRideConfigurationIndex = 0;
 	_numCurrentPossibleSpecialTrackPieces = 0;
 	for (trackType = 0; trackType < 256; trackType++) {
-		edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+		int edx = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
 			FlatRideTrackDefinitions[trackType].type :
 			TrackDefinitions[trackType].type;
 
@@ -3576,7 +3575,7 @@ static void ride_construction_set_brakes_speed(int brakesSpeed)
  */
 void ride_construction_toolupdate_construct(int screenX, int screenY)
 {
-	int x, y, z, highestZ;
+	int x, y, z;
 	rct_ride *ride;
 	const rct_preview_track *trackBlock;
 
@@ -3623,8 +3622,8 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	gMapSelectArrowPosition.z = z;
 	if (_trackPlaceZ == 0) {
 		// Raise z above all slopes and water
-		highestZ = 0;
 		if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
+			int highestZ = 0;
 			rct_xy16 *selectedTile = gMapSelectionTiles;
 			while (selectedTile->x != -1) {
 				if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32)) {

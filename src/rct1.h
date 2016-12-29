@@ -78,7 +78,8 @@ typedef struct rct1_ride {
 	uint8 min_waiting_time;
 	uint8 max_waiting_time;
 	uint8 operation_option;
-	uint8 unk_081[0x3];
+	uint8 boat_hire_return_direction;
+	uint16 boat_hire_return_position;
 	uint8 data_logging_index;
 	uint8 special_track_elements;
 	uint16 unk_86;
@@ -96,7 +97,7 @@ typedef struct rct1_ride {
 		uint8 num_holes;
 	};
 	uint8 num_drops;
-	uint8 unk_C6;
+	uint8 start_drop_height;
 	uint8 highest_drop_height;
 	sint32 sheltered_length;
 	uint8 unk_CC[2];
@@ -164,6 +165,236 @@ typedef struct rct1_ride {
 } rct1_ride;
 assert_struct_size(rct1_ride, 0x260);
 
+typedef struct rct1_unk_sprite {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction; //direction of sprite? 0x1e
+	uint8 pad_1F[3]; // 0x1f
+	rct_string_id name_string_idx;	// 0x22
+	uint16 var_24;
+	uint16 frame;					// 0x26
+	uint8 var_28[3];
+	uint8 var_2B;
+	uint8 pad_2C[0x45];
+	uint8 var_71;
+} rct1_unk_sprite;
+
+typedef struct rct1_peep {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8 sprite_direction;			// 0x1E
+	uint8 pad_1F[3];
+	rct_string_id name_string_idx;	// 0x22
+	uint16 next_x;					// 0x24
+	uint16 next_y;					// 0x26
+	uint8 next_z;					// 0x28
+	uint8 next_var_29;				// 0x29
+	uint8 outside_of_park;			// 0x2A
+	uint8 state;					// 0x2B
+	uint8 sub_state;				// 0x2C
+	uint8 sprite_type;				// 0x2D
+	uint8 type;						// 0x2E
+	union{
+		uint8 staff_type;			// 0x2F
+		uint8 no_of_rides;			// 0x2F
+	};
+	uint8 tshirt_colour;			// 0x30
+	uint8 trousers_colour;			// 0x31
+	uint16 destination_x;			// 0x32 Location that the peep is trying to get to
+	uint16 destination_y;			// 0x34
+	uint8 destination_tolerence;	// 0x36 How close to destination before next action/state 0 = exact
+	uint8 var_37;
+	uint8 energy;					// 0x38
+	uint8 energy_growth_rate;		// 0x39
+	uint8 happiness;				// 0x3A
+	uint8 happiness_growth_rate;	// 0x3B
+	uint8 nausea;					// 0x3C
+	uint8 nausea_growth_rate;		// 0x3D
+	uint8 hunger;					// 0x3E
+	uint8 thirst;					// 0x3F
+	uint8 bathroom;					// 0x40
+	uint8 var_41;
+	uint8 var_42;
+	uint8 intensity;				// 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
+	uint8 nausea_tolerance;			// 0x44
+	uint8 window_invalidate_flags;	// 0x45
+	money16 paid_on_drink;			// 0x46
+	uint8 ride_types_been_on[16];	// 0x48
+	uint32 item_extra_flags;		// 0x58
+	uint8 photo2_ride_ref;			// 0x5C
+	uint8 photo3_ride_ref;			// 0x5D
+	uint8 photo4_ride_ref;			// 0x5E
+	uint8 pad_5F[0x09];				// 0x5F
+	uint8 current_ride;				// 0x68
+	uint8 current_ride_station;		// 0x69
+	uint8 current_train;			// 0x6A
+	union{
+		struct{
+			uint8 current_car;		// 0x6B
+			uint8 current_seat;		// 0x6C
+		};
+		uint16 time_to_sitdown;		//0x6B
+		struct{
+			uint8 time_to_stand;	//0x6B
+			uint8 standing_flags;	//0x6C
+		};
+	};
+	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
+	uint8 special_sprite;   		// 0x6D
+	uint8 action_sprite_type;		// 0x6E
+	// Seems to be used like a local variable, as it's always set before calling sub_693BAB, which reads this again
+	uint8 next_action_sprite_type;	// 0x6F
+	uint8 action_sprite_image_offset; // 0x70
+	uint8 action;					// 0x71
+	uint8 action_frame;				// 0x72
+	uint8 var_73;
+	union {
+		uint16 var_74; // time getting to ride to fix
+		uint16 next_in_queue;		// 0x74
+	};
+	uint8 var_76;
+	uint8 pad_77;
+	union{
+		uint8 maze_last_edge;		// 0x78
+		uint8 direction;	//Direction ?
+	};
+	uint8 interactionRideIndex;
+	uint16 time_in_queue;			// 0x7A
+	uint8 rides_been_on[32];		// 0x7C
+	// 255 bit bitmap of every ride the peep has been on see
+	// window_peep_rides_update for how to use.
+	uint32 id;						// 0x9C
+	money32 cash_in_pocket;			// 0xA0
+	money32 cash_spent;				// 0xA4
+	sint32 time_in_park;			// 0xA8
+	sint8 var_AC;					// 0xAC
+	uint8 previous_ride;			// 0xAD
+	uint16 previous_ride_time_out;	// 0xAE
+	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
+	uint8 pad_C4;
+	union {
+		uint8 staff_id;						// 0xC5
+		uint8 guest_heading_to_ride_id;		// 0xC5
+	};
+	union {
+		uint8 staff_orders;				// 0xC6
+		uint8 peep_is_lost_countdown;	// 0xC6
+	};
+	uint8 photo1_ride_ref;			// 0xC7
+	uint32 peep_flags;				// 0xC8
+	rct_xyzd8 pathfind_goal;		// 0xCC
+	rct_xyzd8 pathfind_history[4];	// 0xD0
+	uint8 no_action_frame_no;		// 0xE0
+	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 litter_count;				// 0xE1
+	union{
+		uint8 time_on_ride;			// 0xE2
+		uint8 var_E2;				// 0xE2
+	};
+	// 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
+	uint8 disgusting_count;			// 0xE3
+	money16 paid_to_enter;			// 0xE4
+	money16 paid_on_rides;			// 0xE6
+	money16 paid_on_food;			// 0xE8
+	money16 paid_on_souvenirs;		// 0xEA
+	uint8 no_of_food;				// 0xEC
+	uint8 no_of_drinks;				// 0xED
+	uint8 no_of_souvenirs;			// 0xEE
+	uint8 var_EF;
+	uint8 voucher_type;				// 0xF0
+	uint8 voucher_arguments;		// 0xF1 ride_id or string_offset_id
+	uint8 var_F2;
+	uint8 var_F3;
+	uint8 var_F4;
+	uint8 days_in_queue;			// 0xF5
+	uint8 balloon_colour;			// 0xF6
+	uint8 umbrella_colour;			// 0xF7
+	uint8 hat_colour;				// 0xF8
+	uint8 favourite_ride;			// 0xF9
+	uint8 favourite_ride_rating;	// 0xFA
+	uint8 pad_FB;
+	uint32 item_standard_flags;		// 0xFC
+} rct1_peep;
+assert_struct_size(rct1_peep, 0x100);
+
+
+enum RCT1_PEEP_SPRITE_TYPE {
+ 	RCT1_PEEP_SPRITE_TYPE_NORMAL = 0,
+ 	RCT1_PEEP_SPRITE_TYPE_HANDYMAN = 1,
+ 	RCT1_PEEP_SPRITE_TYPE_MECHANIC = 2,
+ 	RCT1_PEEP_SPRITE_TYPE_SECURITY = 3,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_PANDA = 4,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_TIGER = 5,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT = 6,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN = 7,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA = 8,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN = 9,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT = 10,
+ 	RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT = 11,
+
+ 	RCT1_PEEP_SPRITE_TYPE_BALLOON = 16,
+ 	RCT1_PEEP_SPRITE_TYPE_CANDYFLOSS = 17,
+ 	RCT1_PEEP_SPRITE_TYPE_UMBRELLA = 18,
+ 	RCT1_PEEP_SPRITE_TYPE_PIZZA = 19, // Unsure
+ 	RCT1_PEEP_SPRITE_TYPE_SECURITY_ALT = 20, // Unknown
+ 	RCT1_PEEP_SPRITE_TYPE_POPCORN = 21,
+ 	RCT1_PEEP_SPRITE_TYPE_ARMS_CROSSED = 22,
+ 	RCT1_PEEP_SPRITE_TYPE_HEAD_DOWN = 23,
+ 	RCT1_PEEP_SPRITE_TYPE_NAUSEOUS = 24,
+ 	RCT1_PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 25,
+ 	RCT1_PEEP_SPRITE_TYPE_REQUIRE_BATHROOM = 26,
+ 	RCT1_PEEP_SPRITE_TYPE_HAT = 27,
+ 	RCT1_PEEP_SPRITE_TYPE_BURGER = 28,
+ 	RCT1_PEEP_SPRITE_TYPE_TENTACLE = 29,
+ 	RCT1_PEEP_SPRITE_TYPE_TOFFEE_APPLE = 30
+};
+
+typedef union rct1_sprite {
+	uint8 pad_00[0x100];
+	rct1_unk_sprite unknown;
+	rct1_peep peep;
+ 	rct_litter litter;
+} rct1_sprite;
+assert_struct_size(rct1_sprite, 0x100);
+
 typedef struct rct1_research_item {
 	uint8 item;
 	uint8 related_ride;
@@ -185,7 +416,7 @@ typedef struct rct1_s4 {
 	uint32 random_b;
 	rct_map_element map_elements[0xC000];
 	uint32 unk_counter;
-	rct_sprite sprites[5000];
+	rct1_sprite sprites[5000];
 	uint16 next_sprite_index;
 	uint16 first_vehicle_sprite_index;
 	uint16 first_peep_sprite_index;

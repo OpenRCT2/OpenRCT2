@@ -20,7 +20,7 @@
 #include "common.h"
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.5"
+#define OPENRCT2_VERSION			"0.0.6"
 
 #if defined(__amd64__) || defined(_M_AMD64)
 	#define OPENRCT2_ARCHITECTURE		"x86-64"
@@ -48,17 +48,27 @@
 #ifdef __MACOSX__
 	#define OPENRCT2_PLATFORM		"macOS"
 #endif
+#ifdef __FREEBSD__
+	#define OPENRCT2_PLATFORM		"FreeBSD"
+#endif
 #ifndef OPENRCT2_PLATFORM
 	#error Unknown platform!
 #endif
 
 #define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
 
-// The following constants are for automated build servers
-extern const char *gBuildNumber;
-extern const char *gBuildServer;
-extern const char *gGitBranch;
-extern const char *gCommitSha1;
-extern const char *gCommitSha1Short;
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+	// The following constants are for automated build servers
+	extern const char *gBuildNumber;
+	extern const char *gBuildServer;
+	extern const char *gGitBranch;
+	extern const char *gCommitSha1;
+	extern const char *gCommitSha1Short;
+#ifdef __cplusplus
+}
+#endif
 
 #endif

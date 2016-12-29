@@ -970,10 +970,9 @@ static void window_guest_list_find_groups()
 		int argument_1 = _window_guest_list_groups_argument_1[groupIndex];
 		int argument_2 = _window_guest_list_groups_argument_2[groupIndex];
 		int bl = _window_guest_list_group_index[groupIndex];
-		int temp;
 
 		do {
-			temp = curr_num_guests;
+			int temp = curr_num_guests;
 			curr_num_guests = _window_guest_list_groups_num_guests[swap_position];
 			_window_guest_list_groups_num_guests[swap_position] = temp;
 

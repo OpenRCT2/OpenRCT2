@@ -178,12 +178,16 @@ private:
 	void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume);
 	bool MustConvert(Source& source);
 	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
-	SDL_AudioDeviceID deviceid;
-	AudioFormat format;
-	uint8* effectbuffer;
+	SDL_AudioDeviceID deviceid = 0;
+	AudioFormat format = { 0 };
+	uint8* effectbuffer = nullptr;
 	std::list<Channel*> channels;
 	Source_Null source_null;
-	float volume;
+	float volume = 1.0f;
+	float adjust_sound_vol = 0.0f;
+	float adjust_music_vol = 0.0f;
+	uint8 setting_sound_vol = 0xFF;
+	uint8 setting_music_vol = 0xFF;
 };
 
 extern "C"

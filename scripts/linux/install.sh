@@ -18,8 +18,8 @@ else
 fi
 mkdir -p "$cachedir"
 
-# Sets default target to "linux", if none specified
-TARGET=${TARGET-linux}
+# Sets default target to "ubuntu_amd64", if none specified
+TARGET=${TARGET-ubuntu_amd64}
 # keep in sync with version in build.sh
 libversion=3
 libVFile="./libversion"
@@ -170,20 +170,14 @@ elif [[ $(uname) == "Linux" ]]; then
 	else
 		# prevent build.sh from re-doing all the steps again
 		case "$TARGET" in
-			"linux")
-				sudo dpkg --add-architecture i386
-				sudo apt-get update
-				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev:i386 libsdl2-ttf-dev:i386 gcc-4.8 pkg-config:i386 g++-4.8-multilib gcc-4.8-multilib libjansson-dev:i386 libspeex-dev:i386 libspeexdsp-dev:i386 libcurl4-openssl-dev:i386 libcrypto++-dev:i386 clang libfontconfig1-dev:i386 libfreetype6-dev:i386 libpng-dev:i386
-				sudo apt-get install -f
+			"ubuntu_i686")
+				docker pull openrct2/openrct2:ubuntu_i686
 				;;
-			"linux64")
-				sudo apt-get update
-				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev libsdl2-ttf-dev gcc-4.8 pkg-config g++ gcc libjansson-dev libspeex-dev libspeexdsp-dev libcurl4-openssl-dev libcrypto++-dev libfontconfig1-dev libfreetype6-dev libpng-dev
-				sudo apt-get install -f
+			"ubuntu_amd64")
+				docker pull openrct2/openrct2:ubuntu_amd64
 				;;
 			"windows")
-				sudo apt-get update
-				sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
+				docker pull openrct2/openrct2:mingw
 				;;
 			"docker32")
 				docker pull openrct2/openrct2:32bit-only

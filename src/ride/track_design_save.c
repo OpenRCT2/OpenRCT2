@@ -122,7 +122,8 @@ void track_design_save_reset_scenery()
 	gfx_invalidate_screen();
 }
 
-static void track_design_save_callback(int result) {
+static void track_design_save_callback(int result, const utf8 * path)
+{
 	free(_trackDesign->track_elements);
 	free(_trackDesign->entrance_elements);
 	free(_trackDesign->scenery_elements);

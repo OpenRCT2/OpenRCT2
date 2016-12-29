@@ -1,6 +1,6 @@
 #pragma once
 
-#include "addresses.h"
+#include "rct2/addresses.h"
 #include "ride/ride.h"
 #include "world/banner.h"
 #include "world/entrance.h"

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
 #include <dirent.h>
 #include <errno.h>
@@ -28,7 +28,7 @@
 #include <SDL_syswm.h>
 #include "../config.h"
 #include "../localisation/language.h"
-#include "../openrct2.h"
+#include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "platform.h"
 #include <dirent.h>
@@ -174,14 +174,36 @@ static mode_t getumask()
 
 bool platform_ensure_directory_exists(const utf8 *path)
 {
+	mode_t mask = getumask();
 	char buffer[MAX_PATH];
 	platform_utf8_to_multibyte(path, buffer, MAX_PATH);
-	mode_t mask = getumask();
-	log_verbose("%s", buffer);
-	const int result = mkdir(buffer, mask);
-	if (result == 0 || (result == -1 && errno == EEXIST))
-		return true;
-	return false;
+
+	log_verbose("Create directory: %s", buffer);
+	for (char *p = buffer + 1; *p != '\0'; p++) {
+		if (*p == '/') {
+			// Temporarily truncate
+			*p = '\0';
+
+			log_verbose("mkdir(%s)", buffer);
+			if (mkdir(buffer, mask) != 0) {
+				if (errno != EEXIST) {
+					return false;
+				}
+			}
+
+			// Restore truncation
+			*p = '/';
+		}
+	}
+
+	log_verbose("mkdir(%s)", buffer);
+	if (mkdir(buffer, mask) != 0) {
+		if (errno != EEXIST) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool platform_directory_delete(const utf8 *path)
@@ -699,9 +721,16 @@ void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
 void platform_resolve_openrct_data_path()
 {
 	if (gCustomOpenrctDataPath[0] != 0) {
-		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath) == NULL) {
+		// NOTE: second argument to `realpath` is meant to either be NULL or `PATH_MAX`-sized buffer,
+		// since our `MAX_PATH` macro is set to some other value, pass NULL to have `realpath` return
+		// a `malloc`ed buffer.
+		char *resolved_path = realpath(gCustomOpenrctDataPath, NULL);
+		if (resolved_path == NULL) {
 			log_error("Could not resolve path \"%s\", errno = %d", gCustomOpenrctDataPath, errno);
 			return;
+		} else {
+			safe_strcpy(_openrctDataDirectoryPath, resolved_path, MAX_PATH);
+			free(resolved_path);
 		}
 
 		path_end_with_separator(_openrctDataDirectoryPath, MAX_PATH);

@@ -17,6 +17,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../rct2.h"
 #include "../world/footpath.h"
 
 rct_widget window_main_widgets[] = {

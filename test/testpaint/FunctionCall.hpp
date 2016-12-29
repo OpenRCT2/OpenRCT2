@@ -45,6 +45,7 @@ typedef struct
         sint16 z_offset;
         rct_xyz16 bound_box_offset;
         uint32 rotation;
+        paint_struct output_struct;
     } paint;
     struct supports
     {
@@ -53,6 +54,7 @@ typedef struct
         int special;
         int height;
         uint32 colour_flags;
+        sint32 prepend_to;
     } supports;
 } function_call;
 

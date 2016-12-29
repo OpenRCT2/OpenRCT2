@@ -21,6 +21,8 @@ extern "C"
     #include "../common.h"
 }
 
+#include <cstdarg>
+
 namespace Console
 {
     void Write(char c);

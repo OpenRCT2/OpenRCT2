@@ -17,7 +17,7 @@
 #include "../audio/audio.h"
 #include "../game.h"
 #include "../localisation/date.h"
-#include "../scenario.h"
+#include "../scenario/scenario.h"
 #include "sprite.h"
 
 enum {

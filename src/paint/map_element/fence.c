@@ -379,4 +379,3 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
     sub_98199C(scrolling_text_setup(stringId, scroll, scrollingMode), 0, 0, 1, 1, 13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 }
-

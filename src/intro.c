@@ -18,8 +18,7 @@
 #include "audio/mixer.h"
 #include "drawing/drawing.h"
 #include "intro.h"
-#include "localisation/localisation.h"
-#include "platform/platform.h"
+#include "rct2.h"
 #include "sprites.h"
 
 #define BACKROUND_COLOUR_DARK		10

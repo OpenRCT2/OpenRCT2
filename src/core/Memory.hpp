@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <cstring>
+#include <typeinfo>
 #include "../common.h"
 #include "Guard.hpp"
-#include <typeinfo>
 
 /**
  * Utility methods for memory management. Typically helpers and wrappers around the C standard library.

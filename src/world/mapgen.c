@@ -234,11 +234,10 @@ static void mapgen_place_tree(int type, int x, int y)
 	assert(mapElement != NULL);
 	mapElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
-	mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() % 3);
+	mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
 	mapElement->properties.scenery.type = type;
 	mapElement->properties.scenery.age = 0;
-	mapElement->properties.scenery.colour_1 = 26;
-	mapElement->properties.scenery.colour_1 = 18;
+	mapElement->properties.scenery.colour_1 = COLOUR_YELLOW;
 }
 
 /**
@@ -246,21 +245,19 @@ static void mapgen_place_tree(int type, int x, int y)
  */
 static void mapgen_place_trees()
 {
-	int x, y, mapSize, i, j, rindex, type;
-	rct_map_element *mapElement;
-
 	int numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
 	int *grassTreeIds = (int*)malloc(countof(GrassTrees) * sizeof(int));
 	int *desertTreeIds = (int*)malloc(countof(DesertTrees) * sizeof(int));
 	int *snowTreeIds = (int*)malloc(countof(SnowTrees) * sizeof(int));
 
-	for (i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
+	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
 		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
 		if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
 			continue;
 
+		int j;
 		for (j = 0; j < countof(GrassTrees); j++)
 			if (strncmp(GrassTrees[j], entry->name, 8) == 0)
 				break;
@@ -286,16 +283,14 @@ static void mapgen_place_trees()
 		}
 	}
 
-	mapSize = gMapSize;
-
 	int availablePositionsCount = 0;
 	struct { int x; int y; } tmp, *pos, *availablePositions;
 	availablePositions = malloc(256 * 256 * sizeof(tmp));
 
 	// Create list of available tiles
-	for (y = 1; y < mapSize - 1; y++) {
-		for (x = 1; x < mapSize - 1; x++) {
-			mapElement = map_get_surface_element_at(x, y);
+	for (int y = 1; y < gMapSize - 1; y++) {
+		for (int x = 1; x < gMapSize - 1; x++) {
+			rct_map_element *mapElement = map_get_surface_element_at(x, y);
 
 			// Exclude water tiles
 			if ((mapElement->properties.surface.terrain & 0x1F) != 0)
@@ -308,8 +303,8 @@ static void mapgen_place_trees()
 	}
 
 	// Shuffle list
-	for (i = 0; i < availablePositionsCount; i++) {
-		rindex = util_rand() % availablePositionsCount;
+	for (int i = 0; i < availablePositionsCount; i++) {
+		int rindex = util_rand() % availablePositionsCount;
 		if (rindex == i)
 			continue;
 
@@ -322,12 +317,11 @@ static void mapgen_place_trees()
 	float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
 	int numTrees = max(4, (int)(availablePositionsCount * treeToLandRatio));
 
-	mapSize = gMapSize;
-	for (i = 0; i < numTrees; i++) {
+	for (int i = 0; i < numTrees; i++) {
 		pos = &availablePositions[i];
 
-		type = -1;
-		mapElement = map_get_surface_element_at(pos->x, pos->y);
+		int type = -1;
+		rct_map_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
 		switch (map_element_get_terrain(mapElement)) {
 		case TERRAIN_GRASS:
 		case TERRAIN_DIRT:

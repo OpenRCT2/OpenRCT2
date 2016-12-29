@@ -1018,5 +1018,4 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 	if (edges & 8) {
 		paint_util_set_segment_support_height(SEGMENT_C8, 0xFFFF, 0);
 	}
-
 }

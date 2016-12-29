@@ -17,7 +17,7 @@
 #ifndef _TRACK_PAINT_H
 #define _TRACK_PAINT_H
 
-#include "../addresses.h"
+#include "../rct2/addresses.h"
 #include "ride_data.h"
 #include "../common.h"
 #include "../paint/map_element/map_element.h"

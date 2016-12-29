@@ -882,11 +882,10 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
 		if (y + 11 >= dpi->y) {
 			char buffer[300] = {0};
-			char* lineCh;
 			int groupindex = network_get_group_index(_selectedGroup);
 			if (groupindex != -1){
 				if (network_can_perform_action(groupindex, i)) {
-					lineCh = buffer;
+					char* lineCh = buffer;
 					lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
 					lineCh = utf8_write_codepoint(lineCh, FORMAT_TICK);
 					gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y - 1);

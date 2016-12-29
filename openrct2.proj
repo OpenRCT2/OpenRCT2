@@ -16,13 +16,14 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
+    <TestConfig Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">true</TestConfig>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.5.0</Version>
+    <Version>0.0.6.0</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
     <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
-    <TargetLibsVersion>10</TargetLibsVersion>
+    <TargetLibsVersion>11</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
@@ -55,16 +56,20 @@
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
 
     <!-- Set openrct2.sln properties -->
-    <SlnProperties>Configuration=$(Configuration)</SlnProperties>
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
     <SlnProperties Condition="'$(BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
+    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
     <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
-    <LibsPath>$(RootDir)lib\</LibsPath>
-    <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
+    <LibsSha1>f088adcd12450c2672f78679ea5d1fbffc28fd22</LibsSha1>
+    <GtestVersion>1.8.0</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
+    <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>79ffb2585d12abcbfce205d7696e3472a504b005</TitleSequencesSha1>
   </PropertyGroup>
 
   <ItemGroup>
@@ -105,39 +110,31 @@
     </UploadArtifacts>
   </ItemGroup>
 
-  <Target Name="CheckLibs">
-    <!-- Get libversion file and check version -->
-    <Message Text="Checking if libraries need updating..." Importance="high" />
-    <PropertyGroup>
-      <CurrentLibsVersion>0</CurrentLibsVersion>
-      <CurrentLibsVersion Condition="Exists($(LibsVersionPath))">$([System.IO.File]::ReadAllText($(LibsVersionPath)).Trim())</CurrentLibsVersion>
-      <UpdateLibs Condition="$(TargetLibsVersion) &gt; $(CurrentLibsVersion)">true</UpdateLibs>
-    </PropertyGroup>
-
-    <Message Condition="'$(UpdateLibs)'!='true'" Text="Libraries up to date" Importance="high" />
-    <Message Condition="'$(UpdateLibs)'=='true'" Text="Libraries out of date, updating..." Importance="high" />
-    <CallTarget Condition="'$(UpdateLibs)'=='true'" Targets="DownloadLibs" />
-  </Target>
-
   <Target Name="DownloadLibs">
+    <!-- libs -->
+    <DownloadDependency Name="Libs"
+                        Url="$(LibsUrl)"
+                        Sha1="$(LibsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
+
+    <!-- googletest -->
+    <DownloadDependency Name="googletest"
+                        Url="$(GtestUrl)"
+                        Sha1="$(GtestSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
     <PropertyGroup>
-      <LibsZipPath>$(LibsPath)openrct2-libs-vs2015.zip</LibsZipPath>
+      <GtestSrc>$(RootDir)lib\googletest-release-$(GtestVersion)</GtestSrc>
+      <GtestDst>$(RootDir)lib\googletest</GtestDst>
     </PropertyGroup>
-
-    <!-- Clean libs directory -->
-    <RemoveDir Directories="$(LibsPath)" />
-    <MakeDir Directories="$(LibsPath)" />
-
-    <Message Text="Downloading libraries..." Importance="normal" />
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(LibsUrl)' -OutFile '$(LibsZipPath)'&quot;" StandardOutputImportance="low" />
-    <Unzip Input="$(LibsZipPath)" OutputDirectory="$(LibsPath)" />
-    <Delete Files="$(LibsZipPath)" ContinueOnError="true" />
-
-    <!-- Update libversion file -->
-    <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
+    <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
   </Target>
 
   <Target Name="Clean">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
       <CleanItems Include="$(g2Output)" />
@@ -151,7 +148,7 @@
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="CheckLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
@@ -169,28 +166,57 @@
   </Target>
 
   <Target Name="Build">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
   </Target>
   <Target Name="Rebuild">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
+  <Target Name="BuildTests">
+    <PropertyGroup>
+      <Configuration Condition="'$(Configuration)'=='Debug'">DebugTests</Configuration>
+      <Configuration Condition="'$(Configuration)'=='Release'">ReleaseTests</Configuration>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
+    <Message Text="SlnProperties: $(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
+  </Target>
 
-  <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
+  <Target Name="Test" DependsOnTargets="BuildTests">
+    <Exec Command="$(TargetDir)tests\tests.exe" />
+  </Target>
+  <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
     <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
+  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
+          Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." />
     <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
           StandardOutputImportance="low" />
   </Target>
 
+  <!-- Target to download the title sequences -->
+  <Target Name="DownloadTitleSequences" AfterTargets="Build">
+    <DownloadDependency Name="TitleSequences"
+                        Url="$(TitleSequencesUrl)"
+                        Sha1="$(TitleSequencesSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\title" />
+  </Target>
+
   <!-- Target to sign OpenRCT2
        This requires the project parameter SIGN_PASSWORD to be set -->
-  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed">
+  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed"
+          Condition="'$(TestConfig)'!='true'">
     <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
@@ -203,14 +229,16 @@
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
-  <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)">
+  <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)"
+          Condition="'$(TestConfig)'!='true'">
     <MakeDir Directories="$(ArtifactsDir)" />
     <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishZip)))..." />
     <_7z Output="$(PublishZip)" Inputs="@(PublishItems)" />
   </Target>
 
   <!-- Target to publish the OpenRCT2 debug symbols -->
-  <Target Name="PublishSymbols" DependsOnTargets="Build" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)">
+  <Target Name="PublishSymbols" DependsOnTargets="Build" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)"
+          Condition="'$(TestConfig)'!='true'">
     <MakeDir Directories="$(ArtifactsDir)" />
     <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishSymbolsZip)))..." />
     <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
@@ -221,7 +249,7 @@
           DependsOnTargets="Build;g2"
           Inputs="@(PublishItems);$(NsisScript)"
           Outputs="$(PublishInstallerExe)"
-          Condition="'$(NO_NSIS)'!='true'">
+          Condition="'$(NO_NSIS)'!='true' AND '$(TestConfig)'!='true'">
     <PropertyGroup>
       <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
     </PropertyGroup>
@@ -249,7 +277,8 @@
           DependsOnTargets="PublishSymbols;PublishPortable;PublishInstaller" />
 
   <!-- Target to upload the artifacts to OpenRCT2.org -->
-  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll">
+  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll"
+          Condition="'$(TestConfig)'!='true'">
     <PropertyGroup>
       <UploadLink>https://openrct2.org/altapi/?command=push-build</UploadLink>
       <UploadFileNameShort>%(UploadArtifacts.Filename)%(UploadArtifacts.Extension)</UploadFileNameShort>

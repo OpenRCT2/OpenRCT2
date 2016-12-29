@@ -35,7 +35,7 @@
 #include "network/twitch.h"
 #include "object.h"
 #include "object/ObjectManager.h"
-#include "openrct2.h"
+#include "OpenRCT2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"
@@ -43,12 +43,12 @@
 #include "ride/track.h"
 #include "ride/track_design.h"
 #include "ride/TrackDesignRepository.h"
-#include "ScenarioRepository.h"
-#include "title.h"
+#include "scenario/ScenarioRepository.h"
+#include "title/TitleScreen.h"
 #include "util/util.h"
+#include "world/climate.h"
 #include "world/map.h"
 #include "world/park.h"
-#include "world/climate.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
 
@@ -171,10 +171,6 @@ bool rct2_init()
 		return false;
 	}
 
-	object_list_load();
-	scenario_repository_scan();
-	track_repository_scan();
-
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
@@ -198,6 +194,7 @@ bool rct2_init()
 	window_new_ride_init_vars();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
+	load_palette();
 
 
 #ifdef __ENABLE_LIGHTFX__
@@ -380,10 +377,12 @@ bool rct2_open_file(const char *path)
 	} else if (_stricmp(extension, "sv4") == 0) {
 		if (rct1_load_saved_game(path)) {
 			game_load_init();
+			return true;
 		}
 	} else if (_stricmp(extension, "sc4") == 0) {
 		if (rct1_load_scenario(path)) {
 			scenario_begin();
+			return true;
 		}
 	}
 
@@ -498,4 +497,73 @@ uint32 get_file_extension_type(const utf8 *path)
 	if (strcicmp(extension, ".sv6") == 0) return FILE_EXTENSION_SV6;
 	if (strcicmp(extension, ".td6") == 0) return FILE_EXTENSION_TD6;
 	return FILE_EXTENSION_UNKNOWN;
+}
+
+static void rct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
+{
+	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
+	int fileEnumHandle;
+	file_info fileInfo;
+
+	if (!platform_ensure_directory_exists(newDirectory)) {
+		log_error("Could not create directory %s.", newDirectory);
+		return;
+	}
+
+	// Create filter path
+	safe_strcpy(filter, originalDirectory, sizeof(filter));
+	ch = strchr(filter, '*');
+	if (ch != NULL)
+		*ch = 0;
+	safe_strcat_path(filter, "*", sizeof(filter));
+	path_append_extension(filter, extension, sizeof(filter));
+
+	fileEnumHandle = platform_enumerate_files_begin(filter);
+	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, fileInfo.path, sizeof(newPath));
+
+		safe_strcpy(oldPath, originalDirectory, sizeof(oldPath));
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		safe_strcat_path(oldPath, fileInfo.path, sizeof(oldPath));
+
+		if (!platform_file_exists(newPath))
+			platform_file_copy(oldPath, newPath, false);
+	}
+	platform_enumerate_files_end(fileEnumHandle);
+
+	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
+	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
+		safe_strcpy(newPath, newDirectory, sizeof(newPath));
+		safe_strcat_path(newPath, filter, sizeof(newPath));
+
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
+		ch = strchr(oldPath, '*');
+		if (ch != NULL)
+			*ch = 0;
+		safe_strcat_path(oldPath, filter, sizeof(oldPath));
+
+		if (!platform_ensure_directory_exists(newPath)) {
+			log_error("Could not create directory %s.", newPath);
+			return;
+		}
+		rct2_copy_files_over(oldPath, newPath, extension);
+	}
+	platform_enumerate_directories_end(fileEnumHandle);
+}
+
+/**
+ * Copy saved games and landscapes to user directory
+ */
+void rct2_copy_original_user_files_over()
+{
+	utf8 path[MAX_PATH];
+
+	platform_get_user_directory(path, "save", sizeof(path));
+	rct2_copy_files_over((utf8*)gRCT2AddressSavedGamesPath, path, ".sv6");
+
+	platform_get_user_directory(path, "landscape", sizeof(path));
+	rct2_copy_files_over((utf8*)gRCT2AddressLandscapesPath, path, ".sc6");
 }

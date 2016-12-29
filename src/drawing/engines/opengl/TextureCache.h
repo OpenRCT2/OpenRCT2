@@ -35,8 +35,7 @@ struct GlyphId
     {
         size_t operator()(const GlyphId &k) const
         {
-            size_t hash = 0x3154A85E;
-            hash = k.Image * 7;
+            size_t hash = k.Image * 7;
             hash += (k.Palette & 0xFFFFFFFF) * 13;
             hash += (k.Palette >> 32) * 23;
             return hash;

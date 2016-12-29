@@ -18,6 +18,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/map.h"
 #include "../interface/themes.h"
@@ -228,8 +229,6 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gLandToolSize > 7) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
 	}
-	y = w->y + window_water_widgets[WIDX_PREVIEW].bottom + 5;
-
 
 	// Draw raise cost amount
 	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;

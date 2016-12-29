@@ -20,12 +20,6 @@
 #include "../common.h"
 #include "../world/map.h"
 
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-// Some variables used for the path finding debugging.
-extern bool gPathFindDebug;
-extern utf8 gPathFindDebugPeepName[256];
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 #define PEEP_MAX_THOUGHTS 5
 
 #define PEEP_HUNGER_WARNING_THRESHOLD 25
@@ -363,15 +357,21 @@ enum PEEP_SPRITE_TYPE {
 	PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT = 12,
 	PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF = 13,
 	PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE = 14,
-	PEEP_SPRITE_TYPE_19 = 19,
+	PEEP_SPRITE_TYPE_BALLOON = 19,
+	PEEP_SPRITE_TYPE_CANDYFLOSS = 20,
 	PEEP_SPRITE_TYPE_UMBRELLA = 21,
-	PEEP_SPRITE_TYPE_23 = 23,
-	PEEP_SPRITE_TYPE_25 = 25,
-	PEEP_SPRITE_TYPE_26 = 26,
+	PEEP_SPRITE_TYPE_PIZZA = 22,
+	PEEP_SPRITE_TYPE_SECURITY_ALT = 23,
+	PEEP_SPRITE_TYPE_POPCORN = 24,
+	PEEP_SPRITE_TYPE_ARMS_CROSSED = 25,
+	PEEP_SPRITE_TYPE_HEAD_DOWN = 26,
 	PEEP_SPRITE_TYPE_NAUSEOUS = 27,
 	PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 28,
 	PEEP_SPRITE_TYPE_REQUIRE_BATHROOM = 29,
-	PEEP_SPRITE_TYPE_30 = 30,
+	PEEP_SPRITE_TYPE_HAT = 30,
+	PEEP_SPRITE_TYPE_BURGER = 31,
+	PEEP_SPRITE_TYPE_TENTACLE = 32,
+	PEEP_SPRITE_TYPE_TOFFEE_APPLE = 33,
 	PEEP_SPRITE_TYPE_WATCHING = 38
 };
 
@@ -497,7 +497,7 @@ typedef struct rct_peep {
 		uint8 maze_last_edge;			// 0x78
 		uint8 direction;	//Direction ?
 	};
-	uint8 var_79;
+	uint8 interactionRideIndex;
 	uint16 time_in_queue;			// 0x7A
 	uint8 rides_been_on[32];		// 0x7C
 	// 255 bit bitmap of every ride the peep has been on see
@@ -685,5 +685,21 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
+void peep_reset_pathfind_goal(rct_peep *peep);
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+#define PATHFIND_DEBUG 0 // Set to 0 to disable pathfinding debugging;
+			 // Set to 1 to enable pathfinding debugging.
+// Some variables used for the path finding debugging.
+extern bool gPathFindDebug; // Use to guard calls to log messages
+extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
+
+// The following calls set the above two variables for a peep.
+// ... when PATHFIND_DEBUG is 1 (non zero) 
+void pathfind_logging_enable(rct_peep* peep);
+void pathfind_logging_disable();
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+void peep_autoposition(rct_peep *newPeep);
 
 #endif

@@ -115,6 +115,7 @@ option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags")
 option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla. On by default." ON)
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
+option(WITH_TESTS "Build tests")
 
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment")
 
@@ -275,6 +276,7 @@ if (WITH_BREAKPAD)
 	set(BREAKPAD_LIBS breakpad_client pthread)
 endif (WITH_BREAKPAD)
 
+PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
 # find and include SDL2
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
 if (STATIC)
@@ -287,9 +289,9 @@ endif (STATIC)
 
 if (STATIC)
 	set(STATIC_START "-static")
-	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES} ${SSL_STATIC_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES} ${SSL_STATIC_LIBRARIES} ${LIBZIP_STATIC_LIBRARIES})
 else (STATIC)
-	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${JANSSON_LIBRARIES} ${ZLIB_LIBRARIES} ${SSL_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${JANSSON_LIBRARIES} ${ZLIB_LIBRARIES} ${SSL_LIBRARIES} ${LIBZIP_LIBRARIES})
 endif (STATIC)
 
 if (NOT DISABLE_OPENGL)
@@ -324,14 +326,14 @@ endif (NOT DISABLE_HTTP_TWITCH)
 
 PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 
-if (UNIX)
+if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
 	# Include libdl for dlopen
 	set(DLLIB dl)
-endif (UNIX)
+endif ()
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR} ${SSL_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR} ${SSL_INCLUDE_DIRS} ${LIBZIP_INCLUDE_DIRS})
 
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS})
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS} ${LIBZIP_LIBRARY_DIRS})
 
 if (NOT DISABLE_RCT2)
 	# Disable optimizations for addresses.c for all compilers, to allow optimized
@@ -382,10 +384,10 @@ TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
 # if creating a static binary, precede libraries with -static, then name all the libs
 TARGET_LINK_LIBRARIES(${PROJECT} ${STATIC_START} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
 
-if (APPLE OR STATIC)
+if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
-endif (APPLE OR STATIC)
+endif ()
 
 # Don't recurse, grab all *.txt and *.md files
 file(GLOB DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/distribution/*.txt")
@@ -394,6 +396,9 @@ list(APPEND DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/contributors.md" "${CMAKE_CUR
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
+install(CODE "file(DOWNLOAD https://github.com/OpenRCT2/title-sequences/releases/download/v0.0.5/title-sequence-v0.0.5.zip \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=79ffb2585d12abcbfce205d7696e3472a504b005 SHOW_PROGRESS)")
+install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
+install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/title/title-sequences.zip)")
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
@@ -406,6 +411,11 @@ install(FILES resources/logo/icon_x128.png DESTINATION share/icons/hicolor/128x1
 install(FILES resources/logo/icon_x256.png DESTINATION share/icons/hicolor/256x256/apps RENAME openrct2.png)
 install(FILES resources/logo/icon_flag.svg DESTINATION share/icons/hicolor/scalable/apps RENAME openrct2.svg)
 install(FILES distribution/linux/openrct2.desktop DESTINATION share/applications)
+
+if (WITH_TESTS)
+	enable_testing()
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test/tests/)
+endif ()
 
 if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
 	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")

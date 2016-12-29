@@ -16,6 +16,7 @@
 
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../rct2.h"
 #include "../world/map.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -435,7 +436,7 @@ static void ride_ratings_score_close_proximity_loops(rct_map_element *inputMapEl
 	if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
 		int x = gRideRatingsCalcData.proximity_x;
 		int y = gRideRatingsCalcData.proximity_y;
-		ride_ratings_score_close_proximity_loops_helper(inputMapElement, gRideRatingsCalcData.proximity_x, gRideRatingsCalcData.proximity_y);
+		ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
 
 		int direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 		x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
@@ -1117,6 +1118,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 	result.nausea += (ride->max_lateral_g * 21845) >> 16;
 
 	// Very high lateral G force penalty
+	#ifdef ORIGINAL_RATINGS
 	if (ride->max_lateral_g > FIXED_2DP(2,80)) {
 		result.intensity += FIXED_2DP(3,75);
 		result.nausea += FIXED_2DP(2,00);
@@ -1126,6 +1128,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 		result.intensity += FIXED_2DP(8,50);
 		result.nausea += FIXED_2DP(4,00);
 	}
+	#endif
 
 	return result;
 }
@@ -1343,6 +1346,21 @@ static void ride_ratings_apply_max_lateral_g_penalty(rating_tuple *ratings, rct_
 	}
 }
 
+static void ride_ratings_apply_excessive_lateral_g_penalty(rating_tuple *ratings, rct_ride *ride)
+{
+	#ifndef ORIGINAL_RATINGS
+	if (ride->max_lateral_g > FIXED_2DP(2,80)) {
+		ratings->intensity += FIXED_2DP(3,75);
+		ratings->nausea += FIXED_2DP(2,00);
+	}
+	if (ride->max_lateral_g > FIXED_2DP(3,10)) {
+		ratings->excitement /= 2;
+		ratings->intensity += FIXED_2DP(8,50);
+		ratings->nausea += FIXED_2DP(4,00);
+	}
+	#endif
+}
+
 static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, rct_ride *ride, int minFirstLength, int excitementPenalty, int intensityPenalty, int nauseaPenalty)
 {
 	if (ride->length[0] < minFirstLength) {
@@ -1389,6 +1407,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1427,6 +1446,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
 	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,50), 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1467,6 +1487,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(rct_ride *ride)
 	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1, 50), 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1510,6 +1531,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(rct_ride *ride)
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,30), 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1548,6 +1570,7 @@ static void ride_ratings_calculate_junior_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1659,6 +1682,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(rct_ride *ride)
 	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1,30), 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1731,6 +1755,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 3, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1771,6 +1796,7 @@ static void ride_ratings_calculate_steeplechase(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xF00000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1895,6 +1921,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(rct_ride *ride)
 	ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1,20), 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1971,6 +1998,7 @@ static void ride_ratings_calculate_looping_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2009,6 +2037,7 @@ static void ride_ratings_calculate_dinghy_slide(rct_ride *ride)
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x8C0000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2049,6 +2078,7 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2136,6 +2166,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2723,6 +2754,7 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,10), 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2827,6 +2859,7 @@ static void ride_ratings_calculate_flying_roller_coaster(rct_ride *ride)
 
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2864,6 +2897,7 @@ static void ride_ratings_calculate_virginia_reel(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xD20000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2980,6 +3014,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3065,6 +3100,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 1, 1);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3105,6 +3141,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(rct_ride *ride)
 
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 4, 1, 1);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3253,6 +3290,7 @@ static void ride_ratings_calculate_twister_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3293,6 +3331,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3332,6 +3371,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xFA0000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3372,6 +3412,7 @@ static void ride_ratings_calculate_wild_mouse(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3417,6 +3458,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3462,6 +3504,7 @@ static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3632,6 +3675,7 @@ static void ride_ratings_calculate_compact_inverted_coaster(rct_ride *ride)
 	if ((ride->inversions & 0x1F) == 0)
 		ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,30), 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3670,6 +3714,7 @@ static void ride_ratings_calculate_water_coaster(rct_ride *ride)
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3704,6 +3749,7 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(rct_ride *ride)
 	ride_ratings_apply_scenery(&ratings, ride, 11155);
 	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 1, 1);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3745,6 +3791,7 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(rct_ride *ride)
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 3, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3898,6 +3945,7 @@ static void ride_ratings_calculate_inverted_impulse_coaster(rct_ride *ride)
 	ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 20, 2, 2, 2);
 	ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3937,6 +3985,7 @@ static void ride_ratings_calculate_mini_roller_coaster(rct_ride *ride)
 	ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0,50), 2, 2, 2);
 	ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3973,6 +4022,7 @@ static void ride_ratings_calculate_mine_ride(rct_ride *ride)
 	ride_ratings_apply_scenery(&ratings, ride, 16732);
 	ride_ratings_apply_first_length_penalty(&ratings, ride, 0x10E0000, 2, 2, 2);
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4018,6 +4068,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(rct_ride *ride)
 		ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 	}
 
+	ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
 

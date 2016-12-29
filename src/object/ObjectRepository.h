@@ -28,7 +28,8 @@ extern "C"
 #endif
 
 #ifdef __cplusplus
-    class Object;
+    interface   IPlatformEnvironment;
+    class       Object;
 #else
     typedef struct Object Object;
 #endif
@@ -63,6 +64,7 @@ interface IObjectRepository
     virtual ~IObjectRepository() { }
 
     virtual void                            LoadOrConstruct() abstract;
+    virtual void                            Construct() abstract;
     virtual size_t                          GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem *    GetObjects() const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
@@ -77,6 +79,7 @@ interface IObjectRepository
                                                       size_t dataSize) abstract;
 };
 
+IObjectRepository * CreateObjectRepository(IPlatformEnvironment * env);
 IObjectRepository * GetObjectRepository();
 
 #endif

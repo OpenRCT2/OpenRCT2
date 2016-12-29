@@ -16,10 +16,15 @@
 
 #pragma once
 
+#include <SDL_video.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+#include "../rct2.h"
+#include "drawing.h"
 
 extern rct_string_id DrawingEngineStringIds[3];
 
@@ -39,4 +44,3 @@ void drawing_engine_set_fps_uncapped(bool uncapped);
 #ifdef __cplusplus
 }
 #endif
-

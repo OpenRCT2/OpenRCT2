@@ -21,14 +21,15 @@
 #include "../drawing/lightfx.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/console.h"
 #include "../interface/Cursors.h"
+#include "../interface/console.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
-#include "../openrct2.h"
-#include "../title.h"
+#include "../OpenRCT2.h"
+#include "../rct2.h"
+#include "../title/TitleScreen.h"
 #include "../util/util.h"
 #include "../world/climate.h"
 #include "platform.h"
@@ -80,18 +81,13 @@ static int resolution_sort_func(const void *pa, const void *pb)
 
 void platform_update_fullscreen_resolutions()
 {
-	int i, displayIndex, numDisplayModes;
-	SDL_DisplayMode mode;
-	resolution *resLook, *resPlace;
-	float desktopAspectRatio, aspectRatio;
-
 	// Query number of display modes
-	displayIndex = SDL_GetWindowDisplayIndex(gWindow);
-	numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
+	int displayIndex = SDL_GetWindowDisplayIndex(gWindow);
+	int numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
 
 	// Get desktop aspect ratio
+	SDL_DisplayMode mode;
 	SDL_GetDesktopDisplayMode(displayIndex, &mode);
-	desktopAspectRatio = (float)mode.w / mode.h;
 
 	if (gResolutions != NULL)
 		free(gResolutions);
@@ -99,12 +95,13 @@ void platform_update_fullscreen_resolutions()
 	// Get resolutions
 	gNumResolutions = numDisplayModes;
 	gResolutions = malloc(gNumResolutions * sizeof(resolution));
-
 	gNumResolutions = 0;
-	for (i = 0; i < numDisplayModes; i++) {
+
+	float desktopAspectRatio = (float)mode.w / mode.h;
+	for (int i = 0; i < numDisplayModes; i++) {
 		SDL_GetDisplayMode(displayIndex, i, &mode);
 
-		aspectRatio = (float)mode.w / mode.h;
+		float aspectRatio = (float)mode.w / mode.h;
 		if (gResolutionsAllowAnyAspectRatio || fabs(desktopAspectRatio - aspectRatio) < 0.0001f) {
 			gResolutions[gNumResolutions].width = mode.w;
 			gResolutions[gNumResolutions].height = mode.h;
@@ -116,9 +113,9 @@ void platform_update_fullscreen_resolutions()
 	qsort(gResolutions, gNumResolutions, sizeof(resolution), resolution_sort_func);
 
 	// Remove duplicates
-	resPlace = &gResolutions[0];
+	resolution *resPlace = &gResolutions[0];
 	for (int i = 1; i < gNumResolutions; i++) {
-		resLook = &gResolutions[i];
+		resolution *resLook = &gResolutions[i];
 		if (resLook->width != resPlace->width || resLook->height != resPlace->height)
 			*++resPlace = *resLook;
 	}
@@ -134,11 +131,11 @@ void platform_update_fullscreen_resolutions()
 
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight)
 {
-	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth = 640, closestHeight = 480;
+	int closestWidth = 640, closestHeight = 480;
 
-	closestAreaDiff = -1;
-	destinationArea = inWidth * inHeight;
-	for (i = 0; i < gNumResolutions; i++) {
+	int closestAreaDiff = -1;
+	int destinationArea = inWidth * inHeight;
+	for (int i = 0; i < gNumResolutions; i++) {
 		// Check if exact match
 		if (gResolutions[i].width == inWidth && gResolutions[i].height == inHeight) {
 			closestWidth = gResolutions[i].width;
@@ -148,7 +145,7 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 		}
 
 		// Check if area is closer to best match
-		areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
+		int areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
 		if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
 			closestAreaDiff = areaDiff;
 			closestWidth = gResolutions[i].width;
@@ -190,7 +187,6 @@ static void platform_resize(int width, int height)
 		window_relocate_windows(dst_w, dst_h);
 	}
 
-	title_fix_location();
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly

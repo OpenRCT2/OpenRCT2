@@ -310,6 +310,7 @@ int strlogicalcmp(char const *a, char const *b) {
 	}
 
 	assert(false);
+	return 0;
 }
 
 utf8 * safe_strtrunc(utf8 * text, size_t size)
@@ -409,7 +410,7 @@ char *safe_strcat_path(char *destination, const char *source, size_t size)
 
 char *safe_strtrimleft(char *destination, const char *source, size_t size)
 {
-	while (*source == ' ' && *source != '\0') {
+	while (*source == ' ') {
 		source++;
 	}
 	return safe_strcpy(destination, source, size);

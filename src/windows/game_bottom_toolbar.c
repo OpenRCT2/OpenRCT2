@@ -26,6 +26,7 @@
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
+#include "../rct2.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/park.h"
@@ -163,7 +164,6 @@ void window_game_bottom_toolbar_open()
  */
 static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_window *mainWindow;
 	rct_news_item *newsItem;
 
 	switch (widgetIndex) {
@@ -199,7 +199,8 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 			if (x == SPRITE_LOCATION_NULL)
 				break;
 
-			if ((mainWindow = window_get_main()) != NULL)
+			rct_window *mainWindow = window_get_main();
+			if (mainWindow != NULL)
 				window_scroll_to_location(mainWindow, x, y, z);
 		}
 		break;
