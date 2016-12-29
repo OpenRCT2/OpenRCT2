@@ -364,7 +364,7 @@ static const bool peep_slow_walking_types[] = {
 	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
 	false,	// PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
 	true,	// PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
-	true,	// PEEP_SPRITE_TYPE_19
+	true,	// PEEP_SPRITE_TYPE_BALLOON
 };
 
 /**
