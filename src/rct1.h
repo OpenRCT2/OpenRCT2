@@ -78,8 +78,8 @@ typedef struct rct1_ride {
 	uint8 min_waiting_time;
 	uint8 max_waiting_time;
 	uint8 operation_option;
-    uint8 boat_hire_return_direction;
-    uint16 boat_hire_return_position;
+	uint8 boat_hire_return_direction;
+	uint16 boat_hire_return_position;
 	uint8 data_logging_index;
 	uint8 special_track_elements;
 	uint16 unk_86;

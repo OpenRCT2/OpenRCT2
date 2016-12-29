@@ -597,11 +597,7 @@ private:
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = 0xFFFF;
-
             dst->queue_length[i] = src->num_peeps_in_queue[i];
-            if (src->last_peep_in_queue[i] != 0xFFFF)
-                dst->queue_length[i]--;
-
         }
         dst->num_stations = src->num_stations;
 
