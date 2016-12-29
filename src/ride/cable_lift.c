@@ -475,6 +475,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 		rct_vehicle* vehicle = GET_VEHICLE(spriteId);
 		vehicleCount++;
 		frictionTotal += vehicle->friction;
+		assert(INT32_MAX - var2CTotal >= vehicle->acceleration);
 		var2CTotal += vehicle->acceleration;
 		spriteId = vehicle->next_vehicle_on_train;
 	}
