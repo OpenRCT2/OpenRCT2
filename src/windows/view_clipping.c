@@ -96,6 +96,7 @@ void window_view_clipping_open()
 {
 	rct_window* window;
 
+	fprintf(stderr, "Open start\n");
 	// Check if window is already open
 	if (window_find_by_class(WC_VIEW_CLIPPING) != NULL)
 		return;
@@ -103,13 +104,13 @@ void window_view_clipping_open()
 	window = window_create(gScreenWidth - 98, 29, 98, 94, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
 	window->widgets = window_view_clipping_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) |
-		(1 << WIDX_CLIP_HEIGHT_CHECKBOX) | (1 << WIDX_CLIP_HEIGHT_SLIDER);
+		(1 << WIDX_CLIP_HEIGHT_CHECKBOX); //| (1 << WIDX_CLIP_HEIGHT_SLIDER);
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
 	//window_invalidate(window);
 
-	colour_scheme_update(window);
+	//colour_scheme_update(window); // Segfaults - not set up for colour schemes?
 
 	// Set the height units symbol
 	switch (gConfigGeneral.measurement_format) {
@@ -131,6 +132,7 @@ void window_view_clipping_open()
 		mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
 		window_invalidate(mainWindow);
 	}
+	fprintf(stderr, "Open end\n");
 }
 
 void window_view_clipping_close()
@@ -184,6 +186,7 @@ static void window_view_clipping_mousedown(int widgetIndex, rct_window*w, rct_wi
 
 static void window_view_clipping_update(rct_window *w)
 {
+	fprintf(stderr, "Update start\n");
 	rct_widget *widget;
 	widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
 	uint8 clip_height = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 255);
@@ -203,7 +206,8 @@ static void window_view_clipping_invalidate(rct_window *w)
 {
 	rct_widget* widget;
 
-	colour_scheme_update(w);
+	fprintf(stderr, "Invalidate start\n");
+	//colour_scheme_update(w);
 
 	w->disabled_widgets = 0;
 	// Disable the height slider and height value according to the height checkbox.
@@ -231,6 +235,7 @@ static void window_view_clipping_invalidate(rct_window *w)
 	//window_view_clipping_widgets[WIDX_CLIP_HEIGHT_CHECKBOX].type = WWT_CHECKBOX;
 	//window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER].type = WWT_SCROLL;
 	//window_view_clipping_widgets[WIDX_CLIP_HEIGHT_VALUE].type = WWT_SPINNER;
+	fprintf(stderr, "Invalidate end\n");
 }
 
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
