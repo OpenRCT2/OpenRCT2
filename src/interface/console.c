@@ -445,7 +445,7 @@ static int cc_echo(const utf8 **argv, int argc)
 }
 
 
-static void cc_ride_set_all_vehicles(rct_ride* ride, int value, void (*set_func)(rct_vehicle*, int))
+static int cc_ride_set_all_vehicles(rct_ride* ride, int value, void (*set_func)(rct_vehicle*, int))
 {
 	for (int i = 0; i < ride->num_vehicles; i++) {
 		uint16 vehicle_index = ride->vehicles[i];
