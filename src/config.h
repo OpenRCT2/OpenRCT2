@@ -144,7 +144,8 @@ typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
-	utf8string game_path;
+	utf8string rct1_path;
+	utf8string rct2_path;
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;

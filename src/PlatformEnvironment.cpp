@@ -46,7 +46,6 @@ public:
         switch (base) {
         default:
         case DIRBASE::RCT1:
-            throw Exception("Not implemented");
         case DIRBASE::RCT2:
             directoryName = DirectoryNamesRCT2[(size_t)did];
             break;

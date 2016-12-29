@@ -368,7 +368,8 @@ namespace OpenRCT2
 
         utf8 path[260];
         std::string basePaths[4];
-        basePaths[(size_t)DIRBASE::RCT2] = std::string(gRCT2AddressAppPath);
+        basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
+        basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
         platform_get_openrct_data_path(path, sizeof(path));
         basePaths[(size_t)DIRBASE::OPENRCT2] = std::string(path);
         platform_get_user_directory(path, nullptr, sizeof(path));

@@ -382,7 +382,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     // Update RCT2 path in config
     config_set_defaults();
     config_open_default();
-    String::DiscardDuplicate(&gConfigGeneral.game_path, path);
+    String::DiscardDuplicate(&gConfigGeneral.rct2_path, path);
     if (config_save_default())
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path);
