@@ -721,7 +721,6 @@ private:
 
         dst->music_tune_id = 255;
         dst->measurement_index = 255;
-        dst->excitement = (ride_rating)-1;
     }
 
     void ImportRideMeasurements()
