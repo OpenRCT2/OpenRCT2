@@ -2145,7 +2145,7 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
 	switch (ride->status) {
 	case RIDE_STATUS_CLOSED:
 		highlightedIndex = 0;
-		if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) || (ride->lifecycle_flags & RIDE_LIFECYCLE_11))
+		if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) || (ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE))
 			break;
 
 		highlightedIndex = 2;

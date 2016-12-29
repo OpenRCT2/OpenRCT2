@@ -2941,7 +2941,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 		return;
 
 	vehicle->lost_time_out++;
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_11)
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE)
 		return;
 
 	uint16 limit = ride->type == RIDE_TYPE_BOAT_RIDE ? 15360 : 9600;
@@ -2949,7 +2949,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	if (vehicle->lost_time_out <= limit)
 		return;
 
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_HAS_STALLED_VEHICLE;
 
 	set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].number);
 

@@ -1054,7 +1054,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 {
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
 		ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
-		ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_11);
+		ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
 		for (size_t i = 0; i < 32; i++) {
 			uint16 spriteIndex = ride->vehicles[i];
@@ -2331,7 +2331,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrentRainLevel == 0 ? 3 : 20;
 
 	entry = get_ride_entry_by_ride(ride);
-	if (entry->flags & RIDE_ENTRY_FLAG_14)
+	if (entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
 		return -1;
 
 	availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
