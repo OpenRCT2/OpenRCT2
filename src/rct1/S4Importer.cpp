@@ -146,6 +146,7 @@ public:
         ImportRides();
         ImportRideMeasurements();
         ImportSprites();
+        //FixNumPeepsInQueue();
         ImportMapElements();
         ImportMapAnimations();
         ImportPeepSpawns();
@@ -569,11 +570,16 @@ private:
         dst->status = RIDE_STATUS_CLOSED;
 
         // Flags
-//        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-//        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
-//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-//        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-        dst->lifecycle_flags = src->lifecycle_flags;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)                dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)     dst->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)     dst->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)              dst->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_TESTED)               dst->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+
+        //dst->lifecycle_flags = src->lifecycle_flags;
 
         // Station
         dst->overall_view = src->overall_view;
@@ -591,6 +597,7 @@ private:
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
             dst->last_peep_in_queue[i] = 0xFFFF;
+            dst->queue_length[i] = src->num_peeps_in_queue[i];
         }
         dst->num_stations = src->num_stations;
 
@@ -603,6 +610,8 @@ private:
         dst->proposed_num_vehicles = src->num_trains;
         dst->max_trains = 32;
         dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
+        dst->special_track_elements = src->special_track_elements;
+        dst->num_sheltered_sections = src->num_sheltered_sections;
 
         // Operation
         dst->depart_flags = src->depart_flags;
@@ -671,8 +680,6 @@ private:
         }
 
         // Fix other Z
-        // dst->start_drop_height /= 2;
-        // dst->highest_drop_height = 1;
         // if (dst->cur_test_track_z != 255)
         // {
         //     dst->cur_test_track_z /= 2;
@@ -703,25 +710,41 @@ private:
         dst->max_negative_vertical_g = src->max_negative_vertical_g;
         dst->max_lateral_g = src->max_lateral_g;
         dst->drops = src->num_drops;
+        dst->start_drop_height = src->start_drop_height / 2;
         dst->highest_drop_height = src->highest_drop_height / 2;
         dst->inversions = src->num_inversions;
+        dst->measurement_index = 255;
 
-        // Finance
+        // Finance / customers
         dst->upkeep_cost = src->upkeep_cost;
         dst->price = src->price;
         dst->income_per_hour = src->income_per_hour;
-
+        dst->total_customers = src->total_customers;
+        dst->profit = src->profit;
+        dst->total_profit = src->total_profit;
         dst->value = src->value;
-        dst->satisfaction = 255;
-        dst->satisfaction_time_out = 0;
-        dst->satisfaction_next = 0;
+
+        dst->satisfaction = src->satisfaction;
+        dst->satisfaction_time_out = src->satisfaction_time_out;
+        dst->satisfaction_next = src->satisfaction_next;
         dst->popularity = src->popularity;
         dst->popularity_next = src->popularity_next;
         dst->popularity_time_out = src->popularity_time_out;
 
         dst->music_tune_id = 255;
-        dst->measurement_index = 255;
-        dst->excitement = (ride_rating)-1;
+    }
+
+    void FixNumPeepsInQueue()
+    {
+        int i;
+        rct_ride *ride;
+        FOR_ALL_RIDES(i, ride)
+        {
+            for (int stationIndex = 0; stationIndex < 4; stationIndex++)
+            {
+                ride->queue_length[stationIndex] = 0;
+            }
+        }
     }
 
     void ImportRideMeasurements()

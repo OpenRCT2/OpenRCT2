@@ -138,7 +138,7 @@ typedef struct rct_ride {
 	uint8 mode;						// 0x004
 	uint8 colour_scheme_type;		// 0x005
 	rct_vehicle_colour vehicle_colours[32];		// 0x006
-	uint8 pad_046[0x03];
+	uint8 pad_046[0x03];            // Used to be track colours in RCT1 without expansions
 	// 0 = closed, 1 = open, 2 = test
 	uint8 status;					// 0x049
 	rct_string_id name;				// 0x04A
@@ -160,7 +160,7 @@ typedef struct rct_ride {
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint16 last_peep_in_queue[4];	// 0x07A
-	uint8 pad_082[4];
+	uint8 pad_082[4];               // Used to be number of peeps in queue in RCT1, but this has moved.
 	uint16 vehicles[32];			// 0x086 Points to the first car in the train
 	uint8 depart_flags;				// 0x0C6
 
