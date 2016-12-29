@@ -943,6 +943,113 @@ static void vertical_drop_rc_track_right_quarter_turn_1_90_deg_down(uint8 rideIn
 	bolliger_mabillard_track_right_quarter_turn_1_90_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
 }
 
+
+/* The following elements used to be specific to the Twister RC */
+static void vertical_drop_rc_track_half_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_half_loop_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_half_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_half_loop_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_corkscrew_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_corkscrew_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_corkscrew_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_corkscrew_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_corkscrew_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_corkscrew_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_corkscrew_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_flat_to_60_deg_up_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_flat_to_60_deg_up_long_base(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_60_deg_up_to_flat_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_60_deg_up_to_flat_long_base(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_flat_to_60_deg_down_long_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_flat_to_60_deg_down_long_base(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_60_deg_up_to_flat_long_base122(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_60_deg_up_to_flat_long_base122(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_barrel_roll_up_to_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_barrel_roll_up_to_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_barrel_roll_up_to_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_barrel_roll_up_to_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_barrel_roll_down_to_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_barrel_roll_down_to_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_barrel_roll_down_to_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_barrel_roll_down_to_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_powered_lift(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_powered_lift(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_large_half_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_large_half_loop_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_large_half_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_large_half_loop_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_right_large_half_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_right_large_half_loop_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_left_large_half_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_left_large_half_loop_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_90_deg_to_inverted_flat_quarter_loop_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
+static void vertical_drop_rc_track_inverted_flat_to_90_deg_quarter_loop_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_BOXED);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int trackType, int direction)
 {
 	switch (trackType) {
@@ -1134,14 +1241,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int trackType, in
 		return vertical_drop_rc_track_diag_60_deg_down_to_25_deg_down;
 	case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
 		return vertical_drop_rc_track_diag_25_deg_down_to_flat;
-	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
-		return vertical_drop_rc_track_diag_flat_to_60_deg_up;
-	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		return vertical_drop_rc_track_diag_60_deg_up_to_flat;
-	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
-		return vertical_drop_rc_track_diag_flat_to_60_deg_down;
-	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
-		return vertical_drop_rc_track_diag_60_deg_down_to_flat;
 	case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
 		return vertical_drop_rc_track_diag_flat_to_left_bank;
 	case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
@@ -1263,9 +1362,45 @@ TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int trackType, in
         return vertical_drop_rc_track_60_deg_down_to_flat;
     case TRACK_ELEM_BRAKE_FOR_DROP:
         return vertical_drop_rc_track_brake_for_drop;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+		return vertical_drop_rc_track_diag_flat_to_60_deg_up;
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		return vertical_drop_rc_track_diag_60_deg_up_to_flat;
+	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+		return vertical_drop_rc_track_diag_flat_to_60_deg_down;
+	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+		return vertical_drop_rc_track_diag_60_deg_down_to_flat;
     /* These track elements used to be specific to the steel twister */
-
-
+	case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+		return vertical_drop_rc_track_flat_to_60_deg_up_long_base;
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
+		return vertical_drop_rc_track_60_deg_up_to_flat_long_base;
+	case TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE:
+		return vertical_drop_rc_track_flat_to_60_deg_down_long_base;
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122:
+		return vertical_drop_rc_track_60_deg_up_to_flat_long_base122;
+	case TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN:
+		return vertical_drop_rc_track_left_barrel_roll_up_to_down;
+	case TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN:
+		return vertical_drop_rc_track_right_barrel_roll_up_to_down;
+	case TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP:
+		return vertical_drop_rc_track_left_barrel_roll_down_to_up;
+	case TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP:
+		return vertical_drop_rc_track_right_barrel_roll_down_to_up;
+	case TRACK_ELEM_POWERED_LIFT:
+		return vertical_drop_rc_track_powered_lift;
+	case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
+		return vertical_drop_rc_track_left_large_half_loop_up;
+	case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+		return vertical_drop_rc_track_right_large_half_loop_up;
+	case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
+		return vertical_drop_rc_track_right_large_half_loop_down;
+	case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+		return vertical_drop_rc_track_left_large_half_loop_down;
+	case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
+		return vertical_drop_rc_track_90_deg_to_inverted_flat_quarter_loop_up;
+	case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+		return vertical_drop_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
 	}
 	return NULL;
 }
