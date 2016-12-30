@@ -19,6 +19,7 @@
 #include "../../interface/viewport.h"
 #include "../../peep/staff.h"
 #include "../../rct2.h"
+#include "../../sprites.h"
 #include "map_element.h"
 #include "surface.h"
 
@@ -182,18 +183,43 @@ const uint8 byte_97B5B0[] = {
 	10, 11, 12, 13, 14, 14
 };
 
+#define EDGE_SPRITES_NORMAL(base) { \
+	(base) +  0, \
+	(base) + 20, \
+	(base) + 10, \
+	(base) + 30, \
+}
+#define EDGE_SPRITES_TUNNELS(base) { \
+	(base) + 36, \
+	(base) + 40, \
+	(base) + 44, \
+	(base) + 48, \
+	(base) + 52, \
+	(base) + 56, \
+	(base) + 60, \
+	(base) + 64, \
+	(base) + 68, \
+	(base) + 72, \
+	(base) + 76, \
+	(base) + 80, \
+	(base) + 36, \
+	(base) + 48, \
+	(base) + 60, \
+	(base) + 72, \
+}
+
 const uint32 stru_97B5C0[][5] = {
-	{1579, 1599, 1589, 1609, 0},
-	{1747, 1767, 1757, 1777, 1},
-	{1663, 1683, 1673, 1693, 2},
-	{1831, 1851, 1841, 1861, 3},
+	EDGE_SPRITES_NORMAL(SPR_EDGE_ROCK_BASE),
+	EDGE_SPRITES_NORMAL(SPR_EDGE_WOOD_RED_BASE),
+	EDGE_SPRITES_NORMAL(SPR_EDGE_WOOD_BLACK_BASE),
+	EDGE_SPRITES_NORMAL(SPR_EDGE_ICE_BASE),
 };
 
 const uint32 stru_97B640[][16] = {
-	{1615, 1619, 1623, 1627, 1631, 1635, 1639, 1643, 1647, 1651, 1655, 1659, 1615, 1627, 1639, 1651},
-	{1783, 1787, 1791, 1795, 1799, 1803, 1807, 1811, 1815, 1819, 1823, 1827, 1783, 1795, 1807, 1819},
-	{1699, 1703, 1707, 1711, 1715, 1719, 1723, 1727, 1731, 1735, 1739, 1743, 1699, 1711, 1723, 1735},
-	{1867, 1871, 1875, 1879, 1883, 1887, 1891, 1895, 1899, 1903, 1907, 1911, 1867, 1879, 1891, 1903},
+	EDGE_SPRITES_TUNNELS(SPR_EDGE_ROCK_BASE),
+	EDGE_SPRITES_TUNNELS(SPR_EDGE_WOOD_RED_BASE),
+	EDGE_SPRITES_TUNNELS(SPR_EDGE_WOOD_BLACK_BASE),
+	EDGE_SPRITES_TUNNELS(SPR_EDGE_ICE_BASE),
 };
 
 const uint8 byte_97B740[] = {
@@ -1177,7 +1203,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
-	    && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
+		&& !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
 			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
@@ -1236,7 +1262,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 						local_height += 16;
 
 						if (waterHeight != local_height
-						    || !(local_surfaceShape & 0x10)) {
+							|| !(local_surfaceShape & 0x10)) {
 							local_height = waterHeight;
 							local_surfaceShape = 0;
 						} else {
@@ -1279,10 +1305,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	if (zoomLevel == 0
-	    && has_surface
-	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
-	    && gConfigGeneral.landscape_smoothing) {
+		&& has_surface
+		&& !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+		&& !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
+		&& gConfigGeneral.landscape_smoothing) {
 		viewport_surface_smoothen_edge(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_smoothen_edge(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_smoothen_edge(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
@@ -1291,8 +1317,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE
-	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
-	    && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+		&& !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
+		&& !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 
 		uint8 image_offset = byte_97B444[surfaceShape];
 		uint32 base_image = terrain_type;
