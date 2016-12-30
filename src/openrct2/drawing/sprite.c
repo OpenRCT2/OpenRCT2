@@ -618,6 +618,8 @@ rct_g1_element *gfx_get_g1_element(sint32 image_id) {
 	if (image_id < SPR_G2_BEGIN) {
 		return &g1Elements[image_id];
 	}
-
-	return &g2.elements[image_id - SPR_G2_BEGIN];
+	if (image_id < SPR_CSG_BEGIN) {
+		return &g2.elements[image_id - SPR_G2_BEGIN];
+	}
+	return &csg.elements[image_id - SPR_CSG_BEGIN];
 }
