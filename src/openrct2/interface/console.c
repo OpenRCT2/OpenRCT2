@@ -446,6 +446,33 @@ static sint32 cc_echo(const utf8 **argv, sint32 argc)
 	return 0;
 }
 
+static void cc_ride_set_all_vehicles(rct_ride* ride, int value, void (*set_func)(rct_vehicle*, int))
+{
+	for (int i = 0; i < ride->num_vehicles; i++) {
+		uint16 vehicle_index = ride->vehicles[i];
+ 		while (vehicle_index != SPRITE_INDEX_NULL) {
+			rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
+			set_func(vehicle, value);
+			vehicle_index = vehicle->next_vehicle_on_train;
+		}
+	}
+}
+
+static void cc_ride_vehicle_set_friction(rct_vehicle* vehicle, int value)
+{
+	vehicle->friction = value;
+}
+
+static void cc_ride_vehicle_set_powered_velocity(rct_vehicle* vehicle, int value)
+{
+	vehicle->speed = value;
+}
+
+static void cc_ride_vehicle_set_powered_acceleration(rct_vehicle* vehicle, int value)
+{
+	vehicle->powered_acceleration = value;
+}
+
 static sint32 cc_rides(const utf8 **argv, sint32 argc)
 {
 	if (argc > 0) {
@@ -467,7 +494,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 						format_string(mode_name, 128, mode_string_id, 0);
 						console_printf("%02d - %s", i, mode_name);
 					}
-					
+
 				} else {
 					console_printf("rides set type <ride id> <ride type>");
 					console_printf("rides set mode [<ride id> <operating mode>]");
@@ -478,72 +505,49 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				}
 				return 0;
 			}
-			if (strcmp(argv[1], "type") == 0) {
-				bool int_valid[2] = { 0 };
-				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-				sint32 type = console_parse_int(argv[3], &int_valid[1]);
-				if (!int_valid[0] || !int_valid[1]) {
-					console_printf("This command expects integer arguments");
-				} else if (ride_index < 0) {
-					console_printf("Ride index must not be negative");
-				} else {
-					gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-					sint32 res = game_do_command(0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-					if (res == MONEY32_UNDEFINED) {
-						console_printf("That didn't work");
-					}
-				}
+			sint32 optional;
+			bool int_valid[3] = { 0 };
+			sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
+			sint32 value = console_parse_int(argv[3], &int_valid[1]);
+			if (argc > 4) {
+				optional = console_parse_int(argv[4], &int_valid[2]);
 			}
-			else if (strcmp(argv[1], "mode") == 0) {
-				bool int_valid[2] = { 0 };
-				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-				sint32 mode = console_parse_int(argv[3], &int_valid[1]);
-				if (!int_valid[0] || !int_valid[1]) {
-					console_printf("This command expects integer arguments");
-				} else if (ride_index < 0) {
-					console_printf("Ride index must not be negative");
-				} else {
-					rct_ride *ride = get_ride(ride_index);
-					if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1)) {
-						console_printf("Invalid ride mode.");
-					}
-					else if (ride == NULL || ride->type == RIDE_TYPE_NULL) {
-						console_printf("No ride found with index %d", ride_index);
-					}
-					else {
-						ride->mode = mode;
-						invalidate_test_results(ride_index);
-					}
-				}
+			if (!int_valid[0] || !int_valid[1] || ((argc > 4) && !int_valid[2])) {
+				console_printf("This command expects integer arguments");
+				return 0;
 			}
-			else if (strcmp(argv[1], "friction") == 0) {
-				bool int_valid[2] = { 0 };
-				sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-				sint32 friction = console_parse_int(argv[3], &int_valid[1]);
+			if ((ride_index < 0) || (ride_index > 254)) {
+				console_printf("Ride index must be between 0 and 254");
+				return 0;
+			}
+			rct_ride *ride = get_ride(ride_index);
+			if (ride->type == RIDE_TYPE_NULL) {
+				console_printf("No ride found with index %d", ride_index);
+				return 0;
+			}
 
-				if (ride_index < 0) {
-					console_printf("Ride index must not be negative");
+
+			if (strcmp(argv[1], "type") == 0) {
+				gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
+				int res = game_do_command(0, (ride->type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+				if (res == MONEY32_UNDEFINED) {
+					console_printf("That didn't work");
 				}
-				else if (!int_valid[0] || !int_valid[1]) {
-					console_printf("This command expects integer arguments");
+			} else if (strcmp(argv[1], "friction") == 0) {
+				if (value <= 0) {
+					console_printf("Friction value must be strictly positive");
+				} else {
+					cc_ride_set_all_vehicles(ride,value,cc_ride_vehicle_set_friction);
 				}
-				else {
-					rct_ride *ride = get_ride(ride_index);
-					if (friction <= 0) {
-						console_printf("Friction value must be strictly positive");
-					}
-					else if (ride->type == RIDE_TYPE_NULL) {
-						console_printf("No ride found with index %d", ride_index);
-					}
-					else {
-						for (sint32 i = 0; i < ride->num_vehicles; i++) {
-							uint16 vehicle_index = ride->vehicles[i];
-							while (vehicle_index != SPRITE_INDEX_NULL) {
-								rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
-								vehicle->friction = friction;
-								vehicle_index = vehicle->next_vehicle_on_train;
-							}
-						}
+			} else if (strcmp(argv[1], "powered_velocity") == 0) {
+				if((value < 1) || (value > 65535)) {
+					console_printf("Velocity must be between 1 and 65535");
+				} else if ((argc > 4) && ((optional < 1) || (optional > 65535))) {
+					console_printf("Acceleration must be between 1 and 65535");
+				} else {
+					cc_ride_set_all_vehicles(ride, value, cc_ride_vehicle_set_powered_velocity);
+					if (argc > 4) {
+						cc_ride_set_all_vehicles(ride, optional, cc_ride_vehicle_set_powered_acceleration);
 					}
 				}
 			}
