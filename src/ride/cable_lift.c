@@ -475,7 +475,14 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 		rct_vehicle* vehicle = GET_VEHICLE(spriteId);
 		vehicleCount++;
 		frictionTotal += vehicle->friction;
-		var2CTotal += vehicle->acceleration;
+		// Prevent over/underflow in var2CTotal
+		if ((INT32_MAX - abs(vehicle->acceleration)) < abs(var2CTotal) &&
+				(var2CTotal < 0) == (vehicle->acceleration < 0))
+		{
+			var2CTotal = (var2CTotal < 0) ? INT32_MIN : INT32_MAX ;
+		} else {
+			var2CTotal += vehicle->acceleration;
+		}
 		spriteId = vehicle->next_vehicle_on_train;
 	}
 
