@@ -502,6 +502,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 					console_printf("rides set excitement <ride id> <excitement value>");
 					console_printf("rides set intensity <ride id> <intensity value>");
 					console_printf("rides set nausea <ride id> <nausea value>");
+                    console_printf("rides set powered_velocity <ride id> <velocity> [acceleration]");
 				}
 				return 0;
 			}
