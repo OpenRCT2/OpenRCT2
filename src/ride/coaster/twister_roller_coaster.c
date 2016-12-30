@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+;#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -37,283 +37,283 @@ static void twister_rc_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 di
 /** rct2: 0x008AB8F4, 0x008AB904, 0x008AB914 */
 static void twister_rc_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_station(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_station(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB6B4 */
 static void twister_rc_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB6C4 */
 static void twister_rc_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB6D4 */
 static void twister_rc_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB6E4 */
 static void twister_rc_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB6F4 */
 static void twister_rc_track_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_up_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB704 */
 static void twister_rc_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB714 */
 static void twister_rc_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB724 */
 static void twister_rc_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB734 */
 static void twister_rc_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB744 */
 static void twister_rc_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_down_to_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_down_to_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB754 */
 static void twister_rc_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_down_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_down_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB764 */
 static void twister_rc_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_down_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_down_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB774 */
 static void twister_rc_track_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB784 */
 static void twister_rc_track_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB794 */
 static void twister_rc_track_flat_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7A4 */
 static void twister_rc_track_flat_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7B4 */
 static void twister_rc_track_left_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_bank_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_bank_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7C4 */
 static void twister_rc_track_right_bank_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_bank_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_bank_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7D4 */
 static void twister_rc_track_banked_left_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_banked_left_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_banked_left_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7E4 */
 static void twister_rc_track_banked_right_quarter_turn_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_banked_right_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_banked_right_quarter_turn_5(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB7F4 */
 static void twister_rc_track_left_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_bank_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_bank_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB804 */
 static void twister_rc_track_right_bank_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_bank_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_bank_to_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB814 */
 static void twister_rc_track_25_deg_up_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_up_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB824 */
 static void twister_rc_track_25_deg_up_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_up_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_up_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB834 */
 static void twister_rc_track_left_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_bank_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_bank_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB844 */
 static void twister_rc_track_right_bank_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_bank_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_bank_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB854 */
 static void twister_rc_track_25_deg_down_to_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_down_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_down_to_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB864 */
 static void twister_rc_track_25_deg_down_to_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_25_deg_down_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_25_deg_down_to_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB874 */
 static void twister_rc_track_left_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB884 */
 static void twister_rc_track_right_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB894 */
 static void twister_rc_track_left_quarter_turn_5_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB8A4 */
 static void twister_rc_track_right_quarter_turn_5_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB8B4 */
 static void twister_rc_track_left_quarter_turn_5_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_5_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_5_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB8C4 */
 static void twister_rc_track_right_quarter_turn_5_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_5_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_5_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB8D4 */
 static void twister_rc_track_s_bend_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_s_bend_left(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_s_bend_left(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB8E4 */
 static void twister_rc_track_s_bend_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_s_bend_right(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_s_bend_right(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008ABA84 */
 static void twister_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_vertical_loop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_vertical_loop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008ABA94 */
 static void twister_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_vertical_loop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_vertical_loop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB924 */
 static void twister_rc_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_3(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_3(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB934 */
 static void twister_rc_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_3(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_3(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB944 */
 static void twister_rc_track_left_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_3_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_3_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB954 */
 static void twister_rc_track_right_quarter_turn_3_bank(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_3_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_3_bank(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB964 */
 static void twister_rc_track_left_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB974 */
 static void twister_rc_track_right_quarter_turn_3_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB984 */
 static void twister_rc_track_left_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_left_quarter_turn_3_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_left_quarter_turn_3_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB994 */
 static void twister_rc_track_right_quarter_turn_3_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_right_quarter_turn_3_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_right_quarter_turn_3_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB9A4 */
@@ -379,12 +379,14 @@ static void twister_rc_track_right_quarter_turn_1_60_deg_up(uint8 rideIndex, uin
 /** rct2: 0x008ABA34 */
 static void twister_rc_track_left_quarter_turn_1_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bolliger_mabillard_track_left_quarter_turn_1_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);}
+	bolliger_mabillard_track_left_quarter_turn_1_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+}
 
 /** rct2: 0x008ABA54 */
 static void twister_rc_track_right_quarter_turn_1_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bolliger_mabillard_track_right_quarter_turn_1_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);}
+	bolliger_mabillard_track_right_quarter_turn_1_60_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+}
 
 /** rct2: 0x008ABA64 */
 static void twister_rc_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -773,17 +775,20 @@ static void twister_rc_track_right_banked_25_deg_up_to_25_deg_up(uint8 rideIndex
 /** rct2: 0x008ABF64 */
 static void twister_rc_track_25_deg_down_to_left_banked_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);}
+	bolliger_mabillard_track_25_deg_down_to_left_banked_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+}
 
 /** rct2: 0x008ABF74 */
 static void twister_rc_track_25_deg_down_to_right_banked_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);}
+	bolliger_mabillard_track_25_deg_down_to_right_banked_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+}
 
 /** rct2: 0x008ABF84 */
 static void twister_rc_track_left_banked_25_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);}
+	bolliger_mabillard_track_left_banked_25_deg_down_to_25_deg_down(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+}
 
 /** rct2: 0x008ABF94 */
 static void twister_rc_track_right_banked_25_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -914,27 +919,27 @@ static void twister_rc_track_right_quarter_turn_1_90_deg_down(uint8 rideIndex, u
 /* The following track elements used to be specific to the Vertical Roller Coaster */
 static void twister_rc_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 static void twister_rc_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 static void twister_rc_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_flat_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_flat_to_60_deg_up(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 static void twister_rc_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_60_deg_up_to_flat(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 static void twister_rc_track_brake_for_drop(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-    bolliger_mabillard_track_brake_for_drop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
+	bolliger_mabillard_track_brake_for_drop(rideIndex, trackSequence, direction, height, mapElement, METAL_SUPPORTS_TUBES);
 }
 
 static void twister_rc_track_diag_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -1186,18 +1191,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int trackType, int dire
 		return twister_rc_track_left_quarter_turn_3_25_deg_down;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
 		return twister_rc_track_right_quarter_turn_3_25_deg_down;
-	case TRACK_ELEM_HALF_LOOP_UP:
-		return twister_rc_track_half_loop_up;
-	case TRACK_ELEM_HALF_LOOP_DOWN:
-		return twister_rc_track_half_loop_down;
-	case TRACK_ELEM_LEFT_CORKSCREW_UP:
-		return twister_rc_track_left_corkscrew_up;
-	case TRACK_ELEM_RIGHT_CORKSCREW_UP:
-		return twister_rc_track_right_corkscrew_up;
-	case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
-		return twister_rc_track_left_corkscrew_down;
-	case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
-		return twister_rc_track_right_corkscrew_down;
 	case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
 		return twister_rc_track_left_half_banked_helix_up_small;
 	case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
@@ -1398,17 +1391,17 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int trackType, int dire
 		return twister_rc_track_left_quarter_turn_1_90_deg_down;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
 		return twister_rc_track_right_quarter_turn_1_90_deg_down;
-    /* The following track elements used to be specific to the vertical RC */
-    case TRACK_ELEM_FLAT_TO_60_DEG_UP:
-        return twister_rc_track_flat_to_60_deg_up;
-    case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-        return twister_rc_track_60_deg_up_to_flat;
-    case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
-        return twister_rc_track_flat_to_60_deg_down;
-    case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
-        return twister_rc_track_60_deg_down_to_flat;
-    case TRACK_ELEM_BRAKE_FOR_DROP:
-        return twister_rc_track_brake_for_drop;
+	/* The following track elements used to be specific to the vertical RC */
+	case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+		return twister_rc_track_flat_to_60_deg_up;
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+		return twister_rc_track_60_deg_up_to_flat;
+	case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+		return twister_rc_track_flat_to_60_deg_down;
+	case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+		return twister_rc_track_60_deg_down_to_flat;
+	case TRACK_ELEM_BRAKE_FOR_DROP:
+		return twister_rc_track_brake_for_drop;
 	case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
 		return twister_rc_track_diag_flat_to_60_deg_up;
 	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
@@ -1418,6 +1411,18 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int trackType, int dire
 	case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
 		return twister_rc_track_diag_60_deg_down_to_flat;
 	/* The following track elements used to be specific to the Twister RC */
+	case TRACK_ELEM_HALF_LOOP_UP:
+		return twister_rc_track_half_loop_up;
+	case TRACK_ELEM_HALF_LOOP_DOWN:
+		return twister_rc_track_half_loop_down;
+	case TRACK_ELEM_LEFT_CORKSCREW_UP:
+		return twister_rc_track_left_corkscrew_up;
+	case TRACK_ELEM_RIGHT_CORKSCREW_UP:
+		return twister_rc_track_right_corkscrew_up;
+	case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
+		return twister_rc_track_left_corkscrew_down;
+	case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
+		return twister_rc_track_right_corkscrew_down;
 	case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
 		return twister_rc_track_flat_to_60_deg_up_long_base;
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
