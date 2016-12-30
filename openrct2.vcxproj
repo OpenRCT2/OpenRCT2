@@ -237,6 +237,7 @@
     <ClCompile Include="src\ride\cable_lift.c" />
     <ClCompile Include="src\ride\coaster\air_powered_vertical_coaster.c" />
     <ClCompile Include="src\ride\coaster\bobsleigh_coaster.c" />
+    <ClCompile Include="src\ride\coaster\bolliger_mabillard_track.c" />
     <ClCompile Include="src\ride\coaster\compact_inverted_coaster.c" />
     <ClCompile Include="src\ride\coaster\corkscrew_roller_coaster.c" />
     <ClCompile Include="src\ride\coaster\flying_roller_coaster.c" />
