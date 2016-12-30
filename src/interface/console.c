@@ -424,6 +424,11 @@ static void console_history_add(const utf8 *src)
 	memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
 	_consoleHistoryIndex = _consoleHistoryCount;
 }
+static int cc_cose(const char **argv, int argc)
+{
+	console_close();
+	return 0;
+}
 
 static int cc_clear(const utf8 **argv, int argc)
 {
@@ -1130,6 +1135,7 @@ utf8* console_window_table[] = {
 };
 
 console_command console_command_table[] = {
+	{ "close", cc_cose, "Closes the console.", "close"},
 	{ "clear", cc_clear, "Clears the console.", "clear"},
 	{ "hide", cc_hide, "Hides the console.", "hide"},
 	{ "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
