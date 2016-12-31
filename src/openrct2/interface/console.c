@@ -532,7 +532,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 				int res = game_do_command(0, (value << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 				if (res == MONEY32_UNDEFINED) {
-					console_printf("That didn't work");
+					console_printf("Failed to set ride type");
 				}
 			} else if (strcmp(argv[1], "friction") == 0) {
 				if (value <= 0) {
