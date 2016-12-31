@@ -122,6 +122,7 @@
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
 		C6575A371D46AFBA00C3E79F /* debug_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C6575A361D46AFBA00C3E79F /* debug_paint.c */; };
+		C65A888A1E16859D000368D7 /* bolliger_mabillard_track.c in Sources */ = {isa = PBXBuildFile; fileRef = C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */; };
 		C6834A111DFDE8E300CE933A /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = C6834A0F1DFDE8E300CE933A /* interop.c */; };
 		C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8981CDBC37E009F9BFC /* banner.c */; };
 		C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8991CDBC37E009F9BFC /* entrance.c */; };
@@ -552,6 +553,8 @@
 		C650B2181CCABBDD00B4D91C /* Tables.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Tables.h; sourceTree = "<group>"; usesTabs = 0; };
 		C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertCommand.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C6575A361D46AFBA00C3E79F /* debug_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug_paint.c; sourceTree = "<group>"; };
+		C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bolliger_mabillard_track.c; sourceTree = "<group>"; };
+		C65A88891E16859D000368D7 /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
 		C6834A0F1DFDE8E300CE933A /* interop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = interop.c; sourceTree = "<group>"; usesTabs = 1; };
 		C6834A101DFDE8E300CE933A /* interop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interop.h; sourceTree = "<group>"; };
 		C686F8981CDBC37E009F9BFC /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
@@ -1319,6 +1322,8 @@
 			children = (
 				C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */,
 				C686F8BC1CDBC3B7009F9BFC /* bobsleigh_coaster.c */,
+				C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */,
+				C65A88891E16859D000368D7 /* bolliger_mabillard_track.h */,
 				C686F8BD1CDBC3B7009F9BFC /* compact_inverted_coaster.c */,
 				C686F8BE1CDBC3B7009F9BFC /* corkscrew_roller_coaster.c */,
 				C686F8BF1CDBC3B7009F9BFC /* flying_roller_coaster.c */,
@@ -2595,6 +2600,7 @@
 				D44272491CC81B3200D84D28 /* track.c in Sources */,
 				C686F9201CDBC3B7009F9BFC /* side_friction_roller_coaster.c in Sources */,
 				D44272561CC81B3200D84D28 /* cheats.c in Sources */,
+				C65A888A1E16859D000368D7 /* bolliger_mabillard_track.c in Sources */,
 				D442722B1CC81B3200D84D28 /* real_names.c in Sources */,
 				D442721C1CC81B3200D84D28 /* keyboard_shortcut.c in Sources */,
 				D442728F1CC81B3200D84D28 /* title_menu.c in Sources */,

@@ -33,4 +33,21 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special,
 bool path_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry, bool * underground);
 bool path_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * pathEntry);
 
+// There are 13 types of metal supports. A graphic showing all of them is available here: https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
+enum {
+    METAL_SUPPORTS_TUBES,               // Used by the steel twister and other rides
+    METAL_SUPPORTS_FORK,                // Used by the junior RC and other rides
+    METAL_SUPPORTS_FORK_ALT,            // Rotated version of METAL_SUPPORTS_FORK
+    METAL_SUPPORTS_BOXED,               // Used by the vertical roller coasters, the log flume and other rides
+    METAL_SUPPORTS_STICK,               // Used by the Steeplechase (or perhaps the _ALT version is used instead)
+    METAL_SUPPORTS_STICK_ALT,           // No visible difference from METAL_SUPPORTS_STICK
+    METAL_SUPPORTS_THICK_CENTRED,       // Every THICK type seems to be used for the Looping Roller Coaster's
+    METAL_SUPPORTS_THICK,               // loop, and only for that specific part.
+    METAL_SUPPORTS_THICK_ALT,
+    METAL_SUPPORTS_THICK_ALT_CENTRED,
+    METAL_SUPPORTS_TRUSS,               // Used by the chairlift
+    METAL_SUPPORTS_TUBES_ALT,           // Mostly the same as METAL_SUPPORTS_TUBES, but with a thinner crossbeam
+    METAL_SUPPORTS_BOXED_COATED
+};
+
 #endif
