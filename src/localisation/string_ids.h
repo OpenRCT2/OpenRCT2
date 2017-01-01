@@ -3644,6 +3644,9 @@ enum {
 	STR_TILE_INSPECTOR_COPY_TIP = 5993,
 	STR_TILE_INSPECTOR_PASTE_TIP = 5994,
 
+	STR_BOOSTER = 5995,
+	STR_RIDE_CONSTRUCTION_BOOSTER_SPEED = 5996,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

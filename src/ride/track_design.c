@@ -256,15 +256,6 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	td6->space_required_y = 255;
 	td6->lift_hill_speed_num_circuits = 5;
 
-	// If it has boosters then sadly track has to be discarded.
-	if (td4_track_has_boosters(td4)) {
-		log_error("Track design contains RCT1 boosters which are not yet supported.");
-		SafeFree(td4->elements);
-		SafeFree(td4);
-		SafeFree(td6);
-		return NULL;
-	}
-
 	// Move elements across
 	td6->elements = td4->elements;
 	td6->elementsSize = td4->elementsSize;
@@ -354,26 +345,6 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
 
 	rct_td6_scenery_element *sceneryElement = (rct_td6_scenery_element*)sceneryElementsStart;
 	td6->scenery_elements = sceneryElement;
-}
-
-/**
- *
- *  rct2: 0x00677530
- * Returns true if it has booster track elements
- */
-static bool td4_track_has_boosters(rct_track_td4 * td4)
-{
-	if (td4->type != RCT1_RIDE_TYPE_HEDGE_MAZE) {
-		rct_td6_track_element * track = (rct_td6_track_element *)td4->elements;
-		size_t numElements = td4->elementsSize / sizeof(rct_td6_track_element);
-		for (size_t i = 0; i < numElements; i++) {
-			if (track[i].type == 0xFF) break;
-			if (track[i].type == RCT1_TRACK_ELEM_BOOSTER) {
-				return true;
-			}
-		}
-	}
-	return false;
 }
 
 void track_design_dispose(rct_track_td6 *td6)

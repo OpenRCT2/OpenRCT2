@@ -187,7 +187,7 @@ typedef struct rct_vehicle {
 	};
 	union {
 		uint8 var_CF;
-		uint8 break_speed;			// 0xCF
+		uint8 brake_speed;			// 0xCF
 	};
 	uint16 lost_time_out;			// 0xD0
 	sint8 vertical_drop_countdown;	// 0xD1

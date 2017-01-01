@@ -1453,6 +1453,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int trackType, int dire
 		return twister_rc_track_90_deg_to_inverted_flat_quarter_loop_up;
 	case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
 		return twister_rc_track_inverted_flat_to_90_deg_quarter_loop_down;
+
+    case TRACK_ELEM_BOOSTER:
+        return twister_rc_track_brakes;
 	}
 	return NULL;
 }

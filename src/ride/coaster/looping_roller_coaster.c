@@ -6551,6 +6551,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int trackType, int dire
 		return looping_rc_track_left_banked_25_deg_down_to_flat;
 	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
 		return looping_rc_track_right_banked_25_deg_down_to_flat;
+
+	case TRACK_ELEM_BOOSTER:
+		return looping_rc_track_brakes;
 	}
 	return NULL;
 }

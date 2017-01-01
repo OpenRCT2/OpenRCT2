@@ -27,6 +27,7 @@ extern "C"
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
     #include "../rct1.h"
+    #include "../ride/track.h"
 }
 
 RideObject::~RideObject()
@@ -76,8 +77,26 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
     // TODO: Move to its own function when ride construction window is merged.
-    if (gConfigInterface.select_by_track_type) {
+    if (gConfigInterface.select_by_track_type)
+    {
         _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
+    }
+    else
+    {
+        // When not in select by track type mode, add boosters if the track type is eligible
+        for (int i = 0; i < 3; i++)
+        {
+            if (_legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
+                _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
+                _legacyType.ride_type[i] == RIDE_TYPE_TWISTER_ROLLER_COASTER ||
+                _legacyType.ride_type[i] == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER ||
+                _legacyType.ride_type[i] == RIDE_TYPE_GIGA_COASTER ||
+                _legacyType.ride_type[i] == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+            {
+
+                _legacyType.enabledTrackPieces |= (1ULL << TRACK_BOOSTER);
+            }
+        }
     }
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_CAPACITY);

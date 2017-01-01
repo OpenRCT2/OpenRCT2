@@ -32,6 +32,7 @@
 #include "../world/footpath.h"
 #include "dropdown.h"
 #include "../sprites.h"
+#include "../world/map.h"
 
 /* move to ride.c */
 static void sub_6B2FA9(rct_windownumber number)
@@ -2140,6 +2141,8 @@ static void window_ride_construction_invalidate(rct_window *w)
 		stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
+		if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE)
+			stringId = STR_BOOSTER;
 	}
 	set_format_arg(0, uint16, stringId);
 
@@ -2440,7 +2443,7 @@ void sub_6C84CE()
 		int z = _currentTrackBeginZ;
 		if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
 			_selectedTrackType = mapElement->properties.track.type;
-			if (mapElement->properties.track.type == TRACK_ELEM_BRAKES)
+			if (mapElement->properties.track.type == TRACK_ELEM_BRAKES || mapElement->properties.track.type == TRACK_ELEM_BOOSTER)
 				_currentBrakeSpeed2 = (mapElement->properties.track.sequence >> 4) << 1;
 			_currentSeatRotationAngle = mapElement->properties.track.colour >> 4;
 		}
@@ -2665,7 +2668,7 @@ bool sub_6CA2DF(int *_trackType, int *_trackDirection, int *_rideIndex, int *_ed
 	}
 
 
-	if (trackType == TRACK_ELEM_BRAKES) {
+	if (trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER) {
 		properties = _currentBrakeSpeed2;
 	} else {
 		properties = _currentSeatRotationAngle << 12;
@@ -3226,7 +3229,11 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WWT_EMPTY;
 	window_ride_construction_widgets[WIDX_U_TRACK].type = WWT_EMPTY;
 	window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
-	if (_selectedTrackType != TRACK_ELEM_BRAKES && _currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES)) {
+
+	bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
+	bool boosterSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+
+	if (!brakesSelected && !boosterSelected) {
 		if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
 			window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_FLATBTN;
 			window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WWT_FLATBTN;
@@ -3254,7 +3261,11 @@ static void window_ride_construction_update_widgets(rct_window *w)
 			}
 		}
 	} else {
-		window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+		if (brakesSelected)
+			window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+		else
+			window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
+
 		_currentlyShowingBrakeSpeed = 1;
 		window_ride_construction_widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 		window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
@@ -3492,6 +3503,12 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 			rct_ride *ride = get_ride(_currentRideIndex);
 			if (ride->type == RIDE_TYPE_CAR_RIDE)
 				trackPieceStringId = STR_LOG_BUMPS;
+
+		}
+		if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK) {
+			rct_ride *ride = get_ride(_currentRideIndex);
+			if (ride->type != RIDE_TYPE_WILD_MOUSE)
+				trackPieceStringId = STR_BOOSTER;
 		}
 		gDropdownItemsFormat[i] = trackPieceStringId;
 		if ((trackPiece | 0x100) == _currentTrackCurve) {
