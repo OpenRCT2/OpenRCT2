@@ -2141,8 +2141,8 @@ static void window_ride_construction_invalidate(rct_window *w)
 		stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
-        if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE)
-            stringId = STR_BOOSTER;
+		if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE)
+			stringId = STR_BOOSTER;
 	}
 	set_format_arg(0, uint16, stringId);
 
@@ -3230,8 +3230,8 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	window_ride_construction_widgets[WIDX_U_TRACK].type = WWT_EMPTY;
 	window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
 
-    bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
-    bool boosterSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+	bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
+	bool boosterSelected = ride->type != RIDE_TYPE_WILD_MOUSE && (_selectedTrackType == TRACK_ELEM_BOOSTER || _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
 	if (!brakesSelected && !boosterSelected) {
 		if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
@@ -3261,10 +3261,10 @@ static void window_ride_construction_update_widgets(rct_window *w)
 			}
 		}
 	} else {
-        if (brakesSelected)
-        	window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
-        else
-            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
+		if (brakesSelected)
+			window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+		else
+			window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
 
 		_currentlyShowingBrakeSpeed = 1;
 		window_ride_construction_widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
@@ -3505,12 +3505,11 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 				trackPieceStringId = STR_LOG_BUMPS;
 
 		}
-        if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK) {
-            rct_ride *ride = get_ride(_currentRideIndex);
-            if (ride->type != RIDE_TYPE_WILD_MOUSE)
-                trackPieceStringId = STR_BOOSTER;
-
-        }
+		if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK) {
+			rct_ride *ride = get_ride(_currentRideIndex);
+			if (ride->type != RIDE_TYPE_WILD_MOUSE)
+				trackPieceStringId = STR_BOOSTER;
+		}
 		gDropdownItemsFormat[i] = trackPieceStringId;
 		if ((trackPiece | 0x100) == _currentTrackCurve) {
 			defaultIndex = i;

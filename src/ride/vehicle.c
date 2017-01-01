@@ -7488,12 +7488,6 @@ loc_6DAEB9:
 			if (regs.eax > _vehicleVelocityF64E08) {
 				vehicle->acceleration = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
 			}
-//			else if (!(gCurrentTicks & 0x0F)) {
-//				if (_vehicleF64E2C == 0) {
-//					_vehicleF64E2C++;
-//					audio_play_sound_at_location(SOUND_51, vehicle->x, vehicle->y, vehicle->z);
-//				}
-//			}
 		}
 	}
 
@@ -7841,11 +7835,11 @@ loc_6DBA33:;
 		}
 	}
 
-	// Bit of a hack. We need a flag or something similar to distinguish between spinning control track and boosters.
+	// Boosters share their ID with the Spinning Control track.
 	if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		regs.eax = (vehicle->brake_speed << 16);
 		if (regs.eax < _vehicleVelocityF64E08) {
-			regs.eax = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
+			regs.eax = RideProperties[ride->type].acceleration << 16;
 			vehicle->acceleration = regs.eax;
 		}
 	}
