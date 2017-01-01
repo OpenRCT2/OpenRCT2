@@ -3669,33 +3669,33 @@ void bolliger_mabillard_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequenc
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17871, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17801, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -3763,33 +3763,33 @@ void bolliger_mabillard_track_diag_60_deg_up(uint8 rideIndex, uint8 trackSequenc
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 32, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 32, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17883, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 36, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 36, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 32, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 32, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 36, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 36, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 32, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 32, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17813, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 36, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 36, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 32, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 32, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 36, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 36, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -3857,33 +3857,33 @@ void bolliger_mabillard_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trac
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17863, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17793, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -3951,33 +3951,33 @@ void bolliger_mabillard_track_diag_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17875, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17805, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4045,33 +4045,33 @@ void bolliger_mabillard_track_diag_60_deg_up_to_25_deg_up(uint8 rideIndex, uint8
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17879, -16, -16, 16, 16, 3, height, 0, 0, height);
-						metal_b_supports_paint_setup(3, 0, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17809, -16, -16, 16, 16, 3, height, 0, 0, height);
-						metal_b_supports_paint_setup(3, 0, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 21, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 21, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4139,33 +4139,33 @@ void bolliger_mabillard_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trac
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17867, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17797, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4233,33 +4233,33 @@ void bolliger_mabillard_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSeque
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17873, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17803, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4327,33 +4327,33 @@ void bolliger_mabillard_track_diag_60_deg_down(uint8 rideIndex, uint8 trackSeque
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 24, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 24, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17885, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 28, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 28, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 24, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 24, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 28, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 28, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 24, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 24, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17815, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 28, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 28, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 24, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 24, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 28, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 28, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4418,33 +4418,33 @@ void bolliger_mabillard_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 tr
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17869, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17799, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4513,33 +4513,33 @@ void bolliger_mabillard_track_diag_25_deg_down_to_60_deg_down(uint8 rideIndex, u
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17881, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17811, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 17, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 17, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4607,33 +4607,33 @@ void bolliger_mabillard_track_diag_60_deg_down_to_25_deg_down(uint8 rideIndex, u
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17877, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17807, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4701,33 +4701,33 @@ void bolliger_mabillard_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 tr
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17865, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17795, -16, -16, 32, 32, 3, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4795,33 +4795,33 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_up(uint8 rideIndex, uint8 trac
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17887, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17817, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4889,33 +4889,33 @@ void bolliger_mabillard_track_diag_60_deg_up_to_flat(uint8 rideIndex, uint8 trac
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17891, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17821, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -4983,33 +4983,33 @@ void bolliger_mabillard_track_diag_flat_to_60_deg_down(uint8 rideIndex, uint8 tr
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17893, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17823, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -5077,33 +5077,33 @@ void bolliger_mabillard_track_diag_60_deg_down_to_flat(uint8 rideIndex, uint8 tr
 			if (track_element_is_lift_hill(mapElement)) {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17889, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			} else {
 				switch (direction) {
 					case 0:
-						metal_b_supports_paint_setup(3, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 1, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 1:
 						sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17819, -16, -16, 32, 32, 4, height, -16, -16, height);
-						metal_b_supports_paint_setup(3, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 0, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 2:
-						metal_b_supports_paint_setup(3, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 2, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 					case 3:
-						metal_b_supports_paint_setup(3, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
+						metal_b_supports_paint_setup(supportType, 3, 5, height, gTrackColours[SCHEME_SUPPORTS]);
 						break;
 				}
 			}
@@ -5359,17 +5359,17 @@ void bolliger_mabillard_track_diag_left_bank_to_25_deg_up(uint8 rideIndex, uint8
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17849, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5412,17 +5412,17 @@ void bolliger_mabillard_track_diag_right_bank_to_25_deg_up(uint8 rideIndex, uint
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17854, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5465,17 +5465,17 @@ void bolliger_mabillard_track_diag_25_deg_up_to_left_bank(uint8 rideIndex, uint8
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17839, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5518,17 +5518,17 @@ void bolliger_mabillard_track_diag_25_deg_up_to_right_bank(uint8 rideIndex, uint
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17844, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5568,17 +5568,17 @@ void bolliger_mabillard_track_diag_left_bank_to_25_deg_down(uint8 rideIndex, uin
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17846, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5619,17 +5619,17 @@ void bolliger_mabillard_track_diag_right_bank_to_25_deg_down(uint8 rideIndex, ui
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17841, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 4, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5673,17 +5673,17 @@ void bolliger_mabillard_track_diag_25_deg_down_to_left_bank(uint8 rideIndex, uin
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17856, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5726,17 +5726,17 @@ void bolliger_mabillard_track_diag_25_deg_down_to_right_bank(uint8 rideIndex, ui
 		case 3:
 			switch (direction) {
 				case 0:
-					metal_b_supports_paint_setup(3, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 1:
 					sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17851, -16, -16, 32, 32, 3, height, -16, -16, height);
-					metal_b_supports_paint_setup(3, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 2:
-					metal_b_supports_paint_setup(3, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 				case 3:
-					metal_b_supports_paint_setup(3, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+					metal_b_supports_paint_setup(supportType, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 					break;
 			}
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
