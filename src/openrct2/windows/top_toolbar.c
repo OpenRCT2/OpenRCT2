@@ -3143,12 +3143,7 @@ void top_toolbar_view_menu_dropdown(sint16 dropdownIndex)
 			w->viewport->flags ^= VIEWPORT_FLAG_PATH_HEIGHTS;
 			break;
 		case DDIDX_VIEW_CLIPPING:
-			if ((w->viewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) == 0) {
-				window_view_clipping_open();
-			}
-			else {
-				window_view_clipping_close();
-			}
+			window_view_clipping_open();
 			break;
 		default:
 			return;

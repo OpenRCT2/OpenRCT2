@@ -35,11 +35,11 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
 #pragma region Widgets
 
 rct_widget window_view_clipping_widgets[] = {
-	{  WWT_FRAME,	0,	0,	159,	0,	64,	0xFFFFFFFF,									STR_NONE },							// panel / background
-	{ WWT_CAPTION,	0,	1,	158,	1,	14,	STR_VIEW_CLIPPING,							STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,	0,	147,	157,	2,	13,	STR_CLOSE_X,								STR_CLOSE_WINDOW_TIP },				// close x button
+	{  WWT_FRAME, 0, 0, 159, 0, 64, STR_NONE, STR_NONE }, // panel / background
+	{ WWT_CAPTION, 0, 1, 158, 1, 14, STR_VIEW_CLIPPING, STR_WINDOW_TITLE_TIP }, // title bar
+	{ WWT_CLOSEBOX,	0, 147,	157, 2,	13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
 	{ WWT_CHECKBOX, 1, 11, 89, 19, 29, STR_VIEW_CLIPPING_HEIGHT_ENABLE, STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
-	{ WWT_SPINNER, 1, 81, 139, 34, 44, STR_NONE, STR_NONE }, // clip height value spinner
+	{ WWT_SPINNER, 1, 81, 111, 34, 44, STR_NONE, STR_NONE }, // clip height value spinner
 	{ WWT_SCROLL, 1, 11, 149, 49, 59, SCROLL_HORIZONTAL, STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
 	// Future: add checkbox(es) to only clip height in front of the cursor position; behind the cursor position is rendered normally.
 
@@ -97,10 +97,21 @@ void window_view_clipping_open()
 {
 	rct_window* window;
 
-	// Check if window is already open
-	if (window_find_by_class(WC_VIEW_CLIPPING) != NULL)
-		return;
+	// Get the main viewport to set the view clipping flag.
+	rct_window *mainWindow = window_get_main();
 
+	// Check if window is already open
+	if (window_find_by_class(WC_VIEW_CLIPPING) != NULL) {
+		// If window is already open, toggle the view clipping on/off
+		if (mainWindow != NULL) {
+			mainWindow->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
+			window_invalidate(mainWindow);
+		}
+
+		return;
+	}
+
+	// Window is not open - create it.
 	window = window_create(32, 32, 160, 65, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
 	window->widgets = window_view_clipping_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) |
@@ -130,7 +141,6 @@ void window_view_clipping_open()
 	//gClipHeightEnable = true; // Use the VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT to record whether clipping is on/off.
 
 	// Turn on view clipping when the window is opened.
-	rct_window *mainWindow = window_get_main();
 	if (mainWindow != NULL) {
 		mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
 		window_invalidate(mainWindow);
@@ -160,19 +170,13 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_CLIP_HEIGHT_CHECKBOX:
-		//gClipHeightEnable = !gClipHeightEnable;
-
 		// Toggle height clipping.
 		mainWindow = window_get_main();
 		if (mainWindow != NULL) {
-			if ((mainWindow->viewport->flags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) == 0) {
-				mainWindow->viewport->flags |= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
-			}
-			else {
-				mainWindow->viewport->flags &= ~VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
-			}
+			mainWindow->viewport->flags ^= VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT;
 			window_invalidate(mainWindow);
 		}
+		window_invalidate(w);
 		break;
 	}
 }
@@ -193,6 +197,7 @@ static void window_view_clipping_update(rct_window *w)
 	widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
 	uint8 clip_height = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 255);
 	if (clip_height != gClipHeight) {
+		fprintf(stderr, "Update clip height from scrollbar\n");
 		gClipHeight = clip_height;
 
 		// Update the main window accordingly.
@@ -207,11 +212,12 @@ static void window_view_clipping_update(rct_window *w)
 
 static void window_view_clipping_invalidate(rct_window *w)
 {
-	rct_widget* widget;
+	//rct_widget* widget;
 
 	fprintf(stderr, "Invalidate start\n");
 	//colour_scheme_update(w);
 
+	//window_init_scroll_widgets(w); // Needed?
 	w->disabled_widgets = 0;
 	// Disable the height slider and height value according to the height checkbox.
 	rct_window *mainWindow = window_get_main();
@@ -223,10 +229,11 @@ static void window_view_clipping_invalidate(rct_window *w)
 	//}
 
 	// Set the clip height slider value.
-	if (w->frame_no == 0) { // No animation in this windows so should not be needed?
-		widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-		w->scrolls[0].h_left = (sint16)ceil((gClipHeight / 255.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
-	}
+	// TODO: Initialise the scroll position - do this once, not based on frame_no -> try moving to opening the window?
+	//if (w->frame_no == 0) { // No animation in this windows so should not be needed?
+	//	widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+	//	w->scrolls[0].h_left = (sint16)ceil((gClipHeight / 255.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+	//}
 	widget_scroll_update_thumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
 
 	if (mainWindow != NULL) {
