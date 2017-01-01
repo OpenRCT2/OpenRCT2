@@ -153,6 +153,11 @@ extern "C"
         if (_sequencePlayer != nullptr)
         {
             _sequencePlayer->Reset();
+
+            // Force the title sequence to load / update so we
+            // don't see a blank screen for a split second.
+            TryLoadSequence();
+            _sequencePlayer->Update();
         }
 
         log_verbose("loading title finished");
