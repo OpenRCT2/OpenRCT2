@@ -2429,12 +2429,12 @@ STR_2420    :{STRINGID} 반값 할인권
 STR_2421    :{STRINGID} 무료 이용권
 STR_2422    :{STRINGID} 광고
 STR_2423    :{STRINGID} 광고
-STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰입니다
-STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰입니다
-STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰입니다
-STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰입니다
-STR_2428    :{WINDOW_COLOUR_2}공원을 광고합니다
-STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구를 광고합니다
+STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰
+STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰
+STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰
+STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰
+STR_2428    :{WINDOW_COLOUR_2}공원 광고
+STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구 광고
 STR_2430    :{BLACK}{STRINGID} 무료 입장권
 STR_2431    :{BLACK}{STRINGID} 무료 탑승 쿠폰
 STR_2432    :{BLACK}{STRINGID} 반값 할인 쿠폰
