@@ -18,7 +18,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../ride/track.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
 
@@ -27,6 +26,7 @@ extern "C"
     #include "../config.h"
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
+    #include "../ride/track.h"
     #include "../rct1.h"
 }
 
