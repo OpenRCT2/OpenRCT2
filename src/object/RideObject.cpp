@@ -18,9 +18,9 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../ride/track.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
-#include "../ride/track.h"
 
 extern "C"
 {
