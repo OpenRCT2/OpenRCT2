@@ -5,10 +5,22 @@ questions or concerns, please ask in the [gitter](https://gitter.im/OpenRCT2/Ope
 
 # Reporting bugs
 To report a bug, ensure you have a GitHub account. Search the issues page to see if the bug has already been reported.
-If not, create a new issue and write the steps to reproduce. Upload a saved game if possible and this is very helpful
-for users to replicate the bug. Please state which version of the game you are running and where you downloaded it from, e.g. *openrct2.com develop 0.0.3 build 1255 (ec25b2f)*.
+If not, create a new issue and write the steps to reproduce. Upload a saved game if possible as this is very helpful
+for users to replicate the bug. Please state which architecture and version of the game you are running, e.g.
+```
+OpenRCT2, v0.0.6-develop build 84ddd12 provided by AppVeyor
+Windows (x86-64)
+```
 
-For Windows builds, OpenRCT2 will generate a memory dump and saved game when the game crashes unexpectedly. The game will open explorer to these files automatically for you. They are placed inside your configured user directory which by default is `%HOMEPATH%\Documents\OpenRCT2`.
+This can be found either at the bottom left of the title screen or
+by running:
+```
+openrct2 --version
+```
+
+For Windows builds, OpenRCT2 will generate a memory dump and saved game when the game crashes unexpectedly. The game
+will open explorer to these files automatically for you. They are placed inside your configured user directory which
+by default is `%HOMEPATH%\Documents\OpenRCT2`.
 
 # Translation
 Translation is managed in a separate repository, [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
