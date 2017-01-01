@@ -74,7 +74,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_ADD_MONEY,
 	WIDX_SET_MONEY,
 	WIDX_CLEAR_LOAN,
-	WIDX_GUEST_PARAMETERS_GROUP = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
+	WIDX_GUEST_PARAMETERS_GROUP = 8, //Same as NO_MONEY as it is also the 8th widget but on a different page
 	WIDX_GUEST_HAPPINESS_MAX,
 	WIDX_GUEST_HAPPINESS_MIN,
 	WIDX_GUEST_ENERGY_MAX,
@@ -856,6 +856,14 @@ static void window_cheats_invalidate(rct_window *w)
 	w->pressed_widgets = 0;
 	w->disabled_widgets = 0;
 
+	// Set correct active tab
+	for (i = 0; i < 7; i++)
+		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
+
+	// Set title
+	w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
+
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:{
 		widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY); 
@@ -897,15 +905,6 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
 		break;
 	}
-
-	// Set correct active tab
-	for (i = 0; i < 7; i++)
-		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
-
-	// Set title
-	w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
-
 
 	// Current weather
 	window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrentWeather];
