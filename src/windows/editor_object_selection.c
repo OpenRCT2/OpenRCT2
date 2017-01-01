@@ -657,6 +657,7 @@ static int sub_6AB211()
 	const ObjectRepositoryItem * items = object_repository_get_items();
 	for (int i = 0; i < numObjects; i++) {
 		uint8 objectType = items[i].ObjectEntry.flags & 0xF;
+		assert(objectType < countof(_numAvailableObjectsForType));
 		_numAvailableObjectsForType[objectType]++;
 	}
 
