@@ -183,13 +183,13 @@ const uint8 byte_97B5B0[] = {
 	10, 11, 12, 13, 14, 14
 };
 
-#define EDGE_SPRITES_NORMAL(base) { \
+#define DEFINE_EDGE_SPRITES(base) { \
 	(base) +  0, \
 	(base) + 20, \
 	(base) + 10, \
 	(base) + 30, \
 }
-#define EDGE_SPRITES_TUNNELS(base) { \
+#define DEFINE_EDGE_TUNNEL_SPRITES(base) { \
 	(base) + 36, \
 	(base) + 40, \
 	(base) + 44, \
@@ -208,18 +208,18 @@ const uint8 byte_97B5B0[] = {
 	(base) + 72, \
 }
 
-const uint32 stru_97B5C0[][5] = {
-	EDGE_SPRITES_NORMAL(SPR_EDGE_ROCK_BASE),
-	EDGE_SPRITES_NORMAL(SPR_EDGE_WOOD_RED_BASE),
-	EDGE_SPRITES_NORMAL(SPR_EDGE_WOOD_BLACK_BASE),
-	EDGE_SPRITES_NORMAL(SPR_EDGE_ICE_BASE),
+static const uint32 _terrainEdgeSpriteIds[][4] = {
+	DEFINE_EDGE_SPRITES(SPR_EDGE_ROCK_BASE),
+	DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_RED_BASE),
+	DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
+	DEFINE_EDGE_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-const uint32 stru_97B640[][16] = {
-	EDGE_SPRITES_TUNNELS(SPR_EDGE_ROCK_BASE),
-	EDGE_SPRITES_TUNNELS(SPR_EDGE_WOOD_RED_BASE),
-	EDGE_SPRITES_TUNNELS(SPR_EDGE_WOOD_BLACK_BASE),
-	EDGE_SPRITES_TUNNELS(SPR_EDGE_ICE_BASE),
+static const uint32 _terrainEdgeTunnelSpriteIds[][16] = {
+	DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ROCK_BASE),
+	DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_RED_BASE),
+	DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
+	DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
 const uint8 byte_97B740[] = {
@@ -505,13 +505,13 @@ static void viewport_surface_draw_land_side_top(enum edge_t edge, uint8 height, 
 	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint8 incline = (regs.cl - regs.al) + 1;
 
-		uint32 image_id = stru_97B5C0[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+		uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
 		sint16 y = (regs.dl - regs.al) * 16;
 		paint_attach_to_previous_ps(image_id, 0, y);
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+	uint32 base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
 
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
@@ -606,9 +606,9 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[edgeStyle][0];
+	uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-		base_image_id = stru_97B5C0[edgeStyle][1];
+		base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
 	}
 
 	if (edge == EDGE_BOTTOMRIGHT) {
@@ -687,7 +687,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
 		}
 
 
-		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+		uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
@@ -699,7 +699,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge_t edge, uint8 heigh
 			boundBoxLength -= 16;
 		}
 
-		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+		image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
 		curHeight += stru_97B570[tunnelType][0];
@@ -767,10 +767,10 @@ static void viewport_surface_draw_water_side_top(enum edge_t edge, uint8 height,
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[terrain][2]; // var_08
+	uint32 base_image_id = _terrainEdgeSpriteIds[terrain][2]; // var_08
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-		base_image_id = stru_97B5C0[terrain][1];  // var_04
+		base_image_id = _terrainEdgeSpriteIds[terrain][1];  // var_04
 	}
 
 	base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
@@ -878,9 +878,9 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[edgeStyle][0];
+	uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-		base_image_id = stru_97B5C0[edgeStyle][1];
+		base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
 	}
 
 	if (edge == EDGE_BOTTOMRIGHT) {
@@ -957,7 +957,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
 		}
 
 
-		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+		uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
@@ -969,7 +969,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge_t edge, uint8 heig
 			boundBoxLength -= 16;
 		}
 
-		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+		image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
 		curHeight += stru_97B570[tunnelType][0];
