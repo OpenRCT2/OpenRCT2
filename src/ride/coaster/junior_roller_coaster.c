@@ -4873,6 +4873,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int trackType, int direc
 
 	case TRACK_ELEM_BLOCK_BRAKES:
 		return junior_rc_block_brake_paint_setup;
+
+	case TRACK_ELEM_BOOSTER:
+		return junior_rc_brake_paint_setup;
 	}
 	return NULL;
 }

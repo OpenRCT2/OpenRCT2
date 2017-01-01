@@ -1344,7 +1344,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, mapElement->base_height);
 			break;
 		}
-		if (type == TRACK_ELEM_BRAKES) {
+		if (type == TRACK_ELEM_BRAKES || type == TRACK_ELEM_BOOSTER) {
 			mapElement->properties.track.sequence = (properties_1 >> 1) << 4;
 		}
 		else {

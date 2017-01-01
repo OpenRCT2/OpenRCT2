@@ -7478,7 +7478,7 @@ loc_6DAEB9:
 			}
 		}
 	}
-	else if (trackType == TRACK_ELEM_RCTC_BOOSTER && rideEntry->ride_type[0] != RIDE_TYPE_WILD_MOUSE) {
+	else if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		if (!(
 				ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN &&
 				ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
@@ -7486,7 +7486,7 @@ loc_6DAEB9:
 		)) {
 			regs.eax = (vehicle->brake_speed << 16);
 			if (regs.eax > _vehicleVelocityF64E08) {
-				vehicle->acceleration = _vehicleVelocityF64E08 * 1.5;
+				vehicle->acceleration = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
 			}
 //			else if (!(gCurrentTicks & 0x0F)) {
 //				if (_vehicleF64E2C == 0) {
@@ -7842,10 +7842,10 @@ loc_6DBA33:;
 	}
 
 	// Bit of a hack. We need a flag or something similar to distinguish between spinning control track and boosters.
-	if (trackType == TRACK_ELEM_RCTC_BOOSTER && rideEntry->ride_type[0] != RIDE_TYPE_WILD_MOUSE) {
+	if (trackType == TRACK_ELEM_BOOSTER && ride->type != RIDE_TYPE_WILD_MOUSE) {
 		regs.eax = (vehicle->brake_speed << 16);
 		if (regs.eax < _vehicleVelocityF64E08) {
-			regs.eax = _vehicleVelocityF64E08 * 1.5;
+			regs.eax = RideProperties[ride->type].acceleration << 16; //_vehicleVelocityF64E08 * 1.2;
 			vehicle->acceleration = regs.eax;
 		}
 	}

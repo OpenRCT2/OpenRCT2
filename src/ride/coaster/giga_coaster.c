@@ -6430,6 +6430,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int trackType, int directi
 		return giga_rc_track_left_banked_25_deg_down_to_flat;
 	case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
 		return giga_rc_track_right_banked_25_deg_down_to_flat;
+
+	case TRACK_ELEM_BOOSTER:
+		return giga_rc_track_brakes;
 	}
 	return NULL;
 }

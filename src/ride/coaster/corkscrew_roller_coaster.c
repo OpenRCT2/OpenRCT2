@@ -6084,6 +6084,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int trackType, int di
 		return corkscrew_rc_track_diag_right_bank;
 	case TRACK_ELEM_BLOCK_BRAKES:
 		return corkscrew_rc_track_block_brakes;
+
+	case TRACK_ELEM_BOOSTER:
+		return corkscrew_rc_track_brakes;
 	}
 	return NULL;
 }
