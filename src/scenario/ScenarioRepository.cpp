@@ -199,6 +199,10 @@ public:
 
     bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
     {
+        // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
+        // not getting recorded, see #4951.
+        Scan();
+
         scenario_index_entry * scenario = GetByFilename(scenarioFileName);
         if (scenario != nullptr)
         {
