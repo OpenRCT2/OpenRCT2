@@ -1581,7 +1581,13 @@ static money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 su
 					(mapElement->properties.surface.terrain >> 5);
 
 				if (surfaceStyle != cur_terrain) {
-					surfaceCost += TerrainPricing[surfaceStyle & 0x1F];
+					// Prevent network-originated value of surfaceStyle from causing
+					// invalid access.
+					uint8 style = surfaceStyle & 0x1F;
+					if (style >= countof(TerrainPricing)) {
+						return MONEY32_UNDEFINED;
+					}
+					surfaceCost += TerrainPricing[style];
 					if (flags & 1){
 						mapElement->properties.surface.terrain &= MAP_ELEMENT_WATER_HEIGHT_MASK;
 						mapElement->type &= MAP_ELEMENT_QUADRANT_MASK | MAP_ELEMENT_TYPE_MASK;
