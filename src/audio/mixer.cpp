@@ -632,6 +632,8 @@ private:
 
     void * _channelBuffer = nullptr;
     size_t _channelBufferCapacity = 0;
+    void * _convertBuffer = nullptr;
+    size_t _convertBufferCapacity = 0;
 
 public:
     AudioMixer()
@@ -704,7 +706,8 @@ public:
             delete[] effectbuffer;
             effectbuffer = 0;
         }
-        free(_channelBuffer);
+        SafeFree(_channelBuffer);
+        SafeFree(_convertBuffer);
     }
 
     void Lock() override
@@ -828,8 +831,7 @@ private:
             rate = channel->GetRate();
         }
         int samplestoread = (int)(samples * rate);
-        int lengthloaded = 0;
-        bool mustconvert = false;
+        bool mustConvert = false;
         if (MustConvert(&streamformat))
         {
             if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, format.format, format.channels, format.freq) == -1)
@@ -837,7 +839,7 @@ private:
                 // Unable to convert channel data
                 return;
             }
-            mustconvert = true;
+            mustConvert = true;
         }
 
         // Read raw PCM from channel
@@ -850,15 +852,14 @@ private:
         size_t bytesRead = channel->Read(_channelBuffer, toread);
 
         // Convert data to required format if necessary
-        uint8 * convertedBuffer = nullptr;
-        const uint8 * buffer = 0;
-        if (mustconvert)
+        void * buffer = nullptr;
+        size_t bufferLen = 0;
+        if (mustConvert)
         {
-            // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
-            if (Convert(cvt, (const uint8 *)_channelBuffer, (unsigned long)bytesRead, &convertedBuffer))
+            if (Convert(&cvt, _channelBuffer, bytesRead))
             {
-                buffer = convertedBuffer;
-                lengthloaded = cvt.len_cvt;
+                buffer = _convertBuffer;
+                bufferLen = _convertBufferCapacity;
             }
             else
             {
@@ -867,15 +868,15 @@ private:
         }
         else
         {
-            buffer = (const uint8 *)_channelBuffer;
-            lengthloaded = (int)bytesRead;
+            buffer = _channelBuffer;
+            bufferLen = bytesRead;
         }
 
         // Apply effects
         bool effectbufferloaded = false;
         if (rate != 1 && format.format == AUDIO_S16SYS)
         {
-            int in_len = (int)((double)lengthloaded / samplesize);
+            int in_len = (int)((double)bufferLen / samplesize);
             int out_len = samples;
 
             SpeexResamplerState * resampler = channel->GetResampler();
@@ -897,79 +898,77 @@ private:
             speex_resampler_process_interleaved_int(resampler, (const spx_int16_t*)buffer, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
             effectbufferloaded = true;
             buffer = effectbuffer;
-            lengthloaded = (out_len * samplesize);
+            bufferLen = (out_len * samplesize);
         }
 
-        // Pan
+        ApplyPan(channel, buffer, bufferLen, samplesize);
+        int mixVolume = ApplyVolume(channel, buffer, bufferLen);
+
+        size_t dstLength = Math::Min((size_t)length, bufferLen);
+        SDL_MixAudioFormat(data, (const Uint8 *)buffer, format.format, (Uint32)dstLength, mixVolume);
+
+        channel->UpdateOldVolume();
+    }
+
+    void ApplyPan(const IAudioChannel * channel, void * buffer, size_t len, size_t sampleSize)
+    {
         if (channel->GetPan() != 0.5f && format.channels == 2)
         {
-            if (!effectbufferloaded)
-            {
-                memcpy(effectbuffer, buffer, lengthloaded);
-                effectbufferloaded = true;
-                buffer = effectbuffer;
-            }
             switch (format.format) {
             case AUDIO_S16SYS:
-                EffectPanS16(channel, (sint16*)effectbuffer, lengthloaded / samplesize);
+                EffectPanS16(channel, (sint16 *)buffer, (int)(len / sampleSize));
                 break;
             case AUDIO_U8:
-                EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
+                EffectPanU8(channel, (uint8 *)buffer, (int)(len / sampleSize));
                 break;
             }
         }
+    }
 
-        int mixlength = Math::Min(lengthloaded, length);
-
-        // Volume
-        float volumeadjust = volume;
-        volumeadjust *= (gConfigSound.master_volume / 100.0f);
+    int ApplyVolume(const IAudioChannel * channel, void * buffer, size_t len)
+    {
+        float volumeAdjust = volume;
+        volumeAdjust *= (gConfigSound.master_volume / 100.0f);
         switch (channel->GetGroup()) {
         case MIXER_GROUP_SOUND:
-            volumeadjust *= adjust_sound_vol;
+            volumeAdjust *= adjust_sound_vol;
 
             // Cap sound volume on title screen so music is more audible
-            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-                volumeadjust = Math::Min(volumeadjust, 0.75f);
+            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            {
+                volumeAdjust = Math::Min(volumeAdjust, 0.75f);
             }
             break;
         case MIXER_GROUP_RIDE_MUSIC:
-            volumeadjust *= adjust_music_vol;
+            volumeAdjust *= adjust_music_vol;
             break;
         }
-        int startvolume = (int)(channel->GetOldVolume() * volumeadjust);
-        int endvolume = (int)(channel->GetVolume() * volumeadjust);
+
+        int startVolume = (int)(channel->GetOldVolume() * volumeAdjust);
+        int endVolume = (int)(channel->GetVolume() * volumeAdjust);
         if (channel->IsStopping())
         {
-            endvolume = 0;
+            endVolume = 0;
         }
-        int mixvolume = (int)(channel->GetVolume() * volumeadjust);
-        if (startvolume != endvolume)
+
+        int mixVolume = (int)(channel->GetVolume() * volumeAdjust);
+        if (startVolume != endVolume)
         {
-            // fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-            if (!effectbufferloaded)
-            {
-                memcpy(effectbuffer, buffer, lengthloaded);
-                effectbufferloaded = true;
-                buffer = effectbuffer;
-            }
-            mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
-            int fadelength = mixlength / format.BytesPerSample();
+            // Set to max since we are adjusting the volume ourselves
+            mixVolume = SDL_MIX_MAXVOLUME;
+
+            // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
+            int fadeLength = (int)len / format.BytesPerSample();
             switch (format.format) {
             case AUDIO_S16SYS:
-                EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
+                EffectFadeS16((sint16 *)buffer, fadeLength, startVolume, endVolume);
                 break;
             case AUDIO_U8:
-                EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
+                EffectFadeU8((uint8 *)buffer, fadeLength, startVolume, endVolume);
                 break;
             }
         }
-
-        SDL_MixAudioFormat(data, buffer, format.format, mixlength, mixvolume);
-
-        delete[] convertedBuffer;
-
-        channel->UpdateOldVolume();
+        return mixVolume;
     }
 
     static void EffectPanS16(const IAudioChannel * channel, sint16 * data, int length)
@@ -1037,20 +1036,24 @@ private:
         return false;
     }
 
-    bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout)
+    bool Convert(SDL_AudioCVT * cvt, const void * src, size_t len)
     {
-        if (length == 0 || cvt.len_mult == 0) {
-            return false;
+        // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
+        bool result = false;
+        if (len != 0 && cvt->len_mult != 0)
+        {
+            _convertBufferCapacity = len * cvt->len_mult;
+            _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
+            memcpy(_convertBuffer, src, len);
+
+            cvt->len = (int)len;
+            cvt->buf = (Uint8 *)_convertBuffer;
+            if (SDL_ConvertAudio(cvt) >= 0)
+            {
+                result = true;
+            }
         }
-        cvt.len = length;
-        cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
-        memcpy(cvt.buf, data, length);
-        if (SDL_ConvertAudio(&cvt) < 0) {
-            delete[] cvt.buf;
-            return false;
-        }
-        *dataout = cvt.buf;
-        return true;
+        return result;
     }
 };
 
