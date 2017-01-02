@@ -18,7 +18,6 @@
 #define _MIXER_H_
 
 #include <SDL.h>
-#include <speex/speex_resampler.h>
 #include "../common.h"
 
 #ifdef __cplusplus
@@ -44,6 +43,9 @@ enum MIXER_GROUP
 
 #ifdef __cplusplus
 
+interface IAudioSource;
+interface IAudioChannel;
+
 /**
  * Represents the size, frequency and number of channels for
  * an audio stream or buffer.
@@ -58,74 +60,6 @@ struct AudioFormat
     {
         return (SDL_AUDIO_BITSIZE(format)) / 8;
     }
-};
-
-/**
- * Represents a readable source of audio PCM data.
- */
-interface IAudioSource
-{
-    virtual ~IAudioSource() = default;
-
-    virtual size_t GetLength() abstract;
-    virtual AudioFormat GetFormat() abstract;
-    virtual size_t Read(void * dst, size_t offset, size_t len) abstract;
-};
-
-/**
- * Represents an audio channel that represents an audio source
- * and a number of properties such as volume, pan and loop information.
- */
-interface IAudioChannel
-{
-    virtual ~IAudioChannel() = default;
-
-    virtual IAudioSource * GetSource() const abstract;
-
-    virtual SpeexResamplerState * GetResampler() const abstract;
-    virtual void SetResampler(SpeexResamplerState * value) abstract;
-
-    virtual int     GetGroup() const abstract;
-    virtual void    SetGroup(int group) abstract;
-
-    virtual double  GetRate() const abstract;
-    virtual void    SetRate(double rate) abstract;
-
-    virtual unsigned long   GetOffset() const abstract;
-    virtual bool            SetOffset(unsigned long offset) abstract;
-
-    virtual int     GetLoop() const abstract;
-    virtual void    SetLoop(int value) abstract;
-
-    virtual int     GetVolume() const abstract;
-    virtual float   GetVolumeL() const abstract;
-    virtual float   GetVolumeR() const abstract;
-    virtual float   GetOldVolumeL() const abstract;
-    virtual float   GetOldVolumeR() const abstract;
-    virtual int     GetOldVolume() const abstract;
-    virtual void    SetVolume(int volume) abstract;
-
-    virtual float   GetPan() const abstract;
-    virtual void    SetPan(float pan) abstract;
-
-    virtual bool IsStopping() const abstract;
-    virtual void SetStopping(bool value) abstract;
-
-    virtual bool IsDone() const abstract;
-    virtual void SetDone(bool value) abstract;
-
-    virtual bool DeleteOnDone() const abstract;
-    virtual void SetDeleteOnDone(bool value) abstract;
-
-    virtual void SetDeleteSourceOnDone(bool value) abstract;
-
-    virtual bool IsPlaying() const abstract;
-
-    virtual void Play(IAudioSource * source, int loop = MIXER_LOOP_NONE) abstract;
-    virtual void UpdateOldVolume() abstract;
-
-    virtual AudioFormat GetFormat() const abstract;
-    virtual size_t Read(void * dst, size_t len) abstract;
 };
 
 /**
