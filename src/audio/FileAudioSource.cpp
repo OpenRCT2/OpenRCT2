@@ -65,9 +65,10 @@ public:
         if (currentPosition != -1)
         {
             size_t bytesToRead = Math::Min(len, _dataLength - offset);
-            if (currentPosition != _dataBegin + offset)
+            sint64 dataOffset = _dataBegin + offset;
+            if (currentPosition != dataOffset)
             {
-                sint64 newPosition = SDL_RWseek(_rw, _dataBegin + offset, SEEK_SET);
+                sint64 newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
                 if (newPosition == -1)
                 {
                     return 0;
@@ -101,7 +102,8 @@ public:
             return false;
         }
 
-        Uint32 chunkSize = SDL_ReadLE32(rw);
+        // Read and discard chunk size
+        SDL_ReadLE32(rw);
         Uint32 chunkFormat = SDL_ReadLE32(rw);
         if (chunkFormat != WAVE)
         {
