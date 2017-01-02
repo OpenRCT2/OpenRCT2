@@ -84,7 +84,7 @@ public:
         return _group;
     }
 
-    void SetGroup(int group)
+    void SetGroup(int group) override
     {
         _group = group;
     }
@@ -94,7 +94,7 @@ public:
         return _rate;
     }
 
-    void SetRate(double rate)
+    void SetRate(double rate) override
     {
         _rate = Math::Max(0.001, rate);
     }
@@ -104,7 +104,7 @@ public:
         return (unsigned long)_offset;
     }
 
-    bool SetOffset(unsigned long offset)
+    bool SetOffset(unsigned long offset) override
     {
         if (_source != nullptr && offset < _source->GetLength())
         {
@@ -166,7 +166,7 @@ public:
         return _pan;
     }
 
-    void SetPan(float pan)
+    void SetPan(float pan) override
     {
         _pan = Math::Clamp(0.0f, pan, 1.0f);
         double decibels = (std::abs(_pan - 0.5) * 2.0) * 100.0;
@@ -203,7 +203,7 @@ public:
         _done = value;
     }
 
-    bool DeleteOnDone() const
+    bool DeleteOnDone() const override
     {
         return _deleteondone;
     }
@@ -223,7 +223,7 @@ public:
         return !_done;
     }
 
-    void Play(IAudioSource * source, int loop)
+    void Play(IAudioSource * source, int loop) override
     {
         _source = source;
         _loop = loop;
