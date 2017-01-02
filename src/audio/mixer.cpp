@@ -882,8 +882,8 @@ private:
         // Apply effects
         if (rate != 1 && _format.format == AUDIO_S16SYS)
         {
-            int in_len = (int)((double)bufferLen / samplesize);
-            int out_len = samples;
+            int inLen = (int)((double)bufferLen / samplesize);
+            int outLen = samples;
 
             SpeexResamplerState * resampler = channel->GetResampler();
             if (resampler == nullptr)
@@ -894,7 +894,7 @@ private:
             if (bytesRead == toread)
             {
                 // use buffer lengths for conversion ratio so that it fits exactly
-                speex_resampler_set_rate(resampler, in_len, samples);
+                speex_resampler_set_rate(resampler, inLen, samples);
             }
             else
             {
@@ -902,7 +902,7 @@ private:
                 speex_resampler_set_rate(resampler, _format.freq, (int)(_format.freq * (1 / rate)));
             }
 
-            size_t effectBufferReqLen  = out_len * samplesize;
+            size_t effectBufferReqLen  = outLen * samplesize;
             if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
             {
                 _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
@@ -912,16 +912,18 @@ private:
             speex_resampler_process_interleaved_int(
                 resampler,
                 (const spx_int16_t *)buffer,
-                (spx_uint32_t *)&in_len,
+                (spx_uint32_t *)&inLen,
                 (spx_int16_t *)_effectBuffer,
-                (spx_uint32_t *)&out_len);
+                (spx_uint32_t *)&outLen);
             buffer = _effectBuffer;
             bufferLen = effectBufferReqLen;
         }
 
+        // Apply panning and volume
         ApplyPan(channel, buffer, bufferLen, samplesize);
         int mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
+        // Finally mix on to destination buffer
         size_t dstLength = Math::Min((size_t)length, bufferLen);
         SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
 
