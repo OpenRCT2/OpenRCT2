@@ -209,7 +209,7 @@ public:
             // Check if record company value has been broken or the highscore is the same but no name is registered
             scenario_highscore_entry * highscore = scenario->highscore;
             if (highscore == nullptr || companyValue > highscore->company_value ||
-                (highscore->name == nullptr && companyValue == highscore->company_value))
+                (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
             {
                 if (highscore == nullptr)
                 {
@@ -219,7 +219,7 @@ public:
                 }
                 else
                 {
-                    if (highscore->name != nullptr)
+                    if (!String::IsNullOrEmpty(highscore->name))
                     {
                         highscore->timestamp = platform_get_datetime_now_utc();
                     }
