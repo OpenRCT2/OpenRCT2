@@ -17,110 +17,58 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-#include "../common.h"
 #include <SDL.h>
-#include "../platform/platform.h"
+#include <speex/speex_resampler.h>
+#include "../common.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif // __cplusplus
+
+    #include "../platform/platform.h"
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#define MIXER_LOOP_NONE			0
-#define MIXER_LOOP_INFINITE		-1
+#define MIXER_LOOP_NONE         0
+#define MIXER_LOOP_INFINITE     -1
 
-enum {
-	MIXER_GROUP_SOUND,
-	MIXER_GROUP_RIDE_MUSIC,
-	MIXER_GROUP_TITLE_MUSIC,
+enum MIXER_GROUP
+{
+    MIXER_GROUP_SOUND,
+    MIXER_GROUP_RIDE_MUSIC,
+    MIXER_GROUP_TITLE_MUSIC,
 };
 
 #ifdef __cplusplus
 
-#include <list>
-extern "C" {
-#include <speex/speex_resampler.h>
-}
+struct AudioFormat
+{
+    int             freq;
+    SDL_AudioFormat format;
+    int             channels;
 
-typedef struct AudioFormat {
-	int BytesPerSample() const { return (SDL_AUDIO_BITSIZE(format)) / 8; }
-	int freq;
-	SDL_AudioFormat format;
-	int channels;
-} AudioFormat;
+    int BytesPerSample() const
+    {
+        return (SDL_AUDIO_BITSIZE(format)) / 8;
+    }
+};
 
 class Source
 {
 public:
-	virtual ~Source();
-	unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
-	unsigned long Length();
-	const AudioFormat& Format();
-
-	friend class Mixer;
+    virtual ~Source();
+    unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
+    unsigned long Length();
+    const AudioFormat& Format();
 
 protected:
-	virtual unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) = 0;
+    virtual unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) = 0;
 
-	AudioFormat format;
-	unsigned long length;
-};
-
-class Source_Null : public Source
-{
-public:
-	Source_Null();
-
-protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
-};
-
-class Source_Sample : public Source
-{
-public:
-	Source_Sample();
-	~Source_Sample();
-	bool LoadWAV(const char* filename);
-	bool LoadCSS1(const char* filename, unsigned int offset);
-	bool Convert(AudioFormat format);
-
-private:
-	void Unload();
-
-	uint8* data;
-	bool issdlwav;
-
-protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
-};
-
-class Source_SampleStream : public Source
-{
-public:
-	Source_SampleStream() = default;
-	~Source_SampleStream();
-	bool LoadWAV(SDL_RWops* rw);
-
-private:
-	Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id);
-	void Unload();
-
-	SDL_RWops* rw = nullptr;
-	Uint64 databegin = 0;
-	uint8* buffer = nullptr;
-	unsigned long buffersize = 0;
-
-protected:
-	unsigned long Read(unsigned long offset, const uint8** data, unsigned long length);
-};
-
-class Channel
-{
-public:
-	Channel();
-	~Channel();
-
+    AudioFormat format;
+    unsigned long length = 0;
 };
 
 interface IAudioChannel
