@@ -51,8 +51,8 @@ Some Linux distributions offer native packages already. These packages are usual
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Vista / 7 / 8 / 10
-- Visual Studio 2015 Update 2+ (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
+- 7 / 8 / 10
+- Visual Studio 2015 Update 3 or 2017 RC (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
 - [NSIS](http://nsis.sourceforge.net/) (for deployment only)
 
