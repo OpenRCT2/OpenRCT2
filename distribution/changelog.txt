@@ -9,6 +9,8 @@
 - Improved: Guests and staff are now imported when loading SC4 / SV4 parks.
 - Fix: [#4571] Only start autosave timer after update or game command.
 - Fix: [#4929] Changing TTF language crashes game.
+- Fix: [#4951] Scenarios are not recorded as completed from a saved game.
+- Fix: [#4968] Completing a scenario does not save the name that is entered.
 
 0.0.5 (2016-12-27)
 ------------------------------------------------------------------------
