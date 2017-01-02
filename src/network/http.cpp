@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <fcntl.h>
+
 extern "C" {
     #include "http.h"
     #include "../platform/platform.h"
@@ -299,23 +301,35 @@ bool http_download_park(const char *url, char tmpPath[L_tmpnam + 10])
 		return false;
 	}
 
-	// Generate temporary filename that includes the original extension
-	if (tmpnam(tmpPath) == NULL) {
-		Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.url);
-		http_request_dispose(response);
-		return false;
-	}
-	size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPath);
-
-	const char *ext = http_get_extension_from_url(request.url, ".sv6");
-	strncat(tmpPath, ext, remainingBytes);
-
+	// Generate temporary filename that does not includes the original extension
+    char tmpPathTemplateName[MAX_PATH] = P_tmpdir"openrct2parkXXXXXX";
+    
+    const char *ext = http_get_extension_from_url(request.url, ".sv6");
+    size_t remainingBytes = L_tmpnam + 10 - strlen(tmpPathTemplateName);
+    strncat(tmpPathTemplateName, ext, remainingBytes);
+    
+    
+    int tmpPath_fd = mkstemps(tmpPathTemplateName, strlen(ext) + 1);
+    if (tmpPath_fd == -1)
+    {
+        Console::Error::WriteLine("Failed to generate temporary filename for downloaded park '%s'", request.url);
+        http_request_dispose(response);
+        return false;
+    }
+    
+    if (fcntl(tmpPath_fd, F_GETPATH, tmpPath) == -1)
+    {
+        Console::Error::WriteLine("Failed to get temporary filename for downloaded park '%s'", request.url);
+        http_request_dispose(response);
+        return false;
+    }
+    
 	// Store park in temporary file and load it (discard ending NUL in response body)
-	FILE* tmpFile = fopen(tmpPath, "wb");
-
+	FILE* tmpFile = fdopen(tmpPath_fd, "wb");
 	if (tmpFile == NULL) {
 		Console::Error::WriteLine("Failed to write downloaded park '%s' to temporary file", request.url);
 		http_request_dispose(response);
+		close(tmpPath_fd);
 		return false;
 	}
 
