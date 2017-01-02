@@ -618,7 +618,6 @@ class AudioMixer : public IAudioMixer
 private:
     SDL_AudioDeviceID deviceid = 0;
     AudioFormat format = { 0 };
-    uint8 * effectbuffer = nullptr;
     std::list<IAudioChannel *> channels;
     Source_Null source_null;
     float volume = 1.0f;
@@ -634,6 +633,8 @@ private:
     size_t _channelBufferCapacity = 0;
     void * _convertBuffer = nullptr;
     size_t _convertBufferCapacity = 0;
+    void * _effectBuffer = nullptr;
+    size_t _effectBufferCapacity = 0;
 
 public:
     AudioMixer()
@@ -677,7 +678,6 @@ public:
                 delete source_sample;
             }
         }
-        effectbuffer = new uint8[(have.samples * format.BytesPerSample() * format.channels)];
         SDL_PauseAudioDevice(deviceid, 0);
     }
 
@@ -702,12 +702,9 @@ public:
                 musicsources[i] = 0;
             }
         }
-        if (effectbuffer) {
-            delete[] effectbuffer;
-            effectbuffer = 0;
-        }
         SafeFree(_channelBuffer);
         SafeFree(_convertBuffer);
+        SafeFree(_effectBuffer);
     }
 
     void Lock() override
@@ -873,7 +870,6 @@ private:
         }
 
         // Apply effects
-        bool effectbufferloaded = false;
         if (rate != 1 && format.format == AUDIO_S16SYS)
         {
             int in_len = (int)((double)bufferLen / samplesize);
@@ -895,10 +891,22 @@ private:
                 // reached end of stream so we cant use buffer length as resampling ratio
                 speex_resampler_set_rate(resampler, format.freq, (int)(format.freq * (1 / rate)));
             }
-            speex_resampler_process_interleaved_int(resampler, (const spx_int16_t*)buffer, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
-            effectbufferloaded = true;
-            buffer = effectbuffer;
-            bufferLen = (out_len * samplesize);
+
+            size_t effectBufferReqLen  = out_len * samplesize;
+            if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
+            {
+                _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
+                _effectBufferCapacity = effectBufferReqLen;
+            }
+
+            speex_resampler_process_interleaved_int(
+                resampler,
+                (const spx_int16_t *)buffer,
+                (spx_uint32_t *)&in_len,
+                (spx_int16_t *)_effectBuffer,
+                (spx_uint32_t *)&out_len);
+            buffer = _effectBuffer;
+            bufferLen = effectBufferReqLen;
         }
 
         ApplyPan(channel, buffer, bufferLen, samplesize);
