@@ -858,8 +858,8 @@ private:
         {
             if (Convert(&cvt, _channelBuffer, bytesRead))
             {
-                buffer = _convertBuffer;
-                bufferLen = _convertBufferCapacity;
+                buffer = cvt.buf;
+                bufferLen = cvt.len_cvt;
             }
             else
             {
@@ -1042,8 +1042,11 @@ private:
         bool result = false;
         if (len != 0 && cvt->len_mult != 0)
         {
-            _convertBufferCapacity = len * cvt->len_mult;
-            _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
+            if (_convertBuffer == nullptr || _convertBufferCapacity < len)
+            {
+                _convertBufferCapacity = len * cvt->len_mult;
+                _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
+            }
             memcpy(_convertBuffer, src, len);
 
             cvt->len = (int)len;
