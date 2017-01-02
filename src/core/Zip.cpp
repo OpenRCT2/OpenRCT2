@@ -59,7 +59,7 @@ public:
         return name;
     }
 
-    const uint64 GetFileSize(size_t index) const override
+    uint64 GetFileSize(size_t index) const override
     {
         zip_stat_t zipFileStat;
         if (zip_stat_index(_zip, index, 0, &zipFileStat) == ZIP_ER_OK)

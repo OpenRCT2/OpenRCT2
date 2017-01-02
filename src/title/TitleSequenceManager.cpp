@@ -170,7 +170,7 @@ namespace TitleSequenceManager
         return std::string(path);
     }
 
-    static const uint16 GetPredefinedIndex(const std::string &path)
+    static uint16 GetPredefinedIndex(const std::string &path)
     {
         const utf8 * filename = Path::GetFileName(path.c_str());
         for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)

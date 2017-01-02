@@ -27,7 +27,7 @@ interface IZipArchive
 
     virtual size_t          GetNumFiles() const abstract;
     virtual const utf8 *    GetFileName(size_t index) const abstract;
-    virtual const uint64    GetFileSize(size_t index) const abstract;
+    virtual uint64          GetFileSize(size_t index) const abstract;
     virtual void *          GetFileData(const utf8 * path, size_t * outSize) const abstract;
 
     /**
