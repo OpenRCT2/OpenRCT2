@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <cmath>
 #include <list>
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"

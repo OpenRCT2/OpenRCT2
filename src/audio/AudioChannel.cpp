@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
 #include <speex/speex_resampler.h>
 #include "../core/Math.hpp"
 #include "AudioChannel.h"

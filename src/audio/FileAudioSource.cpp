@@ -64,7 +64,7 @@ public:
         sint64 currentPosition = SDL_RWtell(_rw);
         if (currentPosition != -1)
         {
-            size_t bytesToRead = Math::Min(len, _dataLength - offset);
+            size_t bytesToRead = Math::Min<size_t>(len, _dataLength - offset);
             sint64 dataOffset = _dataBegin + offset;
             if (currentPosition != dataOffset)
             {
