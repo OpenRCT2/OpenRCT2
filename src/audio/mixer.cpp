@@ -830,8 +830,8 @@ private:
         AudioFormat streamformat = channel->GetFormat();
         SDL_AudioCVT cvt;
         cvt.len_ratio = 1;
-        int samplesize = _format.channels * _format.BytesPerSample();
-        int samples = length / samplesize;
+        int sampleSize = _format.channels * _format.BytesPerSample();
+        int samples = length / sampleSize;
         double rate = 1;
         if (_format.format == AUDIO_S16SYS)
         {
@@ -850,7 +850,7 @@ private:
         }
 
         // Read raw PCM from channel
-        size_t toread = (size_t)(samplestoread / cvt.len_ratio) * samplesize;
+        size_t toread = (size_t)(samplestoread / cvt.len_ratio) * sampleSize;
         if (_channelBuffer == nullptr || _channelBufferCapacity < toread)
         {
             _channelBuffer = realloc(_channelBuffer, toread);
@@ -880,9 +880,32 @@ private:
         }
 
         // Apply effects
+        size_t effectBufferLen;
+        bool useBufferLengthForRatio = (bytesRead == toread);
+        if (ApplyResample(channel, samples, sampleSize, buffer, bufferLen, &effectBufferLen, useBufferLengthForRatio))
+        {
+            buffer = _effectBuffer;
+            bufferLen = effectBufferLen;
+        }
+
+        // Apply panning and volume
+        ApplyPan(channel, buffer, bufferLen, sampleSize);
+        int mixVolume = ApplyVolume(channel, buffer, bufferLen);
+
+        // Finally mix on to destination buffer
+        size_t dstLength = Math::Min((size_t)length, bufferLen);
+        SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
+
+        channel->UpdateOldVolume();
+    }
+
+    bool ApplyResample(IAudioChannel * channel, int samples, int sampleSize, const void * buffer, size_t bufferLen, size_t * newLength, bool useBufferLengthForRatio)
+    {
+        bool applied = false;
+        double rate = channel->GetRate();
         if (rate != 1 && _format.format == AUDIO_S16SYS)
         {
-            int inLen = (int)((double)bufferLen / samplesize);
+            int inLen = (int)((double)bufferLen / sampleSize);
             int outLen = samples;
 
             SpeexResamplerState * resampler = channel->GetResampler();
@@ -891,7 +914,7 @@ private:
                 resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
                 channel->SetResampler(resampler);
             }
-            if (bytesRead == toread)
+            if (useBufferLengthForRatio)
             {
                 // use buffer lengths for conversion ratio so that it fits exactly
                 speex_resampler_set_rate(resampler, inLen, samples);
@@ -902,7 +925,7 @@ private:
                 speex_resampler_set_rate(resampler, _format.freq, (int)(_format.freq * (1 / rate)));
             }
 
-            size_t effectBufferReqLen  = outLen * samplesize;
+            size_t effectBufferReqLen  = outLen * sampleSize;
             if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
             {
                 _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
@@ -915,19 +938,10 @@ private:
                 (spx_uint32_t *)&inLen,
                 (spx_int16_t *)_effectBuffer,
                 (spx_uint32_t *)&outLen);
-            buffer = _effectBuffer;
-            bufferLen = effectBufferReqLen;
+            *newLength = effectBufferReqLen;
+            applied = true;
         }
-
-        // Apply panning and volume
-        ApplyPan(channel, buffer, bufferLen, samplesize);
-        int mixVolume = ApplyVolume(channel, buffer, bufferLen);
-
-        // Finally mix on to destination buffer
-        size_t dstLength = Math::Min((size_t)length, bufferLen);
-        SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
-
-        channel->UpdateOldVolume();
+        return applied;
     }
 
     void ApplyPan(const IAudioChannel * channel, void * buffer, size_t len, size_t sampleSize)
