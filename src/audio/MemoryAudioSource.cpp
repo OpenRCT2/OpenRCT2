@@ -17,6 +17,7 @@
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "AudioSource.h"
+#include "mixer.h"
 
 #pragma pack(push, 1)
     struct WaveFormatEx
@@ -158,9 +159,7 @@ public:
 
     bool Convert(const AudioFormat * format)
     {
-        if (_format.format != format->format ||
-            _format.channels != format->channels ||
-            _format.freq != format->freq)
+        if (*format != _format)
         {
             SDL_AudioCVT cvt;
             if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)

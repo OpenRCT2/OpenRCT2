@@ -254,9 +254,6 @@ private:
             _adjust_music_vol = powf(_setting_music_vol / 100.f, 10.f / 6.f);
         }
 
-        AudioFormat streamformat = channel->GetFormat();
-        SDL_AudioCVT cvt;
-        cvt.len_ratio = 1;
         int sampleSize = _format.channels * _format.BytesPerSample();
         int samples = length / sampleSize;
         double rate = 1;
@@ -265,8 +262,12 @@ private:
             rate = channel->GetRate();
         }
         int samplestoread = (int)(samples * rate);
+
         bool mustConvert = false;
-        if (MustConvert(&streamformat))
+        SDL_AudioCVT cvt;
+        cvt.len_ratio = 1;
+        AudioFormat streamformat = channel->GetFormat();
+        if (streamformat != _format)
         {
             if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels, _format.freq) == -1)
             {
@@ -484,17 +485,6 @@ private:
             float t = (float)i / length;
             data[i] = (uint8)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
         }
-    }
-
-    bool MustConvert(const AudioFormat * sourceFormat)
-    {
-        if (sourceFormat->format != _format.format ||
-            sourceFormat->channels != _format.channels ||
-            sourceFormat->freq != _format.freq)
-        {
-            return true;
-        }
-        return false;
     }
 
     bool Convert(SDL_AudioCVT * cvt, const void * src, size_t len)

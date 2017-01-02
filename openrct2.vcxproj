@@ -429,6 +429,7 @@
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
     <ClInclude Include="src\audio\AudioChannel.h" />
+    <ClInclude Include="src\audio\AudioFormat.h" />
     <ClInclude Include="src\audio\AudioSource.h" />
     <ClInclude Include="src\FileClassifier.h" />
     <ClInclude Include="src\rct2\addresses.h" />

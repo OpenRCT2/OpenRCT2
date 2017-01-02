@@ -17,25 +17,32 @@
 #pragma once
 
 #include "../common.h"
-#include "AudioFormat.h"
-#include "mixer.h"
+#include <SDL.h>
 
 /**
- * Represents a readable source of audio PCM data.
+ * Represents the size, frequency and number of channels for
+ * an audio stream or buffer.
  */
-interface IAudioSource
+struct AudioFormat
 {
-    virtual ~IAudioSource() = default;
+    int             freq;
+    SDL_AudioFormat format;
+    int             channels;
 
-    virtual size_t GetLength() abstract;
-    virtual AudioFormat GetFormat() abstract;
-    virtual size_t Read(void * dst, size_t offset, size_t len) abstract;
+    int BytesPerSample() const
+    {
+        return (SDL_AUDIO_BITSIZE(format)) / 8;
+    }
 };
 
-namespace AudioSource
+inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)
 {
-    IAudioSource * CreateNull();
-    IAudioSource * CreateMemoryFromCSS1(const utf8 * path, size_t index, const AudioFormat * targetFormat = nullptr);
-    IAudioSource * CreateMemoryFromWAV(const utf8 * path, const AudioFormat * targetFormat = nullptr);
-    IAudioSource * CreateStreamFromWAV(SDL_RWops * rw);
+    return lhs.freq == rhs.freq &&
+            lhs.format == rhs.format &&
+            lhs.channels == rhs.channels;
+}
+
+inline bool operator !=(const AudioFormat& lhs, const AudioFormat& rhs)
+{
+    return !(lhs == rhs);
 }

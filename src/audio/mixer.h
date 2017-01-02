@@ -17,7 +17,6 @@
 #ifndef _MIXER_H_
 #define _MIXER_H_
 
-#include <SDL.h>
 #include "../common.h"
 
 #ifdef __cplusplus
@@ -45,22 +44,6 @@ enum MIXER_GROUP
 
 interface IAudioSource;
 interface IAudioChannel;
-
-/**
- * Represents the size, frequency and number of channels for
- * an audio stream or buffer.
- */
-struct AudioFormat
-{
-    int             freq;
-    SDL_AudioFormat format;
-    int             channels;
-
-    int BytesPerSample() const
-    {
-        return (SDL_AUDIO_BITSIZE(format)) / 8;
-    }
-};
 
 /**
  * Provides an audio stream by mixing multiple audio channels together.
