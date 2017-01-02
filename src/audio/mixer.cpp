@@ -616,18 +616,18 @@ public:
 class AudioMixer : public IAudioMixer
 {
 private:
-    SDL_AudioDeviceID deviceid = 0;
-    AudioFormat format = { 0 };
-    std::list<IAudioChannel *> channels;
-    Source_Null source_null;
-    float volume = 1.0f;
-    float adjust_sound_vol = 0.0f;
-    float adjust_music_vol = 0.0f;
-    uint8 setting_sound_vol = 0xFF;
-    uint8 setting_music_vol = 0xFF;
+    SDL_AudioDeviceID _deviceid = 0;
+    AudioFormat _format = { 0 };
+    std::list<IAudioChannel *> _channels;
+    Source_Null _source_null;
+    float _volume = 1.0f;
+    float _adjust_sound_vol = 0.0f;
+    float _adjust_music_vol = 0.0f;
+    uint8 _setting_sound_vol = 0xFF;
+    uint8 _setting_music_vol = 0xFF;
 
-    Source * css1sources[SOUND_MAXID];
-    Source * musicsources[PATH_ID_END];
+    Source * _css1sources[SOUND_MAXID] = { nullptr };
+    Source * _musicsources[PATH_ID_END] = { nullptr };
 
     void * _channelBuffer = nullptr;
     size_t _channelBufferCapacity = 0;
@@ -639,12 +639,6 @@ private:
 public:
     AudioMixer()
     {
-        for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
-            css1sources[i] = 0;
-        }
-        for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
-            musicsources[i] = 0;
-        }
     }
 
     ~AudioMixer()
@@ -663,45 +657,54 @@ public:
         want.samples = 1024;
         want.callback = Callback;
         want.userdata = this;
-        deviceid = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
-        format.format = have.format;
-        format.channels = have.channels;
-        format.freq = have.freq;
+        _deviceid = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
+        _format.format = have.format;
+        _format.channels = have.channels;
+        _format.freq = have.freq;
         const char* filename = get_file_path(PATH_ID_CSS1);
-        for (int i = 0; i < (int)Util::CountOf(css1sources); i++) {
+        for (int i = 0; i < (int)Util::CountOf(_css1sources); i++) {
             Source_Sample* source_sample = new Source_Sample;
             if (source_sample->LoadCSS1(filename, i)) {
-                source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
-                css1sources[i] = source_sample;
+                source_sample->Convert(_format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
+                _css1sources[i] = source_sample;
             } else {
-                css1sources[i] = &source_null;
+                _css1sources[i] = &_source_null;
                 delete source_sample;
             }
         }
-        SDL_PauseAudioDevice(deviceid, 0);
+        SDL_PauseAudioDevice(_deviceid, 0);
     }
 
     void Close() override
     {
+        // Free channels
         Lock();
-        while (channels.begin() != channels.end()) {
-            delete *(channels.begin());
-            channels.erase(channels.begin());
+        for (IAudioChannel * channel : _channels)
+        {
+            delete channel;
         }
+        _channels.clear();
         Unlock();
-        SDL_CloseAudioDevice(deviceid);
-        for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
-            if (css1sources[i] && css1sources[i] != &source_null) {
-                delete css1sources[i];
-                css1sources[i] = 0;
+
+        SDL_CloseAudioDevice(_deviceid);
+
+        // Free sources
+        for (size_t i = 0; i < Util::CountOf(_css1sources); i++)
+        {
+            if (_css1sources[i] && _css1sources[i] != &_source_null)
+            {
+                SafeDelete(_css1sources[i]);
             }
         }
-        for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
-            if (musicsources[i] && musicsources[i] != &source_null) {
-                delete musicsources[i];
-                musicsources[i] = 0;
+        for (size_t i = 0; i < Util::CountOf(_musicsources); i++)
+        {
+            if (_musicsources[i] && _musicsources[i] != &_source_null)
+            {
+                SafeDelete(_musicsources[i]);
             }
         }
+
+        // Free buffers
         SafeFree(_channelBuffer);
         SafeFree(_convertBuffer);
         SafeFree(_effectBuffer);
@@ -709,12 +712,12 @@ public:
 
     void Lock() override
     {
-        SDL_LockAudioDevice(deviceid);
+        SDL_LockAudioDevice(_deviceid);
     }
 
     void Unlock() override
     {
-        SDL_UnlockAudioDevice(deviceid);
+        SDL_UnlockAudioDevice(_deviceid);
     }
 
     IAudioChannel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) override
@@ -726,7 +729,7 @@ public:
             newchannel->Play(source, loop);
             newchannel->SetDeleteOnDone(deleteondone);
             newchannel->SetDeleteSourceOnDone(deletesourceondone);
-            channels.push_back(newchannel);
+            _channels.push_back(newchannel);
         }
         Unlock();
         return newchannel;
@@ -741,38 +744,45 @@ public:
 
     bool LoadMusic(size_t pathId) override
     {
-        if (pathId >= Util::CountOf(musicsources)) {
+        if (pathId >= Util::CountOf(_musicsources))
+        {
             return false;
         }
-        if (!musicsources[pathId]) {
+        if (!_musicsources[pathId])
+        {
             const char* filename = get_file_path((int)pathId);
             Source_Sample* source_sample = new Source_Sample;
-            if (source_sample->LoadWAV(filename)) {
-                musicsources[pathId] = source_sample;
+            if (source_sample->LoadWAV(filename))
+            {
+                _musicsources[pathId] = source_sample;
                 return true;
-            } else {
+            }
+            else
+            {
                 delete source_sample;
-                musicsources[pathId] = &source_null;
+                _musicsources[pathId] = &_source_null;
                 return false;
             }
-        } else {
+        }
+        else
+        {
             return true;
         }
     }
 
     void SetVolume(float volume) override
     {
-        this->volume = volume;
+        _volume = volume;
     }
 
     Source * GetSoundSource(int id) override
     {
-        return css1sources[id];
+        return _css1sources[id];
     }
 
     Source * GetMusicSource(int id) override
     {
-        return musicsources[id];
+        return _musicsources[id];
     }
 
 private:
@@ -781,8 +791,8 @@ private:
         auto mixer = static_cast<AudioMixer *>(arg);
 
         memset(stream, 0, length);
-        std::list<IAudioChannel *>::iterator it = mixer->channels.begin();
-        while (it != mixer->channels.end())
+        std::list<IAudioChannel *>::iterator it = mixer->_channels.begin();
+        while (it != mixer->_channels.end())
         {
             IAudioChannel * channel = *it;
 
@@ -794,7 +804,7 @@ private:
             if ((channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
             {
                 delete channel;
-                it = mixer->channels.erase(it);
+                it = mixer->_channels.erase(it);
             }
             else
             {
@@ -806,24 +816,24 @@ private:
     void MixChannel(IAudioChannel * channel, uint8 * data, int length) 
     {
         // Did the volume level get changed? Recalculate level in this case.
-        if (setting_sound_vol != gConfigSound.sound_volume)
+        if (_setting_sound_vol != gConfigSound.sound_volume)
         {
-            setting_sound_vol = gConfigSound.sound_volume;
-            adjust_sound_vol = powf(setting_sound_vol / 100.f, 10.f / 6.f);
+            _setting_sound_vol = gConfigSound.sound_volume;
+            _adjust_sound_vol = powf(_setting_sound_vol / 100.f, 10.f / 6.f);
         }
-        if (setting_music_vol != gConfigSound.ride_music_volume)
+        if (_setting_music_vol != gConfigSound.ride_music_volume)
         {
-            setting_music_vol = gConfigSound.ride_music_volume;
-            adjust_music_vol = powf(setting_music_vol / 100.f, 10.f / 6.f);
+            _setting_music_vol = gConfigSound.ride_music_volume;
+            _adjust_music_vol = powf(_setting_music_vol / 100.f, 10.f / 6.f);
         }
 
         AudioFormat streamformat = channel->GetFormat();
         SDL_AudioCVT cvt;
         cvt.len_ratio = 1;
-        int samplesize = format.channels * format.BytesPerSample();
+        int samplesize = _format.channels * _format.BytesPerSample();
         int samples = length / samplesize;
         double rate = 1;
-        if (format.format == AUDIO_S16SYS)
+        if (_format.format == AUDIO_S16SYS)
         {
             rate = channel->GetRate();
         }
@@ -831,7 +841,7 @@ private:
         bool mustConvert = false;
         if (MustConvert(&streamformat))
         {
-            if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, format.format, format.channels, format.freq) == -1)
+            if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels, _format.freq) == -1)
             {
                 // Unable to convert channel data
                 return;
@@ -870,7 +880,7 @@ private:
         }
 
         // Apply effects
-        if (rate != 1 && format.format == AUDIO_S16SYS)
+        if (rate != 1 && _format.format == AUDIO_S16SYS)
         {
             int in_len = (int)((double)bufferLen / samplesize);
             int out_len = samples;
@@ -878,7 +888,7 @@ private:
             SpeexResamplerState * resampler = channel->GetResampler();
             if (resampler == nullptr)
             {
-                resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
+                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
                 channel->SetResampler(resampler);
             }
             if (bytesRead == toread)
@@ -889,7 +899,7 @@ private:
             else
             {
                 // reached end of stream so we cant use buffer length as resampling ratio
-                speex_resampler_set_rate(resampler, format.freq, (int)(format.freq * (1 / rate)));
+                speex_resampler_set_rate(resampler, _format.freq, (int)(_format.freq * (1 / rate)));
             }
 
             size_t effectBufferReqLen  = out_len * samplesize;
@@ -913,16 +923,16 @@ private:
         int mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
         size_t dstLength = Math::Min((size_t)length, bufferLen);
-        SDL_MixAudioFormat(data, (const Uint8 *)buffer, format.format, (Uint32)dstLength, mixVolume);
+        SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
 
         channel->UpdateOldVolume();
     }
 
     void ApplyPan(const IAudioChannel * channel, void * buffer, size_t len, size_t sampleSize)
     {
-        if (channel->GetPan() != 0.5f && format.channels == 2)
+        if (channel->GetPan() != 0.5f && _format.channels == 2)
         {
-            switch (format.format) {
+            switch (_format.format) {
             case AUDIO_S16SYS:
                 EffectPanS16(channel, (sint16 *)buffer, (int)(len / sampleSize));
                 break;
@@ -935,11 +945,11 @@ private:
 
     int ApplyVolume(const IAudioChannel * channel, void * buffer, size_t len)
     {
-        float volumeAdjust = volume;
+        float volumeAdjust = _volume;
         volumeAdjust *= (gConfigSound.master_volume / 100.0f);
         switch (channel->GetGroup()) {
         case MIXER_GROUP_SOUND:
-            volumeAdjust *= adjust_sound_vol;
+            volumeAdjust *= _adjust_sound_vol;
 
             // Cap sound volume on title screen so music is more audible
             if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -948,7 +958,7 @@ private:
             }
             break;
         case MIXER_GROUP_RIDE_MUSIC:
-            volumeAdjust *= adjust_music_vol;
+            volumeAdjust *= _adjust_music_vol;
             break;
         }
 
@@ -966,8 +976,8 @@ private:
             mixVolume = SDL_MIX_MAXVOLUME;
 
             // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-            int fadeLength = (int)len / format.BytesPerSample();
-            switch (format.format) {
+            int fadeLength = (int)len / _format.BytesPerSample();
+            switch (_format.format) {
             case AUDIO_S16SYS:
                 EffectFadeS16((sint16 *)buffer, fadeLength, startVolume, endVolume);
                 break;
@@ -1035,9 +1045,9 @@ private:
 
     bool MustConvert(const AudioFormat * sourceFormat)
     {
-        if (sourceFormat->format != format.format ||
-            sourceFormat->channels != format.channels ||
-            sourceFormat->freq != format.freq)
+        if (sourceFormat->format != _format.format ||
+            sourceFormat->channels != _format.channels ||
+            sourceFormat->freq != _format.freq)
         {
             return true;
         }
