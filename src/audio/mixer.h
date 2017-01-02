@@ -170,6 +170,9 @@ interface IAudioChannel
 
     virtual void Play(Source& source, int loop = MIXER_LOOP_NONE) abstract;
     virtual void UpdateOldVolume() abstract;
+
+    virtual AudioFormat GetFormat() const abstract;
+    virtual size_t Read(void * dst, size_t len) abstract;
 };
 
 interface IAudioMixer

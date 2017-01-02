@@ -354,7 +354,7 @@ private:
 
     int _group = MIXER_GROUP_SOUND;
     double _rate = 0;
-    unsigned long _offset = 0;
+    size_t _offset = 0;
     int _loop = 0;
 
     int     _volume = 1;
@@ -428,12 +428,12 @@ public:
 
     unsigned long GetOffset() const override
     {
-        return _offset;
+        return (unsigned long)_offset;
     }
 
     bool SetOffset(unsigned long offset)
     {
-        if (_source && offset < _source->Length())
+        if (_source != nullptr && offset < _source->Length())
         {
             AudioFormat format = _source->Format();
             int samplesize = format.channels * format.BytesPerSample();
@@ -564,6 +564,53 @@ public:
         _oldvolume_l = _volume_l;
         _oldvolume_r = _volume_r;
     }
+
+    AudioFormat GetFormat() const override
+    {
+        AudioFormat result = { 0 };
+        if (_source != nullptr)
+        {
+            result = _source->Format();
+        }
+        return result;
+    }
+
+    size_t Read(void * dst, size_t len) override
+    {
+        size_t bytesRead = 0;
+        size_t bytesToRead = len;
+        while (bytesToRead > 0 && !_done)
+        {
+            const uint8 * src = nullptr;
+            unsigned long someLen = _source->GetSome((unsigned long)_offset, &src, (unsigned long)bytesToRead);
+            if (someLen > 0)
+            {
+                size_t copyLen = Math::Min((size_t)someLen, bytesToRead);
+                memcpy(dst, src, copyLen);
+                dst = (void *)((uintptr_t)dst + copyLen);
+                bytesToRead -= copyLen;
+                bytesRead += copyLen;
+                _offset += copyLen;
+            }
+            if (_offset >= _source->Length())
+            {
+                if (_loop == 0)
+                {
+                    _done = true;
+                }
+                else if (_loop == MIXER_LOOP_INFINITE)
+                {
+                    _offset = 0;
+                }
+                else
+                {
+                    _loop--;
+                    _offset = 0;
+                }
+            }
+        }
+        return bytesRead;
+    }
 };
 
 class AudioMixer : public IAudioMixer
@@ -583,8 +630,11 @@ private:
     Source * css1sources[SOUND_MAXID];
     Source * musicsources[PATH_ID_END];
 
+    void * _channelBuffer = nullptr;
+    size_t _channelBufferCapacity = 0;
+
 public:
-    AudioMixer::AudioMixer()
+    AudioMixer()
     {
         for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
             css1sources[i] = 0;
@@ -592,6 +642,11 @@ public:
         for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
             musicsources[i] = 0;
         }
+    }
+
+    ~AudioMixer()
+    {
+        Close();
     }
 
     void Init(const char* device) override
@@ -649,6 +704,7 @@ public:
             delete[] effectbuffer;
             effectbuffer = 0;
         }
+        free(_channelBuffer);
     }
 
     void Lock() override
@@ -729,7 +785,12 @@ private:
         while (it != mixer->channels.end())
         {
             IAudioChannel * channel = *it;
-            mixer->MixChannel(channel, stream, length);
+
+            int group = channel->GetGroup();
+            if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
+            {
+                mixer->MixChannel(channel, stream, length);
+            }
             if ((channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
             {
                 delete channel;
@@ -742,7 +803,7 @@ private:
         }
     }
 
-    void MixChannel(IAudioChannel * channel, uint8* data, int length) 
+    void MixChannel(IAudioChannel * channel, uint8 * data, int length) 
     {
         // Did the volume level get changed? Recalculate level in this case.
         if (setting_sound_vol != gConfigSound.sound_volume)
@@ -756,197 +817,159 @@ private:
             adjust_music_vol = powf(setting_music_vol / 100.f, 10.f / 6.f);
         }
 
-        // Do not mix channel if channel is a sound and sound is disabled
-        if (channel->GetGroup() == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
-            return;
-        }
-
-        Source * source = channel->GetSource();
-        if (source != nullptr && source->Length() > 0 && !channel->IsDone())
+        AudioFormat streamformat = channel->GetFormat();
+        SDL_AudioCVT cvt;
+        cvt.len_ratio = 1;
+        int samplesize = format.channels * format.BytesPerSample();
+        int samples = length / samplesize;
+        double rate = 1;
+        if (format.format == AUDIO_S16SYS)
         {
-            AudioFormat streamformat = source->Format();
-            int loaded = 0;
-            SDL_AudioCVT cvt;
-            cvt.len_ratio = 1;
-            do
+            rate = channel->GetRate();
+        }
+        int samplestoread = (int)(samples * rate);
+        int lengthloaded = 0;
+        bool mustconvert = false;
+        if (MustConvert(&streamformat))
+        {
+            if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, format.format, format.channels, format.freq) == -1)
             {
-                int samplesize = format.channels * format.BytesPerSample();
-                int samples = length / samplesize;
-                int samplesloaded = loaded / samplesize;
-                double rate = 1;
-                if (format.format == AUDIO_S16SYS)
-                {
-                    rate = channel->GetRate();
-                }
-                int samplestoread = (int)((samples - samplesloaded) * rate);
-                int lengthloaded = 0;
-                if (channel->GetOffset() < source->Length())
-                {
-                    bool mustconvert = false;
-                    if (MustConvert(*source))
-                    {
-                        if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, format.format, format.channels, format.freq) == -1)
-                        {
-                            break;
-                        }
-                        mustconvert = true;
-                    }
-
-                    const uint8 * datastream = nullptr;
-                    int toread = (int)(samplestoread / cvt.len_ratio) * samplesize;
-                    int readfromstream = source->GetSome(channel->GetOffset(), &datastream, toread);
-                    if (readfromstream == 0)
-                    {
-                        break;
-                    }
-
-                    uint8* dataconverted = 0;
-                    const uint8* tomix = 0;
-
-                    if (mustconvert)
-                    {
-                        // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
-                        if (Convert(cvt, datastream, readfromstream, &dataconverted))
-                        {
-                            tomix = dataconverted;
-                            lengthloaded = cvt.len_cvt;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        tomix = datastream;
-                        lengthloaded = readfromstream;
-                    }
-
-                    bool effectbufferloaded = false;
-                    if (rate != 1 && format.format == AUDIO_S16SYS)
-                    {
-                        int in_len = (int)((double)lengthloaded / samplesize);
-                        int out_len = samples;
-
-                        SpeexResamplerState * resampler = channel->GetResampler();
-                        if (resampler == nullptr)
-                        {
-                            resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
-                            channel->SetResampler(resampler);
-                        }
-                        if (readfromstream == toread)
-                        {
-                            // use buffer lengths for conversion ratio so that it fits exactly
-                            speex_resampler_set_rate(resampler, in_len, samples - samplesloaded);
-                        }
-                        else
-                        {
-                            // reached end of stream so we cant use buffer length as resampling ratio
-                            speex_resampler_set_rate(resampler, format.freq, (int)(format.freq * (1 / rate)));
-                        }
-                        speex_resampler_process_interleaved_int(resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
-                        effectbufferloaded = true;
-                        tomix = effectbuffer;
-                        lengthloaded = (out_len * samplesize);
-                    }
-
-                    if (channel->GetPan() != 0.5f && format.channels == 2)
-                    {
-                        if (!effectbufferloaded)
-                        {
-                            memcpy(effectbuffer, tomix, lengthloaded);
-                            effectbufferloaded = true;
-                            tomix = effectbuffer;
-                        }
-                        switch (format.format) {
-                        case AUDIO_S16SYS:
-                            EffectPanS16(channel, (sint16*)effectbuffer, lengthloaded / samplesize);
-                            break;
-                        case AUDIO_U8:
-                            EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
-                            break;
-                        }
-                    }
-
-                    int mixlength = lengthloaded;
-                    if (loaded + mixlength > length)
-                    {
-                        mixlength = length - loaded;
-                    }
-
-                    float volumeadjust = volume;
-                    volumeadjust *= (gConfigSound.master_volume / 100.0f);
-                    switch (channel->GetGroup()) {
-                    case MIXER_GROUP_SOUND:
-                        volumeadjust *= adjust_sound_vol;
-
-                        // Cap sound volume on title screen so music is more audible
-                        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-                            volumeadjust = Math::Min(volumeadjust, 0.75f);
-                        }
-                        break;
-                    case MIXER_GROUP_RIDE_MUSIC:
-                        volumeadjust *= adjust_music_vol;
-                        break;
-                    }
-                    int startvolume = (int)(channel->GetOldVolume() * volumeadjust);
-                    int endvolume = (int)(channel->GetVolume() * volumeadjust);
-                    if (channel->IsStopping())
-                    {
-                        endvolume = 0;
-                    }
-                    int mixvolume = (int)(channel->GetVolume() * volumeadjust);
-                    if (startvolume != endvolume)
-                    {
-                        // fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-                        if (!effectbufferloaded)
-                        {
-                            memcpy(effectbuffer, tomix, lengthloaded);
-                            effectbufferloaded = true;
-                            tomix = effectbuffer;
-                        }
-                        mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
-                        int fadelength = mixlength / format.BytesPerSample();
-                        switch (format.format) {
-                        case AUDIO_S16SYS:
-                            EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
-                            break;
-                        case AUDIO_U8:
-                            EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
-                            break;
-                        }
-                    }
-
-                    SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, mixvolume);
-
-                    if (dataconverted)
-                    {
-                        delete[] dataconverted;
-                    }
-
-                    channel->SetOffset(channel->GetOffset() + readfromstream);
-                }
-
-                loaded += lengthloaded;
-
-                int loop = channel->GetLoop();
-                if (loop != 0 && channel->GetOffset() >= source->Length())
-                {
-                    if (loop != -1)
-                    {
-                        channel->SetLoop(loop - 1);
-                    }
-                    channel->SetOffset(0);
-                }
+                // Unable to convert channel data
+                return;
             }
-            while (loaded < length && channel->GetLoop() != 0 && !channel->IsStopping());
+            mustconvert = true;
+        }
 
-            channel->UpdateOldVolume();
-            if (channel->GetLoop() == 0 && channel->GetOffset() >= source->Length())
+        // Read raw PCM from channel
+        size_t toread = (size_t)(samplestoread / cvt.len_ratio) * samplesize;
+        if (_channelBuffer == nullptr || _channelBufferCapacity < toread)
+        {
+            _channelBuffer = realloc(_channelBuffer, toread);
+            _channelBufferCapacity = toread;
+        }
+        size_t bytesRead = channel->Read(_channelBuffer, toread);
+
+        // Convert data to required format if necessary
+        uint8 * convertedBuffer = nullptr;
+        const uint8 * buffer = 0;
+        if (mustconvert)
+        {
+            // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
+            if (Convert(cvt, (const uint8 *)_channelBuffer, (unsigned long)bytesRead, &convertedBuffer))
             {
-                channel->SetDone(true);
+                buffer = convertedBuffer;
+                lengthloaded = cvt.len_cvt;
+            }
+            else
+            {
+                return;
             }
         }
+        else
+        {
+            buffer = (const uint8 *)_channelBuffer;
+            lengthloaded = (int)bytesRead;
+        }
+
+        // Apply effects
+        bool effectbufferloaded = false;
+        if (rate != 1 && format.format == AUDIO_S16SYS)
+        {
+            int in_len = (int)((double)lengthloaded / samplesize);
+            int out_len = samples;
+
+            SpeexResamplerState * resampler = channel->GetResampler();
+            if (resampler == nullptr)
+            {
+                resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
+                channel->SetResampler(resampler);
+            }
+            if (bytesRead == toread)
+            {
+                // use buffer lengths for conversion ratio so that it fits exactly
+                speex_resampler_set_rate(resampler, in_len, samples);
+            }
+            else
+            {
+                // reached end of stream so we cant use buffer length as resampling ratio
+                speex_resampler_set_rate(resampler, format.freq, (int)(format.freq * (1 / rate)));
+            }
+            speex_resampler_process_interleaved_int(resampler, (const spx_int16_t*)buffer, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
+            effectbufferloaded = true;
+            buffer = effectbuffer;
+            lengthloaded = (out_len * samplesize);
+        }
+
+        // Pan
+        if (channel->GetPan() != 0.5f && format.channels == 2)
+        {
+            if (!effectbufferloaded)
+            {
+                memcpy(effectbuffer, buffer, lengthloaded);
+                effectbufferloaded = true;
+                buffer = effectbuffer;
+            }
+            switch (format.format) {
+            case AUDIO_S16SYS:
+                EffectPanS16(channel, (sint16*)effectbuffer, lengthloaded / samplesize);
+                break;
+            case AUDIO_U8:
+                EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
+                break;
+            }
+        }
+
+        int mixlength = Math::Min(lengthloaded, length);
+
+        // Volume
+        float volumeadjust = volume;
+        volumeadjust *= (gConfigSound.master_volume / 100.0f);
+        switch (channel->GetGroup()) {
+        case MIXER_GROUP_SOUND:
+            volumeadjust *= adjust_sound_vol;
+
+            // Cap sound volume on title screen so music is more audible
+            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
+                volumeadjust = Math::Min(volumeadjust, 0.75f);
+            }
+            break;
+        case MIXER_GROUP_RIDE_MUSIC:
+            volumeadjust *= adjust_music_vol;
+            break;
+        }
+        int startvolume = (int)(channel->GetOldVolume() * volumeadjust);
+        int endvolume = (int)(channel->GetVolume() * volumeadjust);
+        if (channel->IsStopping())
+        {
+            endvolume = 0;
+        }
+        int mixvolume = (int)(channel->GetVolume() * volumeadjust);
+        if (startvolume != endvolume)
+        {
+            // fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
+            if (!effectbufferloaded)
+            {
+                memcpy(effectbuffer, buffer, lengthloaded);
+                effectbufferloaded = true;
+                buffer = effectbuffer;
+            }
+            mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
+            int fadelength = mixlength / format.BytesPerSample();
+            switch (format.format) {
+            case AUDIO_S16SYS:
+                EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
+                break;
+            case AUDIO_U8:
+                EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
+                break;
+            }
+        }
+
+        SDL_MixAudioFormat(data, buffer, format.format, mixlength, mixvolume);
+
+        delete[] convertedBuffer;
+
+        channel->UpdateOldVolume();
     }
 
     static void EffectPanS16(const IAudioChannel * channel, sint16 * data, int length)
@@ -1003,12 +1026,11 @@ private:
         }
     }
 
-    bool MustConvert(Source& source)
+    bool MustConvert(const AudioFormat * sourceFormat)
     {
-        const AudioFormat sourceformat = source.Format();
-        if (sourceformat.format != format.format ||
-            sourceformat.channels != format.channels ||
-            sourceformat.freq != format.freq)
+        if (sourceFormat->format != format.format ||
+            sourceFormat->channels != format.channels ||
+            sourceFormat->freq != format.freq)
         {
             return true;
         }
