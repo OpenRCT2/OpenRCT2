@@ -120,30 +120,56 @@ class Channel
 public:
 	Channel();
 	~Channel();
-	void Play(Source& source, int loop);
-	void SetRate(double rate);
-	void SetVolume(int volume);
-	void SetPan(float pan);
-	bool IsPlaying();
-	unsigned long GetOffset();
-	bool SetOffset(unsigned long offset);
-	void SetGroup(int group);
 
-	int loop = 0;
-	unsigned long offset = 0;
-	double rate = 0;
-	int volume = 1;
-	float volume_l = 0.f, volume_r = 0.f;
-	float oldvolume_l = 0.f, oldvolume_r = 0.f;
-	float pan = 0;
-	bool done = true;
-	bool deleteondone = false;
-	bool deletesourceondone = false;
-	bool stopping = false;
-	int oldvolume = 0;
-	int group = MIXER_GROUP_SOUND;
-	SpeexResamplerState* resampler = nullptr;
-	Source* source = nullptr;
+};
+
+interface IAudioChannel
+{
+    virtual ~IAudioChannel() = default;
+
+    virtual Source * GetSource() const abstract;
+
+    virtual SpeexResamplerState * GetResampler() const abstract;
+    virtual void SetResampler(SpeexResamplerState * value) abstract;
+
+    virtual int     GetGroup() const abstract;
+    virtual void    SetGroup(int group) abstract;
+
+    virtual double  GetRate() const abstract;
+    virtual void    SetRate(double rate) abstract;
+
+    virtual unsigned long   GetOffset() const abstract;
+    virtual bool            SetOffset(unsigned long offset) abstract;
+
+    virtual int     GetLoop() const abstract;
+    virtual void    SetLoop(int value) abstract;
+
+    virtual int     GetVolume() const abstract;
+    virtual float   GetVolumeL() const abstract;
+    virtual float   GetVolumeR() const abstract;
+    virtual float   GetOldVolumeL() const abstract;
+    virtual float   GetOldVolumeR() const abstract;
+    virtual int     GetOldVolume() const abstract;
+    virtual void    SetVolume(int volume) abstract;
+
+    virtual float   GetPan() const abstract;
+    virtual void    SetPan(float pan) abstract;
+
+    virtual bool IsStopping() const abstract;
+    virtual void SetStopping(bool value) abstract;
+
+    virtual bool IsDone() const abstract;
+    virtual void SetDone(bool value) abstract;
+
+    virtual bool DeleteOnDone() const abstract;
+    virtual void SetDeleteOnDone(bool value) abstract;
+
+    virtual void SetDeleteSourceOnDone(bool value) abstract;
+
+    virtual bool IsPlaying() const abstract;
+
+    virtual void Play(Source& source, int loop = MIXER_LOOP_NONE) abstract;
+    virtual void UpdateOldVolume() abstract;
 };
 
 interface IAudioMixer
@@ -154,8 +180,8 @@ interface IAudioMixer
     virtual void Close() abstract;
     virtual void Lock() abstract;
     virtual void Unlock() abstract;
-    virtual Channel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) abstract;
-    virtual void Stop(Channel& channel) abstract;
+    virtual IAudioChannel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) abstract;
+    virtual void Stop(IAudioChannel * channel) abstract;
     virtual bool LoadMusic(size_t pathid) abstract;
     virtual void SetVolume(float volume) abstract;
 
