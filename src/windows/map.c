@@ -333,6 +333,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_BUILD_PARK_ENTRANCE:
 		window_invalidate(w);
+		gCheatsDisableClearanceChecks = false;				//Fixes a bug with ghost entrences being placed which can't be removed
 		if (tool_set(w, widgetIndex, 2))
 			break;
 
