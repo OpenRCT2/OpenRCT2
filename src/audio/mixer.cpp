@@ -18,68 +18,92 @@
 #include <list>
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "mixer.h"
 
 extern "C"
 {
-	#include "../config.h"
-	#include "../localisation/localisation.h"
-	#include "../OpenRCT2.h"
-	#include "../platform/platform.h"
-	#include "../rct2.h"
-	#include "audio.h"
+    #include "../config.h"
+    #include "../localisation/localisation.h"
+    #include "../OpenRCT2.h"
+    #include "../platform/platform.h"
+    #include "../rct2.h"
+    #include "audio.h"
 }
+
+#pragma pack(push, 1)
+    struct WaveFormat
+    {
+        Uint16 encoding;
+        Uint16 channels;
+        Uint32 frequency;
+        Uint32 byterate;
+        Uint16 blockalign;
+        Uint16 bitspersample;
+    };
+    assert_struct_size(WaveFormat, 16);
+
+    struct WaveFormatEx
+    {
+        uint16 encoding;
+        uint16 channels;
+        uint32 frequency;
+        uint32 byterate;
+        uint16 blockalign;
+        uint16 bitspersample;
+        uint16 extrasize;
+    };
+    assert_struct_size(WaveFormatEx, 18);
+#pragma pack(pop)
 
 IAudioMixer * gMixer;
 
-Source::~Source()
-{
+// unsigned long Source::GetSome(unsigned long offset, const uint8** data, unsigned long length)
+// {
+// 	if (offset >= Length()) {
+// 		return 0;
+// 	}
+// 	unsigned long size = length;
+// 	if (offset + length > Length()) {
+// 		size = Length() - offset;
+// 	}
+// 	return Read(offset, data, size);
+// }
 
-}
-
-unsigned long Source::GetSome(unsigned long offset, const uint8** data, unsigned long length)
-{
-	if (offset >= Length()) {
-		return 0;
-	}
-	unsigned long size = length;
-	if (offset + length > Length()) {
-		size = Length() - offset;
-	}
-	return Read(offset, data, size);
-}
-
-unsigned long Source::Length()
-{
-	return length;
-}
-
-const AudioFormat& Source::Format()
-{
-	return format;
-}
-
-class Source_Null : public Source
+/**
+ * An audio source representing silence.
+ */
+class Source_Null : public IAudioSource
 {
 public:
-    Source_Null()
+    size_t GetLength() override
     {
-        length = 0;
+        return 0;
     }
 
-protected:
-    unsigned long Read(unsigned long offset, const uint8 * * data, unsigned long length) override
+    AudioFormat GetFormat() override
+    {
+        return { 0 };
+    }
+
+    size_t Read(void * dst, size_t offset, size_t len) override
     {
         return 0;
     }
 };
 
-class Source_Sample : public Source
+/**
+ * An audio source where raw PCM data is initially loaded into RAM from
+ * a file and then streamed.
+ */
+class Source_Sample : public IAudioSource
 {
 private:
-    uint8 * data = nullptr;
-    bool issdlwav = false;
+    AudioFormat _format = { 0 };
+    uint8 *     _data = nullptr;
+    size_t      _length = 0;
+    bool        _isSDLWav = false;
 
 public:
     ~Source_Sample()
@@ -87,118 +111,137 @@ public:
         Unload();
     }
 
-    bool LoadWAV(const char * filename)
+    size_t GetLength() override
     {
-        log_verbose("Source_Sample::LoadWAV(%s)", filename);
+        return _length;
+    }
+
+    AudioFormat GetFormat() override
+    {
+        return _format;
+    }
+
+    size_t Read(void * dst, size_t offset, size_t len) override
+    {
+        size_t bytesToRead = 0;
+        if (offset < _length)
+        {
+            bytesToRead = Math::Min(len, _length - offset);
+            Memory::Copy<void>(dst, _data + offset, bytesToRead);
+        }
+        return bytesToRead;
+    }
+
+    bool LoadWAV(const utf8 * path)
+    {
+        log_verbose("Source_Sample::LoadWAV(%s)", path);
 
         Unload();
-        SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-        if (rw == NULL)
-        {
-            log_verbose("Error loading %s", filename);
-            return false;
-        }
 
-        SDL_AudioSpec audiospec;
-        memset(&audiospec, 0, sizeof(audiospec));
-        SDL_AudioSpec* spec = SDL_LoadWAV_RW(rw, false, &audiospec, &data, (Uint32*)&length);
-        SDL_RWclose(rw);
-
-        if (spec != NULL)
+        bool result = false;
+        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+        if (rw != nullptr)
         {
-            format.freq = spec->freq;
-            format.format = spec->format;
-            format.channels = spec->channels;
-            issdlwav = true;
+            SDL_AudioSpec audiospec = { 0 };
+            Uint32 audioLen;
+            SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_data, &audioLen);
+            if (spec != nullptr)
+            {
+                _format.freq = spec->freq;
+                _format.format = spec->format;
+                _format.channels = spec->channels;
+                _length = audioLen;
+                _isSDLWav = true;
+                result = true;
+            }
+            else
+            {
+                log_verbose("Error loading %s, unsupported WAV format", path);
+            }
+            SDL_RWclose(rw);
         }
         else
         {
-            log_verbose("Error loading %s, unsupported WAV format", filename);
-            return false;
+            log_verbose("Error loading %s", path);
         }
-
-        return true;
+        return result;
     }
 
-    bool LoadCSS1(const char * filename, unsigned int offset)
+    bool LoadCSS1(const utf8 * path, size_t index)
     {
-        log_verbose("Source_Sample::LoadCSS1(%s, %d)", filename, offset);
+        log_verbose("Source_Sample::LoadCSS1(%s, %d)", path, index);
 
         Unload();
-        SDL_RWops * rw = SDL_RWFromFile(filename, "rb");
-        if (rw == nullptr)
-        {
-            log_verbose("Unable to load %s", filename);
-            return false;
-        }
 
-        Uint32 numsounds;
-        SDL_RWread(rw, &numsounds, sizeof(numsounds), 1);
-        if (offset > numsounds)
+        bool result = false;
+        SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+        if (rw != nullptr)
         {
+            uint32 numSounds;
+            SDL_RWread(rw, &numSounds, sizeof(numSounds), 1);
+            if (index < numSounds)
+            {
+                SDL_RWseek(rw, index * 4, RW_SEEK_CUR);
+
+                uint32 pcmOffset;
+                SDL_RWread(rw, &pcmOffset, sizeof(pcmOffset), 1);
+                SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
+
+                uint32 pcmSize;
+                SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
+                _length = pcmSize;
+
+                WaveFormatEx waveFormat;
+                SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
+                _format.freq = waveFormat.frequency;
+                _format.format = AUDIO_S16LSB;
+                _format.channels = waveFormat.channels;
+
+                _data = new (std::nothrow) uint8[_length];
+                if (_data != nullptr)
+                {
+                    SDL_RWread(rw, _data, _length, 1);
+                    result = true;
+                }
+                else
+                {
+                    log_verbose("Unable to allocate data");
+                }
+            }
             SDL_RWclose(rw);
-            return false;
         }
-        SDL_RWseek(rw, offset * 4, RW_SEEK_CUR);
-        Uint32 soundoffset;
-        SDL_RWread(rw, &soundoffset, sizeof(soundoffset), 1);
-        SDL_RWseek(rw, soundoffset, RW_SEEK_SET);
-        Uint32 soundsize;
-        SDL_RWread(rw, &soundsize, sizeof(soundsize), 1);
-        length = soundsize;
-#pragma pack(push, 1)
-        struct WaveFormatEx
+        else
         {
-            Uint16 encoding;
-            Uint16 channels;
-            Uint32 frequency;
-            Uint32 byterate;
-            Uint16 blockalign;
-            Uint16 bitspersample;
-            Uint16 extrasize;
-        } waveformat;
-#pragma pack(pop)
-        assert_struct_size(waveformat, 18);
-        SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
-        format.freq = waveformat.frequency;
-        format.format = AUDIO_S16LSB;
-        format.channels = waveformat.channels;
-        data = new (std::nothrow) uint8[length];
-        if (!data)
-        {
-            log_verbose("Unable to allocate data");
-            SDL_RWclose(rw);
-            return false;
+            log_verbose("Unable to load %s", path);
         }
-        SDL_RWread(rw, data, length, 1);
-        SDL_RWclose(rw);
-        return true;
+        return result;
     }
 
-    bool Convert(AudioFormat format)
+    bool Convert(const AudioFormat * format)
     {
-        if (Source_Sample::format.format != format.format ||
-            Source_Sample::format.channels != format.channels ||
-            Source_Sample::format.freq != format.freq)
+        if (_format.format != format->format ||
+            _format.channels != format->channels ||
+            _format.freq != format->freq)
         {
             SDL_AudioCVT cvt;
-            if (SDL_BuildAudioCVT(&cvt, Source_Sample::format.format, Source_Sample::format.channels, Source_Sample::format.freq, format.format, format.channels, format.freq) < 0)
+            if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
             {
-                return false;
+                cvt.len = (int)_length;
+                cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
+                memcpy(cvt.buf, _data, _length);
+                if (SDL_ConvertAudio(&cvt) >= 0)
+                {
+                    Unload();
+                    _data = cvt.buf;
+                    _length = cvt.len_cvt;
+                    _format = *format;
+                    return true;
+                }
+                else
+                {
+                    delete[] cvt.buf;
+                }
             }
-            cvt.len = length;
-            cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
-            memcpy(cvt.buf, data, length);
-            if (SDL_ConvertAudio(&cvt) < 0)
-            {
-                delete[] cvt.buf;
-                return false;
-            }
-            Unload();
-            data = cvt.buf;
-            length = cvt.len_cvt;
-            Source_Sample::format = format;
-            return true;
         }
         return false;
     }
@@ -206,37 +249,34 @@ public:
 private:
     void Unload()
     {
-        if (data != nullptr)
+        if (_data != nullptr)
         {
-            if (issdlwav)
+            if (_isSDLWav)
             {
-                SDL_FreeWAV(data);
+                SDL_FreeWAV(_data);
             }
             else
             {
-                delete[] data;
+                delete[] _data;
             }
-            data = nullptr;
+            _data = nullptr;
         }
-        issdlwav = false;
-        length = 0;
-    }
-
-protected:
-    unsigned long Read(unsigned long offset, const uint8 * * data, unsigned long length) override
-    {
-        *data = &Source_Sample::data[offset];
-        return length;
+        _isSDLWav = false;
+        _length = 0;
     }
 };
 
-class Source_SampleStream : public Source
+/**
+ * An audio source where raw PCM data is streamed directly from
+ * a file.
+ */
+class Source_SampleStream : public IAudioSource
 {
 private:
-    SDL_RWops * rw = nullptr;
-    uint64 databegin = 0;
-    uint8 * buffer = nullptr;
-    unsigned long buffersize = 0;
+    AudioFormat _format = { 0 };
+    SDL_RWops * _rw = nullptr;
+    uint64      _dataBegin = 0;
+    uint64      _dataLength = 0;
 
 public:
     ~Source_SampleStream()
@@ -244,97 +284,132 @@ public:
         Unload();
     }
 
-    bool LoadWAV(SDL_RWops* rw)
+    size_t GetLength() override
     {
+        return _dataLength;
+    }
+
+    AudioFormat GetFormat() override
+    {
+        return _format;
+    }
+
+    size_t Read(void * dst, size_t offset, size_t len) override
+    {
+        size_t bytesRead = 0;
+        sint64 currentPosition = SDL_RWtell(_rw);
+        if (currentPosition != -1)
+        {
+            size_t bytesToRead = Math::Min(len, _dataLength - offset);
+            if (currentPosition != _dataBegin + offset)
+            {
+                sint64 newPosition = SDL_RWseek(_rw, _dataBegin + offset, SEEK_SET);
+                if (newPosition == -1)
+                {
+                    return 0;
+                }
+            }
+            bytesRead = SDL_RWread(_rw, dst, 1, bytesToRead);
+        }
+        return bytesRead;
+    }
+
+    bool LoadWAV(SDL_RWops * rw)
+    {
+        const uint32 DATA = 0x61746164;
+        const Uint32 FMT  = 0x20746D66;
+        const Uint32 RIFF = 0x46464952;
+        const Uint32 WAVE = 0x45564157;
+        const Uint16 pcmformat = 0x0001;
+
         Unload();
-        if (rw == NULL) {
+
+        if (rw == nullptr)
+        {
             return false;
         }
-        Source_SampleStream::rw = rw;
+        _rw = rw;
+
         Uint32 chunk_id = SDL_ReadLE32(rw);
-        const Uint32 RIFF = 0x46464952;
-        if (chunk_id != RIFF) {
+        if (chunk_id != RIFF)
+        {
             log_verbose("Not a WAV file");
             return false;
         }
-        Uint32 chunk_size = SDL_ReadLE32(rw);
-        (void)chunk_size;
-        Uint32 chunk_format = SDL_ReadLE32(rw);
-        const Uint32 WAVE = 0x45564157;
-        if (chunk_format != WAVE) {
+
+        Uint32 chunkSize = SDL_ReadLE32(rw);
+        Uint32 chunkFormat = SDL_ReadLE32(rw);
+        if (chunkFormat != WAVE)
+        {
             log_verbose("Not in WAVE format");
             return false;
         }
-        const Uint32 FMT = 0x20746D66;
-        Uint32 fmtchunk_size = FindChunk(rw, FMT);
-        if (!fmtchunk_size) {
+
+        Uint32 fmtChunkSize = FindChunk(rw, FMT);
+        if (!fmtChunkSize)
+        {
             log_verbose("Could not find FMT chunk");
             return false;
         }
-        Uint64 chunkstart = SDL_RWtell(rw);
-#pragma pack(push, 1)
-        struct WaveFormat
-        {
-            Uint16 encoding;
-            Uint16 channels;
-            Uint32 frequency;
-            Uint32 byterate;
-            Uint16 blockalign;
-            Uint16 bitspersample;
-        } waveformat;
-#pragma pack(pop)
-        assert_struct_size(waveformat, 16);
-        SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
-        SDL_RWseek(rw, chunkstart + fmtchunk_size, RW_SEEK_SET);
-        const Uint16 pcmformat = 0x0001;
-        if (waveformat.encoding != pcmformat) {
+
+        uint64 chunkStart = SDL_RWtell(rw);
+
+        WaveFormat waveFormat;
+        SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
+        SDL_RWseek(rw, chunkStart + fmtChunkSize, RW_SEEK_SET);
+        if (waveFormat.encoding != pcmformat) {
             log_verbose("Not in proper format");
             return false;
         }
-        format.freq = waveformat.frequency;
-        switch (waveformat.bitspersample) {
+
+        _format.freq = waveFormat.frequency;
+        switch (waveFormat.bitspersample) {
         case 8:
-            format.format = AUDIO_U8;
+            _format.format = AUDIO_U8;
             break;
         case 16:
-            format.format = AUDIO_S16LSB;
+            _format.format = AUDIO_S16LSB;
             break;
         default:
             log_verbose("Invalid bits per sample");
             return false;
             break;
         }
-        format.channels = waveformat.channels;
-        const Uint32 DATA = 0x61746164;
-        Uint32 datachunk_size = FindChunk(rw, DATA);
-        if (!datachunk_size) {
+        _format.channels = waveFormat.channels;
+
+        uint32 dataChunkSize = FindChunk(rw, DATA);
+        if (dataChunkSize == 0)
+        {
             log_verbose("Could not find DATA chunk");
             return false;
         }
-        length = datachunk_size;
-        databegin = SDL_RWtell(rw);
+
+        _dataLength = dataChunkSize;
+        _dataBegin = SDL_RWtell(rw);
         return true;
     }
 
 private:
-    Uint32 FindChunk(SDL_RWops* rw, Uint32 wanted_id)
+    uint32 FindChunk(SDL_RWops * rw, uint32 wantedId)
     {
-        Uint32 subchunk_id = SDL_ReadLE32(rw);
-        Uint32 subchunk_size = SDL_ReadLE32(rw);
-        if (subchunk_id == wanted_id)
+        uint32 subchunkId = SDL_ReadLE32(rw);
+        uint32 subchunkSize = SDL_ReadLE32(rw);
+        if (subchunkId == wantedId)
         {
-            return subchunk_size;
+            return subchunkSize;
         }
         const Uint32 FACT = 0x74636166;
         const Uint32 LIST = 0x5453494c;
         const Uint32 BEXT = 0x74786562;
         const Uint32 JUNK = 0x4B4E554A;
-        while (subchunk_id == FACT || subchunk_id == LIST || subchunk_id == BEXT || subchunk_id == JUNK) {
-            SDL_RWseek(rw, subchunk_size, RW_SEEK_CUR);
-            subchunk_id = SDL_ReadLE32(rw);
-            subchunk_size = SDL_ReadLE32(rw);
-            if (subchunk_id == wanted_id) {
-                return subchunk_size;
+        while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
+        {
+            SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);
+            subchunkId = SDL_ReadLE32(rw);
+            subchunkSize = SDL_ReadLE32(rw);
+            if (subchunkId == wantedId)
+            {
+                return subchunkSize;
             }
         }
         return 0;
@@ -342,59 +417,20 @@ private:
 
     void Unload()
     {
-        if (rw != nullptr)
+        if (_rw != nullptr)
         {
-            SDL_RWclose(rw);
-            rw = nullptr;
+            SDL_RWclose(_rw);
+            _rw = nullptr;
         }
-        length = 0;
-        SafeDelete(buffer);
-        buffersize = 0;
-    }
-
-protected:
-    unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) override
-    {
-        if (length > buffersize)
-        {
-            if (buffer)
-            {
-                delete[] buffer;
-            }
-            buffer = new (std::nothrow) uint8[length];
-            if (!buffer)
-            {
-                return 0;
-            }
-            buffersize = length;
-        }
-        Sint64 currentposition = SDL_RWtell(rw);
-        if (currentposition == -1)
-        {
-            return 0;
-        }
-        if (currentposition - databegin != offset)
-        {
-            Sint64 newposition = SDL_RWseek(rw, databegin + offset, SEEK_SET);
-            if (newposition == -1)
-            {
-                return 0;
-            }
-        }
-        *data = buffer;
-        size_t read = SDL_RWread(rw, buffer, 1, length);
-        if (read == (size_t)-1)
-        {
-            return 0;
-        }
-        return (unsigned long)read;
+        _dataBegin = 0;
+        _dataLength = 0;
     }
 };
 
 class AudioChannel : public IAudioChannel
 {
 private:
-    Source * _source = nullptr;
+    IAudioSource * _source = nullptr;
     SpeexResamplerState * _resampler = nullptr;
 
     int _group = MIXER_GROUP_SOUND;
@@ -436,7 +472,7 @@ public:
         }
     }
 
-    Source * GetSource() const override
+    IAudioSource * GetSource() const override
     {
         return _source;
     }
@@ -478,16 +514,16 @@ public:
 
     bool SetOffset(unsigned long offset)
     {
-        if (_source != nullptr && offset < _source->Length())
+        if (_source != nullptr && offset < _source->GetLength())
         {
-            AudioFormat format = _source->Format();
+            AudioFormat format = _source->GetFormat();
             int samplesize = format.channels * format.BytesPerSample();
             _offset = (offset / samplesize) * samplesize;
             return true;
         }
         return false;
     }
-    
+
     virtual int GetLoop() const override
     {
         return _loop;
@@ -595,9 +631,9 @@ public:
         return !_done;
     }
 
-    void Play(Source& source, int loop)
+    void Play(IAudioSource * source, int loop)
     {
-        _source = &source;
+        _source = source;
         _loop = loop;
         _offset = 0;
         _done = false;
@@ -615,7 +651,7 @@ public:
         AudioFormat result = { 0 };
         if (_source != nullptr)
         {
-            result = _source->Format();
+            result = _source->GetFormat();
         }
         return result;
     }
@@ -626,18 +662,15 @@ public:
         size_t bytesToRead = len;
         while (bytesToRead > 0 && !_done)
         {
-            const uint8 * src = nullptr;
-            unsigned long someLen = _source->GetSome((unsigned long)_offset, &src, (unsigned long)bytesToRead);
-            if (someLen > 0)
+            size_t readLen = _source->Read(dst, _offset, bytesToRead);
+            if (readLen > 0)
             {
-                size_t copyLen = Math::Min((size_t)someLen, bytesToRead);
-                memcpy(dst, src, copyLen);
-                dst = (void *)((uintptr_t)dst + copyLen);
-                bytesToRead -= copyLen;
-                bytesRead += copyLen;
-                _offset += copyLen;
+                dst = (void *)((uintptr_t)dst + readLen);
+                bytesToRead -= readLen;
+                bytesRead += readLen;
+                _offset += readLen;
             }
-            if (_offset >= _source->Length())
+            if (_offset >= _source->GetLength())
             {
                 if (_loop == 0)
                 {
@@ -671,8 +704,8 @@ private:
     uint8 _setting_sound_vol = 0xFF;
     uint8 _setting_music_vol = 0xFF;
 
-    Source * _css1sources[SOUND_MAXID] = { nullptr };
-    Source * _musicsources[PATH_ID_END] = { nullptr };
+    IAudioSource * _css1sources[SOUND_MAXID] = { nullptr };
+    IAudioSource * _musicsources[PATH_ID_END] = { nullptr };
 
     void * _channelBuffer = nullptr;
     size_t _channelBufferCapacity = 0;
@@ -710,7 +743,7 @@ public:
         for (int i = 0; i < (int)Util::CountOf(_css1sources); i++) {
             Source_Sample* source_sample = new Source_Sample;
             if (source_sample->LoadCSS1(filename, i)) {
-                source_sample->Convert(_format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
+                source_sample->Convert(&_format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
                 _css1sources[i] = source_sample;
             } else {
                 _css1sources[i] = &_source_null;
@@ -765,7 +798,7 @@ public:
         SDL_UnlockAudioDevice(_deviceid);
     }
 
-    IAudioChannel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) override
+    IAudioChannel * Play(IAudioSource * source, int loop, bool deleteondone, bool deletesourceondone) override
     {
         Lock();
         IAudioChannel * newchannel = new (std::nothrow) AudioChannel;
@@ -820,12 +853,12 @@ public:
         _volume = volume;
     }
 
-    Source * GetSoundSource(int id) override
+    IAudioSource * GetSoundSource(int id) override
     {
         return _css1sources[id];
     }
 
-    Source * GetMusicSource(int id) override
+    IAudioSource * GetMusicSource(int id) override
     {
         return _musicsources[id];
     }
@@ -858,7 +891,7 @@ private:
         }
     }
 
-    void MixChannel(IAudioChannel * channel, uint8 * data, int length) 
+    void MixChannel(IAudioChannel * channel, uint8 * data, int length)
     {
         // Did the volume level get changed? Recalculate level in this case.
         if (_setting_sound_vol != gConfigSound.sound_volume)
@@ -1161,8 +1194,8 @@ void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate
         {
             IAudioMixer * mixer = gMixer;
             mixer->Lock();
-            Source * source = mixer->GetSoundSource((int)id);
-            channel = mixer->Play(*source, loop, deleteondone != 0, false);
+            IAudioSource * source = mixer->GetSoundSource((int)id);
+            channel = mixer->Play(source, loop, deleteondone != 0, false);
             if (channel != nullptr)
             {
                 channel->SetVolume(volume);
@@ -1267,7 +1300,7 @@ void * Mixer_Play_Music(int pathId, int loop, int streaming)
                 Source_SampleStream * source_samplestream = new Source_SampleStream;
                 if (source_samplestream->LoadWAV(rw))
                 {
-                    channel = mixer->Play(*source_samplestream, loop, false, true);
+                    channel = mixer->Play(source_samplestream, loop, false, true);
                     if (channel == nullptr)
                     {
                         delete source_samplestream;
@@ -1283,8 +1316,8 @@ void * Mixer_Play_Music(int pathId, int loop, int streaming)
         {
             if (mixer->LoadMusic(pathId))
             {
-                Source * source = mixer->GetMusicSource(pathId);
-                channel = mixer->Play(*source, MIXER_LOOP_INFINITE, false, false);
+                IAudioSource * source = mixer->GetMusicSource(pathId);
+                channel = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
             }
         }
         if (channel != nullptr)

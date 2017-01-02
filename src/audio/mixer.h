@@ -44,6 +44,10 @@ enum MIXER_GROUP
 
 #ifdef __cplusplus
 
+/**
+ * Represents the size, frequency and number of channels for
+ * an audio stream or buffer.
+ */
 struct AudioFormat
 {
     int             freq;
@@ -56,26 +60,27 @@ struct AudioFormat
     }
 };
 
-class Source
+/**
+ * Represents a readable source of audio PCM data.
+ */
+interface IAudioSource
 {
-public:
-    virtual ~Source();
-    unsigned long GetSome(unsigned long offset, const uint8** data, unsigned long length);
-    unsigned long Length();
-    const AudioFormat& Format();
+    virtual ~IAudioSource() = default;
 
-protected:
-    virtual unsigned long Read(unsigned long offset, const uint8** data, unsigned long length) = 0;
-
-    AudioFormat format;
-    unsigned long length = 0;
+    virtual size_t GetLength() abstract;
+    virtual AudioFormat GetFormat() abstract;
+    virtual size_t Read(void * dst, size_t offset, size_t len) abstract;
 };
 
+/**
+ * Represents an audio channel that represents an audio source
+ * and a number of properties such as volume, pan and loop information.
+ */
 interface IAudioChannel
 {
     virtual ~IAudioChannel() = default;
 
-    virtual Source * GetSource() const abstract;
+    virtual IAudioSource * GetSource() const abstract;
 
     virtual SpeexResamplerState * GetResampler() const abstract;
     virtual void SetResampler(SpeexResamplerState * value) abstract;
@@ -116,13 +121,16 @@ interface IAudioChannel
 
     virtual bool IsPlaying() const abstract;
 
-    virtual void Play(Source& source, int loop = MIXER_LOOP_NONE) abstract;
+    virtual void Play(IAudioSource * source, int loop = MIXER_LOOP_NONE) abstract;
     virtual void UpdateOldVolume() abstract;
 
     virtual AudioFormat GetFormat() const abstract;
     virtual size_t Read(void * dst, size_t len) abstract;
 };
 
+/**
+ * Provides an audio stream by mixing multiple audio channels together.
+ */
 interface IAudioMixer
 {
     virtual ~IAudioMixer() = default;
@@ -131,13 +139,13 @@ interface IAudioMixer
     virtual void Close() abstract;
     virtual void Lock() abstract;
     virtual void Unlock() abstract;
-    virtual IAudioChannel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) abstract;
+    virtual IAudioChannel * Play(IAudioSource * source, int loop, bool deleteondone, bool deletesourceondone) abstract;
     virtual void Stop(IAudioChannel * channel) abstract;
     virtual bool LoadMusic(size_t pathid) abstract;
     virtual void SetVolume(float volume) abstract;
 
-    virtual Source * GetSoundSource(int id) abstract;
-    virtual Source * GetMusicSource(int id) abstract;
+    virtual IAudioSource * GetSoundSource(int id) abstract;
+    virtual IAudioSource * GetMusicSource(int id) abstract;
 };
 
 extern "C"
