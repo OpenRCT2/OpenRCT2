@@ -28,7 +28,7 @@ extern "C" {
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 
-Mixer gMixer;
+IAudioMixer * gMixer;
 
 Source::~Source()
 {
@@ -436,517 +436,583 @@ void Channel::SetGroup(int group)
 	Channel::group = group;
 }
 
-Mixer::Mixer()
+class AudioMixer : public IAudioMixer
 {
-	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
-		css1sources[i] = 0;
-	}
-	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
-		musicsources[i] = 0;
-	}
+private:
+    SDL_AudioDeviceID deviceid = 0;
+    AudioFormat format = { 0 };
+    uint8 * effectbuffer = nullptr;
+    std::list<Channel *> channels;
+    Source_Null source_null;
+    float volume = 1.0f;
+    float adjust_sound_vol = 0.0f;
+    float adjust_music_vol = 0.0f;
+    uint8 setting_sound_vol = 0xFF;
+    uint8 setting_music_vol = 0xFF;
+
+    Source * css1sources[SOUND_MAXID];
+    Source * musicsources[PATH_ID_END];
+
+public:
+    AudioMixer::AudioMixer()
+    {
+        for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
+            css1sources[i] = 0;
+        }
+        for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
+            musicsources[i] = 0;
+        }
+    }
+
+    void Init(const char* device) override
+    {
+        Close();
+        SDL_AudioSpec want, have;
+        SDL_zero(want);
+        want.freq = 44100;
+        want.format = AUDIO_S16SYS;
+        want.channels = 2;
+        want.samples = 1024;
+        want.callback = Callback;
+        want.userdata = this;
+        deviceid = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
+        format.format = have.format;
+        format.channels = have.channels;
+        format.freq = have.freq;
+        const char* filename = get_file_path(PATH_ID_CSS1);
+        for (int i = 0; i < (int)Util::CountOf(css1sources); i++) {
+            Source_Sample* source_sample = new Source_Sample;
+            if (source_sample->LoadCSS1(filename, i)) {
+                source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
+                css1sources[i] = source_sample;
+            } else {
+                css1sources[i] = &source_null;
+                delete source_sample;
+            }
+        }
+        effectbuffer = new uint8[(have.samples * format.BytesPerSample() * format.channels)];
+        SDL_PauseAudioDevice(deviceid, 0);
+    }
+
+    void Close() override
+    {
+        Lock();
+        while (channels.begin() != channels.end()) {
+            delete *(channels.begin());
+            channels.erase(channels.begin());
+        }
+        Unlock();
+        SDL_CloseAudioDevice(deviceid);
+        for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
+            if (css1sources[i] && css1sources[i] != &source_null) {
+                delete css1sources[i];
+                css1sources[i] = 0;
+            }
+        }
+        for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
+            if (musicsources[i] && musicsources[i] != &source_null) {
+                delete musicsources[i];
+                musicsources[i] = 0;
+            }
+        }
+        if (effectbuffer) {
+            delete[] effectbuffer;
+            effectbuffer = 0;
+        }
+    }
+
+    void Lock() override
+    {
+        SDL_LockAudioDevice(deviceid);
+    }
+
+    void Unlock() override
+    {
+        SDL_UnlockAudioDevice(deviceid);
+    }
+
+    Channel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) override
+    {
+        Lock();
+        Channel* newchannel = new (std::nothrow) Channel;
+        if (newchannel) {
+            newchannel->Play(source, loop);
+            newchannel->deleteondone = deleteondone;
+            newchannel->deletesourceondone = deletesourceondone;
+            channels.push_back(newchannel);
+        }
+        Unlock();
+        return newchannel;
+    }
+
+    void Stop(Channel& channel) override
+    {
+        Lock();
+        channel.stopping = true;
+        Unlock();
+    }
+
+    bool LoadMusic(size_t pathId) override
+    {
+        if (pathId >= Util::CountOf(musicsources)) {
+            return false;
+        }
+        if (!musicsources[pathId]) {
+            const char* filename = get_file_path((int)pathId);
+            Source_Sample* source_sample = new Source_Sample;
+            if (source_sample->LoadWAV(filename)) {
+                musicsources[pathId] = source_sample;
+                return true;
+            } else {
+                delete source_sample;
+                musicsources[pathId] = &source_null;
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    void SetVolume(float volume) override
+    {
+        this->volume = volume;
+    }
+
+    Source * GetSoundSource(int id) override
+    {
+        return css1sources[id];
+    }
+
+    Source * GetMusicSource(int id) override
+    {
+        return musicsources[id];
+    }
+
+private:
+    static void SDLCALL Callback(void * arg, uint8 * stream, int length)
+    {
+        auto mixer = static_cast<AudioMixer *>(arg);
+        memset(stream, 0, length);
+        std::list<Channel*>::iterator i = mixer->channels.begin();
+        while (i != mixer->channels.end()) {
+            Channel * channel = *i;
+            mixer->MixChannel(*channel, stream, length);
+            if ((channel->done && channel->deleteondone) || channel->stopping)
+            {
+                delete channel;
+                i = mixer->channels.erase(i);
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+
+    void MixChannel(Channel& channel, uint8* data, int length) 
+    {
+        // Did the volume level get changed? Recalculate level in this case.
+        if (setting_sound_vol != gConfigSound.sound_volume) {
+            setting_sound_vol = gConfigSound.sound_volume;
+            adjust_sound_vol = powf(setting_sound_vol / 100.f, 10.f / 6.f);
+        }
+        if (setting_music_vol != gConfigSound.ride_music_volume) {
+            setting_music_vol = gConfigSound.ride_music_volume;
+            adjust_music_vol = powf(setting_music_vol / 100.f, 10.f / 6.f);
+        }
+
+        // Do not mix channel if channel is a sound and sound is disabled
+        if (channel.group == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
+            return;
+        }
+
+        if (channel.source && channel.source->Length() > 0 && !channel.done) {
+            AudioFormat streamformat = channel.source->Format();
+            int loaded = 0;
+            SDL_AudioCVT cvt;
+            cvt.len_ratio = 1;
+            do {
+                int samplesize = format.channels * format.BytesPerSample();
+                int samples = length / samplesize;
+                int samplesloaded = loaded / samplesize;
+                double rate = 1;
+                if (format.format == AUDIO_S16SYS) {
+                    rate = channel.rate;
+                }
+                int samplestoread = (int)((samples - samplesloaded) * rate);
+                int lengthloaded = 0;
+                if (channel.offset < channel.source->Length()) {
+                    bool mustconvert = false;
+                    if (MustConvert(*channel.source)) {
+                        if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, format.format, format.channels, format.freq) == -1) {
+                            break;
+                        }
+                        mustconvert = true;
+                    }
+
+                    const uint8* datastream = 0;
+                    int toread = (int)(samplestoread / cvt.len_ratio) * samplesize;
+                    int readfromstream = (channel.source->GetSome(channel.offset, &datastream, toread));
+                    if (readfromstream == 0) {
+                        break;
+                    }
+
+                    uint8* dataconverted = 0;
+                    const uint8* tomix = 0;
+
+                    if (mustconvert) {
+                        // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
+                        if (Convert(cvt, datastream, readfromstream, &dataconverted)) {
+                            tomix = dataconverted;
+                            lengthloaded = cvt.len_cvt;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        tomix = datastream;
+                        lengthloaded = readfromstream;
+                    }
+
+                    bool effectbufferloaded = false;
+                    if (rate != 1 && format.format == AUDIO_S16SYS) {
+                        int in_len = (int)((double)lengthloaded / samplesize);
+                        int out_len = samples;
+                        if (!channel.resampler) {
+                            channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
+                        }
+                        if (readfromstream == toread) {
+                            // use buffer lengths for conversion ratio so that it fits exactly
+                            speex_resampler_set_rate(channel.resampler, in_len, samples - samplesloaded);
+                        } else {
+                            // reached end of stream so we cant use buffer length as resampling ratio
+                            speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
+                        }
+                        speex_resampler_process_interleaved_int(channel.resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
+                        effectbufferloaded = true;
+                        tomix = effectbuffer;
+                        lengthloaded = (out_len * samplesize);
+                    }
+
+                    if (channel.pan != 0.5f && format.channels == 2) {
+                        if (!effectbufferloaded) {
+                            memcpy(effectbuffer, tomix, lengthloaded);
+                            effectbufferloaded = true;
+                            tomix = effectbuffer;
+                        }
+                        switch (format.format) {
+                        case AUDIO_S16SYS:
+                            EffectPanS16(channel, (sint16*)effectbuffer, lengthloaded / samplesize);
+                            break;
+                        case AUDIO_U8:
+                            EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
+                            break;
+                        }
+                    }
+
+                    int mixlength = lengthloaded;
+                    if (loaded + mixlength > length) {
+                        mixlength = length - loaded;
+                    }
+
+                    float volumeadjust = volume;
+                    volumeadjust *= (gConfigSound.master_volume / 100.0f);
+                    switch (channel.group) {
+                    case MIXER_GROUP_SOUND:
+                        volumeadjust *= adjust_sound_vol;
+
+                        // Cap sound volume on title screen so music is more audible
+                        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
+                            volumeadjust = Math::Min(volumeadjust, 0.75f);
+                        }
+                        break;
+                    case MIXER_GROUP_RIDE_MUSIC:
+                        volumeadjust *= adjust_music_vol;
+                        break;
+                    }
+                    int startvolume = (int)(channel.oldvolume * volumeadjust);
+                    int endvolume = (int)(channel.volume * volumeadjust);
+                    if (channel.stopping) {
+                        endvolume = 0;
+                    }
+                    int mixvolume = (int)(channel.volume * volumeadjust);
+                    if (startvolume != endvolume) {
+                        // fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
+                        if (!effectbufferloaded) {
+                            memcpy(effectbuffer, tomix, lengthloaded);
+                            effectbufferloaded = true;
+                            tomix = effectbuffer;
+                        }
+                        mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
+                        int fadelength = mixlength / format.BytesPerSample();
+                        switch (format.format) {
+                        case AUDIO_S16SYS:
+                            EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
+                            break;
+                        case AUDIO_U8:
+                            EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
+                            break;
+                        }
+                    }
+
+                    SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, mixvolume);
+
+                    if (dataconverted) {
+                        delete[] dataconverted;
+                    }
+
+                    channel.offset += readfromstream;
+                }
+
+                loaded += lengthloaded;
+
+                if (channel.loop != 0 && channel.offset >= channel.source->Length()) {
+                    if (channel.loop != -1) {
+                        channel.loop--;
+                    }
+                    channel.offset = 0;
+                }
+            } while (loaded < length && channel.loop != 0 && !channel.stopping);
+
+            channel.oldvolume = channel.volume;
+            channel.oldvolume_l = channel.volume_l;
+            channel.oldvolume_r = channel.volume_r;
+            if (channel.loop == 0 && channel.offset >= channel.source->Length()) {
+                channel.done = true;
+            }
+        }
+    }
+
+    void EffectPanS16(Channel& channel, sint16* data, int length)
+    {
+        const float dt = 1.0f / (length * 2);
+        float left_volume = channel.oldvolume_l;
+        float right_volume = channel.oldvolume_r;
+        const float d_left = dt * (channel.volume_l - channel.oldvolume_l);
+        const float d_right = dt * (channel.volume_r - channel.oldvolume_r);
+
+        for (int i = 0; i < length * 2; i += 2) {
+            data[i] = (sint16)(data[i] * left_volume);
+            data[i + 1] = (sint16)(data[i + 1] * right_volume);
+            left_volume += d_left;
+            right_volume += d_right;
+        }
+    }
+
+    void EffectPanU8(Channel& channel, uint8* data, int length)
+    {
+        for (int i = 0; i < length * 2; i += 2) {
+            float t = (float)i / (length * 2);
+            data[i] = (uint8)(data[i] * ((1.0 - t) * channel.oldvolume_l + t * channel.volume_l));
+            data[i + 1] = (uint8)(data[i + 1] * ((1.0 - t) * channel.oldvolume_r + t * channel.volume_r));
+        }
+    }
+
+    void EffectFadeS16(sint16* data, int length, int startvolume, int endvolume)
+    {
+        float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
+        float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+        for (int i = 0; i < length; i++) {
+            float t = (float)i / length;
+            data[i] = (sint16)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
+        }
+    }
+
+    void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume)
+    {
+        float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
+        float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+        for (int i = 0; i < length; i++) {
+            float t = (float)i / length;
+            data[i] = (uint8)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
+        }
+    }
+
+    bool MustConvert(Source& source)
+    {
+        const AudioFormat sourceformat = source.Format();
+        if (sourceformat.format != format.format || sourceformat.channels != format.channels || sourceformat.freq != format.freq) {
+            return true;
+        }
+        return false;
+    }
+
+    bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout)
+    {
+        if (length == 0 || cvt.len_mult == 0) {
+            return false;
+        }
+        cvt.len = length;
+        cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
+        memcpy(cvt.buf, data, length);
+        if (SDL_ConvertAudio(&cvt) < 0) {
+            delete[] cvt.buf;
+            return false;
+        }
+        *dataout = cvt.buf;
+        return true;
+    }
+};
+
+void Mixer_Init(const char * device)
+{
+    if (!gOpenRCT2Headless)
+    {
+        gMixer = new AudioMixer();
+        gMixer->Init(device);
+    }
 }
 
-void Mixer::Init(const char* device)
+void * Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone)
 {
-	Close();
-	SDL_AudioSpec want, have;
-	SDL_zero(want);
-	want.freq = 44100;
-	want.format = AUDIO_S16SYS;
-	want.channels = 2;
-	want.samples = 1024;
-	want.callback = Callback;
-	want.userdata = this;
-	deviceid = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
-	format.format = have.format;
-	format.channels = have.channels;
-	format.freq = have.freq;
-	const char* filename = get_file_path(PATH_ID_CSS1);
-	for (int i = 0; i < (int)Util::CountOf(css1sources); i++) {
-		Source_Sample* source_sample = new Source_Sample;
-		if (source_sample->LoadCSS1(filename, i)) {
-			source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
-			css1sources[i] = source_sample;
-		} else {
-			css1sources[i] = &source_null;
-			delete source_sample;
-		}
-	}
-	effectbuffer = new uint8[(have.samples * format.BytesPerSample() * format.channels)];
-	SDL_PauseAudioDevice(deviceid, 0);
+    Channel * channel = nullptr;
+    if (!gOpenRCT2Headless && gConfigSound.sound_enabled)
+    {
+        if (id >= SOUND_MAXID)
+        {
+            log_error("Tried to play an invalid sound id. %i", id);
+        }
+        else
+        {
+            IAudioMixer * mixer = gMixer;
+            mixer->Lock();
+            Source * source = mixer->GetSoundSource((int)id);
+            channel = mixer->Play(*source, loop, deleteondone != 0, false);
+            if (channel != nullptr)
+            {
+                channel->SetVolume(volume);
+                channel->SetPan(pan);
+                channel->SetRate(rate);
+            }
+            mixer->Unlock();
+        }
+    }
+    return channel;
 }
 
-void Mixer::Close()
+void Mixer_Stop_Channel(void * channel)
 {
-	Lock();
-	while (channels.begin() != channels.end()) {
-		delete *(channels.begin());
-		channels.erase(channels.begin());
-	}
-	Unlock();
-	SDL_CloseAudioDevice(deviceid);
-	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
-		if (css1sources[i] && css1sources[i] != &source_null) {
-			delete css1sources[i];
-			css1sources[i] = 0;
-		}
-	}
-	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
-		if (musicsources[i] && musicsources[i] != &source_null) {
-			delete musicsources[i];
-			musicsources[i] = 0;
-		}
-	}
-	if (effectbuffer) {
-		delete[] effectbuffer;
-		effectbuffer = 0;
-	}
+    if (!gOpenRCT2Headless)
+    {
+        gMixer->Stop(*static_cast<Channel*>(channel));
+    }
 }
 
-void Mixer::Lock()
+void Mixer_Channel_Volume(void * channel, int volume)
 {
-	SDL_LockAudioDevice(deviceid);
-}
-
-void Mixer::Unlock()
-{
-	SDL_UnlockAudioDevice(deviceid);
-}
-
-Channel* Mixer::Play(Source& source, int loop, bool deleteondone, bool deletesourceondone)
-{
-	Lock();
-	Channel* newchannel = new (std::nothrow) Channel;
-	if (newchannel) {
-		newchannel->Play(source, loop);
-		newchannel->deleteondone = deleteondone;
-		newchannel->deletesourceondone = deletesourceondone;
-		channels.push_back(newchannel);
-	}
-	Unlock();
-	return newchannel;
-}
-
-void Mixer::Stop(Channel& channel)
-{
-	Lock();
-	channel.stopping = true;
-	Unlock();
-}
-
-bool Mixer::LoadMusic(size_t pathId)
-{
-	if (pathId >= Util::CountOf(musicsources)) {
-		return false;
-	}
-	if (!musicsources[pathId]) {
-		const char* filename = get_file_path((int)pathId);
-		Source_Sample* source_sample = new Source_Sample;
-		if (source_sample->LoadWAV(filename)) {
-			musicsources[pathId] = source_sample;
-			return true;
-		} else {
-			delete source_sample;
-			musicsources[pathId] = &source_null;
-			return false;
-		}
-	} else {
-		return true;
-	}
-}
-
-void Mixer::SetVolume(float volume)
-{
-	Mixer::volume = volume;
-}
-
-void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
-{
-	Mixer* mixer = static_cast<Mixer*>(arg);
-	memset(stream, 0, length);
-	std::list<Channel*>::iterator i = mixer->channels.begin();
-	while (i != mixer->channels.end()) {
-		mixer->MixChannel(*(*i), stream, length);
-		if (((*i)->done && (*i)->deleteondone) || (*i)->stopping) {
-			delete (*i);
-			i = mixer->channels.erase(i);
-		} else {
-			++i;
-		}
-	}
-}
-
-void Mixer::MixChannel(Channel& channel, uint8* data, int length)
-{
-	// Did the volume level get changed? Recalculate level in this case.
-	if (setting_sound_vol != gConfigSound.sound_volume) {
-		setting_sound_vol = gConfigSound.sound_volume;
-		adjust_sound_vol = powf(setting_sound_vol / 100.f, 10.f / 6.f);
-	}
-	if (setting_music_vol != gConfigSound.ride_music_volume) {
-		setting_music_vol = gConfigSound.ride_music_volume;
-		adjust_music_vol = powf(setting_music_vol / 100.f, 10.f / 6.f);
-	}
-
-	// Do not mix channel if channel is a sound and sound is disabled
-	if (channel.group == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
-		return;
-	}
-
-	if (channel.source && channel.source->Length() > 0 && !channel.done) {
-		AudioFormat streamformat = channel.source->Format();
-		int loaded = 0;
-		SDL_AudioCVT cvt;
-		cvt.len_ratio = 1;
-		do {
-			int samplesize = format.channels * format.BytesPerSample();
-			int samples = length / samplesize;
-			int samplesloaded = loaded / samplesize;
-			double rate = 1;
-			if (format.format == AUDIO_S16SYS) {
-				rate = channel.rate;
-			}
-			int samplestoread = (int)((samples - samplesloaded) * rate);
-			int lengthloaded = 0;
-			if (channel.offset < channel.source->Length()) {
-				bool mustconvert = false;
-				if (MustConvert(*channel.source)) {
-					if (SDL_BuildAudioCVT(&cvt, streamformat.format, streamformat.channels, streamformat.freq, Mixer::format.format, Mixer::format.channels, Mixer::format.freq) == -1) {
-						break;
-					}
-					mustconvert = true;
-				}
-
-				const uint8* datastream = 0;
-				int toread = (int)(samplestoread / cvt.len_ratio) * samplesize;
-				int readfromstream = (channel.source->GetSome(channel.offset, &datastream, toread));
-				if (readfromstream == 0) {
-					break;
-				}
-
-				uint8* dataconverted = 0;
-				const uint8* tomix = 0;
-
-				if (mustconvert) {
-					// tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted, can cause pops and static depending on sample rate and channels
-					if (Convert(cvt, datastream, readfromstream, &dataconverted)) {
-						tomix = dataconverted;
-						lengthloaded = cvt.len_cvt;
-					} else {
-						break;
-					}
-				} else {
-					tomix = datastream;
-					lengthloaded = readfromstream;
-				}
-
-				bool effectbufferloaded = false;
-				if (rate != 1 && format.format == AUDIO_S16SYS) {
-					int in_len = (int)((double)lengthloaded / samplesize);
-					int out_len = samples;
-					if (!channel.resampler) {
-						channel.resampler = speex_resampler_init(format.channels, format.freq, format.freq, 0, 0);
-					}
-					if (readfromstream == toread) {
-						// use buffer lengths for conversion ratio so that it fits exactly
-						speex_resampler_set_rate(channel.resampler, in_len, samples - samplesloaded);
-					} else {
-						// reached end of stream so we cant use buffer length as resampling ratio
-						speex_resampler_set_rate(channel.resampler, format.freq, (int)(format.freq * (1 / rate)));
-					}
-					speex_resampler_process_interleaved_int(channel.resampler, (const spx_int16_t*)tomix, (spx_uint32_t*)&in_len, (spx_int16_t*)effectbuffer, (spx_uint32_t*)&out_len);
-					effectbufferloaded = true;
-					tomix = effectbuffer;
-					lengthloaded = (out_len * samplesize);
-				}
-
-				if (channel.pan != 0.5f && format.channels == 2) {
-					if (!effectbufferloaded) {
-						memcpy(effectbuffer, tomix, lengthloaded);
-						effectbufferloaded = true;
-						tomix = effectbuffer;
-					}
-					switch (format.format) {
-						case AUDIO_S16SYS:
-							EffectPanS16(channel, (sint16*)effectbuffer, lengthloaded / samplesize);
-							break;
-						case AUDIO_U8:
-							EffectPanU8(channel, (uint8*)effectbuffer, lengthloaded / samplesize);
-							break;
-					}
-				}
-
-				int mixlength = lengthloaded;
-				if (loaded + mixlength > length) {
-					mixlength = length - loaded;
-				}
-
-				float volumeadjust = volume;
-				volumeadjust *= (gConfigSound.master_volume / 100.0f);
-				switch (channel.group) {
-				case MIXER_GROUP_SOUND:
-					volumeadjust *= adjust_sound_vol;
-
-					// Cap sound volume on title screen so music is more audible
-					if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-						volumeadjust = Math::Min(volumeadjust, 0.75f);
-					}
-					break;
-				case MIXER_GROUP_RIDE_MUSIC:
-					volumeadjust *= adjust_music_vol;
-					break;
-				}
-				int startvolume = (int)(channel.oldvolume * volumeadjust);
-				int endvolume = (int)(channel.volume * volumeadjust);
-				if (channel.stopping) {
-					endvolume = 0;
-				}
-				int mixvolume = (int)(channel.volume * volumeadjust);
-				if (startvolume != endvolume) {
-					// fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-					if (!effectbufferloaded) {
-						memcpy(effectbuffer, tomix, lengthloaded);
-						effectbufferloaded = true;
-						tomix = effectbuffer;
-					}
-					mixvolume = SDL_MIX_MAXVOLUME; // set to max since we are adjusting the volume ourselves
-					int fadelength = mixlength / format.BytesPerSample();
-					switch (format.format) {
-						case AUDIO_S16SYS:
-							EffectFadeS16((sint16*)effectbuffer, fadelength, startvolume, endvolume);
-							break;
-						case AUDIO_U8:
-							EffectFadeU8((uint8*)effectbuffer, fadelength, startvolume, endvolume);
-							break;
-					}
-				}
-
-				SDL_MixAudioFormat(&data[loaded], tomix, format.format, mixlength, mixvolume);
-
-				if (dataconverted) {
-					delete[] dataconverted;
-				}
-
-				channel.offset += readfromstream;
-			}
-
-			loaded += lengthloaded;
-
-			if (channel.loop != 0 && channel.offset >= channel.source->Length()) {
-				if (channel.loop != -1) {
-					channel.loop--;
-				}
-				channel.offset = 0;
-			}
-		} while(loaded < length && channel.loop != 0 && !channel.stopping);
-
-		channel.oldvolume = channel.volume;
-		channel.oldvolume_l = channel.volume_l;
-		channel.oldvolume_r = channel.volume_r;
-		if (channel.loop == 0 && channel.offset >= channel.source->Length()) {
-			channel.done = true;
-		}
-	}
-}
-
-void Mixer::EffectPanS16(Channel& channel, sint16* data, int length)
-{
-	const float dt = 1.0f / (length * 2);
-	float left_volume = channel.oldvolume_l;
-	float right_volume = channel.oldvolume_r;
-	const float d_left = dt * (channel.volume_l - channel.oldvolume_l);
-	const float d_right = dt * (channel.volume_r - channel.oldvolume_r);
-
-	for (int i = 0; i < length * 2; i += 2) {
-		data[i] = (sint16)(data[i] * left_volume);
-		data[i + 1] = (sint16)(data[i + 1] * right_volume);
-		left_volume += d_left;
-		right_volume += d_right;
-	}
-}
-
-void Mixer::EffectPanU8(Channel& channel, uint8* data, int length)
-{
-	for (int i = 0; i < length * 2; i += 2) {
-		float t = (float)i / (length * 2);
-		data[i] = (uint8)(data[i] * ((1.0 - t) * channel.oldvolume_l + t * channel.volume_l));
-		data[i + 1] = (uint8)(data[i + 1] * ((1.0 - t) * channel.oldvolume_r + t * channel.volume_r));
-	}
-}
-
-void Mixer::EffectFadeS16(sint16* data, int length, int startvolume, int endvolume)
-{
-	float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-	float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
-	for (int i = 0; i < length; i++) {
-		float t = (float)i / length;
-		data[i] = (sint16)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
-	}
-}
-
-void Mixer::EffectFadeU8(uint8* data, int length, int startvolume, int endvolume)
-{
-	float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-	float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
-	for (int i = 0; i < length; i++) {
-		float t = (float)i / length;
-		data[i] = (uint8)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
-	}
-}
-
-bool Mixer::MustConvert(Source& source)
-{
-	const AudioFormat sourceformat = source.Format();
-	if (sourceformat.format != format.format || sourceformat.channels != format.channels || sourceformat.freq != format.freq) {
-		return true;
-	}
-	return false;
-}
-
-bool Mixer::Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout)
-{
-	if (length == 0 || cvt.len_mult == 0) {
-		return false;
-	}
-	cvt.len = length;
-	cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
-	memcpy(cvt.buf, data, length);
-	if (SDL_ConvertAudio(&cvt) < 0) {
-		delete[] cvt.buf;
-		return false;
-	}
-	*dataout = cvt.buf;
-	return true;
-}
-
-void Mixer_Init(const char* device)
-{
-	if (gOpenRCT2Headless) return;
-
-	gMixer.Init(device);
-}
-
-void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone)
-{
-	if (gOpenRCT2Headless) return 0;
-
-	if (!gConfigSound.sound_enabled) {
-		return 0;
-	}
-	if (id >= Util::CountOf(gMixer.css1sources)) {
-		log_error("Tried to play an invalid sound id. %i", id);
-		return 0;
-	}
-	gMixer.Lock();
-	Channel* channel = gMixer.Play(*gMixer.css1sources[id], loop, deleteondone != 0, false);
-	if (channel) {
-		channel->SetVolume(volume);
-		channel->SetPan(pan);
-		channel->SetRate(rate);
-	}
-	gMixer.Unlock();
-	return channel;
-}
-
-void Mixer_Stop_Channel(void* channel)
-{
-	if (gOpenRCT2Headless) return;
-
-	gMixer.Stop(*static_cast<Channel*>(channel));
-}
-
-void Mixer_Channel_Volume(void* channel, int volume)
-{
-	if (gOpenRCT2Headless) return;
-
-	gMixer.Lock();
-	static_cast<Channel*>(channel)->SetVolume(volume);
-	gMixer.Unlock();
+    if (!gOpenRCT2Headless)
+    {
+        gMixer->Lock();
+        static_cast<Channel*>(channel)->SetVolume(volume);
+        gMixer->Unlock();
+    }
 }
 
 void Mixer_Channel_Pan(void* channel, float pan)
 {
-	if (gOpenRCT2Headless) return;
-
-	gMixer.Lock();
-	static_cast<Channel*>(channel)->SetPan(pan);
-	gMixer.Unlock();
+    if (!gOpenRCT2Headless)
+    {
+        gMixer->Lock();
+        static_cast<Channel*>(channel)->SetPan(pan);
+        gMixer->Unlock();
+    }
 }
 
 void Mixer_Channel_Rate(void* channel, double rate)
 {
-	if (gOpenRCT2Headless) return;
-
-	gMixer.Lock();
-	static_cast<Channel*>(channel)->SetRate(rate);
-	gMixer.Unlock();
+    if (!gOpenRCT2Headless)
+    {
+        gMixer->Lock();
+        static_cast<Channel*>(channel)->SetRate(rate);
+        gMixer->Unlock();
+    }
 }
 
-int Mixer_Channel_IsPlaying(void* channel)
+int Mixer_Channel_IsPlaying(void * channel)
 {
-	if (gOpenRCT2Headless) return false;
-
-	return static_cast<Channel*>(channel)->IsPlaying();
+    bool isPlaying = false;
+    if (!gOpenRCT2Headless)
+    {
+        isPlaying = static_cast<Channel*>(channel)->IsPlaying();
+    }
+    return isPlaying;
 }
 
-unsigned long Mixer_Channel_GetOffset(void* channel)
+unsigned long Mixer_Channel_GetOffset(void * channel)
 {
-	if (gOpenRCT2Headless) return 0;
-
-	return static_cast<Channel*>(channel)->GetOffset();
+    unsigned long offset = 0;
+    if (!gOpenRCT2Headless)
+    {
+        offset = static_cast<Channel*>(channel)->GetOffset();
+    }
+    return offset;
 }
 
-int Mixer_Channel_SetOffset(void* channel, unsigned long offset)
+int Mixer_Channel_SetOffset(void * channel, unsigned long offset)
 {
-	if (gOpenRCT2Headless) return 0;
-
-	return static_cast<Channel*>(channel)->SetOffset(offset);
+    int result = 0;
+    if (!gOpenRCT2Headless)
+    {
+        result = static_cast<Channel*>(channel)->SetOffset(offset);
+    }
+    return result;
 }
 
-void Mixer_Channel_SetGroup(void* channel, int group)
+void Mixer_Channel_SetGroup(void * channel, int group)
 {
-	if (gOpenRCT2Headless) return;
-
-	static_cast<Channel*>(channel)->SetGroup(group);
+    if (!gOpenRCT2Headless)
+    {
+        static_cast<Channel*>(channel)->SetGroup(group);
+    }
 }
 
-void* Mixer_Play_Music(int pathId, int loop, int streaming)
+void * Mixer_Play_Music(int pathId, int loop, int streaming)
 {
-	if (gOpenRCT2Headless) return 0;
+    Channel * channel = nullptr;
+    if (!gOpenRCT2Headless)
+    {
+        IAudioMixer * mixer = gMixer;
+        if (streaming)
+        {
+            const utf8 * filename = get_file_path(pathId);
 
-	if (streaming) {
-		const utf8 *filename = get_file_path(pathId);
-
-		SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-		if (rw != NULL) {
-			Source_SampleStream* source_samplestream = new Source_SampleStream;
-			if (source_samplestream->LoadWAV(rw)) {
-				Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
-				if (!channel) {
-					delete source_samplestream;
-				} else {
-					channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
-				}
-				return channel;
-			} else {
-				delete source_samplestream;
-			}
-		}
-	} else {
-		if (gMixer.LoadMusic(pathId)) {
-			Channel* channel = gMixer.Play(*gMixer.musicsources[pathId], MIXER_LOOP_INFINITE, false, false);
-			if (channel) {
-				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
-			}
-			return channel;
-		}
-	}
-	return NULL;
+            SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
+            if (rw != nullptr)
+            {
+                Source_SampleStream * source_samplestream = new Source_SampleStream;
+                if (source_samplestream->LoadWAV(rw))
+                {
+                    channel = mixer->Play(*source_samplestream, loop, false, true);
+                    if (channel == nullptr)
+                    {
+                        delete source_samplestream;
+                    }
+                }
+                else
+                {
+                    delete source_samplestream;
+                }
+            }
+        }
+        else
+        {
+            if (mixer->LoadMusic(pathId))
+            {
+                Source * source = mixer->GetMusicSource(pathId);
+                channel = mixer->Play(*source, MIXER_LOOP_INFINITE, false, false);
+            }
+        }
+        if (channel != nullptr)
+        {
+            channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+        }
+    }
+    return channel;
 }
 
 void Mixer_SetVolume(float volume)
 {
-	if (gOpenRCT2Headless) return;
-
-	gMixer.SetVolume(volume);
+    if (!gOpenRCT2Headless)
+    {
+        gMixer->SetVolume(volume);
+    }
 }

@@ -83,10 +83,6 @@ public:
 	~Source_Sample();
 	bool LoadWAV(const char* filename);
 	bool LoadCSS1(const char* filename, unsigned int offset);
-
-	friend class Mixer;
-
-protected:
 	bool Convert(AudioFormat format);
 
 private:
@@ -133,9 +129,6 @@ public:
 	bool SetOffset(unsigned long offset);
 	void SetGroup(int group);
 
-	friend class Mixer;
-
-private:
 	int loop = 0;
 	unsigned long offset = 0;
 	double rate = 0;
@@ -153,41 +146,21 @@ private:
 	Source* source = nullptr;
 };
 
-class Mixer
+interface IAudioMixer
 {
-public:
-	Mixer();
-	void Init(const char* device);
-	void Close();
-	void Lock();
-	void Unlock();
-	Channel* Play(Source& source, int loop, bool deleteondone, bool deletesourceondone);
-	void Stop(Channel& channel);
-	bool LoadMusic(size_t pathid);
-	void SetVolume(float volume);
+    virtual ~IAudioMixer() = default;
 
-	Source* css1sources[SOUND_MAXID];
-	Source* musicsources[PATH_ID_END];
+    virtual void Init(const char * device) abstract;
+    virtual void Close() abstract;
+    virtual void Lock() abstract;
+    virtual void Unlock() abstract;
+    virtual Channel * Play(Source& source, int loop, bool deleteondone, bool deletesourceondone) abstract;
+    virtual void Stop(Channel& channel) abstract;
+    virtual bool LoadMusic(size_t pathid) abstract;
+    virtual void SetVolume(float volume) abstract;
 
-private:
-	static void SDLCALL Callback(void* arg, uint8* data, int length);
-	void MixChannel(Channel& channel, uint8* buffer, int length);
-	void EffectPanS16(Channel& channel, sint16* data, int length);
-	void EffectPanU8(Channel& channel, uint8* data, int length);
-	void EffectFadeS16(sint16* data, int length, int startvolume, int endvolume);
-	void EffectFadeU8(uint8* data, int length, int startvolume, int endvolume);
-	bool MustConvert(Source& source);
-	bool Convert(SDL_AudioCVT& cvt, const uint8* data, unsigned long length, uint8** dataout);
-	SDL_AudioDeviceID deviceid = 0;
-	AudioFormat format = { 0 };
-	uint8* effectbuffer = nullptr;
-	std::list<Channel*> channels;
-	Source_Null source_null;
-	float volume = 1.0f;
-	float adjust_sound_vol = 0.0f;
-	float adjust_music_vol = 0.0f;
-	uint8 setting_sound_vol = 0xFF;
-	uint8 setting_music_vol = 0xFF;
+    virtual Source * GetSoundSource(int id) abstract;
+    virtual Source * GetMusicSource(int id) abstract;
 };
 
 extern "C"
