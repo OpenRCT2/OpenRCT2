@@ -41,17 +41,17 @@ class AudioMixer : public IAudioMixer
 private:
     IAudioSource * _nullSource = nullptr;
 
-    SDL_AudioDeviceID _deviceid = 0;
+    SDL_AudioDeviceID _deviceId = 0;
     AudioFormat _format = { 0 };
     std::list<IAudioChannel *> _channels;
     float _volume = 1.0f;
-    float _adjust_sound_vol = 0.0f;
-    float _adjust_music_vol = 0.0f;
-    uint8 _setting_sound_vol = 0xFF;
-    uint8 _setting_music_vol = 0xFF;
+    float _adjustSoundVolume = 0.0f;
+    float _adjustMusicVolume = 0.0f;
+    uint8 _settingSoundVolume = 0xFF;
+    uint8 _settingMusicVolume = 0xFF;
 
-    IAudioSource * _css1sources[SOUND_MAXID] = { nullptr };
-    IAudioSource * _musicsources[PATH_ID_END] = { nullptr };
+    IAudioSource * _css1Sources[SOUND_MAXID] = { nullptr };
+    IAudioSource * _musicSources[PATH_ID_END] = { nullptr };
 
     void * _channelBuffer = nullptr;
     size_t _channelBufferCapacity = 0;
@@ -85,14 +85,14 @@ public:
         want.userdata = this;
 
         SDL_AudioSpec have;
-        _deviceid = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
+        _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, 0);
         _format.format = have.format;
         _format.channels = have.channels;
         _format.freq = have.freq;
 
         LoadAllSounds();
 
-        SDL_PauseAudioDevice(_deviceid, 0);
+        SDL_PauseAudioDevice(_deviceId, 0);
     }
 
     void Close() override
@@ -106,21 +106,21 @@ public:
         _channels.clear();
         Unlock();
 
-        SDL_CloseAudioDevice(_deviceid);
+        SDL_CloseAudioDevice(_deviceId);
 
         // Free sources
-        for (size_t i = 0; i < Util::CountOf(_css1sources); i++)
+        for (size_t i = 0; i < Util::CountOf(_css1Sources); i++)
         {
-            if (_css1sources[i] != _nullSource)
+            if (_css1Sources[i] != _nullSource)
             {
-                SafeDelete(_css1sources[i]);
+                SafeDelete(_css1Sources[i]);
             }
         }
-        for (size_t i = 0; i < Util::CountOf(_musicsources); i++)
+        for (size_t i = 0; i < Util::CountOf(_musicSources); i++)
         {
-            if (_musicsources[i] != _nullSource)
+            if (_musicSources[i] != _nullSource)
             {
-                SafeDelete(_musicsources[i]);
+                SafeDelete(_musicSources[i]);
             }
         }
 
@@ -132,12 +132,12 @@ public:
 
     void Lock() override
     {
-        SDL_LockAudioDevice(_deviceid);
+        SDL_LockAudioDevice(_deviceId);
     }
 
     void Unlock() override
     {
-        SDL_UnlockAudioDevice(_deviceid);
+        SDL_UnlockAudioDevice(_deviceId);
     }
 
     IAudioChannel * Play(IAudioSource * source, int loop, bool deleteondone, bool deletesourceondone) override
@@ -165,9 +165,9 @@ public:
     bool LoadMusic(size_t pathId) override
     {
         bool result = false;
-        if (pathId < Util::CountOf(_musicsources))
+        if (pathId < Util::CountOf(_musicSources))
         {
-            IAudioSource * source = _musicsources[pathId];
+            IAudioSource * source = _musicSources[pathId];
             if (source == nullptr)
             {
                 const utf8 * path = get_file_path((int)pathId);
@@ -176,7 +176,7 @@ public:
                 {
                     source = _nullSource;
                 }
-                _musicsources[pathId] = source;
+                _musicSources[pathId] = source;
             }
             result = source != _nullSource;
         }
@@ -190,26 +190,26 @@ public:
 
     IAudioSource * GetSoundSource(int id) override
     {
-        return _css1sources[id];
+        return _css1Sources[id];
     }
 
     IAudioSource * GetMusicSource(int id) override
     {
-        return _musicsources[id];
+        return _musicSources[id];
     }
 
 private:
     void LoadAllSounds()
     {
         const utf8 * css1Path = get_file_path(PATH_ID_CSS1);
-        for (size_t i = 0; i < Util::CountOf(_css1sources); i++)
+        for (size_t i = 0; i < Util::CountOf(_css1Sources); i++)
         {
             auto source = AudioSource::CreateMemoryFromCSS1(css1Path, i, &_format);
             if (source == nullptr)
             {
                 source = _nullSource;
             }
-            _css1sources[i] = source;
+            _css1Sources[i] = source;
         }
     }
 
@@ -217,7 +217,7 @@ private:
     {
         auto mixer = static_cast<AudioMixer *>(arg);
 
-        memset(stream, 0, length);
+        Memory::Set(stream, 0, length);
         std::list<IAudioChannel *>::iterator it = mixer->_channels.begin();
         while (it != mixer->_channels.end())
         {
@@ -243,25 +243,25 @@ private:
     void MixChannel(IAudioChannel * channel, uint8 * data, int length)
     {
         // Did the volume level get changed? Recalculate level in this case.
-        if (_setting_sound_vol != gConfigSound.sound_volume)
+        if (_settingSoundVolume != gConfigSound.sound_volume)
         {
-            _setting_sound_vol = gConfigSound.sound_volume;
-            _adjust_sound_vol = powf(_setting_sound_vol / 100.f, 10.f / 6.f);
+            _settingSoundVolume = gConfigSound.sound_volume;
+            _adjustSoundVolume = powf(_settingSoundVolume / 100.f, 10.f / 6.f);
         }
-        if (_setting_music_vol != gConfigSound.ride_music_volume)
+        if (_settingMusicVolume != gConfigSound.ride_music_volume)
         {
-            _setting_music_vol = gConfigSound.ride_music_volume;
-            _adjust_music_vol = powf(_setting_music_vol / 100.f, 10.f / 6.f);
+            _settingMusicVolume = gConfigSound.ride_music_volume;
+            _adjustMusicVolume = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
         }
 
         int sampleSize = _format.channels * _format.BytesPerSample();
-        int samples = length / sampleSize;
+        int numSamples = length / sampleSize;
         double rate = 1;
         if (_format.format == AUDIO_S16SYS)
         {
             rate = channel->GetRate();
         }
-        int samplestoread = (int)(samples * rate);
+        int samplesToRead = (int)(numSamples * rate);
 
         bool mustConvert = false;
         SDL_AudioCVT cvt;
@@ -278,7 +278,7 @@ private:
         }
 
         // Read raw PCM from channel
-        size_t toread = (size_t)(samplestoread / cvt.len_ratio) * sampleSize;
+        size_t toread = (size_t)(samplesToRead / cvt.len_ratio) * sampleSize;
         if (_channelBuffer == nullptr || _channelBufferCapacity < toread)
         {
             _channelBuffer = realloc(_channelBuffer, toread);
@@ -310,7 +310,7 @@ private:
         // Apply effects
         size_t effectBufferLen;
         bool useBufferLengthForRatio = (bytesRead == toread);
-        if (ApplyResample(channel, samples, sampleSize, buffer, bufferLen, &effectBufferLen, useBufferLengthForRatio))
+        if (ApplyResample(channel, numSamples, sampleSize, buffer, bufferLen, &effectBufferLen, useBufferLengthForRatio))
         {
             buffer = _effectBuffer;
             bufferLen = effectBufferLen;
@@ -393,7 +393,7 @@ private:
         volumeAdjust *= (gConfigSound.master_volume / 100.0f);
         switch (channel->GetGroup()) {
         case MIXER_GROUP_SOUND:
-            volumeAdjust *= _adjust_sound_vol;
+            volumeAdjust *= _adjustSoundVolume;
 
             // Cap sound volume on title screen so music is more audible
             if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -402,7 +402,7 @@ private:
             }
             break;
         case MIXER_GROUP_RIDE_MUSIC:
-            volumeAdjust *= _adjust_music_vol;
+            volumeAdjust *= _adjustMusicVolume;
             break;
         }
 
@@ -498,7 +498,7 @@ private:
                 _convertBufferCapacity = len * cvt->len_mult;
                 _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
             }
-            memcpy(_convertBuffer, src, len);
+            Memory::Copy(_convertBuffer, src, len);
 
             cvt->len = (int)len;
             cvt->buf = (Uint8 *)_convertBuffer;
