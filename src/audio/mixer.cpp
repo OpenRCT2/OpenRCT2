@@ -74,7 +74,7 @@ IAudioMixer * gMixer;
 /**
  * An audio source representing silence.
  */
-class Source_Null : public IAudioSource
+class NullAudioSource : public IAudioSource
 {
 public:
     size_t GetLength() override
@@ -97,7 +97,7 @@ public:
  * An audio source where raw PCM data is initially loaded into RAM from
  * a file and then streamed.
  */
-class Source_Sample : public IAudioSource
+class MemoryAudioSource : public IAudioSource
 {
 private:
     AudioFormat _format = { 0 };
@@ -106,7 +106,7 @@ private:
     bool        _isSDLWav = false;
 
 public:
-    ~Source_Sample()
+    ~MemoryAudioSource()
     {
         Unload();
     }
@@ -134,7 +134,7 @@ public:
 
     bool LoadWAV(const utf8 * path)
     {
-        log_verbose("Source_Sample::LoadWAV(%s)", path);
+        log_verbose("MemoryAudioSource::LoadWAV(%s)", path);
 
         Unload();
 
@@ -169,7 +169,7 @@ public:
 
     bool LoadCSS1(const utf8 * path, size_t index)
     {
-        log_verbose("Source_Sample::LoadCSS1(%s, %d)", path, index);
+        log_verbose("MemoryAudioSource::LoadCSS1(%s, %d)", path, index);
 
         Unload();
 
@@ -270,7 +270,7 @@ private:
  * An audio source where raw PCM data is streamed directly from
  * a file.
  */
-class Source_SampleStream : public IAudioSource
+class FileAudioSource : public IAudioSource
 {
 private:
     AudioFormat _format = { 0 };
@@ -279,7 +279,7 @@ private:
     uint64      _dataLength = 0;
 
 public:
-    ~Source_SampleStream()
+    ~FileAudioSource()
     {
         Unload();
     }
@@ -697,7 +697,7 @@ private:
     SDL_AudioDeviceID _deviceid = 0;
     AudioFormat _format = { 0 };
     std::list<IAudioChannel *> _channels;
-    Source_Null _source_null;
+    NullAudioSource _NullAudioSource;
     float _volume = 1.0f;
     float _adjust_sound_vol = 0.0f;
     float _adjust_music_vol = 0.0f;
@@ -741,13 +741,13 @@ public:
         _format.freq = have.freq;
         const char* filename = get_file_path(PATH_ID_CSS1);
         for (int i = 0; i < (int)Util::CountOf(_css1sources); i++) {
-            Source_Sample* source_sample = new Source_Sample;
-            if (source_sample->LoadCSS1(filename, i)) {
-                source_sample->Convert(&_format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
-                _css1sources[i] = source_sample;
+            auto source = new MemoryAudioSource;
+            if (source->LoadCSS1(filename, i)) {
+                source->Convert(&_format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
+                _css1sources[i] = source;
             } else {
-                _css1sources[i] = &_source_null;
-                delete source_sample;
+                _css1sources[i] = &_NullAudioSource;
+                delete source;
             }
         }
         SDL_PauseAudioDevice(_deviceid, 0);
@@ -769,14 +769,14 @@ public:
         // Free sources
         for (size_t i = 0; i < Util::CountOf(_css1sources); i++)
         {
-            if (_css1sources[i] && _css1sources[i] != &_source_null)
+            if (_css1sources[i] && _css1sources[i] != &_NullAudioSource)
             {
                 SafeDelete(_css1sources[i]);
             }
         }
         for (size_t i = 0; i < Util::CountOf(_musicsources); i++)
         {
-            if (_musicsources[i] && _musicsources[i] != &_source_null)
+            if (_musicsources[i] && _musicsources[i] != &_NullAudioSource)
             {
                 SafeDelete(_musicsources[i]);
             }
@@ -829,16 +829,16 @@ public:
         if (!_musicsources[pathId])
         {
             const char* filename = get_file_path((int)pathId);
-            Source_Sample* source_sample = new Source_Sample;
-            if (source_sample->LoadWAV(filename))
+            auto source = new MemoryAudioSource();
+            if (source->LoadWAV(filename))
             {
-                _musicsources[pathId] = source_sample;
+                _musicsources[pathId] = source;
                 return true;
             }
             else
             {
-                delete source_sample;
-                _musicsources[pathId] = &_source_null;
+                delete source;
+                _musicsources[pathId] = &_NullAudioSource;
                 return false;
             }
         }
@@ -1297,18 +1297,18 @@ void * Mixer_Play_Music(int pathId, int loop, int streaming)
             SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
             if (rw != nullptr)
             {
-                Source_SampleStream * source_samplestream = new Source_SampleStream;
-                if (source_samplestream->LoadWAV(rw))
+                auto source = new FileAudioSource();
+                if (source->LoadWAV(rw))
                 {
-                    channel = mixer->Play(source_samplestream, loop, false, true);
+                    channel = mixer->Play(source, loop, false, true);
                     if (channel == nullptr)
                     {
-                        delete source_samplestream;
+                        delete source;
                     }
                 }
                 else
                 {
-                    delete source_samplestream;
+                    delete source;
                 }
             }
         }
