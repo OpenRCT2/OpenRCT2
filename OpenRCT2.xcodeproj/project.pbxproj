@@ -123,6 +123,10 @@
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
 		C6575A371D46AFBA00C3E79F /* debug_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C6575A361D46AFBA00C3E79F /* debug_paint.c */; };
 		C65A888A1E16859D000368D7 /* bolliger_mabillard_track.c in Sources */ = {isa = PBXBuildFile; fileRef = C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */; };
+		C65A88921E1B1148000368D7 /* AudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A888B1E1B1148000368D7 /* AudioChannel.cpp */; };
+		C65A88931E1B1148000368D7 /* FileAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */; };
+		C65A88941E1B1148000368D7 /* MemoryAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */; };
+		C65A88951E1B1148000368D7 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A88911E1B1148000368D7 /* NullAudioSource.cpp */; };
 		C6834A111DFDE8E300CE933A /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = C6834A0F1DFDE8E300CE933A /* interop.c */; };
 		C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8981CDBC37E009F9BFC /* banner.c */; };
 		C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8991CDBC37E009F9BFC /* entrance.c */; };
@@ -555,6 +559,13 @@
 		C6575A361D46AFBA00C3E79F /* debug_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug_paint.c; sourceTree = "<group>"; };
 		C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bolliger_mabillard_track.c; sourceTree = "<group>"; };
 		C65A88891E16859D000368D7 /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
+		C65A888B1E1B1148000368D7 /* AudioChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioChannel.cpp; sourceTree = "<group>"; };
+		C65A888C1E1B1148000368D7 /* AudioChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioChannel.h; sourceTree = "<group>"; };
+		C65A888D1E1B1148000368D7 /* AudioFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFormat.h; sourceTree = "<group>"; };
+		C65A888E1E1B1148000368D7 /* AudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioSource.h; sourceTree = "<group>"; };
+		C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileAudioSource.cpp; sourceTree = "<group>"; };
+		C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryAudioSource.cpp; sourceTree = "<group>"; };
+		C65A88911E1B1148000368D7 /* NullAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NullAudioSource.cpp; sourceTree = "<group>"; };
 		C6834A0F1DFDE8E300CE933A /* interop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = interop.c; sourceTree = "<group>"; usesTabs = 1; };
 		C6834A101DFDE8E300CE933A /* interop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interop.h; sourceTree = "<group>"; };
 		C686F8981CDBC37E009F9BFC /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
@@ -1587,8 +1598,15 @@
 			children = (
 				D44270D01CC81B3200D84D28 /* audio.c */,
 				D44270D11CC81B3200D84D28 /* audio.h */,
+				C65A888B1E1B1148000368D7 /* AudioChannel.cpp */,
+				C65A888C1E1B1148000368D7 /* AudioChannel.h */,
+				C65A888D1E1B1148000368D7 /* AudioFormat.h */,
+				C65A888E1E1B1148000368D7 /* AudioSource.h */,
+				C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */,
+				C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */,
 				D44270D21CC81B3200D84D28 /* mixer.cpp */,
 				D44270D31CC81B3200D84D28 /* mixer.h */,
+				C65A88911E1B1148000368D7 /* NullAudioSource.cpp */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -2614,6 +2632,7 @@
 				791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */,
 				D44272441CC81B3200D84D28 /* cable_lift.c in Sources */,
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
+				C65A88921E1B1148000368D7 /* AudioChannel.cpp in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
@@ -2698,6 +2717,7 @@
 				D442724C1CC81B3200D84D28 /* vehicle.c in Sources */,
 				D464FEED1D31A6AA00CBABAC /* ObjectManager.cpp in Sources */,
 				D44272261CC81B3200D84D28 /* currency.c in Sources */,
+				C65A88931E1B1148000368D7 /* FileAudioSource.cpp in Sources */,
 				C6E96E301E04072F0076A04F /* TitleSequence.cpp in Sources */,
 				C686F92B1CDBC3B7009F9BFC /* car_ride.c in Sources */,
 				D44272921CC81B3200D84D28 /* tooltip.c in Sources */,
@@ -2782,6 +2802,7 @@
 				C686F8B61CDBC37E009F9BFC /* misc.c in Sources */,
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
 				D44272621CC81B3200D84D28 /* footpath.c in Sources */,
+				C65A88951E1B1148000368D7 /* NullAudioSource.cpp in Sources */,
 				D44272521CC81B3200D84D28 /* util.c in Sources */,
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
@@ -2870,6 +2891,7 @@
 				C686F9351CDBC3B7009F9BFC /* mini_golf.c in Sources */,
 				D44272541CC81B3200D84D28 /* banner.c in Sources */,
 				D44272A31CC81B3200D84D28 /* money_effect.c in Sources */,
+				C65A88941E1B1148000368D7 /* MemoryAudioSource.cpp in Sources */,
 				D464FEE61D31A6AA00CBABAC /* EntranceObject.cpp in Sources */,
 				D43407DE1D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp in Sources */,
 				D43407DC1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp in Sources */,
