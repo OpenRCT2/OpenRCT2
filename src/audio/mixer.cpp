@@ -80,7 +80,11 @@ public:
         want.format = AUDIO_S16SYS;
         want.channels = 2;
         want.samples = 1024;
-        want.callback = Callback;
+        want.callback = [](void * arg, uint8 * dst, int length) -> void
+        {
+            auto mixer = static_cast<AudioMixer *>(arg);
+            mixer->GetNextAudioChunk(dst, (size_t)length);
+        };
         want.userdata = this;
 
         SDL_AudioSpec have;
@@ -212,25 +216,28 @@ private:
         }
     }
 
-    static void SDLCALL Callback(void * arg, uint8 * stream, int length)
+    void GetNextAudioChunk(uint8 * dst, size_t length)
     {
-        auto mixer = static_cast<AudioMixer *>(arg);
+        UpdateAdjustedSound();
 
-        Memory::Set(stream, 0, length);
-        std::list<IAudioChannel *>::iterator it = mixer->_channels.begin();
-        while (it != mixer->_channels.end())
+        // Zero the output buffer
+        Memory::Set(dst, 0, length);
+
+        // Mix channels onto output buffer
+        std::list<IAudioChannel *>::iterator it = _channels.begin();
+        while (it != _channels.end())
         {
             IAudioChannel * channel = *it;
 
             int group = channel->GetGroup();
             if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
             {
-                mixer->MixChannel(channel, stream, length);
+                MixChannel(channel, dst, length);
             }
             if ((channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
             {
                 delete channel;
-                it = mixer->_channels.erase(it);
+                it = _channels.erase(it);
             }
             else
             {
@@ -239,7 +246,7 @@ private:
         }
     }
 
-    void MixChannel(IAudioChannel * channel, uint8 * data, int length)
+    void UpdateAdjustedSound()
     {
         // Did the volume level get changed? Recalculate level in this case.
         if (_settingSoundVolume != gConfigSound.sound_volume)
@@ -252,9 +259,12 @@ private:
             _settingMusicVolume = gConfigSound.ride_music_volume;
             _adjustMusicVolume = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
         }
+    }
 
+    void MixChannel(IAudioChannel * channel, uint8 * data, size_t length)
+    {
         int byteRate = _format.GetByteRate();
-        int numSamples = length / byteRate;
+        int numSamples = (int)(length / byteRate);
         double rate = 1;
         if (_format.format == AUDIO_S16SYS)
         {
@@ -320,7 +330,7 @@ private:
         int mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
         // Finally mix on to destination buffer
-        size_t dstLength = Math::Min((size_t)length, bufferLen);
+        size_t dstLength = Math::Min(length, bufferLen);
         SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
 
         channel->UpdateOldVolume();
