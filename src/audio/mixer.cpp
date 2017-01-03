@@ -492,9 +492,10 @@ private:
         bool result = false;
         if (len != 0 && cvt->len_mult != 0)
         {
-            if (_convertBuffer == nullptr || _convertBufferCapacity < len)
+            size_t reqConvertBufferCapacity = len * cvt->len_mult;
+            if (_convertBuffer == nullptr || _convertBufferCapacity < reqConvertBufferCapacity)
             {
-                _convertBufferCapacity = len * cvt->len_mult;
+                _convertBufferCapacity = reqConvertBufferCapacity;
                 _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
             }
             Memory::Copy(_convertBuffer, src, len);
