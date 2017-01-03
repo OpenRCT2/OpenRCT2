@@ -20,8 +20,8 @@
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "AudioChannel.h"
+#include "AudioMixer.h"
 #include "AudioSource.h"
-#include "mixer.h"
 
 extern "C"
 {

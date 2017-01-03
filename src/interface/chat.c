@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../audio/mixer.h"
+#include "../audio/AudioMixer.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"

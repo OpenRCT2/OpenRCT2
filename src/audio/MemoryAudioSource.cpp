@@ -16,8 +16,8 @@
 
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "AudioMixer.h"
 #include "AudioSource.h"
-#include "mixer.h"
 
 #pragma pack(push, 1)
     struct WaveFormatEx

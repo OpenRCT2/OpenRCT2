@@ -14,9 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../rct2/addresses.h"
 #include "../audio/audio.h"
-#include "../audio/mixer.h"
+#include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../common.h"
 #include "../config.h"
@@ -34,6 +33,7 @@
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
+#include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../windows/error.h"

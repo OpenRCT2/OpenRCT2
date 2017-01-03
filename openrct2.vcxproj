@@ -95,7 +95,7 @@
     <ClCompile Include="src\FileClassifier.cpp" />
     <ClCompile Include="src\rct2\addresses.c" />
     <ClCompile Include="src\audio\audio.c" />
-    <ClCompile Include="src\audio\mixer.cpp" />
+    <ClCompile Include="src\audio\AudioMixer.cpp" />
     <ClCompile Include="src\cheats.c" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
     <ClCompile Include="src\cmdline\ConvertCommand.cpp" />
@@ -434,7 +434,7 @@
     <ClInclude Include="src\FileClassifier.h" />
     <ClInclude Include="src\rct2\addresses.h" />
     <ClInclude Include="src\audio\audio.h" />
-    <ClInclude Include="src\audio\mixer.h" />
+    <ClInclude Include="src\audio\AudioMixer.h" />
     <ClInclude Include="src\cheats.h" />
     <ClInclude Include="src\cmdline\CommandLine.hpp" />
     <ClInclude Include="src\cmdline_sprite.h" />

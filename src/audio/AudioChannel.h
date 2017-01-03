@@ -19,7 +19,7 @@
 #include <speex/speex_resampler.h>
 #include "../common.h"
 #include "AudioFormat.h"
-#include "mixer.h"
+#include "AudioMixer.h"
 
 interface IAudioSource;
 

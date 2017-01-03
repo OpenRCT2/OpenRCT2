@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "AudioFormat.h"
-#include "mixer.h"
+#include "AudioMixer.h"
 
 /**
  * Represents a readable source of audio PCM data.

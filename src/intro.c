@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "audio/audio.h"
-#include "audio/mixer.h"
+#include "audio/AudioMixer.h"
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "rct2.h"

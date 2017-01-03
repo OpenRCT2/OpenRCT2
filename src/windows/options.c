@@ -23,7 +23,7 @@
  */
 
 #include "../audio/audio.h"
-#include "../audio/mixer.h"
+#include "../audio/AudioMixer.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../interface/themes.h"
