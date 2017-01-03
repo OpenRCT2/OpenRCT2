@@ -26,6 +26,7 @@ extern "C" {
 #include "../localisation/language.h"
 }
 
+#ifndef NO_TTF
 static TTFFontSetDescriptor TTFFontMSGothic = { {
     { "msgothic.ttc", "MS PGothic", 9, 1, 0, 15, nullptr },
     { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
@@ -60,6 +61,10 @@ static TTFFontSetDescriptor TTFFontArial = { {
     { "arial.ttf", "Arial", 11, 0, -1, 12, nullptr },
     { "arial.ttf", "Arial", 12, 0, -1, 20, nullptr },
 } };
+#define FONT(x) x
+#else
+#define FONT(x) FONT_OPENRCT2_SPRITE
+#endif // NO_TTF
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "", "", "", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },                              // LANGUAGE_UNDEFINED
@@ -69,21 +74,21 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "nl-NL", "Dutch", "Nederlands", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
     { "fr-FR", "French", u8"Français", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_FRENCH },             // LANGUAGE_FRENCH
     { "hu-HU", "Hungarian", "Magyar", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
-    { "pl-PL", "Polish", "Polski", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },                    // LANGUAGE_POLISH
+    { "pl-PL", "Polish", "Polski", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },                    // LANGUAGE_POLISH
     { "es-ES", "Spanish", u8"Español", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SPANISH },            // LANGUAGE_SPANISH
     { "sv-SE", "Swedish", "Svenska", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_SWEDISH },              // LANGUAGE_SWEDISH
     { "it-IT", "Italian", "Italiano", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
     { "pt-BR", "Portuguese (BR)", u8"Português (BR)", FONT_OPENRCT2_SPRITE,
       RCT2_LANGUAGE_ID_PORTUGUESE }, // LANGUAGE_PORTUGUESE_BR
-    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", &TTFFontMingLiu,
+    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FONT(&TTFFontMingLiu),
       RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
-    { "zh-CN", "Chinese (Simplified)", "Chinese (Simplified)", &TTFFontSimSun,
+    { "zh-CN", "Chinese (Simplified)", "Chinese (Simplified)", FONT(&TTFFontSimSun),
       RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },                                            // LANGUAGE_CHINESE_SIMPLIFIED
     { "fi-FI", "Finnish", "Suomi", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_FINNISH
-    { "ko-KR", "Korean", "Korean", &TTFFontGulim, RCT2_LANGUAGE_ID_KOREAN },            // LANGUAGE_KOREAN
-    { "ru-RU", "Russian", "Russian", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
-    { "cs-CZ", "Czech", "Czech", &TTFFontArial, RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
-    { "ja-JP", "Japanese", "Japanese", &TTFFontMSGothic, RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
+    { "ko-KR", "Korean", "Korean", FONT(&TTFFontGulim), RCT2_LANGUAGE_ID_KOREAN },            // LANGUAGE_KOREAN
+    { "ru-RU", "Russian", "Russian", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },      // LANGUAGE_RUSSIAN
+    { "cs-CZ", "Czech", "Czech", FONT(&TTFFontArial), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
+    { "ja-JP", "Japanese", "Japanese", FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK }, // LANGUAGE_JAPANESE
     {
         "nb-NO", "Norwegian", "Norsk", FONT_OPENRCT2_SPRITE, RCT2_LANGUAGE_ID_ENGLISH_UK,
     }, // LANGUAGE_NORWEGIAN
@@ -91,11 +96,14 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 
 static void LoadSpriteFont()
 {
+#ifndef NO_TTF
     ttf_dispose();
     gUseTrueTypeFont   = false;
     gCurrentTTFFontSet = nullptr;
+#endif
 }
 
+#ifndef NO_TTF
 static bool LoadFont(TTFFontSetDescriptor * font)
 {
     gUseTrueTypeFont   = true;
@@ -126,9 +134,11 @@ static bool LoadCustomConfigFont()
     bool fontInitialised = ttf_initialise();
     return fontInitialised;
 }
+#endif // NO_TTF
 
 void TryLoadFonts()
 {
+#ifndef NO_TTF
     TTFFontSetDescriptor * font = LanguagesDescriptors[gCurrentLanguage].font;
     if (font != FONT_OPENRCT2_SPRITE)
     {
@@ -153,5 +163,6 @@ void TryLoadFonts()
         }
         Console::Error::WriteLine("Unable to initialise prefered TrueType font -- Falling back to sprite font.");
     }
+#endif // NO_TTF
     LoadSpriteFont();
 }
