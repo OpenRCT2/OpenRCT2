@@ -35,6 +35,39 @@ extern "C"
 
 IAudioMixer * gMixer;
 
+struct Buffer
+{
+private:
+    void * _data = nullptr;
+    size_t _capacity = 0;
+
+public:
+    void * GetData() const { return _data; }
+    void * GetData() { return _data; }
+    size_t GetCapacity() const { return _capacity; }
+
+    ~Buffer()
+    {
+        Free();
+    }
+
+    void Free()
+    {
+        Memory::Free(_data);
+        _data = nullptr;
+        _capacity = 0;
+    }
+
+    void EnsureCapacity(size_t capacity)
+    {
+        if (_capacity < capacity)
+        {
+            _capacity = capacity;
+            _data = Memory::Reallocate(_data, capacity);
+        }
+    }
+};
+
 class AudioMixer : public IAudioMixer
 {
 private:
@@ -52,12 +85,9 @@ private:
     IAudioSource * _css1Sources[SOUND_MAXID] = { nullptr };
     IAudioSource * _musicSources[PATH_ID_END] = { nullptr };
 
-    void * _channelBuffer = nullptr;
-    size_t _channelBufferCapacity = 0;
-    void * _convertBuffer = nullptr;
-    size_t _convertBufferCapacity = 0;
-    void * _effectBuffer = nullptr;
-    size_t _effectBufferCapacity = 0;
+    Buffer _channelBuffer;
+    Buffer _convertBuffer;
+    Buffer _effectBuffer;
 
 public:
     AudioMixer()
@@ -128,9 +158,9 @@ public:
         }
 
         // Free buffers
-        SafeFree(_channelBuffer);
-        SafeFree(_convertBuffer);
-        SafeFree(_effectBuffer);
+        _channelBuffer.Free();
+        _convertBuffer.Free();
+        _effectBuffer.Free();
     }
 
     void Lock() override
@@ -288,19 +318,15 @@ private:
         // Read raw PCM from channel
         int readSamples = (int)(numSamples * rate);
         size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
-        if (_channelBuffer == nullptr || _channelBufferCapacity < readLength)
-        {
-            _channelBuffer = realloc(_channelBuffer, readLength);
-            _channelBufferCapacity = readLength;
-        }
-        size_t bytesRead = channel->Read(_channelBuffer, readLength);
+        _channelBuffer.EnsureCapacity(readLength);
+        size_t bytesRead = channel->Read(_channelBuffer.GetData(), readLength);
 
         // Convert data to required format if necessary
         void * buffer = nullptr;
         size_t bufferLen = 0;
         if (mustConvert)
         {
-            if (Convert(&cvt, _channelBuffer, bytesRead))
+            if (Convert(&cvt, _channelBuffer.GetData(), bytesRead))
             {
                 buffer = cvt.buf;
                 bufferLen = cvt.len_cvt;
@@ -312,7 +338,7 @@ private:
         }
         else
         {
-            buffer = _channelBuffer;
+            buffer = _channelBuffer.GetData();
             bufferLen = bytesRead;
         }
 
@@ -322,7 +348,7 @@ private:
             int srcSamples = (int)(bufferLen / byteRate);
             int dstSamples = numSamples;
             bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
-            buffer = _effectBuffer;
+            buffer = _effectBuffer.GetData();
         }
 
         // Apply panning and volume
@@ -355,11 +381,7 @@ private:
 
         // Ensure destination buffer is large enough
         size_t effectBufferReqLen  = dstSamples * byteRate;
-        if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
-        {
-            _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
-            _effectBufferCapacity = effectBufferReqLen;
-        }
+        _effectBuffer.EnsureCapacity(effectBufferReqLen);
 
         uint32 inLen = srcSamples;
         uint32 outLen = dstSamples;
@@ -367,7 +389,7 @@ private:
             resampler,
             (const spx_int16_t *)srcBuffer,
             &inLen,
-            (spx_int16_t *)_effectBuffer,
+            (spx_int16_t *)_effectBuffer.GetData(),
             &outLen);
 
         return outLen * byteRate;
@@ -495,15 +517,11 @@ private:
         if (len != 0 && cvt->len_mult != 0)
         {
             size_t reqConvertBufferCapacity = len * cvt->len_mult;
-            if (_convertBuffer == nullptr || _convertBufferCapacity < reqConvertBufferCapacity)
-            {
-                _convertBufferCapacity = reqConvertBufferCapacity;
-                _convertBuffer = realloc(_convertBuffer, _convertBufferCapacity);
-            }
-            Memory::Copy(_convertBuffer, src, len);
+            _convertBuffer.EnsureCapacity(reqConvertBufferCapacity);
+            Memory::Copy(_convertBuffer.GetData(), src, len);
 
             cvt->len = (int)len;
-            cvt->buf = (Uint8 *)_convertBuffer;
+            cvt->buf = (uint8 *)_convertBuffer.GetData();
             if (SDL_ConvertAudio(cvt) >= 0)
             {
                 result = true;
