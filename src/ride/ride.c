@@ -3547,7 +3547,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 				*tuneId = 0xFF;
 				return 0;
 			}
-			a1 = Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
+			a1 = (uint32)Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
 		label51:
 			if (a1 < gRideMusicInfoList[*tuneId]->length) {
 				position = a1;

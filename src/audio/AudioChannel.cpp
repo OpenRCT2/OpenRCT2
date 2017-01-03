@@ -28,7 +28,7 @@ private:
 
     int _group = MIXER_GROUP_SOUND;
     double _rate = 0;
-    size_t _offset = 0;
+    uint64 _offset = 0;
     int _loop = 0;
 
     int     _volume = 1;
@@ -100,12 +100,12 @@ public:
         _rate = Math::Max(0.001, rate);
     }
 
-    unsigned long GetOffset() const override
+    uint64 GetOffset() const override
     {
-        return (unsigned long)_offset;
+        return _offset;
     }
 
-    bool SetOffset(unsigned long offset) override
+    bool SetOffset(uint64 offset) override
     {
         if (_source != nullptr && offset < _source->GetLength())
         {

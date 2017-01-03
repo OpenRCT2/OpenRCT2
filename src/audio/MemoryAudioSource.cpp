@@ -51,7 +51,7 @@ public:
         Unload();
     }
 
-    size_t GetLength() override
+    uint64 GetLength() override
     {
         return _length;
     }
@@ -61,12 +61,12 @@ public:
         return _format;
     }
 
-    size_t Read(void * dst, size_t offset, size_t len) override
+    size_t Read(void * dst, uint64 offset, size_t len) override
     {
         size_t bytesToRead = 0;
         if (offset < _length)
         {
-            bytesToRead = Math::Min(len, _length - offset);
+            bytesToRead = (size_t)Math::Min<uint64>(len, _length - offset);
             Memory::Copy<void>(dst, _data + offset, bytesToRead);
         }
         return bytesToRead;

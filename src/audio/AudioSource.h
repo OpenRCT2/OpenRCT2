@@ -27,9 +27,9 @@ interface IAudioSource
 {
     virtual ~IAudioSource() = default;
 
-    virtual size_t GetLength() abstract;
+    virtual uint64 GetLength() abstract;
     virtual AudioFormat GetFormat() abstract;
-    virtual size_t Read(void * dst, size_t offset, size_t len) abstract;
+    virtual size_t Read(void * dst, uint64 offset, size_t len) abstract;
 };
 
 namespace AudioSource

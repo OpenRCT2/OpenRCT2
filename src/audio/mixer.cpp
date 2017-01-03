@@ -594,9 +594,9 @@ int Mixer_Channel_IsPlaying(void * channel)
     return isPlaying;
 }
 
-unsigned long Mixer_Channel_GetOffset(void * channel)
+uint64 Mixer_Channel_GetOffset(void * channel)
 {
-    unsigned long offset = 0;
+    uint64 offset = 0;
     if (!gOpenRCT2Headless)
     {
         offset = static_cast<IAudioChannel*>(channel)->GetOffset();
@@ -604,7 +604,7 @@ unsigned long Mixer_Channel_GetOffset(void * channel)
     return offset;
 }
 
-int Mixer_Channel_SetOffset(void * channel, unsigned long offset)
+int Mixer_Channel_SetOffset(void * channel, uint64 offset)
 {
     int result = 0;
     if (!gOpenRCT2Headless)

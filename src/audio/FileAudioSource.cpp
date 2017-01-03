@@ -48,7 +48,7 @@ public:
         Unload();
     }
 
-    size_t GetLength() override
+    uint64 GetLength() override
     {
         return _dataLength;
     }
@@ -58,13 +58,13 @@ public:
         return _format;
     }
 
-    size_t Read(void * dst, size_t offset, size_t len) override
+    size_t Read(void * dst, uint64 offset, size_t len) override
     {
         size_t bytesRead = 0;
         sint64 currentPosition = SDL_RWtell(_rw);
         if (currentPosition != -1)
         {
-            size_t bytesToRead = Math::Min<size_t>(len, _dataLength - offset);
+            size_t bytesToRead = (size_t)Math::Min<uint64>(len, _dataLength - offset);
             sint64 dataOffset = _dataBegin + offset;
             if (currentPosition != dataOffset)
             {
@@ -95,8 +95,8 @@ public:
         }
         _rw = rw;
 
-        Uint32 chunk_id = SDL_ReadLE32(rw);
-        if (chunk_id != RIFF)
+        Uint32 chunkId = SDL_ReadLE32(rw);
+        if (chunkId != RIFF)
         {
             log_verbose("Not a WAV file");
             return false;

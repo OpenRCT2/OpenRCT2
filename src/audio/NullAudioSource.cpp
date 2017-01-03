@@ -22,7 +22,7 @@
 class NullAudioSource : public IAudioSource
 {
 public:
-    size_t GetLength() override
+    uint64 GetLength() override
     {
         return 0;
     }
@@ -32,7 +32,7 @@ public:
         return { 0 };
     }
 
-    size_t Read(void * dst, size_t offset, size_t len) override
+    size_t Read(void * dst, uint64 offset, size_t len) override
     {
         return 0;
     }

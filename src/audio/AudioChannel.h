@@ -42,8 +42,8 @@ interface IAudioChannel
     virtual double  GetRate() const abstract;
     virtual void    SetRate(double rate) abstract;
 
-    virtual unsigned long   GetOffset() const abstract;
-    virtual bool            SetOffset(unsigned long offset) abstract;
+    virtual uint64  GetOffset() const abstract;
+    virtual bool    SetOffset(uint64 offset) abstract;
 
     virtual int     GetLoop() const abstract;
     virtual void    SetLoop(int value) abstract;
