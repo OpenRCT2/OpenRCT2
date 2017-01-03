@@ -583,7 +583,7 @@ private:
 
         // Station
         dst->overall_view = src->overall_view;
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < RCT1_MAX_STATIONS; i++)
         {
             dst->station_starts[i] = src->station_starts[i];
             dst->station_heights[i] = src->station_height[i] / 2;
@@ -702,7 +702,7 @@ private:
 
         dst->max_speed = src->max_speed;
         dst->average_speed = src->average_speed;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < RCT1_MAX_STATIONS; i++) {
             dst->time[i] = src->time[i];
             dst->length[i] = src->length[i];
         }
@@ -740,7 +740,7 @@ private:
         rct_ride *ride;
         FOR_ALL_RIDES(i, ride)
         {
-            for (int stationIndex = 0; stationIndex < 4; stationIndex++)
+            for (int stationIndex = 0; stationIndex < RCT1_MAX_STATIONS; stationIndex++)
             {
                 ride->queue_length[stationIndex] = 0;
             }
