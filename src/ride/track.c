@@ -34,6 +34,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
+#include "station.h"
 #include "track.h"
 #include "track_data.h"
 
