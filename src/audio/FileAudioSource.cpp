@@ -20,12 +20,12 @@
 #pragma pack(push, 1)
     struct WaveFormat
     {
-        Uint16 encoding;
-        Uint16 channels;
-        Uint32 frequency;
-        Uint32 byterate;
-        Uint16 blockalign;
-        Uint16 bitspersample;
+        uint16 encoding;
+        uint16 channels;
+        uint32 frequency;
+        uint32 byterate;
+        uint16 blockalign;
+        uint16 bitspersample;
     };
     assert_struct_size(WaveFormat, 16);
 #pragma pack(pop)
@@ -82,10 +82,10 @@ public:
     bool LoadWAV(SDL_RWops * rw)
     {
         const uint32 DATA = 0x61746164;
-        const Uint32 FMT  = 0x20746D66;
-        const Uint32 RIFF = 0x46464952;
-        const Uint32 WAVE = 0x45564157;
-        const Uint16 pcmformat = 0x0001;
+        const uint32 FMT  = 0x20746D66;
+        const uint32 RIFF = 0x46464952;
+        const uint32 WAVE = 0x45564157;
+        const uint16 pcmformat = 0x0001;
 
         Unload();
 
@@ -95,7 +95,7 @@ public:
         }
         _rw = rw;
 
-        Uint32 chunkId = SDL_ReadLE32(rw);
+        uint32 chunkId = SDL_ReadLE32(rw);
         if (chunkId != RIFF)
         {
             log_verbose("Not a WAV file");
@@ -104,14 +104,14 @@ public:
 
         // Read and discard chunk size
         SDL_ReadLE32(rw);
-        Uint32 chunkFormat = SDL_ReadLE32(rw);
+        uint32 chunkFormat = SDL_ReadLE32(rw);
         if (chunkFormat != WAVE)
         {
             log_verbose("Not in WAVE format");
             return false;
         }
 
-        Uint32 fmtChunkSize = FindChunk(rw, FMT);
+        uint32 fmtChunkSize = FindChunk(rw, FMT);
         if (!fmtChunkSize)
         {
             log_verbose("Could not find FMT chunk");
@@ -164,10 +164,10 @@ private:
         {
             return subchunkSize;
         }
-        const Uint32 FACT = 0x74636166;
-        const Uint32 LIST = 0x5453494c;
-        const Uint32 BEXT = 0x74786562;
-        const Uint32 JUNK = 0x4B4E554A;
+        const uint32 FACT = 0x74636166;
+        const uint32 LIST = 0x5453494c;
+        const uint32 BEXT = 0x74786562;
+        const uint32 JUNK = 0x4B4E554A;
         while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
         {
             SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);

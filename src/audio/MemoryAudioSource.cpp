@@ -83,7 +83,7 @@ public:
         if (rw != nullptr)
         {
             SDL_AudioSpec audiospec = { 0 };
-            Uint32 audioLen;
+            uint32 audioLen;
             SDL_AudioSpec * spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_data, &audioLen);
             if (spec != nullptr)
             {
@@ -165,8 +165,8 @@ public:
             if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
             {
                 cvt.len = (int)_length;
-                cvt.buf = (Uint8*)new uint8[cvt.len * cvt.len_mult];
-                memcpy(cvt.buf, _data, _length);
+                cvt.buf = new uint8[cvt.len * cvt.len_mult];
+                Memory::Copy(cvt.buf, _data, _length);
                 if (SDL_ConvertAudio(&cvt) >= 0)
                 {
                     Unload();

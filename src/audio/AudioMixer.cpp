@@ -357,7 +357,7 @@ private:
 
         // Finally mix on to destination buffer
         size_t dstLength = Math::Min(length, bufferLen);
-        SDL_MixAudioFormat(data, (const Uint8 *)buffer, _format.format, (Uint32)dstLength, mixVolume);
+        SDL_MixAudioFormat(data, (const uint8 *)buffer, _format.format, (uint32)dstLength, mixVolume);
 
         channel->UpdateOldVolume();
     }
