@@ -25,7 +25,9 @@
 #include "../rct2.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
+#include "footpath_scenery.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
@@ -57,6 +59,9 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_SLOPEDOWN,
 	WIDX_LEVEL,
 	WIDX_SLOPEUP,
+
+	WIDX_AUTOSCENERY,
+
 	WIDX_CONSTRUCT,
 	WIDX_REMOVE,
 
@@ -66,7 +71,7 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 };
 
 static rct_widget window_footpath_widgets[] = {
-	{ WWT_FRAME,	0,		0,		105,	0,		380,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_FRAME,	0,		0,		105,	0,		404,	0xFFFFFFFF,							STR_NONE },
 	{ WWT_CAPTION,	0,		1,		104,	1,		14,		STR_FOOTPATHS,						STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,	0,		93,		103,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
 	// Type group
@@ -86,13 +91,18 @@ static rct_widget window_footpath_widgets[] = {
 	{ WWT_FLATBTN,	1,		17,		40,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,	STR_SLOPE_DOWN_TIP },
 	{ WWT_FLATBTN,	1,		41,		64,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,	STR_LEVEL_TIP },
 	{ WWT_FLATBTN,	1,		65,		88,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_UP,		STR_SLOPE_UP_TIP },
-	{ WWT_FLATBTN,	1,		8,		97,		202,	291,	0xFFFFFFFF,							STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
-	{ WWT_FLATBTN,	1,		30,		75,		295,	318,	SPR_DEMOLISH_CURRENT_SECTION,		STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP },
+
+	// Autoscenery button
+	{ WWT_CLOSEBOX,	1,		8,		97,	199,	215,	STR_PATH_SCENERY,	STR_PATH_SCENERY_TIP },
+
+	// Construct/Demolish
+	{ WWT_FLATBTN,	1,		8,		97,		226,	315,	0xFFFFFFFF,							STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
+	{ WWT_FLATBTN,	1,		30,		75,		319,	342,	SPR_DEMOLISH_CURRENT_SECTION,		STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP },
 
 	// Mode group
-	{ WWT_GROUPBOX,	0,		3,		102,	321,	374,	0xFFFFFFFF,							STR_NONE },
-	{ WWT_FLATBTN,	1,		13,		48,		332,	367,	SPR_CONSTRUCTION_FOOTPATH_LAND,		STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP },
-	{ WWT_FLATBTN,	1,		57,		92,		332,	367,	SPR_CONSTRUCTION_FOOTPATH_BRIDGE,	STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP },
+	{ WWT_GROUPBOX,	0,		3,		102,	345,	398,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_FLATBTN,	1,		13,		48,		356,	391,	SPR_CONSTRUCTION_FOOTPATH_LAND,		STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP },
+	{ WWT_FLATBTN,	1,		57,		92,		356,	391,	SPR_CONSTRUCTION_FOOTPATH_BRIDGE,	STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -107,6 +117,8 @@ static void window_footpath_tooldrag(rct_window* w, int widgetIndex, int x, int 
 static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y);
 static void window_footpath_invalidate(rct_window *w);
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static int window_footpath_pathimage(rct_window *w);
 
 static rct_window_event_list window_footpath_events = {
 	window_footpath_close,
@@ -222,7 +234,7 @@ void window_footpath_open()
 		0,
 		29,
 		106,
-		381,
+		405,
 		&window_footpath_events,
 		WC_FOOTPATH,
 		0
@@ -239,6 +251,7 @@ void window_footpath_open()
 		(1 << WIDX_SLOPEDOWN) |
 		(1 << WIDX_LEVEL) |
 		(1 << WIDX_SLOPEUP) |
+		(1 << WIDX_AUTOSCENERY) |
 		(1 << WIDX_CONSTRUCT) |
 		(1 << WIDX_REMOVE) |
 		(1 << WIDX_CONSTRUCT_ON_LAND) |
@@ -279,6 +292,7 @@ static void window_footpath_close(rct_window *w)
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 	hide_gridlines();
+	window_close_by_class(WC_FOOTPATH_SCENERY);
 }
 
 /**
@@ -363,6 +377,9 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
 		break;
 	case WIDX_SLOPEUP:
 		window_footpath_mousedown_slope(2);
+		break;
+	case WIDX_AUTOSCENERY:
+		window_footpath_scenery_open();
 		break;
 	}
 }
@@ -580,16 +597,9 @@ static void window_footpath_invalidate(rct_window *w)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
 }
 
-/**
- *
- *  rct2: 0x006A7D8B
- */
-static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static int window_footpath_pathimage(rct_window *w)
 {
-	window_draw_widgets(w, dpi);
-
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
-		// Get construction image
 		uint8 direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
 		uint8 slope = 0;
 		if (gFootpathConstructSlope == 2)
@@ -603,6 +613,22 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		image += pathType->image;
 		if (gFootpathSelectedType != SELECTED_PATH_TYPE_NORMAL)
 			image += 51;
+
+		return image;
+	}
+	return -1;
+}
+
+/**
+ *
+ *  rct2: 0x006A7D8B
+ */
+static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
+{
+	window_draw_widgets(w, dpi);
+
+	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
+		int image = window_footpath_pathimage(w);
 
 		// Draw construction image
 		int x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
@@ -824,6 +850,8 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// dx = RCT2_ADDRESS_COMMAND_MAP_Y
 		// cx = RCT2_ADDRESS_COMMAND_MAP_X
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+		window_footpath_scenery_advance();
+		// TODO: DO NOT FORGET ME!
 	}
 }
 
@@ -913,6 +941,13 @@ static void window_footpath_construct()
 			gFootpathConstructFromPosition.y,
 			gFootpathConstructFromPosition.z
 		);
+
+		const rct_scenery_entry* add_scenery = window_footpath_scenery_get_next_scenery();
+		if (add_scenery != NULL)
+		{
+
+		}
+		window_footpath_scenery_advance();
 
 		if (gFootpathConstructSlope == 0) {
 			gFootpathConstructValidDirections = 0xFF;

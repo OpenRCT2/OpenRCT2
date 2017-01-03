@@ -449,6 +449,7 @@ enum {
 	WC_TRACK_DELETE_PROMPT = 48,
 	WC_INSTALL_TRACK = 49,
 	WC_CLEAR_SCENERY = 50,
+	WC_FOOTPATH_SCENERY = 51,
 	WC_NOTIFICATION_OPTIONS = 109,
 	WC_CHEATS = 110,
 	WC_RESEARCH = 111,
@@ -634,6 +635,7 @@ void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_about_open();
 void window_footpath_open();
+void window_footpath_scenery_open();
 void window_save_prompt_open();
 void window_title_menu_open();
 void window_title_exit_open();
