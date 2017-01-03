@@ -34,6 +34,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
+#include "station.h"
 #include "track.h"
 #include "track_data.h"
 
@@ -616,7 +617,7 @@ static rct_map_element *find_station_element(int x, int y, int z, int direction,
 static void ride_remove_station(rct_ride *ride, int x, int y, int z)
 {
 	uint16 xy = (x >> 5) | ((y >> 5) << 8);
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < MAX_STATIONS; i++) {
 		if (ride->station_starts[i] == xy && ride->station_heights[i] == z) {
 			ride->station_starts[i] = 0xFFFF;
 			ride->num_stations--;
@@ -639,13 +640,13 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 
 	rct_ride *ride = get_ride(rideIndex);
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
-		if (ride->num_stations >= 4) {
+		if (ride->num_stations >= MAX_STATIONS) {
 			gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 			return false;
 		}
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			int stationIndex = -1;
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < MAX_STATIONS; i++) {
 				if (ride->station_starts[i] == 0xFFFF) {
 					stationIndex = i;
 					break;
@@ -707,7 +708,7 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 		}
 	} while (stationElement != NULL);
 
-	if (stationX0 == stationX1 && stationY0 == stationY1 && ride->num_stations >= 4) {
+	if (stationX0 == stationX1 && stationY0 == stationY1 && ride->num_stations >= MAX_STATIONS) {
 		gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 		return false;
 	}
@@ -730,7 +731,7 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 				int targetTrackType;
 				if (x == stationX1 && y == stationY1) {
 					int stationIndex = -1;
-					for (int i = 0; i < 4; i++) {
+					for (int i = 0; i < MAX_STATIONS; i++) {
 						if (ride->station_starts[i] == 0xFFFF) {
 							stationIndex = i;
 							break;
@@ -837,7 +838,7 @@ static bool track_remove_station_element(int x, int y, int z, int direction, int
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		if ((removeX != stationX0 || removeY != stationY0) &&
 			(removeX != stationX1 || removeY != stationY1) &&
-			ride->num_stations >= 4
+			ride->num_stations >= MAX_STATIONS
 		) {
 			gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 			return false;
@@ -859,7 +860,7 @@ static bool track_remove_station_element(int x, int y, int z, int direction, int
 				if (x == stationX1 && y == stationY1) {
 				loc_6C4BF5:;
 					int stationIndex = -1;
-					for (int i = 0; i < 4; i++) {
+					for (int i = 0; i < MAX_STATIONS; i++) {
 						if (ride->station_starts[i] == 0xFFFF) {
 							stationIndex = i;
 							break;

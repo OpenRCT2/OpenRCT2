@@ -977,6 +977,8 @@ enum {
 	RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION = 		(1 << 15),
 };
 
+#define RCT1_MAX_STATIONS 4
+
 extern const uint8 gRideCategories[0x60];
 
 bool rct1_read_sc4(const char *path, rct1_s4 *s4);
