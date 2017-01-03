@@ -33,6 +33,11 @@ struct AudioFormat
     {
         return (SDL_AUDIO_BITSIZE(format)) / 8;
     }
+
+    int GetByteRate() const
+    {
+        return BytesPerSample() * channels;
+    }
 };
 
 inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)

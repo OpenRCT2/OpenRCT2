@@ -253,14 +253,13 @@ private:
             _adjustMusicVolume = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
         }
 
-        int sampleSize = _format.channels * _format.BytesPerSample();
-        int numSamples = length / sampleSize;
+        int byteRate = _format.GetByteRate();
+        int numSamples = length / byteRate;
         double rate = 1;
         if (_format.format == AUDIO_S16SYS)
         {
             rate = channel->GetRate();
         }
-        int samplesToRead = (int)(numSamples * rate);
 
         bool mustConvert = false;
         SDL_AudioCVT cvt;
@@ -277,13 +276,14 @@ private:
         }
 
         // Read raw PCM from channel
-        size_t toread = (size_t)(samplesToRead / cvt.len_ratio) * sampleSize;
-        if (_channelBuffer == nullptr || _channelBufferCapacity < toread)
+        int readSamples = (int)(numSamples * rate);
+        size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
+        if (_channelBuffer == nullptr || _channelBufferCapacity < readLength)
         {
-            _channelBuffer = realloc(_channelBuffer, toread);
-            _channelBufferCapacity = toread;
+            _channelBuffer = realloc(_channelBuffer, readLength);
+            _channelBufferCapacity = readLength;
         }
-        size_t bytesRead = channel->Read(_channelBuffer, toread);
+        size_t bytesRead = channel->Read(_channelBuffer, readLength);
 
         // Convert data to required format if necessary
         void * buffer = nullptr;
@@ -307,16 +307,16 @@ private:
         }
 
         // Apply effects
-        size_t effectBufferLen;
-        bool useBufferLengthForRatio = (bytesRead == toread);
-        if (ApplyResample(channel, numSamples, sampleSize, buffer, bufferLen, &effectBufferLen, useBufferLengthForRatio))
+        if (rate != 1)
         {
+            int srcSamples = (int)(bufferLen / byteRate);
+            int dstSamples = numSamples;
+            bufferLen = ApplyResample(channel, buffer, srcSamples, dstSamples);
             buffer = _effectBuffer;
-            bufferLen = effectBufferLen;
         }
 
         // Apply panning and volume
-        ApplyPan(channel, buffer, bufferLen, sampleSize);
+        ApplyPan(channel, buffer, bufferLen, byteRate);
         int mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
         // Finally mix on to destination buffer
@@ -326,49 +326,41 @@ private:
         channel->UpdateOldVolume();
     }
 
-    bool ApplyResample(IAudioChannel * channel, int samples, int sampleSize, const void * buffer, size_t bufferLen, size_t * newLength, bool useBufferLengthForRatio)
+    /**
+     * Resample the given buffer into _effectBuffer.
+     * Assumes that srcBuffer is the same format as _format.
+     */
+    size_t ApplyResample(IAudioChannel * channel, const void * srcBuffer, int srcSamples, int dstSamples)
     {
-        bool applied = false;
-        double rate = channel->GetRate();
-        if (rate != 1 && _format.format == AUDIO_S16SYS)
+        int byteRate = _format.GetByteRate();
+
+        // Create resampler
+        SpeexResamplerState * resampler = channel->GetResampler();
+        if (resampler == nullptr)
         {
-            int inLen = (int)((double)bufferLen / sampleSize);
-            int outLen = samples;
-
-            SpeexResamplerState * resampler = channel->GetResampler();
-            if (resampler == nullptr)
-            {
-                resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
-                channel->SetResampler(resampler);
-            }
-            if (useBufferLengthForRatio)
-            {
-                // use buffer lengths for conversion ratio so that it fits exactly
-                speex_resampler_set_rate(resampler, inLen, samples);
-            }
-            else
-            {
-                // reached end of stream so we cant use buffer length as resampling ratio
-                speex_resampler_set_rate(resampler, _format.freq, (int)(_format.freq * (1 / rate)));
-            }
-
-            size_t effectBufferReqLen  = outLen * sampleSize;
-            if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
-            {
-                _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
-                _effectBufferCapacity = effectBufferReqLen;
-            }
-
-            speex_resampler_process_interleaved_int(
-                resampler,
-                (const spx_int16_t *)buffer,
-                (spx_uint32_t *)&inLen,
-                (spx_int16_t *)_effectBuffer,
-                (spx_uint32_t *)&outLen);
-            *newLength = effectBufferReqLen;
-            applied = true;
+            resampler = speex_resampler_init(_format.channels, _format.freq, _format.freq, 0, 0);
+            channel->SetResampler(resampler);
         }
-        return applied;
+        speex_resampler_set_rate(resampler, srcSamples, dstSamples);
+
+        // Ensure destination buffer is large enough
+        size_t effectBufferReqLen  = dstSamples * byteRate;
+        if (_effectBuffer == nullptr || _effectBufferCapacity < effectBufferReqLen)
+        {
+            _effectBuffer = realloc(_effectBuffer, effectBufferReqLen);
+            _effectBufferCapacity = effectBufferReqLen;
+        }
+
+        uint32 inLen = srcSamples;
+        uint32 outLen = dstSamples;
+        speex_resampler_process_interleaved_int(
+            resampler,
+            (const spx_int16_t *)srcBuffer,
+            &inLen,
+            (spx_int16_t *)_effectBuffer,
+            &outLen);
+
+        return outLen * byteRate;
     }
 
     void ApplyPan(const IAudioChannel * channel, void * buffer, size_t len, size_t sampleSize)
