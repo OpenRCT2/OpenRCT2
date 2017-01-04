@@ -16,98 +16,18 @@
 
 #define WIN32_LEAN_AND_MEAN
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <windows.h>
-#include <shellapi.h>
-#include <openrct2/OpenRCT2.h>
 
 // Enable visual styles
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-static bool GetCommandLineArgs(int * outargc, char * * * outargv);
-static void FreeCommandLineArgs(int argc, char * * argv);
-static char * ConvertUTF16toUTF8(const wchar_t * src);
+#define DLLIMPORT extern "C"
+DLLIMPORT int LaunchOpenRCT2(int argc, wchar_t * * argv);
 
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int main(int argc, char * * argv)
+int wmain(int argc, wchar_t * * argvW, wchar_t * envp)
 {
-    if (!GetCommandLineArgs(&argc, &argv))
-    {
-        puts("Unable to fetch command line arguments.");
-        return -1;
-    }
-
-    int exitCode = RunOpenRCT2(argc, argv);
-
-    FreeCommandLineArgs(argc, argv);
-    return exitCode;
-}
-
-/**
- * Windows entry point to OpenRCT2 without a console window.
- */
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-    int argc;
-    char * * argv;
-    if (!GetCommandLineArgs(&argc, &argv))
-    {
-        puts("Unable to fetch command line arguments.");
-        return -1;
-    }
-
-    int exitCode = RunOpenRCT2(argc, argv);
-
-    FreeCommandLineArgs(argc, argv);
-    return exitCode;
-}
-
-static bool GetCommandLineArgs(int * outargc, char * * * outargv)
-{
-    // Get UTF-16 command line arguments
-    int argc;
-    LPWSTR cmdLine = GetCommandLineW();
-    LPWSTR * argvW = CommandLineToArgvW(cmdLine, &argc);
-
-    // Allocate UTF-8 strings
-    char * * argv = (char * *)malloc(argc * sizeof(char *));
-    if (argv == nullptr)
-    {
-        return false;
-    }
-
-    // Convert to UTF-8
-    for (int i = 0; i < argc; i++)
-    {
-        argv[i] = ConvertUTF16toUTF8(argvW[i]);
-    }
-
-    // Free UTF-16 strings
-    LocalFree(argvW);
-
-    *outargc = argc;
-    *outargv = argv;
-    return true;
-}
-
-static void FreeCommandLineArgs(int argc, char * * argv)
-{
-    // Free argv
-    for (int i = 0; i < argc; i++)
-    {
-        free(argv[i]);
-    }
-    free(argv);
-}
-
-static char * ConvertUTF16toUTF8(const wchar_t * src)
-{
-    int srcLen = lstrlenW(src);
-    int sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    char * result = (char *)calloc(1, sizeReq + 1);
-    WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
-    return result;
+    return LaunchOpenRCT2(argc, argvW);
 }

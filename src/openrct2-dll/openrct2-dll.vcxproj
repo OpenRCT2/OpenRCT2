@@ -22,12 +22,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7A9A57D5-7006-4208-A290-5491BA3C8808}</ProjectGuid>
-    <RootNamespace>openrct2-win</RootNamespace>
-    <ProjectName>openrct2-win</ProjectName>
+    <ProjectGuid>{7B8DB129-79EF-417E-B372-8A18E009D261}</ProjectGuid>
+    <RootNamespace>openrct2-dll</RootNamespace>
+    <ProjectName>openrct2-dll</ProjectName>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
   <PropertyGroup>
@@ -45,8 +45,7 @@
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>openrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>openrct2-lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
@@ -57,7 +56,7 @@
     <ResourceCompile Include="..\..\resources\OpenRCT2.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="openrct2-win.cpp" />
+    <ClCompile Include="openrct2-dll.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
