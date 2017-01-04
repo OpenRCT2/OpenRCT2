@@ -105,7 +105,7 @@ static void window_footpath_scenery_update_listselection(int index);
 static void window_footpath_scenery_add(rct_window * w);
 
 static rct_window_event_list window_footpath_scenery_events = {
-	window_footpath_scenery_close,
+    window_footpath_scenery_close,
     window_footpath_scenery_mouseup,
     NULL,
     window_footpath_scenery_mousedown,
