@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../audio/mixer.h"
+#include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
