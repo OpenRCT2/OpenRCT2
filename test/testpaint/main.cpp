@@ -375,7 +375,7 @@ static bool openrct2_setup_rct2_segment()
 
 static void PrintRideTypes()
 {
-	for (uint8 rideType = 0; rideType < 91; rideType++) {
+	for (uint8 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
 		CLIColour colour = CLIColour::DEFAULT;
 		bool implemented = Utils::rideIsImplemented(rideType);
 		const char * rideName = RideNames[rideType];
@@ -464,7 +464,7 @@ int main(int argc, char *argv[]) {
 		return generatePaintCode(specificRideType);
 	}
 
-	for (uint8 rideType = 0; rideType < 91; rideType++) {
+	for (uint8 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++) {
 		if (specificRideType != 0xFF && rideType != specificRideType) {
 			continue;
 		}
