@@ -453,9 +453,13 @@ static struct {
 };
 
 static sint16 windowTileInspectorHighlightedIndex = -1;
-static unsigned int windowTileInspectorTileX;
-static unsigned int windowTileInspectorTileY;
+static uint32 windowTileInspectorTileX;
+static uint32 windowTileInspectorTileY;
 static bool windowTileInspectorTileSelected = false;
+static uint32 windowTileInspectorToolMouseX = 0;
+static uint32 windowTileInspectorToolMouseY = 0;
+static uint32 windowTileInspectorToolMapX = 0;
+static uint32 windowTileInspectorToolMapY = 0;
 static int windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
@@ -481,7 +485,9 @@ static void window_tile_inspector_mousedown(int widgetIndex, rct_window *w, rct_
 static void window_tile_inspector_update(rct_window *w);
 static void window_tile_inspector_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y);
+static void window_tile_inspector_update_selected_tile(rct_window *w, int x, int y);
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y);
+static void window_tile_inspector_tool_drag(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
@@ -503,7 +509,7 @@ static rct_window_event_list windowTileInspectorEvents = {
 	NULL,
 	window_tile_inspector_tool_update,
 	window_tile_inspector_tool_down,
-	NULL,
+	window_tile_inspector_tool_drag,
 	NULL,
 	NULL,
 	NULL,
@@ -1470,8 +1476,15 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 	map_invalidate_selection_rect();
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y)
+static void window_tile_inspector_update_selected_tile(rct_window *w, int x, int y)
 {
+	//if call matches previous mouse coordinates, do not continue.
+	if (x == windowTileInspectorToolMouseX && y == windowTileInspectorToolMouseY) {
+		return;
+	}
+	windowTileInspectorToolMouseX = x;
+	windowTileInspectorToolMouseY = y;
+
 	short mapX = x;
 	short mapY = y;
 	int direction;
@@ -1479,13 +1492,30 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 	if (mapX == (short)0x8000) {
 		return;
 	}
+	//if call matches previously selected item, do not continue.
+	if (mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY) {
+		return;
+	}
+	windowTileInspectorToolMapX = mapX;
+	windowTileInspectorToolMapY = mapY;
 
 	windowTileInspectorTileSelected = true;
+
 	windowTileInspectorTileX = mapX >> 5;
 	windowTileInspectorTileY = mapY >> 5;
 
 	window_tile_inspector_load_tile(w);
 	window_tile_inspector_auto_set_buttons(w);
+}
+
+static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y)
+{
+	window_tile_inspector_update_selected_tile(w, x, y);
+}
+
+static void window_tile_inspector_tool_drag(rct_window* w, int widgetIndex, int x, int y)
+{
+	window_tile_inspector_update_selected_tile(w, x, y);
 }
 
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
