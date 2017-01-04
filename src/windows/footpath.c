@@ -841,7 +841,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	// Try and place path
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-	cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
+	cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY, 0);
 
 	if (cost == MONEY32_UNDEFINED) {
 		_footpathErrorOccured = true;
@@ -917,7 +917,7 @@ static void window_footpath_construct()
 
 	// Try to place the path at the desired location
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-	money32 cost = footpath_place(type, x, y, z, slope, 0);
+	money32 cost = footpath_place(type, x, y, z, slope, 0, 0);
 
 	if (cost != MONEY32_UNDEFINED) {
 		// It is possible, let's remove walls between the old and new piece of path
@@ -930,9 +930,17 @@ static void window_footpath_construct()
 		);
 	}
 
+	// Get path scenery
+	const rct_scenery_entry* add_scenery = window_footpath_scenery_get_next_scenery();
+	int sceneryFlags = 0;
+	if (add_scenery != 0)
+	{
+		// TODO
+	}
+
 	// Actually place the path now
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
+	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, sceneryFlags);
 
 	if (cost != MONEY32_UNDEFINED) {
 		audio_play_sound_at_location(
@@ -942,11 +950,6 @@ static void window_footpath_construct()
 			gFootpathConstructFromPosition.z
 		);
 
-		const rct_scenery_entry* add_scenery = window_footpath_scenery_get_next_scenery();
-		if (add_scenery != NULL)
-		{
-
-		}
 		window_footpath_scenery_advance();
 
 		if (gFootpathConstructSlope == 0) {

@@ -587,7 +587,7 @@ void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *e
 	*ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
 }
 
-money32 footpath_place(int type, int x, int y, int z, int slope, int flags)
+money32 footpath_place(int type, int x, int y, int z, int slope, int flags, int parameter3)
 {
 	return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
 }
@@ -607,7 +607,7 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 
 	footpath_provisional_remove();
 
-	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY);
+	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY, 0);
 	if (cost != MONEY32_UNDEFINED) {
 		gFootpathProvisionalType = type;
 		gFootpathProvisionalPosition.x = x;
