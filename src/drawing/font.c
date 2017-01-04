@@ -28,7 +28,9 @@ static uint8 _spriteFontCharacterWidths[896];
 static uint8 *_spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
 #endif
 
+#ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
+#endif // NO_TTF
 
 /**
  *
@@ -125,11 +127,15 @@ int font_get_size_from_sprite_base(uint16 spriteBase)
 int font_get_line_height(int fontSpriteBase)
 {
 	int fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+#ifndef NO_TTF
 	if (gUseTrueTypeFont) {
 		return gCurrentTTFFontSet->size[fontSize].line_height;
 	} else {
+#endif // NO_TTF
 		return SpriteFontLineHeight[fontSize];
+#ifndef NO_TTF
 	}
+#endif // NO_TTF
 }
 
 int font_get_line_height_small(int fontSpriteBase)
@@ -190,6 +196,7 @@ bool font_supports_string_sprite(const utf8 *text)
 
 bool font_supports_string_ttf(const utf8 *text, int fontSize)
 {
+#ifndef NO_TTF
 	const utf8 *src = text;
 	const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
 	if (font == NULL) {
@@ -204,6 +211,9 @@ bool font_supports_string_ttf(const utf8 *text, int fontSize)
 		}
 	}
 	return true;
+#else
+	return false;
+#endif // NO_TTF
 }
 
 bool font_supports_string(const utf8 *text, int fontSize)

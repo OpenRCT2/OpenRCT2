@@ -26,13 +26,16 @@ enum {
 	TEXT_DRAW_FLAG_DARK = 1 << 2,
 	TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
 	TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
+#ifndef NO_TTF
 	TEXT_DRAW_FLAG_TTF = 1 << 30,
+#endif // NO_TTF
 	TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
 static int ttf_get_string_width(const utf8 *text);
 static void ttf_draw_string(rct_drawpixelinfo *dpi, char *buffer, int colour, int x, int y);
 
+#ifndef NO_TTF
 static bool _ttfInitialised = false;
 
 #define TTF_SURFACE_CACHE_SIZE 256
@@ -61,6 +64,7 @@ static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0
 static int _ttfGetWidthCacheCount = 0;
 static int _ttfGetWidthCacheHitCount = 0;
 static int _ttfGetWidthCacheMissCount = 0;
+#endif // NO_TTF
 
 /**
  *
@@ -702,6 +706,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 	}
 }
 
+#ifndef NO_TTF
 static uint32 _ttf_surface_cache_hash(TTF_Font *font, const utf8 *text)
 {
 	uint32 hash = (uint32)((((uintptr_t)font * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
@@ -892,6 +897,14 @@ TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase)
 {
 	return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
 }
+#else
+bool ttf_initialise()
+{
+	return false;
+}
+
+void ttf_dispose() {}
+#endif // NO_TTF
 
 typedef struct text_draw_info {
 	int startX;
@@ -935,6 +948,7 @@ static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text,
 	};
 }
 
+#ifndef NO_TTF
 static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
 	if (!_ttfInitialised && !ttf_initialise())
@@ -1038,14 +1052,19 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 		}
 	}
 }
+#endif // NO_TTF
 
 static void ttf_draw_string_raw(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
+#ifndef NO_TTF
 	if (info->flags & TEXT_DRAW_FLAG_TTF) {
 		ttf_draw_string_raw_ttf(dpi, text, info);
 	} else {
+#endif // NO_TTF
 		ttf_draw_string_raw_sprite(dpi, text, info);
+#ifndef NO_TTF
 	}
+#endif // NO_TTF
 }
 
 static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
@@ -1159,7 +1178,11 @@ static const utf8 *ttf_process_glyph_run(rct_drawpixelinfo *dpi, const utf8 *tex
 	const utf8 *lastCh;
 	int codepoint;
 
+#ifndef NO_TTF
 	bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+#else
+	bool isTTF = false;
+#endif // NO_TTF
 	while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &lastCh))) {
 		if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint)) {
 			break;
@@ -1184,7 +1207,11 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 	const utf8 *nextCh;
 	int codepoint;
 
+#ifndef NO_TTF
 	bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+#else
+	bool isTTF = false;
+#endif // NO_TTF
 
 	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
@@ -1264,7 +1291,9 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int 
 	info.x = x;
 	info.y = y;
 
+#ifndef NO_TTF
 	if (gUseTrueTypeFont) info.flags |= TEXT_DRAW_FLAG_TTF;
+#endif // NO_TTF
 
 	memcpy(info.palette, text_palette, sizeof(info.palette));
 	ttf_process_initial_colour(colour, &info);
@@ -1291,7 +1320,9 @@ static int ttf_get_string_width(const utf8 *text)
 	info.maxY = 0;
 
 	info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
+#ifndef NO_TTF
 	if (gUseTrueTypeFont) info.flags |= TEXT_DRAW_FLAG_TTF;
+#endif // NO_TTF
 
 	ttf_process_string(NULL, text, &info);
 
@@ -1315,9 +1346,11 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 
 	info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
+#ifndef NO_TTF
 	if (!forceSpriteFont && gUseTrueTypeFont) {
 		info.flags |= TEXT_DRAW_FLAG_TTF;
 	}
+#endif // NO_TTF
 
 	memcpy(info.palette, text_palette, sizeof(info.palette));
 	ttf_process_initial_colour(colour, &info);
