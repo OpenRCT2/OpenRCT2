@@ -53,7 +53,7 @@ typedef struct language_descriptor {
 #ifndef NO_TTF
 	TTFFontSetDescriptor *font;
 #else
-    void * font;
+	void * font;
 #endif // NO_TTF
 	uint8 rct2_original_id;
 } language_descriptor;

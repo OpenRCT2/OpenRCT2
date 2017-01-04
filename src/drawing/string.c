@@ -26,7 +26,9 @@ enum {
 	TEXT_DRAW_FLAG_DARK = 1 << 2,
 	TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
 	TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
+#ifndef NO_TTF
 	TEXT_DRAW_FLAG_TTF = 1 << 30,
+#endif // NO_TTF
 	TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
@@ -895,6 +897,13 @@ TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase)
 {
 	return &gCurrentTTFFontSet->size[font_get_size_from_sprite_base(spriteBase)];
 }
+#else
+bool ttf_initialise()
+{
+	return false;
+}
+
+void ttf_dispose() {}
 #endif // NO_TTF
 
 typedef struct text_draw_info {
@@ -1169,7 +1178,11 @@ static const utf8 *ttf_process_glyph_run(rct_drawpixelinfo *dpi, const utf8 *tex
 	const utf8 *lastCh;
 	int codepoint;
 
+#ifndef NO_TTF
 	bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+#else
+	bool isTTF = false;
+#endif // NO_TTF
 	while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &lastCh))) {
 		if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint)) {
 			break;
@@ -1194,7 +1207,11 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
 	const utf8 *nextCh;
 	int codepoint;
 
+#ifndef NO_TTF
 	bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+#else
+	bool isTTF = false;
+#endif // NO_TTF
 
 	while ((codepoint = utf8_get_next(ch, &nextCh)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
@@ -1329,9 +1346,11 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 
 	info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
+#ifndef NO_TTF
 	if (!forceSpriteFont && gUseTrueTypeFont) {
 		info.flags |= TEXT_DRAW_FLAG_TTF;
 	}
+#endif // NO_TTF
 
 	memcpy(info.palette, text_palette, sizeof(info.palette));
 	ttf_process_initial_colour(colour, &info);

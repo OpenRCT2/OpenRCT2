@@ -194,9 +194,9 @@ bool font_supports_string_sprite(const utf8 *text)
 	return true;
 }
 
-#ifndef NO_TTF
 bool font_supports_string_ttf(const utf8 *text, int fontSize)
 {
+#ifndef NO_TTF
 	const utf8 *src = text;
 	const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
 	if (font == NULL) {
@@ -211,18 +211,16 @@ bool font_supports_string_ttf(const utf8 *text, int fontSize)
 		}
 	}
 	return true;
-}
+#else
+	return false;
 #endif // NO_TTF
+}
 
 bool font_supports_string(const utf8 *text, int fontSize)
 {
-#ifndef NO_TTF
 	if (gUseTrueTypeFont) {
 		return font_supports_string_ttf(text, fontSize);
 	} else {
-#endif // NO_TTF
 		return font_supports_string_sprite(text);
-#ifndef NO_TTF
 	}
-#endif // NO_TTF
 }

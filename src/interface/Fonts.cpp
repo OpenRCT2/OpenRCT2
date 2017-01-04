@@ -96,11 +96,11 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 
 static void LoadSpriteFont()
 {
-#ifndef NO_TTF
     ttf_dispose();
     gUseTrueTypeFont   = false;
+#ifndef NO_TTF
     gCurrentTTFFontSet = nullptr;
-#endif
+#endif // NO_TTF
 }
 
 #ifndef NO_TTF

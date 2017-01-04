@@ -68,9 +68,7 @@ int font_get_size_from_sprite_base(uint16 spriteBase);
 int font_get_line_height(int fontSpriteBase);
 int font_get_line_height_small(int fontSpriteBase);
 bool font_supports_string_sprite(const utf8 *text);
-#ifndef NO_TTF
 bool font_supports_string_ttf(const utf8 *text, int fontSize);
-#endif // NO_TTF
 bool font_supports_string(const utf8 *text, int fontSize);
 
 #endif

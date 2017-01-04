@@ -357,10 +357,10 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 #ifndef NO_TTF
 SDL_Surface *ttf_surface_cache_get_or_add(TTF_Font *font, const utf8 *text);
 TTFFontDescriptor *ttf_get_font_from_sprite_base(uint16 spriteBase);
+#endif // NO_TTF
 
 bool ttf_initialise();
 void ttf_dispose();
-#endif // NO_TTF
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();
