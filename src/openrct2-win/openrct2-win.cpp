@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <shellapi.h>
+#include <openrct2/OpenRCT2.h>
 
 // Enable visual styles
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -39,7 +40,7 @@ int main(int argc, char * * argv)
         return -1;
     }
 
-    int exitCode = 0; // RunOpenRCT2
+    int exitCode = RunOpenRCT2(argc, argv);
 
     FreeCommandLineArgs(argc, argv);
     return exitCode;
@@ -58,7 +59,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return -1;
     }
 
-    int exitCode = 0; // RunOpenRCT2
+    int exitCode = RunOpenRCT2(argc, argv);
 
     FreeCommandLineArgs(argc, argv);
     return exitCode;

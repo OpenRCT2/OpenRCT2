@@ -12,28 +12,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugTests|Win32">
-      <Configuration>DebugTests</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugTests|x64">
-      <Configuration>DebugTests</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|Win32">
-      <Configuration>ReleaseTests</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|x64">
-      <Configuration>ReleaseTests</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -46,6 +30,10 @@
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
+  <PropertyGroup>
+    <TargetName>openrct2</TargetName>
+    <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">__NOENTRYPOINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -57,6 +45,7 @@
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>openrct2-lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem Condition="'$(Configuration)'!='Release'">Console</SubSystem>
       <SubSystem Condition="'$(Configuration)'=='Release'">Windows</SubSystem>
     </Link>
