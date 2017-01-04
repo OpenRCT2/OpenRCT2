@@ -238,9 +238,9 @@ static void window_footpath_scenery_path_scenery_dialog(rct_window * w, rct_widg
 	gDropdownItemsFormat[0] = -1;
 	gDropdownItemsArgs[0]	= SPR_NONE;
 
-	for (uint16 sceneryId = SCENERY_PATHSCENERY_ID_MIN; sceneryId < SCENERY_PATHSCENERY_ID_MAX; sceneryId++)
+	for (uint16 sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
 	{
-		int pathBitIndex = sceneryId - SCENERY_PATHSCENERY_ID_MIN;
+		int pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
 		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -273,9 +273,9 @@ static void window_footpath_scenery_object_dropdown(rct_window * w, int widgetIn
 		dropdownIndex--;
 		uint16 sceneryId;
 
-		for (sceneryId = SCENERY_PATHSCENERY_ID_MIN; sceneryId < SCENERY_PATHSCENERY_ID_MAX; sceneryId++)
+		for (sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
 		{
-			int pathBitIndex = sceneryId - SCENERY_PATHSCENERY_ID_MIN;
+			int pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
 			if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
 				continue;

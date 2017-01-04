@@ -21,8 +21,16 @@
 #include "../object.h"
 #include "../world/map.h"
 
-#define SCENERY_PATHSCENERY_ID_MIN 0x100
-#define SCENERY_PATHSCENERY_ID_MAX 0x10F
+#define SCENERY_SMALL_SCENERY_ID_MIN	0x0
+#define SCENERY_SMALL_SCENERY_ID_MAX	0xFC
+#define SCENERY_LARGE_SCENERY_ID_MIN	0x300
+#define SCENERY_LARGE_SCENERY_ID_MAX	0x380
+#define SCENERY_WALLS_ID_MIN			0x200
+#define SCENERY_WALLS_ID_MAX			0x280
+#define SCENERY_BANNERS_ID_MIN			0x400
+#define SCENERY_BANNERS_ID_MAX			0x420
+#define SCENERY_PATH_SCENERY_ID_MIN		0x100
+#define SCENERY_PATH_SCENERY_ID_MAX		0x10F
 
 #pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
