@@ -48,6 +48,8 @@ enum {
  * only checking whether the define is present or not.
  */
 
+#include "common.h"
+
 #if defined(DEBUG)
 	#if DEBUG > 0
 		#define DEBUG_LEVEL_1 1
@@ -73,14 +75,14 @@ enum {
 	#define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern int _log_levels[DIAGNOSTIC_LEVEL_COUNT];
+extern sint32 _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-void diagnostic_log(int diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(int diagnosticLevel, const char *file, const char *function, int line, const char *format, ...);
+void diagnostic_log(sint32 diagnosticLevel, const char *format, ...);
+void diagnostic_log_with_location(sint32 diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
 
 #ifdef __cplusplus
 }
