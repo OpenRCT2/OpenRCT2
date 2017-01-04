@@ -4188,7 +4188,7 @@ STR_5875    :Moteur de dessin :
 STR_5876    :{SMALLFONT}{BLACK}Sélectionne le moteur à utiliser pour dessiner le jeu
 STR_5877    :Logiciel
 STR_5878    :Logiciel (aff. matériel)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (expérimental)
 STR_5880    :Sélectionnés
 STR_5881    :Non-sélectionnés
 STR_5882    :Devise personnalisée...

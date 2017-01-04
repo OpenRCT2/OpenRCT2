@@ -4295,6 +4295,8 @@ STR_5991    :Kan element niet plakken
 STR_5992    :De limiet voor kaartelementen is bereikt
 STR_5993    :{SMALLFONT}{BLACK}Geselecteerd element kopiëren
 STR_5994    :{SMALLFONT}{BLACK}Gekopieerd element plakken
+STR_5995    :Turbo
+STR_5996    :Turbosnelheid
 
 #############
 # Scenarios #

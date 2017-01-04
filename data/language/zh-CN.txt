@@ -4308,6 +4308,8 @@ STR_5991    :无法粘贴元素...
 STR_5992    :地图元素已达上限
 STR_5993    :{SMALLFONT}{BLACK}复制所选元素
 STR_5994    :{SMALLFONT}{BLACK}粘贴所选元素
+STR_5995    :助推器
+STR_5996    :助推器速度
 
 #############
 # Scenarios #
