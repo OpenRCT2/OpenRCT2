@@ -105,10 +105,6 @@ endif (APPLE)
 # Options
 
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
-if (DISABLE_HTTP_TWITCH)
-	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
-endif (DISABLE_HTTP_TWITCH)
-
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(STATIC "Create a static build.")
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags")
@@ -116,6 +112,7 @@ option(DISABLE_OPENGL "Disable OpenGL support.")
 option(DISABLE_RCT2 "Build a standalone version, without using code and data segments from vanilla. On by default." ON)
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(WITH_TESTS "Build tests")
+option(DISABLE_TTF "Disable support for TTF provided by SDL2_ttf.")
 
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment")
 
@@ -128,6 +125,14 @@ if (NOT DISABLE_RCT2)
 	set (FORCE32 ON)
 	message("DISABLE_RCT2 implies FORCE32")
 endif()
+
+if (DISABLE_HTTP_TWITCH)
+	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
+endif (DISABLE_HTTP_TWITCH)
+
+if (DISABLE_TTF)
+	add_definitions(-DNO_TTF)
+endif (DISABLE_TTF)
 
 # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
@@ -278,13 +283,19 @@ endif (WITH_BREAKPAD)
 
 PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
 # find and include SDL2
-PKG_CHECK_MODULES(SDL2 REQUIRED sdl2 SDL2_ttf)
+PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
+if (NOT DISABLE_TTF)
+	PKG_CHECK_MODULES(SDL2_TTF REQUIRED SDL2_ttf)
+endif (NOT DISABLE_TTF)
+
 if (STATIC)
-	# FreeType is required by SDL2_ttf, but not wired up properly in package
-	PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
-	SET(SDL2LIBS ${SDL2_STATIC_LIBRARIES} ${FREETYPE_STATIC_LIBRARIES})
+	if (NOT DISABLE_TTF)
+		# FreeType is required by SDL2_ttf, but not wired up properly in package
+		PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
+	endif (DISABLE_TTF)
+	SET(SDL2LIBS ${SDL2_STATIC_LIBRARIES} ${SDL2_TTF_STATIC_LIBRARIES} ${FREETYPE_STATIC_LIBRARIES})
 else (STATIC)
-	SET(SDL2LIBS ${SDL2_LIBRARIES})
+	SET(SDL2LIBS ${SDL2_LIBRARIES} ${SDL2_TTF_LIBRARIES})
 endif (STATIC)
 
 if (STATIC)
@@ -364,12 +375,12 @@ else (WIN32)
 	add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 endif (WIN32)
 
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE AND NOT DISABLE_TTF)
 	# FontConfig for TrueType fonts.
 	PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
 	INCLUDE_DIRECTORIES(${FONTCONFIG_INCLUDE_DIRS})
 	TARGET_LINK_LIBRARIES(${PROJECT} ${FONTCONFIG_LIBRARIES})
-endif (UNIX AND NOT APPLE)
+endif (UNIX AND NOT APPLE AND NOT DISABLE_TTF)
 
 
 # install into ${CMAKE_INSTALL_PREFIX}/bin/
@@ -418,11 +429,13 @@ if (WITH_TESTS)
 endif ()
 
 if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
-	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "src/ride/*/*.c")
-	file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "src/ride/ride_data.c" "src/ride/track_data.c" "src/ride/track_data_old.c" "src/ride/track_paint.c" "src/addresses.c" "src/diagnostic.c" "src/hook.c" "src/paint/map_element/map_element.c" "src/paint/paint_helpers.c")
+	set(OPENRCT2_SRCPATH "src/openrct2")
+	file(GLOB_RECURSE ORCT2_RIDE_SOURCES "${OPENRCT2_SRCPATH}/ride/*/*.c")
+	file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "${OPENRCT2_SRCPATH}/ride/ride_data.c" "${OPENRCT2_SRCPATH}/ride/track_data.c" "${OPENRCT2_SRCPATH}/ride/track_data_old.c" "${OPENRCT2_SRCPATH}/ride/track_paint.c" "${OPENRCT2_SRCPATH}/rct2/addresses.c" "${OPENRCT2_SRCPATH}/diagnostic.c" "${OPENRCT2_SRCPATH}/rct2/hook.c" "${OPENRCT2_SRCPATH}/paint/map_element/map_element.c" "${OPENRCT2_SRCPATH}/paint/paint_helpers.c")
 	file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "test/testpaint/*.c" "test/testpaint/*.cpp" "test/testpaint/*.h")
 
 	add_executable(testpaint EXCLUDE_FROM_ALL ${ORCT2_RIDE_SOURCES} ${ORCT2_RIDE_DEP_SOURCES} ${ORCT2_TESTPAINT_SOURCES} ${RCT2_SECTIONS})
+	target_include_directories(testpaint PRIVATE "src/")
 	set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__ -Wno-unused")
 	add_dependencies(testpaint segfiles)
 endif ()

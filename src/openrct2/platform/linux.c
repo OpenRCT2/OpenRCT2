@@ -522,6 +522,7 @@ void platform_show_messagebox(char *message) {
 	execute_cmd(cmd, 0, 0, 0);
 }
 
+#ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
 	assert(buffer != NULL);
@@ -563,5 +564,6 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 	FcFini();
 	return found;
 }
+#endif // NO_TTF
 
 #endif

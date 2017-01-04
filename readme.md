@@ -67,13 +67,18 @@ The program can also be built as a command line program using CMake. This type o
 
 ### Linux:
 - sdl2
-- sdl2-ttf
+- sdl2-ttf (can be disabled)
+- fontconfig (can be disabled)
+- libzip (>= 1.0)
+- libpng (>= 1.2)
 - speexdsp
-- curl (only if building with network support)
-- jansson (only if building with network support)
+- curl (only if building with http support)
+- jansson (>= 2.3)
+- openssl (>= 1.0; only if building with multiplayer support)
 - iconv (part of glibc on Linux)
+- zlib
+- gl (commonly provided by Mesa or GPU vendors; can be disabled)
 - cmake
-All libs listed here (bar cmake) required in 32 bit variants.
 
 ## 3.2 Compiling and running
 ### Windows:

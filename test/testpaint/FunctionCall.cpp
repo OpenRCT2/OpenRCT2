@@ -17,7 +17,7 @@
 #include "FunctionCall.hpp"
 
 extern "C" {
-#include "../../src/sprites.h"
+#include <openrct2/sprites.h>
 }
 
 enum SpriteGroup {

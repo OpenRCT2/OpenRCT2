@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../src/config.h"
-#include "../../src/object.h"
-#include "../../src/interface/colour.h"
-#include "../../src/interface/viewport.h"
-#include "../../src/ride/ride.h"
-#include "../../src/ride/track.h"
-#include "../../src/world/sprite.h"
-#include "../../src/paint/map_element/map_element.h"
+#include <openrct2/config.h>
+#include <openrct2/object.h>
+#include <openrct2/interface/colour.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/ride/ride.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/world/sprite.h>
+#include <openrct2/paint/map_element/map_element.h>
 
 #define RCT2_ADDRESS_SPRITE_LIST					0x010E63BC
 

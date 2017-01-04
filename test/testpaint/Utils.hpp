@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 namespace Utils {
     int getTrackSequenceCount(uint8 rideType, uint8 trackType);

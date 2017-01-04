@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../src/common.h"
+#include <openrct2/common.h>
 
 const utf8string RideNames[91] = {
 	"SpiralRollerCoaster",

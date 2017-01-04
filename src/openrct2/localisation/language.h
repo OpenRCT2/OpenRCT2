@@ -50,7 +50,11 @@ typedef struct language_descriptor {
 	const char *locale;
 	const utf8 *english_name;
 	const utf8 *native_name;
+#ifndef NO_TTF
 	TTFFontSetDescriptor *font;
+#else
+	void * font;
+#endif // NO_TTF
 	uint8 rct2_original_id;
 } language_descriptor;
 

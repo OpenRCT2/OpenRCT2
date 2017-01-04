@@ -17,7 +17,10 @@
 #ifndef _DRAWING_FONT_H_
 #define _DRAWING_FONT_H_
 
+#ifndef NO_TTF
 #include <SDL_ttf.h>
+#endif // NO_TTF
+
 #include "../common.h"
 
 enum {
@@ -39,6 +42,7 @@ enum {
 	FONT_SPRITE_BASE_BIG = 672
 };
 
+#ifndef NO_TTF
 typedef struct TTFFontDescriptor {
 	const utf8 *filename;
 	const utf8 *font_name;
@@ -54,6 +58,7 @@ typedef struct  TTFFontSetDescriptor {
 } TTFFontSetDescriptor;
 
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;
+#endif // NO_TTF
 
 void font_sprite_initialise_characters();
 int font_sprite_get_codepoint_offset(int codepoint);

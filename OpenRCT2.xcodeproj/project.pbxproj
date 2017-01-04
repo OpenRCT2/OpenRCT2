@@ -222,6 +222,8 @@
 		C6B5A7D41CDFE4CB00C9C006 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D01CDFE4CB00C9C006 /* S6Exporter.cpp */; };
 		C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6B5A7D21CDFE4CB00C9C006 /* S6Importer.cpp */; };
 		C6CABA821E1466D600D33A6B /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6CABA801E1466D600D33A6B /* FileClassifier.cpp */; };
+		C6CABA7E1E13F11C00D33A6B /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E181E0406F00076A04F /* hook.c */; };
+		C6CABA7F1E13F14F00D33A6B /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E161E0406F00076A04F /* addresses.c */; };
 		C6E96E121E04067A0076A04F /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E101E04067A0076A04F /* File.cpp */; };
 		C6E96E151E04069A0076A04F /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E131E04069A0076A04F /* Zip.cpp */; };
 		C6E96E1A1E0406F00076A04F /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = C6E96E161E0406F00076A04F /* addresses.c */; };
@@ -518,14 +520,14 @@
 		791166FA1D7486EF005912EA /* NetworkServerAdvertiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkServerAdvertiser.h; sourceTree = "<group>"; };
 		8594C05F1D885CF600235E93 /* track_data_old.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
 		85B468FB1D96822F000F1DB5 /* paint_helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
-		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compat.c; sourceTree = "<group>"; };
-		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = data.c; sourceTree = "<group>"; };
-		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
-		C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FunctionCall.cpp; sourceTree = "<group>"; };
-		C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FunctionCall.hpp; sourceTree = "<group>"; };
-		C606CCB01DB4054000FE4015 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = generate.cpp; sourceTree = "<group>"; };
-		C606CCB41DB4054000FE4015 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PaintIntercept.cpp; sourceTree = "<group>"; };
+		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = FunctionCall.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = FunctionCall.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		C606CCB01DB4054000FE4015 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = generate.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		C606CCB41DB4054000FE4015 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = main.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PaintIntercept.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CCB61DB4054000FE4015 /* Printer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Printer.cpp; sourceTree = "<group>"; };
 		C606CCB71DB4054000FE4015 /* Printer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Printer.hpp; sourceTree = "<group>"; };
 		C606CCB81DB4054000FE4015 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
@@ -535,14 +537,14 @@
 		C606CCBC1DB4054000FE4015 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
 		C606CCBD1DB4054000FE4015 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
 		C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneralSupportHeightCall.cpp; sourceTree = "<group>"; };
-		C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneralSupportHeightCall.hpp; sourceTree = "<group>"; };
+		C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = GeneralSupportHeightCall.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentSupportHeightCall.cpp; sourceTree = "<group>"; };
 		C606CCCD1DB427A000FE4015 /* SegmentSupportHeightCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SegmentSupportHeightCall.hpp; sourceTree = "<group>"; };
 		C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SideTunnelCall.cpp; sourceTree = "<group>"; };
 		C606CCD11DB4D7C800FE4015 /* SideTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SideTunnelCall.hpp; sourceTree = "<group>"; };
 		C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerticalTunnelCall.cpp; sourceTree = "<group>"; };
 		C606CCD41DB4DD6C00FE4015 /* VerticalTunnelCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = VerticalTunnelCall.hpp; sourceTree = "<group>"; };
-		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PaintIntercept.hpp; sourceTree = "<group>"; };
+		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = PaintIntercept.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CD231DB5120900FE4015 /* TestPaint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPaint.cpp; sourceTree = "<group>"; };
 		C606CD241DB5120900FE4015 /* TestPaint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestPaint.hpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
@@ -1552,7 +1554,7 @@
 				D442718D1CC81B3200D84D28 /* version.h */,
 			);
 			name = Sources;
-			path = src;
+			path = src/openrct2;
 			sourceTree = "<group>";
 		};
 		D41B73ED1C21017D0080A7B9 /* Libraries */ = {
@@ -2510,6 +2512,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6CABA7F1E13F14F00D33A6B /* addresses.c in Sources */,
+				C6CABA7E1E13F11C00D33A6B /* hook.c in Sources */,
 				C64FDAC31D6DA41000F259B9 /* track_paint.c in Sources */,
 				C64FDAC21D6DA0B800F259B9 /* diagnostic.c in Sources */,
 				C64FDAC01D6D9E3B00F259B9 /* track_data.c in Sources */,
@@ -2972,6 +2976,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/src",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
 				OTHER_LDFLAGS = (
@@ -3020,6 +3025,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/libxc/include",
 					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/src",
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/libxc/lib";
 				OTHER_LDFLAGS = (

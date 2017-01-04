@@ -2,7 +2,7 @@
 #include <cmath>
 
 extern "C" {
-#include "util/sawyercoding.h"
+#include "openrct2/util/sawyercoding.h"
 }
 
 #include <gtest/gtest.h>
