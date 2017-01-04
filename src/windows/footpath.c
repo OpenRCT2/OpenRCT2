@@ -842,6 +842,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	// Try and place path
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
 	cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY, 0);
+	// Do not place automatic path scenery here, as the previous command deleted it
 
 	if (cost == MONEY32_UNDEFINED) {
 		_footpathErrorOccured = true;
@@ -850,8 +851,6 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// dx = RCT2_ADDRESS_COMMAND_MAP_Y
 		// cx = RCT2_ADDRESS_COMMAND_MAP_X
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-		window_footpath_scenery_advance();
-		// TODO: DO NOT FORGET ME!
 	}
 }
 
@@ -930,17 +929,9 @@ static void window_footpath_construct()
 		);
 	}
 
-	// Get path scenery
-	const rct_scenery_entry* add_scenery = window_footpath_scenery_get_next_scenery();
-	int sceneryFlags = 0;
-	if (add_scenery != 0)
-	{
-		// TODO
-	}
-
 	// Actually place the path now
 	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, sceneryFlags);
+	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, 0);
 
 	if (cost != MONEY32_UNDEFINED) {
 		audio_play_sound_at_location(
@@ -950,6 +941,14 @@ static void window_footpath_construct()
 			gFootpathConstructFromPosition.z
 		);
 
+		// Get path scenery
+		uint16 add_scenery = window_footpath_scenery_get_next_scenery();
+		if (add_scenery != 0)
+		{
+			int sceneryFlags = (add_scenery & 0xFF) + 1;
+			gGameCommandErrorTitle = STR_CANT_DO_THIS;
+			cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, sceneryFlags);
+		}
 		window_footpath_scenery_advance();
 
 		if (gFootpathConstructSlope == 0) {
@@ -1146,8 +1145,11 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 			(1 << WIDX_SLOPEDOWN) |
 			(1 << WIDX_LEVEL) |
 			(1 << WIDX_SLOPEUP) |
+			(1 << WIDX_AUTOSCENERY) |
 			(1 << WIDX_CONSTRUCT) |
 			(1 << WIDX_REMOVE);
+
+		// window_close_by_class(WC_FOOTPATH_SCENERY); This causes a glitch
 	}
 
 	w->pressed_widgets = pressedWidgets;

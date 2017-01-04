@@ -142,12 +142,14 @@ static uint64 window_footpath_scenery_enabled_widgets = {
 
 typedef struct path_rule_entry {
 	rct_scenery_entry* sceneEntry;
+	uint16 sceneryId;
 	struct path_rule_entry* next;
 } path_rule_entry_t;
 
 static path_rule_entry_t* _footpath_scenery_list = NULL;
 static path_rule_entry_t* _footpath_scenery_selected_listEntry = NULL;
 static rct_scenery_entry* _footpath_scenery_selected_sceneryEntry = NULL;
+static uint16 _footpath_scenery_selected_sceneryId = 0;
 
 void window_footpath_scenery_open()
 {
@@ -266,6 +268,7 @@ static void window_footpath_scenery_object_dropdown(rct_window *w, int widgetInd
 	int numSceneryTypes = 0;
 	if (dropdownIndex == 0) {
 		_footpath_scenery_selected_sceneryEntry = NULL;
+		_footpath_scenery_selected_sceneryId = 0;
 	} else if (dropdownIndex != -1) {
 		dropdownIndex--;
 		uint16 sceneryId;
@@ -280,6 +283,7 @@ static void window_footpath_scenery_object_dropdown(rct_window *w, int widgetInd
 			 	continue;
 
 			_footpath_scenery_selected_sceneryEntry = get_footpath_item_entry(pathBitIndex);
+			_footpath_scenery_selected_sceneryId = sceneryId;
 
 			if (dropdownIndex == numSceneryTypes)
 				break;
@@ -344,6 +348,7 @@ static void window_footpath_scenery_add(rct_window *w)
 		// Append
 		path_rule_entry_t* add_to = malloc(sizeof(path_rule_entry_t));
 		add_to->sceneEntry = _footpath_scenery_selected_sceneryEntry;
+		add_to->sceneryId = _footpath_scenery_selected_sceneryId;
 		add_to->next = NULL;
 
 		if (_footpath_scenery_list == NULL) {
@@ -360,6 +365,7 @@ static void window_footpath_scenery_add(rct_window *w)
 		// Append after selected
 		path_rule_entry_t* add_to = malloc(sizeof(path_rule_entry_t));
 		add_to->sceneEntry = _footpath_scenery_selected_sceneryEntry;
+		add_to->sceneryId = _footpath_scenery_selected_sceneryId;
 
 		path_rule_entry_t* after = _footpath_scenery_list;
 		while (i != w->selected_list_item) {
@@ -398,18 +404,19 @@ static void window_footpath_scenery_clear_rules(rct_window *w)
 	_footpath_scenery_list = NULL;
 	_footpath_scenery_selected_sceneryEntry = NULL;
 	_footpath_scenery_selected_listEntry = NULL;
+	_footpath_scenery_selected_sceneryId = 0;
 
 	w->no_list_items = 0;
 	w->selected_list_item = -1;
 	window_invalidate(w);
 }
 
-const rct_scenery_entry* window_footpath_scenery_get_next_scenery()
+uint16 window_footpath_scenery_get_next_scenery()
 {
 	if (_footpath_scenery_selected_listEntry == NULL)
-		return NULL;
+		return 0;
 
-	return _footpath_scenery_selected_listEntry->sceneEntry;
+	return _footpath_scenery_selected_listEntry->sceneryId;
 }
 
 void window_footpath_scenery_advance()

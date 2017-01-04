@@ -71,7 +71,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags);
 void game_command_place_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_place_footpath_from_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-money32 footpath_place(int type, int x, int y, int z, int slope, int flags, int parameter3);
+money32 footpath_place(int type, int x, int y, int z, int slope, int flags, int pathScenery);
 void footpath_remove(int x, int y, int z, int flags);
 money32 footpath_provisional_set(int type, int x, int y, int z, int slope);
 void footpath_provisional_remove();

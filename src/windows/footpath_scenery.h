@@ -19,7 +19,7 @@
 
 #include "../world/scenery.h"
 
-const rct_scenery_entry* window_footpath_scenery_get_next_scenery();
+uint16 window_footpath_scenery_get_next_scenery();
 void window_footpath_scenery_advance();
 
 #endif
