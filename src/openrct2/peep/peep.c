@@ -10491,6 +10491,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	finance_payment(-amount, gCommandExpenditureType);
 
 	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
+	money_effect_create_at(amount, peep->x, peep->y, peep->z);
 }
 
 static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
