@@ -22,7 +22,7 @@
 #include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "audio.h"
-#include "mixer.h"
+#include "AudioMixer.h"
 
 typedef struct rct_audio_params {
 	bool in_range;

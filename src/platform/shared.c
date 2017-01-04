@@ -15,14 +15,14 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../audio/mixer.h"
+#include "../audio/AudioMixer.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
 #include "../game.h"
 #include "../input.h"
-#include "../interface/Cursors.h"
 #include "../interface/console.h"
+#include "../interface/Cursors.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../localisation/currency.h"

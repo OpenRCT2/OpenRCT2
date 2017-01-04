@@ -37,6 +37,7 @@
 		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
+		C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */; };
 		C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = C649B3D31DF04ED2008AC826 /* format_codes.c */; };
 		C64FDA641D6D9A2100F259B9 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BB1CDBC3B7009F9BFC /* air_powered_vertical_coaster.c */; };
 		C64FDA651D6D9A2100F259B9 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8BC1CDBC3B7009F9BFC /* bobsleigh_coaster.c */; };
@@ -123,6 +124,10 @@
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
 		C6575A371D46AFBA00C3E79F /* debug_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = C6575A361D46AFBA00C3E79F /* debug_paint.c */; };
 		C65A888A1E16859D000368D7 /* bolliger_mabillard_track.c in Sources */ = {isa = PBXBuildFile; fileRef = C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */; };
+		C65A88921E1B1148000368D7 /* AudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A888B1E1B1148000368D7 /* AudioChannel.cpp */; };
+		C65A88931E1B1148000368D7 /* FileAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */; };
+		C65A88941E1B1148000368D7 /* MemoryAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */; };
+		C65A88951E1B1148000368D7 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C65A88911E1B1148000368D7 /* NullAudioSource.cpp */; };
 		C6834A111DFDE8E300CE933A /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = C6834A0F1DFDE8E300CE933A /* interop.c */; };
 		C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8981CDBC37E009F9BFC /* banner.c */; };
 		C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8991CDBC37E009F9BFC /* entrance.c */; };
@@ -247,7 +252,6 @@
 		D437A26F1DBC2937001CB2CF /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D437A26D1DBC2937001CB2CF /* TrackDesignRepository.cpp */; };
 		D437A2721DBC29B0001CB2CF /* FileScanner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D437A2701DBC29B0001CB2CF /* FileScanner.cpp */; };
 		D44271F61CC81B3200D84D28 /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270D01CC81B3200D84D28 /* audio.c */; };
-		D44271F71CC81B3200D84D28 /* mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270D21CC81B3200D84D28 /* mixer.cpp */; };
 		D44271F81CC81B3200D84D28 /* cheats.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270D41CC81B3200D84D28 /* cheats.c */; };
 		D44271F91CC81B3200D84D28 /* CommandLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270D71CC81B3200D84D28 /* CommandLine.cpp */; };
 		D44271FA1CC81B3200D84D28 /* RootCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270D91CC81B3200D84D28 /* RootCommands.cpp */; };
@@ -545,6 +549,8 @@
 		C612A8981D64825300B634CA /* vehicle_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C61FB7231CF86356004CE991 /* NetworkUser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = NetworkUser.h; sourceTree = "<group>"; usesTabs = 0; };
+		C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioMixer.cpp; sourceTree = "<group>"; };
+		C647C6901E1D0CA000C7FB21 /* AudioMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioMixer.h; sourceTree = "<group>"; };
 		C649B3D31DF04ED2008AC826 /* format_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = format_codes.c; sourceTree = "<group>"; };
 		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -555,6 +561,13 @@
 		C6575A361D46AFBA00C3E79F /* debug_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug_paint.c; sourceTree = "<group>"; };
 		C65A88881E16859D000368D7 /* bolliger_mabillard_track.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bolliger_mabillard_track.c; sourceTree = "<group>"; };
 		C65A88891E16859D000368D7 /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
+		C65A888B1E1B1148000368D7 /* AudioChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioChannel.cpp; sourceTree = "<group>"; };
+		C65A888C1E1B1148000368D7 /* AudioChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioChannel.h; sourceTree = "<group>"; };
+		C65A888D1E1B1148000368D7 /* AudioFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFormat.h; sourceTree = "<group>"; };
+		C65A888E1E1B1148000368D7 /* AudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioSource.h; sourceTree = "<group>"; };
+		C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileAudioSource.cpp; sourceTree = "<group>"; };
+		C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryAudioSource.cpp; sourceTree = "<group>"; };
+		C65A88911E1B1148000368D7 /* NullAudioSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NullAudioSource.cpp; sourceTree = "<group>"; };
 		C6834A0F1DFDE8E300CE933A /* interop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = interop.c; sourceTree = "<group>"; usesTabs = 1; };
 		C6834A101DFDE8E300CE933A /* interop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interop.h; sourceTree = "<group>"; };
 		C686F8981CDBC37E009F9BFC /* banner.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
@@ -715,8 +728,6 @@
 		D437A2711DBC29B0001CB2CF /* FileScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileScanner.h; sourceTree = "<group>"; usesTabs = 0; };
 		D44270D01CC81B3200D84D28 /* audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = audio.c; sourceTree = "<group>"; };
 		D44270D11CC81B3200D84D28 /* audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
-		D44270D21CC81B3200D84D28 /* mixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mixer.cpp; sourceTree = "<group>"; };
-		D44270D31CC81B3200D84D28 /* mixer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = mixer.h; sourceTree = "<group>"; };
 		D44270D41CC81B3200D84D28 /* cheats.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cheats.c; sourceTree = "<group>"; };
 		D44270D51CC81B3200D84D28 /* cheats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cheats.h; sourceTree = "<group>"; };
 		D44270D71CC81B3200D84D28 /* CommandLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLine.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1587,8 +1598,15 @@
 			children = (
 				D44270D01CC81B3200D84D28 /* audio.c */,
 				D44270D11CC81B3200D84D28 /* audio.h */,
-				D44270D21CC81B3200D84D28 /* mixer.cpp */,
-				D44270D31CC81B3200D84D28 /* mixer.h */,
+				C65A888B1E1B1148000368D7 /* AudioChannel.cpp */,
+				C65A888C1E1B1148000368D7 /* AudioChannel.h */,
+				C65A888D1E1B1148000368D7 /* AudioFormat.h */,
+				C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */,
+				C647C6901E1D0CA000C7FB21 /* AudioMixer.h */,
+				C65A888E1E1B1148000368D7 /* AudioSource.h */,
+				C65A888F1E1B1148000368D7 /* FileAudioSource.cpp */,
+				C65A88901E1B1148000368D7 /* MemoryAudioSource.cpp */,
+				C65A88911E1B1148000368D7 /* NullAudioSource.cpp */,
 			);
 			path = audio;
 			sourceTree = "<group>";
@@ -2613,7 +2631,9 @@
 				D49766891D03BABB002222CD /* rain.cpp in Sources */,
 				791166FB1D7486EF005912EA /* NetworkServerAdvertiser.cpp in Sources */,
 				D44272441CC81B3200D84D28 /* cable_lift.c in Sources */,
+				C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */,
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
+				C65A88921E1B1148000368D7 /* AudioChannel.cpp in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
@@ -2698,6 +2718,7 @@
 				D442724C1CC81B3200D84D28 /* vehicle.c in Sources */,
 				D464FEED1D31A6AA00CBABAC /* ObjectManager.cpp in Sources */,
 				D44272261CC81B3200D84D28 /* currency.c in Sources */,
+				C65A88931E1B1148000368D7 /* FileAudioSource.cpp in Sources */,
 				C6E96E301E04072F0076A04F /* TitleSequence.cpp in Sources */,
 				C686F92B1CDBC3B7009F9BFC /* car_ride.c in Sources */,
 				D44272921CC81B3200D84D28 /* tooltip.c in Sources */,
@@ -2782,6 +2803,7 @@
 				C686F8B61CDBC37E009F9BFC /* misc.c in Sources */,
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,
 				D44272621CC81B3200D84D28 /* footpath.c in Sources */,
+				C65A88951E1B1148000368D7 /* NullAudioSource.cpp in Sources */,
 				D44272521CC81B3200D84D28 /* util.c in Sources */,
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
@@ -2870,6 +2892,7 @@
 				C686F9351CDBC3B7009F9BFC /* mini_golf.c in Sources */,
 				D44272541CC81B3200D84D28 /* banner.c in Sources */,
 				D44272A31CC81B3200D84D28 /* money_effect.c in Sources */,
+				C65A88941E1B1148000368D7 /* MemoryAudioSource.cpp in Sources */,
 				D464FEE61D31A6AA00CBABAC /* EntranceObject.cpp in Sources */,
 				D43407DE1D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp in Sources */,
 				D43407DC1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp in Sources */,
@@ -2893,7 +2916,6 @@
 				D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */,
 				C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */,
 				D44272221CC81B3200D84D28 /* widget.c in Sources */,
-				D44271F71CC81B3200D84D28 /* mixer.cpp in Sources */,
 				D442723D1CC81B3200D84D28 /* macos.m in Sources */,
 				D44271FF1CC81B3200D84D28 /* Console.cpp in Sources */,
 				D44272781CC81B3200D84D28 /* player.c in Sources */,

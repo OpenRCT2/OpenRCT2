@@ -88,10 +88,14 @@
     <None Include="openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio\AudioChannel.cpp" />
+    <ClCompile Include="src\audio\FileAudioSource.cpp" />
+    <ClCompile Include="src\audio\MemoryAudioSource.cpp" />
+    <ClCompile Include="src\audio\NullAudioSource.cpp" />
     <ClCompile Include="src\FileClassifier.cpp" />
     <ClCompile Include="src\rct2\addresses.c" />
     <ClCompile Include="src\audio\audio.c" />
-    <ClCompile Include="src\audio\mixer.cpp" />
+    <ClCompile Include="src\audio\AudioMixer.cpp" />
     <ClCompile Include="src\cheats.c" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
     <ClCompile Include="src\cmdline\ConvertCommand.cpp" />
@@ -424,10 +428,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
+    <ClInclude Include="src\audio\AudioChannel.h" />
+    <ClInclude Include="src\audio\AudioFormat.h" />
+    <ClInclude Include="src\audio\AudioSource.h" />
     <ClInclude Include="src\FileClassifier.h" />
     <ClInclude Include="src\rct2\addresses.h" />
     <ClInclude Include="src\audio\audio.h" />
-    <ClInclude Include="src\audio\mixer.h" />
+    <ClInclude Include="src\audio\AudioMixer.h" />
     <ClInclude Include="src\cheats.h" />
     <ClInclude Include="src\cmdline\CommandLine.hpp" />
     <ClInclude Include="src\cmdline_sprite.h" />
