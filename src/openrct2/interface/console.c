@@ -506,7 +506,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				}
 				return 0;
 			}
-			sint32 optional;
+			sint32 optional = -1;
 			bool int_valid[3] = { 0 };
 			sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
 			sint32 value = console_parse_int(argv[3], &int_valid[1]);
@@ -548,6 +548,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 				} else {
 					cc_ride_set_all_vehicles(ride, value, cc_ride_vehicle_set_powered_velocity);
 					if (argc > 4) {
+						assert(optional!=-1);
 						cc_ride_set_all_vehicles(ride, optional, cc_ride_vehicle_set_powered_acceleration);
 					}
 				}
