@@ -473,7 +473,7 @@ static const rct_xy16 _97e1bc_21[64] = {
 	{   0,  32 },
 };
 
-static const rct_xy16 * _97e1bc[91] = {
+static const rct_xy16 * _97e1bc[RIDE_TYPE_COUNT] = {
 	NULL,
 	NULL,
 	NULL,

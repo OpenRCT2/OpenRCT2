@@ -144,18 +144,18 @@ extern const uint8 rideBonusValue[0x60];
 
 extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
 extern const rct_ride_name_convention RideNameConvention[96];
-extern const rct_ride_name RideNaming[91];
+extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
 extern const uint8 RideAvailableModes[];
 extern const uint8 AllRideModesAvailable[];
 extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
-extern const rct_ride_lift_data RideLiftData[91];
+extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
-extern const rct_ride_data_4 RideData4[91];
-extern const int RidePhotoItems[91];
-extern const ride_cost RideTrackCosts[91];
-extern const rct_ride_data_5 RideData5[91];
+extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
+extern const int RidePhotoItems[RIDE_TYPE_COUNT];
+extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
+extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
@@ -166,12 +166,12 @@ extern const rct_ride_entry_vehicle CableLiftVehicle;
 extern const uint16 RideFilmLength[3];
 extern const uint16 RideCrookedHouseLength[1];
 
-extern const rating_tuple RideRatings[91];
+extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
 
 extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
 
-extern const uint8 RideConstructionDefaultTrackType[91];
+extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
-extern const track_colour_preset_list RideColourPresets[91];
+extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
 #endif
