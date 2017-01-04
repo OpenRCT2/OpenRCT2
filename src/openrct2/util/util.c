@@ -20,7 +20,6 @@
 #include <SDL.h>
 #include "../core/Guard.hpp"
 #include "../localisation/localisation.h"
-#include "../localisation/language.h"
 #include "../platform/platform.h"
 #include "util.h"
 #include "zlib.h"
@@ -521,59 +520,4 @@ unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_
 	*data_out_size = out_size;
 	buffer = realloc(buffer, *data_out_size);
 	return buffer;
-}
-
-money32 string_to_money(char * string_to_monetise)
-{
-	const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-	char * text_ptr = string_to_monetise;
-	int i, j;
-	//Remove everything except numbers and decimal
-	for (i = 0; text_ptr[i] != '\0'; ++i) {
-		while (!(
-			(text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
-			(text_ptr[i] == decimal_char[0]) ||
-			(text_ptr[i] == '\0')
-		)) {
-			//move everything over to the left by one
-			for (j = i; text_ptr[j] != '\0'; ++j) {
-				text_ptr[j] = text_ptr[j + 1];
-			}
-			text_ptr[j] = '\0';
-		}
-	}
-	
-	//determine if decimal exists in text
-	char *decimal_place = strstr(string_to_monetise, decimal_char);
-	if (decimal_place == NULL) {
-		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
-		return atoi(string_to_monetise) * 10;
-	}
-
-	char *tokenize = _strdup(string_to_monetise);
-	char *numberText = strtok(tokenize, decimal_char);
-	char *decimalText = strtok(NULL, decimal_char);
-
-	int number = 0, decimal = 0;
-	if (numberText != NULL) number = atoi(numberText);
-	if (decimalText != NULL) decimal = atoi(decimalText);
-	if (decimal < 10) decimal *= 10; //if less than 10, say, 6, convert to 60.
-
-	free(tokenize);
-
-	return MONEY(number, decimal);
-}
-
-void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len)
-{
-	if (amount == MONEY32_UNDEFINED) {
-		snprintf(buffer_to_put_value_to, buffer_len, "0");
-	}
-	else if (amount / 10 > 0) {
-		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", amount / 10, decimal_char, amount % 10);
-	}
-	else {
-		snprintf(buffer_to_put_value_to, buffer_len, "%d", amount % 10);
-	}
 }

@@ -88,4 +88,7 @@ static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t val
 #define set_map_tooltip_format_arg(offset, type, value) \
 	set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type))
 
+money32 string_to_money(char * string_to_monetise);
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len);
+
 #endif
