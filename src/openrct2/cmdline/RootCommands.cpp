@@ -163,7 +163,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         if (_verbose)
         {
-            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = 1;
+            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = true;
             PrintLaunchInformation();
         }
 
