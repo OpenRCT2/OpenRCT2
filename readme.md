@@ -70,6 +70,7 @@ The program can also be built as a command line program using CMake. This type o
 - sdl2-ttf (can be disabled)
 - fontconfig (can be disabled)
 - libzip (>= 1.0)
+- libpng (>= 1.2)
 - speexdsp
 - curl (only if building with http support)
 - jansson (>= 2.3)
