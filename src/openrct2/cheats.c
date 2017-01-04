@@ -214,9 +214,9 @@ static void cheat_10_minute_inspections()
 	window_invalidate_by_class(WC_RIDE);
 }
 
-static void cheat_no_money(int enabled)
+static void cheat_no_money(bool enabled)
 {
-	if (enabled == 1) {
+	if (enabled) {
 		gParkFlags |= PARK_FLAGS_NO_MONEY;	
 	}
 	else {

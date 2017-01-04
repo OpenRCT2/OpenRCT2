@@ -38,8 +38,8 @@
 #define MONEY_DEFAULT MONEY(5000,00)
 #define MONEY_INCREMENT_DIV MONEY(1000,00)
 #define MONEY_DIGITS 14
-char money_spinner_text[MONEY_DIGITS];
-int money_spinner_value = MONEY_DEFAULT;
+static utf8 _moneySpinnerText[MONEY_DIGITS];
+static money32 _moneySpinnerValue = MONEY_DEFAULT;
 
 enum {
 	WINDOW_CHEATS_PAGE_MONEY,
@@ -495,15 +495,15 @@ static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_wi
 {
 	switch (widgetIndex) {
 	case WIDX_MONEY_SPINNER_INCREMENT:
-		money_spinner_value = min(INT_MAX, MONEY_INCREMENT_DIV * (money_spinner_value / MONEY_INCREMENT_DIV + 1));
+		_moneySpinnerValue = min(INT_MAX, MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV + 1));
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
 		break;
 	case WIDX_MONEY_SPINNER_DECREMENT:
-		money_spinner_value = max(INT_MIN, MONEY_INCREMENT_DIV * (money_spinner_value / MONEY_INCREMENT_DIV - 1));
+		_moneySpinnerValue = max(INT_MIN, MONEY_INCREMENT_DIV * (_moneySpinnerValue / MONEY_INCREMENT_DIV - 1));
 		widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
 		break;
 	case WIDX_ADD_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ADDMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ADDMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	}
 }
@@ -545,7 +545,8 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 		currentWeather = gClimateCurrentWeather;
 		dropdown_set_checked(currentWeather, true);
-	}break;
+	}
+	break;
 	}
 }
 
@@ -573,11 +574,11 @@ static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1, GAME_COMMAND_CHEAT, 0, 0); 
 		break;
 	case WIDX_MONEY_SPINNER:
-		money_to_string(money_spinner_value, money_spinner_text, MONEY_DIGITS);
-		window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, money_spinner_text, MONEY_DIGITS);
+		money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_DIGITS);
+		window_text_input_raw_open(w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_DIGITS);
 		break;
 	case WIDX_SET_MONEY:
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money_spinner_value, GAME_COMMAND_CHEAT, 0, 0);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
 		break;
 	case WIDX_CLEAR_LOAN:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_CLEARLOAN, CHEATS_MONEY_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
@@ -829,7 +830,7 @@ static void window_cheats_text_input(rct_window *w, int widgetIndex, char *text)
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER) {
 		money32 val = string_to_money(text);
 		if (val != MONEY32_UNDEFINED) {
-			money_spinner_value = val;
+			_moneySpinnerValue = val;
 		}
 		window_invalidate(w);
 	}
@@ -917,9 +918,9 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		uint8 colour = w->colours[2];
-		set_format_arg(0, money32, money_spinner_value);
+		set_format_arg(0, money32, _moneySpinnerValue);
 		if (widget_is_disabled(w, WIDX_MONEY_SPINNER)) {
-			colour |= 0x40;
+			colour |= COLOUR_FLAG_INSET;
 		}
 		gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}

@@ -1321,6 +1321,10 @@ money32 string_to_money(char * string_to_monetise)
 	if (text_ptr[0] == '-') {
 		sign = -1;
 	}
+	else {
+		sign = 1;
+	}
+
 	//now minus signs can be removed from string
 	for (i = 0; text_ptr[i] != '\0'; ++i) {
 		if (text_ptr[i] == '-') {
@@ -1335,7 +1339,7 @@ money32 string_to_money(char * string_to_monetise)
 	char *decimal_place = strstr(string_to_monetise, decimal_char);
 	if (decimal_place == NULL) {
 		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
-		return atoi(string_to_monetise) * 10;
+		return atoi(string_to_monetise) * 10 * sign;
 	}
 
 	char *tokenize = _strdup(string_to_monetise);
