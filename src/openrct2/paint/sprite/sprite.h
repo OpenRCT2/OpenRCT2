@@ -22,8 +22,8 @@
 
 void sprite_paint_setup(const uint16 eax, const uint16 ecx);
 
-void misc_paint(rct_sprite *misc, int imageDirection);
-void litter_paint(rct_litter *litter, int imageDirection);
-void peep_paint(rct_peep *peep, int imageDirection);
+void misc_paint(rct_sprite *misc, sint32 imageDirection);
+void litter_paint(rct_litter *litter, sint32 imageDirection);
+void peep_paint(rct_peep *peep, sint32 imageDirection);
 
 #endif

@@ -69,7 +69,7 @@ static void TitleInitialise()
             seqId = 0;
         }
     }
-    title_sequence_change_preset((int)seqId);
+    title_sequence_change_preset((sint32)seqId);
     TryLoadSequence();
 }
 
@@ -210,7 +210,7 @@ extern "C"
         game_handle_input();
     }
 
-    void DrawOpenRCT2(rct_drawpixelinfo * dpi, int x, int y)
+    void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
     {
         utf8 buffer[256];
 
@@ -234,9 +234,9 @@ extern "C"
         return _sequencePlayer;
     }
 
-    void title_sequence_change_preset(int preset)
+    void title_sequence_change_preset(sint32 preset)
     {
-        int count = (int)title_sequence_manager_get_count();
+        sint32 count = (sint32)title_sequence_manager_get_count();
         if (preset < 0 || preset >= count) {
             return;
         }

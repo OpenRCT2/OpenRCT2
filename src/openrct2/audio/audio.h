@@ -161,8 +161,8 @@ typedef enum RCT2_SOUND {
 } RCT2_SOUND;
 
 extern audio_device *gAudioDevices;
-extern int gAudioDeviceCount;
-extern int gAudioCurrentDevice;
+extern sint32 gAudioDeviceCount;
+extern sint32 gAudioCurrentDevice;
 extern void *gCrowdSoundChannel;
 extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
@@ -174,7 +174,7 @@ extern void *gTitleMusicChannel;
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
-extern int gVolumeAdjustZoom;
+extern sint32 gVolumeAdjustZoom;
 
 /**
 * Deregisters the audio device.
@@ -194,7 +194,7 @@ void audio_init_ride_sounds_and_info();
 * Loads the ride sounds.
 * rct2: 0x006BA9B5
 */
-void audio_init_ride_sounds(int device);
+void audio_init_ride_sounds(sint32 device);
 /**
 * Temporarily stops playing sounds until audio_unpause_sounds() is called.
 * rct2: 0x006BABB4
@@ -208,7 +208,7 @@ void audio_pause_sounds();
 * sound at a position relative to the centre of the viewport.
 * @return 0 if the sound was not out of range; otherwise, soundId.
 */
-int audio_play_sound(int soundId, int volume, int pan);
+sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan);
 /**
 * Plays the specified sound at a virtual location.
 * @param soundId The sound effect to play.
@@ -217,7 +217,7 @@ int audio_play_sound(int soundId, int volume, int pan);
 * @param z The z coordinate of the location.
 * @return 0 if the sound was not out of range; otherwise, soundId.
 */
-int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z);
+sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z);
 /**
 * rct2: 0x006BB76E
 * @deprecated Use audio_play_sound_at_location or audio_play_sound instead.
@@ -231,7 +231,7 @@ int audio_play_sound_at_location(int soundId, sint16 x, sint16 y, sint16 z);
 * @param z (bp) The z coordinate of the location.
 * @return 0 if the sound was not out of range; otherwise, soundId.
 */
-int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z);
+sint32 audio_play_sound_panned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z);
 /**
 * Populates the gAudioDevices array with the available audio devices.
 */

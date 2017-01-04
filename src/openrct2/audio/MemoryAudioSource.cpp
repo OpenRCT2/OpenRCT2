@@ -164,7 +164,7 @@ public:
             SDL_AudioCVT cvt;
             if (SDL_BuildAudioCVT(&cvt, _format.format, _format.channels, _format.freq, format->format, format->channels, format->freq) >= 0)
             {
-                cvt.len = (int)_length;
+                cvt.len = (sint32)_length;
                 cvt.buf = new uint8[cvt.len * cvt.len_mult];
                 Memory::Copy(cvt.buf, _data, _length);
                 if (SDL_ConvertAudio(&cvt) >= 0)

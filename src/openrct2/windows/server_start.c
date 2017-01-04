@@ -64,9 +64,9 @@ static rct_widget window_server_start_widgets[] = {
 };
 
 static void window_server_start_close(rct_window *w);
-static void window_server_start_mouseup(rct_window *w, int widgetIndex);
+static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_server_start_update(rct_window *w);
-static void window_server_start_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_server_start_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_server_start_invalidate(rct_window *w);
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -159,14 +159,14 @@ static void window_server_start_scenarioselect_callback(const utf8 *path)
 	}
 }
 
-static void window_server_start_loadsave_callback(int result, const utf8 * path)
+static void window_server_start_loadsave_callback(sint32 result, const utf8 * path)
 {
 	if (result == MODAL_RESULT_OK && game_load_save_or_scenario(path)) {
 		network_begin_server(gConfigNetwork.default_port);
 	}
 }
 
-static void window_server_start_mouseup(rct_window *w, int widgetIndex)
+static void window_server_start_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -220,7 +220,7 @@ static void window_server_start_update(rct_window *w)
 	}
 }
 
-static void window_server_start_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_server_start_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (text == NULL) return;
 

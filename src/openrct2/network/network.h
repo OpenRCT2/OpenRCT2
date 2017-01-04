@@ -93,11 +93,11 @@ public:
 	~Network();
 	bool Init();
 	void Close();
-	bool BeginClient(const char* host, unsigned short port);
-	bool BeginServer(unsigned short port, const char* address = NULL);
-	int GetMode();
-	int GetStatus();
-	int GetAuthStatus();
+	bool BeginClient(const char* host, uint16 port);
+	bool BeginServer(uint16 port, const char* address = NULL);
+	sint32 GetMode();
+	sint32 GetStatus();
+	sint32 GetAuthStatus();
 	uint32 GetServerTick();
 	uint8 GetPlayerID();
 	void Update();
@@ -108,7 +108,7 @@ public:
 	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
-	void KickPlayer(int playerId);
+	void KickPlayer(sint32 playerId);
 	void SetPassword(const char* password);
 	void ShutdownClient();
 	NetworkGroup* AddGroup();
@@ -189,11 +189,11 @@ private:
 		}
 	};
 
-	int mode = NETWORK_MODE_NONE;
-	int status = NETWORK_STATUS_NONE;
+	sint32 mode = NETWORK_MODE_NONE;
+	sint32 status = NETWORK_STATUS_NONE;
 	bool wsa_initialized = false;
 	ITcpSocket * listening_socket = nullptr;
-	unsigned short listening_port = 0;
+	uint16 listening_port = 0;
 	NetworkConnection server_connection;
 	SOCKET_STATUS _lastConnectStatus;
 	uint32 last_tick_sent_time = 0;
@@ -244,7 +244,7 @@ private:
 	void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
-	unsigned char * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
+	uint8 * save_for_network(SDL_RWops *buffer, size_t &out_size, const std::vector<const ObjectRepositoryItem *> &objects) const;
 };
 
 namespace Convert
@@ -261,50 +261,50 @@ namespace Convert
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-int network_init();
+sint32 network_init();
 void network_close();
 void network_shutdown_client();
-int network_begin_client(const char *host, int port);
-int network_begin_server(int port);
+sint32 network_begin_client(const char *host, sint32 port);
+sint32 network_begin_server(sint32 port);
 
-int network_get_mode();
-int network_get_status();
+sint32 network_get_mode();
+sint32 network_get_status();
 void network_update();
-int network_get_authstatus();
+sint32 network_get_authstatus();
 uint32 network_get_server_tick();
 uint8 network_get_current_player_id();
-int network_get_num_players();
-const char* network_get_player_name(unsigned int index);
-uint32 network_get_player_flags(unsigned int index);
-int network_get_player_ping(unsigned int index);
-int network_get_player_id(unsigned int index);
-money32 network_get_player_money_spent(unsigned int index);
-void network_add_player_money_spent(unsigned int index, money32 cost);
-int network_get_player_last_action(unsigned int index, int time);
-void network_set_player_last_action(unsigned int index, int command);
-rct_xyz16 network_get_player_last_action_coord(unsigned int index);
-void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
-unsigned int network_get_player_commands_ran(unsigned int index);
-int network_get_player_index(uint8 id);
-uint8 network_get_player_group(unsigned int index);
-void network_set_player_group(unsigned int index, unsigned int groupindex);
-int network_get_group_index(uint8 id);
-int network_get_current_player_group_index();
-uint8 network_get_group_id(unsigned int index);
-int network_get_num_groups();
-const char* network_get_group_name(unsigned int index);
-void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
-void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+sint32 network_get_num_players();
+const char* network_get_player_name(uint32 index);
+uint32 network_get_player_flags(uint32 index);
+sint32 network_get_player_ping(uint32 index);
+sint32 network_get_player_id(uint32 index);
+money32 network_get_player_money_spent(uint32 index);
+void network_add_player_money_spent(uint32 index, money32 cost);
+sint32 network_get_player_last_action(uint32 index, sint32 time);
+void network_set_player_last_action(uint32 index, sint32 command);
+rct_xyz16 network_get_player_last_action_coord(uint32 index);
+void network_set_player_last_action_coord(uint32 index, rct_xyz16 coord);
+uint32 network_get_player_commands_ran(uint32 index);
+sint32 network_get_player_index(uint8 id);
+uint8 network_get_player_group(uint32 index);
+void network_set_player_group(uint32 index, uint32 groupindex);
+sint32 network_get_group_index(uint8 id);
+sint32 network_get_current_player_group_index();
+uint8 network_get_group_id(uint32 index);
+sint32 network_get_num_groups();
+const char* network_get_group_name(uint32 index);
+void game_command_set_player_group(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_kick_player(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 uint8 network_get_default_group();
-int network_get_num_actions();
-rct_string_id network_get_action_name_string_id(unsigned int index);
-int network_can_perform_action(unsigned int groupindex, unsigned int index);
-int network_can_perform_command(unsigned int groupindex, unsigned int index);
+sint32 network_get_num_actions();
+rct_string_id network_get_action_name_string_id(uint32 index);
+sint32 network_can_perform_action(uint32 groupindex, uint32 index);
+sint32 network_can_perform_command(uint32 groupindex, uint32 index);
 void network_set_pickup_peep(uint8 playerid, rct_peep* peep);
 rct_peep* network_get_pickup_peep(uint8 playerid);
-void network_set_pickup_peep_old_x(uint8 playerid, int x);
-int network_get_pickup_peep_old_x(uint8 playerid);
+void network_set_pickup_peep_old_x(uint8 playerid, sint32 x);
+sint32 network_get_pickup_peep_old_x(uint8 playerid);
 
 void network_send_map();
 void network_send_chat(const char* text);

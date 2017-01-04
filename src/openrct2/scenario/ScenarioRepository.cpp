@@ -36,7 +36,7 @@ extern "C"
     #include "scenario.h"
 }
 
-static int ScenarioCategoryCompare(int categoryA, int categoryB)
+static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
 {
     if (categoryA == categoryB) return 0;
     if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
@@ -46,7 +46,7 @@ static int ScenarioCategoryCompare(int categoryA, int categoryB)
     return Math::Sign(categoryA - categoryB);
 }
 
-static int scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
+static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
                                                   const scenario_index_entry &entryB)
 {
     // Order by category
@@ -69,7 +69,7 @@ static int scenario_index_entry_CompareByCategory(const scenario_index_entry &en
     }
 }
 
-static int scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
+static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
                                                const scenario_index_entry &entryB)
 {
     // Order by source game

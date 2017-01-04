@@ -635,28 +635,28 @@ extern rct_xyz16 gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
 extern uint8 gPeepPathFindQueueRideIndex;
 
-int peep_get_staff_count();
-int peep_can_be_picked_up(rct_peep* peep);
+sint32 peep_get_staff_count();
+sint32 peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-rct_peep *peep_generate(int x, int y, int z);
+rct_peep *peep_generate(sint32 x, sint32 y, sint32 z);
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2);
 void peep_thought_set_format_args(rct_peep_thought *thought);
-int get_peep_face_sprite_small(rct_peep *peep);
-int get_peep_face_sprite_large(rct_peep *peep);
-int peep_check_easteregg_name(int index, rct_peep *peep);
-int peep_get_easteregg_name_id(rct_peep *peep);
-int peep_is_mechanic(rct_peep *peep);
-bool peep_has_item(rct_peep *peep, int peepItem);
-int peep_has_food(rct_peep* peep);
+sint32 get_peep_face_sprite_small(rct_peep *peep);
+sint32 get_peep_face_sprite_large(rct_peep *peep);
+sint32 peep_check_easteregg_name(sint32 index, rct_peep *peep);
+sint32 peep_get_easteregg_name_id(rct_peep *peep);
+sint32 peep_is_mechanic(rct_peep *peep);
+bool peep_has_item(rct_peep *peep, sint32 peepItem);
+sint32 peep_has_food(rct_peep* peep);
 void peep_pickup(rct_peep* peep);
-void peep_pickup_abort(rct_peep* peep, int old_x);
-bool peep_pickup_place(rct_peep* peep, int x, int y, int z, bool apply);
-bool peep_pickup_command(unsigned int peepnum, int x, int y, int z, int action, bool apply);
-void game_command_pickup_guest(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void peep_pickup_abort(rct_peep* peep, sint32 old_x);
+bool peep_pickup_place(rct_peep* peep, sint32 x, sint32 y, sint32 z, bool apply);
+bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 action, bool apply);
+void game_command_pickup_guest(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 void peep_sprite_remove(rct_peep* peep);
 void peep_remove(rct_peep* peep);
 void peep_update_sprite_type(rct_peep* peep);
@@ -681,10 +681,10 @@ void peep_update_name_sort(rct_peep *peep);
 void peep_sort();
 void peep_update_names(bool realNames);
 
-money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3);
-void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+money32 set_peep_name(sint32 flags, sint32 state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3);
+void game_command_set_guest_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
+sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
 void peep_reset_pathfind_goal(rct_peep *peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

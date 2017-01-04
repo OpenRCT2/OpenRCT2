@@ -30,18 +30,18 @@
 #include "../world/sprite.h"
 #include "viewport.h"
 
-static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y);
-static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y);
-static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, int x, int y);
-static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y);
-static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y);
-static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDistance);
+static void viewport_interaction_remove_scenery(rct_map_element *mapElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_footpath(rct_map_element *mapElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, sint32 x, sint32 y);
+static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint32 maxDistance);
 
 /**
  *
  *  rct2: 0x006ED9D0
  */
-int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info)
+sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interaction_info *info)
 {
 	rct_map_element *mapElement;
 	rct_sprite *sprite;
@@ -104,7 +104,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	return info->type;
 }
 
-int viewport_interaction_left_over(int x, int y)
+sint32 viewport_interaction_left_over(sint32 x, sint32 y)
 {
 	viewport_interaction_info info;
 
@@ -118,7 +118,7 @@ int viewport_interaction_left_over(int x, int y)
 	}
 }
 
-int viewport_interaction_left_click(int x, int y)
+sint32 viewport_interaction_left_click(sint32 x, sint32 y)
 {
 	viewport_interaction_info info;
 
@@ -160,13 +160,13 @@ int viewport_interaction_left_click(int x, int y)
  *
  *  rct2: 0x006EDE88
  */
-int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info)
+sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interaction_info *info)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
 	rct_banner *banner;
 	rct_ride *ride;
-	int i, stationIndex;
+	sint32 i, stationIndex;
 
 	// No click input for title screen or track manager
 	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
@@ -339,7 +339,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int viewport_interaction_right_over(int x, int y)
+sint32 viewport_interaction_right_over(sint32 x, sint32 y)
 {
 	viewport_interaction_info info;
 
@@ -350,7 +350,7 @@ int viewport_interaction_right_over(int x, int y)
  *
  *  rct2: 0x006E8A62
  */
-int viewport_interaction_right_click(int x, int y)
+sint32 viewport_interaction_right_click(sint32 x, sint32 y)
 {
 	rct_xy_element mapElement;
 	viewport_interaction_info info;
@@ -399,7 +399,7 @@ int viewport_interaction_right_click(int x, int y)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y)
+static void viewport_interaction_remove_scenery(rct_map_element *mapElement, sint32 x, sint32 y)
 {
 	gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 	game_do_command(
@@ -417,9 +417,9 @@ static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(rct_map_element *mapElement, int x, int y)
+static void viewport_interaction_remove_footpath(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-	int z;
+	sint32 z;
 	rct_window *w;
 	rct_map_element *mapElement2;
 
@@ -443,9 +443,9 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, int x, int y)
+static void viewport_interaction_remove_footpath_item(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-	int type;
+	sint32 type;
 
 	type = mapElement->properties.path.type >> 4;
 	if (mapElement->type & 1)
@@ -467,9 +467,9 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y)
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint32 x, sint32 y)
 {
-	int rotation = (mapElement->type + 1) & 3;
+	sint32 rotation = (mapElement->type + 1) & 3;
 	switch (mapElement->properties.entrance.index & 0x0F) {
 	case 1:
 		x += TileDirectionDelta[rotation].x;
@@ -488,7 +488,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y)
+static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, sint32 x, sint32 y)
 {
 	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
 	if (sceneryEntry->wall.var_0D != 0xFF){
@@ -511,12 +511,12 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y)
+static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, sint32 x, sint32 y)
 {
 	rct_scenery_entry *sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 
 	if (sceneryEntry->large_scenery.var_11 != 0xFF){
-		int id = (mapElement->type & 0xC0) |
+		sint32 id = (mapElement->type & 0xC0) |
 			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 		window_sign_open(id);
@@ -534,9 +534,9 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 	}
 }
 
-static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDistance)
+static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint32 maxDistance)
 {
-	int distance, closestDistance;
+	sint32 distance, closestDistance;
 	uint16 spriteIndex;
 	rct_window *w;
 	rct_viewport *viewport;
@@ -578,10 +578,10 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement)
+void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_map_element **mapElement)
 {
 	sint16 my_x, my_y;
-	int interactionType;
+	sint32 interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
@@ -599,7 +599,7 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
-	for (int i = 0; i < 5; i++) {
+	for (sint32 i = 0; i < 5; i++) {
 		sint16 z = originalZ;
 		if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER) {
 			z = map_element_height(map_pos.x, map_pos.y);
@@ -610,9 +610,9 @@ void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rc
 	}
 
 	// Determine to which edge the cursor is closest
-	int myDirection;
-	int mod_x = map_pos.x & 0x1F;
-	int mod_y = map_pos.y & 0x1F;
+	sint32 myDirection;
+	sint32 mod_x = map_pos.x & 0x1F;
+	sint32 mod_y = map_pos.y & 0x1F;
 	if (mod_x < mod_y) {
 		if (mod_x + mod_y < 32) {
 			myDirection = 0;

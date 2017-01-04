@@ -42,7 +42,7 @@ static const uint32 lift_cage_sprites[][2] = {
 	{SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT},
 };
 
-static void paint_lift_cage(sint8 index, uint32 colourFlags, int height, uint8 rotation)
+static void paint_lift_cage(sint8 index, uint32 colourFlags, sint32 height, uint8 rotation)
 {
 	uint32 imageId;
 
@@ -54,7 +54,7 @@ static void paint_lift_cage(sint8 index, uint32 colourFlags, int height, uint8 r
 }
 
 /** rct2: 0x0076C6CC */
-static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -77,7 +77,7 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 		return;
 	}
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -86,7 +86,7 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 
 		track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
-	int blockedSegments = 0;
+	sint32 blockedSegments = 0;
 	switch (trackSequence) {
 		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
 		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
@@ -103,7 +103,7 @@ static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 directio
 }
 
 /** rct2: 0x0076C6DC */
-static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	if (trackSequence == 1) {
 		return;
@@ -120,7 +120,7 @@ static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8
 /**
  * rct2: 0x0076C5BC
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_lift(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_TOWER_BASE:

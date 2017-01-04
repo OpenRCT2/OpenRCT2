@@ -30,11 +30,11 @@
 
 // This variable serves a purpose of identifying a crash if it has happened inside original code.
 // When switching to original code, stack frame pointer is modified and prevents breakpad from providing stack trace.
-volatile int _originalAddress = 0;
+volatile sint32 _originalAddress = 0;
 
-int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
+sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp)
 {
-	int result = 0;
+	sint32 result = 0;
 	_originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER
@@ -86,9 +86,9 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 	return result & 0xFF00;
 }
 
-int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
+sint32 DISABLE_OPT RCT2_CALLFUNC_X(sint32 address, sint32 *_eax, sint32 *_ebx, sint32 *_ecx, sint32 *_edx, sint32 *_esi, sint32 *_edi, sint32 *_ebp)
 {
-	int result = 0;
+	sint32 result = 0;
 	_originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER

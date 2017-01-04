@@ -315,7 +315,7 @@ public:
 #ifdef __ENABLE_LIGHTFX__
                 const SDL_Color * lightPalette = lightfx_get_palette();
 #endif
-                for (int i = 0; i < 256; i++)
+                for (sint32 i = 0; i < 256; i++)
                 {
                     _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].r, palette[i].g, palette[i].b);
 #ifdef __ENABLE_LIGHTFX__
@@ -421,10 +421,10 @@ public:
         // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
         // screen; hence the checks. This code should ultimately not be called when
         // zooming because this function is specific to updating the screen on move
-        int lmargin = Math::Min(x - dx, 0);
-        int rmargin = Math::Min((sint32)_width - (x - dx + width), 0);
-        int tmargin = Math::Min(y - dy, 0);
-        int bmargin = Math::Min((sint32)_height - (y - dy + height), 0);
+        sint32 lmargin = Math::Min(x - dx, 0);
+        sint32 rmargin = Math::Min((sint32)_width - (x - dx + width), 0);
+        sint32 tmargin = Math::Min(y - dy, 0);
+        sint32 bmargin = Math::Min((sint32)_height - (y - dy + height), 0);
         x -= lmargin;
         y -= tmargin;
         width += lmargin + rmargin;
@@ -443,7 +443,7 @@ public:
         }
 
         // Move bytes
-        for (int i = 0; i < height; i++)
+        for (sint32 i = 0; i < height; i++)
         {
             memmove(to, from, width);
             to += stride;
@@ -720,7 +720,7 @@ private:
     void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
     {
         void *  pixels;
-        int     pitch;
+        sint32     pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
         {
             sint32 padding = pitch - (width * 4);
@@ -833,11 +833,11 @@ void SoftwareDrawingContext::Clear(uint8 paletteIndex)
 {
     rct_drawpixelinfo * dpi = _dpi;
 
-    int w = dpi->width >> dpi->zoom_level;
-    int h = dpi->height >> dpi->zoom_level;
+    sint32 w = dpi->width >> dpi->zoom_level;
+    sint32 h = dpi->height >> dpi->zoom_level;
     uint8 * ptr = dpi->bits;
 
-    for (int y = 0; y < h; y++)
+    for (sint32 y = 0; y < h; y++)
     {
         Memory::Set(ptr, paletteIndex, w);
         ptr += w + dpi->pitch;
@@ -903,40 +903,40 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
 
     uint16 crossPattern = 0;
 
-    int startX = left - dpi->x;
+    sint32 startX = left - dpi->x;
     if (startX < 0)
     {
         crossPattern ^= startX;
         startX = 0;
     }
 
-    int endX = right - dpi->x + 1;
+    sint32 endX = right - dpi->x + 1;
     if (endX > dpi->width)
     {
         endX = dpi->width;
     }
 
-    int startY = top - dpi->y;
+    sint32 startY = top - dpi->y;
     if (startY < 0)
     {
         crossPattern ^= startY;
         startY = 0;
     }
 
-    int endY = bottom - dpi->y + 1;
+    sint32 endY = bottom - dpi->y + 1;
     if (endY > dpi->height)
     {
         endY = dpi->height;
     }
 
-    int width = endX - startX;
-    int height = endY - startY;
+    sint32 width = endX - startX;
+    sint32 height = endY - startY;
 
     if (colour & 0x1000000)
     {
         // Cross hatching
         uint8 * dst = (startY * (dpi->width + dpi->pitch)) + startX + dpi->bits;
-        for (int i = 0; i < height; i++)
+        for (sint32 i = 0; i < height; i++)
         {
             uint8 * nextdst = dst + dpi->width + dpi->pitch;
             uint32  p = ror32(crossPattern, 1);
@@ -966,21 +966,21 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
 
         // The pattern loops every 15 lines this is which
         // part the pattern is on.
-        int patternY = (startY + dpi->y) % 16;
+        sint32 patternY = (startY + dpi->y) % 16;
 
         // The pattern loops every 15 pixels this is which
         // part the pattern is on.
-        int startPatternX = (startX + dpi->x) % 16;
-        int patternX = startPatternX;
+        sint32 startPatternX = (startX + dpi->x) % 16;
+        sint32 patternX = startPatternX;
 
         const uint16 * patternsrc = Patterns[colour >> 28]; // or possibly uint8)[esi*4] ?
 
-        for (int numLines = height; numLines > 0; numLines--)
+        for (sint32 numLines = height; numLines > 0; numLines--)
         {
             uint8 * nextdst = dst + dpi->width + dpi->pitch;
             uint16  pattern = patternsrc[patternY];
 
-            for (int numPixels = width; numPixels > 0; numPixels--)
+            for (sint32 numPixels = width; numPixels > 0; numPixels--)
             {
                 if (pattern & (1 << patternX))
                 {
@@ -997,7 +997,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     else
     {
         uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
-        for (int i = 0; i < height; i++)
+        for (sint32 i = 0; i < height; i++)
         {
             Memory::Set(dst, colour & 0xFF, width);
             dst += dpi->width + dpi->pitch;
@@ -1016,32 +1016,32 @@ void SoftwareDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, 
     if (bottom < dpi->y) return;
     if (top >= dpi->y + dpi->height) return;
 
-    int startX = left - dpi->x;
+    sint32 startX = left - dpi->x;
     if (startX < 0)
     {
         startX = 0;
     }
 
-    int endX = right - dpi->x + 1;
+    sint32 endX = right - dpi->x + 1;
     if (endX > dpi->width)
     {
         endX = dpi->width;
     }
 
-    int startY = top - dpi->y;
+    sint32 startY = top - dpi->y;
     if (startY < 0)
     {
         startY = 0;
     }
 
-    int endY = bottom - dpi->y + 1;
+    sint32 endY = bottom - dpi->y + 1;
     if (endY > dpi->height)
     {
         endY = dpi->height;
     }
 
-    int width = endX - startX;
-    int height = endY - startY;
+    sint32 width = endX - startX;
+    sint32 height = endY - startY;
 
 
     //0x2000000
@@ -1055,10 +1055,10 @@ void SoftwareDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, 
     uint8 *          g1Bits = g1Element->offset;
 
     // Fill the rectangle with the colours from the colour table
-    for (int i = 0; i < height >> dpi->zoom_level; i++)
+    for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
     {
         uint8 * nextdst = dst + (dpi->width >> dpi->zoom_level) + dpi->pitch;
-        for (int j = 0; j < (width >> dpi->zoom_level); j++)
+        for (sint32 j = 0; j < (width >> dpi->zoom_level); j++)
         {
             *dst = g1Bits[*dst];
             dst++;

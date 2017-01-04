@@ -68,7 +68,7 @@ static rct_window_event_list window_tooltip_events = {
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static sint16 _tooltipNumLines;
 
-void window_tooltip_reset(int x, int y)
+void window_tooltip_reset(sint32 x, sint32 y)
 {
 	gTooltipCursorX = x;
 	gTooltipCursorY = y;
@@ -78,10 +78,10 @@ void window_tooltip_reset(int x, int y)
 	gInputFlags &= ~INPUT_FLAG_4;
 }
 
-void window_tooltip_show(rct_string_id id, int x, int y)
+void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
 {
 	rct_window *w;
-	int width, height;
+	sint32 width, height;
 
 	w = window_find_by_class(WC_ERROR);
 	if (w != NULL)
@@ -92,14 +92,14 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 	format_string(buffer, 256, id, gCommonFormatArgs);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-	int tooltip_text_width;
+	sint32 tooltip_text_width;
 	tooltip_text_width = gfx_get_string_width_new_lined(buffer);
 	buffer = gCommonStringFormatBuffer;
 	tooltip_text_width = min(tooltip_text_width, 196);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-	int numLines, fontSpriteBase;
+	sint32 numLines, fontSpriteBase;
 	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &numLines, &fontSpriteBase);
 
 	_tooltipNumLines = numLines;
@@ -115,7 +115,7 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 	// TODO The cursor size will be relative to the window DPI.
 	//      The amount to offset the y should be adjusted.
 
-	int max_y = gScreenHeight - height;
+	sint32 max_y = gScreenHeight - height;
 	y += 26; // Normally, we'd display the tooltip 26 lower
 	if (y > max_y)
 		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
@@ -141,7 +141,7 @@ void window_tooltip_show(rct_string_id id, int x, int y)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window *widgetWindow, int widgetIndex, int x, int y)
+void window_tooltip_open(rct_window *widgetWindow, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	rct_widget *widget;
 
@@ -189,10 +189,10 @@ static void window_tooltip_update(rct_window *w)
  */
 static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int left = w->x;
-	int top = w->y;
-	int right = w->x + w->width - 1;
-	int bottom = w->y + w->height - 1;
+	sint32 left = w->x;
+	sint32 top = w->y;
+	sint32 right = w->x + w->width - 1;
+	sint32 bottom = w->y + w->height - 1;
 
 	// Background
 	gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_45);

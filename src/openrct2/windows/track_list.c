@@ -53,15 +53,15 @@ static rct_widget window_track_list_widgets[] = {
 };
 
 static void window_track_list_close(rct_window *w);
-static void window_track_list_mouseup(rct_window *w, int widgetIndex);
+static void window_track_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_track_list_update(rct_window *w);
-static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
-static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_track_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_track_list_events = {
 	window_track_list_close,
@@ -117,7 +117,7 @@ void window_track_list_open(ride_list_item item)
 	_window_track_list_item = item;
 	track_list_load_designs(item);
 
-	int x, y;
+	sint32 x, y;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		x = gScreenWidth / 2 - 300;
 		y = max(28, gScreenHeight / 2 - 200);
@@ -178,7 +178,7 @@ static void window_track_list_close(rct_window *w)
  *
  *  rct2: 0x006CFB82
  */
-static void window_track_list_select(rct_window *w, int index)
+static void window_track_list_select(rct_window *w, sint32 index)
 {
 	w->track_list.var_480 = index;
 
@@ -215,15 +215,15 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 }
 
-static int window_track_list_get_list_item_index_from_position(int x, int y)
+static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint32 y)
 {
-	int maxItems = (int)_trackDesignsCount;
+	sint32 maxItems = (sint32)_trackDesignsCount;
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Extra item: custom design
 		maxItems++;
 	}
 
-	int index = y / 10;
+	sint32 index = y / 10;
 	if (index < 0 || index >= maxItems) {
 		index = -1;
 	}
@@ -234,7 +234,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
  *
  *  rct2: 0x006CFA31
  */
-static void window_track_list_mouseup(rct_window *w, int widgetIndex)
+static void window_track_list_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -272,7 +272,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x006CFAB0
  */
-static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	size_t numItems = _trackDesignsCount;
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -280,17 +280,17 @@ static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 		numItems++;
 	}
 
-	*height = (int)(numItems * 10);
+	*height = (sint32)(numItems * 10);
 }
 
 /**
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
 	if (!(w->track_list.var_484 & 1)) {
-		int i = window_track_list_get_list_item_index_from_position(x, y);
+		sint32 i = window_track_list_get_list_item_index_from_position(x, y);
 		if (i != -1) {
 			window_track_list_select(w, i);
 		}
@@ -301,10 +301,10 @@ static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, in
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
 	if (!(w->track_list.var_484 & 1)) {
-		int i = window_track_list_get_list_item_index_from_position(x, y);
+		sint32 i = window_track_list_get_list_item_index_from_position(x, y);
 		if (i != -1 && w->selected_list_item != i) {
 			w->selected_list_item = i;
 			window_invalidate(w);
@@ -316,7 +316,7 @@ static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, in
  *
  *  rct2: 0x006CFD6C
  */
-static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_track_list_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -381,7 +381,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	int trackIndex = w->selected_list_item;
+	sint32 trackIndex = w->selected_list_item;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (_trackDesignsCount == 0 || trackIndex == -1) {
 			return;
@@ -391,7 +391,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Track preview
-	int x, y, colour;
+	sint32 x, y, colour;
 	rct_widget *widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
 	x = w->x + widget->left + 1;
 	y = w->y + widget->top + 1;
@@ -490,7 +490,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
 		// Maximum positive vertical Gs
-		int gForces = td6->max_positive_vertical_g * 32;
+		sint32 gForces = td6->max_positive_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
@@ -508,7 +508,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (td6->version_and_colour_scheme / 4 >= 2) {
 			if (td6->total_air_time != 0) {
 				// Total air time
-				int airTime = td6->total_air_time * 25;
+				sint32 airTime = td6->total_air_time * 25;
 				gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
 				y += 10;
 			}
@@ -553,13 +553,13 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x006CF8CD
  */
-static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	uint8 paletteIndex = ColourMapA[w->colours[0]].mid_light;
 	gfx_clear(dpi, paletteIndex);
 
-	int x = 0;
-	int y = 0;
+	sint32 x = 0;
+	sint32 y = 0;
 	size_t listIndex = 0;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (_trackDesignsCount == 0) {

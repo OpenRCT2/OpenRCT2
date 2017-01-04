@@ -40,12 +40,12 @@ private:
     uint64      _fileSize;
 
 public:
-    FileStream(const std::string &path, int fileMode) :
+    FileStream(const std::string &path, sint32 fileMode) :
         FileStream(path.c_str(), fileMode)
     {
     }
 
-    FileStream(const utf8 * path, int fileMode)
+    FileStream(const utf8 * path, sint32 fileMode)
     {
         const char * mode;
         switch (fileMode) {
@@ -93,7 +93,7 @@ public:
         Seek(position, STREAM_SEEK_BEGIN);
     }
 
-    void Seek(sint64 offset, int origin) override
+    void Seek(sint64 offset, sint32 origin) override
     {
         switch (origin) {
         case STREAM_SEEK_BEGIN:

@@ -426,11 +426,11 @@ void invalidate_sprite_0(rct_sprite* sprite);
 void invalidate_sprite_1(rct_sprite *sprite);
 void invalidate_sprite_2(rct_sprite *sprite);
 void sprite_remove(rct_sprite *sprite);
-void litter_create(int x, int y, int z, int direction, int type);
-void litter_remove_at(int x, int y, int z);
-void sprite_misc_explosion_cloud_create(int x, int y, int z);
-void sprite_misc_explosion_flare_create(int x, int y, int z);
-uint16 sprite_get_first_in_quadrant(int x, int y);
+void litter_create(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type);
+void litter_remove_at(sint32 x, sint32 y, sint32 z);
+void sprite_misc_explosion_cloud_create(sint32 x, sint32 y, sint32 z);
+void sprite_misc_explosion_flare_create(sint32 x, sint32 y, sint32 z);
+uint16 sprite_get_first_in_quadrant(sint32 x, sint32 y);
 void sprite_position_tween_store_a();
 void sprite_position_tween_store_b();
 void sprite_position_tween_all(float nudge);
@@ -440,14 +440,14 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 // Balloon
 ///////////////////////////////////////////////////////////////
-void create_balloon(int x, int y, int z, int colour, uint8 bl);
+void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl);
 void balloon_update(rct_balloon *balloon);
-void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_balloon_press(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 ///////////////////////////////////////////////////////////////
 // Duck
 ///////////////////////////////////////////////////////////////
-void create_duck(int targetX, int targetY);
+void create_duck(sint32 targetX, sint32 targetY);
 void duck_update(rct_duck *duck);
 void duck_press(rct_duck *duck);
 void duck_remove_all();
@@ -461,9 +461,9 @@ void money_effect_update(rct_money_effect *moneyEffect);
 ///////////////////////////////////////////////////////////////
 // Crash particles
 ///////////////////////////////////////////////////////////////
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, int z);
+void crashed_vehicle_particle_create(rct_vehicle_colour colours, sint32 x, sint32 y, sint32 z);
 void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle);
-void crash_splash_create(int x, int y, int z);
+void crash_splash_create(sint32 x, sint32 y, sint32 z);
 void crash_splash_update(rct_crash_splash *splash);
 
 const char *sprite_checksum();

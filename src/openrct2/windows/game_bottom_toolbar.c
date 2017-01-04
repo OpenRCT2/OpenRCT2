@@ -72,16 +72,16 @@ rct_widget window_game_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex);
-static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_game_bottom_toolbar_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor);
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, sint32 colour, sint32 x, sint32 y, uint8 factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 
@@ -162,7 +162,7 @@ void window_game_bottom_toolbar_open()
  *
  *  rct2: 0x0066C588
  */
-static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
+static void window_game_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_news_item *newsItem;
 
@@ -191,8 +191,8 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 
 		{
 			newsItem = news_item_get(0);
-			int x, y, z;
-			int subject = newsItem->assoc;
+			sint32 x, y, z;
+			sint32 subject = newsItem->assoc;
 
 			news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
@@ -211,17 +211,17 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_game_bottom_toolbar_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
-	int month, day;
+	sint32 month, day;
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
-		set_format_arg(0, int, gCurrentProfit);
-		set_format_arg(4, int, gParkValue);
+		set_format_arg(0, sint32, gCurrentProfit);
+		set_format_arg(4, sint32, gParkValue);
 		break;
 	case WIDX_PARK_RATING:
-		set_format_arg(0, short, gParkRating);
+		set_format_arg(0, sint16, gParkRating);
 		break;
 	case WIDX_DATE:
 		month = gDateMonthsElapsed % 8;
@@ -239,7 +239,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
  */
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
-	int x;
+	sint32 x;
 	rct_news_item *newsItem;
 
 	colour_scheme_update(w);
@@ -284,8 +284,8 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 		w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
 		// Find out if the news item is no longer valid
-		int y, z;
-		int subject = newsItem->assoc;
+		sint32 y, z;
+		sint32 subject = newsItem->assoc;
 		news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 
 		if (x == SPRITE_LOCATION_NULL)
@@ -362,7 +362,7 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y;
+	sint32 x, y;
 
 	// Draw green inset rectangle on panel
 	gfx_fill_rect_inset(
@@ -422,9 +422,9 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
  *
  *  rct2: 0x0066C76C
  */
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int colour, int x, int y, uint8 factor)
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, sint32 colour, sint32 x, sint32 y, uint8 factor)
 {
-	short bar_width;
+	sint16 bar_width;
 
 	bar_width = (factor * (90 + WIDTH_MOD)) / 256;
 	gfx_fill_rect_inset(dpi, x, y + 1, x + (93 + WIDTH_MOD), y + 9, w->colours[1], INSET_RECT_F_30);
@@ -440,7 +440,7 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y, temperature;
+	sint32 x, y, temperature;
 	rct_string_id format;
 
 	// Draw green inset rectangle on panel
@@ -458,14 +458,14 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	int year = date_get_year(gDateMonthsElapsed) + 1;
-	int month = date_get_month(gDateMonthsElapsed & 7);
-	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
+	sint32 year = date_get_year(gDateMonthsElapsed) + 1;
+	sint32 month = date_get_month(gDateMonthsElapsed & 7);
+	sint32 day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
 	set_format_arg(0, rct_string_id, DateDayNames[day]);
-	set_format_arg(2, short, month);
-	set_format_arg(4, short, year);
+	set_format_arg(2, sint16, month);
+	set_format_arg(4, sint16, year);
 	gfx_draw_string_centred(
 		dpi,
 		stringId,
@@ -485,7 +485,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}
-	set_format_arg(0, short, temperature);
+	set_format_arg(0, sint16, temperature);
 	gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, x, y + 6);
 	x += 30;
 
@@ -507,7 +507,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
  */
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int x, y, width;
+	sint32 x, y, width;
 	rct_news_item *newsItem;
 	rct_widget *middleOutsetWidget;
 
@@ -549,7 +549,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		}
 
 		rct_peep* peep = GET_PEEP(newsItem->assoc);
-		int clip_x = 10, clip_y = 19;
+		sint32 clip_x = 10, clip_y = 19;
 
 		if (peep->type == PEEP_TYPE_STAFF){
 			if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
@@ -620,7 +620,7 @@ static void window_game_bottom_toolbar_update(rct_window* w){
  *
  *  rct2: 0x0066C644
  */
-static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
+static void window_game_bottom_toolbar_cursor(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
 	switch (widgetIndex) {
 	case WIDX_MONEY:

@@ -130,7 +130,7 @@ static void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryE
  * @param height (dx)
  * @param map_element (esi)
  */
-void fence_paint(uint8 direction, int height, rct_map_element * map_element)
+void fence_paint(uint8 direction, sint32 height, rct_map_element * map_element)
 {
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
@@ -142,7 +142,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     }
 
 
-    int primaryColour = map_element->properties.fence.item[1] & 0x1F;
+    sint32 primaryColour = map_element->properties.fence.item[1] & 0x1F;
     uint32 imageColourFlags = primaryColour << 19 | 0x20000000;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 

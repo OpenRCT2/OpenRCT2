@@ -57,9 +57,9 @@ static rct_widget window_new_campaign_widgets[] = {
 };
 
 
-static void window_new_campaign_mouseup(rct_window *w, int widgetIndex);
-static void window_new_campaign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_new_campaign_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_new_campaign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -97,7 +97,7 @@ static rct_window_event_list window_new_campaign_events = {
 uint8 window_new_campaign_rides[MAX_RIDES];
 uint8 window_new_campaign_shop_items[64];
 
-static int ride_value_compare(const void *a, const void *b)
+static sint32 ride_value_compare(const void *a, const void *b)
 {
 	rct_ride *rideA, *rideB;
 
@@ -106,7 +106,7 @@ static int ride_value_compare(const void *a, const void *b)
 	return rideB->value - rideA->value;
 }
 
-static int ride_name_compare(const void *a, const void *b)
+static sint32 ride_name_compare(const void *a, const void *b)
 {
 	char rideAName[256], rideBName[256];
 	rct_ride *rideA, *rideB;
@@ -128,7 +128,7 @@ void window_new_campaign_open(sint16 campaignType)
 {
 	rct_window *w;
 	rct_ride *ride;
-	int i, numApplicableRides;
+	sint32 i, numApplicableRides;
 
 	w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
 	if (w != NULL) {
@@ -189,7 +189,7 @@ void window_new_campaign_open(sint16 campaignType)
  */
 static void window_new_campaign_get_shop_items()
 {
-	int i, numItems;
+	sint32 i, numItems;
 	rct_ride *ride;
 
 	uint64 items = 0;
@@ -218,7 +218,7 @@ static void window_new_campaign_get_shop_items()
  *
  *  rct2: 0x0069E50B
  */
-static void window_new_campaign_mouseup(rct_window *w, int widgetIndex)
+static void window_new_campaign_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -235,7 +235,7 @@ static void window_new_campaign_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x0069E51C
  */
-static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
+static void window_new_campaign_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 	rct_widget *dropdownWidget;
 
@@ -246,8 +246,8 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 		if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
 			window_new_campaign_get_shop_items();
 			if (window_new_campaign_shop_items[0] != 255) {
-				int numItems = 0;
-				for (int i = 0; i < 40; i++) {
+				sint32 numItems = 0;
+				for (sint32 i = 0; i < 40; i++) {
 					if (window_new_campaign_shop_items[i] == 255)
 						break;
 
@@ -267,8 +267,8 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 				);
 			}
 		} else {
-			int numItems = 0;
-			for (int i = 0; i < 40; i++) {
+			sint32 numItems = 0;
+			for (sint32 i = 0; i < 40; i++) {
 				if (window_new_campaign_rides[i] == 255)
 					break;
 
@@ -305,7 +305,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
  *
  *  rct2: 0x0069E537
  */
-static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_new_campaign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;
@@ -373,7 +373,7 @@ static void window_new_campaign_invalidate(rct_window *w)
  */
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y;
+	sint32 x, y;
 
 	window_draw_widgets(w, dpi);
 

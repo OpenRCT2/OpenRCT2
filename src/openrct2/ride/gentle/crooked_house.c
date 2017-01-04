@@ -43,7 +43,7 @@ rct_crooked_house_bound_box crooked_house_data[] = {
  * @param (ebx) image_id
  * @param (edx) height
  */
-static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, int height) {
+static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, sint32 height) {
 	rct_map_element *original_map_element = g_currently_drawn_item;
 
 	rct_ride *ride = get_ride(original_map_element->properties.track.ride_index);
@@ -65,11 +65,11 @@ static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 s
 	sub_98197C(image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x, boundBox.offset_y, height + 3, get_current_rotation());
 }
 
-static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -87,7 +87,7 @@ static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 dire
 		//case 8: sub_88ABA4(rideIndex, 224, 0, 3, height); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
 			// top
@@ -112,7 +112,7 @@ static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 dire
 	paint_util_set_general_support_height(height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(sint32 trackType, sint32 direction) {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;
 	}

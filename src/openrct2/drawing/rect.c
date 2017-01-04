@@ -31,7 +31,7 @@
  * colour (ebp)
  * flags (si)
  */
-void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short right, short bottom, int colour, uint8 flags)
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom, sint32 colour, uint8 flags)
 {
 	uint8 shadow, fill, hilight;
 

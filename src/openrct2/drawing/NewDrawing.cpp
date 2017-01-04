@@ -135,7 +135,7 @@ extern "C"
         _drawingEngine->Draw();
     }
 
-    void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy)
+    void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)
     {
         if (_drawingEngine != nullptr)
         {
@@ -202,7 +202,7 @@ extern "C"
         }
     }
 
-    void gfx_fill_rect(rct_drawpixelinfo * dpi, int left, int top, int right, int bottom, int colour)
+    void gfx_fill_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, sint32 colour)
     {
         if (_drawingEngine != nullptr)
         {
@@ -211,7 +211,7 @@ extern "C"
         }
     }
 
-    void gfx_filter_rect(rct_drawpixelinfo * dpi, int left, int top, int right, int bottom, FILTER_PALETTE_ID palette)
+    void gfx_filter_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette)
     {
         if (_drawingEngine != nullptr)
         {
@@ -220,7 +220,7 @@ extern "C"
         }
     }
 
-    void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
+    void gfx_draw_line(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 colour)
     {
         if (_drawingEngine != nullptr)
         {
@@ -229,7 +229,7 @@ extern "C"
         }
     }
 
-    void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, int image, int x, int y, uint32 tertiary_colour)
+    void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint32 tertiary_colour)
     {
         if (_drawingEngine != nullptr)
         {
@@ -238,7 +238,7 @@ extern "C"
         }
     }
 
-    void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 * palette)
+    void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 * palette)
     {
         if (_drawingEngine != nullptr)
         {
@@ -247,7 +247,7 @@ extern "C"
         }
     }
 
-    void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, int x, int y, int maskImage, int colourImage)
+    void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
     {
         if (_drawingEngine != nullptr)
         {
@@ -256,7 +256,7 @@ extern "C"
         }
     }
 
-    void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 colour)
+    void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 colour)
     {
         if (_drawingEngine != nullptr)
         {
@@ -265,7 +265,7 @@ extern "C"
         }
     }
 
-    int screenshot_dump()
+    sint32 screenshot_dump()
     {
         if (_drawingEngine != nullptr)
         {

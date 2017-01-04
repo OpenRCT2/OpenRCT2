@@ -58,7 +58,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 	    && imageOffset < 12
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && vehicle != NULL) {
-		for (int i = 0; i < 15; i++) {
+		for (sint32 i = 0; i < 15; i++) {
 			if (vehicle->num_peeps <= i) {
 				break;
 			}
@@ -75,11 +75,11 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 }
 
 /** rct2: 0x008A1584 */
-static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_4x4[direction][trackSequence];
 
-	int edges = edges_4x4[trackSequence];
+	sint32 edges = edges_4x4[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -106,7 +106,7 @@ static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		case 13: paint_enterprise_structure(ride, -48, 16, height, mapElement); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 0: cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
 		case 3: cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4; break;
@@ -122,7 +122,7 @@ static void paint_enterprise(uint8 rideIndex, uint8 trackSequence, uint8 directi
 /**
  * rct2: 0x008A13B4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;

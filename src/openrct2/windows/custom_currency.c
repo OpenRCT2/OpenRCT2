@@ -51,10 +51,10 @@ rct_widget window_custom_currency_widgets[] = {
 };
 
 
-static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
-static void custom_currency_window_mouseup(rct_window *w, int widgetIndex);
-static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text);
+static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_mouseup(rct_window *w, sint32 widgetIndex);
+static void custom_currency_window_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void custom_currency_window_text_input(struct rct_window *w, sint32 widgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
@@ -125,7 +125,7 @@ void custom_currency_window_open()
 
 
 
-static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+static void custom_currency_window_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
 {
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -190,7 +190,7 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 	}
 }
 
-static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
+static void custom_currency_window_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch(widgetIndex) {
 	case WIDX_RATE:
@@ -207,7 +207,7 @@ static void custom_currency_window_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void custom_currency_window_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if(dropdownIndex == -1)
 		return;
@@ -231,11 +231,11 @@ static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int 
 	}
 }
 
-static void custom_currency_window_text_input(struct rct_window *w, int widgetIndex, char *text)
+static void custom_currency_window_text_input(struct rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
-	int rate;
+	sint32 rate;
 	char* end;
 	switch(widgetIndex){
 	case WIDX_SYMBOL_TEXT:
@@ -270,7 +270,7 @@ static void custom_currency_window_text_input(struct rct_window *w, int widgetIn
 
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int x, y;
+	sint32 x, y;
 
 	set_format_arg(0, sint32, 100);
 

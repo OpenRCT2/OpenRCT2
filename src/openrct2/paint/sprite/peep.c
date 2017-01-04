@@ -25,7 +25,7 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(rct_peep * peep, int imageDirection)
+void peep_paint(rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
 

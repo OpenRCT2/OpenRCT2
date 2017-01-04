@@ -49,7 +49,7 @@ enum {
 	FILE_TYPE_SC4 = (2 << 2)
 };
 
-int sawyercoding_validate_checksum(SDL_RWops* rw);
+sint32 sawyercoding_validate_checksum(SDL_RWops* rw);
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
 bool sawyercoding_read_chunk_safe(SDL_RWops *rw, void *dst, size_t dstLength);
 bool sawyercoding_skip_chunk(SDL_RWops *rw);
@@ -61,9 +61,9 @@ size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size
 size_t sawyercoding_encode_sv4(const uint8 *src, uint8 *dst, size_t length);
 size_t sawyercoding_decode_td6(const uint8 *src, uint8 *dst, size_t length);
 size_t sawyercoding_encode_td6(const uint8 *src, uint8 *dst, size_t length);
-int sawyercoding_validate_track_checksum(const uint8* src, size_t length);
+sint32 sawyercoding_validate_track_checksum(const uint8* src, size_t length);
 
-int sawyercoding_detect_file_type(const uint8 *src, size_t length);
-int sawyercoding_detect_rct1_version(int gameVersion);
+sint32 sawyercoding_detect_file_type(const uint8 *src, size_t length);
+sint32 sawyercoding_detect_rct1_version(sint32 gameVersion);
 
 #endif

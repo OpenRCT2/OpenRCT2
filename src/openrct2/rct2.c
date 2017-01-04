@@ -154,7 +154,7 @@ bool rct2_init()
 	log_verbose("initialising game");
 
 	gScenarioTicks = 0;
-	util_srand((unsigned int)time(0));
+	util_srand((uint32)time(0));
 
 	config_reset_shortcut_keys();
 	config_shortcut_keys_load();
@@ -209,7 +209,7 @@ bool rct2_init()
  *
  *  rct2: 0x00683499
  */
-int rct2_init_directories()
+sint32 rct2_init_directories()
 {
 	// windows_get_registry_install_info((rct2_install_info*)0x009AA10C, "RollerCoaster Tycoon 2 Setup", "MS Sans Serif", 0);
 
@@ -268,7 +268,7 @@ void substitute_path(char *dest, size_t size, const char *path, const char *file
  *
  *  rct2: 0x00674B42
  */
-int rct2_startup_checks()
+sint32 rct2_startup_checks()
 {
 	if (!check_file_paths())
 		return 0;
@@ -304,8 +304,8 @@ void rct2_draw(rct_drawpixelinfo *dpi)
 }
 
 static time_t _lastSecond;
-static int _currentFPS;
-static int _frames;
+static sint32 _currentFPS;
+static sint32 _frames;
 
 static void rct2_measure_fps()
 {
@@ -323,8 +323,8 @@ static void rct2_measure_fps()
 
 static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 {
-	int x = gScreenWidth / 2;
-	int y = 2;
+	sint32 x = gScreenWidth / 2;
+	sint32 y = 2;
 
 	// Measure FPS
 	rct2_measure_fps();
@@ -339,7 +339,7 @@ static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 	snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
 	// Draw Text
-	int stringWidth = gfx_get_string_width(buffer);
+	sint32 stringWidth = gfx_get_string_width(buffer);
 	x = x - (stringWidth / 2);
 	gfx_draw_string(dpi, buffer, 0, x, y);
 
@@ -390,9 +390,9 @@ bool rct2_open_file(const char *path)
  *
  *  rct2: 0x00674C95
  */
-int check_file_paths()
+sint32 check_file_paths()
 {
-	for (int pathId = 0; pathId < PATH_ID_END; pathId++) {
+	for (sint32 pathId = 0; pathId < PATH_ID_END; pathId++) {
 		if (!check_file_path(pathId)) {
 			return 0;
 		}
@@ -404,7 +404,7 @@ int check_file_paths()
  *
  *  rct2: 0x00674CA5
  */
-int check_file_path(int pathId)
+sint32 check_file_path(sint32 pathId)
 {
 	const utf8* path = get_file_path(pathId);
 	SDL_RWops *file = SDL_RWFromFile(path, "rb");
@@ -441,7 +441,7 @@ int check_file_path(int pathId)
 
 void rct2_update()
 {
-	int tickCount = SDL_GetTicks();
+	sint32 tickCount = SDL_GetTicks();
 	gTicksSinceLastUpdate = min(tickCount - gLastTickCount, 500);
 	gLastTickCount = tickCount;
 	if (game_is_not_paused()) {
@@ -475,7 +475,7 @@ void rct2_update()
  *
  *  rct2: 0x00674E6C
  */
-const utf8 *get_file_path(int pathId)
+const utf8 *get_file_path(sint32 pathId)
 {
 	static utf8 path[MAX_PATH];
 	safe_strcpy(path, gRCT2AddressAppPath, sizeof(path));
@@ -499,7 +499,7 @@ uint32 get_file_extension_type(const utf8 *path)
 static void rct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
 {
 	utf8 *ch, filter[MAX_PATH], oldPath[MAX_PATH], newPath[MAX_PATH];
-	int fileEnumHandle;
+	sint32 fileEnumHandle;
 	file_info fileInfo;
 
 	if (!platform_ensure_directory_exists(newDirectory)) {

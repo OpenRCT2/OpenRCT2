@@ -233,7 +233,7 @@ void S6Exporter::Export()
 {
     _s6.info = gS6Info;
 
-    for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+    for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {
         const rct_object_entry * entry = get_loaded_object_entry(i);
         void * entryData = get_loaded_object_chunk(i);
@@ -256,12 +256,12 @@ void S6Exporter::Export()
     memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
 
     _s6.next_free_map_element_pointer_index = gNextFreeMapElementPointerIndex;
-    for (int i = 0; i < MAX_SPRITES; i++)
+    for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
     }
 
-    for (int i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++)
     {
         _s6.sprite_lists_head[i] = gSpriteListHead[i];
         _s6.sprite_lists_count[i] = gSpriteListCount[i];
@@ -457,7 +457,7 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
 
 
 // Save game state without modifying any of the state for multiplayer
-int scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
+sint32 scenario_save_network(SDL_RWops * rw, const std::vector<const ObjectRepositoryItem *> &objects)
 {
     viewport_set_saved_view();
 
@@ -519,7 +519,7 @@ static bool object_is_custom(const ObjectRepositoryItem * object)
             && !(object->ObjectEntry.flags & 0xF0));
 }
 
-int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects)
+sint32 scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects)
 {
     log_verbose("exporting packed objects");
     for (const auto &object : objects)
@@ -574,7 +574,7 @@ extern "C"
      *  rct2: 0x006754F5
      * @param flags bit 0: pack objects, 1: save as scenario
      */
-    int scenario_save(SDL_RWops* rw, int flags)
+    sint32 scenario_save(SDL_RWops* rw, sint32 flags)
     {
         if (flags & S6_SAVE_FLAG_SCENARIO)
         {

@@ -40,9 +40,9 @@ static rct_widget window_network_status_widgets[] = {
 static char window_network_status_text[1024];
 
 static void window_network_status_onclose(rct_window *w);
-static void window_network_status_mouseup(rct_window *w, int widgetIndex);
+static void window_network_status_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_network_status_update(rct_window *w);
-static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_network_status_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_network_status_invalidate(rct_window *w);
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -129,7 +129,7 @@ static void window_network_status_onclose(rct_window *w)
 	}
 }
 
-static void window_network_status_mouseup(rct_window *w, int widgetIndex)
+static void window_network_status_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -143,7 +143,7 @@ static void window_network_status_update(rct_window *w)
 	widget_invalidate(w, WIDX_BACKGROUND);
 }
 
-static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_network_status_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	_password[0] = '\0';
 	switch (widgetIndex) {
@@ -179,8 +179,8 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
 	safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
 	gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
-	int x = w->x + (w->width / 2);
-	int y = w->y + (w->height / 2);
+	sint32 x = w->x + (w->width / 2);
+	sint32 y = w->y + (w->height / 2);
 	x -= gfx_get_string_width(buffer) / 2;
 	gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
 }

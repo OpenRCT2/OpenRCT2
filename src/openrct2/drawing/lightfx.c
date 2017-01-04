@@ -124,8 +124,8 @@ void lightfx_init()
 
 	uint8 *parcer = _bakedLightTexture_lantern_3;
 
-	for (int y = 0; y < 256; y++) {
-		for (int x = 0; x < 256; x++) {
+	for (sint32 y = 0; y < 256; y++) {
+		for (sint32 x = 0; x < 256; x++) {
 			*parcer = calc_light_intensity_lantern(x - 128, y - 128);
 			parcer++;
 		}
@@ -133,8 +133,8 @@ void lightfx_init()
 
 	parcer = _bakedLightTexture_spot_3;
 
-	for (int y = 0; y < 256; y++) {
-		for (int x = 0; x < 256; x++) {
+	for (sint32 y = 0; y < 256; y++) {
+		for (sint32 x = 0; x < 256; x++) {
 			*parcer = calc_light_intensity_spot(x - 128, y - 128);
 			parcer++;
 		}
@@ -249,28 +249,28 @@ void lightfx_prepare_light_list()
 			break;
 		}
 
-		int mapFrontDiv = 1 << _current_view_zoom_front;
+		sint32 mapFrontDiv = 1 << _current_view_zoom_front;
 		static sint16 offsetPattern[26]	= {		0, 0,		-4, 0,		0, -3,		4, 0,		0, 3,
 															-2, -1,		-1, -1,		2, 1,		1, 1,
 															-3, -2,		-3, 2,		3, -2,		3, 2	};
 #endif //LIGHTFX_UNKNOWN_PART_1
 
 		if (true) {
-			int totalSamplePoints = 5;
-			int startSamplePoint = 1;
-			int lastSampleCount = 0;
+			sint32 totalSamplePoints = 5;
+			sint32 startSamplePoint = 1;
+			sint32 lastSampleCount = 0;
 
 			if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP) {
 				startSamplePoint = 0;
 				totalSamplePoints = 1;
 			}
 
-			for (int pat = startSamplePoint; pat < totalSamplePoints; pat++) {
+			for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
 				rct_xy16 mapCoord = { 0 };
 
 				rct_map_element *mapElement = 0;
 
-				int interactionType = 0;
+				sint32 interactionType = 0;
 
 				rct_window *w = window_get_main();
 				if (w != NULL) {
@@ -306,12 +306,12 @@ void lightfx_prepare_light_list()
 					//RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
 					//RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
 					//RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-					//if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
+					//if (screenX >= 0 && screenX < (sint32)myviewport->width && screenY >= 0 && screenY < (sint32)myviewport->height)
 					//{
 					//	screenX <<= myviewport->zoom;
 					//	screenY <<= myviewport->zoom;
-					//	screenX += (int)myviewport->view_x;
-					//	screenY += (int)myviewport->view_y;
+					//	screenX += (sint32)myviewport->view_x;
+					//	screenY += (sint32)myviewport->view_y;
 					//	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
 					//	screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 					//	screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
@@ -378,7 +378,7 @@ void lightfx_prepare_light_list()
 					break;
 					if (_current_view_zoom_front > 0)
 						break;
-					int newSampleCount = lightIntensityOccluded / 900;
+					sint32 newSampleCount = lightIntensityOccluded / 900;
 					if (abs(newSampleCount - lastSampleCount) < 10)
 						break;
 					totalSamplePoints += 4;
@@ -575,8 +575,8 @@ void lightfx_render_lights_to_frontbuffer()
 		bufWriteSkip	= _pixelInfo.width - bufWriteWidth;
 
 		if (entry->lightIntensity == 0xFF) {
-			for (int y = 0; y < bufWriteHeight; y++) {
-				for (int x = 0; x < bufWriteWidth; x++) {
+			for (sint32 y = 0; y < bufWriteHeight; y++) {
+				for (sint32 x = 0; x < bufWriteWidth; x++) {
 					*bufWriteBase = min(0xFF, *bufWriteBase + *bufReadBase);
 					bufWriteBase++;
 					bufReadBase++;
@@ -587,8 +587,8 @@ void lightfx_render_lights_to_frontbuffer()
 			}
 		}
 		else {
-			for (int y = 0; y < bufWriteHeight; y++) {
-				for (int x = 0; x < bufWriteWidth; x++) {
+			for (sint32 y = 0; y < bufWriteHeight; y++) {
+				for (sint32 x = 0; x < bufWriteWidth; x++) {
 					*bufWriteBase = min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->lightIntensity)) >> 8));
 					bufWriteBase++;
 					bufReadBase++;
@@ -967,8 +967,8 @@ static uint8 lerp(uint8 a, uint8 b, float t)
 	if (t <= 0) return a;
 	if (t >= 1) return b;
 
-	int range = b - a;
-	int amount = (int)(range * t);
+	sint32 range = b - a;
+	sint32 amount = (sint32)(range * t);
 	return (uint8)(a + amount);
 }
 
@@ -1007,7 +1007,7 @@ void lightfx_render_to_texture(
 	uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
 
 	void * pixels;
-	int pitch;
+	sint32 pitch;
 	if (SDL_LockTexture(texture, NULL, &pixels, &pitch) == 0) {
 		for (uint32 y = 0; y < height; y++) {
 			uintptr_t dstOffset = (uintptr_t)(y * pitch);

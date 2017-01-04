@@ -43,7 +43,7 @@ interface IStream
     virtual uint64  GetLength()                               const abstract;
     virtual uint64  GetPosition()                             const abstract;
     virtual void    SetPosition(uint64 position)                    abstract;
-    virtual void    Seek(sint64 offset, int origin)                 abstract;
+    virtual void    Seek(sint64 offset, sint32 origin)                 abstract;
 
     virtual void    Read(void * buffer, uint64 length)              abstract;
     virtual void    Write(const void * buffer, uint64 length)       abstract;

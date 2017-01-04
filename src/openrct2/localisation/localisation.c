@@ -363,9 +363,9 @@ static void format_append_string_n(char **dest, size_t *size, const utf8 *string
 	}
 }
 
-static void format_integer(char **dest, size_t *size, long long value)
+static void format_integer(char **dest, size_t *size, sint64 value)
 {
-	int digit;
+	sint32 digit;
 	char *nbegin, *nend, *ncur;
 	char tmp;
 
@@ -419,9 +419,9 @@ static void format_integer(char **dest, size_t *size, long long value)
 	}
 }
 
-static void format_comma_separated_integer(char **dest, size_t *size, long long value)
+static void format_comma_separated_integer(char **dest, size_t *size, sint64 value)
 {
-	int digit, groupIndex;
+	sint32 digit, groupIndex;
 	char *nbegin, *nend, *ncur;
 	char tmp;
 	const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
@@ -502,15 +502,15 @@ static void format_comma_separated_integer(char **dest, size_t *size, long long 
 	}
 }
 
-static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long long value)
+static void format_comma_separated_fixed_1dp(char **dest, size_t *size, sint64 value)
 {
-	int digit, groupIndex;
+	sint32 digit, groupIndex;
 	char *nbegin, *nend, *ncur;
 	char tmp;
 	const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
 	const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
 	const char *ch = NULL;
-	int zeroNeeded = 1;
+	sint32 zeroNeeded = 1;
 
 	if ((*size) == 0) return;
 
@@ -595,15 +595,15 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, long lon
 	}
 }
 
-static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long long value)
+static void format_comma_separated_fixed_2dp(char **dest, size_t *size, sint64 value)
 {
-	int digit, groupIndex;
+	sint32 digit, groupIndex;
 	char *nbegin, *nend, *ncur;
 	char tmp;
 	const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
 	const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
 	const char *ch = NULL;
-	int zeroNeeded = 1;
+	sint32 zeroNeeded = 1;
 
 	if ((*size) == 0) return;
 
@@ -694,7 +694,7 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, long lon
 	}
 }
 
-static void format_currency(char **dest, size_t *size, long long value)
+static void format_currency(char **dest, size_t *size, sint64 value)
 {
 	if ((*size) == 0) return;
 
@@ -732,13 +732,13 @@ static void format_currency(char **dest, size_t *size, long long value)
 		format_append_string(dest, size, symbol);
 }
 
-static void format_currency_2dp(char **dest, size_t *size, long long value)
+static void format_currency_2dp(char **dest, size_t *size, sint64 value)
 {
 	if ((*size) == 0) return;
 
 	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
-	int rate = currencyDesc->rate;
+	sint32 rate = currencyDesc->rate;
 	value *= rate;
 
 	// Negative sign
@@ -828,7 +828,7 @@ static void format_duration(char **dest, size_t *size, uint16 value)
 	uint16 args[] = { minutes, seconds };
 	uint16 *argsRef = &args[1];
 
-	int minuteIndex = 0;
+	sint32 minuteIndex = 0;
 	if (minutes > 0) {
 		minuteIndex = 1;
 		if (minutes != 1) {
@@ -838,7 +838,7 @@ static void format_duration(char **dest, size_t *size, uint16 value)
 		argsRef--;
 	}
 
-	int secondsIndex = 0;
+	sint32 secondsIndex = 0;
 	if (seconds != 1) {
 		secondsIndex = 1;
 	}
@@ -861,7 +861,7 @@ static void format_realtime(char **dest, size_t *size, uint16 value)
 	uint16 args[] = { hours, minutes };
 	uint16 *argsRef = &args[1];
 
-	int hourIndex = 0;
+	sint32 hourIndex = 0;
 	if (hours > 0) {
 		hourIndex = 1;
 		if (hours != 1) {
@@ -871,7 +871,7 @@ static void format_realtime(char **dest, size_t *size, uint16 value)
 		argsRef--;
 	}
 
-	int minuteIndex = 0;
+	sint32 minuteIndex = 0;
 	if (minutes != 1) {
 		minuteIndex = 1;
 	}
@@ -881,7 +881,7 @@ static void format_realtime(char **dest, size_t *size, uint16 value)
 	format_string_part(dest, size, stringId, (char**)&argsRef);
 }
 
-static void format_string_code(unsigned int format_code, char **dest, size_t *size, char **args)
+static void format_string_code(uint32 format_code, char **dest, size_t *size, char **args)
 {
 	intptr_t value;
 
@@ -978,7 +978,7 @@ static void format_string_code(unsigned int format_code, char **dest, size_t *si
 		value = *((uint16*)*args);
 		*args += 2;
 
-		format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int)value)]));
+		format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((sint32)value)]));
 		break;
 	case FORMAT_VELOCITY:
 		// Pop argument
@@ -1038,7 +1038,7 @@ static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *s
 #endif
 
 	while (*size > 1) {
-		unsigned int code = utf8_get_next(src, &src);
+		uint32 code = utf8_get_next(src, &src);
 		if (code < ' ') {
 			if (code == 0) {
 				break;
@@ -1320,11 +1320,11 @@ utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize)
 	size_t stringLength = strnlen(src, srcMaxSize);
 	size_t reservedSpace = (stringLength * 4) + 1;
 	utf8 *result = malloc(reservedSpace);
-	int actualSpace = win1252_to_utf8(result, src, stringLength, reservedSpace);
+	sint32 actualSpace = win1252_to_utf8(result, src, stringLength, reservedSpace);
 	return (utf8*)realloc(result, actualSpace);
 }
 
-int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength)
+sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t maxBufferLength)
 {
 #ifdef __WINDOWS__
 	utf16 stackBuffer[256];
@@ -1339,8 +1339,8 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 			intermediateBuffer = heapBuffer;
 		}
 	}
-	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, (int)bufferCount);
-	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, (int)maxBufferLength, NULL, NULL);
+	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, (sint32)bufferCount);
+	sint32 result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, (sint32)maxBufferLength, NULL, NULL);
 
 	free(heapBuffer);
 #else
@@ -1352,7 +1352,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 	iconv_t cd = iconv_open(to_charset, from_charset);
 	if ((iconv_t)-1 == cd)
 	{
-		int error = errno;
+		sint32 error = errno;
 		switch (error)
 		{
 			case EINVAL:
@@ -1368,7 +1368,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 	size_t conversion_result = iconv(cd, &buffer_conv, &srcLength, &outBuf, &obl);
 	if (conversion_result == (size_t)-1)
 	{
-		int error = errno;
+		sint32 error = errno;
 		switch (error)
 		{
 			case EILSEQ:
@@ -1384,7 +1384,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 				log_error("Unknown error encountered, errno = %d", error);
 		}
 	}
-	int close_result = iconv_close(cd);
+	sint32 close_result = iconv_close(cd);
 	if (close_result == -1)
 	{
 		log_error("Failed to close iconv, errno = %d", errno);
@@ -1392,7 +1392,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 	size_t byte_diff = maxBufferLength - obl + 1;
 	dst[byte_diff - 1] = '\0';
 	//log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
-	int result = byte_diff;
+	sint32 result = byte_diff;
 	free(buffer_orig);
 #endif // __WINDOWS__
 

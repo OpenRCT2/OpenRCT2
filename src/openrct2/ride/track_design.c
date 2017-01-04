@@ -188,7 +188,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	td6->version_and_colour_scheme = td4->version_and_colour_scheme;
 
 	// Vehicle colours
-	for (int i = 0; i < 12; i++) {
+	for (sint32 i = 0; i < 12; i++) {
 		td6->vehicle_colours[i].body_colour = rct1_get_colour(td4->vehicle_colours[i].body_colour);
 		td6->vehicle_colours[i].trim_colour = rct1_get_colour(td4->vehicle_colours[i].trim_colour);
 
@@ -198,17 +198,17 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 		}
 	}
 	// Set remaining vehicles to same colour as first vehicle
-	for (int i = 12; i < 32; i++) {
+	for (sint32 i = 12; i < 32; i++) {
 		td6->vehicle_colours[i] = td6->vehicle_colours[0];
 	}
 	// Set additional colour to trim colour for all vehicles
-	for (int i = 0; i < 32; i++) {
+	for (sint32 i = 0; i < 32; i++) {
 		td6->vehicle_additional_colour[i] = td6->vehicle_colours[i].trim_colour;
 	}
 
 	// Track colours
 	if (version == 0) {
-		for (int i = 0; i < 4; i++) {
+		for (sint32 i = 0; i < 4; i++) {
 			td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour_v0);
 			td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour_v0);
 			td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour_v0);
@@ -225,7 +225,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 			}
 		}
 	} else {
-		for (int i = 0; i < 4; i++) {
+		for (sint32 i = 0; i < 4; i++) {
 			td6->track_spine_colour[i] = rct1_get_colour(td4->track_spine_colour[i]);
 			td6->track_rail_colour[i] = rct1_get_colour(td4->track_rail_colour[i]);
 			td6->track_support_colour[i] = rct1_get_colour(td4->track_support_colour[i]);
@@ -563,7 +563,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *
  *  rct2: 0x006D0964
  */
-static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, int originX, int originY, int originZ)
+static sint32 track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, sint32 originX, sint32 originY, sint32 originZ)
 {
 	for (uint8 mode = 0; mode <= 1; mode++) {
 		if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
@@ -648,7 +648,7 @@ static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, ui
 						entry_type = 0xFF;
 					}
 				}
-				int z;
+				sint32 z;
 				switch (entry_type) {
 				case OBJECT_TYPE_SMALL_SCENERY:
 					//bl
@@ -709,7 +709,7 @@ static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, ui
 			}
 
 			if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z) {
-				int z = scenery->z * 8 + _trackDesignPlaceZ;
+				sint32 z = scenery->z * 8 + _trackDesignPlaceZ;
 				if (z < word_F44129) {
 					word_F44129 = z;
 				}
@@ -913,7 +913,7 @@ static int track_design_place_scenery(rct_td6_scenery_element *scenery_start, ui
 	return 1;
 }
 
-static int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+static sint32 track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
@@ -1084,7 +1084,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 		{
 			const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
 			const rct_preview_track *trackBlock = TrackBlocks[trackType];
-			int tempZ = z - trackCoordinates->z_begin + trackBlock->z;
+			sint32 tempZ = z - trackCoordinates->z_begin + trackBlock->z;
 			uint8 flags =
 				GAME_COMMAND_FLAG_APPLY |
 				GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
@@ -1108,7 +1108,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 				(((track->flags >> 4) & 0x03) << 24) |
 				(tempZ & 0xFFFF);
 
-			int edx = _currentRideIndex | (trackType << 8);
+			sint32 edx = _currentRideIndex | (trackType << 8);
 			if (track->flags & 0x80) edx |= 0x10000;
 			if (track->flags & 0x40) edx |= 0x20000;
 
@@ -1137,7 +1137,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 		}
 		case PTD_OPERATION_GET_PLACE_Z:
 		{
-			int tempZ = z - TrackCoordinates[trackType].z_begin;
+			sint32 tempZ = z - TrackCoordinates[trackType].z_begin;
 			for (const rct_preview_track *trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
 				rct_xy16 tile = { x, y };
 				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
@@ -1150,7 +1150,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 					return false;
 				}
 
-				int height = mapElement->base_height * 8;
+				sint32 height = mapElement->base_height * 8;
 				if (mapElement->properties.surface.slope & 0x0F) {
 					height += 16;
 					if (mapElement->properties.surface.slope & 0x10) {
@@ -1162,7 +1162,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 				if (water_height > 0 && water_height > height) {
 					height = water_height;
 				}
-				int heightDifference = tempZ + _trackDesignPlaceZ + trackBlock->z - height;
+				sint32 heightDifference = tempZ + _trackDesignPlaceZ + trackBlock->z - height;
 				if (heightDifference < 0) {
 					_trackDesignPlaceZ -= heightDifference;
 				}
@@ -1225,7 +1225,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK) continue;
 					if (map_element->base_height != z) continue;
 
-					int di = (map_element->properties.track.sequence >> 4) & 0x07;
+					sint32 di = (map_element->properties.track.sequence >> 4) & 0x07;
 					uint8 bl = 1;
 					if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST) bl = 41;
 					if (_trackDesignPlaceOperation == PTD_OPERATION_4) bl = 105;
@@ -1283,7 +1283,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 * bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
-int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z)
+sint32 sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32 x, sint32 y, sint32 z)
 {
 	byte_F4414E = bl & 0x80;
 	_trackDesignPlaceOperation = bl & 0x7F;
@@ -1363,7 +1363,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 
 	ride->entrance_style = td6->entrance_style;
 
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		ride->track_colour_main[i] = td6->track_spine_colour[i];
 		ride->track_colour_additional[i] = td6->track_rail_colour[i];
 		ride->track_colour_supports[i] = td6->track_support_colour[i];
@@ -1373,10 +1373,10 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = gParkFlags;
 	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-	int mapSize = gMapSize << 4;
+	sint32 mapSize = gMapSize << 4;
 
 	_currentTrackPieceDirection = 0;
-	int z = sub_6D01B3(td6, PTD_OPERATION_GET_PLACE_Z, 0, mapSize, mapSize, 16);
+	sint32 z = sub_6D01B3(td6, PTD_OPERATION_GET_PLACE_Z, 0, mapSize, mapSize, 16);
 
 	if (byte_F4414E & 4) {
 		*flags |= 2;
@@ -1384,7 +1384,7 @@ static bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *
 
 	z += 16 - word_F44129;
 
-	int operation = PTD_OPERATION_GET_COST;
+	sint32 operation = PTD_OPERATION_GET_COST;
 	if (byte_F4414E & BYTE_F4414E_SCENERY_UNAVAILABLE) {
 		operation |= 0x80;
 		*flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
@@ -1506,13 +1506,13 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
 
 	ride->entrance_style = td6->entrance_style;
 
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		ride->track_colour_main[i] = td6->track_spine_colour[i];
 		ride->track_colour_additional[i] = td6->track_rail_colour[i];
 		ride->track_colour_supports[i] = td6->track_support_colour[i];
 	}
 
-	for (int i = 0; i < 32; i++) {
+	for (sint32 i = 0; i < 32; i++) {
 		ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
 		ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
 		ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
@@ -1576,10 +1576,10 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 	money32 cost = 0;
 	// Clearance checks
 	if (!gCheatsDisableClearanceChecks) {
-		int fx = floor2(x, 32);
-		int fy = floor2(y, 32);
-		int fz0 = z >> 3;
-		int fz1 = fz0 + 4;
+		sint32 fx = floor2(x, 32);
+		sint32 fy = floor2(y, 32);
+		sint32 fz0 = z >> 3;
+		sint32 fz1 = fz0 + 4;
 
 		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost)) {
 			return MONEY32_UNDEFINED;
@@ -1617,9 +1617,9 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
 		}
 
 		// Place track element
-		int fx = floor2(x, 32);
-		int fy = floor2(y, 32);
-		int fz = z >> 3;
+		sint32 fx = floor2(x, 32);
+		sint32 fy = floor2(y, 32);
+		sint32 fz = z >> 3;
 		rct_map_element *mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
 		mapElement->clearance_height = fz + 4;
 		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
@@ -1647,7 +1647,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
  *
  *  rct2: 0x006D13FE
  */
-void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_place_track_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
 	sint16 x = *eax & 0xFFFF;
 	sint16 y = *ecx & 0xFFFF;
@@ -1662,7 +1662,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
  *
  *  rct2: 0x006CDEE4
  */
-void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_place_maze_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
 	*ebx = place_maze_design(
 		*ebx & 0xFF,
@@ -1709,13 +1709,13 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
 	centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
-	int width = gTrackPreviewMax.x - gTrackPreviewMin.x;
-	int height = gTrackPreviewMax.y - gTrackPreviewMin.y;
+	sint32 width = gTrackPreviewMax.x - gTrackPreviewMin.x;
+	sint32 height = gTrackPreviewMax.y - gTrackPreviewMin.y;
 	if (width < height) {
 		width = height;
 	}
 
-	int zoom_level = 1;
+	sint32 zoom_level = 1;
 	if (width > 1120) {
 		zoom_level = 2;
 	}
@@ -1746,7 +1746,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 	dpi.bits = pixels;
 
 	rct_xy32 offset = { width / 2, height / 2 };
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		gCurrentRotation = i;
 
 		rct_xy32 pos2d = translate_3d_to_2d_with_z(i, centre);
@@ -1834,7 +1834,7 @@ static void track_design_preview_clear_map()
 	gMapSizeMinus2 = (264 * 32) - 2;
 	gMapSize = 256;
 
-	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
+	for (sint32 i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
 		rct_map_element* map_element = &gMapElements[i];
 		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;

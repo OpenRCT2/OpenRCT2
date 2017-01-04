@@ -24,16 +24,16 @@
 // Per-instance data for images
 struct DrawImageInstance {
     vec4i clip;
-    int texColourAtlas;
+    sint32 texColourAtlas;
     vec4f texColourBounds;
-    int texMaskAtlas;
+    sint32 texMaskAtlas;
     vec4f texMaskBounds;
-    int texPaletteAtlas;
+    sint32 texPaletteAtlas;
     vec4f texPaletteBounds;
-    int flags;
+    sint32 flags;
     vec4f colour;
     vec4i bounds;
-    int mask;
+    sint32 mask;
 };
 
 class DrawImageShader final : public OpenGLShaderProgram

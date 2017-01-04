@@ -37,7 +37,7 @@ enum
 };
 
 /** rct2: 0x008B0E40 */
-static void paint_boat_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_boat_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -60,7 +60,7 @@ static void paint_boat_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 }
 
 /** rct2: 0x008B0E50 */
-static void paint_boat_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_boat_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -79,7 +79,7 @@ static void paint_boat_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 
 }
 
 /** rct2: 0x008B0E80 */
-static void paint_boat_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_boat_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 	switch (direction) {
@@ -118,7 +118,7 @@ static void paint_boat_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint
 }
 
 /** rct2: 0x008B0E90 */
-static void paint_boat_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_boat_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_boat_ride_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
@@ -126,7 +126,7 @@ static void paint_boat_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uin
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_FLAT:

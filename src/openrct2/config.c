@@ -83,7 +83,7 @@ typedef struct config_section_definition {
 	void *base_address;
 	const_utf8string section_name;
 	config_property_definition *property_definitions;
-	int property_definitions_count;
+	sint32 property_definitions_count;
 } config_section_definition;
 
 #pragma region Enum definitions
@@ -340,15 +340,15 @@ static bool config_open(const utf8string path);
 static bool config_save(const utf8string path);
 static void config_read_properties(config_section_definition **currentSection, const_utf8string line);
 static void config_save_property_value(SDL_RWops *file, uint8 type, value_union *value);
-static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions);
+static bool config_read_enum(void *dest, sint32 destSize, const utf8 *key, sint32 keySize, config_enum_definition *enumDefinitions);
 static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, config_enum_definition *enumDefinitions);
 
 static void utf8_skip_whitespace(utf8 **outch);
 static void utf8_skip_non_whitespace(utf8 **outch);
 
-static int rwopsreadc(SDL_RWops *file)
+static sint32 rwopsreadc(SDL_RWops *file)
 {
-	int c = 0;
+	sint32 c = 0;
 	if (SDL_RWread(file, &c, 1, 1) != 1)
 		c = EOF;
 	return c;
@@ -383,14 +383,14 @@ static void rwopswritenewline(SDL_RWops *file)
 }
 
 static void rwopswritestresc(SDL_RWops *file, const char *str) {
-	int length = 0;
+	sint32 length = 0;
 	for (const char *c = str; *c != '\0'; ++c) {
 		if (*c == '\\') length += 2;
 		else ++length;
 	}
 
 	char *escaped = malloc(length + 1);
-	int j=0;
+	sint32 j=0;
 	for (const char *c = str; *c != '\0'; ++c) {
 		if (*c == '\\') escaped[j++] = '\\';
 		escaped[j++] = *c;
@@ -403,7 +403,7 @@ static void rwopswritestresc(SDL_RWops *file, const char *str) {
 
 void config_set_defaults()
 {
-	int i, j;
+	sint32 i, j;
 
 	for (i = 0; i < countof(_sectionDefinitions); i++) {
 		config_section_definition *section = &_sectionDefinitions[i];
@@ -454,9 +454,9 @@ void config_set_defaults()
 
 void config_release()
 {
-	for (int i = 0; i < countof(_sectionDefinitions); i++) {
+	for (sint32 i = 0; i < countof(_sectionDefinitions); i++) {
 		config_section_definition *section = &_sectionDefinitions[i];
-		for (int j = 0; j < section->property_definitions_count; j++) {
+		for (sint32 j = 0; j < section->property_definitions_count; j++) {
 			config_property_definition *property = &section->property_definitions[j];
 			value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 			if (property->type == CONFIG_VALUE_TYPE_STRING) {
@@ -504,7 +504,7 @@ bool config_open(const utf8string path)
 	utf8string lineBuffer;
 	size_t lineBufferCapacity;
 	size_t lineLength;
-	int c;
+	sint32 c;
 	config_section_definition *currentSection;
 
 	file = SDL_RWFromFile(path, "rb");
@@ -549,7 +549,7 @@ bool config_open(const utf8string path)
 bool config_save(const utf8string path)
 {
 	SDL_RWops *file;
-	int i, j;
+	sint32 i, j;
 	value_union *value;
 
 	file = SDL_RWFromFile(path, "wb");
@@ -627,10 +627,10 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 	}
 }
 
-static bool config_get_section(const utf8string line, const utf8 **sectionName, int *sectionNameSize)
+static bool config_get_section(const utf8string line, const utf8 **sectionName, sint32 *sectionNameSize)
 {
 	utf8 *ch;
-	int c;
+	sint32 c;
 
 	ch = line;
 	utf8_skip_whitespace(&ch);
@@ -644,14 +644,14 @@ static bool config_get_section(const utf8string line, const utf8 **sectionName, 
 		if (c == ']') break;
 	}
 
-	*sectionNameSize = (int)(ch - *sectionName - 1);
+	*sectionNameSize = (sint32)(ch - *sectionName - 1);
 	return true;
 }
 
-static bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
+static bool config_get_property_name_value(const utf8string line, utf8 **propertyName, sint32 *propertyNameSize, utf8 **value, sint32 *valueSize)
 {
 	utf8 *ch, *clast;
-	int c;
+	sint32 c;
 	bool quotes;
 
 	ch = line;
@@ -664,7 +664,7 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
 			if (c == '=') equals = true;
-			*propertyNameSize = (int)(ch - *propertyName - 1);
+			*propertyNameSize = (sint32)(ch - *propertyName - 1);
 			break;
 		} else if (c == '#') {
 			return false;
@@ -695,19 +695,19 @@ static bool config_get_property_name_value(const utf8string line, utf8 **propert
 			if (c != ' ') clast = ch;
 		}
 	}
-	if (!quotes) *valueSize = (int)(clast - *value);
-	else *valueSize = (int)(ch - *value - 1);
+	if (!quotes) *valueSize = (sint32)(clast - *value);
+	else *valueSize = (sint32)(ch - *value - 1);
 	if (quotes) (*valueSize)--;
 	return true;
 }
 
-static config_section_definition *config_get_section_def(const utf8 *name, int size)
+static config_section_definition *config_get_section_def(const utf8 *name, sint32 size)
 {
-	int i;
+	sint32 i;
 
 	for (i = 0; i < countof(_sectionDefinitions); i++) {
 		const_utf8string sectionName = _sectionDefinitions[i].section_name;
-		int sectionNameSize = (int)strnlen(sectionName, size);
+		sint32 sectionNameSize = (sint32)strnlen(sectionName, size);
 		if (sectionNameSize == size && sectionName[size] == 0 && _strnicmp(sectionName, name, size) == 0)
 			return &_sectionDefinitions[i];
 	}
@@ -715,13 +715,13 @@ static config_section_definition *config_get_section_def(const utf8 *name, int s
 	return NULL;
 }
 
-static config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, int size)
+static config_property_definition *config_get_property_def(config_section_definition *section, const utf8 *name, sint32 size)
 {
-	int i;
+	sint32 i;
 
 	for (i = 0; i < section->property_definitions_count; i++) {
 		const_utf8string propertyName = section->property_definitions[i].property_name;
-		int propertyNameSize = (int)strnlen(propertyName, size);
+		sint32 propertyNameSize = (sint32)strnlen(propertyName, size);
 		if (propertyNameSize == size && propertyName[size] == 0 && _strnicmp(propertyName, name, size) == 0)
 		{
 			return &section->property_definitions[i];
@@ -731,10 +731,10 @@ static config_property_definition *config_get_property_def(config_section_defini
 	return NULL;
 }
 
-static utf8string escape_string(const utf8 *value, int valueSize) {
-	int length = 0;
+static utf8string escape_string(const utf8 *value, sint32 valueSize) {
+	sint32 length = 0;
 	bool backslash = false;
-	for (int i=0; i < valueSize; ++i) {
+	for (sint32 i=0; i < valueSize; ++i) {
 		if (value[i] == '\\') {
 			if (backslash) backslash = false;
 			else ++length, backslash = true;
@@ -742,9 +742,9 @@ static utf8string escape_string(const utf8 *value, int valueSize) {
 	}
 	utf8string escaped = malloc(length + 1);
 
-	int j=0;
+	sint32 j=0;
 	backslash = false;
-	for (int i=0; i < valueSize; ++i) {
+	for (sint32 i=0; i < valueSize; ++i) {
 		if (value[i] == '\\') {
 			if (backslash) backslash = false;
 			else escaped[j++] = value[i], backslash = true;
@@ -755,12 +755,12 @@ static utf8string escape_string(const utf8 *value, int valueSize) {
 	return escaped;
 }
 
-static void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
+static void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, sint32 valueSize)
 {
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 
 	if (property->enum_definitions != NULL)
-		if (config_read_enum(destValue, (int)_configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
+		if (config_read_enum(destValue, (sint32)_configValueTypeSize[property->type], value, valueSize, property->enum_definitions))
 			return;
 
 	switch (property->type) {
@@ -807,13 +807,13 @@ static void config_read_properties(config_section_definition **currentSection, c
 
 	if (*ch == '[') {
 		const utf8 *sectionName;
-		int sectionNameSize;
+		sint32 sectionNameSize;
 		if (config_get_section(ch, &sectionName, &sectionNameSize))
 			*currentSection = config_get_section_def(sectionName, sectionNameSize);
 	} else {
 		if (*currentSection != NULL) {
 			utf8 *propertyName, *value;
-			int propertyNameSize = 0, valueSize;
+			sint32 propertyNameSize = 0, valueSize;
 			if (config_get_property_name_value(ch, &propertyName, &propertyNameSize, &value, &valueSize)) {
 				config_property_definition *property;
 				property = config_get_property_def(*currentSection, propertyName, propertyNameSize);
@@ -824,7 +824,7 @@ static void config_read_properties(config_section_definition **currentSection, c
 	}
 }
 
-static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions)
+static bool config_read_enum(void *dest, sint32 destSize, const utf8 *key, sint32 keySize, config_enum_definition *enumDefinitions)
 {
 	while (enumDefinitions->key != NULL) {
 		if (strlen(enumDefinitions->key) == (size_t)keySize && _strnicmp(enumDefinitions->key, key, keySize) == 0) {
@@ -898,7 +898,7 @@ static config_line *_configLines = NULL;
  */
 static bool config_find_rct2_path(utf8 *resultPath)
 {
-	int i;
+	sint32 i;
 
 	log_verbose("searching common installation locations.");
 
@@ -1053,7 +1053,7 @@ bool config_shortcut_keys_load()
 	if (file != NULL) {
 		result = SDL_RWread(file, &version, sizeof(version), 1) == 1;
 		if (result && version == SHORTCUT_FILE_VERSION) {
-			for (int i = 0; i < SHORTCUT_COUNT; i++) {
+			for (sint32 i = 0; i < SHORTCUT_COUNT; i++) {
 				if (SDL_RWread(file, &gShortcutKeys[i], sizeof(uint16), 1) != 1) {
 					break;
 				}

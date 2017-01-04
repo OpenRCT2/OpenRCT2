@@ -172,12 +172,12 @@ void S6Importer::Import()
     memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
 
     gNextFreeMapElementPointerIndex = _s6.next_free_map_element_pointer_index;
-    for (int i = 0; i < MAX_SPRITES; i++)
+    for (sint32 i = 0; i < MAX_SPRITES; i++)
     {
         memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
     }
 
-    for (int i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++)
     {
         gSpriteListHead[i] = _s6.sprite_lists_head[i];
         gSpriteListCount[i] = _s6.sprite_lists_count[i];
@@ -479,7 +479,7 @@ extern "C"
      *  rct2: 0x00676053
      * scenario (ebx)
      */
-    int scenario_load(const char * path)
+    sint32 scenario_load(const char * path)
     {
         bool result = false;
         auto s6Importer = new S6Importer();
@@ -514,7 +514,7 @@ extern "C"
         return result;
     }
 
-    int game_load_network(SDL_RWops* rw)
+    sint32 game_load_network(SDL_RWops* rw)
     {
         bool result = false;
         auto s6Importer = new S6Importer();

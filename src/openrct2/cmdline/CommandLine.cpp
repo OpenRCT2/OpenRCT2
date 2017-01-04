@@ -29,7 +29,7 @@ extern "C"
 
 #pragma region CommandLineArgEnumerator
 
-CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, int count)
+CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, sint32 count)
 {
     _arguments = arguments;
     _count = count;
@@ -560,7 +560,7 @@ namespace CommandLine
 
 extern "C"
 {
-    int cmdline_run(const char * * argv, int argc)
+    sint32 cmdline_run(const char * * argv, sint32 argc)
     {
         auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 

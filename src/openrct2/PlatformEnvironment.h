@@ -19,14 +19,14 @@
 #include <string>
 #include "common.h"
 
-enum class DIRBASE : int
+enum class DIRBASE : sint32
 {
     RCT1,               // Base directory for original RollerCoaster Tycoon 1 content.
     RCT2,               // Base directory for original RollerCoaster Tycoon 2 content.
     OPENRCT2,           // Base directory for OpenRCT2 installation.
     USER,               // Base directory for OpenRCT2 user content.
 };
-constexpr int DIRBASE_COUNT = 4;
+constexpr sint32 DIRBASE_COUNT = 4;
 using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
 
 enum class DIRID

@@ -40,9 +40,9 @@ extern "C"
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-int  gNetworkStart = NETWORK_MODE_NONE;
+sint32  gNetworkStart = NETWORK_MODE_NONE;
 char gNetworkStartHost[128];
-int  gNetworkStartPort = NETWORK_DEFAULT_PORT;
+sint32  gNetworkStartPort = NETWORK_DEFAULT_PORT;
 
 static uint32 _port            = 0;
 #endif

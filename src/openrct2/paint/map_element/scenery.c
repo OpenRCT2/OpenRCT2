@@ -42,16 +42,16 @@ static const rct_xy16 lengths[] = {
  *
  *  rct2: 0x006DFF47
  */
-void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
-	//RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)mapElement, 0, 0); return;
+void scenery_paint(uint8 direction, sint32 height, rct_map_element* mapElement) {
+	//RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
 	rct_xyz16 boxlength;
 	rct_xyz16 boxoffset;
 	boxoffset.x = 0;
 	boxoffset.y = 0;
 	boxoffset.z = height;
-	int baseImageid = 0;
-	const int rotation = get_current_rotation();
+	sint32 baseImageid = 0;
+	const sint32 rotation = get_current_rotation();
 	if (gTrackDesignSaveMode) {
 		if (!track_design_save_contains_map_element(mapElement)) {
 			baseImageid = 0x21700000;
@@ -134,7 +134,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		if (dword_F64EB0 == 0) {
 			// Draw translucent overlay:
 			// TODO: Name palette entries
-			int image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[(mapElement->properties.scenery.colour_1 & 0x1F)] << 19) + 0x40000004;
+			sint32 image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[(mapElement->properties.scenery.colour_1 & 0x1F)] << 19) + 0x40000004;
 			sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, rotation);
 		}
 	}
@@ -145,7 +145,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			// 6E01A9:
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG12) {
 				// 6E0512:
-				int image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
+				sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
 				if (dword_F64EB0 != 0) {
 					image_id = (image_id & 0x7FFFF) | dword_F64EB0;
 				}
@@ -153,7 +153,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			} else
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG13) {
 				// 6E043B:
-				int image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
+				sint32 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
 				if (dword_F64EB0 != 0) {
 					image_id = (image_id & 0x7FFFF) | dword_F64EB0;
 				}
@@ -173,8 +173,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			} else
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 				// 6E035C:
-				int minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
-				int timeImageBase = gRealTimeOfDay.hour;
+				sint32 minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
+				sint32 timeImageBase = gRealTimeOfDay.hour;
 				while (timeImageBase >= 12) {
 					timeImageBase -= 12;
 				}
@@ -182,7 +182,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				if (timeImageBase >= 48) {
 					timeImageBase -= 48;
 				}
-				int image_id = timeImageBase + (direction * 12);
+				sint32 image_id = timeImageBase + (direction * 12);
 				if (image_id >= 48) {
 					image_id -= 48;
 				}
@@ -205,7 +205,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			} else
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG15) {
 				// 6E02F6:
-				int image_id = gCurrentTicks;
+				sint32 image_id = gCurrentTicks;
 				image_id += gUnk9DE568 / 4;
 				image_id += gUnk9DE56C / 4;
 				image_id = (image_id / 4) & 15;
@@ -218,7 +218,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				if (entry->small_scenery.flags & SMALL_SCENERY_FLAG16) {
 					// nothing
 				}
-				int esi = gCurrentTicks;
+				sint32 esi = gCurrentTicks;
 				if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG22)) {
 					// 6E01F8:
 					esi += ((gUnk9DE568 / 4) + (gUnk9DE56C / 4));
@@ -229,7 +229,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				uint8 cl = cx & 0xFF;
 				esi >>= cl;
 				esi &= entry->small_scenery.var_16;
-				int image_id = 0;
+				sint32 image_id = 0;
 				if (esi < entry->small_scenery.var_18) {
 					image_id = entry->small_scenery.var_10[esi];
 				}
@@ -257,8 +257,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	// 6E0556: Draw supports:
 	if (mapElement->properties.scenery.colour_1 & 0x20) {
 		if (!(entry->small_scenery.flags & SMALL_SCENERY_FLAG20)) {
-			int ax = 0;
-			int supportHeight = height;
+			sint32 ax = 0;
+			sint32 supportHeight = height;
 			if (supportHeight & 0xF) {
 				supportHeight &= 0xFFFFFFF0;
 				ax = 49;

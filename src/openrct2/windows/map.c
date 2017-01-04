@@ -116,20 +116,20 @@ static const uint16 RideKeyColours[] = {
 
 static void window_map_close(rct_window *w);
 static void window_map_resize(rct_window *w);
-static void window_map_mouseup(rct_window *w, int widgetIndex);
-static void window_map_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
+static void window_map_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_map_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
 static void window_map_update(rct_window *w);
-static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y);
-static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y);
-static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y);
-static void window_map_toolabort(rct_window *w, int widgetIndex);
-static void window_map_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
-static void window_map_textinput(rct_window *w, int widgetIndex, char *text);
-static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId);
+static void window_map_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_map_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_map_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_map_toolabort(rct_window *w, sint32 widgetIndex);
+static void window_map_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_map_textinput(rct_window *w, sint32 widgetIndex, char *text);
+static void window_map_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId);
 static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_map_events = {
 	window_map_close,
@@ -182,16 +182,16 @@ static void window_map_inputsize_land(rct_window *w);
 static void window_map_inputsize_map(rct_window *w);
 static void window_map_set_bounds(rct_window* w);
 
-static void window_map_set_land_rights_tool_update(int x, int y);
-static void window_map_place_park_entrance_tool_update(int x, int y);
-static void window_map_set_peep_spawn_tool_update(int x, int y);
-static void window_map_place_park_entrance_tool_down(int x, int y);
-static void window_map_set_peep_spawn_tool_down(int x, int y);
+static void window_map_set_land_rights_tool_update(sint32 x, sint32 y);
+static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y);
+static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y);
+static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y);
+static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y);
 static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window *w);
 
-static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY);
+static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *mapX, sint32 *mapY);
 
 /**
 *
@@ -270,7 +270,7 @@ static void window_map_close(rct_window *w)
  *
  *  rct2: 0x0068CFC1
  */
-static void window_map_mouseup(rct_window *w, int widgetIndex)
+static void window_map_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -403,7 +403,7 @@ static void window_map_resize(rct_window *w)
  *
  *  rct2: 0x0068D040
  */
-static void window_map_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
+static void window_map_mousedown(sint32 widgetIndex, rct_window *w, rct_widget *widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_SPINNER_UP:
@@ -427,7 +427,7 @@ static void window_map_update(rct_window *w)
 		window_map_center_on_view_point();
 	}
 
-	for (int i = 0; i < 16; i++)
+	for (sint32 i = 0; i < 16; i++)
 		map_window_set_pixels(w);
 
 	window_invalidate(w);
@@ -452,7 +452,7 @@ static void window_map_update(rct_window *w)
  *
  *  rct2: 0x0068D093
  */
-static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y)
+static void window_map_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -471,7 +471,7 @@ static void window_map_toolupdate(rct_window* w, int widgetIndex, int x, int y)
  *
  *  rct2: 0x0068D074
  */
-static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y)
+static void window_map_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_BUILD_PARK_ENTRANCE:
@@ -487,7 +487,7 @@ static void window_map_tooldown(rct_window* w, int widgetIndex, int x, int y)
  *
  *  rct2: 0x0068D088
  */
-static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
+static void window_map_tooldrag(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -511,7 +511,7 @@ static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
  *
  *  rct2: 0x0068D055
  */
-static void window_map_toolabort(rct_window *w, int widgetIndex)
+static void window_map_toolabort(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
@@ -540,7 +540,7 @@ static void window_map_toolabort(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x0068D7CC
  */
-static void window_map_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_map_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	window_map_invalidate(w);
 
@@ -552,9 +552,9 @@ static void window_map_scrollgetsize(rct_window *w, int scrollIndex, int *width,
  *
  *  rct2: 0x0068D726
  */
-static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-	int mapX = 0, mapY = 0, mapZ = 0;
+	sint32 mapX = 0, mapY = 0, mapZ = 0;
 	rct_window *mainWindow;
 
 	map_window_screen_to_map(x, y, &mapX, &mapY);
@@ -569,9 +569,9 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 
 	if (land_tool_is_active()) {
 		// Set land terrain
-		int landToolSize = max(1, gLandToolSize);
-		int size = (landToolSize * 32) - 32;
-		int radius = (landToolSize * 16) - 16;
+		sint32 landToolSize = max(1, gLandToolSize);
+		sint32 size = (landToolSize * 32) - 32;
+		sint32 radius = (landToolSize * 16) - 16;
 		mapX = (mapX - radius) & 0xFFE0;
 		mapY = (mapY - radius) & 0xFFE0;
 
@@ -596,9 +596,9 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 		);
 	} else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
 		// Set land rights
-		int landToolSize = max(1, gLandToolSize);
-		int size = (landToolSize * 32) - 32;
-		int radius = (landToolSize * 16) - 16;
+		sint32 landToolSize = max(1, gLandToolSize);
+		sint32 size = (landToolSize * 32) - 32;
+		sint32 radius = (landToolSize * 16) - 16;
 		mapX = (mapX - radius) & 0xFFE0;
 		mapY = (mapY - radius) & 0xFFE0;
 
@@ -624,9 +624,9 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 	}
 }
 
-static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_map_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
-	int size;
+	sint32 size;
 	char* end;
 
 	if (text == NULL)
@@ -648,7 +648,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 			size += 2;
 			size=clamp(MINIMUM_MAP_SIZE_TECHNICAL, size, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-			int currentSize = gMapSize;
+			sint32 currentSize = gMapSize;
 			while (size < currentSize) {
 				map_window_decrease_map_size();
 				currentSize--;
@@ -667,7 +667,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
  *
  *  rct2: 0x0068D140
  */
-static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
+static void window_map_tooltip(rct_window* w, sint32 widgetIndex, rct_string_id *stringId)
 {
 	set_format_arg(0, rct_string_id, STR_MAP);
 }
@@ -679,7 +679,7 @@ static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *st
 static void window_map_invalidate(rct_window *w)
 {
 	uint64 pressedWidgets;
-	int i, height;
+	sint32 i, height;
 
 	colour_scheme_update(w);
 
@@ -816,8 +816,8 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	window_map_draw_tab_images(w, dpi);
 
-	int x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
-	int y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
+	sint32 x = w->x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2;
+	sint32 y = w->y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2;
 
 	// Draw land tool size
 	if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && gLandToolSize > 7) {
@@ -849,7 +849,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				STR_MAP_TOILET,
 			};
 
-			for (int i = 0; i < 8; i++) {
+			for (sint32 i = 0; i < 8; i++) {
 				gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
 				gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + 10, y);
 				y += 10;
@@ -868,7 +868,7 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0068CF23
  */
-static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	rct_g1_element *g1_element, pushed_g1_element;
 
@@ -1168,7 +1168,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0068D24E
  */
-static void window_map_set_land_rights_tool_update(int x, int y)
+static void window_map_set_land_rights_tool_update(sint32 x, sint32 y)
 {
 	sint16 mapX, mapY;
 	rct_viewport *viewport;
@@ -1182,12 +1182,12 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 	gMapSelectType = MAP_SELECT_TYPE_FULL;
 
-	int landToolSize = gLandToolSize;
+	sint32 landToolSize = gLandToolSize;
 	if (landToolSize == 0)
 		landToolSize = 1;
 
-	int size = (landToolSize * 32) - 32;
-	int radius = (landToolSize * 16) - 16;
+	sint32 size = (landToolSize * 32) - 32;
+	sint32 radius = (landToolSize * 16) - 16;
 	mapX = (mapX - radius) & 0xFFE0;
 	mapY = (mapY - radius) & 0xFFE0;
 	gMapSelectPositionA.x = mapX;
@@ -1201,7 +1201,7 @@ static void window_map_set_land_rights_tool_update(int x, int y)
  *
  *  rct2: 0x00666EEF
  */
-static void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *direction)
+static void sub_666EEF(sint32 x, sint32 y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, sint32 *direction)
 {
 	rct_map_element *mapElement;
 
@@ -1227,10 +1227,10 @@ static void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, i
  *
  *  rct2: 0x00666FD0
  */
-static void window_map_place_park_entrance_tool_update(int x, int y)
+static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 {
 	sint16 mapX, mapY, mapZ = 0;
-	int direction, sideDirection;
+	sint32 direction, sideDirection;
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
@@ -1271,9 +1271,9 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
  *
  *  rct2: 0x0068D4E9
  */
-static void window_map_set_peep_spawn_tool_update(int x, int y)
+static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
 {
-	int mapX, mapY, mapZ, direction;
+	sint32 mapX, mapY, mapZ, direction;
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
@@ -1309,12 +1309,12 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
  *
  *  rct2: 0x006670A4
  */
-static void window_map_place_park_entrance_tool_down(int x, int y)
+static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
 {
 	park_remove_ghost_entrance();
 
 	sint16 mapX, mapY, mapZ;
-	int direction;
+	sint32 direction;
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
 	if (mapX != MAP_LOCATION_NULL) {
 		gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
@@ -1342,10 +1342,10 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
  *
  *  rct2: 0x0068D573
  */
-static void window_map_set_peep_spawn_tool_down(int x, int y)
+static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement, *surfaceMapElement;
-	int mapX, mapY, mapZ, direction;
+	sint32 mapX, mapY, mapZ, direction;
 
 	footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
 	if (mapX == 0x8000)
@@ -1360,7 +1360,7 @@ static void window_map_set_peep_spawn_tool_down(int x, int y)
 	mapY = mapY + 16 + (word_981D6C[direction].y * 15);
 	mapZ = mapElement->base_height / 2;
 
-	int peepSpawnIndex = 0;
+	sint32 peepSpawnIndex = 0;
 	if (gLandToolSize != 1 && gPeepSpawns[0].x != 0xFFFF)
 		peepSpawnIndex = 1;
 
@@ -1564,7 +1564,7 @@ static const uint8 RideColourKey[] = {
 	COLOUR_KEY_RIDE,				//
 };
 
-static uint16 map_window_get_pixel_colour_peep(int x, int y)
+static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement;
 	uint16 colour;
@@ -1577,9 +1577,9 @@ static uint16 map_window_get_pixel_colour_peep(int x, int y)
 	if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
 		colour = 10 | (colour & 0xFF00);
 
-	const int maxSupportedMapElementType = (int)countof(ElementTypeAddColour);
+	const sint32 maxSupportedMapElementType = (sint32)countof(ElementTypeAddColour);
 	while (!map_element_is_last_for_tile(mapElement++)) {
-		int mapElementType = map_element_get_type(mapElement) >> 2;
+		sint32 mapElementType = map_element_get_type(mapElement) >> 2;
 		if (mapElementType >= maxSupportedMapElementType) {
 			mapElementType = MAP_ELEMENT_TYPE_CORRUPT >> 2;
 		}
@@ -1590,7 +1590,7 @@ static uint16 map_window_get_pixel_colour_peep(int x, int y)
 	return colour;
 }
 
-static uint16 map_window_get_pixel_colour_ride(int x, int y)
+static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement;
 	rct_ride *ride;
@@ -1634,9 +1634,9 @@ static void map_window_set_pixels(rct_window *w)
 {
 	uint16 colour = 0;
 	uint8 *destination;
-	int x = 0, y = 0, dx = 0, dy = 0;
+	sint32 x = 0, y = 0, dx = 0, dy = 0;
 
-	int pos = (_currentLine * 511) + 255;
+	sint32 pos = (_currentLine * 511) + 255;
 	rct_xy16 destinationPosition = {.y = pos/512, .x = pos % 512};
 	destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
 	switch (get_current_rotation()) {
@@ -1666,7 +1666,7 @@ static void map_window_set_pixels(rct_window *w)
 		break;
 	}
 
-	for (int i = 0; i < 256; i++) {
+	for (sint32 i = 0; i < 256; i++) {
 		if (
 			x > 0 &&
 			y > 0 &&
@@ -1696,9 +1696,9 @@ static void map_window_set_pixels(rct_window *w)
 		_currentLine = 0;
 }
 
-static void map_window_screen_to_map(int screenX, int screenY, int *mapX, int *mapY)
+static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *mapX, sint32 *mapY)
 {
-	int x, y;
+	sint32 x, y;
 
 	screenX = ((screenX + 8) - 256) / 2;
 	screenY = ((screenY + 8)      ) / 2;

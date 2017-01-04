@@ -100,7 +100,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
-		for (int i = 0; i < 32; i += 2) {
+		for (sint32 i = 0; i < 32; i += 2) {
 			if (vehicle->peep[i] == SPRITE_INDEX_NULL) {
 				continue;
 			}
@@ -110,7 +110,7 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 				continue;
 			}
 
-			int frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
+			sint32 frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
 			imageColourFlags = vehicle->peep_tshirt_colours[i] << 19 | vehicle->peep_tshirt_colours[i + 1] << 24 | 0xA0000000;
 			imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
 			sub_98199C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
@@ -128,11 +128,11 @@ static void paint_ferris_wheel_structure(uint8 rideIndex, uint8 direction, sint8
 /**
  * rct2: 0x008A8EC4
  */
-static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
-	int edges;
+	sint32 edges;
 	if (direction & 1) {
 		edges = edges_1x4_nw_se[relativeTrackSequence];
 	} else {
@@ -181,7 +181,7 @@ static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direc
 /**
  * rct2: 0x008A8CC8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_1_X_4_C) {
 		return NULL;

@@ -185,7 +185,7 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 }
 
 /** rct2: 0x00898514 */
-static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
@@ -222,7 +222,7 @@ static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direc
  *
  *  rct2: 0x00898384
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 	case FLAT_TRACK_ELEM_1_X_4_A: return paint_magic_carpet;

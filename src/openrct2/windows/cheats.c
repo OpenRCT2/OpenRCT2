@@ -287,18 +287,18 @@ static rct_widget *window_cheats_page_widgets[] = {
 	window_cheats_rides_widgets,
 };
 
-static void window_cheats_money_mouseup(rct_window *w, int widgetIndex);
-static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_widget* widget);
-static void window_cheats_misc_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex);
-static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex);
-static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex);
+static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_cheats_money_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_misc_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget);
+static void window_cheats_misc_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_cheats_guests_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_cheats_misc_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_cheats_rides_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_cheats_set_page(rct_window *w, int page);
-static void window_cheats_text_input(rct_window *w, int widgetIndex, char *text);
+static void window_cheats_set_page(rct_window *w, sint32 page);
+static void window_cheats_text_input(rct_window *w, sint32 widgetIndex, char *text);
 
 static rct_window_event_list window_cheats_money_events = {
 	NULL,
@@ -491,7 +491,7 @@ void window_cheats_open()
 	park_rating_spinner_value = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 }
 
-static void window_cheats_money_mousedown(int widgetIndex, rct_window *w, rct_widget* widget) 
+static void window_cheats_money_mousedown(sint32 widgetIndex, rct_window *w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MONEY_SPINNER_INCREMENT:
@@ -550,7 +550,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 	}
 }
 
-static void window_cheats_misc_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_cheats_misc_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (widgetIndex != WIDX_WEATHER_DROPDOWN_BUTTON || dropdownIndex == -1)
 		return;
@@ -558,7 +558,7 @@ static void window_cheats_misc_dropdown(rct_window *w, int widgetIndex, int drop
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FORCEWEATHER, dropdownIndex, GAME_COMMAND_CHEAT, 0, 0);
 }
 
-static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
+static void window_cheats_money_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -586,7 +586,7 @@ static void window_cheats_money_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex)
+static void window_cheats_guests_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -679,7 +679,7 @@ static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
+static void window_cheats_misc_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -754,7 +754,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
+static void window_cheats_rides_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -844,7 +844,7 @@ static void window_cheats_update(rct_window *w)
 
 static void window_cheats_invalidate(rct_window *w)
 {
-	int i;
+	sint32 i;
 
 	colour_scheme_update(w);
 
@@ -879,7 +879,7 @@ static void window_cheats_invalidate(rct_window *w)
 		}
 	}break;
 	case WINDOW_CHEATS_PAGE_GUESTS:
-		set_format_arg(0, int, 10000);
+		set_format_arg(0, sint32, 10000);
 		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
 		widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
 		widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -943,7 +943,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-	int sprite_idx;
+	sint32 sprite_idx;
 
 	// Money tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_1))) {
@@ -976,7 +976,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 	}
 }
 
-static void window_cheats_set_page(rct_window *w, int page)
+static void window_cheats_set_page(rct_window *w, sint32 page)
 {
 	w->page = page;
 	w->frame_no = 0;
@@ -988,7 +988,7 @@ static void window_cheats_set_page(rct_window *w, int page)
 	w->event_handlers = window_cheats_page_events[page];
 	w->widgets = window_cheats_page_widgets[page];
 
-	int maxY = 0;
+	sint32 maxY = 0;
 	rct_widget *widget = &w->widgets[8];
 	while (widget->type != WWT_LAST) {
 		maxY = max(maxY, widget->bottom);

@@ -39,11 +39,11 @@ static const uint32 flying_saucers_fence_sprites[] = {
 /**
  * rct2: 0x008873D8
  */
-static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-	int edges = edges_4x4[relativeTrackSequence];
+	sint32 edges = edges_4x4[relativeTrackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -61,7 +61,7 @@ static void paint_flying_saucers(uint8 rideIndex, uint8 trackSequence, uint8 dir
 /**
  * rct2: 0x00887208
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_4_X_4) {
 		return NULL;

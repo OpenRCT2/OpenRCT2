@@ -82,11 +82,11 @@ const uint32 chairlift_bullwheel_frames[] = {
 	SPR_CHAIRLIFT_BULLWHEEL_FRAME_4
 };
 
-static void chairlift_paint_util_draw_supports(int segments, uint16 height)
+static void chairlift_paint_util_draw_supports(sint32 segments, uint16 height)
 {
 	bool success = false;
 
-	for (int s = 0; s < 9; s++) {
+	for (sint32 s = 0; s < 9; s++) {
 		if (!(segments & segment_offsets[s])) {
 			continue;
 		}
@@ -100,7 +100,7 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 		return;
 	}
 
-	for (int s = 0; s < 9; s++) {
+	for (sint32 s = 0; s < 9; s++) {
 		if (!(segments & segment_offsets[s])) {
 			continue;
 		}
@@ -111,7 +111,7 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 	}
 }
 
-static rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int x, int y, int z, int rideIndex)
+static rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(sint32 x, sint32 y, sint32 z, sint32 rideIndex)
 {
 	rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	if (mapElement == NULL) {
@@ -163,7 +163,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 	return nextTrack == NULL;
 }
 
-static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint8 trackType = mapElement->properties.track.type;
@@ -242,7 +242,7 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	const rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 	uint8 trackType = mapElement->properties.track.type;
@@ -323,7 +323,7 @@ static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, 
 }
 
 /** rct2: 0x00744068 */
-static void chairlift_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	if (direction % 2) {
 		chairlift_paint_station_se_nw(rideIndex, trackSequence, direction, height, mapElement);
@@ -332,7 +332,7 @@ static void chairlift_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 
 	}
 }
 
-static void chairlift_paint_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 	if (direction & 1) {
@@ -350,7 +350,7 @@ static void chairlift_paint_flat(uint8 rideIndex, uint8 trackSequence, uint8 dir
 }
 
 /** rct2: 0x00743FD8 */
-static void chairlift_paint_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -385,7 +385,7 @@ static void chairlift_paint_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /** rct2: 0x00743FD8 */
-static void chairlift_paint_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -437,7 +437,7 @@ static void chairlift_paint_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequen
 }
 
 /** rct2: 0x00743FF8 */
-static void chairlift_paint_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -490,25 +490,25 @@ static void chairlift_paint_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequen
 }
 
 /** rct2: 0x00744008 */
-static void chairlift_paint_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	chairlift_paint_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x00744018 */
-static void chairlift_paint_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	chairlift_paint_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x00744028 */
-static void chairlift_paint_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	chairlift_paint_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x00744038 */
-static void chairlift_paint_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -572,13 +572,13 @@ static void chairlift_paint_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x00744048 */
-static void chairlift_paint_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void chairlift_paint_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	chairlift_paint_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(sint32 trackType, sint32 direction)
 {
 	switch (trackType) {
 		case TRACK_ELEM_BEGIN_STATION:

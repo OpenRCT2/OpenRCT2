@@ -44,7 +44,7 @@ uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length)
  *
  *  rct2: 0x00676FD2
  */
-int sawyercoding_validate_checksum(SDL_RWops* rw)
+sint32 sawyercoding_validate_checksum(SDL_RWops* rw)
 {
 	size_t i, dataSize;
 	uint32 checksum, fileChecksum;
@@ -286,7 +286,7 @@ size_t sawyercoding_encode_td6(const uint8* src, uint8* dst, size_t length){
 }
 
 /* Based off of rct2: 0x006770C1 */
-int sawyercoding_validate_track_checksum(const uint8* src, size_t length){
+sint32 sawyercoding_validate_track_checksum(const uint8* src, size_t length){
 	uint32 file_checksum = *((uint32*)&src[length - 4]);
 
 	uint32 checksum = 0;
@@ -387,7 +387,7 @@ static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
 			*dst++ = src[++i];
 		} else {
 			count = (src[i] & 7) + 1;
-			copyOffset = dst + (int)(src[i] >> 3) - 32;
+			copyOffset = dst + (sint32)(src[i] >> 3) - 32;
 			memcpy(dst, copyOffset, count);
 			dst = (uint8*)((uintptr_t)dst + count);
 		}
@@ -534,7 +534,7 @@ static void encode_chunk_rotate(uint8 *buffer, size_t length)
 
 #pragma endregion
 
-int sawyercoding_detect_file_type(const uint8 *src, size_t length)
+sint32 sawyercoding_detect_file_type(const uint8 *src, size_t length)
 {
 	size_t i;
 
@@ -550,9 +550,9 @@ int sawyercoding_detect_file_type(const uint8 *src, size_t length)
 	return sawyercoding_detect_rct1_version(checksum - actualChecksum);
 }
 
-int sawyercoding_detect_rct1_version(int gameVersion)
+sint32 sawyercoding_detect_rct1_version(sint32 gameVersion)
 {
-	int fileType = (gameVersion) > 0 ? FILE_TYPE_SV4 : FILE_TYPE_SC4;
+	sint32 fileType = (gameVersion) > 0 ? FILE_TYPE_SV4 : FILE_TYPE_SC4;
 	gameVersion=abs(gameVersion);
 
 	if (gameVersion >= 108000 && gameVersion < 110000)

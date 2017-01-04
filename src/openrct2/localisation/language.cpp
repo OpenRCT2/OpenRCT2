@@ -28,7 +28,7 @@ extern "C" {
 
 #include "localisation.h"
 
-int gCurrentLanguage = LANGUAGE_UNDEFINED;
+sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;
 
 static ILanguagePack * _languageFallback = nullptr;
@@ -44,7 +44,7 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {
     const utf8 * ch = text;
     utf8 * dstCh = text;
-    int codepoint;
+    sint32 codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
@@ -87,7 +87,7 @@ static utf8 * GetLanguagePath(utf8 * buffer, size_t bufferSize, uint32 languageI
     return buffer;
 }
 
-bool language_open(int id)
+bool language_open(sint32 id)
 {
     char filename[MAX_PATH];
 
@@ -128,7 +128,7 @@ void language_close_all()
 constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
-static wchar_t convert_specific_language_character_to_unicode(int languageId, wchar_t codepoint)
+static wchar_t convert_specific_language_character_to_unicode(sint32 languageId, wchar_t codepoint)
 {
     switch (languageId) {
     case RCT2_LANGUAGE_ID_KOREAN:
@@ -142,7 +142,7 @@ static wchar_t convert_specific_language_character_to_unicode(int languageId, wc
     }
 }
 
-static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int languageId)
+static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, sint32 languageId)
 {
     constexpr char CODEPOINT_DOUBLEBYTE = (char)(uint8)0xFF;
 
@@ -174,7 +174,7 @@ static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, int
     return sb.StealString();
 }
 
-static bool rct2_language_is_multibyte_charset(int languageId)
+static bool rct2_language_is_multibyte_charset(sint32 languageId)
 {
     switch (languageId) {
     case RCT2_LANGUAGE_ID_KOREAN:
@@ -187,7 +187,7 @@ static bool rct2_language_is_multibyte_charset(int languageId)
     }
 }
 
-utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, int languageId)
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, sint32 languageId)
 {
     if (rct2_language_is_multibyte_charset(languageId))
     {

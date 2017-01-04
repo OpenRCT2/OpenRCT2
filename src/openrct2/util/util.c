@@ -24,28 +24,28 @@
 #include "util.h"
 #include "zlib.h"
 
-int squaredmetres_to_squaredfeet(int squaredMetres)
+sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres)
 {
 	// 1 metre squared = 10.7639104 feet squared
 	// RCT2 approximates as 11
 	return squaredMetres * 11;
 }
 
-int metres_to_feet(int metres)
+sint32 metres_to_feet(sint32 metres)
 {
 	// 1 metre = 3.2808399 feet
 	// RCT2 approximates as 3.28125
 	return (metres * 840) / 256;
 }
 
-int mph_to_kmph(int mph)
+sint32 mph_to_kmph(sint32 mph)
 {
 	// 1 mph = 1.60934 kmph
 	// RCT2 approximates as 1.609375
 	return (mph * 1648) >> 10;
 }
 
-int mph_to_dmps(int mph)
+sint32 mph_to_dmps(sint32 mph)
 {
 	// 1 mph = 4.4704 decimeters/s
 	return (mph * 73243) >> 14;
@@ -53,7 +53,7 @@ int mph_to_dmps(int mph)
 
 bool filename_valid_characters(const utf8 *filename)
 {
-	for (int i = 0; filename[i] != '\0'; i++) {
+	for (sint32 i = 0; filename[i] != '\0'; i++) {
 		if (filename[i] == '\\' || filename[i] == '/' || filename[i] == ':' || filename[i] == '?' ||
 			filename[i] == '*' || filename[i] == '<' || filename[i] == '>' || filename[i] == '|')
 			return false;
@@ -172,21 +172,21 @@ bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
 	return 1;
 }
 
-int bitscanforward(int source)
+sint32 bitscanforward(sint32 source)
 {
 	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
-		int i;
-		uint8 success = _BitScanForward((unsigned long *)&i, (unsigned long)source);
+		sint32 i;
+		uint8 success = _BitScanForward((uint32 *)&i, (uint32)source);
 		return success != 0 ? i : -1;
 	#elif defined(__GNUC__)
-		int success = __builtin_ffs(source);
+		sint32 success = __builtin_ffs(source);
 		return success - 1;
 	#else
 	#pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
 	// This is a low-hanging optimisation boost, check if your compiler offers
 	// any intrinsic.
 	// cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-	for (int i = 0; i < 32; i++)
+	for (sint32 i = 0; i < 32; i++)
 		if (source & (1u << i))
 			return i;
 
@@ -208,11 +208,11 @@ static bool bitcount_popcnt_available()
 	#if defined(OpenRCT2_POPCNT_GNUC)
 		// we could use __builtin_cpu_supports, but it requires runtime support from
 		// the compiler's library, which clang doesn't have yet.
-		unsigned int eax, ebx, ecx = 0, edx; // avoid "maybe uninitialized"
+		uint32 eax, ebx, ecx = 0, edx; // avoid "maybe uninitialized"
 		__get_cpuid(1, &eax, &ebx, &ecx, &edx);
 		return (ecx & (1 << 23));
 	#elif defined(OpenRCT2_POPCNT_MSVC)
-		int regs[4];
+		sint32 regs[4];
 		__cpuid(regs, 1);
 		return (regs[2] & (1 << 23));
 	#else
@@ -220,12 +220,12 @@ static bool bitcount_popcnt_available()
 	#endif
 }
 
-static int bitcount_popcnt(uint32 source)
+static sint32 bitcount_popcnt(uint32 source)
 {
 	#if defined(OpenRCT2_POPCNT_GNUC)
 		// use asm directly in order to actually emit the instruction : using
 		// __builtin_popcount results in an extra call to a library function.
-		int rv;
+		sint32 rv;
 		asm volatile ("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
 		return rv;
 	#elif defined(OpenRCT2_POPCNT_MSVC)
@@ -236,10 +236,10 @@ static int bitcount_popcnt(uint32 source)
 	#endif
 }
 
-static int bitcount_lut(uint32 source)
+static sint32 bitcount_lut(uint32 source)
 {
 	// https://graphics.stanford.edu/~seander/bithacks.html
-	static const unsigned char BitsSetTable256[256] =
+	static const uint8 BitsSetTable256[256] =
 	{
 	#define B2(n) n,     n+1,     n+1,     n+2
 	#define B4(n) B2(n), B2(n+1), B2(n+1), B2(n+2)
@@ -252,19 +252,19 @@ static int bitcount_lut(uint32 source)
 		BitsSetTable256[source >> 24];
 }
 
-static int(*bitcount_fn)(uint32);
+static sint32(*bitcount_fn)(uint32);
 
 void bitcount_init()
 {
 	bitcount_fn = bitcount_popcnt_available() ? bitcount_popcnt : bitcount_lut;
 }
 
-int bitcount(uint32 source)
+sint32 bitcount(uint32 source)
 {
 	return bitcount_fn(source);
 }
 
-bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
+bool strequals(const char *a, const char *b, sint32 length, bool caseInsensitive)
 {
 	return caseInsensitive ?
 		_strnicmp(a, b, length) == 0 :
@@ -272,10 +272,10 @@ bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
 }
 
 /* case insensitive compare */
-int strcicmp(char const *a, char const *b)
+sint32 strcicmp(char const *a, char const *b)
 {
 	for (;; a++, b++) {
-		int d = tolower(*a) - tolower(*b);
+		sint32 d = tolower(*a) - tolower(*b);
 		if (d != 0 || !*a)
 			return d;
 	}
@@ -288,14 +288,14 @@ int strcicmp(char const *a, char const *b)
 // - Guest 100
 // - John v2.0
 // - John v2.1
-int strlogicalcmp(char const *a, char const *b) {
+sint32 strlogicalcmp(char const *a, char const *b) {
 	for (;; a++, b++) {
-		int result = tolower(*a) - tolower(*b);
+		sint32 result = tolower(*a) - tolower(*b);
 		bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
 		if (result != 0 || !*a || both_numeric) { // difference found || end of string
 			if (both_numeric) { // a and b both start with a number
 				// Get the numbers in the string at current positions
-				int na = 0 , nb = 0;
+				sint32 na = 0 , nb = 0;
 				for (; *a >= '0' && *a <= '9'; a++) { na *= 10; na += *a - '0'; }
 				for (; *b >= '0' && *b <= '9'; b++) { nb *= 10; nb += *b - '0'; }
 				// In case the numbers are the same
@@ -425,7 +425,7 @@ bool str_is_null_or_empty(const char *str)
 
 uint32 srand0, srand1, srand2, srand3;
 
-void util_srand(int source) {
+void util_srand(sint32 source) {
 	srand0 = source;
 	srand1 = srand0 ^ (source >> 24);
 	srand2 = srand1 ^ (source >> 16);
@@ -452,9 +452,9 @@ uint32 util_rand() {
  * @return Returns a pointer to memory holding decompressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size)
 {
-	int ret = Z_OK;
+	sint32 ret = Z_OK;
 	uLongf out_size = (uLong)*data_out_size;
 	if (out_size == 0)
 	{
@@ -464,7 +464,7 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 		out_size = min(MAX_ZLIB_REALLOC, out_size);
 	}
 	uLongf buffer_size = out_size;
-	unsigned char *buffer = malloc(buffer_size);
+	uint8 *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
 		{
@@ -495,12 +495,12 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
  * @return Returns a pointer to memory holding compressed data or NULL on failure.
  * @note It is caller's responsibility to free() the returned pointer once done with it.
  */
-unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size)
 {
-	int ret = Z_OK;
+	sint32 ret = Z_OK;
 	uLongf out_size = (uLongf)*data_out_size;
 	uLong buffer_size = compressBound((uLong)data_in_size);
-	unsigned char *buffer = malloc(buffer_size);
+	uint8 *buffer = malloc(buffer_size);
 	do {
 		if (ret == Z_BUF_ERROR)
 		{

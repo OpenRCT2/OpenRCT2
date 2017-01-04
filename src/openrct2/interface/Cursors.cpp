@@ -104,12 +104,12 @@ extern "C"
         Cursors::Dispose();
     }
 
-    int cursors_getcurrentcursor()
+    sint32 cursors_getcurrentcursor()
     {
         return Cursors::GetCurrentCursor();
     }
 
-    void cursors_setcurrentcursor(int cursorId)
+    void cursors_setcurrentcursor(sint32 cursorId)
     {
         Cursors::SetCurrentCursor((CURSOR_ID)cursorId);
     }

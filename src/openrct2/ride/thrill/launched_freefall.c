@@ -42,10 +42,10 @@ static const uint32 launched_freefall_fence_sprites[] = {
  *
  *  rct2: 0x006D5FAB
  */
-void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+void vehicle_visual_launched_freefall(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-	int image_id;
-	int baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+	sint32 image_id;
+	sint32 baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
 
 	const uint8 rotation = get_current_rotation();
 	// Draw back:
@@ -84,11 +84,11 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 }
 
 /** rct2: 0x006FD1F8 */
-static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -116,7 +116,7 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 		height -= 64;
 	}
 
-	int blockedSegments = 0;
+	sint32 blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENTS_ALL; break;
 		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
@@ -134,7 +134,7 @@ static void paint_launched_freefall_base(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x006FD208 */
-static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	if (trackSequence == 1) {
 		return;
@@ -158,7 +158,7 @@ static void paint_launched_freefall_tower_section(uint8 rideIndex, uint8 trackSe
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(sint32 trackType, sint32 direction) {
 	switch(trackType) {
 		case TRACK_ELEM_TOWER_BASE:
 			return paint_launched_freefall_base;

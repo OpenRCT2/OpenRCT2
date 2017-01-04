@@ -147,7 +147,7 @@ static const uint32 ghost_train_track_pieces_brakes[4] = {
 };
 
 /** rct2: 0x00770BEC */
-static void paint_ghost_train_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -174,7 +174,7 @@ static void paint_ghost_train_track_flat(uint8 rideIndex, uint8 trackSequence, u
 }
 
 /** rct2: 0x00770BFC */
-static void paint_ghost_train_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -217,7 +217,7 @@ static void paint_ghost_train_track_25_deg_up(uint8 rideIndex, uint8 trackSequen
 }
 
 /** rct2: 0x00770C0C */
-static void paint_ghost_train_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -258,7 +258,7 @@ static void paint_ghost_train_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-static void paint_ghost_train_track_25_deg_up_to_flat_shared(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_up_to_flat_shared(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -285,7 +285,7 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(uint8 rideIndex, ui
 }
 
 /** rct2: 0x00770C1C */
-static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_ghost_train_track_25_deg_up_to_flat_shared(rideIndex, trackSequence, direction, height, mapElement);
 
@@ -298,13 +298,13 @@ static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 }
 
 /** rct2: 0x00770C2C */
-static void paint_ghost_train_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_ghost_train_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x00770C3C */
-static void paint_ghost_train_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_ghost_train_track_25_deg_up_to_flat_shared(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 
@@ -317,13 +317,13 @@ static void paint_ghost_train_track_flat_to_25_deg_down(uint8 rideIndex, uint8 t
 }
 
 /** rct2: 0x00770C4C */
-static void paint_ghost_train_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_ghost_train_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
-static void paint_ghost_train_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -363,7 +363,7 @@ static void paint_ghost_train_station(uint8 rideIndex, uint8 trackSequence, uint
 }
 
 /** rct2: 0x00770C9C */
-static void paint_ghost_train_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets, get_current_rotation());
 	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
@@ -375,7 +375,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(uint8 rideIndex, 
 			break;
 	}
 
-	int blockedSegments = 0;
+	sint32 blockedSegments = 0;
 	switch (trackSequence) {
 		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC; break;
 		case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
@@ -387,14 +387,14 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(uint8 rideIndex, 
 }
 
 /** rct2: 0x00770CAC */
-static void paint_ghost_train_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
 	paint_ghost_train_track_right_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
 /** rct2: 0x00770CAC */
-static void paint_ghost_train_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	track_paint_util_left_quarter_turn_1_tile_paint(3, height, 0, direction, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile, get_current_rotation());
 	track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
@@ -405,13 +405,13 @@ static void paint_ghost_train_track_left_quarter_turn_1_tile(uint8 rideIndex, ui
 }
 
 /** rct2: 0x00770CBC */
-static void paint_ghost_train_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_ghost_train_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x00770CCC */
-static void paint_ghost_train_track_spinning_tunnel(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_spinning_tunnel(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | gTrackColours[SCHEME_TRACK];
 
@@ -436,7 +436,7 @@ static void paint_ghost_train_track_spinning_tunnel(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x00770CDC */
-static void paint_ghost_train_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_ghost_train_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -465,7 +465,7 @@ static void paint_ghost_train_track_brakes(uint8 rideIndex, uint8 trackSequence,
 /**
  * rct2: 0x00770924
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(sint32 trackType, sint32 direction) {
 	switch(trackType) {
 		case TRACK_ELEM_FLAT:
 			return paint_ghost_train_track_flat;

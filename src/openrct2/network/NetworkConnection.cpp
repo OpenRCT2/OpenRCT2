@@ -42,7 +42,7 @@ NetworkConnection::~NetworkConnection()
     }
 }
 
-int NetworkConnection::ReadPacket()
+sint32 NetworkConnection::ReadPacket()
 {
     if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
     {

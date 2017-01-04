@@ -141,7 +141,7 @@ extern "C"
                 {
                     handle = Memory::Allocate<TitleSequenceParkHandle>();
                     handle->Data = zip->GetFileData(filename, &handle->DataSize);
-                    handle->RWOps = SDL_RWFromMem(handle->Data, (int)handle->DataSize);
+                    handle->RWOps = SDL_RWFromMem(handle->Data, (sint32)handle->DataSize);
                     handle->IsScenario = String::Equals(Path::GetExtension(filename), ".sc6", true);
                     delete zip;
                 }
@@ -394,7 +394,7 @@ static std::vector<utf8 *> GetSaves(IZipArchive * zip)
 static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves)
 {
     std::vector<TitleCommand> commands;
-    SDL_RWops * file = SDL_RWFromMem(script, (int)scriptLength);
+    SDL_RWops * file = SDL_RWFromMem(script, (sint32)scriptLength);
     do {
         char parts[3 * 128], *token, *part1, *part2;
         LegacyScriptGetLine(file, parts);
@@ -468,7 +468,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
         {
             commands.push_back(command);
         }
-    } while (SDL_RWtell(file) < (int)scriptLength);
+    } while (SDL_RWtell(file) < (sint32)scriptLength);
     SDL_RWclose(file);
 
     return commands;
@@ -476,18 +476,18 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
 
 static void LegacyScriptGetLine(SDL_RWops * file, char * parts)
 {
-    for (int i = 0; i < 3; i++)
+    for (sint32 i = 0; i < 3; i++)
     {
         parts[i * 128] = 0;
     }
-    int part = 0;
-    int cindex = 0;
-    int whitespace = 1;
-    int comment = 0;
-    int load = 0;
+    sint32 part = 0;
+    sint32 cindex = 0;
+    sint32 whitespace = 1;
+    sint32 comment = 0;
+    sint32 load = 0;
     for (; part < 3;)
     {
-        int c = 0;
+        sint32 c = 0;
         if (SDL_RWread(file, &c, 1, 1) != 1)
         {
             c = EOF;

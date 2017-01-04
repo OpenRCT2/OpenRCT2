@@ -198,10 +198,10 @@ void track_design_dispose(rct_track_td6 *td6);
 
 void track_design_mirror(rct_track_td6 *td6);
 
-int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
+sint32 sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, sint32 x, sint32 y, sint32 z);
 
-void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
-void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_place_track_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_place_maze_design(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
@@ -214,8 +214,8 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels);
 void track_design_save_init();
 void track_design_save_reset_scenery();
 bool track_design_save_contains_map_element(rct_map_element *mapElement);
-void track_design_save_select_nearby_scenery(int rideIndex);
-void track_design_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
+void track_design_save_select_nearby_scenery(sint32 rideIndex);
+void track_design_save_toggle_map_element(sint32 interactionType, sint32 x, sint32 y, rct_map_element *mapElement);
 bool track_design_save(uint8 rideIndex);
 bool track_design_save_to_file(const utf8 *path);
 

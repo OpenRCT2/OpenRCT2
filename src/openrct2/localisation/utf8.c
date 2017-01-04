@@ -19,8 +19,8 @@
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
 {
-	int result;
-	int numBytes;
+	sint32 result;
+	sint32 numBytes;
 
 	if (!(char_ptr[0] & 0x80)) {
 		result = char_ptr[0];
@@ -72,9 +72,9 @@ utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint)
  * Inserts the given codepoint at the given address, shifting all characters after along.
  * @returns the size of the inserted codepoint.
  */
-int utf8_insert_codepoint(utf8 *dst, uint32 codepoint)
+sint32 utf8_insert_codepoint(utf8 *dst, uint32 codepoint)
 {
-	int shift = utf8_get_codepoint_length(codepoint);
+	sint32 shift = utf8_get_codepoint_length(codepoint);
 	utf8 *endPoint = get_string_end(dst);
 	memmove(dst + shift, dst, endPoint - dst + 1);
 	utf8_write_codepoint(dst, codepoint);
@@ -88,7 +88,7 @@ bool utf8_is_codepoint_start(const utf8 *text)
 	return false;
 }
 
-int utf8_get_codepoint_length(int codepoint)
+sint32 utf8_get_codepoint_length(sint32 codepoint)
 {
 	if (codepoint <= 0x7F) {
 		return 1;
@@ -105,12 +105,12 @@ int utf8_get_codepoint_length(int codepoint)
  * Gets the number of characters / codepoints in a UTF-8 string (not necessarily 1:1 with bytes and not including null
  * terminator).
  */
-int utf8_length(const utf8 *text)
+sint32 utf8_length(const utf8 *text)
 {
-	int codepoint;
+	sint32 codepoint;
 	const utf8 *ch = text;
 
-	int count = 0;
+	sint32 count = 0;
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		count++;
 	}
@@ -123,7 +123,7 @@ wchar_t *utf8_to_widechar(const utf8 *src)
 	wchar_t *dst = result;
 
 	const utf8 *ch = src;
-	int codepoint;
+	sint32 codepoint;
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		if ((uint32)codepoint > 0xFFFF) {
 			*dst++ = '?';
@@ -156,11 +156,11 @@ utf8 *widechar_to_utf8(const wchar_t *src)
  */
 utf8 *get_string_end(const utf8 *text)
 {
-	int codepoint;
+	sint32 codepoint;
 	const utf8 *ch = text;
 
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-		int argLength = utf8_get_format_code_arg_length(codepoint);
+		sint32 argLength = utf8_get_format_code_arg_length(codepoint);
 		ch += argLength;
 	}
 	return (utf8*)(ch - 1);
@@ -177,12 +177,12 @@ size_t get_string_size(const utf8 *text)
 /**
  * Return the number of visible characters (excludes format codes) in the given UTF-8 string.
  */
-int get_string_length(const utf8 *text)
+sint32 get_string_length(const utf8 *text)
 {
-	int codepoint;
+	sint32 codepoint;
 	const utf8 *ch = text;
 
-	int count = 0;
+	sint32 count = 0;
 	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
 		if (utf8_is_format_code(codepoint)) {
 			ch += utf8_get_format_code_arg_length(codepoint);
@@ -193,7 +193,7 @@ int get_string_length(const utf8 *text)
 	return count;
 }
 
-int utf8_get_format_code_arg_length(int codepoint)
+sint32 utf8_get_format_code_arg_length(sint32 codepoint)
 {
 	switch (codepoint) {
 	case FORMAT_MOVE_X:
@@ -226,7 +226,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours) {
 	}
 }
 
-bool utf8_is_format_code(int codepoint)
+bool utf8_is_format_code(sint32 codepoint)
 {
 	if (codepoint < 32) return true;
 	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
@@ -235,7 +235,7 @@ bool utf8_is_format_code(int codepoint)
 	return false;
 }
 
-bool utf8_is_colour_code(int codepoint)
+bool utf8_is_colour_code(sint32 codepoint)
 {
 	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
 	return false;

@@ -20,9 +20,9 @@
 /**
  * Not perfect, this still leaves some particular tiles unsmoothed.
  */
-int map_smooth(int l, int t, int r, int b)
+sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-	int i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+	sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
 	rct_map_element *mapElement, *mapElement2;
 	for (y = t; y < b; y++) {
 		for (x = l; x < r; x++) {
@@ -52,7 +52,7 @@ int map_smooth(int l, int t, int r, int b)
 
 			if (highest >= mapElement->base_height + 4) {
 				count = 0;
-				int canCompensate = 1;
+				sint32 canCompensate = 1;
 				for (i = 0; i < 4; i++)
 					if (cornerHeights[i] == highest){
 						count++;
@@ -60,7 +60,7 @@ int map_smooth(int l, int t, int r, int b)
 						// Check if surrounding corners aren't too high. The current tile
 						// can't compensate for all the height differences anymore if it has
 						// the extra height slope.
-						int highestOnLowestSide;
+						sint32 highestOnLowestSide;
 						switch (i){
 						default:
 						case 0:
@@ -176,12 +176,12 @@ int map_smooth(int l, int t, int r, int b)
 	return raisedLand;
 }
 
-static int map_get_corner_height(int x, int y, int corner)
+static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
 {
 	rct_map_element *mapElement = map_get_surface_element_at(x, y);
-	int baseHeight = mapElement->base_height;
-	int slope = mapElement->properties.surface.slope;
-	int doubleCorner = slope & 16;
+	sint32 baseHeight = mapElement->base_height;
+	sint32 slope = mapElement->properties.surface.slope;
+	sint32 doubleCorner = slope & 16;
 	if (doubleCorner) {
 		if (!(slope & 1)) doubleCorner = 4;
 		else if (!(slope & 2)) doubleCorner = 8;
@@ -206,9 +206,9 @@ static int map_get_corner_height(int x, int y, int corner)
 /**
  * There are non-smoothed tiles with this version, but diagonal land blocks end up being wavy.
  */
-static int map_smooth_wavy(int l, int t, int r, int b)
+static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-	int i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+	sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
 	rct_map_element *mapElement;
 	for (y = t; y < b; y++) {
 		for (x = l; x < r; x++) {

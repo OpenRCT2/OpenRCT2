@@ -41,17 +41,17 @@ const rct_string_id DateFormatStringFormatIds[] = {
 
 openrct_timeofday gRealTimeOfDay;
 
-int date_get_month(int months)
+sint32 date_get_month(sint32 months)
 {
 	return months % MONTH_COUNT;
 }
 
-int date_get_year(int months)
+sint32 date_get_year(sint32 months)
 {
 	return months / MONTH_COUNT;
 }
 
-int date_get_total_months(int month, int year)
+sint32 date_get_total_months(sint32 month, sint32 year)
 {
 	return (year - 1) * MONTH_COUNT + month;
 }

@@ -32,7 +32,7 @@ static uint32 _unk9E32BC;
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_element)
+static void ride_entrance_exit_paint(uint8 direction, sint32 height, rct_map_element* map_element)
 {
 
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
@@ -185,7 +185,7 @@ static void ride_entrance_exit_paint(uint8 direction, int height, rct_map_elemen
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(uint8 direction, int height, rct_map_element* map_element){
+static void park_entrance_paint(uint8 direction, sint32 height, rct_map_element* map_element){
 	if (gTrackDesignSaveMode)
 		return;
 
@@ -275,7 +275,7 @@ static void park_entrance_paint(uint8 direction, int height, rct_map_element* ma
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
+void entrance_paint(uint8 direction, sint32 height, rct_map_element* map_element){
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
 	rct_drawpixelinfo* dpi = unk_140E9A8;
@@ -285,7 +285,7 @@ void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 
 		if (entrance_get_directions(map_element) & 0xF){
 
-			int z = map_element->base_height * 8 + 3;
+			sint32 z = map_element->base_height * 8 + 3;
 			uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
 			image_id -= gMapBaseZ;
 

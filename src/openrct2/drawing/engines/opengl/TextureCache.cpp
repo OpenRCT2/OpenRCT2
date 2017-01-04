@@ -219,7 +219,7 @@ void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 
     return pixels32;
 }
 
-CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight)
+CachedTextureInfo TextureCache::AllocateImage(sint32 imageWidth, sint32 imageHeight)
 {
     CreateAtlasesTexture();
 
@@ -233,13 +233,13 @@ CachedTextureInfo TextureCache::AllocateImage(int imageWidth, int imageHeight)
     }
 
     // If there is no such atlas, then create a new one
-    if ((int) _atlases.size() >= _atlasesTextureIndicesLimit)
+    if ((sint32) _atlases.size() >= _atlasesTextureIndicesLimit)
     {
         throw std::runtime_error("more texture atlases required, but device limit reached!");
     }
 
-    int atlasIndex = (int) _atlases.size();
-    int atlasSize = (int) powf(2, (float) Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
+    sint32 atlasIndex = (sint32) _atlases.size();
+    sint32 atlasSize = (sint32) powf(2, (float) Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
 #ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);

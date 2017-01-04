@@ -186,7 +186,7 @@ public:
     {
         if (_loadedObjects != nullptr)
         {
-            for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+            for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
             {
                 UnloadObject(_loadedObjects[i]);
             }
@@ -304,7 +304,7 @@ private:
 
         // Build a hash set for quick checking
         auto exceptSet = std::unordered_set<Object *>();
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * object = newLoadedObjects[i];
             if (object != nullptr)
@@ -316,7 +316,7 @@ private:
         // Unload objects that are not in the hash set
         size_t totalObjectsLoaded = 0;
         size_t numObjectsUnloaded = 0;
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * object = _loadedObjects[i];
             if (object != nullptr)
@@ -335,7 +335,7 @@ private:
 
     void UpdateLegacyLoadedObjectList()
     {
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * loadedObject = nullptr;
             if (_loadedObjects != nullptr)
@@ -427,7 +427,7 @@ private:
     {
         bool missingObjects = false;
         size_t numRequiredObjects = 0;
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
@@ -455,7 +455,7 @@ private:
     {
         size_t newObjectsLoaded = 0;
         Object * * loadedObjects = Memory::AllocateArray<Object *>(OBJECT_ENTRY_COUNT);
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * loadedObject = nullptr;
             const ObjectRepositoryItem * ori = requiredObjects[i];
@@ -518,7 +518,7 @@ private:
 
     static sint32 GetIndexFromTypeEntry(uint8 objectType, uint8 entryIndex)
     {
-        int result = 0;
+        sint32 result = 0;
         for (uint8 i = 0; i < objectType; i++)
         {
             result += object_entry_group_counts[i];

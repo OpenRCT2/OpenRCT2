@@ -26,8 +26,8 @@ enum {
 	JUMPING_FOUNTAIN_TYPE_SNOW
 };
 
-void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement);
-void jumping_fountain_create(int type, int x, int y, int z, int direction, int flags, int iteration);
+void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, rct_map_element *mapElement);
+void jumping_fountain_create(sint32 type, sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags, sint32 iteration);
 void jumping_fountain_update(rct_jumping_fountain *jumpingFountain);
 
 #endif

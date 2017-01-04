@@ -20,8 +20,8 @@
 #include "../common.h"
 #include "vehicle.h"
 
-rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 remaining_distance, bool head);
+rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sint32 z, sint32 direction, uint16 var_44, sint32 remaining_distance, bool head);
 void cable_lift_update(rct_vehicle *vehicle);
-int cable_lift_update_track_motion(rct_vehicle *cableLift);
+sint32 cable_lift_update_track_motion(rct_vehicle *cableLift);
 
 #endif

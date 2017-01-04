@@ -71,9 +71,9 @@ const rct_xy8 ScenerySubTileOffsets[] = {
 	{ 23,  7 }
 };
 
-void scenery_increase_age(int x, int y, rct_map_element *mapElement);
+void scenery_increase_age(sint32 x, sint32 y, rct_map_element *mapElement);
 
-void scenery_update_tile(int x, int y)
+void scenery_update_tile(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement;
 
@@ -99,7 +99,7 @@ void scenery_update_tile(int x, int y)
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(int x, int y, rct_map_element *mapElement)
+void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
 {
 	rct_map_element *mapElementAbove;
 	rct_scenery_entry *sceneryEntry;
@@ -146,7 +146,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 	map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
-void scenery_increase_age(int x, int y, rct_map_element *mapElement)
+void scenery_increase_age(sint32 x, sint32 y, rct_map_element *mapElement)
 {
 	if (mapElement->flags & SMALL_SCENERY_FLAG_ANIMATED)
 		return;
@@ -240,7 +240,7 @@ void scenery_remove_ghost_tool_placement(){
 	}
 }
 
-rct_scenery_entry *get_small_scenery_entry(int entryIndex)
+rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]) {
 		return NULL;
@@ -248,7 +248,7 @@ rct_scenery_entry *get_small_scenery_entry(int entryIndex)
 	return (rct_scenery_entry*)gSmallSceneryEntries[entryIndex];
 }
 
-rct_scenery_entry *get_large_scenery_entry(int entryIndex)
+rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]) {
 		return NULL;
@@ -256,7 +256,7 @@ rct_scenery_entry *get_large_scenery_entry(int entryIndex)
 	return (rct_scenery_entry*)gLargeSceneryEntries[entryIndex];
 }
 
-rct_scenery_entry *get_wall_entry(int entryIndex)
+rct_scenery_entry *get_wall_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_WALLS]) {
 		return NULL;
@@ -264,7 +264,7 @@ rct_scenery_entry *get_wall_entry(int entryIndex)
 	return (rct_scenery_entry*)gWallSceneryEntries[entryIndex];
 }
 
-rct_scenery_entry *get_banner_entry(int entryIndex)
+rct_scenery_entry *get_banner_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_BANNERS]) {
 		return NULL;
@@ -272,7 +272,7 @@ rct_scenery_entry *get_banner_entry(int entryIndex)
 	return (rct_scenery_entry*)gBannerSceneryEntries[entryIndex];
 }
 
-rct_scenery_entry *get_footpath_item_entry(int entryIndex)
+rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_PATH_BITS]) {
 		return NULL;
@@ -280,7 +280,7 @@ rct_scenery_entry *get_footpath_item_entry(int entryIndex)
 	return (rct_scenery_entry*)gFootpathAdditionEntries[entryIndex];
 }
 
-rct_scenery_set_entry *get_scenery_group_entry(int entryIndex)
+rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex)
 {
 	if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SCENERY_SETS]) {
 		return NULL;

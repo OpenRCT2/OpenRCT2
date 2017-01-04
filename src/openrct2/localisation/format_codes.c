@@ -102,7 +102,7 @@ format_code_token format_code_tokens[] = {
 
 uint32 format_get_code(const char *token)
 {
-	int i;
+	sint32 i;
 	for (i = 0; i < countof(format_code_tokens); i++)
 		if (_strcmpi(token, format_code_tokens[i].token) == 0)
 			return format_code_tokens[i].code;
@@ -111,14 +111,14 @@ uint32 format_get_code(const char *token)
 
 const char *format_get_token(uint32 code)
 {
-	int i;
+	sint32 i;
 	for (i = 0; i < countof(format_code_tokens); i++)
 		if (code == format_code_tokens[i].code)
 			return format_code_tokens[i].token;
 	return 0;
 }
 
-bool utf8_should_use_sprite_for_codepoint(int codepoint)
+bool utf8_should_use_sprite_for_codepoint(sint32 codepoint)
 {
 	switch (codepoint) {
 	case FORMAT_UP:

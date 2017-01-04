@@ -30,7 +30,7 @@
 #include "news_item.h"
 #include "research.h"
 
-const int _researchRate[] = { 0, 160, 250, 400 };
+const sint32 _researchRate[] = { 0, 160, 250, 400 };
 
 uint8 gResearchFundingLevel;
 uint8 gResearchPriorities;
@@ -56,8 +56,8 @@ uint32 gResearchedSceneryItems[56];
 
 bool gSilentResearch = false;
 
-static void ride_type_set_invented(int rideType);
-static void ride_entry_set_invented(int rideEntryIndex);
+static void ride_type_set_invented(sint32 rideType);
+static void ride_entry_set_invented(sint32 rideEntryIndex);
 
 /**
  *
@@ -76,7 +76,7 @@ void research_reset_items()
  */
 void research_update_uncompleted_types()
 {
-	int uncompletedResearchTypes = 0;
+	sint32 uncompletedResearchTypes = 0;
 	rct_research_item *researchItem = gResearchItems;
 	while (researchItem++->entryIndex != RESEARCHED_ITEMS_SEPARATOR);
 
@@ -95,15 +95,15 @@ static void research_calculate_expected_date()
 	if (gResearchProgressStage == RESEARCH_STAGE_INITIAL_RESEARCH || gResearchFundingLevel == RESEARCH_FUNDING_NONE) {
 		gResearchExpectedDay = 255;
 	} else {
-		int progressRemaining = gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
+		sint32 progressRemaining = gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
 		progressRemaining -= gResearchProgress;
-		int daysRemaining = (progressRemaining / _researchRate[gResearchFundingLevel]) * 128;
+		sint32 daysRemaining = (progressRemaining / _researchRate[gResearchFundingLevel]) * 128;
 
-		int expectedDay = gDateMonthTicks + (daysRemaining & 0xFFFF);
-		int dayQuotient = expectedDay / 0x10000;
-		int dayRemainder = expectedDay % 0x10000;
+		sint32 expectedDay = gDateMonthTicks + (daysRemaining & 0xFFFF);
+		sint32 dayQuotient = expectedDay / 0x10000;
+		sint32 dayRemainder = expectedDay % 0x10000;
 
-		int expectedMonth = date_get_month(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
+		sint32 expectedMonth = date_get_month(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
 		expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
 
 		gResearchExpectedDay = expectedDay;
@@ -124,7 +124,7 @@ static void research_invalidate_related_windows()
 static void research_next_design()
 {
 	rct_research_item *firstUnresearchedItem, *researchItem, tmp;
-	int ignoreActiveResearchTypes;
+	sint32 ignoreActiveResearchTypes;
 
 	// Skip already researched items
 	firstUnresearchedItem = gResearchItems;
@@ -180,8 +180,8 @@ void research_finish_item(sint32 entryIndex)
 
 	if (entryIndex >= 0x10000) {
 		// Ride
-		int base_ride_type = (entryIndex >> 8) & 0xFF;
-		int rideEntryIndex = entryIndex & 0xFF;
+		sint32 base_ride_type = (entryIndex >> 8) & 0xFF;
+		sint32 rideEntryIndex = entryIndex & 0xFF;
 		rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 		if (rideEntry != NULL && rideEntry != (rct_ride_entry *)-1)
 		{
@@ -190,7 +190,7 @@ void research_finish_item(sint32 entryIndex)
 			gResearchedTrackTypesB[base_ride_type] = (RideTypePossibleTrackConfigurations[base_ride_type] >> 32ULL) & 0xFFFFFFFFULL;
 
 			if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
-				int ebx = RideData4[base_ride_type].alternate_type;
+				sint32 ebx = RideData4[base_ride_type].alternate_type;
 				gResearchedTrackTypesA[ebx] = (RideTypePossibleTrackConfigurations[ebx]) & 0xFFFFFFFFULL;
 				gResearchedTrackTypesB[ebx] = (RideTypePossibleTrackConfigurations[ebx] >> 32ULL) & 0xFFFFFFFFULL;
 			}
@@ -198,7 +198,7 @@ void research_finish_item(sint32 entryIndex)
 			ride_entry_set_invented(rideEntryIndex);
 
 			if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-				for (int i = 0; i < 128; i++) {
+				for (sint32 i = 0; i < 128; i++) {
 					rct_ride_entry *rideEntry2 = get_ride_entry(i);
 					if (rideEntry2 == (rct_ride_entry*)-1)
 						continue;
@@ -230,8 +230,8 @@ void research_finish_item(sint32 entryIndex)
 		rct_scenery_set_entry *scenerySetEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
 		if (scenerySetEntry != NULL && scenerySetEntry != (rct_scenery_set_entry *)-1)
 		{
-			for (int i = 0; i < scenerySetEntry->entry_count; i++) {
-				int subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+			for (sint32 i = 0; i < scenerySetEntry->entry_count; i++) {
+				sint32 subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
 				gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
 			}
 
@@ -255,7 +255,7 @@ void research_finish_item(sint32 entryIndex)
  */
 void research_update()
 {
-	int editorScreenFlags, researchLevel, currentResearchProgress;
+	sint32 editorScreenFlags, researchLevel, currentResearchProgress;
 
 	editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
 	if (gScreenFlags & editorScreenFlags)
@@ -327,20 +327,20 @@ void sub_684AC3(){
 		ebp->category = cat;
 	}
 
-	for (int i = 0; i < 8; ++i){
+	for (sint32 i = 0; i < 8; ++i){
 		gResearchedRideTypes[i] = 0;
 		gResearchedRideEntries[i] = 0;
 	}
 
-	for (int i = 0; i < 56; i++) {
+	for (sint32 i = 0; i < 56; i++) {
 		gResearchedSceneryItems[i] = 0xFFFFFFFF;
 	}
 
-	for (int i = 0; i < 19; ++i){
+	for (sint32 i = 0; i < 19; ++i){
 		rct_scenery_set_entry* scenery_set = get_scenery_group_entry(i);
 		if ((intptr_t)scenery_set == -1)continue;
 
-		for (int j = 0; j < scenery_set->entry_count; ++j){
+		for (sint32 j = 0; j < scenery_set->entry_count; ++j){
 			uint8 value = scenery_set->scenery_entries[j] & 0x1F;
 			gResearchedSceneryItems[scenery_set->scenery_entries[j] >> 5] &= ~(1UL << value);
 		}
@@ -409,7 +409,7 @@ void research_remove_non_separate_vehicle_types()
  *
  *  rct2: 0x006857FA
  */
-static void research_insert_unresearched(int entryIndex, int category)
+static void research_insert_unresearched(sint32 entryIndex, sint32 category)
 {
 	rct_research_item *researchItem, *researchItem2;
 
@@ -435,7 +435,7 @@ static void research_insert_unresearched(int entryIndex, int category)
  *
  *  rct2: 0x00685826
  */
-static void research_insert_researched(int entryIndex, int category)
+static void research_insert_researched(sint32 entryIndex, sint32 category)
 {
 	rct_research_item *researchItem, *researchItem2;
 
@@ -478,7 +478,7 @@ void research_remove(sint32 entryIndex){
 	}
 }
 
-void research_insert(int researched, int entryIndex, int category)
+void research_insert(sint32 researched, sint32 entryIndex, sint32 category)
 {
 	if (researched)
 		research_insert_researched(entryIndex, category);
@@ -493,26 +493,26 @@ void research_insert(int researched, int entryIndex, int category)
 void research_populate_list_random()
 {
 	// Rides
-	for (int i = 0; i < 128; i++) {
+	for (sint32 i = 0; i < 128; i++) {
 		rct_ride_entry *rideEntry = get_ride_entry(i);
 		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
-		int researched = (scenario_rand() & 0xFF) > 128;
-		for (int j = 0; j < 3; j++) {
-			int rideType = rideEntry->ride_type[j];
+		sint32 researched = (scenario_rand() & 0xFF) > 128;
+		for (sint32 j = 0; j < 3; j++) {
+			sint32 rideType = rideEntry->ride_type[j];
 			if (rideType != 255)
 				research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
 		}
 	}
 
 	// Scenery
-	for (int i = 0; i < 19; i++) {
+	for (sint32 i = 0; i < 19; i++) {
 		rct_scenery_set_entry *scenerySetEntry = get_scenery_group_entry(i);
 		if (scenerySetEntry == (rct_scenery_set_entry*)-1)
 			continue;
 
-		int researched = (scenario_rand() & 0xFF) > 85;
+		sint32 researched = (scenario_rand() & 0xFF) > 85;
 		research_insert(researched, i, RESEARCH_CATEGORY_SCENERYSET);
 	}
 }
@@ -520,20 +520,20 @@ void research_populate_list_random()
 void research_populate_list_researched()
 {
 	// Rides
-	for (int i = 0; i < 128; i++) {
+	for (sint32 i = 0; i < 128; i++) {
 		rct_ride_entry *rideEntry = get_ride_entry(i);
 		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
-		for (int j = 0; j < 3; j++) {
-			int rideType = rideEntry->ride_type[j];
+		for (sint32 j = 0; j < 3; j++) {
+			sint32 rideType = rideEntry->ride_type[j];
 			if (rideType != 255)
 				research_insert(true, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
 		}
 	}
 
 	// Scenery
-	for (int i = 0; i < 19; i++) {
+	for (sint32 i = 0; i < 19; i++) {
 		rct_scenery_set_entry *scenerySetEntry = get_scenery_group_entry(i);
 		if (scenerySetEntry == (rct_scenery_set_entry*)-1)
 			continue;
@@ -542,13 +542,13 @@ void research_populate_list_researched()
 	}
 }
 
-void research_set_funding(int amount)
+void research_set_funding(sint32 amount)
 {
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, amount, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
 
 }
 
-void research_set_priority(int activeCategories)
+void research_set_priority(sint32 activeCategories)
 {
 	game_do_command(0, (1 << 8) | GAME_COMMAND_FLAG_APPLY, 0, activeCategories, GAME_COMMAND_SET_RESEARCH_FUNDING, 0, 0);
 }
@@ -557,11 +557,11 @@ void research_set_priority(int activeCategories)
  *
  *  rct2: 0x00684A7F
  */
-void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-	int setPriorities = (*ebx & (1 << 8)) != 0;
-	int fundingAmount = *edx;
-	int activeCategories = *edx;
+	sint32 setPriorities = (*ebx & (1 << 8)) != 0;
+	sint32 fundingAmount = *edx;
+	sint32 activeCategories = *edx;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RESEARCH;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
@@ -587,7 +587,7 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 {
 	rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
 	uint8 category = rideEntry->category[0];
-	for (int i = 0; i < 3; i++) {
+	for (sint32 i = 0; i < 3; i++) {
 		uint8 rideType = rideEntry->ride_type[i];
 		if (rideType != 255) {
 			research_insert(researched, 0x10000 | (rideType << 8) | entryIndex, category);
@@ -600,23 +600,23 @@ void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
 	research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
 }
 
-bool ride_type_is_invented(int rideType)
+bool ride_type_is_invented(sint32 rideType)
 {
-	int quadIndex = rideType >> 5;
-	int bitIndex = rideType & 0x1F;
+	sint32 quadIndex = rideType >> 5;
+	sint32 bitIndex = rideType & 0x1F;
 	bool invented = (gResearchedRideTypes[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
 }
 
-bool ride_entry_is_invented(int rideEntryIndex)
+bool ride_entry_is_invented(sint32 rideEntryIndex)
 {
-	int quadIndex = rideEntryIndex >> 5;
-	int bitIndex = rideEntryIndex & 0x1F;
+	sint32 quadIndex = rideEntryIndex >> 5;
+	sint32 bitIndex = rideEntryIndex & 0x1F;
 	bool invented = (gResearchedRideEntries[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
 }
 
-bool track_type_is_invented(uint8 rideType, int trackType)
+bool track_type_is_invented(uint8 rideType, sint32 trackType)
 {
 	if (trackType < 32) {
 		bool invented = (gResearchedTrackTypesA[rideType] & (1UL << trackType));
@@ -628,24 +628,24 @@ bool track_type_is_invented(uint8 rideType, int trackType)
 	}
 }
 
-static void ride_type_set_invented(int rideType)
+static void ride_type_set_invented(sint32 rideType)
 {
-	int quadIndex = rideType >> 5;
-	int bitIndex = rideType & 0x1F;
+	sint32 quadIndex = rideType >> 5;
+	sint32 bitIndex = rideType & 0x1F;
 	gResearchedRideTypes[quadIndex] |= 1 << bitIndex;
 }
 
-static void ride_entry_set_invented(int rideEntryIndex)
+static void ride_entry_set_invented(sint32 rideEntryIndex)
 {
-	int quadIndex = rideEntryIndex >> 5;
-	int bitIndex = rideEntryIndex & 0x1F;
+	sint32 quadIndex = rideEntryIndex >> 5;
+	sint32 bitIndex = rideEntryIndex & 0x1F;
 	gResearchedRideEntries[quadIndex] |= 1 << bitIndex;
 }
 
 bool scenery_is_invented(uint16 sceneryItem)
 {
-	int quadIndex = sceneryItem >> 5;
-	int bitIndex = sceneryItem & 0x1F;
+	sint32 quadIndex = sceneryItem >> 5;
+	sint32 bitIndex = sceneryItem & 0x1F;
 	bool invented = (gResearchedSceneryItems[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
 }

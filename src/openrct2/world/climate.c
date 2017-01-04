@@ -62,23 +62,23 @@ uint16 gClimateLightningFlash;
 static const rct_weather_transition* climate_transitions[4];
 
 // Sound data
-static int _rainVolume = 1;
-static unsigned int _lightningTimer, _thunderTimer;
+static sint32 _rainVolume = 1;
+static uint32 _lightningTimer, _thunderTimer;
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
-static int _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
-static unsigned int _thunderSoundId;
-static int _thunderVolume;
-static int _thunderStereoEcho = 0;
+static sint32 _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS_NULL, THUNDER_STATUS_NULL };
+static uint32 _thunderSoundId;
+static sint32 _thunderVolume;
+static sint32 _thunderStereoEcho = 0;
 
-static void climate_determine_future_weather(int randomDistribution);
+static void climate_determine_future_weather(sint32 randomDistribution);
 
 static void climate_update_rain_sound();
 static void climate_update_thunder_sound();
 static void climate_update_lightning();
 static void climate_update_thunder();
-static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan);
+static sint32 climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 volume, sint32 pan);
 
-int climate_celsius_to_fahrenheit(int celsius)
+sint32 climate_celsius_to_fahrenheit(sint32 celsius)
 {
 	return (celsius * 29) / 16 + 32;
 }
@@ -87,7 +87,7 @@ int climate_celsius_to_fahrenheit(int celsius)
  * Set climate and determine start weather.
  *  rct2: 0x006C45ED
  */
-void climate_reset(int climate)
+void climate_reset(sint32 climate)
 {
 	gClimate = climate;
 
@@ -177,7 +177,7 @@ void climate_update()
 		climate_update_thunder();
 	} else if (gClimateCurrentWeatherEffect == 2) {
 		// Create new thunder and lightning
-		unsigned int randomNumber = util_rand();
+		uint32 randomNumber = util_rand();
 		if ((randomNumber & 0xFFFF) <= 0x1B4) {
 			randomNumber >>= 16;
 			_thunderTimer = 43 + (randomNumber % 64);
@@ -207,7 +207,7 @@ void climate_force_weather(uint8 weather){
  *
  *  rct2: 0x006C461C
  */
-static void climate_determine_future_weather(int randomDistribution)
+static void climate_determine_future_weather(sint32 randomDistribution)
 {
 	sint8 climate = gClimate;
 	const rct_weather_transition* climate_table = climate_transitions[climate];
@@ -284,7 +284,7 @@ static void climate_update_thunder_sound()
 	}
 
 	// Stop thunder sounds if they have finished
-	for (int i = 0; i < MAX_THUNDER_INSTANCES; i++) {
+	for (sint32 i = 0; i < MAX_THUNDER_INSTANCES; i++) {
 		if (_thunderStatus[i] == THUNDER_STATUS_NULL)
 			continue;
 
@@ -313,12 +313,12 @@ static void climate_update_thunder()
 	if (_thunderTimer != 0)
 		return;
 
-	unsigned int randomNumber = util_rand();
+	uint32 randomNumber = util_rand();
 	if (randomNumber & 0x10000) {
 		if (_thunderStatus[0] == THUNDER_STATUS_NULL && _thunderStatus[1] == THUNDER_STATUS_NULL) {
 			// Play thunder on left side
 			_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-			_thunderVolume = (-((int)((randomNumber >> 18) & 0xFF))) * 8;
+			_thunderVolume = (-((sint32)((randomNumber >> 18) & 0xFF))) * 8;
 			climate_play_thunder(0, _thunderSoundId, _thunderVolume, -10000);
 
 			// Let thunder play on right side
@@ -327,13 +327,13 @@ static void climate_update_thunder()
 	} else {
 		if (_thunderStatus[0] == THUNDER_STATUS_NULL){
 			_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-			int pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
+			sint32 pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
 			climate_play_thunder(0, _thunderSoundId, 0, pan);
 		}
 	}
 }
 
-static int climate_play_thunder(int instanceIndex, int soundId, int volume, int pan)
+static sint32 climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 volume, sint32 pan)
 {
 	_thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
 	if (_thunderSoundChannels[instanceIndex]) {

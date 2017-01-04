@@ -48,7 +48,7 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex);
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_editor_bottom_toolbar_invalidate(rct_window *w);
 static void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -169,7 +169,7 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
  */
 static void sub_6DFED0()
 {
-	for (int i = 0; i < 56; i++) {
+	for (sint32 i = 0; i < 56; i++) {
 		gResearchedSceneryItems[i] = 0xFFFFFFFF;
 	}
 }
@@ -228,7 +228,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
 	rct_window *w;
 
-	int missingObjectType = editor_check_object_selection();
+	sint32 missingObjectType = editor_check_object_selection();
 	if (missingObjectType < 0) {
 		window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
 		return true;
@@ -249,21 +249,21 @@ static bool window_editor_bottom_toolbar_check_object_selection()
  */
 static void sub_66F6E3()
 {
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		gResearchedRideTypes[i] = 0xFFFFFFFF;
 	}
 
-	for (int i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
+	for (sint32 i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
 		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
 		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
 	}
 
-	for (int i = countof(RideTypePossibleTrackConfigurations); i < 128; i++) {
+	for (sint32 i = countof(RideTypePossibleTrackConfigurations); i < 128; i++) {
 		gResearchedTrackTypesA[i] = (uint32)-1;
 		gResearchedTrackTypesB[i] = (uint32)-1;
 	}
 
-	for (int i = 0; i < 8; i++) {
+	for (sint32 i = 0; i < 8; i++) {
 		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
@@ -350,7 +350,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 *
 *  rct2: 0x0066F5AE
 */
-static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
+static void window_editor_bottom_toolbar_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
@@ -474,10 +474,10 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				w->colours[1], INSET_RECT_F_30);
 		}
 
-		short stateX =
+		sint16 stateX =
 			(window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right +
 			window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
-		short stateY = w->height - 0x0C + w->y;
+		sint16 stateY = w->height - 0x0C + w->y;
 		gfx_draw_string_centred(dpi, EditorStepNames[gS6Info.editor_step],
 			stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, 0);
 
@@ -486,16 +486,16 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y, 0);
 
-			int textColour = NOT_TRANSLUCENT(w->colours[1]);
+			sint32 textColour = NOT_TRANSLUCENT(w->colours[1]);
 			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
 				gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON
 			) {
 				textColour = COLOUR_WHITE;
 			}
 
-			short textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30 +
+			sint16 textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30 +
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + w->x;
-			short textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
+			sint16 textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
 
 			rct_string_id stringId = EditorStepNames[gS6Info.editor_step - 1];
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -510,7 +510,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y, 0);
 
-			int textColour = NOT_TRANSLUCENT(w->colours[1]);
+			sint32 textColour = NOT_TRANSLUCENT(w->colours[1]);
 
 			if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR &&
 				gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON
@@ -518,9 +518,9 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				textColour = COLOUR_WHITE;
 			}
 
-			short textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
+			sint16 textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left +
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;
-			short textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
+			sint16 textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
 
 			rct_string_id stringId = EditorStepNames[gS6Info.editor_step + 1];
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)

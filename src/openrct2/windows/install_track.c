@@ -53,10 +53,10 @@ static rct_widget window_install_track_widgets[] = {
 };
 
 static void window_install_track_close(rct_window *w);
-static void window_install_track_mouseup(rct_window *w, int widgetIndex);
+static void window_install_track_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_install_track_invalidate(rct_window *w);
 static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_install_track_text_input(rct_window *w, int widgetIndex, char *text);
+static void window_install_track_text_input(rct_window *w, sint32 widgetIndex, char *text);
 
 static rct_window_event_list window_install_track_events = {
 	window_install_track_close,
@@ -125,8 +125,8 @@ void window_install_track_open(const utf8 *path)
 	gTrackDesignSceneryToggle = false;
 	_currentTrackPieceDirection = 2;
 
-	int x = gScreenWidth / 2 - 201;
-	int y = max(28, gScreenHeight / 2 - 200);
+	sint32 x = gScreenWidth / 2 - 201;
+	sint32 y = max(28, gScreenHeight / 2 - 200);
 
 	rct_window *w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
 	w->widgets = window_install_track_widgets;
@@ -160,7 +160,7 @@ static void window_install_track_close(rct_window *w)
 *
 *  rct2: 0x006D407A
 */
-static void window_install_track_mouseup(rct_window *w, int widgetIndex)
+static void window_install_track_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -216,9 +216,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Track preview
 	rct_widget *widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
-	int x = w->x + widget->left + 1;
-	int y = w->y + widget->top + 1;
-	int colour = ColourMapA[w->colours[0]].darkest;
+	sint32 x = w->x + widget->left + 1;
+	sint32 y = w->y + widget->top + 1;
+	sint32 colour = ColourMapA[w->colours[0]].darkest;
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	rct_g1_element *substituteElement = &g1Elements[0];
@@ -294,7 +294,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
 		// Maximum positive vertical Gs
-		int gForces = td6->max_positive_vertical_g * 32;
+		sint32 gForces = td6->max_positive_vertical_g * 32;
 		gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
 		y += 10;
 
@@ -312,7 +312,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (td6->version_and_colour_scheme / 4 >= 2) {
 			if (td6->total_air_time != 0) {
 				// Total air time
-				int airTime = td6->total_air_time * 25;
+				sint32 airTime = td6->total_air_time * 25;
 				gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
 				y += 10;
 			}
@@ -357,7 +357,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x006D40A7
 */
-static void window_install_track_text_input(rct_window *w, int widgetIndex, char *text)
+static void window_install_track_text_input(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text)) {
 		return;

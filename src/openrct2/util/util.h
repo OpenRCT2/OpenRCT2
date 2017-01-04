@@ -19,10 +19,10 @@
 
 #include "../common.h"
 
-int squaredmetres_to_squaredfeet(int squaredMetres);
-int metres_to_feet(int metres);
-int mph_to_kmph(int mph);
-int mph_to_dmps(int mph);
+sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
+sint32 metres_to_feet(sint32 metres);
+sint32 mph_to_kmph(sint32 mph);
+sint32 mph_to_dmps(sint32 mph);
 
 bool filename_valid_characters(const utf8 *filename);
 
@@ -35,12 +35,12 @@ void path_remove_extension(utf8 *path);
 void path_end_with_separator(utf8 *path, size_t size);
 bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 
-int bitscanforward(int source);
+sint32 bitscanforward(sint32 source);
 void bitcount_init();
-int bitcount(uint32 source);
-bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
-int strcicmp(char const *a, char const *b);
-int strlogicalcmp(char const *a, char const *b);
+sint32 bitcount(uint32 source);
+bool strequals(const char *a, const char *b, sint32 length, bool caseInsensitive);
+sint32 strcicmp(char const *a, char const *b);
+sint32 strlogicalcmp(char const *a, char const *b);
 utf8 * safe_strtrunc(utf8 * text, size_t size);
 char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);
@@ -50,10 +50,10 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size);
 bool utf8_is_bom(const char *str);
 bool str_is_null_or_empty(const char *str);
 
-void util_srand(int source);
+void util_srand(sint32 source);
 uint32 util_rand();
 
-unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
-unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
+uint8 *util_zlib_deflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
+uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size);
 
 #endif

@@ -153,7 +153,7 @@ extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
-extern const int RidePhotoItems[RIDE_TYPE_COUNT];
+extern const sint32 RidePhotoItems[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 

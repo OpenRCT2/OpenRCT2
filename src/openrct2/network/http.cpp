@@ -151,7 +151,7 @@ http_response_t *http_request(const http_request_t *request)
         return NULL;
     }
 
-    long httpStatusCode;
+    sint32 httpStatusCode;
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpStatusCode);
 
     char* contentType;
@@ -173,7 +173,7 @@ http_response_t *http_request(const http_request_t *request)
         if (root != NULL) {
             response = (http_response_t*) malloc(sizeof(http_response_t));
             response->tag = request->tag;
-            response->status_code = (int) httpStatusCode;
+            response->status_code = (sint32) httpStatusCode;
             response->root = root;
             response->type = HTTP_DATA_JSON;
             response->size = writeBuffer.length;
@@ -182,7 +182,7 @@ http_response_t *http_request(const http_request_t *request)
     } else {
         response = (http_response_t*) malloc(sizeof(http_response_t));
         response->tag = request->tag;
-        response->status_code = (int) httpStatusCode;
+        response->status_code = (sint32) httpStatusCode;
         response->body = writeBuffer.ptr;
         response->type = HTTP_DATA_RAW;
         response->size = writeBuffer.length;
@@ -217,7 +217,7 @@ void http_request_async(const http_request_t *request, void (*callback)(http_res
     args->request.tag = request->tag;
     args->callback = callback;
 
-    SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> int {
+    SDL_Thread *thread = SDL_CreateThread([](void *ptr) -> sint32 {
         TempThreadArgs *args2 = (TempThreadArgs*)ptr;
 
         http_response_t *response = http_request(&args2->request);

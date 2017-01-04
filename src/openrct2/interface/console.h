@@ -29,7 +29,7 @@ void console_toggle();
 void console_update();
 void console_draw(rct_drawpixelinfo *dpi);
 
-void console_input(int c);
+void console_input(sint32 c);
 void console_write(const utf8 *src);
 void console_writeline(const utf8 *src);
 void console_writeline_error(const utf8 *src);
@@ -40,6 +40,6 @@ void console_execute_silent(const utf8 *src);
 void console_clear();
 void console_clear_line();
 void console_refresh_caret();
-void console_scroll(int delta);
+void console_scroll(sint32 delta);
 
 #endif

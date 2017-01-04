@@ -33,7 +33,7 @@ private:
 public:
     PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
-        for (int i = 0; i < 4; i++)
+        for (sint32 i = 0; i < 4; i++)
         {
             _basePath[i] = basePaths[i];
         }

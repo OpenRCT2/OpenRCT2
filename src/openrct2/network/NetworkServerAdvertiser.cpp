@@ -43,8 +43,8 @@ enum MASTER_SERVER_STATUS
     MASTER_SERVER_STATUS_INTERNAL_ERROR     = 500
 };
 
-constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
-constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
+constexpr sint32 MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
+constexpr sint32 MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
 class NetworkServerAdvertiser : public INetworkServerAdvertiser
 {
@@ -162,7 +162,7 @@ private:
         json_t *jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            int status = (int)json_integer_value(jsonStatus);
+            sint32 status = (sint32)json_integer_value(jsonStatus);
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 json_t * jsonToken = json_object_get(jsonRoot, "token");
@@ -190,7 +190,7 @@ private:
         json_t *jsonStatus = json_object_get(jsonRoot, "status");
         if (json_is_integer(jsonStatus))
         {
-            int status = (int)json_integer_value(jsonStatus);
+            sint32 status = (sint32)json_integer_value(jsonStatus);
             if (status == MASTER_SERVER_STATUS_OK)
             {
                 // Master server has successfully updated our server status
@@ -232,9 +232,9 @@ private:
         // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
         static const char hexChars[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
         char key[17];
-        for (int i = 0; i < 16; i++)
+        for (sint32 i = 0; i < 16; i++)
         {
-            int hexCharIndex = util_rand() % Util::CountOf(hexChars);
+            sint32 hexCharIndex = util_rand() % Util::CountOf(hexChars);
             key[i] = hexChars[hexCharIndex];
         }
         key[Util::CountOf(key) - 1] = 0;

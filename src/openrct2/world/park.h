@@ -62,8 +62,8 @@ extern money32 gCompanyValue;
 extern sint16 gParkRatingCasualtyPenalty;
 extern uint8 gParkRatingHistory[32];
 extern uint8 gGuestsInParkHistory[32];
-extern int _guestGenerationProbability;
-extern int _suggestedGuestMaximum;
+extern sint32 _guestGenerationProbability;
+extern sint32 _suggestedGuestMaximum;
 
 extern sint16 gParkEntranceX[4];
 extern sint16 gParkEntranceY[4];
@@ -75,15 +75,15 @@ extern rct_xyz16 gParkEntranceGhostPosition;
 extern uint8 gParkEntranceGhostDirection;
 extern money32 gParkEntranceGhostPrice;
 
-void set_forced_park_rating(int rating);
-int get_forced_park_rating();
+void set_forced_park_rating(sint32 rating);
+sint32 get_forced_park_rating();
 
-int park_is_open();
+sint32 park_is_open();
 void park_init();
 void park_reset_history();
-int park_calculate_size();
+sint32 park_calculate_size();
 
-int calculate_park_rating();
+sint32 calculate_park_rating();
 money32 calculate_park_value();
 money32 calculate_company_value();
 void reset_park_entrances();
@@ -91,25 +91,25 @@ void generate_new_guest();
 
 void park_update();
 void park_update_histories();
-void update_park_fences(int x, int y);
+void update_park_fences(sint32 x, sint32 y);
 
 uint8 calculate_guest_initial_happiness(uint8 percentage);
 
-void park_set_open(int open);
-int park_get_entrance_index(int x, int y, int z);
+void park_set_open(sint32 open);
+sint32 park_get_entrance_index(sint32 x, sint32 y, sint32 z);
 void park_set_name(const char *name);
 void park_set_entrance_fee(money32 value);
 
-int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags);
+sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 setting, sint32 flags);
 
-void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_set_park_open(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_set_park_entrance_fee(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_set_park_open(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
 void park_remove_ghost_entrance();
-money32 park_place_ghost_entrance(int x, int y, int z, int direction);
+money32 park_place_ghost_entrance(sint32 x, sint32 y, sint32 z, sint32 direction);
 
 money16 park_get_entrance_fee();
 

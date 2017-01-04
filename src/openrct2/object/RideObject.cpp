@@ -32,7 +32,7 @@ extern "C"
 
 RideObject::~RideObject()
 {
-    for (int i = 0; i < 4; i++)
+    for (sint32 i = 0; i < 4; i++)
     {
         Memory::Free(_peepLoadingPositions[i]);
     }
@@ -42,7 +42,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Seek(8, STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint32>();
-    for (int i = 0; i < 3; i++)
+    for (sint32 i = 0; i < 3; i++)
     {
         _legacyType.ride_type[i] = stream->ReadValue<uint8>();
     }
@@ -57,7 +57,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.rear_vehicle = stream->ReadValue<uint8>();
     _legacyType.third_vehicle = stream->ReadValue<uint8>();
     _legacyType.pad_019 = stream->ReadValue<uint8>();
-    for (int i = 0; i < 4; i++)
+    for (sint32 i = 0; i < 4; i++)
     {
         rct_ride_entry_vehicle * entry = &_legacyType.vehicles[i];
         ReadLegacyVehicle(context, stream, entry);
@@ -84,7 +84,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     else
     {
         // When not in select by track type mode, add boosters if the track type is eligible
-        for (int i = 0; i < 3; i++)
+        for (sint32 i = 0; i < 3; i++)
         {
             if (_legacyType.ride_type[i] == RIDE_TYPE_LOOPING_ROLLER_COASTER ||
                 _legacyType.ride_type[i] == RIDE_TYPE_CORKSCREW_ROLLER_COASTER ||
@@ -104,7 +104,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     // Read preset colours, by default there are 32
     _presetColours.count = stream->ReadValue<uint8>();
 
-    int coloursCount = _presetColours.count;
+    sint32 coloursCount = _presetColours.count;
     // To indicate a ride has different colours each train the count
     // is set to 255. There are only actually 32 colours though.
     if (coloursCount == 255)
@@ -118,7 +118,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     }
 
     // Read peep loading positions
-    for (int i = 0; i < 4; i++)
+    for (sint32 i = 0; i < 4; i++)
     {
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
         if (numPeepLoadingPositions == 255)
@@ -155,13 +155,13 @@ void RideObject::Load()
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    int cur_vehicle_images_offset = _legacyType.images_offset + 3;
-    for (int i = 0; i < 4; i++)
+    sint32 cur_vehicle_images_offset = _legacyType.images_offset + 3;
+    for (sint32 i = 0; i < 4; i++)
     {
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
-            int al = 1;
+            sint32 al = 1;
             if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING)
             {
                 al = 13;
@@ -208,11 +208,11 @@ void RideObject::Load()
 
             vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
-            int image_index = vehicleEntry->base_image_id;
+            sint32 image_index = vehicleEntry->base_image_id;
 
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                int b = vehicleEntry->var_16 * 32;
+                sint32 b = vehicleEntry->var_16 * 32;
 
                 if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) b /= 2;
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
@@ -345,7 +345,7 @@ void RideObject::Load()
 
             if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10))
             {
-                int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
+                sint32 num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
                 if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13)
                 {
                     num_images *= 2;
@@ -395,11 +395,11 @@ const utf8 * RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
-    for (int i = 0; i < 3; i++)
+    for (sint32 i = 0; i < 3; i++)
     {
         item->RideType[i] = _legacyType.ride_type[i];
     }
-    for (int i = 0; i < 2; i++)
+    for (sint32 i = 0; i < 2; i++)
     {
         item->RideCategory[i] = _legacyType.category[i];
     }

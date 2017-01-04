@@ -75,9 +75,9 @@ enum {
 };
 
 typedef struct viewport_interaction_info {
-	int type;
-	int x;
-	int y;
+	sint32 type;
+	sint32 x;
+	sint32 y;
 	union {
 		rct_map_element *mapElement;
 		rct_sprite *sprite;
@@ -115,19 +115,19 @@ extern uint32 gCurrentViewportFlags;
 #endif
 
 void viewport_init_all();
-void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);
-void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite);
+void center_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32* out_x, sint32* out_y, rct_viewport* viewport);
+void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 center_x, sint32 center_y, sint32 center_z, char flags, sint16 sprite);
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_update_sprite_follow(rct_window *window);
-void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom);
+void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
 
 void sub_689174(sint16* x, sint16* y, sint16 *z);
 
 rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
-rct_xy16 viewport_coord_to_map_coord(int x, int y, int z);
-void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction);
+rct_xy16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z);
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -137,23 +137,23 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
+void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
 
-int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info);
-int viewport_interaction_left_over(int x, int y);
-int viewport_interaction_left_click(int x, int y);
-int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info);
-int viewport_interaction_right_over(int x, int y);
-int viewport_interaction_right_click(int x, int y);
-void sub_68A15E(int screenX, int screenY, short *x, short *y, int *direction, rct_map_element **mapElement);
+sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interaction_info *info);
+sint32 viewport_interaction_left_over(sint32 x, sint32 y);
+sint32 viewport_interaction_left_click(sint32 x, sint32 y);
+sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interaction_info *info);
+sint32 viewport_interaction_right_over(sint32 x, sint32 y);
+sint32 viewport_interaction_right_click(sint32 x, sint32 y);
+void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_map_element **mapElement);
 
-void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int x, int y);
+void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, sint32 x, sint32 y);
 
-void sub_68B2B7(int x, int y);
+void sub_68B2B7(sint32 x, sint32 y);
 
-void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
+void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom);
 
-void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
+void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport);
 void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY);
 void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant);
 void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant);

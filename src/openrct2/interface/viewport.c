@@ -86,7 +86,7 @@ void viewport_init_all()
 	gWindowNextSlot = g_window_list;
 
 	// Setting up viewports
-	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+	for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
 		g_viewport_list[i].width = 0;
 	}
 
@@ -111,8 +111,8 @@ void viewport_init_all()
  * out_x : ax
  * out_y : bx
  */
-void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport){
-	int start_x = x;
+void center_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32* out_x, sint32* out_y, rct_viewport* viewport){
+	sint32 start_x = x;
 
 	rct_xyz16 coord_3d = {
 		.x = x,
@@ -152,10 +152,10 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 *  flags:  edx top most 2 bits 0b_X1 for zoom clear see below for 2nd bit.
 *  w:      esi
 */
-void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite)
+void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 center_x, sint32 center_y, sint32 center_z, char flags, sint16 sprite)
 {
 	rct_viewport* viewport = NULL;
-	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+	for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
 		if (g_viewport_list[i].width == 0) {
 			viewport = &g_viewport_list[i];
 			break;
@@ -195,7 +195,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
 		w->viewport_target_sprite = SPR_NONE;
 	}
 
-	int view_x, view_y;
+	sint32 view_x, view_y;
 	center_2d_coordinates(center_x, center_y, center_z, &view_x, &view_y, viewport);
 
 	w->saved_view_x = view_x;
@@ -229,7 +229,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 
 	uint32 rotation = get_current_rotation();
 	rct_xy16 pos;
-	for (int i = 0; i < 6; i++) {
+	for (sint32 i = 0; i < 6; i++) {
 		pos = viewport_coord_to_map_coord(start_x, start_y, height);
 		height = map_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
 
@@ -237,8 +237,8 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 		// of the map. This can happen when the height is larger than the map size.
 		sint16 max = gMapSizeMinus2;
 		if (pos.x > max && pos.y > max) {
-			int x_corr[] = { -1, 1, 1, -1 };
-			int y_corr[] = { -1, -1, 1, 1 };
+			sint32 x_corr[] = { -1, 1, 1, -1 };
+			sint32 y_corr[] = { -1, -1, 1, 1 };
 			pos.x += x_corr[rotation] * height;
 			pos.y += y_corr[rotation] * height;
 		}
@@ -249,7 +249,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	*z = height;
 }
 
-static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int x, int y)
+static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, sint32 x, sint32 y)
 {
 	// sub-divide by intersecting windows
 	if (window < gWindowNextSlot)
@@ -372,7 +372,7 @@ static void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport 
 static void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
 {
 	rct_window* orignal_w = w;
-	int left = 0, right = 0, top = 0, bottom = 0;
+	sint32 left = 0, right = 0, top = 0, bottom = 0;
 
 	for (; w < gWindowNextSlot; w++){
 		if (!(w->flags & WF_TRANSPARENT)) continue;
@@ -422,10 +422,10 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 	if ((!x_diff) && (!y_diff))return;
 
 	if (w->flags & WF_7){
-		int left = max(viewport->x, 0);
-		int top = max(viewport->y, 0);
-		int right = min(viewport->x + viewport->width, gScreenWidth);
-		int bottom = min(viewport->y + viewport->height, gScreenHeight);
+		sint32 left = max(viewport->x, 0);
+		sint32 top = max(viewport->y, 0);
+		sint32 right = min(viewport->x + viewport->width, gScreenWidth);
+		sint32 bottom = min(viewport->y + viewport->height, gScreenHeight);
 
 		if (left >= right) return;
 		if (top >= bottom) return;
@@ -447,7 +447,7 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 		viewport->x = 0;
 	}
 
-	int eax = viewport->x + viewport->width - gScreenWidth;
+	sint32 eax = viewport->x + viewport->width - gScreenWidth;
 	if (eax > 0){
 		viewport->width -= eax;
 		viewport->view_width -= eax * zoom;
@@ -485,19 +485,19 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
 }
 
 //rct2: 0x006E7A15
-static void viewport_set_underground_flag(int underground, rct_window* window, rct_viewport* viewport)
+static void viewport_set_underground_flag(sint32 underground, rct_window* window, rct_viewport* viewport)
 {
 	if (window->classification != WC_MAIN_WINDOW)
 	{
 		if (!underground)
 		{
-			int bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			sint32 bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
 			viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
 			if (!bit) return;
 		}
 		else
 		{
-			int bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+			sint32 bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
 			viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
 			if (bit) return;
 		}
@@ -530,12 +530,12 @@ void viewport_update_position(rct_window *window)
 	viewport_set_underground_flag(0, window, viewport);
 
 	//Clamp to the map minimum value
-	int at_map_edge_x = 0;
+	sint32 at_map_edge_x = 0;
 	if (x < MAP_MINIMUM_X_Y){
 		x = MAP_MINIMUM_X_Y;
 		at_map_edge_x = 1;
 	}
-	int at_map_edge_y = 0;
+	sint32 at_map_edge_y = 0;
 	if (y < MAP_MINIMUM_X_Y){
 		y = MAP_MINIMUM_X_Y;
 		at_map_edge_y = 1;
@@ -554,8 +554,8 @@ void viewport_update_position(rct_window *window)
 	if (at_map_edge_x || at_map_edge_y) {
 		// The &0xFFFF is to prevent the sign extension messing the
 		// function up.
-		int zz = map_element_height(x & 0xFFFF, y & 0xFFFF);
-		int _2d_x, _2d_y;
+		sint32 zz = map_element_height(x & 0xFFFF, y & 0xFFFF);
+		sint32 _2d_x, _2d_y;
 		center_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
 
 		if (at_map_edge_x)
@@ -604,12 +604,12 @@ void viewport_update_sprite_follow(rct_window *window)
 	if (window->viewport_target_sprite != -1 && window->viewport){
 		rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-		int height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
-		int underground = sprite->unknown.z < height;
+		sint32 height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
+		sint32 underground = sprite->unknown.z < height;
 
 		viewport_set_underground_flag(underground, window, window->viewport);
 
-		int center_x, center_y;
+		sint32 center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
 		viewport_move(center_x, center_y, window, window->viewport);
@@ -626,7 +626,7 @@ void viewport_update_sprite_follow(rct_window *window)
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, int top, int right, int bottom)
+void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
 	if (right <= viewport->x) return;
 	if (bottom <= viewport->y) return;
@@ -634,7 +634,7 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	if (top >= viewport->y + viewport->height)return;
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
-	int l = left, t = top, r = right, b = bottom;
+	sint32 l = left, t = top, r = right, b = bottom;
 #endif
 
 	left = max(left - viewport->x, 0);
@@ -773,15 +773,15 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
+void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
 {
 	screen_get_map_xy(*x, *y, x, y, NULL);
 	if (*x == MAP_LOCATION_NULL)
 		return;
 
-	int my_direction;
-	int dist_from_center_x = abs(*x % 32);
-	int dist_from_center_y = abs(*y % 32);
+	sint32 my_direction;
+	sint32 dist_from_center_x = abs(*x % 32);
+	sint32 dist_from_center_y = abs(*y % 32);
 	if (dist_from_center_x > 8 && dist_from_center_x < 24 &&
 		dist_from_center_y > 8 && dist_from_center_y < 24) {
 		my_direction = 4;
@@ -816,7 +816,7 @@ rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16
 	return ret;
 }
 
-rct_xy16 viewport_coord_to_map_coord(int x, int y, int z)
+rct_xy16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
 {
 	rct_xy16 ret = { 0 };
 	switch (get_current_rotation()) {
@@ -1050,12 +1050,12 @@ static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, u
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
+static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
 	const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
 
 	uint8 last_data_line = 0;
 	while (!last_data_line) {
-		int no_pixels = *ebx++;
+		sint32 no_pixels = *ebx++;
 		uint8 gap_size = *ebx++;
 
 		last_data_line = no_pixels & 0x80;
@@ -1084,7 +1084,7 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
 			}
 		}
 
-		int x_start = gap_size - x_start_point;
+		sint32 x_start = gap_size - x_start_point;
 		if (x_start <= 0) {
 			no_pixels += x_start;
 			if (no_pixels <= 0) {
@@ -1125,7 +1125,7 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
+static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 y)
 {
 	rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
 
@@ -1150,7 +1150,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		}
 	}
 
-	int round = 1 << dpi->zoom_level;
+	sint32 round = 1 << dpi->zoom_level;
 
 	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
 		y -= (round - 1);
@@ -1247,12 +1247,12 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 	}
 
 	// The code below is untested.
-	int total_no_pixels = image->width * image->height;
+	sint32 total_no_pixels = image->width * image->height;
 	uint8 *source_pointer = image->offset;
 	uint8 *new_source_pointer_start = malloc(total_no_pixels);
 	uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
 	intptr_t ebx1;
-	int ecx;
+	sint32 ecx;
 	while (total_no_pixels > 0) {
 		sint8 no_pixels = *source_pointer;
 		if (no_pixels >= 0) {
@@ -1266,7 +1266,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 		ecx = no_pixels;
 		no_pixels &= 0x7;
 		ecx >>= 3;//SAR
-		uintptr_t eax = ((int) no_pixels) << 8;
+		uintptr_t eax = ((sint32) no_pixels) << 8;
 		ecx = -ecx;//Odd
 		eax = (eax & 0xFF00) + *(source_pointer + 1);
 		total_no_pixels -= ecx;
@@ -1291,16 +1291,16 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
  *
  *  rct2: 0x00679023
  */
-static bool sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
 	imageId &= 0xBFFFFFFF;
 	if (imageId & 0x20000000) {
 		gUnkEDF81C = 0x20000000;
-		int index = (imageId >> 19) & 0x7F;
+		sint32 index = (imageId >> 19) & 0x7F;
 		if (imageId & 0x80000000) {
 			index &= 0x1F;
 		}
-		int g1Index = palette_to_g1_offset[index];
+		sint32 g1Index = palette_to_g1_offset[index];
 		unk_9ABDA4 = g1Elements[g1Index].offset;
 	} else {
 		gUnkEDF81C = 0;
@@ -1352,7 +1352,7 @@ static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  * mapElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x, sint16 *y, int *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
 	_unk9AC154 = flags & 0xFFFF;
 	_unk9AC148 = 0;
@@ -1360,14 +1360,14 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 	if (window != NULL && window->viewport != NULL)
 	{
 		rct_viewport* myviewport = window->viewport;
-		screenX -= (int)myviewport->x;
-		screenY -= (int)myviewport->y;
-		if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
+		screenX -= (sint32)myviewport->x;
+		screenY -= (sint32)myviewport->y;
+		if (screenX >= 0 && screenX < (sint32)myviewport->width && screenY >= 0 && screenY < (sint32)myviewport->height)
 		{
 			screenX <<= myviewport->zoom;
 			screenY <<= myviewport->zoom;
-			screenX += (int)myviewport->view_x;
-			screenY += (int)myviewport->view_y;
+			screenX += (sint32)myviewport->view_x;
+			screenY += (sint32)myviewport->view_y;
 			_viewportDpi1.zoom_level = myviewport->zoom;
 			screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
 			screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
@@ -1395,7 +1395,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 /**
  * Left, top, right and bottom represent 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom)
+void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
 	// if unknown viewport visibility, use the containing window to discover the status
 	if (viewport->visibility == VC_UNKNOWN)
@@ -1414,10 +1414,10 @@ void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, i
 
 	if (viewport->visibility == VC_COVERED) return;
 
-	int viewportLeft = viewport->view_x;
-	int viewportTop = viewport->view_y;
-	int viewportRight = viewport->view_x + viewport->view_width;
-	int viewportBottom = viewport->view_y + viewport->view_height;
+	sint32 viewportLeft = viewport->view_x;
+	sint32 viewportTop = viewport->view_y;
+	sint32 viewportRight = viewport->view_x + viewport->view_width;
+	sint32 viewportBottom = viewport->view_y + viewport->view_height;
 	if (right > viewportLeft && bottom > viewportTop) {
 		left = max(left, viewportLeft);
 		top = max(top, viewportTop);
@@ -1441,7 +1441,7 @@ void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, i
 	}
 }
 
-static rct_viewport *viewport_find_from_point(int screenX, int screenY)
+static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
 {
 	rct_window *w = window_find_from_point(screenX, screenY);
 	if (w == NULL)
@@ -1471,9 +1471,9 @@ static rct_viewport *viewport_find_from_point(int screenX, int screenY)
  *		map_element: edx ?
  *		viewport: edi
  */
-void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
+void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
 	sint16 my_x, my_y;
-	int interactionType;
+	sint32 interactionType;
 	rct_viewport *myViewport;
 	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
@@ -1484,8 +1484,8 @@ void screen_get_map_xy(int screenX, int screenY, sint16 *x, sint16 *y, rct_viewp
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
 	rct_xy16 map_pos = { my_x + 16, my_y + 16 };
 
-	for (int i = 0; i < 5; i++) {
-		int z = map_element_height(map_pos.x, map_pos.y);
+	for (sint32 i = 0; i < 5; i++) {
+		sint32 z = map_element_height(map_pos.x, map_pos.y);
 		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
 		map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
 		map_pos.y = clamp(my_y, map_pos.y, my_y + 31);

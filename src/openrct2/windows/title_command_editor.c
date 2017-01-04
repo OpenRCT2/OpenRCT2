@@ -72,7 +72,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 #define WHA ((WW-WS*2)/2)
 
 static bool _window_title_command_editor_insert;
-static int _window_title_command_editor_index;
+static sint32 _window_title_command_editor_index;
 #define BUF_SIZE 50
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
@@ -101,16 +101,16 @@ static rct_widget window_title_command_editor_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex);
-static void window_title_command_editor_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_title_command_editor_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_title_command_editor_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_title_command_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_title_command_editor_update(rct_window *w);
 static void window_title_command_editor_invalidate(rct_window *w);
 static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_title_command_editor_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_title_command_editor_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_title_command_editor_inputsize(rct_window *w);
-static int get_command_info_index(int index);
-static TITLE_COMMAND_ORDER get_command_info(int index);
+static sint32 get_command_info_index(sint32 index);
+static TITLE_COMMAND_ORDER get_command_info(sint32 index);
 static rct_xy16 get_location();
 static uint8 get_zoom();
 
@@ -145,18 +145,18 @@ static rct_window_event_list window_title_command_editor_events = {
 	NULL
 };
 
-static int get_command_info_index(int index)
+static sint32 get_command_info_index(sint32 index)
 {
-	for (int i = 0; i < NUM_COMMANDS; i++) {
+	for (sint32 i = 0; i < NUM_COMMANDS; i++) {
 		if (window_title_command_editor_orders[i].command == index)
 			return i;
 	}
 	return 0;
 }
 
-static TITLE_COMMAND_ORDER get_command_info(int index)
+static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 {
-	for (int i = 0; i < NUM_COMMANDS; i++) {
+	for (sint32 i = 0; i < NUM_COMMANDS; i++) {
 		if (window_title_command_editor_orders[i].command == index)
 			return window_title_command_editor_orders[i];
 	}
@@ -168,7 +168,7 @@ static rct_xy16 get_location()
 	rct_xy16 mapCoord = { 0 };
 	rct_window *w = window_get_main();
 	if (w != NULL) {
-		int interactionType;
+		sint32 interactionType;
 		rct_map_element *mapElement;
 
 		get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
@@ -192,7 +192,7 @@ static uint8 get_zoom()
 	return zoom;
 }
 
-void window_title_command_editor_open(TitleSequence * sequence, int index, bool insert)
+void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bool insert)
 {
 	_sequence = sequence;
 
@@ -248,7 +248,7 @@ void window_title_command_editor_open(TitleSequence * sequence, int index, bool 
 	}
 }
 
-static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
+static void window_title_command_editor_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -302,14 +302,14 @@ static void window_title_command_editor_mouseup(rct_window *w, int widgetIndex)
 	}
 }
 
-static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
+static void window_title_command_editor_mousedown(sint32 widgetIndex, rct_window* w, rct_widget* widget)
 {
 	widget--;
 	switch (widgetIndex) {
 	case WIDX_COMMAND_DROPDOWN:
 	{
-		int numItems = NUM_COMMANDS;
-		for (int i = 0; i < numItems; i++) {
+		sint32 numItems = NUM_COMMANDS;
+		for (sint32 i = 0; i < numItems; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = window_title_command_editor_orders[i].nameStringId;
 		}
@@ -328,8 +328,8 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 	}
 	case WIDX_INPUT_DROPDOWN:
 		if (command.Type == TITLE_SCRIPT_SPEED) {
-			int numItems = 4;
-			for (int i = 0; i < numItems; i++) {
+			sint32 numItems = 4;
+			for (sint32 i = 0; i < numItems; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = SpeedNames[i];
 			}
@@ -345,8 +345,8 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 
 			dropdown_set_checked(command.Speed - 1, true);
 		} else if (command.Type == TITLE_SCRIPT_LOAD) {
-			int numItems = (int)_sequence->NumSaves;
-			for (int i = 0; i < numItems; i++) {
+			sint32 numItems = (sint32)_sequence->NumSaves;
+			for (sint32 i = 0; i < numItems; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)_sequence->Saves[i];
 			}
@@ -366,7 +366,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 	}
 }
 
-static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_title_command_editor_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -430,10 +430,10 @@ static void window_title_command_editor_dropdown(rct_window *w, int widgetIndex,
 	}
 }
 
-static void window_title_command_editor_textinput(rct_window * w, int widgetIndex, char * text)
+static void window_title_command_editor_textinput(rct_window * w, sint32 widgetIndex, char * text)
 {
 	char * end;
-	int value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
+	sint32 value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
 	if (value < 0) value = 0;
 	if (value > 255) value = 255;
 	switch (widgetIndex) {

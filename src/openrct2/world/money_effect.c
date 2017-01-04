@@ -30,7 +30,7 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
  *
  *  rct2: 0x0067351F
  */
-static void money_effect_create_at(money32 value, int x, int y, int z)
+static void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z)
 {
 	rct_money_effect *moneyEffect;
 	rct_string_id stringId;
@@ -111,9 +111,9 @@ void money_effect_update(rct_money_effect *moneyEffect)
 		return;
 
 	moneyEffect->move_delay = 0;
-	int x = moneyEffect->x + _moneyEffectMoveOffset[get_current_rotation()].x;
-	int y = moneyEffect->y + _moneyEffectMoveOffset[get_current_rotation()].y;
-	int z = moneyEffect->z;
+	sint32 x = moneyEffect->x + _moneyEffectMoveOffset[get_current_rotation()].x;
+	sint32 y = moneyEffect->y + _moneyEffectMoveOffset[get_current_rotation()].y;
+	sint32 z = moneyEffect->z;
 	sprite_move(x, y, z, (rct_sprite*)moneyEffect);
 
 	moneyEffect->num_movements++;

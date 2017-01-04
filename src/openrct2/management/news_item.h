@@ -64,15 +64,15 @@ extern rct_news_item gNewsItems[MAX_NEWS_ITEMS];
 void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
-void news_item_get_subject_location(int type, int subject, int *x, int *y, int *z);
+void news_item_get_subject_location(sint32 type, sint32 subject, sint32 *x, sint32 *y, sint32 *z);
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc);
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc);
-void news_item_open_subject(int type, int subject);
+void news_item_open_subject(sint32 type, sint32 subject);
 void news_item_disable_news(uint8 type, uint32 assoc);
-rct_news_item *news_item_get(int index);
-bool news_item_is_empty(int index);
+rct_news_item *news_item_get(sint32 index);
+bool news_item_is_empty(sint32 index);
 bool news_item_is_queue_empty();
-bool news_item_is_valid_idx(int index);
+bool news_item_is_valid_idx(sint32 index);
 
 void news_item_add_to_queue_custom(rct_news_item *newNewsItem);
 

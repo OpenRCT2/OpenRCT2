@@ -37,7 +37,7 @@ static const uint32 space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, int height)
+static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
 	rct_map_element * savedMapElement = g_currently_drawn_item;
 
@@ -47,7 +47,7 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 		rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
 		rct_vehicle * vehicle = NULL;
 
-		int frameNum = direction;
+		sint32 frameNum = direction;
 
 		uint32 baseImageId = ride_type->vehicles[0].base_image_id;
 
@@ -84,11 +84,11 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 }
 
 /** rct2: 0x00767C40 */
-static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -121,7 +121,7 @@ static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direct
 		case 8: paint_space_rings_structure(ride, direction, 3, height + 3); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 0: cornerSegments = 0; break;
 		case 1: cornerSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
@@ -141,7 +141,7 @@ static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direct
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;

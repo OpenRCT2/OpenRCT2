@@ -68,12 +68,12 @@ uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT] = {
 	_editorSelectedStexs,
 };
 
-static void editor_convert_save_to_scenario_callback(int result, const utf8 * path);
+static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 * path);
 static void set_all_land_owned();
-static int editor_load_landscape_from_sv4(const char *path);
-static int editor_load_landscape_from_sc4(const char *path);
+static sint32 editor_load_landscape_from_sv4(const char *path);
+static sint32 editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
-static int editor_read_s6(const char *path);
+static sint32 editor_read_s6(const char *path);
 static void editor_clear_map_for_editing(bool fromSave);
 
 /**
@@ -130,7 +130,7 @@ void editor_convert_save_to_scenario()
 	gLoadSaveCallback = editor_convert_save_to_scenario_callback;
 }
 
-static void editor_convert_save_to_scenario_callback(int result, const utf8 * path)
+static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 * path)
 {
 	if (result != MODAL_RESULT_OK) {
 		return;
@@ -252,7 +252,7 @@ void trackmanager_load()
  */
 static void set_all_land_owned()
 {
-	int mapSize = gMapSize;
+	sint32 mapSize = gMapSize;
 
 	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 3) * 32, (mapSize - 3) * 32);
 }
@@ -285,7 +285,7 @@ bool editor_load_landscape(const utf8 *path)
  *
  *  rct2: 0x006A2B02
  */
-static int editor_load_landscape_from_sv4(const char *path)
+static sint32 editor_load_landscape_from_sv4(const char *path)
 {
 	rct1_load_saved_game(path);
 	editor_clear_map_for_editing(true);
@@ -299,7 +299,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 	return 1;
 }
 
-static int editor_load_landscape_from_sc4(const char *path)
+static sint32 editor_load_landscape_from_sc4(const char *path)
 {
 	rct1_load_scenario(path);
 	editor_clear_map_for_editing(false);
@@ -317,7 +317,7 @@ static int editor_load_landscape_from_sc4(const char *path)
  *
  *  rct2: 0x006758FE
  */
-static int editor_read_s6(const char *path)
+static sint32 editor_read_s6(const char *path)
 {
 	bool loadResult = false;
 	const char *extension = path_get_extension(path);
@@ -346,7 +346,7 @@ static void editor_clear_map_for_editing(bool fromSave)
 	map_remove_all_rides();
 
 	//
-	for (int i = 0; i < MAX_BANNERS; i++) {
+	for (sint32 i = 0; i < MAX_BANNERS; i++) {
 		if (gBanners[i].type == 255) {
 			gBanners[i].flags &= ~BANNER_FLAG_2;
 		}
@@ -354,7 +354,7 @@ static void editor_clear_map_for_editing(bool fromSave)
 
 	//
 	{
-		int i;
+		sint32 i;
 		rct_ride *ride;
 		FOR_ALL_RIDES(i, ride) {
 			user_string_free(ride->name);
@@ -364,7 +364,7 @@ static void editor_clear_map_for_editing(bool fromSave)
 	ride_init_all();
 
 	//
-	for (int i = 0; i < MAX_SPRITES; i++) {
+	for (sint32 i = 0; i < MAX_SPRITES; i++) {
 		rct_sprite *sprite = get_sprite(i);
 		user_string_free(sprite->unknown.name_string_idx);
 	}
@@ -471,7 +471,7 @@ static void editor_finalise_main_view()
 	w->saved_view_y = gSavedViewY;
 	gCurrentRotation = gSavedViewRotation;
 
-	int zoom_difference = gSavedViewZoom - viewport->zoom;
+	sint32 zoom_difference = gSavedViewZoom - viewport->zoom;
 	viewport->zoom = gSavedViewZoom;
 	if (zoom_difference != 0) {
 		if (zoom_difference >= 0) {
@@ -500,7 +500,7 @@ static void editor_finalise_main_view()
  *
  *  rct2: 0x006AB9B8
  */
-int editor_check_object_selection()
+sint32 editor_check_object_selection()
 {
 	bool isTrackDesignerManager =
 		gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
@@ -538,13 +538,13 @@ int editor_check_object_selection()
  */
 bool editor_check_park()
 {
-	int parkSize = park_calculate_size();
+	sint32 parkSize = park_calculate_size();
 	if (parkSize == 0) {
 		gGameCommandErrorText = STR_PARK_MUST_OWN_SOME_LAND;
 		return false;
 	}
 
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		if (gParkEntranceX[i] != MAP_LOCATION_NULL)
 			break;
 
@@ -554,14 +554,14 @@ bool editor_check_park()
 		}
 	}
 
-	for (int i = 0; i < 4; i++) {
+	for (sint32 i = 0; i < 4; i++) {
 		if (gParkEntranceX[i] == MAP_LOCATION_NULL)
 			continue;
 
-		int x = gParkEntranceX[i];
-		int y = gParkEntranceY[i];
-		int z = gParkEntranceZ[i] / 8;
-		int direction = gParkEntranceDirection[i] ^ 2;
+		sint32 x = gParkEntranceX[i];
+		sint32 y = gParkEntranceY[i];
+		sint32 z = gParkEntranceZ[i] / 8;
+		sint32 direction = gParkEntranceDirection[i] ^ 2;
 
 		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
 		case FOOTPATH_SEARCH_NOT_FOUND:

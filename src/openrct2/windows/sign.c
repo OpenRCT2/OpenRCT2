@@ -57,10 +57,10 @@ rct_widget window_sign_widgets[] = {
 		{ WIDGETS_END },
 };
 
-static void window_sign_mouseup(rct_window *w, int widgetIndex);
-static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void window_sign_textinput(rct_window *w, int widgetIndex, char *text);
+static void window_sign_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
+static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text);
 static void window_sign_unknown_14(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
 static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -98,8 +98,8 @@ static rct_window_event_list window_sign_events = {
 	NULL
 };
 
-static void window_sign_small_mouseup(rct_window *w, int widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
@@ -161,8 +161,8 @@ void window_sign_open(rct_windownumber number)
 	w->number = number;
 	window_init_scroll_widgets(w);
 
-	int view_x = gBanners[w->number].x << 5;
-	int view_y = gBanners[w->number].y << 5;
+	sint32 view_x = gBanners[w->number].x << 5;
+	sint32 view_y = gBanners[w->number].y << 5;
 
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -170,7 +170,7 @@ void window_sign_open(rct_windownumber number)
 		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 			if (scenery_entry->large_scenery.var_11 != 0xFF){
-				int id = (map_element->type & 0xC0) |
+				sint32 id = (map_element->type & 0xC0) |
 					((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 					((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 				if (id == w->number)
@@ -180,7 +180,7 @@ void window_sign_open(rct_windownumber number)
 		map_element++;
 	}
 
-	int view_z = map_element->base_height << 3;
+	sint32 view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
 	w->list_information_type = map_element->properties.scenerymultiple.colour[0] & 0x1F;
@@ -214,11 +214,11 @@ void window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6B9765
  */
-static void window_sign_mouseup(rct_window *w, int widgetIndex)
+static void window_sign_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
-	int x = banner->x << 5;
-	int y = banner->y << 5;
+	sint32 x = banner->x << 5;
+	sint32 y = banner->y << 5;
 
 	rct_string_id string_id;
 
@@ -233,7 +233,7 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 				rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 				if (scenery_entry->large_scenery.var_11 != 0xFF){
-					int id = (map_element->type & 0xC0) |
+					sint32 id = (map_element->type & 0xC0) |
 						((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 						((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 					if (id == w->number)
@@ -270,7 +270,7 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_sign_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
 	case WIDX_MAIN_COLOUR:
@@ -286,7 +286,7 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
  *
  *  rct2: 0x6B979C
  */
-static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_sign_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:
@@ -310,12 +310,12 @@ static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownInd
  *
  *  rct2: 0x6B9791, 0x6E6171
  */
-static void window_sign_textinput(rct_window *w, int widgetIndex, char *text)
+static void window_sign_textinput(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (widgetIndex == WIDX_SIGN_TEXT && text != NULL) {
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_SET_SIGN_NAME, *((int*)(text + 8)), *((int*)(text + 4)));
-		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_SET_SIGN_NAME, *((int*)(text + 20)), *((int*)(text + 16)));
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_SIGN_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
+		game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_SIGN_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
 	}
 }
 
@@ -374,9 +374,9 @@ static void window_sign_unknown_14(rct_window *w)
 
 	rct_banner* banner = &gBanners[w->number];
 
-	int view_x = (banner->x << 5) + 16;
-	int view_y = (banner->y << 5) + 16;
-	int view_z = w->frame_no;
+	sint32 view_x = (banner->x << 5) + 16;
+	sint32 view_y = (banner->y << 5) + 16;
+	sint32 view_z = w->frame_no;
 
 	// Create viewport
 	rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
@@ -428,8 +428,8 @@ void window_sign_small_open(rct_windownumber number){
 	w->colours[1] = COLOUR_DARK_BROWN;
 	w->colours[2] = COLOUR_DARK_BROWN;
 
-	int view_x = gBanners[w->number].x << 5;
-	int view_y = gBanners[w->number].y << 5;
+	sint32 view_x = gBanners[w->number].x << 5;
+	sint32 view_y = gBanners[w->number].y << 5;
 
 	rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -444,7 +444,7 @@ void window_sign_small_open(rct_windownumber number){
 		map_element++;
 	}
 
-	int view_z = map_element->base_height << 3;
+	sint32 view_z = map_element->base_height << 3;
 	w->frame_no = view_z;
 
 	w->list_information_type = map_element->properties.fence.item[1] & 0x1F;
@@ -480,11 +480,11 @@ void window_sign_small_open(rct_windownumber number){
  *
  *  rct2: 0x6E6145
  */
-static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
+static void window_sign_small_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	rct_banner* banner = &gBanners[w->number];
-	int x = banner->x << 5;
-	int y = banner->y << 5;
+	sint32 x = banner->x << 5;
+	sint32 y = banner->y << 5;
 
 	rct_string_id string_id;
 
@@ -534,7 +534,7 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x6E617C
  */
-static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_sign_small_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:

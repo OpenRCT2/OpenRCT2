@@ -46,10 +46,10 @@ enum {
 typedef struct TTFFontDescriptor {
 	const utf8 *filename;
 	const utf8 *font_name;
-	int ptSize;
-	int offset_x;
-	int offset_y;
-	int line_height;
+	sint32 ptSize;
+	sint32 offset_x;
+	sint32 offset_y;
+	sint32 line_height;
 	TTF_Font *font;
 } TTFFontDescriptor;
 
@@ -61,14 +61,14 @@ extern TTFFontSetDescriptor *gCurrentTTFFontSet;
 #endif // NO_TTF
 
 void font_sprite_initialise_characters();
-int font_sprite_get_codepoint_offset(int codepoint);
-int font_sprite_get_codepoint_width(int fontSpriteBase, int codepoint);
-int font_sprite_get_codepoint_sprite(int fontSpriteBase, int codepoint);
-int font_get_size_from_sprite_base(uint16 spriteBase);
-int font_get_line_height(int fontSpriteBase);
-int font_get_line_height_small(int fontSpriteBase);
+sint32 font_sprite_get_codepoint_offset(sint32 codepoint);
+sint32 font_sprite_get_codepoint_width(sint32 fontSpriteBase, sint32 codepoint);
+sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint);
+sint32 font_get_size_from_sprite_base(uint16 spriteBase);
+sint32 font_get_line_height(sint32 fontSpriteBase);
+sint32 font_get_line_height_small(sint32 fontSpriteBase);
 bool font_supports_string_sprite(const utf8 *text);
-bool font_supports_string_ttf(const utf8 *text, int fontSize);
-bool font_supports_string(const utf8 *text, int fontSize);
+bool font_supports_string_ttf(const utf8 *text, sint32 fontSize);
+bool font_supports_string(const utf8 *text, sint32 fontSize);
 
 #endif

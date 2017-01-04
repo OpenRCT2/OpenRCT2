@@ -24,7 +24,7 @@
 #include "scenery.h"
 #include "sprite.h"
 
-typedef bool (*map_animation_invalidate_event_handler)(int x, int y, int baseZ);
+typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
 
 static bool map_animation_invalidate(rct_map_animation *obj);
 
@@ -42,15 +42,15 @@ rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
  * @param y (cx)
  * @param z (dl)
  */
-void map_animation_create(int type, int x, int y, int z)
+void map_animation_create(sint32 type, sint32 x, sint32 y, sint32 z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = gNumMapAnimations;
+	sint32 numAnimatedObjects = gNumMapAnimations;
 	if (numAnimatedObjects >= MAX_ANIMATED_OBJECTS) {
 		log_error("Exceeded the maximum number of animations");
 		return;
 	}
-	for (int i = 0; i < numAnimatedObjects; i++, aobj++) {
+	for (sint32 i = 0; i < numAnimatedObjects; i++, aobj++) {
 		if (aobj->x != x)
 			continue;
 		if (aobj->y != y)
@@ -78,7 +78,7 @@ void map_animation_create(int type, int x, int y, int z)
 void map_animation_invalidate_all()
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = gNumMapAnimations;
+	sint32 numAnimatedObjects = gNumMapAnimations;
 	while (numAnimatedObjects > 0) {
 		if (map_animation_invalidate(aobj)) {
 			// Remove animated object
@@ -107,7 +107,7 @@ static bool map_animation_invalidate(rct_map_animation *obj)
  *
  *  rct2: 0x00666670
  */
-static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
+static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 	rct_ride *ride;
@@ -125,7 +125,7 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
 		ride = get_ride(mapElement->properties.entrance.ride_index);
 		entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
-		int height = (mapElement->base_height * 8) + entranceDefinition->height + 8;
+		sint32 height = (mapElement->base_height * 8) + entranceDefinition->height + 8;
 		map_invalidate_tile_zoom1(x, y, height, height + 16);
 		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
@@ -137,7 +137,7 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
  *
  *  rct2: 0x006A7BD4
  */
-static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
+static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -152,7 +152,7 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
 		if (!(mapElement->properties.path.type & PATH_FLAG_QUEUE_BANNER))
 			continue;
 
-		int direction = ((mapElement->type >> 6) + get_current_rotation()) & 3;
+		sint32 direction = ((mapElement->type >> 6) + get_current_rotation()) & 3;
 		if (direction == MAP_ELEMENT_DIRECTION_NORTH || direction == MAP_ELEMENT_DIRECTION_EAST) {
 			baseZ = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);
@@ -167,7 +167,7 @@ static bool map_animation_invalidate_queue_banner(int x, int y, int baseZ)
  *
  *  rct2: 0x006E32C9
  */
-static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
+static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -192,9 +192,9 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 			// Peep, looking at scenery
 			if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
-				int direction = mapElement->type & 3;
-				int x2 = x - TileDirectionDelta[direction].x;
-				int y2 = y - TileDirectionDelta[direction].y;
+				sint32 direction = mapElement->type & 3;
+				sint32 x2 = x - TileDirectionDelta[direction].x;
+				sint32 y2 = y - TileDirectionDelta[direction].y;
 
 				uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
 				for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->unknown.next_in_quadrant) {
@@ -229,7 +229,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
  *
  *  rct2: 0x00666C63
  */
-static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ)
+static bool map_animation_invalidate_park_entrance(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -256,7 +256,7 @@ static bool map_animation_invalidate_park_entrance(int x, int y, int baseZ)
  *
  *  rct2: 0x006CE29E
  */
-static bool map_animation_invalidate_track_waterfall(int x, int y, int baseZ)
+static bool map_animation_invalidate_track_waterfall(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -268,7 +268,7 @@ static bool map_animation_invalidate_track_waterfall(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_WATERFALL) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z + 14, z + 46);
 			return false;
 		}
@@ -281,7 +281,7 @@ static bool map_animation_invalidate_track_waterfall(int x, int y, int baseZ)
  *
  *  rct2: 0x006CE2F3
  */
-static bool map_animation_invalidate_track_rapids(int x, int y, int baseZ)
+static bool map_animation_invalidate_track_rapids(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -293,7 +293,7 @@ static bool map_animation_invalidate_track_rapids(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_RAPIDS) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
 			return false;
 		}
@@ -306,7 +306,7 @@ static bool map_animation_invalidate_track_rapids(int x, int y, int baseZ)
  *
  *  rct2: 0x006CE39D
  */
-static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
+static bool map_animation_invalidate_track_onridephoto(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -338,7 +338,7 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
  *
  *  rct2: 0x006CE348
  */
-static bool map_animation_invalidate_track_whirlpool(int x, int y, int baseZ)
+static bool map_animation_invalidate_track_whirlpool(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -350,7 +350,7 @@ static bool map_animation_invalidate_track_whirlpool(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_WHIRLPOOL) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
 			return false;
 		}
@@ -363,7 +363,7 @@ static bool map_animation_invalidate_track_whirlpool(int x, int y, int baseZ)
  *
  *  rct2: 0x006CE3FA
  */
-static bool map_animation_invalidate_track_spinningtunnel(int x, int y, int baseZ)
+static bool map_animation_invalidate_track_spinningtunnel(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -375,7 +375,7 @@ static bool map_animation_invalidate_track_spinningtunnel(int x, int y, int base
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_SPINNING_TUNNEL) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z + 14, z + 32);
 			return false;
 		}
@@ -388,7 +388,7 @@ static bool map_animation_invalidate_track_spinningtunnel(int x, int y, int base
  *
  *  rct2: 0x0068DF8F
  */
-static bool map_animation_invalidate_remove(int x, int y, int baseZ)
+static bool map_animation_invalidate_remove(sint32 x, sint32 y, sint32 baseZ)
 {
 	return true;
 }
@@ -397,7 +397,7 @@ static bool map_animation_invalidate_remove(int x, int y, int baseZ)
  *
  *  rct2: 0x006BA2BB
  */
-static bool map_animation_invalidate_banner(int x, int y, int baseZ)
+static bool map_animation_invalidate_banner(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 
@@ -420,7 +420,7 @@ static bool map_animation_invalidate_banner(int x, int y, int baseZ)
  *
  *  rct2: 0x006B94EB
  */
-static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
+static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -435,7 +435,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
 
 		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
 		if (sceneryEntry->large_scenery.flags & (1 << 3)) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 16);
 			wasInvalidated = true;
 		}
@@ -448,7 +448,7 @@ static bool map_animation_invalidate_large_scenery(int x, int y, int baseZ)
  *
  *  rct2: 0x006E5B50
  */
-static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
+static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -492,7 +492,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 		}
 		mapElement->properties.fence.item[2] = bl;
 		if (di & 1) {
-			int z = mapElement->base_height * 8;
+			sint32 z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, z, z + 32);
 		}
 		if (di & 2)
@@ -506,7 +506,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
  *
  *  rct2: 0x006E5EE4
  */
-static bool map_animation_invalidate_wall(int x, int y, int baseZ)
+static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 {
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
@@ -523,7 +523,7 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 		if (!(sceneryEntry->wall.flags2 & (1 << 4)) && sceneryEntry->wall.var_0D == 255)
 			continue;
 
-		int z = mapElement->base_height * 8;
+		sint32 z = mapElement->base_height * 8;
 		map_invalidate_tile_zoom1(x, y, z, z + 16);
 		wasInvalidated = true;
 	} while (!map_element_is_last_for_tile(mapElement++));

@@ -65,8 +65,8 @@ extern uint16 gClimateLightningFlash;
 extern const rct_weather climate_weather_data[6];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
-int climate_celsius_to_fahrenheit(int celsius);
-void climate_reset(int climate);
+sint32 climate_celsius_to_fahrenheit(sint32 celsius);
+void climate_reset(sint32 climate);
 void climate_update();
 void climate_update_sound();
 void climate_force_weather(uint8 weather);

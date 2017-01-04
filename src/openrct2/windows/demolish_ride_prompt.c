@@ -45,7 +45,7 @@ static rct_widget window_ride_demolish_widgets[] = {
 	{ WIDGETS_END }
 };
 
-static void window_ride_demolish_mouseup(rct_window *w, int widgetIndex);
+static void window_ride_demolish_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_ride_demolish_invalidate(rct_window *w);
 static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -82,7 +82,7 @@ static rct_window_event_list window_ride_demolish_events = {
 };
 
 /** Based off of rct2: 0x006B486A */
-void window_ride_demolish_prompt_open(int rideIndex)
+void window_ride_demolish_prompt_open(sint32 rideIndex)
 {
 	rct_window *w;
 
@@ -102,7 +102,7 @@ void window_ride_demolish_prompt_open(int rideIndex)
 *
 *  rct2: 0x006B4933
 */
-static void window_ride_demolish_mouseup(rct_window *w, int widgetIndex)
+static void window_ride_demolish_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_DEMOLISH:
@@ -134,8 +134,8 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 
-	int x = w->x + WW / 2;
-	int y = w->y + (WH / 2) - 3;
+	sint32 x = w->x + WW / 2;
+	sint32 y = w->y + (WH / 2) - 3;
 
 	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
 }

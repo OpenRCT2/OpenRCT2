@@ -37,9 +37,9 @@ void user_string_clear_all()
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(int base, const utf8 *text)
+rct_string_id user_string_allocate(sint32 base, const utf8 *text)
 {
-	int highBits = (base & 0x7F) << 9;
+	sint32 highBits = (base & 0x7F) << 9;
 	bool allowDuplicates = base & 0x80;
 
 	if (!allowDuplicates && user_string_exists(text)) {
@@ -48,7 +48,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 	}
 
 	char *userString = gUserStrings;
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+	for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
 		if (userString[0] != 0)
 			continue;
 
@@ -75,7 +75,7 @@ void user_string_free(rct_string_id id)
 static bool user_string_exists(const utf8 *text)
 {
 	char *userString = gUserStrings;
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+	for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
 		if (userString[0] == 0)
 			continue;
 
@@ -94,7 +94,7 @@ void reset_user_strings()
 {
 	char *userString = gUserStrings;
 
-	for (int i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+	for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
 		userString[0] = 0;
 	}
 

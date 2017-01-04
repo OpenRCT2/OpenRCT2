@@ -24,7 +24,7 @@
 
 extern "C"
 {
-    int gSpriteMode = 0;
+	sint32 gSpriteMode = 0;
 }
 
 static const char * _mode;
@@ -53,8 +53,8 @@ static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
     Memory::Free(_mode);
 
     const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
-    int argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    int result = cmdline_for_sprite(argv, argc);
+    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
+    sint32 result = cmdline_for_sprite(argv, argc);
     if (result < 0) {
         return EXITCODE_FAIL;
     }

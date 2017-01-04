@@ -99,8 +99,8 @@ void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
 
-void store_mouse_input(int state, int x, int y);
+void store_mouse_input(sint32 state, sint32 x, sint32 y);
 
-void input_window_position_begin(rct_window *w, int widgetIndex, int x, int y);
+void input_window_position_begin(rct_window *w, sint32 widgetIndex, sint32 x, sint32 y);
 
 #endif

@@ -373,26 +373,26 @@ static const rct_string_id window_options_fullscreen_mode_names[] = {
 	STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 
-const int window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 1 };
-const int window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 1 };
+const sint32 window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 1 };
+const sint32 window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 1 };
 
-static void window_options_set_page(rct_window *w, int page);
+static void window_options_set_page(rct_window *w, sint32 page);
 static void window_options_set_pressed_tab(rct_window *w);
-static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int page, int spriteIndex);
+static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex);
 static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int num_items);
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint32 num_items);
 static void window_options_update_height_markers();
 
 #pragma region Events
 
-static void window_options_mouseup(rct_window *w, int widgetIndex);
-static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void window_options_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget);
+static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex);
 static void window_options_update(rct_window *w);
 static void window_options_invalidate(rct_window *w);
 static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_options_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-static void window_options_text_input(rct_window *w, int widgetIndex, char *text);
+static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
+static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text);
 
 static rct_window_event_list window_options_events = {
 	NULL,
@@ -572,7 +572,7 @@ void window_options_open()
 *
 *  rct2: 0x006BAFCA
 */
-static void window_options_mouseup(rct_window *w, int widgetIndex)
+static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -853,9 +853,9 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 *
 *  rct2: 0x006BB01B
 */
-static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
+static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int num_items;
+	sint32 num_items;
 
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -866,8 +866,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		{
 			platform_update_fullscreen_resolutions();
 
-			int selectedResolution = -1;
-			for (int i = 0; i < gNumResolutions; i++) {
+			sint32 selectedResolution = -1;
+			for (sint32 i = 0; i < gNumResolutions; i++) {
 				resolution_t *resolution = &gResolutions[i];
 
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -903,12 +903,12 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_DRAWING_ENGINE_DROPDOWN:
 		{
-			int numItems = 3;
+			sint32 numItems = 3;
 #ifdef DISABLE_OPENGL
 			numItems = 2;
 #endif
 
-			for (int i = 0; i < numItems; i++) {
+			for (sint32 i = 0; i < numItems; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
 			}
@@ -973,9 +973,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
 			num_items = CURRENCY_END + 1; // All the currencies plus the separator
-			int num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+			sint32 num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
 
-			for (int i = 0; i < num_ordinary_currencies; i++) {
+			for (size_t i = 0; i < num_ordinary_currencies; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
 			}
@@ -1017,7 +1017,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.temperature_format, true);
 			break;
 		case WIDX_LANGUAGE_DROPDOWN:
-			for (int i = 1; i < LANGUAGE_COUNT; i++) {
+			for (size_t i = 1; i < LANGUAGE_COUNT; i++) {
 				gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i - 1] = (uintptr_t)LanguagesDescriptors[i].native_name;
 			}
@@ -1025,7 +1025,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gCurrentLanguage - 1, true);
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
-			for (int i = 0; i < 4; i++) {
+			for (size_t i = 0; i < 4; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = DateFormatStringIds[i];
 			}
@@ -1041,7 +1041,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			audio_populate_devices();
 
 			// populate the list with the sound devices
-			for (int i = 0; i < gAudioDeviceCount; i++) {
+			for (size_t i = 0; i < gAudioDeviceCount; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)gAudioDevices[i].name;
 			}
@@ -1053,7 +1053,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_TITLE_MUSIC_DROPDOWN:
 			num_items = 4;
 
-			for (int i = 0; i < num_items ; i++) {
+			for (size_t i = 0; i < num_items ; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = window_options_title_music_names[i];
 			}
@@ -1068,9 +1068,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		switch (widgetIndex) {
 		case WIDX_THEMES_DROPDOWN:
-			num_items = (int)theme_manager_get_num_available_themes();
+			num_items = (sint32)theme_manager_get_num_available_themes();
 
-			for (int i = 0; i < num_items; i++) {
+			for (sint32 i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
 			}
@@ -1085,7 +1085,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				widget->right - widget->left - 3
 			);
 
-			dropdown_set_checked((int)theme_manager_get_active_available_theme_index(), true);
+			dropdown_set_checked((sint32)theme_manager_get_active_available_theme_index(), true);
 			widget_invalidate(w, WIDX_THEMES_DROPDOWN);
 			break;
 
@@ -1115,7 +1115,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
 		case WIDX_AUTOSAVE_DROPDOWN:
-			for (int i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
+			for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = window_options_autosave_names[i];
 			}
@@ -1124,8 +1124,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
-			num_items = (int)title_sequence_manager_get_count();
-			for (int i = 0; i < num_items; i++) {
+			num_items = (sint32)title_sequence_manager_get_count();
+			for (size_t i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)title_sequence_manager_get_name(i);
 			}
@@ -1142,7 +1142,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gTitleCurrentSequence, true);
 			break;
 		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-			for (int i = 0; i < 7; i++) {
+			for (size_t i = 0; i < 7; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
 			}
@@ -1152,7 +1152,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_WINDOW_LIMIT_UP:
 		{
-			int i = gConfigGeneral.window_limit;
+			sint32 i = gConfigGeneral.window_limit;
 			if (i < WINDOW_LIMIT_MAX) {
 				window_set_window_limit(++i);
 			}
@@ -1161,7 +1161,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		}
 		case WIDX_WINDOW_LIMIT_DOWN:
 		{
-			int i = gConfigGeneral.window_limit;
+			sint32 i = gConfigGeneral.window_limit;
 			if (i > WINDOW_LIMIT_MIN) {
 				window_set_window_limit(--i);
 			}
@@ -1180,7 +1180,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 *
 *  rct2: 0x006BB076
 */
-static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
+static void window_options_dropdown(rct_window *w, sint32 widgetIndex, sint32 dropdownIndex)
 {
 	if (dropdownIndex == -1)
 		return;
@@ -1287,7 +1287,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 			break;
 		case WIDX_LANGUAGE_DROPDOWN:
 			{
-				int fallbackLanguage = gCurrentLanguage;
+				sint32 fallbackLanguage = gCurrentLanguage;
 				if (dropdownIndex != gCurrentLanguage - 1) {
 					if (!language_open(dropdownIndex + 1))
 					{
@@ -1660,7 +1660,7 @@ static void window_options_invalidate(rct_window *w)
 	}
 
 	// Automatically adjust window height to fit widgets
-	int y = 0;
+	sint32 y = 0;
 	for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++) {
 		y = max(y, widget->bottom);
 	}
@@ -1706,7 +1706,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 
-		int colour = w->colours[1];
+		sint32 colour = w->colours[1];
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2) {
 			colour |= COLOUR_FLAG_INSET;
@@ -1726,7 +1726,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			window_options_culture_widgets[WIDX_DRAWING_ENGINE].right - window_options_culture_widgets[WIDX_DRAWING_ENGINE].left - 11
 		);
 
-		int scale = (int)(gConfigGeneral.window_scale * 100);
+		sint32 scale = (sint32)(gConfigGeneral.window_scale * 100);
 		gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 
 		colour = w->colours[1];
@@ -1881,7 +1881,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 // helper function, all dropdown boxes have similar properties
-static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int num_items)
+static void window_options_show_dropdown(rct_window *w, rct_widget *widget, sint32 num_items)
 {
 	window_dropdown_show_text_custom_width(
 		w->x + widget->left,
@@ -1900,14 +1900,14 @@ static void window_options_update_height_markers()
 	gfx_invalidate_screen();
 }
 
-static void window_options_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_options_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
 		*width = 1000;
 	}
 }
 
-static void window_options_text_input(rct_window *w, int widgetIndex, char *text)
+static void window_options_text_input(rct_window *w, sint32 widgetIndex, char *text)
 {
 	if (text == NULL)
 		return;
@@ -1922,7 +1922,7 @@ static void window_options_text_input(rct_window *w, int widgetIndex, char *text
 
 #pragma region Common
 
-static void window_options_set_page(rct_window *w, int page)
+static void window_options_set_page(rct_window *w, sint32 page)
 {
 	w->page = page;
 	w->frame_no = 0;
@@ -1939,19 +1939,19 @@ static void window_options_set_page(rct_window *w, int page)
 
 static void window_options_set_pressed_tab(rct_window *w)
 {
-	int i;
+	sint32 i;
 	for (i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, int page, int spriteIndex)
+static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w, sint32 page, sint32 spriteIndex)
 {
-	int widgetIndex = WIDX_TAB_1 + page;
+	sint32 widgetIndex = WIDX_TAB_1 + page;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
 		if (w->page == page) {
-			int frame = w->frame_no / window_options_tab_animation_divisor[w->page];
+			sint32 frame = w->frame_no / window_options_tab_animation_divisor[w->page];
 			spriteIndex += (frame % window_options_tab_animation_frames[w->page]);
 		}
 

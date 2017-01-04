@@ -56,7 +56,7 @@ enum {
 extern uint16 gNumMapAnimations;
 extern rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
 
-void map_animation_create(int type, int x, int y, int z);
+void map_animation_create(sint32 type, sint32 x, sint32 y, sint32 z);
 void map_animation_invalidate_all();
 
 #endif

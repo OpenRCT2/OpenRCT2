@@ -90,7 +90,7 @@ void paint_init(rct_drawpixelinfo * dpi)
 	gNextFreePaintStruct = gPaintStructs;
 	g_ps_F1AD28 = NULL;
 	g_aps_F1AD2C = NULL;
-	for (int i = 0; i < 512; i++) {
+	for (sint32 i = 0; i < 512; i++) {
 		_paintQuadrants[i] = NULL;
 	}
 	_paintQuadrantBackIndex = -1;
@@ -147,11 +147,11 @@ static paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 bo
 	ps->x = map.x;
 	ps->y = map.y;
 
-	int left = map.x + g1Element->x_offset;
-	int bottom = map.y + g1Element->y_offset;
+	sint32 left = map.x + g1Element->x_offset;
+	sint32 bottom = map.y + g1Element->y_offset;
 
-	int right = left + g1Element->width;
-	int top = bottom + g1Element->height;
+	sint32 right = left + g1Element->width;
+	sint32 top = bottom + g1Element->height;
 
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 
@@ -795,7 +795,7 @@ static void paint_arrange_structs_helper(paint_struct * ps_next, uint16 ax, uint
 			if (ps_next->var_1B & (1 << 7)) break;
 			if (!(ps_next->var_1B & (1 << 1))) continue;
 
-			int yes = 0;
+			sint32 yes = 0;
 			switch (rotation) {
 			case 0:
 				if (initialBBox.z_end >= ps_next->bound_box_z && initialBBox.y_end >= ps_next->bound_box_y && initialBBox.x_end >= ps_next->bound_box_x
@@ -1028,7 +1028,7 @@ static uint32 paint_ps_colourify_image(uint32 imageId, uint8 spriteType, uint32 
 
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
-	int zoom = dpi->zoom_level;
+	sint32 zoom = dpi->zoom_level;
 	dpi->zoom_level = 0;
 	dpi->x >>= zoom;
 	dpi->y >>= zoom;

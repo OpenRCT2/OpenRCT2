@@ -52,11 +52,11 @@ static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xO
 /**
  * rct2: 0x0076574C
  */
-static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
 
-	int edges = edges_3x3[trackSequence];
+	sint32 edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 
@@ -76,7 +76,7 @@ static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 directio
 		case 8: paint_3d_cinema_structure(rideIndex, direction, -32, 0, height); break;
 	}
 
-	int cornerSegments = 0;
+	sint32 cornerSegments = 0;
 	switch (trackSequence) {
 		case 1:
 			// top
@@ -102,7 +102,7 @@ static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 directio
 }
 
 /* 0x0076554C */
-TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(sint32 trackType, sint32 direction)
 {
 	if (trackType != FLAT_TRACK_ELEM_3_X_3) {
 		return NULL;

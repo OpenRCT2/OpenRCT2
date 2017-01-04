@@ -37,7 +37,7 @@ public:
     uint16               GetCount()     const { return _count; }
     uint16               GetIndex()     const { return _index; }
 
-    CommandLineArgEnumerator(const char * const * arguments, int count);
+    CommandLineArgEnumerator(const char * const * arguments, sint32 count);
 
     void Reset();
     bool Backtrack();
@@ -47,7 +47,7 @@ public:
     bool TryPopString(const char * * result);
 };
 
-typedef int exitcode_t;
+typedef sint32 exitcode_t;
 typedef exitcode_t (*CommandLineFunc)(CommandLineArgEnumerator *);
 
 enum

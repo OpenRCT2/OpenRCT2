@@ -49,20 +49,20 @@ enum {
 /**
  * rct: 0x004ACF4A
  */
-static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
+static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement) {
 	uint16 maze_entry = mapElement->properties.track.maze_entry;
 	maze_entry = rol16(maze_entry, direction * 4);
 
 	uint32 rotation = get_current_rotation();
 	// draw ground
-	int image_id = SPR_TERRAIN_DIRT | gTrackColours[SCHEME_MISC];
+	sint32 image_id = SPR_TERRAIN_DIRT | gTrackColours[SCHEME_MISC];
 	sub_98196C(image_id, 0, 0, 32, 32, 0, height, rotation);
 
 	wooden_a_supports_paint_setup((rotation & 1) ? 0 : 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
-	int base_image_id = 0;
+	sint32 base_image_id = 0;
 	switch (get_ride(rideIndex)->track_colour_supports[0]) {
 		case 0: base_image_id = SPR_MAZE_BASE_BRICK; break;
 		case 1: base_image_id = SPR_MAZE_BASE_HEDGE; break;
@@ -177,7 +177,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_maze(sint32 trackType, sint32 direction) {
 	if (trackType != TRACK_ELEM_MAZE) {
 		return NULL;
 	}

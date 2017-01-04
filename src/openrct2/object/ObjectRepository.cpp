@@ -72,7 +72,7 @@ struct ObjectEntryHash
     size_t operator()(const rct_object_entry &entry) const
     {
         uint32 hash = 5381;
-        for (int i = 0; i < 8; i++)
+        for (sint32 i = 0; i < 8; i++)
         {
             hash = ((hash << 5) + hash) + entry.name[i];
         }
@@ -99,7 +99,7 @@ class ObjectRepository final : public IObjectRepository
     QueryDirectoryResult                _queryDirectoryResult = { 0 };
     ObjectEntryMap                      _itemMap;
     uint16                              _languageId = 0;
-    int                                 _numConflicts;
+    sint32                                 _numConflicts;
 
 public:
     ObjectRepository(IPlatformEnvironment * env)
@@ -422,11 +422,11 @@ private:
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
             item.RideFlags = stream->ReadValue<uint8>();
-            for (int i = 0; i < 2; i++)
+            for (sint32 i = 0; i < 2; i++)
             {
                 item.RideCategory[i] = stream->ReadValue<uint8>();
             }
-            for (int i = 0; i < 3; i++)
+            for (sint32 i = 0; i < 3; i++)
             {
                 item.RideType[i] = stream->ReadValue<uint8>();
             }
@@ -452,11 +452,11 @@ private:
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
             stream->WriteValue<uint8>(item.RideFlags);
-            for (int i = 0; i < 2; i++)
+            for (sint32 i = 0; i < 2; i++)
             {
                 stream->WriteValue<uint8>(item.RideCategory[i]);
             }
-            for (int i = 0; i < 3; i++)
+            for (sint32 i = 0; i < 3; i++)
             {
                 stream->WriteValue<uint8>(item.RideType[i]);
             }
@@ -565,7 +565,7 @@ private:
         }
     }
 
-    static void * CalculateExtraBytesToFixChecksum(int currentChecksum, int targetChecksum, size_t * outSize)
+    static void * CalculateExtraBytesToFixChecksum(sint32 currentChecksum, sint32 targetChecksum, size_t * outSize)
     {
         // Allocate 11 extra bytes to manipulate the checksum
         uint8 * salt = Memory::Allocate<uint8>(11);
@@ -573,7 +573,7 @@ private:
 
         // Next work out which bits need to be flipped to make the current checksum match the one in the file
         // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
-        int bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
+        sint32 bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
 
         // Each set bit encountered during encoding flips one bit of the resulting checksum (so each bit of the checksum is an
         // XOR of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in
@@ -597,7 +597,7 @@ private:
     void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
     {
         char normalisedName[9] = { 0 };
-        for (int i = 0; i < 8; i++)
+        for (sint32 i = 0; i < 8; i++)
         {
             if (name[i] != ' ')
             {
@@ -736,7 +736,7 @@ extern "C"
         }
     }
 
-    int object_load_packed(SDL_RWops * rw)
+    sint32 object_load_packed(SDL_RWops * rw)
     {
         IObjectRepository * objRepo = GetObjectRepository();
 
@@ -894,7 +894,7 @@ extern "C"
             {
                 return 0;
             }
-            int match = memcmp(a->name, b->name, 8);
+            sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
                 return 0;
@@ -906,7 +906,7 @@ extern "C"
             {
                 return 0;
             }
-            int match = memcmp(a->name, b->name, 8);
+            sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
                 return 0;
@@ -919,14 +919,14 @@ extern "C"
         return 1;
     }
 
-    int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
+    sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
     {
         const uint8 * entryBytePtr = (uint8 *)entry;
 
         uint32 checksum = 0xF369A75B;
         checksum ^= entryBytePtr[0];
         checksum = rol32(checksum, 11);
-        for (int i = 4; i < 12; i++)
+        for (sint32 i = 4; i < 12; i++)
         {
             checksum ^= entryBytePtr[i];
             checksum = rol32(checksum, 11);
@@ -948,6 +948,6 @@ extern "C"
             checksum = rol32(checksum, 11);
         }
 
-        return (int)checksum;
+        return (sint32)checksum;
     }
 }

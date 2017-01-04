@@ -70,7 +70,7 @@ static const litter_sprite litter_sprites[] = {
  * Litter Paint Setup
  *  rct2: 0x006736FC
  */
-void litter_paint(rct_litter *litter, int imageDirection)
+void litter_paint(rct_litter *litter, sint32 imageDirection)
 {
 	rct_drawpixelinfo *dpi;
 

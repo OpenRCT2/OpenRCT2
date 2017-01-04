@@ -29,8 +29,8 @@ extern "C"
 
 struct ObjectRepositoryItem;
 
-int scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
-int scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects);
+sint32 scenario_save_network(SDL_RWops* rw, const std::vector<const ObjectRepositoryItem *> &objects);
+sint32 scenario_write_packed_objects(SDL_RWops* rw, std::vector<const ObjectRepositoryItem *> &objects);
 std::vector<const ObjectRepositoryItem *> scenario_get_packable_objects();
 
 /**

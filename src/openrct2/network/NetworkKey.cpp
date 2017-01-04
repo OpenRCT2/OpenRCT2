@@ -26,7 +26,7 @@
 
 #define KEY_TYPE EVP_PKEY_RSA
 
-constexpr int KEY_LENGTH_BITS = 2048;
+constexpr sint32 KEY_LENGTH_BITS = 2048;
 
 NetworkKey::NetworkKey()
 {
@@ -106,7 +106,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     }
     char * priv_key = new char[size];
     file->read(file, priv_key, 1, size);
-    BIO * bio = BIO_new_mem_buf(priv_key, (int)size);
+    BIO * bio = BIO_new_mem_buf(priv_key, (sint32)size);
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
@@ -150,7 +150,7 @@ bool NetworkKey::LoadPublic(SDL_RWops * file)
     }
     char * pub_key = new char[size];
     file->read(file, pub_key, 1, size);
-    BIO * bio = BIO_new_mem_buf(pub_key, (int)size);
+    BIO * bio = BIO_new_mem_buf(pub_key, (sint32)size);
     if (bio == nullptr)
     {
         log_error("Failed to initialise OpenSSL's BIO!");
@@ -196,7 +196,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
         log_error("Failed to initialise OpenSSL's BIO!");
         return false;
     }
-    int result = PEM_write_bio_RSAPrivateKey(bio, rsa, nullptr, nullptr, 0, nullptr, nullptr);
+    sint32 result = PEM_write_bio_RSAPrivateKey(bio, rsa, nullptr, nullptr, 0, nullptr, nullptr);
     if (result != 1)
     {
         log_error("failed to write private key!");
@@ -205,7 +205,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    sint32 keylen = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
@@ -238,7 +238,7 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
         log_error("Failed to initialise OpenSSL's BIO!");
         return false;
     }
-    int result = PEM_write_bio_RSAPublicKey(bio, rsa);
+    sint32 result = PEM_write_bio_RSAPublicKey(bio, rsa);
     if (result != 1)
     {
         log_error("failed to write private key!");
@@ -247,7 +247,7 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    sint32 keylen = BIO_pending(bio);
     char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
@@ -276,7 +276,7 @@ std::string NetworkKey::PublicKeyString()
         log_error("Failed to initialise OpenSSL's BIO!");
         return nullptr;
     }
-    int result = PEM_write_bio_RSAPublicKey(bio, rsa);
+    sint32 result = PEM_write_bio_RSAPublicKey(bio, rsa);
     if (result != 1)
     {
         log_error("failed to write private key!");
@@ -285,7 +285,7 @@ std::string NetworkKey::PublicKeyString()
     }
     RSA_free(rsa);
 
-    int keylen = BIO_pending(bio);
+    sint32 keylen = BIO_pending(bio);
     char * pem_key = new char[keylen + 1];
     BIO_read(bio, pem_key, keylen);
     BIO_free_all(bio);
@@ -328,13 +328,13 @@ std::string NetworkKey::PublicKeyHash()
         EVP_MD_CTX_destroy(ctx);
         return nullptr;
     }
-    unsigned int digest_size = EVP_MAX_MD_SIZE;
-    std::vector<unsigned char> digest(EVP_MAX_MD_SIZE);
+    uint32 digest_size = EVP_MAX_MD_SIZE;
+    std::vector<uint8> digest(EVP_MAX_MD_SIZE);
     // Cleans up `ctx` automatically.
     EVP_DigestFinal(ctx, digest.data(), &digest_size);
     std::string digest_out;
     digest_out.reserve(EVP_MAX_MD_SIZE * 2 + 1);
-    for (unsigned int i = 0; i < digest_size; i++)
+    for (uint32 i = 0; i < digest_size; i++)
     {
         char buf[3];
         snprintf(buf, 3, "%02x", digest[i]);
@@ -380,9 +380,9 @@ bool NetworkKey::Sign(const uint8 * md, const size_t len, char ** signature, siz
         return false;
     }
 
-    unsigned char * sig;
+    uint8 * sig;
     /* Allocate memory for the signature based on size in slen */
-    if ((sig = (unsigned char*)OPENSSL_malloc((int)(sizeof(unsigned char) * (*out_size)))) == NULL)
+    if ((sig = (unsigned char*)OPENSSL_malloc((sint32)(sizeof(unsigned char) * (*out_size)))) == NULL)
     {
         log_error("Failed to crypto-allocate space fo signature");
         EVP_MD_CTX_destroy(mdctx);
@@ -429,7 +429,7 @@ bool NetworkKey::Verify(const uint8 * md, const size_t len, const char * sig, co
         return false;
     }
 
-    if (1 == EVP_DigestVerifyFinal(mdctx, (unsigned char *)sig, siglen))
+    if (1 == EVP_DigestVerifyFinal(mdctx, (uint8 *)sig, siglen))
     {
         EVP_MD_CTX_destroy(mdctx);
         log_verbose("Succesfully verified signature");

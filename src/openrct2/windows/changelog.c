@@ -50,12 +50,12 @@ rct_widget window_changelog_widgets[] = {
 };
 
 static void window_changelog_close(rct_window *w);
-static void window_changelog_mouseup(rct_window *w, int widgetIndex);
+static void window_changelog_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_changelog_resize(rct_window *w);
-static void window_changelog_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_changelog_invalidate(rct_window *w);
 static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_changelog_events = {
 	window_changelog_close,
@@ -94,8 +94,8 @@ static void window_changelog_dispose_file();
 static char *_changelogText = NULL;
 static size_t _changelogTextSize = 0;
 static char **_changelogLines = NULL;
-static int _changelogNumLines = 0;
-static int _changelogLongestLineWidth = 0;
+static sint32 _changelogNumLines = 0;
+static sint32 _changelogLongestLineWidth = 0;
 
 rct_window *window_changelog_open()
 {
@@ -108,8 +108,8 @@ rct_window *window_changelog_open()
 	if (!window_changelog_read_file())
 		return NULL;
 
-	int screenWidth = gScreenWidth;
-	int screenHeight = gScreenHeight;
+	sint32 screenWidth = gScreenWidth;
+	sint32 screenHeight = gScreenHeight;
 
 	window = window_create_centred(
 		screenWidth * 4 / 5,
@@ -134,7 +134,7 @@ static void window_changelog_close(rct_window *w)
 	window_changelog_dispose_file();
 }
 
-static void window_changelog_mouseup(rct_window *w, int widgetIndex)
+static void window_changelog_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -145,8 +145,8 @@ static void window_changelog_mouseup(rct_window *w, int widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-	int screenWidth = gScreenWidth;
-	int screenHeight = gScreenHeight;
+	sint32 screenWidth = gScreenWidth;
+	sint32 screenHeight = gScreenHeight;
 
 	w->max_width = (screenWidth * 4) / 5;
 	w->max_height = (screenHeight * 4) / 5;
@@ -163,7 +163,7 @@ static void window_changelog_resize(rct_window *w)
 	}
 }
 
-static void window_changelog_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_changelog_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*width = _changelogLongestLineWidth + 4;
 	*height = _changelogNumLines * 11;
@@ -189,14 +189,14 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
 	gCurrentFontFlags = 0;
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-	int x = 3;
-	int y = 3;
-	for (int i = 0; i < _changelogNumLines; i++) {
+	sint32 x = 3;
+	sint32 y = 3;
+	for (sint32 i = 0; i < _changelogNumLines; i++) {
 		gfx_draw_string(dpi, _changelogLines[i], w->colours[0], x, y);
 		y += 11;
 	}
@@ -224,14 +224,14 @@ static bool window_changelog_read_file()
 	if (_changelogTextSize >= 3 && utf8_is_bom(_changelogText))
 		start += 3;
 
-	int changelogLinesCapacity = 8;
+	sint32 changelogLinesCapacity = 8;
 	_changelogLines = malloc(changelogLinesCapacity * sizeof(char*));
 	_changelogLines[0] = start;
 	_changelogNumLines = 1;
 
 	char *ch = start;
 	while (*ch != 0) {
-		unsigned char c = *ch;
+		uint8 c = *ch;
 		if (c == '\n') {
 			*ch++ = 0;
 			_changelogNumLines++;
@@ -262,8 +262,8 @@ static bool window_changelog_read_file()
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_changelogLongestLineWidth = 0;
-	for (int i = 0; i < _changelogNumLines; i++) {
-		int width = gfx_get_string_width(_changelogLines[i]);
+	for (sint32 i = 0; i < _changelogNumLines; i++) {
+		sint32 width = gfx_get_string_width(_changelogLines[i]);
 		_changelogLongestLineWidth = max(width, _changelogLongestLineWidth);
 	}
 	return true;

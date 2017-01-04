@@ -22,7 +22,7 @@
 #include "util/util.h"
 
 // 98DA00
-int object_entry_group_counts[] = {
+sint32 object_entry_group_counts[] = {
 	128,	// rides
 	252,	// small scenery
 	128,	// large scenery
@@ -37,7 +37,7 @@ int object_entry_group_counts[] = {
 };
 
 // 98DA2C
-int object_entry_group_encoding[] = {
+sint32 object_entry_group_encoding[] = {
 	CHUNK_ENCODING_RLE,
 	CHUNK_ENCODING_RLE,
 	CHUNK_ENCODING_RLE,
@@ -147,7 +147,7 @@ bool object_read_and_load_entries(SDL_RWops* rw)
  * bl = entry_index
  * ecx = entry_type
  */
-int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
 	*entry_type = entry->flags & 0xF;
 
 	rct_object_entry_group entry_group = object_entry_groups[*entry_type];

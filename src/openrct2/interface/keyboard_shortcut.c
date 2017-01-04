@@ -42,9 +42,9 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT];
  *
  *  rct2: 0x006E3E91
  */
-void keyboard_shortcut_set(int key)
+void keyboard_shortcut_set(sint32 key)
 {
-	int i;
+	sint32 i;
 
 	// Unmap shortcut that already uses this key
 	for (i = 0; i < SHORTCUT_COUNT; i++) {
@@ -61,9 +61,9 @@ void keyboard_shortcut_set(int key)
 	config_shortcut_keys_save();
 }
 
-static int keyboard_shortcut_get_from_key(int key)
+static sint32 keyboard_shortcut_get_from_key(sint32 key)
 {
-	for (int i = 0; i < SHORTCUT_COUNT; i++) {
+	for (sint32 i = 0; i < SHORTCUT_COUNT; i++) {
 		if (key == gShortcutKeys[i]) {
 			return i;
 		}
@@ -75,15 +75,15 @@ static int keyboard_shortcut_get_from_key(int key)
  *
  *  rct2: 0x006E3E68
  */
-void keyboard_shortcut_handle(int key)
+void keyboard_shortcut_handle(sint32 key)
 {
-	int shortcut = keyboard_shortcut_get_from_key(key);
+	sint32 shortcut = keyboard_shortcut_get_from_key(key);
 	if (shortcut != -1) {
 		keyboard_shortcut_handle_command(shortcut);
 	}
 }
 
-void keyboard_shortcut_handle_command(int shortcutIndex)
+void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 {
 	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table)) {
 		shortcut_action action = shortcut_table[shortcutIndex];
@@ -125,7 +125,7 @@ void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutK
 
 #pragma region Shortcut Commands
 
-static void toggle_view_flag(int viewportFlag)
+static void toggle_view_flag(sint32 viewportFlag)
 {
 	rct_window *window;
 

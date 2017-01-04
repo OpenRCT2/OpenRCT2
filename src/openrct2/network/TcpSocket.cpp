@@ -47,7 +47,7 @@
     #include <netinet/in.h>
     #include <sys/socket.h>
     #include <fcntl.h>
-    typedef int SOCKET;
+    typedef sint32 SOCKET;
     #define SOCKET_ERROR -1
     #define INVALID_SOCKET -1
     #define LAST_SOCKET_ERROR() errno
@@ -132,7 +132,7 @@ public:
         }
 
         sockaddr_storage ss;
-        int ss_len;
+        sint32 ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
             throw SocketException("Unable to resolve address.");
@@ -146,7 +146,7 @@ public:
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        int value = 0;
+        sint32 value = 0;
         if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0)
         {
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
@@ -207,7 +207,7 @@ public:
             else
             {
                 char hostName[NI_MAXHOST];
-                int rc = getnameinfo(
+                sint32 rc = getnameinfo(
                     (struct sockaddr *)&client_addr,
                     client_len,
                     hostName,
@@ -239,7 +239,7 @@ public:
             _status = SOCKET_STATUS_RESOLVING;
 
             sockaddr_storage ss;
-            int ss_len;
+            sint32 ss_len;
             if (!ResolveAddress(address, port, &ss, &ss_len))
             {
                 throw SocketException("Unable to resolve address.");
@@ -260,7 +260,7 @@ public:
 
             // Connect
             uint32 connectStartTick;
-            int connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
+            sint32 connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
             if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS &&
                                                   LAST_SOCKET_ERROR() != EWOULDBLOCK))
             {
@@ -269,7 +269,7 @@ public:
 
             connectStartTick = SDL_GetTicks();
 
-            int error = 0;
+            sint32 error = 0;
             socklen_t len = sizeof(error);
             if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char *)&error, &len) != 0)
             {
@@ -291,7 +291,7 @@ public:
                 timeval timeout;
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
-                if (select((int)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
+                if (select((sint32)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
                     error = 0;
                     len = sizeof(error);
@@ -331,7 +331,7 @@ public:
             req->Socket = this;
             req->Address = std::string(address);
             req->Port = port;
-            SDL_CreateThread([](void * pointer) -> int
+            SDL_CreateThread([](void * pointer) -> sint32
             {
                 auto req2 = static_cast<ConnectRequest *>(pointer);
                 try
@@ -370,7 +370,7 @@ public:
         {
             const char * bufferStart = (const char *)buffer + totalSent;
             size_t remainingSize = size - totalSent;
-            int sentBytes = send(_socket, (const char *)bufferStart, (int)remainingSize, FLAG_NO_PIPE);
+            sint32 sentBytes = send(_socket, (const char *)bufferStart, (sint32)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;
@@ -387,7 +387,7 @@ public:
             throw Exception("Socket not connected.");
         }
 
-        int readBytes = recv(_socket, (char *)buffer, (int)size, 0);
+        sint32 readBytes = recv(_socket, (char *)buffer, (sint32)size, 0);
         if (readBytes == 0)
         {
             *sizeReceived = 0;
@@ -443,7 +443,7 @@ private:
         _status = SOCKET_STATUS_CLOSED;
     }
 
-    bool ResolveAddress(const char * address, uint16 port, sockaddr_storage * ss, int * ss_len)
+    bool ResolveAddress(const char * address, uint16 port, sockaddr_storage * ss, sint32 * ss_len)
     {
         std::string serviceName = std::to_string(port);
 
@@ -463,7 +463,7 @@ private:
         else
         {
             memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = (int)result->ai_addrlen;
+            *ss_len = (sint32)result->ai_addrlen;
             freeaddrinfo(result);
             return true;
         }
@@ -475,7 +475,7 @@ private:
         u_long nonBlocking = on;
         return ioctlsocket(socket, FIONBIO, &nonBlocking) == 0;
 #else
-        int flags = fcntl(socket, F_GETFL, 0);
+        sint32 flags = fcntl(socket, F_GETFL, 0);
         return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
 #endif
     }

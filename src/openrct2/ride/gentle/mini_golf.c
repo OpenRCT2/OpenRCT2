@@ -461,7 +461,7 @@ static bool mini_golf_paint_util_should_draw_fence(rct_map_element * mapElement)
 }
 
 /** rct2: 0x0087F10C */
-static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -498,7 +498,7 @@ static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 }
 
 /** rct2: 0x0087F11C */
-static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -533,7 +533,7 @@ static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence
 }
 
 /** rct2: 0x0087F12C */
-static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -568,7 +568,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0087F13C */
-static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -603,25 +603,25 @@ static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 track
 }
 
 /** rct2: 0x0087F14C */
-static void paint_mini_golf_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F15C */
-static void paint_mini_golf_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F16C */
-static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
-static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {gPaintMapPosition.x, gPaintMapPosition.y};
 	rct_ride * ride = get_ride(rideIndex);
@@ -676,7 +676,7 @@ static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 
 }
 
 /** rct2: 0x0087F1AC */
-static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -743,12 +743,12 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint
 }
 
 /** rct2: 0x0087F1BC */
-static void paint_mini_golf_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int height, const uint32 sprites[4][2][2])
+static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, sint32 height, const uint32 sprites[4][2][2])
 {
 	uint32 imageId;
 
@@ -782,19 +782,19 @@ static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int he
 }
 
 /** rct2: 0x0087F1CC */
-static void paint_mini_golf_hole_a(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_a(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_a);
 }
 
 /** rct2: 0x0087F1DC */
-static void paint_mini_golf_hole_b(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_b(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_b);
 }
 
 /** rct2: 0x0087F1EC */
-static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
@@ -841,11 +841,11 @@ static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 d
 }
 
 /** rct2: 0x0087F1FC */
-static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
-	int supportType = (direction & 1);
+	sint32 supportType = (direction & 1);
 	if (trackSequence == 2) supportType = 1 - supportType;
 	bool drewSupports = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -907,11 +907,11 @@ static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 d
 }
 
 /** rct2: 0x0087F1FC */
-static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
 	uint32 imageId;
 
-	int supportType = (direction & 1);
+	sint32 supportType = (direction & 1);
 	if (trackSequence == 2) supportType = 1 - supportType;
 	bool drewSupports = wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
@@ -975,7 +975,7 @@ static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 d
 /**
  * rct2: 0x0087EDC4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direction) {
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(sint32 trackType, sint32 direction) {
 	switch (trackType) {
 		case TRACK_ELEM_FLAT:
 			return paint_mini_golf_track_flat;
@@ -1022,7 +1022,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direc
 /**
  * rct2: 0x006D42F0
  */
-void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rct_vehicle *vehicle)
+void vehicle_visual_mini_golf_player(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
 {
 	if (vehicle->num_peeps == 0) {
 		return;
@@ -1051,7 +1051,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 /**
  * rct2: 0x006D43C6
  */
-void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle)
+void vehicle_visual_mini_golf_ball(sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle)
 {
 	if (vehicle->mini_golf_current_animation != 1) {
 		return;

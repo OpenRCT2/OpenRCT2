@@ -64,7 +64,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 	exePath[bytesRead - 1] = '\0';
 #elif defined(__FREEBSD__)
 	size_t exeLen = sizeof(exePath);
-	const int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+	const sint32 mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
 	if (sysctl(mib, 4, exePath, &exeLen, NULL, 0) == -1) {
 		log_fatal("failed to get process path");
 
@@ -173,9 +173,9 @@ uint16 platform_get_locale_language(){
 		// longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
 		char pattern[32];
 		//strip the codeset and modifier part
-		int length = strlen(langString);
+		sint32 length = strlen(langString);
 		{
-			for(int i = 0; i < length; ++i){
+			for(sint32 i = 0; i < length; ++i){
 				if(langString[i] == '.' || langString[i] == '@'){
 					length = i;
 					break;
@@ -193,7 +193,7 @@ uint16 platform_get_locale_language(){
 		}
 
 		// Iterate through all available languages
-		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+		for(sint32 i = 1; i < LANGUAGE_COUNT; ++i){
 			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
 				return i;
 			}
@@ -214,7 +214,7 @@ uint16 platform_get_locale_language(){
 		if(strip != NULL){
 			pattern[strip - pattern] = '*';
 			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
-			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			for(sint32 i = 1; i < LANGUAGE_COUNT; ++i){
 				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
 					return i;
 				}
@@ -253,7 +253,7 @@ uint8 platform_get_locale_measurement_format(){
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
-static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
+static void execute_cmd(char *command, sint32 *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
 	size_t n_chars;
 
@@ -286,7 +286,7 @@ static void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_s
 }
 
 static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
-	int exit_value;
+	sint32 exit_value;
 	size_t size;
 	dialog_type dtype;
 
@@ -318,7 +318,7 @@ static dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 }
 
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc, size_t outSize) {
-	int exit_value;
+	sint32 exit_value;
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
 	char result[MAX_PATH];
@@ -345,7 +345,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 
 			{
 		        bool first = true;
-				for (int j = 0; j < countof(desc->filters); j++) {
+				for (sint32 j = 0; j < countof(desc->filters); j++) {
 					if (desc->filters[j].pattern && desc->filters[j].name) {
 						char filterTemp[100] = { 0 };
 						if (first) {
@@ -368,8 +368,8 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 				// kdialog wants filters space-delimited and we don't expect ';' anywhere else,
 				// this is much easier and quicker to do than being overly careful about replacing
 				// it only where truly needed.
-				int filterSize = strlen(filter);
-				for (int i = 0; i < filterSize + 3; i++) {
+				sint32 filterSize = strlen(filter);
+				for (sint32 i = 0; i < filterSize + 3; i++) {
 					if (filter[i] == ';') {
 						filter[i] = ' ';
 					}
@@ -390,10 +390,10 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 			}
 
 			// Zenity seems to be case sensitive, while Kdialog isn't.
-			for (int j = 0; j < countof(desc->filters); j++) {
+			for (sint32 j = 0; j < countof(desc->filters); j++) {
 				if (desc->filters[j].pattern && desc->filters[j].name) {
-					int regexIterator = 0;
-					for(int i = 0; i <= strlen(desc->filters[j].pattern); i++) {
+					sint32 regexIterator = 0;
+					for(sint32 i = 0; i <= strlen(desc->filters[j].pattern); i++) {
 						if (isalpha(desc->filters[j].pattern[i])) {
 							filterPatternRegex[regexIterator+0] = '[';
 							filterPatternRegex[regexIterator+1] = (char)toupper(desc->filters[j].pattern[i]);
@@ -462,7 +462,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc,
 utf8 *platform_open_directory_browser(utf8 *title) {
 	size_t size;
 	dialog_type dtype;
-	int exit_value;
+	sint32 exit_value;
 	char cmd[MAX_PATH];
 	char executable[MAX_PATH];
 	char result[MAX_PATH];

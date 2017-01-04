@@ -60,11 +60,11 @@ static rct_widget window_track_place_widgets[] = {
 };
 
 static void window_track_place_close(rct_window *w);
-static void window_track_place_mouseup(rct_window *w, int widgetIndex);
+static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x, int y);
-static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, int y);
-static void window_track_place_toolabort(rct_window *w, int widgetIndex);
+static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y);
+static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -114,13 +114,13 @@ static money32 _window_track_place_last_cost;
 static rct_track_td6 *_trackDesign;
 
 static void window_track_place_clear_provisional();
-static int window_track_place_get_base_z(int x, int y);
-static void window_track_place_attempt_placement(rct_track_td6 *td6, int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex);
+static sint32 window_track_place_get_base_z(sint32 x, sint32 y);
+static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex);
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(rct_track_td6 *td6);
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
 static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
 static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel);
 static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel);
@@ -201,7 +201,7 @@ static void window_track_place_close(rct_window *w)
  *
  *  rct2: 0x006CFEAC
  */
-static void window_track_place_mouseup(rct_window *w, int widgetIndex)
+static void window_track_place_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -243,9 +243,9 @@ static void window_track_place_update(rct_window *w)
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x, int y)
+static void window_track_place_toolupdate(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
-	short mapX, mapY, mapZ;
+	sint16 mapX, mapY, mapZ;
 
 	map_invalidate_map_selection_tiles();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -273,7 +273,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found
-		for (int i = 0; i < 7; i++) {
+		for (sint32 i = 0; i < 7; i++) {
 			uint8 rideIndex;
 			window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 105, &cost, &rideIndex);
 			if (cost != MONEY32_UNDEFINED) {
@@ -302,10 +302,10 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, int y)
+static void window_track_place_tooldown(rct_window* w, sint32 widgetIndex, sint32 x, sint32 y)
 {
-	int i;
-	short mapX, mapY, mapZ;
+	sint32 i;
+	sint16 mapX, mapY, mapZ;
 	money32 cost;
 	uint8 rideIndex;
 
@@ -357,7 +357,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
  *
  *  rct2: 0x006D015C
  */
-static void window_track_place_toolabort(rct_window *w, int widgetIndex)
+static void window_track_place_toolabort(rct_window *w, sint32 widgetIndex)
 {
 	window_track_place_clear_provisional();
 }
@@ -400,10 +400,10 @@ static void window_track_place_clear_provisional()
  *
  *  rct2: 0x006D17C6
  */
-static int window_track_place_get_base_z(int x, int y)
+static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
 {
 	rct_map_element *mapElement;
-	int z;
+	sint32 z;
 
 	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
 	z = mapElement->base_height * 8;
@@ -424,9 +424,9 @@ static int window_track_place_get_base_z(int x, int y)
 	return z + sub_6D01B3(_trackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
 }
 
-static void window_track_place_attempt_placement(rct_track_td6 *td6, int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
+static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, sint32 y, sint32 z, sint32 bl, money32 *cost, uint8 *rideIndex)
 {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
+	sint32 eax, ebx, ecx, edx, esi, edi, ebp;
 	money32 result;
 
 	edx = esi = ebp = 0;
@@ -484,7 +484,7 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
 	// First pass is used to determine the width and height of the image so it can centre it
 	rct_xy16 min = { 0, 0 };
 	rct_xy16 max = { 0, 0 };
-	for (int pass = 0; pass < 2; pass++) {
+	for (sint32 pass = 0; pass < 2; pass++) {
 		rct_xy16 origin = { 0, 0 };
 		if (pass == 1) {
 			origin.x -= ((max.x + min.x) >> 6) << 5;
@@ -499,12 +499,12 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
 	}
 }
 
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
 {
 	uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 	rct_td6_track_element *trackElement = td6->track_elements;
 	while (trackElement->type != 255) {
-		int trackType = trackElement->type;
+		sint32 trackType = trackElement->type;
 		if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
 			trackType = 255;
 		}
@@ -532,7 +532,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 					// Station track is a lighter colour
 					uint8 colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN) ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
-					for (int i = 0; i < 4; i++) {
+					for (sint32 i = 0; i < 4; i++) {
 						if (bits & 1) pixel[338 + i] = colour; // x + 2, y + 2
 						if (bits & 2) pixel[168 + i] = colour; //        y + 1
 						if (bits & 4) pixel[  2 + i] = colour; // x + 2
@@ -562,7 +562,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, int p
 	}
 }
 
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
 {
 	uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 	rct_td6_maze_element *mazeElement = td6->maze_elements;
@@ -587,7 +587,7 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, int pa
 				// Entrance or exit is a lighter colour
 				uint8 colour = mazeElement->type == 8 || mazeElement->type == 128 ? PALETTE_INDEX_PRIMARY_LIGHTEST : PALETTE_INDEX_PRIMARY_MID_DARK;
 
-				for (int i = 0; i < 4; i++) {
+				for (sint32 i = 0; i < 4; i++) {
 					pixel[338 + i] = colour; // x + 2, y + 2
 					pixel[168 + i] = colour; //        y + 1
 					pixel[  2 + i] = colour; // x + 2

@@ -108,9 +108,9 @@ enum {
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
 #define CHEATS_TRAM_INCREMENT 250
 
-extern int park_rating_spinner_value;
+extern sint32 park_rating_spinner_value;
 
-void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 void cheats_reset();
 

@@ -24,7 +24,7 @@
  *
  *  rct2: 0x006736C7
  */
-void create_balloon(int x, int y, int z, int colour, uint8 bl)
+void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, uint8 bl)
 {
 	rct_sprite* sprite = create_sprite(2);
 	if (sprite != NULL) {
@@ -62,7 +62,7 @@ void balloon_update(rct_balloon *balloon)
 		return;
 	}
 
-	int original_var26a = balloon->var_26a;
+	sint32 original_var26a = balloon->var_26a;
 	balloon->var_26a += 85;
 	if (original_var26a < 255 - 85)
 		return;
@@ -70,7 +70,7 @@ void balloon_update(rct_balloon *balloon)
 	balloon->var_26b++;
 	sprite_move(balloon->x, balloon->y, balloon->z + 1, (rct_sprite*)balloon);
 
-	int maxZ = 1967 - ((balloon->x ^ balloon->y) & 31);
+	sint32 maxZ = 1967 - ((balloon->x ^ balloon->y) & 31);
 	if (balloon->z < maxZ)
 		return;
 
@@ -100,10 +100,10 @@ static void balloon_press(rct_balloon *balloon)
 	);
 }
 
-void game_command_balloon_press(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+void game_command_balloon_press(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
-	unsigned int balloon_num = *eax;
-	int flags = *ebx;
+	uint32 balloon_num = *eax;
+	sint32 flags = *ebx;
 	*ebx = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 		return;

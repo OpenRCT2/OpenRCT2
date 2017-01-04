@@ -35,22 +35,22 @@
 #include "../world/climate.h"
 #include "platform.h"
 
-typedef void(*update_palette_func)(const uint8*, int, int);
+typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
-const unsigned char *gKeysState;
-unsigned char *gKeysPressed;
-unsigned int gLastKeyPressed;
+const uint8 *gKeysState;
+uint8 *gKeysPressed;
+uint32 gLastKeyPressed;
 textinputbuffer gTextInput;
 
 bool gTextInputCompositionActive;
 utf8 gTextInputComposition[32];
-int gTextInputCompositionStart;
-int gTextInputCompositionLength;
+sint32 gTextInputCompositionStart;
+sint32 gTextInputCompositionLength;
 
-int gNumResolutions = 0;
+sint32 gNumResolutions = 0;
 resolution_t *gResolutions = NULL;
-int gResolutionsAllowAnyAspectRatio = 0;
+sint32 gResolutionsAllowAnyAspectRatio = 0;
 
 SDL_Window *gWindow = NULL;
 SDL_Renderer *gRenderer = NULL;
@@ -61,19 +61,19 @@ uint32 gPaletteHWMapped[256];
 
 bool gSteamOverlayActive = false;
 
-static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-static unsigned int _lastGestureTimestamp;
+static const sint32 _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
+static uint32 _lastGestureTimestamp;
 static float _gestureRadius;
 
 static void platform_create_window();
 
-static int resolution_sort_func(const void *pa, const void *pb)
+static sint32 resolution_sort_func(const void *pa, const void *pb)
 {
 	const resolution_t *a = (resolution_t*)pa;
 	const resolution_t *b = (resolution_t*)pb;
 
-	int areaA = a->width * a->height;
-	int areaB = b->width * b->height;
+	sint32 areaA = a->width * a->height;
+	sint32 areaB = b->width * b->height;
 
 	if (areaA == areaB) return 0;
 	if (areaA < areaB) return -1;
@@ -83,8 +83,8 @@ static int resolution_sort_func(const void *pa, const void *pb)
 void platform_update_fullscreen_resolutions()
 {
 	// Query number of display modes
-	int displayIndex = SDL_GetWindowDisplayIndex(gWindow);
-	int numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
+	sint32 displayIndex = SDL_GetWindowDisplayIndex(gWindow);
+	sint32 numDisplayModes = SDL_GetNumDisplayModes(displayIndex);
 
 	// Get desktop aspect ratio
 	SDL_DisplayMode mode;
@@ -99,7 +99,7 @@ void platform_update_fullscreen_resolutions()
 	gNumResolutions = 0;
 
 	float desktopAspectRatio = (float)mode.w / mode.h;
-	for (int i = 0; i < numDisplayModes; i++) {
+	for (sint32 i = 0; i < numDisplayModes; i++) {
 		SDL_GetDisplayMode(displayIndex, i, &mode);
 
 		float aspectRatio = (float)mode.w / mode.h;
@@ -115,13 +115,13 @@ void platform_update_fullscreen_resolutions()
 
 	// Remove duplicates
 	resolution_t *resPlace = &gResolutions[0];
-	for (int i = 1; i < gNumResolutions; i++) {
+	for (sint32 i = 1; i < gNumResolutions; i++) {
 		resolution_t *resLook = &gResolutions[i];
 		if (resLook->width != resPlace->width || resLook->height != resPlace->height)
 			*++resPlace = *resLook;
 	}
 
-	gNumResolutions = (int)(resPlace - &gResolutions[0]) + 1;
+	gNumResolutions = (sint32)(resPlace - &gResolutions[0]) + 1;
 
 	// Update config fullscreen resolution if not set
 	if (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1) {
@@ -130,13 +130,13 @@ void platform_update_fullscreen_resolutions()
 	}
 }
 
-void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight)
+void platform_get_closest_resolution(sint32 inWidth, sint32 inHeight, sint32 *outWidth, sint32 *outHeight)
 {
-	int closestWidth = 640, closestHeight = 480;
+	sint32 closestWidth = 640, closestHeight = 480;
 
-	int closestAreaDiff = -1;
-	int destinationArea = inWidth * inHeight;
-	for (int i = 0; i < gNumResolutions; i++) {
+	sint32 closestAreaDiff = -1;
+	sint32 destinationArea = inWidth * inHeight;
+	for (sint32 i = 0; i < gNumResolutions; i++) {
 		// Check if exact match
 		if (gResolutions[i].width == inWidth && gResolutions[i].height == inHeight) {
 			closestWidth = gResolutions[i].width;
@@ -146,7 +146,7 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 		}
 
 		// Check if area is closer to best match
-		int areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
+		sint32 areaDiff = abs((gResolutions[i].width * gResolutions[i].height) - destinationArea);
 		if (closestAreaDiff == -1 || areaDiff < closestAreaDiff) {
 			closestAreaDiff = areaDiff;
 			closestWidth = gResolutions[i].width;
@@ -170,11 +170,11 @@ void platform_draw()
 	}
 }
 
-static void platform_resize(int width, int height)
+static void platform_resize(sint32 width, sint32 height)
 {
 	uint32 flags;
-	int dst_w = (int)(width / gConfigGeneral.window_scale);
-	int dst_h = (int)(height / gConfigGeneral.window_scale);
+	sint32 dst_w = (sint32)(width / gConfigGeneral.window_scale);
+	sint32 dst_h = (sint32)(height / gConfigGeneral.window_scale);
 
 	gScreenWidth = dst_w;
 	gScreenHeight = dst_h;
@@ -192,7 +192,7 @@ static void platform_resize(int width, int height)
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly
 	// This is called in rct2_update and is only called after resizing a window has finished
-	const int nonWindowFlags =
+	const sint32 nonWindowFlags =
 		SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (!(flags & nonWindowFlags)) {
 		if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height) {
@@ -219,7 +219,7 @@ void platform_trigger_resize()
 	snprintf(scale_quality_buffer, sizeof(scale_quality_buffer), "%u", scale_quality);
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality_buffer);
 
-	int w, h;
+	sint32 w, h;
 	SDL_GetWindowSize(gWindow, &w, &h);
 	platform_resize(w, h);
 }
@@ -242,16 +242,16 @@ static uint8 lerp(uint8 a, uint8 b, float t)
 	if (t <= 0) return a;
 	if (t >= 1) return b;
 
-	int range = b - a;
-	int amount = (int)(range * t);
+	sint32 range = b - a;
+	sint32 amount = (sint32)(range * t);
 	return (uint8)(a + amount);
 }
 
-void platform_update_palette(const uint8* colours, int start_index, int num_colours)
+void platform_update_palette(const uint8* colours, sint32 start_index, sint32 num_colours)
 {
 	colours += start_index * 4;
 
-	for (int i = start_index; i < num_colours + start_index; i++) {
+	for (sint32 i = start_index; i < num_colours + start_index; i++) {
 		uint8 r = colours[2];
 		uint8 g = colours[1];
 		uint8 b = colours[0];
@@ -327,8 +327,8 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_MOUSEMOTION:
-			gCursorState.x = (int)(e.motion.x / gConfigGeneral.window_scale);
-			gCursorState.y = (int)(e.motion.y / gConfigGeneral.window_scale);
+			gCursorState.x = (sint32)(e.motion.x / gConfigGeneral.window_scale);
+			gCursorState.y = (sint32)(e.motion.y / gConfigGeneral.window_scale);
 			break;
 		case SDL_MOUSEWHEEL:
 			if (gConsoleOpen) {
@@ -339,8 +339,8 @@ void platform_process_messages()
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			int x = (int)(e.button.x / gConfigGeneral.window_scale);
-			int y = (int)(e.button.y / gConfigGeneral.window_scale);
+			sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
+			sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
@@ -360,8 +360,8 @@ void platform_process_messages()
 		}
 		case SDL_MOUSEBUTTONUP:
 		{
-			int x = (int)(e.button.x / gConfigGeneral.window_scale);
-			int y = (int)(e.button.y / gConfigGeneral.window_scale);
+			sint32 x = (sint32)(e.button.x / gConfigGeneral.window_scale);
+			sint32 y = (sint32)(e.button.y / gConfigGeneral.window_scale);
 			switch (e.button.button) {
 			case SDL_BUTTON_LEFT:
 				store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
@@ -382,13 +382,13 @@ void platform_process_messages()
 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
-			gCursorState.x = (int)(e.tfinger.x * gScreenWidth);
-			gCursorState.y = (int)(e.tfinger.y * gScreenHeight);
+			gCursorState.x = (sint32)(e.tfinger.x * gScreenWidth);
+			gCursorState.y = (sint32)(e.tfinger.y * gScreenHeight);
 			break;
 		case SDL_FINGERDOWN:
 		{
-			int x = (int)(e.tfinger.x * gScreenWidth);
-			int y = (int)(e.tfinger.y * gScreenHeight);
+			sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
+			sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
 				&& e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -408,8 +408,8 @@ void platform_process_messages()
 		}
 		case SDL_FINGERUP:
 		{
-			int x = (int)(e.tfinger.x * gScreenWidth);
-			int y = (int)(e.tfinger.y * gScreenHeight);
+			sint32 x = (sint32)(e.tfinger.x * gScreenWidth);
+			sint32 y = (sint32)(e.tfinger.y * gScreenHeight);
 
 			if (gCursorState.touchIsDouble) {
 				store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
@@ -506,8 +506,8 @@ void platform_process_messages()
 				_gestureRadius += e.mgesture.dDist;
 
 				// Zoom gesture
-				const int tolerance = 128;
-				int gesturePixels = (int)(_gestureRadius * gScreenWidth);
+				const sint32 tolerance = 128;
+				sint32 gesturePixels = (sint32)(_gestureRadius * gScreenWidth);
 				if (abs(gesturePixels) > tolerance) {
 					_gestureRadius = 0;
 					main_window_zoom(gesturePixels > 0, true);
@@ -549,7 +549,7 @@ void platform_process_messages()
 	gCursorState.any = gCursorState.left | gCursorState.middle | gCursorState.right;
 
 	// Updates the state of the keys
-	int numKeys = 256;
+	sint32 numKeys = 256;
 	gKeysState = SDL_GetKeyboardState(&numKeys);
 }
 
@@ -562,8 +562,8 @@ static void platform_close_window()
 void platform_init()
 {
 	platform_create_window();
-	gKeysPressed = malloc(sizeof(unsigned char) * 256);
-	memset(gKeysPressed, 0, sizeof(unsigned char) * 256);
+	gKeysPressed = malloc(sizeof(uint8) * 256);
+	memset(gKeysPressed, 0, sizeof(uint8) * 256);
 
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the
@@ -576,7 +576,7 @@ void platform_init()
 
 static void platform_create_window()
 {
-	int width, height;
+	sint32 width, height;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		log_fatal("SDL_Init %s", SDL_GetError());
@@ -622,7 +622,7 @@ static void platform_create_window()
 	platform_trigger_resize();
 }
 
-int platform_scancode_to_rct_keycode(int sdl_key)
+sint32 platform_scancode_to_rct_keycode(sint32 sdl_key)
 {
 	char keycode = (char)SDL_GetKeyFromScancode((SDL_Scancode)sdl_key);
 
@@ -643,7 +643,7 @@ void platform_free()
 	SDL_Quit();
 }
 
-void platform_start_text_input(utf8* buffer, int max_length)
+void platform_start_text_input(utf8* buffer, sint32 max_length)
 {
 	// TODO This doesn't work, and position could be improved to where text entry is
 	SDL_Rect rect = { 10, 10, 100, 100 };
@@ -666,9 +666,9 @@ void platform_stop_text_input()
 	gTextInputCompositionActive = false;
 }
 
-void platform_set_fullscreen_mode(int mode)
+void platform_set_fullscreen_mode(sint32 mode)
 {
-	int width, height;
+	sint32 width, height;
 
 	mode = _fullscreen_modes[mode];
 
@@ -695,7 +695,7 @@ void platform_set_fullscreen_mode(int mode)
 
 void platform_toggle_windowed_mode()
 {
-	int targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+	sint32 targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
 	platform_set_fullscreen_mode(targetMode);
 	gConfigGeneral.fullscreen_mode = targetMode;
 	config_save_default();
@@ -732,26 +732,26 @@ void platform_show_cursor()
 	SDL_ShowCursor(SDL_ENABLE);
 }
 
-void platform_get_cursor_position(int *x, int *y)
+void platform_get_cursor_position(sint32 *x, sint32 *y)
 {
 	SDL_GetMouseState(x, y);
 }
 
-void platform_get_cursor_position_scaled(int *x, int *y)
+void platform_get_cursor_position_scaled(sint32 *x, sint32 *y)
 {
 	platform_get_cursor_position(x, y);
 
 	// Compensate for window scaling.
-	*x = (int) ceilf(*x / gConfigGeneral.window_scale);
-	*y = (int) ceilf(*y / gConfigGeneral.window_scale);
+	*x = (sint32) ceilf(*x / gConfigGeneral.window_scale);
+	*y = (sint32) ceilf(*y / gConfigGeneral.window_scale);
 }
 
-void platform_set_cursor_position(int x, int y)
+void platform_set_cursor_position(sint32 x, sint32 y)
 {
 	SDL_WarpMouseInWindow(NULL, x, y);
 }
 
-unsigned int platform_get_ticks()
+uint32 platform_get_ticks()
 {
 	return SDL_GetTicks();
 }
@@ -761,7 +761,7 @@ uint8 platform_get_currency_value(const char *currCode) {
 			return CURRENCY_POUNDS;
 	}
 
-	for (int currency = 0; currency < CURRENCY_END; ++currency) {
+	for (sint32 currency = 0; currency < CURRENCY_END; ++currency) {
 		if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0) {
 			return currency;
 		}

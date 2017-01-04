@@ -81,10 +81,10 @@ static const rct_string_id music_credits_rct2[] = {
 	STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_WHAT_SHALL_WE_DO_WITH_THE_DRUNKEN_SAILOR,
 };
 
-static void window_music_credits_mouseup(rct_window *w, int widgetIndex);
-static void window_music_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_music_credits_mouseup(rct_window *w, sint32 widgetIndex);
+static void window_music_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_music_credits_events = {
 	NULL,
@@ -152,7 +152,7 @@ void window_music_credits_open()
 *
 *  rct2: 0x0066DB2C
 */
-static void window_music_credits_mouseup(rct_window *w, int widgetIndex)
+static void window_music_credits_mouseup(rct_window *w, sint32 widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
@@ -165,7 +165,7 @@ static void window_music_credits_mouseup(rct_window *w, int widgetIndex)
  *
  *  rct2: 0x0066DB37
  */
-static void window_music_credits_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+static void window_music_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
 	*height = 560;
 }
@@ -183,13 +183,13 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066D7BF
  */
-static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-	int x = 245;
+	sint32 x = 245;
 
-	int y = 2;
+	sint32 y = 2;
 
-	for (int i = 0; i < countof(music_credits); i++) {
+	for (sint32 i = 0; i < countof(music_credits); i++) {
 		gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, NULL);
 		y += 10;
 	}
@@ -204,7 +204,7 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 	gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 	y += 11;
 
-	for (int i = 0; i < countof(music_credits_rct2); i++) {
+	for (sint32 i = 0; i < countof(music_credits_rct2); i++) {
 		gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, NULL);
 		y += 10;
 	}

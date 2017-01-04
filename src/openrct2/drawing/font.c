@@ -20,7 +20,7 @@
 #include "drawing.h"
 #include "font.h"
 
-static const int SpriteFontLineHeight[] = { 6, 10, 10, 18 };
+static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
 #ifdef NO_RCT2
 static uint8 _spriteFontCharacterWidths[896];
@@ -39,12 +39,12 @@ TTFFontSetDescriptor *gCurrentTTFFontSet;
 void font_sprite_initialise_characters()
 {
 	uint8* pCharacterWidth = _spriteFontCharacterWidths;
-	for (int fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
-		int glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
+	for (sint32 fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
+		sint32 glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
 		for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
 			rct_g1_element g1 = g1Elements[glyphIndex + SPR_CHAR_START + glyphOffset];
 
-			int width = fontSize == FONT_SIZE_BIG ? g1.width + 1 : g1.width - 1;
+			sint32 width = fontSize == FONT_SIZE_BIG ? g1.width + 1 : g1.width - 1;
 			if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
 				width = 0;
 			}
@@ -55,7 +55,7 @@ void font_sprite_initialise_characters()
 	scrolling_text_initialise_bitmaps();
 }
 
-int font_sprite_get_codepoint_offset(int codepoint)
+sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
 {
 	switch (codepoint) {
 	case FORMAT_ENDQUOTES: return 34 - 32;
@@ -99,17 +99,17 @@ int font_sprite_get_codepoint_offset(int codepoint)
 	}
 }
 
-int font_sprite_get_codepoint_width(int fontSpriteBase, int codepoint)
+sint32 font_sprite_get_codepoint_width(sint32 fontSpriteBase, sint32 codepoint)
 {
 	return _spriteFontCharacterWidths[fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)];
 }
 
-int font_sprite_get_codepoint_sprite(int fontSpriteBase, int codepoint)
+sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint)
 {
 	return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
 }
 
-int font_get_size_from_sprite_base(uint16 spriteBase)
+sint32 font_get_size_from_sprite_base(uint16 spriteBase)
 {
 	switch (spriteBase) {
 	case FONT_SPRITE_BASE_TINY:
@@ -124,9 +124,9 @@ int font_get_size_from_sprite_base(uint16 spriteBase)
 	}
 }
 
-int font_get_line_height(int fontSpriteBase)
+sint32 font_get_line_height(sint32 fontSpriteBase)
 {
-	int fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+	sint32 fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
 	if (gUseTrueTypeFont) {
 		return gCurrentTTFFontSet->size[fontSize].line_height;
@@ -138,7 +138,7 @@ int font_get_line_height(int fontSpriteBase)
 #endif // NO_TTF
 }
 
-int font_get_line_height_small(int fontSpriteBase)
+sint32 font_get_line_height_small(sint32 fontSpriteBase)
 {
 	return font_get_line_height(fontSpriteBase) / 2;
 }
@@ -194,7 +194,7 @@ bool font_supports_string_sprite(const utf8 *text)
 	return true;
 }
 
-bool font_supports_string_ttf(const utf8 *text, int fontSize)
+bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 {
 #ifndef NO_TTF
 	const utf8 *src = text;
@@ -216,7 +216,7 @@ bool font_supports_string_ttf(const utf8 *text, int fontSize)
 #endif // NO_TTF
 }
 
-bool font_supports_string(const utf8 *text, int fontSize)
+bool font_supports_string(const utf8 *text, sint32 fontSize)
 {
 	if (gUseTrueTypeFont) {
 		return font_supports_string_ttf(text, fontSize);

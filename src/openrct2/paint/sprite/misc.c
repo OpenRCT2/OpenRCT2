@@ -37,7 +37,7 @@ extern const uint8 * duck_animations[];
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(rct_sprite *misc, int imageDirection)
+void misc_paint(rct_sprite *misc, sint32 imageDirection)
 {
 	rct_drawpixelinfo * dpi = unk_140E9A8;
 
@@ -113,7 +113,7 @@ void misc_paint(rct_sprite *misc, int imageDirection)
 			rct_jumping_fountain jumpingFountain = misc->jumping_fountain;
 
 			uint16 height = jumpingFountain.z + 6;
-			int ebx = imageDirection / 8;
+			sint32 ebx = imageDirection / 8;
 
 			uint8 al = (jumpingFountain.fountain_flags / 128) & 1;
 			uint8 ah = (jumpingFountain.sprite_direction / 16) & 1;
