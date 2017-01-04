@@ -20,7 +20,7 @@
 #include "SegmentSupportHeightCall.hpp"
 
 extern "C" {
-#include "../../src/paint/map_element/map_element.h"
+#include <openrct2/paint/map_element/map_element.h>
 }
 
 static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)

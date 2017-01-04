@@ -28,12 +28,12 @@
 extern "C"
 {
     #include "data.h"
-    #include "../../src/interface/viewport.h"
-    #include "../../src/rct2.h"
-    #include "../../src/ride/ride.h"
-    #include "../../src/ride/ride_data.h"
-    #include "../../src/ride/track.h"
-    #include "../../src/ride/track_data.h"
+    #include <openrct2/interface/viewport.h>
+    #include <openrct2/rct2.h>
+    #include <openrct2/ride/ride.h>
+    #include <openrct2/ride/ride_data.h>
+    #include <openrct2/ride/track.h>
+    #include <openrct2/ride/track_data.h>
 }
 
 class PaintCodeGenerator

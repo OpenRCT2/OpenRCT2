@@ -30,10 +30,10 @@
 #include "VerticalTunnelCall.hpp"
 
 extern "C" {
-#include "../../src/paint/supports.h"
-#include "../../src/ride/ride.h"
-#include "../../src/ride/track.h"
-#include "../../src/ride/track_data.h"
+#include <openrct2/paint/supports.h>
+#include <openrct2/ride/ride.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/ride/track_data.h>
 }
 
 interface ITestTrackFilter {
