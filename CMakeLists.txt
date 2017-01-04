@@ -166,7 +166,9 @@ else (DISABLE_NETWORK)
 	endif (WIN32)
 	# If you are on macOS, CMake might try using system-provided OpenSSL.
 	# This is too old and will not work.
-	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
+	if (APPLE)
+		PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
+	endif (APPLE)
 endif (DISABLE_NETWORK)
 
 if (DISABLE_RCT2)
