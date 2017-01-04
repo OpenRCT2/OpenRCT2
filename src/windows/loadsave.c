@@ -185,14 +185,14 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_GAME:
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "save", sizeof(path))) {
-			window_loadsave_populate_list(w, isSave, path, isSave ? ".sv6" : ".sv6;.sc6;.sv4;.sc4");
+			window_loadsave_populate_list(w, isSave, path, ".sv6;.sc6;.sv4;.sc4");
 			success = true;
 		}
 		break;
 	case LOADSAVETYPE_LANDSCAPE:
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_landscape_directory, path, "landscape", sizeof(path))) {
-			window_loadsave_populate_list(w, isSave, path, isSave ? ".sc6" : ".sc6;.sv6;.sc4;.sv4");
+			window_loadsave_populate_list(w, isSave, path, ".sc6;.sv6;.sc4;.sv4");
 			success = true;
 		}
 		break;
@@ -206,7 +206,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case LOADSAVETYPE_TRACK:
 		w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path))) {
-			window_loadsave_populate_list(w, isSave, path, isSave ? ".td6" : ".td6;.td4");
+			window_loadsave_populate_list(w, isSave, path, ".td6;.td4");
 			success = true;
 		}
 		break;
@@ -425,7 +425,10 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 		case WIDX_NEW_FILE:
 			safe_strcpy(path, _directory, sizeof(path));
 			safe_strcat_path(path, text, sizeof(path));
-			path_append_extension(path, _extension, sizeof(path));
+			int sepIndex = strchr(_extension, ';') - _extension;
+			char *firstExt = substr(_extension, sepIndex);
+			path_append_extension(path, firstExt, sizeof(path));
+			
 
 			overwrite = 0;
 			for (i = 0; i < _listItemsCount; i++) {
