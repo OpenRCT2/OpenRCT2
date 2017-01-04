@@ -21,6 +21,9 @@
 #include "../object.h"
 #include "../world/map.h"
 
+#define SCENERY_PATHSCENERY_ID_MIN 0x100
+#define SCENERY_PATHSCENERY_ID_MAX 0x10F
+
 #pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
 	uint32 flags;			// 0x06

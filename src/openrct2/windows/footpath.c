@@ -27,7 +27,6 @@
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
-#include "footpath_scenery.h"
 
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
@@ -93,7 +92,7 @@ static rct_widget window_footpath_widgets[] = {
 	{ WWT_FLATBTN,	1,		65,		88,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_UP,		STR_SLOPE_UP_TIP },
 
 	// Autoscenery button
-	{ WWT_CLOSEBOX,	1,		8,		97,	199,	215,	STR_PATH_SCENERY,	STR_PATH_SCENERY_TIP },
+	{ WWT_CLOSEBOX,	1,		8,		97,	199,	215,		STR_FOOTPATH_SCENERY,				STR_FOOTPATH_SCENERY_TIP },
 
 	// Construct/Demolish
 	{ WWT_FLATBTN,	1,		8,		97,		226,	315,	0xFFFFFFFF,							STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
@@ -118,7 +117,7 @@ static void window_footpath_toolup(rct_window* w, int widgetIndex, int x, int y)
 static void window_footpath_invalidate(rct_window *w);
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static int window_footpath_pathimage(rct_window *w);
+static sint32 window_footpath_pathimage(rct_window *w);
 
 static rct_window_event_list window_footpath_events = {
 	window_footpath_close,
@@ -597,26 +596,23 @@ static void window_footpath_invalidate(rct_window *w)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
 }
 
-static int window_footpath_pathimage(rct_window *w)
+static sint32 window_footpath_pathimage(rct_window *w)
 {
-	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
-		uint8 direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
-		uint8 slope = 0;
-		if (gFootpathConstructSlope == 2)
-			slope = 1;
-		else if (gFootpathConstructSlope == 6)
-			slope = 2;
-		int image = footpath_construction_preview_images[slope][direction];
+	uint8 direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
+	uint8 slope = 0;
+	if (gFootpathConstructSlope == 2)
+		slope = 1;
+	else if (gFootpathConstructSlope == 6)
+		slope = 2;
+	int image = footpath_construction_preview_images[slope][direction];
 
-		int selectedPath = gFootpathSelectedId;
-		rct_footpath_entry *pathType = get_footpath_entry(selectedPath);
-		image += pathType->image;
-		if (gFootpathSelectedType != SELECTED_PATH_TYPE_NORMAL)
-			image += 51;
+	int selectedPath = gFootpathSelectedId;
+	rct_footpath_entry *pathType = get_footpath_entry(selectedPath);
+	image += pathType->image;
+	if (gFootpathSelectedType != SELECTED_PATH_TYPE_NORMAL)
+		image += 51;
 
-		return image;
-	}
-	return -1;
+	return image;
 }
 
 /**
@@ -628,7 +624,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
-		int image = window_footpath_pathimage(w);
+		sint32 image = window_footpath_pathimage(w);
 
 		// Draw construction image
 		int x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
@@ -1148,8 +1144,6 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 			(1 << WIDX_AUTOSCENERY) |
 			(1 << WIDX_CONSTRUCT) |
 			(1 << WIDX_REMOVE);
-
-		// window_close_by_class(WC_FOOTPATH_SCENERY); This causes a glitch
 	}
 
 	w->pressed_widgets = pressedWidgets;
