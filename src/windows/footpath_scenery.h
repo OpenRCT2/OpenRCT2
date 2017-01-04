@@ -20,6 +20,6 @@
 #include "../world/scenery.h"
 
 uint16 window_footpath_scenery_get_next_scenery();
-void window_footpath_scenery_advance();
+void   window_footpath_scenery_advance();
 
 #endif
