@@ -82,6 +82,11 @@ namespace TitleSequenceManager
     void DeleteItem(size_t i)
     {
         auto item = GetItem(i);
+        if (item == nullptr)
+        {
+            log_error("Delete title sequence failed: %d does not exist.", i);
+            return;
+        }
         const utf8 * path = item->Path.c_str();
         if (item->IsZip)
         {
@@ -97,6 +102,11 @@ namespace TitleSequenceManager
     size_t RenameItem(size_t i, const utf8 * newName)
     {
         auto item = &_items[i];
+        if (item == nullptr)
+        {
+            log_error("Rename title sequence failed: %d does not exist.", i);
+            return -1;
+        }
         const utf8 * oldPath = item->Path.c_str();
 
         utf8 newPath[MAX_PATH];
@@ -123,6 +133,11 @@ namespace TitleSequenceManager
     size_t DuplicateItem(size_t i, const utf8 * name)
     {
         auto item = &_items[i];
+        if (item == nullptr)
+        {
+            log_error("Delete title sequence failed: %d does not exist.", i);
+            return -1;
+        }
         const utf8 * srcPath = item->Path.c_str();
 
         std::string dstPath = GetNewTitleSequencePath(std::string(name), item->IsZip);
@@ -295,6 +310,8 @@ extern "C"
     const utf8 * title_sequence_manager_get_name(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        if (item == nullptr) { item = TitleSequenceManager::GetItem(0); }
+        if (item == nullptr) { return "<null>"; }
         const utf8 * name = item->Name.c_str();
         return name;
     }
@@ -324,6 +341,7 @@ extern "C"
     uint16 title_sequence_manager_get_predefined_index(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
+        assert(item != nullptr);
         uint16 predefinedIndex = item->PredefinedIndex;
         return predefinedIndex;
     }
@@ -334,7 +352,7 @@ extern "C"
         for (size_t i = 0; i < count; i++)
         {
             const utf8 * cid = title_sequence_manager_get_config_id(i);
-            if (String::Equals(cid, configId))
+            if (cid != nullptr && String::Equals(cid, configId))
             {
                 return i;
             }

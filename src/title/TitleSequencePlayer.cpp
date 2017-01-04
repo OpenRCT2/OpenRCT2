@@ -46,6 +46,7 @@ private:
     sint32          _lastScreenWidth = 0;
     sint32          _lastScreenHeight = 0;
     rct_xy32        _viewCentreLocation = { 0 };
+    sint32          _lastLoadedSaveIndex = -1;
 
 public:
     ~TitleSequencePlayer() override
@@ -123,9 +124,10 @@ public:
             while (true)
             {
                 const TitleCommand * command = &_sequence->Commands[_position];
-                if (ExecuteCommand(command))
+                bool forceBreak = false;
+                if (ExecuteCommand(command, &forceBreak))
                 {
-                    if (command->Type == TITLE_SCRIPT_WAIT)
+                    if (forceBreak || command->Type == TITLE_SCRIPT_WAIT || command->Type == TITLE_SCRIPT_END)
                     {
                         break;
                     }
@@ -219,7 +221,7 @@ private:
         while (!TitleSequenceIsLoadCommand(command));
     }
 
-    bool ExecuteCommand(const TitleCommand * command)
+    bool ExecuteCommand(const TitleCommand * command, bool * forceBreak)
     {
         switch (command->Type) {
         case TITLE_SCRIPT_END:
@@ -227,6 +229,7 @@ private:
             break;
         case TITLE_SCRIPT_WAIT:
             _waitCounter = command->Seconds * 32;
+            _lastLoadedSaveIndex = -1;
             break;
         case TITLE_SCRIPT_LOADMM:
         {
@@ -234,7 +237,7 @@ private:
             if (!LoadParkFromFile(path))
             {
                 Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
-                return false;
+				return false;
             }
             break;
         }
@@ -255,12 +258,22 @@ private:
             gGameSpeed = Math::Clamp<uint8>(1, command->Speed, 4);
             break;
         case TITLE_SCRIPT_RESTART:
+            _lastLoadedSaveIndex = -1;
             Reset();
             break;
         case TITLE_SCRIPT_LOAD:
         {
             bool loadSuccess = false;
             uint8 saveIndex = command->SaveIndex;
+            if (_lastLoadedSaveIndex == saveIndex)
+            {
+                //Sequence has attempted to load same park without any waiting,
+                //end sequence to prevent infinite hanging.
+                _waitCounter = 1;
+                *forceBreak = true;
+                break;
+            }
+            _lastLoadedSaveIndex = saveIndex;
             TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
             if (parkHandle != nullptr)
             {
