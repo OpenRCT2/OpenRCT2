@@ -151,7 +151,7 @@ public:
             const TrackRepositoryItem * item = &_items[index];
             if (!(item->Flags & TRIF_READ_ONLY))
             {
-                if (File::Delete(path.c_str()))
+                if (File::Delete(path))
                 {
                     _items.erase(_items.begin() + index);
                     result = true;
@@ -172,7 +172,7 @@ public:
             {
                 std::string directory = Path::GetDirectory(path);
                 std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
-                if (File::Move(path.c_str(), newPath.c_str()))
+                if (File::Move(path, newPath))
                 {
                     item->Name = newName;
                     item->Path = newPath;
@@ -191,7 +191,7 @@ public:
         std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
         std::string newPath = Path::Combine(installDir, fileName);
-        if (File::Copy(path.c_str(), newPath.c_str(), false))
+        if (File::Copy(path, newPath, false))
         {
             AddTrack(path);
             SortItems();
