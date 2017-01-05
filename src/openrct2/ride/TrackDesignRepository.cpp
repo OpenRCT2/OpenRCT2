@@ -374,13 +374,13 @@ extern "C"
     size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetCountForObjectEntry(rideType, entry);
+        return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetItemsForObjectEntry(outRefs, rideType, entry);
+        return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
     }
 
     bool track_repository_delete(const utf8 * path)
