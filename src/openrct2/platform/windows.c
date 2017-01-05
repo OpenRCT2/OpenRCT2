@@ -1141,6 +1141,7 @@ static bool windows_setup_file_association(
 	wchar_t szIconW[MAX_PATH];
 	printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
 	assert(printResult >= 0);
+	UNUSED(printResult);
 	if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
@@ -1158,6 +1159,7 @@ static bool windows_setup_file_association(
 	// [hRootKey\OpenRCT2.sv6\shell\open\command]
 	wchar_t szCommandW[MAX_PATH];
 	printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW);
+	UNUSED(printResult);
 	assert(printResult >= 0);
 	if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS) {
 		goto fail;
