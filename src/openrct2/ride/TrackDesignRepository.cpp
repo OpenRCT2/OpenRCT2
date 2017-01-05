@@ -110,8 +110,8 @@ public:
                 (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
             {
                 track_design_file_ref ref;
-                ref.name = GetNameFromTrackPath(item.Path.c_str());
-                ref.path = String::Duplicate(item.Path.c_str());
+                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
+                ref.path = String::Duplicate(item.Path);
                 refs.push_back(ref);
             }
         }
@@ -228,10 +228,7 @@ private:
 
     void Scan(const std::string &directory, uint32 flags = 0)
     {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
-
+        std::string pattern = Path::Append(directory, "*.td4;*.td6");
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
@@ -241,14 +238,14 @@ private:
         delete scanner;
     }
 
-    void AddTrack(const utf8 * path, uint32 flags = 0)
+    void AddTrack(const std::string path, uint32 flags = 0)
     {
-        rct_track_td6 * td6 = track_design_open(path);
+        rct_track_td6 * td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;
-            item.Name = std::string(GetNameFromTrackPath(path));
-            item.Path = std::string(path);
+            item.Name = GetNameFromTrackPath(path);
+            item.Path = path;
             item.RideType = td6->type;
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
             item.Flags = flags;
@@ -266,10 +263,7 @@ private:
                 {
                     return a.RideType < b.RideType;
                 }
-
-                const utf8 * nameA = a.Name.c_str();
-                const utf8 * nameB = b.Name.c_str();
-                return _stricmp(nameA, nameB) < 0;
+                return String::Compare(a.Name, b.Name) < 0;
             });
     }
 
@@ -369,12 +363,9 @@ private:
     }
 
 public:
-    static utf8 * GetNameFromTrackPath(const utf8 * path)
+    static std::string GetNameFromTrackPath(const std::string &path)
     {
-        utf8 * name = Memory::Allocate<utf8>(MAX_PATH);
-        Path::GetFileNameWithoutExtension(name, MAX_PATH, path);
-        name = Memory::ReallocateArray(name, String::SizeOf(name) + 1);
-        return name;
+        return Path::GetFileNameWithoutExtension(path);
     }
 };
 
@@ -431,6 +422,6 @@ extern "C"
 
     utf8 * track_repository_get_name_from_path(const utf8 * path)
     {
-        return TrackDesignRepository::GetNameFromTrackPath(path);
+        return String::Duplicate(TrackDesignRepository::GetNameFromTrackPath(path));
     }
 }

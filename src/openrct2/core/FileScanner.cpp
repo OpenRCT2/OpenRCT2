@@ -375,6 +375,11 @@ private:
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
+IFileScanner * Path::ScanDirectory(const std::string &pattern, bool recurse)
+{
+    return Path::ScanDirectory(pattern.c_str(), recurse);
+}
+
 IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 {
 #ifdef __WINDOWS__

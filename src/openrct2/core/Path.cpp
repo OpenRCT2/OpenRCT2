@@ -29,6 +29,14 @@ extern "C"
 
 namespace Path
 {
+    std::string Append(const std::string &a, const std::string &b)
+    {
+        utf8 buffer[MAX_PATH];
+        String::Set(buffer, sizeof(buffer), a.c_str());
+        Path::Append(buffer, sizeof(buffer), b.c_str());
+        return std::string(buffer);
+    }
+
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return safe_strcat_path(buffer, src, bufferSize);
@@ -79,6 +87,14 @@ namespace Path
         return lastPathSeperator == nullptr ?
             path :
             lastPathSeperator + 1;
+    }
+
+    std::string GetFileNameWithoutExtension(const std::string &path)
+    {
+        utf8 * cstr = GetFileNameWithoutExtension(path.c_str());
+        std::string result = String::ToStd(cstr);
+        Memory::Free(cstr);
+        return result;
     }
 
     utf8 * GetFileNameWithoutExtension(const utf8 * path)

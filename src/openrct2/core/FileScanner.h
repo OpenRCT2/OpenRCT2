@@ -54,6 +54,15 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
+    IFileScanner * ScanDirectory(const std::string &pattern, bool recurse);
+
+    /**
+     * Scans a directory and optionally sub directories for files that matches the
+     * given pattern and returns an enumerator.
+     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+     * @param recurse Whether to scan sub directories or not.
+     * @returns A new FileScanner, this must be deleted when no longer needed.
+     */
     IFileScanner * ScanDirectory(const utf8 * pattern, bool recurse);
 
     /**
