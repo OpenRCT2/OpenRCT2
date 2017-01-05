@@ -263,7 +263,9 @@ static void set_all_land_owned()
  */
 bool editor_load_landscape(const utf8 *path)
 {
-	window_close_construction_windows();
+	// #4996: Make sure the object selection window closes here to prevent unload objects
+	//        after we have loaded a new park.
+	window_close_all();
 
 	uint32 extension = get_file_extension_type(path);
 	switch (extension) {
