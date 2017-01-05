@@ -1212,6 +1212,82 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 	}
 }
 
+money32 string_to_money(char * string_to_monetise)
+{
+	const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
+	char * text_ptr = string_to_monetise;
+	int i, j, sign;
+	//Remove everything except numbers decimal, and minus sign(s)
+	for (i = 0; text_ptr[i] != '\0'; ++i) {
+		while (!(
+			(text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
+			(text_ptr[i] == decimal_char[0]) ||
+			(text_ptr[i] == '-') || 
+			(text_ptr[i] == '\0')
+		)) {
+			//move everything over to the left by one
+			for (j = i; text_ptr[j] != '\0'; ++j) {
+				text_ptr[j] = text_ptr[j + 1];
+			}
+			text_ptr[j] = '\0';
+		}
+	}
+	
+	//if first character of shortened string is a minus, consider number negative
+	if (text_ptr[0] == '-') {
+		sign = -1;
+	}
+	else {
+		sign = 1;
+	}
+
+	//now minus signs can be removed from string
+	for (i = 0; text_ptr[i] != '\0'; ++i) {
+		if (text_ptr[i] == '-') {
+			for (j = i; text_ptr[j] != '\0'; ++j) {
+				text_ptr[j] = text_ptr[j + 1];
+			}
+			text_ptr[j] = '\0';
+		}
+	}
+
+	//determine if decimal exists in text
+	char *decimal_place = strstr(string_to_monetise, decimal_char);
+	if (decimal_place == NULL) {
+		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
+		return atoi(string_to_monetise) * 10 * sign;
+	}
+
+	char *tokenize = _strdup(string_to_monetise);
+	char *numberText = strtok(tokenize, decimal_char);
+	char *decimalText = strtok(NULL, decimal_char);
+
+	int number = 0, decimal = 0;
+	if (numberText != NULL) number = atoi(numberText);
+	if (decimalText != NULL) decimal = atoi(decimalText);
+	if (decimal < 10) decimal *= 10; //if less than 10, say, 6, convert to 60.
+
+	free(tokenize);
+
+	return MONEY(number, decimal) * sign;
+}
+
+void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len)
+{
+	if (amount == MONEY32_UNDEFINED) {
+		snprintf(buffer_to_put_value_to, buffer_len, "0");
+		return;
+	}
+	int sign = amount >= 0 ? 1 : -1;
+	if (abs(amount) / 10 > 0) {
+		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
+		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (abs(amount) / 10) * sign, decimal_char, abs(amount) % 10);
+	}
+	else {
+		snprintf(buffer_to_put_value_to, buffer_len, "%d", (abs(amount) % 10) * sign);
+	}
+}
+
 utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize)
 {
 	size_t stringLength = strnlen(src, srcMaxSize);
@@ -1294,80 +1370,4 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t ma
 #endif // __WINDOWS__
 
 	return result;
-}
-
-money32 string_to_money(char * string_to_monetise)
-{
-	const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-	char * text_ptr = string_to_monetise;
-	int i, j, sign;
-	//Remove everything except numbers decimal, and minus sign(s)
-	for (i = 0; text_ptr[i] != '\0'; ++i) {
-		while (!(
-			(text_ptr[i] >= '0' && text_ptr[i] <= '9') ||
-			(text_ptr[i] == decimal_char[0]) ||
-			(text_ptr[i] == '-') || 
-			(text_ptr[i] == '\0')
-		)) {
-			//move everything over to the left by one
-			for (j = i; text_ptr[j] != '\0'; ++j) {
-				text_ptr[j] = text_ptr[j + 1];
-			}
-			text_ptr[j] = '\0';
-		}
-	}
-	
-	//if first character of shortened string is a minus, consider number negative
-	if (text_ptr[0] == '-') {
-		sign = -1;
-	}
-	else {
-		sign = 1;
-	}
-
-	//now minus signs can be removed from string
-	for (i = 0; text_ptr[i] != '\0'; ++i) {
-		if (text_ptr[i] == '-') {
-			for (j = i; text_ptr[j] != '\0'; ++j) {
-				text_ptr[j] = text_ptr[j + 1];
-			}
-			text_ptr[j] = '\0';
-		}
-	}
-
-	//determine if decimal exists in text
-	char *decimal_place = strstr(string_to_monetise, decimal_char);
-	if (decimal_place == NULL) {
-		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
-		return atoi(string_to_monetise) * 10 * sign;
-	}
-
-	char *tokenize = _strdup(string_to_monetise);
-	char *numberText = strtok(tokenize, decimal_char);
-	char *decimalText = strtok(NULL, decimal_char);
-
-	int number = 0, decimal = 0;
-	if (numberText != NULL) number = atoi(numberText);
-	if (decimalText != NULL) decimal = atoi(decimalText);
-	if (decimal < 10) decimal *= 10; //if less than 10, say, 6, convert to 60.
-
-	free(tokenize);
-
-	return MONEY(number, decimal) * sign;
-}
-
-void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len)
-{
-	if (amount == MONEY32_UNDEFINED) {
-		snprintf(buffer_to_put_value_to, buffer_len, "0");
-		return;
-	}
-	int sign = amount >= 0 ? 1 : -1;
-	if (abs(amount) / 10 > 0) {
-		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (abs(amount) / 10) * sign, decimal_char, abs(amount) % 10);
-	}
-	else {
-		snprintf(buffer_to_put_value_to, buffer_len, "%d", (abs(amount) % 10) * sign);
-	}
 }
