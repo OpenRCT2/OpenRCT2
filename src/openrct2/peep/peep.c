@@ -9795,6 +9795,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				/* Peep remembers this junction, so remove the
 				 * chosen_edge from those left to try. */
 				peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+				/* Also remove the edge the peep came from from
+				 * those left to try. */
+				peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
 				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				if (gPathFindDebug) {
 					log_verbose("Removing edge %d from existing pf_history for %d,%d,%d.", chosen_edge, x >> 5, y >> 5, z);
@@ -9813,6 +9816,9 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].z = z;
 		peep->pathfind_history[i].direction = permitted_edges;
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
+		/* Also remove the edge the peep came from from
+		 * those left to try. */
+		peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
 			log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without edge %d.", i, x >> 5, y >> 5, z, chosen_edge);
