@@ -11,6 +11,7 @@
 - Fix: [#4929] Changing TTF language crashes game.
 - Fix: [#4951] Scenarios are not recorded as completed from a saved game.
 - Fix: [#4968] Completing a scenario does not save the name that is entered.
+- Fix: [#4996] Objects unloaded after loading landscape.
 
 0.0.5 (2016-12-27)
 ------------------------------------------------------------------------
