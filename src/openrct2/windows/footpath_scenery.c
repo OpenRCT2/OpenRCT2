@@ -73,13 +73,13 @@ static rct_widget window_footpath_scenery_widgets[] = {
 	{ WWT_CAPTION,			0,	1,								WW - 2,					1,				14,				STR_FOOTPATH_SCENERY_TITLE,			STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	WW - 13,						WW - 3,					2,				13,				STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
 
-	{ WWT_SCROLL,			1,	PADDING,						LIST_WIDTH,				YPL(1),			OHPL(9),		SCROLL_VERTICAL,					STR_NONE },
-	{ WWT_FLATBTN,			1,	LIST_BUTTON_X,					WIDGET_WIDTH,			YPL(1),			FHPL(1),		SPR_DEMOLISH,						STR_FOOTPATH_SCENERY_DELETE_RULES },
+	{ WWT_SCROLL,			0,	PADDING,						LIST_WIDTH,				YPL(1),			OHPL(9),		SCROLL_VERTICAL,					STR_NONE },
+	{ WWT_FLATBTN,			0,	LIST_BUTTON_X,					WIDGET_WIDTH,			YPL(1),			FHPL(1),		SPR_DEMOLISH,						STR_FOOTPATH_SCENERY_DELETE_RULES },
 
-	{ WWT_DROPDOWN, 		2,	PADDING,						DROPDOWN_RIGHT,			YPL(11),		OHPL(11),		STR_STRINGID,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	2,	DROPDOWN_RIGHT - 11,			DROPDOWN_RIGHT - 1,		YPL(11) + 1,	OHPL(11) - 1,	STR_DROPDOWN_GLYPH,					STR_NONE },
+	{ WWT_DROPDOWN, 		0,	PADDING,						DROPDOWN_RIGHT,			YPL(11),		OHPL(11),		STR_STRINGID,						STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	0,	DROPDOWN_RIGHT - 11,			DROPDOWN_RIGHT - 1,		YPL(11) + 1,	OHPL(11) - 1,	STR_DROPDOWN_GLYPH,					STR_NONE },
 
-	{ WWT_CLOSEBOX,			1,	APPEND_BUTTON_LEFT,				APPEND_BUTTON_RIGHT,	YPL(13),		HPL(13),		STR_FOOTPATH_SCENERY_APPEND,		STR_NONE },
+	{ WWT_CLOSEBOX,			0,	APPEND_BUTTON_LEFT,				APPEND_BUTTON_RIGHT,	YPL(13),		HPL(13),		STR_FOOTPATH_SCENERY_APPEND,		STR_NONE },
 
 	{ WIDGETS_END },
 };
@@ -255,7 +255,7 @@ static void window_footpath_scenery_path_scenery_dialog(rct_window * w, rct_widg
 		numSceneryTypes++;
 	}
 
-	window_dropdown_show_image(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+	window_dropdown_show_image(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0], 0,
 							   numSceneryTypes, 50, 50, gAppropriateImageDropdownItemsPerRow[numSceneryTypes]);
 	return;
 }
@@ -300,7 +300,7 @@ static void window_footpath_scenery_scrollpaint(rct_window * w, rct_drawpixelinf
 	int y = 0, i = 0;
 	rct_string_id format = STR_BLACK_STRING;
 
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[0]].mid_light);
 
 	path_rule_entry_t * c = _footpath_scenery_list;
 	while (c != NULL)
