@@ -1254,8 +1254,8 @@ money32 string_to_money(char * string_to_monetise)
 	//determine if decimal exists in text
 	char *decimal_place = strstr(string_to_monetise, decimal_char);
 	if (decimal_place == NULL) {
-		//if decimal char does not exist, keep it basic. multiply by 10 to fill decimal and be done.
-		return atoi(string_to_monetise) * 10 * sign;
+		//if decimal char does not exist, no tokenising is needed. convert to money and be done.
+		return MONEY(atoi(string_to_monetise), 00) * sign;
 	}
 
 	char *tokenize = _strdup(string_to_monetise);
