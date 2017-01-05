@@ -551,7 +551,9 @@ enum {
 	RIDE_TYPE_MINI_ROLLER_COASTER,
 	RIDE_TYPE_MINE_RIDE,
 	RIDE_TYPE_59,
-	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90
+	RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90,
+
+	RIDE_TYPE_COUNT
 };
 
 enum {
@@ -904,7 +906,7 @@ typedef struct rct_ride_properties {
 	uint8 acceleration;
 } rct_ride_properties;
 
-extern const rct_ride_properties RideProperties[91];
+extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 #define MAX_RIDES 255
 

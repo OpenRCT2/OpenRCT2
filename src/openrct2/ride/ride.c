@@ -278,10 +278,9 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 void reset_type_to_ride_entry_index_map()
 {
 	uint8 maxRideEntries = 128;
-	uint8 maxRideTypes = 91;
 	size_t stride = maxRideEntries + 1;
-	uint8 * entryTypeTable = malloc(maxRideTypes * stride);
-	memset(entryTypeTable, 0xFF, maxRideTypes * stride);
+	uint8 * entryTypeTable = malloc(RIDE_TYPE_COUNT * stride);
+	memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
 
 	for (uint8 i = 0; i < maxRideEntries; i++) {
 		rct_ride_entry * rideEntry = get_ride_entry(i);
@@ -290,7 +289,7 @@ void reset_type_to_ride_entry_index_map()
 		}
 		for (uint8 j = 0; j < 3; j++) {
 			uint8 rideType = rideEntry->ride_type[j];
-			if (rideType < maxRideTypes) {
+			if (rideType < RIDE_TYPE_COUNT) {
 				uint8 * entryArray = &entryTypeTable[rideType * stride];
 				uint8 * nextEntry = memchr(entryArray, 0xFF, stride);
 				*nextEntry = i;
@@ -299,7 +298,7 @@ void reset_type_to_ride_entry_index_map()
 	}
 
 	uint8 * dst = gTypeToRideEntryIndexMap;
-	for (uint8 i = 0; i < maxRideTypes; i++) {
+	for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++) {
 		uint8 * entryArray = &entryTypeTable[i * stride];
 		uint8 * entry = entryArray;
 		while (*entry != 0xFF) {
@@ -5929,7 +5928,7 @@ static money32 ride_create(int type, int subType, int flags, int *outRideIndex, 
 	rct_ride_entry *rideEntry;
 	int rideIndex, rideEntryIndex;
 
-	if (type > 90)
+	if (type >= RIDE_TYPE_COUNT)
 	{
 		log_warning("Invalid request for ride type %u", type);
 		return MONEY32_UNDEFINED;
@@ -7727,7 +7726,7 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
 	) {
 		selectionShouldBeExpanded = true;
 		rideTypeIterator = 0;
-		rideTypeIteratorMax = 90;
+		rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
 	} else {
 		selectionShouldBeExpanded = false;
 		rideTypeIterator = ride->type;
