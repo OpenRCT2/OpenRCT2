@@ -1106,7 +1106,7 @@ static int vehicle_close_restraints(rct_vehicle* vehicle){
 		}
 		vehicle_invalidate(vehicle);
 		ebp++;
-	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
+	} while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
 	return ebp;
 }
@@ -1205,7 +1205,7 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 		}
 		vehicle_invalidate(vehicle);
 		ebp++;
-	} while ((vehicle_id = vehicle->next_vehicle_on_train) != 0xFFFF);
+	} while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
 	return ebp;
 }
@@ -1799,7 +1799,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
 
 		uint8 peep = ((-vehicle->vehicle_sprite_type) / 8) & 0xF;
-		if (vehicle->peep[peep] != 0xFFFF){
+		if (vehicle->peep[peep] != SPRITE_INDEX_NULL) {
 			ride->train_at_station[vehicle->current_station] = 0xFF;
 			vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
 			vehicle->sub_state = 0;
@@ -1865,7 +1865,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		// 0xF64E31, 0xF64E32, 0xF64E33
 		uint8 num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
 
-		for (uint16 sprite_id = vehicle->sprite_index; sprite_id != 0xFFFF;){
+		for (uint16 sprite_id = vehicle->sprite_index; sprite_id != SPRITE_INDEX_NULL;) {
 			rct_vehicle* train_vehicle = GET_VEHICLE(sprite_id);
 
 			num_peeps_on_train += train_vehicle->num_peeps;
@@ -1910,7 +1910,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
 			for (int i = 0; i < 32; ++i){
 				uint16 train_id = ride->vehicles[i];
-				if (train_id == 0xFFFF)
+				if (train_id == SPRITE_INDEX_NULL)
 					continue;
 
 				if (train_id == vehicle->sprite_index)
@@ -2063,7 +2063,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
 			uint8 seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-			if (vehicle->peep[seat * 2] == 0xFFFF) {
+			if (vehicle->peep[seat * 2] == SPRITE_INDEX_NULL) {
 				if (vehicle->num_peeps == 0) {
 					skipCheck = true;
 				}
@@ -2079,7 +2079,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		}
 		else {
 			uint16 spriteId = vehicle->sprite_index;
-			for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+			for (rct_vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train) {
 				curVehicle = GET_VEHICLE(spriteId);
 
 				if (curVehicle->num_peeps != 0) {
@@ -2515,7 +2515,7 @@ void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle) {
 				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
 			}
 		}
-	} while ((spriteId = vehicle->next_vehicle_on_train) != 0xFFFF);
+	} while ((spriteId = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 }
 
 /**
@@ -2998,7 +2998,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 
 	rct_vehicle* lastVehicle = vehicle;
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+	for (rct_vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train) {
 		train = GET_VEHICLE(spriteId);
 		lastVehicle = train;
 
@@ -3088,7 +3088,7 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 
 	rct_vehicle* lastVehicle = vehicle;
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* trainVehicle; spriteId != 0xFFFF; spriteId = trainVehicle->next_vehicle_on_train) {
+	for (rct_vehicle* trainVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = trainVehicle->next_vehicle_on_train) {
 		trainVehicle = GET_VEHICLE(spriteId);
 		lastVehicle = trainVehicle;
 
@@ -3519,11 +3519,11 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
 		uint8 seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
 		if (vehicle->restraints_position == 255 &&
-			(vehicle->peep[seat * 2] != 0xFFFF)) {
+			(vehicle->peep[seat * 2] != SPRITE_INDEX_NULL)) {
 			vehicle->next_free_seat -= 2;
 
 			rct_peep* peep = GET_PEEP(vehicle->peep[seat * 2]);
-			vehicle->peep[seat * 2] = 0xFFFF;
+			vehicle->peep[seat * 2] = SPRITE_INDEX_NULL;
 
 			peep_decrement_num_riders(peep);
 			peep->sub_state = 7;
@@ -3531,7 +3531,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
 			peep_window_state_update(peep);
 
 			peep = GET_PEEP(vehicle->peep[seat * 2 + 1]);
-			vehicle->peep[seat * 2 + 1] = 0xFFFF;
+			vehicle->peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
 			peep_decrement_num_riders(peep);
 			peep->sub_state = 7;
@@ -3556,7 +3556,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
 		}
 
 		uint16 spriteId = vehicle->sprite_index;
-		for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+		for (rct_vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train) {
 			train = GET_VEHICLE(spriteId);
 			if (train->restraints_position != 255)
 				continue;
@@ -3579,7 +3579,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
 		return;
 
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* train; spriteId != 0xFFFF; spriteId = train->next_vehicle_on_train) {
+	for (rct_vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train) {
 		train = GET_VEHICLE(spriteId);
 		if (train->num_peeps != train->next_free_seat)
 			return;
@@ -4532,7 +4532,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 	uint16 numFatalities = 0;
 
 	uint16 spriteId = vehicle->sprite_index;
-	for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+	for (rct_vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train) {
 		curVehicle = GET_VEHICLE(spriteId);
 		numFatalities += curVehicle->num_peeps;
 	}
@@ -4558,7 +4558,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 	}
 
 	spriteId = vehicle->sprite_index;
-	for (rct_vehicle* curVehicle; spriteId != 0xFFFF; spriteId = curVehicle->next_vehicle_on_train) {
+	for (rct_vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train) {
 		curVehicle = GET_VEHICLE(spriteId);
 
 		if (curVehicle->num_peeps != curVehicle->next_free_seat)
@@ -4770,7 +4770,7 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 		if (curVehicle->sub_state == 1) {
 			curVehicle->var_4E += 0xFFEC;
 		}
-	} while ((spriteId = curVehicle->next_vehicle_on_train) != 0xFFFF);
+	} while ((spriteId = curVehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 }
 /**
  *
@@ -5723,7 +5723,7 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		x + bp > rideRight ||
 		y + bp > rideBottom) {
 		if (spriteId != NULL)
-			*spriteId = 0xFFFF;
+			*spriteId = SPRITE_INDEX_NULL;
 		return true;
 	}
 
@@ -5736,7 +5736,7 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 		location.y += Unk9A37C4[i].y;
 
 		uint16 spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
-		while (spriteIdx != 0xFFFF) {
+		while (spriteIdx != SPRITE_INDEX_NULL) {
 			rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx);
 			spriteIdx = vehicle2->next_in_quadrant;
 
@@ -7041,14 +7041,14 @@ static bool vehicle_update_motion_collision_detection(
 	rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
 
 	bool mayCollide = false;
-	uint16 collideId = 0xFFFF;
+	uint16 collideId = SPRITE_INDEX_NULL;
 	rct_vehicle* collideVehicle = NULL;
 	for (int i = 0; i < countof(Unk9A37C4); i++) {
 		location.x += Unk9A37C4[i].x;
 		location.y += Unk9A37C4[i].y;
 
 		collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
-		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
+		for(; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;
 
@@ -8163,7 +8163,7 @@ loc_6DC743:
 			// When the ride is closed occasionally the peep is removed
 			// but the vehicle is still on the track. This will prevent
 			// it from crashing in that situation.
-			if (vehicle->peep[0] != 0xFFFF) {
+			if (vehicle->peep[0] != SPRITE_INDEX_NULL) {
 				if (z == 2) {
 					rct_peep *peep = GET_PEEP(vehicle->peep[0]);
 					if (peep->id & 7) {
@@ -8612,7 +8612,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	_vehicleFrontVehicle = vehicle;
 
 	uint16 spriteId = vehicle->sprite_index;
-	while (spriteId != 0xFFFF) {
+	while (spriteId != SPRITE_INDEX_NULL) {
 		rct_vehicle* car = GET_VEHICLE(spriteId);
 		vehicleEntry = vehicle_get_vehicle_entry(car);
 

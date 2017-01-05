@@ -519,7 +519,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 	int result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &command_x, &ebx, &command_y, &command_z, &esi, &new_sprite_index, &ebp);
 
 	if (result == MONEY32_UNDEFINED)
-		return 0xFFFF;
+		return SPRITE_INDEX_NULL;
 
 	return new_sprite_index;
 }

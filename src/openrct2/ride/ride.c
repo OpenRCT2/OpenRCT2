@@ -845,7 +845,7 @@ void ride_get_status(int rideIndex, rct_string_id *formatSecondary, int *argumen
 		*formatSecondary = STR_TEST_RUN;
 		return;
 	}
-	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != SPRITE_INDEX_NULL && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
 		rct_peep *peep = GET_PEEP(ride->race_winner);
 		if (peep->name_string_idx == STR_GUEST_X) {
 			*argument = peep->id;
@@ -2422,7 +2422,7 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 		// Set flag on broken car
 		vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
 		for (i = ride->broken_car; i > 0; i--) {
-			if (vehicle->next_vehicle_on_train == (uint16)0xFFFFFFFF) {
+			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				vehicle = NULL;
 				break;
 			}
@@ -5487,7 +5487,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 			ride->status = RIDE_STATUS_CLOSED;
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-			ride->race_winner = 0xFFFF;
+			ride->race_winner = SPRITE_INDEX_NULL;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 			window_invalidate_by_number(WC_RIDE, rideIndex);
 		}
@@ -5521,7 +5521,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 		}
 
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-			ride->race_winner = 0xFFFF;
+			ride->race_winner = SPRITE_INDEX_NULL;
 			ride->status = targetStatus;
 			ride_get_measurement(rideIndex, NULL);
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
@@ -6043,7 +6043,7 @@ foundRideEntry:
 	}
 
 	for (int i = 0; i < 32; i++) {
-		ride->vehicles[i] = 0xFFFF;
+		ride->vehicles[i] = SPRITE_INDEX_NULL;
 	}
 
 	ride->status = RIDE_STATUS_CLOSED;
@@ -8298,7 +8298,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 				ride->exits[station_num] = (x / 32) | (y / 32 << 8);
 			} else {
 				ride->entrances[station_num] = (x / 32) | (y / 32 << 8);
-				ride->last_peep_in_queue[station_num] = 0xFFFF;
+				ride->last_peep_in_queue[station_num] = SPRITE_INDEX_NULL;
 				ride->queue_length[station_num] = 0;
 
 				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
@@ -8646,7 +8646,7 @@ uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 rct_vehicle *ride_get_broken_vehicle(rct_ride *ride) {
 	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
 
-	if (vehicleIndex == 0xFFFF) {
+	if (vehicleIndex == SPRITE_INDEX_NULL) {
 		return NULL;
 	}
 

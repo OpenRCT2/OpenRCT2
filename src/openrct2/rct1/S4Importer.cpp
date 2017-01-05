@@ -596,7 +596,7 @@ private:
             dst->entrances[i] = src->entrance[i];
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
-            dst->last_peep_in_queue[i] = 0xFFFF;
+            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
             dst->queue_length[i] = src->num_peeps_in_queue[i];
         }
         dst->num_stations = src->num_stations;
