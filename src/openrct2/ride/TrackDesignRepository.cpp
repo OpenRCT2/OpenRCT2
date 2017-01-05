@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
@@ -27,7 +28,6 @@
 
 extern "C"
 {
-    #include "../platform/platform.h"
     #include "../rct2.h"
     #include "track_design.h"
 }
@@ -152,7 +152,7 @@ public:
             const TrackRepositoryItem * item = &_items[index];
             if (!(item->Flags & TRIF_READ_ONLY))
             {
-                if (platform_file_delete(path))
+                if (File::Delete(path))
                 {
                     _items.erase(_items.begin() + index);
                     result = true;
@@ -176,7 +176,7 @@ public:
                 Path::Append(newPath, sizeof(newPath), newName);
                 String::Append(newPath, sizeof(newPath), Path::GetExtension(path));
 
-                if (platform_file_move(path, newPath))
+                if (File::Move(path, newPath))
                 {
                     item->Name = std::string(newName);
                     item->Path = std::string(newPath);
@@ -203,7 +203,7 @@ public:
         String::Set(newPath, sizeof(newPath), installDir.c_str());
         Path::Append(newPath, sizeof(newPath), fileName);
 
-        if (platform_file_copy(path, newPath, false))
+        if (File::Copy(path, newPath, false))
         {
             AddTrack(path);
             SortItems();
@@ -366,13 +366,6 @@ private:
             result = &_items[index];
         }
         return result;
-    }
-
-    utf8 * GetRCT2Directory(utf8 * buffer, size_t bufferSize) const
-    {
-        String::Set(buffer, bufferSize, gRCT2AddressAppPath);
-        Path::Append(buffer, bufferSize, "Tracks");
-        return buffer;
     }
 
 public:
