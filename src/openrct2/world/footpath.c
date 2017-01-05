@@ -587,7 +587,7 @@ void game_command_remove_footpath(int *eax, int *ebx, int *ecx, int *edx, int *e
 	*ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
 }
 
-money32 footpath_place(int type, int x, int y, int z, int slope, int flags, int pathScenery)
+money32 footpath_place(int type, int x, int y, int z, int slope, int flags, uint16 pathScenery)
 {
 	return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, pathScenery, 0);
 }

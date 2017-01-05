@@ -941,7 +941,7 @@ static void window_footpath_construct()
 		uint16 add_scenery = window_footpath_scenery_get_next_scenery();
 		if (add_scenery != 0)
 		{
-			int sceneryFlags = (add_scenery & 0xFF) + 1;
+			uint16 sceneryFlags = (add_scenery & 0xFF) + 1;
 			gGameCommandErrorTitle = STR_CANT_DO_THIS;
 			cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, sceneryFlags);
 		}
