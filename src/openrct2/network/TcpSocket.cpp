@@ -47,6 +47,7 @@
     #include <netinet/in.h>
     #include <sys/socket.h>
     #include <fcntl.h>
+    #include "../common.h"
     typedef sint32 SOCKET;
     #define SOCKET_ERROR -1
     #define INVALID_SOCKET -1
