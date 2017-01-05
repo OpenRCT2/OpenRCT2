@@ -1265,8 +1265,10 @@ money32 string_to_money(char * string_to_monetise)
 	int number = 0, decimal = 0;
 	if (numberText != NULL) number = atoi(numberText);
 	if (decimalText != NULL) decimal = atoi(decimalText);
-	if (decimal < 10) decimal *= 10; //if less than 10, say, 6, convert to 60.
-
+	// MONEY assumes decimal is 2 digits in length, so if less than 10, say 6, convert to 60.
+	// Otherwise "10.1" will be returned as "10.00".
+	if (decimal < 10) decimal *= 10;
+	
 	free(tokenize);
 
 	return MONEY(number, decimal) * sign;
