@@ -425,7 +425,6 @@ static void window_footpath_scenery_add(rct_window * w)
 		}
 	}
 
-	// _footpath_scenery_selected_sceneryEntry = NULL;
 	w->no_list_items++;
 	window_invalidate(w);
 }
