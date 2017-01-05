@@ -300,7 +300,7 @@ static void window_footpath_scenery_scrollpaint(rct_window * w, rct_drawpixelinf
 	int y = 0, i = 0;
 	rct_string_id format = STR_BLACK_STRING;
 
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[0]].mid_light);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[NOT_TRANSLUCENT(w->colours[0])].mid_light);
 
 	path_rule_entry_t * c = _footpath_scenery_list;
 	while (c != NULL)
