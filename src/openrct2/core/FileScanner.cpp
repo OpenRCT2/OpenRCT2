@@ -377,7 +377,7 @@ private:
 
 IFileScanner * Path::ScanDirectory(const std::string &pattern, bool recurse)
 {
-    return Path::ScanDirectory(pattern.c_str(), recurse);
+    return ScanDirectory(pattern.c_str(), recurse);
 }
 
 IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
@@ -387,6 +387,11 @@ IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 #elif defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
     return new FileScannerUnix(pattern, recurse);
 #endif
+}
+
+void Path::QueryDirectory(QueryDirectoryResult * result, const std::string &pattern)
+{
+    return QueryDirectory(result, pattern.c_str());
 }
 
 void Path::QueryDirectory(QueryDirectoryResult * result, const utf8 * pattern)

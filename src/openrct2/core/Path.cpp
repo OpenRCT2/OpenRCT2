@@ -29,7 +29,12 @@ extern "C"
 
 namespace Path
 {
-    std::string Append(const std::string &a, const std::string &b)
+    utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    {
+        return safe_strcat_path(buffer, src, bufferSize);
+    }
+
+    std::string Combine(const std::string &a, const std::string &b)
     {
         utf8 buffer[MAX_PATH];
         String::Set(buffer, sizeof(buffer), a.c_str());
@@ -37,9 +42,9 @@ namespace Path
         return std::string(buffer);
     }
 
-    utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    std::string GetDirectory(const std::string &path)
     {
-        return safe_strcat_path(buffer, src, bufferSize);
+        return GetDirectory(path.c_str());
     }
 
     utf8 * GetDirectory(const utf8 * path)
@@ -64,6 +69,11 @@ namespace Path
         Memory::Copy(buffer, path, copyLength);
         buffer[copyLength] = '\0';
         return buffer;
+    }
+
+    std::string GetFileName(const std::string &path)
+    {
+        return GetFileName(path.c_str());
     }
 
     const utf8 * GetFileName(const utf8 * path)
@@ -132,6 +142,11 @@ namespace Path
         return buffer;
     }
 
+    const std::string GetExtension(const std::string &path)
+    {
+        return GetExtension(path.c_str());
+    }
+
     const utf8 * GetExtension(const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
@@ -185,6 +200,11 @@ namespace Path
             return buffer;
         }
 #endif
+    }
+
+    bool Equals(const std::string &a, const std::string &b)
+    {
+        return String::Equals(a.c_str(), b.c_str());
     }
 
     bool Equals(const utf8 * a, const utf8 * b)

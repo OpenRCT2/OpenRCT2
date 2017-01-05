@@ -50,12 +50,12 @@ namespace String
         return str == nullptr || str[0] == '\0';
     }
 
-    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase = false)
+    sint32 Compare(const std::string &a, const std::string &b, bool ignoreCase)
     {
         return Compare(a.c_str(), b.c_str(), ignoreCase);
     }
 
-    sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase = false)
+    sint32 Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
         if (a == b) return true;
         if (a == nullptr || b == nullptr) return false;
@@ -68,6 +68,11 @@ namespace String
         {
             return strcmp(a, b);
         }
+    }
+
+    bool Equals(const std::string &a, const std::string &b, bool ignoreCase)
+    {
+        return Equals(a.c_str(), b.c_str(), ignoreCase);
     }
 
     bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase)

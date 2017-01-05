@@ -71,5 +71,13 @@ namespace Path
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      * @returns An aggregated result of all scanned files.
      */
+    void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
+
+    /**
+     * Scans a directory and all sub directories
+     * @param result The query result to modify.
+     * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
+     * @returns An aggregated result of all scanned files.
+     */
     void QueryDirectory(QueryDirectoryResult * result, const utf8 * pattern);
 }
