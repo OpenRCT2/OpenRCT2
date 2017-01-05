@@ -235,7 +235,7 @@ static void window_footpath_scenery_paint(rct_window * w, rct_drawpixelinfo * dp
 static void window_footpath_scenery_path_scenery_dialog(rct_window * w, rct_widget * widget, int widgetIndex)
 {
 	int numSceneryTypes		= 1;
-	gDropdownItemsFormat[0] = -1;
+	gDropdownItemsFormat[0] = STR_FOOTPATH_SCENERY_NOTHING;
 	gDropdownItemsArgs[0]	= SPR_NONE;
 
 	for (uint16 sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
