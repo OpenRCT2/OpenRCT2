@@ -893,8 +893,10 @@ private:
         dst->scream_sound_id = 255;
         dst->vehicle_sprite_type = 0;
         dst->bank_rotation = src->bank_rotation;
-        dst->target_seat_rotation = src->target_seat_rotation;
-        dst->seat_rotation = src->seat_rotation;
+
+        // Seat rotation was not in RCT1
+        dst->target_seat_rotation = 4;
+        dst->seat_rotation = 4;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;

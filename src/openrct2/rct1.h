@@ -328,8 +328,6 @@ typedef struct rct1_vehicle {
 	uint8 mini_golf_flags;			// 0xD5
 	uint8 ride_subtype;				// 0xD6
 	uint8 colours_extended;			// 0xD7
-	uint8 seat_rotation;			// 0xD8
-	uint8 target_seat_rotation;		// 0xD9
 } rct1_vehicle;
 
 typedef struct rct1_peep {
