@@ -4263,6 +4263,8 @@ STR_5991    :No se puede pegar el elemento...
 STR_5992    :El limite de elementos del mapa ha sido alcanzado
 STR_5993    :{SMALLFONT}{BLACK}Copiar elemento seleccionado
 STR_5994    :{SMALLFONT}{BLACK}Pegar elemento copiado
+STR_5995    :Acelerador
+STR_5996    :Velocidad de Acelerador
 
 ##############
 # Escenarios #
