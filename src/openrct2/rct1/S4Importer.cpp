@@ -902,7 +902,7 @@ private:
         dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
 
-        // Guests
+        // Guests (indexes converted later)
         for (int i = 0; i < 32; i++)
         {
             dst->peep[i] = src->peep[i];
@@ -942,18 +942,41 @@ private:
         }
     }
 
+    void FixVehiclePeepLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
+    {
+        for (int i = 0; i < 32; i++)
+        {
+            uint16 originalSpriteIndex = vehicle->peep[i];
+            if (originalSpriteIndex != SPRITE_INDEX_NULL)
+            {
+                vehicle->peep[i] = spriteIndexMap[originalSpriteIndex];
+            }
+        }
+    }
+
     void ImportPeeps()
     {
+        uint16 spriteIndexMap[RCT1_MAX_SPRITES];
         for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
         {
+            spriteIndexMap[i] = SPRITE_INDEX_NULL;
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
-                rct1_peep *srcPeep = &_s4.sprites[i].peep;
-
-                rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                rct1_peep * srcPeep = &_s4.sprites[i].peep;
+                rct_peep * peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                 move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+                spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
+            }
+        }
+        for (size_t i = 0; i < MAX_SPRITES; i++)
+        {
+            rct_sprite * sprite = get_sprite(i);
+            if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            {
+                rct_vehicle * vehicle = (rct_vehicle *)sprite;
+                FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
     }
