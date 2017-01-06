@@ -48,6 +48,7 @@ rct_widget window_view_clipping_widgets[] = {
 
 #pragma region Events
 
+static void window_view_clipping_close_button(rct_window *w);
 static void window_view_clipping_mouseup(rct_window *w, int widgetIndex);
 static void window_view_clipping_update(rct_window *w);
 static void window_view_clipping_invalidate(rct_window *w);
@@ -55,7 +56,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 
 static rct_window_event_list window_view_clipping_events = {
-	window_view_clipping_close,
+	window_view_clipping_close_button,
 	window_view_clipping_mouseup,
 	NULL,
 	NULL,
@@ -142,6 +143,11 @@ void window_view_clipping_close()
 		window_invalidate(mainWindow);
 	}
 
+}
+
+static void window_view_clipping_close_button(rct_window *w)
+{
+	window_view_clipping_close();
 }
 
 static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
