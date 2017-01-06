@@ -245,6 +245,90 @@ typedef struct rct1_vehicle {
 	uint8 ride;						// 0x30
 	uint8 vehicle_type;				// 0x31
 	rct_vehicle_colour colours;		// 0x32
+	union {
+		uint16 track_progress;			// 0x34
+		struct {
+			sint8 var_34;
+			uint8 var_35;
+		};
+	};
+	union {
+		sint16 track_direction;		// 0x36 (0000 0000 0000 0011)
+		sint16 track_type;			// 0x36 (0000 0011 1111 1100)
+		rct_xy8 boat_location;		// 0x36
+	};
+	uint16 track_x;					// 0x38
+	uint16 track_y;					// 0x3A
+	uint16 track_z;					// 0x3C
+	uint16 next_vehicle_on_train;	// 0x3E
+
+	// The previous vehicle on the same train or the last vehicle on the previous or only train.
+	uint16 prev_vehicle_on_ride;	// 0x40
+
+	// The next vehicle on the same train or the first vehicle on the next or only train
+	uint16 next_vehicle_on_ride;	// 0x42
+
+	uint16 var_44;
+	uint16 friction;				// 0x46
+	uint16 update_flags;			// 0x48
+	uint8 var_4A;
+	uint8 current_station;			// 0x4B
+	union {
+		sint16 swinging_car_var_0;	// 0x4C
+		sint16 current_time;		// 0x4C
+		struct {
+			sint8 ferris_wheel_var_0;	// 0x4C
+			sint8 ferris_wheel_var_1;	// 0x4D
+		};
+	};
+	sint16 var_4E;
+	uint8 status;					// 0x50
+	uint8 sub_state;				// 0x51
+	uint16 peep[32];				// 0x52
+	uint8 peep_tshirt_colours[32];	// 0x92
+	uint8 num_seats;				// 0xB2
+	uint8 num_peeps;				// 0xB3
+	uint8 next_free_seat;			// 0xB4
+	uint8 restraints_position;		// 0xB5 0 == Close, 255 == Open
+	sint16 var_B6;
+	uint16 var_B8;
+	uint8 var_BA;
+	uint8 sound1_id;				// 0xBB
+	uint8 sound1_volume;			// 0xBC
+	uint8 sound2_id;				// 0xBD
+	uint8 sound2_volume;			// 0xBE
+	sint8 var_BF;
+	union {
+		uint16 var_C0;
+		uint16 time_waiting;		// 0xC0
+		uint16 cable_lift_target;	// 0xC0
+	};
+	uint8 speed;					// 0xC2
+	uint8 powered_acceleration;		// 0xC3
+	uint8 var_C4;
+	uint8 var_C5;
+	uint8 pad_C6[0x2];
+	uint16 var_C8;
+	uint16 var_CA;
+	uint8 scream_sound_id;			// 0xCC
+	uint8 var_CD;
+	union {
+		uint8 var_CE;
+		uint8 num_laps;				// 0xCE
+	};
+	union {
+		uint8 var_CF;
+		uint8 brake_speed;			// 0xCF
+	};
+	uint16 lost_time_out;			// 0xD0
+	sint8 vertical_drop_countdown;	// 0xD1
+	uint8 var_D3;
+	uint8 mini_golf_current_animation;
+	uint8 mini_golf_flags;			// 0xD5
+	uint8 ride_subtype;				// 0xD6
+	uint8 colours_extended;			// 0xD7
+	uint8 seat_rotation;			// 0xD8
+	uint8 target_seat_rotation;		// 0xD9
 } rct1_vehicle;
 
 typedef struct rct1_peep {

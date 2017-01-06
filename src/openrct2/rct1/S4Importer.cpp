@@ -812,11 +812,75 @@ private:
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
     {
+        // TODO perform vehicle type conversion
+        //      this will be whether the vehicle is the head of the train or a seat etc.
+        uint8 vehicleEntryIndex = 0;
+
+        rct_ride * ride = get_ride(src->ride);
+        rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
+        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+
         dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
         dst->ride = src->ride;
+        dst->ride_subtype = ride->subtype;
+
+        dst->vehicle_type = vehicleEntryIndex;
+        dst->is_child = src->is_child;
+        dst->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
+        dst->remaining_distance = src->remaining_distance;
+
+        // Properties from vehicle entry
+        dst->sprite_width = vehicleEntry->sprite_width;
+        dst->sprite_height_negative = vehicleEntry->sprite_height_negative;
+        dst->sprite_height_positive = vehicleEntry->sprite_height_positive;
+        dst->friction = vehicleEntry->car_friction;
+        dst->num_seats = vehicleEntry->num_seats;
+        dst->speed = vehicleEntry->powered_max_speed;
+        dst->powered_acceleration = vehicleEntry->powered_acceleration;
+
+        dst->velocity = src->velocity;
+        dst->acceleration = src->acceleration;
+        dst->var_4A = src->var_4A;
+        dst->swinging_car_var_0 = src->swinging_car_var_0;
+        dst->var_4E = src->var_4E;
+        dst->restraints_position = src->restraints_position;
+        dst->var_BA = src->var_BA;
+        dst->var_B6 = src->var_B6;
+        dst->var_B8 = src->var_B8;
+        dst->sound1_id = 0xFF;
+        dst->sound2_id = 0xFF;
+        dst->next_vehicle_on_train = SPRITE_INDEX_NULL;
+        dst->var_C4 = src->var_C4;
+        dst->var_C5 = src->var_C5;
+        dst->var_C8 = src->var_C8;
+        dst->scream_sound_id = 255;
+        dst->vehicle_sprite_type = 0;
+        dst->bank_rotation = src->bank_rotation;
+        dst->target_seat_rotation = src->target_seat_rotation;
+        dst->seat_rotation = src->seat_rotation;
+
+        // Guests
+        for (int i = 0; i < 32; i++)
+        {
+            dst->peep[i] = SPRITE_INDEX_NULL;
+        }
+
+        dst->var_CD = 0;
+        dst->track_x = src->track_x;
+        dst->track_y = src->track_y;
+        dst->track_z = src->track_z;
+        dst->current_station = src->current_station;
+        dst->track_type = src->track_type;
+        dst->track_progress = src->track_progress;
+        dst->status = src->status;
+        dst->sub_state = src->sub_state;
+        dst->update_flags = src->update_flags;
 
         sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
         invalidate_sprite_2((rct_sprite *)dst);
+
+        dst->num_peeps = 0;
+        dst->next_free_seat = 0;
     }
 
     void ImportPeeps()
