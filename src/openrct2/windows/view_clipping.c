@@ -48,7 +48,6 @@ rct_widget window_view_clipping_widgets[] = {
 
 #pragma region Events
 
-static void window_view_clipping_close(rct_window *w);
 static void window_view_clipping_mouseup(rct_window *w, int widgetIndex);
 static void window_view_clipping_update(rct_window *w);
 static void window_view_clipping_invalidate(rct_window *w);
@@ -134,7 +133,7 @@ void window_view_clipping_open()
 	window_invalidate(window);
 }
 
-void window_view_clipping_close(rct_window *w)
+void window_view_clipping_close()
 {
 	// Turn off view clipping when the window is closed.
 	rct_window *mainWindow = window_get_main();
