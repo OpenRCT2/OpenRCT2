@@ -353,11 +353,11 @@ namespace RCT1
                 0,
                 0,
                 0,
-                0, //MINE_TRAIN_FRONT
-                1, //MINE_TRAIN_CARRIAGE
+                0, // MINE_TRAIN_FRONT
+                1, // MINE_TRAIN_CARRIAGE
                 0,
-                0,
-                0,
+                0, // CORKSCREW_RC_FRONT
+                1, // CORKSCREW_RC_CARRIAGE
                 0,
                 0,
                 0,

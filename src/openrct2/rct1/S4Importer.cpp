@@ -918,6 +918,7 @@ private:
         for (int i = 0; i < 32; i++)
         {
             dst->peep[i] = src->peep[i];
+            dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
         }
 
         dst->var_CD = src->var_CD;
@@ -930,6 +931,10 @@ private:
         dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
+        dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
+        dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
+        dst->colours_extended = RCT1::GetColour(src->colours_extended);
+
 
         sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
         invalidate_sprite_2((rct_sprite *)dst);
