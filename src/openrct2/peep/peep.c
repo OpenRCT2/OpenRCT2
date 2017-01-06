@@ -9800,7 +9800,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 				peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
 				#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				if (gPathFindDebug) {
-					log_verbose("Removing edge %d from existing pf_history for %d,%d,%d.", chosen_edge, x >> 5, y >> 5, z);
+					log_verbose("Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, x >> 5, y >> 5, z, peep->direction ^ 2, chosen_edge);
 				}
 				#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 				return chosen_edge;
@@ -9815,13 +9815,14 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		peep->pathfind_history[i].y = y >> 5;
 		peep->pathfind_history[i].z = z;
 		peep->pathfind_history[i].direction = permitted_edges;
+		/* Remove the chosen_edge from those left to try. */
 		peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
 		/* Also remove the edge through which the peep
 		 * entered the junction from those left to try. */
 		peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
 		#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 		if (gPathFindDebug) {
-			log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without edge %d.", i, x >> 5, y >> 5, z, chosen_edge);
+			log_verbose("Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, x >> 5, y >> 5, z, peep->direction ^ 2, chosen_edge);
 		}
 		#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 	}
