@@ -27,8 +27,9 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
-#define RCT1_MAX_MAP_ELEMENTS   0xC000
-#define RCT1_MAX_SPRITES        5000
+#define RCT1_MAX_MAP_ELEMENTS       0xC000
+#define RCT1_MAX_SPRITES            5000
+#define RCT1_MAX_VEHICLES_PER_RIDE  12
 
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
@@ -52,7 +53,7 @@ typedef struct rct1_ride {
 	struct {
 		colour_t body;
 		colour_t trim;
-	} vehicle_colours[12];
+	} vehicle_colours[RCT1_MAX_VEHICLES_PER_RIDE];
 	colour_t track_primary_colour;
 	colour_t track_secondary_colour;
 	colour_t track_support_colour;
@@ -70,7 +71,7 @@ typedef struct rct1_ride {
 	uint16 exit[4];
 	uint16 last_peep_in_queue[4];
 	uint8 num_peeps_in_queue[4];
-	uint16 vehicles[12];
+	uint16 vehicles[RCT1_MAX_VEHICLES_PER_RIDE];
 	uint8 depart_flags;
 	uint8 num_stations;
 	uint8 num_trains;

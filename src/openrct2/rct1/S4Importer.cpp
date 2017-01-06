@@ -552,6 +552,7 @@ private:
         dst->status = RIDE_STATUS_CLOSED;
 
         // Flags
+        if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)             dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
         if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)        dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
         if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)       dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
         if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
@@ -586,10 +587,16 @@ private:
         }
         dst->num_stations = src->num_stations;
 
-        for (sint32 i = 0; i < 32; i++)
+        // Vehicle links (indexes converted later)
+        for (sint32 i = 0; i < RCT1_MAX_VEHICLES_PER_RIDE; i++)
+        {
+            dst->vehicles[i] = src->vehicles[i];
+        }
+        for (sint32 i = RCT1_MAX_VEHICLES_PER_RIDE; i < 32; i++)
         {
             dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
+
         dst->num_vehicles = src->num_trains;
         dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
         dst->proposed_num_vehicles = src->num_trains;
@@ -751,6 +758,23 @@ private:
         dst->music_tune_id = 255;
     }
 
+    void FixRideVehicleLinks(const uint16 * spriteIndexMap)
+    {
+        uint8 i;
+        rct_ride * ride;
+        FOR_ALL_RIDES(i, ride)
+        {
+            for (uint8 j = 0; j < Util::CountOf(ride->vehicles); j++)
+            {
+                uint16 originalIndex = ride->vehicles[j];
+                if (originalIndex != SPRITE_INDEX_NULL)
+                {
+                    ride->vehicles[j] = spriteIndexMap[originalIndex];
+                }
+            }
+        }
+    }
+
     void FixNumPeepsInQueue()
     {
         sint32 i;
@@ -794,8 +818,11 @@ private:
 
     void ImportVehicles()
     {
+        std::vector<rct_vehicle *> vehicles;
+        uint16 spriteIndexMap[RCT1_MAX_SPRITES];
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
+            spriteIndexMap[i] = SPRITE_INDEX_NULL;
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
                 rct1_vehicle * srcVehicle = &_s4.sprites[i].vehicle;
@@ -803,11 +830,18 @@ private:
                 {
                     rct_vehicle * vehicle = (rct_vehicle *)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     move_sprite_to_list((rct_sprite *)vehicle, SPRITE_LIST_VEHICLE * 2);
+                    spriteIndexMap[i] = vehicle->sprite_index;
+                    vehicles.push_back(vehicle);
 
                     ImportVehicle(vehicle, srcVehicle);
                 }
             }
         }
+        for (auto vehicle : vehicles)
+        {
+            FixVehicleLinks(vehicle, spriteIndexMap);
+        }
+        FixRideVehicleLinks(spriteIndexMap);
     }
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
@@ -815,6 +849,10 @@ private:
         // TODO perform vehicle type conversion
         //      this will be whether the vehicle is the head of the train or a seat etc.
         uint8 vehicleEntryIndex = 0;
+        if (src->vehicle_type == 36)
+        {
+            vehicleEntryIndex = 1;
+        }
 
         rct_ride * ride = get_ride(src->ride);
         rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
@@ -849,7 +887,6 @@ private:
         dst->var_B8 = src->var_B8;
         dst->sound1_id = 0xFF;
         dst->sound2_id = 0xFF;
-        dst->next_vehicle_on_train = SPRITE_INDEX_NULL;
         dst->var_C4 = src->var_C4;
         dst->var_C5 = src->var_C5;
         dst->var_C8 = src->var_C8;
@@ -859,13 +896,18 @@ private:
         dst->target_seat_rotation = src->target_seat_rotation;
         dst->seat_rotation = src->seat_rotation;
 
+        // Vehicle links (indexes converted later)
+        dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
+        dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
+        dst->next_vehicle_on_train = src->next_vehicle_on_train;
+
         // Guests
         for (int i = 0; i < 32; i++)
         {
             dst->peep[i] = SPRITE_INDEX_NULL;
         }
 
-        dst->var_CD = 0;
+        dst->var_CD = src->var_CD;
         dst->track_x = src->track_x;
         dst->track_y = src->track_y;
         dst->track_z = src->track_z;
@@ -881,6 +923,22 @@ private:
 
         dst->num_peeps = 0;
         dst->next_free_seat = 0;
+    }
+
+    void FixVehicleLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
+    {
+        if (vehicle->prev_vehicle_on_ride != SPRITE_INDEX_NULL)
+        {
+            vehicle->prev_vehicle_on_ride = spriteIndexMap[vehicle->prev_vehicle_on_ride];
+        }
+        if (vehicle->next_vehicle_on_ride != SPRITE_INDEX_NULL)
+        {
+            vehicle->next_vehicle_on_ride = spriteIndexMap[vehicle->next_vehicle_on_ride];
+        }
+        if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
+        {
+            vehicle->next_vehicle_on_train = spriteIndexMap[vehicle->next_vehicle_on_train];
+        }
     }
 
     void ImportPeeps()
