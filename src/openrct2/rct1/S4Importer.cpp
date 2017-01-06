@@ -800,11 +800,14 @@ private:
     void ImportRideMeasurement(rct_ride_measurement * dst, rct_ride_measurement * src)
     {
         // Not yet supported
-        // *dst = *src;
-        // for (sint32 i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++)
-        // {
-        //     dst->altitude[i] /= 2;
-        // }
+        *dst = *src;
+        for (sint32 i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++)
+        {
+            dst->velocity[i] /= 2;
+            dst->altitude[i] /= 2;
+            dst->vertical[i] /= 2;
+            dst->lateral[i] /= 2;
+        }
     }
 
     void ImportSprites()
