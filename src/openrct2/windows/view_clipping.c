@@ -49,18 +49,16 @@ rct_widget window_view_clipping_widgets[] = {
 #pragma region Events
 
 static void window_view_clipping_mouseup(rct_window *w, int widgetIndex);
-static void window_view_clipping_mousedown(int widgetIndex, rct_window*w, rct_widget* widget);
 static void window_view_clipping_update(rct_window *w);
 static void window_view_clipping_invalidate(rct_window *w);
 static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
-//static void window_view_clipping_text_input(rct_window *w, int widgetIndex, char *text);
 
 static rct_window_event_list window_view_clipping_events = {
 	window_view_clipping_close,
 	window_view_clipping_mouseup,
 	NULL,
-	window_view_clipping_mousedown,
+	NULL,
 	NULL,
 	NULL,
 	window_view_clipping_update,
@@ -76,7 +74,7 @@ static rct_window_event_list window_view_clipping_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL, //window_view_clipping_text_input,
+	NULL,
 	NULL,
 	NULL,
 	NULL,
@@ -124,7 +122,7 @@ void window_view_clipping_open()
 
 	window_push_others_below(window);
 
-	//colour_scheme_update(window); // Segfaults - not set up for colour schemes?
+	colour_scheme_update(window);
 
 	// Turn on view clipping when the window is opened.
 	if (mainWindow != NULL) {
@@ -164,15 +162,6 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 		}
 		window_invalidate(w);
 		break;
-	}
-}
-
-static void window_view_clipping_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
-{
-	// mousedown appears to be used primarily for dropdown list boxes
-	switch (widgetIndex) {
-		default:
-			break;
 	}
 }
 
@@ -220,7 +209,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 	gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &gClipHeight, w->colours[1], x, y); //Printing the raw value.
 
-	// Print the value in the configured game units.
+	// Print the value in the configured measurement units.
 	fixed16_1dp clipHeightValueInMeters;
 	sint16 clipHeightValueInFeet;
 	switch (gConfigGeneral.measurement_format) {
