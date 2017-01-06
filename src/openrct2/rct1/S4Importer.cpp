@@ -867,13 +867,20 @@ private:
         dst->remaining_distance = src->remaining_distance;
 
         // Properties from vehicle entry
-        dst->sprite_width = vehicleEntry->sprite_width;
-        dst->sprite_height_negative = vehicleEntry->sprite_height_negative;
-        dst->sprite_height_positive = vehicleEntry->sprite_height_positive;
-        dst->friction = vehicleEntry->car_friction;
-        dst->num_seats = vehicleEntry->num_seats;
-        dst->speed = vehicleEntry->powered_max_speed;
-        dst->powered_acceleration = vehicleEntry->powered_acceleration;
+        dst->sprite_width = src->sprite_width; //vehicleEntry->sprite_width;
+        dst->sprite_height_negative = src->sprite_height_negative; //vehicleEntry->sprite_height_negative;
+        dst->sprite_height_positive = src->sprite_height_positive; //vehicleEntry->sprite_height_positive;
+
+        dst->sprite_left = src->sprite_left;
+        dst->sprite_top = src->sprite_top;
+        dst->sprite_right = src->sprite_right;
+        dst->sprite_bottom = src->sprite_bottom;
+
+
+        dst->friction = src->friction; //vehicleEntry->car_friction;
+        dst->num_seats = src->num_seats; //vehicleEntry->num_seats;
+        dst->speed = src->speed; //vehicleEntry->powered_max_speed;
+        dst->powered_acceleration = src->powered_acceleration; //vehicleEntry->powered_acceleration;
 
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
@@ -890,12 +897,8 @@ private:
         dst->var_C5 = src->var_C5;
         dst->var_C8 = src->var_C8;
         dst->scream_sound_id = 255;
-        dst->vehicle_sprite_type = 0;
+        dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
-
-        // Seat rotation was not in RCT1
-        dst->target_seat_rotation = 4;
-        dst->seat_rotation = 4;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
