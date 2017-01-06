@@ -786,9 +786,37 @@ private:
 
     void ImportSprites()
     {
+        ImportVehicles();
         ImportPeeps();
         ImportLitter();
         ImportMiscSprites();
+    }
+
+    void ImportVehicles()
+    {
+        for (int i = 0; i < RCT1_MAX_SPRITES; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            {
+                rct1_vehicle * srcVehicle = &_s4.sprites[i].vehicle;
+                if (srcVehicle->x != (sint16)0x8000)
+                {
+                    rct_vehicle * vehicle = (rct_vehicle *)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
+                    move_sprite_to_list((rct_sprite *)vehicle, SPRITE_LIST_VEHICLE * 2);
+
+                    ImportVehicle(vehicle, srcVehicle);
+                }
+            }
+        }
+    }
+
+    void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
+    {
+        dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
+        dst->ride = src->ride;
+
+        sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
+        invalidate_sprite_2((rct_sprite *)dst);
     }
 
     void ImportPeeps()
