@@ -789,7 +789,7 @@ private:
 
     void ImportPeeps()
     {
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
@@ -941,7 +941,7 @@ private:
 
     void ImportLitter()
     {
-        for (int i = 0; i < 5000; i++)
+        for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER) {
                 rct_litter *srcLitter = &_s4.sprites[i].litter;
@@ -1076,7 +1076,7 @@ private:
 
     void ImportMapElements()
     {
-        memcpy(gMapElements, _s4.map_elements, 0xC000 * sizeof(rct_map_element));
+        memcpy(gMapElements, _s4.map_elements, RCT1_MAX_MAP_ELEMENTS * sizeof(rct_map_element));
         ClearExtraTileEntries();
         FixColours();
         FixZ();

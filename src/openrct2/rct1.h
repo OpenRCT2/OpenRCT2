@@ -26,6 +26,9 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
+#define RCT1_MAX_MAP_ELEMENTS   0xC000
+#define RCT1_MAX_SPRITES        5000
+
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
 	uint16 x;
@@ -414,9 +417,9 @@ typedef struct rct1_s4 {
 	uint32 ticks;
 	uint32 random_a;
 	uint32 random_b;
-	rct_map_element map_elements[0xC000];
+	rct_map_element map_elements[RCT1_MAX_MAP_ELEMENTS];
 	uint32 unk_counter;
-	rct1_sprite sprites[5000];
+	rct1_sprite sprites[RCT1_MAX_SPRITES];
 	uint16 next_sprite_index;
 	uint16 first_vehicle_sprite_index;
 	uint16 first_peep_sprite_index;
