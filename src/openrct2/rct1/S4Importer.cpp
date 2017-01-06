@@ -847,11 +847,16 @@ private:
     {
         // TODO perform vehicle type conversion
         //      this will be whether the vehicle is the head of the train or a seat etc.
-        uint8 vehicleEntryIndex = 0;
-        if (src->vehicle_type == 36)
-        {
-            vehicleEntryIndex = 1;
-        }
+//        uint8 vehicleEntryIndex = 0;
+//        if (src->vehicle_type == 36)
+//        {
+//            vehicleEntryIndex = 1;
+//        }
+        char buf[64];
+        sprintf(buf, "%d", src->vehicle_type);
+        log_error(buf);
+
+        uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
         rct_ride * ride = get_ride(src->ride);
         rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
@@ -899,6 +904,10 @@ private:
         dst->scream_sound_id = 255;
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
+
+        // Seat rotation was not in RCT1
+        dst->target_seat_rotation = 4;
+        dst->seat_rotation = 4;
 
         // Vehicle links (indexes converted later)
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;

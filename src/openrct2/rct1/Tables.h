@@ -33,6 +33,7 @@ namespace RCT1
     bool RideTypeUsesVehicles(uint8 rideType);
     bool PathIsQueue(uint8 pathType);
     uint8 NormalisePathAddition(uint8 pathAdditionType);
+    uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry);
 
     const char * GetRideTypeObject(uint8 rideType);
     const char * GetVehicleObject(uint8 vehicleType);

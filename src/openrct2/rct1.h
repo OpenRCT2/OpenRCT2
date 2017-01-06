@@ -1121,6 +1121,13 @@ enum {
 	RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION = 		(1 << 15),
 };
 
+enum {
+    STEEL_RC_FRONT = 0,
+    STEEL_RC_CARRIAGE = 1,
+    MINE_TRAIN_FRONT = 35,
+    MINE_TRAIN_CARRIAGE = 36,
+};
+
 #define RCT1_MAX_STATIONS 4
 
 extern const uint8 gRideCategories[0x60];
