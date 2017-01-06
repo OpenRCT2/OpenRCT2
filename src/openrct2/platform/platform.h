@@ -19,14 +19,14 @@
 
 #include "../common.h"
 
+#include <SDL.h>
+
 #ifdef __WINDOWS__
 #include "../rct2.h"
 	#ifndef HAVE_MATH_H
 		#define HAVE_MATH_H
 	#endif
 #endif // __WINDOWS__
-
-#include <SDL.h>
 
 #include "../core/textinputbuffer.h"
 #include "../drawing/font.h"
