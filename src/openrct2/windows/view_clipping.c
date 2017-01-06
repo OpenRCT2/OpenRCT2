@@ -210,8 +210,6 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	// Clip height value
-	// Currently as a spinner.
-	// Alternately could try putting the value on the scrollbar.
 	int x;
 	int y;
 	x = w->x + 8;
@@ -222,31 +220,21 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 	gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &gClipHeight, w->colours[1], x, y); //Printing the raw value.
 
-	// Set the height units symbol
-	rct_string_id clipHeight_Units_StringId;
+	// Print the value in the configured game units.
+	fixed16_1dp clipHeightValueInMeters;
+	sint16 clipHeightValueInFeet;
 	switch (gConfigGeneral.measurement_format) {
 		case MEASUREMENT_FORMAT_METRIC:
 		case MEASUREMENT_FORMAT_SI:
-			clipHeight_Units_StringId = STR_UNIT_SUFFIX_METRES;
+			clipHeightValueInMeters = FIXED_1DP(gClipHeight, 0) / 2 * 1.5 - FIXED_1DP(10,5);
+			gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[1], x + 30, y);
 			break;
 		case MEASUREMENT_FORMAT_IMPERIAL:
 		default:
-			clipHeight_Units_StringId = STR_UNIT_SUFFIX_FEET;
+			clipHeightValueInFeet = gClipHeight / 2 * 5 - 35;
+			gfx_draw_string_left(dpi, STR_UNIT_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[1], x + 30, y);
 			break;
 	}
-
-	fixed16_1dp clipHeightValueInUnits; // The clip height in the unit type - feet or meters. For value in meters a fixed point number is needed.
-	switch (clipHeight_Units_StringId) {
-		case STR_UNIT_SUFFIX_FEET:
-			clipHeightValueInUnits = FIXED_1DP(gClipHeight, 0) / 2 * 5 - FIXED_1DP(35,0);
-			break;
-		case STR_UNIT_SUFFIX_METRES:
-		default:
-			clipHeightValueInUnits = FIXED_1DP(gClipHeight, 0) / 2 * 1.5 - FIXED_1DP(10,5);
-			break;
-	}
-	// TODO: Display fixed point value correctly.
-	gfx_draw_string_left(dpi, clipHeight_Units_StringId, &clipHeightValueInUnits, w->colours[1], x + 30, y);
 }
 
 static void window_view_clipping_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
