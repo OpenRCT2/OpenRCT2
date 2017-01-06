@@ -133,7 +133,7 @@ void window_view_clipping_open()
 	window_invalidate(window);
 }
 
-void window_view_clipping_close()
+void window_view_clipping_close(rct_window *w)
 {
 	// Turn off view clipping when the window is closed.
 	rct_window *mainWindow = window_get_main();
@@ -215,7 +215,7 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	switch (gConfigGeneral.measurement_format) {
 		case MEASUREMENT_FORMAT_METRIC:
 		case MEASUREMENT_FORMAT_SI:
-			clipHeightValueInMeters = FIXED_1DP(gClipHeight, 0) / 2 * 1.5 - FIXED_1DP(10,5);
+			clipHeightValueInMeters = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 * 1.5 - FIXED_1DP(10,5));
 			gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[1], x + 30, y);
 			break;
 		case MEASUREMENT_FORMAT_IMPERIAL:
