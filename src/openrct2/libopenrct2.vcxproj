@@ -391,6 +391,7 @@
     <ClCompile Include="windows\track_list.c" />
     <ClCompile Include="windows\track_manage.c" />
     <ClCompile Include="windows\track_place.c" />
+    <ClCompile Include="windows\view_clipping.c" />
     <ClCompile Include="windows\viewport.c" />
     <ClCompile Include="windows\water.c" />
     <ClCompile Include="world\banner.c" />
