@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
@@ -65,6 +66,8 @@ enum TRACK_REPO_ITEM_FLAGS
 class TrackDesignRepository : public ITrackDesignRepository
 {
 private:
+    static constexpr const utf8 * TD_FILE_PATTERN = "*.td4;*.td6";
+
     IPlatformEnvironment * _env;
 
     std::vector<TrackRepositoryItem> _items;
@@ -87,13 +90,13 @@ public:
         return _items.size();
     }
 
-    size_t GetCountForObjectEntry(uint8 rideType, const utf8 * entry) const override
+    size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const override
     {
         size_t count = 0;
         for (const auto item : _items)
         {
             if (item.RideType == rideType &&
-                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
+                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
             {
                 count++;
             }
@@ -101,26 +104,22 @@ public:
         return count;
     }
 
-    size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry) const override
+    size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs, uint8 rideType, const std::string &entry) const override
     {
         std::vector<track_design_file_ref> refs;
         for (const auto item : _items)
         {
             if (item.RideType == rideType &&
-                (entry == nullptr || String::Equals(item.ObjectEntry.c_str(), entry, true)))
+                (entry.empty() || String::Equals(item.ObjectEntry, entry, true)))
             {
                 track_design_file_ref ref;
-                ref.name = GetNameFromTrackPath(item.Path.c_str());
-                ref.path = String::Duplicate(item.Path.c_str());
+                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
+                ref.path = String::Duplicate(item.Path);
                 refs.push_back(ref);
             }
         }
 
-        *outRefs = nullptr;
-        if (refs.size() != 0)
-        {
-            *outRefs = Memory::DuplicateArray(refs.data(), refs.size());
-        }
+        *outRefs = Collections::ToArray(refs);
         return refs.size();
     }
 
@@ -143,7 +142,7 @@ public:
         }
     }
 
-    bool Delete(const utf8 * path) override
+    bool Delete(const std::string &path) override
     {
         bool result = false;
         size_t index = GetTrackIndex(path);
@@ -162,57 +161,41 @@ public:
         return result;
     }
 
-    const utf8 * Rename(const utf8 * path, const utf8 * newName) override
+    std::string Rename(const std::string &path, const std::string &newName) override
     {
-        const utf8 * result = nullptr;
+        std::string result;
         size_t index = GetTrackIndex(path);
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem * item = &_items[index];
             if (!(item->Flags & TRIF_READ_ONLY))
             {
-                utf8 newPath[MAX_PATH];
-                Path::GetDirectory(newPath, sizeof(newPath), path);
-                Path::Append(newPath, sizeof(newPath), newName);
-                String::Append(newPath, sizeof(newPath), Path::GetExtension(path));
-
+                std::string directory = Path::GetDirectory(path);
+                std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
                 if (File::Move(path, newPath))
                 {
-                    item->Name = std::string(newName);
-                    item->Path = std::string(newPath);
+                    item->Name = newName;
+                    item->Path = newPath;
                     SortItems();
-
-                    item = GetTrackItem(newPath);
-                    if (item != nullptr)
-                    {
-                        result = item->Path.c_str();
-                    }
+                    result = newPath;
                 }
             }
         }
         return result;
     }
 
-    const utf8 * Install(const utf8 * path) override
+    std::string Install(const std::string &path) override
     {
-        const utf8 * result = nullptr;
-        const utf8 * fileName = Path::GetFileName(path);
+        std::string result;
+        std::string fileName = Path::GetFileName(path);
         std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
-        utf8 newPath[MAX_PATH];
-        String::Set(newPath, sizeof(newPath), installDir.c_str());
-        Path::Append(newPath, sizeof(newPath), fileName);
-
+        std::string newPath = Path::Combine(installDir, fileName);
         if (File::Copy(path, newPath, false))
         {
             AddTrack(path);
             SortItems();
-
-            const TrackRepositoryItem * item = GetTrackItem(path);
-            if (item != nullptr)
-            {
-                result = item->Path.c_str();
-            }
+            result = path;
         }
         return result;
     }
@@ -220,18 +203,13 @@ public:
 private:
     void Query(const std::string &directory)
     {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
+        std::string pattern = Path::Combine(directory, TD_FILE_PATTERN);
         Path::QueryDirectory(&_directoryQueryResult, pattern);
     }
 
     void Scan(const std::string &directory, uint32 flags = 0)
     {
-        utf8 pattern[MAX_PATH];
-        String::Set(pattern, sizeof(pattern), directory.c_str());
-        Path::Append(pattern, sizeof(pattern), "*.td4;*.td6");
-
+        std::string pattern = Path::Combine(directory, TD_FILE_PATTERN);
         IFileScanner * scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
@@ -241,14 +219,14 @@ private:
         delete scanner;
     }
 
-    void AddTrack(const utf8 * path, uint32 flags = 0)
+    void AddTrack(const std::string path, uint32 flags = 0)
     {
-        rct_track_td6 * td6 = track_design_open(path);
+        rct_track_td6 * td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
         {
             TrackRepositoryItem item;
-            item.Name = std::string(GetNameFromTrackPath(path));
-            item.Path = std::string(path);
+            item.Name = GetNameFromTrackPath(path);
+            item.Path = path;
             item.RideType = td6->type;
             item.ObjectEntry = std::string(td6->vehicle_object.name, 8);
             item.Flags = flags;
@@ -266,10 +244,7 @@ private:
                 {
                     return a.RideType < b.RideType;
                 }
-
-                const utf8 * nameA = a.Name.c_str();
-                const utf8 * nameB = b.Name.c_str();
-                return _stricmp(nameA, nameB) < 0;
+                return String::Compare(a.Name, b.Name) < 0;
             });
     }
 
@@ -345,11 +320,11 @@ private:
         }
     }
 
-    size_t GetTrackIndex(const utf8 * path) const
+    size_t GetTrackIndex(const std::string &path) const
     {
         for (size_t i = 0; i < _items.size(); i++)
         {
-            if (Path::Equals(_items[i].Path.c_str(), path))
+            if (Path::Equals(_items[i].Path, path))
             {
                 return i;
             }
@@ -357,7 +332,7 @@ private:
         return SIZE_MAX;
     }
 
-    TrackRepositoryItem * GetTrackItem(const utf8 * path)
+    TrackRepositoryItem * GetTrackItem(const std::string &path)
     {
         TrackRepositoryItem * result = nullptr;
         size_t index = GetTrackIndex(path);
@@ -369,12 +344,9 @@ private:
     }
 
 public:
-    static utf8 * GetNameFromTrackPath(const utf8 * path)
+    static std::string GetNameFromTrackPath(const std::string &path)
     {
-        utf8 * name = Memory::Allocate<utf8>(MAX_PATH);
-        Path::GetFileNameWithoutExtension(name, MAX_PATH, path);
-        name = Memory::ReallocateArray(name, String::SizeOf(name) + 1);
-        return name;
+        return Path::GetFileNameWithoutExtension(path);
     }
 };
 
@@ -402,13 +374,13 @@ extern "C"
     size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetCountForObjectEntry(rideType, entry);
+        return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetItemsForObjectEntry(outRefs, rideType, entry);
+        return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
     }
 
     bool track_repository_delete(const utf8 * path)
@@ -417,20 +389,22 @@ extern "C"
         return repo->Delete(path);
     }
 
-    const utf8 * track_repository_rename(const utf8 * path, const utf8 * newName)
+    bool track_repository_rename(const utf8 * path, const utf8 * newName)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->Rename(path, newName);
+        std::string newPath = repo->Rename(path, newName);
+        return !newPath.empty();
     }
 
-    const utf8 * track_repository_install(const utf8 * srcPath)
+    bool track_repository_install(const utf8 * srcPath)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->Install(srcPath);
+        std::string newPath = repo->Install(srcPath);
+        return !newPath.empty();
     }
 
     utf8 * track_repository_get_name_from_path(const utf8 * path)
     {
-        return TrackDesignRepository::GetNameFromTrackPath(path);
+        return String::Duplicate(TrackDesignRepository::GetNameFromTrackPath(path));
     }
 }

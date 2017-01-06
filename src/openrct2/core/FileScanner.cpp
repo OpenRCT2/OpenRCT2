@@ -34,6 +34,7 @@
 #endif
 
 #include <stack>
+#include <string>
 #include <vector>
 #include "FileScanner.h"
 #include "Memory.hpp"
@@ -45,10 +46,10 @@ extern "C"
     #include "../platform/platform.h"
 }
 
-enum DIRECTORY_CHILD_TYPE
+enum class DIRECTORY_CHILD_TYPE
 {
-    DCT_DIRECTORY,
-    DCT_FILE,
+    DIRECTORY,
+    FILE,
 };
 
 struct DirectoryChild
@@ -75,10 +76,9 @@ private:
     };
 
     // Options
-    utf8 *      _rootPath;
-    utf8 * *    _patterns;
-    size_t      _numPatterns;
-    bool        _recurse;
+    std::string                 _rootPath;
+    std::vector<std::string>    _patterns;
+    bool                        _recurse;
 
     // State
     bool                        _started;
@@ -89,12 +89,11 @@ private:
     utf8        * _currentPath;
 
 public:
-    FileScannerBase(const utf8 * pattern, bool recurse)
+    FileScannerBase(const std::string &pattern, bool recurse)
     {
-        _rootPath = Memory::Allocate<utf8>(MAX_PATH);
-        Path::GetDirectory(_rootPath, MAX_PATH, pattern);
+        _rootPath = Path::GetDirectory(pattern);
         _recurse = recurse;
-        _numPatterns = GetPatterns(&_patterns, Path::GetFileName(pattern));
+        _patterns = GetPatterns(Path::GetFileName(pattern));
 
         _currentPath = Memory::Allocate<utf8>(MAX_PATH);
         _currentFileInfo = Memory::Allocate<FileInfo>();
@@ -104,12 +103,6 @@ public:
 
     ~FileScannerBase() override
     {
-        Memory::Free(_rootPath);
-        for (size_t i = 0; i < _numPatterns; i++)
-        {
-            Memory::Free(_patterns[i]);
-        }
-        Memory::Free(_patterns);
         Memory::Free(_currentPath);
         Memory::Free(_currentFileInfo);
     }
@@ -127,7 +120,7 @@ public:
     const utf8 * GetPathRelative() const override
     {
         // +1 to remove the path separator
-        return _currentPath + String::SizeOf(_rootPath) + 1;
+        return _currentPath + _rootPath.size() + 1;
     }
 
     void Reset() override
@@ -156,7 +149,7 @@ public:
             else
             {
                 const DirectoryChild * child = &state->Listing[state->Index];
-                if (child->Type == DCT_DIRECTORY)
+                if (child->Type == DIRECTORY_CHILD_TYPE::DIRECTORY)
                 {
                     utf8 childPath[MAX_PATH];
                     String::Set(childPath, sizeof(childPath), state->Path.c_str());
@@ -164,7 +157,7 @@ public:
 
                     PushState(childPath);
                 }
-                else if (PatternMatch(child->Name.c_str()))
+                else if (PatternMatch(child->Name))
                 {
                     String::Set(_currentPath, MAX_PATH, state->Path.c_str());
                     Path::Append(_currentPath, MAX_PATH, child->Name.c_str());
@@ -180,20 +173,20 @@ public:
     }
 
 private:
-    void PushState(const utf8 * directory)
+    void PushState(const std::string &directory)
     {
         DirectoryState newState;
-        newState.Path = std::string(directory);
+        newState.Path = directory;
         newState.Index = -1;
         GetDirectoryChildren(newState.Listing, directory);
         _directoryStack.push(newState);
     }
 
-    bool PatternMatch(const utf8 * fileName)
+    bool PatternMatch(const std::string &fileName)
     {
-        for (size_t i = 0; i < _numPatterns; i++)
+        for (const auto &pattern : _patterns)
         {
-            if (MatchWildcard(fileName, _patterns[i]))
+            if (MatchWildcard(fileName.c_str(), pattern.c_str()))
             {
                 return true;
             }
@@ -201,11 +194,11 @@ private:
         return false;
     }
 
-    static size_t GetPatterns(utf8 * * * outPatterns, const utf8 * delimitedPatterns)
+    static std::vector<std::string> GetPatterns(const std::string &delimitedPatterns)
     {
-        std::vector<utf8 *> patterns;
+        std::vector<std::string> patterns;
 
-        const utf8 * start = delimitedPatterns;
+        const utf8 * start = delimitedPatterns.c_str();
         const utf8 * ch = start;
         utf8 c;
         do
@@ -216,9 +209,7 @@ private:
                 size_t length = (size_t)(ch - start);
                 if (length > 0)
                 {
-                    utf8 * newPattern = Memory::Allocate<utf8>(length + 1);
-                    Memory::Copy(newPattern, start, length);
-                    newPattern[length] = '\0';
+                    std::string newPattern = std::string(start, length);
                     patterns.push_back(newPattern);
                 }
                 start = ch + 1;
@@ -227,12 +218,12 @@ private:
         }
         while (c != '\0');
 
-        *outPatterns = Memory::DuplicateArray(patterns.data(), patterns.size());
-        return patterns.size();
+        patterns.shrink_to_fit();
+        return patterns;
     }
 
 protected:
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) abstract;
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) abstract;
 
 };
 
@@ -241,21 +232,16 @@ protected:
 class FileScannerWindows final : public FileScannerBase
 {
 public:
-    FileScannerWindows(const utf8 * pattern, bool recurse)
+    FileScannerWindows(const std::string &pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
 
 protected:
-    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) override
+    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
-        size_t pathLength = String::SizeOf(path);
-        utf8 * pattern = Memory::Duplicate(path, pathLength + 3);
-        pattern[pathLength + 0] = '\\';
-        pattern[pathLength + 1] = '*';
-        pattern[pathLength + 2] = '\0';
-
-        wchar_t * wPattern = utf8_to_widechar(pattern);
+        std::string pattern = path + "\\*";
+        wchar_t * wPattern = utf8_to_widechar(pattern.c_str());
 
         WIN32_FIND_DATAW findData;
         HANDLE hFile = FindFirstFileW(wPattern, &findData);
@@ -274,7 +260,6 @@ protected:
             FindClose(hFile);
         }
 
-        Memory::Free(pattern);
         Memory::Free(wPattern);
     }
 
@@ -289,11 +274,11 @@ private:
 
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
-            result.Type = DCT_DIRECTORY;
+            result.Type = DIRECTORY_CHILD_TYPE::DIRECTORY;
         }
         else
         {
-            result.Type = DCT_FILE;
+            result.Type = DIRECTORY_CHILD_TYPE::FILE;
             result.Size = ((uint64)child->nFileSizeHigh << 32ULL) | (uint64)child->nFileSizeLow;
             result.LastModified = ((uint64)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)child->ftLastWriteTime.dwLowDateTime;
         }
@@ -308,16 +293,16 @@ private:
 class FileScannerUnix final : public FileScannerBase
 {
 public:
-    FileScannerUnix(const utf8 * pattern, bool recurse)
+    FileScannerUnix(const std::string &pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
 
 protected:
-    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const utf8 * path) override
+    void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         struct dirent * * namelist;
-        int count = scandir(path, &namelist, FilterFunc, alphasort);
+        int count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
         if (count > 0)
         {
             for (int i = 0; i < count; i++)
@@ -326,7 +311,7 @@ protected:
                 if (!String::Equals(node->d_name, ".") &&
                     !String::Equals(node->d_name, ".."))
                 {
-                    DirectoryChild child = CreateChild(path, node);
+                    DirectoryChild child = CreateChild(path.c_str(), node);
                     children.push_back(child);
                 }
                 free(namelist[i]);
@@ -347,11 +332,11 @@ private:
         result.Name = std::string(node->d_name);
         if (node->d_type & DT_DIR)
         {
-            result.Type = DCT_DIRECTORY;
+            result.Type = DIRECTORY_CHILD_TYPE::DIRECTORY;
         }
         else
         {
-            result.Type = DCT_FILE;
+            result.Type = DIRECTORY_CHILD_TYPE::FILE;
 
             // Get the full path of the file
             size_t pathSize = String::SizeOf(directory) + 1 + String::SizeOf(node->d_name) + 1;
@@ -375,7 +360,7 @@ private:
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
+IFileScanner * Path::ScanDirectory(const std::string &pattern, bool recurse)
 {
 #ifdef __WINDOWS__
     return new FileScannerWindows(pattern, recurse);
@@ -384,7 +369,7 @@ IFileScanner * Path::ScanDirectory(const utf8 * pattern, bool recurse)
 #endif
 }
 
-void Path::QueryDirectory(QueryDirectoryResult * result, const utf8 * pattern)
+void Path::QueryDirectory(QueryDirectoryResult * result, const std::string &pattern)
 {
     IFileScanner * scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())

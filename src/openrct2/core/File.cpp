@@ -26,22 +26,22 @@ extern "C"
 
 namespace File
 {
-    bool Copy(const utf8 * srcPath, const utf8 * dstPath, bool overwrite)
+    bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)
     {
-        return platform_file_copy(srcPath, dstPath, overwrite);
+        return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);
     }
 
-    bool Delete(const utf8 * path)
+    bool Delete(const std::string &path)
     {
-        return platform_file_delete(path);
+        return platform_file_delete(path.c_str());
     }
 
-    bool Move(const utf8 * srcPath, const utf8 * dstPath)
+    bool Move(const std::string &srcPath, const std::string &dstPath)
     {
-        return platform_file_move(srcPath, dstPath);
+        return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
 
-    void * ReadAllBytes(const utf8 * path, size_t * length)
+    void * ReadAllBytes(const std::string &path, size_t * length)
     {
         void * result = nullptr;
 

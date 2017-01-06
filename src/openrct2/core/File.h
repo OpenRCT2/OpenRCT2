@@ -16,12 +16,13 @@
 
 #pragma once
 
+#include <string>
 #include "../common.h"
 
 namespace File
 {
-    bool Copy(const utf8 * srcPath, const utf8 * dstPath, bool overwrite);
-    bool Delete(const utf8 * path);
-    bool Move(const utf8 * srcPath, const utf8 * dstPath);
-    void * ReadAllBytes(const utf8 * path, size_t * length);
+    bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite);
+    bool Delete(const std::string &path);
+    bool Move(const std::string &srcPath, const std::string &dstPath);
+    void * ReadAllBytes(const std::string &path, size_t * length);
 }
