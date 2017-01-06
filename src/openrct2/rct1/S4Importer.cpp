@@ -548,8 +548,7 @@ private:
             args[1] = src->name_argument_number;
         }
 
-        // We can't convert vehicles yet so just close the ride
-        dst->status = RIDE_STATUS_CLOSED;
+        dst->status = src->status;
 
         // Flags
         if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)             dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
@@ -577,12 +576,12 @@ private:
             dst->station_depart[i] = src->station_light[i];
 
             // Use src->station_depart[i] when we import with guests and vehicles intact
-            dst->train_at_station[i] = 0xFF;
+            dst->train_at_station[i] = src->station_depart[i];
 
             dst->entrances[i] = src->entrance[i];
             dst->exits[i] = src->exit[i];
             dst->queue_time[i] = src->queue_time[i];
-            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+            dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
             dst->queue_length[i] = src->num_peeps_in_queue[i];
         }
         dst->num_stations = src->num_stations;
@@ -600,7 +599,7 @@ private:
         dst->num_vehicles = src->num_trains;
         dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
         dst->proposed_num_vehicles = src->num_trains;
-        dst->max_trains = 32;
+        dst->max_trains = src->max_trains;
         dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
         dst->special_track_elements = src->special_track_elements;
         dst->num_sheltered_sections = src->num_sheltered_sections;
@@ -906,7 +905,7 @@ private:
         // Guests
         for (int i = 0; i < 32; i++)
         {
-            dst->peep[i] = SPRITE_INDEX_NULL;
+            dst->peep[i] = src->peep[i];
         }
 
         dst->var_CD = src->var_CD;
@@ -923,8 +922,8 @@ private:
         sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
         invalidate_sprite_2((rct_sprite *)dst);
 
-        dst->num_peeps = 0;
-        dst->next_free_seat = 0;
+        dst->num_peeps = src->num_peeps;
+        dst->next_free_seat = src->next_free_seat;
     }
 
     void FixVehicleLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
@@ -950,13 +949,11 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep *srcPeep = &_s4.sprites[i].peep;
-                if (srcPeep->x != MAP_LOCATION_NULL || srcPeep->state == PEEP_STATE_ON_RIDE)
-                {
-                    rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
-                    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
 
-                    ImportPeep(peep, srcPeep);
-                }
+                rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+
+                ImportPeep(peep, srcPeep);
             }
         }
     }
@@ -1001,18 +998,7 @@ private:
 
         dst->outside_of_park = src->outside_of_park;
 
-        // We cannot yet import peeps that are on a ride properly. Move these to a safe place.
-        switch(src->state) {
-            case PEEP_STATE_ON_RIDE:
-            case PEEP_STATE_QUEUING_FRONT:
-            case PEEP_STATE_LEAVING_RIDE:
-            case PEEP_STATE_ENTERING_RIDE:
-                dst->state = PEEP_STATE_FALLING;
-                peep_autoposition(dst);
-                break;
-            default:
-                dst->state = src->state;
-        }
+        dst->state = src->state;
 
         dst->type = src->type;
 
