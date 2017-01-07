@@ -29,6 +29,8 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
 	WIDX_CLOSE,
 	WIDX_CLIP_HEIGHT_CHECKBOX,
 	WIDX_CLIP_HEIGHT_VALUE,
+	WIDX_CLIP_HEIGHT_INCREASE,
+	WIDX_CLIP_HEIGHT_DECREASE,
 	WIDX_CLIP_HEIGHT_SLIDER
 };
 
@@ -38,12 +40,14 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
 #define WH 70
 
 rct_widget window_view_clipping_widgets[] = {
-	{ WWT_FRAME,        0,  0,          WW - 1, 0,      WH - 1, STR_NONE,                        STR_NONE }, // panel / background
-	{ WWT_CAPTION,      0,  1,          WW - 2, 1,      14,     STR_VIEW_CLIPPING,               STR_WINDOW_TITLE_TIP }, // title bar
-	{ WWT_CLOSEBOX,     0,  WW - 13,    WW - 3, 2,      13,     STR_CLOSE_X,                     STR_CLOSE_WINDOW_TIP }, // close x button
-	{ WWT_CHECKBOX,     1,  11,         149,    19,     29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE, STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
-	{ WWT_SPINNER,      1,  81,         104,    34,     44,     STR_NONE,                        STR_NONE }, // clip height value spinner
-	{ WWT_SCROLL,       1,  11,         149,    49,     61,     SCROLL_HORIZONTAL,               STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
+	{ WWT_FRAME,           0,  0,       WW - 1, 0,      WH - 1, STR_NONE,                        STR_NONE }, // panel / background
+	{ WWT_CAPTION,         0,  1,       WW - 2, 1,      14,     STR_VIEW_CLIPPING,               STR_WINDOW_TITLE_TIP }, // title bar
+	{ WWT_CLOSEBOX,        0,  WW - 13, WW - 3, 2,      13,     STR_CLOSE_X,                     STR_CLOSE_WINDOW_TIP }, // close x button
+	{ WWT_CHECKBOX,        1,  11,      149,    19,     29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE, STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
+	{ WWT_SPINNER,         1,  71,      104,    34,     45,     STR_NONE,                        STR_NONE }, // clip height value
+	{ WWT_DROPDOWN_BUTTON, 1,  93,      103,    35,     39,     STR_NUMERIC_UP,                  STR_NONE }, // clip height increase
+	{ WWT_DROPDOWN_BUTTON, 1,  93,      103,    40,     44,     STR_NUMERIC_DOWN,                STR_NONE }, // clip height decrease
+	{ WWT_SCROLL,          1,  11,      149,    49,     61,     SCROLL_HORIZONTAL,               STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
 	{ WIDGETS_END }
 };
 
@@ -91,6 +95,14 @@ static rct_window_event_list window_view_clipping_events = {
 
 #pragma endregion
 
+static void window_view_slippint_set_clipheight(rct_window *w, const uint8 clipheight)
+{
+	gClipHeight = clipheight;
+	rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+	const float clip_height_ratio = (float)gClipHeight / 255;
+	w->scrolls[0].h_left = (sint16)ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+}
+
 void window_view_clipping_open()
 {
 	rct_window* window;
@@ -112,17 +124,16 @@ void window_view_clipping_open()
 	// Window is not open - create it.
 	window = window_create(32, 32, WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
 	window->widgets = window_view_clipping_widgets;
-	window->enabled_widgets = (1 << WIDX_CLOSE) |
-		(1 << WIDX_CLIP_HEIGHT_CHECKBOX) |
-		(1 << WIDX_CLIP_HEIGHT_VALUE) |
-		(1 << WIDX_CLIP_HEIGHT_SLIDER);
+	window->enabled_widgets = (1ULL << WIDX_CLOSE) |
+		(1ULL << WIDX_CLIP_HEIGHT_CHECKBOX) |
+		(1ULL << WIDX_CLIP_HEIGHT_INCREASE) |
+		(1ULL << WIDX_CLIP_HEIGHT_DECREASE) |
+		(1ULL << WIDX_CLIP_HEIGHT_SLIDER);
 
 	window_init_scroll_widgets(window);
 
 	// Initialise the clip height slider from the current clip height value.
-	rct_widget* widget;
-	widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-	window->scrolls[0].h_left = (sint16)ceil(((gClipHeight >> 1) / 127.0f) * (window->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+	window_view_slippint_set_clipheight(window, gClipHeight);
 
 	window_push_others_below(window);
 
@@ -171,14 +182,29 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 		}
 		window_invalidate(w);
 		break;
+	case WIDX_CLIP_HEIGHT_INCREASE:
+		if (gClipHeight < 255)
+			window_view_slippint_set_clipheight(w, gClipHeight + 1);
+		mainWindow = window_get_main();
+		if (mainWindow != NULL)
+			window_invalidate(mainWindow);
+		break;
+	case WIDX_CLIP_HEIGHT_DECREASE:
+		if(gClipHeight > 0)
+			window_view_slippint_set_clipheight(w, gClipHeight - 1);
+		mainWindow = window_get_main();
+		if (mainWindow != NULL)
+			window_invalidate(mainWindow);
+		break;
 	}
 }
 
 static void window_view_clipping_update(rct_window *w)
 {
-	rct_widget *widget;
-	widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-	uint8 clip_height = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 127) << 1;
+	const rct_widget *const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
+	const rct_scroll *const scroll = &w->scrolls[0];
+	const sint16 scroll_width = widget->right - widget->left - 1;
+	const uint8 clip_height = (uint8)(((float)scroll->h_left / (scroll->h_right - scroll_width)) * 255);
 	if (clip_height != gClipHeight) {
 		gClipHeight = clip_height;
 
@@ -225,12 +251,12 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	case MEASUREMENT_FORMAT_METRIC:
 	case MEASUREMENT_FORMAT_SI:
 		clipHeightValueInMeters = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 * 1.5 - FIXED_1DP(10, 5));
-		gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[1], x + 30, y);
+		gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[1], x + 40, y);
 		break;
 	case MEASUREMENT_FORMAT_IMPERIAL:
 	default:
 		clipHeightValueInFeet = gClipHeight / 2 * 5 - 35;
-		gfx_draw_string_left(dpi, STR_UNIT_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[1], x + 30, y);
+		gfx_draw_string_left(dpi, STR_UNIT_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[1], x + 40, y);
 		break;
 	}
 }
