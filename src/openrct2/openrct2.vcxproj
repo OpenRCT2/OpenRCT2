@@ -145,7 +145,7 @@
     <ClCompile Include="editor.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="rct2\hook.c" />
-    <ClCompile Include="image_io.c" />
+    <ClCompile Include="Imaging.cpp" />
     <ClCompile Include="input.c" />
     <ClCompile Include="interface\chat.c" />
     <ClCompile Include="interface\colour.c" />
@@ -487,7 +487,7 @@
     <ClInclude Include="editor.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="rct2\hook.h" />
-    <ClInclude Include="image_io.h" />
+    <ClInclude Include="Imaging.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="interface\chat.h" />
     <ClInclude Include="interface\colour.h" />
