@@ -95,7 +95,7 @@ static rct_window_event_list window_view_clipping_events = {
 
 #pragma endregion
 
-static void window_view_slippint_set_clipheight(rct_window *w, const uint8 clipheight)
+static void window_view_clipping_set_clipheight(rct_window *w, const uint8 clipheight)
 {
 	gClipHeight = clipheight;
 	rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
@@ -133,7 +133,7 @@ void window_view_clipping_open()
 	window_init_scroll_widgets(window);
 
 	// Initialise the clip height slider from the current clip height value.
-	window_view_slippint_set_clipheight(window, gClipHeight);
+	window_view_clipping_set_clipheight(window, gClipHeight);
 
 	window_push_others_below(window);
 
@@ -184,14 +184,14 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_CLIP_HEIGHT_INCREASE:
 		if (gClipHeight < 255)
-			window_view_slippint_set_clipheight(w, gClipHeight + 1);
+			window_view_clipping_set_clipheight(w, gClipHeight + 1);
 		mainWindow = window_get_main();
 		if (mainWindow != NULL)
 			window_invalidate(mainWindow);
 		break;
 	case WIDX_CLIP_HEIGHT_DECREASE:
 		if(gClipHeight > 0)
-			window_view_slippint_set_clipheight(w, gClipHeight - 1);
+			window_view_clipping_set_clipheight(w, gClipHeight - 1);
 		mainWindow = window_get_main();
 		if (mainWindow != NULL)
 			window_invalidate(mainWindow);
