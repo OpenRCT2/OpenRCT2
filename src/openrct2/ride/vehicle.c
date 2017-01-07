@@ -76,6 +76,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle);
 
 #define NO_SCREAM 254
+#define VEHICLE_INVALID_ID -1
 
 rct_vehicle *gCurrentVehicle;
 
@@ -1824,6 +1825,20 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 	vehicle_invalidate_window(vehicle);
 }
 
+static int ride_get_train_index_from_vehicle(rct_ride* ride, uint16 spriteIndex)
+{
+	int trainIndex = 0;
+	while (ride->vehicles[trainIndex] != spriteIndex)
+	{
+		trainIndex++;
+		if (trainIndex >= ride->num_vehicles || trainIndex >= countof(ride->vehicles))
+		{
+			return VEHICLE_INVALID_ID;
+		}
+	}
+	return trainIndex;
+}
+
 /**
  *
  *  rct2: 0x006D7DA1
@@ -1843,13 +1858,16 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 			return;
 		}
 
-		uint8 train_index = 0;
-		while (ride->vehicles[train_index] != vehicle->sprite_index)train_index++;
+		int trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
+		if (trainIndex == VEHICLE_INVALID_ID)
+		{
+			return;
+		}
 
 		if (ride->train_at_station[vehicle->current_station] != 0xFF)
 			return;
 
-		ride->train_at_station[vehicle->current_station] = train_index;
+		ride->train_at_station[vehicle->current_station] = trainIndex;
 		vehicle->sub_state = 1;
 		vehicle->time_waiting = 0;
 
@@ -2981,9 +2999,11 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 		rct_vehicle* frontVehicle = vehicle;
 		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
 
-		uint8 trainIndex = 0;
-		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
-			trainIndex++;
+		int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+		if (trainIndex == VEHICLE_INVALID_ID)
+		{
+			return;
+		}
 
 		ride_crash(vehicle->ride, trainIndex);
 
@@ -4593,9 +4613,11 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 		rct_vehicle* frontVehicle = vehicle;
 		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
 
-		uint8 trainIndex = 0;
-		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
-			trainIndex++;
+		int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+		if (trainIndex == VEHICLE_INVALID_ID)
+		{
+			return;
+		}
 
 		ride_crash(vehicle->ride, trainIndex);
 
@@ -4644,9 +4666,11 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle) {
 		rct_vehicle* frontVehicle = vehicle;
 		while (frontVehicle->is_child != 0)frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
 
-		uint8 trainIndex = 0;
-		while (ride->vehicles[trainIndex] != frontVehicle->sprite_index)
-			trainIndex++;
+		int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+		if (trainIndex == VEHICLE_INVALID_ID)
+		{
+			return;
+		}
 
 		ride_crash(vehicle->ride, trainIndex);
 
