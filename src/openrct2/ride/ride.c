@@ -4676,7 +4676,7 @@ static void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_el
 		lastTrain = train;
 
 		// Add train to ride vehicle list
-		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE * 2);
+		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN * 2);
 		for (int i = 0; i < 32; i++) {
 			if (ride->vehicles[i] == SPRITE_INDEX_NULL) {
 				ride->vehicles[i] = train.head->sprite_index;

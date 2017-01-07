@@ -1104,7 +1104,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 
 	sint16 left, top, right, bottom;
 
-	for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE]; train_index != SPRITE_INDEX_NULL; train_index = train->next) {
+	for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN]; train_index != SPRITE_INDEX_NULL; train_index = train->next) {
 		train = GET_VEHICLE(train_index);
 		for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train) {
 			vehicle = GET_VEHICLE(vehicle_index);

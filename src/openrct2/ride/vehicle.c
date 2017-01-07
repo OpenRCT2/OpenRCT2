@@ -802,7 +802,7 @@ void vehicle_sounds_update()
 				}
 			}
 			gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-			for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next) {
+			for (uint16 i = gSpriteListHead[SPRITE_LIST_TRAIN]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next) {
 				vehicle_update_sound_params(&get_sprite(i)->vehicle);
 			}
 			for(int i = 0; i < countof(gVehicleSoundList); i++){
@@ -1051,7 +1051,7 @@ void vehicle_update_all()
 		return;
 
 
-	sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE];
+	sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN];
 	while (sprite_index != SPRITE_INDEX_NULL) {
 		vehicle = &(get_sprite(sprite_index)->vehicle);
 		sprite_index = vehicle->next;

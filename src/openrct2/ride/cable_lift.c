@@ -35,7 +35,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->ride = rideIndex;
 	current->ride_subtype = 0xFF;
 	if (head) {
-		move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE * 2);
+		move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
 		ride->cable_lift = current->sprite_index;
 	}
 	current->is_child = head ? 0 : 1;

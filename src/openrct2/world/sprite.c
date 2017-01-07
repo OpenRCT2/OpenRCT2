@@ -695,7 +695,7 @@ void litter_remove_at(int x, int y, int z)
 static bool sprite_should_tween(rct_sprite *sprite)
 {
 	switch (sprite->unknown.linked_list_type_offset >> 1) {
-	case SPRITE_LIST_VEHICLE:
+	case SPRITE_LIST_TRAIN:
 	case SPRITE_LIST_PEEP:
 	case SPRITE_LIST_UNKNOWN:
 		return true;
