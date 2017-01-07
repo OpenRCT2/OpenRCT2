@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include <png.h>
+#include "core/Exception.hpp"
+#include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/Memory.hpp"
 
@@ -49,76 +51,84 @@ namespace Imaging
         }
 
         // Open PNG file
-        SDL_RWops * fp = SDL_RWFromFile(path, "rb");
-        if (fp == nullptr)
+        try
         {
-            return false;
-        }
+            auto fs = FileStream(path, FILE_MODE_OPEN);
 
-        // Set error handling
-        if (setjmp(png_jmpbuf(png_ptr)))
-        {
-            png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
-            SDL_RWclose(fp);
-            return false;
-        }
-
-        // Setup png reading
-        png_set_read_fn(png_ptr, fp, PngReadData);
-        png_set_sig_bytes(png_ptr, sig_read);
-
-        // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
-        png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
-
-        // Read header
-        png_uint_32 pngWidth, pngHeight;
-        int bitDepth, colourType, interlaceType;
-        png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
-
-        // Read pixels as 32bpp RGBA data
-        png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
-        png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
-        uint8 * pngPixels = Memory::Allocate<uint8>(pngWidth * pngHeight * 4);
-        uint8 * dst = pngPixels;
-        if (colourType == PNG_COLOR_TYPE_RGB)
-        {
-            // 24-bit PNG (no alpha)
-            Guard::Assert(rowBytes == pngWidth * 3, GUARD_LINE);
-            for (png_uint_32 i = 0; i < pngHeight; i++)
+            // Set error handling
+            if (setjmp(png_jmpbuf(png_ptr)))
             {
-                uint8 * src = rowPointers[i];
-                for (png_uint_32 x = 0; x < pngWidth; x++)
+                png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+                return false;
+            }
+
+            // Setup png reading
+            png_set_read_fn(png_ptr, &fs, PngReadData);
+            png_set_sig_bytes(png_ptr, sig_read);
+
+            // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
+            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND, nullptr);
+
+            // Read header
+            png_uint_32 pngWidth, pngHeight;
+            int bitDepth, colourType, interlaceType;
+            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
+
+            // Read pixels as 32bpp RGBA data
+            png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
+            png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
+            uint8 * pngPixels = Memory::Allocate<uint8>(pngWidth * pngHeight * 4);
+            uint8 * dst = pngPixels;
+            if (colourType == PNG_COLOR_TYPE_RGB)
+            {
+                // 24-bit PNG (no alpha)
+                Guard::Assert(rowBytes == pngWidth * 3, GUARD_LINE);
+                for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
-                    *dst++ = *src++;
-                    *dst++ = *src++;
-                    *dst++ = *src++;
-                    *dst++ = 255;
+                    uint8 * src = rowPointers[i];
+                    for (png_uint_32 x = 0; x < pngWidth; x++)
+                    {
+                        *dst++ = *src++;
+                        *dst++ = *src++;
+                        *dst++ = *src++;
+                        *dst++ = 255;
+                    }
                 }
             }
-        } else
-        {
-            // 32-bit PNG (with alpha)
-            Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
-            for (png_uint_32 i = 0; i < pngHeight; i++)
+            else
             {
-                Memory::Copy(dst, rowPointers[i], rowBytes);
-                dst += rowBytes;
+                // 32-bit PNG (with alpha)
+                Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
+                for (png_uint_32 i = 0; i < pngHeight; i++)
+                {
+                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    dst += rowBytes;
+                }
             }
+
+            // Close the PNG
+            png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
+
+            // Return the output data
+            *pixels = (uint8*)pngPixels;
+            if (width != nullptr) *width = pngWidth;
+            if (height != nullptr) *height = pngHeight;
+
+            return true;
         }
-
-        // Close the PNG
-        png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
-        SDL_RWclose(fp);
-
-        // Return the output data
-        *pixels = (uint8*)pngPixels;
-        if (width != nullptr) *width = pngWidth;
-        if (height != nullptr) *height = pngHeight;
-        return true;
+        catch (Exception)
+        {
+            *pixels = nullptr;
+            if (width != nullptr) *width = 0;
+            if (height != nullptr) *height = 0;
+            return false;
+        }
     }
 
     bool PngWrite(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
     {
+        bool result = false;
+
         // Get image size
         int stride = dpi->width + dpi->pitch;
 
@@ -147,53 +157,52 @@ namespace Imaging
 
         png_set_PLTE(png_ptr, info_ptr, png_palette, PNG_MAX_PALETTE_LENGTH);
 
-        // Open file for writing
-        SDL_RWops * file = SDL_RWFromFile(path, "wb");
-        if (file == nullptr)
+        try
         {
-            png_free(png_ptr, png_palette);
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-            return false;
-        }
-        png_set_write_fn(png_ptr, file, PngWriteData, PngFlush);
+            // Open file for writing
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            png_set_write_fn(png_ptr, &fs, PngWriteData, PngFlush);
 
-        // Set error handler
-        if (setjmp(png_jmpbuf(png_ptr)))
+            // Set error handler
+            if (setjmp(png_jmpbuf(png_ptr)))
+            {
+                throw Exception("PNG ERROR");
+            }
+
+            // Write header
+            png_set_IHDR(
+                png_ptr, info_ptr, dpi->width, dpi->height, 8,
+                PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+            );
+            png_byte transparentIndex = 0;
+            png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
+            png_write_info(png_ptr, info_ptr);
+
+            // Write pixels
+            uint8 * bits = dpi->bits;
+            for (int y = 0; y < dpi->height; y++)
+            {
+                png_write_row(png_ptr, (png_byte *)bits);
+                bits += stride;
+            }
+
+            // Finish
+            png_write_end(png_ptr, nullptr);
+            result = true;
+        }
+        catch (Exception)
         {
-            png_free(png_ptr, png_palette);
-            png_destroy_write_struct(&png_ptr, &info_ptr);
-            SDL_RWclose(file);
-            return false;
         }
-
-        // Write header
-        png_set_IHDR(
-            png_ptr, info_ptr, dpi->width, dpi->height, 8,
-            PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-        );
-        png_byte transparentIndex = 0;
-        png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
-        png_write_info(png_ptr, info_ptr);
-
-        // Write pixels
-        uint8 *bits = dpi->bits;
-        for (int y = 0; y < dpi->height; y++)
-        {
-            png_write_row(png_ptr, (png_byte *)bits);
-            bits += stride;
-        }
-
-        // Finish
-        png_write_end(png_ptr, nullptr);
-        SDL_RWclose(file);
 
         png_free(png_ptr, png_palette);
-        png_destroy_write_struct(&png_ptr, &info_ptr);
-        return true;
+        png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
+        return result;
     }
 
     bool PngWrite32bpp(sint32 width, sint32 height, const void * pixels, const utf8 * path)
     {
+        bool result = false;
+
         // Setup PNG
         png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, PngError, PngWarning);
         if (png_ptr == nullptr)
@@ -208,56 +217,55 @@ namespace Imaging
             return false;
         }
 
-        // Open file for writing
-        SDL_RWops * file = SDL_RWFromFile(path, "wb");
-        if (file == nullptr)
+        try
         {
-            png_destroy_write_struct(&png_ptr, (png_infopp)nullptr);
-            return false;
-        }
-        png_set_write_fn(png_ptr, file, PngWriteData, PngFlush);
+            // Open file for writing
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            png_set_write_fn(png_ptr, &fs, PngWriteData, PngFlush);
 
-        // Set error handler
-        if (setjmp(png_jmpbuf(png_ptr)))
+            // Set error handler
+            if (setjmp(png_jmpbuf(png_ptr)))
+            {
+                throw Exception("PNG ERROR");
+            }
+
+            // Write header
+            png_set_IHDR(
+                png_ptr, info_ptr, width, height, 8,
+                PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+            );
+            png_write_info(png_ptr, info_ptr);
+
+            // Write pixels
+            uint8 * bits = (uint8 *)pixels;
+            for (int y = 0; y < height; y++)
+            {
+                png_write_row(png_ptr, (png_byte *)bits);
+                bits += width * 4;
+            }
+
+            // Finish
+            png_write_end(png_ptr, nullptr);
+            result = true;
+        }
+        catch (Exception)
         {
-            png_destroy_write_struct(&png_ptr, &info_ptr);
-            SDL_RWclose(file);
-            return false;
         }
-
-        // Write header
-        png_set_IHDR(
-            png_ptr, info_ptr, width, height, 8,
-            PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
-        );
-        png_write_info(png_ptr, info_ptr);
-
-        // Write pixels
-        uint8 * bits = (uint8 *)pixels;
-        for (int y = 0; y < height; y++)
-        {
-            png_write_row(png_ptr, (png_byte *)bits);
-            bits += width * 4;
-        }
-
-        // Finish
-        png_write_end(png_ptr, nullptr);
-        SDL_RWclose(file);
 
         png_destroy_write_struct(&png_ptr, &info_ptr);
-        return true;
+        return result;
     }
 
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        SDL_RWops * file = (SDL_RWops *)png_get_io_ptr(png_ptr);
-        SDL_RWread(file, data, length, 1);
+        auto * fs = static_cast<FileStream *>(png_get_io_ptr(png_ptr));
+        fs->Read(data, length);
     }
 
     static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        SDL_RWops * file = (SDL_RWops *)png_get_io_ptr(png_ptr);
-        SDL_RWwrite(file, data, length, 1);
+        auto * fs = static_cast<FileStream *>(png_get_io_ptr(png_ptr));
+        fs->Write(data, length);
     }
 
     static void PngFlush(png_structp png_ptr)
