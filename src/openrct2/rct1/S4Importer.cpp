@@ -862,8 +862,8 @@ private:
         uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
         rct_ride * ride = get_ride(src->ride);
-        rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
-        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+        //rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
+        //rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
 
         dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
         dst->ride = src->ride;
@@ -871,7 +871,7 @@ private:
 
         dst->vehicle_type = vehicleEntryIndex;
         dst->is_child = src->is_child;
-        dst->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
+        dst->var_44 = src->var_44; //ror32(vehicleEntry->spacing, 10) & 0xFFFF;
         dst->remaining_distance = src->remaining_distance;
 
         // Properties from vehicle entry
@@ -889,6 +889,7 @@ private:
         dst->num_seats = src->num_seats; //vehicleEntry->num_seats;
         dst->speed = src->speed; //vehicleEntry->powered_max_speed;
         dst->powered_acceleration = src->powered_acceleration; //vehicleEntry->powered_acceleration;
+        dst->brake_speed = src->brake_speed;
 
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
@@ -897,13 +898,18 @@ private:
         dst->var_4E = src->var_4E;
         dst->restraints_position = src->restraints_position;
         dst->var_BA = src->var_BA;
+        dst->var_BF = src->var_BF;
         dst->var_B6 = src->var_B6;
         dst->var_B8 = src->var_B8;
         dst->sound1_id = 0xFF;
         dst->sound2_id = 0xFF;
+        dst->var_C0 = src->var_C0;
         dst->var_C4 = src->var_C4;
         dst->var_C5 = src->var_C5;
         dst->var_C8 = src->var_C8;
+        dst->var_CA = src->var_CA;
+        dst->var_CE = src->var_CE;
+        dst->var_D3 = src->var_D3;
         dst->scream_sound_id = 255;
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
@@ -931,13 +937,16 @@ private:
         dst->current_station = src->current_station;
         dst->track_type = src->track_type;
         dst->track_progress = src->track_progress;
+        dst->vertical_drop_countdown = src->vertical_drop_countdown;
+        dst->lost_time_out = src->lost_time_out;
         dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
         dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
         dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
         dst->colours_extended = RCT1::GetColour(src->colours_extended);
-
+        dst->mini_golf_current_animation = src->mini_golf_current_animation;
+        dst->mini_golf_flags = src->mini_golf_flags;
 
         sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
         invalidate_sprite_2((rct_sprite *)dst);
@@ -1090,7 +1099,7 @@ private:
         dst->time_on_ride = src->time_on_ride;
         dst->days_in_queue = src->days_in_queue;
 
-        dst->interactionRideIndex = 0xFF;
+        dst->interactionRideIndex = src->interactionRideIndex;
 
         dst->id = src->id;
         dst->cash_in_pocket = src->cash_in_pocket;
@@ -1129,7 +1138,8 @@ private:
             dst->thoughts[i] = src->thoughts[i];
         }
 
-        dst->previous_ride = 0xFF;
+        dst->previous_ride = src->previous_ride;
+        dst->previous_ride_time_out = src->previous_ride_time_out;
 
         dst->var_C4 = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
