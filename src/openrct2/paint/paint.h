@@ -23,7 +23,7 @@
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
 
-// zax: Global paint clipping height.
+// Global for paint clipping height.
 extern uint8 gClipHeight;
 
 

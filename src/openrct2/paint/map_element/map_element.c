@@ -319,7 +319,7 @@ static void sub_68B3FB(sint32 x, sint32 y)
 				imageColourFlats = 0b111011 << 19 | 0x40000000;
 			}
 
-			// Only draw supports above the clipping height.
+			// Only draw supports below the clipping height.
 			if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (segmentHeight > gClipHeight)) continue;
 
 			sint32 xOffset = sy * 10;
