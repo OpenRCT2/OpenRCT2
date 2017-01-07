@@ -831,11 +831,16 @@ private:
                 if (srcVehicle->x != (sint16)0x8000)
                 {
                     rct_vehicle * vehicle = (rct_vehicle *)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
-                    move_sprite_to_list((rct_sprite *)vehicle, SPRITE_LIST_VEHICLE * 2);
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
                     ImportVehicle(vehicle, srcVehicle);
+
+                    // If vehicle is the first car on a train add to train list
+                    if (!vehicle->is_child)
+                    {
+                        move_sprite_to_list((rct_sprite *)vehicle, SPRITE_LIST_TRAIN * 2);
+                    }
                 }
             }
         }
