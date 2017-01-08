@@ -1036,12 +1036,16 @@ private:
                 dst->y = src->y;
                 dst->z = src->z;
                 dst->sprite_direction = src->sprite_direction;
+                dst->sprite_width = src->sprite_width;
+                dst->sprite_height_negative = src->sprite_height_negative;
+                dst->sprite_height_positive = src->sprite_height_positive;
 
                 switch (src->misc_identifier) {
                 case SPRITE_MISC_STEAM_PARTICLE:
                     ImportSteamParticle((rct_steam_particle *) dst, (rct_steam_particle *) src);
                     break;
                 case SPRITE_MISC_MONEY_EFFECT:
+                    ImportMoneyEffect((rct_money_effect *) dst, (rct_money_effect *) src);
                     break;
                 case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                     break;
@@ -1066,6 +1070,15 @@ private:
                 invalidate_sprite_2((rct_sprite *) dst);
             }
         }
+    }
+
+    void ImportMoneyEffect(rct_money_effect * dst, rct_money_effect * src)
+    {
+        dst->move_delay = src->move_delay;
+        dst->num_movements = src->num_movements;
+        dst->value = src->value;
+        dst->offset_x = dst->offset_x;
+        dst->wiggle = src->wiggle;
     }
 
     void ImportSteamParticle(rct_steam_particle * dst, rct_steam_particle * src)
