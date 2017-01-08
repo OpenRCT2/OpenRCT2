@@ -146,7 +146,6 @@ public:
         ImportRides();
         ImportRideMeasurements();
         ImportSprites();
-        //FixNumPeepsInQueue();
         ImportMapElements();
         ImportMapAnimations();
         ImportPeepSpawns();
@@ -615,6 +614,7 @@ private:
         dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
         dst->special_track_elements = src->special_track_elements;
         dst->num_sheltered_sections = src->num_sheltered_sections;
+        dst->sheltered_length = src->sheltered_length;
 
         // Operation
         dst->depart_flags = src->depart_flags;
@@ -694,14 +694,6 @@ private:
             }
         }
 
-        // Fix other Z
-        // if (dst->cur_test_track_z != 255)
-        // {
-        //     dst->cur_test_track_z /= 2;
-        // }
-        // dst->chairlift_bullwheel_z[0] /= 2;
-        // dst->chairlift_bullwheel_z[1] /= 2;
-
         // Maintenance
         dst->build_date = src->build_date;
         dst->inspection_interval = src->inspection_interval;
@@ -724,11 +716,30 @@ private:
         dst->max_positive_vertical_g = src->max_positive_vertical_g;
         dst->max_negative_vertical_g = src->max_negative_vertical_g;
         dst->max_lateral_g = src->max_lateral_g;
+        dst->previous_lateral_g = src->previous_lateral_g;
+        dst->previous_vertical_g = src->previous_vertical_g;
+        dst->turn_count_banked = src->turn_count_banked;
+        dst->turn_count_default  = src->turn_count_default;
+        dst->turn_count_sloped = src->turn_count_sloped;
         dst->drops = src->num_drops;
         dst->start_drop_height = src->start_drop_height / 2;
         dst->highest_drop_height = src->highest_drop_height / 2;
         dst->inversions = src->num_inversions;
-        dst->measurement_index = 255;
+        dst->boat_hire_return_direction = src->boat_hire_return_direction;
+        dst->boat_hire_return_position = src->boat_hire_return_position;
+        dst->measurement_index = src->data_logging_index;
+        dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
+        for (int i = 0; i < 2; i++)
+        {
+            dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
+            dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i] / 2;
+        }
+        dst->cur_test_track_z = src->cur_test_track_z / 2;
+        dst->cur_test_track_location = src->cur_test_track_location;
+        dst->testing_flags = src->testing_flags;
+        dst->current_test_segment = src->current_test_segment;
+        dst->current_test_station = 0xFF;
+        dst->average_speed_test_timeout = src->average_speed_test_timeout;
 
         // Finance / customers
         dst->upkeep_cost = src->upkeep_cost;
@@ -745,6 +756,8 @@ private:
         dst->popularity = src->popularity;
         dst->popularity_next = src->popularity_next;
         dst->popularity_time_out = src->popularity_time_out;
+
+        dst->num_riders = src->num_riders;
 
         dst->music_tune_id = 255;
     }
@@ -785,6 +798,7 @@ private:
     void ImportSprites()
     {
         ImportPeeps();
+        ImportLitter();
     }
 
     void ImportPeeps()
@@ -810,11 +824,13 @@ private:
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = PEEP_ACTION_NONE_2;
-        dst->special_sprite = 0;
-        dst->action_sprite_image_offset = 0;
-        dst->no_action_frame_no = 0;
-        dst->action_sprite_type = 0;
+        dst->action = src->action;
+        dst->special_sprite = src->special_sprite;
+        dst->next_action_sprite_type = src->next_action_sprite_type;
+        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->no_action_frame_no = src->no_action_frame_no;
+        dst->action_sprite_type = src->action_sprite_type;
+        dst->action_frame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_sprite_entries[dst->sprite_type].sprite_bounds;
         dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
@@ -874,6 +890,11 @@ private:
 
         dst->current_ride = src->current_ride;
         dst->current_ride_station = src->current_ride_station;
+        dst->current_train = src->current_train;
+        dst->current_car = src->current_car;
+        dst->current_seat = src->current_seat;
+        dst->time_on_ride = src->time_on_ride;
+        dst->days_in_queue = src->days_in_queue;
 
         dst->interactionRideIndex = 0xFF;
 
@@ -913,12 +934,12 @@ private:
 
         dst->previous_ride = 0xFF;
 
-        dst->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
-
         dst->var_C4 = 0;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
         // Doubles as staff orders
         dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+        // The ID is fixed later
+        dst->next_in_queue = src->next_in_queue;
 
         dst->peep_flags = 0;
         dst->pathfind_goal.x = 0xFF;
@@ -939,26 +960,50 @@ private:
         }
     }
 
+    void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
+    {
+        for (int i = 0; i < RCT1_MAX_STATIONS; i++)
+        {
+            uint16 originalSpriteIndex = ride->last_peep_in_queue[i];
+            if (originalSpriteIndex != SPRITE_INDEX_NULL)
+            {
+                ride->last_peep_in_queue[i] = spriteIndexMap[originalSpriteIndex];
+            }
+        }
+    }
+
+    void FixPeepNextInQueue(rct_peep * peep, const uint16 * spriteIndexMap)
+    {
+        uint16 originalSpriteIndex = peep->next_in_queue;
+        if (originalSpriteIndex != SPRITE_INDEX_NULL)
+        {
+            peep->next_in_queue = spriteIndexMap[originalSpriteIndex];
+        }
+    }
+
     void ImportLitter()
     {
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER) {
                 rct_litter *srcLitter = &_s4.sprites[i].litter;
-                if (srcLitter->x != (sint16) 0x8000) {
-                    rct_litter *litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
-                    move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
 
-                    litter->x = srcLitter->x;
-                    litter->y = srcLitter->y;
-                    litter->z = srcLitter->z;
+                rct_litter *litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
+                move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
 
-                    sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite *) litter);
-                    invalidate_sprite_2((rct_sprite *) litter);
+                litter->sprite_identifier = srcLitter->sprite_identifier;
+                litter->type = srcLitter->type;
 
-                    litter->sprite_direction = srcLitter->sprite_direction;
-                    litter->type = srcLitter->type;
-                }
+                litter->x = srcLitter->x;
+                litter->y = srcLitter->y;
+                litter->z = srcLitter->z;
+                litter->sprite_direction = srcLitter->sprite_direction;
+                litter->sprite_width = srcLitter->sprite_width;
+                litter->sprite_height_positive = srcLitter->sprite_height_positive;
+                litter->sprite_height_negative = srcLitter->sprite_height_negative;
+
+                sprite_move(srcLitter->x, srcLitter->y, srcLitter->z, (rct_sprite *) litter);
+                invalidate_sprite_2((rct_sprite *) litter);
             }
         }
     }
