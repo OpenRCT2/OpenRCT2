@@ -1232,7 +1232,7 @@ money32 string_to_money(char * string_to_monetise)
 			text_ptr[j] = '\0';
 		}
 	}
-	
+
 	//if first character of shortened string is a minus, consider number negative
 	if (text_ptr[0] == '-') {
 		sign = -1;
@@ -1251,27 +1251,52 @@ money32 string_to_money(char * string_to_monetise)
 		}
 	}
 
-	//determine if decimal exists in text
-	char *decimal_place = strstr(string_to_monetise, decimal_char);
-	if (decimal_place == NULL) {
-		//if decimal char does not exist, no tokenising is needed. convert to money and be done.
-		return MONEY(atoi(string_to_monetise), 00) * sign;
+	//Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
+	//".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
+	char* buffer = (char*)malloc(strlen(string_to_monetise) + 4);
+	if (string_to_monetise[0] == decimal_char[0]) {
+		strcpy(buffer, "0");
+		strcpy(buffer + 1, string_to_monetise);
+	}
+	else {
+		strcpy(buffer, string_to_monetise);
 	}
 
-	char *tokenize = _strdup(string_to_monetise);
-	char *numberText = strtok(tokenize, decimal_char);
+	char *decimal_place = strstr(buffer, decimal_char);
+	if (decimal_place == NULL) {
+		//if decimal char does not exist, no tokenising is needed. convert to money and be done.
+		int number = atoi(buffer);
+		free(buffer);
+
+		money32 result = MONEY(number, 00);
+		//check if MONEY resulted in overflow
+		if ((number > 0 && result < 0) || result / 10 < number) {
+			result = INT_MAX;
+		}
+		result *= sign;
+		return result;
+	}
+
+	char *numberText = strtok(buffer, decimal_char);
 	char *decimalText = strtok(NULL, decimal_char);
 
 	int number = 0, decimal = 0;
 	if (numberText != NULL) number = atoi(numberText);
 	if (decimalText != NULL) decimal = atoi(decimalText);
-	// MONEY assumes decimal is 2 digits in length, so if less than 10, say 6, convert to 60.
-	// Otherwise "10.1" will be returned as "10.00".
+	//The second parameter in MONEY must be two digits in length, while the game only ever uses the first
+	//of the two digits. This converts invalid numbers as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
+	while (decimal > 10) decimal /= 10;
 	if (decimal < 10) decimal *= 10;
-	
-	free(tokenize);
 
-	return MONEY(number, decimal) * sign;
+	free(buffer);
+
+	money32 result = MONEY(number, decimal);
+	//check if MONEY resulted in overflow
+	if ((number > 0 && result < 0) || result / 10 < number) {
+		result = INT_MAX;
+	}
+	result *= sign;
+	return result;
 }
 
 void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len)
@@ -1281,12 +1306,20 @@ void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffe
 		return;
 	}
 	int sign = amount >= 0 ? 1 : -1;
-	if (abs(amount) / 10 > 0) {
+	int a = abs(amount);
+	if (a / 10 > 0 && a % 10 > 0) { // if whole and decimal exist
 		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (abs(amount) / 10) * sign, decimal_char, abs(amount) % 10);
+		snprintf(buffer_to_put_value_to, buffer_len, "%d%s%d0", (a / 10) * sign, decimal_char, a % 10);
+	}
+	else if (a / 10 > 0 && a % 10 == 0) { // if whole exists, but not decimal
+		snprintf(buffer_to_put_value_to, buffer_len, "%d", (a / 10) * sign);
+	}
+	else if (a / 10 == 0 && a % 10 > 0) { //if decimal exists, but not whole
+		const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
+		snprintf(buffer_to_put_value_to, buffer_len, "%s0%s%d0", sign < 0 ? "-" : "", decimal_char, a % 10);
 	}
 	else {
-		snprintf(buffer_to_put_value_to, buffer_len, "%d", (abs(amount) % 10) * sign);
+		snprintf(buffer_to_put_value_to, buffer_len, "0");
 	}
 }
 
