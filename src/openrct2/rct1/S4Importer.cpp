@@ -866,6 +866,7 @@ private:
         dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
         dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
         dst->hat_colour = RCT1::GetColour(src->hat_colour);
+
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
@@ -875,7 +876,6 @@ private:
         {
             dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
         }
-
 
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
@@ -930,16 +930,19 @@ private:
         dst->voucher_arguments = src->voucher_arguments;
         dst->voucher_type = src->voucher_type;
 
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 32; i++)
+        {
             dst->rides_been_on[i] = src->rides_been_on[i];
         }
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++)
+        {
             dst->ride_types_been_on[i] = src->ride_types_been_on[i];
         }
 
         dst->photo1_ride_ref = src->photo1_ride_ref;
 
-        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++) {
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        {
             dst->thoughts[i] = src->thoughts[i];
         }
 
@@ -996,10 +999,11 @@ private:
     {
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER) {
-                rct_litter *srcLitter = &_s4.sprites[i].litter;
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+            {
+                rct_litter * srcLitter = &_s4.sprites[i].litter;
 
-                rct_litter *litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
+                rct_litter * litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
                 move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
 
                 litter->sprite_identifier = srcLitter->sprite_identifier;
