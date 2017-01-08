@@ -1253,7 +1253,7 @@ money32 string_to_money(char * string_to_monetise)
 
 	//Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
 	//".1" to be interpreted as "1". To prevent this, prefix with "0" if decimal is at the beginning.
-	char* buffer = (char*)malloc(strlen(string_to_monetise) + 4);
+	char * buffer = (char *)malloc(strlen(string_to_monetise) + 4);
 	if (string_to_monetise[0] == decimal_char[0]) {
 		strcpy(buffer, "0");
 		strcpy(buffer + 1, string_to_monetise);
@@ -1262,32 +1262,24 @@ money32 string_to_money(char * string_to_monetise)
 		strcpy(buffer, string_to_monetise);
 	}
 
-	char *decimal_place = strstr(buffer, decimal_char);
-	if (decimal_place == NULL) {
-		//if decimal char does not exist, no tokenising is needed. convert to money and be done.
-		int number = atoi(buffer);
-		free(buffer);
-
-		money32 result = MONEY(number, 00);
-		//check if MONEY resulted in overflow
-		if ((number > 0 && result < 0) || result / 10 < number) {
-			result = INT_MAX;
-		}
-		result *= sign;
-		return result;
-	}
-
-	char *numberText = strtok(buffer, decimal_char);
-	char *decimalText = strtok(NULL, decimal_char);
-
 	int number = 0, decimal = 0;
-	if (numberText != NULL) number = atoi(numberText);
-	if (decimalText != NULL) decimal = atoi(decimalText);
-	//The second parameter in MONEY must be two digits in length, while the game only ever uses the first
-	//of the two digits. This converts invalid numbers as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
-	while (decimal > 10) decimal /= 10;
-	if (decimal < 10) decimal *= 10;
+	if (strstr(buffer, decimal_char) == NULL) {
+		//if decimal char does not exist, no tokenising is needed.
+		number = atoi(buffer);
+	}
+	else {
+		char *numberText = strtok(buffer, decimal_char);
+		char *decimalText = strtok(NULL, decimal_char);
 
+		if (numberText != NULL) number = atoi(numberText);
+		if (decimalText != NULL) decimal = atoi(decimalText);
+
+		//The second parameter in MONEY must be two digits in length, while the game only ever uses
+		//the first of the two digits.
+		//Convert invalid numbers, such as ".6", ".234", ".05", to ".60", ".20", ".00" (respectively)
+		while (decimal > 10) decimal /= 10;
+		if (decimal < 10) decimal *= 10;
+	}
 	free(buffer);
 
 	money32 result = MONEY(number, decimal);
