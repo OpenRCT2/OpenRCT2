@@ -243,13 +243,21 @@ static void cheat_set_money(money32 amount)
 
 static void cheat_add_money(money32 amount)
 {
-	money32 currentMoney;
+	money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
+	if (amount >= 0) {
+		if (currentMoney < INT_MAX - amount)
+			currentMoney += amount;
+		else
+			currentMoney = INT_MAX;
+	}
+	else {
+		money32 absAmount = amount * -1;
+		if (currentMoney > INT_MIN + absAmount)
+			currentMoney -= absAmount;
+		else
+			currentMoney = INT_MIN;
+	}
 
-	currentMoney = DECRYPT_MONEY(gCashEncrypted);
-	if (currentMoney < INT_MAX - amount)
-		currentMoney += amount;
-	else
-		currentMoney = INT_MAX;
 	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
 	window_invalidate_by_class(WC_FINANCES);
