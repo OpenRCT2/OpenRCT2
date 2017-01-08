@@ -544,7 +544,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Handymen tab image
 	i = (selectedTab == 0 ? (w->list_information_type & ~3) : 0);
-	i += g_sprite_entries[PEEP_SPRITE_TYPE_HANDYMAN].sprite_image->base_image + 1;
+	i += g_peep_animation_entries[PEEP_SPRITE_TYPE_HANDYMAN].sprite_animation->base_image + 1;
 	i |= 0x20000000;
 	i |= gStaffHandymanColour << 19;
 	gfx_draw_sprite(
@@ -556,7 +556,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Mechanic tab image
 	i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
-	i += g_sprite_entries[PEEP_SPRITE_TYPE_MECHANIC].sprite_image->base_image + 1;
+	i += g_peep_animation_entries[PEEP_SPRITE_TYPE_MECHANIC].sprite_animation->base_image + 1;
 	i |= 0x20000000;
 	i |= gStaffMechanicColour << 19;
 	gfx_draw_sprite(
@@ -568,7 +568,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Security tab image
 	i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
-	i += g_sprite_entries[PEEP_SPRITE_TYPE_SECURITY].sprite_image->base_image + 1;
+	i += g_peep_animation_entries[PEEP_SPRITE_TYPE_SECURITY].sprite_animation->base_image + 1;
 	i |= 0x20000000;
 	i |= gStaffSecurityColour << 19;
 	gfx_draw_sprite(
@@ -589,7 +589,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	)) {
 		// Entertainers tab image
 		i = (selectedTab == 3 ? (w->list_information_type & ~3) : 0);
-		i += g_sprite_entries[PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT].sprite_image->base_image + 1;
+		i += g_peep_animation_entries[PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT].sprite_animation->base_image + 1;
 		gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
 	}
 

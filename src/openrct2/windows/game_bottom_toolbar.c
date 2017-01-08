@@ -557,7 +557,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 			}
 		}
 
-		uint32 image_id_base = g_sprite_entries[peep->sprite_type].sprite_image->base_image;
+		uint32 image_id_base = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image;
 		image_id_base += w->frame_no & 0xFFFFFFFC;
 		image_id_base++;
 

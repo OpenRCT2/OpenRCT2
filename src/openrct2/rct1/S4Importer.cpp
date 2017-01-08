@@ -822,7 +822,7 @@ private:
         dst->action_sprite_type = src->action_sprite_type;
         dst->action_frame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_sprite_entries[dst->sprite_type].sprite_bounds;
+        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
         dst->sprite_width = spriteBounds[dst->action_sprite_type].sprite_width;
         dst->sprite_height_negative = spriteBounds[dst->action_sprite_type].sprite_height_negative;
         dst->sprite_height_positive = spriteBounds[dst->action_sprite_type].sprite_height_positive;
