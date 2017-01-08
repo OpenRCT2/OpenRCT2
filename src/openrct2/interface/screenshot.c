@@ -18,7 +18,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
-#include "../image_io.h"
+#include "../Imaging.h"
 #include "../intro.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
