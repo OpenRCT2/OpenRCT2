@@ -1031,6 +1031,7 @@ private:
 
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->misc_identifier = src->misc_identifier;
+                dst->flags = src->flags;
                 dst->x = src->x;
                 dst->y = src->y;
                 dst->z = src->z;
@@ -1051,6 +1052,7 @@ private:
                 case SPRITE_MISC_EXPLOSION_FLARE:
                     break;
                 case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    ImportJumpingFountainWater((rct_jumping_fountain *) dst, (rct_jumping_fountain *) src);
                     break;
                 case SPRITE_MISC_BALLOON:
                     ImportBalloon((rct_balloon*)dst, (rct_balloon*)src);
@@ -1069,6 +1071,14 @@ private:
     void ImportSteamParticle(rct_steam_particle * dst, rct_steam_particle * src)
     {
         dst->frame = src->frame;
+    }
+
+    void ImportJumpingFountainWater(rct_jumping_fountain * dst, rct_jumping_fountain * src)
+    {
+        dst->fountain_flags = src->fountain_flags;
+        dst->iteration = src->iteration;
+        dst->var_26a = src->var_26a;
+        dst->var_26b = src->var_26b;
     }
 
     void ImportBalloon(rct_balloon * dst, rct_balloon * src)
