@@ -36,6 +36,7 @@ sint16 gMapSizeUnits;
 sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
+uint8 gClipHeight = 255;
 
 const rct_xy16 TileDirectionDelta[] = {
 	{-32, 0},
@@ -165,5 +166,3 @@ bool track_element_is_inverted(rct_map_element *trackElement)
 {
 	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
-
-uint8 gClipHeight = 255;
