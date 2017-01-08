@@ -931,8 +931,12 @@ private:
         // Guests (indexes converted later)
         for (int i = 0; i < 32; i++)
         {
-            dst->peep[i] = src->peep[i];
-            dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
+            uint16 spriteIndex = src->peep[i];
+            dst->peep[i] = spriteIndex;
+            if (spriteIndex != SPRITE_INDEX_NULL)
+            {
+                dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
+            }
         }
 
         dst->var_CD = src->var_CD;
@@ -949,7 +953,15 @@ private:
         dst->update_flags = src->update_flags;
         dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
         dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
-        dst->colours_extended = RCT1::GetColour(src->colours_extended);
+        if (_gameVersion == FILE_VERSION_RCT1)
+        {
+            // TODO we might need to use a lookup table here for default colours
+            dst->colours_extended = 0;
+        }
+        else
+        {
+            dst->colours_extended = RCT1::GetColour(src->colours_extended);
+        }
         dst->mini_golf_current_animation = src->mini_golf_current_animation;
         dst->mini_golf_flags = src->mini_golf_flags;
 
