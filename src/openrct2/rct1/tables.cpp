@@ -328,9 +328,9 @@ namespace RCT1
             0,
             0,
             0,
-            0,
-            0,
-            0,
+            0, // MONORAIL_CARRIAGE
+            1, // MONORAIL_FRONT
+            2, // MONORAIL_BACK
             0,
             0,
             1, // MINIATURE_RAILWAY_TENDER

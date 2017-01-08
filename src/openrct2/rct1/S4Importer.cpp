@@ -799,7 +799,6 @@ private:
 
     void ImportRideMeasurement(rct_ride_measurement * dst, rct_ride_measurement * src)
     {
-        // Not yet supported
         *dst = *src;
         for (sint32 i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++)
         {
@@ -853,13 +852,6 @@ private:
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
     {
-        // TODO perform vehicle type conversion
-        //      this will be whether the vehicle is the head of the train or a seat etc.
-//        uint8 vehicleEntryIndex = 0;
-//        if (src->vehicle_type == 36)
-//        {
-//            vehicleEntryIndex = 1;
-//        }
         char buf[64];
         sprintf(buf, "%d", src->vehicle_type);
         log_error(buf);
@@ -1025,6 +1017,20 @@ private:
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
             }
         }
+
+        int i;
+        rct_ride *ride;
+        rct_peep *peep;
+
+        FOR_ALL_RIDES(i, ride)
+        {
+            FixRidePeepLinks(ride, spriteIndexMap);
+        }
+
+        FOR_ALL_GUESTS(i, peep)
+        {
+            FixPeepNextInQueue(peep, spriteIndexMap);
+        }
     }
 
     void ImportPeep(rct_peep * dst, rct1_peep * src)
@@ -1068,6 +1074,15 @@ private:
         dst->outside_of_park = src->outside_of_park;
 
         dst->state = src->state;
+        dst->sub_state = src->sub_state;
+        dst->next_x = src->next_x;
+        dst->next_y = src->next_y;
+        dst->next_z = src->next_z / 2;
+        dst->next_var_29 = src->next_var_29;
+        dst->var_37 = src->var_37;
+        dst->var_42 = src->var_42;
+        dst->var_73 = src->var_73;
+        dst->var_EF = src->var_EF;
 
         dst->type = src->type;
 
@@ -1207,6 +1222,7 @@ private:
 
     void ImportLitter()
     {
+
         for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
