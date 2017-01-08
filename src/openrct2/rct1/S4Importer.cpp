@@ -799,6 +799,7 @@ private:
     {
         ImportPeeps();
         ImportLitter();
+        ImportMiscSprites();
     }
 
     void ImportPeeps()
@@ -863,9 +864,19 @@ private:
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
         dst->trousers_colour = RCT1::GetColour(src->trousers_colour);
-        dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
         dst->umbrella_colour = RCT1::GetColour(src->umbrella_colour);
         dst->hat_colour = RCT1::GetColour(src->hat_colour);
+        // Balloons were always blue in RCT1 without AA/LL
+        if (_gameVersion == FILE_VERSION_RCT1)
+        {
+            dst->balloon_colour = COLOUR_LIGHT_BLUE;
+        }
+        else
+        {
+            dst->balloon_colour = RCT1::GetColour(src->balloon_colour);
+        }
+
+
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
         dst->destination_tolerence = src->destination_tolerence;
@@ -1006,6 +1017,77 @@ private:
                 invalidate_sprite_2((rct_sprite *) litter);
             }
         }
+    }
+
+    void ImportMiscSprites()
+    {
+        for (int i = 0; i < RCT1_MAX_SPRITES; i++)
+        {
+            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
+            {
+                rct1_unk_sprite * src = &_s4.sprites[i].unknown;
+                rct_unk_sprite * dst = (rct_unk_sprite *) create_sprite(SPRITE_IDENTIFIER_MISC);
+                move_sprite_to_list((rct_sprite *) dst, SPRITE_LIST_MISC * 2);
+
+                dst->sprite_identifier = src->sprite_identifier;
+                dst->misc_identifier = src->misc_identifier;
+                dst->x = src->x;
+                dst->y = src->y;
+                dst->z = src->z;
+                dst->sprite_direction = src->sprite_direction;
+
+                switch (src->misc_identifier) {
+                case SPRITE_MISC_STEAM_PARTICLE:
+                    ImportSteamParticle((rct_steam_particle *) dst, (rct_steam_particle *) src);
+                    break;
+                case SPRITE_MISC_MONEY_EFFECT:
+                    break;
+                case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                    break;
+                case SPRITE_MISC_EXPLOSION_CLOUD:
+                    break;
+                case SPRITE_MISC_CRASH_SPLASH:
+                    break;
+                case SPRITE_MISC_EXPLOSION_FLARE:
+                    break;
+                case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    break;
+                case SPRITE_MISC_BALLOON:
+                    ImportBalloon((rct_balloon*)dst, (rct_balloon*)src);
+                    break;
+                case SPRITE_MISC_DUCK:
+                    ImportDuck((rct_duck*)dst, (rct_duck*)src);
+                    break;
+                }
+
+                sprite_move(src->x, src->y, src->z, (rct_sprite *) dst);
+                invalidate_sprite_2((rct_sprite *) dst);
+            }
+        }
+    }
+
+    void ImportSteamParticle(rct_steam_particle * dst, rct_steam_particle * src)
+    {
+        dst->frame = src->frame;
+    }
+
+    void ImportBalloon(rct_balloon * dst, rct_balloon * src)
+    {
+        // Balloons were always blue in RCT1 without AA/LL
+        if (_gameVersion == FILE_VERSION_RCT1)
+        {
+            dst->colour = COLOUR_LIGHT_BLUE;
+        }
+        else
+        {
+            dst->colour = RCT1::GetColour(src->colour);
+        }
+    }
+
+    void ImportDuck(rct_duck * dst, rct_duck * src)
+    {
+        dst->frame = src->frame;
+        dst->state = src->state;
     }
 
     void ImportPeepSpawns()

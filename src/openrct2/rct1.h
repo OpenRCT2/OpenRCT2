@@ -405,7 +405,14 @@ typedef union rct1_sprite {
 	uint8 pad_00[0x100];
 	rct1_unk_sprite unknown;
 	rct1_peep peep;
- 	rct_litter litter;
+	rct_litter litter;
+	rct_balloon balloon;
+	rct_sprite duck;
+	rct_jumping_fountain jumping_fountain;
+	rct_money_effect money_effect;
+	rct_crashed_vehicle_particle crashed_vehicle_particle;
+	rct_crash_splash crash_splash;
+	rct_steam_particle steam_particle;
 } rct1_sprite;
 assert_struct_size(rct1_sprite, 0x100);
 
