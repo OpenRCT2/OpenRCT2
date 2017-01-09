@@ -188,17 +188,8 @@
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
-  <Target Name="BuildTests">
-    <PropertyGroup>
-      <Configuration Condition="'$(Configuration)'=='Debug'">DebugTests</Configuration>
-      <Configuration Condition="'$(Configuration)'=='Release'">ReleaseTests</Configuration>
-      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
-    </PropertyGroup>
-    <Message Text="SlnProperties: $(SlnProperties)" />
-    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
-  </Target>
 
-  <Target Name="Test" DependsOnTargets="BuildTests">
+  <Target Name="Test" DependsOnTargets="Build">
     <Exec Command="$(TargetDir)tests\tests.exe" />
   </Target>
   <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
