@@ -66,7 +66,7 @@ typedef void (*ride_ratings_calculation)(rct_ride *ride);
 
 rct_ride_rating_calc_data gRideRatingsCalcData;
 
-static const ride_ratings_calculation ride_ratings_calculate_func_table[91];
+static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYPE_COUNT];
 
 static void ride_ratings_update_state_0();
 static void ride_ratings_update_state_1();
@@ -4086,7 +4086,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(rct_ride *ride)
 #pragma region Ride rating calculation function table
 
 // rct2: 0x0097E050
-static const ride_ratings_calculation ride_ratings_calculate_func_table[91] = {
+static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYPE_COUNT] = {
 	ride_ratings_calculate_spiral_roller_coaster,				// SPIRAL_ROLLER_COASTER
 	ride_ratings_calculate_stand_up_roller_coaster,				// STAND_UP_ROLLER_COASTER
 	ride_ratings_calculate_suspended_swinging_coaster,			// SUSPENDED_SWINGING_COASTER

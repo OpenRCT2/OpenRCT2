@@ -473,7 +473,7 @@ static const rct_xy16 _97e1bc_21[64] = {
 	{   0,  32 },
 };
 
-static const rct_xy16 * _97e1bc[91] = {
+static const rct_xy16 * _97e1bc[RIDE_TYPE_COUNT] = {
 	NULL,
 	NULL,
 	NULL,
@@ -2368,7 +2368,7 @@ void remove_peep_from_queue(rct_peep* peep)
 	}
 
 	uint16 spriteId = ride->last_peep_in_queue[cur_station];
-	while (spriteId != 0xFFFF) {
+	while (spriteId != SPRITE_INDEX_NULL) {
 		rct_peep* other_peep = GET_PEEP(spriteId);
 		if (peep->sprite_index == other_peep->next_in_queue){
 			other_peep->next_in_queue = peep->next_in_queue;
@@ -2543,7 +2543,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 		uint16 vehicle_id = ride->vehicles[chosen_train];
 		rct_vehicle* vehicle = GET_VEHICLE(vehicle_id);
 
-		for (; vehicle_id != 0xFFFF;
+		for (; vehicle_id != SPRITE_INDEX_NULL;
 			vehicle_id = vehicle->next_vehicle_on_train,
 			i++){
 			vehicle = GET_VEHICLE(vehicle_id);
@@ -2565,7 +2565,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 				ride->mode == RIDE_MODE_BACKWARD_ROTATION)
 			{
 				uint8 position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
-				if (vehicle->peep[position] != 0xFFFF)
+				if (vehicle->peep[position] != SPRITE_INDEX_NULL)
 					continue;
 			}
 
@@ -2984,19 +2984,19 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 	peep->sub_state = 0;
 	peep_window_state_update(peep);
 
-	peep->next_in_queue = 0xFFFF;
+	peep->next_in_queue = SPRITE_INDEX_NULL;
 
 	ride->queue_length[peep->current_ride_station]++;
 
 	uint16 current_last = ride->last_peep_in_queue[peep->current_ride_station];
-	if (current_last == 0xFFFF){
+	if (current_last == SPRITE_INDEX_NULL) {
 		ride->last_peep_in_queue[peep->current_ride_station] = peep->sprite_index;
 		return;
 	}
 
 	rct_peep* queue_peep;
 	for (queue_peep = GET_PEEP(current_last);
-		queue_peep->next_in_queue != 0xFFFF;
+		queue_peep->next_in_queue != SPRITE_INDEX_NULL;
 		queue_peep = GET_PEEP(queue_peep->next_in_queue));
 
 	queue_peep->next_in_queue = peep->sprite_index;
@@ -3038,7 +3038,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 
 
 		for (int i = 0; i < ride->num_vehicles; ++i){
-			if (ride->vehicles[i] == 0xFFFF)
+			if (ride->vehicles[i] == SPRITE_INDEX_NULL)
 				continue;
 
 			rct_vehicle* train = GET_VEHICLE(ride->vehicles[i]);
@@ -3090,7 +3090,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 	}
 
 	vehicle->next_free_seat--;
-	vehicle->peep[peep->current_seat] = 0xFFFF;
+	vehicle->peep[peep->current_seat] = SPRITE_INDEX_NULL;
 
 	peep_update_ride_sub_state_2_rejoin_queue(peep, ride);
 }
@@ -4890,7 +4890,7 @@ static void peep_update_queuing(rct_peep* peep){
 
 	if (peep->sub_state != 10){
 		bool is_front = true;
-		if (peep->next_in_queue != 0xFFFF) {
+		if (peep->next_in_queue != SPRITE_INDEX_NULL) {
 			// Fix #4819: Occasionally the peep->next_in_queue is incorrectly set
 			// to prevent this from causing the peeps to enter a loop
 			// first check if the next in queue is actually nearby
@@ -6305,7 +6305,7 @@ static int peep_update_patrolling_find_sweeping(rct_peep* peep){
 	uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 
 	for (rct_sprite* sprite = NULL;
-		sprite_id != 0xFFFF;
+		sprite_id != SPRITE_INDEX_NULL;
 		sprite_id = sprite->unknown.next_in_quadrant){
 
 		sprite = get_sprite(sprite_id);
@@ -7906,7 +7906,7 @@ void sub_693BAB(rct_peep* peep) {
  */
 static int peep_update_queue_position(rct_peep* peep){
 	peep->time_in_queue++;
-	if (peep->next_in_queue == 0xFFFF)
+	if (peep->next_in_queue == SPRITE_INDEX_NULL)
 		return 0;
 
 	rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
@@ -8257,7 +8257,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 	uint8 litter_count = 0;
 	uint8 sick_count = 0;
 	uint16 sprite_id = sprite_get_first_in_quadrant(x, y);
-	for (rct_sprite* sprite; sprite_id != 0xFFFF; sprite_id = sprite->unknown.next_in_quadrant){
+	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
 		sprite = get_sprite(sprite_id);
 		if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP){
 			rct_peep* other_peep = (rct_peep*)sprite;

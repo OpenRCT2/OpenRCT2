@@ -35,7 +35,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->ride = rideIndex;
 	current->ride_subtype = 0xFF;
 	if (head) {
-		move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE * 2);
+		move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
 		ride->cable_lift = current->sprite_index;
 	}
 	current->is_child = head ? 0 : 1;
@@ -456,7 +456,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 		}
 		vehicle->acceleration /= _vehicleUnkF64E10;
 		if (_vehicleVelocityF64E08 >= 0) {
-			if (vehicle->next_vehicle_on_train == 0xFFFF)
+			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
 				break;
 			vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 		}
@@ -471,7 +471,7 @@ int cable_lift_update_track_motion(rct_vehicle *cableLift)
 	uint16 frictionTotal = 0;
 	sint32 var2CTotal = 0;
 
-	for (uint16 spriteId = cableLift->sprite_index; spriteId != 0xFFFF;) {
+	for (uint16 spriteId = cableLift->sprite_index; spriteId != SPRITE_INDEX_NULL;) {
 		rct_vehicle* vehicle = GET_VEHICLE(spriteId);
 		vehicleCount++;
 		frictionTotal += vehicle->friction;

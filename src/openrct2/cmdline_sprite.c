@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "cmdline_sprite.h"
 #include "drawing/drawing.h"
-#include "image_io.h"
+#include "Imaging.h"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/util.h"
-#include "cmdline_sprite.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1

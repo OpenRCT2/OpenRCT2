@@ -34,6 +34,19 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
+    std::string Combine(const std::string &a, const std::string &b)
+    {
+        utf8 buffer[MAX_PATH];
+        String::Set(buffer, sizeof(buffer), a.c_str());
+        Path::Append(buffer, sizeof(buffer), b.c_str());
+        return std::string(buffer);
+    }
+
+    std::string GetDirectory(const std::string &path)
+    {
+        return GetDirectory(path.c_str());
+    }
+
     utf8 * GetDirectory(const utf8 * path)
     {
         size_t maxSize = String::SizeOf(path) + 1;
@@ -58,6 +71,11 @@ namespace Path
         return buffer;
     }
 
+    std::string GetFileName(const std::string &path)
+    {
+        return GetFileName(path.c_str());
+    }
+
     const utf8 * GetFileName(const utf8 * path)
     {
         const utf8 * lastPathSeperator = nullptr;
@@ -79,6 +97,14 @@ namespace Path
         return lastPathSeperator == nullptr ?
             path :
             lastPathSeperator + 1;
+    }
+
+    std::string GetFileNameWithoutExtension(const std::string &path)
+    {
+        utf8 * cstr = GetFileNameWithoutExtension(path.c_str());
+        std::string result = String::ToStd(cstr);
+        Memory::Free(cstr);
+        return result;
     }
 
     utf8 * GetFileNameWithoutExtension(const utf8 * path)
@@ -114,6 +140,11 @@ namespace Path
         Memory::Copy(buffer, path, truncatedLength);
         buffer[truncatedLength] = '\0';
         return buffer;
+    }
+
+    const std::string GetExtension(const std::string &path)
+    {
+        return GetExtension(path.c_str());
     }
 
     const utf8 * GetExtension(const utf8 * path)
@@ -169,6 +200,11 @@ namespace Path
             return buffer;
         }
 #endif
+    }
+
+    bool Equals(const std::string &a, const std::string &b)
+    {
+        return String::Equals(a.c_str(), b.c_str());
     }
 
     bool Equals(const utf8 * a, const utf8 * b)

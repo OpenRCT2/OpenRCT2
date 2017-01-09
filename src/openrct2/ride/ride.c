@@ -278,10 +278,9 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 void reset_type_to_ride_entry_index_map()
 {
 	uint8 maxRideEntries = 128;
-	uint8 maxRideTypes = 91;
 	size_t stride = maxRideEntries + 1;
-	uint8 * entryTypeTable = malloc(maxRideTypes * stride);
-	memset(entryTypeTable, 0xFF, maxRideTypes * stride);
+	uint8 * entryTypeTable = malloc(RIDE_TYPE_COUNT * stride);
+	memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
 
 	for (uint8 i = 0; i < maxRideEntries; i++) {
 		rct_ride_entry * rideEntry = get_ride_entry(i);
@@ -290,7 +289,7 @@ void reset_type_to_ride_entry_index_map()
 		}
 		for (uint8 j = 0; j < 3; j++) {
 			uint8 rideType = rideEntry->ride_type[j];
-			if (rideType < maxRideTypes) {
+			if (rideType < RIDE_TYPE_COUNT) {
 				uint8 * entryArray = &entryTypeTable[rideType * stride];
 				uint8 * nextEntry = memchr(entryArray, 0xFF, stride);
 				*nextEntry = i;
@@ -299,7 +298,7 @@ void reset_type_to_ride_entry_index_map()
 	}
 
 	uint8 * dst = gTypeToRideEntryIndexMap;
-	for (uint8 i = 0; i < maxRideTypes; i++) {
+	for (uint8 i = 0; i < RIDE_TYPE_COUNT; i++) {
 		uint8 * entryArray = &entryTypeTable[i * stride];
 		uint8 * entry = entryArray;
 		while (*entry != 0xFF) {
@@ -846,7 +845,7 @@ void ride_get_status(int rideIndex, rct_string_id *formatSecondary, int *argumen
 		*formatSecondary = STR_TEST_RUN;
 		return;
 	}
-	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
+	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != SPRITE_INDEX_NULL && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
 		rct_peep *peep = GET_PEEP(ride->race_winner);
 		if (peep->name_string_idx == STR_GUEST_X) {
 			*argument = peep->id;
@@ -2423,7 +2422,7 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 		// Set flag on broken car
 		vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
 		for (i = ride->broken_car; i > 0; i--) {
-			if (vehicle->next_vehicle_on_train == (uint16)0xFFFFFFFF) {
+			if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL) {
 				vehicle = NULL;
 				break;
 			}
@@ -4677,7 +4676,7 @@ static void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_el
 		lastTrain = train;
 
 		// Add train to ride vehicle list
-		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE * 2);
+		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN * 2);
 		for (int i = 0; i < 32; i++) {
 			if (ride->vehicles[i] == SPRITE_INDEX_NULL) {
 				ride->vehicles[i] = train.head->sprite_index;
@@ -5488,7 +5487,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 			ride->status = RIDE_STATUS_CLOSED;
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-			ride->race_winner = 0xFFFF;
+			ride->race_winner = SPRITE_INDEX_NULL;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 			window_invalidate_by_number(WC_RIDE, rideIndex);
 		}
@@ -5522,7 +5521,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 		}
 
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-			ride->race_winner = 0xFFFF;
+			ride->race_winner = SPRITE_INDEX_NULL;
 			ride->status = targetStatus;
 			ride_get_measurement(rideIndex, NULL);
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
@@ -5929,7 +5928,7 @@ static money32 ride_create(int type, int subType, int flags, int *outRideIndex, 
 	rct_ride_entry *rideEntry;
 	int rideIndex, rideEntryIndex;
 
-	if (type > 90)
+	if (type >= RIDE_TYPE_COUNT)
 	{
 		log_warning("Invalid request for ride type %u", type);
 		return MONEY32_UNDEFINED;
@@ -6044,7 +6043,7 @@ foundRideEntry:
 	}
 
 	for (int i = 0; i < 32; i++) {
-		ride->vehicles[i] = 0xFFFF;
+		ride->vehicles[i] = SPRITE_INDEX_NULL;
 	}
 
 	ride->status = RIDE_STATUS_CLOSED;
@@ -7727,7 +7726,7 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
 	) {
 		selectionShouldBeExpanded = true;
 		rideTypeIterator = 0;
-		rideTypeIteratorMax = 90;
+		rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
 	} else {
 		selectionShouldBeExpanded = false;
 		rideTypeIterator = ride->type;
@@ -8299,7 +8298,7 @@ static money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 d
 				ride->exits[station_num] = (x / 32) | (y / 32 << 8);
 			} else {
 				ride->entrances[station_num] = (x / 32) | (y / 32 << 8);
-				ride->last_peep_in_queue[station_num] = 0xFFFF;
+				ride->last_peep_in_queue[station_num] = SPRITE_INDEX_NULL;
 				ride->queue_length[station_num] = 0;
 
 				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
@@ -8647,7 +8646,7 @@ uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 rct_vehicle *ride_get_broken_vehicle(rct_ride *ride) {
 	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
 
-	if (vehicleIndex == 0xFFFF) {
+	if (vehicleIndex == SPRITE_INDEX_NULL) {
 		return NULL;
 	}
 

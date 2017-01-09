@@ -4294,6 +4294,8 @@ STR_5991    :Kann Element nicht einfügen...
 STR_5992    :Das Limit der Kartenelemente wurde erreicht
 STR_5993    :{SMALLFONT}{BLACK}Ausgewähltes Element kopieren
 STR_5994    :{SMALLFONT}{BLACK}Kopiertes Element einfügen
+STR_5995    :Zusatzantrieb
+STR_5996    :Antriebsgeschwindigkeit
 
 #############
 # Scenarios #

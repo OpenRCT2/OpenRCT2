@@ -2296,7 +2296,7 @@ static void window_ride_main_update(rct_window *w)
 		if (w->ride.view <= ride->num_vehicles) {
 			int vehicleIndex = w->ride.view - 1;
 			uint16 vehicleSpriteIndex = ride->vehicles[vehicleIndex];
-			if (vehicleSpriteIndex == 0xFFFF)
+			if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
 				return;
 
 			rct_vehicle *vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
@@ -2490,7 +2490,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 
 	vehicleIndex = w->ride.view - 1;
 	vehicleSpriteIndex = ride->vehicles[vehicleIndex];
-	if (vehicleSpriteIndex == 0xFFFF)
+	if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
 		return 0;
 
 	vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);

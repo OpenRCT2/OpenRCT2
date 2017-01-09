@@ -67,6 +67,7 @@ namespace RCT1
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };
+        Guard::ArgumentInRange<size_t>(colour, 0, Util::CountOf(map), "Unsupported RCT1 colour.");
         return map[colour];
     }
 
@@ -106,6 +107,7 @@ namespace RCT1
             PEEP_SPRITE_TYPE_TENTACLE,
             PEEP_SPRITE_TYPE_TOFFEE_APPLE
         };
+        Guard::ArgumentInRange<size_t>(rct1SpriteType, 0, Util::CountOf(map), "Unsupported RCT1 sprite type.");
         return map[rct1SpriteType];
     }
 
@@ -130,6 +132,7 @@ namespace RCT1
             TERRAIN_GRID_BLUE,
             TERRAIN_GRID_GREEN
         };
+        Guard::ArgumentInRange<size_t>(terrain, 0, Util::CountOf(map), "Unsupported RCT1 terrain type.");
         return map[terrain];
     }
 
@@ -154,6 +157,7 @@ namespace RCT1
             TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_SKYSCRAPER_B
             TERRAIN_EDGE_ROCK             // Unused
         };
+        Guard::ArgumentInRange<size_t>(terrainEdge, 0, Util::CountOf(map), "Unsupported RCT1 terrain edge.");
         return map[terrainEdge];
     }
 
@@ -247,6 +251,8 @@ namespace RCT1
             RIDE_TYPE_FOOD_STALL,
             RIDE_TYPE_DRINK_STALL
         };
+
+        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "Unsupported RCT1 ride type.");
         return map[rideType];
     }
 

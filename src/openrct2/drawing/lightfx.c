@@ -745,7 +745,7 @@ void lightfx_add_lights_magic_vehicles()
 			case RIDE_TYPE_SPLASH_BOATS:
 			case RIDE_TYPE_WATER_COASTER: {
 				rct_vehicle *vehicle_draw = vehicle_get_head(vehicle);
-				if (vehicle_draw->next_vehicle_on_train != 0xFFFF) {
+				if (vehicle_draw->next_vehicle_on_train != SPRITE_INDEX_NULL) {
 					vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);
 				}
 				place_x = vehicle_draw->x;

@@ -28,7 +28,7 @@ extern const rct_track_coordinates FlatTrackCoordinates[253];
 extern const uint8 TrackSequenceProperties[256][16];
 extern const uint8 FlatRideTrackSequenceProperties[256][16];
 
-extern const uint64 RideTypePossibleTrackConfigurations[91];
+extern const uint64 RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
 extern const rct_preview_track *TrackBlocks[256];
 extern const rct_preview_track *FlatRideTrackBlocks[255];
 
@@ -42,8 +42,8 @@ typedef struct track_curve_chain {
 extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
 
-extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91];
-extern const uint32 * RideTypeTrackPaintFunctionsOld[91];
+extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT];
+extern const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 typedef struct track_descriptor {
 	bool starts_diagonal;

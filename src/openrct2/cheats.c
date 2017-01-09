@@ -345,7 +345,7 @@ static void cheat_remove_all_guests()
 
 		for(int i=0;i<4;i++) {
 			ride->queue_length[i] = 0;
-			ride->last_peep_in_queue[i]=0xFFFF;
+			ride->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
 		}
 	}
 	window_invalidate_by_class(WC_RIDE);

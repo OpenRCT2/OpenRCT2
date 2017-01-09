@@ -4303,6 +4303,8 @@ STR_5991    :Impossível colar elemento...
 STR_5992    :O limite de elementos no mapa foi atingido
 STR_5993    :{SMALLFONT}{BLACK}Copiar elemento selecionado
 STR_5994    :{SMALLFONT}{BLACK}Colar elemento selecionado
+STR_5995    :Lançador
+STR_5996    :Velocidade do lançador
 
 #############
 # Scenarios #
@@ -4446,8 +4448,8 @@ STR_PARK    :Funtopia
 STR_DTLS    :Cobrindo terra em ambos os lados de uma estrada, este parque já tem vários brinquedos em operação.
 
 <Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :A autoridade local concordou em vender barato o terreno para este pequeno parque litorâneo, com a condição de que certos brinquedos são preservados.
 
 <Fun Fortress>
