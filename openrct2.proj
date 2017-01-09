@@ -85,7 +85,8 @@
     <SymbolItems Include="$(OutputExe)" />
     <SymbolItems Include="$(OutputCom)" />
     <SymbolItems Include="$(OutputDll)" />
-    <SymbolItems Include="$([System.IO.Path]::ChangeExtension($(OutputExe), '.pdb'))" />
+    <SymbolItems Include="$(TargetDir)openrct2-dll.pdb" />
+    <SymbolItems Include="$(TargetDir)openrct2-win.pdb" />
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">

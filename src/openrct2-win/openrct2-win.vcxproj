@@ -46,6 +46,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>openrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>$(OutDir)openrct2-win.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <Lib>
