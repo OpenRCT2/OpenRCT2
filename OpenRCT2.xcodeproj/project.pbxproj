@@ -62,7 +62,6 @@
 		C64FDA771D6D9A2100F259B9 /* reverse_freefall_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CE1CDBC3B7009F9BFC /* reverse_freefall_coaster.c */; };
 		C64FDA781D6D9A2100F259B9 /* reverser_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CF1CDBC3B7009F9BFC /* reverser_roller_coaster.c */; };
 		C64FDA791D6D9A2100F259B9 /* side_friction_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D01CDBC3B7009F9BFC /* side_friction_roller_coaster.c */; };
-		C64FDA7A1D6D9A2100F259B9 /* spiral_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D11CDBC3B7009F9BFC /* spiral_roller_coaster.c */; };
 		C64FDA7B1D6D9A2100F259B9 /* stand_up_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D21CDBC3B7009F9BFC /* stand_up_roller_coaster.c */; };
 		C64FDA7C1D6D9A2100F259B9 /* steeplechase.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D31CDBC3B7009F9BFC /* steeplechase.c */; };
 		C64FDA7D1D6D9A2100F259B9 /* suspended_swinging_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D41CDBC3B7009F9BFC /* suspended_swinging_coaster.c */; };
@@ -166,7 +165,6 @@
 		C686F91E1CDBC3B7009F9BFC /* reverse_freefall_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CE1CDBC3B7009F9BFC /* reverse_freefall_coaster.c */; };
 		C686F91F1CDBC3B7009F9BFC /* reverser_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8CF1CDBC3B7009F9BFC /* reverser_roller_coaster.c */; };
 		C686F9201CDBC3B7009F9BFC /* side_friction_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D01CDBC3B7009F9BFC /* side_friction_roller_coaster.c */; };
-		C686F9211CDBC3B7009F9BFC /* spiral_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D11CDBC3B7009F9BFC /* spiral_roller_coaster.c */; };
 		C686F9221CDBC3B7009F9BFC /* stand_up_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D21CDBC3B7009F9BFC /* stand_up_roller_coaster.c */; };
 		C686F9231CDBC3B7009F9BFC /* steeplechase.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D31CDBC3B7009F9BFC /* steeplechase.c */; };
 		C686F9241CDBC3B7009F9BFC /* suspended_swinging_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8D41CDBC3B7009F9BFC /* suspended_swinging_coaster.c */; };
@@ -615,7 +613,6 @@
 		C686F8CE1CDBC3B7009F9BFC /* reverse_freefall_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reverse_freefall_coaster.c; sourceTree = "<group>"; };
 		C686F8CF1CDBC3B7009F9BFC /* reverser_roller_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reverser_roller_coaster.c; sourceTree = "<group>"; };
 		C686F8D01CDBC3B7009F9BFC /* side_friction_roller_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = side_friction_roller_coaster.c; sourceTree = "<group>"; };
-		C686F8D11CDBC3B7009F9BFC /* spiral_roller_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spiral_roller_coaster.c; sourceTree = "<group>"; };
 		C686F8D21CDBC3B7009F9BFC /* stand_up_roller_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stand_up_roller_coaster.c; sourceTree = "<group>"; };
 		C686F8D31CDBC3B7009F9BFC /* steeplechase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = steeplechase.c; sourceTree = "<group>"; };
 		C686F8D41CDBC3B7009F9BFC /* suspended_swinging_coaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = suspended_swinging_coaster.c; sourceTree = "<group>"; };
@@ -1358,7 +1355,6 @@
 				C686F8CE1CDBC3B7009F9BFC /* reverse_freefall_coaster.c */,
 				C686F8CF1CDBC3B7009F9BFC /* reverser_roller_coaster.c */,
 				C686F8D01CDBC3B7009F9BFC /* side_friction_roller_coaster.c */,
-				C686F8D11CDBC3B7009F9BFC /* spiral_roller_coaster.c */,
 				C686F8D21CDBC3B7009F9BFC /* stand_up_roller_coaster.c */,
 				C686F8D31CDBC3B7009F9BFC /* steeplechase.c */,
 				C686F8D41CDBC3B7009F9BFC /* suspended_swinging_coaster.c */,
@@ -2545,7 +2541,6 @@
 				C606CCBE1DB4054000FE4015 /* compat.c in Sources */,
 				C64FDA781D6D9A2100F259B9 /* reverser_roller_coaster.c in Sources */,
 				C64FDA791D6D9A2100F259B9 /* side_friction_roller_coaster.c in Sources */,
-				C64FDA7A1D6D9A2100F259B9 /* spiral_roller_coaster.c in Sources */,
 				C64FDA7B1D6D9A2100F259B9 /* stand_up_roller_coaster.c in Sources */,
 				C606CCC61DB4054000FE4015 /* Printer.cpp in Sources */,
 				C64FDA7C1D6D9A2100F259B9 /* steeplechase.c in Sources */,
@@ -2652,7 +2647,6 @@
 				C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */,
 				D44272671CC81B3200D84D28 /* land.c in Sources */,
 				D442726D1CC81B3200D84D28 /* mapgen.c in Sources */,
-				C686F9211CDBC3B7009F9BFC /* spiral_roller_coaster.c in Sources */,
 				C686F9291CDBC3B7009F9BFC /* wooden_roller_coaster.c in Sources */,
 				D460DFD41E0123D1007BA2FE /* PlatformEnvironment.cpp in Sources */,
 				D44272A71CC81B3200D84D28 /* sprite.c in Sources */,

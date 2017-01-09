@@ -317,7 +317,6 @@ void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height)
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
-TRACK_PAINT_FUNCTION get_track_paint_function_spiral_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_stand_up_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int trackType, int direction);

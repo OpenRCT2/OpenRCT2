@@ -1546,7 +1546,11 @@ void ride_construction_set_default_next_piece()
 			bank = FlatRideTrackDefinitions[trackType].bank_end;
 			slope = FlatRideTrackDefinitions[trackType].vangle_end;
 		} else {
-			curve = gTrackCurveChain[trackType].next;
+			if (ride->type != RIDE_TYPE_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER) {
+				curve = 0x100 | TRACK_ELEM_BOOSTER;
+			} else {
+				curve = gTrackCurveChain[trackType].next;
+			}
 			bank = TrackDefinitions[trackType].bank_end;
 			slope = TrackDefinitions[trackType].vangle_end;
 		}
@@ -1597,7 +1601,11 @@ void ride_construction_set_default_next_piece()
 			bank = FlatRideTrackDefinitions[trackType].bank_start;
 			slope = FlatRideTrackDefinitions[trackType].vangle_start;
 		} else {
-			curve = gTrackCurveChain[trackType].previous;
+			if (ride->type != RIDE_TYPE_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER) {
+				curve = 0x100 | TRACK_ELEM_BOOSTER;
+			} else {
+				curve = gTrackCurveChain[trackType].previous;
+			}
 			bank = TrackDefinitions[trackType].bank_start;
 			slope = TrackDefinitions[trackType].vangle_start;
 		}
