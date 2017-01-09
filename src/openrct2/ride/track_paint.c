@@ -1733,19 +1733,6 @@ void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height)
 	}
 }
 
-static int pick_ride_type_for_drawing(int rideType, int trackType)
-{
-	if (rideType == RIDE_TYPE_MINI_ROLLER_COASTER) {
-		switch(trackType) {
-			case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
-			case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
-				rideType = RIDE_TYPE_SPIRAL_ROLLER_COASTER;
-		}
-	}
-
-	return rideType;
-}
-
 /**
  *
  *  rct2: 0x006C4794
@@ -1804,13 +1791,11 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 			gTrackColours[SCHEME_3] = ghost_id;
 		}
 
-		int rideType = pick_ride_type_for_drawing(ride->type, trackType);
-
 		bool useOriginalRidePaint = false;
 #ifndef NO_RCT2
 		useOriginalRidePaint = gUseOriginalRidePaint;
 #endif
-		TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
+		TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
 		if (paintFunctionGetter != NULL && !useOriginalRidePaint) {
 			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
 			if (paintFunction != NULL) {
@@ -1819,13 +1804,13 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 		}
 		else {
 #ifndef NO_RCT2
-			uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[rideType][trackType];
+			uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[ride->type][trackType];
 
 			if (trackDirectionList != NULL) {
 				// Have to call from this point as it pushes esi and expects callee to pop it
 				RCT2_CALLPROC_X(
 					0x006C4934,
-					rideType,
+					ride->type,
 					(int)trackDirectionList,
 					direction,
 					height,
