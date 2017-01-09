@@ -87,12 +87,31 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 };
 
 #define FOOTPATH_SCENERY_PRESET_COUNT	4
-static const rct_string_id FootpathSceneryPresets[] = {
+#define FOOTPATH_SCENERY_PRESET_BENCH	
+static const rct_string_id _footpath_scenery_presets[] = {
 	STR_FOOTPATH_SCENERY_NO_SCENERY,
 	STR_FOOTPATH_SCENERY_STANDARD,
 	STR_FOOTPATH_SCENERY_FOOD_CORNER,
 	STR_FOOTPATH_SCENERY_CUSTOM,
 };
+
+static const uint16 _footpath_scenery_presets_ids[][] = {
+	{1, {1}}
+};
+
+static path_rule_entry_t * _footpath_scenery_list[] = {
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
+
+typedef struct path_rule_entry
+{
+	rct_scenery_entry *		 sceneEntry;
+	uint16					 sceneryId;
+	struct path_rule_entry * next;
+} path_rule_entry;
 
 static rct_widget window_footpath_widgets[] = {
 	{ WWT_FRAME,	0,		0,		120,	0,		402 + FOOTPATH_SCENERY_GROUPBOX_HEIGHT,	0xFFFFFFFF,							STR_NONE },
@@ -256,6 +275,8 @@ static void window_footpath_set_enabled_and_pressed_widgets();
 static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope);
 static void footpath_select_default();
 static void window_footpath_update_selected_object_string();
+
+static void window_footpath_scenery_init_presets();
 
 /**
  *
@@ -661,9 +682,9 @@ static void window_footpath_invalidate(rct_window *w)
 	// Disable queue line button if in Scenario Editor
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
-	
+
 	// Set selected dropdown items
-	set_format_arg(0, rct_string_id, FootpathSceneryPresets[_window_footpath_scenery_preset]);
+	set_format_arg(0, rct_string_id, _footpath_scenery_presets[_window_footpath_scenery_preset]);
 	if (_window_footpath_scenery_selected_sceneryEntry == NULL) {
 		set_format_arg(2, rct_string_id, STR_FOOTPATH_SCENERY_NOTHING);
 	} else {
@@ -792,7 +813,7 @@ static void window_footpath_autoscenery_mousedown_preset(rct_window *w, rct_widg
 	rct_widget *dropdownWidget = widget - 1;
 	for (i = 0; i < FOOTPATH_SCENERY_PRESET_COUNT; i++) {
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = FootpathSceneryPresets[i];
+		gDropdownItemsArgs[i] = _footpath_scenery_presets[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -810,7 +831,7 @@ static void window_footpath_autoscenery_mousedown_object(rct_window *w, rct_widg
 {
 	uint16 sceneryId;
 	rct_widget *dropdownWidget = widget - 1;
-	
+
 	int numSceneryTypes		= 1;
 	gDropdownItemsFormat[0] = STR_FOOTPATH_SCENERY_NOTHING;
 	gDropdownItemsArgs[0]	= SPR_NONE;
@@ -831,7 +852,7 @@ static void window_footpath_autoscenery_mousedown_object(rct_window *w, rct_widg
 		gDropdownItemsArgs[numSceneryTypes]	  = sceneryEntry->image;
 		numSceneryTypes++;
 	}
-	
+
 	window_dropdown_show_image(w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
 							   w->colours[0], DROPDOWN_FLAG_STAY_OPEN, numSceneryTypes, 50, 50, gAppropriateImageDropdownItemsPerRow[numSceneryTypes]);
 }
@@ -840,7 +861,7 @@ static void window_footpath_update_selected_object_string()
 {
 	uint32 index = 0;
 	uint16 sceneryId;
-	
+
 	if (_window_footpath_scenery_custom_selected_id == 0) {
 		_window_footpath_scenery_selected_sceneryEntry = NULL;
 	} else {
@@ -1306,8 +1327,8 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 			(1 << WIDX_CONSTRUCT) |
 			(1 << WIDX_REMOVE);
 	}
-	
-	if (FootpathSceneryPresets[_window_footpath_scenery_preset] != STR_FOOTPATH_SCENERY_CUSTOM) {
+
+	if (_footpath_scenery_presets[_window_footpath_scenery_preset] != STR_FOOTPATH_SCENERY_CUSTOM) {
 		disabledWidgets |= (1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN) |
 			(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON) |
 			(1 << WIDX_AUTOSCENERY_ADD) |
@@ -1356,5 +1377,33 @@ static void footpath_select_default()
 				break;
 			}
 		}
+	}
+}
+
+static void window_footpath_scenery_init_presets()
+{
+	if (_footpath_scenery_list[1] == NULL) {
+		_footpath_scenery_list[1] = malloc(sizeof(path_rule_entry_t));
+	}
+}
+
+static path_rule_entry_t* make_bench() {
+
+}
+
+static rct_scenery_entry* find_path_scenery_of_ids(uint8 n, uint16* ids)
+{
+	uint8 i;
+	for (i = 0; i < n; i++)
+	{
+		int pathBitIndex = ids[i] - SCENERY_PATH_SCENERY_ID_MIN;
+
+		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
+			continue;
+
+		if (!scenery_is_invented(ids[i]))
+			continue;
+
+		return get_footpath_item_entry(pathBitIndex);
 	}
 }
