@@ -369,7 +369,6 @@
     <ClCompile Include="windows\editor_scenario_options.c" />
     <ClCompile Include="windows\error.c" />
     <ClCompile Include="windows\finances.c" />
-    <ClCompile Include="windows\footpath_scenery.c" />
     <ClCompile Include="windows\footpath.c" />
     <ClCompile Include="windows\game_bottom_toolbar.c" />
     <ClCompile Include="windows\guest_list.c" />
@@ -594,7 +593,6 @@
     <ClInclude Include="util\util.h" />
     <ClInclude Include="windows\dropdown.h" />
     <ClInclude Include="windows\error.h" />
-    <ClInclude Include="windows\footpath_scenery.h" />
     <ClInclude Include="windows\tooltip.h" />
     <ClInclude Include="world\banner.h" />
     <ClInclude Include="world\climate.h" />

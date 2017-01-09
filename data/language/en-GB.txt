@@ -4306,13 +4306,13 @@ STR_5994    :{SMALLFONT}{BLACK}Paste copied element
 STR_5995    :Booster
 STR_5996    :Booster speed
 STR_5997    :Path scenery
-STR_5998    :{SMALLFONT}{BLACK}Opens the window for automatically adding scenery to paths
-STR_5999    :Automatic path scenery
-STR_6000    :Automatic path scenery
-STR_6001    :{BLACK}Add on the path
-STR_6002    :{SMALLFONT}{BLACK}Delete all rules
-STR_6003    :Nothing
-STR_6004    :Append to list
+STR_5998    :{SMALLFONT}{BLACK}Delete all rules
+STR_5999    :Nothing
+STR_6000    :Add
+STR_6001    :No scenery
+STR_6002    :Standard
+STR_6003    :Food corner
+STR_6004    :Custom
 
 #############
 # Scenarios #

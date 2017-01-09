@@ -28,6 +28,16 @@
 #include "../world/scenery.h"
 #include "dropdown.h"
 
+#define FOOTPATH_SCENERY_GROUPBOX_TOP		199
+#define FOOTPATH_SCENERY_GROUPBOX_HEIGHT	135
+#define FOOTPATH_SCENERY_GROUPBOX_BOTTOM	(FOOTPATH_SCENERY_GROUPBOX_TOP + FOOTPATH_SCENERY_GROUPBOX_HEIGHT)
+#define FOOTPATH_SCENERY_IMGBUTTON_SIZE		23
+#define FOOTPATH_SCENERY_IMGBUTTON_PADDING	5
+#define FOOTPATH_SCENERY_IMGBUTTON_LEFT		(FOOTPATH_SCENERY_LIST_RIGHT + FOOTPATH_SCENERY_IMGBUTTON_PADDING)
+#define FOOTPATH_SCENERY_IMGBUTTON_RIGHT	(FOOTPATH_SCENERY_LIST_RIGHT + FOOTPATH_SCENERY_IMGBUTTON_PADDING + FOOTPATH_SCENERY_IMGBUTTON_SIZE)
+#define FOOTPATH_SCENERY_IMGBUTTON_BOTTOM	(FOOTPATH_SCENERY_GROUPBOX_TOP + 29 + FOOTPATH_SCENERY_IMGBUTTON_SIZE)
+#define FOOTPATH_SCENERY_LIST_RIGHT			(112 - FOOTPATH_SCENERY_IMGBUTTON_SIZE - FOOTPATH_SCENERY_IMGBUTTON_PADDING)
+
 enum {
 	PATH_CONSTRUCTION_MODE_LAND,
 	PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL,
@@ -59,7 +69,14 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_LEVEL,
 	WIDX_SLOPEUP,
 
-	WIDX_AUTOSCENERY,
+	WIDX_AUTOSCENERY_GROUP,
+	WIDX_AUTOSCENERY_DROPDOWN,
+	WIDX_AUTOSCENERY_DROPDOWN_BUTTON,
+	WIDX_AUTOSCENERY_DROPDOWN_LIST,
+	WIDX_AUTOSCENERY_DROPDOWN_LIST_CLEAR,
+	WIDX_AUTOSCENERY_OBJECT_DROPDOWN,
+	WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON,
+	WIDX_AUTOSCENERY_ADD,
 
 	WIDX_CONSTRUCT,
 	WIDX_REMOVE,
@@ -69,39 +86,55 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 	WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL,
 };
 
+#define FOOTPATH_SCENERY_PRESET_COUNT	4
+static const rct_string_id FootpathSceneryPresets[] = {
+	STR_FOOTPATH_SCENERY_NO_SCENERY,
+	STR_FOOTPATH_SCENERY_STANDARD,
+	STR_FOOTPATH_SCENERY_FOOD_CORNER,
+	STR_FOOTPATH_SCENERY_CUSTOM,
+};
+
 static rct_widget window_footpath_widgets[] = {
-	{ WWT_FRAME,	0,		0,		105,	0,		404,	0xFFFFFFFF,							STR_NONE },
-	{ WWT_CAPTION,	0,		1,		104,	1,		14,		STR_FOOTPATHS,						STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,	0,		93,		103,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+	{ WWT_FRAME,	0,		0,		120,	0,		402 + FOOTPATH_SCENERY_GROUPBOX_HEIGHT,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_CAPTION,	0,		1,		119,	1,		14,										STR_FOOTPATHS,						STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,	0,		108,	118,	2,		13,										STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
+
 	// Type group
-	{ WWT_GROUPBOX,	0,		3,		102,	17,		71,		STR_TYPE,							STR_NONE },
-	{ WWT_FLATBTN,	1,		6,		52,		30,		65,		0xFFFFFFFF,							STR_FOOTPATH_TIP },
-	{ WWT_FLATBTN,	1,		53,		99,		30,		65,		0xFFFFFFFF,							STR_QUEUE_LINE_PATH_TIP },
+	{ WWT_GROUPBOX,	0,		3,		117,	17,		71,										STR_TYPE,							STR_NONE },
+	{ WWT_FLATBTN,	1,		10,		56,		30,		65,										0xFFFFFFFF,							STR_FOOTPATH_TIP },
+	{ WWT_FLATBTN,	1,		65,		110,	30,		65,										0xFFFFFFFF,							STR_QUEUE_LINE_PATH_TIP },
 
 	// Direction group
-	{ WWT_GROUPBOX,	0,		3,		102,	75,		151,	STR_DIRECTION,						STR_NONE },
-	{ WWT_FLATBTN,	1,		53,		97,		87,		115,	SPR_CONSTRUCTION_DIRECTION_NE,		STR_DIRECTION_TIP },
-	{ WWT_FLATBTN,	1,		53,		97,		116,	144,	SPR_CONSTRUCTION_DIRECTION_SE,		STR_DIRECTION_TIP },
-	{ WWT_FLATBTN,	1,		8,		52,		116,	144,	SPR_CONSTRUCTION_DIRECTION_SW,		STR_DIRECTION_TIP },
-	{ WWT_FLATBTN,	1,		8,		52,		87,		115,	SPR_CONSTRUCTION_DIRECTION_NW,		STR_DIRECTION_TIP },
+	{ WWT_GROUPBOX,	0,		3,		117,	75,		151,									STR_DIRECTION,						STR_NONE },
+	{ WWT_FLATBTN,	1,		63,		107,	87,		115,									SPR_CONSTRUCTION_DIRECTION_NE,		STR_DIRECTION_TIP },
+	{ WWT_FLATBTN,	1,		63,		107,	116,	144,									SPR_CONSTRUCTION_DIRECTION_SE,		STR_DIRECTION_TIP },
+	{ WWT_FLATBTN,	1,		13,		57,		116,	144,									SPR_CONSTRUCTION_DIRECTION_SW,		STR_DIRECTION_TIP },
+	{ WWT_FLATBTN,	1,		13,		57,		87,		115,									SPR_CONSTRUCTION_DIRECTION_NW,		STR_DIRECTION_TIP },
 
 	// Slope group
-	{ WWT_GROUPBOX,	0,		3,		102,	155,	195,	STR_SLOPE,							STR_NONE },
-	{ WWT_FLATBTN,	1,		17,		40,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,	STR_SLOPE_DOWN_TIP },
-	{ WWT_FLATBTN,	1,		41,		64,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,	STR_LEVEL_TIP },
-	{ WWT_FLATBTN,	1,		65,		88,		167,	190,	SPR_RIDE_CONSTRUCTION_SLOPE_UP,		STR_SLOPE_UP_TIP },
+	{ WWT_GROUPBOX,	0,		3,		117,	155,	195,									STR_SLOPE,							STR_NONE },
+	{ WWT_FLATBTN,	1,		24,		47,		167,	190,									SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,	STR_SLOPE_DOWN_TIP },
+	{ WWT_FLATBTN,	1,		48,		71,		167,	190,									SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,	STR_LEVEL_TIP },
+	{ WWT_FLATBTN,	1,		72,		95,		167,	190,									SPR_RIDE_CONSTRUCTION_SLOPE_UP,		STR_SLOPE_UP_TIP },
 
-	// Autoscenery button
-	{ WWT_CLOSEBOX,	1,		8,		97,	199,	215,		STR_FOOTPATH_SCENERY,				STR_FOOTPATH_SCENERY_TIP },
+	// Autoscenery group
+	{ WWT_GROUPBOX,			0,		3,									117,								FOOTPATH_SCENERY_GROUPBOX_TOP,			FOOTPATH_SCENERY_GROUPBOX_BOTTOM,		STR_FOOTPATH_SCENERY,		STR_NONE },
+	{ WWT_DROPDOWN, 		1,		8,									112,								FOOTPATH_SCENERY_GROUPBOX_TOP + 13,		FOOTPATH_SCENERY_GROUPBOX_TOP + 23,		STR_STRINGID,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,		101,								111,								FOOTPATH_SCENERY_GROUPBOX_TOP + 14,		FOOTPATH_SCENERY_GROUPBOX_TOP + 22,		STR_DROPDOWN_GLYPH,			STR_NONE },
+	{ WWT_SCROLL,			1,		8,									FOOTPATH_SCENERY_LIST_RIGHT,		FOOTPATH_SCENERY_GROUPBOX_TOP + 29,		FOOTPATH_SCENERY_GROUPBOX_TOP + 90,		SCROLL_VERTICAL,			STR_NONE },
+	{ WWT_FLATBTN,			0,		FOOTPATH_SCENERY_IMGBUTTON_LEFT,	FOOTPATH_SCENERY_IMGBUTTON_RIGHT,	FOOTPATH_SCENERY_GROUPBOX_TOP + 29,		FOOTPATH_SCENERY_IMGBUTTON_BOTTOM,		SPR_DEMOLISH,				STR_FOOTPATH_SCENERY_DELETE_RULES },
+	{ WWT_DROPDOWN, 		1,		8,									112,								FOOTPATH_SCENERY_GROUPBOX_TOP + 101,	FOOTPATH_SCENERY_GROUPBOX_TOP + 111,	STR_ARG_2_STRINGID,			STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,		101,								111,								FOOTPATH_SCENERY_GROUPBOX_TOP + 102,	FOOTPATH_SCENERY_GROUPBOX_TOP + 110,	STR_DROPDOWN_GLYPH,			STR_NONE },
+	{ WWT_CLOSEBOX,			1,		8,									112,								FOOTPATH_SCENERY_GROUPBOX_TOP + 114,	FOOTPATH_SCENERY_GROUPBOX_TOP + 130,	STR_FOOTPATH_SCENERY_ADD,	STR_NONE },
 
 	// Construct/Demolish
-	{ WWT_FLATBTN,	1,		8,		97,		226,	315,	0xFFFFFFFF,							STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
-	{ WWT_FLATBTN,	1,		30,		75,		319,	342,	SPR_DEMOLISH_CURRENT_SECTION,		STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP },
+	{ WWT_FLATBTN,	1,		8,		112,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 7,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 111,	0xFFFFFFFF,							STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
+	{ WWT_FLATBTN,	1,		37,		82,		FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 115,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 138,	SPR_DEMOLISH_CURRENT_SECTION,		STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP },
 
 	// Mode group
-	{ WWT_GROUPBOX,	0,		3,		102,	345,	398,	0xFFFFFFFF,							STR_NONE },
-	{ WWT_FLATBTN,	1,		13,		48,		356,	391,	SPR_CONSTRUCTION_FOOTPATH_LAND,		STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP },
-	{ WWT_FLATBTN,	1,		57,		92,		356,	391,	SPR_CONSTRUCTION_FOOTPATH_BRIDGE,	STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP },
+	{ WWT_GROUPBOX,	0,		3,		117,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 141,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 194,	0xFFFFFFFF,							STR_NONE },
+	{ WWT_FLATBTN,	1,		18,		53,		FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 152,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 187,	SPR_CONSTRUCTION_FOOTPATH_LAND,		STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP },
+	{ WWT_FLATBTN,	1,		68,		103,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 152,	FOOTPATH_SCENERY_GROUPBOX_BOTTOM + 187,	SPR_CONSTRUCTION_FOOTPATH_BRIDGE,	STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP },
 	{ WIDGETS_END },
 };
 
@@ -155,6 +188,9 @@ static sint8 _window_footpath_provisional_path_arrow_timer;
 static uint8 _lastUpdatedCameraRotation = UINT8_MAX;
 static bool _footpathErrorOccured;
 
+static int _window_footpath_scenery_preset = 0;
+static rct_string_id _window_footpath_scenery_custom_selected_id = 0;
+static rct_scenery_entry * _window_footpath_scenery_selected_sceneryEntry = NULL;
 
 enum
 {
@@ -207,6 +243,8 @@ unsigned char footpath_construction_preview_images[][4] = {
 
 static void window_footpath_mousedown_direction(int direction);
 static void window_footpath_mousedown_slope(int slope);
+static void window_footpath_autoscenery_mousedown_preset(rct_window *w, rct_widget* widget);
+static void window_footpath_autoscenery_mousedown_object(rct_window *w, rct_widget* widget);
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues);
 static void window_footpath_set_provisional_path_at_point(int x, int y);
 static void window_footpath_set_selection_start_bridge_at_point(int screenX, int screenY);
@@ -217,6 +255,7 @@ static void window_footpath_remove();
 static void window_footpath_set_enabled_and_pressed_widgets();
 static void footpath_get_next_path_info(int *type, int *x, int *y, int *z, int *slope);
 static void footpath_select_default();
+static void window_footpath_update_selected_object_string();
 
 /**
  *
@@ -232,8 +271,8 @@ void window_footpath_open()
 	window = window_create(
 		0,
 		29,
-		106,
-		405,
+		121,
+		(403 + FOOTPATH_SCENERY_GROUPBOX_HEIGHT),
 		&window_footpath_events,
 		WC_FOOTPATH,
 		0
@@ -250,7 +289,14 @@ void window_footpath_open()
 		(1 << WIDX_SLOPEDOWN) |
 		(1 << WIDX_LEVEL) |
 		(1 << WIDX_SLOPEUP) |
-		(1 << WIDX_AUTOSCENERY) |
+		(1 << WIDX_AUTOSCENERY_GROUP) |
+		(1 << WIDX_AUTOSCENERY_DROPDOWN) |
+		(1 << WIDX_AUTOSCENERY_DROPDOWN_BUTTON) |
+		(1 << WIDX_AUTOSCENERY_DROPDOWN_LIST) |
+		(1 << WIDX_AUTOSCENERY_DROPDOWN_LIST_CLEAR) |
+		(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN) |
+		(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON) |
+		(1 << WIDX_AUTOSCENERY_ADD) |
 		(1 << WIDX_CONSTRUCT) |
 		(1 << WIDX_REMOVE) |
 		(1 << WIDX_CONSTRUCT_ON_LAND) |
@@ -377,8 +423,11 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
 	case WIDX_SLOPEUP:
 		window_footpath_mousedown_slope(2);
 		break;
-	case WIDX_AUTOSCENERY:
-		window_footpath_scenery_open();
+	case WIDX_AUTOSCENERY_DROPDOWN_BUTTON:
+		window_footpath_autoscenery_mousedown_preset(w, widget);
+		break;
+	case WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON:
+		window_footpath_autoscenery_mousedown_object(w, widget);
 		break;
 	}
 }
@@ -389,12 +438,30 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
  */
 static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	if (widgetIndex == WIDX_FOOTPATH_TYPE)
-		gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
-	else if (widgetIndex == WIDX_QUEUELINE_TYPE)
-		gFootpathSelectedType = SELECTED_PATH_TYPE_QUEUE;
-	else
-		return;
+	switch (widgetIndex) {
+		case WIDX_FOOTPATH_TYPE:
+			gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
+			break;
+		case WIDX_QUEUELINE_TYPE:
+			gFootpathSelectedType = SELECTED_PATH_TYPE_QUEUE;
+			break;
+		case WIDX_AUTOSCENERY_DROPDOWN_BUTTON:
+			if (dropdownIndex != -1) {
+				_window_footpath_scenery_preset = dropdownIndex;
+				window_footpath_set_enabled_and_pressed_widgets();
+				window_invalidate(w);
+			}
+			return;
+		case WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON:
+			if (dropdownIndex != -1) {
+				_window_footpath_scenery_custom_selected_id = dropdownIndex;
+				window_footpath_update_selected_object_string();
+				window_footpath_set_enabled_and_pressed_widgets();
+				window_invalidate(w);
+			}
+		default:
+			return;
+	}
 
 	// Get path id
 	int pathId = dropdownIndex;
@@ -594,6 +661,14 @@ static void window_footpath_invalidate(rct_window *w)
 	// Disable queue line button if in Scenario Editor
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
+	
+	// Set selected dropdown items
+	set_format_arg(0, rct_string_id, FootpathSceneryPresets[_window_footpath_scenery_preset]);
+	if (_window_footpath_scenery_selected_sceneryEntry == NULL) {
+		set_format_arg(2, rct_string_id, STR_FOOTPATH_SCENERY_NOTHING);
+	} else {
+		set_format_arg(2, rct_string_id, _window_footpath_scenery_selected_sceneryEntry->name);
+	}
 }
 
 static sint32 window_footpath_pathimage(rct_window *w)
@@ -709,6 +784,85 @@ static void window_footpath_mousedown_slope(int slope)
 	gFootpathConstructSlope = slope;
 	_window_footpath_cost = MONEY32_UNDEFINED;
 	window_footpath_set_enabled_and_pressed_widgets();
+}
+
+static void window_footpath_autoscenery_mousedown_preset(rct_window *w, rct_widget* widget)
+{
+	int i;
+	rct_widget *dropdownWidget = widget - 1;
+	for (i = 0; i < FOOTPATH_SCENERY_PRESET_COUNT; i++) {
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+		gDropdownItemsArgs[i] = FootpathSceneryPresets[i];
+	}
+	window_dropdown_show_text_custom_width(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		DROPDOWN_FLAG_STAY_OPEN,
+		FOOTPATH_SCENERY_PRESET_COUNT,
+		dropdownWidget->right - dropdownWidget->left - 3
+		);
+	dropdown_set_checked(_window_footpath_scenery_preset, true);
+}
+
+static void window_footpath_autoscenery_mousedown_object(rct_window *w, rct_widget* widget)
+{
+	uint16 sceneryId;
+	rct_widget *dropdownWidget = widget - 1;
+	
+	int numSceneryTypes		= 1;
+	gDropdownItemsFormat[0] = STR_FOOTPATH_SCENERY_NOTHING;
+	gDropdownItemsArgs[0]	= SPR_NONE;
+
+	for (sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
+	{
+		int pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
+
+		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
+			continue;
+
+		if (!scenery_is_invented(sceneryId))
+			continue;
+
+		rct_scenery_entry * sceneryEntry = get_footpath_item_entry(pathBitIndex);
+
+		gDropdownItemsFormat[numSceneryTypes] = -1;
+		gDropdownItemsArgs[numSceneryTypes]	  = sceneryEntry->image;
+		numSceneryTypes++;
+	}
+	
+	window_dropdown_show_image(w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+							   w->colours[0], DROPDOWN_FLAG_STAY_OPEN, numSceneryTypes, 50, 50, gAppropriateImageDropdownItemsPerRow[numSceneryTypes]);
+}
+
+static void window_footpath_update_selected_object_string()
+{
+	uint32 index = 0;
+	uint16 sceneryId;
+	
+	if (_window_footpath_scenery_custom_selected_id == 0) {
+		_window_footpath_scenery_selected_sceneryEntry = NULL;
+	} else {
+		for (sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++)
+		{
+			int pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
+
+			if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
+				continue;
+
+			if (!scenery_is_invented(sceneryId))
+				continue;
+
+			rct_scenery_entry * sceneryEntry = get_footpath_item_entry(pathBitIndex);
+			index++;
+
+			if (index == _window_footpath_scenery_custom_selected_id) {
+				_window_footpath_scenery_selected_sceneryEntry = sceneryEntry;
+				break;
+			}
+		}
+	}
 }
 
 /**
@@ -938,14 +1092,14 @@ static void window_footpath_construct()
 		);
 
 		// Get path scenery
-		uint16 add_scenery = window_footpath_scenery_get_next_scenery();
+		uint16 add_scenery = 0; // window_footpath_scenery_get_next_scenery();
 		if (add_scenery != 0)
 		{
 			uint16 sceneryFlags = (add_scenery & 0xFF) + 1;
 			gGameCommandErrorTitle = STR_CANT_DO_THIS;
 			cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, sceneryFlags);
 		}
-		window_footpath_scenery_advance();
+// 		window_footpath_scenery_advance();
 
 		if (gFootpathConstructSlope == 0) {
 			gFootpathConstructValidDirections = 0xFF;
@@ -1141,9 +1295,23 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 			(1 << WIDX_SLOPEDOWN) |
 			(1 << WIDX_LEVEL) |
 			(1 << WIDX_SLOPEUP) |
-			(1 << WIDX_AUTOSCENERY) |
+			(1 << WIDX_AUTOSCENERY_GROUP) |
+			(1 << WIDX_AUTOSCENERY_DROPDOWN) |
+			(1 << WIDX_AUTOSCENERY_DROPDOWN_BUTTON) |
+			(1 << WIDX_AUTOSCENERY_DROPDOWN_LIST) |
+			(1 << WIDX_AUTOSCENERY_DROPDOWN_LIST_CLEAR) |
+			(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN) |
+			(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON) |
+			(1 << WIDX_AUTOSCENERY_ADD) |
 			(1 << WIDX_CONSTRUCT) |
 			(1 << WIDX_REMOVE);
+	}
+	
+	if (FootpathSceneryPresets[_window_footpath_scenery_preset] != STR_FOOTPATH_SCENERY_CUSTOM) {
+		disabledWidgets |= (1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN) |
+			(1 << WIDX_AUTOSCENERY_OBJECT_DROPDOWN_BUTTON) |
+			(1 << WIDX_AUTOSCENERY_ADD) |
+			(1 << WIDX_AUTOSCENERY_DROPDOWN_LIST_CLEAR);
 	}
 
 	w->pressed_widgets = pressedWidgets;

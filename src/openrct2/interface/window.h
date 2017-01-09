@@ -681,9 +681,6 @@ void ride_construction_tooldown_construct(int screenX, int screenY);
 
 void custom_currency_window_open();
 
-uint16 window_footpath_scenery_get_next_scenery();
-void window_footpath_scenery_advance();
-
 void window_maze_construction_update_pressed_widgets();
 void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
