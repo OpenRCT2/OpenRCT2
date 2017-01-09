@@ -72,7 +72,18 @@ int RunOpenRCT2(int argc, char * * argv)
 	return gExitCode;
 }
 
-#ifndef NO_RCT2
+#ifdef NO_RCT2
+
+#ifdef __MINGW32__
+
+int main(int argc, const char **argv)
+{
+	return RunOpenRCT2(argc, argv);
+}
+
+#endif
+
+#else
 
 /* DllMain is already defined in one of static libraries we implicitly depend
  * on (libcrypto), which is their bug really, but since we don't do anything in
