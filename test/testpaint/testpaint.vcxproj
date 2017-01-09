@@ -119,7 +119,6 @@
     <ClCompile Include="..\..\src\openrct2\ride\coaster\reverser_roller_coaster.c" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\reverse_freefall_coaster.c" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\side_friction_roller_coaster.c" />
-    <ClCompile Include="..\..\src\openrct2\ride\coaster\spiral_roller_coaster.c" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\stand_up_roller_coaster.c" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\steeplechase.c" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\suspended_swinging_coaster.c" />
