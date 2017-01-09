@@ -34,20 +34,27 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
 	WIDX_CLIP_HEIGHT_SLIDER
 };
 
+typedef enum DISPLAY_TYPE {
+	DISPLAY_RAW = 0,
+	DISPLAY_UNITS = 1
+} clip_value_display_type;
+
+clip_value_display_type gClipHeightDisplayType = DISPLAY_UNITS;
+
 #pragma region Widgets
 
 #define WW 160
 #define WH 70
 
 rct_widget window_view_clipping_widgets[] = {
-	{ WWT_FRAME,           0,  0,       WW - 1, 0,      WH - 1, STR_NONE,                        STR_NONE }, // panel / background
-	{ WWT_CAPTION,         0,  1,       WW - 2, 1,      14,     STR_VIEW_CLIPPING,               STR_WINDOW_TITLE_TIP }, // title bar
-	{ WWT_CLOSEBOX,        0,  WW - 13, WW - 3, 2,      13,     STR_CLOSE_X,                     STR_CLOSE_WINDOW_TIP }, // close x button
-	{ WWT_CHECKBOX,        0,  11,      149,    19,     29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE, STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
-	{ WWT_SPINNER,         0,  71,      130,    34,     45,     STR_NONE,                        STR_NONE }, // clip height value
-	{ WWT_DROPDOWN_BUTTON, 0,  119,      129,    35,     39,     STR_NUMERIC_UP,                  STR_NONE }, // clip height increase
-	{ WWT_DROPDOWN_BUTTON, 0,  119,      129,    40,     44,     STR_NUMERIC_DOWN,                STR_NONE }, // clip height decrease
-	{ WWT_SCROLL,          0,  11,      149,    49,     61,     SCROLL_HORIZONTAL,               STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
+	{ WWT_FRAME,		0,	0,		WW - 1,	0,	WH - 1, STR_NONE,				STR_NONE }, // panel / background
+	{ WWT_CAPTION,		0,	1,		WW - 2,	1,	14,     STR_VIEW_CLIPPING_TITLE,		STR_WINDOW_TITLE_TIP }, // title bar
+	{ WWT_CLOSEBOX,		0,	WW - 13,	WW - 3,	2,	13,     STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP }, // close x button
+	{ WWT_CHECKBOX,		0,	11,		149,	19,	29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE,	STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
+	{ WWT_SPINNER,		0,	90,		149,	34,	45,     STR_NONE,				STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
+	{ WWT_DROPDOWN_BUTTON,	0,	138,		148,	35,	39,     STR_NUMERIC_UP,				STR_NONE }, // clip height increase
+	{ WWT_DROPDOWN_BUTTON, 0,	138,		148,	40,	44,     STR_NUMERIC_DOWN,			STR_NONE }, // clip height decrease
+	{ WWT_SCROLL,          0,	11,		149,	49,	61,     SCROLL_HORIZONTAL,			STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
 	{ WIDGETS_END }
 };
 
@@ -126,6 +133,7 @@ void window_view_clipping_open()
 	window->widgets = window_view_clipping_widgets;
 	window->enabled_widgets = (1ULL << WIDX_CLOSE) |
 		(1ULL << WIDX_CLIP_HEIGHT_CHECKBOX) |
+		(1ULL << WIDX_CLIP_HEIGHT_VALUE) |
 		(1ULL << WIDX_CLIP_HEIGHT_INCREASE) |
 		(1ULL << WIDX_CLIP_HEIGHT_DECREASE) |
 		(1ULL << WIDX_CLIP_HEIGHT_SLIDER);
@@ -196,6 +204,11 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 		if (mainWindow != NULL)
 			window_invalidate(mainWindow);
 		break;
+	case WIDX_CLIP_HEIGHT_VALUE:
+		// Toggle display of the cut height value in RAW vs UNITS
+		gClipHeightDisplayType = !gClipHeightDisplayType;
+		window_invalidate(w);
+		break;
 	}
 }
 
@@ -234,30 +247,35 @@ static void window_view_clipping_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	// Clip height value
-	int x;
-	int y;
-	x = w->x + 8;
-	y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+	sint32 x = w->x + 8;
+	sint32 y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
 	gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, NULL, w->colours[0], x, y);
 
 	x = w->x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
 	y = w->y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
-	//gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &gClipHeight, w->colours[0], x + 60, y); //Printing the raw value.
 
-	// Print the value in the configured measurement units.
 	fixed32_2dp clipHeightValueInMeters;
 	fixed16_1dp clipHeightValueInFeet;
-	switch (gConfigGeneral.measurement_format) {
-	case MEASUREMENT_FORMAT_METRIC:
-	case MEASUREMENT_FORMAT_SI:
-		clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5 - FIXED_2DP(10, 50));
-		gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
-		break;
-	case MEASUREMENT_FORMAT_IMPERIAL:
+	switch (gClipHeightDisplayType) {
+	case DISPLAY_RAW:
 	default:
-		clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0 * 5 - FIXED_1DP(35, 0));
-		gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
+		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &gClipHeight, w->colours[0], x, y); //Printing the raw value.
 		break;
+
+	case DISPLAY_UNITS:
+		// Print the value in the configured measurement units.
+		switch (gConfigGeneral.measurement_format) {
+		case MEASUREMENT_FORMAT_METRIC:
+		case MEASUREMENT_FORMAT_SI:
+			clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5 - FIXED_2DP(10, 50));
+			gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
+			break;
+		case MEASUREMENT_FORMAT_IMPERIAL:
+		default:
+			clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0 * 5 - FIXED_1DP(35, 0));
+			gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
+			break;
+		}
 	}
 }
 
