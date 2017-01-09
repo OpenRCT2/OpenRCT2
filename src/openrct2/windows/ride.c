@@ -4890,6 +4890,12 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Measurements
 
+static rct_string_id get_rating_name(ride_rating rating)
+{
+	sint32 index = clamp(0, rating >> 8, countof(RatingNames) - 1);
+	return RatingNames[index];
+}
+
 /**
  *
  *  rct2: 0x006D2804
@@ -5220,15 +5226,17 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED) {
 			// Excitement
+			rct_string_id ratingName = get_rating_name(ride->excitement);
 			set_format_arg(0, uint32, ride->excitement);
-			set_format_arg(4, rct_string_id, RatingNames[min(ride->excitement >> 8, 5)]);
+			set_format_arg(4, rct_string_id, ratingName);
 			rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
 			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 10;
 
 			// Intensity
+			ratingName = get_rating_name(ride->intensity);
 			set_format_arg(0, uint32, ride->intensity);
-			set_format_arg(4, rct_string_id, RatingNames[min(ride->intensity >> 8, 5)]);
+			set_format_arg(4, rct_string_id, ratingName);
 
 			stringId = STR_INTENSITY_RATING;
 			if (ride->excitement == RIDE_RATING_UNDEFINED)
@@ -5240,8 +5248,9 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 			y += 10;
 
 			// Nausea
+			ratingName = get_rating_name(ride->nausea);
 			set_format_arg(0, uint32, ride->nausea);
-			set_format_arg(4, rct_string_id, RatingNames[min(ride->nausea >> 8, 5)]);
+			set_format_arg(4, rct_string_id, ratingName);
 			stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
 			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
 			y += 20;
