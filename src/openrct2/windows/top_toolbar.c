@@ -308,11 +308,11 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_ZOOM_OUT:
 		if ((mainWindow = window_get_main()) != NULL)
-			window_zoom_out(mainWindow);
+			window_zoom_out(mainWindow, false);
 		break;
 	case WIDX_ZOOM_IN:
 		if ((mainWindow = window_get_main()) != NULL)
-			window_zoom_in(mainWindow);
+			window_zoom_in(mainWindow, false);
 		break;
 	case WIDX_CLEAR_SCENERY:
 		toggle_clear_scenery_window(w, WIDX_CLEAR_SCENERY);

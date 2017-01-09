@@ -314,7 +314,7 @@ private:
         rct_window * w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
         {
-            window_zoom_set(w, zoom);
+            window_zoom_set(w, zoom, false);
         }
     }
 
