@@ -26,6 +26,9 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
+#define RCT1_MAX_MAP_ELEMENTS   0xC000
+#define RCT1_MAX_SPRITES        5000
+
 #pragma pack(push, 1)
 typedef struct rct1_entrance {
 	uint16 x;
@@ -71,10 +74,10 @@ typedef struct rct1_ride {
 	uint8 num_stations;
 	uint8 num_trains;
 	uint8 num_cars_per_train;
-	uint8 unk_7A;
-	uint8 unk_7B;
+	uint8 proposed_num_vehicles;	// 0x7A
+	uint8 proposed_num_cars_per_train; // 0x7B
 	uint8 max_trains;
-	uint8 unk_7D;
+	uint8 min_max_cars_per_train; // 0x7D
 	uint8 min_waiting_time;
 	uint8 max_waiting_time;
 	uint8 operation_option;
@@ -85,13 +88,25 @@ typedef struct rct1_ride {
 	uint16 unk_86;
 	sint32 max_speed;
 	sint32 average_speed;
-	uint8 pad_090[4];
+	uint8 current_test_segment;		// 0x90
+	uint8 average_speed_test_timeout; // 0x91
+	uint8 pad_0E2[0x2]; // 0x92
 	sint32 length[4];
 	uint16 time[4];
 	fixed16_2dp max_positive_vertical_g;
 	fixed16_2dp max_negative_vertical_g;
 	fixed16_2dp max_lateral_g;
-	uint8 unk_B2[18];
+	fixed16_2dp previous_vertical_g;// 0xB2
+	fixed16_2dp previous_lateral_g;	// 0xB4
+	uint8 pad_106[0x2];
+	uint32 testing_flags;			// 0xB8
+	// x y map location of the current track piece during a test
+	// this is to prevent counting special tracks multiple times
+	rct_xy8 cur_test_track_location;	// 0xBC
+	// Next 3 variables are related (XXXX XYYY ZZZa aaaa)
+	uint16 turn_count_default;		// 0xBE X = current turn count
+	uint16 turn_count_banked;		// 0xC0
+	uint16 turn_count_sloped;		// 0xC2 X = number turns > 3 elements
 	union {
 		uint8 num_inversions;
 		uint8 num_holes;
@@ -102,7 +117,8 @@ typedef struct rct1_ride {
 	sint32 sheltered_length;
 	uint8 unk_CC[2];
 	uint8 num_sheltered_sections;
-	uint8 unk_CF;
+	// see cur_test_track_location
+	uint8 cur_test_track_z;			// 0xCF
 	sint16 unk_D0;
 	sint16 unk_D2;
 	sint16 customers_per_hour;
@@ -116,10 +132,8 @@ typedef struct rct1_ride {
 	sint16 unk_E4;
 	sint16 unk_E6;
 	money16 price;
-	sint16 var_EA;
-	sint16 var_EC;
-	uint8 var_EE;
-	uint8 var_EF;
+	rct_xy8 chairlift_bullwheel_location[2]; // 0xEA
+	uint8 chairlift_bullwheel_z[2];	// 0xEE
 	union {
 		rating_tuple ratings;
 		struct {
@@ -129,7 +143,7 @@ typedef struct rct1_ride {
 		};
 	};
 	uint16 value;
-	uint16 var_F8;
+	uint16 chairlift_bullwheel_rotation; // 0xF8
 	uint8 satisfaction;
 	uint8 satisfaction_time_out;
 	uint8 satisfaction_next;
@@ -391,7 +405,14 @@ typedef union rct1_sprite {
 	uint8 pad_00[0x100];
 	rct1_unk_sprite unknown;
 	rct1_peep peep;
- 	rct_litter litter;
+	rct_litter litter;
+	rct_balloon balloon;
+	rct_sprite duck;
+	rct_jumping_fountain jumping_fountain;
+	rct_money_effect money_effect;
+	rct_crashed_vehicle_particle crashed_vehicle_particle;
+	rct_crash_splash crash_splash;
+	rct_steam_particle steam_particle;
 } rct1_sprite;
 assert_struct_size(rct1_sprite, 0x100);
 
@@ -414,9 +435,9 @@ typedef struct rct1_s4 {
 	uint32 ticks;
 	uint32 random_a;
 	uint32 random_b;
-	rct_map_element map_elements[0xC000];
+	rct_map_element map_elements[RCT1_MAX_MAP_ELEMENTS];
 	uint32 unk_counter;
-	rct1_sprite sprites[5000];
+	rct1_sprite sprites[RCT1_MAX_SPRITES];
 	uint16 next_sprite_index;
 	uint16 first_vehicle_sprite_index;
 	uint16 first_peep_sprite_index;
