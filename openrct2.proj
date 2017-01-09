@@ -208,9 +208,7 @@
   <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
   <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
     <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
-    <Exec Command="printf '\x02' | dd of=$(OutputExe) seek=372 bs=1 conv=notrunc count=1"
-          StandardOutputImportance="low"
-          StandardErrorImportance="low" />
+    <Exec Command="editbin /subsystem:windows $(OutputExe)" />
   </Target>
 
   <!-- Target to download the title sequences -->
