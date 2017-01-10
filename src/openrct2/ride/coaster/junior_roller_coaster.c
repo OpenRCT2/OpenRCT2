@@ -1823,8 +1823,8 @@ void junior_rc_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		}
 		sub_98199C(imageId, 0, 6, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
-		metal_a_supports_paint_setup(3, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-		metal_a_supports_paint_setup(3, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 
 		paint_util_push_tunnel_left(height, TUNNEL_6);
 	} else if (direction == 1 || direction == 3) {
@@ -1840,8 +1840,8 @@ void junior_rc_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		}
 		sub_98199C(imageId, 6, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 
-		metal_a_supports_paint_setup(3, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-		metal_a_supports_paint_setup(3, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 		paint_util_push_tunnel_right(height, TUNNEL_6);
 	}
 
@@ -2609,9 +2609,9 @@ static void junior_rc_s_bend_left_paint_setup(uint8 rideIndex, uint8 trackSequen
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(1, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 0: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	} else {
 		if (trackSequence == 3) {
@@ -2619,9 +2619,9 @@ static void junior_rc_s_bend_left_paint_setup(uint8 rideIndex, uint8 trackSequen
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(2, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(2, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(2, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 0: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	}
 
@@ -2673,9 +2673,9 @@ static void junior_rc_s_bend_right_paint_setup(uint8 rideIndex, uint8 trackSeque
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(1, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 0: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	} else {
 		if (trackSequence == 3) {
@@ -2683,9 +2683,9 @@ static void junior_rc_s_bend_right_paint_setup(uint8 rideIndex, uint8 trackSeque
 		}
 
 		switch (trackSequence) {
-			case 0: metal_a_supports_paint_setup(2, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 1: metal_a_supports_paint_setup(2, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-			case 3: metal_a_supports_paint_setup(2, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 0: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 1: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+			case 3: metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
 		}
 	}
 
@@ -3312,10 +3312,10 @@ static void junior_rc_left_eighth_to_diag_paint_setup(uint8 rideIndex, uint8 tra
 			metal_a_supports_paint_setup((direction & 1) ? 2 : 1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 4:
-			if (direction == 0) metal_a_supports_paint_setup(2, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup(1, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup(2, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup(1, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 
@@ -3349,10 +3349,10 @@ static void junior_rc_right_eighth_to_diag_paint_setup(uint8 rideIndex, uint8 tr
 			metal_a_supports_paint_setup((direction & 1) ? 2 : 1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 4:
-			if (direction == 0) metal_a_supports_paint_setup(2, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup(1, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup(2, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup(1, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 
@@ -3483,10 +3483,10 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(uint8 rideIndex, uint
 			metal_a_supports_paint_setup((direction & 1) ? 2 : 1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 4:
-			if (direction == 0) metal_a_supports_paint_setup(1, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup(2, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup(1, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup(2, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 
@@ -3601,10 +3601,10 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(uint8 rideIndex, uin
 			metal_a_supports_paint_setup((direction & 1) ? 2 : 1, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 4:
-			if (direction == 0) metal_a_supports_paint_setup(1, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 1) metal_a_supports_paint_setup(2, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 2) metal_a_supports_paint_setup(1, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-			if (direction == 3) metal_a_supports_paint_setup(2, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 0) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 1) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 2) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+			if (direction == 3) metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 	}
 

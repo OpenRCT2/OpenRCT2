@@ -117,7 +117,7 @@ const uint32 _97B072[][8] = {
 };
 
 /** rct2: 0x0097B142 */
-static const uint8 word_97B142[] = {
+static const uint8 supportTypeToHeight[] = {
 	6,
 	3,
 	3,
@@ -705,7 +705,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special,
 	if (height < gSupportSegments[segment].height){
 		unk9E3294 = height;
 
-		height -= word_97B142[supportType];
+		height -= supportTypeToHeight[supportType];
 		if (height < 0)
 			return false;
 
@@ -901,7 +901,7 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special,
 	if (height < gSupportSegments[segment].height) {
 		_9E3294 = height;
 
-		baseHeight -= word_97B142[supportType];
+		baseHeight -= supportTypeToHeight[supportType];
 		if (baseHeight < 0) {
 			return false; // AND
 		}

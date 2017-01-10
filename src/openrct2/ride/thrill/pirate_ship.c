@@ -169,14 +169,14 @@ static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direct
 	if (relativeTrackSequence == 1 || relativeTrackSequence == 4) {
 		wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 	} else if (direction & 1) {
-		metal_a_supports_paint_setup(0, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-		metal_a_supports_paint_setup(0, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 
 		imageId = SPR_STATION_BASE_A_NW_SE | gTrackColours[SCHEME_SUPPORTS];
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 	} else {
-		metal_a_supports_paint_setup(0, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-		metal_a_supports_paint_setup(0, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 
 		imageId = SPR_STATION_BASE_A_SW_NE | gTrackColours[SCHEME_SUPPORTS];
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
