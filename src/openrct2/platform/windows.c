@@ -47,7 +47,6 @@
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
-static bool _consoleIsAttached = false;
 
 utf8 **windows_get_command_line_args(int *outNumArgs);
 
@@ -55,38 +54,10 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
 
 static HMODULE _dllModule = NULL;
 
-#if defined(NO_RCT2) && !defined(__NOENTRYPOINT__)
-
-/**
- * Windows entry point to OpenRCT2 without a console window.
- */
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	_dllModule = hInstance;
-
-	core_init();
-
-	int argc;
-	char ** argv = (char**)windows_get_command_line_args(&argc);
-	int runGame = cmdline_run((const char **)argv, argc);
-
-	// Free argv
-	for (int i = 0; i < argc; i++) {
-		free(argv[i]);
-	}
-	free(argv);
-
-	if (runGame == 1) {
-		openrct2_launch();
-	}
-
-	return gExitCode;
-}
-
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int main(int argc, char *argv[])
+int RunOpenRCT2(int argc, char * * argv)
 {
 	HINSTANCE hInstance = GetModuleHandle(NULL);
 	_dllModule = hInstance;
@@ -100,6 +71,17 @@ int main(int argc, char *argv[])
 
 	return gExitCode;
 }
+
+#ifdef NO_RCT2
+
+#ifdef __MINGW32__
+
+int main(int argc, char **argv)
+{
+	return RunOpenRCT2(argc, argv);
+}
+
+#endif
 
 #else
 
@@ -152,28 +134,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 }
 
 #endif // NO_RCT2
-
-void platform_windows_open_console()
-{
-	if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
-		if (!AllocConsole()) {
-			return;
-		}
-	}
-
-	freopen("CONIN$", "r", stdin);
-	freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stderr);
-	_consoleIsAttached = true;
-}
-
-void platform_windows_close_console()
-{
-	if (_consoleIsAttached) {
-		_consoleIsAttached = false;
-		FreeConsole();
-	}
-}
 
 utf8 **windows_get_command_line_args(int *outNumArgs)
 {

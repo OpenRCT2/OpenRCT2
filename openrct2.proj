@@ -40,6 +40,8 @@
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
     <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
+    <OutputCom>$(TargetDir)openrct2.com</OutputCom>
+    <OutputDll>$(TargetDir)openrct2.dll</OutputDll>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
@@ -75,15 +77,22 @@
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
     <SignItems Include="$(OutputExe)" />
+    <SignItems Include="$(OutputDll)" />
+    <SignItems Include="$(OutputCom)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
     <SymbolItems Include="$(OutputExe)" />
-    <SymbolItems Include="$([System.IO.Path]::ChangeExtension($(OutputExe), '.pdb'))" />
+    <SymbolItems Include="$(OutputCom)" />
+    <SymbolItems Include="$(OutputDll)" />
+    <SymbolItems Include="$(TargetDir)openrct2-dll.pdb" />
+    <SymbolItems Include="$(TargetDir)openrct2-win.pdb" />
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
+    <PublishItems Include="$(OutputCom)" />
+    <PublishItems Include="$(OutputDll)" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(DistDir)changelog.txt" />
     <PublishItems Include="$(DistDir)known_issues.txt" />
@@ -137,6 +146,7 @@
     </PropertyGroup>
     <ItemGroup>
       <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
+      <CleanItems Include="$(OutputCom)" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
       <CleanItems Include="$(ArtifactsDir)openrct2-portable-$(Configuration)-$(Platform)*.zip" />
@@ -179,17 +189,8 @@
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
-  <Target Name="BuildTests">
-    <PropertyGroup>
-      <Configuration Condition="'$(Configuration)'=='Debug'">DebugTests</Configuration>
-      <Configuration Condition="'$(Configuration)'=='Release'">ReleaseTests</Configuration>
-      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
-    </PropertyGroup>
-    <Message Text="SlnProperties: $(SlnProperties)" />
-    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
-  </Target>
 
-  <Target Name="Test" DependsOnTargets="BuildTests">
+  <Target Name="Test" DependsOnTargets="Build">
     <Exec Command="$(TargetDir)tests\tests.exe" />
   </Target>
   <Target Name="TestPaint" DependsOnTargets="Build" Condition="'$(Platform)'=='Win32'">
@@ -202,6 +203,12 @@
     <Message Text="Building g2.dat..." />
     <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
           StandardOutputImportance="low" />
+  </Target>
+
+  <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
+  <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
+    <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
+    <Exec Command="editbin /subsystem:windows $(OutputExe)" />
   </Target>
 
   <!-- Target to download the title sequences -->

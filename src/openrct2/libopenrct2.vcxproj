@@ -12,14 +12,6 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugTests|Win32">
-      <Configuration>DebugTests</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="DebugTests|x64">
-      <Configuration>DebugTests</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -28,35 +20,23 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|Win32">
-      <Configuration>ReleaseTests</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleaseTests|x64">
-      <Configuration>ReleaseTests</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
-    <RootNamespace>openrct2</RootNamespace>
-    <ProjectName>openrct2</ProjectName>
+    <RootNamespace>openrct2-lib</RootNamespace>
+    <ProjectName>libopenrct2</ProjectName>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <!-- Debug|Win32 is reserved for RCT2 interop builds, this means it has to be a DLL -->
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-  </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)'=='DebugTests' OR '$(Configuration)'=='ReleaseTests'">__NOENTRYPOINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -64,10 +44,6 @@
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
-    <Link>
-      <SubSystem Condition="'$(Configuration)'!='Release'">Console</SubSystem>
-      <SubSystem Condition="'$(Configuration)'=='Release'">Windows</SubSystem>
-    </Link>
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
