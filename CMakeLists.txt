@@ -190,7 +190,7 @@ PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.3)
 
 # Handle creating the rct2 text and data files on macOS and Linux
-# See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
+# See details in src/openrct2/rct2/interop.c:rct2_interop_setup_segment for how the values
 # were derived.
 if ((NOT DISABLE_RCT2) AND UNIX)
   add_custom_command(
@@ -248,9 +248,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
+file(GLOB_RECURSE ORCT2_SOURCES "src/openrct2/*.c" "src/openrct2/*.cpp" "src/openrct2/*.h" "src/openrct2/*.hpp")
 if (APPLE)
-    file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
+    file(GLOB_RECURSE ORCT2_MM_SOURCES "src/openrct2/*.m")
     set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
 endif (APPLE)
 
@@ -349,7 +349,7 @@ LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_
 if (NOT DISABLE_RCT2)
     # Disable optimizations for addresses.c for all compilers, to allow optimized
     # builds without need for -fno-omit-frame-pointer
-    set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
+    set_source_files_properties(src/openrct2/addresses.c PROPERTIES COMPILE_FLAGS -O0)
 endif (NOT DISABLE_RCT2)
 
 if (WIN32)
