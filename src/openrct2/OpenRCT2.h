@@ -87,7 +87,7 @@ extern "C"
 
     int cmdline_run(const char * * argv, int argc);
 
-#ifdef _MSC_VER
+#ifdef __WINDOWS__
     int RunOpenRCT2(int argc, char * * argv);
 #endif
 

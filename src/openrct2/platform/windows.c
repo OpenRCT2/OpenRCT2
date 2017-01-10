@@ -76,7 +76,7 @@ int RunOpenRCT2(int argc, char * * argv)
 
 #ifdef __MINGW32__
 
-int main(int argc, const char **argv)
+int main(int argc, char **argv)
 {
 	return RunOpenRCT2(argc, argv);
 }
