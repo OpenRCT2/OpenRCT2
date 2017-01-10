@@ -216,9 +216,9 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MIN,							STR_NONE },								// bathroom min
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(9),			HPL(9),			STR_CHEAT_MORE_THAN_1,				STR_NONE },								// ride intensity > 1
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(9),			HPL(9),			STR_CHEAT_LESS_THAN_15,				STR_NONE },								// ride intensity < 15
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_CHEAT_IGNORE_INTENSITY_TIP },		// guests ignore intensity
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(11),		OHPL(11),		STR_CHEAT_DISABLE_VANDALISM,		STR_CHEAT_DISABLE_VANDALISM_TIP },		// disable vandalism
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_LITTERING,		STR_CHEAT_DISABLE_LITTERING_TIP },		// disable littering
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_CHEAT_IGNORE_INTENSITY_TIP },		// guests ignore intensity
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(11),		OHPL(11),		STR_CHEAT_DISABLE_VANDALISM,		STR_CHEAT_DISABLE_VANDALISM_TIP },		// disable vandalism
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_LITTERING,		STR_CHEAT_DISABLE_LITTERING_TIP },		// disable littering
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(14),		HPL(16.5),		STR_CHEAT_GIVE_ALL_GUESTS,			STR_NONE },								// Guests parameters group frame
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_CURRENCY_FORMAT,			STR_NONE },								// give guests money
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(15),		HPL(15),		STR_SHOP_ITEM_PLURAL_PARK_MAP,		STR_NONE },								// give guests park maps
@@ -266,17 +266,17 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,				STR_CHEAT_RENEW_RIDES_TIP },			// Renew rides
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_MAKE_DESTRUCTABLE_TIP },		// All destructible
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_CHEAT_FIX_ALL_RIDES_TIP },			// Fix all rides
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(11),		OHPL(11),		STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, // Disable brakes failure
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_CHEAT_DISABLE_BREAKDOWNS_TIP }, 	// Disable all breakdowns
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP }, 	// Build in pause mode
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(11),		OHPL(11),		STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, // Disable brakes failure
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_CHEAT_DISABLE_BREAKDOWNS_TIP }, 	// Disable all breakdowns
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP }, 	// Build in pause mode
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,		STR_CHEAT_RESET_CRASH_STATUS_TIP },		// Reset crash status
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,	STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },	// 10 minute inspections
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },	// Disable train length limits
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(13),		OHPL(13),		STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,	STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },	// Enable chain lift on all track
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(14),		OHPL(14),		STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,	STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },	// Allow arbitrary ride type changes
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },	// Disable train length limits
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(13),		OHPL(13),		STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,	STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },	// Enable chain lift on all track
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(14),		OHPL(14),		STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,	STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },	// Allow arbitrary ride type changes
 	{ WIDGETS_END },
 };
 
@@ -917,7 +917,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		uint8 colour = w->colours[2];
+		uint8 colour = w->colours[1];
 		set_format_arg(0, money32, _moneySpinnerValue);
 		if (widget_is_disabled(w, WIDX_MONEY_SPINNER)) {
 			colour |= COLOUR_FLAG_INSET;
@@ -927,7 +927,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
 		gfx_draw_string_left(dpi, STR_FORCE_WEATHER,				NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
-		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,		&park_rating_spinner_value,	w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,		NULL,	COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);
