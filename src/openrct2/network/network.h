@@ -51,14 +51,6 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-#include <openssl/evp.h>
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
@@ -74,6 +66,7 @@ extern "C" {
 #include <string>
 #include <vector>
 #include <map>
+#include <openssl/evp.h>
 #include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
@@ -85,6 +78,7 @@ extern "C" {
 #include "NetworkServerAdvertiser.h"
 #include "NetworkUser.h"
 #include "TcpSocket.h"
+
 
 enum {
 	NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
