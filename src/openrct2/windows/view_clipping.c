@@ -53,8 +53,8 @@ rct_widget window_view_clipping_widgets[] = {
 	{ WWT_CHECKBOX,		0,	11,		149,	19,	29,     STR_VIEW_CLIPPING_HEIGHT_ENABLE,	STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip height enable/disable check box
 	{ WWT_SPINNER,		0,	90,		149,	34,	45,     STR_NONE,				STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE }, // clip height value
 	{ WWT_DROPDOWN_BUTTON,	0,	138,		148,	35,	39,     STR_NUMERIC_UP,				STR_NONE }, // clip height increase
-	{ WWT_DROPDOWN_BUTTON, 0,	138,		148,	40,	44,     STR_NUMERIC_DOWN,			STR_NONE }, // clip height decrease
-	{ WWT_SCROLL,          0,	11,		149,	49,	61,     SCROLL_HORIZONTAL,			STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
+	{ WWT_DROPDOWN_BUTTON,	0,	138,		148,	40,	44,     STR_NUMERIC_DOWN,			STR_NONE }, // clip height decrease
+	{ WWT_SCROLL,		0,	11,		149,	49,	61,     SCROLL_HORIZONTAL,			STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
 	{ WIDGETS_END }
 };
 
