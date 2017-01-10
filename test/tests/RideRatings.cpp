@@ -36,6 +36,8 @@ TEST_F(RideRatings, all)
         rct_ride * ride = get_ride(rideId);
         if (ride->type != RIDE_TYPE_NULL)
         {
+            ride_ratings_update_ride(rideId);
+
             rating_tuple ratings = ride->ratings;
             std::string actual = String::StdFormat("Ride type: %d, Ratings: %d, %d, %d",
                 (int)ride->type,
