@@ -43,7 +43,6 @@ extern "C" {
 #include "../game.h"
 #include "../platform/platform.h"
 #include "../localisation/string_ids.h"
-#include <openssl/evp.h>
 #ifdef __cplusplus
 }
 #endif // __cplusplus
@@ -51,6 +50,14 @@ extern "C" {
 #include "NetworkTypes.h"
 
 #ifndef DISABLE_NETWORK
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+#include <openssl/evp.h>
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
