@@ -48,7 +48,8 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 	WIDX_TAB_3,
 	WIDX_LIST,
 	WIDX_CLOSE_LIGHT,
-	WIDX_OPEN_LIGHT
+	WIDX_OPEN_LIGHT,
+	WIDX_QUICK_DEMOLISH,
 };
 
 static rct_widget window_ride_list_widgets[] = {
@@ -66,8 +67,11 @@ static rct_widget window_ride_list_widgets[] = {
 	{ WWT_SCROLL,			1,	3,		336,	60,		236,	SCROLL_VERTICAL,							STR_NONE },									// list
 	{ WWT_IMGBTN,			1,	320,	333,	62,		75,		SPR_G2_RCT1_CLOSE_BUTTON_0,	STR_NONE },
 	{ WWT_IMGBTN,			1,	320,	333,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,	STR_NONE },
+	{ WWT_IMGBTN,			1,	315,	338,	90,		113,	SPR_DEMOLISH,				STR_QUICK_DEMOLISH_RIDE },
 	{ WIDGETS_END },
 };
+
+bool _quick_demolish_mode = false;
 
 static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex);
 static void window_ride_list_resize(rct_window *w);
@@ -210,7 +214,8 @@ void window_ride_list_open()
 			(1 << WIDX_TAB_2) |
 			(1 << WIDX_TAB_3) |
 			(1 << WIDX_CLOSE_LIGHT) |
-			(1 << WIDX_OPEN_LIGHT);
+			(1 << WIDX_OPEN_LIGHT) |
+			(1 << WIDX_QUICK_DEMOLISH);
 		window_init_scroll_widgets(window);
 		window->page = PAGE_RIDES;
 		window->no_list_items = 0;
@@ -223,6 +228,7 @@ void window_ride_list_open()
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
+	_quick_demolish_mode = false;
 }
 
 /**
@@ -259,6 +265,10 @@ static void window_ride_list_mouseup(rct_window *w, sint32 widgetIndex)
 		break;
 	case WIDX_OPEN_LIGHT:
 		window_ride_list_open_all(w);
+		break;
+	case WIDX_QUICK_DEMOLISH:
+		_quick_demolish_mode ^= 1;
+		window_invalidate(w);
 		break;
 	}
 }
@@ -412,7 +422,13 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
 		return;
 
 	// Open ride window
-	window_ride_main_open(w->list_item_positions[index]);
+	if (_quick_demolish_mode) {
+		gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
+		game_do_command(0, 1, 0, w->list_item_positions[index], GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+	}
+	else {
+		window_ride_main_open(w->list_item_positions[index]);
+	}
 }
 
 /**
@@ -458,6 +474,11 @@ static void window_ride_list_invalidate(rct_window *w)
 
 	window_ride_list_widgets[WIDX_TITLE].text = page_names[w->page];
 
+	if (_quick_demolish_mode)
+		w->pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
+	else
+		w->pressed_widgets &= ~(1ULL << WIDX_QUICK_DEMOLISH);
+
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
@@ -473,6 +494,8 @@ static void window_ride_list_invalidate(rct_window *w)
 	w->widgets[WIDX_CLOSE_LIGHT].left = w->width - 20;
 	w->widgets[WIDX_OPEN_LIGHT].right = w->width - 7;
 	w->widgets[WIDX_OPEN_LIGHT].left = w->width - 20;
+	w->widgets[WIDX_QUICK_DEMOLISH].right = w->width - 2;
+	w->widgets[WIDX_QUICK_DEMOLISH].left = w->width - 25;
 
 	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE) {
 		w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
@@ -532,12 +555,12 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
 	y = 0;
 	for (i = 0; i < w->no_list_items; i++) {
-		format = STR_BLACK_STRING;
+		format = (_quick_demolish_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
 		// Background highlight
 		if (i == w->selected_list_item) {
 			gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
-			format = STR_WINDOW_COLOUR_2_STRINGID;
+			format = (_quick_demolish_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
 		}
 
 		// Get ride
