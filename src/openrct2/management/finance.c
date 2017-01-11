@@ -78,7 +78,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	//overflow check
 	if (amount < 0 && cur_money >= INT_MAX + amount)
 		new_money = INT_MAX;
-	else if (amount >= 0 && cur_money < INT_MIN - amount)
+	else if (amount >= 0 && cur_money < INT_MIN + amount)
 		new_money = INT_MIN;
 
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
