@@ -24,9 +24,9 @@
 
 namespace RCT1
 {
-    typedef struct RCT1VehicleColourSchemeCopyDescriptor {
+    struct RCT1VehicleColourSchemeCopyDescriptor {
         sint8 colour1, colour2, colour3;
-    } RCT1VehicleColourSchemeCopyDescriptor;
+    };
 
     colour_t GetColour(colour_t colour);
     uint8 GetPeepSpriteType(uint8 rct1SpriteType);

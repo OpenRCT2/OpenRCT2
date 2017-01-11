@@ -648,88 +648,7 @@ private:
             dst->mode = src->operating_mode;
         }
 
-        // Colours
-        dst->colour_scheme_type = src->colour_scheme;
-        if (_gameVersion == FILE_VERSION_RCT1)
-        {
-            dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
-            dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
-            dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
-
-            // Balloons were always blue in the original RCT.
-            if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
-            {
-                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
-            }
-            else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
-            {
-                dst->track_colour_main[0] = COLOUR_WHITE;
-            }
-        }
-        else
-        {
-            for (sint32 i = 0; i < 4; i++)
-            {
-                dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
-                dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
-                dst->track_colour_supports[i] = RCT1::GetColour(src->track_colour_supports[i]);
-            }
-            // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
-            dst->entrance_style = src->entrance_style;
-        }
-
-        if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
-        {
-            // The merry-go-round in pre-LL versions was always yellow with red
-            dst->vehicle_colours[0].body_colour = COLOUR_YELLOW;
-            dst->vehicle_colours[0].trim_colour = COLOUR_BRIGHT_RED;
-        }
-        else
-        {
-            for (sint32 i = 0; i < 12; i++)
-            {
-                // RCT1 had no third colour
-                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
-                if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
-                {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
-                }
-                else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
-                {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
-                }
-                else
-                {
-                    dst->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
-                }
-
-                if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
-                {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].body);
-                }
-                else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
-                {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
-                }
-                else
-                {
-                    dst->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
-                }
-
-                if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
-                {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].body);
-                }
-                else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
-                {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].trim);
-                }
-                else
-                {
-                    dst->vehicle_colours_extended[i] = colourSchemeCopyDescriptor.colour3;
-                }
-            }
-        }
+        SetRideColourScheme(dst, src);
 
         // Maintenance
         dst->build_date = src->build_date;
@@ -797,6 +716,92 @@ private:
         dst->num_riders = src->num_riders;
 
         dst->music_tune_id = 255;
+    }
+
+    void SetRideColourScheme(rct_ride * dst, rct1_ride * src)
+    {
+        // Colours
+        dst->colour_scheme_type = src->colour_scheme;
+        if (_gameVersion == FILE_VERSION_RCT1)
+        {
+            dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
+            dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
+            dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+
+            // Balloons were always blue in the original RCT.
+            if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
+            {
+                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
+            }
+            else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
+            {
+                dst->track_colour_main[0] = COLOUR_WHITE;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
+                dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
+                dst->track_colour_supports[i] = RCT1::GetColour(src->track_colour_supports[i]);
+            }
+            // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
+            dst->entrance_style = src->entrance_style;
+        }
+
+        if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
+        {
+            // The merry-go-round in pre-LL versions was always yellow with red
+            dst->vehicle_colours[0].body_colour = COLOUR_YELLOW;
+            dst->vehicle_colours[0].trim_colour = COLOUR_BRIGHT_RED;
+        }
+        else
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                // RCT1 had no third colour
+                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
+                if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
+                }
+
+                if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
+                }
+
+                if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours_extended[i] = colourSchemeCopyDescriptor.colour3;
+                }
+            }
+        }
     }
 
     void FixRideVehicleLinks(const uint16 * spriteIndexMap)
@@ -986,6 +991,20 @@ private:
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
 
+        SetVehicleColours(dst, src);
+
+        dst->mini_golf_current_animation = src->mini_golf_current_animation;
+        dst->mini_golf_flags = src->mini_golf_flags;
+
+        sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
+        invalidate_sprite_2((rct_sprite *)dst);
+
+        dst->num_peeps = src->num_peeps;
+        dst->next_free_seat = src->next_free_seat;
+    }
+
+    void SetVehicleColours(rct_vehicle * dst, rct1_vehicle * src)
+    {
         // RCT1 had no third colour
         RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
         if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
@@ -1026,15 +1045,6 @@ private:
         {
             dst->colours_extended = colourSchemeCopyDescriptor.colour3;
         }
-
-        dst->mini_golf_current_animation = src->mini_golf_current_animation;
-        dst->mini_golf_flags = src->mini_golf_flags;
-
-        sprite_move(src->x, src->y, src->z, (rct_sprite *)dst);
-        invalidate_sprite_2((rct_sprite *)dst);
-
-        dst->num_peeps = src->num_peeps;
-        dst->next_free_seat = src->next_free_seat;
     }
 
     void FixVehicleLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
