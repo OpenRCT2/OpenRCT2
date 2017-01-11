@@ -32,15 +32,15 @@ enum MEMORY_ACCESS
 class MemoryStream final : public IStream
 {
 private:
-    uint16  _access;
-    size_t  _dataCapacity;
-    size_t  _dataSize;
-    void *  _data;
-    void *  _position;
+    uint16 _access       = MEMORY_ACCESS_READ | MEMORY_ACCESS_WRITE | MEMORY_ACCESS_OWNER;
+    size_t _dataCapacity = 0;
+    size_t _dataSize     = 0;
+    void * _data         = nullptr;
+    void * _position     = nullptr;
 
 public:
     MemoryStream();
-    MemoryStream(const MemoryStream &copy);
+    MemoryStream(const MemoryStream & copy);
     explicit MemoryStream(size_t capacity);
     MemoryStream(void * data, size_t dataSize, uint32 access = MEMORY_ACCESS_READ);
     MemoryStream(const void * data, size_t dataSize);
