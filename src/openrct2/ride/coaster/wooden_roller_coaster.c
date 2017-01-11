@@ -1796,7 +1796,7 @@ static void wooden_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSeque
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23468, 0, 6, 32, 20, 7, height);
 			break;
 		}
-		metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
 		}
@@ -1807,19 +1807,19 @@ static void wooden_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSeque
 		switch (direction) {
 		case 0:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23454, 0, 0, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23462, 0, 14, 32, 2, 63, height);
-			metal_a_supports_paint_setup(3, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23459, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23467, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1907,19 +1907,19 @@ static void wooden_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSeque
 		switch (direction) {
 		case 0:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23459, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23467, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23454, 0, 0, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23462, 0, 14, 32, 2, 63, height);
-			metal_a_supports_paint_setup(3, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -1940,7 +1940,7 @@ static void wooden_rc_track_left_vertical_loop(uint8 rideIndex, uint8 trackSeque
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23461, 0, 6, 32, 20, 3, height);
 			break;
 		}
-		metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 		switch (direction) {
 		case 1:
 			paint_util_push_tunnel_right(height - 8, TUNNEL_7);
@@ -1974,7 +1974,7 @@ static void wooden_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequ
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23469, 0, 6, 32, 20, 3, height);
 			break;
 		}
-		metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 		if (direction == 0 || direction == 3) {
 			paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
 		}
@@ -1984,19 +1984,19 @@ static void wooden_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequ
 		switch (direction) {
 		case 0:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23483, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23475, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23478, 0, 14, 32, 2, 63, height);
-			metal_a_supports_paint_setup(3, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23470, 0, 0, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 		paint_util_set_general_support_height(height + 72, 0x20);
@@ -2079,19 +2079,19 @@ static void wooden_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequ
 		switch (direction) {
 		case 0:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23478, 0, 14, 32, 2, 63, height);
-			metal_a_supports_paint_setup(3, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 1:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23470, 0, 0, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 2:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23483, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		case 3:
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23475, 0, 6, 32, 26, 3, height);
-			metal_a_supports_paint_setup(3, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
+			metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 16, height, gTrackColours[SCHEME_SUPPORTS]);
 			break;
 		}
 		paint_util_set_general_support_height(height + 72, 0x20);
@@ -2111,7 +2111,7 @@ static void wooden_rc_track_right_vertical_loop(uint8 rideIndex, uint8 trackSequ
 			sub_98196C_rotated(direction, wooden_rc_get_rails_colour() | 23476, 0, 6, 32, 20, 3, height);
 			break;
 		}
-		metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+		metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 		switch (direction) {
 		case 1:
 			paint_util_push_tunnel_right(height - 8, TUNNEL_7);

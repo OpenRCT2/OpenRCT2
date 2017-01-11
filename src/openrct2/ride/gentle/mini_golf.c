@@ -475,7 +475,7 @@ static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 		paint_util_push_tunnel_left(height, TUNNEL_10);
 	}
 
-	metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
 	if (mini_golf_paint_util_should_draw_fence(mapElement)) {
@@ -505,7 +505,7 @@ static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence
 	imageId = mini_golf_track_sprites_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 	mini_golf_paint_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 
-	metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
 	imageId = mini_golf_track_sprites_25_deg_up[direction][1] | gTrackColours[SCHEME_MISC];
@@ -540,7 +540,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(uint8 rideIndex, uint8 track
 	imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
 	mini_golf_paint_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 
-	metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
 	imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][1] | gTrackColours[SCHEME_MISC];
@@ -575,7 +575,7 @@ static void paint_mini_golf_track_25_deg_up_to_flat(uint8 rideIndex, uint8 track
 	imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][0] | gTrackColours[SCHEME_TRACK];
 	mini_golf_paint_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 
-	metal_a_supports_paint_setup(3, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
 	imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][1] | gTrackColours[SCHEME_MISC];
@@ -682,7 +682,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(uint8 rideIndex, uint
 
 	track_paint_util_left_quarter_turn_1_tile_paint(1, height, 0, direction, gTrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile, get_current_rotation());
 
-	metal_a_supports_paint_setup(3, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+	metal_a_supports_paint_setup(METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
 
 	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
 
