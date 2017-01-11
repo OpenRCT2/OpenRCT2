@@ -68,7 +68,7 @@ public:
     }
 };
 
-auto Factory = GameActions::Register<SetParkEntranceFeeAction>(GAME_COMMAND_SET_PARK_ENTRANCE_FEE);
+static auto Factory = GameActions::Register<SetParkEntranceFeeAction>(GAME_COMMAND_SET_PARK_ENTRANCE_FEE);
 
 extern "C"
 {
