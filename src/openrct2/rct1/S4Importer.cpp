@@ -666,6 +666,12 @@ private:
             dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
             dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
             dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+
+            // Balloons were always blue in the original RCT.
+            if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
+            {
+                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
+            }
         }
         else
         {
