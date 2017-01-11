@@ -29,7 +29,14 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <DisableSpecificWarnings>4091;4100;4201;4244;4245;4310;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4091;4100;4201;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <!-- Warnings:
+             C4091: 'keyword': ignored on left of 'type' when no variable is declared
+             C4100: 'identifier': unreferenced formal parameter
+             C4201: nonstandard extension used: nameless struct/union
+             C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
+             C4245: 'conversion_type': conversion from 'type1' to 'type2', signed/unsigned mismatch
+      -->
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;ZIP_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
