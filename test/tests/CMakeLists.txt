@@ -23,6 +23,8 @@ ExternalProject_Add(
 		DOWNLOAD_COMMAND ""
 		SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
 		CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
+		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
+		BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
 		# Disable install step
 		INSTALL_COMMAND ""
 		# Wrap download, configure and build steps in a script to log output
