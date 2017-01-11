@@ -76,6 +76,11 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	money32 new_money = cur_money - amount;
 
 	//overflow check
+	if (amount < 0 && cur_money >= INT_MAX + amount)
+		new_money = INT_MAX;
+	else if (amount >= 0 && cur_money < INT_MIN - amount)
+		new_money = INT_MIN;
+
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
 	gExpenditureTable[type] -= amount;
 	if (dword_988E60[type] & 1)
