@@ -42,6 +42,15 @@ namespace Path
         return std::string(buffer);
     }
 
+    std::string Combine(const std::string &a, const std::string &b, const std::string &c)
+    {
+        utf8 buffer[MAX_PATH];
+        String::Set(buffer, sizeof(buffer), a.c_str());
+        Path::Append(buffer, sizeof(buffer), b.c_str());
+        Path::Append(buffer, sizeof(buffer), c.c_str());
+        return std::string(buffer);
+    }
+
     std::string GetDirectory(const std::string &path)
     {
         const utf8* directory = GetDirectory(path.c_str());

@@ -56,7 +56,7 @@ protected:
 TEST_F(RideRatings, all)
 {
     std::string testdataPath = "testdata";
-    std::string path = Path::Combine(testdataPath, "sfmm.sc6");
+    std::string path = Path::Combine(testdataPath, "parks", "sfmm.sc6");
 
     gOpenRCT2Headless = true;
     core_init();
