@@ -19,6 +19,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
+#include "../editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/console.h"
@@ -507,12 +508,9 @@ void platform_process_messages()
 				// Zoom gesture
 				const int tolerance = 128;
 				int gesturePixels = (int)(_gestureRadius * gScreenWidth);
-				if (gesturePixels > tolerance) {
+				if (abs(gesturePixels) > tolerance) {
 					_gestureRadius = 0;
-					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
-				} else if (gesturePixels < -tolerance) {
-					_gestureRadius = 0;
-					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_OUT);
+					main_window_zoom(gesturePixels > 0, true);
 				}
 			}
 			break;
