@@ -30,6 +30,11 @@ class SetParkEntranceFeeAction : public IGameAction
 public:
     money16 Fee;
 
+    uint16 GetFlags() const override
+    {
+        return GA_FLAGS::ALLOW_WHILE_PAUSED;
+    }
+
     void Deserialise(IStream * stream) override
     {
         Fee = stream->ReadValue<money16>();

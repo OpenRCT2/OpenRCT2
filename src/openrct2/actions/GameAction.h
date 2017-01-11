@@ -43,6 +43,12 @@ enum class GA_ERROR : uint16
     UNKNOWN = UINT16_MAX,
 };
 
+namespace GA_FLAGS
+{
+    constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
+    constexpr uint16 CLIENT_ONLY        = 1 << 1;
+}
+
 /**
  * Represents the result of a game action query or execution.
  */
@@ -53,6 +59,7 @@ struct GameActionResult
     rct_xyz32       Position = { 0 };
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
+    void *          Tag = nullptr;
 
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
@@ -64,6 +71,13 @@ struct GameActionResult
  */
 interface IGameAction
 {
+    virtual ~IGameAction() = default;
+
+    /**
+     * Gets the GA_FLAGS flags that are enabled for this game action.
+     */
+    virtual uint16 GetFlags() const abstract;
+
     /**
      * Reads the game action directly from the given stream. Used for
      * sending across the network in multiplayer.
