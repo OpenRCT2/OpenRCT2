@@ -3,6 +3,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/OpenRCT2.h>
+#include "TestData.h"
 
 extern "C"
 {
@@ -55,8 +56,7 @@ protected:
 
 TEST_F(RideRatings, all)
 {
-    std::string testdataPath = "testdata";
-    std::string path = Path::Combine(testdataPath, "parks", "sfmm.sc6");
+    std::string path = TestData::GetParkPath("sfmm.sc6");
 
     gOpenRCT2Headless = true;
     core_init();

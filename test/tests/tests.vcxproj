@@ -48,6 +48,7 @@
   <!-- Files -->
   <ItemGroup>
     <ClInclude Include="AssertHelpers.hpp" />
+    <ClInclude Include="TestData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LanguagePackTest.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
+    <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
   </ItemGroup>
