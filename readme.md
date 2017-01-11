@@ -73,7 +73,7 @@ The program can also be built as a command line program using CMake. This type o
 - libpng (>= 1.2)
 - speexdsp
 - curl (only if building with http support)
-- jansson (>= 2.3)
+- jansson (>= 2.5)
 - openssl (>= 1.0; only if building with multiplayer support)
 - iconv (part of glibc on Linux)
 - zlib
