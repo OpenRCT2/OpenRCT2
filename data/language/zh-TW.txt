@@ -4304,6 +4304,9 @@ STR_5991    :無法貼上元素...
 STR_5992    :此地圖元素的數量已達上限
 STR_5993    :{SMALLFONT}{BLACK}複製所選元素
 STR_5994    :{SMALLFONT}{BLACK}貼上所選元素
+STR_5995    :加速裝置
+STR_5996    :加速速度
+
 
 #############
 # Scenarios #

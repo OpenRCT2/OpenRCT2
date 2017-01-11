@@ -4296,6 +4296,10 @@ STR_5993    :{SMALLFONT}{BLACK}Ausgewähltes Element kopieren
 STR_5994    :{SMALLFONT}{BLACK}Kopiertes Element einfügen
 STR_5995    :Zusatzantrieb
 STR_5996    :Antriebsgeschwindigkeit
+STR_5997    :Geld hinzufügen/festlegen
+STR_5998    :Geld hinzufügen
+STR_5999    :Geld festlegen
+STR_6000    :Neuen Wert eingeben:
 
 #############
 # Scenarios #
