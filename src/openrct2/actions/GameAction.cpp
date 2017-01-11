@@ -15,8 +15,17 @@
 #pragma endregion
 
 #include "../core/Guard.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Util.hpp"
+#include "../network/network.h"
 #include "GameAction.h"
+
+extern "C"
+{
+    #include "../localisation/localisation.h"
+    #include "../windows/error.h"
+    #include "../world/park.h"
+}
 
 GameActionResult::GameActionResult()
 {
@@ -55,25 +64,94 @@ namespace GameActions
         return result;
     }
 
+    static bool CheckActionInPausedMode(uint32 actionFlags)
+    {
+        if (gGamePaused == 0) return true;
+        if (gCheatsBuildInPauseMode) return true;
+        if (actionFlags & GA_FLAGS::ALLOW_WHILE_PAUSED) return true;
+        return false;
+    }
+
+    static bool CheckActionAffordability(const GameActionResult * result)
+    {
+        if (gParkFlags & PARK_FLAGS_NO_MONEY) return true;
+        if (result->Cost <= 0) return true;
+        if (result->Cost <= DECRYPT_MONEY(gCashEncrypted)) return true;
+        return false;
+    }
+
     GameActionResult Query(const IGameAction * action)
     {
         Guard::ArgumentNotNull(action);
 
-        return action->Query();
+        GameActionResult result;
+        uint16 actionFlags = action->GetFlags();
+        if (!CheckActionInPausedMode(actionFlags))
+        {
+            result.Error = GA_ERROR::GAME_PAUSED;
+            result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+        }
+        else
+        {
+            result = action->Query();
+            if (result.Error == GA_ERROR::OK)
+            {
+                if (!CheckActionAffordability(&result))
+                {
+                    result.Error = GA_ERROR::INSUFFICIENT_FUNDS;
+                    result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
+                    set_format_arg_on(result.ErrorMessageArgs, 0, uint32, result.Cost);
+                }
+            }
+        }
+        return result;
     }
 
     void Execute(const IGameAction * action, GameActionCallback callback)
     {
         Guard::ArgumentNotNull(action);
 
-        GameActionResult result = action->Query();
+        uint16 actionFlags = action->GetFlags();
+        GameActionResult result = Query(action);
         if (result.Error == GA_ERROR::OK)
         {
+            // Execute the action, changing the game state
             result = action->Execute();
+
+            // Update money balance
+            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result.Cost != 0)
+            {
+                finance_payment(result.Cost, result.ExpenditureType);
+                money_effect_create(result.Cost);
+            }
+
+            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY))
+            {
+                if (network_get_mode() == NETWORK_MODE_SERVER)
+                {
+                    // network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
+                    // network_add_player_money_spent(network_get_current_player_id(), cost);
+                }
+            }
+
+            // Allow autosave to commence
+            if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+            {
+                gLastAutoSaveUpdate = SDL_GetTicks();
+            }
         }
+
+        // Call callback for asynchronous events
         if (callback != nullptr)
         {
             callback(result);
+        }
+
+        if (result.Error != GA_ERROR::OK)
+        {
+            // Show the error box
+            Memory::Copy(gCommonFormatArgs, result.ErrorMessageArgs, sizeof(result.ErrorMessageArgs));
+            window_error_open(result.ErrorTitle, result.ErrorMessage);
         }
     }
 }
