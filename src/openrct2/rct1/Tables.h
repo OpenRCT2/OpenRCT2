@@ -24,12 +24,17 @@
 
 namespace RCT1
 {
+    typedef struct RCT1VehicleColourSchemeCopyDescriptor {
+        sint8 colour1, colour2, colour3;
+    } RCT1VehicleColourSchemeCopyDescriptor;
+
     colour_t GetColour(colour_t colour);
     uint8 GetPeepSpriteType(uint8 rct1SpriteType);
     uint8 GetTerrain(uint8 terrain);
     uint8 GetTerrainEdge(uint8 terrainEdge);
 
     uint8 GetRideType(uint8 rideType);
+    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8 vehicleType);
     bool RideTypeUsesVehicles(uint8 rideType);
     bool PathIsQueue(uint8 pathType);
     uint8 NormalisePathAddition(uint8 pathAdditionType);

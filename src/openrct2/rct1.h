@@ -1142,6 +1142,11 @@ enum {
 	HYPERCOASTER_CARRIAGE = 97,
 };
 
+enum {
+	COPY_COLOUR_1 = -1,
+	COPY_COLOUR_2 = -2,
+};
+
 #define RCT1_MAX_STATIONS 4
 
 extern const uint8 gRideCategories[0x60];

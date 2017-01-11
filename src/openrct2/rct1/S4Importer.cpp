@@ -661,6 +661,10 @@ private:
             {
                 dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
             }
+            else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
+            {
+                dst->track_colour_main[0] = COLOUR_WHITE;
+            }
         }
         else
         {
@@ -684,8 +688,46 @@ private:
         {
             for (sint32 i = 0; i < 12; i++)
             {
-                dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
-                dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                // RCT1 had no third colour
+                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
+                if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
+                }
+
+                if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
+                }
+
+                if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+                {
+                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].body);
+                }
+                else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+                {
+                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].trim);
+                }
+                else
+                {
+                    dst->vehicle_colours_extended[i] = colourSchemeCopyDescriptor.colour3;
+                }
             }
         }
 
@@ -943,17 +985,48 @@ private:
         dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
-        dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
-        dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
-        if (_gameVersion == FILE_VERSION_RCT1)
+
+        // RCT1 had no third colour
+        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
+        if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
         {
-            // TODO we might need to use a lookup table here for default colours
-            dst->colours_extended = 0;
+            dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
+        }
+        else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
+        {
+            dst->colours.body_colour = RCT1::GetColour(src->colours.trim_colour);
         }
         else
         {
-            dst->colours_extended = RCT1::GetColour(src->colours_extended);
+            dst->colours.body_colour = colourSchemeCopyDescriptor.colour1;
         }
+
+        if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
+        {
+            dst->colours.trim_colour = RCT1::GetColour(src->colours.body_colour);
+        }
+        else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
+        {
+            dst->colours.trim_colour = RCT1::GetColour(src->colours.trim_colour);
+        }
+        else
+        {
+            dst->colours.trim_colour = colourSchemeCopyDescriptor.colour2;
+        }
+
+        if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
+        {
+            dst->colours_extended = RCT1::GetColour(src->colours.body_colour);
+        }
+        else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
+        {
+            dst->colours_extended = RCT1::GetColour(src->colours.trim_colour);
+        }
+        else
+        {
+            dst->colours_extended = colourSchemeCopyDescriptor.colour3;
+        }
+
         dst->mini_golf_current_animation = src->mini_golf_current_animation;
         dst->mini_golf_flags = src->mini_golf_flags;
 
