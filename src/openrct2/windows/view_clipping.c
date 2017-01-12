@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -35,8 +35,8 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
 };
 
 typedef enum DISPLAY_TYPE {
-	DISPLAY_RAW = 0,
-	DISPLAY_UNITS = 1
+	DISPLAY_RAW,
+	DISPLAY_UNITS
 } clip_value_display_type;
 
 clip_value_display_type gClipHeightDisplayType = DISPLAY_UNITS;
@@ -198,7 +198,7 @@ static void window_view_clipping_mouseup(rct_window *w, int widgetIndex)
 			window_invalidate(mainWindow);
 		break;
 	case WIDX_CLIP_HEIGHT_DECREASE:
-		if(gClipHeight > 0)
+		if (gClipHeight > 0)
 			window_view_clipping_set_clipheight(w, gClipHeight - 1);
 		mainWindow = window_get_main();
 		if (mainWindow != NULL)

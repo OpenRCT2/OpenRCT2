@@ -21,7 +21,6 @@
 #include "../../ride/ride_data.h"
 #include "../../interface/viewport.h"
 #include "../../ride/vehicle_paint.h"
-#include "../../localisation/localisation.h"
 
 /**
  * Paint Quadrant

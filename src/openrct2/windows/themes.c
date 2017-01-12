@@ -234,6 +234,7 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
 	WC_TILE_INSPECTOR,
+	WC_VIEW_CLIPPING,
 	WC_THEMES,
 	WC_TITLE_EDITOR,
 	WC_OPTIONS,
@@ -245,7 +246,6 @@ static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_MULTIPLAYER,
 	WC_PLAYER,
 	WC_CHAT,
-	WC_VIEW_CLIPPING,
 };
 
 static rct_windowclass window_themes_tab_7_classes[] = {
