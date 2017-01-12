@@ -320,7 +320,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_VINTAGE_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS,
-            { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
+            { COPY_COLOUR_1, COLOUR_BLACK, COPY_COLOUR_2 }, // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS,
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE,
@@ -480,15 +480,15 @@ namespace RCT1
             0,
             0,
             0,
-            0,
+            0, // GHOST_TRAIN_CAR
             1, // TWISTER_RC_SPOILER
             0, // TWISTER_RC_CARRIAGE
+            1, // GHOST_TRAIN_INVISIBLE
+            0, // ARTICULATED_RC_FRONT
+            1, // ARTICULATED_RC_CARRIAGE
             0,
             0,
-            0,
-            0,
-            0,
-            0,
+            2, // MINIATURE_RAILWAY_CARRIAGE_COVERED
             0, // STANDUP_TWISTER_RC_CARRIAGE
             0,
             0,
@@ -496,8 +496,8 @@ namespace RCT1
             0,
             0,
             0,
-            0,
-            0,
+            0, // REVERSER_RC_CAR
+            2, // REVERSER_RC_BOGIE
             0,
             0,
             0,
@@ -515,12 +515,12 @@ namespace RCT1
             0,
             0, // HYPERCOASTER_FRONT
             1, // HYPERCOASTER_CARRIAGE
+            0, // INVERTED_4_ACROSS_CARRIAGE
+            0, // WATER_COASTER_BOAT
             0,
+            1, // WATER_COASTER_INVISIBLE
             0,
-            0,
-            0,
-            0,
-            0,
+            0, // RIVER_RAFT
             0,
             0,
             0,
