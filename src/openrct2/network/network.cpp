@@ -1607,7 +1607,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 {
 	uint32 size, offset;
 	packet >> size >> offset;
-	int chunksize = (int)(packet.size - packet.read);
+	int chunksize = (int)(packet.Size - packet.BytesRead);
 	if (chunksize <= 0) {
 		return;
 	}
