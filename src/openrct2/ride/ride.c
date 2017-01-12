@@ -209,7 +209,6 @@ static int ride_get_new_breakdown_problem(rct_ride *ride);
 static void ride_inspection_update(rct_ride *ride);
 static void ride_mechanic_status_update(int rideIndex, int mechanicStatus);
 static void ride_music_update(int rideIndex);
-void ride_prepare_breakdown(int rideIndex, int breakdownReason);
 static void ride_shop_connected(rct_ride* ride, int ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(int rideIndex);

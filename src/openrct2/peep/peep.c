@@ -145,7 +145,6 @@ static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtR
 static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool peepAtRide, bool updateLastRide);
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
-void peep_reset_pathfind_goal(rct_peep *peep);
 static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
