@@ -390,6 +390,13 @@ static void visible_list_refresh(rct_window *w)
 		}
 	}
 
+	if (_numListItems == 0)
+	{
+		visible_list_dispose();
+		window_invalidate(w);
+		return;
+	}
+
 	void *new_memory = realloc(_listItems, _numListItems * sizeof(list_item));
 	if (new_memory == NULL) {
 		log_error("Unable to reallocate list items");
