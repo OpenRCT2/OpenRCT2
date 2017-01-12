@@ -982,7 +982,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
-		if (peep->peep_flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
+		if (peep->peep_flags & PEEP_FLAGS_EXPLODE && peep->x != MAP_LOCATION_NULL){
 			audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
 
 			sprite_misc_explosion_cloud_create(peep->x, peep->y, peep->z + 16);
@@ -1016,7 +1016,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep->var_F2++;
 			if (peep->var_F2 >= 18){
 				peep->var_F2 = 0;
-				if (peep->x != (sint16)0x8000){
+				if (peep->x != MAP_LOCATION_NULL){
 
 					uint8 thought_type = peep_assess_surroundings(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
 
@@ -2159,7 +2159,7 @@ static void peep_update_falling(rct_peep* peep){
 						if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 							peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
-							if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != (sint16) 0x8000) {
+							if (peep->sprite_type == PEEP_SPRITE_TYPE_BALLOON && peep->x != MAP_LOCATION_NULL) {
 								create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
 								peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 								peep_update_sprite_type(peep);
@@ -6971,7 +6971,7 @@ void peep_update_crowd_noise()
 	visiblePeeps = 0;
 
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->sprite_left == (sint16)0x8000)
+		if (peep->sprite_left == (sint16)(uint16)0x8000)
 			continue;
 		if (viewport->view_x > peep->sprite_right)
 			continue;
@@ -7035,7 +7035,7 @@ void peep_applause()
 		// Release balloon
 		if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
 			peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
-			if (peep->x != (sint16)0x8000) {
+			if (peep->x != MAP_LOCATION_NULL) {
 				create_balloon(peep->x, peep->y, peep->z + 9, peep->balloon_colour, 0);
 				peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 				peep_update_sprite_type(peep);
@@ -7270,7 +7270,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		cash = 0;
 	}
 
-	if (gGuestInitialCash == (money16)0xFFFF){
+	if (gGuestInitialCash == (money16)(uint16)0xFFFF){
 		cash = 0;
 	}
 
@@ -9838,7 +9838,7 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
 	for (uint8 entranceNum = 0; entranceNum < 4; ++entranceNum){
-		if (gParkEntranceX[entranceNum] == (sint16)0x8000)
+		if (gParkEntranceX[entranceNum] == MAP_LOCATION_NULL)
 			continue;
 
 		uint16 dist = abs(gParkEntranceX[entranceNum] - peep->next_x) +
@@ -9910,7 +9910,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 
 	// Resolves already-corrupt guests (e.g. loaded from save)
 	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
-		(peep->current_ride >= 4 || gParkEntranceX[peep->current_ride] == (sint16)0x8000)
+		(peep->current_ride >= 4 || gParkEntranceX[peep->current_ride] == MAP_LOCATION_NULL)
 	) {
 		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 	}
