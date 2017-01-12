@@ -221,7 +221,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	if (!platform_file_exists(keyPath)) {
 		Console::WriteLine("Generating key... This may take a while");
 		Console::WriteLine("Need to collect enough entropy from the system");
-		key.Generate();
+		_key.Generate();
 		Console::WriteLine("Key generated, saving private bits as %s", keyPath);
 
 		utf8 keysDirectory[MAX_PATH];
@@ -236,10 +236,10 @@ bool Network::BeginClient(const char* host, unsigned short port)
 			log_error("Unable to save private key at %s.", keyPath);
 			return false;
 		}
-		key.SavePrivate(privkey);
+		_key.SavePrivate(privkey);
 		SDL_RWclose(privkey);
 
-		const std::string hash = key.PublicKeyHash();
+		const std::string hash = _key.PublicKeyHash();
 		const utf8 *publicKeyHash = hash.c_str();
 		network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
 		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
@@ -248,7 +248,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 			log_error("Unable to save public key at %s.", keyPath);
 			return false;
 		}
-		key.SavePublic(pubkey);
+		_key.SavePublic(pubkey);
 		SDL_RWclose(pubkey);
 	} else {
 		log_verbose("Loading key from %s", keyPath);
@@ -259,10 +259,10 @@ bool Network::BeginClient(const char* host, unsigned short port)
 		}
 
 		// LoadPrivate returns validity of loaded key
-		bool ok = key.LoadPrivate(privkey);
+		bool ok = _key.LoadPrivate(privkey);
 		SDL_RWclose(privkey);
 		// Don't store private key in memory when it's not in use.
-		key.Unload();
+		_key.Unload();
 		return ok;
 	}
 
@@ -594,7 +594,7 @@ void Network::KickPlayer(int playerId)
 
 void Network::SetPassword(const char* password)
 {
-	Network::password = password == nullptr ? "" : password;
+	_password = password == nullptr ? "" : password;
 }
 
 void Network::ShutdownClient()
@@ -1104,7 +1104,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 #ifndef DISABLE_HTTP
 	json_t* obj = json_object();
 	json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
-	json_object_set_new(obj, "requiresPassword", json_boolean(password.size() > 0));
+	json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
 	json_object_set_new(obj, "version", json_string(NETWORK_STREAM_ID));
 	json_object_set_new(obj, "players", json_integer(player_list.size()));
 	json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
@@ -1376,7 +1376,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 		return;
 	}
 	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	bool ok = key.LoadPrivate(privkey);
+	bool ok = _key.LoadPrivate(privkey);
 	SDL_RWclose(privkey);
 	if (!ok) {
 		log_error("Failed to load key %s", keyPath);
@@ -1389,10 +1389,10 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	const char *challenge = (const char *)packet.Read(challenge_size);
 	size_t sigsize;
 	char *signature;
-	const std::string pubkey = key.PublicKeyString();
-	this->challenge.resize(challenge_size);
-	memcpy(this->challenge.data(), challenge, challenge_size);
-	ok = key.Sign(this->challenge.data(), this->challenge.size(), &signature, &sigsize);
+	const std::string pubkey = _key.PublicKeyString();
+	_challenge.resize(challenge_size);
+	memcpy(_challenge.data(), challenge, challenge_size);
+	ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
 	if (!ok) {
 		log_error("Failed to sign server's challenge.");
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1401,7 +1401,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	}
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
-	key.Unload();
+	_key.Unload();
 	Client_Send_AUTH(gConfigNetwork.player_name, "", pubkey.c_str(), signature, sigsize);
 	delete [] signature;
 }
@@ -1580,10 +1580,10 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			connection.AuthStatus = NETWORK_AUTH_BADNAME;
 		} else
 		if (!passwordless) {
-			if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
+			if ((!password || strlen(password) == 0) && _password.size() > 0) {
 				connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
 			} else
-			if (password && Network::password != password) {
+			if (password && _password != password) {
 				connection.AuthStatus = NETWORK_AUTH_BADPASSWORD;
 			}
 		}
@@ -2449,14 +2449,14 @@ void network_send_password(const char* password)
 		return;
 	}
 	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	gNetwork.key.LoadPrivate(privkey);
-	const std::string pubkey = gNetwork.key.PublicKeyString();
+	gNetwork._key.LoadPrivate(privkey);
+	const std::string pubkey = gNetwork._key.PublicKeyString();
 	size_t sigsize;
 	char *signature;
-	gNetwork.key.Sign(gNetwork.challenge.data(), gNetwork.challenge.size(), &signature, &sigsize);
+	gNetwork._key.Sign(gNetwork._challenge.data(), gNetwork._challenge.size(), &signature, &sigsize);
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
-	gNetwork.key.Unload();
+	gNetwork._key.Unload();
 	gNetwork.Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
 	delete [] signature;
 }

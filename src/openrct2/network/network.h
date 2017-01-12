@@ -150,8 +150,8 @@ public:
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
-	NetworkKey key;
-	std::vector<uint8> challenge;
+	NetworkKey _key;
+	std::vector<uint8> _challenge;
 	NetworkUserManager _userManager;
 
 	std::string ServerName;
@@ -206,7 +206,7 @@ private:
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
-	std::string password;
+	std::string _password;
 	bool _desynchronised = false;
 	INetworkServerAdvertiser * _advertiser = nullptr;
 	uint32 server_connect_time = 0;
