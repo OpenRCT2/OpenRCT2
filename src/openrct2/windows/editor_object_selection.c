@@ -397,37 +397,35 @@ static void visible_list_refresh(rct_window *w)
 		return;
 	}
 
-	void *new_memory = realloc(_listItems, _numListItems * sizeof(list_item));
-	if (new_memory == NULL) {
+	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
+	if (_listItems == NULL) {
+		_numListItems = 0;
 		log_error("Unable to reallocate list items");
-		return;
-	}
-	_listItems = (list_item*)new_memory;
+	} else {
+		sortFunc sortFunc = NULL;
+		switch (_listSortType) {
+		case RIDE_SORT_TYPE:
+			sortFunc = visible_list_sort_ride_type;
+			break;
+		case RIDE_SORT_RIDE:
+			sortFunc = visible_list_sort_ride_name;
+			break;
+		default:
+			log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
+			window_invalidate(w);
+			return;
+		}
+		qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
 
-	sortFunc sortFunc = NULL;
-	switch (_listSortType) {
-	case RIDE_SORT_TYPE:
-		sortFunc = visible_list_sort_ride_type;
-		break;
-	case RIDE_SORT_RIDE:
-		sortFunc = visible_list_sort_ride_name;
-		break;
-	default:
-		log_warning("Wrong sort type %d, leaving list as-is.", _listSortType);
-		window_invalidate(w);
-		return;
-	}
-	qsort(_listItems, _numListItems, sizeof(list_item), sortFunc);
-
-	if (_listSortDescending) {
-		for (int i = 0; i < _numListItems / 2; i++) {
-			int ri = _numListItems - i - 1;
-			list_item temp = _listItems[i];
-			_listItems[i] = _listItems[ri];
-			_listItems[ri] = temp;
+		if (_listSortDescending) {
+			for (int i = 0; i < _numListItems / 2; i++) {
+				int ri = _numListItems - i - 1;
+				list_item temp = _listItems[i];
+				_listItems[i] = _listItems[ri];
+				_listItems[ri] = temp;
+			}
 		}
 	}
-
 	window_invalidate(w);
 }
 
