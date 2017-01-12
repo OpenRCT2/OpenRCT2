@@ -4297,6 +4297,10 @@ STR_5993    :{SMALLFONT}{BLACK}Geselecteerd element kopiëren
 STR_5994    :{SMALLFONT}{BLACK}Gekopieerd element plakken
 STR_5995    :Turbo
 STR_5996    :Turbosnelheid
+STR_5997    :Geld toevoegen/instellen
+STR_5998    :Toevoegen
+STR_5999    :Instellen
+STR_6000    :Voer een bedrag in
 
 #############
 # Scenarios #

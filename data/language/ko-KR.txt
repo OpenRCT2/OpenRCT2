@@ -3246,8 +3246,8 @@ STR_3234    :설정 - 공원
 STR_3235    :{SMALLFONT}{BLACK}재정 관련 설정을 보여줍니다
 STR_3236    :{SMALLFONT}{BLACK}손님 관련 설정을 보여줍니다
 STR_3237    :{SMALLFONT}{BLACK}공원 관련 설정을 보여줍니다
-STR_3238    :돈 무제한
-STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 돈을 '무제한'으로 만듭니다
+STR_3238    :재정 무제한
+STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 재정을 '무제한'으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
@@ -3707,7 +3707,7 @@ STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
 STR_5369    :공원 설정...
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
+STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 재정 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -4303,6 +4303,10 @@ STR_5993    :{SMALLFONT}{BLACK}선택한 요소를 복사합니다.
 STR_5994    :{SMALLFONT}{BLACK}복사했던 요소를 붙여넣습니다.
 STR_5995    :부스터
 STR_5996    :부스터 속력
+STR_5997    :재정 추가/설정
+STR_5998    :돈 추가
+STR_5999    :이 값으로 돈 지정
+STR_6000    :새로운 값을 입력하세요
 
 #############
 # Scenarios #
