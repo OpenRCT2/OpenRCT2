@@ -254,7 +254,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	bool customLocation = false;
 	bool centreMapX = false;
 	bool centreMapY = false;
-	int resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation;
+	int resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
 
 	const char *inputPath = argv[0];
 	const char *outputPath = argv[1];

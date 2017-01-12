@@ -42,6 +42,9 @@ static uint32               _allocatedImageCount;
 #ifdef DEBUG
 static std::list<ImageList> _allocatedLists;
 
+#pragma warning(push)
+#pragma warning(disable : 4505)
+
 static bool AllocatedListContains(uint32 baseImageId, uint32 count)
 {
     bool contains = std::any_of(
@@ -53,6 +56,8 @@ static bool AllocatedListContains(uint32 baseImageId, uint32 count)
         });
     return contains;
 }
+
+#pragma warning(pop)
 
 static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
 {

@@ -601,8 +601,8 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		int x = w->x + w->width + 2;
-		int y = w->y;
+		x = w->x + w->width + 2;
+		y = w->y;
 		if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -639,8 +639,8 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		int x = w->x + w->width + 2;
-		int y = w->y;
+		x = w->x + w->width + 2;
+		y = w->y;
 		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -1499,7 +1499,10 @@ void window_zoom_set(rct_window *w, int zoomLevel, bool atCursor)
 		return;
 
 	// Zooming to cursor? Remember where we're pointing at the moment.
-	sint16 saved_map_x, saved_map_y, offset_x, offset_y;
+	sint16 saved_map_x = 0;
+	sint16 saved_map_y = 0;
+	sint16 offset_x = 0;
+	sint16 offset_y = 0;
 	if (gConfigGeneral.zoom_to_cursor && atCursor) {
 		window_viewport_get_map_coords_by_cursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
 	}

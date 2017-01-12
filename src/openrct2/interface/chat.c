@@ -154,7 +154,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		y = _chatBottom - inputLineHeight - 5;
 
 		lineCh = lineBuffer;
-		int inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
+		inputLineHeight = gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
 		gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
 
 		//TODO: Show caret if the input text have multiple lines

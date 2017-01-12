@@ -125,8 +125,8 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 	// If the start location was invalid
 	// propagate the invalid location to the output.
 	// This fixes a bug that caused the game to enter an infinite loop.
-	if (start_x == (sint16)0x8000){
-		*out_x = (sint16)0x8000;
+	if (start_x == ((sint16)(uint16)0x8000)){
+		*out_x = ((sint16)(uint16)0x8000);
 		*out_y = 0;
 		return;
 	}
@@ -554,9 +554,9 @@ void viewport_update_position(rct_window *window)
 	if (at_map_edge_x || at_map_edge_y) {
 		// The &0xFFFF is to prevent the sign extension messing the
 		// function up.
-		int z = map_element_height(x & 0xFFFF, y & 0xFFFF);
+		int zz = map_element_height(x & 0xFFFF, y & 0xFFFF);
 		int _2d_x, _2d_y;
-		center_2d_coordinates(x, y, z, &_2d_x, &_2d_y, viewport);
+		center_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
 
 		if (at_map_edge_x)
 			window->saved_view_x = _2d_x;
@@ -776,7 +776,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, int *direction)
 {
 	screen_get_map_xy(*x, *y, x, y, NULL);
-	if (*x == (sint16)0x8000)
+	if (*x == MAP_LOCATION_NULL)
 		return;
 
 	int my_direction;
@@ -818,7 +818,7 @@ rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16
 
 rct_xy16 viewport_coord_to_map_coord(int x, int y, int z)
 {
-	rct_xy16 ret;
+	rct_xy16 ret = { 0 };
 	switch (get_current_rotation()) {
 	case 0:
 		ret.x = -x / 2 + y + z;
@@ -1529,7 +1529,7 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
 void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
 	screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
-	if (*mapX == (sint16)0x8000)
+	if (*mapX == MAP_LOCATION_NULL)
 		return;
 
 	*quadrant = map_get_tile_quadrant(*mapX, *mapY);
@@ -1544,7 +1544,7 @@ void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, si
 void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
 	screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
-	if (*mapX == (sint16)0x8000)
+	if (*mapX == MAP_LOCATION_NULL)
 		return;
 
 	*quadrant = map_get_tile_quadrant(*mapX, *mapY);
@@ -1559,7 +1559,7 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
 void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
 	screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
-	if (*mapX == (sint16)0x8000)
+	if (*mapX == MAP_LOCATION_NULL)
 		return;
 
 	*side = map_get_tile_side(*mapX, *mapY);
@@ -1574,7 +1574,7 @@ void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16
 void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
 	screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
-	if (*mapX == (sint16)0x8000)
+	if (*mapX == MAP_LOCATION_NULL)
 		return;
 
 	*side = map_get_tile_side(*mapX, *mapY);

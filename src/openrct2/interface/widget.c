@@ -456,7 +456,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	int r = w->x + widget->right;
 
 	// TODO: -2 seems odd
-	if (widget->text == (rct_string_id)0xFFFFFFFE || widget->text == STR_NONE)
+	if (widget->text == (rct_string_id)-2 || widget->text == STR_NONE)
 		return;
 
 	if (widget_is_disabled(w, widgetIndex))
@@ -1115,7 +1115,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 	if (gTextBoxFrameNo <= 15){
-		uint8 colour = ColourMapA[w->colours[1]].mid_light;
+		colour = ColourMapA[w->colours[1]].mid_light;
 		gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
 	}
 }

@@ -29,10 +29,12 @@
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <DisableSpecificWarnings>4091;4100;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4091;4100;4132;4200;4201;4204;4206;4221;4244;4245;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
              C4091: 'keyword': ignored on left of 'type' when no variable is declared
              C4100: 'identifier': unreferenced formal parameter
+             C4132: 'identifier': const object should be initialized
+             C4200: nonstandard extension used: zero-sized array in struct/union
              C4201: nonstandard extension used: nameless struct/union
              C4204: nonstandard extension used: non-constant aggregate initializer
              C4206: nonstandard extension used: translation unit is empty

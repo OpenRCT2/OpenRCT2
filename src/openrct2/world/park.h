@@ -20,8 +20,8 @@
 #include "../common.h"
 #include "map.h"
 
-#define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
-#define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
+#define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
+#define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
 
 enum {
 	PARK_FLAGS_PARK_OPEN = (1 << 0),
