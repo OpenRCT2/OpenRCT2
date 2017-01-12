@@ -972,7 +972,7 @@ static rct_window *ride_create_or_find_construction_window(int rideIndex)
 	if (w == NULL || w->number != rideIndex) {
 		window_close_construction_windows();
 		_currentRideIndex = rideIndex;
-		w = window_ride_construction_open(rideIndex);
+		w = window_ride_construction_open();
 	} else {
 		sub_6C9627();
 		_currentRideIndex = rideIndex;

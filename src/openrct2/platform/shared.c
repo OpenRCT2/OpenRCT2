@@ -713,14 +713,11 @@ void platform_set_cursor(uint8 cursor)
 
 void platform_refresh_video()
 {
-	int width = gScreenWidth;
-	int height = gScreenHeight;
-
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
 	drawing_engine_dispose();
 	drawing_engine_init();
-	drawing_engine_resize(width, height);
+	drawing_engine_resize();
 	drawing_engine_set_palette(gPalette);
 	gfx_invalidate_screen();
 }

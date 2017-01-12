@@ -79,7 +79,7 @@ static void mapgen_blob(int cx, int cy, int size, int height);
 static void mapgen_smooth_height(int iterations);
 static void mapgen_set_height();
 
-static void mapgen_simplex();
+static void mapgen_simplex(mapgen_settings *settings);
 
 static int _heightSize;
 static uint8 *_height;
