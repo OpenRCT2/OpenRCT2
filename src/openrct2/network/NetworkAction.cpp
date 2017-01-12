@@ -29,9 +29,9 @@ int NetworkActions::FindCommand(int command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
     {
-        for (auto it = action.Commands.begin(); it != action.Commands.end(); it++)
+        for (auto it2 = action.Commands.begin(); it2 != action.Commands.end(); it2++)
         {
-            if ((*it) == command)
+            if ((*it2) == command)
             {
                 return true;
             }

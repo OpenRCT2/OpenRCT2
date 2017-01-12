@@ -1250,12 +1250,12 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 
-		int support_height = baseZ - mapElement->base_height;
-		if (support_height < 0) {
-			support_height = 10;
+		int _support_height = baseZ - mapElement->base_height;
+		if (_support_height < 0) {
+			_support_height = 10;
 		}
 
-		cost += ((support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
+		cost += ((_support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
 
 		//6c56d3
 
@@ -1604,12 +1604,12 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 			return MONEY32_UNDEFINED;
 		}
 
-		sint8 support_height = mapElement->base_height - surfaceElement->base_height;
-		if (support_height < 0){
-			support_height = 10;
+		sint8 _support_height = mapElement->base_height - surfaceElement->base_height;
+		if (_support_height < 0){
+			_support_height = 10;
 		}
 
-		cost += (support_height / 2) * RideTrackCosts[ride->type].support_price;
+		cost += (_support_height / 2) * RideTrackCosts[ride->type].support_price;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;

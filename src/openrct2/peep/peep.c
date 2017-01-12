@@ -1816,15 +1816,15 @@ void peep_update_sprite_type(rct_peep* peep)
 		}
 	}
 
-	for (item_pref* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++) {
-		if (item_pref->type == 0){
-			if (peep->item_standard_flags & item_pref->item) {
-				set_sprite_type(peep, item_pref->sprite_type);
+	for (item_pref* _item_pref = item_order_preference; _item_pref->type != 0xFF; _item_pref++) {
+		if (_item_pref->type == 0){
+			if (peep->item_standard_flags & _item_pref->item) {
+				set_sprite_type(peep, _item_pref->sprite_type);
 				return;
 			}
 		} else {
-			if (peep->item_extra_flags & item_pref->item) {
-				set_sprite_type(peep, item_pref->sprite_type);
+			if (peep->item_extra_flags & _item_pref->item) {
+				set_sprite_type(peep, _item_pref->sprite_type);
 				return;
 			}
 		}

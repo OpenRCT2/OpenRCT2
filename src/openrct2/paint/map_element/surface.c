@@ -327,7 +327,7 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * m
 /**
  * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
-static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_smoothen_edge(enum edge _edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 
 	if (neighbour.map_element == NULL) {
@@ -338,7 +338,7 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 	uint8 neighbourCorners[2] = { 0 };
 	uint8 ownCorners[2] = { 0 };
 
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_BOTTOMLEFT:
 			maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
 			neighbourCorners[0] = neighbour.corner_heights.top;
@@ -375,7 +375,7 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 	}
 
 	uint8 dh = 0, cl = 0;
-	switch(edge) {
+	switch(_edge) {
 		case EDGE_BOTTOMLEFT:
 			dh = byte_97B524[byte_97B444[self.slope]];
 			cl = byte_97B54A[byte_97B444[neighbour.slope]];
@@ -430,13 +430,13 @@ static void viewport_surface_smoothen_edge(enum edge edge, struct tile_descripto
 /**
  * rct2: 0x0065F63B, 0x0065F77D
  */
-static void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_top(enum edge _edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
 	rct_xy8 offset = {0, 0};
 	rct_xy8 bounds = {0, 0};
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_TOPLEFT:
 			regs.al = self.corner_heights.top;
 			regs.cl = self.corner_heights.left;
@@ -479,13 +479,13 @@ static void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, ui
 	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint8 incline = (regs.cl - regs.al) + 1;
 
-		uint32 image_id = stru_97B5C0[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+		uint32 image_id = stru_97B5C0[terrain][3] + (_edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
 		sint16 y = (regs.dl - regs.al) * 16;
 		paint_attach_to_previous_ps(image_id, 0, y);
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+	uint32 base_image_id = stru_97B5C0[terrain][1] + (_edge == EDGE_TOPLEFT ? 5 : 0); // var_04
 
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
@@ -526,7 +526,7 @@ static void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, ui
 /**
  * rct2: 0x0065EB7D, 0x0065F0D8
  */
-static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_land_side_bottom(enum edge _edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
@@ -536,7 +536,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
 	tunnel_entry * tunnelArray;
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
 			regs.cl = self.corner_heights.bottom;
@@ -585,7 +585,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		base_image_id = stru_97B5C0[edgeStyle][1];
 	}
 
-	if (edge == EDGE_BOTTOMRIGHT) {
+	if (_edge == EDGE_BOTTOMRIGHT) {
 		base_image_id += 5;
 	}
 
@@ -661,7 +661,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 		}
 
 
-		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (_edge == EDGE_BOTTOMRIGHT ? 2 : 0);
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
@@ -673,7 +673,7 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 			boundBoxLength -= 16;
 		}
 
-		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+		image_id = stru_97B640[edgeStyle][tunnelType] + (_edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
 		curHeight += stru_97B570[tunnelType][0];
@@ -686,13 +686,13 @@ static void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height,
 /**
  * rct2: 0x0066039B, 0x006604F1
  */
-static void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_top(enum edge _edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
 	rct_xy8 offset = {0, 0};
 	rct_xy8 bounds = {0, 0};
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_TOPLEFT:
 			regs.al = self.corner_heights.top;
 			regs.cl = self.corner_heights.left;
@@ -747,7 +747,7 @@ static void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, u
 		base_image_id = stru_97B5C0[terrain][1];  // var_04
 	}
 
-	base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
+	base_image_id += (_edge == EDGE_TOPLEFT ? 5 : 0);
 
 	const uint8 rotation = get_current_rotation();
 	uint8 cur_height = min(regs.ch, regs.ah);
@@ -788,7 +788,7 @@ static void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, u
 /**
  * rct2: 0x0065F8B9, 0x0065FE26
  */
-static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_water_side_bottom(enum edge _edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
@@ -798,7 +798,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
 	tunnel_entry * tunnelArray;
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
 			regs.cl = self.corner_heights.bottom;
@@ -857,7 +857,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 		base_image_id = stru_97B5C0[edgeStyle][1];
 	}
 
-	if (edge == EDGE_BOTTOMRIGHT) {
+	if (_edge == EDGE_BOTTOMRIGHT) {
 		base_image_id += 5;
 	}
 
@@ -931,7 +931,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 		}
 
 
-		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (_edge == EDGE_BOTTOMRIGHT ? 2 : 0);
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
@@ -943,7 +943,7 @@ static void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height
 			boundBoxLength -= 16;
 		}
 
-		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+		image_id = stru_97B640[edgeStyle][tunnelType] + (_edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
 		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
 		curHeight += stru_97B570[tunnelType][0];

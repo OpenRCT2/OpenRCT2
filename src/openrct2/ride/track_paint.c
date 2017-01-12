@@ -207,10 +207,10 @@ uint32 gTrackColours[4];
 
 bool gUseOriginalRidePaint = false;
 
-bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
+bool track_paint_util_has_fence(enum edge _edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
 {
 	rct_xy16 offset = { 0, 0 };
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_NE:
 			offset = loc_7667AC[rotation];
 			break;
@@ -570,12 +570,12 @@ void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence
 	}
 }
 
-bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
+bool track_paint_util_draw_station_covers(enum edge _edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
 {
-	return track_paint_util_draw_station_covers_2(edge, hasFence, entranceStyle, direction, height, STATION_VARIANT_BASIC);
+	return track_paint_util_draw_station_covers_2(_edge, hasFence, entranceStyle, direction, height, STATION_VARIANT_BASIC);
 }
 
-bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant)
+bool track_paint_util_draw_station_covers_2(enum edge _edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant)
 {
 	if (!(g141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2))) {
 		return false;
@@ -593,7 +593,7 @@ bool track_paint_util_draw_station_covers_2(enum edge edge, bool hasFence, const
 	rct_xyz16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
 	offset = (rct_xyz16) {0, 0, height};
-	switch (edge) {
+	switch (_edge) {
 		case EDGE_NE:
 			bounds = (rct_xyz16) {1, 30, heights[stationVariant][0]};
 			boundsOffset = (rct_xyz16) {0, 1, height + 1};

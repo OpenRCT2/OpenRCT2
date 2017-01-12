@@ -48,8 +48,8 @@ extern "C"
 
 enum class DIRECTORY_CHILD_TYPE
 {
-    DIRECTORY,
-    FILE,
+    DC_DIRECTORY,
+    DC_FILE,
 };
 
 struct DirectoryChild
@@ -149,7 +149,7 @@ public:
             else
             {
                 const DirectoryChild * child = &state->Listing[state->Index];
-                if (child->Type == DIRECTORY_CHILD_TYPE::DIRECTORY)
+                if (child->Type == DIRECTORY_CHILD_TYPE::DC_DIRECTORY)
                 {
                     utf8 childPath[MAX_PATH];
                     String::Set(childPath, sizeof(childPath), state->Path.c_str());
@@ -274,11 +274,11 @@ private:
 
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DIRECTORY;
+            result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
         }
         else
         {
-            result.Type = DIRECTORY_CHILD_TYPE::FILE;
+            result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
             result.Size = ((uint64)child->nFileSizeHigh << 32ULL) | (uint64)child->nFileSizeLow;
             result.LastModified = ((uint64)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)child->ftLastWriteTime.dwLowDateTime;
         }
@@ -332,11 +332,11 @@ private:
         result.Name = std::string(node->d_name);
         if (node->d_type & DT_DIR)
         {
-            result.Type = DIRECTORY_CHILD_TYPE::DIRECTORY;
+            result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
         }
         else
         {
-            result.Type = DIRECTORY_CHILD_TYPE::FILE;
+            result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
 
             // Get the full path of the file
             size_t pathSize = String::SizeOf(directory) + 1 + String::SizeOf(node->d_name) + 1;
