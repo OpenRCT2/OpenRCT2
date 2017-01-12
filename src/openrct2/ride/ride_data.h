@@ -123,7 +123,7 @@ enum {
 	RIDE_TYPE_FLAG4_TRANSPORT_RIDE = (1 << 12),
 	RIDE_TYPE_FLAG4_13 = (1 << 13),
 	RIDE_TYPE_FLAG4_14 = (1 << 14),
-	RIDE_TYPE_FLAG4_15 = (1 << 15),
+	RIDE_TYPE_FLAG4_FLYING_RC = (1 << 15), // This is only set on the Flying RC and its alternative type. It seems to be used in determining the track variety or something like that.
 };
 
 typedef struct rct_shop_item_stats {

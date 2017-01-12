@@ -11282,11 +11282,11 @@ static bool sub_69101A(rct_map_element *esi) {
 		return false;
 	}
 
-	if (RideData4[ride->type].flags & 0x2000) {
+	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_13) {
 		if ((scenario_rand() & 0xFFFF) > 0x3333) {
 			return true;
 		}
-	} else if (RideData4[ride->type].flags & 0x4000) {
+	} else if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_14) {
 		if ((scenario_rand() & 0xFFFF) > 0x1000) {
 			return true;
 		}
