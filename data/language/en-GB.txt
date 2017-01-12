@@ -4312,13 +4312,14 @@ STR_6000    :Enter new value
 STR_6001    :Enable lighting effects (experimental)
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
 STR_6003    :Cut-away View
-STR_6004    :Enable cut-away view
-STR_6005    :Cut-away view only displays map elements at or below the cut height
-STR_6006    :Cut height
-STR_6007    :Click to toggle raw value<->value in measurement units
-STR_6008    :Select cut height
-STR_6009    :{COMMA2DP32}m
-STR_6010    :{COMMA1DP16}ft
+STR_6004    :Cut-away View
+STR_6005    :Enable cut-away view
+STR_6006    :Cut-away view only displays map elements at or below the cut height
+STR_6007    :Cut height
+STR_6008    :Click to toggle raw value<->value in measurement units
+STR_6009    :Select cut height
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
 
 #############
 # Scenarios #

@@ -99,6 +99,7 @@ typedef enum {
 	DDIDX_TRACK_HEIGHTS = 11,
 	DDIDX_PATH_HEIGHTS = 12,
 	DDIDX_VIEW_CLIPPING = 14,
+
 	TOP_TOOLBAR_VIEW_MENU_COUNT
 } TOP_TOOLBAR_VIEW_MENU_DDIDX;
 
@@ -3060,7 +3061,7 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
 	gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
 	gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
-	gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING;
+	gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING_MENU;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
