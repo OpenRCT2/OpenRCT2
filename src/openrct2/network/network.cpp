@@ -306,9 +306,9 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	BeginChatLog();
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
-	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
-	player->group = 0;
-	player_id = player->id;
+	player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
+	player->Group = 0;
+	player_id = player->Id;
 
 	printf("Ready for clients...\n");
 	network_chat_show_connected_message();
@@ -494,7 +494,7 @@ void Network::UpdateClient()
 
 std::vector<std::unique_ptr<NetworkPlayer>>::iterator Network::GetPlayerIteratorByID(uint8 id)
 {
-	auto it = std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->id == id; });
+	auto it = std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; });
 	if (it != player_list.end()) {
 		return it;
 	}
@@ -536,7 +536,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		safe_strcpy(lineCh, (const char *) fromplayer->name.c_str(), sizeof(formatted) - (lineCh - formatted));
+		safe_strcpy(lineCh, (const char *) fromplayer->Name.c_str(), sizeof(formatted) - (lineCh - formatted));
 		safe_strcat(lineCh, ": ", sizeof(formatted) - (lineCh - formatted));
 		lineCh = strchr(lineCh, '\0');
 	}
@@ -580,7 +580,7 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 void Network::KickPlayer(int playerId)
 {
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		if ((*it)->Player->id == playerId) {
+		if ((*it)->Player->Id == playerId) {
 			// Disconnect the client gracefully
 			(*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
@@ -896,7 +896,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 {
 	uint8 new_playerid = 0;
 	if (connection.Player) {
-		new_playerid = connection.Player->id;
+		new_playerid = connection.Player->Id;
 	}
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << (uint8)new_playerid;
@@ -1083,7 +1083,7 @@ void Network::Server_Send_PINGLIST()
 	std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PINGLIST << (uint8)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
-		*packet << player_list[i]->id << player_list[i]->ping;
+		*packet << player_list[i]->Id << player_list[i]->Ping;
 	}
 	SendPacketToClients(*packet);
 }
@@ -1236,8 +1236,8 @@ void Network::ProcessGameCommandQueue()
 		if (cost != MONEY32_UNDEFINED) {
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
-				player->last_action = NetworkActions::FindCommand(command);
-				player->last_action_time = SDL_GetTicks();
+				player->LastAction = NetworkActions::FindCommand(command);
+				player->LastActionTime = SDL_GetTicks();
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1258,7 +1258,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	if (connection_player) {
 		char text[256];
 		const char * has_disconnected_args[2] = {
-				(char *) connection_player->name.c_str(),
+				(char *) connection_player->Name.c_str(),
 				connection->GetLastDisconnectReason()
 		};
 		if (has_disconnected_args[1]) {
@@ -1268,12 +1268,12 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		}
 
 		chat_history_add(text);
-		rct_peep* pickup_peep = network_get_pickup_peep(connection_player->id);
+		rct_peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
 		if(pickup_peep) {
-			game_command_playerid = connection_player->id;
-			game_do_command(pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->id), 0);
+			game_command_playerid = connection_player->Id;
+			game_do_command(pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0, pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF, network_get_pickup_peep_old_x(connection_player->Id), 0);
 		}
-		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->GetLastDisconnectReason());
+		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());
 	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
 						  return player.get() == connection_player;
@@ -1290,7 +1290,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
 		// Find first unused player id
 		for (int id = 0; id < 255; id++) {
 			if (std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) {
-							 return player->id == id;
+							 return player->Id == id;
 				}) == player_list.end()) {
 				newid = id;
 				break;
@@ -1309,21 +1309,21 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
 			const NetworkUser * networkUser = _userManager.GetUserByHash(keyhash);
 
 			player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
-			player->id = newid;
-			player->keyhash = keyhash;
+			player->Id = newid;
+			player->KeyHash = keyhash;
 			if (networkUser == nullptr) {
-				player->group = GetDefaultGroup();
+				player->Group = GetDefaultGroup();
 				if (!String::IsNullOrEmpty(name)) {
 					player->SetName(MakePlayerNameUnique(std::string(name)));
 				}
 			} else {
-				player->group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
+				player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
 				player->SetName(networkUser->Name);
 			}
 		} else {
 			player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
-			player->id = newid;
-			player->group = GetDefaultGroup();
+			player->Id = newid;
+			player->Group = GetDefaultGroup();
 			player->SetName(name);
 		}
 
@@ -1345,7 +1345,7 @@ std::string Network::MakePlayerNameUnique(const std::string &name)
 
 		// Check if there is already a player with this name in the server
 		for (const auto &player : player_list) {
-			if (String::Equals(player->name.c_str(), new_name.c_str(), true)) {
+			if (String::Equals(player->Name.c_str(), new_name.c_str(), true)) {
 				unique = false;
 				break;
 			}
@@ -1458,7 +1458,7 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 	connection.Player = player;
 	if (player) {
 		char text[256];
-		const char * player_name = (const char *) player->name.c_str();
+		const char * player_name = (const char *) player->Name.c_str();
 		format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
 		std::vector<const ObjectRepositoryItem *> objects = scenario_get_packable_objects();
@@ -1525,7 +1525,7 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 		}
 	}
 
-	const char * player_name = (const char *) connection.Player->name.c_str();
+	const char * player_name = (const char *) connection.Player->Name.c_str();
 	Server_Send_MAP(&connection);
 	gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
 	Server_Send_GROUPLIST(connection);
@@ -1679,7 +1679,7 @@ void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
 	if (connection.Player) {
-		NetworkGroup* group = GetGroupByID(connection.Player->group);
+		NetworkGroup* group = GetGroupByID(connection.Player->Group);
 		if (!group || (group && !group->CanPerformCommand(-1))) {
 			return;
 		}
@@ -1715,7 +1715,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		return;
 	}
 
-	playerid = connection.Player->id;
+	playerid = connection.Player->Id;
 
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
 
@@ -1724,7 +1724,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	int ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
 
 	// Check if player's group permission allows command to run
-	NetworkGroup* group = GetGroupByID(connection.Player->group);
+	NetworkGroup* group = GetGroupByID(connection.Player->Group);
 	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
@@ -1733,7 +1733,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// require a small delay in between placing scenery to provide some security, as
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.Player->last_action_time) < 20) {
+		if ((ticks - connection.Player->LastActionTime) < 20) {
 			if (!(group->CanPerformCommand(-2))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
 				return;
@@ -1755,8 +1755,8 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		return;
 	}
 
-	connection.Player->last_action = NetworkActions::FindCommand(commandCommand);
-	connection.Player->last_action_time = SDL_GetTicks();
+	connection.Player->LastAction = NetworkActions::FindCommand(commandCommand);
+	connection.Player->LastActionTime = SDL_GetTicks();
 	connection.Player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
@@ -1792,12 +1792,12 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 	for (unsigned int i = 0; i < size; i++) {
 		NetworkPlayer tempplayer;
 		tempplayer.Read(packet);
-		ids.push_back(tempplayer.id);
-		if (!GetPlayerByID(tempplayer.id)) {
+		ids.push_back(tempplayer.Id);
+		if (!GetPlayerByID(tempplayer.Id)) {
 			NetworkPlayer* player = AddPlayer("", "");
 			if (player) {
 				*player = tempplayer;
-				if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+				if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 					server_connection.Player = player;
 				}
 			}
@@ -1806,7 +1806,7 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 	// Remove any players that are not in newly received list
 	auto it = player_list.begin();
 	while (it != player_list.end()) {
-		if (std::find(ids.begin(), ids.end(), (*it)->id) == ids.end()) {
+		if (std::find(ids.begin(), ids.end(), (*it)->Id) == ids.end()) {
 			it = player_list.erase(it);
 		} else {
 			it++;
@@ -1826,8 +1826,8 @@ void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& p
 		ping = 0;
 	}
 	if (connection.Player) {
-		connection.Player->ping = ping;
-		window_invalidate_by_number(WC_PLAYER, connection.Player->id);
+		connection.Player->Ping = ping;
+		window_invalidate_by_number(WC_PLAYER, connection.Player->Id);
 	}
 }
 
@@ -1841,7 +1841,7 @@ void Network::Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacke
 		packet >> id >> ping;
 		NetworkPlayer* player = GetPlayerByID(id);
 		if (player) {
-			player->ping = ping;
+			player->Ping = ping;
 		}
 	}
 	window_invalidate_by_class(WC_PLAYER);
@@ -2022,27 +2022,27 @@ int network_get_num_players()
 
 const char* network_get_player_name(unsigned int index)
 {
-	return (const char*)gNetwork.player_list[index]->name.c_str();
+	return (const char*)gNetwork.player_list[index]->Name.c_str();
 }
 
 uint32 network_get_player_flags(unsigned int index)
 {
-	return gNetwork.player_list[index]->flags;
+	return gNetwork.player_list[index]->Flags;
 }
 
 int network_get_player_ping(unsigned int index)
 {
-	return gNetwork.player_list[index]->ping;
+	return gNetwork.player_list[index]->Ping;
 }
 
 int network_get_player_id(unsigned int index)
 {
-	return gNetwork.player_list[index]->id;
+	return gNetwork.player_list[index]->Id;
 }
 
 money32 network_get_player_money_spent(unsigned int index)
 {
-	return gNetwork.player_list[index]->money_spent;
+	return gNetwork.player_list[index]->MoneySpent;
 }
 
 void network_add_player_money_spent(unsigned int index, money32 cost)
@@ -2052,33 +2052,33 @@ void network_add_player_money_spent(unsigned int index, money32 cost)
 
 int network_get_player_last_action(unsigned int index, int time)
 {
-	if (time && SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->last_action_time + time)) {
+	if (time && SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->LastActionTime + time)) {
 		return -999;
 	}
-	return gNetwork.player_list[index]->last_action;
+	return gNetwork.player_list[index]->LastAction;
 }
 
 void network_set_player_last_action(unsigned int index, int command)
 {
-	gNetwork.player_list[index]->last_action = NetworkActions::FindCommand(command);
-	gNetwork.player_list[index]->last_action_time = SDL_GetTicks();
+	gNetwork.player_list[index]->LastAction = NetworkActions::FindCommand(command);
+	gNetwork.player_list[index]->LastActionTime = SDL_GetTicks();
 }
 
 rct_xyz16 network_get_player_last_action_coord(unsigned int index)
 {
-	return gNetwork.player_list[index]->last_action_coord;
+	return gNetwork.player_list[index]->LastActionCoord;
 }
 
 void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord)
 {
 	if (index < gNetwork.player_list.size()) {
-		gNetwork.player_list[index]->last_action_coord = coord;
+		gNetwork.player_list[index]->LastActionCoord = coord;
 	}
 }
 
 unsigned int network_get_player_commands_ran(unsigned int index)
 {
-	return gNetwork.player_list[index]->commands_ran;
+	return gNetwork.player_list[index]->CommandsRan;
 }
 
 int network_get_player_index(uint8 id)
@@ -2092,12 +2092,12 @@ int network_get_player_index(uint8 id)
 
 uint8 network_get_player_group(unsigned int index)
 {
-	return gNetwork.player_list[index]->group;
+	return gNetwork.player_list[index]->Group;
 }
 
 void network_set_player_group(unsigned int index, unsigned int groupindex)
 {
-	gNetwork.player_list[index]->group = gNetwork.group_list[groupindex]->Id;
+	gNetwork.player_list[index]->Group = gNetwork.group_list[groupindex]->Id;
 }
 
 int network_get_group_index(uint8 id)
@@ -2131,7 +2131,7 @@ void network_chat_show_connected_message()
 	keyboard_shortcut_format_string(templateBuffer, 128, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
 	utf8 buffer[256];
 	NetworkPlayer server;
-	server.name = "Server";
+	server.Name = "Server";
 	format_string(buffer, 256, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
 	const char *formatted = Network::FormatChat(&server, buffer);
 	chat_history_add(formatted);
@@ -2172,7 +2172,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+	if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
 		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
@@ -2185,14 +2185,14 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		player->group = groupid;
+		player->Group = groupid;
 
 		if (network_get_mode() == NETWORK_MODE_SERVER) {
 			// Add or update saved user
 			NetworkUserManager *userManager = &gNetwork._userManager;
-			NetworkUser *networkUser = userManager->GetOrAddUser(player->keyhash);
+			NetworkUser *networkUser = userManager->GetOrAddUser(player->KeyHash);
 			networkUser->GroupId = groupid;
-			networkUser->Name = player->name;
+			networkUser->Name = player->Name;
 			userManager->Save();
 		}
 
@@ -2231,7 +2231,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			return;
 		}
 		for (auto it = gNetwork.player_list.begin(); it != gNetwork.player_list.end(); it++) {
-			if((*it)->group == groupid) {
+			if((*it)->Group == groupid) {
 				gGameCommandErrorTitle = STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO;
 				gGameCommandErrorText = STR_NONE;
 				*ebx = MONEY32_UNDEFINED;
@@ -2255,7 +2255,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		NetworkGroup* mygroup = nullptr;
 		NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
 		if (player && !all) {
-			mygroup = gNetwork.GetGroupByID(player->group);
+			mygroup = gNetwork.GetGroupByID(player->Group);
 			if (!mygroup || (mygroup && !mygroup->CanPerformAction(index))) {
 				gGameCommandErrorTitle = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
 				gGameCommandErrorText = STR_NONE;
@@ -2336,7 +2336,7 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 {
 	uint8 playerid = (uint8)*eax;
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-	if (player && player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+	if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_KICK_THE_HOST;
 		gGameCommandErrorText = STR_NONE;
 		*ebx = MONEY32_UNDEFINED;
@@ -2348,7 +2348,7 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 
 			NetworkUserManager * networkUserManager = &gNetwork._userManager;
 			networkUserManager->Load();
-			networkUserManager->RemoveUser(player->keyhash);
+			networkUserManager->RemoveUser(player->KeyHash);
 			networkUserManager->Save();
 		}
 	}
@@ -2387,27 +2387,27 @@ int network_can_perform_command(unsigned int groupindex, unsigned int index)
 
 void network_set_pickup_peep(uint8 playerid, rct_peep* peep)
 {
-	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep = peep : gNetwork.GetPlayerByID(playerid)->pickup_peep = peep;
+	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep = peep : gNetwork.GetPlayerByID(playerid)->PickupPeep = peep;
 }
 
 rct_peep* network_get_pickup_peep(uint8 playerid)
 {
-	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep : gNetwork.GetPlayerByID(playerid)->pickup_peep;
+	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep : gNetwork.GetPlayerByID(playerid)->PickupPeep;
 }
 
 void network_set_pickup_peep_old_x(uint8 playerid, int x)
 {
-	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x = x : gNetwork.GetPlayerByID(playerid)->pickup_peep_old_x = x;
+	gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x = x : gNetwork.GetPlayerByID(playerid)->PickupPeepOldX = x;
 }
 
 int network_get_pickup_peep_old_x(uint8 playerid)
 {
-	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x : gNetwork.GetPlayerByID(playerid)->pickup_peep_old_x;
+	return gNetwork.GetMode() == NETWORK_MODE_NONE ? _pickup_peep_old_x : gNetwork.GetPlayerByID(playerid)->PickupPeepOldX;
 }
 
 int network_get_current_player_group_index()
 {
-	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
+	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->Group);
 }
 
 void network_send_map()
