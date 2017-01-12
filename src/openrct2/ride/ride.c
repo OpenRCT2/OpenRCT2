@@ -2886,7 +2886,7 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
 	}
 
 	uint8 trackType = (vehicle->track_type >> 2) & 0xFF;
-	if (trackType == 216 ||
+	if (trackType == TRACK_ELEM_BLOCK_BRAKES ||
 		trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
 		trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
 		trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
@@ -4128,19 +4128,19 @@ static int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output
 
 	track_circuit_iterator_begin(&it, *input);
 	while (track_circuit_iterator_next(&it)) {
-		if (it.current.element->properties.track.type == 216) {
+		if (it.current.element->properties.track.type == TRACK_ELEM_BLOCK_BRAKES) {
 			type = it.last.element->properties.track.type;
-			if (type == 1) {
+			if (type == TRACK_ELEM_END_STATION) {
 				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
 				*output = it.current;
 				return 0;
 			}
-			if (type == 216) {
+			if (type == TRACK_ELEM_BLOCK_BRAKES) {
 				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
 				*output = it.current;
 				return 0;
 			}
-			if ((it.last.element->type & 0x80) && type != 209 && type != 210) {
+			if ((it.last.element->type & 0x80) && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL && type != TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
 				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
 				*output = it.current;
 				return 0;
@@ -4401,7 +4401,7 @@ static void ride_set_block_points(rct_xy_element *startElement)
 		case TRACK_ELEM_60_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
 		case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-		case 216:		// block brakes
+		case TRACK_ELEM_BLOCK_BRAKES:
 			currentElement.element->flags &= ~(1 << 5);
 			break;
 		}
@@ -4769,7 +4769,7 @@ static void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element
 			break;
 		case TRACK_ELEM_END_STATION:
 		case TRACK_ELEM_CABLE_LIFT_HILL:
-		case 216:
+		case TRACK_ELEM_BLOCK_BRAKES:
 			outXYElement->x = x;
 			outXYElement->y = y;
 			outXYElement->element = trackElement;
