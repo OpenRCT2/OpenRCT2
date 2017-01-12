@@ -1005,8 +1005,11 @@ private:
 
     void SetVehicleColours(rct_vehicle * dst, rct1_vehicle * src)
     {
+        rct1_ride * srcRide = &_s4.rides[src->ride];
+        uint8 vehicleTypeIndex = srcRide->vehicle_type;
+        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(vehicleTypeIndex);
+
         // RCT1 had no third colour
-        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
         if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
         {
             dst->colours.body_colour = RCT1::GetColour(src->colours.body_colour);
