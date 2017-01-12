@@ -254,7 +254,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Get the tool map position
 	sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
-	if (mapX == (short)0x8000) {
+	if (mapX == MAP_LOCATION_NULL) {
 		window_track_place_clear_provisional();
 		return;
 	}
@@ -316,7 +316,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
-	if (mapX == (short)0x8000)
+	if (mapX == MAP_LOCATION_NULL)
 		return;
 
 	// Try increasing Z until a feasible placement is found

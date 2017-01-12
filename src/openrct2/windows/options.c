@@ -855,7 +855,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 */
 static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int num_items, i;
+	int num_items;
 
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -867,7 +867,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			platform_update_fullscreen_resolutions();
 
 			int selectedResolution = -1;
-			for (i = 0; i < gNumResolutions; i++) {
+			for (int i = 0; i < gNumResolutions; i++) {
 				resolution *resolution = &gResolutions[i];
 
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -975,7 +975,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			num_items = CURRENCY_END + 1; // All the currencies plus the separator
 			int num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
 
-			for (i = 0; i < num_ordinary_currencies; i++) {
+			for (int i = 0; i < num_ordinary_currencies; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
 			}
@@ -1017,7 +1017,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.temperature_format, true);
 			break;
 		case WIDX_LANGUAGE_DROPDOWN:
-			for (i = 1; i < LANGUAGE_COUNT; i++) {
+			for (int i = 1; i < LANGUAGE_COUNT; i++) {
 				gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i - 1] = (uintptr_t)LanguagesDescriptors[i].native_name;
 			}
@@ -1025,7 +1025,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gCurrentLanguage - 1, true);
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
-			for (i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = DateFormatStringIds[i];
 			}
@@ -1041,7 +1041,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			audio_populate_devices();
 
 			// populate the list with the sound devices
-			for (i = 0; i < gAudioDeviceCount; i++) {
+			for (int i = 0; i < gAudioDeviceCount; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)gAudioDevices[i].name;
 			}
@@ -1053,7 +1053,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_TITLE_MUSIC_DROPDOWN:
 			num_items = 4;
 
-			for (i = 0; i < num_items ; i++) {
+			for (int i = 0; i < num_items ; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = window_options_title_music_names[i];
 			}
@@ -1115,7 +1115,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
 		case WIDX_AUTOSAVE_DROPDOWN:
-			for (i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
+			for (int i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = window_options_autosave_names[i];
 			}
@@ -1125,7 +1125,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_TITLE_SEQUENCE_DROPDOWN:
 			num_items = (int)title_sequence_manager_get_count();
-			for (i = 0; i < num_items; i++) {
+			for (int i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)title_sequence_manager_get_name(i);
 			}
@@ -1142,7 +1142,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gTitleCurrentSequence, true);
 			break;
 		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-			for (i = 0; i < 7; i++) {
+			for (int i = 0; i < 7; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
 			}
@@ -1151,19 +1151,23 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
 			break;
 		case WIDX_WINDOW_LIMIT_UP:
-			i = gConfigGeneral.window_limit;
+		{
+			int i = gConfigGeneral.window_limit;
 			if (i < WINDOW_LIMIT_MAX) {
 				window_set_window_limit(++i);
 			}
 			window_invalidate(w);
 			break;
+		}
 		case WIDX_WINDOW_LIMIT_DOWN:
-			i = gConfigGeneral.window_limit;
+		{
+			int i = gConfigGeneral.window_limit;
 			if (i > WINDOW_LIMIT_MIN) {
 				window_set_window_limit(--i);
 			}
 			window_invalidate(w);
 			break;
+		}
 		}
 		break;
 

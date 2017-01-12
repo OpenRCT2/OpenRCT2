@@ -456,10 +456,10 @@ static sint16 windowTileInspectorHighlightedIndex = -1;
 static uint32 windowTileInspectorTileX;
 static uint32 windowTileInspectorTileY;
 static bool windowTileInspectorTileSelected = false;
-static uint32 windowTileInspectorToolMouseX = 0;
-static uint32 windowTileInspectorToolMouseY = 0;
-static uint32 windowTileInspectorToolMapX = 0;
-static uint32 windowTileInspectorToolMapY = 0;
+static sint32 windowTileInspectorToolMouseX = 0;
+static sint32 windowTileInspectorToolMouseY = 0;
+static sint32 windowTileInspectorToolMapX = 0;
+static sint32 windowTileInspectorToolMapY = 0;
 static int windowTileInspectorElementCount = 0;
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
@@ -1460,7 +1460,7 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 	short mapY = y;
 	int direction;
 	screen_pos_to_map_pos(&mapX, &mapY, &direction);
-	if (mapX != (short)0x8000) {
+	if (mapX != MAP_LOCATION_NULL) {
 		gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
 		gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
 	}
@@ -1489,7 +1489,7 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, int x, int
 	short mapY = y;
 	int direction;
 	screen_pos_to_map_pos(&mapX, &mapY, &direction);
-	if (mapX == (short)0x8000) {
+	if (mapX == MAP_LOCATION_NULL) {
 		return;
 	}
 	//if call matches previously selected item, do not continue.

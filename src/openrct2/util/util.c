@@ -176,7 +176,7 @@ int bitscanforward(int source)
 {
 	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
 		int i;
-		uint8 success = _BitScanForward(&i, source);
+		uint8 success = _BitScanForward((unsigned long *)&i, (unsigned long)source);
 		return success != 0 ? i : -1;
 	#elif defined(__GNUC__)
 		int success = __builtin_ffs(source);
@@ -308,9 +308,6 @@ int strlogicalcmp(char const *a, char const *b) {
 			}
 		}
 	}
-
-	assert(false);
-	return 0;
 }
 
 utf8 * safe_strtrunc(utf8 * text, size_t size)
@@ -418,7 +415,7 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size)
 
 bool utf8_is_bom(const char *str)
 {
-	return str[0] == (char)0xEF && str[1] == (char)0xBB && str[2] == (char)0xBF;
+	return str[0] == (char)(uint8)0xEF && str[1] == (char)(uint8)0xBB && str[2] == (char)(uint8)0xBF;
 }
 
 bool str_is_null_or_empty(const char *str)

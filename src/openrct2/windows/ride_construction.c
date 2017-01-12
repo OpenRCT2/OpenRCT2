@@ -2063,7 +2063,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 
 	if (!_trackPlaceCtrlState) {
 		sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &mapElement);
-		if (mapX == (short)0x8000)
+		if (mapX == MAP_LOCATION_NULL)
 			return false;
 
 		_trackPlaceZ = 0;
@@ -2083,7 +2083,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 		_trackPlaceZ = max(mapZ, 16);
 	}
 
-	if (mapX == (short)0x8000)
+	if (mapX == MAP_LOCATION_NULL)
 		return false;
 
 	*outX = floor2(mapX, 32);
@@ -2331,6 +2331,7 @@ static void sub_6CBCE2(
 		int bl = trackBlock->var_08;
 		int bh;
 		switch (trackDirection) {
+		default:
 		case 0:
 			offsetX =  trackBlock->x;
 			offsetY =  trackBlock->y;
@@ -3463,6 +3464,7 @@ static void window_ride_construction_select_map_tiles(rct_ride *ride, int trackT
 	int selectionTileIndex = 0;
 	while (trackBlock->index != 255) {
 		switch (trackDirection) {
+		default:
 		case 0:
 			offsetX = trackBlock->x;
 			offsetY = trackBlock->y;

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
+
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
@@ -1332,7 +1334,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		rct_drawpixelinfo clipDPI;
 		x = w->x + widget->left + 1;
 		y = w->y + widget->top + 1;
-		int width = widget->right - widget->left - 1;
+		width = widget->right - widget->left - 1;
 		int height = widget->bottom - widget->top - 1;
 		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
 			object_draw_preview(_loadedObject, &clipDPI, width, height);
@@ -1355,7 +1357,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 		x = w->x + w->widgets[WIDX_LIST].right + 4;
 		y += 15;
-		int width = w->x + w->width - x - 4;
+		width = w->x + w->width - x - 4;
 		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
 			gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT, COLOUR_BLACK);
 		} else {

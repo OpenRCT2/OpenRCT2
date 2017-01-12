@@ -163,6 +163,7 @@ rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation){
 	rct_xy16 coordinate_2d;
 
 	switch (rotation){
+	default:
 	case 0:
 		coordinate_2d.x = coordinate_3d->y - coordinate_3d->x;
 		coordinate_2d.y = ((coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
@@ -4996,6 +4997,7 @@ static void translate_3d_to_2d(int rotation, int *x, int *y)
 	int rx, ry;
 
 	switch (rotation & 3) {
+	default:
 	case 0:
 		rx = (*y) - (*x);
 		ry = (*x) + (*y);
@@ -5023,6 +5025,7 @@ rct_xy32 translate_3d_to_2d_with_z(sint32 rotation, rct_xyz32 pos)
 {
 	rct_xy32 result;
 	switch (rotation & 3) {
+	default:
 	case 0:
 		result.x = pos.y - pos.x;
 		result.y = (pos.x + pos.y) / 2 - pos.z;
@@ -5204,7 +5207,7 @@ static money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint
 
 	sint8 entranceNum = -1;
 	for (uint8 i = 0; i < 4; ++i) {
-		if (gParkEntranceX[i] == (sint16)0x8000) {
+		if (gParkEntranceX[i] == MAP_LOCATION_NULL) {
 			entranceNum = i;
 			break;
 		}
