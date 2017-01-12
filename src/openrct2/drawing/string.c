@@ -181,7 +181,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 	utf8 *currentWord = NULL;
 
 	// Width of line up to current word
-	int currentWidth;
+	int currentWidth = 0;
 
 	utf8 *ch = text;
 	utf8 *firstCh = text;

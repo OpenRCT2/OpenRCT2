@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4127) // conditional expression is constant
+
 extern "C"
 {
     #include "drawing.h"
