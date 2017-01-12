@@ -1407,6 +1407,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			rct_xy16 box_offset, box_size;
 			uint32 image_1, image_2, image_3;
 			switch (i) {
+				default:
 				case 0:
 					// Bottom right
 					bit_1 = 1;

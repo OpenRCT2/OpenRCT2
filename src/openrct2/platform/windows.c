@@ -1076,9 +1076,10 @@ static bool windows_setup_file_association(
 	get_progIdName(progIdNameW, extension);
 
 	bool result = false;
+	HKEY hKey = NULL;
+	HKEY hRootKey = NULL;
 
 	// [HKEY_CURRENT_USER\Software\Classes]
-	HKEY hRootKey = NULL;
 	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {
 		goto fail;
 	}
@@ -1088,7 +1089,6 @@ static bool windows_setup_file_association(
 		goto fail;
 	}
 
-	HKEY hKey = NULL;
 	if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS) {
 		goto fail;
 	}
