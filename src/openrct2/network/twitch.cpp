@@ -546,7 +546,7 @@ namespace Twitch
         if (gConfigTwitch.enable_news)
         {
             utf8 buffer[256];
-            buffer[0] = (utf8)FORMAT_TOPAZ;
+            buffer[0] = (utf8)(uint8)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
             // Remove unsupported characters

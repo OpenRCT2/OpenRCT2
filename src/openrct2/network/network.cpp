@@ -90,7 +90,6 @@ void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
 static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName);
 static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
-static void network_get_keymap_path(utf8 *buffer, size_t bufferSize);
 
 Network::Network()
 {
@@ -2491,12 +2490,6 @@ static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const u
 	String::Append(buffer, bufferSize, "-");
 	String::Append(buffer, bufferSize, hash);
 	String::Append(buffer, bufferSize, ".pubkey");
-}
-
-static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
-{
-	platform_get_user_directory(buffer, NULL, bufferSize);
-	Path::Append(buffer, bufferSize, "keymappings.json");
 }
 
 const utf8 * network_get_server_name() { return gNetwork.ServerName.c_str(); }
