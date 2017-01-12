@@ -124,7 +124,7 @@ static bool OnCrash(const wchar_t * dumpPath,
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
         }
         if (pidl != nullptr) {
-            HRESULT result = SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST *)files, 0);
+            SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST *)files, 0);
             ILFree(pidl);
             for (uint32 i = 0; i < numFiles; i++)
             {

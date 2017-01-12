@@ -570,7 +570,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	} else {
 		// Build custom track item
 		rct_string_id stringId;
-		if (listIndex == w->selected_list_item) {
+		if (listIndex == (size_t)w->selected_list_item) {
 			// Highlight
 			gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
 			stringId = STR_WINDOW_COLOUR_2_STRINGID;
@@ -587,7 +587,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	for (size_t i = 0; i < _trackDesignsCount; i++, listIndex++) {
 		if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
 			rct_string_id stringId;
-			if (listIndex == w->selected_list_item) {
+			if (listIndex == (size_t)w->selected_list_item) {
 				// Highlight
 				gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
 				stringId = STR_WINDOW_COLOUR_2_STRINGID;
