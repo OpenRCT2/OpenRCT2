@@ -89,9 +89,9 @@ void Mixer_Channel_SetGroup(void* channel, int group);
 void* Mixer_Play_Music(int pathId, int loop, int streaming);
 void Mixer_SetVolume(float volume);
 
-inline int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); }
-inline float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; }
-inline double DStoMixerRate(int frequency) { return (double)frequency / 22050; }
+static inline int DStoMixerVolume(int volume) { return (int)(SDL_MIX_MAXVOLUME * (SDL_pow(10, (float)volume / 2000))); }
+static inline float DStoMixerPan(int pan) { return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2; }
+static inline double DStoMixerRate(int frequency) { return (double)frequency / 22050; }
 
 #ifdef __cplusplus
 }
