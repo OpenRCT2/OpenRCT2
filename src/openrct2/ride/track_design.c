@@ -168,7 +168,10 @@ static rct_track_td6 * track_design_open_from_td4(uint8 *src, size_t srcLength)
 	}
 
 	// Convert RCT1 vehicle type to RCT2 vehicle type
+#pragma warning(push)
+#pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 	rct_object_entry vehicleObject = { 0x80, { "        " }, 0 };
+#pragma warning(pop)
 	if (td4->type == RIDE_TYPE_MAZE) {
 		const char * name = rct1_get_ride_type_object(td4->type);
 		assert(name != NULL);
@@ -1216,7 +1219,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 				};
 				rct_map_element* map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
 				z = gTrackPreviewOrigin.z / 8;
-				z += (entrance->z == (sint8)0x80) ? -1 : entrance->z;
+				z += (entrance->z == (sint8)(uint8)0x80) ? -1 : entrance->z;
 
 				do {
 					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK) continue;
@@ -1240,7 +1243,7 @@ static bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint
 					break;
 				} while (!map_element_is_last_for_tile(map_element++));
 			} else {
-				z = (entrance->z == (sint8)0x80) ? -1 : entrance->z;
+				z = (entrance->z == (sint8)(uint8)0x80) ? -1 : entrance->z;
 				z *= 8;
 				z += gTrackPreviewOrigin.z;
 				z >>= 4;

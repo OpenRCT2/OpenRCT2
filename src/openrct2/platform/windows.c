@@ -728,7 +728,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 
 	utf8 *outPath = NULL;
 
-	if ((pidl = SHBrowseForFolderW(&bi))) {
+	if ((pidl = SHBrowseForFolderW(&bi)) != NULL) {
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath

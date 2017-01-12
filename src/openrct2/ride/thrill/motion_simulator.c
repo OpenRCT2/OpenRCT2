@@ -89,7 +89,7 @@ static void paint_motionsimulator_vehicle(sint8 offsetX, sint8 offsetY, uint8 di
 		imageId = simulatorImageId;
 		sub_98197C(imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
 		// Stairs
-		uint32 imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
+		imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
 		sub_98199C(imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
 		// Stairs (rail)
 		imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | gTrackColours[SCHEME_MISC];

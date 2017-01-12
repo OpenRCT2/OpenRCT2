@@ -815,7 +815,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep *srcPeep = &_s4.sprites[i].peep;
-                if (srcPeep->x != (sint16)0x8000 || srcPeep->state == PEEP_STATE_ON_RIDE)
+                if (srcPeep->x != MAP_LOCATION_NULL || srcPeep->state == PEEP_STATE_ON_RIDE)
                 {
                     rct_peep *peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                     move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
@@ -1722,7 +1722,7 @@ private:
                 if (additionType != RCT1_PATH_ADDITION_NONE)
                 {
                     uint8 normalisedType = RCT1::NormalisePathAddition(additionType);
-                    uint8 entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
+                    entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
                         mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
@@ -1888,7 +1888,7 @@ private:
     {
         for (int i = 0; i < 4; i++)
         {
-            gParkEntranceX[i] = (sint16)0x8000;
+            gParkEntranceX[i] = MAP_LOCATION_NULL;
         }
 
         uint8 entranceIndex = 0;

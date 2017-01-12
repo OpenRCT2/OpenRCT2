@@ -658,7 +658,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
 	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
-			if (vehicle->sprite_left != (sint16)0x8000) {
+			if (vehicle->sprite_left != (sint16)(uint16)0x8000) {
 				sint16 x = g_music_tracking_viewport->view_x;
 				sint16 y = g_music_tracking_viewport->view_y;
 				sint16 w = g_music_tracking_viewport->view_width / 4;
@@ -727,7 +727,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 							i->frequency = (uint16)v;
 							i->id = vehicle->sprite_index;
 							i->volume = 0;
-							if (vehicle->x != (sint16)0x8000) {
+							if (vehicle->x != MAP_LOCATION_NULL) {
 								rct_map_element* map_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
 								if (map_element != NULL && map_element->base_height * 8 > vehicle->z) { // vehicle underground
 									i->volume = 0x30;
@@ -751,7 +751,7 @@ int sub_6BC2F3(rct_vehicle* vehicle)
 	rct_vehicle* vehicle_temp = vehicle;
 	do {
 		result += vehicle_temp->friction;
-	} while (vehicle_temp->next_vehicle_on_train != (uint16)-1 && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)));
+	} while (vehicle_temp->next_vehicle_on_train != (uint16)-1 && (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)) != NULL);
 	sint32 v4 = vehicle->velocity;
 	if (v4 < 0) {
 		v4 = -v4;
@@ -8149,7 +8149,7 @@ loc_6DC743:
 
 	for (;;) {
 		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
-		if (moveInfo->x != (sint16)0x8000) {
+		if (moveInfo->x != MAP_LOCATION_NULL) {
 			break;
 		}
 		switch (moveInfo->y) {
@@ -8302,7 +8302,7 @@ loc_6DCA7A:
 
 loc_6DCA9A:
 	regs.ax = vehicle->track_progress - 1;
-	if (regs.ax != (short)0xFFFF) {
+	if ((uint16)regs.ax != 0xFFFF) {
 		goto loc_6DCC2C;
 	}
 

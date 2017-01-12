@@ -226,7 +226,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 		rct_peep *idSearchPeep;
 
 		// We search for the first available id for a given staff type
-		int newStaffIndex = 0;
+		uint32 newStaffIndex = 0;
 		for (;;) {
 			bool found = false;
 			++newStaffIndex;
@@ -302,7 +302,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
 		gStaffModes[newStaffId] = STAFF_MODE_WALK;
 
-		for (int i = 0; i < 128; i++) {
+		for (i = 0; i < 128; i++) {
 			uint32 *addr = (uint32*)((uintptr_t)gStaffPatrolAreas + (newStaffId << 9) + i * 4);
 			*addr = 0;
 		}

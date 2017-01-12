@@ -502,7 +502,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
 	if (mapElement == NULL){
 		output->element = NULL;
-		output->x = (sint16)0x8000;
+		output->x = MAP_LOCATION_NULL;
 		return 0;
 	}
 
@@ -1114,7 +1114,9 @@ static void ride_remove_peeps(int rideIndex)
 	}
 
 	// Get exit position and direction
-	int exitX, exitY, exitZ;
+	int exitX = 0;
+	int exitY = 0;
+	int exitZ = 0;
 	int exitDirection = 255;
 	if (stationIndex != -1) {
 		uint16 xy = ride->exits[stationIndex];
@@ -2025,7 +2027,7 @@ static void ride_update(int rideIndex)
 		ride->income_per_hour = ride_calculate_income_per_hour(ride);
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-		if (ride->upkeep_cost != (money16)0xFFFF)
+		if (ride->upkeep_cost != (money16)(uint16)0xFFFF)
 			ride->profit = (ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
 	}
 
@@ -2039,7 +2041,7 @@ static void ride_update(int rideIndex)
 
 	// Various things include news messages
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-		if (((gCurrentTicks >> 1) & 255) == rideIndex)
+		if (((gCurrentTicks >> 1) & 255) == (uint32)rideIndex)
 			ride_breakdown_status_update(rideIndex);
 
 	ride_inspection_update(ride);
@@ -2682,7 +2684,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 			if (!staff_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
 				continue;
 
-		if (peep->x == (sint16)0x8000)
+		if (peep->x == MAP_LOCATION_NULL)
 			continue;
 
 		// manhattan distance
@@ -3647,7 +3649,7 @@ rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
 void ride_music_update_final()
 {
 	rct_ride_music_params* edi = NULL;
-	int ebx;
+	int ebx = 0;
 	if (!(gScreenFlags & 2)) {
 		// TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
 		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & 1)) {
@@ -3697,53 +3699,53 @@ void ride_music_update_final()
 
 			for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0]; ride_music_params < gRideMusicParamsListEnd; ride_music_params++) {
 				if (ride_music_params->ride_id != (uint8)-1) {
-					rct_ride_music* ride_music = &gRideMusicList[0];
-					int channel = 0;
-					while (ride_music_params->ride_id != ride_music->ride_id || ride_music_params->tune_id != ride_music->tune_id) {
-						if (ride_music->ride_id == (uint8)-1) {
-							ebx = channel;
+					rct_ride_music* ride_music_2 = &gRideMusicList[0];
+					int channel2 = 0;
+					while (ride_music_params->ride_id != ride_music_2->ride_id || ride_music_params->tune_id != ride_music_2->tune_id) {
+						if (ride_music_2->ride_id == (uint8)-1) {
+							ebx = channel2;
 						}
-						ride_music++;
-						channel++;
-						if (channel >= AUDIO_MAX_RIDE_MUSIC) {
+						ride_music_2++;
+						channel2++;
+						if (channel2 >= AUDIO_MAX_RIDE_MUSIC) {
 							rct_ride_music_info* ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
-							rct_ride_music* ride_music = &gRideMusicList[ebx];
-							ride_music->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
-							if (ride_music->sound_channel) {
-								ride_music->volume = ride_music_params->volume;
-								ride_music->pan = ride_music_params->pan;
-								ride_music->frequency = ride_music_params->frequency;
-								ride_music->ride_id = ride_music_params->ride_id;
-								ride_music->tune_id = ride_music_params->tune_id;
-								Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
-								Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
-								Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->frequency));
+							rct_ride_music* ride_music_3 = &gRideMusicList[ebx];
+							ride_music_3->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
+							if (ride_music_3->sound_channel) {
+								ride_music_3->volume = ride_music_params->volume;
+								ride_music_3->pan = ride_music_params->pan;
+								ride_music_3->frequency = ride_music_params->frequency;
+								ride_music_3->ride_id = ride_music_params->ride_id;
+								ride_music_3->tune_id = ride_music_params->tune_id;
+								Mixer_Channel_Volume(ride_music_3->sound_channel, DStoMixerVolume(ride_music_3->volume));
+								Mixer_Channel_Pan(ride_music_3->sound_channel, DStoMixerPan(ride_music_3->pan));
+								Mixer_Channel_Rate(ride_music_3->sound_channel, DStoMixerRate(ride_music_3->frequency));
 								int offset = ride_music_params->offset - 10000;
 								if (offset < 0) {
 									offset = 0;
 								}
-								Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
+								Mixer_Channel_SetOffset(ride_music_3->sound_channel, offset);
 
 								// Move circus music to the sound mixer group
 								if (ride_music_info->path_id == PATH_ID_CSS24) {
-									Mixer_Channel_SetGroup(ride_music->sound_channel, MIXER_GROUP_SOUND);
+									Mixer_Channel_SetGroup(ride_music_3->sound_channel, MIXER_GROUP_SOUND);
 								}
 							}
 							return;
 						}
 					}
 
-					if (ride_music_params->volume != ride_music->volume) {
-						ride_music->volume = ride_music_params->volume;
-						Mixer_Channel_Volume(ride_music->sound_channel, DStoMixerVolume(ride_music->volume));
+					if (ride_music_params->volume != ride_music_2->volume) {
+						ride_music_2->volume = ride_music_params->volume;
+						Mixer_Channel_Volume(ride_music_2->sound_channel, DStoMixerVolume(ride_music_2->volume));
 					}
-					if (ride_music_params->pan != ride_music->pan) {
-						ride_music->pan = ride_music_params->pan;
-						Mixer_Channel_Pan(ride_music->sound_channel, DStoMixerPan(ride_music->pan));
+					if (ride_music_params->pan != ride_music_2->pan) {
+						ride_music_2->pan = ride_music_params->pan;
+						Mixer_Channel_Pan(ride_music_2->sound_channel, DStoMixerPan(ride_music_2->pan));
 					}
-					if (ride_music_params->frequency != ride_music->frequency) {
-						ride_music->frequency = ride_music_params->frequency;
-						Mixer_Channel_Rate(ride_music->sound_channel, DStoMixerRate(ride_music->frequency));
+					if (ride_music_params->frequency != ride_music_2->frequency) {
+						ride_music_2->frequency = ride_music_params->frequency;
+						Mixer_Channel_Rate(ride_music_2->sound_channel, DStoMixerRate(ride_music_2->frequency));
 					}
 
 				}
@@ -7124,7 +7126,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 	stationHeight = ride->station_heights[gRideEntranceExitPlaceStationIndex];
 
 	screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
-	if (mapX == (short)0x8000) {
+	if (mapX == MAP_LOCATION_NULL) {
 		*outX = 0x8000;
 		return;
 	}
