@@ -294,7 +294,7 @@ public:
                 if (select((int)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
                     error = 0;
-                    socklen_t len = sizeof(error);
+                    len = sizeof(error);
                     if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
                     {
                         throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));

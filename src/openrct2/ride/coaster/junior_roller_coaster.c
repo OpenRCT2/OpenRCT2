@@ -2849,9 +2849,9 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(uint8 rideInde
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
 	uint32 imageId = 0;
-	rct_xy16 offset;
-	rct_xy16 boundsLength;
-	rct_xy16 boundsOffset;
+	rct_xy16 offset = { 0 };
+	rct_xy16 boundsLength = { 0 };
+	rct_xy16 boundsOffset = { 0 };
 
 	switch (trackSequence) {
 	case 0:
@@ -2914,9 +2914,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(uint8 rideIndex,
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
 	uint32 imageId = 0;
-	rct_xy16 offset;
-	rct_xy16 boundsLength;
-	rct_xy16 boundsOffset;
+	rct_xy16 offset = { 0 };
+	rct_xy16 boundsLength = { 0 };
+	rct_xy16 boundsOffset = { 0 };
 
 	switch (trackSequence) {
 	case 0:

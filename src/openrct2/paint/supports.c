@@ -911,14 +911,14 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special,
 		uint8 ebp = _97AF32[baseIndex + segment * 8];
 		if (baseHeight <= gSupportSegments[ebp].height) {
 			baseIndex += 9 * 4 * 2; // 9 segments, 4 directions, 2 values
-			uint8 ebp = _97AF32[baseIndex + segment * 8];
-			if (baseHeight <= gSupportSegments[ebp].height) {
+			uint8 ebp2 = _97AF32[baseIndex + segment * 8];
+			if (baseHeight <= gSupportSegments[ebp2].height) {
 				baseIndex += 9 * 4 * 2;
-				uint8 ebp = _97AF32[baseIndex + segment * 8];
-				if (baseHeight <= gSupportSegments[ebp].height) {
+				uint8 ebp3 = _97AF32[baseIndex + segment * 8];
+				if (baseHeight <= gSupportSegments[ebp3].height) {
 					baseIndex += 9 * 4 * 2;
-					uint8 ebp = _97AF32[baseIndex + segment * 8];
-					if (baseHeight <= gSupportSegments[ebp].height) {
+					uint8 ebp4 = _97AF32[baseIndex + segment * 8];
+					if (baseHeight <= gSupportSegments[ebp4].height) {
 						return true; // STC
 					}
 				}

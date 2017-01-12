@@ -22,7 +22,7 @@
 #include "../ride/vehicle.h"
 
 #define SPRITE_INDEX_NULL		0xFFFF
-#define SPRITE_LOCATION_NULL	((sint16)0x8000)
+#define SPRITE_LOCATION_NULL	((sint16)(uint16)0x8000)
 #define MAX_SPRITES				10000
 #define NUM_SPRITE_LISTS		6
 

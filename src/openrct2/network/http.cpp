@@ -62,22 +62,6 @@ void http_dispose()
     curl_global_cleanup();
 }
 
-static size_t http_request_read_func(void *ptr, size_t size, size_t nmemb, void *userdata)
-{
-    read_buffer *readBuffer = (read_buffer*)userdata;
-
-    size_t remainingBytes = readBuffer->length - readBuffer->position;
-    size_t readBytes = size * nmemb;
-    if (readBytes > remainingBytes) {
-        readBytes = remainingBytes;
-    }
-
-    memcpy(ptr, readBuffer->ptr + readBuffer->position, readBytes);
-
-    readBuffer->position += readBytes;
-    return readBytes;
-}
-
 static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
     write_buffer *writeBuffer = (write_buffer*)userdata;

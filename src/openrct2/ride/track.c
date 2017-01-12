@@ -985,7 +985,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	uint32 num_elements = 0;
 	// First check if any of the track pieces are outside the park
 	for (; trackBlock->index != 0xFF; trackBlock++) {
-		int x, y, z, offsetX, offsetY;
+		sint32 offsetX = 0;
+		sint32 offsetY = 0;
 
 		switch (direction) {
 		case 0:
@@ -1006,9 +1007,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			break;
 		}
 
-		x = originX + offsetX;
-		y = originY + offsetY;
-		z = originZ + trackBlock->z;
+		sint32 x = originX + offsetX;
+		sint32 y = originY + offsetY;
+		sint32 z = originZ + trackBlock->z;
 
 		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
 			gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
@@ -1039,7 +1040,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	trackBlock = get_track_def_from_ride(ride, type);
 
 	for (int blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++) {
-		int x, y, z, offsetX, offsetY;
+		sint32 offsetX = 0;
+		sint32 offsetY = 0;
 		int bl = trackBlock->var_08;
 		int bh;
 		switch (direction) {
@@ -1078,9 +1080,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			bl |= bh;
 			break;
 		}
-		x = originX + offsetX;
-		y = originY + offsetY;
-		z = originZ + trackBlock->z;
+		sint32 x = originX + offsetX;
+		sint32 y = originY + offsetY;
+		sint32 z = originZ + trackBlock->z;
 
 		trackpieceZ = z;
 

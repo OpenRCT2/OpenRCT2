@@ -1014,7 +1014,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		tileDescriptors[i + 1].slope = ebx;
 
 		uint8 baseHeight = surfaceElement->base_height / 2;
-		corner_height ch = corner_heights[ebx];
+		ch = corner_heights[ebx];
 		tileDescriptors[i + 1].corner_heights.top = baseHeight + ch.top;
 		tileDescriptors[i + 1].corner_heights.right = baseHeight + ch.right;
 		tileDescriptors[i + 1].corner_heights.bottom = baseHeight + ch.bottom;
@@ -1170,8 +1170,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
 			paint_struct * backup = g_ps_F1AD28;
-			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
-			sub_98196C(22955, 16, 16, 1, 1, 0, height, rotation);
+			int height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+			sub_98196C(22955, 16, 16, 1, 1, 0, height2, rotation);
 			g_ps_F1AD28 = backup;
 		}
 	}
@@ -1185,8 +1185,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = g_ps_F1AD28;
 			rct_xy16 pos = {gPaintMapPosition.x, gPaintMapPosition.y};
-			int height = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
-			sub_98196C(22956, 16, 16, 1, 1, 0, height + 3, rotation);
+			int height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+			sub_98196C(22956, 16, 16, 1, 1, 0, height2 + 3, rotation);
 			g_ps_F1AD28 = backup;
 		}
 	}
@@ -1407,6 +1407,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			rct_xy16 box_offset, box_size;
 			uint32 image_1, image_2, image_3;
 			switch (i) {
+				default:
 				case 0:
 					// Bottom right
 					bit_1 = 1;

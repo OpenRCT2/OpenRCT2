@@ -296,7 +296,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		}
 		if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
 			// 6E075C:
-			uint8 direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+			direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
 			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
 			return;
 		}
@@ -310,7 +310,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		return;
 	}
 	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
-		uint8 direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+		direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
 		paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
 		return;
 	}

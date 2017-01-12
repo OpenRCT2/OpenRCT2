@@ -759,7 +759,7 @@ static void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
 	rct_xy16 mapTile = { 0 };
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
 
-	if (mapTile.x == (sint16)0x8000){
+	if (mapTile.x == MAP_LOCATION_NULL) {
 		if (gLandRightsCost != MONEY32_UNDEFINED) {
 			gLandRightsCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_CLEAR_SCENERY);
@@ -851,7 +851,7 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 	switch (widgetIndex){
 	case WIDX_BUY_LAND_RIGHTS:
 		if (LandRightsMode) {
-			if (x != (sint16)0x8000) {
+			if (x != MAP_LOCATION_NULL) {
 				gGameCommandErrorTitle = STR_CANT_BUY_LAND;
 				game_do_command(
 					gMapSelectPositionA.x,
@@ -865,7 +865,7 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 			}
 		}
 		else {
-			if (x != (sint16)0x8000) {
+			if (x != MAP_LOCATION_NULL) {
 				gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
 				game_do_command(
 					gMapSelectPositionA.x,
@@ -894,7 +894,7 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 		switch (widgetIndex){
 		case WIDX_BUY_LAND_RIGHTS:
 			if (LandRightsMode) {
-				if (x != (sint16)0x8000) {
+				if (x != MAP_LOCATION_NULL) {
 					gGameCommandErrorTitle = STR_CANT_BUY_LAND;
 					game_do_command(
 						gMapSelectPositionA.x,
@@ -908,7 +908,7 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 				}
 			}
 			else {
-				if (x != (sint16)0x8000) {
+				if (x != MAP_LOCATION_NULL) {
 					gGameCommandErrorTitle = STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE;
 					game_do_command(
 						gMapSelectPositionA.x,

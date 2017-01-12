@@ -73,26 +73,6 @@ bool gfx_load_g1()
 	if (file != NULL) {
 		rct_g1_header header;
 		if (SDL_RWread(file, &header, 8, 1) == 1) {
-			/* We need to load in the data file, which has an `offset` field,
-			 * which is supposed to hold a pointer, but is only 32 bit long.
-			 * We will load a 32 bit version of rct_g1_element and then convert
-			 * pointers to however long our machine wants them.
-			 */
-
-			#pragma pack(push, 1)
-			// Size: 0x10
-			typedef struct {
-				uint32 offset;			// 0x00 note: uint32 always!
-				sint16 width;			// 0x04
-				sint16 height;			// 0x06
-				sint16 x_offset;		// 0x08
-				sint16 y_offset;		// 0x0A
-				uint16 flags;			// 0x0C
-				uint16 zoomed_offset;	// 0x0E
-			} rct_g1_element_32bit;
-			assert_struct_size(rct_g1_element_32bit, 0x10);
-			#pragma pack(pop)
-
 			/* number of elements is stored in g1.dat, but because the entry
 			 * headers are static, this can't be variable until made into a
 			 * dynamic array.
@@ -547,8 +527,8 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x,
 	int maskWrap = imgMask->width - width;
 	int colourWrap = imgColour->width - width;
 	int dstWrap = ((dpi->width + dpi->pitch) - width);
-	for (int y = top; y < bottom; y++) {
-		for (int x = left; x < right; x++) {
+	for (int yy = top; yy < bottom; yy++) {
+		for (int xx = left; xx < right; xx++) {
 			uint8 colour = (*colourSrc) & (*maskSrc);
 			if (colour != 0) {
 				*dst = colour;

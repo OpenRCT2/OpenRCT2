@@ -55,6 +55,7 @@ static void window_text_input_update7(rct_window *w);
 static void window_text_input_text(int key, rct_window* w);
 static void window_text_input_invalidate(rct_window *w);
 static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY);
 
 //0x9A3F7C
 static rct_window_event_list window_text_input_events = {
@@ -324,15 +325,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// IME composition
 	if (gTextInputCompositionActive) {
-		int compositionWidth = gfx_get_string_width(gTextInputComposition);
-		int x = cursorX - (compositionWidth / 2);
-		int y = cursorY + 13;
-		int w = compositionWidth;
-		int h = 10;
-
-		gfx_fill_rect(dpi, x - 1, y - 1, x + w + 1, y + h + 1, 12);
-		gfx_fill_rect(dpi, x, y, x + w, y + h, 0);
-		gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
+		draw_ime_composition(dpi, cursorX, cursorY);
 	}
 }
 
@@ -403,4 +396,17 @@ static void window_text_input_invalidate(rct_window *w)
 	window_text_input_widgets[WIDX_CANCEL].bottom = height - 10;
 
 	window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
+}
+
+static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY)
+{
+	int compositionWidth = gfx_get_string_width(gTextInputComposition);
+	int x = cursorX - (compositionWidth / 2);
+	int y = cursorY + 13;
+	int width = compositionWidth;
+	int height = 10;
+
+	gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, 12);
+	gfx_fill_rect(dpi, x, y, x + width, y + height, 0);
+	gfx_draw_string(dpi, gTextInputComposition, COLOUR_DARK_GREEN, x, y);
 }

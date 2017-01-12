@@ -2011,6 +2011,7 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 		ride = get_ride(w->number);
 
 		switch (widgetIndex - WIDX_CLOSE_LIGHT) {
+		default:
 		case 0:
 			status = RIDE_STATUS_CLOSED;
 			gGameCommandErrorTitle = STR_CANT_CLOSE;
@@ -3003,7 +3004,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 
 		// For each car in train
 		for (int j = 0; j < ride->num_cars_per_train; j++) {
-			rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, j)];
+			rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, j)];
 			x += rideVehicleEntry->spacing / 17432;
 			y -= (rideVehicleEntry->spacing / 2) / 17432;
 
@@ -6138,7 +6139,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Running cost per hour
 	costPerHour = ride->upkeep_cost * 16;
-	stringId = ride->upkeep_cost == (money16)0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+	stringId = ride->upkeep_cost == (money16)(uint16)0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
 	gfx_draw_string_left(dpi, stringId, &costPerHour, COLOUR_BLACK, x, y);
 	y += 10;
 

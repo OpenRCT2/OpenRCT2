@@ -1115,7 +1115,7 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 
 	int map_x, map_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
-	if (map_x != (sint16)0x8000) {
+	if (map_x != MAP_LOCATION_NULL) {
 		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 		gMapSelectType = MAP_SELECT_TYPE_FULL;
 		gMapSelectPositionA.x = map_x;
@@ -1162,7 +1162,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		rct_map_element* mapElement;
 		footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, NULL, &mapElement);
 
-		if (dest_x == (sint16)0x8000)
+		if (dest_x == MAP_LOCATION_NULL)
 			return;
 
 		game_command_callback = game_command_callback_pickup_staff;
@@ -1172,7 +1172,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		int dest_x, dest_y;
 		footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, NULL, NULL);
 
-		if (dest_x == (sint16)0x8000)return;
+		if (dest_x == MAP_LOCATION_NULL) return;
 
 		game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
 	}
@@ -1306,12 +1306,12 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		}
 	}
 
-	uint8 *costume = _availableCostumes;
+	uint8 *costumep = _availableCostumes;
 	uint16 numCostumes = 0;
 	for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++) {
 		if (entertainerCostumes & (1 << i)) {
 			// For some reason the flags are +4 from the actual costume IDs
-			*costume++ = (i - 4);
+			*costumep++ = (i - 4);
 			numCostumes++;
 		}
 	}

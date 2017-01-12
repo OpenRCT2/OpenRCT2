@@ -284,7 +284,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 		w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
 		// Find out if the news item is no longer valid
-		int x, y, z;
+		int y, z;
 		int subject = newsItem->assoc;
 		news_item_get_subject_location(newsItem->type, subject, &x, &y, &z);
 

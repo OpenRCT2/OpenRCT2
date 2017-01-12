@@ -62,6 +62,7 @@ int map_smooth(int l, int t, int r, int b)
 						// the extra height slope.
 						int highestOnLowestSide;
 						switch (i){
+						default:
 						case 0:
 							highestOnLowestSide = max(
 								map_get_surface_element_at(x + 1, y)->base_height,

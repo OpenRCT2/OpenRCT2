@@ -545,7 +545,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (gParkEntranceX[i] != (sint16)0x8000)
+		if (gParkEntranceX[i] != MAP_LOCATION_NULL)
 			break;
 
 		if (i == 3) {
@@ -555,7 +555,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (gParkEntranceX[i] == (sint16)0x8000)
+		if (gParkEntranceX[i] == MAP_LOCATION_NULL)
 			continue;
 
 		int x = gParkEntranceX[i];

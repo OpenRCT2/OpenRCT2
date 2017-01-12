@@ -19,14 +19,6 @@
 #include "NetworkTypes.h"
 #include "NetworkPacket.h"
 
-NetworkPacket::NetworkPacket()
-    : size(0)
-    , data(std::make_shared<std::vector<uint8>>())
-    , transferred(0)
-    , read(0)
-{
-}
-
 std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
 {
     return std::unique_ptr<NetworkPacket>(new NetworkPacket); // change to make_unique in c++14
@@ -39,14 +31,14 @@ std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
 
 uint8 * NetworkPacket::GetData()
 {
-    return &(*data)[0];
+    return &(*Data)[0];
 }
 
 uint32 NetworkPacket::GetCommand()
 {
-    if (data->size() >= sizeof(uint32))
+    if (Data->size() >= sizeof(uint32))
     {
-        return ByteSwapBE(*(uint32 *)(&(*data)[0]));
+        return ByteSwapBE(*(uint32 *)(&(*Data)[0]));
     }
     else
     {
@@ -56,9 +48,9 @@ uint32 NetworkPacket::GetCommand()
 
 void NetworkPacket::Clear()
 {
-    transferred = 0;
-    read = 0;
-    data->clear();
+    BytesTransferred = 0;
+    BytesRead = 0;
+    Data->clear();
 }
 
 bool NetworkPacket::CommandRequiresAuth()
@@ -77,7 +69,7 @@ bool NetworkPacket::CommandRequiresAuth()
 
 void NetworkPacket::Write(const uint8 * bytes, size_t size)
 {
-    data->insert(data->end(), bytes, bytes + size);
+    Data->insert(Data->end(), bytes, bytes + size);
 }
 
 void NetworkPacket::WriteString(const utf8 * string)
@@ -87,32 +79,32 @@ void NetworkPacket::WriteString(const utf8 * string)
 
 const uint8 * NetworkPacket::Read(size_t size)
 {
-    if (read + size > NetworkPacket::size)
+    if (BytesRead + size > NetworkPacket::Size)
     {
         return nullptr;
     }
     else
     {
-        uint8 * data = &GetData()[read];
-        read += size;
+        uint8 * data = &GetData()[BytesRead];
+        BytesRead += size;
         return data;
     }
 }
 
 const utf8 * NetworkPacket::ReadString()
 {
-    char * str = (char *)&GetData()[read];
+    char * str = (char *)&GetData()[BytesRead];
     char * strend = str;
-    while (read < size && *strend != 0)
+    while (BytesRead < Size && *strend != 0)
     {
-        read++;
+        BytesRead++;
         strend++;
     }
     if (*strend != 0)
     {
         return nullptr;
     }
-    read++;
+    BytesRead++;
     return str;
 }
 

@@ -728,7 +728,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 
 	utf8 *outPath = NULL;
 
-	if ((pidl = SHBrowseForFolderW(&bi))) {
+	if ((pidl = SHBrowseForFolderW(&bi)) != NULL) {
 		// Copy the path directory to the buffer
 		if (SHGetPathFromIDListW(pidl, pszBuffer)) {
 			// Store pszBuffer (and the path) in the outPath
@@ -1076,9 +1076,10 @@ static bool windows_setup_file_association(
 	get_progIdName(progIdNameW, extension);
 
 	bool result = false;
+	HKEY hKey = NULL;
+	HKEY hRootKey = NULL;
 
 	// [HKEY_CURRENT_USER\Software\Classes]
-	HKEY hRootKey = NULL;
 	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {
 		goto fail;
 	}
@@ -1088,7 +1089,6 @@ static bool windows_setup_file_association(
 		goto fail;
 	}
 
-	HKEY hKey = NULL;
 	if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS) {
 		goto fail;
 	}

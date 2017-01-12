@@ -727,7 +727,8 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 		sint32 staffIndex = gStaffDrawPatrolAreas;
 		uint8 staffType = staffIndex & 0x7FFF;
 		bool is_staff_list = staffIndex & 0x8000;
-		sint16 x = gPaintMapPosition.x, y = gPaintMapPosition.y;
+		x = gPaintMapPosition.x;
+		y = gPaintMapPosition.y;
 
 		uint8 patrolColour = COLOUR_LIGHT_BLUE;
 
@@ -741,26 +742,26 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 
 		if (staff_is_patrol_area_set(200 + staffType, x, y)) {
 			uint32 imageId = 2618;
-			int height = map_element->base_height * 8;
+			int height2 = map_element->base_height * 8;
 			if (footpath_element_is_sloped(map_element)) {
 				imageId = 2619 + ((map_element->properties.path.type + get_current_rotation()) & 3);
-				height += 16;
+				height2 += 16;
 			}
 
-			sub_98196C(imageId | patrolColour << 19 | 0x20000000, 16, 16, 1, 1, 0, height + 2, get_current_rotation());
+			sub_98196C(imageId | patrolColour << 19 | 0x20000000, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
 		}
 	}
 
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS) {
-		uint16 height = 3 + map_element->base_height * 8;
+		uint16 height2 = 3 + map_element->base_height * 8;
 		if (footpath_element_is_sloped(map_element)) {
-			height += 8;
+			height2 += 8;
 		}
-		uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height / 16) | COLOUR_GREY << 19 | 0x20000000;
+		uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | 0x20000000;
 		imageId += get_height_marker_offset();
 		imageId -= gMapBaseZ;
-		sub_98196C(imageId, 16, 16, 1, 1, 0, height, get_current_rotation());
+		sub_98196C(imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
 	}
 
 	uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;

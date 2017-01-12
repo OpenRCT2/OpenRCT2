@@ -610,7 +610,7 @@ static void ride_ratings_calculate(rct_ride *ride)
 
 static void ride_ratings_calculate_value(rct_ride *ride)
 {
-	if (ride->excitement == (ride_rating)0xFFFF)
+	if (ride->excitement == RIDE_RATING_UNDEFINED)
 		return;
 
 	int value =

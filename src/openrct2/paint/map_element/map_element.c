@@ -295,9 +295,9 @@ static void sub_68B3FB(int x, int y)
 		{1, 7, 3},
 	};
 
-	for (int y = 0; y < 3; y++) {
-		for (int x = 0; x < 3; x++) {
-			uint16 segmentHeight = gSupportSegments[segmentPositions[y][x]].height;
+	for (int sy = 0; sy < 3; sy++) {
+		for (int sx = 0; sx < 3; sx++) {
+			uint16 segmentHeight = gSupportSegments[segmentPositions[sy][sx]].height;
 			int imageColourFlats = 0b101111 << 19 | 0x40000000;
 			if (segmentHeight == 0xFFFF) {
 				segmentHeight = gSupport.height;
@@ -305,8 +305,8 @@ static void sub_68B3FB(int x, int y)
 				imageColourFlats = 0b111011 << 19 | 0x40000000;
 			}
 
-			int xOffset = y * 10;
-			int yOffset = -22 + x * 10;
+			int xOffset = sy * 10;
+			int yOffset = -22 + sx * 10;
 			paint_struct * ps = sub_98197C(5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
 			if (ps != NULL) {
 				ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;

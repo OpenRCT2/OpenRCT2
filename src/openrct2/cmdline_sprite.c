@@ -323,7 +323,7 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 		currentCode = (rle_code*)dst;
 		dst += 2;
 		int startX = 0;
-		int pixels = 0;
+		int npixels = 0;
 		bool pushRun = false;
 		for (unsigned int x = 0; x < width; x++) {
 			int paletteIndex = get_palette_index(src);
@@ -378,24 +378,24 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 
 			src += 4;
 			if (paletteIndex == -1) {
-				if (pixels != 0) {
+				if (npixels != 0) {
 					x--;
 					src -= 4;
 					pushRun = true;
 				}
 			} else {
-				if (pixels == 0)
+				if (npixels == 0)
 					startX = x;
-				pixels++;
+				npixels++;
 				*dst++ = (uint8)paletteIndex;
 			}
-			if (pixels == 127 || x == width - 1)
+			if (npixels == 127 || x == width - 1)
 				pushRun = true;
 
 			if (pushRun) {
-				if (pixels > 0) {
+				if (npixels > 0) {
 					previousCode = currentCode;
-					currentCode->num_pixels = pixels;
+					currentCode->num_pixels = npixels;
 					currentCode->offset_x = startX;
 
 					if (x == width - 1)
@@ -413,7 +413,7 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 					}
 				}
 				startX = 0;
-				pixels = 0;
+				npixels = 0;
 				pushRun = false;
 			}
 		}

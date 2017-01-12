@@ -1176,7 +1176,7 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 	map_invalidate_selection_rect();
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	screen_get_map_xy(x, y, &mapX, &mapY, &viewport);
-	if (mapX == (sint16)0x8000)
+	if (mapX == MAP_LOCATION_NULL)
 		return;
 
 	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1206,7 +1206,7 @@ static void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, i
 	rct_map_element *mapElement;
 
 	sub_68A15E(x, y, mapX, mapY, direction, &mapElement);
-	if (*mapX == (sint16)0x8000)
+	if (*mapX == MAP_LOCATION_NULL)
 		return;
 
 	mapElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
@@ -1316,7 +1316,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 	sint16 mapX, mapY, mapZ;
 	int direction;
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
-	if (mapX != (sint16)0x8000) {
+	if (mapX != MAP_LOCATION_NULL) {
 		gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 		money32 price = game_do_command(
 			mapX,
