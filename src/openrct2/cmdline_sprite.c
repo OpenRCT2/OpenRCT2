@@ -289,7 +289,8 @@ static sint32 get_palette_index(sint16 *colour)
 	return -1;
 }
 
-static bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, sint32 *outBufferLength, sint32 mode)
+
+static bool sprite_file_import(const char *path, int x_offset, int y_offset, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
 {
 	uint8 *pixels;
 	uint32 width, height;
@@ -433,8 +434,8 @@ static bool sprite_file_import(const char *path, rct_g1_element *outElement, uin
 	outElement->width = width;
 	outElement->height = height;
 	outElement->flags = G1_FLAG_RLE_COMPRESSION;
-	outElement->x_offset = 0;
-	outElement->y_offset = 0;
+	outElement->x_offset = x_offset;
+	outElement->y_offset = y_offset;
 	outElement->zoomed_offset = 0;
 
 	*outBuffer = buffer;
@@ -595,18 +596,40 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 		sprite_file_close();
 		return 1;
 	} else if (_strcmpi(argv[0], "append") == 0) {
-		if (argc < 3) {
-			fprintf(stderr, "usage: sprite append <spritefile> <input>\n");
+		if (argc != 3 && argc != 5) {
+			fprintf(stderr, "usage: sprite append <spritefile> <input> [x_offset y_offset]\n");
 			return -1;
 		}
 
+
 		const char *spriteFilePath = argv[1];
 		const char *imagePath = argv[2];
+		int x_offset=0;
+		int y_offset=0;
+
+			if(argc == 5) {
+			char* endptr;
+			x_offset=strtol(argv[3],&endptr,0);
+				if(*endptr!=0) {
+				fprintf(stderr, "X offset must be an integer\n");
+				return -1;
+				}
+			y_offset=strtol(argv[4],&endptr,0);
+				if(*endptr!=0) {
+				fprintf(stderr, "Y offset must be an integer\n");
+				return -1;
+				}
+			}
 
 		rct_g1_element spriteElement;
 		uint8 *buffer;
+<<<<<<< HEAD
 		sint32 bufferLength;
 		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+=======
+		int bufferLength;
+		if (!sprite_file_import(imagePath, x_offset, y_offset, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+>>>>>>> Add support for x/y offsets to append command
 			return -1;
 
 		if (!sprite_file_open(spriteFilePath)) {
@@ -665,8 +688,13 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 				SDL_RWclose(file);
 				rct_g1_element spriteElement;
 				uint8 *buffer;
+<<<<<<< HEAD
 				sint32 bufferLength;
 				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
+=======
+				int bufferLength;
+				if (!sprite_file_import(imagePath, 0, 0, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
+>>>>>>> Add support for x/y offsets to append command
 					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
 					return -1;
 				}
