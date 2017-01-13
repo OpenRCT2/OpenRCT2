@@ -1442,7 +1442,7 @@ static void window_ride_disable_tabs(rct_window *w)
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) &&
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL) &&
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) &&
-		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_26) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS) &&
 		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
 	) {
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
@@ -4485,7 +4485,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 	}
 
 	// Vehicle colours
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_26)) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)) {
 		int vehicleColourSchemeType = ride->colour_scheme_type & 3;
 		if (vehicleColourSchemeType == 0)
 			w->var_48C = 0;
