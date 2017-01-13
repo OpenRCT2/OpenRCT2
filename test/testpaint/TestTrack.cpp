@@ -54,22 +54,22 @@ public:
 
 class CableLiftFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         return rideType == RIDE_TYPE_GIGA_COASTER;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("cableLift:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
         } else {
@@ -80,22 +80,22 @@ public:
 
 class ChainLiftFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         return !ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE);
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("chainLift:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
         } else {
@@ -106,7 +106,7 @@ public:
 
 class InvertedFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER ||
             rideType == RIDE_TYPE_FLYING_ROLLER_COASTER ||
             rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER) {
@@ -116,18 +116,18 @@ public:
         return false;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return 2;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("inverted:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
         } else {
@@ -138,7 +138,7 @@ public:
 
 class EntranceStyleFilter : public ITestTrackFilter {
 public:
-    bool AppliesTo(uint8 rideType, uint8 trackType) {
+    bool AppliesTo(uint8 rideType, uint8 trackType) override {
         if (trackType == TRACK_ELEM_BEGIN_STATION ||
             trackType == TRACK_ELEM_MIDDLE_STATION ||
             trackType == TRACK_ELEM_END_STATION) {
@@ -148,18 +148,18 @@ public:
         return false;
     }
 
-    int Variations(uint8 rideType, uint8 trackType) {
+    int Variations(uint8 rideType, uint8 trackType) override {
         return RIDE_ENTRANCE_STYLE_COUNT - 1;
     }
 
-    std::string VariantName(uint8 rideType, uint8 trackType, int variant) {
+    std::string VariantName(uint8 rideType, uint8 trackType, int variant) override {
         return String::Format("entranceStyle:%d", variant);
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
                          rct_ride *ride, rct_ride_entry *rideEntry
-    ) {
+    ) override {
         ride->entrance_style = variant;
     }
 };
