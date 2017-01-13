@@ -568,6 +568,12 @@ extern "C"
         argEnumerator.TryPop();
 
         const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+
+	if (command == nullptr)
+	{
+	return EXITCODE_FAIL;
+	}
+
         if (command->Options != nullptr)
         {
             auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
@@ -576,6 +582,7 @@ extern "C"
                 return EXITCODE_FAIL;
             }
         }
+
         if (command == CommandLine::RootCommands && command->Func == nullptr)
         {
             return CommandLine::HandleCommandDefault();
