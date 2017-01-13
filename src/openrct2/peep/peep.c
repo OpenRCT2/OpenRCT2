@@ -10597,96 +10597,83 @@ static sint16 peep_calculate_ride_value_satisfaction(rct_peep* peep, rct_ride* r
     return 0;
 }
 
-static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, rct_ride* ride) {
-	ride_rating minIntensity, maxIntensity;
-	ride_rating minNausea, maxNausea;
-
-	// Calculate satisfaction based on the intensity and nausea of the ride.
-	// The best possible score from this section is achieved by having the intensity and nausea
-	// of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
-	// if the peep's happiness is enough to offset it.
-
-	uint8 intensitySatisfaction = 0;
-	uint8 nauseaSatisfaction = 0;
-	if (ride->excitement == RIDE_RATING_UNDEFINED) {
+/**
+ * Calculate satisfaction based on the intensity and nausea of the ride.
+ * The best possible score from this section is achieved by having the intensity and nausea
+ * of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
+ * if the peep's happiness is enough to offset it.
+ */
+static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep * peep, rct_ride * ride)
+{
+	if (!ride_has_ratings(ride)) {
 		return 70;
 	}
-	intensitySatisfaction = 3;
-	nauseaSatisfaction = 3;
 
-    maxIntensity = (peep->intensity >> 4) * 100;
-    minIntensity = (peep->intensity & 0xF) * 100;
-    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+	uint8 intensitySatisfaction = 3;
+	uint8 nauseaSatisfaction = 3;
+	ride_rating maxIntensity = (peep->intensity >> 4) * 100;
+	ride_rating minIntensity = (peep->intensity & 0xF) * 100;
+	if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
-    }
-    minIntensity -= peep->happiness * 2;
-    maxIntensity += peep->happiness;
-    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+	}
+	minIntensity -= peep->happiness * 2;
+	maxIntensity += peep->happiness;
+	if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
-    }
-    minIntensity -= peep->happiness * 2;
-    maxIntensity += peep->happiness;
-    if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
+	}
+	minIntensity -= peep->happiness * 2;
+	maxIntensity += peep->happiness;
+	if (minIntensity <= ride->intensity && maxIntensity >= ride->intensity) {
 		intensitySatisfaction--;
-    }
+	}
 
 	// Although it's not shown in the interface, a peep with Average or High nausea tolerance
 	// has a minimum preferred nausea value. (For peeps with None or Low, this is set to zero.)
-    minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
-    maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
-    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+	ride_rating minNausea = NauseaMinimumThresholds[(peep->nausea_tolerance & 3)];
+	ride_rating maxNausea = NauseaMaximumThresholds[(peep->nausea_tolerance & 3)];
+	if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
-    }
-    minNausea -= peep->happiness * 2;
-    maxNausea += peep->happiness;
-    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+	}
+	minNausea -= peep->happiness * 2;
+	maxNausea += peep->happiness;
+	if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
-    }
-    minNausea -= peep->happiness * 2;
-    maxNausea += peep->happiness;
-    if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
+	}
+	minNausea -= peep->happiness * 2;
+	maxNausea += peep->happiness;
+	if (minNausea <= ride->nausea && maxNausea >= ride->nausea) {
 		nauseaSatisfaction--;
-    }
+	}
 
 	uint8 highestSatisfaction = max(intensitySatisfaction, nauseaSatisfaction);
 	uint8 lowestSatisfaction = min(intensitySatisfaction, nauseaSatisfaction);
 
 	switch (highestSatisfaction) {
+	default:
 	case 0:
 		return 70;
 	case 1:
-		switch (lowestSatisfaction)
-		{
-		case 0:
-			return 50;
-		case 1:
-			return 35;
+		switch (lowestSatisfaction) {
+		default:
+		case 0: return 50;
+		case 1: return 35;
 		}
 	case 2:
-		switch (lowestSatisfaction)
-		{
-		case 0:
-			return 35;
-		case 1:
-			return 20;
-		case 2:
-			return 10;
+		switch (lowestSatisfaction) {
+		default:
+		case 0: return 35;
+		case 1: return 20;
+		case 2: return 10;
 		}
 	case 3:
-		switch (lowestSatisfaction)
-		{
-		case 0:
-			return -35;
-		case 1:
-			return -50;
-		case 2:
-			return -60;
-		case 3:
-			return -60;
+		switch (lowestSatisfaction) {
+		default:
+		case 0: return -35;
+		case 1: return -50;
+		case 2: return -60;
+		case 3: return -60;
 		}
 	}
-	// Should never happen
-	return 70;
 }
 
 /**
@@ -10742,7 +10729,7 @@ static void peep_update_ride_nausea_growth(rct_peep *peep, rct_ride *ride)
 static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 {
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN)) return false;
-	if (ride->excitement == RIDE_RATING_UNDEFINED) return false;
+	if (!ride_has_ratings(ride)) return false;
 	if (ride->intensity > RIDE_RATING(10,00) && !gCheatsIgnoreRideIntensity) return false;
 	if (peep->happiness < 180) return false;
 	if (peep->energy < 100) return false;
@@ -10770,11 +10757,11 @@ static bool peep_should_preferred_intensity_increase(rct_peep *peep)
 
 static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
 {
-	return
-		peep->happiness >= 215 &&
-		((peep->nausea <= 120 &&
-		ride->excitement != RIDE_RATING_UNDEFINED &&
-		ride->intensity <= RIDE_RATING(10,00))||gCheatsIgnoreRideIntensity);
+	if (peep->happiness < 215) return false;
+	if (peep->nausea > 120) return false;
+	if (!ride_has_ratings(ride)) return false;
+	if (ride->intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity) return false;
+	return true;
 }
 
 /**
@@ -11711,7 +11698,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			}
 
 
-			if (ride->excitement != RIDE_RATING_UNDEFINED) {
+			if (ride_has_ratings(ride)) {
 				// If a peep has already decided that they're going to go on a ride, they'll skip the weather and
 				// excitement check and will only do a basic intensity check when they arrive at the ride itself.
 				if (rideIndex == peep->guest_heading_to_ride_id) {
@@ -11782,8 +11769,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 			// If the ride has not yet been rated and is capable of having g-forces,
 			// there's a 90% chance that the peep will ignore it.
-			if ((ride->excitement == RIDE_RATING_UNDEFINED)
-				&& (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES)) {
+			if (!ride_has_ratings(ride) && (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES)) {
 				if ((scenario_rand() & 0xFFFF) > 0x1999U) {
 					peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
 					return false;
@@ -12006,7 +11992,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		int i;
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->lifecycle_flags == RIDE_LIFECYCLE_TESTED) continue;
-			if (ride->excitement == RIDE_RATING_UNDEFINED) continue;
+			if (!ride_has_ratings(ride)) continue;
 			if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8,00)) continue;
 
 			_peepRideConsideration[i >> 5] |= (1u << (i & 0x1F));
@@ -12035,7 +12021,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	ride_rating mostExcitingRideRating = 0;
 	for (int i = 0; i < numPotentialRides; i++) {
 		ride = get_ride(potentialRides[i]);
-		if (ride->excitement == RIDE_RATING_UNDEFINED) continue;
+		if (!ride_has_ratings(ride)) continue;
 		if (ride->excitement > mostExcitingRideRating) {
 			mostExcitingRideIndex = potentialRides[i];
 			mostExcitingRideRating = ride->excitement;
