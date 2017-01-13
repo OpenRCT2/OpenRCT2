@@ -10741,7 +10741,7 @@ static void peep_update_ride_nausea_growth(rct_peep *peep, rct_ride *ride)
 
 static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 {
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_20)) return false;
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN)) return false;
 	if (ride->excitement == RIDE_RATING_UNDEFINED) return false;
 	if (ride->intensity > RIDE_RATING(10,00) && !gCheatsIgnoreRideIntensity) return false;
 	if (peep->happiness < 180) return false;
