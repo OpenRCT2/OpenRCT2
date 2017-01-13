@@ -126,14 +126,14 @@ static rct_window_event_list window_dropdown_events = {
  * @param num_items (bx)
  * @param colour (al)
  */
-void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, sint32 num_items)
+void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, size_t num_items)
 {
-	sint32 i, string_width, max_string_width;
+	sint32 string_width, max_string_width;
 	char buffer[256];
 
 	// Calculate the longest string width
 	max_string_width = 0;
-	for (i = 0; i < num_items; i++) {
+	for (size_t i = 0; i < num_items; i++) {
 		format_string(buffer, 256, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		string_width = gfx_get_string_width(buffer);
@@ -154,7 +154,7 @@ void window_dropdown_show_text(sint32 x, sint32 y, sint32 extray, uint8 colour, 
  * @param num_items (bx)
  * @param colour (al)
  */
-void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, sint32 num_items, sint32 width)
+void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, uint8 colour, uint8 flags, size_t num_items, sint32 width)
 {
 	rct_window* w;
 
@@ -170,8 +170,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 		_dropdown_item_height = flags & 0x3F;
 
 	// Set the widgets
-	gDropdownNumItems = num_items;
-	_dropdown_num_rows = num_items;
+	gDropdownNumItems = (sint32)num_items;
+	_dropdown_num_rows = (sint32)num_items;
 
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	sint32 height = _dropdown_item_height * _dropdown_num_rows + 3;
@@ -180,8 +180,8 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
 	if (y + height > gScreenHeight)
 		y = max(0, gScreenHeight - height);
 
-	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
-	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
+	window_dropdown_widgets[WIDX_BACKGROUND].bottom = (sint16)(_dropdown_item_height * num_items + 3);
+	window_dropdown_widgets[WIDX_BACKGROUND].right = (sint16)(_dropdown_item_width + 3);
 
 	// Create the window
 	w = window_create(

@@ -17,6 +17,8 @@
 #ifndef _CMDLINE_SPRITE_H_
 #define _CMDLINE_SPRITE_H_
 
+#include "common.h"
+
 #ifdef __cplusplus
 extern "C"
 {

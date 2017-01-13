@@ -209,7 +209,7 @@ static sint32 ride_get_new_breakdown_problem(rct_ride *ride);
 static void ride_inspection_update(rct_ride *ride);
 static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus);
 static void ride_music_update(sint32 rideIndex);
-static void ride_shop_connected(rct_ride* ride, insint32t ride_idx);
+static void ride_shop_connected(rct_ride* ride, sint32 ride_idx);
 static void ride_spiral_slide_update(rct_ride *ride);
 static void ride_update(sint32 rideIndex);
 static void ride_update_vehicle_colours(sint32 rideIndex);

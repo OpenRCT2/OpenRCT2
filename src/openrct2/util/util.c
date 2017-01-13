@@ -175,8 +175,8 @@ bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength)
 sint32 bitscanforward(sint32 source)
 {
 	#if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
-		sint32 i;
-		uint8 success = _BitScanForward((uint32 *)&i, (uint32)source);
+		DWORD i;
+		uint8 success = _BitScanForward(&i, (uint32)source);
 		return success != 0 ? i : -1;
 	#elif defined(__GNUC__)
 		sint32 success = __builtin_ffs(source);

@@ -1485,8 +1485,8 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
 	windowTileInspectorToolMouseX = x;
 	windowTileInspectorToolMouseY = y;
 
-	sint32 mapX = x;
-	sint32 mapY = y;
+	sint16 mapX = x;
+	sint16 mapY = y;
 	sint32 direction;
 	screen_pos_to_map_pos(&mapX, &mapY, &direction);
 	if (mapX == MAP_LOCATION_NULL) {

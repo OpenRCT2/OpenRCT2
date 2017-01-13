@@ -855,7 +855,7 @@ static void window_options_mouseup(rct_window *w, sint32 widgetIndex)
 */
 static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widget* widget)
 {
-	sint32 num_items;
+	uint32 num_items;
 
 	widget = &w->widgets[widgetIndex - 1];
 
@@ -973,7 +973,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
 			num_items = CURRENCY_END + 1; // All the currencies plus the separator
-			sint32 num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+			size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
 
 			for (size_t i = 0; i < num_ordinary_currencies; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
@@ -1041,7 +1041,7 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 			audio_populate_devices();
 
 			// populate the list with the sound devices
-			for (size_t i = 0; i < gAudioDeviceCount; i++) {
+			for (size_t i = 0; (sint32)i < gAudioDeviceCount; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)gAudioDevices[i].name;
 			}
@@ -1068,9 +1068,9 @@ static void window_options_mousedown(sint32 widgetIndex, rct_window*w, rct_widge
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		switch (widgetIndex) {
 		case WIDX_THEMES_DROPDOWN:
-			num_items = (sint32)theme_manager_get_num_available_themes();
+			num_items = (uint32)theme_manager_get_num_available_themes();
 
-			for (sint32 i = 0; i < num_items; i++) {
+			for (size_t i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
 				gDropdownItemsArgs[i] = (uintptr_t)theme_manager_get_available_theme_name(i);
 			}

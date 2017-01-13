@@ -1263,7 +1263,7 @@ private:
         Memory::Set(_researchRideTypeUsed, 0, sizeof(_researchRideTypeUsed));
 
         // The first six scenery groups are always available
-        for (size_t i = 0; i < 6; i++)
+        for (uint8 i = 0; i < 6; i++)
         {
             research_insert_scenery_group_entry(i, true);
         }

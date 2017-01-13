@@ -272,7 +272,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			utf8 fitStr[32];
 			const utf8 *fitStrPtr = fitStr;
 			safe_strcpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr));
-			sint32 height = scenery_multiple_sign_text_height(fitStr, text);
+			sint32 height2 = scenery_multiple_sign_text_height(fitStr, text);
 			uint32 codepoint;
 			while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
 				utf8 str[5] = {0};
