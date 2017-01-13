@@ -1167,5 +1167,6 @@ money16 ride_get_price(rct_ride * ride);
 
 rct_map_element *get_station_platform(int x, int y, int z, int z_tolerance);
 bool ride_has_adjacent_station(rct_ride *ride);
+bool ride_has_ratings(const rct_ride * ride);
 
 #endif

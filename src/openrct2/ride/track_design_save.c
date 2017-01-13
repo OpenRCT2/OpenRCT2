@@ -148,7 +148,7 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	if (ride->ratings.excitement == RIDE_RATING_UNDEFINED) {
+	if (!ride_has_ratings(ride)) {
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return false;
 	}

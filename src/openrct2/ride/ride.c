@@ -8791,3 +8791,8 @@ bool ride_has_adjacent_station(rct_ride *ride)
 	}
 	return found;
 }
+
+bool ride_has_ratings(const rct_ride * ride)
+{
+	return ride->excitement != RIDE_RATING_UNDEFINED;
+}
