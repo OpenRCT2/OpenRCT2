@@ -2505,7 +2505,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	uint8 car_array_size = 0xFF;
 	uint8 car_array[255];
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES)){
 		if (ride->num_riders >= ride->operation_option)
 			return;
 	}
@@ -2635,7 +2635,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 		}
 	}
 
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES)){
 		rct_vehicle* vehicle = peep_choose_car_from_ride(peep, ride, car_array, car_array_size);
 		peep_choose_seat_from_car(peep, ride, vehicle);
 	}
@@ -2689,7 +2689,7 @@ static void peep_update_ride_sub_state_1(rct_peep* peep){
 		return;
 	}
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
 	{
 		x = ride->entrances[peep->current_ride_station] & 0xFF;
 		y = ride->entrances[peep->current_ride_station] >> 8;
@@ -3011,7 +3011,7 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
 static void peep_update_ride_sub_state_2(rct_peep* peep){
 	rct_ride* ride = get_ride(peep->current_ride);
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES)){
 		if (ride->status != RIDE_STATUS_OPEN ||
 			ride->vehicle_change_timeout != 0 ||
 			(++peep->var_AC) == 0){
