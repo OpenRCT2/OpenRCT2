@@ -868,7 +868,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			int selectedResolution = -1;
 			for (int i = 0; i < gNumResolutions; i++) {
-				resolution *resolution = &gResolutions[i];
+				resolution_t *resolution = &gResolutions[i];
 
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 
@@ -1190,7 +1190,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		switch (widgetIndex) {
 		case WIDX_RESOLUTION_DROPDOWN:
 			{
-				resolution *resolution = &gResolutions[dropdownIndex];
+				resolution_t *resolution = &gResolutions[dropdownIndex];
 				if (resolution->width != gConfigGeneral.fullscreen_width || resolution->height != gConfigGeneral.fullscreen_height) {
 					gConfigGeneral.fullscreen_width = resolution->width;
 					gConfigGeneral.fullscreen_height = resolution->height;

@@ -257,6 +257,10 @@ static void ThrowThemeLoadException()
 json_t * UIThemeWindowEntry::ToJson() const
 {
     const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(WindowClass);
+    if (wtDesc == nullptr)
+    {
+        return nullptr;
+    }
 
     json_t * jsonColours = json_array();
     for (uint8 i = 0; i < wtDesc->NumColours; i++) {
@@ -370,6 +374,10 @@ json_t * UITheme::ToJson() const
     for (const UIThemeWindowEntry & entry : Entries)
     {
         const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
+        if (wtDesc == nullptr)
+        {
+            return nullptr;
+        }
         json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry.ToJson());
     }
 
@@ -704,6 +712,10 @@ extern "C"
         if (entry == nullptr)
         {
             const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+            if (desc == nullptr)
+            {
+                return 0;
+            }
             return desc->DefaultTheme.Colours[index];
         }
         else
@@ -725,6 +737,10 @@ extern "C"
         else
         {
             const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+            if (desc == nullptr)
+            {
+                return;
+            }
             entry.Theme = desc->DefaultTheme;
         }
 
@@ -820,12 +836,20 @@ extern "C"
     uint8 theme_desc_get_num_colours(rct_windowclass wc)
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        if (desc == nullptr)
+        {
+            return 0;
+        }
         return desc->NumColours;
     }
 
     rct_string_id theme_desc_get_name(rct_windowclass wc)
     {
         const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        if (desc == nullptr)
+        {
+            return STR_EMPTY;
+        }
         return desc->WindowName;
     }
 

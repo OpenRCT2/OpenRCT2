@@ -34,7 +34,7 @@
  * An audio source where raw PCM data is streamed directly from
  * a file.
  */
-class FileAudioSource : public IAudioSource
+class FileAudioSource final : public IAudioSource
 {
 private:
     AudioFormat _format = { 0 };

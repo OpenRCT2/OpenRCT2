@@ -317,7 +317,7 @@ typedef struct list_item {
 
 static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
 
-typedef int (*sortFunc)(const void *, const void *);
+typedef int (*sortFunc_t)(const void *, const void *);
 
 static int _numListItems = 0;
 static list_item *_listItems = NULL;
@@ -402,7 +402,7 @@ static void visible_list_refresh(rct_window *w)
 		_numListItems = 0;
 		log_error("Unable to reallocate list items");
 	} else {
-		sortFunc sortFunc = NULL;
+		sortFunc_t sortFunc = NULL;
 		switch (_listSortType) {
 		case RIDE_SORT_TYPE:
 			sortFunc = visible_list_sort_ride_type;

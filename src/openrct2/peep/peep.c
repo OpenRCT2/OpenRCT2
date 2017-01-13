@@ -145,7 +145,6 @@ static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtR
 static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool peepAtRide, bool updateLastRide);
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
-void peep_reset_pathfind_goal(rct_peep *peep);
 static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
@@ -1723,13 +1722,13 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 	}
 }
 
-typedef struct item_pref {
+typedef struct item_pref_t {
 	uint8 type; // 0 for standard, 1 for extra
 	uint32 item; // And this with the relevant flags
 	uint8 sprite_type;
-} item_pref;
+} item_pref_t;
 
-item_pref item_order_preference[] = {
+item_pref_t item_order_preference[] = {
 		{ 0, PEEP_ITEM_ICE_CREAM, 15 },
 		{ 0, PEEP_ITEM_FRIES, 16},
 		{ 0, PEEP_ITEM_PIZZA, 22 },
@@ -1816,7 +1815,7 @@ void peep_update_sprite_type(rct_peep* peep)
 		}
 	}
 
-	for (item_pref* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++) {
+	for (item_pref_t* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++) {
 		if (item_pref->type == 0){
 			if (peep->item_standard_flags & item_pref->item) {
 				set_sprite_type(peep, item_pref->sprite_type);

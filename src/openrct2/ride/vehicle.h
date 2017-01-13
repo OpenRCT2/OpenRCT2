@@ -372,7 +372,6 @@ void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
-rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation);
 rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 int vehicle_get_total_num_peeps(rct_vehicle *vehicle);

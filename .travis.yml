@@ -51,7 +51,7 @@ matrix:
         - os: linux
           env: OPENRCT2_CMAKE_OPTS="-DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on" TARGET=windows
         - os: linux
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-DDISABLE_TTF=ON"
+          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release"
           services:
             - docker
         - os: linux

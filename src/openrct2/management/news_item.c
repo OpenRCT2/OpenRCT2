@@ -41,7 +41,6 @@ const uint8 news_type_properties[] =	{
 	NEWS_TYPE_HAS_SUBJECT,							// NEWS_ITEM_GRAPH
 };
 
-void window_game_bottom_toolbar_invalidate_news_item();
 static int news_item_get_new_history_slot();
 
 bool news_item_is_valid_idx(int index)

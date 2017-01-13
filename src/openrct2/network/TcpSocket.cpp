@@ -81,7 +81,7 @@ struct ConnectRequest
     uint16      Port;
 };
 
-class TcpSocket : public ITcpSocket
+class TcpSocket final : public ITcpSocket
 {
 private:
     SOCKET_STATUS   _status         = SOCKET_STATUS_CLOSED;
@@ -333,18 +333,18 @@ public:
             req->Port = port;
             SDL_CreateThread([](void * pointer) -> int
             {
-                auto req = static_cast<ConnectRequest *>(pointer);
+                auto req2 = static_cast<ConnectRequest *>(pointer);
                 try
                 {
-                    req->Socket->Connect(req->Address.c_str(), req->Port);
+                    req2->Socket->Connect(req2->Address.c_str(), req2->Port);
                 }
                 catch (const Exception & ex)
                 {
-                    req->Socket->_error = std::string(ex.GetMessage());
+                    req2->Socket->_error = std::string(ex.GetMessage());
                 }
 
-                SDL_UnlockMutex(req->Socket->_connectMutex);
-                delete req;
+                SDL_UnlockMutex(req2->Socket->_connectMutex);
+                delete req2;
                 return 0;
             }, 0, req);
         }

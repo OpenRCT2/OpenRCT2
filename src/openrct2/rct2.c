@@ -133,9 +133,6 @@ typedef struct tm tm_t;
 
 void print_launch_information();
 
-int rct2_init_directories();
-int rct2_startup_checks();
-
 static void rct2_draw_fps(rct_drawpixelinfo *dpi);
 
 void rct2_quit()
