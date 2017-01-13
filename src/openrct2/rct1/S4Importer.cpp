@@ -87,7 +87,7 @@ public:
     }
 };
 
-class S4Importer : public IS4Importer
+class S4Importer final : public IS4Importer
 {
 private:
     const utf8 * _s4Path;

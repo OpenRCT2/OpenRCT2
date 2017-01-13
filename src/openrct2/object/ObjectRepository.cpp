@@ -92,7 +92,7 @@ using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryH
 
 static void ReportMissingObject(const rct_object_entry * entry);
 
-class ObjectRepository : public IObjectRepository
+class ObjectRepository final : public IObjectRepository
 {
     IPlatformEnvironment *              _env = nullptr;
     std::vector<ObjectRepositoryItem>   _items;
@@ -107,7 +107,7 @@ public:
         _env = env;
     }
 
-    ~ObjectRepository()
+    ~ObjectRepository() final
     {
         ClearItems();
     }
@@ -160,7 +160,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override
+    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override final
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())

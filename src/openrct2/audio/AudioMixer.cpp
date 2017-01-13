@@ -68,7 +68,7 @@ public:
     }
 };
 
-class AudioMixer : public IAudioMixer
+class AudioMixer final : public IAudioMixer
 {
 private:
     IAudioSource * _nullSource = nullptr;

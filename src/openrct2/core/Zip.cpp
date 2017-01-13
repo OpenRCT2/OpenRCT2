@@ -18,7 +18,7 @@
 #include "IStream.hpp"
 #include "Zip.h"
 
-class ZipArchive : public IZipArchive
+class ZipArchive final : public IZipArchive
 {
 private:
     zip_t *     _zip;

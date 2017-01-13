@@ -81,7 +81,7 @@ struct ConnectRequest
     uint16      Port;
 };
 
-class TcpSocket : public ITcpSocket
+class TcpSocket final : public ITcpSocket
 {
 private:
     SOCKET_STATUS   _status         = SOCKET_STATUS_CLOSED;
