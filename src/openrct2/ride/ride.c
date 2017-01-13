@@ -6176,7 +6176,7 @@ foundRideEntry:
 
 	// Log ride creation
 	int ebp = 1;
-	game_log_multiplayer_command(GAME_COMMAND_CREATE_RIDE, 0, 0, &rideIndex, 0, &ebp);
+	game_log_multiplayer_command(GAME_COMMAND_CREATE_RIDE, 0, 0, 0, &rideIndex, 0, &ebp);
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	gCommandPosition.x = 0x8000;

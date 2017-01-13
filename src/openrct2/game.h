@@ -166,7 +166,7 @@ void update_palette_effects();
 sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-void game_log_multiplayer_command(int command, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
+void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
 
 void game_load_or_quit_no_save_prompt();
 bool game_load_sv6_path(const char * path);

@@ -1337,6 +1337,9 @@ void Network::AddClient(ITcpSocket * socket)
 {
 	auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
 	connection->Socket = socket;
+	char addr[128];
+	snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
+	AppendServerLog(addr);
 	client_connection_list.push_back(std::move(connection));
 }
 

@@ -4404,8 +4404,11 @@ STR_6092    :{STRING} changed the park entrance fee to {STRING}
 STR_6093    :{STRING} placed new scenery.
 STR_6094    :{STRING} removed scenery.
 STR_6095    :{STRING} edited scenery.
-STR_6096    :You connected to the server.
-STR_6097    :You disconnected from the server.
+STR_6096    :{STRING} set sign name to '{STRING}'.
+STR_6097    :{STRING} placed a track of ride '{STRING}'.
+STR_6098    :{STRING} removed a track of ride.
+STR_6099    :You connected to the server.
+STR_6100    :You disconnected from the server.
 
 #############
 # Scenarios #

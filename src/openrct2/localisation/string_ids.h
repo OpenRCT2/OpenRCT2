@@ -3759,8 +3759,11 @@ enum {
 	STR_LOG_PLACE_SCENERY = 6093,
 	STR_LOG_REMOVE_SCENERY = 6094,
 	STR_LOG_EDIT_SCENERY = 6095,
-	STR_LOG_CLIENT_STARTED = 6096,
-	STR_LOG_CLIENT_STOPPED = 6097,
+	STR_LOG_SET_SIGN_NAME = 6096,
+	STR_LOG_PLACE_TRACK = 6097,
+	STR_LOG_REMOVE_TRACK = 6098,
+	STR_LOG_CLIENT_STARTED = 6099,
+	STR_LOG_CLIENT_STOPPED = 6100,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

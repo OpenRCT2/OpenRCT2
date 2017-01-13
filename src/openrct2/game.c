@@ -516,7 +516,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 	bool serverLog = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
 	bool clientLog = (network_get_mode() == NETWORK_MODE_CLIENT) && (flags & GAME_COMMAND_FLAG_NETWORKED) && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
 	if (serverLog || clientLog) {
-		game_log_multiplayer_command(command, ebx, ecx, edx, edi, ebp);
+		game_log_multiplayer_command(command, eax, ebx, ecx, edx, edi, ebp);
 	}
 
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
@@ -618,14 +618,13 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 	return MONEY32_UNDEFINED;
 }
 
-void game_log_multiplayer_command(int command, int* ebx, int* ecx, int* edx, int* edi, int* ebp)
+void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp)
 {
 	// Get player name
 	int player_index = network_get_player_index(game_command_playerid);
 	const char* player_name = network_get_player_name(player_index);
 
 	char log_msg[256];
-
 	if (command == GAME_COMMAND_CHEAT) {
 		// Get cheat name
 		const char* cheat = cheats_get_cheat_string(*ecx, *edx, *edi);
@@ -648,7 +647,7 @@ void game_log_multiplayer_command(int command, int* ebx, int* ecx, int* edx, int
 
 		format_string(log_msg, 256, STR_LOG_CREATE_RIDE, args);
 		network_append_server_log(log_msg);
-	} else if (command == GAME_COMMAND_DEMOLISH_RIDE && *ebp == 1) { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
+	} else if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0)) { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
 		// Get ride name
 		rct_ride* ride = get_ride(*edx);
 		char ride_name[128];
@@ -793,6 +792,50 @@ void game_log_multiplayer_command(int command, int* ebx, int* ecx, int* edx, int
 		};
 
 		format_string(log_msg, 256, STR_LOG_EDIT_SCENERY, args);
+		network_append_server_log(log_msg);
+		if (command == GAME_COMMAND_SET_BANNER_NAME          || command == GAME_COMMAND_SET_SIGN_NAME) {
+			static char banner_name[128];
+
+			memset(banner_name, ' ', sizeof(banner_name));
+			int nameChunkIndex = *eax & 0xFFFF;
+
+			int nameChunkOffset = nameChunkIndex - 1;
+			if (nameChunkOffset < 0)
+				nameChunkOffset = 2;
+			nameChunkOffset *= 12;
+			nameChunkOffset = min(nameChunkOffset, countof(banner_name) - 12);
+			memcpy(banner_name + nameChunkOffset + 0, edx, 4);
+			memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
+			memcpy(banner_name + nameChunkOffset + 8, edi, 4);
+			banner_name[sizeof(banner_name) - 1] = '\0';
+			char* args_sign[2] = {
+				(char *)player_name,
+				(char *)banner_name
+			};
+
+			format_string(log_msg, 256, STR_LOG_SET_SIGN_NAME, args_sign);
+			network_append_server_log(log_msg);
+		}
+	} else if (command == GAME_COMMAND_PLACE_TRACK) {
+		// Get ride name
+		int ride_index = *edx & 0xFF;
+		rct_ride* ride = get_ride(ride_index);
+		char ride_name[128];
+		format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+		char* args[2] = {
+			(char *) player_name,
+			ride_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_PLACE_TRACK, args);
+		network_append_server_log(log_msg);
+	} else if (command == GAME_COMMAND_REMOVE_TRACK) {
+		char* args[1] = {
+			(char *) player_name
+		};
+
+		format_string(log_msg, 256, STR_LOG_REMOVE_TRACK, args);
 		network_append_server_log(log_msg);
 	}
 }
