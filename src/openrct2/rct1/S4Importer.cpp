@@ -118,7 +118,7 @@ private:
     uint8 _researchRideTypeUsed[128];
 
 public:
-    void LoadSavedGame(const utf8 * path)
+    void LoadSavedGame(const utf8 * path) override
     {
         if (!rct1_read_sv4(path, &_s4))
         {
@@ -127,7 +127,7 @@ public:
         _s4Path = path;
     }
 
-    void LoadScenario(const utf8 * path)
+    void LoadScenario(const utf8 * path) override
     {
         if (!rct1_read_sc4(path, &_s4))
         {
@@ -136,7 +136,7 @@ public:
         _s4Path = path;
     }
 
-    void Import()
+    void Import() override
     {
         Initialise();
 
