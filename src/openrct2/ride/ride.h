@@ -775,7 +775,7 @@ enum {
 	RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
 	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
 	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
-	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_TRACK_NO_WALLS = 1 << 18,					// if set, wall scenery can not share a tile with the ride's track
 	RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
 	RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = 1 << 20,				// whether or not guests will go on the ride again if they liked it (this is usually applied to everything apart from transport rides)
 	RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = 1 << 21,	// used by toilets and first aid to mark that peep should go inside the building (rather than 'buying' at the counter)

@@ -1120,7 +1120,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
+			if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS) {
 				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
 			} else {
 				// Remove walls in the directions this track intersects
