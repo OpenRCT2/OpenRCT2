@@ -11987,10 +11987,10 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 			}
 		}
 
-		// Always take the big rides into consideration (realistic as you can usually see them from anywhere in the park)
+		// Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
 		sint32 i;
 		FOR_ALL_RIDES(i, ride) {
-			if (ride->lifecycle_flags == RIDE_LIFECYCLE_TESTED) continue;
+			if (ride->status != RIDE_STATUS_OPEN) continue;
 			if (!ride_has_ratings(ride)) continue;
 			if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8,00)) continue;
 
