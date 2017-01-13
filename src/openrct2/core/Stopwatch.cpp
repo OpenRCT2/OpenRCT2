@@ -102,49 +102,49 @@ extern "C"
 {
     #include "stopwatch.h"
 
-    void stopwatch_create(stopwatch * _stopwatch)
+    void stopwatch_create(stopwatch_t * stopwatch)
     {
-        _stopwatch->context = new Stopwatch();
+        stopwatch->context = new Stopwatch();
     }
 
-    void stopwatch_dispose(stopwatch * _stopwatch)
+    void stopwatch_dispose(stopwatch_t * stopwatch)
     {
-        delete static_cast<Stopwatch *>(_stopwatch->context);
+        delete static_cast<Stopwatch *>(stopwatch->context);
     }
 
-    uint64 stopwatch_GetElapsedTicks(stopwatch * _stopwatch)
+    uint64 stopwatch_GetElapsedTicks(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->GetElapsedTicks();
     }
 
-    uint64 stopwatch_GetElapsedMilliseconds(stopwatch * _stopwatch)
+    uint64 stopwatch_GetElapsedMilliseconds(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->GetElapsedMilliseconds();
     }
 
-    void stopwatch_Reset(stopwatch * _stopwatch)
+    void stopwatch_Reset(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Reset();
     }
 
-    void stopwatch_Start(stopwatch * _stopwatch)
+    void stopwatch_Start(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Start();
     }
 
-    void stopwatch_Restart(stopwatch * _stopwatch)
+    void stopwatch_Restart(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Restart();
     }
 
-    void stopwatch_Stop(stopwatch * _stopwatch)
+    void stopwatch_Stop(stopwatch_t * stopwatch)
     {
-        Stopwatch * ctx = static_cast<Stopwatch *>(_stopwatch->context);
+        Stopwatch * ctx = static_cast<Stopwatch *>(stopwatch->context);
         return ctx->Stop();
     }
 }

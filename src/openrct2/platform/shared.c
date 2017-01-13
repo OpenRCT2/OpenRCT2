@@ -49,7 +49,7 @@ int gTextInputCompositionStart;
 int gTextInputCompositionLength;
 
 int gNumResolutions = 0;
-resolution *gResolutions = NULL;
+resolution_t *gResolutions = NULL;
 int gResolutionsAllowAnyAspectRatio = 0;
 
 SDL_Window *gWindow = NULL;
@@ -69,8 +69,8 @@ static void platform_create_window();
 
 static int resolution_sort_func(const void *pa, const void *pb)
 {
-	const resolution *a = (resolution*)pa;
-	const resolution *b = (resolution*)pb;
+	const resolution_t *a = (resolution_t*)pa;
+	const resolution_t *b = (resolution_t*)pb;
 
 	int areaA = a->width * a->height;
 	int areaB = b->width * b->height;
@@ -95,7 +95,7 @@ void platform_update_fullscreen_resolutions()
 
 	// Get resolutions
 	gNumResolutions = numDisplayModes;
-	gResolutions = malloc(gNumResolutions * sizeof(resolution));
+	gResolutions = malloc(gNumResolutions * sizeof(resolution_t));
 	gNumResolutions = 0;
 
 	float desktopAspectRatio = (float)mode.w / mode.h;
@@ -111,12 +111,12 @@ void platform_update_fullscreen_resolutions()
 	}
 
 	// Sort by area
-	qsort(gResolutions, gNumResolutions, sizeof(resolution), resolution_sort_func);
+	qsort(gResolutions, gNumResolutions, sizeof(resolution_t), resolution_sort_func);
 
 	// Remove duplicates
-	resolution *resPlace = &gResolutions[0];
+	resolution_t *resPlace = &gResolutions[0];
 	for (int i = 1; i < gNumResolutions; i++) {
-		resolution *resLook = &gResolutions[i];
+		resolution_t *resLook = &gResolutions[i];
 		if (resLook->width != resPlace->width || resLook->height != resPlace->height)
 			*++resPlace = *resLook;
 	}

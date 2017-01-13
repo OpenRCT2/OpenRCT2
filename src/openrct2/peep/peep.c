@@ -1722,13 +1722,13 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
 	}
 }
 
-typedef struct item_pref {
+typedef struct item_pref_t {
 	uint8 type; // 0 for standard, 1 for extra
 	uint32 item; // And this with the relevant flags
 	uint8 sprite_type;
-} item_pref;
+} item_pref_t;
 
-item_pref item_order_preference[] = {
+item_pref_t item_order_preference[] = {
 		{ 0, PEEP_ITEM_ICE_CREAM, 15 },
 		{ 0, PEEP_ITEM_FRIES, 16},
 		{ 0, PEEP_ITEM_PIZZA, 22 },
@@ -1815,15 +1815,15 @@ void peep_update_sprite_type(rct_peep* peep)
 		}
 	}
 
-	for (item_pref* _item_pref = item_order_preference; _item_pref->type != 0xFF; _item_pref++) {
-		if (_item_pref->type == 0){
-			if (peep->item_standard_flags & _item_pref->item) {
-				set_sprite_type(peep, _item_pref->sprite_type);
+	for (item_pref_t* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++) {
+		if (item_pref->type == 0){
+			if (peep->item_standard_flags & item_pref->item) {
+				set_sprite_type(peep, item_pref->sprite_type);
 				return;
 			}
 		} else {
-			if (peep->item_extra_flags & _item_pref->item) {
-				set_sprite_type(peep, _item_pref->sprite_type);
+			if (peep->item_extra_flags & item_pref->item) {
+				set_sprite_type(peep, item_pref->sprite_type);
 				return;
 			}
 		}

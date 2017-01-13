@@ -2821,7 +2821,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	int x = (uint16)*eax;
 	int y = (uint16)*ecx;
 	uint8 base_height = *edx;
-	uint8 _edge = *edx >> 8;
+	uint8 edge = *edx >> 8;
 	uint8 colour = *edi;
 	uint8 type = *ebx >> 8;
 	gCommandPosition.x = x + 16;
@@ -2856,7 +2856,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		if (map_element->base_height != dl && map_element->base_height != ch)
 			continue;
 
-		if (!(map_element->properties.path.edges & (1 << _edge)))
+		if (!(map_element->properties.path.edges & (1 << edge)))
 			continue;
 
 		pathFound = true;
@@ -2884,7 +2884,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		if (map_element->base_height != dl)
 			continue;
 
-		if ((map_element->properties.banner.position & 0x3) != _edge)
+		if ((map_element->properties.banner.position & 0x3) != edge)
 			continue;
 
 		gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
@@ -2915,7 +2915,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		gBanners[banner_index].y = y / 32;
 		new_map_element->type = MAP_ELEMENT_TYPE_BANNER;
 		new_map_element->clearance_height = new_map_element->base_height + 2;
-		new_map_element->properties.banner.position = _edge;
+		new_map_element->properties.banner.position = edge;
 		new_map_element->properties.banner.flags = 0xFF;
 		new_map_element->properties.banner.unused = 0;
 		new_map_element->properties.banner.index = banner_index;
@@ -3239,14 +3239,14 @@ static bool map_is_location_at_edge(int x, int y)
  *
  *  rct2: 0x006E5CBA
  */
-static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall, int x, int y, int z0, int z1, int _edge, rct_map_element *trackElement)
+static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall, int x, int y, int z0, int z1, int edge, rct_map_element *trackElement)
 {
 	const rct_preview_track *trackBlock;
 	int z, direction;
 
 	int trackType = trackElement->properties.track.type;
 	int sequence = trackElement->properties.track.sequence & 0x0F;
-	direction = (_edge - trackElement->type) & 3;
+	direction = (edge - trackElement->type) & 3;
 	rct_ride *ride = get_ride(trackElement->properties.track.ride_index);
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
@@ -3289,7 +3289,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		if (TrackDefinitions[trackType].bank_start == 0) {
 			if (!(TrackCoordinates[trackType].rotation_begin & 4)) {
 				direction = (trackElement->type & 3) ^ 2;
-				if (direction == _edge) {
+				if (direction == edge) {
 					trackBlock = &TrackBlocks[trackType][sequence];
 					z = TrackCoordinates[trackType].z_begin;
 					z = trackElement->base_height + ((z - trackBlock->z) * 8);
@@ -3316,7 +3316,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 	}
 
 	direction = (trackElement->type + direction) & 3;
-	if (direction != _edge) {
+	if (direction != edge) {
 		return false;
 	}
 
@@ -3334,7 +3334,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
  *
  *  rct2: 0x006E5C1A
  */
-static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, int y, int z0, int z1, int _edge)
+static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, int y, int z0, int z1, int edge)
 {
 	int entryType, sequence;
 	rct_scenery_entry *entry;
@@ -3355,7 +3355,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 		if (z1 <= mapElement->base_height) continue;
 		if (elementType == MAP_ELEMENT_TYPE_FENCE) {
 			int direction = mapElement->type & 3;
-			if (_edge == direction) {
+			if (edge == direction) {
 				map_obstruction_set_error_text(mapElement);
 				return false;
 			}
@@ -3368,7 +3368,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 			map_obstruction_set_error_text(mapElement);
 			return false;
 		case MAP_ELEMENT_TYPE_PATH:
-			if (mapElement->properties.path.edges & (1 << _edge)) {
+			if (mapElement->properties.path.edges & (1 << edge)) {
 				map_obstruction_set_error_text(mapElement);
 				return false;
 			}
@@ -3379,7 +3379,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 			entry = get_large_scenery_entry(entryType);
 			tile = &entry->large_scenery.tiles[sequence];
 
-			int direction = ((_edge - mapElement->type) & 3) + 8;
+			int direction = ((edge - mapElement->type) & 3) + 8;
 			if (!(tile->var_7 & (1 << direction))) {
 				map_obstruction_set_error_text(mapElement);
 				return false;
@@ -3394,7 +3394,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 			}
 			break;
 		case MAP_ELEMENT_TYPE_TRACK:
-			if (!map_place_fence_check_obstruction_with_track(wall, x, y, z0, z1, _edge, mapElement)) {
+			if (!map_place_fence_check_obstruction_with_track(wall, x, y, z0, z1, edge, mapElement)) {
 				return false;
 			}
 			break;
@@ -3466,7 +3466,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	uint8 primary_colour = (*edx >> 8) & 0xFF;
 	uint8 secondary_colour = *ebp & 0xFF;
 	uint8 tertiary_colour = (*ebp >> 8) & 0xFF;
-	uint8 _edge = *edx & 0xFF;
+	uint8 edge = *edx & 0xFF;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	gCommandPosition.x = position.x + 16;
@@ -3508,7 +3508,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		position.z = map_element->base_height * 8;
 
 		uint8 slope = map_element->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
-		bp = EdgeSlopes[slope][_edge & 3];
+		bp = EdgeSlopes[slope][edge & 3];
 		if (bp & EDGE_SLOPE_ELEVATED) {
 			position.z += 16;
 			bp &= ~(1 << 0);
@@ -3539,7 +3539,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 
 	if (!(bp & 0xC0)){
-		uint8 new_edge = (_edge + 2) & 3;
+		uint8 new_edge = (edge + 2) & 3;
 		uint8 new_base_height = map_element->base_height;
 		new_base_height += 2;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
@@ -3567,7 +3567,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 			}
 		}
 
-		new_edge = (_edge + 3) & 3;
+		new_edge = (edge + 3) & 3;
 		if (map_element->properties.surface.slope & (1 << new_edge)){
 			if (position.z / 8 < new_base_height){
 				gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
@@ -3635,7 +3635,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	clearanceHeight += fence->wall.height;
 
 	if (!(flags & GAME_COMMAND_FLAG_7) && !gCheatsDisableClearanceChecks){
-		if (!map_place_fence_check_obstruction(fence, position.x, position.y, position.z / 8, clearanceHeight, _edge)) {
+		if (!map_place_fence_check_obstruction(fence, position.x, position.y, position.z / 8, clearanceHeight, edge)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3662,7 +3662,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 
 		map_element->clearance_height = clearanceHeight;
 
-		map_element->type = bp | _edge | MAP_ELEMENT_TYPE_FENCE;
+		map_element->type = bp | edge | MAP_ELEMENT_TYPE_FENCE;
 
 		map_element->properties.fence.item[1] = primary_colour;
 		map_element->properties.fence.item[1] |= (secondary_colour & 7) << 5;
@@ -3698,14 +3698,14 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 }
 
 money32 map_place_fence(
-	int type, int x, int y, int z, int _edge, int primaryColour, int secondaryColour, int tertiaryColour, int flags
+	int type, int x, int y, int z, int edge, int primaryColour, int secondaryColour, int tertiaryColour, int flags
 ) {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 
 	eax = x;
 	ebx = flags | (type << 8);
 	ecx = y;
-	edx = _edge | (primaryColour << 8);
+	edx = edge | (primaryColour << 8);
 	edi = z;
 	ebp = secondaryColour | (tertiaryColour << 8);
 	game_command_place_fence(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);

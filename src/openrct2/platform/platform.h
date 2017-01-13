@@ -65,7 +65,7 @@
 
 typedef struct resolution {
 	int width, height;
-} resolution;
+} resolution_t;
 
 typedef struct file_info {
 	const char *path;
@@ -129,7 +129,7 @@ extern int gTextInputCompositionLength;
 
 extern int gResolutionsAllowAnyAspectRatio;
 extern int gNumResolutions;
-extern resolution *gResolutions;
+extern resolution_t *gResolutions;
 extern SDL_Window *gWindow;
 
 extern SDL_Color gPalette[256];
