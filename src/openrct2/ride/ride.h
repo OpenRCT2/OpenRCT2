@@ -787,7 +787,7 @@ enum {
 	RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
 	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,								// used only by lift
-	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,					// whether the ride supports large (45 degree turn) curves
 	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
 
