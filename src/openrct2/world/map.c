@@ -3251,13 +3251,13 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 		if (FlatRideTrackSequenceElementAllowedWallEdges[trackType][sequence] & (1 << direction)) {
-			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_NO_WALLS)) {
 				return true;
 			}
 		}
 	} else {
 		if (TrackSequenceElementAllowedWallEdges[trackType][sequence] & (1 << direction)) {
-			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_18)) {
+			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_NO_WALLS)) {
 				return true;
 			}
 		}

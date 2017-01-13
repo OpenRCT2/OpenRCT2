@@ -1435,14 +1435,14 @@ static void window_ride_disable_tabs(rct_window *w)
 	if (ride_type == RIDE_TYPE_MINI_GOLF)
 		disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
 
-	if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_13))
+	if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_NO_VEHICLES))
 		disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
 	if (
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) &&
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL) &&
 		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) &&
-		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_26) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS) &&
 		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
 	) {
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
@@ -1609,7 +1609,7 @@ rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 
 	ride = get_ride(rideIndex);
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
 		return window_ride_main_open(rideIndex);
 
 	w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
@@ -2058,7 +2058,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 	rct_ride *ride = get_ride(w->number);
 
 	int numItems = 1;
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES)) {
 		numItems += ride->num_stations;
 		numItems += ride->num_vehicles;
 	}
@@ -3076,7 +3076,7 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 		gGameCommandErrorTitle = STR_CANT_CHANGE_SPEED;
 	if (ride->mode == RIDE_MODE_RACE)
 		gGameCommandErrorTitle = STR_CANT_CHANGE_NUMBER_OF_LAPS;
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
 		gGameCommandErrorTitle = STR_CANT_CHANGE_THIS;
 	if (ride->mode == RIDE_MODE_BUMPERCAR)
 		gGameCommandErrorTitle = STR_CANT_CHANGE_TIME_LIMIT;
@@ -3564,7 +3564,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 		format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
 		caption = STR_MAX_PEOPLE_ON_RIDE;
 		tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
 			format = 0;
 		break;
 	}
@@ -4485,7 +4485,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 	}
 
 	// Vehicle colours
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_26)) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)) {
 		int vehicleColourSchemeType = ride->colour_scheme_type & 3;
 		if (vehicleColourSchemeType == 0)
 			w->var_48C = 0;

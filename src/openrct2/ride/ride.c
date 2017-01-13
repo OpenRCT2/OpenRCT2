@@ -5290,7 +5290,7 @@ static int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplyi
 		ride_set_start_finish_points(rideIndex, &trackElement);
 
 	if (
-		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
+		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
 		if (!ride_create_vehicles(ride, rideIndex, &trackElement, isApplying)) {
@@ -5421,7 +5421,7 @@ static int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplyi
 		ride_set_start_finish_points(rideIndex, &trackElement);
 
 	if (
-		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13) &&
+		!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) &&
 		!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
 	) {
 		if (!ride_create_vehicles(ride, rideIndex, &trackElement, isApplying)) {

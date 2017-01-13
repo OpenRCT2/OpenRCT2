@@ -3017,7 +3017,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 		window_ride_construction_widgets[WIDX_STRAIGHT].type = WWT_EMPTY;
 	}
 
-	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_30)) {
+	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_LARGE_CURVES)) {
 		window_ride_construction_widgets[WIDX_LEFT_CURVE_LARGE].type = WWT_FLATBTN;
 		window_ride_construction_widgets[WIDX_RIGHT_CURVE_LARGE].type = WWT_FLATBTN;
 	} else {

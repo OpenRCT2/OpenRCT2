@@ -763,31 +763,31 @@ enum {
 	RIDE_TYPE_FLAG_3 = 1 << 3,
 	RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
 	RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
-	RIDE_TYPE_FLAG_6 = 1 << 6,									// used only by boat ride and submarine ride
+	RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6,				// used only by boat ride and submarine ride
 	RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
 	RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = 1 << 8,					// used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
 	RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
 	RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
 	RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,
 	RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1 << 12,	// used by rides with two variaties, like the u and o shapes of the dinghy slide and the dry and submerged track of the water coaster
-	RIDE_TYPE_FLAG_13 = 1 << 13,								// used only by maze, spiral slide and shops
+	RIDE_TYPE_FLAG_NO_VEHICLES = 1 << 13,						// used only by maze, spiral slide and shops
 	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
 	RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
 	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
 	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
-	RIDE_TYPE_FLAG_18 = 1 << 18,
+	RIDE_TYPE_FLAG_TRACK_NO_WALLS = 1 << 18,					// if set, wall scenery can not share a tile with the ride's track
 	RIDE_TYPE_FLAG_FLAT_RIDE = 1 << 19,
-	RIDE_TYPE_FLAG_20 = 1 << 20,
+	RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = 1 << 20,				// whether or not guests will go on the ride again if they liked it (this is usually applied to everything apart from transport rides)
 	RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = 1 << 21,	// used by toilets and first aid to mark that peep should go inside the building (rather than 'buying' at the counter)
 	RIDE_TYPE_FLAG_IN_RIDE = 1 << 22,							// peeps are "IN" (ride) rather than "ON" (ride)
 	RIDE_TYPE_FLAG_SELLS_FOOD = 1 << 23,
 	RIDE_TYPE_FLAG_SELLS_DRINKS = 1 << 24,
 	RIDE_TYPE_FLAG_IS_BATHROOM = 1 << 25,
-	RIDE_TYPE_FLAG_26 = 1 << 26,								// something to do with vehicle colours
+	RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = 1 << 26,				// whether or not vehicle colours can be set
 	RIDE_TYPE_FLAG_CHECK_FOR_STALLING = 1 << 27,
 	RIDE_TYPE_FLAG_HAS_TRACK = 1 << 28,
 	RIDE_TYPE_FLAG_29 = 1 << 29,								// used only by lift
-	RIDE_TYPE_FLAG_30 = 1 << 30,
+	RIDE_TYPE_FLAG_HAS_LARGE_CURVES = 1 << 30,					// whether the ride supports large (45 degree turn) curves
 	RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = 1u << 31,
 };
 
