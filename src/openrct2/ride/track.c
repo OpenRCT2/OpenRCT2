@@ -1180,7 +1180,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			return MONEY32_UNDEFINED;
 		}
 
-		if ((rideTypeFlags & RIDE_TYPE_FLAG_6) && !byte_9D8150) {
+		if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150) {
 			mapElement = map_get_surface_element_at(x / 32, y / 32);
 
 			uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
@@ -1375,7 +1375,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			ride_update_max_vehicles(rideIndex);
 		}
 
-		if (rideTypeFlags & RIDE_TYPE_FLAG_6){
+		if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER){
 			rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 			surfaceElement->type |= (1 << 6);
 			mapElement = surfaceElement;
@@ -1620,7 +1620,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 			}
 		}
 
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_6)){
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)){
 			surfaceElement->type &= ~(1 << 6);
 		}
 
