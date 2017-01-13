@@ -1644,7 +1644,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
 		case TRACK_ELEM_CABLE_LIFT_HILL:
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
 			break;
-		case 216:
+		case TRACK_ELEM_BLOCK_BRAKES:
 			ride->num_block_brakes--;
 			if (ride->num_block_brakes == 0){
 				ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
@@ -2138,7 +2138,7 @@ bool track_element_is_block_start(rct_map_element *trackElement)
 	switch (trackElement->properties.track.type) {
 	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_CABLE_LIFT_HILL:
-	case 216:
+	case TRACK_ELEM_BLOCK_BRAKES:
 		return true;
 	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
