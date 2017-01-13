@@ -114,7 +114,13 @@ option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 option(WITH_TESTS "Build tests")
 option(DISABLE_TTF "Disable support for TTF provided by SDL2_ttf.")
 
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces -Wno-comment -Wshadow  -Wmissing-declarations -Wredundant-decls")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wredundant-decls -Wnonnull -Wignored-qualifiers")
+
+# -Wstrict-overflow is only active when -fstrict-overflow is enabled, but -fstrict-overflow
+# is enabled on -O2, -O3, -Os. This should help catch bugs locally before they reach Travis
+# As of 2a435bf -Wstrict-overflow=1 passes, but higher values do not.
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-overflow -Wstrict-overflow=1")
 
 # On mingw all code is already PIC, this will avoid compiler error on redefining this option
 if(NOT MINGW)
@@ -137,6 +143,7 @@ endif (DISABLE_TTF)
 # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
+ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
 
 if (FORCE32)
     set(TARGET_M "-m32")
