@@ -6968,8 +6968,8 @@ static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	int trackType = vehicle->track_type >> 2;
 
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_8)) {
-		if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND)) {
+		if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE) {
 			if (!vehicle->is_child) {
 				if (track_element_is_covered(trackType)) {
 					rct_vehicle *nextVehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
@@ -8899,7 +8899,7 @@ loc_6DC316:
 		}
 	}
 
-	if (rideEntry->flags & RIDE_ENTRY_FLAG_9) {
+	if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE) {
 		if (!vehicle->is_child) {
 			regs.bx = vehicle->track_type >> 2;
 			if (track_element_is_covered(regs.bx)) {
