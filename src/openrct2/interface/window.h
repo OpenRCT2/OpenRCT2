@@ -635,6 +635,7 @@ void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_about_open();
 void window_footpath_open();
+void window_footpath_scenery_open();
 void window_save_prompt_open();
 void window_title_menu_open();
 void window_title_exit_open();

@@ -1237,7 +1237,6 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 	case 1:
 	{
 		// Path bits
-
 		uint16 flags =
 			VIEWPORT_INTERACTION_MASK_FOOTPATH &
 			VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;

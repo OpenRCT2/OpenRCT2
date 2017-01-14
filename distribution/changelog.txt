@@ -4,6 +4,7 @@
 - Feature: FreeBSD support
 - Feature: Allow loading of parks from URLs
 - Feature: Add boosters (from RCT1 and RCTC) [#4963]
+- Feature: Add path scenery automatically
 - Improved: Checksum calculations speeded up
 - Improved: Pathfinding [#4847]
 - Improved: Guests and staff are now imported when loading SC4 / SV4 parks.

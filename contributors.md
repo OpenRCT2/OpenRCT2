@@ -55,6 +55,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
 * Hielke Morsink (Broxzier) - Tile inspector, misc.
+* Christian Friedrich Coors - Automatic path scenery
 
 ## Bug fixes
 * (halfbro)

@@ -254,7 +254,7 @@ void init_scenery()
 	}
 
 	// small scenery
-	for (uint16 sceneryId = 0; sceneryId < 0xFC; sceneryId++) {
+	for (uint16 sceneryId = SCENERY_SMALL_SCENERY_ID_MIN; sceneryId < SCENERY_SMALL_SCENERY_ID_MAX; sceneryId++) {
 		if (get_small_scenery_entry(sceneryId) == (rct_scenery_entry *)-1)
 			continue;
 
@@ -263,8 +263,8 @@ void init_scenery()
 	}
 
 	// large scenery
-	for (int sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
-		int largeSceneryIndex = sceneryId - 0x300;
+	for (int sceneryId = SCENERY_LARGE_SCENERY_ID_MIN; sceneryId < SCENERY_LARGE_SCENERY_ID_MAX; sceneryId++) {
+		int largeSceneryIndex = sceneryId - SCENERY_LARGE_SCENERY_ID_MIN;
 
 		if (get_large_scenery_entry(largeSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -274,8 +274,8 @@ void init_scenery()
 	}
 
 	// walls
-	for (int sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
-		int wallSceneryIndex = sceneryId - 0x200;
+	for (int sceneryId = SCENERY_WALLS_ID_MIN; sceneryId < SCENERY_WALLS_ID_MAX; sceneryId++) {
+		int wallSceneryIndex = sceneryId - SCENERY_WALLS_ID_MIN;
 
 		if (get_wall_entry(wallSceneryIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -285,8 +285,8 @@ void init_scenery()
 	}
 
 	// banners
-	for (int sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
-		int bannerIndex = sceneryId - 0x400;
+	for (int sceneryId = SCENERY_BANNERS_ID_MIN; sceneryId < SCENERY_BANNERS_ID_MAX; sceneryId++) {
+		int bannerIndex = sceneryId - SCENERY_BANNERS_ID_MIN;
 
 		if (get_banner_entry(bannerIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -296,8 +296,8 @@ void init_scenery()
 	}
 
 	// path bits
-	for (int sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
-		int pathBitIndex = sceneryId - 0x100;
+	for (int sceneryId = SCENERY_PATH_SCENERY_ID_MIN; sceneryId < SCENERY_PATH_SCENERY_ID_MAX; sceneryId++) {
+		int pathBitIndex = sceneryId - SCENERY_PATH_SCENERY_ID_MIN;
 
 		if (get_footpath_item_entry(pathBitIndex) == (rct_scenery_entry *)-1)
 			continue;
@@ -1105,7 +1105,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 				gfx_fill_rect_inset(dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1,
 					top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
 			}
-		} 
+		}
 		else {
 			if (tabSelectedSceneryId == currentSceneryGlobalId) {
 				gfx_fill_rect_inset(dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1,
